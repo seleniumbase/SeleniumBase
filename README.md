@@ -57,10 +57,12 @@ That installs the MySQL library so that you can use db commands in your code. To
 (There are web drivers for other web browsers as well. This one will get you started.)
 
 
-**Step 1:** Checkout the framework with git:
+**Step 1:** Checkout the SeleniumSpot Test Framework with Git or a Git GUI tool:
+
+First you'll want to fork the repository on GitHub to create your own copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now clone your forked SeleniumSpot repository to your development machine. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
 
 ```bash
-git clone [LOCATION OF GITHUB FOLDER]/SeleniumSpot.git
+git clone [LOCATION OF YOUR FORKED SELENIUMSPOT GITHUB FOLDER]/SeleniumSpot.git
 cd SeleniumSpot
 ```
 
