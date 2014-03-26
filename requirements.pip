@@ -9,4 +9,4 @@ BeautifulSoup
 unittest2
 simplejson
 chardet
-errplane
+influxdb
