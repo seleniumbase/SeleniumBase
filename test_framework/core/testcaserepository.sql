@@ -40,6 +40,7 @@ CREATE TABLE `testcaseRunData` (
   `state` varchar(255) DEFAULT NULL,
   `browser` varchar(255) DEFAULT NULL,
   `stackTrace` text,
+  `message` text,
   `retryCount` int(11) DEFAULT '0',
   `exceptionMap_guid` varchar(64) DEFAULT NULL,
   `logURL` text,
