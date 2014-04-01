@@ -97,6 +97,8 @@ sudo python setup.py install
 
 (If you already have root access on the machine you're using, you might not need to add "sudo" before those commands.)
 
+(If the pip install gives you a "clang error: unknown argument: '-mno-fused-madd'", see: http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa)
+
 
 **Step 4:** You can verify that Chromedriver and Selenium were successfully installed by checking inside a python command prompt:
 
