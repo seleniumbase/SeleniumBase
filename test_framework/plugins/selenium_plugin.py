@@ -7,7 +7,6 @@ import time
 import os
 from nose.plugins import Plugin
 from selenium import webdriver
-from selenium.webdriver import DesiredCapabilities
 from test_framework.core import selenium_launcher
 from test_framework.fixtures import constants
 
@@ -51,7 +50,7 @@ class SeleniumBase(Plugin):
         if not self.enabled:
             return
 
-        # Determine the browser version to use, and create a DesiredCapabilities dict
+        # Determine the browser version to use, and configure settings
         self.browser_settings = {
             "browserName": options.browser,
             'name': self.conf.testNames[0],
@@ -81,15 +80,6 @@ class SeleniumBase(Plugin):
             selenium_launcher.execute_selenium(self.options.servername,
                                                self.options.port,
                                                self.options.log_path)
-            time.sleep(20)
-            try:
-                driver = webdriver.Remote("http://%s:%s/wd/hub" %
-                                          (self.options.servername,
-                                          self.options.port),
-                                          DesiredCapabilities.HTML_UNIT)
-                driver.quit()
-            except:
-                raise Exception ("Selenium did not launch. Try again.")
 
 
     def beforeTest(self, test):
@@ -154,6 +144,8 @@ class SeleniumBase(Plugin):
                 return webdriver.Firefox()
             if browser_name == constants.Browser.INTERNET_EXPLORER:
                 return webdriver.Ie()
+            if browser_name == constants.Browser.PHANTOM_JS:
+                return webdriver.PhantomJS()
             if browser_name == constants.Browser.GOOGLE_CHROME:
                 try:
                     # Make it possible for Chrome to save screenshot files to disk.
