@@ -14,19 +14,22 @@ class Browser:
     INTERNET_EXPLORER = "ie"
     SAFARI = "safari"
     GOOGLE_CHROME = "chrome"
+    PHANTOM_JS = "phantomjs"
     HTML_UNIT = "htmlunit"
 
     VERSION = {
         "firefox" : None,
-        "ie" : ["8", "9"],
+        "ie" : ["8", "9", "10", "11"],
         "chrome" : None,
+        "phantomjs" : None,
         "htmlunit" : None
     }
 
     LATEST = {
         "firefox": None,
-        "ie": "9",
+        "ie": "11",
         "chrome": None,
+        "phantomjs" : None,
         "htmlunit": None
     }
 
