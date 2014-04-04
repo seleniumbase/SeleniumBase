@@ -40,14 +40,15 @@ class TestcaseManager:
         """inserts all data for the test case, returns the new row guid"""
 
         query = """INSERT INTO testcaseRunData 
-                              (guid, browser, state, execution_guid, application, 
+                              (guid, browser, state, execution_guid, env, start_time,
                               testcaseAddress, runtime, retryCount, message, stackTrace) 
                           VALUES (
                               %(guid)s,
                               %(browser)s,
                               %(state)s,
                               %(execution_guid)s,
-                              %(application)s,
+                              %(env)s,
+                              %(start_time)s,
                               %(testcaseAddress)s,
                               %(runtime)s,
                               %(retryCount)s,
@@ -105,7 +106,8 @@ class TestcaseDataPayload:
         self.browser = None
         self.state = None
         self.execution_guid = None
-        self.application = None
+        self.env = None
+        self.start_time = None
         self.runtime = None
         self.retry_count = 0
         self.stack_trace = None
@@ -121,7 +123,8 @@ class TestcaseDataPayload:
             "browser": self.browser,
             "state": self.state,
             "execution_guid": self.execution_guid,
-            "application": self.application,
+            "env": self.env,
+            "start_time": self.start_time,
             "runtime": self.runtime,
             "retryCount": self.retry_count,
             "stackTrace": self.stack_trace,
