@@ -50,11 +50,11 @@ That installs the MySQL library so that you can use db commands in your code. To
     mkdir -p $WORKON_HOME
     source /usr/local/bin/virtualenvwrapper.sh
 
-[Chromedriver](http://code.google.com/p/chromedriver/)
+[Chromedriver](http://code.google.com/p/chromedriver/) and [PhantomJS](http://phantomjs.org/)
 
-    brew install chromedriver
+    brew install chromedriver phantomjs
 
-(There are web drivers for other web browsers as well. This one will get you started.)
+(There are web drivers for other web browsers as well. These two will get you started.)
 
 
 **Step 1:** Checkout the SeleniumSpot Test Framework with Git or a Git GUI tool:
