@@ -55,6 +55,8 @@ class Base(Plugin):
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
+        test.test.environment = self.options.environment
+        test.test.args = self.options
 
 
     def addError(self, test, err, capt=None):
