@@ -73,8 +73,9 @@ class DBReporting(Plugin):
         else:
             data_payload.browser = "N/A"
         data_payload.testcaseAddress = test.id()
-        data_payload.application = \
-            ApplicationManager.generate_application_string(test)
+        application = ApplicationManager.generate_application_string(test)
+        data_payload.env = application.split('.')[0]
+        data_payload.start_time = application.split('.')[1]
         data_payload.state = constants.State.NOTRUN
         self.testcase_manager.insert_testcase_data(data_payload)
         self.case_start_time = int(time.time() * 1000)
