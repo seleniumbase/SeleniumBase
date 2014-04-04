@@ -33,12 +33,13 @@ CREATE TABLE `execution` (
 # -----------------------------------
 CREATE TABLE `testcaseRunData` (
   `guid` varchar(64) NOT NULL DEFAULT '',
-  `testcaseAddress` varchar(1024) DEFAULT NULL,
-  `application` varchar(1024) DEFAULT NULL,
+  `testcaseAddress` varchar(255) DEFAULT NULL,
+  `env` varchar(64) DEFAULT NULL,
+  `start_time` varchar(64) DEFAULT NULL,
   `execution_guid` varchar(64) DEFAULT NULL,
   `runtime` int(11),
-  `state` varchar(255) DEFAULT NULL,
-  `browser` varchar(255) DEFAULT NULL,
+  `state` varchar(64) DEFAULT NULL,
+  `browser` varchar(64) DEFAULT NULL,
   `message` text,
   `stackTrace` text,
   `retryCount` int(11) DEFAULT '0',
