@@ -9,8 +9,8 @@ import mysql_conf as conf
 
 class DatabaseManager():
     """
-    This class wraps database fucntions for us for easy use.
-    It connects to the test case database
+    This class wraps database functions for easy use.
+    It connects to the testcase database.
     """
 
     def __init__(self, database_env='test', conf_creds=None):
@@ -20,7 +20,7 @@ class DatabaseManager():
         db_server, db_user, db_pass, db_schema = \
             conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
         retry_count = 3
-        backoff = 10
+        backoff = 3  # Time to wait (in seconds) between retries
         count = 0
         while count < retry_count:
             try:
