@@ -2,21 +2,13 @@
 # -----------------------------------
 CREATE TABLE `delayedTestData` (
   `guid` varchar(64) NOT NULL DEFAULT '',
-  `testcaseAddress` varchar(1024) NOT NULL DEFAULT '',
+  `testcaseAddress` varchar(255) NOT NULL DEFAULT '',
   `insertedAt` bigint(20) NOT NULL,
   `expectedResult` text,
   `done` tinyint(1) DEFAULT '0',
   `expiresAt` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`guid`),
   UNIQUE KEY `uuid` (`guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-# table exceptionMap
-# -----------------------------------
-CREATE TABLE `exceptionMap` (
-  `guid` varchar(64) NOT NULL DEFAULT '',
-  `jiraIssue` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # table execution
