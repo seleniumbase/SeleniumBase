@@ -166,7 +166,6 @@ def wait_for_element_not_visible(driver, selector,
                 time.sleep(1)
             else:
                 return
-            time.sleep(1)
         except Exception:
             return
     raise Exception("Element %s was still visible after %s seconds!"\
