@@ -152,7 +152,7 @@ If the example is moving too fast for your eyes to see what's going on, there ar
 
 ```python
 import time; time.sleep(5) # sleep for 5 seconds (add this after the line you want to pause on)
-import pdb; pdb.set_trace() # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
+import ipdb; ipdb.set_trace() # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
 ```
 
 You may also want to have your test sleep in other situations where you need to have your test wait for something. If you know what you're waiting for, you should be specific by using a command that waits for something specific to happen.
@@ -163,7 +163,7 @@ If you need to debug things on the fly (in case of errors), use this line to run
 nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures -s
 ```
 
-The above code will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (pdb commands: 'c', 's', 'n' => continue, step, next).
+The above code will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next).
 
 
 **Step 6:** Complete the setup
