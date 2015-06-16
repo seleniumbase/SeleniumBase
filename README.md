@@ -32,7 +32,7 @@ A working system would be something like this: You have a QA build and a Prod bu
 
 [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
 
-    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install git
     brew update
 
