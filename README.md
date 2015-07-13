@@ -112,7 +112,7 @@ python
 ```
 
 
-**Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs. You'll also see something like "timeout=5" in the script, which tells the script how long to wait before failing (you can skip that argument and have it default to 30 seconds, which can be modified from the test framework code).
+**Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
 
 ```python
 from test_framework.fixtures import base_case
@@ -122,10 +122,10 @@ class MyTestClass(base_case.BaseCase):
     def test_basic(self):
         self.driver.get("http://en.wikipedia.org/wiki/Main_Page")
         self.update_text_value("input[name='search']", "Boston\n")
-        text = self.wait_for_element_visible("div#mw-content-text", timeout=5).text
+        text = self.wait_for_element_visible("div#mw-content-text").text
         self.assertTrue("The Charles River separates Boston from " in text)
-        self.wait_for_element_visible("a[title='Find out about Wikipedia']").click()
-        self.wait_for_text_visible("Since its creation in 2001", "div#mw-content-text", timeout=5)
+        self.click("a[title='Find out about Wikipedia']")
+        self.wait_for_text_visible("Since its creation in 2001", "div#mw-content-text")
 ```
 
 Now run the script:
