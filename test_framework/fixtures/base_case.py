@@ -50,9 +50,9 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script("jQuery('%s').click()" % selector)
 
 
-    def click(self, selector):
-        ele = self.driver.find_element(by=By.CSS_SELECTOR, value=selector)
-        return ele.click()
+    def click(self, selector, by=By.CSS_SELECTOR, timeout=5):
+        element = page_loads.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
+        return element.click()
 
 
     def scroll_to(self, selector):
