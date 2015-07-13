@@ -98,25 +98,25 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.5)
 
 
-    def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=30):
+    def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=10):
         return page_loads.wait_for_element_present(self.driver, selector, by, timeout)
 
 
-    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR, timeout=30):
+    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR, timeout=10):
         return page_loads.wait_for_element_visible(self.driver, selector, by, timeout)
 
 
-    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=30):
+    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=10):
         return page_loads.wait_for_text_visible(self.driver, text, selector, by, timeout)
 
 
-    def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=30):
+    def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=10):
         return page_loads.wait_for_element_absent(self.driver, selector, by, timeout)
 
 
-    def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR, timeout=30):
+    def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR, timeout=10):
         return page_loads.wait_for_element_not_visible(self.driver, selector, by, timeout)
 
 
-    def wait_for_and_switch_to_alert(self, timeout=30):
+    def wait_for_and_switch_to_alert(self, timeout=10):
         return page_loads.wait_for_and_switch_to_alert(self.driver, timeout)
