@@ -6,12 +6,12 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'test_framework',
-    version = '1.0.0',
-    author = 'HubSpot Test Automation',
-    author_email = '@hubspot.com',
+    version = '1.1.0',
+    author = 'Michael Mintz',
+    author_email = '@mintzworld',
     maintainer = 'Michael Mintz',
     description = 'The SeleniumSpot Test Framework. (Powered by Python, WebDriver, and more...)',
-    license = 'Public',
+    license = 'The MIT License',
     packages = ['test_framework',
                 'test_framework.core',
                 'test_framework.plugins',
