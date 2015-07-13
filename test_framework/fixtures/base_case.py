@@ -55,6 +55,11 @@ class BaseCase(unittest.TestCase):
         return element.click()
 
 
+    def activate_jquery(self):
+        """ (It's not on by default on all website pages.) """
+        self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
+
+
     def scroll_to(self, selector):
         self.driver.execute_script("jQuery('%s')[0].scrollIntoView()" % selector)
 
