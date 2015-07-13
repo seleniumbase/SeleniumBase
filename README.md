@@ -50,10 +50,12 @@ That installs the MySQL library so that you can use db commands in your code. To
     mkdir -p $WORKON_HOME
     source /usr/local/bin/virtualenvwrapper.sh
 
-To save time from having to source virtualenvwrapper again when you open a new window, you can do the following:
-1. Go to your home directory ("cd ~/")
-2. Create a file called ".bash_profile" ("vi .bash_profile")
-3. Add the line "source /usr/local/bin/virtualenvwrapper.sh" to the file.
+To save time from having to source virtualenvwrapper again when you open a new window, you can add the line "source /usr/local/bin/virtualenvwrapper.sh" to a file called ".bash_profile" in your home directory.
+
+    cd ~/
+    vi .bash_profile
+    source /usr/local/bin/virtualenvwrapper.sh
+
 ("vi" is a fast text editor - "i" for insert-text mode, "esc" to get out of insert-text mode, ":wq"+[Enter] to save & exit the file)
 
 [Chromedriver](http://code.google.com/p/chromedriver/) and [PhantomJS](http://phantomjs.org/)
