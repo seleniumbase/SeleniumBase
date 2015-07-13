@@ -128,7 +128,7 @@ from test_framework.fixtures import base_case
 class MyTestClass(base_case.BaseCase):
 
     def test_basic(self):
-        self.driver.get("http://en.wikipedia.org/wiki/Main_Page")
+        self.open("http://en.wikipedia.org/wiki/Main_Page")
         self.update_text_value("input[name='search']", "Boston\n")
         text = self.wait_for_element_visible("div#mw-content-text").text
         self.assertTrue("The Charles River separates Boston from " in text)
