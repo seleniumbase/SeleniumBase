@@ -502,7 +502,7 @@ Feel free to check out other exciting open source projects on GitHub:
 
 Happy Automating!
 
-~ Michael Mintz (AKA MintzWorld / DrSelenium / your friendly neighborhood automation wizard)
+~ Michael Mintz (https://github.com/mdmintz)
 
 
 ### Legal Disclaimer
