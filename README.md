@@ -365,7 +365,7 @@ self.wait_for_element_visible("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE
 
 #### Switching Tabs
 
-So what if your test opens up a new tab/window and now you have more than one page? No problem. You just need to specify which one you currently want Selenium to use. Switching between them is easy:
+What if your test opens up a new tab/window and now you have more than one page? No problem. You just need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:
 Ex:
 
 ```python
@@ -383,6 +383,19 @@ self.driver.switch_to_frame('ContentManagerTextBody_ifr')
 # Do something cool (here)
 self.driver.switch_to_default_content()  # exit the iFrame when you're done
 ```
+
+#### Handle Pop-Up Alerts
+
+What if your test makes an alert pop up in your browser? No problem. You just need to switch to it and either accept it or dismiss it:
+Ex:
+
+```python
+self.driver.switch_to_alert().accept()
+
+self.driver.switch_to_alert().dismiss()
+```
+
+If you're not sure whether there's an alert before trying to accept or dismiss it, one way to handle that is to wrap your alert-handling code in a try/except block. Other methods such as .text and .send_keys() will also work with alerts.
 
 #### Executing Custom jQuery Scripts:
 
