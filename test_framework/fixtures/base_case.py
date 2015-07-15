@@ -30,7 +30,7 @@ class BaseCase(unittest.TestCase):
         return page_interactions.hover_on_element(self.driver, selector)
 
 
-    def hover_and_click(self, hover_selector, click_selector, click_by=By.CSS_SELECTOR, timeout=5):
+    def hover_and_click(self, hover_selector, click_selector, click_by=By.CSS_SELECTOR, timeout=7):
         return page_interactions.hover_and_click(self.driver, hover_selector, click_selector, click_by, timeout)
 
 
@@ -50,7 +50,7 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script("jQuery('%s').click()" % selector)
 
 
-    def click(self, selector, by=By.CSS_SELECTOR, timeout=5):
+    def click(self, selector, by=By.CSS_SELECTOR, timeout=7):
         element = page_loads.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
         return element.click()
 
@@ -70,7 +70,6 @@ class BaseCase(unittest.TestCase):
 
     def scroll_click(self, selector):
         self.scroll_to(selector)
-        time.sleep(0.1)
         self.click(selector)
 
 
@@ -86,7 +85,7 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
 
 
-    def update_text_value(self, selector, new_value, timeout=5, retry=False):
+    def update_text_value(self, selector, new_value, timeout=7, retry=False):
         """ This method updates a selector's text value with a new value
             @Params
             selector - the selector with the value to change
@@ -104,28 +103,27 @@ class BaseCase(unittest.TestCase):
                 # Since selectors with quotes inside of quotes such as 'div[data-tab-name="advanced"]' break jQuery, format them first
                 selector = self.jq_format(selector)
                 self.set_value(selector, new_value)
-        time.sleep(0.5)
 
 
-    def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=10):
+    def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=14):
         return page_loads.wait_for_element_present(self.driver, selector, by, timeout)
 
 
-    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR, timeout=10):
+    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR, timeout=14):
         return page_loads.wait_for_element_visible(self.driver, selector, by, timeout)
 
 
-    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=10):
+    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=14):
         return page_loads.wait_for_text_visible(self.driver, text, selector, by, timeout)
 
 
-    def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=10):
+    def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=14):
         return page_loads.wait_for_element_absent(self.driver, selector, by, timeout)
 
 
-    def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR, timeout=10):
+    def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR, timeout=14):
         return page_loads.wait_for_element_not_visible(self.driver, selector, by, timeout)
 
 
-    def wait_for_and_switch_to_alert(self, timeout=10):
+    def wait_for_and_switch_to_alert(self, timeout=14):
         return page_loads.wait_for_and_switch_to_alert(self.driver, timeout)
