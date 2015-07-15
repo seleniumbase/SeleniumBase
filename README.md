@@ -95,6 +95,11 @@ To get back into your virtual environment, use the following command:
 workon seleniumspot
 ```
 
+To see a list of environments that exist on your system, use the following command:
+
+```bash
+lsvirtualenv
+```
 
 **Step 3:** Install necessary packages from the SeleniumSpot folder and compile the test framework
 
