@@ -139,18 +139,27 @@ from test_framework.fixtures import base_case
 class MyTestClass(base_case.BaseCase):
 
     def test_basic(self):
-        self.open("http://en.wikipedia.org/wiki/Main_Page")
-        self.update_text_value("input[name='search']", "Boston\n")
-        text = self.wait_for_element_visible("div#mw-content-text").text
-        self.assertTrue("The Charles River separates Boston from " in text)
-        self.click("a[title='Find out about Wikipedia']")
-        self.wait_for_text_visible("Since its creation in 2001", "div#mw-content-text")
+        self.open("http://xkcd.com/1513/")
+        self.click('a[href="http://blag.xkcd.com"]')
+        self.wait_for_text_visible("The blag of the webcomic", "#site-description")
+        self.update_text_value("input#s", "Robots!\n")
+        self.wait_for_text_visible("Hooray robots!", "#content")
+        self.open("http://xkcd.com/1481/")
+        self.wait_for_element_visible("div#comic")
+        self.click('a[rel="license"]')
+        text = self.wait_for_element_visible('center').text
+        self.assertTrue("reuse any of my drawings" in text)
+        self.assertTrue("You can use them freely" in text)
 ```
 
-Now run the script:
+Now try running the script using various web browsers:
 
 ```bash
 nosetests my_first_test.py --browser=chrome --with-selenium -s
+
+nosetests my_first_test.py --browser=phantomjs --with-selenium -s
+
+nosetests my_first_test.py --browser=firefox --with-selenium -s
 ```
 
 After the test completes, in the console output you'll see a dot on a new line, representing a passing test. (On test failures you'll see an F instead, and on test errors you'll see an E). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "Ran 1 test in ..." line, followed by an "OK" if all nosetests passed.
