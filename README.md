@@ -112,6 +112,12 @@ sudo python setup.py install
 
 (If the pip install gives you a "clang error: unknown argument: '-mno-fused-madd'", see: http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa)
 
+In some cames, certain packages will have other dependencies as requirements, and those will get installed automatically. You'll be able to see all installed packages in your virtual environment by using the following command:
+
+```bash
+pip freeze
+```
+
 
 **Step 4:** You can verify that Chromedriver and Selenium were successfully installed by checking inside a python command prompt:
 
