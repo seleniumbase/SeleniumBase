@@ -101,6 +101,12 @@ To see a list of environments that exist on your system, use the following comma
 lsvirtualenv
 ```
 
+To delete a virtual environment that you no longer need, use the following command:
+
+```bash
+rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
+```
+
 **Step 3:** Install necessary packages from the SeleniumSpot folder and compile the test framework
 
 ```bash
