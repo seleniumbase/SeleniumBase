@@ -141,7 +141,12 @@ class SeleniumBase(Plugin):
                                     self.browser_settings)
         else:
             if browser_name == constants.Browser.FIREFOX:
-                return webdriver.Firefox()
+                try:
+                    profile = webdriver.FirefoxProfile()
+                    profile.set_preference("reader.parse-on-load.enabled", False)
+                    return webdriver.Firefox(profile)
+                except:
+                    return webdriver.Firefox()
             if browser_name == constants.Browser.INTERNET_EXPLORER:
                 return webdriver.Ie()
             if browser_name == constants.Browser.PHANTOM_JS:
