@@ -124,6 +124,14 @@ In some cames, certain packages will have other dependencies as requirements, an
 pip freeze
 ```
 
+By default, some files may be hidden on a MAC, such as .gitignore (which is used to tell Git which files to ignore for staging commits). To view all files from the Finder window, run the following command in a terminal window:
+
+```bash
+defaults write com.apple.finder AppleShowAllFiles -bool true
+```
+
+(You may need to reopen the MAC Finder window to see changes from that.)
+
 
 **Step 4:** You can verify that Chromedriver and Selenium were successfully installed by checking inside a python command prompt:
 
