@@ -186,6 +186,14 @@ nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures
 
 The above code will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next).
 
+Here are some other useful nosetest arguments that you may want to append to your run commands:
+
+```bash
+--logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
+-x  # Stop running the tests after the first failure is reached.
+-v  # Prints the full test name rather than just a dot for each test.
+--with-id  # If -v is also used, will number the tests for easy counting.
+```
 
 **Step 6:** Complete the setup
 
