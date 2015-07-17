@@ -215,13 +215,14 @@ If you're planning on using the full power of this test framework, there are a f
 
 * Setup your Selenium Grid and update your *.cfg file to point there. An example config file called selenium_server_config_example.cfg has been provided for you in the grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can just use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
 
-* There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). There's a plugin for Xvfb in Jenkins: https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin
-Here are some more helpful resources I found regarding the use of Xvfb:
-http://stackoverflow.com/questions/6183276/how-do-i-run-selenium-in-xvfb
-http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/
-http://stackoverflow.com/questions/27202131/firefox-started-by-selenium-ignores-the-display-created-by-pyvirtualdisplay
+* There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). [There's a plugin for Xvfb in Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin). Here are some more helpful resources I found regarding the use of Xvfb:
+1. http://stackoverflow.com/questions/6183276/how-do-i-run-selenium-in-xvfb
+2. http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/
+3. http://stackoverflow.com/questions/27202131/firefox-started-by-selenium-ignores-the-display-created-by-pyvirtualdisplay
 
-* If you use [HipChat](https://www.hipchat.com/), you can have test alerts go there when tests fail. If that sounds good to you, update the db_reporting_plugin.py file from the plugins folder with your credentials.
+* If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
+
+* If you use [HipChat](https://www.hipchat.com/), you can have test alerts go there when tests fail by using the db_reporting plugin. Be sure to first update the db_reporting_plugin.py file from the plugins folder with your HipChat credentials.
 
 * Be sure to tell SeleniumSpot to use these added features when you set them up. That's easy to do. You would be running tests like this:
 
