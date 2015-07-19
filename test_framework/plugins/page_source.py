@@ -27,7 +27,7 @@ class PageSource(Plugin):
         self.options = options
 
 
-    def addError(self, test, err,capt=None):
+    def addError(self, test, err, capt=None):
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
@@ -37,11 +37,11 @@ class PageSource(Plugin):
         html_file.close()
 
 
-    def addFailure(self, test, err, capt=None,tbinfo = None):
+    def addFailure(self, test, err, capt=None, tbinfo=None):
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
-        html_file_name = "%s/%s"%(test_logpath,self.logfile_name)
-        html_file = codecs.open(html_file_name, "w+","utf-8")
+        html_file_name = "%s/%s" % (test_logpath, self.logfile_name)
+        html_file = codecs.open(html_file_name, "w+", "utf-8")
         html_file.write(test.driver.page_source)
         html_file.close()
