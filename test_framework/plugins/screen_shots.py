@@ -1,5 +1,5 @@
 """
-Contains the plugin for screenshots for the selenium tests.
+Contains the screenshot plugin for the selenium tests.
 """
 
 import os
@@ -9,15 +9,15 @@ from nose.plugins import Plugin
 
 class ScreenShots(Plugin):
     """
-    This plugin will take a screenshot when a test raises an error
-    or when a test fails. It will store that screenshot either in
-    the default logs file or another file of the user's specification
-    along with default test and time ran info.
+    This plugin will take a screenshot when either a test fails
+    or raises an error. It will store that screenshot either in
+    the default logs file or in another file of the user's specification.
     """
 
     name = "screen_shots"
     logfile_name = "screenshot.jpg"
-    logfile_name_2 = "screenshot_fullscreen.jpg"  # Selenium browser windows aren't always maximized, so this may show you more details
+    # Browser windows aren't always maximized. This may display more details.
+    logfile_name_2 = "screenshot_fullscreen.jpg"
 
     def options(self, parser, env):
         super(ScreenShots, self).options(parser, env=env)
