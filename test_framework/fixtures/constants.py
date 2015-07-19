@@ -4,7 +4,9 @@ This class containts some frequently-used constants
 
 class Environment:
     QA = "qa"
+    STAGING = "staging"
     PRODUCTION = "production"
+    MASTER = "master"
     LOCAL = "local"
     TEST = "test"
 

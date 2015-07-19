@@ -26,9 +26,14 @@ class Base(Plugin):
         super(Base, self).options(parser, env=env)
         parser.add_option('--env', action='store',
                           dest='environment',
-                          choices=(constants.Environment.QA, constants.Environment.PRODUCTION, constants.Environment.LOCAL, constants.Environment.TEST),
+                          choices=(constants.Environment.QA,
+                                   constants.Environment.STAGING,
+                                   constants.Environment.PRODUCTION,
+                                   constants.Environment.MASTER,
+                                   constants.Environment.LOCAL,
+                                   constants.Environment.TEST),
                           default=constants.Environment.TEST,
-                          help="The environment to run the test")
+                          help="The environment to run the tests in.")
         parser.add_option('--log_path', dest='log_path',
                           default='logs/',
                           help='Where the log files are saved.')
