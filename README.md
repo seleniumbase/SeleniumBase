@@ -148,9 +148,9 @@ python
 **Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
 
 ```python
-from test_framework import base_case
+import test_framework
 
-class MyTestClass(base_case.BaseCase):
+class MyTestClass(test_framework.BaseCase):
 
     def test_basic(self):
         self.open("http://xkcd.com/1513/")
@@ -247,9 +247,9 @@ nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[
 Let's try an example of a test that fails. Copy the following into a file called fail_test.py:
 ```python
 """ test_fail.py """
-from test_framework import base_case
+import test_framework
 
-class MyTestClass(base_case.BaseCase):
+class MyTestClass(test_framework.BaseCase):
 
     def test_find_google_on_bing(self):
         self.driver.get("http://bing.com")
@@ -271,7 +271,7 @@ Have you made it this far? Congratulations!!! Now you're ready to dive in at ful
 Important Note: Make sure you include the following import in your code to use the framework commands:
 
 ```python
-from test_framework import base_case
+import test_framework
 ```
 
 #### Navigating to a Page, Plus Some Other Useful Related Commands
@@ -485,13 +485,13 @@ So by now you may be wondering how the nosetests code works? Nosetests will auto
 To use the test framework calls, don't forget to include the following import:
 
 ```python
-from test_framework import base_case
+import test_framework
 ```
 
 And you'll need to inherit the base case in your classes like so:
 
 ```python
-class MyTestClass(base_case.BaseCase):
+class MyTestClass(test_framework.BaseCase):
 ```
 
 To understand the full scope of the test framework, we have to take a peek inside. From the top-level folder that contained the requirements.pip and setup.py files, there are two other major folders: "grid" and "test_framework". The Selenium "Grid" is what maintains the remote machines running selenium tests for "selenium.hubteam.com/jenkins". Machines can be spun up through Amazon EC2, and each one is capable of running 5 simultaneous browser tests. The other major folder, "test_framework", is what contains everything else. The "test_framework" folder contains all the major components such as "Core", "Fixtures", and "Plugins". For all intensive purposes, those sections are all equally important. They contain all the code and libraries that make our test framework useful (because otherwise we'd just be writing tests using raw selenium calls without any special add-ons or support).
