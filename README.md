@@ -148,7 +148,7 @@ python
 **Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
 
 ```python
-from test_framework.fixtures import base_case
+from test_framework import base_case
 
 class MyTestClass(base_case.BaseCase):
 
@@ -247,7 +247,7 @@ nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[
 Let's try an example of a test that fails. Copy the following into a file called fail_test.py:
 ```python
 """ test_fail.py """
-from test_framework.fixtures import base_case
+from test_framework import base_case
 
 class MyTestClass(base_case.BaseCase):
 
@@ -271,7 +271,7 @@ Have you made it this far? Congratulations!!! Now you're ready to dive in at ful
 Important Note: Make sure you include the following import in your code to use the framework commands:
 
 ```python
-from test_framework.fixtures import base_case
+from test_framework import base_case
 ```
 
 #### Navigating to a Page, Plus Some Other Useful Related Commands
@@ -485,7 +485,7 @@ So by now you may be wondering how the nosetests code works? Nosetests will auto
 To use the test framework calls, don't forget to include the following import:
 
 ```python
-from test_framework.fixtures import base_case
+from test_framework import base_case
 ```
 
 And you'll need to inherit the base case in your classes like so:
