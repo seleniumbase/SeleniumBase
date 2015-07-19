@@ -19,7 +19,7 @@ class Browser:
 
     VERSION = {
         "firefox" : None,
-        "ie" : ["8", "9", "10", "11"],
+        "ie" : None,
         "chrome" : None,
         "phantomjs" : None,
         "htmlunit" : None
@@ -27,7 +27,7 @@ class Browser:
 
     LATEST = {
         "firefox": None,
-        "ie": "11",
+        "ie": None,
         "chrome": None,
         "phantomjs" : None,
         "htmlunit": None
