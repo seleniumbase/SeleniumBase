@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'seleniumspot',
-    version = '1.1.0',
+    version = '1.1.1',
     author = 'Michael Mintz',
     author_email = '@mintzworld',
     maintainer = 'Michael Mintz',
