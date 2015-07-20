@@ -5,7 +5,7 @@ The setup package to install the SeleniumSpot Test Framework plugins.
 from setuptools import setup, find_packages
 
 setup(
-    name = 'test_framework',
+    name = 'seleniumspot',
     version = '1.1.0',
     author = 'Michael Mintz',
     author_email = '@mintzworld',
