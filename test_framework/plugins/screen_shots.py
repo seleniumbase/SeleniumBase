@@ -17,7 +17,7 @@ class ScreenShots(Plugin):
     name = "screen_shots"
     logfile_name = "screenshot.jpg"
     # Browser windows aren't always maximized. This may display more details.
-    logfile_name_2 = "screenshot_fullscreen.jpg"
+    logfile_name_2 = "full_screenshot.jpg"
 
     def options(self, parser, env):
         super(ScreenShots, self).options(parser, env=env)
@@ -38,11 +38,11 @@ class ScreenShots(Plugin):
         test.driver.get_screenshot_as_file(screenshot_file)
         try:
             test.driver.maximize_window()
+            time.sleep(0.2)  # Make sure the screen is ready
         except Exception:
             pass
         screen_b64 = test.driver.get_screenshot_as_base64()
         screen = base64.decodestring(screen_b64)
-        time.sleep(0.3)
         screenshot_file_2 = "%s/%s" % (test_logpath, self.logfile_name_2)
         f1 = open(screenshot_file_2, 'w+')
         f1.write(screen)
