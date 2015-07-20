@@ -1,1 +1,1 @@
-nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots -s
+nosetests test_fail.py --browser=chrome --with-selenium --logging-level=INFO --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots -s

@@ -1,1 +1,1 @@
-nosetests test_fail.py --browser=chrome --with-selenium --pdb --pdb-failures -s
+nosetests test_fail.py --browser=chrome --with-selenium --logging-level=INFO --pdb --pdb-failures -s
