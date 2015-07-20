@@ -15,7 +15,8 @@ setup(
     packages = ['test_framework',
                 'test_framework.core',
                 'test_framework.plugins',
-                'test_framework.fixtures'],
+                'test_framework.fixtures',
+                'common'],
     entry_points = {
         'nose.plugins': [
             'base_plugin = test_framework.plugins.base_plugin:Base',
