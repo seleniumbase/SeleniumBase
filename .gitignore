@@ -5,6 +5,8 @@
 *.egg-info
 dist
 build
+logs
+archived_logs
 eggs
 parts
 bin
@@ -18,6 +20,7 @@ __pycache__
 
 # Installer logs
 pip-log.txt
+.swp
 
 # Unit test / coverage reports
 .coverage
