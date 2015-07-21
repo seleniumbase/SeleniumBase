@@ -59,6 +59,11 @@ class BaseCase(unittest.TestCase):
         self.driver.get(url)
 
 
+    def open_url(self, url):
+        """ In case people are mixing up self.open() with open() """
+        self.driver.get(url)
+
+
     def activate_jquery(self):
         """ (It's not on by default on all website pages.) """
         self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
