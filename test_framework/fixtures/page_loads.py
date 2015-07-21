@@ -25,8 +25,7 @@ from selenium.webdriver.remote.errorhandler import ElementNotVisibleException, \
                                                    UnexpectedAlertPresentException
 
 
-def wait_for_element_present(driver, selector,
-                             by=By.CSS_SELECTOR, timeout=30):
+def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR, timeout=30):
     """
     Searches for the specified element by the given selector.  Returns the
     element object if the element is present on the page.  The element can be
@@ -43,19 +42,18 @@ def wait_for_element_present(driver, selector,
     """
 
     element = None
-    for x in range(timeout):
+    for x in range(timeout * 10):
         try:
             element = driver.find_element(by=by, value=selector)
             return element
         except Exception:
-            time.sleep(1)
+            time.sleep(0.1)
     if not element:
         raise NoSuchElementException("Element %s was not present in %s seconds!" %
                                      (selector, timeout))
 
 
-def wait_for_element_visible(driver, selector,
-                             by=By.CSS_SELECTOR, timeout=30):
+def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR, timeout=30):
     """
     Searches for the specified element by the given selector.  Returns the
     element object if the element is present and visible on the page.
@@ -72,23 +70,21 @@ def wait_for_element_visible(driver, selector,
     """
 
     element = None
-    for x in range(timeout):
+    for x in range(timeout * 10):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
                 return element
             else:
-                element = None
-            time.sleep(1)
+                raise Exception()
         except Exception:
-            time.sleep(1)
+            time.sleep(0.1)
     if not element:
         raise ElementNotVisibleException("Element %s was not visible in %s seconds!"\
                                          % (selector, timeout))
 
 
-def wait_for_text_visible(driver, text, selector,
-                          by=By.CSS_SELECTOR, timeout=30):
+def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=30):
     """
     Searches for the specified element by the given selector. Returns the
     element object if the text is present in the element and visible
@@ -106,24 +102,22 @@ def wait_for_text_visible(driver, text, selector,
     """
 
     element = None
-    for x in range(timeout):
+    for x in range(timeout * 10):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
                 if text in element.text:
                     return element
                 else:
-                    element = None
-            time.sleep(1)
+                    raise Exception()
         except Exception:
-            time.sleep(1)
+            time.sleep(0.1)
     if not element:
-        raise ElementNotVisibleException("Expected text for element %s was not visible in %s seconds!"\
-                                         % (selector, timeout))
+        raise ElementNotVisibleException("Expected text [%s] for element %s was not visible in %s seconds!"\
+                                         % (text, selector, timeout))
 
 
-def wait_for_element_absent(driver, selector,
-                             by=By.CSS_SELECTOR, timeout=30):
+def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR, timeout=30):
     """
     Searches for the specified element by the given selector. Returns void when
     element is no longer present on the page. Raises an exception if the
@@ -135,18 +129,17 @@ def wait_for_element_absent(driver, selector,
     timeout - the time to wait for the element in seconds (Default- 30 seconds)
     """
 
-    for x in range(timeout + 1):
+    for x in range(timeout * 10):
         try:
             driver.find_element(by=by, value=selector)
-            time.sleep(1)
+            time.sleep(0.1)
         except Exception:
             return
     raise Exception("Element %s was still present after %s seconds!" %
                     (selector, timeout))
 
 
-def wait_for_element_not_visible(driver, selector,
-                             by=By.CSS_SELECTOR, timeout=30):
+def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR, timeout=30):
     """
     Searches for the specified element by the given selector. Returns void when
     element is no longer visible on the page (or if the element is not
@@ -159,11 +152,11 @@ def wait_for_element_not_visible(driver, selector,
     timeout - the time to wait for the element in seconds (Default - 30 seconds)
     """
 
-    for x in range(timeout + 1):
+    for x in range(timeout * 10):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
-                time.sleep(1)
+                time.sleep(0.1)
             else:
                 return
         except Exception:
@@ -182,7 +175,7 @@ def wait_for_and_switch_to_alert(driver, timeout=30):
     timeout - the time to wait for the alert in seconds (Default - 30 seconds)
     """
 
-    for x in range(timeout + 1):
+    for x in range(timeout * 10):
         try:
             driver.switch_to_alert()
             alert = driver.switch_to_alert()
@@ -190,7 +183,7 @@ def wait_for_and_switch_to_alert(driver, timeout=30):
             return alert
         except NoAlertPresentException:
             try:
-                time.sleep(1)
+                time.sleep(0.1)
             except UnexpectedAlertPresentException:
                 pass
 
