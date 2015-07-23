@@ -8,21 +8,22 @@ import requests
 import logging
 import datetime
 from nose.plugins import Plugin
+from test_framework.config import settings
 
 
 HIPCHAT_URL = 'https://api.hipchat.com/v1/rooms/message'
-HIPCHAT_AUTH_TOKEN = '[ENTER YOUR HIPCHAT AUTH TOKEN HERE]'
+HIPCHAT_AUTH_TOKEN = settings.HIPCHAT_AUTH_TOKEN
 
 
 class HipchatReporting(Plugin):
-    name = 'hipchat_reporting'  # Usage: --with-hipchat_reporting --room_id=[HIPCHAT ROOM ID] --owner_to_mention=[HIPCHAT @NAME]
+    name = 'hipchat_reporting'  # Usage: --with-hipchat_reporting --hipchat_room_id=[HIPCHAT ROOM ID] --hipchat_owner_to_mention=[HIPCHAT @NAME]
 
     def __init__(self):
         super(HipchatReporting, self).__init__()
-        self.room_id = None
-        self.owner_to_mention = None
-        self.notify_on_success = False
-        self.build_url = os.environ.get("BUILD_URL")
+        self.hipchat_room_id = None
+        self.hipchat_owner_to_mention = None
+        self.hipchat_notify_on_success = False
+        self.build_url = os.environ.get('BUILD_URL')
         self.successes = []
         self.failures = []
         self.errors = []
@@ -30,16 +31,16 @@ class HipchatReporting(Plugin):
 
     def options(self, parser, env):
         super(HipchatReporting, self).options(parser, env=env)
-        parser.add_option('--room_id', action='store',
-                          dest='room_id',
-                          help="The hipchat room ID notifications will be sent to.",
+        parser.add_option('--hipchat_room_id', action='store',
+                          dest='hipchat_room_id',
+                          help='The hipchat room ID notifications will be sent to.',
                           default=None)
-        parser.add_option('--owner_to_mention', action='store',
-                          dest='owner_to_mention',
-                          help="The hipchat username to @mention in notifications.",
+        parser.add_option('--hipchat_owner_to_mention', action='store',
+                          dest='hipchat_owner_to_mention',
+                          help='The hipchat username to @mention in notifications.',
                           default=None)
-        parser.add_option('--notify_on_success', action='store_true', default=False,
-                          dest='notify_on_success',
+        parser.add_option('--hipchat_notify_on_success', action='store_true', default=False,
+                          dest='hipchat_notify_on_success',
                           help='Flag for including success notifications. If not specified, only notifies on errors/failures by default.')
 
 
@@ -47,12 +48,12 @@ class HipchatReporting(Plugin):
         super(HipchatReporting, self).configure(options, conf)
         if not self.enabled:
             return
-        if not options.room_id:
-            raise Exception("A hipchat room ID to notify must be specified when using the hipchat reporting plugin.")
+        if not options.hipchat_room_id:
+            raise Exception('A hipchat room ID to notify must be specified when using the hipchat reporting plugin.')
         else:
-            self.room_id = options.room_id
-        self.owner_to_mention = options.owner_to_mention or None
-        self.notify_on_success = options.notify_on_success
+            self.hipchat_room_id = options.hipchat_room_id
+        self.hipchat_owner_to_mention = options.hipchat_owner_to_mention or None
+        self.hipchat_notify_on_success = options.hipchat_notify_on_success
 
 
     def addSuccess(self, test, capt):
@@ -72,8 +73,8 @@ class HipchatReporting(Plugin):
         success = True
         if not result.wasSuccessful():
             success = False
-            if self.owner_to_mention and self._is_during_business_hours():
-                message += "@" + self.owner_to_mention + '\n'
+            if self.hipchat_owner_to_mention and self._is_during_business_hours():
+                message += "@" + self.hipchat_owner_to_mention + '\n'
 
             if self.failures:
                 message += "\n".join(self.failures)
@@ -85,7 +86,7 @@ class HipchatReporting(Plugin):
             if self.build_url:
                 message += '\n' + self.build_url
 
-        elif self.notify_on_success and self.successes:
+        elif self.hipchat_notify_on_success and self.successes:
             message = "SUCCESS! The following tests ran successfully:\n+ "
             message += "\n+ ".join(self.successes)
 
@@ -102,7 +103,7 @@ class HipchatReporting(Plugin):
     def _send_hipchat_notification(self, message, success=True, sender='Selenium'):
         response = requests.post(HIPCHAT_URL, params={
             'auth_token': HIPCHAT_AUTH_TOKEN,
-            'room_id': self.room_id,
+            'room_id': self.hipchat_room_id,
             'from': sender,
             'message': message,
             'message_format': 'text',  # @mentions are only supported in text format
@@ -112,8 +113,8 @@ class HipchatReporting(Plugin):
         })
 
         if response.status_code == 200:
-            logging.debug("Notification sent to room %s", self.room_id)
+            logging.debug("Notification sent to room %s", self.hipchat_room_id)
             return True
         else:
-            logging.error("Failed to send notification to room %s", self.room_id)
+            logging.error("Failed to send notification to room %s", self.hipchat_room_id)
             return False

@@ -1,10 +1,16 @@
 """
-You'll probably want to customize this to your enviroment and needs.
+You'll probably want to customize this to your own environment and needs.
 """
 
-# Default time to wait for page elements to appear before performing actions
+
+##### REQUIRED SETTINGS #####
+
+# Default times to wait for page elements to appear before performing actions
 SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 14
+
+
+##### OPTIONAL SETTINGS #####
 
 # Amazon S3 Bucket Credentials (where screenshots and other log files get saved)
 S3_LOG_BUCKET = "[ENTER LOG BUCKET FOLDER NAME HERE]"
@@ -17,3 +23,7 @@ DB_HOST = "[TEST DB HOST]"
 DB_USERNAME = "[TEST DB USERNAME]"
 DB_PASSWORD = "[TEST DB PASSWORD]"
 DB_SCHEMA = "[TEST DB SCHEMA]"
+
+# HipChat Reporting Credentials (for HipChat notifications)
+# Other info such as room id and owner to mention get entered during nosetest options
+HIPCHAT_AUTH_TOKEN = "[ENTER YOUR HIPCHAT AUTH TOKEN HERE]"

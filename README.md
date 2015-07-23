@@ -222,7 +222,7 @@ If you're planning on using the full power of this test framework, there are a f
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
-* If you use [HipChat](https://www.hipchat.com/), you can have test alerts go there when tests fail by using the db_reporting plugin. Be sure to first update the db_reporting_plugin.py file from the plugins folder with your HipChat credentials.
+* If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the hipchat_reporting plugin, which is included with this test framework.
 
 * Be sure to tell SeleniumSpot to use these added features when you set them up. That's easy to do. You would be running tests like this:
 
