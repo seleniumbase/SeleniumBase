@@ -91,21 +91,26 @@ class BaseCase(unittest.TestCase):
     def update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT, retry=False):
         """ This method updates a selector's text value with a new value
             @Params
-            selector - the selector with the value to change
-            new_value - the new value for the text field where the selector points to
-            timeout - how long to want for the selector to be visible before timing out
-            retry - if text update fails, try the jQuery version (Warning: don't use this if update_text_value() takes you to
-                    a new page, or if it resets the value (such as using [backslash n] for the enter key) """
+            selector - the selector with the value to update
+            new_value - the new value for setting the text field
+            timeout - how long to wait for the selector to be visible
+            retry - if True, use jquery if the selenium text update fails
+        """
         element = self.wait_for_element_visible(selector, timeout=timeout)
         element.clear()
         element.send_keys(new_value)
+        if retry and element.get_attribute('value') != new_value and not new_value.endswith('\n'):
+            logging.debug('update_text_value is falling back to jQuery!')
+            selector = self.jq_format(selector)
+            self.set_value(selector, new_value)
 
-        if retry:
-            if element.get_attribute('value') != new_value:
-                logging.debug('update_text_value is falling back to jQuery!')
-                # Since selectors with quotes inside of quotes such as 'div[data-tab-name="advanced"]' break jQuery, format them first
-                selector = self.jq_format(selector)
-                self.set_value(selector, new_value)
+
+    def jquery_update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
+        element = self.wait_for_element_visible(selector, timeout=timeout)
+        self.driver.execute_script("""jQuery('%s').val('%s')"""
+                                   % (selector, self.jq_format(new_value)))
+        if new_value.endswith('\n'):
+            element.send_keys('\n')
 
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
