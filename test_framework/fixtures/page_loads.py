@@ -22,8 +22,7 @@ from test_framework.config import settings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException, \
                                                    NoSuchElementException, \
-                                                   NoAlertPresentException, \
-                                                   UnexpectedAlertPresentException
+                                                   NoAlertPresentException
 
 
 def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
@@ -184,6 +183,32 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
                                      % timeout)
 
 
+def wait_for_and_accept_alert(driver, timeout=settings.LARGE_TIMEOUT):
+    """
+    Wait for and accept an alert. Returns the text from the alert.
+    @params
+    driver - the webdriver object (required)
+    timeout - the time to wait for the alert in seconds
+    """
+    alert = wait_for_and_switch_to_alert(driver, timeout)
+    alert_text = alert.text
+    alert.accept()
+    return alert_text
+
+
+def wait_for_and_dismiss_alert(driver, timeout=settings.LARGE_TIMEOUT):
+    """
+    Wait for and dismiss an alert. Returns the text from the alert.
+    @params
+    driver - the webdriver object (required)
+    timeout - the time to wait for the alert in seconds
+    """
+    alert = wait_for_and_switch_to_alert(driver, timeout)
+    alert_text = alert.text
+    alert.dismiss()
+    return alert_text
+
+
 def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     """
     Wait for a browser alert to appear, and switch to it. This should be usable
@@ -196,14 +221,8 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
 
     for x in range(timeout * 10):
         try:
-            driver.switch_to_alert()
             alert = driver.switch_to_alert()
-            alert_text = alert.text
             return alert
         except NoAlertPresentException:
-            try:
-                time.sleep(0.1)
-            except UnexpectedAlertPresentException:
-                pass
-
+            time.sleep(0.1)
     raise Exception("Alert was not present after %s seconds!" % timeout)

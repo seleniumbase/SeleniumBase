@@ -141,5 +141,13 @@ class BaseCase(unittest.TestCase):
         return page_loads.wait_for_ready_state_complete(self.driver, timeout)
 
 
+    def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
+        return page_loads.wait_for_and_accept_alert(self.driver, timeout)
+
+
+    def wait_for_and_dismiss_alert(self, timeout=settings.LARGE_TIMEOUT):
+        return page_loads.wait_for_and_dismiss_alert(self.driver, timeout)
+
+
     def wait_for_and_switch_to_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_and_switch_to_alert(self.driver, timeout)
