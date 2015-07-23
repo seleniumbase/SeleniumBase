@@ -5,4 +5,5 @@ every test doesn't need to import a number of different fixtures.
 
 from test_framework.fixtures.page_loads import *
 from test_framework.fixtures.page_interactions import *
+from test_framework.fixtures.page_utils import *
 from test_framework.fixtures.errors import *

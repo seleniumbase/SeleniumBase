@@ -5,7 +5,7 @@ import unittest
 from test_framework.config import settings
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-import page_loads, page_interactions
+import page_loads, page_interactions, page_utils
 
 
 class BaseCase(unittest.TestCase):
@@ -80,10 +80,7 @@ class BaseCase(unittest.TestCase):
 
 
     def jq_format(self, code):
-        """ Use before throwing raw code such as 'div[tab="advanced"]' into jQuery. Similar to "json.dumps(value)".
-        The first replace should take care of everything. Now see what else there is. """
-        code = code.replace('\\','\\\\').replace('\t','    ').replace('\n', '\\n').replace('\"','\\\"').replace('\'','\\\'').replace('\r', '\\r').replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f').replace('\b', '\\b').replace('\u', '\\u')
-        return code
+        return page_utils.jq_format(code)
 
 
     def set_value(self, selector, value):
