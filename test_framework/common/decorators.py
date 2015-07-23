@@ -1,5 +1,7 @@
 import logging
 import math
+import requests
+import threading
 import time
 from functools import wraps
 
@@ -41,3 +43,25 @@ def retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32):
             return func(*args, **kwargs)
         return function_to_retry
     return decorated_function_with_retry
+
+
+def rate_limited(max_per_second):
+    min_interval = 1.0 / float(max_per_second)
+
+    def decorate(func):
+        last_time_called = [0.0]
+        rate_lock = threading.Lock()  # To support multi-threading
+
+        def rate_limited_function(*args, **kargs):
+            try:
+                rate_lock.acquire(True)
+                elapsed = time.clock() - last_time_called[0]
+                wait_time_remaining = min_interval - elapsed
+                if wait_time_remaining > 0:
+                    time.sleep(wait_time_remaining)
+                last_time_called[0] = time.clock()
+            finally:
+                rate_lock.release()
+            return func(*args, **kargs)
+        return rate_limited_function
+    return decorate
