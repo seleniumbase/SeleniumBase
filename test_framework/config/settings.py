@@ -3,15 +3,21 @@ You'll probably want to customize this to your own environment and needs.
 """
 
 
-##### REQUIRED SETTINGS #####
+#####>>>>>----- REQUIRED SETTINGS -----<<<<<#####
 
 # Default times to wait for page elements to appear before performing actions
 SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 14
 EXTREME_TIMEOUT = 42  # "Bueller? ... Bueller?" - (Ferris Bueller's Day Off, 1986)
 
+# The option of adding wait_for_ready_state_complete() after various actions.
+# By default, Selenium waits for the 'interactive' state, which might not be enough.
+# Setting these values to True might make your tests more reliable, but it also might slightly slow them down.
+WAIT_FOR_RSC_ON_PAGE_LOADS = False  # When using self.open(url) or self.open_url(url), NOT self.driver.open(url)
+WAIT_FOR_RSC_ON_CLICKS = False  # When using self.click(selector), NOT element.click()
 
-##### RECOMMENDED SETTINGS #####
+
+#####>>>>>----- RECOMMENDED SETTINGS -----<<<<<#####
 
 # Amazon S3 Bucket Credentials (where screenshots and other log files get saved)
 S3_LOG_BUCKET = "[ENTER LOG BUCKET FOLDER NAME HERE]"
@@ -26,7 +32,7 @@ DB_PASSWORD = "[TEST DB PASSWORD]"
 DB_SCHEMA = "[TEST DB SCHEMA]"
 
 
-##### OPTIONAL SETTINGS #####
+#####>>>>>----- OPTIONAL SETTINGS -----<<<<<#####
 
 # Default Email Credentials (if tests send out emails, you can scan through and verify them by using IMAP)
 EMAIL_USERNAME = "[TEST ACCOUNT GMAIL USERNAME]@gmail.com"

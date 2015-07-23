@@ -53,16 +53,20 @@ class BaseCase(unittest.TestCase):
 
     def click(self, selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
         element = page_loads.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
         return element.click()
 
 
     def open(self, url):
         self.driver.get(url)
+        if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+            self.wait_for_ready_state_complete()
 
 
     def open_url(self, url):
         """ In case people are mixing up self.open() with open() """
-        self.driver.get(url)
+        self.open(url)
 
 
     def activate_jquery(self):
