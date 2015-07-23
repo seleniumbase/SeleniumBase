@@ -55,7 +55,8 @@ class BaseCase(unittest.TestCase):
         element = page_loads.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
-        return element.click()
+        element.click()
+        return element
 
 
     def open(self, url):
@@ -69,18 +70,32 @@ class BaseCase(unittest.TestCase):
         self.open(url)
 
 
+    def execute_script(self, script):
+        return self.driver.execute_script(script)
+
+
+    def find_element_by_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        return self.wait_for_element_visible(link_text, by=By.LINK_TEXT, timeout=timeout)
+
+
+    def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        element = self.find_element_by_link_text(link_text, timeout=timeout)
+        element.click()
+        return element
+
+
     def activate_jquery(self):
         """ (It's not on by default on all website pages.) """
-        self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
+        return self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
 
 
     def scroll_to(self, selector):
-        self.driver.execute_script("jQuery('%s')[0].scrollIntoView()" % selector)
+        return self.driver.execute_script("jQuery('%s')[0].scrollIntoView()" % selector)
 
 
     def scroll_click(self, selector):
         self.scroll_to(selector)
-        self.click(selector)
+        return self.click(selector)
 
 
     def jq_format(self, code):
@@ -107,6 +122,7 @@ class BaseCase(unittest.TestCase):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
             self.set_value(selector, new_value)
+        return element
 
 
     def jquery_update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
@@ -115,6 +131,7 @@ class BaseCase(unittest.TestCase):
                                    % (selector, self.jq_format(new_value)))
         if new_value.endswith('\n'):
             element.send_keys('\n')
+        return element
 
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
