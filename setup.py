@@ -16,7 +16,8 @@ setup(
                 'test_framework.core',
                 'test_framework.plugins',
                 'test_framework.fixtures',
-                'common'],
+                'test_framework.common',
+                'test_framework.config'],
     entry_points = {
         'nose.plugins': [
             'base_plugin = test_framework.plugins.base_plugin:Base',
