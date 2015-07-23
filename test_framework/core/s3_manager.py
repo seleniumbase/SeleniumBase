@@ -3,6 +3,7 @@ Manager for dealing with uploading/managing files on S3
 """
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+from test_framework.config import settings
 
 already_uploaded_files = []
 
@@ -13,10 +14,10 @@ class S3LoggingBucket(object):
     """
 
     def __init__(self, 
-         log_bucket = "[ENTER LOG BUCKET FOLDER NAME HERE]", 
-         bucket_url = "http://[ENTER SUBDOMAIN OF AMAZON BUCKET URL HERE].s3-[ENTER S3 REGION HERE].amazonaws.com/",
-         selenium_access_key = "[ENTER YOUR S3 ACCESS KEY FOR SELENIUM HERE]",
-         selenium_secret_key = "[ENTER YOUR S3 SECRET KEY FOR SELENIUM HERE]"):
+         log_bucket = settings.LOG_BUCKET,
+         bucket_url = settings.BUCKET_URL,
+         selenium_access_key = settings.SELENIUM_ACCESS_KEY,
+         selenium_secret_key = settings.SELENIUM_SECRET_KEY):
 
         self.conn = S3Connection(selenium_access_key,
                                  selenium_secret_key)

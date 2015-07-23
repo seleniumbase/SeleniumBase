@@ -5,3 +5,9 @@ You'll probably want to customize this to your enviroment and needs.
 # Default time to wait for page elements to appear before performing actions
 SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 14
+
+# Amazon S3 Bucket Credentials (where screenshots and other log files get saved)
+LOG_BUCKET = "[ENTER LOG BUCKET FOLDER NAME HERE]"
+BUCKET_URL = "http://[ENTER SUBDOMAIN OF AMAZON BUCKET URL HERE].s3-[ENTER S3 REGION HERE].amazonaws.com/"
+SELENIUM_ACCESS_KEY = "[ENTER YOUR S3 ACCESS KEY FOR SELENIUM HERE]"
+SELENIUM_SECRET_KEY = "[ENTER YOUR S3 SECRET KEY FOR SELENIUM HERE]"
