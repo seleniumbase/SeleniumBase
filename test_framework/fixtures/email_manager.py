@@ -1,7 +1,5 @@
 """
-EmailManager - a helper class to login, search for, and delete emails.  
-The default selenium account is '[YOUR-SELENIUM-EMAIL-USERNAME]@gmail.com' with password 
-'[YOUR-SELENIUM-EMAIL-PASSWORD]'.
+EmailManager - a helper class to login, search for, and delete emails.
 """
 
 import email
@@ -10,11 +8,12 @@ import imaplib
 import quopri
 import re
 import time
+from test_framework.config import settings
 
 
 class EmailManager:
-    """ A helper class to interface with an Email account. Our imap methods
-    can search and fetch messages without needing a browser.
+    """ A helper class to interface with an Email account. These imap methods
+    can search for and fetch messages without needing a browser.
 
     Example:
 
@@ -26,8 +25,8 @@ class EmailManager:
     PLAIN = "text/plain"
     TIMEOUT = 1800
 
-    def __init__(self, uname="[YOUR SELENIUM GMAIL USERNAME]@gmail.com", pwd='[YOUR SELENIUM GMAIL PASSWORD]',
-                 imap_string="imap.gmail.com", port=993):
+    def __init__(self, uname=settings.EMAIL_USERNAME, pwd=settings.EMAIL_PASSWORD,
+                 imap_string=settings.EMAIL_IMAP_STRING, port=settings.EMAIL_IMAP_PORT):
         self.uname = uname
         self.pwd = pwd
         self.imap_string = imap_string
@@ -36,7 +35,7 @@ class EmailManager:
 
     def imap_connect(self):
         """
-        Connect to our IMAP mailbox. 
+        Connect to the IMAP mailbox. 
         """
         self.mailbox = imaplib.IMAP4_SSL(self.imap_string, self.port)
         self.mailbox.login(self.uname, self.pwd)
