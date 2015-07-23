@@ -18,6 +18,7 @@ By.PARTIAL_LINK_TEXT
 """
 
 import time
+from test_framework.config import settings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
 from selenium.webdriver.remote.errorhandler import NoSuchElementException
@@ -123,7 +124,7 @@ def hover_on_element(driver, selector):
 
 
 def hover_and_click(driver, hover_selector, click_selector, 
-                    click_by=By.CSS_SELECTOR, timeout=5):
+                    click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
     """
     Fires the hover event for a specified element by a given selector, then clicks on
     another element specified. Useful for dropdown hover based menus.
@@ -135,12 +136,12 @@ def hover_and_click(driver, hover_selector, click_selector,
     timeout - number of seconds to wait between hover and click (Default- 5 seconds)
     """
     driver.execute_script("jQuery('%s').mouseover()" % (hover_selector))
-    for x in range(timeout):
+    for x in range(timeout * 10):
         try:
             driver.find_element(by=click_by, value="%s" % 
                                 click_selector).click()
             return
         except Exception:
-            time.sleep(1)
+            time.sleep(0.1)
     raise NoSuchElementException("Element %s was not present in %s" %
                                 (click_selector, timeout))

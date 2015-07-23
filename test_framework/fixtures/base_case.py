@@ -2,6 +2,7 @@ import json
 import time
 import logging
 import unittest
+from test_framework.config import settings
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import page_loads, page_interactions
@@ -30,7 +31,7 @@ class BaseCase(unittest.TestCase):
         return page_interactions.hover_on_element(self.driver, selector)
 
 
-    def hover_and_click(self, hover_selector, click_selector, click_by=By.CSS_SELECTOR, timeout=7):
+    def hover_and_click(self, hover_selector, click_selector, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
         return page_interactions.hover_and_click(self.driver, hover_selector, click_selector, click_by, timeout)
 
 
@@ -50,7 +51,7 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script("jQuery('%s').click()" % selector)
 
 
-    def click(self, selector, by=By.CSS_SELECTOR, timeout=7):
+    def click(self, selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
         element = page_loads.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
         return element.click()
 
@@ -90,7 +91,7 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
 
 
-    def update_text_value(self, selector, new_value, timeout=7, retry=False):
+    def update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT, retry=False):
         """ This method updates a selector's text value with a new value
             @Params
             selector - the selector with the value to change
@@ -110,25 +111,25 @@ class BaseCase(unittest.TestCase):
                 self.set_value(selector, new_value)
 
 
-    def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=14):
+    def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_element_present(self.driver, selector, by, timeout)
 
 
-    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR, timeout=14):
+    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_element_visible(self.driver, selector, by, timeout)
 
 
-    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=14):
+    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_text_visible(self.driver, text, selector, by, timeout)
 
 
-    def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=14):
+    def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_element_absent(self.driver, selector, by, timeout)
 
 
-    def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR, timeout=14):
+    def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_element_not_visible(self.driver, selector, by, timeout)
 
 
-    def wait_for_and_switch_to_alert(self, timeout=14):
+    def wait_for_and_switch_to_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_loads.wait_for_and_switch_to_alert(self.driver, timeout)
