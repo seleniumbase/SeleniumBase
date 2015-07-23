@@ -8,6 +8,7 @@ You'll probably want to customize this to your own environment and needs.
 # Default times to wait for page elements to appear before performing actions
 SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 14
+EXTREME_TIMEOUT = 42  # "Bueller? ... Bueller?" - (Ferris Bueller's Day Off, 1986)
 
 
 ##### RECOMMENDED SETTINGS #####

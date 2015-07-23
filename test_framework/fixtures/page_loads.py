@@ -166,6 +166,24 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR, timeout=s
                                      % (selector, timeout))
 
 
+def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
+    """
+    The DOM (Document Object Model) has a property called "readyState".
+    When the value of this becomes "complete", page resources are considered
+    fully loaded (although AJAX and other loads might still be happening).
+    This method will wait until document.readyState == "complete".
+    """
+
+    for x in range(timeout * 10):
+        ready_state = driver.execute_script("return document.readyState")
+        if ready_state == u'complete':
+            return True
+        else:
+            time.sleep(0.1)
+    raise Exception("Page elements never fully loaded after %s seconds!"\
+                                     % timeout)
+
+
 def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     """
     Wait for a browser alert to appear, and switch to it. This should be usable
