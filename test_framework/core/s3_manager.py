@@ -14,10 +14,10 @@ class S3LoggingBucket(object):
     """
 
     def __init__(self, 
-         log_bucket = settings.LOG_BUCKET,
-         bucket_url = settings.BUCKET_URL,
-         selenium_access_key = settings.SELENIUM_ACCESS_KEY,
-         selenium_secret_key = settings.SELENIUM_SECRET_KEY):
+         log_bucket = settings.S3_LOG_BUCKET,
+         bucket_url = settings.S3_BUCKET_URL,
+         selenium_access_key = settings.S3_SELENIUM_ACCESS_KEY,
+         selenium_secret_key = settings.S3_SELENIUM_SECRET_KEY):
 
         self.conn = S3Connection(selenium_access_key,
                                  selenium_secret_key)
