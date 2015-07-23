@@ -138,9 +138,9 @@ def hover_and_click(driver, hover_selector, click_selector,
     driver.execute_script("jQuery('%s').mouseover()" % (hover_selector))
     for x in range(timeout * 10):
         try:
-            driver.find_element(by=click_by, value="%s" % 
-                                click_selector).click()
-            return
+            element = driver.find_element(by=click_by, value="%s" % 
+                                          click_selector).click()
+            return element
         except Exception:
             time.sleep(0.1)
     raise NoSuchElementException("Element %s was not present in %s" %

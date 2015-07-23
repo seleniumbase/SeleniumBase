@@ -180,7 +180,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
         try:
             driver.switch_to_alert()
             alert = driver.switch_to_alert()
-            alert_text = alert.text  # this is where the exception is thrown
+            alert_text = alert.text
             return alert
         except NoAlertPresentException:
             try:
@@ -188,5 +188,4 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
             except UnexpectedAlertPresentException:
                 pass
 
-    raise Exception("Alert was not present after %s seconds!"\
-                                    % (selector, timeout))
+    raise Exception("Alert was not present after %s seconds!" % timeout)
