@@ -4,11 +4,28 @@ The setup package to install the SeleniumSpot Test Framework plugins.
 
 from setuptools import setup, find_packages
 
+REQUIREMENTS = [
+    'python==2.7.6',
+    'selenium==2.46.1',
+    'nose==1.3.7',
+    'requests==2.7.0',
+    'urllib3==1.10.4',
+    'BeautifulSoup==3.2.1',
+    'unittest2==1.1.0',
+    'chardet==2.3.0',
+    'simplejson==3.7.3',
+    'boto==2.38.0',
+    'MySQL-python==1.2.5',
+    'pdb==0.1',
+    'ipdb==0.8.1'
+]
+
 setup(
     name = 'seleniumspot',
     version = '1.1.1',
     author = 'Michael Mintz',
     author_email = '@mintzworld',
+    install_requires=REQUIREMENTS,
     maintainer = 'Michael Mintz',
     description = 'The SeleniumSpot Test Framework. (Powered by Python, WebDriver, and more...)',
     license = 'The MIT License',
