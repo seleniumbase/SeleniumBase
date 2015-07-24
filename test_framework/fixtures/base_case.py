@@ -43,20 +43,23 @@ class BaseCase(unittest.TestCase):
         return page_interactions.is_element_visible(self.driver, selector, by)
 
 
+    def is_link_text_visible(self, link_text):
+        return page_interactions.is_element_visible(self.driver, link_text, by=By.LINK_TEXT)
+
+
     def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
         return page_interactions.is_text_visible(self.driver, text, selector, by)
 
 
     def jquery_click(self, selector):
-        return self.driver.execute_script("jQuery('%s').click()" % selector)
+        self.driver.execute_script("jQuery('%s').click()" % selector)
 
 
     def click(self, selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
         element = page_loads.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
+        element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
-        element.click()
-        return element
 
 
     def open(self, url):
@@ -66,7 +69,7 @@ class BaseCase(unittest.TestCase):
 
 
     def open_url(self, url):
-        """ In case people are mixing up self.open() with open() """
+        """ In case people are mixing up self.open() with open(), use this alternative. """
         self.open(url)
 
 
@@ -74,28 +77,29 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script(script)
 
 
-    def find_element_by_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
+    def wait_for_link_text_visible(self, link_text, timeout=settings.LARGE_TIMEOUT):
         return self.wait_for_element_visible(link_text, by=By.LINK_TEXT, timeout=timeout)
 
 
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
-        element = self.find_element_by_link_text(link_text, timeout=timeout)
+        element = self.wait_for_link_text_visible(link_text, timeout=timeout)
         element.click()
-        return element
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
 
 
     def activate_jquery(self):
         """ (It's not on by default on all website pages.) """
-        return self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
+        self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
 
 
     def scroll_to(self, selector):
-        return self.driver.execute_script("jQuery('%s')[0].scrollIntoView()" % selector)
+        self.driver.execute_script("jQuery('%s')[0].scrollIntoView()" % selector)
 
 
     def scroll_click(self, selector):
         self.scroll_to(selector)
-        return self.click(selector)
+        self.click(selector)
 
 
     def jq_format(self, code):
@@ -104,7 +108,7 @@ class BaseCase(unittest.TestCase):
 
     def set_value(self, selector, value):
         val = json.dumps(value)
-        return self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
+        self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
 
 
     def update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT, retry=False):
@@ -122,7 +126,6 @@ class BaseCase(unittest.TestCase):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
             self.set_value(selector, new_value)
-        return element
 
 
     def jquery_update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
@@ -131,7 +134,6 @@ class BaseCase(unittest.TestCase):
                                    % (selector, self.jq_format(new_value)))
         if new_value.endswith('\n'):
             element.send_keys('\n')
-        return element
 
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
