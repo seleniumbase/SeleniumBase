@@ -1,28 +1,26 @@
 # SeleniumSpot Test Framework
 
-The purpose of this open-sourced Selenium Webdriver-based test framework is to have a complete and fully automated testing system for performing browser-based integration testing. You may be wondering why you'd want to use this as opposed to raw WebDriver scripts. Here are the added benefits:
+"The best way of creating test automation for your web apps."
+
+Features include:
 * MySQL DB integration for storing test data and results
-* Amazon S3 manager (to upload logs and screenshots from tests when they fail to see what went wrong)
-* Easy to use and integrate with the Jenkins build-server
-* An advanced logging system (to organize and store all your test data in Jenkins + S3 + MySQL)
-* A system for easily utilizing data generated from previous tests (the delayed-data manager)
-* An error-handling system (so that we can process useful data for the log files, eg: the page_source plugin)
-* An email manager (so that we can automatically read and parse through emails sent to gmail addresses)
+* Amazon S3 manager for uploading logs and screenshots
+* Easy integration with the Jenkins build-server
+* A powerful logging system for tracking failures
+* A system for utilizing data from previous tests
+* An email manager for parsing through sent emails
 * Libraries for code simplification and reusable code
-* Nosetest support (a fast and easy way to run all your tests)
-* A plugin to send test failure notifications directly through HipChat (in the event of a test failure)
-* Advanced commands that will save you significant time
+* Nosetest support for running your tests with ease
+* Advanced commands for saving you significant time
 
-To utilize some of the more advanced integrations, you'll need to setup instances and make connections to the following:
-MySQL, Jenkins, Amazon S3, Gmail, HipChat, and a Selenium Grid. (More on this later)
+
+To utilize some of the more advanced integrations, you'll want to setup instances and make connections to the following:
+MySQL, Jenkins, Amazon S3, and the Selenium Grid. (More on this later)
 We've provided placeholders in the code where you can specify your connection details. You can also use this framework as a bare-bones Selenium WebDriver command executer to automate tasks in a browser without doing any data reporting (and that's also the fastest way to make sure your base setup is working properly).
-If you plan on running tests from a build server across multiple cloud machines, connecting to BrowserStack's Selenium cloud may be the least expensive alternative to having your own Selenium Grid. (If you're looking elsewhere, be wary of any Selenium cloud service that charges you by the test minute, as opposed to a flat monthly fee, because it may be a trap - those automated test minutes add up fast, and you don't want to limit the amount of automation you have.)
+If you plan on running tests from a build server across multiple cloud machines, you can connect to your own Selenium Grid or use a cloud provider such as BrowserStack.
 
-Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot). This is an excellent example of all the pieces coming together.
 
-In short, developers aren't perfect. Bugs can slip by undetected during deploys even if there are existing unit tests to watch for problems. A fully-capable integration testing solution can provide an added layer of security.
-
-A working system would be something like this: You have a QA build and a Prod build. After a QA deploy, run all the associated Selenium tests on QA. If everything passes, it's considered safe to deploy to Prod. As an added safety measure, run all those Selenium tests again on Prod after a deploy. If those pass, you should be able to feel safe. For more protection, also run Selenium tests at regular intervals in case something other than deploys breaks the system.
+For an excellent example of all the pieces coming together, check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).
 
 
 ## Part I: MAC SETUP INSTRUCTIONS
