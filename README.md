@@ -76,6 +76,8 @@ To save time from having to source virtualenvwrapper again when you open a new w
 
 (WINDOWS users: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) and also put that in your PATH.)
 
+If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
+
 
 **Step 1:** Checkout the SeleniumSpot Test Framework with Git or a Git GUI tool:
 
