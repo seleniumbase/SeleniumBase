@@ -24,9 +24,15 @@ For an excellent example of all the pieces coming together, check out HubSpot's 
 
 
 ## Part I: MAC SETUP INSTRUCTIONS
-####(Windows users: Try Powershell. You may need to make some adjustments during installation. This framework works on Windows machines if setup correctly.)
+####(WINDOWS users: You'll need to make a few modifications to the setup steps listed here. For starters, you won't be able to use the "brew install" command since that's MAC-only. Instead, download the requirements mentioned directly from the web. I'll provide you with links to save you time. You'll also want to put downloaded files into your [PATH](http://java.com/en/download/help/path.xml).)
 
 **Step 0:** Get the requirements:
+
+[Python 2.*](https://www.python.org/downloads/)
+
+If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.6 is the one I've been using on my Mac.
+
+If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/).
 
 [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
 
@@ -34,11 +40,17 @@ For an excellent example of all the pieces coming together, check out HubSpot's 
     brew install git
     brew update
 
+(WINDOWS users: Skip the Homebrew part and just [download Git here](http://git-scm.com/download).)
+
 [MySQL](http://www.mysql.com/)
+
+(NOTE: If you're using this test framework from a local development machine and don't plan on writing to the MySQL DB from your local test runs, you can skip this step.)
 
     brew install MySQL
 
-That installs the MySQL library so that you can use db commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to, and you'll want to put your credentials in the mysql_conf.py file in the test_framework/core folder to access your DB from your tests. You'll also want to add the necessary tables, so to get you started, use the testcaserepository.sql file from the test_framework/core folder.
+That installs the MySQL library so that you can use db commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to. You'll also want to use the testcaserepository.sql file from the test_framework/core folder to add the necessary tables.
+
+(WINDOWS users: [Download MySQL here](http://dev.mysql.com/downloads/windows/). If you want a visual tool to help make your MySQL life easier, [try MySQL Workbench](http://dev.mysql.com/downloads/workbench/).)
 
 [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
 
@@ -60,7 +72,9 @@ To save time from having to source virtualenvwrapper again when you open a new w
 
     brew install chromedriver phantomjs
 
-(There are web drivers for other web browsers as well. These two will get you started.)
+(NOTE: There are web drivers for other web browsers as well. These two will get you started.)
+
+(WINDOWS users: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) and also put that in your PATH.)
 
 
 **Step 1:** Checkout the SeleniumSpot Test Framework with Git or a Git GUI tool:
@@ -71,6 +85,8 @@ First you'll want to fork the repository on GitHub to create your own copy. This
 git clone [LOCATION OF YOUR FORKED SELENIUMSPOT GITHUB FOLDER]/SeleniumSpot.git
 cd SeleniumSpot
 ```
+
+(NOTE: You can also download the SeleniumSpot repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
 
 
 **Step 2:** Create a virtualenv for seleniumspot:
@@ -107,14 +123,27 @@ rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
 
 **Step 3:** Install necessary packages from the SeleniumSpot folder and compile the test framework
 
+If you're NOT connecting to a MySQL DB from your local test runs (based on the path you chose above), use these steps:
+
+```bash
+sudo pip install -r local_requirements.pip
+sudo python local_setup.py install
+```
+
+If you ARE connecting to a MySQL DB from your local test runs, use these steps:
+
 ```bash
 sudo pip install -r requirements.pip
 sudo python setup.py install
 ```
 
+NOTE:
+
+(As of now, you can skip the pip install requirements line because the python setup install line will now install those requirements automatically.)
+
 (If you already have root access on the machine you're using, you might not need to add "sudo" before those commands.)
 
-(If the pip install gives you a "clang error: unknown argument: '-mno-fused-madd'", see: http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa)
+(If the pip install gives you a "clang error: unknown argument: '-mno-fused-madd'", [try this](http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa).)
 
 In some cames, certain packages will have other dependencies as requirements, and those will get installed automatically. You'll be able to see all installed packages in your virtual environment by using the following command:
 
