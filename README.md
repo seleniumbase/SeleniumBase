@@ -1,6 +1,6 @@
 # SeleniumSpot Test Framework
 
-### Build, Run, Verify
+### Build, Automate, Verify
 
 Here's what users are saying:
 * "The best way of creating test automation for your web apps."
