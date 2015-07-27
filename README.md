@@ -40,7 +40,7 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
     brew install git
     brew update
 
-(WINDOWS users: Skip the Homebrew part and just [download Git here](http://git-scm.com/download).)
+(WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/download).)
 
 [MySQL](http://www.mysql.com/)
 
@@ -226,7 +226,7 @@ Here are some other useful nosetest arguments that you may want to append to you
 ```bash
 --logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
 -x  # Stop running the tests after the first failure is reached.
--v  # Prints the full test name rather than just a dot for each test.
+-v  # Prints the full test name rather than a dot for each test.
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
@@ -240,7 +240,7 @@ If you're planning on using the full power of this test framework, there are a f
 
 * Install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to make life easier by giving you a nice GUI tool that you can use to read & write from your DB directly.
 
-* Setup your Selenium Grid and update your *.cfg file to point there. An example config file called selenium_server_config_example.cfg has been provided for you in the grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can just use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
+* Setup your Selenium Grid and update your *.cfg file to point there. An example config file called selenium_server_config_example.cfg has been provided for you in the grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
 
 * There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). [There's a plugin for Xvfb in Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin). Here are some more helpful resources I found regarding the use of Xvfb:
 1. http://stackoverflow.com/questions/6183276/how-do-i-run-selenium-in-xvfb
@@ -258,7 +258,7 @@ nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_ba
 ```
 
 (When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests as long as you've setup your MySQL DB properly and you've also updated your test_framework/core/mysql_conf.py file with your DB credentials.)
-To simplify that long run command, you can create a *.cfg file, such as the one provided in the example, and enter your plugins there so that you can run everything just by typing:
+To simplify that long run command, you can create a *.cfg file, such as the one provided in the example, and enter your plugins there so that you can run everything by typing:
 
 ```bash
 nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg -s
@@ -298,7 +298,7 @@ Have you made it this far? Congratulations!!! Now you're ready to dive in at ful
 #### Navigating to a Page, Plus Some Other Useful Related Commands
 
 ```python
-self.driver.get("https://xkcd.com/378/")  # Instant navigation to any web page - just specify the url.
+self.driver.get("https://xkcd.com/378/")  # Instant navigation to any web page.
 
 self.driver.refresh()  # refresh/reload the current page.
 
@@ -424,7 +424,7 @@ self.wait_for_element_visible("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE
 
 #### Switching Tabs
 
-What if your test opens up a new tab/window and now you have more than one page? No problem. You just need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:
+What if your test opens up a new tab/window and now you have more than one page? No problem. You need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:
 Ex:
 
 ```python
@@ -445,7 +445,7 @@ self.driver.switch_to_default_content()  # exit the iFrame when you're done
 
 #### Handle Pop-Up Alerts
 
-What if your test makes an alert pop up in your browser? No problem. You just need to switch to it and either accept it or dismiss it:
+What if your test makes an alert pop up in your browser? No problem. You need to switch to it and either accept it or dismiss it:
 Ex:
 
 ```python
@@ -501,7 +501,7 @@ self.driver.find_element_by_css_selector("a.analytics").click()  # Clicks the ge
 
 ## Part III: Explanations + Advanced Abilities 
 
-So by now you may be wondering how the nosetests code works? Nosetests will automatically run any test that starts with "test" from the file you selected. You can also be more specific and run specific tests in a file or any test in a specific class. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you just wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. (In the beginning example, since there was only one test in that file, this won't change anything.) And if you want better logging in the console output, that's what the "-s" is for.
+So by now you may be wondering how the nosetests code works? Nosetests will automatically run any test that starts with "test" from the file you selected. You can also be more specific and run specific tests in a file or any test in a specific class. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. (In the beginning example, since there was only one test in that file, this won't change anything.) And if you want better logging in the console output, that's what the "-s" is for.
 
 To use the test framework calls, don't forget to include the following import:
 
@@ -515,7 +515,7 @@ And you'll need to inherit BaseCase in your classes like so:
 class MyTestClass(BaseCase):
 ```
 
-To understand the full scope of the test framework, we have to take a peek inside. From the top-level folder that contained the requirements.pip and setup.py files, there are two other major folders: "grid" and "test_framework". The Selenium "Grid" is what maintains the remote machines running selenium tests for "selenium.hubteam.com/jenkins". Machines can be spun up through Amazon EC2, and each one is capable of running 5 simultaneous browser tests. The other major folder, "test_framework", is what contains everything else. The "test_framework" folder contains all the major components such as "Core", "Fixtures", and "Plugins". For all intensive purposes, those sections are all equally important. They contain all the code and libraries that make our test framework useful (because otherwise we'd just be writing tests using raw selenium calls without any special add-ons or support).
+To understand the full scope of the test framework, we have to take a peek inside. From the top-level folder that contained the requirements.pip and setup.py files, there are two other major folders: "grid" and "test_framework". The Selenium "Grid" is what maintains the remote machines running selenium tests for "selenium.hubteam.com/jenkins". Machines can be spun up through Amazon EC2, and each one is capable of running 5 simultaneous browser tests. The other major folder, "test_framework", is what contains everything else. The "test_framework" folder contains all the major components such as "Core", "Fixtures", and "Plugins". For all intensive purposes, those sections are all equally important. They contain all the code and libraries that make our test framework useful (because otherwise we'd be writing tests using raw selenium calls without any special add-ons or support).
 
 
 ####  Checking Email: 
@@ -591,4 +591,4 @@ Happy Automating!
 
 
 ### Legal Disclaimer
-Automation is a powerful tool. It allows you to take full control of web browsers and do just about anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this framework and the automation that you create. You may also want to see an expert when it comes to setting up your automation environment if you require assistance.
+Automation is a powerful tool. It allows you to take full control of web browsers and do almost anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this framework and the automation that you create. You may also want to see an expert when it comes to setting up your automation environment if you require assistance.
