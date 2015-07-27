@@ -141,8 +141,6 @@ sudo python setup.py install
 
 NOTE:
 
-(As of now, you can skip the pip install requirements line because the python setup install line will now install those requirements automatically.)
-
 (If you already have root access on the machine you're using, you might not need to add "sudo" before those commands.)
 
 (If the pip install gives you a "clang error: unknown argument: '-mno-fused-madd'", [try this](http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa).)
