@@ -1,6 +1,11 @@
 # SeleniumSpot Test Framework
 
-"The best way of creating test automation for your web apps."
+### Build, Run, Verify
+
+Here's what users are saying:
+* "The best way of creating test automation for your web apps."
+* "It's like a [Docker](https://www.docker.com/) for automated tests."
+* "Our team was able to start writing & running tests immediately."
 
 Features include:
 * MySQL DB integration for storing test data and results
