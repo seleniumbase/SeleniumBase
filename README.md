@@ -41,6 +41,8 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
 [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
 
+(NOTE: You can download the SeleniumSpot repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
+
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install git
     brew update
@@ -84,17 +86,16 @@ To save time from having to source virtualenvwrapper again when you open a new w
 If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
 
 
-**Step 1:** Checkout the SeleniumSpot Test Framework with Git or a Git GUI tool:
+**Step 1:** Download or Clone SeleniumSpot to your local machine:
 
-First you'll want to fork the repository on GitHub to create your own copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now clone your forked SeleniumSpot repository to your development machine. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
+If you're using Git, you can fork the repository on GitHub to create your personal copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now you can clone your forked copy to your personal computer. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
 
 ```bash
-git clone [LOCATION OF YOUR FORKED SELENIUMSPOT GITHUB FOLDER]/SeleniumSpot.git
-cd SeleniumSpot
+git clone [LOCATION OF YOUR FORKED SELENIUMSPOT GITHUB FOLDER]/seleniumspot.git
+cd seleniumspot
 ```
 
-(NOTE: You can also download the SeleniumSpot repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
-
+(NOTE: If you decided to download SeleniumSpot rather than Git-cloning it, you can skip the above step.)
 
 **Step 2:** Create a virtualenv for seleniumspot:
 
