@@ -472,44 +472,44 @@ You'd know this because the web page would contain something like the following 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 ```
 
-It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, you need to run the following command first:
+It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:
 
 ```python
-self.driver.execute_script('var script = document.createElement("script"); script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"; document.getElementsByTagName("head")[0].appendChild(script);')
+self.activate_jquery()
 ```
 
-Here are some examples:
+Here are some examples of using jQuery in your scripts:
 ```python
-self.driver.execute_script('jQuery, window.scrollTo(0, 600)')  # Scrolling the page
+self.execute_script('jQuery, window.scrollTo(0, 600)')  # Scrolling the page
 
-self.driver.execute_script("jQuery('#annoying-widget').hide()")  # Hiding elements on a page
+self.execute_script("jQuery('#annoying-widget').hide()")  # Hiding elements on a page
 
-self.driver.execute_script("jQuery('#annoying-button a').remove()")  # Removing elements on a page
+self.execute_script("jQuery('#annoying-button a').remove()")  # Removing elements on a page
 
-self.driver.execute_script("jQuery('%s').mouseover()" % (mouse_over_item))  # Mouse-over elements on a page
+self.execute_script("jQuery('%s').mouseover()" % (mouse_over_item))  # Mouse-over elements on a page
 
-self.driver.execute_script("jQuery('input#the_id').val('my_text')")  # Fast text input on a page
+self.execute_script("jQuery('input#the_id').val('my_text')")  # Fast text input on a page
 
-self.driver.execute_script("jQuery('div#dropdown a.link').click()")  # Click elements on a page
+self.execute_script("jQuery('div#dropdown a.link').click()")  # Click elements on a page
 
-self.driver.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "text" of the element given
+self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "text" of the element given
 
-self.driver.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
+self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
 
 In the following more-complex example, jQuery is used to plant code on a page that Selenium can then touch after that:
 ```python
 self.driver.get(SOME_PAGE_TO_PLAY_WITH)
 referral_link = '<a class="analytics test" href="%s">Free-Referral Button!</a>' % DESTINATION_URL
-self.driver.execute_script("document.body.innerHTML = \"%s\"" % referral_link)
-self.driver.find_element_by_css_selector("a.analytics").click()  # Clicks the generated button
+self.execute_script("document.body.innerHTML = \"%s\"" % referral_link)
+self.click("a.analytics")  # Clicks the generated button
 ```
 
-## Part III: Explanations + Advanced Abilities 
+## Part III: More Details
 
-So by now you may be wondering how the nosetests code works? Nosetests will automatically run any test that starts with "test" from the file you selected. You can also be more specific and run specific tests in a file or any test in a specific class. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. (In the beginning example, since there was only one test in that file, this won't change anything.) And if you want better logging in the console output, that's what the "-s" is for.
+Nosetests automatically runs any python method that starts with "test" from the file you selected. You can also select specific tests to run from files or classes. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. Use "-s" if you want better logging in the console output.
 
-To use the test framework calls, don't forget to include the following import:
+To use the SeleniumSpot Test Framework calls, don't forget to include the following import:
 
 ```python
 from test_framework import BaseCase
@@ -521,11 +521,8 @@ And you'll need to inherit BaseCase in your classes like so:
 class MyTestClass(BaseCase):
 ```
 
-To understand the full scope of the test framework, we have to take a peek inside. From the top-level folder that contained the requirements.pip and setup.py files, there are two other major folders: "grid" and "test_framework". The Selenium "Grid" is what maintains the remote machines running selenium tests for "selenium.hubteam.com/jenkins". Machines can be spun up through Amazon EC2, and each one is capable of running 5 simultaneous browser tests. The other major folder, "test_framework", is what contains everything else. The "test_framework" folder contains all the major components such as "Core", "Fixtures", and "Plugins". For all intensive purposes, those sections are all equally important. They contain all the code and libraries that make our test framework useful (because otherwise we'd be writing tests using raw selenium calls without any special add-ons or support).
-
-
 ####  Checking Email: 
-So let's say you have a test that sends an email, and now you want to check that the email was received:
+Let's say you have a test that sends an email, and now you want to check that the email was received:
 
 ```python
 from test_framework.fixtures.email_manager import EmailManager, EmailException
@@ -544,8 +541,7 @@ Now you can parse through the email if you're looking for specific text or want 
 
 
 ####  Database Powers: 
-Let's say you have a test that needs to access the database. First make sure you already have a table ready. Then, Boom:
-Ex:
+Let's say you have a test that needs to access the database. First make sure you already have a table ready. Then try this example:
 
 ```python
 from test_framework.core.mysql import DatabaseManager
@@ -582,7 +578,7 @@ def get_delayed_test_data(self, testcase_address, done=0):
         return []
 ```
 
-And now you know how to pull data from the DB.
+Now you know how to pull data from your MySQL DB.
 
 You may also be wondering when you would use the Delayed Data Manager. Here's one example: If you scheduled an email to go out 12 hours from now and you wanted to check that the email gets received (but you don't want the Selenium test of a Jenkins job to sit idle for 12 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
 
