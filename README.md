@@ -19,10 +19,7 @@ Features include:
 * Advanced commands for saving you significant time
 
 
-To utilize some of the more advanced integrations, you'll want to setup instances and make connections to the following:
-MySQL, Jenkins, Amazon S3, and the Selenium Grid. (More on this later)
-We've provided placeholders in the code where you can specify your connection details. You can also use this framework as a bare-bones Selenium WebDriver command executer to automate tasks in a browser without doing any data reporting (and that's also the fastest way to make sure your base setup is working properly).
-If you plan on running tests from a build server across multiple cloud machines, you can connect to your own Selenium Grid or use a cloud provider such as BrowserStack.
+To utilize some of the more advanced integrations, you'll want to setup instances and make connections to MySQL, Jenkins, Amazon S3, and the Selenium Grid. We've provided placeholders in the code where you can specify your connection details for those (see settings.py in the test_framework/config folder). You can also use this framework as a bare-bones Selenium WebDriver command executer to automate tasks in a browser without doing any data reporting (and that's also the fastest way to make sure your base setup is working properly). If you plan on running tests from a build server across multiple cloud machines, you can connect to your own Selenium Grid or use a cloud provider such as BrowserStack.
 
 
 For an excellent example of all the pieces coming together, check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).
@@ -51,7 +48,7 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
 [MySQL](http://www.mysql.com/)
 
-(NOTE: If you're using this test framework from a local development machine and don't plan on writing to the MySQL DB from your local test runs, you can skip this step.)
+(NOTE: If you're using this test framework from a local development machine and don't plan on writing to a MySQL DB from your local test runs, you can skip this step.)
 
     brew install MySQL
 
