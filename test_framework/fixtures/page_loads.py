@@ -42,7 +42,7 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR, timeout=setti
     """
 
     element = None
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
             return element
@@ -70,7 +70,7 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR, timeout=setti
     """
 
     element = None
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -102,7 +102,7 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=se
     """
 
     element = None
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -129,7 +129,7 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR, timeout=settin
     timeout - the time to wait for elements in seconds
     """
 
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         try:
             driver.find_element(by=by, value=selector)
             time.sleep(0.1)
@@ -152,7 +152,7 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR, timeout=s
     timeout - the time to wait for elements in seconds
     """
 
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -173,7 +173,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     This method will wait until document.readyState == "complete".
     """
 
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         ready_state = driver.execute_script("return document.readyState")
         if ready_state == u'complete':
             return True
@@ -219,7 +219,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     timeout - the time to wait for the alert in seconds
     """
 
-    for x in range(timeout * 10):
+    for x in range(int(timeout * 10)):
         try:
             alert = driver.switch_to_alert()
             return alert
