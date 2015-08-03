@@ -1,4 +1,4 @@
-# SeleniumSpot Test Framework
+# SeleniumBase Test Framework
 
 ### Build, Automate, Verify
 
@@ -38,7 +38,7 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
 [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
 
-(NOTE: You can download the SeleniumSpot repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
+(NOTE: You can download the SeleniumBase repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew install git
@@ -83,21 +83,21 @@ To save time from having to source virtualenvwrapper again when you open a new w
 If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
 
 
-**Step 1:** Download or Clone SeleniumSpot to your local machine:
+**Step 1:** Download or Clone SeleniumBase to your local machine:
 
 If you're using Git, you can fork the repository on GitHub to create your personal copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now you can clone your forked copy to your personal computer. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
 
 ```bash
-git clone [LOCATION OF YOUR FORKED SELENIUMSPOT GITHUB FOLDER]/seleniumspot.git
-cd seleniumspot
+git clone [LOCATION OF YOUR FORKED SELENIUMBASE GITHUB FOLDER]/seleniumbase.git
+cd seleniumbase
 ```
 
-(NOTE: If you decided to download SeleniumSpot rather than Git-cloning it, you can skip the above step.)
+(NOTE: If you decided to download SeleniumBase rather than Git-cloning it, you can skip the above step.)
 
-**Step 2:** Create a virtualenv for seleniumspot:
+**Step 2:** Create a virtualenv for seleniumbase:
 
 ```bash
-mkvirtualenv seleniumspot
+mkvirtualenv seleniumbase
 ```
 
 (Virtual environments are important because they allow you to have separate configurations from the rest of your system. This will prevent conflicts if you use other tools that require other configurations and settings.)
@@ -111,7 +111,7 @@ deactivate
 To get back into your virtual environment, use the following command:
 
 ```bash
-workon seleniumspot
+workon seleniumbase
 ```
 
 To see a list of environments that exist on your system, use the following command:
@@ -126,7 +126,7 @@ To delete a virtual environment that you no longer need, use the following comma
 rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
 ```
 
-**Step 3:** Install necessary packages from the SeleniumSpot folder and compile the test framework
+**Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework
 
 If you're NOT connecting to a MySQL DB from your local test runs (based on the path you chose above), use these steps:
 
@@ -254,7 +254,7 @@ If you're planning on using the full power of this test framework, there are a f
 
 * If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the hipchat_reporting plugin, which is included with this test framework.
 
-* Be sure to tell SeleniumSpot to use these added features when you set them up. That's easy to do. You would be running tests like this:
+* Be sure to tell SeleniumBase to use these added features when you set them up. That's easy to do. You would be running tests like this:
 
 ```bash
 nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots --with-db_reporting --with-s3_logging -s
@@ -506,7 +506,7 @@ self.click("a.analytics")  # Clicks the generated button
 
 Nosetests automatically runs any python method that starts with "test" from the file you selected. You can also select specific tests to run from files or classes. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. Use "-s" if you want better logging in the console output.
 
-To use the SeleniumSpot Test Framework calls, don't forget to include the following import:
+To use the SeleniumBase Test Framework calls, don't forget to include the following import:
 
 ```python
 from test_framework import BaseCase
