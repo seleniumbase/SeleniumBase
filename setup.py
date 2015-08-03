@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'seleniumbase',
-    version = '1.1.1',
+    version = '1.1.2',
     author = 'Michael Mintz',
     author_email = '@mintzworld',
     maintainer = 'Michael Mintz',
