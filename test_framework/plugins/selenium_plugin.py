@@ -11,7 +11,7 @@ from test_framework.core import selenium_launcher
 from test_framework.fixtures import constants
 
 
-class SeleniumBase(Plugin):
+class SeleniumBrowser(Plugin):
     """
     The plugin for Selenium tests. Takes in key arguments and then
     creates a WebDriver object. All arguments are passed to the tests.
@@ -24,7 +24,7 @@ class SeleniumBase(Plugin):
     name = 'selenium'  # Usage: --with-selenium
 
     def options(self, parser, env):
-        super(SeleniumBase, self).options(parser, env=env)
+        super(SeleniumBrowser, self).options(parser, env=env)
 
         parser.add_option('--browser', action='store',
                           dest='browser',
@@ -46,7 +46,7 @@ class SeleniumBase(Plugin):
 
 
     def configure(self, options, conf):
-        super(SeleniumBase, self).configure(options, conf)
+        super(SeleniumBrowser, self).configure(options, conf)
         if not self.enabled:
             return
 
