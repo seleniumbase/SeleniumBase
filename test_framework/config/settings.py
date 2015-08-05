@@ -6,9 +6,9 @@ You'll probably want to customize this to your own environment and needs.
 #####>>>>>----- REQUIRED SETTINGS -----<<<<<#####
 
 # Default times to wait for page elements to appear before performing actions
-SMALL_TIMEOUT = 7
-LARGE_TIMEOUT = 14
-EXTREME_TIMEOUT = 42  # "Bueller? ... Bueller?" - (Ferris Bueller's Day Off, 1986)
+SMALL_TIMEOUT = 5
+LARGE_TIMEOUT = 10
+EXTREME_TIMEOUT = 30
 
 # The option of adding wait_for_ready_state_complete() after various actions.
 # By default, Selenium waits for the 'interactive' state, which might not be enough.
