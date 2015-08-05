@@ -109,11 +109,12 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=se
                 if text in element.text:
                     return element
                 else:
+                    element = None
                     raise Exception()
         except Exception:
             time.sleep(0.1)
     if not element:
-        raise ElementNotVisibleException("Expected text [%s] for element %s was not visible in %s seconds!"\
+        raise ElementNotVisibleException("Expected text [%s] for element [%s] was not visible in %s seconds!"\
                                          % (text, selector, timeout))
 
 
