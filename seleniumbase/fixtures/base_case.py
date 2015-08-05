@@ -77,6 +77,10 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script(script)
 
 
+    def set_window_size(self, width, height):
+        return self.driver.set_window_size(width, height)
+
+
     def wait_for_link_text_visible(self, link_text, timeout=settings.LARGE_TIMEOUT):
         return self.wait_for_element_visible(link_text, by=By.LINK_TEXT, timeout=timeout)
 
