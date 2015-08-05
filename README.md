@@ -19,7 +19,7 @@ Features include:
 * Advanced commands for saving you significant time
 
 
-To utilize some of the more advanced integrations, you'll want to setup instances and make connections to MySQL, Jenkins, Amazon S3, and the Selenium Grid. We've provided placeholders in the code where you can specify your connection details for those (see settings.py in the test_framework/config folder). You can also use this framework as a bare-bones Selenium WebDriver command executer to automate tasks in a browser without doing any data reporting (and that's also the fastest way to make sure your base setup is working properly). If you plan on running tests from a build server across multiple cloud machines, you can connect to your own Selenium Grid or use a cloud provider such as BrowserStack.
+To utilize some of the more advanced integrations, you'll want to setup instances and make connections to MySQL, Jenkins, Amazon S3, and the Selenium Grid. We've provided placeholders in the code where you can specify your connection details for those (see settings.py in the seleniumbase/config folder). You can also use this framework as a bare-bones Selenium WebDriver command executer to automate tasks in a browser without doing any data reporting (and that's also the fastest way to make sure your base setup is working properly). If you plan on running tests from a build server across multiple cloud machines, you can connect to your own Selenium Grid or use a cloud provider such as BrowserStack.
 
 
 For an excellent example of all the pieces coming together, check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).
@@ -52,7 +52,7 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
     brew install MySQL
 
-That installs the MySQL library so that you can use db commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to. You'll also want to use the testcaserepository.sql file from the test_framework/core folder to add the necessary tables.
+That installs the MySQL library so that you can use db commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to. You'll also want to use the testcaserepository.sql file from the seleniumbase/core folder to add the necessary tables.
 
 (WINDOWS users: [Download MySQL here](http://dev.mysql.com/downloads/windows/). If you want a visual tool to help make your MySQL life easier, [try MySQL Workbench](http://dev.mysql.com/downloads/workbench/).)
 
@@ -178,7 +178,7 @@ python
 **Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
 
 ```python
-from test_framework import BaseCase
+from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
@@ -239,7 +239,7 @@ If you're planning on using the full power of this test framework, there are a f
 
 * Setup your [Jenkins](http://jenkins-ci.org/) build server for running your tests at regular intervals. (Or you can use any build server you want.)
 
-* Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify the s3_manager.py file from the test_framework/core folder with connection details to your instance.)
+* Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify the s3_manager.py file from the seleniumbase/core folder with connection details to your instance.)
 
 * Install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to make life easier by giving you a nice GUI tool that you can use to read & write from your DB directly.
 
@@ -260,7 +260,7 @@ If you're planning on using the full power of this test framework, there are a f
 nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots --with-db_reporting --with-s3_logging -s
 ```
 
-(When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests as long as you've setup your MySQL DB properly and you've also updated your test_framework/core/mysql_conf.py file with your DB credentials.)
+(When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests as long as you've setup your MySQL DB properly and you've also updated your seleniumbase/core/mysql_conf.py file with your DB credentials.)
 To simplify that long run command, you can create a *.cfg file, such as the one provided in the example, and enter your plugins there so that you can run everything by typing:
 
 ```bash
@@ -277,7 +277,7 @@ nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[
 Let's try an example of a test that fails. Copy the following into a file called fail_test.py:
 ```python
 """ test_fail.py """
-from test_framework import BaseCase
+from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
@@ -509,7 +509,7 @@ Nosetests automatically runs any python method that starts with "test" from the 
 To use the SeleniumBase Test Framework calls, don't forget to include the following import:
 
 ```python
-from test_framework import BaseCase
+from seleniumbase import BaseCase
 ```
 
 And you'll need to inherit BaseCase in your classes like so:
@@ -522,7 +522,7 @@ class MyTestClass(BaseCase):
 Let's say you have a test that sends an email, and now you want to check that the email was received:
 
 ```python
-from test_framework.fixtures.email_manager import EmailManager, EmailException
+from seleniumbase.fixtures.email_manager import EmailManager, EmailException
 num_email_results = 0
 email_subject = "This is the subject to search for (maybe include a timestamp)"
 email_manager = EmailManager("[YOUR SELENIUM GMAIL EMAIL ADDRESS]")  # the password for this is elsewhere (in the library) because this is a default email account
@@ -541,7 +541,7 @@ Now you can parse through the email if you're looking for specific text or want 
 Let's say you have a test that needs to access the database. First make sure you already have a table ready. Then try this example:
 
 ```python
-from test_framework.core.mysql import DatabaseManager
+from seleniumbase.core.mysql import DatabaseManager
 def write_data_to_db(self, theId, theValue, theUrl):
     db = DatabaseManager()
     query = """INSERT INTO myTable(theId,theValue,theUrl)
@@ -557,7 +557,7 @@ The following example below (taken from the Delayed Data Manager) shows how data
 
 ```python
 import logging
-from test_framework.core.mysql import DatabaseManager
+from seleniumbase.core.mysql import DatabaseManager
 
 def get_delayed_test_data(self, testcase_address, done=0):
     """ Returns a list of rows """

@@ -7,8 +7,8 @@ import time
 import os
 from nose.plugins import Plugin
 from selenium import webdriver
-from test_framework.core import selenium_launcher
-from test_framework.fixtures import constants
+from seleniumbase.core import selenium_launcher
+from seleniumbase.fixtures import constants
 
 
 class SeleniumBrowser(Plugin):

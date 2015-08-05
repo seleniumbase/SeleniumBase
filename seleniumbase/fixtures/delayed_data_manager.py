@@ -3,7 +3,7 @@ import logging
 import time
 import uuid
 
-from test_framework.core.mysql import DatabaseManager
+from seleniumbase.core.mysql import DatabaseManager
 
 DEFAULT_EXPIRATION = 1000 * 60 * 60 * 48
 

@@ -2,7 +2,7 @@
 This file contains database credentials for the various databases the tests need to access
 """
 
-from test_framework.config import settings
+from seleniumbase.config import settings
 
 # Environments
 TEST = "test"

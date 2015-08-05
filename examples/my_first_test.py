@@ -1,4 +1,4 @@
-from test_framework import BaseCase
+from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 

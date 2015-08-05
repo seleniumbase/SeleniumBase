@@ -2,7 +2,7 @@
 Testcase database related methods
 """
 
-from test_framework.core.mysql import DatabaseManager
+from seleniumbase.core.mysql import DatabaseManager
 
 class TestcaseManager:
     """

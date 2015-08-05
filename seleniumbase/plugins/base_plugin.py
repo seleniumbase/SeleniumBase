@@ -10,7 +10,7 @@ import shutil
 import time
 from nose.plugins import Plugin
 from nose.exc import SkipTest
-from test_framework.fixtures import constants, errors
+from seleniumbase.fixtures import constants, errors
 
 
 class Base(Plugin):

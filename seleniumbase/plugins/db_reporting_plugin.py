@@ -8,12 +8,12 @@ import uuid
 from optparse import SUPPRESS_HELP
 from nose.plugins import Plugin
 from nose.exc import SkipTest
-from test_framework.core.application_manager import ApplicationManager
-from test_framework.core.testcase_manager import ExecutionQueryPayload
-from test_framework.core.testcase_manager import TestcaseDataPayload
-from test_framework.core.testcase_manager import TestcaseManager
-from test_framework.fixtures import constants
-from test_framework.fixtures import errors
+from seleniumbase.core.application_manager import ApplicationManager
+from seleniumbase.core.testcase_manager import ExecutionQueryPayload
+from seleniumbase.core.testcase_manager import TestcaseDataPayload
+from seleniumbase.core.testcase_manager import TestcaseManager
+from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import errors
 
 
 class DBReporting(Plugin):

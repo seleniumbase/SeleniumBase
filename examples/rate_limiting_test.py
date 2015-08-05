@@ -1,5 +1,5 @@
-from test_framework import BaseCase
-from test_framework.common import decorators
+from seleniumbase import BaseCase
+from seleniumbase.common import decorators
 
 
 class MyTestClass(BaseCase):

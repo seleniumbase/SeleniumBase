@@ -3,7 +3,7 @@ Manager for dealing with uploading/managing files on S3
 """
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
-from test_framework.config import settings
+from seleniumbase.config import settings
 
 already_uploaded_files = []
 

@@ -18,7 +18,7 @@ By.PARTIAL_LINK_TEXT
 """
 
 import time
-from test_framework.config import settings
+from seleniumbase.config import settings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException, \
                                                    NoSuchElementException, \

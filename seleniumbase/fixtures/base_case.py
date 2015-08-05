@@ -2,7 +2,7 @@ import json
 import time
 import logging
 import unittest
-from test_framework.config import settings
+from seleniumbase.config import settings
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import page_loads, page_interactions, page_utils

@@ -5,7 +5,7 @@ The S3 Logging Plugin to upload all logs to the S3 bucket specifed.
 import uuid
 import logging
 import os
-from test_framework.core.s3_manager import S3LoggingBucket
+from seleniumbase.core.s3_manager import S3LoggingBucket
 from nose.plugins import Plugin
 
 
@@ -43,7 +43,7 @@ class S3Logging(Plugin):
 
         # If the database plugin is running, attach a link to the logs index database row
         if hasattr(test.test, "testcase_guid"):
-            from test_framework.core.testcase_manager \
+            from seleniumbase.core.testcase_manager \
                 import TestcaseDataPayload, TestcaseManager
             self.testcase_manager = TestcaseManager(self.options.database_env)
             data_payload = TestcaseDataPayload()

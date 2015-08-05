@@ -8,7 +8,7 @@ import imaplib
 import quopri
 import re
 import time
-from test_framework.config import settings
+from seleniumbase.config import settings
 
 
 class EmailManager:

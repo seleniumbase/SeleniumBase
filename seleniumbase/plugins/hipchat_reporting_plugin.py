@@ -8,7 +8,7 @@ import requests
 import logging
 import datetime
 from nose.plugins import Plugin
-from test_framework.config import settings
+from seleniumbase.config import settings
 
 
 HIPCHAT_URL = 'https://api.hipchat.com/v1/rooms/message'

@@ -1,5 +1,5 @@
 """ test_fail.py """
-from test_framework.fixtures import base_case
+from seleniumbase.fixtures import base_case
 
 class MyTestClass(base_case.BaseCase):
 
