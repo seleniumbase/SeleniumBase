@@ -81,6 +81,10 @@ class BaseCase(unittest.TestCase):
         return self.driver.set_window_size(width, height)
 
 
+    def maximize_window(self):
+        return self.driver.maximize_window()
+
+
     def wait_for_link_text_visible(self, link_text, timeout=settings.LARGE_TIMEOUT):
         return self.wait_for_element_visible(link_text, by=By.LINK_TEXT, timeout=timeout)
 
