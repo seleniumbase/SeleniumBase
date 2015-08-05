@@ -37,16 +37,18 @@ class ScreenShots(Plugin):
         screenshot_file = "%s/%s" % (test_logpath, self.logfile_name)
         test.driver.get_screenshot_as_file(screenshot_file)
         try:
+            # Let humans see any errors on screen before closing the window
             test.driver.maximize_window()
             time.sleep(0.2)  # Make sure the screen is ready
         except Exception:
             pass
-        screen_b64 = test.driver.get_screenshot_as_base64()
+        # Second screenshot at fullscreen might not be necessary
+        '''screen_b64 = test.driver.get_screenshot_as_base64()
         screen = base64.decodestring(screen_b64)
         screenshot_file_2 = "%s/%s" % (test_logpath, self.logfile_name_2)
         f1 = open(screenshot_file_2, 'w+')
         f1.write(screen)
-        f1.close()
+        f1.close()'''
 
 
     def addError(self, test, err, capt=None):
