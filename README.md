@@ -281,9 +281,9 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_find_google_on_bing(self):
-        self.driver.get("http://bing.com")
-        self.wait_for_element_visible("div#google_is_here", timeout=3)  # This should fail
+    def test_find_army_of_robots_on_xkcd_desert_island(self):
+        self.driver.get("http://xkcd.com/731/")
+        self.wait_for_element_visible("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
 ```
 Now run it:
 
