@@ -223,6 +223,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     for x in range(int(timeout * 10)):
         try:
             alert = driver.switch_to_alert()
+            dummy_variable = alert.text  # Raises exception if no alert present
             return alert
         except NoAlertPresentException:
             time.sleep(0.1)
