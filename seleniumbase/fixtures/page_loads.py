@@ -76,6 +76,7 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR, timeout=setti
             if element.is_displayed():
                 return element
             else:
+                element = None
                 raise Exception()
         except Exception:
             time.sleep(0.1)
