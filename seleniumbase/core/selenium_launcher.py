@@ -1,4 +1,4 @@
-"""Download and run the selenium jar file"""
+""" Download and run the selenium server jar file """
 
 import subprocess
 import os
@@ -6,12 +6,12 @@ import socket
 import urllib
 import time
 
-SELENIUM_JAR = "http://selenium.googlecode.com/files/selenium-server-standalone-2.40.0.jar"
-JAR_FILE = "selenium-server-2.40.0.jar"
+SELENIUM_JAR = "http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar"
+JAR_FILE = "selenium-server-standalone-2.47.1.jar"
 
 def download_selenium():
     """
-    downloads the selenium jar file from its online location and stores it locally
+    Downloads the selenium server jar file from its online location and stores it locally.
     """
     try:
         local_file = open(JAR_FILE, 'wb')
@@ -49,8 +49,8 @@ def start_selenium_server(selenium_jar_location, port, file_path):
     process_args = None
     process_args = ["java", "-jar", selenium_jar_location, "-port", port]
     selenium_exec = subprocess.Popen(process_args,
-                                     stdout=open("%s/log_seleniumOutput.txt"%(file_path),"w"),
-                                     stderr=open("%s/log_seleniumError.txt"%(file_path),"w"))
+                                     stdout=open("%s/log_seleniumOutput.txt" % (file_path),"w"),
+                                     stderr=open("%s/log_seleniumError.txt" % (file_path),"w"))
     time.sleep(2)
     if selenium_exec.poll() == 1:
         raise StartSeleniumException("The selenium server did not start." +\
@@ -65,7 +65,7 @@ def stop_selenium_server(selenium_server_process):
         selenium_server_process.terminate()
         return selenium_server_process.poll() == 143
     except Exception, details:
-        raise Exception("Cannot kill selenium process, details: "+details)
+        raise Exception("Cannot kill selenium process, details: " + details)
 
 
 class StartSeleniumException(Exception):
@@ -83,4 +83,4 @@ def execute_selenium(host, port, file_path):
     try:
         return start_selenium_server(JAR_FILE, port, file_path)
     except StartSeleniumException:
-        print "Selenium Server might already be running.  Continuing"
+        print "Selenium Server might already be running. Continuing... "
