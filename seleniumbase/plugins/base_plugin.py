@@ -16,8 +16,9 @@ from seleniumbase.fixtures import constants, errors
 class Base(Plugin):
     """
     The base_plugin includes the following variables:
-    self.options.env -- the environment you pass in (--env)
-    self.options.log_path -- the directory in which the log files are saved (--log_path)
+    self.options.env -- the environment for the tests to use (--env=ENV)
+    self.options.data -- any extra data to pass to the tests (--data=DATA)
+    self.options.log_path -- the directory in which the log files are saved (--log_path=LOG_PATH)
     """
     name = 'testing_base'  # Usage: --with-testing_base
 
