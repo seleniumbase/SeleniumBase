@@ -34,6 +34,9 @@ class Base(Plugin):
                                    constants.Environment.TEST),
                           default=constants.Environment.TEST,
                           help="The environment to run the tests in.")
+        parser.add_option('--data', dest='data',
+                          default=None,
+                          help='Extra data to pass from the command line.')
         parser.add_option('--log_path', dest='log_path',
                           default='logs/',
                           help='Where the log files are saved.')
@@ -61,6 +64,7 @@ class Base(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         test.test.environment = self.options.environment
+        test.test.data = self.options.data
         test.test.args = self.options
 
 
