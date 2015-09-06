@@ -102,6 +102,7 @@ class BaseCase(unittest.TestCase):
 
 
     def scroll_to(self, selector):
+        self.wait_for_element_visible(selector, timeout=settings.SMALL_TIMEOUT)
         self.driver.execute_script("jQuery('%s')[0].scrollIntoView()" % selector)
 
 
