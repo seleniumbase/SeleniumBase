@@ -32,9 +32,9 @@ For an excellent example of all the pieces coming together, check out HubSpot's 
 
 [Python 2.*](https://www.python.org/downloads/)
 
-If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.6 is the one I've been using on my Mac.
+If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.10 is the one I've been using on my Mac.
 
-If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/).
+If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/). Depending on which version of Python you have installed, you may need to install "pip" if your Python installation didn't come with it. To do that easily, run "python pip_setup.py install" from the SeleniumBase home directory. If that didn't do the trick for you, [get pip here](https://pip.pypa.io/en/latest/installing/).
 
 [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
 
@@ -131,15 +131,15 @@ rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
 If you're NOT connecting to a MySQL DB from your local test runs (based on the path you chose above), use these steps:
 
 ```bash
-sudo pip install -r local_requirements.pip
-sudo python local_setup.py install
+sudo pip install -r requirements.txt
+sudo python setup.py install
 ```
 
 If you ARE connecting to a MySQL DB from your local test runs, use these steps:
 
 ```bash
-sudo pip install -r requirements.pip
-sudo python setup.py install
+sudo pip install -r server_requirements.txt
+sudo python server_setup.py install
 ```
 
 NOTE:
