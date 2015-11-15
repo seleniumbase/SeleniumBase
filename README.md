@@ -2,24 +2,21 @@
 
 ### Build, Automate, Verify
 
+(Now with [Docker](https://www.docker.com/) support for running all your automation!)
+
 Here's what users are saying:
 * "The best way of creating test automation for your web apps."
-* "It's like a [Docker](https://www.docker.com/) for automated tests."
 * "Our team was able to start writing & running tests immediately."
+* "We love the flexibility and ease-of-use of SeleniumBase."
 
 Features include:
-* MySQL DB integration for storing test data and results
-* Amazon S3 manager for uploading logs and screenshots
-* Easy integration with the Jenkins build-server
-* A powerful logging system for tracking failures
-* A system for utilizing data from previous tests
-* An email manager for parsing through sent emails
-* Libraries for code simplification and reusable code
-* Nosetest support for running your tests with ease
-* Advanced commands for saving you significant time
+* All the power of Python, Webdriver, and Nosetests blended together
+* A flexible logging system for storing test data/results/screenshots in MySQL and S3
+* Libraries for code-simplification, time-saving, and reusability
+* Easy integration with a Jenkins build-server, Selenium Grid, and Docker
 
 
-To utilize some of the more advanced integrations, you'll want to setup instances and make connections to MySQL, Jenkins, Amazon S3, and the Selenium Grid. We've provided placeholders in the code where you can specify your connection details for those (see settings.py in the seleniumbase/config folder). You can also use this framework as a bare-bones Selenium WebDriver command executer to automate tasks in a browser without doing any data reporting (and that's also the fastest way to make sure your base setup is working properly). If you plan on running tests from a build server across multiple cloud machines, you can connect to your own Selenium Grid or use a cloud provider such as BrowserStack.
+Placeholders have been provided in the code for specifing custom details such as DB connection info and default configuration (see settings.py in the seleniumbase/config folder).
 
 
 For an excellent example of all the pieces coming together, check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).
