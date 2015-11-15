@@ -19,7 +19,7 @@ Follow these instructions for running tests in Docker on your machine:
 7. Run your Docker image: (The "-i" keeps you inside the Docker shell)
   $ docker run -i seleniumbase
 
-8. Run an example test from inside your Docker shell: (Takes a few seconds)
+8. Run the example test from inside your Docker shell: (Takes a few seconds)
   $ ./docker_test.sh
 
 9. When you're satisfied, you may exit the Docker shell:
@@ -29,7 +29,7 @@ Follow these instructions for running tests in Docker on your machine:
 http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-containers
 Here are a few of those cleanup commands:
 $ docker images | grep "<none>" | awk '{print $3}' | xargs docker rmi
-$ docker rm `docker ps --no-trunc -aq`
+$ docker rm 'docker ps --no-trunc -aq'
 
 11. (Optional) More reading on Docker can be found here:
 https://docs.docker.com/mac/started/
