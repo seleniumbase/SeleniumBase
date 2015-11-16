@@ -89,6 +89,7 @@ RUN cd /SeleniumBase && ls && sudo python docker_setup.py install
 # Create entrypoint and grab example test
 #=========================================
 COPY docker/docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
 COPY docker/docker_test.sh /
+COPY docker/docker_config.cfg /SeleniumBase/examples/
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
