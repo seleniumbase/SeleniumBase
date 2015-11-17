@@ -115,14 +115,17 @@ rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
 
 **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework
 
-If you're NOT connecting to a MySQL DB from your local test runs (based on the path you chose above), use these steps:
+If you don't desire connecting to a MySQL DB to record the results of your local test runs, run this command:
 
 ```bash
 sudo pip install -r requirements.txt
+```
+The "-e ." at the end of requirements.txt should automatically trigger setup.py installation from the following command:
+```bash
 sudo python setup.py install
 ```
 
-If you ARE connecting to a MySQL DB from your local test runs, use these steps:
+If you do desire connecting to a MySQL DB to record the results of your test runs, run both of these commands: (Make sure you already have MySQL installed from either Brew or web-download)
 
 ```bash
 sudo pip install -r server_requirements.txt
