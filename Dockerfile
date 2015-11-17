@@ -75,6 +75,15 @@ RUN sudo useradd seluser --shell /bin/bash --create-home \
   && sudo usermod -a -G sudo seluser \
   && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 
+#===================
+# Install PhantomJS
+#===================
+RUN cd /usr/local/share && wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
+RUN cd /usr/local/share && tar xjf phantomjs-1.9.7-linux-x86_64.tar.bz2
+RUN ln -s /usr/local/share/phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs
+RUN ln -s /usr/local/share/phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+RUN ln -s /usr/local/share/phantomjs-1.9.7-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
+
 #=====================
 # Set up SeleniumBase
 #=====================
