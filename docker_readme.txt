@@ -31,8 +31,11 @@ Follow these instructions for running tests in Docker on your machine:
 11. (Optional) Since Docker images and containers take up a lot of space, you may want to clean up your machine from time to time when they’re not being used:
 http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-containers
 Here are a few of those cleanup commands:
-$ docker images | grep "<none>" | awk '{print $3}' | xargs docker rmi
-$ docker rm 'docker ps --no-trunc -aq'
+  $ docker images | grep "<none>" | awk '{print $3}' | xargs docker rmi
+  $ docker rm 'docker ps --no-trunc -aq'
+If you want to completely remove all your docker containers and images:
+  $ docker rm $(docker ps -a -q)
+  $ docker rmi $(docker images -q)
 
 12. (Optional) More reading on Docker can be found here:
 https://docs.docker.com/mac/started/
