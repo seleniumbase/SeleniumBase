@@ -17,13 +17,13 @@ Follow these instructions for running tests in Docker on your machine:
   $ docker build -t seleniumbase .
 
 7. Run a test inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
-  $ docker run seleniumbase ./docker_test.sh
+  $ docker run seleniumbase ./run_docker_test_in_firefox.sh
 
 8. You can also enter Docker and stay inside the shell:
   $ docker run -i -t seleniumbase
 
-9. Now you can run the example test from inside the Docker shell:
-  $ ./docker_test.sh
+9. Now you can run the example test from inside the Docker shell: (This time using PhantomJS):
+  $ ./run_docker_test_in_phantomjs.sh
 
 10. When you're satisfied, you may exit the Docker shell:
   $ exit
