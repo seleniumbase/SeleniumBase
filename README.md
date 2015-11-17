@@ -2,14 +2,14 @@
 
 ## Your personal web automation solution
 
-Features include:
+#### Features include:
 * ALL the power of Python, WebDriver, and Nosetests
 * Easy integration with [Jenkins](http://jenkins-ci.org/), [Selenium Grid](http://docs.seleniumhq.org/projects/grid/), [Docker](https://www.docker.com/), and [AWS](http://aws.amazon.com/)
 * A flexible logging system for storing test data, results, and screenshots
 * Libraries for code-simplification, time-saving, and reusability
 * Fully customizable (see [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) in the seleniumbase/config folder)
 
-Looking for a real-world business example? Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) to learn how all the pieces of web automation come together. For more, read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete)
+Looking for a real-world business example? Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) to learn how all the pieces of web automation come together. For more, read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete).
 
 
 ## Part I: MAC SETUP INSTRUCTIONS
