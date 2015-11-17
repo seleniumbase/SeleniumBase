@@ -1,1 +1,1 @@
-nosetests my_first_test.py --browser=firefox --with-selenium --logging-level=INFO -s
+nosetests my_first_test.py --browser=phantomjs --with-selenium --logging-level=INFO -s
