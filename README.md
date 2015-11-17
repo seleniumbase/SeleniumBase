@@ -9,7 +9,7 @@
 * Libraries for code-simplification, time-saving, and reusability
 * Fully customizable (see [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) in the seleniumbase/config folder)
 
-Looking for a real-world business example? Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) to learn how all the pieces of web automation come together. For more, read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete).
+*Looking for a real-world business example? Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) to learn how all the pieces of web automation come together. For more, read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete).*
 
 
 ## Part I: MAC SETUP INSTRUCTIONS
@@ -59,7 +59,7 @@ To save time from having to source virtualenvwrapper again when you open a new w
 
 ("vi" is a fast text editor - "i" for insert-text mode, "esc" to get out of insert-text mode, ":wq"+[Enter] to save & exit the file)
 
-[Chromedriver](http://code.google.com/p/chromedriver/) and [PhantomJS](http://phantomjs.org/)
+[Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
 
     brew install chromedriver phantomjs
 
