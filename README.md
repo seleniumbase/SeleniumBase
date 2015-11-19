@@ -137,8 +137,6 @@ NOTE:
 
 (If you already have root access on the machine you're using, you might not need to add "sudo" before those commands.)
 
-(If the pip install gives you a "clang error: unknown argument: '-mno-fused-madd'", [try this](http://stackoverflow.com/questions/22313407/clang-error-unknown-argument-mno-fused-madd-python-package-installation-fa).)
-
 In some cames, certain packages will have other dependencies as requirements, and those will get installed automatically. You'll be able to see all installed packages in your virtual environment by using the following command:
 
 ```bash
