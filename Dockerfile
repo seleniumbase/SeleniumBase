@@ -51,12 +51,12 @@ RUN apt-get update -qqy \
   && apt-get -qy --no-install-recommends install \
      $(apt-cache depends firefox | grep Depends | sed "s/.*ends:\ //" | tr '\n' ' ') \
   && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p /tmp/ff \
-  && wget -P /tmp/ff/ --no-check-certificate -r -l 1 -A bz2 -nH --cut-dirs=8 \
-    https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/latest-esr/linux-x86_64/en-US/ \
-  && tar -xjf /tmp/ff/firefox-*esr.tar.bz2 -C /opt/ \
+  && cd /tmp \
+  && wget --no-check-certificate -O firefox-esr.tar.bz2 \
+    'https://download.mozilla.org/?product=firefox-esr-latest&os=linux64&lang=en-US' \
+  && tar -xjf firefox-esr.tar.bz2 -C /opt/ \
   && ln -s /opt/firefox/firefox /usr/bin/firefox \
-  && rm -rf /tmp/ff/
+  && rm -f /tmp/firefox-esr.tar.bz2
 
 #===================
 # Timezone settings
