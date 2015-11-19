@@ -1,7 +1,5 @@
 """
 The setup package to install the SeleniumBase Test Framework plugins
-on a development machine that DOES NOT intend to write to
-a MySQL DB during test runs.
 """
 
 from setuptools import setup, find_packages
@@ -27,6 +25,7 @@ setup(
             'page_source = seleniumbase.plugins.page_source:PageSource',
             'screen_shots = seleniumbase.plugins.screen_shots:ScreenShots',
             'test_info = seleniumbase.plugins.basic_test_info:BasicTestInfo',
+            'db_reporting = seleniumbase.plugins.db_reporting_plugin:DBReporting',
             's3_logging = seleniumbase.plugins.s3_logging_plugin:S3Logging',
             'hipchat_reporting = seleniumbase.plugins.hipchat_reporting_plugin:HipchatReporting',
             ]
