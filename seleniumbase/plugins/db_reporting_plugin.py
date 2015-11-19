@@ -9,9 +9,6 @@ from optparse import SUPPRESS_HELP
 from nose.plugins import Plugin
 from nose.exc import SkipTest
 from seleniumbase.core.application_manager import ApplicationManager
-from seleniumbase.core.testcase_manager import ExecutionQueryPayload
-from seleniumbase.core.testcase_manager import TestcaseDataPayload
-from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import errors
 
@@ -46,6 +43,7 @@ class DBReporting(Plugin):
     #Plugin methods
     def configure(self, options, conf):
         """get the options"""
+        from seleniumbase.core.testcase_manager import TestcaseManager
         super(DBReporting, self).configure(options, conf)
         self.options = options
         self.testcase_manager = TestcaseManager(self.options.database_env)
@@ -54,6 +52,7 @@ class DBReporting(Plugin):
     def begin(self):
         """At the start of the run, we want to record the
         execution information to the database."""
+        from seleniumbase.core.testcase_manager import ExecutionQueryPayload
         exec_payload = ExecutionQueryPayload()
         exec_payload.execution_start_time = int(time.time() * 1000)
         self.execution_start_time = exec_payload.execution_start_time
@@ -64,6 +63,7 @@ class DBReporting(Plugin):
 
     def startTest(self, test):
         """at the start of the test, set the test case details"""
+        from seleniumbase.core.testcase_manager import TestcaseDataPayload
         data_payload = TestcaseDataPayload()
         self.testcase_guid = str(uuid.uuid4())
         data_payload.guid = self.testcase_guid
@@ -138,6 +138,7 @@ class DBReporting(Plugin):
 
 
     def __insert_test_result(self, state, test, err=None):
+        from seleniumbase.core.testcase_manager import TestcaseDataPayload
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
         data_payload.guid = self.testcase_guid

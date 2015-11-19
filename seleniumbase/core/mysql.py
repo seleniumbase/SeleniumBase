@@ -3,7 +3,6 @@ Wrapper for MySQL functions to make life easier
 """
 
 import time
-import MySQLdb
 import mysql_conf as conf
 
 
@@ -17,6 +16,7 @@ class DatabaseManager():
         """
         Gets database information from mysql_conf.py and creates a connection.
         """
+        import MySQLdb
         db_server, db_user, db_pass, db_schema = \
             conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
         retry_count = 3
