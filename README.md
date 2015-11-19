@@ -125,7 +125,7 @@ The "-e ." at the end of requirements.txt should automatically trigger setup.py 
 sudo python setup.py install
 ```
 
-If you do desire connecting to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download)
+If you do desire connecting to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download. If you're a WINDOWS user, you may have problems on the MySQL installation part. To get around this, you can either follow the instructions from the error message given, or you can pip install the previous requirements.txt file.)
 
 ```bash
 sudo pip install -r server_requirements.txt
