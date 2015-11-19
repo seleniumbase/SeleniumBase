@@ -4,6 +4,7 @@ Testcase database related methods
 
 from seleniumbase.core.mysql import DatabaseManager
 
+
 class TestcaseManager:
     """
     Helper for Testcase related DB stuff
@@ -17,31 +18,33 @@ class TestcaseManager:
         """Inserts an execution into the database, returns the execution guid"""
 
         query = """INSERT INTO execution
-                        (guid, executionStart, totalExecutionTime, username)
+                   (guid, executionStart, totalExecutionTime, username)
                    VALUES (%(guid)s,%(execution_start_time)s,
                            %(total_execution_time)s,%(username)s)"""
-        DatabaseManager(self.database_env).execute_query_and_close(query, 
-                                                  execution_query_payload.get_params())
+        DatabaseManager(self.database_env).execute_query_and_close(
+            query,
+            execution_query_payload.get_params())
         return execution_query_payload.guid
 
 
     def update_execution_data(self, execution_guid, execution_time):
         """updates an existing execution in the database"""
-        
-        query = """UPDATE execution SET
-                          totalExecutionTime=%(execution_time)s 
-                          WHERE guid=%(execution_guid)s """
-        DatabaseManager(self.database_env).execute_query_and_close(query,
-                                                  {"execution_guid":execution_guid,
-                                                  "execution_time":execution_time})
+
+        query = """UPDATE execution
+                   SET totalExecutionTime=%(execution_time)s
+                   WHERE guid=%(execution_guid)s """
+        DatabaseManager(self.database_env).execute_query_and_close(
+            query,
+            {"execution_guid": execution_guid,
+             "execution_time": execution_time})
 
 
     def insert_testcase_data(self, testcase_run_payload):
         """inserts all data for the test case, returns the new row guid"""
 
-        query = """INSERT INTO testcaseRunData 
-                              (guid, browser, state, execution_guid, env, start_time,
-                              testcaseAddress, runtime, retryCount, message, stackTrace) 
+        query = """INSERT INTO testcaseRunData
+                   (guid, browser, state, execution_guid, env, start_time,
+                    testcaseAddress, runtime, retryCount, message, stackTrace)
                           VALUES (
                               %(guid)s,
                               %(browser)s,
@@ -59,7 +62,7 @@ class TestcaseManager:
 
     def update_testcase_data(self, testcase_payload):
         """updates an existing testcase run in the database"""
-        
+
         query = """UPDATE testcaseRunData SET
                           runtime=%(runtime)s,
                           state=%(state)s,
@@ -72,10 +75,10 @@ class TestcaseManager:
 
     def update_testcase_log_url(self, testcase_payload):
         """updates an existing testcase run's logging URL in the database"""
-        
-        query = """UPDATE testcaseRunData SET
-                          logURL=%(logURL)s
-                          WHERE guid=%(guid)s """
+
+        query = """UPDATE testcaseRunData
+                   SET logURL=%(logURL)s
+                   WHERE guid=%(guid)s """
         DatabaseManager(self.database_env).execute_query_and_close(query, testcase_payload.get_params())
 
 
