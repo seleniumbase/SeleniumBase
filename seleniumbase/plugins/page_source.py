@@ -32,7 +32,7 @@ class PageSource(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         html_file_name = "%s/%s" % (test_logpath, self.logfile_name)
-        html_file = codecs.open(html_file_name, "w+","utf-8")
+        html_file = codecs.open(html_file_name, "w+", "utf-8")
         html_file.write(test.driver.page_source)
         html_file.close()
 

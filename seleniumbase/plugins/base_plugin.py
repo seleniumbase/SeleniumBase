@@ -43,7 +43,7 @@ class Base(Plugin):
                           help='Where the log files are saved.')
 
 
-    def configure(self, options, conf): 
+    def configure(self, options, conf):
         super(Base, self).configure(options, conf)
         if not self.enabled:
             return
@@ -55,7 +55,7 @@ class Base(Plugin):
         else:
             if not os.path.exists("%s/../archived_logs/" % options.log_path):
                 os.makedirs("%s/../archived_logs/" % options.log_path)
-            shutil.move(options.log_path, "%s/../archived_logs/logs_%s"%(
+            shutil.move(options.log_path, "%s/../archived_logs/logs_%s" % (
                         options.log_path, int(time.time())))
             os.makedirs(options.log_path)
 
@@ -75,7 +75,7 @@ class Base(Plugin):
         error states, we want to make sure that they don't show up in nose output
         as errors.
         """
-        if (err[0] == errors.BlockedTest or 
+        if (err[0] == errors.BlockedTest or
             err[0] == errors.SkipTest or
             err[0] == errors.DeprecatedTest):
             print err[1].__str__().split('-------------------- >> begin captured logging << --------------------', 1)[0]
@@ -90,11 +90,11 @@ class Base(Plugin):
             if err[0] == errors.BlockedTest:
                 raise SkipTest(err[1])
                 return True
-                
+
             elif err[0] == errors.DeprecatedTest:
                 raise SkipTest(err[1])
                 return True
-                
+
             elif err[0] == errors.SkipTest:
                 raise SkipTest(err[1])
                 return True

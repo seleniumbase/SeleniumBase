@@ -2,12 +2,10 @@
 This is the Docker version of the Selenium plugin.
 """
 
-import time
 import os
 from nose.plugins import Plugin
 from pyvirtualdisplay import Display
 from selenium import webdriver
-from seleniumbase.core import selenium_launcher
 from seleniumbase.fixtures import constants
 
 

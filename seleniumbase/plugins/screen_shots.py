@@ -4,7 +4,6 @@ Contains the screenshot plugin for the selenium tests.
 
 import os
 import time
-import base64
 from nose.plugins import Plugin
 
 class ScreenShots(Plugin):
@@ -43,6 +42,7 @@ class ScreenShots(Plugin):
         except Exception:
             pass
         # Second screenshot at fullscreen might not be necessary
+        # import base64
         '''screen_b64 = test.driver.get_screenshot_as_base64()
         screen = base64.decodestring(screen_b64)
         screenshot_file_2 = "%s/%s" % (test_logpath, self.logfile_name_2)

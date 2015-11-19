@@ -26,14 +26,14 @@ class S3Logging(Plugin):
         """ After each testcase, upload logs to the S3 bucket. """
         s3_bucket = S3LoggingBucket()
         guid = str(uuid.uuid4().hex)
-        path = "%s/%s" % (self.options.log_path, 
+        path = "%s/%s" % (self.options.log_path,
                           test.test.id())
         uploaded_files = []
         for logfile in os.listdir(path):
-            logfile_name = "%s/%s/%s" % (guid, 
-                                       test.test.id(), 
+            logfile_name = "%s/%s/%s" % (guid,
+                                       test.test.id(),
                                        logfile.split(path)[-1])
-            s3_bucket.upload_file(logfile_name, 
+            s3_bucket.upload_file(logfile_name,
                                   "%s/%s" % (path, logfile))
             uploaded_files.append(logfile_name)
         s3_bucket.save_uploaded_file_names(uploaded_files)

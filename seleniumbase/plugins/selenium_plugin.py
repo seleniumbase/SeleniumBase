@@ -61,14 +61,14 @@ class SeleniumBrowser(Plugin):
         if options.browser == constants.Browser.INTERNET_EXPLORER:
             self.browser_settings["platform"] = "WINDOWS"
             self.browser_settings["browserName"] = "internet explorer"
-        
+
         if options.browser_version == 'latest':
             version = constants.Browser.LATEST[options.browser]
             if version is not None:
                 self.browser_settings["version"] = version
         else:
             version_options = constants.Browser.VERSION[options.browser]
-            if (version_options is not None and 
+            if (version_options is not None and
                 options.browser_version in version_options):
                 self.browser_settings["version"] = options.browser_version
 

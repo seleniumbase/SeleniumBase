@@ -36,7 +36,7 @@ class DBReporting(Plugin):
 
     def options(self, parser, env):
         super(DBReporting, self).options(parser, env=env)
-        parser.add_option('--database_environment', action='store', 
+        parser.add_option('--database_environment', action='store',
                           dest='database_env',
                           choices=('prod', 'qa', 'test'),
                           default='test',
@@ -52,7 +52,7 @@ class DBReporting(Plugin):
 
 
     def begin(self):
-        """At the start of the run, we want to record the 
+        """At the start of the run, we want to record the
         execution information to the database."""
         exec_payload = ExecutionQueryPayload()
         exec_payload.execution_start_time = int(time.time() * 1000)
@@ -84,10 +84,10 @@ class DBReporting(Plugin):
 
 
     def finalize(self, result):
-        """At the end of the run, we want to 
+        """At the end of the run, we want to
         update that row with the execution time."""
         runtime = int(time.time() * 1000) - self.execution_start_time
-        self.testcase_manager.update_execution_data(self.execution_guid, 
+        self.testcase_manager.update_execution_data(self.execution_guid,
                                                     runtime)
 
 
@@ -116,13 +116,13 @@ class DBReporting(Plugin):
             self.error_handled = True
             raise SkipTest(err[1])
             return True
-            
+
         elif err[0] == errors.DeprecatedTest:
             self.__insert_test_result(constants.State.DEPRECATED, test, err)
             self.error_handled = True
             raise SkipTest(err[1])
             return True
-            
+
         elif err[0] == errors.SkipTest:
             self.__insert_test_result(constants.State.SKIP, test, err)
             self.error_handled = True
@@ -134,7 +134,7 @@ class DBReporting(Plugin):
         """
         After failure of a test, we want to record the testcase run information.
         """
-        self.__insert_test_result(constants.State.FAILURE, test, err)  
+        self.__insert_test_result(constants.State.FAILURE, test, err)
 
 
     def __insert_test_result(self, state, test, err=None):
