@@ -16,13 +16,13 @@
 ####(WINDOWS users: You'll need to make a few modifications to the setup steps listed here. For starters, you won't be able to use the "brew install" command since that's MAC-only. Instead, download the requirements mentioned directly from the web. I'll provide you with links to save you time. You'll also want to put downloaded files into your [PATH](http://java.com/en/download/help/path.xml).)
 ####(DOCKER users: If you want to run browser automation with Docker, see the [Docker_README](https://github.com/mdmintz/SeleniumBase/blob/master/Docker_README.md))
 
-**Step 0:** Get the requirements:
+### **Step 0:** Get the requirements:
 
 [Python 2.*](https://www.python.org/downloads/)
 
 If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.10 is the one I've been using on my Mac.
 
-If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/). Depending on which version of Python you have installed, you may need to install "pip" if your Python installation didn't come with it. To do that easily, run "python pip_setup.py install" from the SeleniumBase home directory. If that didn't do the trick for you, [get pip here](https://pip.pypa.io/en/latest/installing/).
+If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/). Depending on which version of Python you have installed, you may need to install "pip" if your Python installation didn't come with it. If you don't have it installed, you can [get pip here](https://pip.pypa.io/en/latest/installing/).
 
 [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
 
@@ -71,7 +71,7 @@ To save time from having to source virtualenvwrapper again when you open a new w
 If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
 
 
-**Step 1:** Download or Clone SeleniumBase to your local machine:
+### **Step 1:** Download or Clone SeleniumBase to your local machine:
 
 If you're using Git, you can fork the repository on GitHub to create your personal copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now you can clone your forked copy to your personal computer. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
 
@@ -82,7 +82,7 @@ cd seleniumbase
 
 (NOTE: If you decided to download SeleniumBase rather than Git-cloning it, you can skip the above step.)
 
-**Step 2:** Create a virtualenv for seleniumbase:
+### **Step 2:** Create a virtualenv for seleniumbase:
 
 ```bash
 mkvirtualenv seleniumbase
@@ -114,7 +114,7 @@ To delete a virtual environment that you no longer need, use the following comma
 rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
 ```
 
-**Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework
+### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework
 
 If you don't desire connecting to a MySQL DB to record the results of your local test runs, run this command:
 
@@ -153,7 +153,7 @@ defaults write com.apple.finder AppleShowAllFiles -bool true
 (You may need to reopen the MAC Finder window to see changes from that.)
 
 
-**Step 4:** You can verify that Chromedriver and Selenium were successfully installed by checking inside a python command prompt:
+### **Step 4:** You can verify that Chromedriver and Selenium were successfully installed by checking inside a python command prompt:
 
 ```bash
 python
@@ -165,7 +165,7 @@ python
 ```
 
 
-**Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
+### **Step 5:** Now to verify the test framework installation by writing a simple Selenium script that performs basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (copy/paste this into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
 
 ```python
 from seleniumbase import BaseCase
@@ -225,7 +225,7 @@ Here are some other useful nosetest arguments that you may want to append to you
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
-**Step 6:** Complete the setup
+### **Step 6:** Complete the setup
 
 If you're planning on using the full power of this test framework, there are a few more things you'll want to do:
 
