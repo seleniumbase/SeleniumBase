@@ -14,7 +14,7 @@
 
 ## Part I: MAC SETUP INSTRUCTIONS
 ####(WINDOWS users: You'll need to make a few modifications to the setup steps listed here. For starters, you won't be able to use the "brew install" command since that's MAC-only. Instead, download the requirements mentioned directly from the web. I'll provide you with links to save you time. You'll also want to put downloaded files into your [PATH](http://java.com/en/download/help/path.xml).)
-####(DOCKER users: If you want to run browser automation with Docker, read the [Docker_README](https://github.com/mdmintz/SeleniumBase/blob/master/Docker_README.md))
+####(DOCKER users: If you want to run browser automation with Docker, see the [Docker_README](https://github.com/mdmintz/SeleniumBase/blob/master/Docker_README.md))
 
 **Step 0:** Get the requirements:
 
