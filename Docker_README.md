@@ -49,6 +49,6 @@ If you want to completely remove all of your docker containers and images, use t
     docker rmi $(docker images -q)
 
 #### 12. (Optional) More reading on Docker can be found here:
-https://docs.docker.com/mac/started/
-https://docs.docker.com/installation/mac/
-https://docs.docker.com
+* https://docs.docker.com
+* https://docs.docker.com/installation/mac/
+* https://docs.docker.com/mac/started/
