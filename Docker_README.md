@@ -1,4 +1,4 @@
-## Follow these instructions for running SeleniumBase tests in Docker on your machine:
+## Docker setup instructions for SeleniumBase
 
 #### 1. Get the Docker Toolbox from https://www.docker.com/toolbox and install it.
 
@@ -50,5 +50,5 @@ If you want to completely remove all of your docker containers and images, use t
 
 #### 12. (Optional) More reading on Docker can be found here:
 * https://docs.docker.com
-* https://docs.docker.com/installation/mac/
 * https://docs.docker.com/mac/started/
+* https://docs.docker.com/installation/mac/
