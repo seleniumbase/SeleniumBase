@@ -153,7 +153,7 @@ defaults write com.apple.finder AppleShowAllFiles -bool true
 (You may need to reopen the MAC Finder window to see changes from that.)
 
 
-#### **Step 4:** You can verify that Chromedriver and Selenium were successfully installed by checking inside a python command prompt:
+#### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt:
 
 ```bash
 python
@@ -165,7 +165,7 @@ python
 ```
 
 
-#### **Step 5:** Verify that SeleniumBase was successfully installed by running examples
+#### **Step 5:** Verify that SeleniumBase was successfully installed by running example tests
 
 You can verify the installation of SeleniumBase by writing a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (Copy/paste the following code into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
 
