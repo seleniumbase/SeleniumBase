@@ -6,8 +6,8 @@ import socket
 import urllib
 import time
 
-SELENIUM_JAR = "http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar"
-JAR_FILE = "selenium-server-standalone-2.47.1.jar"
+SELENIUM_JAR = "http://selenium-release.storage.googleapis.com/2.48/selenium-server-standalone-2.48.2.jar"
+JAR_FILE = "selenium-server-standalone-2.48.2.jar"
 
 def download_selenium():
     """

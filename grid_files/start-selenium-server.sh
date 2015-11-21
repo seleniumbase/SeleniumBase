@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar selenium-server-standalone-2.47.1.jar -role hub
+java -jar selenium-server-standalone-2.48.2.jar -role hub
