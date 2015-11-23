@@ -274,7 +274,9 @@ nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg -s
 ```
 
 So much easier on the eyes :)
-Remember, nosetests will run every method in that python file that starts with "test" in the method name. You can be more specific on what to run by doing something like:
+You can simplify that even more by using a setup.cfg file, such as the one provided for you in the examples folder. If you kick off a test run from within the folder that setup.cfg is location in, that file will automatically be used as your configuration, meaning that you wouldn't have to type out all the plugins that you want to use (or include a config file) everytime you run tests.
+
+If you tell nosetests to run an entire file, it will run every method in that python file that starts with "test". You can be more specific on what to run by doing something like:
 
 ```bash
 nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[MY_CONFIG_FILE].cfg -s
