@@ -28,12 +28,11 @@ class BaseCase(unittest.TestCase):
 
     def setUp(self):
         try:
-            pytest._preloadplugins()
-            self.is_pytest = True
+            # This raises an exception if the test is not coming from pytest
+            self.is_pytest = pytest.config.option.is_pytest
         except Exception:
             # Not using pytest (probably nosetests)
             self.is_pytest = False
-            return
         if self.is_pytest:
             pytest_config = open('.pytest_config', 'r')
             browser_name = pytest_config.read()
