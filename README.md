@@ -3,7 +3,7 @@
 ## **Web Automation For Everything**
 
 #### Features include:
-* ALL the power of Python, WebDriver, and Nosetests
+* ALL the power of Python, WebDriver, and Nosetests (pytest also supported)
 * Easy integration with [Jenkins](http://jenkins-ci.org/), [Selenium Grid](http://docs.seleniumhq.org/projects/grid/), [Docker](https://www.docker.com/), and [AWS](http://aws.amazon.com/)
 * A flexible logging system for storing test data, results, and screenshots
 * Libraries for code-simplification, time-saving, and reusability
@@ -216,7 +216,7 @@ If you need to debug things on the fly (in case of errors), use this line to run
 nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures -s
 ```
 
-The above code will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next).
+The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next).
 
 Here are some other useful nosetest arguments that you may want to append to your run commands:
 
@@ -226,6 +226,18 @@ Here are some other useful nosetest arguments that you may want to append to you
 -v  # Prints the full test name rather than a dot for each test.
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
+
+Due to high demand, pytest support has been added. You can run the above sample script in pytest like this:
+
+```bash
+py.test my_first_test.py --browser=chrome -s
+
+py.test my_first_test.py --browser=phantomjs -s
+
+py.test my_first_test.py --browser=firefox -s
+```
+
+(NOTE: If you want to run tests using pytest, you won't have access to the nosetest plugins that are specially defined in SeleniumBase. The nosetest plugins all start with "--with-" and are appended to the test selection in the run commands.)
 
 #### **Step 6:** Complete the setup
 

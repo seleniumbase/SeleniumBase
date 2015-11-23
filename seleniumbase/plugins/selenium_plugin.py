@@ -8,6 +8,7 @@ import os
 from nose.plugins import Plugin
 from selenium import webdriver
 from seleniumbase.core import selenium_launcher
+from seleniumbase.core import browser_launcher
 from seleniumbase.fixtures import constants
 
 
@@ -140,22 +141,4 @@ class SeleniumBrowser(Plugin):
                                     self.options.port),
                                     self.browser_settings)
         else:
-            if browser_name == constants.Browser.FIREFOX:
-                try:
-                    profile = webdriver.FirefoxProfile()
-                    profile.set_preference("reader.parse-on-load.enabled", False)
-                    return webdriver.Firefox(profile)
-                except:
-                    return webdriver.Firefox()
-            if browser_name == constants.Browser.INTERNET_EXPLORER:
-                return webdriver.Ie()
-            if browser_name == constants.Browser.PHANTOM_JS:
-                return webdriver.PhantomJS()
-            if browser_name == constants.Browser.GOOGLE_CHROME:
-                try:
-                    # Make it possible for Chrome to save screenshot files to disk.
-                    chrome_options = webdriver.ChromeOptions()
-                    chrome_options.add_argument("--allow-file-access-from-files")
-                    return webdriver.Chrome(chrome_options=chrome_options)
-                except Exception:
-                    return webdriver.Chrome()
+            return browser_launcher.get_driver(browser_name)

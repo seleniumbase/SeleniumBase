@@ -1,8 +1,10 @@
 import json
 import time
+import pytest
 import logging
 import unittest
 from seleniumbase.config import settings
+from seleniumbase.core import browser_launcher
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import page_loads, page_interactions, page_utils
@@ -21,6 +23,27 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         self.environment = None
+        self.is_pytest = None
+
+
+    def setUp(self):
+        try:
+            pytest._preloadplugins()
+            self.is_pytest = True
+        except Exception:
+            # Not using pytest (probably nosetests)
+            self.is_pytest = False
+            return
+        if self.is_pytest:
+            pytest_config = open('.pytest_config', 'r')
+            browser_name = pytest_config.read()
+            pytest_config.close()
+            self.driver = browser_launcher.get_driver(browser_name)
+
+
+    def tearDown(self):
+        if self.is_pytest:
+            self.driver.quit()
 
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):

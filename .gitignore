@@ -28,6 +28,10 @@ pip-log.txt
 .tox
 nosetests.xml
 
+# py.test
+.cache/*
+.pytest_config
+
 # Developer
 .project
 .pydevproject
