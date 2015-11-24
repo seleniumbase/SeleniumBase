@@ -26,6 +26,8 @@ class BaseCase(unittest.TestCase):
         self.is_pytest = None
 
 
+    # pytest browser management
+    # [Be careful if a subclass of BaseCase overrides setUp()]
     def setUp(self):
         try:
             # This raises an exception if the test is not coming from pytest
@@ -40,6 +42,8 @@ class BaseCase(unittest.TestCase):
             self.driver = browser_launcher.get_driver(browser_name)
 
 
+    # pytest browser management
+    # [Be careful if a subclass of BaseCase overrides tearDown()]
     def tearDown(self):
         if self.is_pytest:
             self.driver.quit()
