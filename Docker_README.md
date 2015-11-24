@@ -2,11 +2,11 @@
 
 #### 1. Get the Docker Toolbox from https://www.docker.com/docker-toolbox and install it.
 
-#### 2. Setup your Docker environment:
+#### 2. Create your SeleniumBase Docker environment:
 
     docker-machine create --driver virtualbox seleniumbase
 
-#### 3. Start up your Docker environment:
+#### 3. If your Docker environment ever goes down for any reason, you can bring it back up with a restart:
 
     docker-machine restart seleniumbase
 
