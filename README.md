@@ -175,7 +175,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open("http://xkcd.com/1513/")
+        self.open("http://xkcd.com/353/")
         self.wait_for_element_visible("div#comic")
         self.click('a[rel="license"]')
         text = self.wait_for_element_visible('center').text
