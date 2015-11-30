@@ -37,7 +37,16 @@ class BaseCase(unittest.TestCase):
             self.is_pytest = False
         if self.is_pytest:
             pytest_config = open('.pytest_config', 'r')
-            browser_name = pytest_config.read()
+            file_data = pytest_config.read()
+            file_lines = file_data.split('\n')
+            for line in file_lines:
+                line_items = line.split(':::')
+                if line_items[0] == 'browser':
+                    browser_name = line_items[1]
+                elif line_items[0] == 'data':
+                    data = line_items[1]
+                else:
+                    pass
             pytest_config.close()
             self.driver = browser_launcher.get_driver(browser_name)
 
