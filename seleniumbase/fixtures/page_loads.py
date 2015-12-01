@@ -1,6 +1,6 @@
 """
 This module contains a set of methods that can be used for loading pages and
-waiting for elements to come in.
+waiting for elements to appear on the page.
 
 The default option we use to search for elements is CSS Selector.
 This can be changed by setting the by paramter.  The enum class for options is:
@@ -20,24 +20,24 @@ By.PARTIAL_LINK_TEXT
 import time
 from seleniumbase.config import settings
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.errorhandler import ElementNotVisibleException, \
-                                                   NoSuchElementException, \
-                                                   NoAlertPresentException
+from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
+from selenium.webdriver.remote.errorhandler import NoSuchElementException
+from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 
 
-def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
+                             timeout=settings.LARGE_TIMEOUT):
     """
-    Searches for the specified element by the given selector.  Returns the
-    element object if the element is present on the page.  The element can be
-    invisible.  Raises an exception if the element does not appear in the
+    Searches for the specified element by the given selector. Returns the
+    element object if the element is present on the page. The element can be
+    invisible. Raises an exception if the element does not appear in the
     specified timeout.
     @Params
     driver - the webdriver object
     selector - the locator that is used (required)
-    by - the method to search for hte locator (Default- By.CSS_SELECTOR)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
-
-    @returns
+    @Returns
     A web element object
     """
 
@@ -49,23 +49,24 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR, timeout=setti
         except Exception:
             time.sleep(0.1)
     if not element:
-        raise NoSuchElementException("Element %s was not present in %s seconds!" %
-                                     (selector, timeout))
+        raise NoSuchElementException(
+            "Element %s was not present in %s seconds!" % (selector, timeout))
 
 
-def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
+                             timeout=settings.LARGE_TIMEOUT):
     """
-    Searches for the specified element by the given selector.  Returns the
+    Searches for the specified element by the given selector. Returns the
     element object if the element is present and visible on the page.
     Raises an exception if the element does not appear in the
     specified timeout.
     @Params
     driver - the webdriver object (required)
     selector - the locator that is used (required)
-    by - the method to search for hte locator (Default- By.CSS_SELECTOR)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
 
-    @returns
+    @Returns
     A web element object
     """
 
@@ -81,11 +82,12 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR, timeout=setti
         except Exception:
             time.sleep(0.1)
     if not element:
-        raise ElementNotVisibleException("Element %s was not visible in %s seconds!"\
-                                         % (selector, timeout))
+        raise ElementNotVisibleException(
+            "Element %s was not visible in %s seconds!" % (selector, timeout))
 
 
-def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
+def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
+                          timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector. Returns the
     element object if the text is present in the element and visible
@@ -95,10 +97,9 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=se
     driver - the webdriver object (required)
     text - the text that is being searched for in the element (required)
     selector - the locator that is used (required)
-    by - the method to search for hte locator (Default- By.CSS_SELECTOR)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
-
-    @returns
+    @Returns
     A web element object that contains the text searched for
     """
 
@@ -115,19 +116,21 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR, timeout=se
         except Exception:
             time.sleep(0.1)
     if not element:
-        raise ElementNotVisibleException("Expected text [%s] for element [%s] was not visible in %s seconds!"\
-                                         % (text, selector, timeout))
+        raise ElementNotVisibleException(
+            "Expected text [%s] for [%s] was not visible after %s seconds!" %
+            (text, selector, timeout))
 
 
-def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
+                            timeout=settings.LARGE_TIMEOUT):
     """
-    Searches for the specified element by the given selector. Returns void when
-    element is no longer present on the page. Raises an exception if the
-    element does still exist after the specified timeout.
+    Searches for the specified element by the given selector.
+    Raises an exception if the element is still present after the
+    specified timeout.
     @Params
     driver - the webdriver object
     selector - the locator that is used (required)
-    by - the method to search for hte locator (Default- By.CSS_SELECTOR)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
     """
 
@@ -141,17 +144,17 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR, timeout=settin
                     (selector, timeout))
 
 
-def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
+def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
+                                 timeout=settings.LARGE_TIMEOUT):
     """
-    Searches for the specified element by the given selector. Returns void when
-    element is no longer visible on the page (or if the element is not
-    present). Raises an exception if the element is still visible after the
+    Searches for the specified element by the given selector.
+    Raises an exception if the element is still visible after the
     specified timeout.
     @Params
     driver - the webdriver object (required)
     selector - the locator that is used (required)
-    by - the method to search for hte locator (Default- By.CSS_SELECTOR)
-    timeout - the time to wait for elements in seconds
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for the element in seconds
     """
 
     for x in range(int(timeout * 10)):
@@ -163,8 +166,8 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR, timeout=s
                 return
         except Exception:
             return
-    raise Exception("Element %s was still visible after %s seconds!"\
-                                     % (selector, timeout))
+    raise Exception(
+        "Element %s was still visible after %s seconds!" % (selector, timeout))
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
@@ -181,14 +184,14 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
             return True
         else:
             time.sleep(0.1)
-    raise Exception("Page elements never fully loaded after %s seconds!"\
-                                     % timeout)
+    raise Exception(
+        "Page elements never fully loaded after %s seconds!" % timeout)
 
 
 def wait_for_and_accept_alert(driver, timeout=settings.LARGE_TIMEOUT):
     """
     Wait for and accept an alert. Returns the text from the alert.
-    @params
+    @Params
     driver - the webdriver object (required)
     timeout - the time to wait for the alert in seconds
     """
@@ -201,7 +204,7 @@ def wait_for_and_accept_alert(driver, timeout=settings.LARGE_TIMEOUT):
 def wait_for_and_dismiss_alert(driver, timeout=settings.LARGE_TIMEOUT):
     """
     Wait for and dismiss an alert. Returns the text from the alert.
-    @params
+    @Params
     driver - the webdriver object (required)
     timeout - the time to wait for the alert in seconds
     """
@@ -214,9 +217,9 @@ def wait_for_and_dismiss_alert(driver, timeout=settings.LARGE_TIMEOUT):
 def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     """
     Wait for a browser alert to appear, and switch to it. This should be usable
-    as a drop-in replacement for driver.switch_to_alert() when the alert box may
-    not exist yet.
-    @params
+    as a drop-in replacement for driver.switch_to_alert() when the alert box
+    may not exist yet.
+    @Params
     driver - the webdriver object (required)
     timeout - the time to wait for the alert in seconds
     """
@@ -224,7 +227,8 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     for x in range(int(timeout * 10)):
         try:
             alert = driver.switch_to_alert()
-            dummy_variable = alert.text  # Raises exception if no alert present
+            # Raises exception if no alert present
+            dummy_variable = alert.text  # noqa
             return alert
         except NoAlertPresentException:
             time.sleep(0.1)

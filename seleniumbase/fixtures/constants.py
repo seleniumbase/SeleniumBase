@@ -2,6 +2,7 @@
 This class containts some frequently-used constants
 """
 
+
 class Environment:
     QA = "qa"
     STAGING = "staging"
@@ -20,18 +21,18 @@ class Browser:
     HTML_UNIT = "htmlunit"
 
     VERSION = {
-        "firefox" : None,
-        "ie" : None,
-        "chrome" : None,
-        "phantomjs" : None,
-        "htmlunit" : None
+        "firefox": None,
+        "ie": None,
+        "chrome": None,
+        "phantomjs": None,
+        "htmlunit": None
     }
 
     LATEST = {
         "firefox": None,
         "ie": None,
         "chrome": None,
-        "phantomjs" : None,
+        "phantomjs": None,
         "htmlunit": None
     }
 

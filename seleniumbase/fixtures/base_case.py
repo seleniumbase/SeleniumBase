@@ -23,12 +23,12 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         self.environment = None
-        self.is_pytest = None
 
 
     # pytest-specific config
     # [Be careful if a subclass of BaseCase overrides setUp()]
     def setUp(self):
+        self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
             self.is_pytest = pytest.config.option.is_pytest

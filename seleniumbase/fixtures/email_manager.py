@@ -8,6 +8,7 @@ import imaplib
 import quopri
 import re
 import time
+import types
 from seleniumbase.config import settings
 
 
@@ -18,29 +19,30 @@ class EmailManager:
     Example:
 
     em = EmailManager()
-    result = em.check_for_recipient("[GMAIL.USER]+[SOME CODE OR TIMESTAMP KEY]@gmail.com")
+    result = em.check_for_recipient(
+        "[GMAIL.USER]+[SOME CODE OR TIMESTAMP KEY]@gmail.com")
     """
 
     HTML = "text/html"
     PLAIN = "text/plain"
     TIMEOUT = 1800
 
-    def __init__(self, uname=settings.EMAIL_USERNAME, pwd=settings.EMAIL_PASSWORD,
-                 imap_string=settings.EMAIL_IMAP_STRING, port=settings.EMAIL_IMAP_PORT):
+    def __init__(self, uname=settings.EMAIL_USERNAME,
+                 pwd=settings.EMAIL_PASSWORD,
+                 imap_string=settings.EMAIL_IMAP_STRING,
+                 port=settings.EMAIL_IMAP_PORT):
         self.uname = uname
         self.pwd = pwd
         self.imap_string = imap_string
         self.port = port
 
-
     def imap_connect(self):
         """
-        Connect to the IMAP mailbox. 
+        Connect to the IMAP mailbox.
         """
         self.mailbox = imaplib.IMAP4_SSL(self.imap_string, self.port)
         self.mailbox.login(self.uname, self.pwd)
         self.mailbox.select()
-
 
     def imap_disconnect(self):
         """
@@ -48,7 +50,6 @@ class EmailManager:
         """
         self.mailbox.close()
         self.mailbox.logout()
-
 
     def __imap_search(self, ** criteria_dict):
         """ Searches for query in the given IMAP criteria and returns
@@ -76,16 +77,14 @@ class EmailManager:
         http://tools.ietf.org/html/rfc3501#section-6.4.4
 
         :param criteria_dict: dictionary of search criteria keywords
-        
         :raises: EmailException if something in IMAP breaks
-        
         :returns: List of message numbers as strings matched by given criteria
         """
         self.imap_connect()
 
         criteria = []
         for key in criteria_dict:
-            if criteria_dict[key] == True:
+            if criteria_dict[key] is True:
                 criteria.append('(%s)' % key)
             else:
                 criteria.append('(%s "%s")' % (key, criteria_dict[key]))
@@ -102,7 +101,6 @@ class EmailManager:
         else:
             raise EmailException("IMAP status is " + str(status))
 
-
     def remove_formatting(self, html):
         """
         Clean out any whitespace
@@ -113,34 +111,34 @@ class EmailManager:
         """
         return ' '.join(html.split())
 
-
     def __parse_imap_search_result(self, result):
         """
         This takes the result of imap_search and returns SANE results
         @Params
         result - result from an imap_search call
         @Returns
-        List of IMAP search results 
+        List of IMAP search results
         """
-        if type(result) == type([]):
+        if isinstance(result, types.ListType):
+            # Above is same as "type(result) == types.ListType"
             if len(result) == 1:
                 return self.__parse_imap_search_result(result[0])
             else:
                 return result
-        elif type(result) == type(""):
+        elif isinstance(result, types.StringType):
+            # Above is same as "type(result) == types.StringType"
             return result.split()
         else:
             # Fail silently assuming tests will fail if emails are not found
             return []
 
-
     def fetch_html(self, msg_nums):
-        """ 
-        Given a message number that we found with imap_search, 
+        """
+        Given a message number that we found with imap_search,
         get the text/html content.
         @Params
         msg_nums - message number to get html message for
-        @Returns 
+        @Returns
         HTML content of message matched by message number
         """
         if not msg_nums:
@@ -148,14 +146,13 @@ class EmailManager:
 
         return self.__imap_fetch_content_type(msg_nums, self.HTML)
 
-
     def fetch_plaintext(self, msg_nums):
-        """ 
-        Given a message number that we found with imap_search, 
+        """
+        Given a message number that we found with imap_search,
         get the text/plain content.
         @Params
         msg_nums - message number to get message for
-        @Returns 
+        @Returns
         Plaintext content of message matched by message number
         """
         if not msg_nums:
@@ -163,12 +160,11 @@ class EmailManager:
 
         return self.__imap_fetch_content_type(msg_nums, self.PLAIN)
 
-
     def __imap_fetch_content_type(self, msg_nums, content_type):
-        """ 
-        Given a message number that we found with imap_search, fetch the 
-        whole source, dump that into an email object, and pick out the part 
-        that matches the content type specified. Return that, if we got 
+        """
+        Given a message number that we found with imap_search, fetch the
+        whole source, dump that into an email object, and pick out the part
+        that matches the content type specified. Return that, if we got
         multiple emails, return dict of all the parts.
         @Params
         msg_nums - message number to search for
@@ -197,7 +193,6 @@ class EmailManager:
         self.imap_disconnect()
         return contents
 
-
     def fetch_html_by_subject(self, email_name):
         """
         Get the html of an email, searching by subject.
@@ -213,7 +208,6 @@ class EmailManager:
         sources = self.fetch_html(results)
 
         return sources
-
 
     def fetch_plaintext_by_subject(self, email_name):
         """
@@ -231,46 +225,43 @@ class EmailManager:
 
         return sources
 
-
     def search_for_recipient(self, email, timeout=None, content_type=None):
         """
         Get content of emails, sent to a specific email address.
         @Params
-        email - the recipient email address to search for 
+        email - the recipient email address to search for
         timeout - seconds to try beore timing out
         content_type - type of email string to return
         @Returns
         Content of the matched email in the given content type
         """
-        return self.search(timeout=timeout, 
+        return self.search(timeout=timeout,
                            content_type=content_type, TO=email)
-
 
     def search_for_subject(self, subject, timeout=None, content_type=None):
         """
         Get content of emails, sent to a specific email address.
         @Params
-        email - the recipient email address to search for 
+        email - the recipient email address to search for
         timeout - seconds to try beore timing out
         content_type - type of email string to return
         @Returns
         Content of the matched email in the given content type
         """
-        return self.search(timeout=timeout, 
+        return self.search(timeout=timeout,
                            content_type=content_type, SUBJECT=subject)
 
-
     def search_for_count(self, ** args):
-        """ 
+        """
         A search that keeps searching up until timeout for a
         specific number of matches to a search. If timeout is not
         specified we use the default.  If count= is not specified we
         will fail. Return values are the same as search(), except for count=0,
-        where we will return an empty list. Use this if you need to wait for a 
+        where we will return an empty list. Use this if you need to wait for a
         number of emails other than 1.
 
         @Params
-        args - dict of arguments to use in search: 
+        args - dict of arguments to use in search:
                count - number of emails to search for
                timeout - seconds to try search before timing out
         @Returns
@@ -304,9 +295,8 @@ class EmailManager:
                 time.sleep(15)
                 count += 15
         if count >= timer:
-            raise EmailException("Failed to match criteria %s in %s minutes" % \
+            raise EmailException("Failed to match criteria %s in %s minutes" %
                                  (args, timeout / 60))
-
 
     def __check_msg_for_headers(self, msg, ** email_headers):
         """
@@ -319,7 +309,7 @@ class EmailManager:
             'Subject', 'MIME-Version', 'Content-Type', 'Date',
             'X-Sendgrid-EID', 'Sender'].
 
-        @Params 
+        @Params
         msg - the Email.message object to check
         email_headers - list of headers to check against
         @Returns
@@ -331,7 +321,6 @@ class EmailManager:
         all_headers_found = all(k in msg.keys() for k in email_headers)
 
         return all_headers_found
-
 
     def fetch_message(self, msgnum):
         """
@@ -348,7 +337,6 @@ class EmailManager:
         for response_part in data:
             if isinstance(response_part, tuple):
                 return email.message_from_string(response_part[1])
-
 
     def get_content_type(self, msg, content_type="HTML"):
         """
@@ -369,7 +357,6 @@ class EmailManager:
         for part in msg.walk():
             if str(part.get_content_type()) == content_type:
                 return str(part.get_payload(decode=True))
-
 
     def search(self, ** args):
         """
@@ -420,7 +407,7 @@ class EmailManager:
         timer = timeout
         count = 0
         while count < timer:
-            results = self.__imap_search( ** args)
+            results = self.__imap_search(** args)
             if len(results) > 0:
                 if fetch:
                     msgs = {}
@@ -430,16 +417,15 @@ class EmailManager:
                 elif not content_type:
                     return results
                 else:
-                    return self.__imap_fetch_content_type(results, 
+                    return self.__imap_fetch_content_type(results,
                                                           content_type)
             else:
                 time.sleep(15)
                 count += 15
         if count >= timer:
             raise EmailException(
-                                 "Failed to find message for criteria %s in %s minutes" % \
-                                 (args, timeout / 60))
-
+                "Failed to find message for criteria %s in %s minutes" %
+                (args, timeout / 60))
 
     def remove_whitespace(self, html):
         """
@@ -455,7 +441,6 @@ class EmailManager:
             clean_html = clean_html.replace(char, "")
         return clean_html
 
-
     def remove_control_chars(self, html):
         """
         Clean control characters from html
@@ -466,12 +451,11 @@ class EmailManager:
         """
         return self.remove_whitespace(html)
 
-
     def replace_entities(self, html):
         """
         Replace htmlentities with unicode characters
         @Params
-        html - html source to replace entities in 
+        html - html source to replace entities in
         @Returns
         String html with entities replaced
         """
@@ -493,9 +477,8 @@ class EmailManager:
                     text = unichr(htmlentitydefs.name2codepoint[text[1:-1]])
                 except KeyError:
                     pass
-            return text # leave as is
+            return text  # leave as is
         return re.sub("&#?\w+;", fixup, html)
-
 
     def decode_quoted_printable(self, html):
         """
@@ -510,14 +493,13 @@ class EmailManager:
         """
         return self.replace_entities(quopri.decodestring(html))
 
-
     def html_bleach(self, html):
-        """ 
+        """
         Cleanup and get rid of all extraneous stuff for better comparison
         later. Turns formatted into into a single line string.
         @Params
         html - HTML source to clean up
-        @Returns 
+        @Returns
         String cleaned up HTML source
         """
         return self.decode_quoted_printable(html)
