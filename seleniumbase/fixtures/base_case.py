@@ -26,7 +26,7 @@ class BaseCase(unittest.TestCase):
         self.is_pytest = None
 
 
-    # pytest browser management
+    # pytest-specific config
     # [Be careful if a subclass of BaseCase overrides setUp()]
     def setUp(self):
         try:
@@ -36,26 +36,19 @@ class BaseCase(unittest.TestCase):
             # Not using pytest (probably nosetests)
             self.is_pytest = False
         if self.is_pytest:
-            pytest_config = open('.pytest_config', 'r')
-            file_data = pytest_config.read()
-            file_lines = file_data.split('\n')
-            for line in file_lines:
-                line_items = line.split(':::')
-                if line_items[0] == 'browser':
-                    browser_name = line_items[1]
-                elif line_items[0] == 'data':
-                    data = line_items[1]
-                else:
-                    pass
-            pytest_config.close()
-            self.driver = browser_launcher.get_driver(browser_name)
+            self.with_selenium = pytest.config.option.with_selenium
+            self.browser = pytest.config.option.browser
+            self.data = pytest.config.option.data
+            if self.with_selenium:
+                self.driver = browser_launcher.get_driver(self.browser)
 
 
-    # pytest browser management
+    # pytest-specific config
     # [Be careful if a subclass of BaseCase overrides tearDown()]
     def tearDown(self):
         if self.is_pytest:
-            self.driver.quit()
+            if self.with_selenium:
+                self.driver.quit()
 
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):

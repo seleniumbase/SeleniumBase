@@ -230,11 +230,11 @@ Here are some other useful nosetest arguments that you may want to append to you
 Due to high demand, pytest support has been added. You can run the above sample script in pytest like this:
 
 ```bash
-py.test my_first_test.py --browser=chrome -s
+py.test my_first_test.py --with-selenium --browser=chrome -s
 
-py.test my_first_test.py --browser=phantomjs -s
+py.test my_first_test.py --with-selenium --browser=phantomjs -s
 
-py.test my_first_test.py --browser=firefox -s
+py.test my_first_test.py --with-selenium --browser=firefox -s
 ```
 
 (NOTE: If you want to run tests using pytest, you won't have access to the nosetest plugins that are specially defined in SeleniumBase. The nosetest plugins all start with "--with-" and are appended to the test selection in the run commands.)
