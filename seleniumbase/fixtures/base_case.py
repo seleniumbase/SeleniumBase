@@ -26,7 +26,9 @@ class BaseCase(unittest.TestCase):
 
 
     # pytest-specific config
-    # [Be careful if a subclass of BaseCase overrides setUp()]
+    # Be careful if a subclass of BaseCase overrides setUp()
+    # You'll need to add the following line to the subclass setUp() method:
+    # super(SubClassOfBaseCase, self).setUp()
     def setUp(self):
         self.is_pytest = None
         try:
@@ -44,7 +46,9 @@ class BaseCase(unittest.TestCase):
 
 
     # pytest-specific config
-    # [Be careful if a subclass of BaseCase overrides tearDown()]
+    # Be careful if a subclass of BaseCase overrides setUp()
+    # You'll need to add the following line to the subclass tearDown() method:
+    # super(SubClassOfBaseCase, self).tearDown()
     def tearDown(self):
         if self.is_pytest:
             if self.with_selenium:
