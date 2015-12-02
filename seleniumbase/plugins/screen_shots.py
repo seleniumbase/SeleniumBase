@@ -6,6 +6,7 @@ import os
 import time
 from nose.plugins import Plugin
 
+
 class ScreenShots(Plugin):
     """
     This plugin will take a screenshot when either a test fails
@@ -21,13 +22,11 @@ class ScreenShots(Plugin):
     def options(self, parser, env):
         super(ScreenShots, self).options(parser, env=env)
 
-
     def configure(self, options, conf):
         super(ScreenShots, self).configure(options, conf)
         if not self.enabled:
             return
         self.options = options
-
 
     def add_screenshot(self, test, err, capt=None, tbinfo=None):
         test_logpath = self.options.log_path + "/" + test.id()
@@ -50,10 +49,8 @@ class ScreenShots(Plugin):
         f1.write(screen)
         f1.close()'''
 
-
     def addError(self, test, err, capt=None):
         self.add_screenshot(test, err, capt=capt)
-
 
     def addFailure(self, test, err, capt=None, tbinfo=None):
         self.add_screenshot(test, err, capt=capt, tbinfo=tbinfo)

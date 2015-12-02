@@ -15,12 +15,10 @@ class S3Logging(Plugin):
     """
     name = 's3_logging'  # Usage: --with-s3_logging
 
-
     def configure(self, options, conf):
         """ Get the options. """
         super(S3Logging, self).configure(options, conf)
         self.options = options
-
 
     def afterTest(self, test):
         """ After each testcase, upload logs to the S3 bucket. """
@@ -31,8 +29,8 @@ class S3Logging(Plugin):
         uploaded_files = []
         for logfile in os.listdir(path):
             logfile_name = "%s/%s/%s" % (guid,
-                                       test.test.id(),
-                                       logfile.split(path)[-1])
+                                         test.test.id(),
+                                         logfile.split(path)[-1])
             s3_bucket.upload_file(logfile_name,
                                   "%s/%s" % (path, logfile))
             uploaded_files.append(logfile_name)
@@ -41,7 +39,8 @@ class S3Logging(Plugin):
         print "Log files uploaded: %s" % index_file
         logging.error("Log files uploaded: %s" % index_file)
 
-        # If the database plugin is running, attach a link to the logs index database row
+        # If the database plugin is running, attach a link
+        # to the logs index database row
         if hasattr(test.test, "testcase_guid"):
             from seleniumbase.core.testcase_manager \
                 import TestcaseDataPayload, TestcaseManager

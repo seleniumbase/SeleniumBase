@@ -28,8 +28,8 @@ class SeleniumBrowser(Plugin):
                           dest='browser',
                           choices=constants.Browser.VERSION.keys(),
                           default=constants.Browser.FIREFOX,
-                          help="""Specifies the browser to use. Default = FireFox.
-                          If you want to use Chrome, explicitly indicate that.""")
+                          help="""Specifies the browser. Default: FireFox.
+                               If you want to use Chrome, indicate that.""")
         parser.add_option('--browser_version', action='store',
                           dest='browser_version',
                           default="latest",
@@ -37,11 +37,12 @@ class SeleniumBrowser(Plugin):
                           a version number or use "latest".""")
         parser.add_option('--server', action='store', dest='servername',
                           default='localhost',
-                          help="Designates the server used by the test. Default: localhost.")
+                          help="""Designates the server used by the test.
+                               Default: localhost.""")
         parser.add_option('--port', action='store', dest='port',
                           default='4444',
-                          help="Designates the port used by the test. Default: 4444.")
-
+                          help="""Designates the port used by the test.
+                               Default: 4444.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -49,7 +50,6 @@ class SeleniumBrowser(Plugin):
         self.display.start()
         self.driver = self.__select_browser()
         self.options = options
-
 
     def beforeTest(self, test):
         """ Running Selenium locally will be handled differently
@@ -65,14 +65,12 @@ class SeleniumBrowser(Plugin):
             os.kill(os.getpid(), 9)
         return self.driver
 
-
     def afterTest(self, test):
         try:
             self.driver.quit()
             self.display.stop()
         except:
             print "No driver to quit."
-
 
     def __select_browser(self):
         try:

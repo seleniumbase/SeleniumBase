@@ -18,10 +18,10 @@ class Base(Plugin):
     The base_plugin includes the following variables:
     self.options.env -- the environment for the tests to use (--env=ENV)
     self.options.data -- any extra data to pass to the tests (--data=DATA)
-    self.options.log_path -- the directory in which the log files are saved (--log_path=LOG_PATH)
+    self.options.log_path -- the directory in which the log files
+                             are saved (--log_path=LOG_PATH)
     """
     name = 'testing_base'  # Usage: --with-testing_base
-
 
     def options(self, parser, env):
         super(Base, self).options(parser, env=env)
@@ -42,7 +42,6 @@ class Base(Plugin):
                           default='logs/',
                           help='Where the log files are saved.')
 
-
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)
         if not self.enabled:
@@ -59,7 +58,6 @@ class Base(Plugin):
                         options.log_path, int(time.time())))
             os.makedirs(options.log_path)
 
-
     def beforeTest(self, test):
         test_logpath = self.options.log_path + "/" + test.id()
         if not os.path.exists(test_logpath):
@@ -68,18 +66,18 @@ class Base(Plugin):
         test.test.data = self.options.data
         test.test.args = self.options
 
-
     def addError(self, test, err, capt=None):
         """
         Since Skip, Blocked, and Deprecated are all technically errors, but not
-        error states, we want to make sure that they don't show up in nose output
-        as errors.
+        error states, we want to make sure that they don't show up in
+        the nose output as errors.
         """
         if (err[0] == errors.BlockedTest or
-            err[0] == errors.SkipTest or
-            err[0] == errors.DeprecatedTest):
-            print err[1].__str__().split('-------------------- >> begin captured logging << --------------------', 1)[0]
-
+                err[0] == errors.SkipTest or
+                err[0] == errors.DeprecatedTest):
+            print err[1].__str__().split('''-------------------- >> '''
+                                         '''begin captured logging'''
+                                         ''' << --------------------''', 1)[0]
 
     def handleError(self, test, err, capt=None):
         """
