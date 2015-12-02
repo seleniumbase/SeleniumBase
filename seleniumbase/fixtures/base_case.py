@@ -4,7 +4,6 @@ Improvements include making WebDriver commands more robust and reliable.
 """
 
 import json
-import time
 import pytest
 import logging
 import unittest
