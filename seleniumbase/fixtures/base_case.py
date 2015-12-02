@@ -1,6 +1,7 @@
 """
 These methods improve on and expand existing WebDriver commands.
-Improvements include making WebDriver commands more robust and reliable.
+Improvements include making WebDriver commands more robust and more reliable
+by giving page elements enough time to load before taking action on them.
 """
 
 import json

@@ -3,7 +3,8 @@ This module contains a set of methods that can be used for page loads and
 for waiting for elements to appear on a page.
 
 These methods improve on and expand existing WebDriver commands.
-Improvements include making WebDriver commands more robust and reliable.
+Improvements include making WebDriver commands more robust and more reliable
+by giving page elements enough time to load before taking action on them.
 
 The default option for searching for elements is by CSS Selector.
 This can be changed by overriding the "By" parameter.
