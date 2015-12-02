@@ -1,1 +1,1 @@
-from seleniumbase.fixtures.base_case import BaseCase
+from seleniumbase.fixtures.base_case import BaseCase  # noqa

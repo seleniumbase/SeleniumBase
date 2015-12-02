@@ -1,6 +1,5 @@
 import logging
 import math
-import requests
 import threading
 import time
 from functools import wraps
