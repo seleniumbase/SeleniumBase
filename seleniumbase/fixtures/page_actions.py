@@ -1,12 +1,13 @@
 """
-This module contains a set of methods that can be used for loading pages and
-waiting for elements to appear on the page.
+This module contains a set of methods that can be used for page loads and
+for waiting for elements to appear on a page.
 
-The default option we use to search for elements is CSS Selector.
-This can be changed by setting the by paramter.  The enum class for options is:
-from selenium.webdriver.common.by import By
+These methods improve on and expand existing WebDriver commands.
+Improvements include making WebDriver commands more robust and reliable.
 
-Options are
+The default option for searching for elements is by CSS Selector.
+This can be changed by overriding the "By" parameter.
+Options are:
 By.CSS_SELECTOR
 By.CLASS_NAME
 By.ID
@@ -79,19 +80,6 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
         return element.is_displayed() and text in element.text
     except Exception:
         return False
-
-
-def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
-    """
-    Finds all WebElements that match a selector and are visible.
-    Similar to webdriver.find_elements.
-    @Params
-    driver - the webdriver object (required)
-    selector - the locator that is used to search the DOM (required)
-    by - the method to search for the locator (Default: By.CSS_SELECTOR)
-    """
-    elements = driver.find_elements(by=by, value=selector)
-    return [element for element in elements if element.is_displayed()]
 
 
 def hover_on_element(driver, selector):
@@ -272,6 +260,19 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
             return
     raise Exception(
         "Element %s was still visible after %s seconds!" % (selector, timeout))
+
+
+def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
+    """
+    Finds all WebElements that match a selector and are visible.
+    Similar to webdriver.find_elements.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator that is used to search the DOM (required)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
+    """
+    elements = driver.find_elements(by=by, value=selector)
+    return [element for element in elements if element.is_displayed()]
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):

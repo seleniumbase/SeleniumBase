@@ -1,3 +1,8 @@
+"""
+These methods improve on and expand existing WebDriver commands.
+Improvements include making WebDriver commands more robust and reliable.
+"""
+
 import json
 import time
 import pytest
@@ -56,16 +61,48 @@ class BaseCase(unittest.TestCase):
                 self.driver.quit()
 
 
-    def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
-        return page_actions.find_visible_elements(self.driver, selector, by)
+    def open(self, url):
+        self.driver.get(url)
+        if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+            self.wait_for_ready_state_complete()
 
 
-    def hover_on_element(self, selector):
-        return page_actions.hover_on_element(self.driver, selector)
+    def open_url(self, url):
+        """ In case people are mixing up self.open() with open(), use this alternative. """
+        self.open(url)
 
 
-    def hover_and_click(self, hover_selector, click_selector, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
-        return page_actions.hover_and_click(self.driver, hover_selector, click_selector, click_by, timeout)
+    def click(self, selector, by=By.CSS_SELECTOR,
+              timeout=settings.SMALL_TIMEOUT):
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout=timeout)
+        element.click()
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+
+
+    def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        element = self.wait_for_link_text_visible(link_text, timeout=timeout)
+        element.click()
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+
+
+    def update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT, retry=False):
+        """ This method updates a selector's text value with a new value
+            @Params
+            selector - the selector with the value to update
+            new_value - the new value for setting the text field
+            timeout - how long to wait for the selector to be visible
+            retry - if True, use jquery if the selenium text update fails
+        """
+        element = self.wait_for_element_visible(selector, timeout=timeout)
+        element.clear()
+        element.send_keys(new_value)
+        if retry and element.get_attribute('value') != new_value and not new_value.endswith('\n'):
+            logging.debug('update_text_value is falling back to jQuery!')
+            selector = self.jq_format(selector)
+            self.set_value(selector, new_value)
 
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
@@ -84,26 +121,12 @@ class BaseCase(unittest.TestCase):
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
 
+    def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
+        return page_actions.find_visible_elements(self.driver, selector, by)
+
+
     def jquery_click(self, selector):
         self.driver.execute_script("jQuery('%s').click()" % selector)
-
-
-    def click(self, selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
-        element = page_actions.wait_for_element_visible(self.driver, selector, by, timeout=timeout)
-        element.click()
-        if settings.WAIT_FOR_RSC_ON_CLICKS:
-            self.wait_for_ready_state_complete()
-
-
-    def open(self, url):
-        self.driver.get(url)
-        if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
-            self.wait_for_ready_state_complete()
-
-
-    def open_url(self, url):
-        """ In case people are mixing up self.open() with open(), use this alternative. """
-        self.open(url)
 
 
     def execute_script(self, script):
@@ -116,17 +139,6 @@ class BaseCase(unittest.TestCase):
 
     def maximize_window(self):
         return self.driver.maximize_window()
-
-
-    def wait_for_link_text_visible(self, link_text, timeout=settings.LARGE_TIMEOUT):
-        return self.wait_for_element_visible(link_text, by=By.LINK_TEXT, timeout=timeout)
-
-
-    def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
-        element = self.wait_for_link_text_visible(link_text, timeout=timeout)
-        element.click()
-        if settings.WAIT_FOR_RSC_ON_CLICKS:
-            self.wait_for_ready_state_complete()
 
 
     def activate_jquery(self):
@@ -144,6 +156,14 @@ class BaseCase(unittest.TestCase):
         self.click(selector)
 
 
+    def hover_on_element(self, selector):
+        return page_actions.hover_on_element(self.driver, selector)
+
+
+    def hover_and_click(self, hover_selector, click_selector, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
+        return page_actions.hover_and_click(self.driver, hover_selector, click_selector, click_by, timeout)
+
+
     def jq_format(self, code):
         return page_utils.jq_format(code)
 
@@ -151,23 +171,6 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, value):
         val = json.dumps(value)
         self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
-
-
-    def update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT, retry=False):
-        """ This method updates a selector's text value with a new value
-            @Params
-            selector - the selector with the value to update
-            new_value - the new value for setting the text field
-            timeout - how long to wait for the selector to be visible
-            retry - if True, use jquery if the selenium text update fails
-        """
-        element = self.wait_for_element_visible(selector, timeout=timeout)
-        element.clear()
-        element.send_keys(new_value)
-        if retry and element.get_attribute('value') != new_value and not new_value.endswith('\n'):
-            logging.debug('update_text_value is falling back to jQuery!')
-            selector = self.jq_format(selector)
-            self.set_value(selector, new_value)
 
 
     def jquery_update_text_value(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
@@ -188,6 +191,10 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
         return page_actions.wait_for_text_visible(self.driver, text, selector, by, timeout)
+
+
+    def wait_for_link_text_visible(self, link_text, timeout=settings.LARGE_TIMEOUT):
+        return self.wait_for_element_visible(link_text, by=By.LINK_TEXT, timeout=timeout)
 
 
     def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
