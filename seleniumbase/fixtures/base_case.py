@@ -119,9 +119,6 @@ class BaseCase(unittest.TestCase):
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
         return page_actions.find_visible_elements(self.driver, selector, by)
 
-    def jquery_click(self, selector):
-        self.driver.execute_script("jQuery('%s').click()" % selector)
-
     def execute_script(self, script):
         return self.driver.execute_script(script)
 
@@ -148,14 +145,8 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector)
         self.click(selector)
 
-    def hover_on_element(self, selector):
-        return page_actions.hover_on_element(self.driver, selector)
-
-    def hover_and_click(self, hover_selector, click_selector,
-                        click_by=By.CSS_SELECTOR,
-                        timeout=settings.SMALL_TIMEOUT):
-        return page_actions.hover_and_click(self.driver, hover_selector,
-                                            click_selector, click_by, timeout)
+    def jquery_click(self, selector):
+        self.driver.execute_script("jQuery('%s').click()" % selector)
 
     def jq_format(self, code):
         return page_utils.jq_format(code)
@@ -171,6 +162,15 @@ class BaseCase(unittest.TestCase):
                                    % (selector, self.jq_format(new_value)))
         if new_value.endswith('\n'):
             element.send_keys('\n')
+
+    def hover_on_element(self, selector):
+        return page_actions.hover_on_element(self.driver, selector)
+
+    def hover_and_click(self, hover_selector, click_selector,
+                        click_by=By.CSS_SELECTOR,
+                        timeout=settings.SMALL_TIMEOUT):
+        return page_actions.hover_and_click(self.driver, hover_selector,
+                                            click_selector, click_by, timeout)
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
