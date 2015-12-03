@@ -1,6 +1,7 @@
 from selenium import webdriver
 from seleniumbase.fixtures import constants
 
+
 def get_driver(browser_name):
     '''
     Spins up a new web browser and returns the driver.

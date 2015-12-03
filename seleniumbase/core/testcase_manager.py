@@ -13,9 +13,9 @@ class TestcaseManager:
     def __init__(self, database_env):
         self.database_env = database_env
 
-
     def insert_execution_data(self, execution_query_payload):
-        """Inserts an execution into the database, returns the execution guid"""
+        """ Inserts an execution into the database.
+            Returns the execution guid. """
 
         query = """INSERT INTO execution
                    (guid, executionStart, totalExecutionTime, username)
@@ -25,7 +25,6 @@ class TestcaseManager:
             query,
             execution_query_payload.get_params())
         return execution_query_payload.guid
-
 
     def update_execution_data(self, execution_guid, execution_time):
         """updates an existing execution in the database"""
@@ -37,7 +36,6 @@ class TestcaseManager:
             query,
             {"execution_guid": execution_guid,
              "execution_time": execution_time})
-
 
     def insert_testcase_data(self, testcase_run_payload):
         """inserts all data for the test case, returns the new row guid"""
@@ -57,8 +55,8 @@ class TestcaseManager:
                               %(retryCount)s,
                               %(message)s,
                               %(stackTrace)s) """
-        DatabaseManager(self.database_env).execute_query_and_close(query, testcase_run_payload.get_params())
-
+        DatabaseManager(self.database_env).execute_query_and_close(
+            query, testcase_run_payload.get_params())
 
     def update_testcase_data(self, testcase_payload):
         """updates an existing testcase run in the database"""
@@ -70,8 +68,8 @@ class TestcaseManager:
                           stackTrace=%(stackTrace)s,
                           message=%(message)s
                           WHERE guid=%(guid)s """
-        DatabaseManager(self.database_env).execute_query_and_close(query, testcase_payload.get_params())
-
+        DatabaseManager(self.database_env).execute_query_and_close(
+            query, testcase_payload.get_params())
 
     def update_testcase_log_url(self, testcase_payload):
         """updates an existing testcase run's logging URL in the database"""
@@ -79,7 +77,8 @@ class TestcaseManager:
         query = """UPDATE testcaseRunData
                    SET logURL=%(logURL)s
                    WHERE guid=%(guid)s """
-        DatabaseManager(self.database_env).execute_query_and_close(query, testcase_payload.get_params())
+        DatabaseManager(self.database_env).execute_query_and_close(
+            query, testcase_payload.get_params())
 
 
 class ExecutionQueryPayload:
@@ -89,7 +88,6 @@ class ExecutionQueryPayload:
         self.total_execution_time = -1
         self.username = "Default"
         self.guid = None
-
 
     def get_params(self):
         """ Returns a params object for use with the pool """
@@ -116,7 +114,6 @@ class TestcaseDataPayload:
         self.stack_trace = None
         self.message = None
         self.logURL = None
-
 
     def get_params(self):
         """ Returns a params object for use with the pool """

@@ -37,7 +37,6 @@ class DatabaseManager():
         if retry_count == 3:
             raise Exception("Unable to connect to Database after 3 retries.")
 
-
     def fetchall_query_and_close(self, query, values):
         """
         Executes a query, gets all the values and then closes up the connection
@@ -47,16 +46,14 @@ class DatabaseManager():
         self.__close_db()
         return retval
 
-
     def fetchone_query_and_close(self, query, values):
         """
-        Executes a query, gets the first value and then closes up the connection
+        Executes a query, gets the first value, and closes up the connection
         """
         self.cursor.execute(query, values)
         retval = self.cursor.fetchone()
         self.__close_db()
         return retval
-
 
     def execute_query_and_close(self, query, values):
         """
@@ -65,7 +62,6 @@ class DatabaseManager():
         retval = self.cursor.execute(query, values)
         self.__close_db()
         return retval
-
 
     def __close_db(self):
         self.cursor.close()

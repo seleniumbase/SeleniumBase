@@ -4,6 +4,7 @@ Method for generating application strings used in the Testcase Database.
 
 import time
 
+
 class ApplicationManager:
     """
     This class contains methods to generate application strings.
