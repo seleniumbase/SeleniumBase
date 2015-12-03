@@ -2,7 +2,7 @@ import sys
 import traceback
 
 
-def log_test_error_data(log_file, driver, browser):
+def log_test_failure_data(log_file, driver, browser):
     try:
         last_page = driver.current_url
     except Exception:

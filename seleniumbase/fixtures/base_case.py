@@ -13,7 +13,7 @@ import sys
 import unittest
 from seleniumbase.config import settings
 from seleniumbase.core import browser_launcher
-from seleniumbase.core import pytest_helper
+from seleniumbase.core import log_helper
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import page_actions
@@ -83,7 +83,7 @@ class BaseCase(unittest.TestCase):
                     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
                     basic_info_file = codecs.open(
                         basic_file_path, "w+", "utf-8")
-                    pytest_helper.log_test_error_data(
+                    log_helper.log_test_failure_data(
                         basic_info_file, self.driver, self.browser)
                     basic_info_file.close()
 
