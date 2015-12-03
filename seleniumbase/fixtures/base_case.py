@@ -4,7 +4,6 @@ Improvements include making WebDriver commands more robust and more reliable
 by giving page elements enough time to load before taking action on them.
 """
 
-import codecs
 import json
 import logging
 import os
@@ -75,17 +74,12 @@ class BaseCase(unittest.TestCase):
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
                     # Handle screenshot logging
-                    screenshot_name = "screenshot.jpg"
-                    screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
-                    self.driver.get_screenshot_as_file(screenshot_path)
+                    log_helper.log_screenshot(test_logpath, self.driver)
                     # Handle basic test info logging
-                    basic_info_name = "basic_test_info.txt"
-                    basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
-                    basic_info_file = codecs.open(
-                        basic_file_path, "w+", "utf-8")
                     log_helper.log_test_failure_data(
-                        basic_info_file, self.driver, self.browser)
-                    basic_info_file.close()
+                        test_logpath, self.driver, self.browser)
+                    # Handle page source logging
+                    log_helper.log_page_source(test_logpath, self.driver)
 
                 # Finally close the browser
                 self.driver.quit()
