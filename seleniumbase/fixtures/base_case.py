@@ -79,7 +79,7 @@ class BaseCase(unittest.TestCase):
                     screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
                     self.driver.get_screenshot_as_file(screenshot_path)
                     # Handle basic test info logging
-                    basic_info_name = "basic_test_info.log"
+                    basic_info_name = "basic_test_info.txt"
                     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
                     basic_info_file = codecs.open(
                         basic_file_path, "w+", "utf-8")

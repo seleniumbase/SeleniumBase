@@ -23,7 +23,7 @@ class BasicTestInfo(Plugin):
     """
     name = "basic_test_info"  # Usage: --with-basic_test_info
 
-    logfile_name = "basic_test_info.log"
+    logfile_name = "basic_test_info.txt"
 
     def options(self, parser, env):
         super(BasicTestInfo, self).options(parser, env=env)
