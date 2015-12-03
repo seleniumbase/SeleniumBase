@@ -1,5 +1,6 @@
 from seleniumbase import BaseCase
 
+
 class MyTestClass(BaseCase):
 
     def test_basic(self):
@@ -11,7 +12,7 @@ class MyTestClass(BaseCase):
         self.assertTrue("You can use them freely" in text)
         self.open("http://xkcd.com/1481/")
         self.click_link_text('Blag')
-        self.wait_for_text_visible("The blag of the webcomic", "#site-description")
+        self.wait_for_text_visible("blag of the webcomic", "#site-description")
         self.update_text_value("input#s", "Robots!\n")
         self.wait_for_text_visible("Hooray robots!", "#content")
         self.open("http://xkcd.com/1319/")
