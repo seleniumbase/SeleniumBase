@@ -4,6 +4,7 @@ Improvements include making WebDriver commands more robust and more reliable
 by giving page elements enough time to load before taking action on them.
 """
 
+import codecs
 import json
 import logging
 import os
@@ -12,6 +13,7 @@ import sys
 import unittest
 from seleniumbase.config import settings
 from seleniumbase.core import browser_launcher
+from seleniumbase.core import pytest_helper
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import page_actions
@@ -69,12 +71,21 @@ class BaseCase(unittest.TestCase):
                     test_id = "%s.%s.%s" % (self.__class__.__module__,
                                             self.__class__.__name__,
                                             self._testMethodName)
-                    logfile_name = "screenshot.jpg"
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
-                    screenshot_file = "%s/%s" % (test_logpath, logfile_name)
-                    self.driver.get_screenshot_as_file(screenshot_file)
+                    # Handle screenshot logging
+                    screenshot_name = "screenshot.jpg"
+                    screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
+                    self.driver.get_screenshot_as_file(screenshot_path)
+                    # Handle basic test info logging
+                    basic_info_name = "basic_test_info.log"
+                    basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
+                    basic_info_file = codecs.open(
+                        basic_file_path, "w+", "utf-8")
+                    pytest_helper.log_test_error_data(
+                        basic_info_file, self.driver, self.browser)
+                    basic_info_file.close()
 
                 # Finally close the browser
                 self.driver.quit()
