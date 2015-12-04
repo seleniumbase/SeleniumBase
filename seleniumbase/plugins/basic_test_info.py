@@ -13,6 +13,7 @@ import os
 import codecs
 import traceback
 from nose.plugins import Plugin
+from seleniumbase.config import settings
 
 
 class BasicTestInfo(Plugin):
@@ -23,7 +24,7 @@ class BasicTestInfo(Plugin):
     """
     name = "basic_test_info"  # Usage: --with-basic_test_info
 
-    logfile_name = "basic_test_info.txt"
+    logfile_name = settings.BASIC_INFO_NAME
 
     def options(self, parser, env):
         super(BasicTestInfo, self).options(parser, env=env)

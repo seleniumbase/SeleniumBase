@@ -1,16 +1,17 @@
 import codecs
 import sys
 import traceback
+from seleniumbase.config import settings
 
 
 def log_screenshot(test_logpath, driver):
-    screenshot_name = "screenshot.jpg"
+    screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
     driver.get_screenshot_as_file(screenshot_path)
 
 
 def log_test_failure_data(test_logpath, driver, browser):
-    basic_info_name = "basic_test_info.txt"
+    basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
     last_page = get_last_page(driver)
@@ -26,7 +27,7 @@ def log_test_failure_data(test_logpath, driver, browser):
 
 
 def log_page_source(test_logpath, driver):
-    html_file_name = "page_source.html"
+    html_file_name = settings.PAGE_SOURCE_NAME
     try:
         page_source = driver.page_source
     except Exception:

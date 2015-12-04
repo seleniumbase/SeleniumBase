@@ -3,26 +3,36 @@ You'll probably want to customize this to your own environment and needs.
 """
 
 
-# #####>>>>>----- REQUIRED SETTINGS -----<<<<<#####
+# #####>>>>>----- REQUIRED/IMPORTANT SETTINGS -----<<<<<#####
 
 # Default times to wait for page elements to appear before performing actions
 SMALL_TIMEOUT = 5
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 
-''' The option of adding wait_for_ready_state_complete()
-    after various actions.
-    By default, Selenium waits for the 'interactive' state,
-    which might not be enough.
-    Setting these values to True might make your tests more reliable,
-    but it also might slightly slow them down. '''
-# When using self.open(url) or self.open_url(url), NOT self.driver.open(url)
+# If True, existing logs from past test runs will be saved and take up space.
+# If False, only the logs from the most recent test run will be saved locally.
+# This has no effect on Jenkins/S3/MySQL, which may still be saving test logs.
+ARCHIVE_EXISTING_LOGS = False
+
+# Default names for files saved during test failures when logging is turned on
+SCREENSHOT_NAME = "screenshot.jpg"
+BASIC_INFO_NAME = "basic_test_info.txt"
+PAGE_SOURCE_NAME = "page_source.html"
+
+''' This adds wait_for_ready_state_complete() after various browser actions.
+    By default, Selenium waits for the 'interactive' state before continuing.
+    Setting this to True may improve reliability at the cost of speed.
+    WARNING: Some websites are in a perpetual "interactive" state due to
+    dynamic content that never fully finishes loading (Use "False" there). '''
+# Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
 WAIT_FOR_RSC_ON_PAGE_LOADS = False
-# When using self.click(selector), NOT element.click()
+# Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = False
 
 
 # #####>>>>>----- RECOMMENDED SETTINGS -----<<<<<#####
+# ##### (For test logging and database reporting)
 
 # Amazon S3 Bucket Credentials
 # (where screenshots and other log files get saved)
@@ -40,6 +50,7 @@ DB_SCHEMA = "[TEST DB SCHEMA]"
 
 
 # #####>>>>>----- OPTIONAL SETTINGS -----<<<<<#####
+# ##### (For reading emails, notifying people via chat apps, etc.)
 
 # Default Email Credentials
 # (If tests send out emails, you can scan and verify them by using IMAP)

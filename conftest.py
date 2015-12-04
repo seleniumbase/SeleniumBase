@@ -4,6 +4,7 @@ import os
 import shutil
 import pytest
 import time
+from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
 
@@ -71,11 +72,14 @@ def pytest_runtest_setup():
         if not os.path.exists(log_path):
             os.makedirs(log_path)
         else:
-            if not os.path.exists("%s/../archived_logs/" % log_path):
-                os.makedirs("%s/../archived_logs/" % log_path)
-            shutil.move(log_path, "%s/../archived_logs/logs_%s" % (
-                        log_path, int(time.time())))
+            archived_folder = "%s/../archived_logs/" % log_path
+            if not os.path.exists(archived_folder):
+                os.makedirs(archived_folder)
+            archived_logs = "%slogs_%s" % (archived_folder, int(time.time()))
+            shutil.move(log_path, archived_logs)
             os.makedirs(log_path)
+            if not settings.ARCHIVE_EXISTING_LOGS:
+                shutil.rmtree(archived_logs)
 
 
 def pytest_runtest_teardown():

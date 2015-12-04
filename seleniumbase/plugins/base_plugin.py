@@ -10,6 +10,7 @@ import shutil
 import time
 from nose.plugins import Plugin
 from nose.exc import SkipTest
+from seleniumbase.config import settings
 from seleniumbase.fixtures import constants, errors
 
 
@@ -19,7 +20,7 @@ class Base(Plugin):
     self.options.env -- the environment for the tests to use (--env=ENV)
     self.options.data -- any extra data to pass to the tests (--data=DATA)
     self.options.log_path -- the directory in which the log files
-                             are saved (--log_path=LOG_PATH)
+                            are saved (--log_path=LOG_PATH)
     """
     name = 'testing_base'  # Usage: --with-testing_base
 
@@ -27,12 +28,13 @@ class Base(Plugin):
         super(Base, self).options(parser, env=env)
         parser.add_option('--env', action='store',
                           dest='environment',
-                          choices=(constants.Environment.QA,
-                                   constants.Environment.STAGING,
-                                   constants.Environment.PRODUCTION,
-                                   constants.Environment.MASTER,
-                                   constants.Environment.LOCAL,
-                                   constants.Environment.TEST),
+                          choices=(
+                              constants.Environment.QA,
+                              constants.Environment.STAGING,
+                              constants.Environment.PRODUCTION,
+                              constants.Environment.MASTER,
+                              constants.Environment.LOCAL,
+                              constants.Environment.TEST),
                           default=constants.Environment.TEST,
                           help="The environment to run the tests in.")
         parser.add_option('--data', dest='data',
@@ -47,16 +49,20 @@ class Base(Plugin):
         if not self.enabled:
             return
         self.options = options
-        if options.log_path.endswith("/"):
-            options.log_path = options.log_path[:-1]
-        if not os.path.exists(options.log_path):
-            os.makedirs(options.log_path)
+        log_path = options.log_path
+        if log_path.endswith("/"):
+            log_path = log_path[:-1]
+        if not os.path.exists(log_path):
+            os.makedirs(log_path)
         else:
-            if not os.path.exists("%s/../archived_logs/" % options.log_path):
-                os.makedirs("%s/../archived_logs/" % options.log_path)
-            shutil.move(options.log_path, "%s/../archived_logs/logs_%s" % (
-                        options.log_path, int(time.time())))
-            os.makedirs(options.log_path)
+            archived_folder = "%s/../archived_logs/" % log_path
+            if not os.path.exists(archived_folder):
+                os.makedirs(archived_folder)
+            archived_logs = "%slogs_%s" % (archived_folder, int(time.time()))
+            shutil.move(log_path, archived_logs)
+            os.makedirs(log_path)
+            if not settings.ARCHIVE_EXISTING_LOGS:
+                shutil.rmtree(archived_logs)
 
     def beforeTest(self, test):
         test_logpath = self.options.log_path + "/" + test.id()

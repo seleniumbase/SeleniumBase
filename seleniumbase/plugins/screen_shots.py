@@ -4,6 +4,7 @@ Contains the screenshot plugin for the selenium tests.
 
 import os
 from nose.plugins import Plugin
+from seleniumbase.config import settings
 
 
 class ScreenShots(Plugin):
@@ -14,7 +15,7 @@ class ScreenShots(Plugin):
     """
 
     name = "screen_shots"
-    logfile_name = "screenshot.jpg"
+    logfile_name = settings.SCREENSHOT_NAME
     # Browser windows aren't always maximized. This may display more details.
     logfile_name_2 = "full_screenshot.jpg"
 
