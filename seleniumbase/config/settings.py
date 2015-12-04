@@ -15,7 +15,8 @@ EXTREME_TIMEOUT = 30
 # This has no effect on Jenkins/S3/MySQL, which may still be saving test logs.
 ARCHIVE_EXISTING_LOGS = False
 
-# Default names for files saved during test failures when logging is turned on
+# Default names for files saved during test failures when logging is turned on.
+# (These files will get saved to the "logs/" folder)
 SCREENSHOT_NAME = "screenshot.jpg"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
