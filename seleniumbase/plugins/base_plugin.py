@@ -26,23 +26,26 @@ class Base(Plugin):
 
     def options(self, parser, env):
         super(Base, self).options(parser, env=env)
-        parser.add_option('--env', action='store',
-                          dest='environment',
-                          choices=(
-                              constants.Environment.QA,
-                              constants.Environment.STAGING,
-                              constants.Environment.PRODUCTION,
-                              constants.Environment.MASTER,
-                              constants.Environment.LOCAL,
-                              constants.Environment.TEST),
-                          default=constants.Environment.TEST,
-                          help="The environment to run the tests in.")
-        parser.add_option('--data', dest='data',
-                          default=None,
-                          help='Extra data to pass from the command line.')
-        parser.add_option('--log_path', dest='log_path',
-                          default='logs/',
-                          help='Where the log files are saved.')
+        parser.add_option(
+            '--env', action='store',
+            dest='environment',
+            choices=(
+                constants.Environment.QA,
+                constants.Environment.STAGING,
+                constants.Environment.PRODUCTION,
+                constants.Environment.MASTER,
+                constants.Environment.LOCAL,
+                constants.Environment.TEST),
+            default=constants.Environment.TEST,
+            help="The environment to run the tests in.")
+        parser.add_option(
+            '--data', dest='data',
+            default=None,
+            help='Extra data to pass from the command line.')
+        parser.add_option(
+            '--log_path', dest='log_path',
+            default='logs/',
+            help='Where the log files are saved.')
 
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)
