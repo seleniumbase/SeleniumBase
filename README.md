@@ -1,6 +1,6 @@
 # SeleniumBase Test Framework
 
-## **Intelligent Web Automation**
+## **Intelligent, Reliable Web Automation**
 
 #### Features include:
 * ALL the power of Python, WebDriver, and Nosetests (pytest also supported)
