@@ -35,18 +35,19 @@ WAIT_FOR_RSC_ON_CLICKS = False
 # ##### (For test logging and database reporting)
 
 # Amazon S3 Bucket Credentials
-# (where screenshots and other log files get saved)
+# (For saving screenshots and other log files from tests)
 S3_LOG_BUCKET = "[ENTER LOG BUCKET FOLDER NAME HERE]"
 S3_BUCKET_URL = ("http://[ENTER SUBDOMAIN OF AMAZON BUCKET URL HERE]"
                  ".s3-[ENTER S3 REGION HERE].amazonaws.com/")
 S3_SELENIUM_ACCESS_KEY = "[ENTER YOUR S3 ACCESS KEY FOR SELENIUM HERE]"
 S3_SELENIUM_SECRET_KEY = "[ENTER YOUR S3 SECRET KEY FOR SELENIUM HERE]"
 
-# MySQL DB Credentials (where data from tests gets saved)
-DB_HOST = "[TEST DB HOST]"
-DB_USERNAME = "[TEST DB USERNAME]"
-DB_PASSWORD = "[TEST DB PASSWORD]"
-DB_SCHEMA = "[TEST DB SCHEMA]"
+# MySQL DB Credentials
+# (For saving data from tests)
+DB_HOST = "[TEST DB HOST]"  # Ex: "127.0.0.1"
+DB_USERNAME = "[TEST DB USERNAME]"  # Ex: "root"
+DB_PASSWORD = "[TEST DB PASSWORD]"  # Ex: "test"
+DB_SCHEMA = "[TEST DB SCHEMA]"  # Ex: "test"
 
 
 # #####>>>>>----- OPTIONAL SETTINGS -----<<<<<#####
@@ -60,7 +61,6 @@ EMAIL_IMAP_STRING = "imap.gmail.com"
 EMAIL_IMAP_PORT = 993
 
 # HipChat Reporting Credentials
-# (for HipChat notifications if your team uses HipChat)
-# Other info such as room id and owner to mention
-# get entered during nosetest options
+# (For HipChat notifications if your team uses HipChat)
+# (room_id and owner_to_mention get entered during nosetest options)
 HIPCHAT_AUTH_TOKEN = "[ENTER YOUR HIPCHAT AUTH TOKEN HERE]"
