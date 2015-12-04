@@ -1,0 +1,1 @@
+nosetests decorator_test.py -s

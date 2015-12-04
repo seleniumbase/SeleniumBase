@@ -1,0 +1,1 @@
+nosetests my_first_test.py --browser=firefox --with-selenium --logging-level=INFO -s
