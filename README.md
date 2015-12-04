@@ -1,6 +1,8 @@
 # SeleniumBase Automation Framework
 
-### An open-source solution for reliable testing and business automation. Trusted by Boston's most promising companies, including HubSpot, Jana, and Veracode.
+### An open-source solution for reliable testing and business automation.
+
+Trusted by Boston's most promising companies, including HubSpot, Jana, and Veracode.
 
 #### Features include:
 * Python libraries for quickly making reliable WebDriver scripts that run fast.
