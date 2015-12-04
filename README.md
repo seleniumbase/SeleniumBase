@@ -1,15 +1,16 @@
-# SeleniumBase Test Framework
+# SeleniumBase Automation Framework
 
-## **Intelligent, Reliable Web Automation**
+## **An open-source solution for reliable testing & business automation**
+
+### Trusted by some of Boston's most promising companies, including HubSpot, Jana, and Veracode.
 
 #### Features include:
-* ALL the power of Python, WebDriver, and Nosetests (pytest also supported)
-* Easy integration with [Jenkins](http://jenkins-ci.org/), [Selenium Grid](http://docs.seleniumhq.org/projects/grid/), [Docker](https://www.docker.com/), and [AWS](http://aws.amazon.com/)
-* A flexible logging system for storing test data, results, and screenshots
-* Libraries for code-simplification, time-saving, and reusability
-* Fully customizable (see [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) in the seleniumbase/config folder)
+* Python libraries for quickly making reliable WebDriver scripts that run fast.
+* Built-in Nosetest & Pytest plugins for logging test data, results, and screenshots.
+* Simple integration with [Jenkins](http://jenkins-ci.org/), [Selenium Grid](http://docs.seleniumhq.org/projects/grid/), [Docker](https://www.docker.com/), and [AWS](http://aws.amazon.com/).
+* Customizable with command-line options and a global config file: [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-*Looking for a real-world business example? Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) to learn how all the pieces of web automation come together. For more, read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete).*
+*Learn how the pros handle test automation: Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot), and read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) for more.*
 
 
 ## Part I: MAC SETUP INSTRUCTIONS
@@ -230,14 +231,14 @@ Here are some other useful nosetest arguments that you may want to append to you
 Due to high demand, pytest support has been added. You can run the above sample script in pytest like this:
 
 ```bash
-py.test my_first_test.py --with-selenium --browser=chrome -s
+py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 
-py.test my_first_test.py --with-selenium --browser=phantomjs -s
+py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 
-py.test my_first_test.py --with-selenium --browser=firefox -s
+py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
 ```
 
-(NOTE: If you want to run tests using pytest, you won't have access to the nosetest plugins that are specially defined in SeleniumBase. The nosetest plugins all start with "--with-" and are appended to the test selection in the run commands.)
+(NOTE: I'm currently adding more pytest plugins to catch up with nosetests. The latest one added is "--with-testing_base", which gives you full logging on test failures for screenshots, page source, and basic test info. Coming soon: The DB and S3 plugins, which are already available with nosetests.)
 
 #### **Step 6:** Complete the setup
 
