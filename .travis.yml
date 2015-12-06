@@ -3,10 +3,8 @@ sudo: false
 python:
   - "2.7"
 install:
-  - "pwd"
-  - "ls"
   - "pip install --upgrade pip"
-  - "pip install -r requirements.pip"
+  - "pip install -r requirements.txt"
   - "python setup.py install"
 before_script:
   - "export DISPLAY=:99.0"
