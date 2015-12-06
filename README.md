@@ -1,5 +1,4 @@
-## SeleniumBase Automation Framework
-[![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase)
+## SeleniumBase Automation Framework [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase)
 
 ### An open-source solution for reliable testing and business automation.
 
