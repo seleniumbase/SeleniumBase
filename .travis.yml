@@ -3,6 +3,8 @@ sudo: false
 python:
   - "2.7"
 install:
+  - "pwd"
+  - "ls"
   - "pip install --upgrade pip"
   - "pip install -r requirements.pip"
   - "python setup.py install"
