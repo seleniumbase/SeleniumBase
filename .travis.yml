@@ -15,3 +15,5 @@ script:
 env:
   matrix:
   - BROWSER=firefox
+notifications:
+  email: false
