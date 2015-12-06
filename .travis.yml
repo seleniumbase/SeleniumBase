@@ -1,0 +1,16 @@
+language: python
+sudo: false
+python:
+  - "2.7"
+install: 
+  - "pip install -r requirements.pip --use-mirrors"
+  - "python setup.py install"
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+script:
+  - "firefox --version"
+  - "nosetests examples/my_first_test.py --with-selenium --browser=firefox"
+env:
+  matrix:
+  - BROWSER=firefox
