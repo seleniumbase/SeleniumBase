@@ -1,25 +1,23 @@
-# SeleniumBase Automation Framework
+[![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase)
 
 ### An open-source solution for reliable testing and business automation.
 
-Trusted by Boston's most promising companies, including HubSpot, Jana, and Veracode.
-
 #### Features include:
-* Python libraries for quickly making reliable WebDriver scripts that run fast.
+* Python wrappers for WebDriver to quickly create reliable scripts that run efficiently.
 * Built-in Nosetest & Pytest plugins for logging test data, results, and screenshots.
 * Simple integration with [Jenkins](http://jenkins-ci.org/), [Selenium Grid](http://docs.seleniumhq.org/projects/grid/), [MySQL](http://www.mysql.com/), [Docker](https://www.docker.com/), and [AWS](http://aws.amazon.com/).
 * Customizable with command-line options and a global config file: [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-*Learn how the pros handle test automation: Check out HubSpot's blog article on [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot), and read [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) for more.*
+*Trusted by the world's most promising companies, including HubSpot, Jana, and Veracode. Learn how HubSpot uses SeleniumBase by reading: [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).*
 
 
-## Part I: MAC SETUP INSTRUCTIONS
+### Part I: MAC SETUP INSTRUCTIONS
 ####(WINDOWS users: You'll need to make a few modifications to the setup steps listed here. For starters, you won't be able to use the "brew install" command since that's MAC-only. Instead, download the requirements mentioned directly from the web. I'll provide you with links to save you time. You'll also want to put downloaded files into your [PATH](http://java.com/en/download/help/path.xml).)
 ####(DOCKER users: If you want to run browser automation with Docker, see the [Docker_README](https://github.com/mdmintz/SeleniumBase/blob/master/Docker_README.md))
 
 #### **Step 0:** Get the requirements
 
-[Python 2.*](https://www.python.org/downloads/)
+[Python 2.7](https://www.python.org/downloads/)
 
 If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.10 is the one I've been using on my Mac.
 
@@ -305,7 +303,7 @@ You'll notice that a logs folder was created to hold information about the faili
 Have you made it this far? Congratulations!!! Now you're ready to dive in at full speed!
 
 
-## Part II: Detailed Method Specifications, Examples
+### Part II: Detailed Method Specifications, Examples
 
 #### Navigating to a Page, Plus Some Other Useful Related Commands
 
@@ -511,7 +509,7 @@ self.execute_script("document.body.innerHTML = \"%s\"" % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
 
-## Part III: More Details
+### Part III: More Details
 
 Nosetests automatically runs any python method that starts with "test" from the file you selected. You can also select specific tests to run from files or classes. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. Use "-s" if you want better logging in the console output.
 
