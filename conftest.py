@@ -54,6 +54,7 @@ def pytest_configure(config):
     config_file.write("with_testing_base:::%s\n" % with_testing_base)
     config_file.write("log_path:::%s\n" % log_path)
     config_file.close()
+    log_folder_setup(config)
 
 
 def pytest_unconfigure():
@@ -62,11 +63,11 @@ def pytest_unconfigure():
         os.remove(pytest_config)
 
 
-def pytest_runtest_setup():
+def log_folder_setup(config):
     # Handle Logging
-    with_testing_base = pytest.config.getoption('with_testing_base')
+    with_testing_base = config.getoption('with_testing_base')
     if with_testing_base:
-        log_path = pytest.config.getoption('log_path')
+        log_path = config.getoption('log_path')
         if log_path.endswith("/"):
             log_path = log_path[:-1]
         if not os.path.exists(log_path):
@@ -80,6 +81,11 @@ def pytest_runtest_setup():
             os.makedirs(log_path)
             if not settings.ARCHIVE_EXISTING_LOGS:
                 shutil.rmtree(archived_logs)
+
+
+def pytest_runtest_setup():
+    # A placeholder for a method that runs before every test with pytest
+    pass
 
 
 def pytest_runtest_teardown():
