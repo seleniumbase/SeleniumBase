@@ -8,7 +8,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.1.7',
+    version='1.1.14',
     author='Michael Mintz',
     author_email='@mintzworld',
     maintainer='Michael Mintz',
@@ -30,8 +30,8 @@ setup(
             'screen_shots = seleniumbase.plugins.screen_shots:ScreenShots',
             'test_info = seleniumbase.plugins.basic_test_info:BasicTestInfo',
             's3_logging = seleniumbase.plugins.s3_logging_plugin:S3Logging',
-            'hipchat_reporting = seleniumbase.plugins'
-            '.hipchat_reporting_plugin:HipchatReporting',
+            ('hipchat_reporting = seleniumbase.plugins'
+             '.hipchat_reporting_plugin:HipchatReporting'),
             ]
         }
     )
