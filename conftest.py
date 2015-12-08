@@ -2,7 +2,6 @@
 
 import os
 import shutil
-import pytest
 import time
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
