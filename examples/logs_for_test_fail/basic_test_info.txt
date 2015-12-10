@@ -1,0 +1,13 @@
+Last_Page: http://xkcd.com/731/
+Browser: firefox 
+Traceback: Traceback (most recent call last):
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/unittest/case.py", line 331, in run
+    testMethod()
+  File "/Users/michael/github/SeleniumBase/examples/test_fail.py", line 11, in test_find_army_of_robots_on_xkcd_desert_island
+    self.wait_for_element_visible("div#ARMY_OF_ROBOTS", timeout=0.5)
+  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/base_case.py", line 206, in wait_for_element_visible
+    self.driver, selector, by, timeout)
+  File "/Users/michael/github/SeleniumBase/seleniumbase/fixtures/page_actions.py", line 179, in wait_for_element_visible
+    "Element %s was not visible in %s seconds!" % (selector, timeout))
+ElementNotVisibleException: Message: Element div#ARMY_OF_ROBOTS was not visible in 0.5 seconds!
+
