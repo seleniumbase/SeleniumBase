@@ -75,8 +75,8 @@ If you haven't already, you'll want to [Download Firefox](https://www.mozilla.or
 If you're using Git, you can fork the repository on GitHub to create your personal copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now you can clone your forked copy to your personal computer. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
 
 ```bash
-git clone [LOCATION OF YOUR FORKED SELENIUMBASE GITHUB FOLDER]/seleniumbase.git
-cd seleniumbase
+git clone [LOCATION OF YOUR FORKED SELENIUMBASE GITHUB FOLDER]/SeleniumBase.git
+cd SeleniumBase
 ```
 
 (NOTE: If you decided to download SeleniumBase rather than Git-cloning it, you can skip the above step.)
@@ -206,6 +206,8 @@ If the example is moving too fast for your eyes to see what's going on, there ar
 import time; time.sleep(5) # sleep for 5 seconds (add this after the line you want to pause on)
 import ipdb; ipdb.set_trace() # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
 ```
+
+(NOTE: If you're using pytest instead of nosetests and you want to use ipdb in your script for debugging purposes, you'll either need to add "--capture=no" on the command line, or use "import pytest; pytest.set_trace()" instead of using ipdb. More info on that [here](http://stackoverflow.com/questions/2678792/can-i-debug-with-python-debugger-when-using-py-test-somehow).)
 
 You may also want to have your test sleep in other situations where you need to have your test wait for something. If you know what you're waiting for, you should be specific by using a command that waits for something specific to happen.
 
