@@ -113,29 +113,29 @@ To delete a virtual environment that you no longer need, use the following comma
 rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
 ```
 
-#### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework
+#### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
 
 If you don't desire connecting to a MySQL DB to record the results of your local test runs, run this command:
 
 ```bash
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 The "-e ." at the end of requirements.txt should automatically trigger setup.py installation from the following command:
 ```bash
-sudo python setup.py install
+python setup.py install
 ```
 
 If you do desire connecting to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download. If you're a WINDOWS user, you may have problems on the MySQL installation part. To get around this, you can either follow the instructions from the error message given, or you can pip install the previous requirements.txt file.)
 
 ```bash
-sudo pip install -r server_requirements.txt
+pip install -r server_requirements.txt
 ```
 
 As mentioned before, the "-e ." in that file should automatically trigger installation of setup.py
 
 NOTE:
 
-(If you already have root access on the machine you're using, you might not need to add "sudo" before those commands.)
+(From a virtual environment, it should not be necessary to add "sudo" before those commands above.)
 
 In some cames, certain packages will have other dependencies as requirements, and those will get installed automatically. You'll be able to see all installed packages in your virtual environment by using the following command:
 
