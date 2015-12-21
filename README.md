@@ -17,13 +17,17 @@
 
 #### **Step 0:** Get the requirements
 
-[Python 2.7](https://www.python.org/downloads/)
+#### [Python 2.7](https://www.python.org/downloads/)
 
 If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.10 is the one I've been using on my Mac.
 
-If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/). Depending on which version of Python you have installed, you may need to install "pip" if your Python installation didn't come with it. If you don't have it installed, you can [get pip here](https://pip.pypa.io/en/latest/installing/).
+If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/).
 
-[Homebrew](http://brew.sh/) + [Git](http://git-scm.com/)
+#### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
+
+If "pip" did not come with your Python installation, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
+
+#### [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/) (OPTIONAL)
 
 (NOTE: You can download the SeleniumBase repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
 
@@ -33,39 +37,39 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
 (WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/download).)
 
-[MySQL](http://www.mysql.com/)
+#### [MySQL](http://www.mysql.com/) (OPTIONAL)
 
 (NOTE: If you're using this test framework from a local development machine and don't plan on writing to a MySQL DB from your local test runs, you can skip this step.)
 
+Mac:
+
     brew install MySQL
+
+Windows: [Download MySQL here](http://dev.mysql.com/downloads/windows/)
 
 That installs the MySQL library so that you can use db commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to. You'll also want to use the testcaserepository.sql file from the seleniumbase/core folder to add the necessary tables.
 
-(WINDOWS users: [Download MySQL here](http://dev.mysql.com/downloads/windows/). If you want a visual tool to help make your MySQL life easier, [try MySQL Workbench](http://dev.mysql.com/downloads/workbench/).)
+If you want a visual tool to help make your MySQL life easier, [try MySQL Workbench](http://dev.mysql.com/downloads/workbench/).)
 
-[virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
+#### [Virtualenv](http://virtualenv.readthedocs.org/en/latest/)
 
-    cd ~/
-    pip install virtualenvwrapper
-    export WORKON_HOME=~/Envs
-    mkdir -p $WORKON_HOME
-    source /usr/local/bin/virtualenvwrapper.sh
+Mac:
 
-To save time from having to source virtualenvwrapper again when you open a new window, you can add the line "source /usr/local/bin/virtualenvwrapper.sh" to a file called ".bash_profile" in your home directory.
+    sudo easy_install virtualenv
 
-    cd ~/
-    vi .bash_profile
-    source /usr/local/bin/virtualenvwrapper.sh
+Windows: (can be used with Mac also, but you may need to use "sudo")
 
-("vi" is a fast text editor - "i" for insert-text mode, "esc" to get out of insert-text mode, ":wq"+[Enter] to save & exit the file)
+    pip install virtualenv
 
-[Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
+#### [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
+
+Mac:
 
     brew install chromedriver phantomjs
 
-(NOTE: There are web drivers for other web browsers as well. These two will get you started.)
+Windows: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) and also put that in your PATH.
 
-(WINDOWS users: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) and also put that in your PATH.)
+(NOTE: There are web drivers for other web browsers as well. These two will get you started.)
 
 If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
 
@@ -83,11 +87,19 @@ cd SeleniumBase
 
 #### **Step 2:** Create a virtualenv for seleniumbase
 
+Mac:
+
 ```bash
-mkvirtualenv seleniumbase
+mkdir -p ~/Envs
+virtualenv ~/Envs/seleniumbase
+source ~/Envs/seleniumbase/bin/activate
 ```
 
-(Virtual environments are important because they allow you to have separate configurations from the rest of your system. This will prevent conflicts if you use other tools that require other configurations and settings.)
+Windows:
+
+Same as above, except:
+1: Don't use "-p"
+2: Replace "~/" from above with the location of your home directory
 
 If you ever need to leave your virtual environment, use the following command:
 
@@ -95,22 +107,10 @@ If you ever need to leave your virtual environment, use the following command:
 deactivate
 ```
 
-To get back into your virtual environment, use the following command:
+You can always jump back in later:
 
 ```bash
-workon seleniumbase
-```
-
-To see a list of environments that exist on your system, use the following command:
-
-```bash
-lsvirtualenv
-```
-
-To delete a virtual environment that you no longer need, use the following command:
-
-```bash
-rmvirtualenv [NAME OF VIRTUAL ENV TO REMOVE]
+source ~/Envs/seleniumbase/bin/activate
 ```
 
 #### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
