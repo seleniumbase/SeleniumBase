@@ -25,7 +25,6 @@ setup(
         'chardet==2.3.0',
         'simplejson==3.7.3',
         'boto==2.38.0',
-        'pdb==0.1',
         'ipdb==0.8.1',
         ],
     packages=['seleniumbase',
