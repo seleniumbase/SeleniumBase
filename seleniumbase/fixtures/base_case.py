@@ -33,57 +33,6 @@ class BaseCase(unittest.TestCase):
             pass
         self.environment = None
 
-    def setUp(self):
-        """
-        pytest-specific code
-        Be careful if a subclass of BaseCase overrides setUp()
-        You'll need to add the following line to the subclass setUp() method:
-        super(SubClassOfBaseCase, self).setUp()
-        """
-        self.is_pytest = None
-        try:
-            # This raises an exception if the test is not coming from pytest
-            self.is_pytest = pytest.config.option.is_pytest
-        except Exception:
-            # Not using pytest (probably nosetests)
-            self.is_pytest = False
-        if self.is_pytest:
-            self.with_selenium = pytest.config.option.with_selenium
-            self.with_testing_base = pytest.config.option.with_testing_base
-            self.log_path = pytest.config.option.log_path
-            self.browser = pytest.config.option.browser
-            self.data = pytest.config.option.data
-            if self.with_selenium:
-                self.driver = browser_launcher.get_driver(self.browser)
-
-    def tearDown(self):
-        """
-        pytest-specific code
-        Be careful if a subclass of BaseCase overrides setUp()
-        You'll need to add the following line to the subclass's tearDown():
-        super(SubClassOfBaseCase, self).tearDown()
-        """
-        if self.is_pytest:
-            if self.with_selenium:
-                # Save a screenshot if logging is on when an exception occurs
-                if self.with_testing_base and (sys.exc_info()[1] is not None):
-                    test_id = "%s.%s.%s" % (self.__class__.__module__,
-                                            self.__class__.__name__,
-                                            self._testMethodName)
-                    test_logpath = self.log_path + "/" + test_id
-                    if not os.path.exists(test_logpath):
-                        os.makedirs(test_logpath)
-                    # Handle screenshot logging
-                    log_helper.log_screenshot(test_logpath, self.driver)
-                    # Handle basic test info logging
-                    log_helper.log_test_failure_data(
-                        test_logpath, self.driver, self.browser)
-                    # Handle page source logging
-                    log_helper.log_page_source(test_logpath, self.driver)
-
-                # Finally close the browser
-                self.driver.quit()
-
     def open(self, url):
         self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
@@ -236,3 +185,56 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_and_switch_to_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
+
+# PyTest-Specific Code #
+
+    def setUp(self):
+        """
+        pytest-specific code
+        Be careful if a subclass of BaseCase overrides setUp()
+        You'll need to add the following line to the subclass setUp() method:
+        super(SubClassOfBaseCase, self).setUp()
+        """
+        self.is_pytest = None
+        try:
+            # This raises an exception if the test is not coming from pytest
+            self.is_pytest = pytest.config.option.is_pytest
+        except Exception:
+            # Not using pytest (probably nosetests)
+            self.is_pytest = False
+        if self.is_pytest:
+            self.with_selenium = pytest.config.option.with_selenium
+            self.with_testing_base = pytest.config.option.with_testing_base
+            self.log_path = pytest.config.option.log_path
+            self.browser = pytest.config.option.browser
+            self.data = pytest.config.option.data
+            if self.with_selenium:
+                self.driver = browser_launcher.get_driver(self.browser)
+
+    def tearDown(self):
+        """
+        pytest-specific code
+        Be careful if a subclass of BaseCase overrides setUp()
+        You'll need to add the following line to the subclass's tearDown():
+        super(SubClassOfBaseCase, self).tearDown()
+        """
+        if self.is_pytest:
+            if self.with_selenium:
+                # Save a screenshot if logging is on when an exception occurs
+                if self.with_testing_base and (sys.exc_info()[1] is not None):
+                    test_id = "%s.%s.%s" % (self.__class__.__module__,
+                                            self.__class__.__name__,
+                                            self._testMethodName)
+                    test_logpath = self.log_path + "/" + test_id
+                    if not os.path.exists(test_logpath):
+                        os.makedirs(test_logpath)
+                    # Handle screenshot logging
+                    log_helper.log_screenshot(test_logpath, self.driver)
+                    # Handle basic test info logging
+                    log_helper.log_test_failure_data(
+                        test_logpath, self.driver, self.browser)
+                    # Handle page source logging
+                    log_helper.log_page_source(test_logpath, self.driver)
+
+                # Finally close the browser
+                self.driver.quit()
