@@ -152,21 +152,21 @@ defaults write com.apple.finder AppleShowAllFiles -bool true
 (You may need to reopen the MAC Finder window to see changes from that.)
 
 
-#### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt
+#### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt. (NOTE: xkcd is a webcomic)
 
 ```bash
 python
 >>> from selenium import webdriver
 >>> browser = webdriver.Chrome()
->>> browser.get("http://dev.hubspot.com/blog/the-classic-qa-team-is-obsolete")
+>>> browser.get("http://xkcd.com/1337/")
 >>> browser.close()
 >>> exit()
 ```
 
 
-#### **Step 5:** Verify that SeleniumBase was successfully installed by running example tests
+#### **Step 5:** Verify that SeleniumBase was successfully installed by running the example test
 
-You can verify the installation of SeleniumBase by writing a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. (Copy/paste the following code into a new file called "my_first_test.py"). This may be a good time to read up on css selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. At a quick glance, dots are for class names and pound signs are for IDs.
+You can verify the installation of SeleniumBase by running a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. This may be a good time to read up on CSS selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. With CSS selectors, dots represent class names and pound signs represent IDs.
 
 ```python
 from seleniumbase import BaseCase
@@ -179,17 +179,16 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')
         text = self.wait_for_element_visible('center').text
         self.assertTrue("reuse any of my drawings" in text)
-        self.assertTrue("You can use them freely" in text)
         self.open("http://xkcd.com/1481/")
         self.click_link_text('Blag')
-        self.wait_for_text_visible("The blag of the webcomic", "#site-description")
-        self.update_text_value("input#s", "Robots!\n")
+        self.wait_for_text_visible("The blag", "header h2")
+        self.update_text("input#s", "Robots!\n")
         self.wait_for_text_visible("Hooray robots!", "#content")
         self.open("http://xkcd.com/1319/")
         self.wait_for_text_visible("Automation", "div#ctitle")
 ```
 
-Now try running the script using various web browsers:
+Now try running the script (from the "examples" folder) using various web browsers:
 
 ```bash
 nosetests my_first_test.py --browser=chrome --with-selenium -s
@@ -503,7 +502,7 @@ self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "
 self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
 
-In the following more-complex example, jQuery is used to plant code on a page that Selenium can then touch after that:
+In the following example, javascript is used to plant code on a page that Selenium can then touch after that:
 ```python
 self.driver.get(SOME_PAGE_TO_PLAY_WITH)
 referral_link = '<a class="analytics test" href="%s">Free-Referral Button!</a>' % DESTINATION_URL
