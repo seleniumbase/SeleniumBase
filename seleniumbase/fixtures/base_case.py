@@ -67,9 +67,15 @@ class BaseCase(unittest.TestCase):
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
 
+    def add_text(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
+        """ The more-reliable version of driver.send_keys()
+            Similar to update_text(), but won't clear the text field first. """
+        element = self.wait_for_element_visible(selector, timeout=timeout)
+        element.send_keys(new_value)
+
     def update_text_value(self, selector, new_value,
                           timeout=settings.SMALL_TIMEOUT, retry=False):
-        """ This method updates a selector's text value with a new value
+        """ This method updates an element's text value with a new value.
             @Params
             selector - the selector with the value to update
             new_value - the new value for setting the text field
@@ -84,6 +90,14 @@ class BaseCase(unittest.TestCase):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
             self.set_value(selector, new_value)
+
+    def update_text(self, selector, new_value,
+                    timeout=settings.SMALL_TIMEOUT, retry=False):
+        """ The shorter version of update_text_value(), which
+            clears existing text and adds new text into the text field.
+            We want to keep the old version for backward compatibility. """
+        self.update_text_value(selector, new_value,
+                               timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         return page_actions.is_element_present(self.driver, selector, by)
@@ -144,6 +158,10 @@ class BaseCase(unittest.TestCase):
                                    % (selector, self.jq_format(new_value)))
         if new_value.endswith('\n'):
             element.send_keys('\n')
+
+    def jquery_update_text(self, selector, new_value,
+                           timeout=settings.SMALL_TIMEOUT):
+        self.jquery_update_text_value(selector, new_value, timeout=timeout)
 
     def hover_on_element(self, selector):
         return page_actions.hover_on_element(self.driver, selector)
