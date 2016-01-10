@@ -9,6 +9,7 @@ import logging
 import os
 import pytest
 import sys
+import time
 import unittest
 from seleniumbase.config import settings
 from seleniumbase.core import browser_launcher
@@ -50,6 +51,15 @@ class BaseCase(unittest.TestCase):
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+
+    def click_chain(self, selectors_list, by=By.CSS_SELECTOR,
+                    timeout=settings.SMALL_TIMEOUT, spacing=0):
+        """ This method clicks on a list of elements in succession.
+            'spacing' is the amount of time to wait between clicks. (sec) """
+        for selector in selectors_list:
+            self.click(selector, by=by, timeout=timeout)
+            if spacing > 0:
+                time.sleep(spacing)
 
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
         element = self.wait_for_link_text_visible(link_text, timeout=timeout)
