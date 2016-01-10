@@ -21,8 +21,8 @@ import page_utils
 
 class BaseCase(unittest.TestCase):
     '''
-    A base test case that wraps a bunch of methods from tools
-    for easier access. You can also add your own methods here.
+    A base test case that wraps methods for enhanced usage.
+    You can also add your own methods here.
     '''
 
     def __init__(self, *args, **kwargs):
