@@ -460,9 +460,9 @@ What if your test makes an alert pop up in your browser? No problem. You need to
 Ex:
 
 ```python
-self.driver.switch_to_alert().accept()
+self.wait_for_and_accept_alert()
 
-self.driver.switch_to_alert().dismiss()
+self.wait_for_and_dismiss_alert()
 ```
 
 If you're not sure whether there's an alert before trying to accept or dismiss it, one way to handle that is to wrap your alert-handling code in a try/except block. Other methods such as .text and .send_keys() will also work with alerts.
