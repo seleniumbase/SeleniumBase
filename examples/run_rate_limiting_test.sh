@@ -1,1 +1,1 @@
-nosetests decorator_test.py -s
+nosetests rate_limiting_test.py -s

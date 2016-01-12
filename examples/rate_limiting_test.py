@@ -4,7 +4,7 @@ from seleniumbase.common import decorators
 
 class MyTestClass(BaseCase):
 
-    @decorators.rate_limited(4)
+    @decorators.rate_limited(4)  # The arg is max calls per second
     def print_item(self, item):
         print item
 
