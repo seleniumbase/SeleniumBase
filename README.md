@@ -419,10 +419,10 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
 
 #### Typing Text
 
-update_text_value(selector, text)  # updates the text from the specified element with the specified value. Exception raised if element missing or field not editable. Example:
+update_text(selector, text)  # updates the text from the specified element with the specified value. Exception raised if element missing or field not editable. Example:
 
 ```python
-self.update_text_value("input#id_value", "2012")
+self.update_text("input#id_value", "2012")
 ```
 
 You can also use the WebDriver .send_keys() command, but it won't clear the text box first if there's already text inside.
