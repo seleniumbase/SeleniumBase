@@ -290,7 +290,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
-        self.driver.get("http://xkcd.com/731/")
+        self.open("http://xkcd.com/731/")
         self.wait_for_element_visible("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
 ```
 Now run it:
@@ -309,7 +309,7 @@ Have you made it this far? Congratulations!!! Now you're ready to dive in at ful
 #### Navigating to a Page, Plus Some Other Useful Related Commands
 
 ```python
-self.driver.get("https://xkcd.com/378/")  # Instant navigation to any web page.
+self.open("https://xkcd.com/378/")  # Instant navigation to any web page.
 
 self.driver.refresh()  # refresh/reload the current page.
 
@@ -504,7 +504,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 In the following example, javascript is used to plant code on a page that Selenium can then touch after that:
 ```python
-self.driver.get(SOME_PAGE_TO_PLAY_WITH)
+self.open(SOME_PAGE_TO_PLAY_WITH)
 referral_link = '<a class="analytics test" href="%s">Free-Referral Button!</a>' % DESTINATION_URL
 self.execute_script("document.body.innerHTML = \"%s\"" % referral_link)
 self.click("a.analytics")  # Clicks the generated button
