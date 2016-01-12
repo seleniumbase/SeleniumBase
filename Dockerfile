@@ -58,6 +58,15 @@ RUN apt-get update -qqy \
   && ln -s /opt/firefox/firefox /usr/bin/firefox \
   && rm -f /tmp/firefox-esr.tar.bz2
 
+#================
+# Install Chrome
+#================
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list \
+  && apt-get update \
+  && apt-get install -y google-chrome-stable \
+  && rm -rf /var/lib/apt/lists/*
+
 #===================
 # Timezone settings
 #===================
@@ -99,6 +108,7 @@ RUN cd /SeleniumBase && ls && sudo python docker_setup.py install
 #=========================================
 COPY docker/docker-entrypoint.sh /
 COPY docker/run_docker_test_in_firefox.sh /
+COPY docker/run_docker_test_in_chrome.sh /
 COPY docker/run_docker_test_in_phantomjs.sh /
 COPY docker/docker_config.cfg /SeleniumBase/examples/
 ENTRYPOINT ["/docker-entrypoint.sh"]
