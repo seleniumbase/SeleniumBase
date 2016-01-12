@@ -347,10 +347,14 @@ self.wait_for_element_present("div.my_class", timeout=10)
 self.wait_for_element_visible("a.my_class", timeout=5)
 ```
 
-You can even combine visibility checking and clicking into one statement like so:
+Since the line above returns the element, you can combine that with .click() as shown below:
 
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5).click()
+
+# But you're better off using the following statement, which does the same thing:
+
+self.click("a.my_class")  # DO IT THIS WAY!
 ```
 
 #### Asserting visibility of text inside an element on a page within some number of seconds:
