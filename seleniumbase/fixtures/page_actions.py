@@ -19,6 +19,7 @@ By.TAG_NAME
 By.PARTIAL_LINK_TEXT
 """
 
+import os
 import time
 from seleniumbase.config import settings
 from selenium.webdriver.common.by import By
@@ -274,6 +275,22 @@ def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
     """
     elements = driver.find_elements(by=by, value=selector)
     return [element for element in elements if element.is_displayed()]
+
+
+def save_screenshot(driver, name, folder=None):
+    """
+    Saves a screenshot to the current directory (or to a subfolder if provided)
+    If the folder provided doesn't exist, it will get created.
+    """
+    if folder:
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % folder
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        screenshot_file = "%s/%s" % (file_path, name)
+    else:
+        screenshot_file = name
+    driver.get_screenshot_as_file(screenshot_file)
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
