@@ -73,6 +73,10 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(selector, timeout=timeout)
         element.send_keys(new_value)
 
+    def send_keys(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
+        """ Same as add_text() -> more reliable, but less name confusion. """
+        self.add_text(selector, new_value, timeout=timeout)
+
     def update_text_value(self, selector, new_value,
                           timeout=settings.SMALL_TIMEOUT, retry=False):
         """ This method updates an element's text value with a new value.
