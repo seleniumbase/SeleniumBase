@@ -38,6 +38,7 @@ class BaseCase(unittest.TestCase):
         self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
+        self._demo_mode_pause_if_active()
 
     def open_url(self, url):
         """ In case people are mixing up self.open() with open(),
@@ -48,9 +49,11 @@ class BaseCase(unittest.TestCase):
               timeout=settings.SMALL_TIMEOUT):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
+        self._demo_mode_scroll_if_active(selector, by)
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+        self._demo_mode_pause_if_active()
 
     def click_chain(self, selectors_list, by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT, spacing=0):
@@ -66,12 +69,14 @@ class BaseCase(unittest.TestCase):
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+        self._demo_mode_pause_if_active()
 
     def add_text(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
         element = self.wait_for_element_visible(selector, timeout=timeout)
         element.send_keys(new_value)
+        self._demo_mode_pause_if_active()
 
     def send_keys(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
         """ Same as add_text() -> more reliable, but less name confusion. """
@@ -88,12 +93,14 @@ class BaseCase(unittest.TestCase):
         """
         element = self.wait_for_element_visible(selector, timeout=timeout)
         element.clear()
+        self._demo_mode_pause_if_active(tiny=True)
         element.send_keys(new_value)
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
             self.set_value(selector, new_value)
+        self._demo_mode_pause_if_active()
 
     def update_text(self, selector, new_value,
                     timeout=settings.SMALL_TIMEOUT, retry=False):
@@ -124,9 +131,11 @@ class BaseCase(unittest.TestCase):
 
     def set_window_size(self, width, height):
         return self.driver.set_window_size(width, height)
+        self._demo_mode_pause_if_active()
 
     def maximize_window(self):
         return self.driver.maximize_window()
+        self._demo_mode_pause_if_active()
 
     def activate_jquery(self):
         """ (It's not on by default on all website pages.) """
@@ -140,6 +149,7 @@ class BaseCase(unittest.TestCase):
         self.wait_for_element_visible(selector, timeout=settings.SMALL_TIMEOUT)
         self.driver.execute_script(
             "jQuery('%s')[0].scrollIntoView()" % selector)
+        self._demo_mode_pause_if_active(tiny=True)
 
     def scroll_click(self, selector):
         self.scroll_to(selector)
@@ -147,6 +157,7 @@ class BaseCase(unittest.TestCase):
 
     def jquery_click(self, selector):
         self.driver.execute_script("jQuery('%s').click()" % selector)
+        self._demo_mode_pause_if_active()
 
     def jq_format(self, code):
         return page_utils.jq_format(code)
@@ -154,6 +165,7 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, value):
         val = json.dumps(value)
         self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
+        self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value,
                                  timeout=settings.SMALL_TIMEOUT):
@@ -162,6 +174,7 @@ class BaseCase(unittest.TestCase):
                                    % (selector, self.jq_format(new_value)))
         if new_value.endswith('\n'):
             element.send_keys('\n')
+        self._demo_mode_pause_if_active()
 
     def jquery_update_text(self, selector, new_value,
                            timeout=settings.SMALL_TIMEOUT):
@@ -175,6 +188,7 @@ class BaseCase(unittest.TestCase):
                         timeout=settings.SMALL_TIMEOUT):
         return page_actions.hover_and_click(self.driver, hover_selector,
                                             click_selector, click_by, timeout)
+        self._demo_mode_pause_if_active()
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
@@ -221,6 +235,19 @@ class BaseCase(unittest.TestCase):
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
 
+    def _demo_mode_pause_if_active(self, tiny=False):
+        if self.demo_mode:
+            if not tiny:
+                time.sleep(settings.DEMO_MODE_TIMEOUT)
+            else:
+                time.sleep(settings.DEMO_MODE_TIMEOUT/3.0)
+
+    def _demo_mode_scroll_if_active(self, selector, by):
+        if self.demo_mode:
+            if by == By.CSS_SELECTOR:
+                self.scroll_to(selector)
+
+
 # PyTest-Specific Code #
 
     def setUp(self):
@@ -243,6 +270,7 @@ class BaseCase(unittest.TestCase):
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
             self.data = pytest.config.option.data
+            self.demo_mode = pytest.config.option.demo_mode
             if self.with_selenium:
                 self.driver = browser_launcher.get_driver(self.browser)
 
