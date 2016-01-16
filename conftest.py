@@ -34,6 +34,11 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', dest='log_path',
                      default='logs/',
                      help='Where the log files are saved.')
+    parser.addoption('--demo_mode', action="store_true",
+                      dest='demo_mode',
+                      default=False,
+                      help="""Using this slows down the automation so that
+                           you can see what it's actually doing.""")
 
 
 def pytest_configure(config):
@@ -41,6 +46,7 @@ def pytest_configure(config):
     with_testing_base = config.getoption('with_testing_base')
     browser = config.getoption('browser')
     log_path = config.getoption('log_path')
+    demo_mode = config.getoption('demo_mode')
     data = ''
     if config.getoption('data') is not None:
         data = config.getoption('data')
@@ -52,6 +58,7 @@ def pytest_configure(config):
     config_file.write("data:::%s\n" % data)
     config_file.write("with_testing_base:::%s\n" % with_testing_base)
     config_file.write("log_path:::%s\n" % log_path)
+    config_file.write("demo_mode:::%s\n" % demo_mode)
     config_file.close()
     log_folder_setup(config)
 
