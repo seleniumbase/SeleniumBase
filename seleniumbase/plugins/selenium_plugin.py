@@ -46,6 +46,11 @@ class SeleniumBrowser(Plugin):
                           default='4444',
                           help="""Designates the port used by the test.
                                Default: 4444.""")
+        parser.add_option('--demo_mode', action="store_true",
+                          dest='demo_mode',
+                          default=False,
+                          help="""Using this slows down the automation so that
+                               you can see what it's actually doing.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -95,6 +100,7 @@ class SeleniumBrowser(Plugin):
                 else:
                     version = ""
                 test.test.browser = "%s%s" % (self.options.browser, version)
+                test.test.demo_mode = self.options.demo_mode
             except Exception as err:
                 print "Error starting/connecting to Selenium:"
                 print err
