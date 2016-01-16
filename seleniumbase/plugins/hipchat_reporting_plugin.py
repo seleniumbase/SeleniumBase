@@ -62,8 +62,8 @@ class HipchatReporting(Plugin):
                             when using the hipchat reporting plugin.''')
         else:
             self.hipchat_room_id = options.hipchat_room_id
-        self.hipchat_owner_to_mention = (options.hipchat_owner_to_mention
-                                         or None)
+        self.hipchat_owner_to_mention = (
+            options.hipchat_owner_to_mention or None)
         self.hipchat_notify_on_success = options.hipchat_notify_on_success
 
     def addSuccess(self, test, capt):
