@@ -89,8 +89,8 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(selector, timeout=timeout)
         element.clear()
         element.send_keys(new_value)
-        if (retry and element.get_attribute('value') != new_value
-                and not new_value.endswith('\n')):
+        if (retry and element.get_attribute('value') != new_value and (
+                not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
             self.set_value(selector, new_value)
