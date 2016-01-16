@@ -35,10 +35,10 @@ def pytest_addoption(parser):
                      default='logs/',
                      help='Where the log files are saved.')
     parser.addoption('--demo_mode', action="store_true",
-                      dest='demo_mode',
-                      default=False,
-                      help="""Using this slows down the automation so that
-                           you can see what it's actually doing.""")
+                     dest='demo_mode',
+                     default=False,
+                     help="""Using this slows down the automation so that
+                          you can see what it's actually doing.""")
 
 
 def pytest_configure(config):
