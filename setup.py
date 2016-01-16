@@ -17,7 +17,7 @@ setup(
         'selenium==2.48.0',
         'nose==1.3.7',
         'pytest==2.8.5',
-        'flake8==2.5.0',
+        'flake8==2.5.1',
         'requests==2.9.1',
         'urllib3==1.14',
         'BeautifulSoup==3.2.1',
