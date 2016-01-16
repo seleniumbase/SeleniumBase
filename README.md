@@ -199,11 +199,19 @@ nosetests my_first_test.py --browser=firefox --with-selenium -s
 ```
 
 After the test completes, in the console output you'll see a dot on a new line, representing a passing test. (On test failures you'll see an F instead, and on test errors you'll see an E). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "Ran 1 test in ..." line, followed by an "OK" if all nosetests passed.
-If the example is moving too fast for your eyes to see what's going on, there are 2 things you can do. Add either of the following:
+
+If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
+You can add ``--demo_mode`` on the command line, which pauses the browser after each action:
+
+```bash
+nosetests my_first_test.py --with-selenium -s --demo_mode
+```
+
+You can also add either of the following to your scripts:
 
 ```python
-import time; time.sleep(5) # sleep for 5 seconds (add this after the line you want to pause on)
-import ipdb; ipdb.set_trace() # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
+import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
+import ipdb; ipdb.set_trace()  # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
 ```
 
 (NOTE: If you're using pytest instead of nosetests and you want to use ipdb in your script for debugging purposes, you'll either need to add "--capture=no" on the command line, or use "import pytest; pytest.set_trace()" instead of using ipdb. More info on that [here](http://stackoverflow.com/questions/2678792/can-i-debug-with-python-debugger-when-using-py-test-somehow).)
