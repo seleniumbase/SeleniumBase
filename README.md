@@ -201,13 +201,19 @@ nosetests my_first_test.py --browser=firefox --with-selenium -s
 After the test completes, in the console output you'll see a dot on a new line, representing a passing test. (On test failures you'll see an F instead, and on test errors you'll see an E). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "Ran 1 test in ..." line, followed by an "OK" if all nosetests passed.
 
 If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
-You can add ``--demo_mode`` on the command line, which pauses the browser after each action:
+You can add ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action:
 
 ```bash
 nosetests my_first_test.py --with-selenium -s --demo_mode
 ```
 
-You can also add either of the following to your scripts:
+You can override the default wait time by either updating [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
+
+```bash
+nosetests my_first_test.py --with-selenium -s --demo_mode --demo_sleep=1.2
+```
+
+You can also add either of the following to your scripts to slow down the tests:
 
 ```python
 import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
