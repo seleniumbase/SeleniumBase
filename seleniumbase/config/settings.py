@@ -13,7 +13,8 @@ EXTREME_TIMEOUT = 30
 # Default time to wait after each browser action performed during Demo Mode
 # Use Demo Mode when you want others to see what your automation is doing
 # Usage: --demo_mode when run from the command line when using --with-selenium
-DEMO_MODE_TIMEOUT = 1.2
+# This value can be overwritten on the command line by using --demo_sleep=FLOAT
+DEFAULT_DEMO_MODE_TIMEOUT = 1.2
 
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
