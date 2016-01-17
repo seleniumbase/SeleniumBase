@@ -237,10 +237,14 @@ class BaseCase(unittest.TestCase):
 
     def _demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:
-            if not tiny:
-                time.sleep(settings.DEMO_MODE_TIMEOUT)
+            if self.demo_sleep:
+                wait_time = float(self.demo_sleep)
             else:
-                time.sleep(settings.DEMO_MODE_TIMEOUT/3.0)
+                wait_time = settings.DEFAULT_DEMO_MODE_TIMEOUT
+            if not tiny:
+                time.sleep(wait_time)
+            else:
+                time.sleep(wait_time/3.0)
 
     def _demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
@@ -271,6 +275,7 @@ class BaseCase(unittest.TestCase):
             self.browser = pytest.config.option.browser
             self.data = pytest.config.option.data
             self.demo_mode = pytest.config.option.demo_mode
+            self.demo_sleep = pytest.config.option.demo_sleep
             if self.with_selenium:
                 self.driver = browser_launcher.get_driver(self.browser)
 
