@@ -51,6 +51,10 @@ class SeleniumBrowser(Plugin):
                           default=False,
                           help="""Using this slows down the automation so that
                                you can see what it's actually doing.""")
+        parser.add_option('--demo_sleep', action='store', dest='demo_sleep',
+                          default=None,
+                          help="""Setting this overrides the Demo Mode sleep
+                               time that happens after browser actions.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -101,6 +105,7 @@ class SeleniumBrowser(Plugin):
                     version = ""
                 test.test.browser = "%s%s" % (self.options.browser, version)
                 test.test.demo_mode = self.options.demo_mode
+                test.test.demo_sleep = self.options.demo_sleep
             except Exception as err:
                 print "Error starting/connecting to Selenium:"
                 print err
