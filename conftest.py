@@ -34,6 +34,15 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', dest='log_path',
                      default='logs/',
                      help='Where the log files are saved.')
+    parser.addoption('--demo_mode', action="store_true",
+                     dest='demo_mode',
+                     default=False,
+                     help="""Using this slows down the automation so that
+                          you can see what it's actually doing.""")
+    parser.addoption('--demo_sleep', action='store', dest='demo_sleep',
+                     default=None,
+                     help="""Setting this overrides the Demo Mode sleep
+                          time that happens after browser actions.""")
 
 
 def pytest_configure(config):
@@ -41,7 +50,11 @@ def pytest_configure(config):
     with_testing_base = config.getoption('with_testing_base')
     browser = config.getoption('browser')
     log_path = config.getoption('log_path')
+    demo_mode = config.getoption('demo_mode')
+    demo_sleep = ''
     data = ''
+    if config.getoption('demo_sleep') is not None:
+        demo_sleep = config.getoption('demo_sleep')
     if config.getoption('data') is not None:
         data = config.getoption('data')
     # Create a temporary config file while tests are running
@@ -52,6 +65,8 @@ def pytest_configure(config):
     config_file.write("data:::%s\n" % data)
     config_file.write("with_testing_base:::%s\n" % with_testing_base)
     config_file.write("log_path:::%s\n" % log_path)
+    config_file.write("demo_mode:::%s\n" % demo_mode)
+    config_file.write("demo_sleep:::%s\n" % demo_sleep)
     config_file.close()
     log_folder_setup(config)
 
