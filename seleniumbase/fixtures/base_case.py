@@ -138,17 +138,40 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_pause_if_active()
 
     def activate_jquery(self):
-        """ (It's not on by default on all website pages.) """
+        """ If "jQuery is not defined", use this method to activate it for use.
+            This happens because jQuery is not always defined on web sites. """
+        try:
+            # Let's first find out if jQuery is already defined.
+            self.driver.execute_script("jQuery('html')")
+            # Since that command worked, jQuery is defined. Let's return.
+            return
+        except Exception:
+            # jQuery is not currently defined. Let's proceed by defining it.
+            pass
         self.driver.execute_script(
             '''var script = document.createElement("script"); '''
             '''script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/'''
             '''jquery.min.js"; document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
+        for x in xrange(30):
+            # jQuery needs a small amount of time to activate. (At most 3s)
+            try:
+                self.driver.execute_script("jQuery('html')")
+                return
+            except Exception:
+                time.sleep(0.1)
+        # Since jQuery still isn't activating, give up and raise an exception
+        raise Exception("Exception: WebDriver could not activate jQuery!")
 
     def scroll_to(self, selector):
         self.wait_for_element_visible(selector, timeout=settings.SMALL_TIMEOUT)
-        self.driver.execute_script(
-            "jQuery('%s')[0].scrollIntoView()" % selector)
+        scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
+        try:
+            self.driver.execute_script(scroll_script)
+        except Exception:
+            # The likely reason this fails is because: "jQuery is not defined"
+            self.activate_jquery()  # It's a good thing we can define it here
+            self.driver.execute_script(scroll_script)
         self._demo_mode_pause_if_active(tiny=True)
 
     def scroll_click(self, selector):
@@ -156,6 +179,7 @@ class BaseCase(unittest.TestCase):
         self.click(selector)
 
     def jquery_click(self, selector):
+        self.scroll_to(selector)
         self.driver.execute_script("jQuery('%s').click()" % selector)
         self._demo_mode_pause_if_active()
 
@@ -163,6 +187,7 @@ class BaseCase(unittest.TestCase):
         return page_utils.jq_format(code)
 
     def set_value(self, selector, value):
+        self.scroll_to(selector)
         val = json.dumps(value)
         self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
         self._demo_mode_pause_if_active()
@@ -170,6 +195,7 @@ class BaseCase(unittest.TestCase):
     def jquery_update_text_value(self, selector, new_value,
                                  timeout=settings.SMALL_TIMEOUT):
         element = self.wait_for_element_visible(selector, timeout=timeout)
+        self.scroll_to(selector)
         self.driver.execute_script("""jQuery('%s').val('%s')"""
                                    % (selector, self.jq_format(new_value)))
         if new_value.endswith('\n'):
@@ -181,14 +207,21 @@ class BaseCase(unittest.TestCase):
         self.jquery_update_text_value(selector, new_value, timeout=timeout)
 
     def hover_on_element(self, selector):
+        self.wait_for_element_visible(selector, timeout=settings.SMALL_TIMEOUT)
+        self.scroll_to(selector)
+        time.sleep(0.05)  # Settle down from scrolling before hovering
         return page_actions.hover_on_element(self.driver, selector)
 
     def hover_and_click(self, hover_selector, click_selector,
                         click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
-        return page_actions.hover_and_click(self.driver, hover_selector,
-                                            click_selector, click_by, timeout)
+        self.wait_for_element_visible(hover_selector, timeout=timeout)
+        self.scroll_to(hover_selector)
+        # Settle down from the scrolling before hovering
+        element = page_actions.hover_and_click(
+            self.driver, hover_selector, click_selector, click_by, timeout)
         self._demo_mode_pause_if_active()
+        return element
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
