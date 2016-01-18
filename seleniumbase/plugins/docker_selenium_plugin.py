@@ -43,6 +43,15 @@ class SeleniumBrowser(Plugin):
                           default='4444',
                           help="""Designates the port used by the test.
                                Default: 4444.""")
+        parser.add_option('--demo_mode', action="store_true",
+                          dest='demo_mode',
+                          default=False,
+                          help="""Using this slows down the automation so that
+                               you can see what it's actually doing.""")
+        parser.add_option('--demo_sleep', action='store', dest='demo_sleep',
+                          default=None,
+                          help="""Setting this overrides the Demo Mode sleep
+                               time that happens after browser actions.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -59,6 +68,8 @@ class SeleniumBrowser(Plugin):
             self.driver = self.__select_browser()
             test.test.driver = self.driver
             test.test.browser = "firefox"
+            test.test.demo_mode = self.options.demo_mode
+            test.test.demo_sleep = self.options.demo_sleep
         except Exception as err:
             print "Error starting/connecting to Selenium:"
             print err
