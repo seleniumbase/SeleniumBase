@@ -11,6 +11,7 @@ import pytest
 import sys
 import time
 import unittest
+from pyvirtualdisplay import Display
 from seleniumbase.config import settings
 from seleniumbase.core import browser_launcher
 from seleniumbase.core import log_helper
@@ -303,12 +304,18 @@ class BaseCase(unittest.TestCase):
             self.is_pytest = False
         if self.is_pytest:
             self.with_selenium = pytest.config.option.with_selenium
+            self.headless = pytest.config.option.headless
+            self.headless_active = False
             self.with_testing_base = pytest.config.option.with_testing_base
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
             self.data = pytest.config.option.data
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
+            if self.headless:
+                self.display = Display(visible=0, size=(1200, 800))
+                self.display.start()
+                self.headless_active = True
             if self.with_selenium:
                 self.driver = browser_launcher.get_driver(self.browser)
 
@@ -336,6 +343,8 @@ class BaseCase(unittest.TestCase):
                         test_logpath, self.driver, self.browser)
                     # Handle page source logging
                     log_helper.log_page_source(test_logpath, self.driver)
-
                 # Finally close the browser
                 self.driver.quit()
+            if self.headless:
+                if self.headless_active:
+                    self.display.stop()

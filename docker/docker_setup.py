@@ -8,7 +8,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.1.17',
+    version='1.1.18',
     author='Michael Mintz',
     author_email='@mintzworld',
     maintainer='Michael Mintz',
@@ -24,8 +24,7 @@ setup(
     entry_points={
         'nose.plugins': [
             'base_plugin = seleniumbase.plugins.base_plugin:Base',
-            'selenium_docker = '
-            'seleniumbase.plugins.docker_selenium_plugin:SeleniumBrowser',
+            'selenium = seleniumbase.plugins.selenium_plugin:SeleniumBrowser',
             'page_source = seleniumbase.plugins.page_source:PageSource',
             'screen_shots = seleniumbase.plugins.screen_shots:ScreenShots',
             'test_info = seleniumbase.plugins.basic_test_info:BasicTestInfo',

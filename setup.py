@@ -6,7 +6,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.1.17',
+    version='1.1.18',
     url='https://github.com/mdmintz/SeleniumBase',
     author='Michael Mintz',
     author_email='@mintzworld',
@@ -26,6 +26,7 @@ setup(
         'simplejson==3.8.1',
         'boto==2.38.0',
         'ipdb==0.8.1',
+        'pyvirtualdisplay==0.1.5',
         ],
     packages=['seleniumbase',
               'seleniumbase.core',
