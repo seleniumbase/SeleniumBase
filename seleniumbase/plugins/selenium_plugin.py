@@ -7,6 +7,7 @@ import time
 import os
 from nose.plugins import Plugin
 from selenium import webdriver
+from pyvirtualdisplay import Display
 from seleniumbase.core import selenium_launcher
 from seleniumbase.core import browser_launcher
 from seleniumbase.fixtures import constants
@@ -20,7 +21,10 @@ class SeleniumBrowser(Plugin):
     The following variables are made to the tests:
     self.options.browser -- the browser to use (--browser)
     self.options.server -- the server used by the test (--server)
-    self.options.port -- the port used by thest (--port)
+    self.options.port -- the port used by the test (--port)
+    self.options.headless -- the option to run headlessly (--headless)
+    self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
+    self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     """
     name = 'selenium'  # Usage: --with-selenium
 
@@ -46,6 +50,11 @@ class SeleniumBrowser(Plugin):
                           default='4444',
                           help="""Designates the port used by the test.
                                Default: 4444.""")
+        parser.add_option('--headless', action="store_true",
+                          dest='headless',
+                          default=False,
+                          help="""Using this makes Webdriver run headlessly,
+                               which is useful inside a Linux Docker.""")
         parser.add_option('--demo_mode', action="store_true",
                           dest='demo_mode',
                           default=False,
@@ -84,6 +93,7 @@ class SeleniumBrowser(Plugin):
                 self.browser_settings["version"] = options.browser_version
 
         self.options = options
+        self.headless_active = False
 
         if (self.options.servername == "localhost" and
                 self.options.browser == constants.Browser.HTML_UNIT):
@@ -95,6 +105,10 @@ class SeleniumBrowser(Plugin):
         """ Running Selenium locally will be handled differently
             from how Selenium is run remotely, such as from Jenkins. """
 
+        if self.options.headless:
+            self.display = Display(visible=0, size=(1200, 800))
+            self.display.start()
+            self.headless_active = True
         if self.options.servername == "localhost":
             try:
                 self.driver = self.__select_browser(self.options.browser)
@@ -127,12 +141,12 @@ class SeleniumBrowser(Plugin):
                 except Exception as err:
                     print "Attempt #%s to connect to Selenium failed" % i
                     if i < 3:
-                        print "Retrying in 15 seconds..."
-                        time.sleep(15)
+                        print "Retrying in 3 seconds..."
+                        time.sleep(3)
             if not connected:
                 print "Error starting/connecting to Selenium:"
                 print err
-                print "\n\n\n"
+                print "\n\n"
                 os.kill(os.getpid(), 9)
 
     def afterTest(self, test):
@@ -140,6 +154,9 @@ class SeleniumBrowser(Plugin):
             self.driver.quit()
         except:
             print "No driver to quit."
+        if self.options.headless:
+            if self.headless_active:
+                self.display.stop()
 
     def __select_browser(self, browser_name):
         if (self.options.servername != "localhost" or
