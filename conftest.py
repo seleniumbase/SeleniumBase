@@ -34,6 +34,11 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', dest='log_path',
                      default='logs/',
                      help='Where the log files are saved.')
+    parser.addoption('--headless', action="store_true",
+                     dest='headless',
+                     default=False,
+                     help="""Using this makes Webdriver run headlessly,
+                          which is useful inside a Linux Docker.""")
     parser.addoption('--demo_mode', action="store_true",
                      dest='demo_mode',
                      default=False,
@@ -50,6 +55,7 @@ def pytest_configure(config):
     with_testing_base = config.getoption('with_testing_base')
     browser = config.getoption('browser')
     log_path = config.getoption('log_path')
+    headless = config.getoption('headless')
     demo_mode = config.getoption('demo_mode')
     demo_sleep = ''
     data = ''
@@ -65,6 +71,7 @@ def pytest_configure(config):
     config_file.write("data:::%s\n" % data)
     config_file.write("with_testing_base:::%s\n" % with_testing_base)
     config_file.write("log_path:::%s\n" % log_path)
+    config_file.write("headless:::%s\n" % headless)
     config_file.write("demo_mode:::%s\n" % demo_mode)
     config_file.write("demo_sleep:::%s\n" % demo_sleep)
     config_file.close()
