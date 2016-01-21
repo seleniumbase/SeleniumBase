@@ -24,6 +24,7 @@ setup(
         'unittest2==1.1.0',
         'chardet==2.3.0',
         'simplejson==3.8.1',
+        'boto==2.38.0',
         'ipdb==0.8.1',
         'pyvirtualdisplay==0.1.5',
         ],
