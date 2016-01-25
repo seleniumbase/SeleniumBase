@@ -48,6 +48,7 @@ bash
 ```bash
 ./Linuxfile.sh
 ```
+(If a message appears during installation asking you to configure "Keyboard layout", you can hit the "Enter" key to accept the default setting, which is "English (US)".)
 
 #### 9. Start up the headless browser display mechanism (Xvfb)
 
