@@ -24,10 +24,10 @@ cd /
 sudo git clone https://github.com/mdmintz/SeleniumBase.git
 ```
 
-#### 5. Enter the "google_cloud" folder
+#### 5. Enter the "linux" folder
 
 ```bash
-cd SeleniumBase/integrations/google_cloud/
+cd SeleniumBase/integrations/linux/
 ```
 
 #### 6. Give Jenkins (aka "tomcat" user) sudo access
