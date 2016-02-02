@@ -94,8 +94,8 @@ RUN exec "$@"
 #=====================
 # Set up SeleniumBase
 #=====================
-COPY docker/docker_requirements.txt /SeleniumBase/
-COPY docker/docker_setup.py /SeleniumBase/
+COPY integrations/docker/docker_requirements.txt /SeleniumBase/
+COPY integrations/docker/docker_setup.py /SeleniumBase/
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
 RUN cd /SeleniumBase && ls && sudo pip install -r docker_requirements.txt
@@ -104,9 +104,9 @@ RUN cd /SeleniumBase && ls && sudo python docker_setup.py install
 #==========================================
 # Create entrypoint and grab example tests
 #==========================================
-COPY docker/docker-entrypoint.sh /
-COPY docker/run_docker_test_in_firefox.sh /
-COPY docker/run_docker_test_in_chrome.sh /
-COPY docker/docker_config.cfg /SeleniumBase/examples/
+COPY integrations/docker/docker-entrypoint.sh /
+COPY integrations/docker/run_docker_test_in_firefox.sh /
+COPY integrations/docker/run_docker_test_in_chrome.sh /
+COPY integrations/docker/docker_config.cfg /SeleniumBase/examples/
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
