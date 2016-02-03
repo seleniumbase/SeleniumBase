@@ -8,7 +8,7 @@ You may need to download selenium-server-standalone-2.48.2.jar (or the latest ve
 * http://docs.seleniumhq.org/download/
 or here:
 * http://selenium-release.storage.googleapis.com/index.html?path=2.48/
-Once you have downloaded the jar file, put it in this folder (the "grid_files" folder).
+Once you have downloaded the jar file, put it in this folder (the "integrations/selenium_grid" folder).
 
 More detailed info about connecting to the Selenium Grid Hub can be found here:
 * https://theintern.github.io/intern/#selenium-grid
