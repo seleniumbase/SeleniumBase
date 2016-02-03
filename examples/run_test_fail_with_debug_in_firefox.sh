@@ -1,1 +1,0 @@
-nosetests test_fail.py --browser=firefox --with-selenium --logging-level=INFO --pdb --pdb-failures -s

@@ -1,1 +1,0 @@
-nosetests my_first_test.py --config=example_config.cfg
