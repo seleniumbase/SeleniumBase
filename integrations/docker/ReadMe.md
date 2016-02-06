@@ -49,8 +49,8 @@ Here are a few of those cleanup commands:
 
 If you want to completely remove all of your Docker containers and images, use these commands: (If there's nothing to delete, those commands will return an error.)
 
-    docker rm $(docker ps -a -q)
-    docker rmi $(docker images -q)
+    docker rm -f $(docker ps -a -q)
+    docker rmi -f $(docker images -q)
 
 Finally, if you want to wipe out your SeleniumBase Docker virtualbox, use these commands:
 
