@@ -14,7 +14,7 @@ setup(
     description='The SeleniumBase Automation Framework',
     license='The MIT License',
     install_requires=[
-        'selenium==2.50.0',
+        'selenium==2.50.1',
         'nose==1.3.7',
         'pytest==2.8.5',
         'flake8==2.5.1',

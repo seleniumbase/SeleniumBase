@@ -4,10 +4,10 @@ The Selenium Grid Hub allows you to distribute tests to run in parallel across m
 
 ### Running the Selenium Grid Hub
 
-You may need to download selenium-server-standalone-2.48.2.jar (or the latest version) separately. That file is not present with this repository to save space. You can download that file from here:
+You may need to download selenium-server-standalone-2.50.1.jar (or the latest version) separately. That file is not present with this repository to save space. You can download that file from here:
 * http://docs.seleniumhq.org/download/
 or here:
-* http://selenium-release.storage.googleapis.com/index.html?path=2.48/
+* http://selenium-release.storage.googleapis.com/index.html?path=2.50/
 Once you have downloaded the jar file, put it in this folder (the "integrations/selenium_grid" folder).
 
 More detailed info about connecting to the Selenium Grid Hub can be found here:
