@@ -35,3 +35,6 @@ nosetests.xml
 # Developer
 .project
 .pydevproject
+
+# Other
+selenium-server-standalone.jar
