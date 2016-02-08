@@ -4,15 +4,22 @@ The Selenium Grid Hub allows you to distribute tests to run in parallel across m
 
 ### Running the Selenium Grid Hub
 
-You may need to download selenium-server-standalone-2.50.1.jar (or the latest version) separately. That file is not present with this repository to save space. You can download that file from here:
-* http://docs.seleniumhq.org/download/
-or here:
-* http://selenium-release.storage.googleapis.com/index.html?path=2.50/
-Once you have downloaded the jar file, put it in this folder (the "integrations/selenium_grid" folder).
+First, download the latest selenium-server-standalone jar file to this folder (integrations/selenium_grid):
+```bash
+./download_selenium
+```
+Now you can start up the Grid Hub:
+```bash
+./grid-hub start
+```
+Now add a Grid Node to the Grid Hub:
+```bash
+./grid-node start
+```
+(NOTE: If the Grid Node is not running on the same machine as the Grid Hub, update the address from the script.)
+You should be able to see the Grid Console up and running from here: [http://0.0.0.0:4444/grid/console](http://0.0.0.0:4444/grid/console) (NOTE: That's the address if you're running locally from localhost.)
 
-More detailed info about connecting to the Selenium Grid Hub can be found here:
-* https://theintern.github.io/intern/#selenium-grid
-and here:
-* https://github.com/SeleniumHQ/selenium/wiki/Grid2
-For even more information, look here:
-* https://github.com/SeleniumHQ/selenium/wiki
+#### More detailed info about connecting to the Selenium Grid Hub can be found here:
+* [https://theintern.github.io/intern/#selenium-grid](https://theintern.github.io/intern/#selenium-grid)
+* [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
+* [https://github.com/SeleniumHQ/selenium/wiki](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
