@@ -48,7 +48,7 @@ class BaseCase(unittest.TestCase):
 
     def click(self, selector, by=By.CSS_SELECTOR,
               timeout=settings.SMALL_TIMEOUT):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
@@ -114,12 +114,12 @@ class BaseCase(unittest.TestCase):
                                timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.is_element_visible(self.driver, selector, by)
 
@@ -128,12 +128,12 @@ class BaseCase(unittest.TestCase):
                                                by=By.LINK_TEXT)
 
     def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.find_visible_elements(self.driver, selector, by)
 
@@ -238,21 +238,21 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
     def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
@@ -264,14 +264,14 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR,
                                 timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_absent(
             self.driver, selector, by, timeout)
 
     def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR,
                                      timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/'):
+        if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
