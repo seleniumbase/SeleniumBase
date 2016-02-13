@@ -17,9 +17,9 @@
 
 #### **Step 0:** Get the requirements
 
-If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions]() to get those installed.
+If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md) to get those installed.
 
-If you plan on storing data in a MySQL DB (OPTIONAL), you'll need to [follow these instructions]() to get that installed.
+If you plan on storing data in a MySQL DB (OPTIONAL), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md) to get that installed.
 
 #### [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
 
@@ -46,7 +46,7 @@ cd SeleniumBase
 
 #### **Step 2:** Create a virtualenv for seleniumbase and activate it
 
-If you're not sure how to create a virtual environment, [follow these instructions]().
+If you're not sure how to create a virtual environment, [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to learn how.
 
 
 #### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
@@ -62,7 +62,7 @@ python setup.py install
 If you want to connect to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download. If you're a WINDOWS user, you may have problems on the MySQL installation part. To get around this, you can either follow the instructions from the error message given, or you can pip install the previous requirements.txt file.)
 
 ```bash
-pip install -r server_requirements.txt  # For MySQL DB usage only
+pip install -r server_requirements.txt  # For MySQL DB usage ONLY!
 ```
 
 NOTE:
