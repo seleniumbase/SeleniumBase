@@ -3,8 +3,8 @@
 ### *(An open-source Python library that makes it easier to write reliable browser automation for testing and more...)*
 
 #### Features include:
-* [Code](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
-* [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/logs_for_test_fail).
+* [Python methods](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
+* [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/logs_for_test_fail) automatically.
 * Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with command-line options and a global config file: [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
@@ -31,9 +31,11 @@ If "pip" did not come with your Python installation, you can [GET PIP HERE](http
 
 (NOTE: You can download the SeleniumBase repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
 
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew install git
-    brew update
+```bash
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install git
+brew update
+```
 
 (WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/download).)
 
@@ -43,7 +45,9 @@ If "pip" did not come with your Python installation, you can [GET PIP HERE](http
 
 Mac:
 
-    brew install MySQL
+```bash
+brew install MySQL
+```
 
 Windows: [Download MySQL here](http://dev.mysql.com/downloads/windows/)
 
@@ -67,13 +71,17 @@ sudo easy_install virtualenvwrapper
 
 Windows:
 
-    pip install virtualenv
+```bash
+pip install virtualenv
+```
 
 #### [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
 
 Mac:
 
-    brew install chromedriver phantomjs
+```bash
+brew install chromedriver phantomjs
+```
 
 Windows: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) and also put that in your PATH.
 
