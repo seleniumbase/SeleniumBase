@@ -17,65 +17,13 @@
 
 #### **Step 0:** Get the requirements
 
-#### [Python 2.7](https://www.python.org/downloads/)
+If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions]() to get those installed.
 
-If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.10 is the one I've been using on my Mac.
-
-If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/).
-
-#### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
-
-If "pip" did not come with your Python installation, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/), and make sure it's on your path.
-
-#### [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/) (OPTIONAL)
-
-(NOTE: You can download the SeleniumBase repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
-
-```bash
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew install git
-brew update
-```
-
-(WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/download).)
-
-#### [MySQL](http://www.mysql.com/) (OPTIONAL)
-
-(NOTE: If you're using this test framework from a local development machine and don't plan on writing to a MySQL DB from your local test runs, you can skip this step.)
-
-Mac:
-
-```bash
-brew install MySQL
-```
-
-Windows: [Download MySQL here](http://dev.mysql.com/downloads/windows/)
-
-That installs the MySQL library so that you can use db commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to. You'll also want to use the testcaserepository.sql file from the seleniumbase/core folder to add the necessary tables.
-
-If you want a visual tool to help make your MySQL life easier, [try MySQL Workbench](http://dev.mysql.com/downloads/workbench/).)
-
-#### [Virtualenv](http://virtualenv.readthedocs.org/en/latest/)
-
-Mac: (The old regular way):
-
-```bash
-sudo easy_install virtualenv
-```
-
-Mac: (The new fancy way):
-
-```bash
-sudo easy_install virtualenvwrapper
-```
-
-Windows:
-
-```bash
-pip install virtualenv
-```
+If you plan on storing data in a MySQL DB (OPTIONAL), you'll need to [follow these instructions]() to get that installed.
 
 #### [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
+
+If you want to run automation on browsers other than Firefox (such as Chrome), you'll need to download drivers for those separately, and that means you may need to install ``brew`` (aka ``homebrew``) if you're using a Mac. You may have previously installed ``brew`` if you used that a few steps above to install ``git``.
 
 Mac:
 
@@ -83,105 +31,46 @@ Mac:
 brew install chromedriver phantomjs
 ```
 
-Windows: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) and also put that in your PATH.
-
-(NOTE: There are web drivers for other web browsers as well. These two will get you started.)
-
+Windows: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (OPTIONAL - if you want to run headless browser automation) and also put that in your PATH.
 If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
-
 
 #### **Step 1:** Download or Clone SeleniumBase to your local machine
 
-If you're using Git, you can fork the repository on GitHub to create your personal copy. This is important because you'll want to add your own configurations, credentials, settings, etc. Now you can clone your forked copy to your personal computer. You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.
-
 ```bash
-git clone [LOCATION OF YOUR FORKED SELENIUMBASE GITHUB FOLDER]/SeleniumBase.git
+git clone https://github.com/mdmintz/SeleniumBase.git
 cd SeleniumBase
 ```
 
-If you only need a local copy and don't plan on checking in any changes that you make, you can just clone the base repo as is:
+(You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.)
 
-```bash
-git clone https://github.com/mdmintz/SeleniumBase.git
-```
 
-#### **Step 2:** Create a virtualenv for seleniumbase
+#### **Step 2:** Create a virtualenv for seleniumbase and activate it
 
-Mac: (If you're using the old regular way):
+If you're not sure how to create a virtual environment, [follow these instructions]().
 
-```bash
-mkdir -p ~/Envs
-virtualenv ~/Envs/seleniumbase
-source ~/Envs/seleniumbase/bin/activate
-```
-
-Mac: (If you're using the new fancy way):
-
-```bash
-mkvirtualenv seleniumbase
-```
-
-Windows:
-
-Use the "virtualenv" version above instead of "mkvirtualenv", but also make the following changes:
-1: Don't use "-p"
-2: Replace "~/" from above with the location of your home directory
-3: Instead of using the "source" command, go into the folder created and type ``activate``
-
-If you ever need to leave your virtual environment, use the following command:
-
-```bash
-deactivate
-```
-
-You can always jump back in later:
-
-(If you're using the old regular way):
-```bash
-source ~/Envs/seleniumbase/bin/activate
-```
-
-(If you're using the new fancy way):
-```bash
-workon seleniumbase
-```
 
 #### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
-
-If you don't desire connecting to a MySQL DB to record the results of your local test runs, run this command:
 
 ```bash
 pip install -r requirements.txt
 ```
-The "-e ." at the end of requirements.txt should automatically trigger setup.py installation from the following command:
+
 ```bash
 python setup.py install
 ```
 
-If you do desire connecting to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download. If you're a WINDOWS user, you may have problems on the MySQL installation part. To get around this, you can either follow the instructions from the error message given, or you can pip install the previous requirements.txt file.)
+If you want to connect to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download. If you're a WINDOWS user, you may have problems on the MySQL installation part. To get around this, you can either follow the instructions from the error message given, or you can pip install the previous requirements.txt file.)
 
 ```bash
-pip install -r server_requirements.txt
+pip install -r server_requirements.txt  # For MySQL DB usage only
 ```
-
-As mentioned before, the "-e ." in that file should automatically trigger installation of setup.py
 
 NOTE:
 
-(From a virtual environment, it should not be necessary to add "sudo" before those commands above.)
-
-In some cames, certain packages will have other dependencies as requirements, and those will get installed automatically. You'll be able to see all installed packages in your virtual environment by using the following command:
-
-```bash
-pip freeze
-```
-
 By default, some files may be hidden on a MAC, such as .gitignore (which is used to tell Git which files to ignore for staging commits). To view all files from the Finder window, run the following command in a terminal window:
-
 ```bash
 defaults write com.apple.finder AppleShowAllFiles -bool true
 ```
-
 (You may need to reopen the MAC Finder window to see changes from that.)
 
 
