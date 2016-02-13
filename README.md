@@ -53,11 +53,19 @@ If you want a visual tool to help make your MySQL life easier, [try MySQL Workbe
 
 #### [Virtualenv](http://virtualenv.readthedocs.org/en/latest/)
 
-Mac:
+Mac: (The old regular way):
 
-    sudo easy_install virtualenv
+```bash
+sudo easy_install virtualenv
+```
 
-Windows: (can be used with Mac also, but you may need to use "sudo")
+Mac: (The new fancy way):
+
+```bash
+sudo easy_install virtualenvwrapper
+```
+
+Windows:
 
     pip install virtualenv
 
@@ -83,11 +91,15 @@ git clone [LOCATION OF YOUR FORKED SELENIUMBASE GITHUB FOLDER]/SeleniumBase.git
 cd SeleniumBase
 ```
 
-(NOTE: If you decided to download SeleniumBase rather than Git-cloning it, you can skip the above step.)
+If you only need a local copy and don't plan on checking in any changes that you make, you can just clone the base repo as is:
+
+```bash
+git clone https://github.com/mdmintz/SeleniumBase.git
+```
 
 #### **Step 2:** Create a virtualenv for seleniumbase
 
-Mac:
+Mac: (If you're using the old regular way):
 
 ```bash
 mkdir -p ~/Envs
@@ -95,11 +107,18 @@ virtualenv ~/Envs/seleniumbase
 source ~/Envs/seleniumbase/bin/activate
 ```
 
+Mac: (If you're using the new fancy way):
+
+```bash
+mkvirtualenv seleniumbase
+```
+
 Windows:
 
-Same as above, except:
+Use the "virtualenv" version above instead of "mkvirtualenv", but also make the following changes:
 1: Don't use "-p"
 2: Replace "~/" from above with the location of your home directory
+3: Instead of using the "source" command, go into the folder created and type ``activate``
 
 If you ever need to leave your virtual environment, use the following command:
 
@@ -109,8 +128,14 @@ deactivate
 
 You can always jump back in later:
 
+(If you're using the old regular way):
 ```bash
 source ~/Envs/seleniumbase/bin/activate
+```
+
+(If you're using the new fancy way):
+```bash
+workon seleniumbase
 ```
 
 #### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
