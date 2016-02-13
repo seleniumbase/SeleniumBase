@@ -15,24 +15,31 @@
 ####(WINDOWS users: You'll need to make a few modifications to the setup steps listed here. For starters, you won't be able to use the "brew install" command since that's MAC-only. Instead, download the requirements mentioned directly from the web. I'll provide you with links to save you time. You'll also want to put downloaded files into your [PATH](http://java.com/en/download/help/path.xml).)
 ####(DOCKER users: If you want to run browser automation with Docker, see the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
 
-#### **Step 0:** Get the requirements
+#### **Step 0a:** Get basic requirements
 
 If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md) to get those installed.
 
-If you plan on storing data in a MySQL DB (OPTIONAL), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md) to get that installed.
 
-#### [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/)
+#### **Step 0b:** Get web browsers to run automation on
 
-If you want to run automation on browsers other than Firefox (such as Chrome), you'll need to download drivers for those separately, and that means you may need to install ``brew`` (aka ``homebrew``) if you're using a Mac. You may have previously installed ``brew`` if you used that a few steps above to install ``git``.
+If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
+
+#### **Step 0c:** Get drivers for the web browsers that require them
+
+If you want to run automation on browsers other than Firefox (such as Chrome), you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/) separately. (Firefox drivers are already included with Selenium by default)
+
+On a Mac you can install those drivers more easily by using ``brew`` (aka ``homebrew``). You may have previously installed ``brew`` if you used that a few steps above to install ``git``.
 
 Mac:
-
 ```bash
 brew install chromedriver phantomjs
 ```
 
-Windows: [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH. Next, [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (OPTIONAL - if you want to run headless browser automation) and also put that in your PATH.
-If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
+Windows:
+* [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH.
+* OPTIONAL: [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (only if you want to run headless browser automation)
+* For everything you download, put those files in your PATH. (``Environmental Variables`` on a Windows machine)
+
 
 #### **Step 1:** Download or Clone SeleniumBase to your local machine
 
@@ -42,6 +49,11 @@ cd SeleniumBase
 ```
 
 (You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.)
+
+Depending on your Mac settings, some files may be hidden from view in your Finder window, such as ``.gitignore``. To view all files, run the following command and then reopen the Finder window:
+```bash
+defaults write com.apple.finder AppleShowAllFiles -bool true
+```
 
 
 #### **Step 2:** Create a virtualenv for seleniumbase and activate it
@@ -59,19 +71,7 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
-If you want to connect to a MySQL DB to record the results of your test runs, run this command: (Make sure you already have MySQL installed from either Brew or web-download. If you're a WINDOWS user, you may have problems on the MySQL installation part. To get around this, you can either follow the instructions from the error message given, or you can pip install the previous requirements.txt file.)
-
-```bash
-pip install -r server_requirements.txt  # For MySQL DB usage ONLY!
-```
-
-NOTE:
-
-By default, some files may be hidden on a MAC, such as .gitignore (which is used to tell Git which files to ignore for staging commits). To view all files from the Finder window, run the following command in a terminal window:
-```bash
-defaults write com.apple.finder AppleShowAllFiles -bool true
-```
-(You may need to reopen the MAC Finder window to see changes from that.)
+If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md).
 
 
 #### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt. (NOTE: xkcd is a webcomic)
