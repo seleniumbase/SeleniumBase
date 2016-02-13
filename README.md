@@ -1,11 +1,11 @@
 ## SeleniumBase Automation Framework [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase)
 
-### An open-source solution for reliable testing and business automation.
+*An open-source Python library for reliable testing and business automation*
 
 #### Features include:
-* [Python wrappers](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/fixtures) for WebDriver to quickly create [reliable scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py) that run efficiently.
-* Built-in [Nosetest & Pytest plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [test data, results, and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/logs_for_test_fail).
-* Simple integration with [Jenkins](http://jenkins-ci.org/), [Selenium Grid](http://docs.seleniumhq.org/projects/grid/), [MySQL](http://www.mysql.com/), [Docker](https://www.docker.com/), and [AWS](http://aws.amazon.com/).
+* [Code](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
+* [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/logs_for_test_fail).
+* Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with command-line options and a global config file: [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 *Trusted by the world's most promising companies, including [HubSpot](http://www.hubspot.com/), [Jana](http://jana.com/), and [Veracode](http://www.veracode.com/). Learn how HubSpot uses SeleniumBase by reading: [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).*
@@ -25,7 +25,7 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
 #### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
-If "pip" did not come with your Python installation, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
+If "pip" did not come with your Python installation, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/), and make sure it's on your path.
 
 #### [Homebrew](http://brew.sh/) + [Git](http://git-scm.com/) (OPTIONAL)
 
