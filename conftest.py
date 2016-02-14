@@ -3,6 +3,7 @@
 import os
 import shutil
 import time
+from optparse import SUPPRESS_HELP
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
@@ -34,6 +35,15 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', dest='log_path',
                      default='logs/',
                      help='Where the log files are saved.')
+    parser.addoption('--with-db_reporting', action="store_true",
+                     dest='with_db_reporting',
+                     default=False,
+                     help="Use to record test data in the MySQL database.")
+    parser.addoption('--database_env', action='store',
+                     dest='database_env',
+                     choices=('prod', 'qa', 'test'),
+                     default='test',
+                     help=SUPPRESS_HELP)
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
@@ -53,6 +63,8 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     with_selenium = config.getoption('with_selenium')
     with_testing_base = config.getoption('with_testing_base')
+    with_db_reporting = config.getoption('with_db_reporting')
+    database_env = config.getoption('database_env')
     browser = config.getoption('browser')
     log_path = config.getoption('log_path')
     headless = config.getoption('headless')
@@ -63,6 +75,8 @@ def pytest_configure(config):
         demo_sleep = config.getoption('demo_sleep')
     if config.getoption('data') is not None:
         data = config.getoption('data')
+    if config.getoption('database_env') is not None:
+        database_env = config.getoption('database_env')
     # Create a temporary config file while tests are running
     pytest_config = '.pytest_config'
     config_file = open(pytest_config, 'w+')
@@ -70,6 +84,8 @@ def pytest_configure(config):
     config_file.write("browser:::%s\n" % browser)
     config_file.write("data:::%s\n" % data)
     config_file.write("with_testing_base:::%s\n" % with_testing_base)
+    config_file.write("with_db_reporting:::%s\n" % with_db_reporting)
+    config_file.write("database_env:::%s\n" % database_env)
     config_file.write("log_path:::%s\n" % log_path)
     config_file.write("headless:::%s\n" % headless)
     config_file.write("demo_mode:::%s\n" % demo_mode)
