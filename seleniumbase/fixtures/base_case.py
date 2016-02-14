@@ -4,6 +4,7 @@ Improvements include making WebDriver commands more robust and more reliable
 by giving page elements enough time to load before taking action on them.
 """
 
+import getpass
 import json
 import logging
 import os
@@ -11,10 +12,16 @@ import pytest
 import sys
 import time
 import unittest
+import uuid
 from pyvirtualdisplay import Display
 from seleniumbase.config import settings
+from seleniumbase.core.application_manager import ApplicationManager
+from seleniumbase.core.testcase_manager import ExecutionQueryPayload
+from seleniumbase.core.testcase_manager import TestcaseDataPayload
+from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import browser_launcher
 from seleniumbase.core import log_helper
+from seleniumbase.fixtures import constants
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import page_actions
@@ -325,10 +332,15 @@ class BaseCase(unittest.TestCase):
             # Not using pytest (probably nosetests)
             self.is_pytest = False
         if self.is_pytest:
+            test_id = "%s.%s.%s" % (self.__class__.__module__,
+                                    self.__class__.__name__,
+                                    self._testMethodName)
             self.with_selenium = pytest.config.option.with_selenium
             self.headless = pytest.config.option.headless
             self.headless_active = False
             self.with_testing_base = pytest.config.option.with_testing_base
+            self.with_db_reporting = pytest.config.option.with_db_reporting
+            self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
             self.data = pytest.config.option.data
@@ -340,6 +352,52 @@ class BaseCase(unittest.TestCase):
                 self.headless_active = True
             if self.with_selenium:
                 self.driver = browser_launcher.get_driver(self.browser)
+            if self.with_db_reporting:
+                self.execution_guid = str(uuid.uuid4())
+                self.testcase_guid = None
+                self.execution_start_time = 0
+                self.case_start_time = 0
+                self.application = None
+                self.testcase_manager = None
+                self.error_handled = False
+                self.testcase_manager = TestcaseManager(self.database_env)
+                #
+                exec_payload = ExecutionQueryPayload()
+                exec_payload.execution_start_time = int(time.time() * 1000)
+                self.execution_start_time = exec_payload.execution_start_time
+                exec_payload.guid = self.execution_guid
+                exec_payload.username = getpass.getuser()
+                self.testcase_manager.insert_execution_data(exec_payload)
+                #
+                data_payload = TestcaseDataPayload()
+                self.testcase_guid = str(uuid.uuid4())
+                data_payload.guid = self.testcase_guid
+                data_payload.execution_guid = self.execution_guid
+                if self.with_selenium:
+                    data_payload.browser = self.browser
+                else:
+                    data_payload.browser = "N/A"
+                data_payload.testcaseAddress = test_id
+                application = ApplicationManager.generate_application_string(
+                    self._testMethodName)
+                data_payload.env = application.split('.')[0]
+                data_payload.start_time = application.split('.')[1]
+                data_payload.state = constants.State.NOTRUN
+                self.testcase_manager.insert_testcase_data(data_payload)
+                self.case_start_time = int(time.time() * 1000)
+
+    def __insert_test_result(self, state, err=None):
+        data_payload = TestcaseDataPayload()
+        data_payload.runtime = int(time.time() * 1000) - self.case_start_time
+        data_payload.guid = self.testcase_guid
+        data_payload.execution_guid = self.execution_guid
+        data_payload.state = state
+        if err is not None:
+            data_payload.message = err[1].__str__().split(
+                '''-------------------- >> '''
+                '''begin captured logging'''
+                ''' << --------------------''', 1)[0]
+        self.testcase_manager.update_testcase_data(data_payload)
 
     def tearDown(self):
         """
@@ -349,12 +407,12 @@ class BaseCase(unittest.TestCase):
         super(SubClassOfBaseCase, self).tearDown()
         """
         if self.is_pytest:
+            test_id = "%s.%s.%s" % (self.__class__.__module__,
+                                    self.__class__.__name__,
+                                    self._testMethodName)
             if self.with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
                 if self.with_testing_base and (sys.exc_info()[1] is not None):
-                    test_id = "%s.%s.%s" % (self.__class__.__module__,
-                                            self.__class__.__name__,
-                                            self._testMethodName)
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
@@ -370,3 +428,11 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 if self.headless_active:
                     self.display.stop()
+            if self.with_db_reporting:
+                if sys.exc_info()[1] is not None:
+                    self.__insert_test_result(constants.State.ERROR)
+                else:
+                    self.__insert_test_result(constants.State.PASS)
+                runtime = int(time.time() * 1000) - self.execution_start_time
+                self.testcase_manager.update_execution_data(
+                    self.execution_guid, runtime)
