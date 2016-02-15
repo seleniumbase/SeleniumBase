@@ -16,6 +16,7 @@ import uuid
 from pyvirtualdisplay import Display
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
+from seleniumbase.core.s3_manager import S3LoggingBucket
 from seleniumbase.core.testcase_manager import ExecutionQueryPayload
 from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
@@ -340,6 +341,11 @@ class BaseCase(unittest.TestCase):
             self.headless_active = False
             self.with_testing_base = pytest.config.option.with_testing_base
             self.with_db_reporting = pytest.config.option.with_db_reporting
+            self.with_s3_logging = pytest.config.option.with_s3_logging
+            self.with_screen_shots = pytest.config.option.with_screen_shots
+            self.with_basic_test_info = (
+                pytest.config.option.with_basic_test_info)
+            self.with_page_source = pytest.config.option.with_page_source
             self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
@@ -416,13 +422,24 @@ class BaseCase(unittest.TestCase):
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
-                    # Handle screenshot logging
-                    log_helper.log_screenshot(test_logpath, self.driver)
-                    # Handle basic test info logging
-                    log_helper.log_test_failure_data(
-                        test_logpath, self.driver, self.browser)
-                    # Handle page source logging
-                    log_helper.log_page_source(test_logpath, self.driver)
+                    if ((not self.with_screen_shots) and
+                            (not self.with_basic_test_info) and
+                            (not self.with_page_source)):
+                        # Log everything if nothing specified (if testing_base)
+                        log_helper.log_screenshot(test_logpath, self.driver)
+                        log_helper.log_test_failure_data(
+                            test_logpath, self.driver, self.browser)
+                        log_helper.log_page_source(test_logpath, self.driver)
+                    else:
+                        if self.with_screen_shots:
+                            log_helper.log_screenshot(
+                                test_logpath, self.driver)
+                        if self.with_basic_test_info:
+                            log_helper.log_test_failure_data(
+                                test_logpath, self.driver, self.browser)
+                        if self.with_page_source:
+                            log_helper.log_page_source(
+                                test_logpath, self.driver)
                 # Finally close the browser
                 self.driver.quit()
             if self.headless:
@@ -436,3 +453,27 @@ class BaseCase(unittest.TestCase):
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
+            if self.with_s3_logging and (sys.exc_info()[1] is not None):
+                """ After each testcase, upload logs to the S3 bucket. """
+                s3_bucket = S3LoggingBucket()
+                guid = str(uuid.uuid4().hex)
+                path = "%s/%s" % (self.log_path, test_id)
+                uploaded_files = []
+                for logfile in os.listdir(path):
+                    logfile_name = "%s/%s/%s" % (guid,
+                                                 test_id,
+                                                 logfile.split(path)[-1])
+                    s3_bucket.upload_file(logfile_name,
+                                          "%s/%s" % (path, logfile))
+                    uploaded_files.append(logfile_name)
+                s3_bucket.save_uploaded_file_names(uploaded_files)
+                index_file = s3_bucket.upload_index_file(test_id, guid)
+                print "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+                logging.error(
+                    "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
+                if self.with_db_reporting:
+                    self.testcase_manager = TestcaseManager(self.database_env)
+                    data_payload = TestcaseDataPayload()
+                    data_payload.guid = guid
+                    data_payload.logURL = index_file
+                    self.testcase_manager.update_testcase_log_url(data_payload)

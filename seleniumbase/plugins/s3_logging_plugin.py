@@ -36,8 +36,8 @@ class S3Logging(Plugin):
             uploaded_files.append(logfile_name)
         s3_bucket.save_uploaded_file_names(uploaded_files)
         index_file = s3_bucket.upload_index_file(test.id(), guid)
-        print "Log files uploaded: %s" % index_file
-        logging.error("Log files uploaded: %s" % index_file)
+        print "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+        logging.error("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
 
         # If the database plugin is running, attach a link
         # to the logs index database row

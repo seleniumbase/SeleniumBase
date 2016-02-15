@@ -43,11 +43,10 @@ WAIT_FOR_RSC_ON_CLICKS = False
 
 # Amazon S3 Bucket Credentials
 # (For saving screenshots and other log files from tests)
-S3_LOG_BUCKET = "[ENTER LOG BUCKET FOLDER NAME HERE]"
-S3_BUCKET_URL = ("http://[ENTER SUBDOMAIN OF AMAZON BUCKET URL HERE]"
-                 ".s3-[ENTER S3 REGION HERE].amazonaws.com/")
-S3_SELENIUM_ACCESS_KEY = "[ENTER YOUR S3 ACCESS KEY FOR SELENIUM HERE]"
-S3_SELENIUM_SECRET_KEY = "[ENTER YOUR S3 SECRET KEY FOR SELENIUM HERE]"
+S3_LOG_BUCKET = "[[S3 BUCKET NAME]]"
+S3_BUCKET_URL = ("https://[[S3 BUCKET_NAME]].s3.amazonaws.com/")
+S3_SELENIUM_ACCESS_KEY = "[[S3_ACCESS_KEY]]"
+S3_SELENIUM_SECRET_KEY = "[[S3_SECRET_KEY]]"
 
 # MySQL DB Credentials
 # (For saving data from tests)

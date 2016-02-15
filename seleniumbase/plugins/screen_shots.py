@@ -16,8 +16,6 @@ class ScreenShots(Plugin):
 
     name = "screen_shots"
     logfile_name = settings.SCREENSHOT_NAME
-    # Browser windows aren't always maximized. This may display more details.
-    logfile_name_2 = "full_screenshot.jpg"
 
     def options(self, parser, env):
         super(ScreenShots, self).options(parser, env=env)
@@ -34,21 +32,6 @@ class ScreenShots(Plugin):
             os.makedirs(test_logpath)
         screenshot_file = "%s/%s" % (test_logpath, self.logfile_name)
         test.driver.get_screenshot_as_file(screenshot_file)
-        '''try:
-            # Let humans see any errors on screen before closing the window
-            test.driver.maximize_window()
-            import time
-            time.sleep(0.2)  # Make sure the screen is ready
-        except Exception:
-            pass
-        # Second screenshot at fullscreen might not be necessary
-        # import base64
-        screen_b64 = test.driver.get_screenshot_as_base64()
-        screen = base64.decodestring(screen_b64)
-        screenshot_file_2 = "%s/%s" % (test_logpath, self.logfile_name_2)
-        f1 = open(screenshot_file_2, 'w+')
-        f1.write(screen)
-        f1.close()'''
 
     def addError(self, test, err, capt=None):
         self.add_screenshot(test, err, capt=capt)
