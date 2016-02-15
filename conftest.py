@@ -44,6 +44,22 @@ def pytest_addoption(parser):
                      choices=('prod', 'qa', 'test'),
                      default='test',
                      help=SUPPRESS_HELP)
+    parser.addoption('--with-s3_logging', action="store_true",
+                     dest='with_s3_logging',
+                     default=False,
+                     help="Use to save test log files in Amazon S3.")
+    parser.addoption('--with-screen_shots', action="store_true",
+                     dest='with_screen_shots',
+                     default=False,
+                     help="Use to save screenshots on test failure.")
+    parser.addoption('--with-basic_test_info', action="store_true",
+                     dest='with_basic_test_info',
+                     default=False,
+                     help="Use to save basic test info on test failure.")
+    parser.addoption('--with-page_source', action="store_true",
+                     dest='with_page_source',
+                     default=False,
+                     help="Use to save page source on test failure.")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
@@ -64,6 +80,10 @@ def pytest_configure(config):
     with_selenium = config.getoption('with_selenium')
     with_testing_base = config.getoption('with_testing_base')
     with_db_reporting = config.getoption('with_db_reporting')
+    with_s3_logging = config.getoption('with_s3_logging')
+    with_screen_shots = config.getoption('with_screen_shots')
+    with_basic_test_info = config.getoption('with_basic_test_info')
+    with_page_source = config.getoption('with_page_source')
     database_env = config.getoption('database_env')
     browser = config.getoption('browser')
     log_path = config.getoption('log_path')
@@ -85,6 +105,10 @@ def pytest_configure(config):
     config_file.write("data:::%s\n" % data)
     config_file.write("with_testing_base:::%s\n" % with_testing_base)
     config_file.write("with_db_reporting:::%s\n" % with_db_reporting)
+    config_file.write("with_s3_logging:::%s\n" % with_s3_logging)
+    config_file.write("with_screen_shots:::%s\n" % with_screen_shots)
+    config_file.write("with_basic_test_info:::%s\n" % with_basic_test_info)
+    config_file.write("with_page_source:::%s\n" % with_page_source)
     config_file.write("database_env:::%s\n" % database_env)
     config_file.write("log_path:::%s\n" % log_path)
     config_file.write("headless:::%s\n" % headless)
