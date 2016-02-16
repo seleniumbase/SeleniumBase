@@ -100,13 +100,14 @@ class Base(Plugin):
         error states, we want to make sure that they don't show up in
         the nose output as errors.
         """
-        self.__log_all_options_if_none_specified(test)
         if (err[0] == errors.BlockedTest or
                 err[0] == errors.SkipTest or
                 err[0] == errors.DeprecatedTest):
             print err[1].__str__().split('''-------------------- >> '''
                                          '''begin captured logging'''
                                          ''' << --------------------''', 1)[0]
+        else:
+            self.__log_all_options_if_none_specified(test)
 
     def handleError(self, test, err, capt=None):
         """
