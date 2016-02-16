@@ -101,11 +101,16 @@ def log_folder_setup(config):
                 shutil.rmtree(archived_logs)
 
 
+def pytest_unconfigure():
+    """ This runs after all tests have completed with pytest """
+    pass
+
+
 def pytest_runtest_setup():
-    # A placeholder for a method that runs before every test with pytest
+    """ This runs before every test with pytest """
     pass
 
 
 def pytest_runtest_teardown():
-    # A placeholder for a method that runs after every test with pytest
+    """ This runs after every test with pytest """
     pass
