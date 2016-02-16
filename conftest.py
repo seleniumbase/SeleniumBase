@@ -1,9 +1,9 @@
 """ This is the pytest configuration file """
 
+import optparse
 import os
 import shutil
 import time
-from optparse import SUPPRESS_HELP
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
@@ -43,7 +43,7 @@ def pytest_addoption(parser):
                      dest='database_env',
                      choices=('prod', 'qa', 'test'),
                      default='test',
-                     help=SUPPRESS_HELP)
+                     help=optparse.SUPPRESS_HELP)
     parser.addoption('--with-s3_logging', action="store_true",
                      dest='with_s3_logging',
                      default=False,
