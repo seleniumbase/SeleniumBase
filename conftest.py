@@ -1,9 +1,9 @@
 """ This is the pytest configuration file """
 
+import optparse
 import os
 import shutil
 import time
-from optparse import SUPPRESS_HELP
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
@@ -43,7 +43,7 @@ def pytest_addoption(parser):
                      dest='database_env',
                      choices=('prod', 'qa', 'test'),
                      default='test',
-                     help=SUPPRESS_HELP)
+                     help=optparse.SUPPRESS_HELP)
     parser.addoption('--with-s3_logging', action="store_true",
                      dest='with_s3_logging',
                      default=False,
@@ -77,55 +77,12 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
-    with_selenium = config.getoption('with_selenium')
-    with_testing_base = config.getoption('with_testing_base')
-    with_db_reporting = config.getoption('with_db_reporting')
-    with_s3_logging = config.getoption('with_s3_logging')
-    with_screen_shots = config.getoption('with_screen_shots')
-    with_basic_test_info = config.getoption('with_basic_test_info')
-    with_page_source = config.getoption('with_page_source')
-    database_env = config.getoption('database_env')
-    browser = config.getoption('browser')
-    log_path = config.getoption('log_path')
-    headless = config.getoption('headless')
-    demo_mode = config.getoption('demo_mode')
-    demo_sleep = ''
-    data = ''
-    if config.getoption('demo_sleep') is not None:
-        demo_sleep = config.getoption('demo_sleep')
-    if config.getoption('data') is not None:
-        data = config.getoption('data')
-    if config.getoption('database_env') is not None:
-        database_env = config.getoption('database_env')
-    # Create a temporary config file while tests are running
-    pytest_config = '.pytest_config'
-    config_file = open(pytest_config, 'w+')
-    config_file.write("with_selenium:::%s\n" % with_selenium)
-    config_file.write("browser:::%s\n" % browser)
-    config_file.write("data:::%s\n" % data)
-    config_file.write("with_testing_base:::%s\n" % with_testing_base)
-    config_file.write("with_db_reporting:::%s\n" % with_db_reporting)
-    config_file.write("with_s3_logging:::%s\n" % with_s3_logging)
-    config_file.write("with_screen_shots:::%s\n" % with_screen_shots)
-    config_file.write("with_basic_test_info:::%s\n" % with_basic_test_info)
-    config_file.write("with_page_source:::%s\n" % with_page_source)
-    config_file.write("database_env:::%s\n" % database_env)
-    config_file.write("log_path:::%s\n" % log_path)
-    config_file.write("headless:::%s\n" % headless)
-    config_file.write("demo_mode:::%s\n" % demo_mode)
-    config_file.write("demo_sleep:::%s\n" % demo_sleep)
-    config_file.close()
+    """ This runs after command line options have been parsed """
     log_folder_setup(config)
 
 
-def pytest_unconfigure():
-    pytest_config = '.pytest_config'
-    if os.path.isfile(pytest_config):
-        os.remove(pytest_config)
-
-
 def log_folder_setup(config):
-    # Handle Logging
+    """ Handle Logging """
     with_testing_base = config.getoption('with_testing_base')
     if with_testing_base:
         log_path = config.getoption('log_path')
@@ -144,11 +101,16 @@ def log_folder_setup(config):
                 shutil.rmtree(archived_logs)
 
 
+def pytest_unconfigure():
+    """ This runs after all tests have completed with pytest """
+    pass
+
+
 def pytest_runtest_setup():
-    # A placeholder for a method that runs before every test with pytest
+    """ This runs before every test with pytest """
     pass
 
 
 def pytest_runtest_teardown():
-    # A placeholder for a method that runs after every test with pytest
+    """ This runs after every test with pytest """
     pass
