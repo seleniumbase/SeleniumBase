@@ -6,7 +6,7 @@ The Selenium Grid Hub allows you to distribute tests to run in parallel across m
 
 First, download the latest selenium-server-standalone jar file to this folder (integrations/selenium_grid):
 ```bash
-./download_selenium
+python download_selenium.py
 ```
 Now you can start up the Grid Hub:
 ```bash
