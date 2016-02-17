@@ -184,8 +184,13 @@ class BaseCase(unittest.TestCase):
 
     def scroll_to(self, selector, wait=True):
         if wait:
+            # Fail here if element isn't visible after SMALL_TIMEOUT seconds
             self.wait_for_element_visible(
                 selector, timeout=settings.SMALL_TIMEOUT)
+        else:
+            # Might be a jQuery action to interact with an invisible element
+            if not self.is_element_visible:
+                time.sleep(0.05)  # Last chance to load before scrolling there
         scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
         try:
             self.driver.execute_script(scroll_script)
