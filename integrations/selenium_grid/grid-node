@@ -4,7 +4,7 @@
 # Usage: grid-node {start|stop}
 #
 
-source $(dirname $0)/util
+source $(dirname $0)/font_color
 
 EXPECTED_ARGS=1
 E_BADARGS=65

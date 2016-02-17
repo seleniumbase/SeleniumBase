@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Text color variables
+txtund=$(tput sgr 0 1)   # Underline
+txtbld=$(tput bold)      # Bold
+regred=$(tput setaf 1)   # Red
+regblu=$(tput setaf 4)   # Blue
+reggrn=$(tput setaf 2)   # Green
+regwht=$(tput setaf 7)   # White
+txtrst=$(tput sgr0)      # Reset
+info=${regwht}*${txtrst} # Feedback
+pass=${regblu}*${txtrst}
+warn=${regred}*${txtrst}
+ques=${regblu}?${txtrst}
+
+FAIL_MSG="${regred}[FAILURE]${txtrst}"
+SUCCESS_MSG="${reggrn}[SUCCESS]${txtrst}"
