@@ -12,12 +12,21 @@ Now you can start up the Grid Hub:
 ```bash
 ./grid-hub start
 ```
-Now add a Grid Node to the Grid Hub:
+Now you can add a Grid Node to the Grid Hub:
 ```bash
 ./grid-node start
 ```
 (NOTE: If the Grid Node is not running on the same machine as the Grid Hub, update the address from the script.)
 You should be able to see the Grid Console up and running from here: [http://0.0.0.0:4444/grid/console](http://0.0.0.0:4444/grid/console) (NOTE: That's the address if you're running locally from localhost.)
+
+You can remove a Grid Node from the Grid Hub with:
+```bash
+./grid-node stop
+```
+You can stop the Grid Hub at anytime with:
+```bash
+./grid-hub stop
+```
 
 #### More detailed info about connecting to the Selenium Grid Hub can be found here:
 * [https://theintern.github.io/intern/#selenium-grid](https://theintern.github.io/intern/#selenium-grid)
