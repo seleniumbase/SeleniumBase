@@ -97,17 +97,17 @@ class MyTestClass(BaseCase):
 
     def test_basic(self):
         self.open("http://xkcd.com/353/")
-        self.wait_for_element_visible("div#comic")
+        self.wait_for_element("div#comic")
         self.click('a[rel="license"]')
-        text = self.wait_for_element_visible('center').text
+        text = self.wait_for_element('center').text
         self.assertTrue("reuse any of my drawings" in text)
         self.open("http://xkcd.com/1481/")
         self.click_link_text('Blag')
-        self.wait_for_text_visible("The blag", "header h2")
+        self.wait_for_text("The blag", "header h2")
         self.update_text("input#s", "Robots!\n")
-        self.wait_for_text_visible("Hooray robots!", "#content")
+        self.wait_for_text("Hooray robots!", "#content")
         self.open("http://xkcd.com/1319/")
-        self.wait_for_text_visible("Automation", "div#ctitle")
+        self.wait_for_text("Automation", "div#ctitle")
 ```
 
 Now try running the script (from the "examples" folder) using various web browsers:
@@ -229,7 +229,7 @@ class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
         self.open("http://xkcd.com/731/")
-        self.wait_for_element_visible("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
+        self.wait_for_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
 ```
 Now run it:
 
@@ -284,11 +284,12 @@ self.wait_for_element_present("div.my_class", timeout=10)
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5)
 ```
+(NOTE: The short version of this is ``self.wait_for_element(ELEMENT)``)
 
 Since the line above returns the element, you can combine that with .click() as shown below:
 
 ```python
-self.wait_for_element_visible("a.my_class", timeout=5).click()
+self.wait_for_element("a.my_class", timeout=5).click()
 
 # But you're better off using the following statement, which does the same thing:
 
@@ -301,6 +302,7 @@ self.click("a.my_class")  # DO IT THIS WAY!
 self.wait_for_text_visible("Make it so!", "div#trek div.picard div.quotes", timeout=3)
 self.wait_for_text_visible("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=1)
 ```
+(NOTE: The short version of this is ``self.wait_for_text(TEXT, ELEMENT)``)
 
 #### Asserting Anything
 
@@ -372,7 +374,7 @@ If you want to type in special keys, that's easy too. Here's an example:
 
 ```python
 from selenium.webdriver.common.keys import Keys
-self.wait_for_element_visible("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # the backspace should cancel out the space, leaving you with the newline
+self.wait_for_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # the backspace should cancel out the space, leaving you with the newline
 ```
 
 #### Switching Tabs
@@ -540,4 +542,4 @@ Happy Automating!
 
 
 ### Legal Disclaimer
-Automation is a powerful tool. It allows you to take full control of web browsers and do almost anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this framework and the automation that you create. You may also want to see an expert when it comes to setting up your automation environment if you require assistance.
+Automation is a powerful thing. It allows you to take full control of web browsers and do almost anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this framework and the automation that you create. You may also want to see a professional when it comes to setting up your automation environment if you require assistance.

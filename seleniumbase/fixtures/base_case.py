@@ -184,8 +184,13 @@ class BaseCase(unittest.TestCase):
 
     def scroll_to(self, selector, wait=True):
         if wait:
+            # Fail here if element isn't visible after SMALL_TIMEOUT seconds
             self.wait_for_element_visible(
                 selector, timeout=settings.SMALL_TIMEOUT)
+        else:
+            # Might be a jQuery action to interact with an invisible element
+            if not self.is_element_visible:
+                time.sleep(0.05)  # Last chance to load before scrolling there
         scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
         try:
             self.driver.execute_script(scroll_script)
@@ -260,6 +265,11 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
+    def wait_for_element(self, selector, by=By.CSS_SELECTOR,
+                         timeout=settings.LARGE_TIMEOUT):
+        """ The shorter version of wait_for_element_visible() """
+        return self.wait_for_element_visible(selector, by=by, timeout=timeout)
+
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
         if selector.startswith('/') or selector.startswith('./'):
@@ -267,10 +277,20 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
+    def wait_for_text(self, text, selector, by=By.CSS_SELECTOR,
+                      timeout=settings.LARGE_TIMEOUT):
+        """ The shorter version of wait_for_text_visible() """
+        return self.wait_for_text_visible(
+            text, selector, by=by, timeout=timeout)
+
     def wait_for_link_text_visible(self, link_text,
                                    timeout=settings.LARGE_TIMEOUT):
         return self.wait_for_element_visible(
             link_text, by=By.LINK_TEXT, timeout=timeout)
+
+    def wait_for_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
+        """ The shorter version of wait_for_link_text_visible() """
+        return self.wait_for_link_text_visible(link_text, timeout=timeout)
 
     def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR,
                                 timeout=settings.LARGE_TIMEOUT):
