@@ -1,6 +1,6 @@
 ## Docker setup instructions for SeleniumBase
 
-#### 1. Get the Docker Toolbox from https://www.docker.com/docker-toolbox and install it.
+#### 1. Get the Docker Toolbox from https://www.docker.com/products/docker-toolbox and install it.
 
 #### 2. Create your SeleniumBase Docker environment:
 
