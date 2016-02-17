@@ -182,8 +182,10 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
-    def scroll_to(self, selector):
-        self.wait_for_element_visible(selector, timeout=settings.SMALL_TIMEOUT)
+    def scroll_to(self, selector, wait=True):
+        if wait:
+            self.wait_for_element_visible(
+                selector, timeout=settings.SMALL_TIMEOUT)
         scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
         try:
             self.driver.execute_script(scroll_script)
@@ -197,16 +199,16 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector)
         self.click(selector)
 
-    def jquery_click(self, selector):
-        self.scroll_to(selector)
+    def jquery_click(self, selector, wait=False):
+        self.scroll_to(selector, wait=wait)
         self.driver.execute_script("jQuery('%s').click()" % selector)
         self._demo_mode_pause_if_active()
 
     def jq_format(self, code):
         return page_utils.jq_format(code)
 
-    def set_value(self, selector, value):
-        self.scroll_to(selector)
+    def set_value(self, selector, value, wait=False):
+        self.scroll_to(selector, wait=wait)
         val = json.dumps(value)
         self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
         self._demo_mode_pause_if_active()
