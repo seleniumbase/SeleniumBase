@@ -8,7 +8,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.1.28',
+    version='1.1.29',
     author='Michael Mintz',
     author_email='@mintzworld',
     maintainer='Michael Mintz',
