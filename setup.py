@@ -7,11 +7,11 @@ from setuptools import setup, find_packages  # noqa
 setup(
     name='seleniumbase',
     version='1.1.28',
-    url='https://github.com/mdmintz/SeleniumBase',
+    url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
     maintainer='Michael Mintz',
-    description='The SeleniumBase Automation Framework',
+    description='Reliable Browser Automation - http://seleniumbase.com',
     license='The MIT License',
     install_requires=[
         'selenium==2.52.0',
