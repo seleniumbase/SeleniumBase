@@ -50,11 +50,6 @@ cd SeleniumBase
 
 (You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.)
 
-Depending on your Mac settings, some files may be hidden from view in your Finder window, such as ``.gitignore``. To view all files, run the following command and then reopen the Finder window:
-```bash
-defaults write com.apple.finder AppleShowAllFiles -bool true
-```
-
 
 #### **Step 2:** Create a virtualenv for seleniumbase and activate it
 
