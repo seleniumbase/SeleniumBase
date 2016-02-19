@@ -53,7 +53,7 @@ cd SeleniumBase
 
 #### **Step 2:** Create a virtualenv for seleniumbase and activate it
 
-If you're not sure how to create a virtual environment, [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to learn how.
+If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
 
 
 #### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
