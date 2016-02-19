@@ -1,4 +1,4 @@
-#### Running SeleniumBase Scripts
+## Running SeleniumBase Scripts
 
 Here are some example run commands for the files in this folder and what they do:
 (Note: You can replace ``nosetests`` with ``py.test`` for any of these.)
