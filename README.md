@@ -499,7 +499,7 @@ def write_data_to_db(self, theId, theValue, theUrl):
                                "theUrl":theUrl})
 ```
 
-Access credentials are stored in your library file for your convenience (you have to add them first).
+Access credentials are stored in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
 
 The following example below (taken from the Delayed Data Manager) shows how data can be pulled from the database.
 
