@@ -68,6 +68,10 @@ python setup.py install
 
 If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md).
 
+SeleniumBase is [in Pypi](https://pypi.python.org/pypi/seleniumbase), which means you can also install it like this:
+```bash
+pip install seleniumbase
+```
 
 #### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt. (NOTE: xkcd is a webcomic)
 
