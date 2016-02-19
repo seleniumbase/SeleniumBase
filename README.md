@@ -12,23 +12,23 @@
 
 
 ### Part I: MAC SETUP INSTRUCTIONS
-####(WINDOWS users: You'll need to make a few modifications to the setup steps listed here. For starters, you won't be able to use the "brew install" command since that's MAC-only. Instead, download the requirements mentioned directly from the web. I'll provide you with links to save you time. You'll also want to put downloaded files into your [PATH](http://java.com/en/download/help/path.xml).)
-####(DOCKER users: If you want to run browser automation with Docker, see the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
+####(WINDOWS users: Ignore the "brew install" commands... that's MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
+####(DOCKER users: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
 
 #### **Step 0a:** Get basic requirements
 
-If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md) to get those installed.
+If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
 
 #### **Step 0b:** Get web browsers to run automation on
 
-If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
+If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/). You can also [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/) to run automation there.
 
 #### **Step 0c:** Get drivers for the web browsers that require them
 
-If you want to run automation on browsers other than Firefox (such as Chrome), you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/) separately. (Firefox drivers are already included with Selenium by default)
+If you want to run automation on browsers other than Firefox (such as Chrome), you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/) separately. (Firefox drivers are already included with Selenium by default, which makes life a bit easier.)
 
-On a Mac you can install those drivers more easily by using ``brew`` (aka ``homebrew``). You may have previously installed ``brew`` if you used that a few steps above to install ``git``.
+On a Mac you can install those drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
 Mac:
 ```bash
@@ -50,11 +50,6 @@ cd SeleniumBase
 
 (You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.)
 
-Depending on your Mac settings, some files may be hidden from view in your Finder window, such as ``.gitignore``. To view all files, run the following command and then reopen the Finder window:
-```bash
-defaults write com.apple.finder AppleShowAllFiles -bool true
-```
-
 
 #### **Step 2:** Create a virtualenv for seleniumbase and activate it
 
@@ -73,6 +68,10 @@ python setup.py install
 
 If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md).
 
+SeleniumBase is [in Pypi](https://pypi.python.org/pypi/seleniumbase), which means you can also install it like this:
+```bash
+pip install seleniumbase
+```
 
 #### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt. (NOTE: xkcd is a webcomic)
 
@@ -173,7 +172,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
 ```
 
-(NOTE: I'm currently adding more pytest plugins to catch up with nosetests. The latest one added is "--with-testing_base", which gives you full logging on test failures for screenshots, page source, and basic test info. Coming soon: The DB and S3 plugins, which are already available with nosetests.)
+(NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
 #### **Step 6:** Complete the setup
 
@@ -196,22 +195,23 @@ Here are some more helpful resources I found regarding the use of Xvfb:
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
-* If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the hipchat_reporting plugin, which is included with this test framework.
+* If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the [hipchat_reporting plugin](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/hipchat_reporting_plugin.py) (nosetests only).
 
 * Be sure to tell SeleniumBase to use these added features when you set them up. That's easy to do. You would be running tests like this:
 
 ```bash
-nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots --with-db_reporting --with-s3_logging -s
+nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-db_reporting --with-s3_logging -s
 ```
+(NOTE: Don't use ``--with-db_reporting`` or ``--with-s3_logging`` if you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py))
 
-(When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests as long as you've setup your MySQL DB properly and you've also updated your seleniumbase/core/mysql_conf.py file with your DB credentials.)
+When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests run into your MySQL DB. The s3_logging plugin uploads basic test info, screenshots, and page source into your S3 storage folder.
+
 To simplify that long run command, you can create a *.cfg file, such as the one provided in the example, and enter your plugins there so that you can run everything by typing:
 
 ```bash
 nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg -s
 ```
 
-So much easier on the eyes :)
 You can simplify that even more by using a setup.cfg file, such as the one provided for you in the examples folder. If you kick off a test run from within the folder that setup.cfg is location in, that file will automatically be used as your configuration, meaning that you wouldn't have to type out all the plugins that you want to use (or include a config file) everytime you run tests.
 
 If you tell nosetests to run an entire file, it will run every method in that python file that starts with "test". You can be more specific on what to run by doing something like:
@@ -234,7 +234,7 @@ class MyTestClass(BaseCase):
 Now run it:
 
 ```bash
-nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots -s
+nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base -s
 ```
 
 You'll notice that a logs folder was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder.
@@ -503,7 +503,7 @@ def write_data_to_db(self, theId, theValue, theUrl):
                                "theUrl":theUrl})
 ```
 
-Access credentials are stored in your library file for your convenience (you have to add them first).
+Access credentials are stored in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
 
 The following example below (taken from the Delayed Data Manager) shows how data can be pulled from the database.
 
