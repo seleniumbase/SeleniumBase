@@ -1,6 +1,6 @@
 ## SeleniumBase Automation Framework [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase)
 
-### *(An open-source Python library that makes it easier to write reliable browser automation for testing and more...)*
+An open-source Python library for jump-starting your browser automation and testing goals.
 
 #### Features include:
 * [Python methods](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
