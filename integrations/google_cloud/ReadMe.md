@@ -1,4 +1,4 @@
-### Google Cloud setup instructions for SeleniumBase (using Jenkins)
+## Google Cloud setup instructions for SeleniumBase (using Jenkins)
 
 #### 1. Go to the Google Cloud Launcher
 
