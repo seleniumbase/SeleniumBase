@@ -12,7 +12,7 @@
 
 
 ### Part I: MAC SETUP INSTRUCTIONS
-####(WINDOWS users: Ignore the "brew install" commands... that's MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
+####(WINDOWS users: Ignore ``brew install``, which is MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
 ####(DOCKER users: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
 
 #### **Step 0a:** Get basic requirements
