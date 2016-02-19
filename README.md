@@ -17,7 +17,7 @@
 
 #### **Step 0a:** Get basic requirements
 
-If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
+If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
 
 #### **Step 0b:** Get web browsers to run automation on
