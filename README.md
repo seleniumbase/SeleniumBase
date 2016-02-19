@@ -230,7 +230,7 @@ class MyTestClass(BaseCase):
 Now run it:
 
 ```bash
-nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots -s
+nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base -s
 ```
 
 You'll notice that a logs folder was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder.
