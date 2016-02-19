@@ -66,7 +66,7 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
-If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md).
+If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md). If you make any changes to your local version of SeleniumBase, you may need to run ``python setup.py install`` each time for those changes to take effect.
 
 SeleniumBase is [in Pypi](https://pypi.python.org/pypi/seleniumbase), which means you can also install it like this:
 ```bash
@@ -129,6 +129,8 @@ nosetests my_first_test.py --with-selenium -s --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
+
+If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
 ```bash
 nosetests my_first_test.py --with-selenium -s --demo_mode --demo_sleep=1.2
