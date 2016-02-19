@@ -168,7 +168,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
 ```
 
-(NOTE: I'm currently adding more pytest plugins to catch up with nosetests. The latest one added is "--with-testing_base", which gives you full logging on test failures for screenshots, page source, and basic test info. Coming soon: The DB and S3 plugins, which are already available with nosetests.)
+(NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
 #### **Step 6:** Complete the setup
 
