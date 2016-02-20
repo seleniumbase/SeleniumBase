@@ -11,6 +11,7 @@ import os
 import pytest
 import sys
 import time
+import traceback
 import unittest
 import uuid
 from pyvirtualdisplay import Display
@@ -414,17 +415,23 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
 
-    def __insert_test_result(self, state, err=None):
+    def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
         data_payload.guid = self.testcase_guid
         data_payload.execution_guid = self.execution_guid
         data_payload.state = state
-        if err is not None:
-            data_payload.message = err[1].__str__().split(
-                '''-------------------- >> '''
-                '''begin captured logging'''
-                ''' << --------------------''', 1)[0]
+        if err:
+            tb_string = traceback.format_exc()
+            if "Message: " in tb_string:
+                data_payload.message = "Message: " + tb_string.split(
+                    "Message: ")[-1]
+            elif "Exception: " in tb_string:
+                data_payload.message = tb_string.split("Exception: ")[-1]
+            elif "Error: " in tb_string:
+                data_payload.message = tb_string.split("Error: ")[-1]
+            else:
+                data_payload.message = "Unknown Error: See Stacktrace"
         self.testcase_manager.update_testcase_data(data_payload)
 
     def tearDown(self):
@@ -469,9 +476,9 @@ class BaseCase(unittest.TestCase):
                     self.display.stop()
             if self.with_db_reporting:
                 if sys.exc_info()[1] is not None:
-                    self.__insert_test_result(constants.State.ERROR)
+                    self.__insert_test_result(constants.State.ERROR, True)
                 else:
-                    self.__insert_test_result(constants.State.PASS)
+                    self.__insert_test_result(constants.State.PASS, False)
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
@@ -496,6 +503,6 @@ class BaseCase(unittest.TestCase):
                 if self.with_db_reporting:
                     self.testcase_manager = TestcaseManager(self.database_env)
                     data_payload = TestcaseDataPayload()
-                    data_payload.guid = guid
+                    data_payload.guid = self.testcase_guid
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
