@@ -42,6 +42,7 @@ Windows:
 * OPTIONAL: [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (only if you want to run headless browser automation)
 * For everything you download, put those files in your PATH. (``Environmental Variables`` on a Windows machine)
 
+If you want to verify that you successfully installed the web drivers, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
 
 #### **Step 1:** Download or Clone SeleniumBase to your local machine
 
@@ -75,19 +76,7 @@ SeleniumBase is [in Pypi](https://pypi.python.org/pypi/seleniumbase), which mean
 pip install seleniumbase
 ```
 
-#### **Step 4:** Verify that Selenium and Chromedriver were successfully installed by checking inside a python command prompt. (NOTE: xkcd is a webcomic)
-
-```bash
-python
->>> from selenium import webdriver
->>> browser = webdriver.Chrome()
->>> browser.get("http://xkcd.com/1337/")
->>> browser.close()
->>> exit()
-```
-
-
-#### **Step 5:** Verify that SeleniumBase was successfully installed by running the example test
+#### **Step 4:** Verify that SeleniumBase was successfully installed by running the example test
 
 You can verify the installation of SeleniumBase by running a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. This may be a good time to read up on CSS selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. With CSS selectors, dots represent class names and pound signs represent IDs.
 
@@ -178,7 +167,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -
 
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
-#### **Step 6:** Complete the setup
+#### **Step 5:** Complete the setup
 
 If you're planning on using the full power of this test framework, there are a few more things you'll want to do:
 
