@@ -1,4 +1,4 @@
-# SeleniumBase Automation Framework
+## SeleniumBase Automation Framework
 
 An open-source Python library for jump-starting your browser automation and testing goals.
 
