@@ -1,6 +1,6 @@
-## SeleniumBase Automation Framework
+# SeleniumBase
 
-An open-source Python library for jump-starting your browser automation and testing goals.
+An open-source Python framework for jump-starting your browser automation and testing goals.
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase)
 
@@ -14,7 +14,7 @@ An open-source Python library for jump-starting your browser automation and test
 
 
 ### Part I: MAC SETUP INSTRUCTIONS
-####(WINDOWS users: Ignore ``brew install``, which is MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
+####(WINDOWS users: Ignore "brew install", which is MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
 ####(DOCKER users: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
 
 #### **Step 0a:** Get basic requirements
