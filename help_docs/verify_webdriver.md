@@ -1,6 +1,6 @@
-### Verify that Selenium and WebDrivers were successfully installed
+### Verify that web drivers were successfully installed
 
-**You can do this by checking inside a Python command prompt. (NOTE: xkcd is a webcomic)**
+*You can do this by checking inside a Python command prompt. (NOTE: xkcd is a webcomic)*
 
 #### Verifying FirefoxDriver (comes with Selenium by default)
 ```bash
