@@ -1,5 +1,8 @@
 """
 You'll probably want to customize this to your own environment and needs.
+
+NOSETESTS USERS: IF YOU MAKE CHANGES TO THIS FILE, YOU NEED TO RERUN
+``python setup.py install`` IN ORDER FOR YOUR CHANGES TO TAKE EFFECT.
 """
 
 
