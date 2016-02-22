@@ -375,12 +375,6 @@ class BaseCase(unittest.TestCase):
             self.data = pytest.config.option.data
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
-            if self.headless:
-                self.display = Display(visible=0, size=(1200, 800))
-                self.display.start()
-                self.headless_active = True
-            if self.with_selenium:
-                self.driver = browser_launcher.get_driver(self.browser)
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
@@ -414,6 +408,12 @@ class BaseCase(unittest.TestCase):
                 data_payload.state = constants.State.NOTRUN
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
+            if self.headless:
+                self.display = Display(visible=0, size=(1200, 800))
+                self.display.start()
+                self.headless_active = True
+            if self.with_selenium:
+                self.driver = browser_launcher.get_driver(self.browser)
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
