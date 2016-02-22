@@ -20,7 +20,7 @@ class DatabaseManager():
         db_server, db_user, db_pass, db_schema = \
             conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
         retry_count = 3
-        backoff = 3  # Time to wait (in seconds) between retries
+        backoff = 1.2  # Time to wait (in seconds) between retries
         count = 0
         while count < retry_count:
             try:
