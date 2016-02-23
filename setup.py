@@ -6,7 +6,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.1.32',
+    version='1.1.33',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
