@@ -1,7 +1,6 @@
 """
 The setup package to install the SeleniumBase Test Framework plugins
-on a development machine that DOES NOT intend to write to
-a MySQL DB during test runs.
+(Docker edition)
 """
 
 from setuptools import setup, find_packages  # noqa
@@ -12,8 +11,7 @@ setup(
     author='Michael Mintz',
     author_email='@mintzworld',
     maintainer='Michael Mintz',
-    description='''The SeleniumBase Test Framework.
-                (Powered by Python, WebDriver, and more...)''',
+    description='Reliable Browser Automation - http://seleniumbase.com',
     license='The MIT License',
     packages=['seleniumbase',
                 'seleniumbase.core',
