@@ -94,12 +94,9 @@ RUN exec "$@"
 #=====================
 # Set up SeleniumBase
 #=====================
-COPY integrations/docker/docker_requirements.txt /SeleniumBase/
-COPY integrations/docker/docker_setup.py /SeleniumBase/
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
-RUN cd /SeleniumBase && ls && sudo pip install -r docker_requirements.txt
-RUN cd /SeleniumBase && ls && sudo python docker_setup.py install
+RUN cd /SeleniumBase && ls && pip install seleniumbase
 
 #==========================================
 # Create entrypoint and grab example tests
