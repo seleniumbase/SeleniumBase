@@ -6,7 +6,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.1.35',
+    version='1.1.36',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
@@ -14,7 +14,7 @@ setup(
     description='Reliable Browser Automation - http://seleniumbase.com',
     license='The MIT License',
     install_requires=[
-        'selenium==2.52.0',
+        'selenium>=2.53.1',
         'nose==1.3.7',
         'pytest==2.8.7',
         'flake8==2.5.4',
