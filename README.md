@@ -80,6 +80,8 @@ pip install seleniumbase
 
 You can verify the installation of SeleniumBase by running a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. This may be a good time to read up on CSS selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. With CSS selectors, dots represent class names and pound signs represent IDs.
 
+Here's the first example script that you'll be running:
+
 ```python
 from seleniumbase import BaseCase
 
@@ -100,7 +102,7 @@ class MyTestClass(BaseCase):
         self.wait_for_text("Automation", "div#ctitle")
 ```
 
-Now try running the script (from the "examples" folder) using various web browsers:
+Here's how to run the example script using various web browsers:
 
 ```bash
 cd examples/
