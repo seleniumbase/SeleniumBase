@@ -91,7 +91,7 @@ class Base(Plugin):
                 test_logpath, test.driver, test.browser)
             log_helper.log_page_source(test_logpath, test.driver)
 
-    def addFailure(self, test, err, capt=None):
+    def addFailure(self, test, err, capt=None, tbinfo=None):
         self.__log_all_options_if_none_specified(test)
 
     def addError(self, test, err, capt=None):
