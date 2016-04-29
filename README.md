@@ -4,9 +4,9 @@
 
 An open-source Python framework for jump-starting your browser automation and testing goals.
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/automation.gif "SeleniumBase")
+![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
-(Actual demo of [my_first_test.py](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py) running against [the XKCD webcomic](http://xkcd.com/353/))
+(Actual demo of [my_first_test.py](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py) running against [the XKCD site](http://xkcd.com/353/).)
 
 #### Features include:
 * [Python methods](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
