@@ -65,7 +65,7 @@ If you're not sure how to create a virtual environment, **[follow these instruct
 
 #### **Step 3:** Install SeleniumBase
 
-[Since SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this:
+Since [SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this:
 ```bash
 pip install seleniumbase
 ```
