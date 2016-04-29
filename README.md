@@ -78,9 +78,9 @@ pip install seleniumbase
 
 #### **Step 4:** Verify that SeleniumBase was successfully installed by running the example test
 
-You can verify the installation of SeleniumBase by running a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. This may be a good time to read up on CSS selectors. If you use Chrome, you can right-click on a page and select "Inspect Element" to see the details you need to create such a script. With CSS selectors, dots represent class names and pound signs represent IDs.
+You can verify the installation of SeleniumBase by running a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. In most web browsers, you can right-click on a page and select "Inspect Element" to see the CSS selector details that you need to create such a script. With CSS selectors, dots represent class names and pound signs represent IDs.
 
-Here's the first example script that you'll be running:
+Here's what the code looks like from the first example script that you'll be running:
 
 ```python
 from seleniumbase import BaseCase
@@ -89,17 +89,17 @@ class MyTestClass(BaseCase):
 
     def test_basic(self):
         self.open("http://xkcd.com/353/")
-        self.wait_for_element("div#comic")
+        self.find_element("div#comic")
         self.click('a[rel="license"]')
-        text = self.wait_for_element('center').text
+        text = self.get_text('center')
         self.assertTrue("reuse any of my drawings" in text)
         self.open("http://xkcd.com/1481/")
         self.click_link_text('Blag')
-        self.wait_for_text("The blag", "header h2")
+        self.find_text("The blag", "header h2")
         self.update_text("input#s", "Robots!\n")
-        self.wait_for_text("Hooray robots!", "#content")
+        self.find_text("Hooray robots!", "#content")
         self.open("http://xkcd.com/1319/")
-        self.wait_for_text("Automation", "div#ctitle")
+        self.find_text("Automation", "div#ctitle")
 ```
 
 Here's how to run the example script using various web browsers:
@@ -222,7 +222,7 @@ class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
         self.open("http://xkcd.com/731/")
-        self.wait_for_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
+        self.find_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
 ```
 Now run it:
 
@@ -266,6 +266,28 @@ To click an element on the page:
 self.click("div#my_id")
 ```
 
+#### Typing Text
+
+self.update_text(selector, text)  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
+
+```python
+self.update_text("input#id_value", "2012")
+```
+
+You can also use self.add_text() or the WebDriver .send_keys() command, but those won't clear the text box first if there's already text inside.
+If you want to type in special keys, that's easy too. Here's an example:
+
+```python
+from selenium.webdriver.common.keys import Keys
+self.find_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # the backspace should cancel out the space, leaving you with the newline
+```
+
+#### Getting the text from an element on a page
+
+```python
+self.get_text("header h2")
+```
+
 #### Asserting existance of an element on a page within some number of seconds:
 
 ```python
@@ -277,12 +299,12 @@ self.wait_for_element_present("div.my_class", timeout=10)
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5)
 ```
-(NOTE: The short version of this is ``self.wait_for_element(ELEMENT)``)
+(NOTE: The short version of this is ``self.find_element(ELEMENT)``)
 
 Since the line above returns the element, you can combine that with .click() as shown below:
 
 ```python
-self.wait_for_element("a.my_class", timeout=5).click()
+self.find_element("a.my_class", timeout=5).click()
 
 # But you're better off using the following statement, which does the same thing:
 
@@ -295,7 +317,7 @@ self.click("a.my_class")  # DO IT THIS WAY!
 self.wait_for_text_visible("Make it so!", "div#trek div.picard div.quotes", timeout=3)
 self.wait_for_text_visible("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=1)
 ```
-(NOTE: The short version of this is ``self.wait_for_text(TEXT, ELEMENT)``)
+(NOTE: The short version of this is ``self.find_text(TEXT, ELEMENT)``)
 
 #### Asserting Anything
 
@@ -352,22 +374,6 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
         return "Picard Facebook Superbowl Ad 2015"
     else:
         raise Exception("Reports of my assimilation are greatly exaggerated.")
-```
-
-#### Typing Text
-
-update_text(selector, text)  # updates the text from the specified element with the specified value. Exception raised if element missing or field not editable. Example:
-
-```python
-self.update_text("input#id_value", "2012")
-```
-
-You can also use the WebDriver .send_keys() command, but it won't clear the text box first if there's already text inside.
-If you want to type in special keys, that's easy too. Here's an example:
-
-```python
-from selenium.webdriver.common.keys import Keys
-self.wait_for_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # the backspace should cancel out the space, leaving you with the newline
 ```
 
 #### Switching Tabs
