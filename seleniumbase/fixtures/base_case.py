@@ -83,6 +83,12 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         self._demo_mode_pause_if_active()
 
+    def get_text(self, selector, by=By.CSS_SELECTOR,
+                 timeout=settings.SMALL_TIMEOUT):
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout)
+        return element.text
+
     def add_text(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
@@ -271,6 +277,11 @@ class BaseCase(unittest.TestCase):
         """ The shorter version of wait_for_element_visible() """
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
+    def find_element(self, selector, by=By.CSS_SELECTOR,
+                     timeout=settings.LARGE_TIMEOUT):
+        """ Same as wait_for_element_visible() """
+        return self.wait_for_element_visible(selector, by=by, timeout=timeout)
+
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
         if selector.startswith('/') or selector.startswith('./'):
@@ -284,6 +295,12 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
+    def find_text(self, text, selector, by=By.CSS_SELECTOR,
+                  timeout=settings.LARGE_TIMEOUT):
+        """ Same as wait_for_text_visible() """
+        return self.wait_for_text_visible(
+            text, selector, by=by, timeout=timeout)
+
     def wait_for_link_text_visible(self, link_text,
                                    timeout=settings.LARGE_TIMEOUT):
         return self.wait_for_element_visible(
@@ -291,6 +308,10 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of wait_for_link_text_visible() """
+        return self.wait_for_link_text_visible(link_text, timeout=timeout)
+
+    def find_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
+        """ Same as wait_for_link_text_visible() """
         return self.wait_for_link_text_visible(link_text, timeout=timeout)
 
     def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR,
