@@ -83,6 +83,12 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         self._demo_mode_pause_if_active()
 
+    def get_text(self, selector, by=By.CSS_SELECTOR,
+                 timeout=settings.SMALL_TIMEOUT):
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout)
+        return element.text
+
     def add_text(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
