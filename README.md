@@ -2,7 +2,7 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/seleniumbase)
 
-An open-source Python framework for jump-starting your browser automation and testing goals.
+The quick solution for reliable browser automation and testing.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
@@ -48,22 +48,29 @@ Windows:
 
 If you want to verify that you successfully installed the web drivers, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
 
-#### **Step 1:** Download or Clone SeleniumBase to your local machine
+#### **Step 1:** Clone SeleniumBase to your local machine
 
 ```bash
 git clone https://github.com/mdmintz/SeleniumBase.git
 cd SeleniumBase
 ```
 
-(You can use a tool such as [SourceTree](http://www.sourcetreeapp.com/) to make things easier by providing you with a simple-to-use user interface for viewing and managing your git commits and status.)
+(A Git GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
 
 
-#### **Step 2:** Create a virtualenv for seleniumbase and activate it
+#### **Step 2:** Create & activate a virtual environment for seleniumbase (MAC/LINUX)
 
 If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
 
 
-#### **Step 3:** Install necessary packages from the SeleniumBase folder and compile the test framework (from within your virtual environment)
+#### **Step 3:** Install SeleniumBase
+
+[Since SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this:
+```bash
+pip install seleniumbase
+```
+
+You can also customize your local version of SeleniumBase. If you change any Python requirements or make changes to the SeleniumBase library files, just run the following commands from the SeleniumBase top-level directory for your changes to take effect:
 
 ```bash
 pip install -r requirements.txt
@@ -73,12 +80,8 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
-If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md). If you make any changes to your local version of SeleniumBase, you may need to run ``python setup.py install`` each time for those changes to take effect.
+If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md).
 
-[SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), which means you can also install it like this:
-```bash
-pip install seleniumbase
-```
 
 #### **Step 4:** Verify that SeleniumBase was successfully installed by running the example test
 
