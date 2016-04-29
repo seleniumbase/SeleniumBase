@@ -5,6 +5,7 @@
 An open-source Python framework for jump-starting your browser automation and testing goals.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation.gif "SeleniumBase")
+
 (Actual demo of my_first_test.py running against xkcd.com)
 
 #### Features include:
