@@ -389,7 +389,7 @@ What if your test opens up a new tab/window and now you have more than one page?
 Ex:
 
 ```python
-self.driver.switch_to_window(self.driver.window_handles[1])  # this switches to the new tab
+self.driver.switch_to.window(self.driver.window_handles[1])  # this switches to the new tab
 ```
 
 driver.window_handles is a list that will continually get updated when new windows/tabs appear (index numbering is auto-incrementing from 0, which represents the main window)
@@ -398,10 +398,10 @@ driver.window_handles is a list that will continually get updated when new windo
 Ex:
 
 ```python
-self.driver.switch_to_frame('ContentManagerTextBody_ifr')
+self.driver.switch_to.frame('ContentManagerTextBody_ifr')
 # Now you can act inside the iFrame
 # Do something cool (here)
-self.driver.switch_to_default_content()  # exit the iFrame when you're done
+self.driver.switch_to.default_content()  # exit the iFrame when you're done
 ```
 
 #### Handle Pop-Up Alerts
