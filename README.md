@@ -2,7 +2,7 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/seleniumbase)
 
-A simple, fast solution for reliable browser automation and testing.
+A reliable solution for fast & simple browser automation and testing.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
