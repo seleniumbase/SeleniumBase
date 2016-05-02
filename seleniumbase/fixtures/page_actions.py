@@ -340,7 +340,7 @@ def wait_for_and_dismiss_alert(driver, timeout=settings.LARGE_TIMEOUT):
 def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     """
     Wait for a browser alert to appear, and switch to it. This should be usable
-    as a drop-in replacement for driver.switch_to.alert() when the alert box
+    as a drop-in replacement for driver.switch_to.alert when the alert box
     may not exist yet.
     @Params
     driver - the webdriver object (required)
@@ -349,7 +349,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
 
     for x in range(int(timeout * 10)):
         try:
-            alert = driver.switch_to.alert()
+            alert = driver.switch_to.alert
             # Raises exception if no alert present
             dummy_variable = alert.text  # noqa
             return alert
