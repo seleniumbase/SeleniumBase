@@ -24,10 +24,10 @@ from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import browser_launcher
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import page_actions
+from seleniumbase.fixtures import page_utils
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-import page_actions
-import page_utils
 
 
 class BaseCase(unittest.TestCase):

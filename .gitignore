@@ -38,4 +38,6 @@ nosetests.xml
 
 # Other
 selenium-server-standalone.jar
+latest_report
+report_archives
 temp

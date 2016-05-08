@@ -19,8 +19,11 @@ By.TAG_NAME
 By.PARTIAL_LINK_TEXT
 """
 
+import codecs
 import os
+import sys
 import time
+import traceback
 from seleniumbase.config import settings
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
@@ -291,6 +294,42 @@ def save_screenshot(driver, name, folder=None):
     else:
         screenshot_file = name
     driver.get_screenshot_as_file(screenshot_file)
+
+
+def _get_last_page(driver):
+    try:
+        last_page = driver.current_url
+    except Exception:
+        last_page = '[WARNING! Browser Not Open!]'
+    if len(last_page) < 5:
+        last_page = '[WARNING! Browser Not Open!]'
+    return last_page
+
+
+def save_test_failure_data(driver, name, browser_type, folder=None):
+    """
+    Saves failure data to the current directory (or to a subfolder if provided)
+    If the folder provided doesn't exist, it will get created.
+    """
+    if folder:
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % folder
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        failure_data_file_path = "%s/%s" % (file_path, name)
+    else:
+        failure_data_file_path = name
+    failure_data_file = codecs.open(failure_data_file_path, "w+", "utf-8")
+    last_page = _get_last_page(driver)
+    data_to_save = []
+    data_to_save.append("Last_Page: %s" % last_page)
+    data_to_save.append("Browser: %s " % browser_type)
+    data_to_save.append("Traceback: " + ''.join(
+        traceback.format_exception(sys.exc_info()[0],
+                                   sys.exc_info()[1],
+                                   sys.exc_info()[2])))
+    failure_data_file.writelines("\r\n".join(data_to_save))
+    failure_data_file.close()
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
