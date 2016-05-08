@@ -1,0 +1,26 @@
+from seleniumbase import BaseCase
+
+
+class MyTestSuite(BaseCase):
+
+    def test_1(self):
+        self.open("http://xkcd.com/1663/")
+        for p in xrange(4):
+            self.click('a[rel="next"]')
+        self.find_text("Algorithms", "div#ctitle", timeout=3)
+
+    def test_2(self):
+        # This test will fail
+        self.open("http://xkcd.com/1675/")
+        raise Exception("FAKE EXCEPTION: This test fails on purpose.")
+
+    def test_3(self):
+        self.open("http://xkcd.com/1406/")
+        self.find_text("Universal Converter Box", "div#ctitle", timeout=3)
+        self.open("http://xkcd.com/608/")
+        self.find_text("Form", "div#ctitle", timeout=3)
+
+    def test_4(self):
+        # This test will fail
+        self.open("http://xkcd.com/1670/")
+        self.find_element("FakeElement.DoesNotExist", timeout=0.5)
