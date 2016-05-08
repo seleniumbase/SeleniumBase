@@ -26,9 +26,17 @@ ARCHIVE_EXISTING_LOGS = False
 
 # Default names for files saved during test failures when logging is turned on.
 # (These files will get saved to the "logs/" folder)
+# Usage: "--with-testing_base"
 SCREENSHOT_NAME = "screenshot.jpg"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
+
+# Default names for folders and files saved when reports are turned on.
+# Usage: "--report" (Also requires: "--with-testing_base")
+LATEST_REPORT_DIR = "latest_report"
+REPORT_ARCHIVE_DIR = "report_archives"
+HTML_REPORT = "report.html"
+RESULTS_TABLE = "results_table.csv"
 
 ''' This adds wait_for_ready_state_complete() after various browser actions.
     By default, Selenium waits for the 'interactive' state before continuing.
@@ -42,14 +50,7 @@ WAIT_FOR_RSC_ON_CLICKS = False
 
 
 # #####>>>>>----- RECOMMENDED SETTINGS -----<<<<<#####
-# ##### (For test logging and database reporting)
-
-# Amazon S3 Bucket Credentials
-# (For saving screenshots and other log files from tests)
-S3_LOG_BUCKET = "[S3 BUCKET NAME]"
-S3_BUCKET_URL = "https://[S3 BUCKET NAME].s3.amazonaws.com/"
-S3_SELENIUM_ACCESS_KEY = "[S3 ACCESS KEY]"
-S3_SELENIUM_SECRET_KEY = "[S3 SECRET KEY]"
+# ##### (For database reporting and saving test logs)
 
 # MySQL DB Credentials
 # (For saving data from tests)
@@ -57,6 +58,14 @@ DB_HOST = "[TEST DB HOST]"  # Ex: "127.0.0.1"
 DB_USERNAME = "[TEST DB USERNAME]"  # Ex: "root"
 DB_PASSWORD = "[TEST DB PASSWORD]"  # Ex: "test"
 DB_SCHEMA = "[TEST DB SCHEMA]"  # Ex: "test"
+
+
+# Amazon S3 Bucket Credentials
+# (For saving screenshots and other log files from tests)
+S3_LOG_BUCKET = "[S3 BUCKET NAME]"
+S3_BUCKET_URL = "https://[S3 BUCKET NAME].s3.amazonaws.com/"
+S3_SELENIUM_ACCESS_KEY = "[S3 ACCESS KEY]"
+S3_SELENIUM_SECRET_KEY = "[S3 SECRET KEY]"
 
 
 # #####>>>>>----- OPTIONAL SETTINGS -----<<<<<#####
