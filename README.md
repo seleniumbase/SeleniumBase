@@ -178,6 +178,13 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -
 
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
+The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base``) (nosetest-only for now)
+
+```bash
+nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
+```
+(Note: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes.)
+
 #### **Step 5:** Complete the setup
 
 If you're planning on using the full power of this test framework, there are a few more things you'll want to do:
