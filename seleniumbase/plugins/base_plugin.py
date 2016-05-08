@@ -12,6 +12,7 @@ from nose.plugins import Plugin
 from nose.exc import SkipTest
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
+from seleniumbase.core import report_helper
 from seleniumbase.fixtures import constants, errors
 
 
@@ -47,6 +48,15 @@ class Base(Plugin):
             '--log_path', dest='log_path',
             default='logs/',
             help='Where the log files are saved.')
+        parser.add_option(
+            '--report', action="store_true", dest='report',
+            default=False,
+            help='Create a fancy report at the end of the test suite.')
+        parser.add_option(
+            '--hide_report', action="store_true",
+            dest='hide_report',
+            default=False,
+            help="If true while using report, it won't pop up after tests run")
 
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)
@@ -54,6 +64,8 @@ class Base(Plugin):
             return
         self.options = options
         log_path = options.log_path
+        self.report_on = options.report
+        self.hide_report = options.hide_report
         if log_path.endswith("/"):
             log_path = log_path[:-1]
         if not os.path.exists(log_path):
@@ -67,6 +79,13 @@ class Base(Plugin):
             os.makedirs(log_path)
             if not settings.ARCHIVE_EXISTING_LOGS:
                 shutil.rmtree(archived_logs)
+        self.successes = []
+        self.failures = []
+        self.page_results_list = []
+        self.test_count = 0
+        self.import_error = False
+        if self.report_on:
+            report_helper.clear_out_old_report_logs(archive_past_runs=False)
 
     def beforeTest(self, test):
         test_logpath = self.options.log_path + "/" + test.id()
@@ -75,6 +94,19 @@ class Base(Plugin):
         test.test.environment = self.options.environment
         test.test.data = self.options.data
         test.test.args = self.options
+        self.test_count += 1
+
+    def finalize(self, result):
+        if self.report_on:
+            if not self.import_error:
+                report_helper.add_bad_page_log_file(self.page_results_list)
+                report_log_path = report_helper.archive_new_report_logs()
+                report_helper.build_report(
+                    report_log_path,
+                    self.page_results_list,
+                    self.successes, self.failures,
+                    self.options.browser,
+                    self.hide_report)
 
     def __log_all_options_if_none_specified(self, test):
         """
@@ -91,8 +123,27 @@ class Base(Plugin):
                 test_logpath, test.driver, test.browser)
             log_helper.log_page_source(test_logpath, test.driver)
 
+    def addSuccess(self, test, capt):
+        if self.report_on:
+            self.successes.append(test.id())
+            self.page_results_list.append(
+                report_helper.process_successes(test, self.test_count))
+
+    def add_fails_or_errors(self, test, err):
+        if self.report_on:
+            if test.id() == 'nose.failure.Failure.runTest':
+                print ">>> ERROR: Could not locate tests to run!"
+                print ">>> The Test Report WILL NOT be generated!"
+                self.import_error = True
+                return
+            self.failures.append(test.id())
+            br = self.options.browser
+            self.page_results_list.append(
+                report_helper.process_failures(test, err, self.test_count, br))
+
     def addFailure(self, test, err, capt=None, tbinfo=None):
         self.__log_all_options_if_none_specified(test)
+        self.add_fails_or_errors(test, err)
 
     def addError(self, test, err, capt=None):
         """
@@ -108,6 +159,7 @@ class Base(Plugin):
                                          ''' << --------------------''', 1)[0]
         else:
             self.__log_all_options_if_none_specified(test)
+        self.add_fails_or_errors(test, err)
 
     def handleError(self, test, err, capt=None):
         """
