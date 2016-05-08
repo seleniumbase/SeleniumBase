@@ -5,6 +5,7 @@ class MyTestSuite(BaseCase):
 
     def test_1(self):
         self.open("http://xkcd.com/1663/")
+        self.find_text("Garden", "div#ctitle", timeout=3)
         for p in xrange(4):
             self.click('a[rel="next"]')
         self.find_text("Algorithms", "div#ctitle", timeout=3)
