@@ -2,7 +2,6 @@ import os
 import shutil
 import sys
 import time
-import traceback
 from selenium import webdriver
 from seleniumbase.config import settings
 from seleniumbase.core.style_sheet import style
@@ -40,14 +39,14 @@ def process_failures(test, err, test_count, browser_type):
     page_actions.save_test_failure_data(
         test.driver, bad_page_data, browser_type, folder=LATEST_REPORT_DIR)
     exc_info = '(Unknown Failure)'
-    if sys.exc_info()[1]:
-        exc_info = traceback.format_exception(
-            sys.exc_info()[0],
-            sys.exc_info()[1],
-            sys.exc_info()[2])[-1]
-        exc_info = exc_info.replace('\n', ' ')
-        exc_info = exc_info.replace(': Message: ', ': ')
-        exc_info = exc_info.strip()
+    exception = sys.exc_info()[1]
+    if exception:
+        if hasattr(exception, 'msg'):
+            exc_info = exception.msg
+        elif hasattr(exception, 'message'):
+            exc_info = exception.message
+        else:
+            pass
     return(
         '"%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,
