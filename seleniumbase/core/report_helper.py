@@ -22,10 +22,10 @@ def process_successes(test, test_count):
     return(
         '"%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,
-            "Success",
-            "-",
-            "-",
-            "-",
+            "Passed!",
+            "*",
+            "*",
+            "*",
             test.browser,
             get_timestamp()[:-3],
             test.id(),
