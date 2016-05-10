@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 import time
+import traceback
 from selenium import webdriver
 from seleniumbase.config import settings
 from seleniumbase.core.style_sheet import style
@@ -21,10 +22,10 @@ def process_successes(test, test_count):
     return(
         '"%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,
-            "Success",
-            "-",
-            "-",
-            "-",
+            "Passed!",
+            "*",
+            "*",
+            "*",
             test.browser,
             get_timestamp()[:-3],
             test.id(),
@@ -40,9 +41,13 @@ def process_failures(test, err, test_count, browser_type):
         test.driver, bad_page_data, browser_type, folder=LATEST_REPORT_DIR)
     exc_info = '(Unknown Failure)'
     if sys.exc_info()[1]:
-        exc_info = sys.exc_info()[1]
-        if hasattr(exc_info, 'message'):
-            exc_info = exc_info.message
+        exc_info = traceback.format_exception(
+            sys.exc_info()[0],
+            sys.exc_info()[1],
+            sys.exc_info()[2])[-1]
+        exc_info = exc_info.replace('\n', ' ')
+        exc_info = exc_info.replace(': Message: ', ': ')
+        exc_info = exc_info.strip()
     return(
         '"%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,

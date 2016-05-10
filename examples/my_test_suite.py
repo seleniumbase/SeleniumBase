@@ -1,3 +1,5 @@
+''' NOTE: This test suite contains 2 passing tests and 2 failing tests. '''
+
 from seleniumbase import BaseCase
 
 
@@ -11,7 +13,7 @@ class MyTestSuite(BaseCase):
         self.find_text("Algorithms", "div#ctitle", timeout=3)
 
     def test_2(self):
-        # This test will fail
+        # This test should FAIL
         self.open("http://xkcd.com/1675/")
         raise Exception("FAKE EXCEPTION: This test fails on purpose.")
 
@@ -22,6 +24,6 @@ class MyTestSuite(BaseCase):
         self.find_text("Form", "div#ctitle", timeout=3)
 
     def test_4(self):
-        # This test will fail
+        # This test should FAIL
         self.open("http://xkcd.com/1670/")
         self.find_element("FakeElement.DoesNotExist", timeout=0.5)
