@@ -117,11 +117,20 @@ cd examples/
 nosetests my_first_test.py --browser=firefox --with-selenium -s
 
 nosetests my_first_test.py --browser=chrome --with-selenium -s
-
-nosetests my_first_test.py --browser=phantomjs --with-selenium -s
 ```
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed.
+
+(NOTE: The following two lines of code can be simplified...
+``` python
+text = self.get_text(CSS_SELECTOR)
+self.assertTrue(TEXT_SEGMENT in text)
+```
+...into this one line:
+``` python
+self.find_text(TEXT SEGMENT, CSS_SELECTOR)
+```
+The lines were broken apart in the example to demonstrate different methods available to you. The one difference is that find_text() also returns the element contained by the CSS_SELECTOR. find_text() was previously called wait_for_text_visible() ... you can still use the older method name if you wish.)
 
 If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
 You can add ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action:
