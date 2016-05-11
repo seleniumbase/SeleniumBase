@@ -128,7 +128,7 @@ self.assertTrue(TEXT_SEGMENT in text)
 ```
 ...into this one line:
 ``` python
-self.find_text(TEXT SEGMENT, CSS_SELECTOR)
+self.find_text(TEXT_SEGMENT, CSS_SELECTOR)
 ```
 The lines were broken apart in the example to demonstrate different methods available to you. The one difference is that find_text() also returns the element contained by the CSS_SELECTOR. find_text() was previously called wait_for_text_visible() ... you can still use the older method name if you wish.)
 
