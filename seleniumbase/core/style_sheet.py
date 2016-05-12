@@ -13,7 +13,7 @@ style = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
         body {
             background-image: none;
             background-origin: padding-box;
-            background-color: #ecf2ff;
+            background-color: #c6d6f0;
             padding: 30;
             margin: 10;
             font-family: "Proxima Nova","proxima-nova",
@@ -47,10 +47,9 @@ style = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
         thead {
             text-align: center;
             border: 1px solid #e1e1e1;
-            background-color: #fefefe;
             width: 150%;
-            color: #0C8CDB;
-            background-color: #cbf2ff;
+            color: #0C8CDF;
+            background-color: #c0f0ff;
         }
         tbody tr:nth-child(even) {
             background-color: #f1f1f1;
@@ -85,7 +84,7 @@ style = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
             padding: 15px 15px 15px 0;
         }
         h2 table {
-            color: #0C8CDB;
+            color: #0C8CDF;
             font-size: 16px;
             text-align: left;
             font-weight: bold;
