@@ -24,6 +24,7 @@ style = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
             1px 2px 12px 0px rgba(0, 0, 0, 0.18) !important;
         }
         table {
+            width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
             box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25),
