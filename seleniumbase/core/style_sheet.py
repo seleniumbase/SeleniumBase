@@ -27,8 +27,8 @@ style = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
             width: 100%;
             border-collapse: collapse;
             border-spacing: 0;
-            box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25),
-            1px 2px 12px 0px rgba(0, 0, 0, 0.19) !important;
+            box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.27),
+            1px 2px 12px 0px rgba(0, 0, 0, 0.21) !important;
             transition: all 0.15s ease-out 0s;
             transition-property: all;
             transition-duration: 0.1s;
