@@ -181,8 +181,6 @@ Due to high demand, pytest support has been added. You can run the above sample 
 ```bash
 py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 
-py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
-
 py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
 ```
 
