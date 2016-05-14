@@ -134,7 +134,7 @@ def build_report(report_log_path, page_results_list,
     if failures_count > 0:
         tf_color = "#EE3A3A"
 
-    new_data = '''<div><table><thead><tr>
+    summary_table = '''<div><table><thead><tr>
         <th>TEST REPORT SUMMARY</th>
         <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         </tr></thead><tbody>
@@ -146,27 +146,27 @@ def build_report(report_log_path, page_results_list,
                                failures_count,
                                total_test_count)
 
-    new_view_1 = '''<h1 id="ContextHeader" class="sectionHeader" title="">
-        %s</h1>''' % new_data
+    summary_table = '''<h1 id="ContextHeader" class="sectionHeader" title="">
+        %s</h1>''' % summary_table
 
     log_link_shown = '../%s%s/' % (
         ARCHIVE_DIR, web_log_path.split(ARCHIVE_DIR)[1])
     csv_link = '%s/%s' % (web_log_path, RESULTS_TABLE)
     csv_link_shown = '%s' % RESULTS_TABLE
-    new_view_2 = '''<p><p><p><p><h2><table><tbody>
+    log_table = '''<p><p><p><p><h2><table><tbody>
         <tr><td>LOG FILES LINK:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>
         <tr><td>RESULTS TABLE:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>
         </tbody></table></h2><p><p><p><p>''' % (
         web_log_path, log_link_shown, csv_link, csv_link_shown)
 
-    new_view_3 = '<h2><table><tbody></div>'
+    failure_table = '<h2><table><tbody></div>'
     any_screenshots = False
     for line in page_results_list:
         line = line.split(',')
         if line[1] == '"FAILED!"':
             if not any_screenshots:
                 any_screenshots = True
-                new_view_3 += '''<thead><tr>
+                failure_table += '''<thead><tr>
                     <th>FAILURE DATA&nbsp;&nbsp;</th>
                     <th>SCREENSHOT&nbsp;&nbsp;</th>
                     <th>LOCATION OF FAILURE</th>
@@ -179,35 +179,34 @@ def build_report(report_log_path, page_results_list,
                 &nbsp;&nbsp;
                 ''' + '<td><a href="%s">%s</a>' % (line[4], line[4])
             line = line.replace('"', '')
-            new_view_3 += '<tr><td>%s</tr>\n' % line
-    new_view_3 += '</tbody></table></h2>'
+            failure_table += '<tr><td>%s</tr>\n' % line
+    failure_table += '</tbody></table></h2>'
 
-    new_view_4 = ''
+    failing_list = ''
     if failures:
-        new_view_4 = '<h2><table><tbody>'
-        new_view_4 += '''<thead><tr><th>LIST OF FAILING TESTS
+        failing_list = '<h2><table><tbody>'
+        failing_list += '''<thead><tr><th>LIST OF FAILING TESTS
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </th></tr></thead>'''
         for failure in failures:
-            new_view_4 += '<tr style="color:#EE3A3A"><td>%s</tr>\n' % failure
-        new_view_4 += '</tbody></table></h2>'
+            failing_list += '<tr style="color:#EE3A3A"><td>%s</tr>\n' % failure
+        failing_list += '</tbody></table></h2>'
 
-    new_view_5 = ''
+    passing_list = ''
     if successes:
-        new_view_5 = '<h2><table><tbody>'
-        new_view_5 += '''<thead><tr><th>LIST OF PASSING TESTS
+        passing_list = '<h2><table><tbody>'
+        passing_list += '''<thead><tr><th>LIST OF PASSING TESTS
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </th></tr></thead>'''
         for success in successes:
-            new_view_5 += '<tr style="color:#00BB00"><td>%s</tr>\n' % success
-        new_view_5 += '</tbody></table></h2>'
+            passing_list += '<tr style="color:#00BB00"><td>%s</tr>\n' % success
+        passing_list += '</tbody></table></h2>'
 
-    new_view = '%s%s%s%s%s' % (
-        new_view_1, new_view_2, new_view_3, new_view_4, new_view_5)
-    results_content = '<body>%s</body>' % new_view
-    new_source = '<html><head>%s</head>%s</html>' % (
-        style, results_content)
-    results_file = add_results_page(new_source)
+    table_view = '%s%s%s%s%s' % (
+        summary_table, log_table, failure_table, failing_list, passing_list)
+    report_html = '<html><head>%s</head><body>%s</body></html>' % (
+        style, table_view)
+    results_file = add_results_page(report_html)
     archived_results_file = report_log_path + '/' + HTML_REPORT
     shutil.copyfile(results_file, archived_results_file)
     print "\n* The latest html report page is located at:\n" + results_file
