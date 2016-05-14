@@ -134,11 +134,13 @@ def build_report(report_log_path, page_results_list,
     if failures_count > 0:
         tf_color = "#EE3A3A"
 
-    new_data = '''<div><table><thead><tr><th>TEST REPORT SUMMARY
-        </th><th></th></tr></thead><tbody>
+    new_data = '''<div><table><thead><tr>
+        <th>TEST REPORT SUMMARY</th>
+        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        </tr></thead><tbody>
         <tr style="color:#00BB00"><td>TESTS PASSING: <td>%s</tr>
-        <tr style="color:%s">     <td>TESTS FAILING: <td>%s</tr>
-        <tr style="color:#4D4DDD"><td>TOTAL TESTS RUN: <td>%s</tr>
+        <tr style="color:%s"     ><td>TESTS FAILING: <td>%s</tr>
+        <tr style="color:#4D4DDD"><td>TOTAL TESTS: <td>%s</tr>
         </tbody></table>''' % (successes_count,
                                tf_color,
                                failures_count,
