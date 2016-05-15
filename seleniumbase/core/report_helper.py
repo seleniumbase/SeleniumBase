@@ -31,7 +31,7 @@ def process_successes(test, test_count):
             "*"))
 
 
-def process_failures(test, err, test_count, browser_type):
+def process_failures(test, test_count, browser_type):
     bad_page_image = "failure_test_%s.jpg" % test_count
     bad_page_data = "failure_test_%s.txt" % test_count
     page_actions.save_screenshot(

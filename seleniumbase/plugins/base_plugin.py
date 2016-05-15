@@ -129,7 +129,7 @@ class Base(Plugin):
             self.page_results_list.append(
                 report_helper.process_successes(test, self.test_count))
 
-    def add_fails_or_errors(self, test, err):
+    def add_fails_or_errors(self, test):
         if self.report_on:
             if test.id() == 'nose.failure.Failure.runTest':
                 print ">>> ERROR: Could not locate tests to run!"
@@ -139,11 +139,11 @@ class Base(Plugin):
             self.failures.append(test.id())
             br = self.options.browser
             self.page_results_list.append(
-                report_helper.process_failures(test, err, self.test_count, br))
+                report_helper.process_failures(test, self.test_count, br))
 
     def addFailure(self, test, err, capt=None, tbinfo=None):
         self.__log_all_options_if_none_specified(test)
-        self.add_fails_or_errors(test, err)
+        self.add_fails_or_errors(test)
 
     def addError(self, test, err, capt=None):
         """
@@ -159,7 +159,7 @@ class Base(Plugin):
                                          ''' << --------------------''', 1)[0]
         else:
             self.__log_all_options_if_none_specified(test)
-        self.add_fails_or_errors(test, err)
+        self.add_fails_or_errors(test)
 
     def handleError(self, test, err, capt=None):
         """
