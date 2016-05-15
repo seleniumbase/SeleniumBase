@@ -32,8 +32,8 @@ def process_successes(test, test_count):
 
 
 def process_failures(test, test_count, browser_type):
-    bad_page_image = "failure_test_%s.jpg" % test_count
-    bad_page_data = "failure_test_%s.txt" % test_count
+    bad_page_image = "failure_%s.jpg" % test_count
+    bad_page_data = "failure_%s.txt" % test_count
     page_actions.save_screenshot(
         test.driver, bad_page_image, folder=LATEST_REPORT_DIR)
     page_actions.save_test_failure_data(
@@ -167,17 +167,20 @@ def build_report(report_log_path, page_results_list,
             if not any_screenshots:
                 any_screenshots = True
                 failure_table += '''<thead><tr>
-                    <th>FAILURE DATA&nbsp;&nbsp;</th>
+                    <th>STACKTRACE&nbsp;&nbsp;</th>
                     <th>SCREENSHOT&nbsp;&nbsp;</th>
                     <th>LOCATION OF FAILURE</th>
                     </tr></thead>'''
+            display_url = line[4]
+            if len(display_url) > 60:
+                display_url = display_url[0:58] + '...'
             line = '<a href="%s">%s</a>' % (
                 "file://" + report_log_path + '/' + line[2], line[2]) + '''
                 &nbsp;&nbsp;
                 ''' + '<td><a href="%s">%s</a>' % (
                 "file://" + report_log_path + '/' + line[3], line[3]) + '''
                 &nbsp;&nbsp;
-                ''' + '<td><a href="%s">%s</a>' % (line[4], line[4])
+                ''' + '<td><a href="%s">%s</a>' % (line[4], display_url)
             line = line.replace('"', '')
             failure_table += '<tr><td>%s</tr>\n' % line
     failure_table += '</tbody></table></h2>'
