@@ -14,6 +14,7 @@ setup(
     description='Reliable Browser Automation - http://seleniumbase.com',
     license='The MIT License',
     install_requires=[
+        'pip>=8.1.2',
         'selenium>=2.53.2',
         'nose==1.3.7',
         'pytest==2.8.7',
