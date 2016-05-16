@@ -89,6 +89,17 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
         return element.text
 
+    def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
+                      timeout=settings.SMALL_TIMEOUT):
+        element = page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout)
+        attribute_value = element.get_attribute(attribute)
+        if attribute_value is not None:
+            return attribute_value
+        else:
+            raise Exception("Element [%s] has no attribute [%s]!" % (
+                selector, attribute))
+
     def add_text(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
