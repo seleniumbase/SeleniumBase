@@ -133,7 +133,7 @@ assert(TEXT_SEGMENT in text)
 ``` python
 self.find_text(TEXT_SEGMENT, CSS_SELECTOR)
 ```
-The lines were broken apart in the example above to demonstrate different methods available to you. The big difference is that find_text() also returns the WebDriver element contained by CSS_SELECTOR.
+This means that `self.find_text()` and other `self.find_*()` methods double as an assert statement: If something can't be found, that counts as an assertion error. The lines were broken apart in the example above to demonstrate different methods available to you. The big difference is that find_text() also returns the WebDriver element contained by CSS_SELECTOR.
 Also, find_text() was previously called wait_for_text_visible(), and you can still use the older method name if you wish.)
 
 If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
