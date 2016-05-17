@@ -95,18 +95,21 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open("http://xkcd.com/353/")
-        self.find_element("div#comic")
+        self.open('http://xkcd.com/353/')
+        self.find_element('img[alt="Python"]')
         self.click('a[rel="license"]')
-        text = self.get_text('center')
-        self.assertTrue("reuse any of my drawings" in text)
-        self.open("http://xkcd.com/1481/")
+        license = self.get_text('center')
+        assert('reuse any of my drawings' in license)
+        self.open('http://xkcd.com/1481/')
+        image_object = self.find_element('#comic img')
+        caption = image_object.get_attribute('title')
+        assert('connections to the server' in caption)
         self.click_link_text('Blag')
-        self.find_text("The blag", "header h2")
-        self.update_text("input#s", "Robots!\n")
-        self.find_text("Hooray robots!", "#content")
-        self.open("http://xkcd.com/1319/")
-        self.find_text("Automation", "div#ctitle")
+        self.find_text('The blag', 'header h2')
+        self.update_text('input#s', 'Robots!\n')
+        self.find_text('Hooray robots!', '#content')
+        self.open('http://xkcd.com/1319/')
+        self.find_text('Automation', 'div#ctitle')
 ```
 
 Here's how to run the example script using various web browsers:
@@ -124,7 +127,7 @@ After the test completes, in the console output you'll see a dot (``.``) on a ne
 (NOTE: The following two lines of code can be simplified...
 ``` python
 text = self.get_text(CSS_SELECTOR)
-self.assertTrue(TEXT_SEGMENT in text)
+assert(TEXT_SEGMENT in text)
 ```
 ...into this one line:
 ``` python
