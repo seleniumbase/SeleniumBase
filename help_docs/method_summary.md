@@ -16,6 +16,11 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR,
 
 self.click_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
 
+self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
+self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT):
+
 self.add_text(selector, new_value, timeout=settings.SMALL_TIMEOUT)
 
 self.send_keys(selector, new_value, timeout=settings.SMALL_TIMEOUT)
@@ -57,8 +62,7 @@ self.set_value(selector, value, wait=False)
 self.jquery_update_text_value(selector, new_value,
     timeout=settings.SMALL_TIMEOUT)
 
-self.jquery_update_text(selector, new_value,
-    timeout=settings.SMALL_TIMEOUT)
+self.jquery_update_text(selector, new_value, timeout=settings.SMALL_TIMEOUT)
 
 self.hover_on_element(selector)
 
@@ -74,8 +78,7 @@ self.wait_for_element_visible(selector, by=By.CSS_SELECTOR,
 self.wait_for_element(selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
-self.find_element(selector, by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.find_element(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
 self.wait_for_text_visible(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
@@ -86,11 +89,7 @@ self.wait_for_text(text, selector, by=By.CSS_SELECTOR,
 self.find_text(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
-self.get_text(selector, by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
-
-self.wait_for_link_text_visible(link_text,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_link_text_visible(link_text, timeout=settings.LARGE_TIMEOUT)
 
 self.wait_for_link_text(link_text, timeout=settings.LARGE_TIMEOUT)
 
