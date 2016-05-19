@@ -91,7 +91,7 @@ def add_bad_page_log_file(page_results_list):
     file_path = abs_path + "/%s" % LATEST_REPORT_DIR
     log_file = "%s/%s" % (file_path, RESULTS_TABLE)
     f = open(log_file, 'w')
-    h_p1 = '''"Num","Result","Failure Info","Screenshot",'''
+    h_p1 = '''"Num","Result","Stacktrace","Screenshot",'''
     h_p2 = '''"URL","Browser","Epoch Time",'''
     h_p3 = '''"Test Case Address","Additional Info"\n'''
     page_header = h_p1 + h_p2 + h_p3
