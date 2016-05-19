@@ -118,7 +118,7 @@ def hover_and_click(driver, hover_selector, click_selector,
         except Exception:
             time.sleep(0.1)
     raise NoSuchElementException(
-        "Element %s was not present after %s seconds!" %
+        "Element [%s] was not present after %s seconds!" %
         (click_selector, timeout))
 
 
@@ -147,7 +147,8 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
             time.sleep(0.1)
     if not element:
         raise NoSuchElementException(
-            "Element %s was not present in %s seconds!" % (selector, timeout))
+            "Element [%s] was not present after %s seconds!" % (
+                selector, timeout))
 
 
 def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
@@ -178,9 +179,14 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
                 raise Exception()
         except Exception:
             time.sleep(0.1)
-    if not element:
+    if not element and by != By.LINK_TEXT:
         raise ElementNotVisibleException(
-            "Element %s was not visible in %s seconds!" % (selector, timeout))
+            "Element [%s] was not visible after %s seconds!" % (
+                selector, timeout))
+    if not element and by == By.LINK_TEXT:
+        raise ElementNotVisibleException(
+            "Link text [%s] was not visible after %s seconds!" % (
+                selector, timeout))
 
 
 def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
@@ -237,7 +243,7 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
             time.sleep(0.1)
         except Exception:
             return
-    raise Exception("Element %s was still present after %s seconds!" %
+    raise Exception("Element [%s] was still present after %s seconds!" %
                     (selector, timeout))
 
 
@@ -264,7 +270,8 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
         except Exception:
             return
     raise Exception(
-        "Element %s was still visible after %s seconds!" % (selector, timeout))
+        "Element [%s] was still visible after %s seconds!" % (
+            selector, timeout))
 
 
 def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
