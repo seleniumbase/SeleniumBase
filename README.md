@@ -120,6 +120,8 @@ cd examples/
 nosetests my_first_test.py --browser=firefox --with-selenium -s
 
 nosetests my_first_test.py --browser=chrome --with-selenium -s
+
+nosetests my_first_test.py --browser=phantomjs --with-selenium -s
 ```
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed.
@@ -182,9 +184,11 @@ Here are some other useful nosetest arguments that you may want to append to you
 Due to high demand, pytest support has been added. You can run the above sample script in pytest like this:
 
 ```bash
+py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
+
 py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 
-py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
+py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 ```
 
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
