@@ -19,7 +19,7 @@ self.click_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
 self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT):
+    timeout=settings.SMALL_TIMEOUT)
 
 self.add_text(selector, new_value, timeout=settings.SMALL_TIMEOUT)
 
@@ -56,6 +56,8 @@ self.scroll_click(selector)
 self.jquery_click(selector, wait=False)
 
 self.jq_format(code)
+
+self.get_domain_url(url)
 
 self.set_value(selector, value, wait=False)
 
