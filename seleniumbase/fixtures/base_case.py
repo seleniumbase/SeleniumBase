@@ -14,6 +14,7 @@ import time
 import traceback
 import unittest
 import uuid
+from BeautifulSoup import BeautifulSoup
 from pyvirtualdisplay import Display
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
@@ -77,6 +78,35 @@ class BaseCase(unittest.TestCase):
                 time.sleep(spacing)
 
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        """ This method clicks link text on a page """
+        # If using phantomjs, might need to extract and open the link directly
+        if self.browser == 'phantomjs':
+            if self.is_link_text_visible(link_text):
+                element = self.wait_for_link_text_visible(link_text)
+                element.click()
+                return
+            source = self.driver.page_source
+            soup = BeautifulSoup(source)
+            html_links = soup.fetch('a')
+            for html_link in html_links:
+                if html_link.text == link_text:
+                    for html_attribute in html_link.attrs:
+                        if html_attribute[0] == 'href':
+                            href = html_attribute[1]
+                            if href.startswith('//'):
+                                link = "http:" + href
+                            elif href.startswith('/'):
+                                url = self.driver.current_url
+                                domain_url = self.get_domain_url(url)
+                                link = domain_url + href
+                            else:
+                                link = href
+                            self.open(link)
+                            return
+                    raise Exception(
+                        'Could not parse link from link_text [%s]' % link_text)
+            raise Exception("Link text [%s] was not found!" % link_text)
+        # Not using phantomjs
         element = self.wait_for_link_text_visible(link_text, timeout=timeout)
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
@@ -229,6 +259,9 @@ class BaseCase(unittest.TestCase):
 
     def jq_format(self, code):
         return page_utils.jq_format(code)
+
+    def get_domain_url(self, url):
+        return page_utils.get_domain_url(url)
 
     def set_value(self, selector, value, wait=False):
         self.scroll_to(selector, wait=wait)
