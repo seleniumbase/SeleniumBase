@@ -13,9 +13,19 @@ Run the example test in Chrome
 nosetests my_first_test.py --browser=chrome --with-selenium
 ```
 
+Run the example test in PhantomJS
+```bash
+nosetests my_first_test.py --browser=phantomjs --with-selenium
+```
+
 Run the example test suite in Firefox and generate an html report (nosetests-only)
 ```bash
 nosetests my_test_suite.py --with-selenium --browser=firefox --with-testing_base --report
+```
+
+Run the example test suite in Chrome and generate an html report (nosetests-only)
+```bash
+nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base --report
 ```
 
 Run the example test suite in PhantomJS and generate an html report (nosetests-only)
