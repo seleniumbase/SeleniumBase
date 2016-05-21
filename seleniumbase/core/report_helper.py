@@ -61,29 +61,29 @@ def process_failures(test, test_count, browser_type):
 
 
 def clear_out_old_report_logs(archive_past_runs=True, get_log_folder=False):
-        abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % LATEST_REPORT_DIR
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
+    abs_path = os.path.abspath('.')
+    file_path = abs_path + "/%s" % LATEST_REPORT_DIR
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
 
-        if archive_past_runs:
-            archive_timestamp = int(time.time())
-            if not os.path.exists("%s/../%s/" % (file_path, ARCHIVE_DIR)):
-                os.makedirs("%s/../%s/" % (file_path, ARCHIVE_DIR))
-            archive_dir = "%s/../%s/report_%s" % (
-                file_path, ARCHIVE_DIR, archive_timestamp)
-            shutil.move(file_path, archive_dir)
-            os.makedirs(file_path)
-            if get_log_folder:
-                return archive_dir
-        else:
-            # Just delete bad pages to make room for the latest run.
-            filelist = [f for f in os.listdir(
-                "./%s" % LATEST_REPORT_DIR) if f.startswith("failure_") or (
-                f == HTML_REPORT) or (f.startswith("automation_failure")) or (
-                f == RESULTS_TABLE)]
-            for f in filelist:
-                os.remove("%s/%s" % (file_path, f))
+    if archive_past_runs:
+        archive_timestamp = int(time.time())
+        if not os.path.exists("%s/../%s/" % (file_path, ARCHIVE_DIR)):
+            os.makedirs("%s/../%s/" % (file_path, ARCHIVE_DIR))
+        archive_dir = "%s/../%s/report_%s" % (
+            file_path, ARCHIVE_DIR, archive_timestamp)
+        shutil.move(file_path, archive_dir)
+        os.makedirs(file_path)
+        if get_log_folder:
+            return archive_dir
+    else:
+        # Just delete bad pages to make room for the latest run.
+        filelist = [f for f in os.listdir(
+            "./%s" % LATEST_REPORT_DIR) if f.startswith("failure_") or (
+            f == HTML_REPORT) or (f.startswith("automation_failure")) or (
+            f == RESULTS_TABLE)]
+        for f in filelist:
+            os.remove("%s/%s" % (file_path, f))
 
 
 def add_bad_page_log_file(page_results_list):
