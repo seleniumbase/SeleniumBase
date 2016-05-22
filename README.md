@@ -199,6 +199,7 @@ The ``--report`` option gives you a fancy report after your test suite completes
 nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/TestReport4.png "Example Test Report")
+
 (Note: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes.)
 
 #### **Step 5:** Complete the setup
