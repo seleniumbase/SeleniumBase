@@ -401,7 +401,7 @@ class BaseCase(unittest.TestCase):
             if not tiny:
                 time.sleep(wait_time)
             else:
-                time.sleep(wait_time/3.0)
+                time.sleep(wait_time/2.0)
 
     def _demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
