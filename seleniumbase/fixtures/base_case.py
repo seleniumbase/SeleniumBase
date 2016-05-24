@@ -130,27 +130,32 @@ class BaseCase(unittest.TestCase):
             raise Exception("Element [%s] has no attribute [%s]!" % (
                 selector, attribute))
 
-    def add_text(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
+    def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                 timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
-        element = self.wait_for_element_visible(selector, timeout=timeout)
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=timeout)
         element.send_keys(new_value)
         self._demo_mode_pause_if_active()
 
-    def send_keys(self, selector, new_value, timeout=settings.SMALL_TIMEOUT):
+    def send_keys(self, selector, new_value, by=By.CSS_SELECTOR,
+                  timeout=settings.SMALL_TIMEOUT):
         """ Same as add_text() -> more reliable, but less name confusion. """
-        self.add_text(selector, new_value, timeout=timeout)
+        self.add_text(selector, new_value, by=by, timeout=timeout)
 
-    def update_text_value(self, selector, new_value,
+    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
                           timeout=settings.SMALL_TIMEOUT, retry=False):
         """ This method updates an element's text value with a new value.
             @Params
             selector - the selector with the value to update
             new_value - the new value for setting the text field
+            by - the type of selector to search by (Default: CSS)
             timeout - how long to wait for the selector to be visible
             retry - if True, use jquery if the selenium text update fails
         """
-        element = self.wait_for_element_visible(selector, timeout=timeout)
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=timeout)
         element.clear()
         self._demo_mode_pause_if_active(tiny=True)
         element.send_keys(new_value)
@@ -161,12 +166,12 @@ class BaseCase(unittest.TestCase):
             self.set_value(selector, new_value)
         self._demo_mode_pause_if_active()
 
-    def update_text(self, selector, new_value,
+    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT, retry=False):
         """ The shorter version of update_text_value(), which
             clears existing text and adds new text into the text field.
             We want to keep the old version for backward compatibility. """
-        self.update_text_value(selector, new_value,
+        self.update_text_value(selector, new_value, by=by,
                                timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
