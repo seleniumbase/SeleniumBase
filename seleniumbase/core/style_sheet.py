@@ -1,8 +1,11 @@
-style = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
+title = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
         <title>Test Report</title>
         <link rel="SHORTCUT ICON"
-        href="http://cdn2.hubspot.net/hubfs/100006/images/results_logo4.ico" />
-        <style type="text/css">
+        href="%s" /> ''' % (
+            "https://raw.githubusercontent.com/mdmintz/SeleniumBase"
+            "/master/seleniumbase/resources/favicon.ico")
+
+style = title + '''<style type="text/css">
         html {
             background-color: #9988ad;
         }
