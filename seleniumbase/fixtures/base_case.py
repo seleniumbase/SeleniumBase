@@ -341,10 +341,12 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
     def assert_element(self, selector, by=By.CSS_SELECTOR,
-                       timeout=settings.LARGE_TIMEOUT):
+                       timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_element_visible(), but returns nothing.
-            As above, will raise an exception if nothing can be found. """
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
+        return True
 
     # For backwards compatibility, earlier method names of the next
     # four methods have remained even though they do the same thing,
@@ -371,10 +373,12 @@ class BaseCase(unittest.TestCase):
             text, selector, by=by, timeout=timeout)
 
     def assert_text(self, text, selector, by=By.CSS_SELECTOR,
-                    timeout=settings.LARGE_TIMEOUT):
+                    timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_text_visible(), but returns nothing.
-            As above, will raise an exception if nothing can be found. """
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+        return True
 
     # For backwards compatibility, earlier method names of the next
     # four methods have remained even though they do the same thing,
@@ -394,10 +398,12 @@ class BaseCase(unittest.TestCase):
         """ Same as wait_for_link_text_visible() - returns the element """
         return self.wait_for_link_text_visible(link_text, timeout=timeout)
 
-    def assert_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
+    def assert_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_link_text_visible(), but returns nothing.
-            As above, will raise an exception if nothing can be found. """
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
         self.wait_for_link_text_visible(link_text, timeout=timeout)
+        return True
 
     ############
 
@@ -413,9 +419,12 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
 
     def assert_element_absent(self, selector, by=By.CSS_SELECTOR,
-                              timeout=settings.LARGE_TIMEOUT):
+                              timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_element_absent() - returns nothing.
-            As above, will raise an exception if the element stays present. """
+            As above, will raise an exception if the element stays present.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_absent(selector, by=by, timeout=timeout)
+        return True
 
     ############
 
@@ -430,9 +439,12 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
 
     def assert_element_not_visible(self, selector, by=By.CSS_SELECTOR,
-                                   timeout=settings.LARGE_TIMEOUT):
+                                   timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_element_not_visible() - returns nothing.
-            As above, will raise an exception if the element stays visible. """
+            As above, will raise an exception if the element stays visible.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
+        return True
 
     ############
 
