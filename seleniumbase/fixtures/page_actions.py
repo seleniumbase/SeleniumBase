@@ -109,6 +109,8 @@ def hover_and_click(driver, hover_selector, click_selector,
     click_by - the method to search by (Default: By.CSS_SELECTOR)
     timeout - number of seconds to wait for click element to appear after hover
     """
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     driver.execute_script("jQuery('%s').mouseover()" % (hover_selector))
     for x in range(int(timeout * 10)):
         try:
@@ -116,6 +118,9 @@ def hover_and_click(driver, hover_selector, click_selector,
                                           value="%s" % click_selector).click()
             return element
         except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
     raise NoSuchElementException(
         "Element [%s] was not present after %s seconds!" %
@@ -139,11 +144,16 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
     """
 
     element = None
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
             return element
         except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
     if not element:
         raise NoSuchElementException(
@@ -169,6 +179,8 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
     """
 
     element = None
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
@@ -178,6 +190,9 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
                 element = None
                 raise Exception()
         except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
     if not element and by != By.LINK_TEXT:
         raise ElementNotVisibleException(
@@ -207,6 +222,8 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     """
 
     element = None
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
@@ -217,6 +234,9 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
                     element = None
                     raise Exception()
         except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
     if not element:
         raise ElementNotVisibleException(
@@ -237,9 +257,14 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
     timeout - the time to wait for elements in seconds
     """
 
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
             driver.find_element(by=by, value=selector)
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
         except Exception:
             return
@@ -260,10 +285,15 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
     timeout - the time to wait for the element in seconds
     """
 
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
                 time.sleep(0.1)
             else:
                 return
@@ -347,11 +377,16 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     This method will wait until document.readyState == "complete".
     """
 
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         ready_state = driver.execute_script("return document.readyState")
         if ready_state == u'complete':
             return True
         else:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
     raise Exception(
         "Page elements never fully loaded after %s seconds!" % timeout)
@@ -393,6 +428,8 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     timeout - the time to wait for the alert in seconds
     """
 
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         try:
             alert = driver.switch_to.alert
@@ -400,5 +437,8 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
             dummy_variable = alert.text  # noqa
             return alert
         except NoAlertPresentException:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
             time.sleep(0.1)
     raise Exception("Alert was not present after %s seconds!" % timeout)
