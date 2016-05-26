@@ -267,7 +267,7 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
                 break
             time.sleep(0.1)
         except Exception:
-            return
+            return True
     raise Exception("Element [%s] was still present after %s seconds!" %
                     (selector, timeout))
 
@@ -296,9 +296,9 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
                     break
                 time.sleep(0.1)
             else:
-                return
+                return True
         except Exception:
-            return
+            return True
     raise Exception(
         "Element [%s] was still visible after %s seconds!" % (
             selector, timeout))
