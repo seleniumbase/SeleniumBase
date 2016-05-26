@@ -15,6 +15,7 @@ setup(
     license='The MIT License',
     install_requires=[
         'pip>=8.1.2',
+        'setuptools>=18.5',
         'selenium>=2.53.2',
         'nose==1.3.7',
         'pytest==2.9.1',
@@ -27,7 +28,7 @@ setup(
         'simplejson==3.8.2',
         'boto==2.40.0',
         'ipdb==0.10.0',
-        'pyvirtualdisplay==0.1.5',
+        'pyvirtualdisplay==0.2',
         ],
     packages=['seleniumbase',
               'seleniumbase.core',
