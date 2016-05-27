@@ -309,13 +309,22 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
+        """ Waits for an element to appear in the HTML of a page.
+            The element does not need be visible (it may be hidden). """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
+    # For backwards compatibility, earlier method names of the next
+    # four methods have remained even though they do the same thing,
+    # with the exception of assert_*, which won't return the element,
+    # but like the others, will raise an exception if the call fails.
+
     def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
+        """ Waits for an element to appear in the HTML of a page.
+            The element must be visible (it cannot be hidden). """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_visible(
@@ -328,8 +337,21 @@ class BaseCase(unittest.TestCase):
 
     def find_element(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.LARGE_TIMEOUT):
-        """ Same as wait_for_element_visible() """
+        """ Same as wait_for_element_visible() - returns the element """
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
+
+    def assert_element(self, selector, by=By.CSS_SELECTOR,
+                       timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_element_visible(), but returns nothing.
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
+        return True
+
+    # For backwards compatibility, earlier method names of the next
+    # four methods have remained even though they do the same thing,
+    # with the exception of assert_*, which won't return the element,
+    # but like the others, will raise an exception if the call fails.
 
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
@@ -346,9 +368,22 @@ class BaseCase(unittest.TestCase):
 
     def find_text(self, text, selector, by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
-        """ Same as wait_for_text_visible() """
+        """ Same as wait_for_text_visible() - returns the element """
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
+
+    def assert_text(self, text, selector, by=By.CSS_SELECTOR,
+                    timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_text_visible(), but returns nothing.
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+        return True
+
+    # For backwards compatibility, earlier method names of the next
+    # four methods have remained even though they do the same thing,
+    # with the exception of assert_*, which won't return the element,
+    # but like the others, will raise an exception if the call fails.
 
     def wait_for_link_text_visible(self, link_text,
                                    timeout=settings.LARGE_TIMEOUT):
@@ -360,22 +395,58 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_link_text_visible(link_text, timeout=timeout)
 
     def find_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
-        """ Same as wait_for_link_text_visible() """
+        """ Same as wait_for_link_text_visible() - returns the element """
         return self.wait_for_link_text_visible(link_text, timeout=timeout)
+
+    def assert_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_link_text_visible(), but returns nothing.
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_link_text_visible(link_text, timeout=timeout)
+        return True
+
+    ############
 
     def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR,
                                 timeout=settings.LARGE_TIMEOUT):
+        """ Waits for an element to no longer appear in the HTML of a page.
+            A hidden element still counts as appearing in the page HTML.
+            If an element with "hidden" status is acceptable,
+            use wait_for_element_not_visible() instead. """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_absent(
             self.driver, selector, by, timeout)
 
+    def assert_element_absent(self, selector, by=By.CSS_SELECTOR,
+                              timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_element_absent() - returns nothing.
+            As above, will raise an exception if the element stays present.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_absent(selector, by=by, timeout=timeout)
+        return True
+
+    ############
+
     def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR,
                                      timeout=settings.LARGE_TIMEOUT):
+        """ Waits for an element to no longer be visible on a page.
+            The element can be non-existant in the HTML or hidden on the page
+            to qualify as not visible. """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
+
+    def assert_element_not_visible(self, selector, by=By.CSS_SELECTOR,
+                                   timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_element_not_visible() - returns nothing.
+            As above, will raise an exception if the element stays visible.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
+        return True
+
+    ############
 
     def wait_for_ready_state_complete(self, timeout=settings.EXTREME_TIMEOUT):
         return page_actions.wait_for_ready_state_complete(self.driver, timeout)
