@@ -17,6 +17,12 @@ def jq_format(code):
 
 
 def get_domain_url(url):
+    """
+    Use this to convert a url like this:
+    https://blog.xkcd.com/2014/07/22/what-if-book-tour/
+    Into this:
+    https://blog.xkcd.com
+    """
     url_header = url.split('://')[0]
     simple_url = url.split('://')[1]
     base_url = simple_url.split('/')[0]
