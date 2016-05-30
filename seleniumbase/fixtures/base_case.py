@@ -311,6 +311,8 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_pause_if_active()
         return element
 
+    ############
+
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
@@ -319,6 +321,15 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
+
+    def assert_element_present(self, selector, by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_element_present(), but returns nothing.
+            Waits for an element to appear in the HTML of a page.
+            The element does not need be visible (it may be hidden).
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
+        return True
 
     # For backwards compatibility, earlier method names of the next
     # four methods have remained even though they do the same thing,
