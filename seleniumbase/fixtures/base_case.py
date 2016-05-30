@@ -27,6 +27,7 @@ from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import xpath_to_css
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
@@ -267,6 +268,9 @@ class BaseCase(unittest.TestCase):
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
+
+    def convert_xpath_to_css(self, xpath):
+        return xpath_to_css.convert_xpath_to_css(xpath)
 
     def set_value(self, selector, value, wait=False):
         self.scroll_to(selector, wait=wait)

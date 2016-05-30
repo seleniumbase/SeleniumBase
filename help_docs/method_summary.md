@@ -59,6 +59,8 @@ self.jq_format(code)
 
 self.get_domain_url(url)
 
+self.convert_xpath_to_css(xpath)
+
 self.set_value(selector, value, wait=False)
 
 self.jquery_update_text_value(selector, new_value,
