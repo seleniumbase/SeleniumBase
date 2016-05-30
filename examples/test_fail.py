@@ -8,4 +8,4 @@ class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
         self.open("http://xkcd.com/731/")
-        self.find_element("div#ARMY_OF_ROBOTS", timeout=0.7)
+        self.assert_element("div#ARMY_OF_ROBOTS", timeout=0.7)

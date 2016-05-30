@@ -59,6 +59,8 @@ self.jq_format(code)
 
 self.get_domain_url(url)
 
+self.convert_xpath_to_css(xpath)
+
 self.set_value(selector, value, wait=False)
 
 self.jquery_update_text_value(selector, new_value,
@@ -71,8 +73,15 @@ self.hover_on_element(selector)
 self.hover_and_click(hover_selector, click_selector,
     click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
+########
+
 self.wait_for_element_present(selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
+
+self.assert_element_present(selector, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+########
 
 self.wait_for_element_visible(selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
@@ -81,6 +90,11 @@ self.wait_for_element(selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
 self.find_element(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
+
+self.assert_element(
+    selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
+########
 
 self.wait_for_text_visible(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
@@ -91,17 +105,36 @@ self.wait_for_text(text, selector, by=By.CSS_SELECTOR,
 self.find_text(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
+self.assert_text(text, selector, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+########
+
 self.wait_for_link_text_visible(link_text, timeout=settings.LARGE_TIMEOUT)
 
 self.wait_for_link_text(link_text, timeout=settings.LARGE_TIMEOUT)
 
 self.find_link_text(link_text, timeout=settings.LARGE_TIMEOUT)
 
+self.assert_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
+
+########
+
 self.wait_for_element_absent(selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
+self.assert_element_absent(selector, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+########
+
 self.wait_for_element_not_visible(selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
+
+self.assert_element_not_visible(selector, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+########
 
 self.wait_for_ready_state_complete(timeout=settings.EXTREME_TIMEOUT)
 

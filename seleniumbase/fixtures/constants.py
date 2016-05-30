@@ -15,6 +15,7 @@ class Environment:
 class Browser:
     FIREFOX = "firefox"
     INTERNET_EXPLORER = "ie"
+    EDGE = "edge"
     SAFARI = "safari"
     GOOGLE_CHROME = "chrome"
     PHANTOM_JS = "phantomjs"
@@ -23,6 +24,8 @@ class Browser:
     VERSION = {
         "firefox": None,
         "ie": None,
+        "edge": None,
+        "safari": None,
         "chrome": None,
         "phantomjs": None,
         "htmlunit": None
@@ -31,6 +34,8 @@ class Browser:
     LATEST = {
         "firefox": None,
         "ie": None,
+        "edge": None,
+        "safari": None,
         "chrome": None,
         "phantomjs": None,
         "htmlunit": None

@@ -73,6 +73,13 @@ S3_SELENIUM_SECRET_KEY = "[S3 SECRET KEY]"
 
 # Default Email Credentials
 # (If tests send out emails, you can scan and verify them by using IMAP)
+# Here's a list of imap strings for known email providers:
+# - Gmail:         imap.gmail.com
+# - Outlook/Live:  imap-mail.outlook.com
+# - Yahoo Mail:    imap.mail.yahoo.com
+# - AT&T:          imap.mail.att.net
+# - Comcast:       imap.comcast.net
+# - Verizon:       incoming.verizon.net
 EMAIL_USERNAME = "[TEST ACCOUNT GMAIL USERNAME]@gmail.com"
 EMAIL_PASSWORD = "[TEST ACCOUNT GMAIL PASSWORD]"
 EMAIL_IMAP_STRING = "imap.gmail.com"

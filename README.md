@@ -14,8 +14,7 @@ A reliable solution for fast & simple browser automation and testing.
 * Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with [command-line options](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-##### *(Trusted by the world's most promising companies, including [HubSpot](http://www.hubspot.com/), [Jana](http://jana.com/), and [Veracode](http://www.veracode.com/). Learn how HubSpot uses SeleniumBase by reading: [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot).)*
-
+##### (To learn about organizations that have used SeleniumBase for automation, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).)
 
 ### Part I: MAC SETUP INSTRUCTIONS
 ####(WINDOWS users: Ignore "brew install", which is MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
@@ -28,7 +27,7 @@ If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`
 
 #### **Step 0b:** Get web browsers to run automation on
 
-If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/). You can also [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/) to run automation there.
+If you haven't already, [Download Firefox](https://www.mozilla.org/en-US/firefox/new/), and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
 
 #### **Step 0c:** Get drivers for the web browsers that require them
 
@@ -42,8 +41,9 @@ brew install chromedriver phantomjs
 ```
 
 Windows:
-* [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH.
+* [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it on your PATH.
 * OPTIONAL: [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (only if you want to run headless browser automation)
+* OPTIONAL: [Download Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212) (Windows 10 only!)
 * For everything you download, put those files in your PATH. (``Environmental Variables`` on a Windows machine)
 
 If you want to verify that you successfully installed the web drivers, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
@@ -96,7 +96,7 @@ class MyTestClass(BaseCase):
 
     def test_basic(self):
         self.open('http://xkcd.com/353/')
-        self.find_element('img[alt="Python"]')
+        self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         xkcd_license = self.get_text('center')
         assert('reuse any of my drawings' in xkcd_license)
@@ -105,11 +105,11 @@ class MyTestClass(BaseCase):
         caption = image_object.get_attribute('title')
         assert('connections to the server' in caption)
         self.click_link_text('Blag')
-        self.find_text('The blag', 'header h2')
+        self.assert_text('The blag', 'header h2')
         self.update_text('input#s', 'Robots!\n')
-        self.find_text('Hooray robots!', '#content')
+        self.assert_text('Hooray robots!', '#content')
         self.open('http://xkcd.com/1319/')
-        self.find_text('Automation', 'div#ctitle')
+        self.assert_text('Automation', 'div#ctitle')
 ```
 
 Here's how to run the example script using various web browsers:
@@ -126,17 +126,15 @@ nosetests my_first_test.py --browser=phantomjs --with-selenium -s
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed.
 
-(NOTE: The following two lines of code can be simplified...
+NOTE: The following two lines of code can be simplified...
 ``` python
 text = self.get_text(CSS_SELECTOR)
 assert(TEXT_SEGMENT in text)
 ```
 ...into this one line:
 ``` python
-self.find_text(TEXT_SEGMENT, CSS_SELECTOR)
+self.assert_text(TEXT_SEGMENT, CSS_SELECTOR)
 ```
-This means that `self.find_text()` and other `self.find_*()` methods double as an assert statement: If something can't be found, that counts as an assertion error. The lines were broken apart in the example above to demonstrate different methods available to you. The big difference is that find_text() also returns the WebDriver element contained by CSS_SELECTOR.
-Also, find_text() was previously called wait_for_text_visible(), and you can still use the older method name if you wish.)
 
 If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
 You can add ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action:
@@ -253,7 +251,7 @@ class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
         self.open("http://xkcd.com/731/")
-        self.find_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
+        self.assert_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
 ```
 Now run it:
 
@@ -324,13 +322,14 @@ self.get_text("header h2")
 ```python
 self.wait_for_element_present("div.my_class", timeout=10)
 ```
+(NOTE: You can also use: ``self.assert_element_present(ELEMENT)``)
 
 #### Asserting visibility of an element on a page within some number of seconds:
 
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5)
 ```
-(NOTE: The short version of this is ``self.find_element(ELEMENT)``)
+(NOTE: The short versions of this are ``self.find_element(ELEMENT)`` and ``self.assert_element(ELEMENT)``. The find_element() version returns the element)
 
 Since the line above returns the element, you can combine that with .click() as shown below:
 
@@ -348,7 +347,7 @@ self.click("a.my_class")  # DO IT THIS WAY!
 self.wait_for_text_visible("Make it so!", "div#trek div.picard div.quotes", timeout=3)
 self.wait_for_text_visible("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=1)
 ```
-(NOTE: The short version of this is ``self.find_text(TEXT, ELEMENT)``)
+(NOTE: The short versions of this are ``self.find_text(TEXT, ELEMENT)`` and ``self.assert_text(TEXT, ELEMENT)``)
 
 #### Asserting Anything
 

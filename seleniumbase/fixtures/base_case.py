@@ -27,6 +27,7 @@ from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import xpath_to_css
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
@@ -268,6 +269,9 @@ class BaseCase(unittest.TestCase):
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
 
+    def convert_xpath_to_css(self, xpath):
+        return xpath_to_css.convert_xpath_to_css(xpath)
+
     def set_value(self, selector, value, wait=False):
         self.scroll_to(selector, wait=wait)
         val = json.dumps(value)
@@ -307,6 +311,8 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_pause_if_active()
         return element
 
+    ############
+
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
@@ -315,6 +321,15 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
+
+    def assert_element_present(self, selector, by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_element_present(), but returns nothing.
+            Waits for an element to appear in the HTML of a page.
+            The element does not need be visible (it may be hidden).
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
+        return True
 
     # For backwards compatibility, earlier method names of the next
     # four methods have remained even though they do the same thing,
