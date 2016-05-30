@@ -17,6 +17,10 @@ def get_driver(browser_name):
             return webdriver.Firefox()
     if browser_name == constants.Browser.INTERNET_EXPLORER:
         return webdriver.Ie()
+    if browser_name == constants.Browser.EDGE:
+        return webdriver.Edge()
+    if browser_name == constants.Browser.SAFARI:
+        return webdriver.Safari()
     if browser_name == constants.Browser.PHANTOM_JS:
         return webdriver.PhantomJS()
     if browser_name == constants.Browser.GOOGLE_CHROME:

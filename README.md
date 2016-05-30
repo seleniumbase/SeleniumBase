@@ -28,7 +28,7 @@ If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`
 
 #### **Step 0b:** Get web browsers to run automation on
 
-If you haven't already, you'll want to [Download Firefox](https://www.mozilla.org/en-US/firefox/new/). You can also [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/) to run automation there.
+If you haven't already, [Download Firefox](https://www.mozilla.org/en-US/firefox/new/), and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
 
 #### **Step 0c:** Get drivers for the web browsers that require them
 
@@ -42,8 +42,9 @@ brew install chromedriver phantomjs
 ```
 
 Windows:
-* [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it in your PATH.
+* [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it on your PATH.
 * OPTIONAL: [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (only if you want to run headless browser automation)
+* OPTIONAL: [Download Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212) (Windows 10 only!)
 * For everything you download, put those files in your PATH. (``Environmental Variables`` on a Windows machine)
 
 If you want to verify that you successfully installed the web drivers, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
