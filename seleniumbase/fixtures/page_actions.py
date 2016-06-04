@@ -26,6 +26,7 @@ import time
 import traceback
 from seleniumbase.config import settings
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
 from selenium.webdriver.remote.errorhandler import NoSuchElementException
 from selenium.webdriver.remote.errorhandler import NoAlertPresentException
@@ -87,18 +88,22 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def hover_on_element(driver, selector):
+def hover_on_element(driver, selector, by=By.CSS_SELECTOR):
     """
     Fires the hover event for the specified element by the given selector.
     @Params
     driver - the webdriver object (required)
     selector - the locator (css selector) that is used (required)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
     """
-    driver.execute_script("jQuery('%s').mouseover()" % selector)
+    element = driver.find_element(by=by, value=selector)
+    hover = ActionChains(driver).move_to_element(element)
+    hover.perform()
 
 
 def hover_and_click(driver, hover_selector, click_selector,
-                    click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT):
+                    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
+                    timeout=settings.SMALL_TIMEOUT):
     """
     Fires the hover event for a specified element by a given selector, then
     clicks on another element specified. Useful for dropdown hover based menus.
@@ -106,12 +111,15 @@ def hover_and_click(driver, hover_selector, click_selector,
     driver - the webdriver object (required)
     hover_selector - the css selector to hover over (required)
     click_selector - the css selector to click on (required)
+    hover_by - the method to search by (Default: By.CSS_SELECTOR)
     click_by - the method to search by (Default: By.CSS_SELECTOR)
     timeout - number of seconds to wait for click element to appear after hover
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
-    driver.execute_script("jQuery('%s').mouseover()" % (hover_selector))
+    element = driver.find_element(by=hover_by, value=hover_selector)
+    hover = ActionChains(driver).move_to_element(element)
+    hover.perform()
     for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=click_by,
