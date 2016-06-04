@@ -189,16 +189,18 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 ```
 
+(NOTE: If you're using pytest instead nosetests for running your own integration tests outside of the SeleniumBase file path, you'll need a copy of [conftest.py](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) inside your folder structure because the pytest configuration is defined there locally at runtime.)
+
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
-The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base``) (nosetest-only for now)
+*Creating Visual Test Suite Reports* (for nosetest users only): The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used)
 
 ```bash
 nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/TestReport4.png "Example Test Report")
 
-(Note: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes.)
+(NOTE: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes. You'll want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
 
 #### **Step 5:** Complete the setup
 
