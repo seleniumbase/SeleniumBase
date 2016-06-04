@@ -193,7 +193,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
-*Creating Visual Test Suite Reports* (for nosetest users only): The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used)
+CREATING VISUAL TEST SUITE REPORTS (for nosetest users *ONLY*): The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used)
 
 ```bash
 nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
