@@ -215,13 +215,13 @@ class BaseCase(unittest.TestCase):
             This happens because jQuery is not always defined on web sites. """
         try:
             # Let's first find out if jQuery is already defined.
-            self.driver.execute_script("jQuery('html')")
+            self.execute_script("jQuery('html')")
             # Since that command worked, jQuery is defined. Let's return.
             return
         except Exception:
             # jQuery is not currently defined. Let's proceed by defining it.
             pass
-        self.driver.execute_script(
+        self.execute_script(
             '''var script = document.createElement("script"); '''
             '''script.src = "http://code.jquery.com/jquery-2.2.4.min.js"; '''
             '''document.getElementsByTagName("head")[0]'''
@@ -229,7 +229,7 @@ class BaseCase(unittest.TestCase):
         for x in xrange(30):
             # jQuery needs a small amount of time to activate. (At most 3s)
             try:
-                self.driver.execute_script("jQuery('html')")
+                self.execute_script("jQuery('html')")
                 return
             except Exception:
                 time.sleep(0.1)
@@ -243,7 +243,7 @@ class BaseCase(unittest.TestCase):
         scroll_script = "window.scrollTo(0, %s);" % element.location['y']
         # The old jQuery scroll_script required by=By.CSS_SELECTOR
         # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
-        self.driver.execute_script(scroll_script)
+        self.execute_script(scroll_script)
         self._demo_mode_pause_if_active(tiny=True)
 
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
@@ -257,11 +257,11 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         click_script = "jQuery('%s').click()" % selector
         try:
-            self.driver.execute_script(click_script)
+            self.execute_script(click_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(click_script)
+            self.execute_script(click_script)
         self._demo_mode_pause_if_active()
 
     def jq_format(self, code):
@@ -299,11 +299,11 @@ class BaseCase(unittest.TestCase):
         val = json.dumps(value)
         set_value_script = "jQuery('%s').val(%s)" % (selector, val)
         try:
-            self.driver.execute_script(set_value_script)
+            self.execute_script(set_value_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(set_value_script)
+            self.execute_script(set_value_script)
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -317,11 +317,11 @@ class BaseCase(unittest.TestCase):
         update_text_script = """jQuery('%s').val('%s')""" % (
             selector, self.jq_format(new_value))
         try:
-            self.driver.execute_script(update_text_script)
+            self.execute_script(update_text_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(update_text_script)
+            self.execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self._demo_mode_pause_if_active()
