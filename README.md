@@ -117,14 +117,14 @@ Here's how to run the example script using various web browsers:
 ```bash
 cd examples/
 
-nosetests my_first_test.py --browser=firefox --with-selenium -s
+nosetests my_first_test.py --with-selenium --browser=firefox -s
 
-nosetests my_first_test.py --browser=chrome --with-selenium -s
+nosetests my_first_test.py --with-selenium --browser=chrome -s
 
-nosetests my_first_test.py --browser=phantomjs --with-selenium -s
+nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 ```
 
-After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed.
+After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Firefox will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
 
 NOTE: The following two lines of code can be simplified...
 ``` python
