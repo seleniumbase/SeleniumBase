@@ -223,8 +223,8 @@ class BaseCase(unittest.TestCase):
             pass
         self.driver.execute_script(
             '''var script = document.createElement("script"); '''
-            '''script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/'''
-            '''jquery.min.js"; document.getElementsByTagName("head")[0]'''
+            '''script.src = "http://code.jquery.com/jquery-2.2.4.min.js"; '''
+            '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
         for x in xrange(30):
             # jQuery needs a small amount of time to activate. (At most 3s)
