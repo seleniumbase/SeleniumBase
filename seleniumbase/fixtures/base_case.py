@@ -164,7 +164,7 @@ class BaseCase(unittest.TestCase):
                 not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
-            self.set_value(selector, new_value)
+            self.set_value(selector, new_value, by=by)
         self._demo_mode_pause_if_active()
 
     def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -236,31 +236,32 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
-    def scroll_to(self, selector, wait=True):
-        if wait:
-            # Fail here if element isn't visible after SMALL_TIMEOUT seconds
-            self.wait_for_element_visible(
-                selector, timeout=settings.SMALL_TIMEOUT)
-        else:
-            # Might be a jQuery action to interact with an invisible element
-            if not self.is_element_visible:
-                time.sleep(0.05)  # Last chance to load before scrolling there
-        scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
+    def scroll_to(self, selector, by=By.CSS_SELECTOR):
+        # Fail here if element isn't visible after SMALL_TIMEOUT seconds
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        scroll_script = "window.scrollTo(0, %s);" % element.location['y']
+        # The old jQuery scroll_script required by=By.CSS_SELECTOR
+        # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
+        self.driver.execute_script(scroll_script)
+        self._demo_mode_pause_if_active(tiny=True)
+
+    def scroll_click(self, selector, by=By.CSS_SELECTOR):
+        self.scroll_to(selector, by=by)
+        self.click(selector, by=by)
+
+    def jquery_click(self, selector, by=By.CSS_SELECTOR):
+        if selector.startswith('/') or selector.startswith('./'):
+            by = By.XPATH
+        self.scroll_to(selector, by=by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        click_script = "jQuery('%s').click()" % selector
         try:
-            self.driver.execute_script(scroll_script)
+            self.driver.execute_script(click_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(scroll_script)
-        self._demo_mode_pause_if_active(tiny=True)
-
-    def scroll_click(self, selector):
-        self.scroll_to(selector)
-        self.click(selector)
-
-    def jquery_click(self, selector, wait=False):
-        self.scroll_to(selector, wait=wait)
-        self.driver.execute_script("jQuery('%s').click()" % selector)
+            self.driver.execute_script(click_script)
         self._demo_mode_pause_if_active()
 
     def jq_format(self, code):
@@ -272,42 +273,85 @@ class BaseCase(unittest.TestCase):
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
 
-    def set_value(self, selector, value, wait=False):
-        self.scroll_to(selector, wait=wait)
+    def convert_to_css_selector(self, selector, by):
+        if by == By.CSS_SELECTOR:
+            return selector
+        elif by == By.ID:
+            return '#%s' % selector
+        elif by == By.CLASS_NAME:
+            return '.%s' % selector
+        elif by == By.NAME:
+            return '[name="%s"]' % selector
+        elif by == By.TAG_NAME:
+            return selector
+        elif by == By.XPATH:
+            return self.convert_xpath_to_css(selector)
+        else:
+            raise Exception(
+                "Exception: Could not convert [%s](by=%s) to CSS_SELECTOR!" % (
+                    selector, by))
+
+    def set_value(self, selector, value, by=By.CSS_SELECTOR):
+        if selector.startswith('/') or selector.startswith('./'):
+            by = By.XPATH
+        self.scroll_to(selector, by=by)
+        selector = self.convert_to_css_selector(selector, by=by)
         val = json.dumps(value)
-        self.driver.execute_script("jQuery('%s').val(%s)" % (selector, val))
+        set_value_script = "jQuery('%s').val(%s)" % (selector, val)
+        try:
+            self.driver.execute_script(set_value_script)
+        except Exception:
+            # The likely reason this fails is because: "jQuery is not defined"
+            self.activate_jquery()  # It's a good thing we can define it here
+            self.driver.execute_script(set_value_script)
         self._demo_mode_pause_if_active()
 
-    def jquery_update_text_value(self, selector, new_value,
+    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
                                  timeout=settings.SMALL_TIMEOUT):
-        element = self.wait_for_element_visible(selector, timeout=timeout)
-        self.scroll_to(selector)
-        self.driver.execute_script("""jQuery('%s').val('%s')"""
-                                   % (selector, self.jq_format(new_value)))
+        if selector.startswith('/') or selector.startswith('./'):
+            by = By.XPATH
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=timeout)
+        self.scroll_to(selector, by=by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        update_text_script = """jQuery('%s').val('%s')""" % (
+            selector, self.jq_format(new_value))
+        try:
+            self.driver.execute_script(update_text_script)
+        except Exception:
+            # The likely reason this fails is because: "jQuery is not defined"
+            self.activate_jquery()  # It's a good thing we can define it here
+            self.driver.execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self._demo_mode_pause_if_active()
 
-    def jquery_update_text(self, selector, new_value,
+    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
-        self.jquery_update_text_value(selector, new_value, timeout=timeout)
+        self.jquery_update_text_value(
+            selector, new_value, by=by, timeout=timeout)
 
-    def hover_on_element(self, selector):
-        self.wait_for_element_visible(selector, timeout=settings.SMALL_TIMEOUT)
-        self.scroll_to(selector)
+    def hover_on_element(self, selector, by=By.CSS_SELECTOR):
+        self.wait_for_element_visible(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         return page_actions.hover_on_element(self.driver, selector)
 
     def hover_and_click(self, hover_selector, click_selector,
-                        click_by=By.CSS_SELECTOR,
+                        hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
-        if click_selector.startswith('/'):
+        if hover_selector.startswith('/') or hover_selector.startswith('./'):
+            hover_by = By.XPATH
+        if click_selector.startswith('/') or click_selector.startswith('./'):
             click_by = By.XPATH
-        self.wait_for_element_visible(hover_selector, timeout=timeout)
-        self.scroll_to(hover_selector)
+        self.wait_for_element_visible(
+            hover_selector, by=hover_by, timeout=timeout)
+        self.scroll_to(hover_selector, by=hover_by)
         # Settle down from the scrolling before hovering
         element = page_actions.hover_and_click(
-            self.driver, hover_selector, click_selector, click_by, timeout)
+                self.driver, hover_selector, click_selector,
+                hover_by, click_by, timeout)
         self._demo_mode_pause_if_active()
         return element
 
@@ -491,8 +535,7 @@ class BaseCase(unittest.TestCase):
 
     def _demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
-            if by == By.CSS_SELECTOR:
-                self.scroll_to(selector)
+            self.scroll_to(selector, by=by)
 
 
 # PyTest-Specific Code #

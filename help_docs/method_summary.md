@@ -49,11 +49,11 @@ self.maximize_window()
 
 self.activate_jquery()
 
-self.scroll_to(selector, wait=True)
+self.scroll_to(selector, by=By.CSS_SELECTOR)
 
-self.scroll_click(selector)
+self.scroll_click(selector, by=By.CSS_SELECTOR)
 
-self.jquery_click(selector, wait=False)
+self.jquery_click(selector, by=By.CSS_SELECTOR)
 
 self.jq_format(code)
 
@@ -61,17 +61,21 @@ self.get_domain_url(url)
 
 self.convert_xpath_to_css(xpath)
 
-self.set_value(selector, value, wait=False)
+self.convert_to_css_selector(selector, by)
 
-self.jquery_update_text_value(selector, new_value,
+self.set_value(selector, value, by=By.CSS_SELECTOR)
+
+self.jquery_update_text_value(selector, new_value, by=By.CSS_SELECTOR
     timeout=settings.SMALL_TIMEOUT)
 
-self.jquery_update_text(selector, new_value, timeout=settings.SMALL_TIMEOUT)
+self.jquery_update_text(selector, new_value, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
 
 self.hover_on_element(selector)
 
 self.hover_and_click(hover_selector, click_selector,
-    click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
 
 ########
 
