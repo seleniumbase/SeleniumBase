@@ -5,17 +5,17 @@ Here are some example run commands for the files in this folder and what they do
 
 Run the example test in Firefox
 ```bash
-nosetests my_first_test.py --browser=firefox --with-selenium
+nosetests my_first_test.py --with-selenium --browser=firefox
 ```
 
 Run the example test in Chrome
 ```bash
-nosetests my_first_test.py --browser=chrome --with-selenium
+nosetests my_first_test.py --with-selenium --browser=chrome
 ```
 
 Run the example test in PhantomJS
 ```bash
-nosetests my_first_test.py --browser=phantomjs --with-selenium
+nosetests my_first_test.py --with-selenium --browser=phantomjs
 ```
 
 Run the example test suite in Firefox and generate an html report (nosetests-only)
