@@ -109,6 +109,8 @@ class BaseCase(unittest.TestCase):
             raise Exception("Link text [%s] was not found!" % link_text)
         # Not using phantomjs
         element = self.wait_for_link_text_visible(link_text, timeout=timeout)
+        if self.demo_mode:
+            self._slow_scroll_to_element(element)
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
@@ -137,6 +139,7 @@ class BaseCase(unittest.TestCase):
             Similar to update_text(), but won't clear the text field first. """
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
+        self._demo_mode_scroll_if_active(selector, by)
         element.send_keys(new_value)
         self._demo_mode_pause_if_active()
 
@@ -157,6 +160,7 @@ class BaseCase(unittest.TestCase):
         """
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
+        self._demo_mode_scroll_if_active(selector, by)
         element.clear()
         self._demo_mode_pause_if_active(tiny=True)
         element.send_keys(new_value)
@@ -215,21 +219,21 @@ class BaseCase(unittest.TestCase):
             This happens because jQuery is not always defined on web sites. """
         try:
             # Let's first find out if jQuery is already defined.
-            self.driver.execute_script("jQuery('html')")
+            self.execute_script("jQuery('html')")
             # Since that command worked, jQuery is defined. Let's return.
             return
         except Exception:
             # jQuery is not currently defined. Let's proceed by defining it.
             pass
-        self.driver.execute_script(
+        self.execute_script(
             '''var script = document.createElement("script"); '''
-            '''script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1/'''
-            '''jquery.min.js"; document.getElementsByTagName("head")[0]'''
+            '''script.src = "http://code.jquery.com/jquery-2.2.4.min.js"; '''
+            '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
         for x in xrange(30):
             # jQuery needs a small amount of time to activate. (At most 3s)
             try:
-                self.driver.execute_script("jQuery('html')")
+                self.execute_script("jQuery('html')")
                 return
             except Exception:
                 time.sleep(0.1)
@@ -237,14 +241,16 @@ class BaseCase(unittest.TestCase):
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
     def scroll_to(self, selector, by=By.CSS_SELECTOR):
-        # Fail here if element isn't visible after SMALL_TIMEOUT seconds
+        ''' Fast scroll to destination '''
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
-        scroll_script = "window.scrollTo(0, %s);" % element.location['y']
-        # The old jQuery scroll_script required by=By.CSS_SELECTOR
-        # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
-        self.driver.execute_script(scroll_script)
-        self._demo_mode_pause_if_active(tiny=True)
+        self._scroll_to_element(element)
+
+    def slow_scroll_to(self, selector, by=By.CSS_SELECTOR):
+        ''' Slow motion scroll to destination '''
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        self._slow_scroll_to_element(element)
 
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
         self.scroll_to(selector, by=by)
@@ -257,11 +263,11 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         click_script = "jQuery('%s').click()" % selector
         try:
-            self.driver.execute_script(click_script)
+            self.execute_script(click_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(click_script)
+            self.execute_script(click_script)
         self._demo_mode_pause_if_active()
 
     def jq_format(self, code):
@@ -294,16 +300,17 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, value, by=By.CSS_SELECTOR):
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
+        self._demo_mode_scroll_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
         val = json.dumps(value)
         set_value_script = "jQuery('%s').val(%s)" % (selector, val)
         try:
-            self.driver.execute_script(set_value_script)
+            self.execute_script(set_value_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(set_value_script)
+            self.execute_script(set_value_script)
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -312,16 +319,17 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
+        self._demo_mode_scroll_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
         update_text_script = """jQuery('%s').val('%s')""" % (
             selector, self.jq_format(new_value))
         try:
-            self.driver.execute_script(update_text_script)
+            self.execute_script(update_text_script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.driver.execute_script(update_text_script)
+            self.execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self._demo_mode_pause_if_active()
@@ -334,6 +342,7 @@ class BaseCase(unittest.TestCase):
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        self._demo_mode_scroll_if_active(selector, by)
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         return page_actions.hover_on_element(self.driver, selector)
@@ -347,6 +356,7 @@ class BaseCase(unittest.TestCase):
             click_by = By.XPATH
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
+        self._demo_mode_scroll_if_active(hover_selector, hover_by)
         self.scroll_to(hover_selector, by=hover_by)
         # Settle down from the scrolling before hovering
         element = page_actions.hover_and_click(
@@ -531,11 +541,36 @@ class BaseCase(unittest.TestCase):
             if not tiny:
                 time.sleep(wait_time)
             else:
-                time.sleep(wait_time/2.0)
+                time.sleep(wait_time/2.4)
 
     def _demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
-            self.scroll_to(selector, by=by)
+            self.slow_scroll_to(selector, by=by)
+
+    def _scroll_to_element(self, element):
+        scroll_script = "window.scrollTo(0, %s);" % element.location['y']
+        # The old jQuery scroll_script required by=By.CSS_SELECTOR
+        # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
+        self.execute_script(scroll_script)
+        self._demo_mode_pause_if_active(tiny=True)
+
+    def _slow_scroll_to_element(self, element):
+        location = element.location['y']
+        scroll_position = self.execute_script("return window.scrollY;")
+        difference = location - scroll_position
+        total_steps = int(abs(difference) / 50.0) + 4.0
+        step_value = float(difference) / total_steps
+        new_position = scroll_position
+        for y in xrange(int(total_steps)):
+            time.sleep(0.012)
+            new_position += step_value
+            scroll_script = "window.scrollTo(0, %s);" % new_position
+            self.execute_script(scroll_script)
+        time.sleep(0.012)
+        scroll_script = "window.scrollTo(0, %s);" % element.location['y']
+        self.execute_script(scroll_script)
+        time.sleep(0.012)
+        self._demo_mode_pause_if_active(tiny=True)
 
 
 # PyTest-Specific Code #

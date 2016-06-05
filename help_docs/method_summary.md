@@ -51,6 +51,8 @@ self.activate_jquery()
 
 self.scroll_to(selector, by=By.CSS_SELECTOR)
 
+self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
+
 self.scroll_click(selector, by=By.CSS_SELECTOR)
 
 self.jquery_click(selector, by=By.CSS_SELECTOR)
