@@ -49,6 +49,8 @@ self.maximize_window()
 
 self.activate_jquery()
 
+self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
+
 self.scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
