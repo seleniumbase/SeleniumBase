@@ -240,6 +240,78 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
+    def highlight(self, selector, by=By.CSS_SELECTOR, loops=4, scroll=True):
+        """ This method uses fancy javascript to highlight an element.
+            Used during demo_mode.
+            @Params
+            selector - the selector of the element to find
+            by - the type of selector to search by (Default: CSS)
+            loops - # of times to repeat the highlight animation (Default: 4)
+                   (4 loops is about 0.70 seconds. Your mileage may vary)
+            scroll - the option to scroll to the element first (Default: True)
+        """
+        element = self.find_element(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if scroll:
+            self._slow_scroll_to_element(element)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't highlight if can't convert to CSS_SELECTOR for jQuery
+            return
+
+        # Only get the first match
+        last_syllable = selector.split(' ')[-1]
+        if ':' not in last_syllable:
+            selector += ':first'
+
+        o_bs = ''  # original_box_shadow
+        style = element.get_attribute('style')
+        if style:
+            if 'box-shadow: ' in style:
+                box_start = style.find('box-shadow: ')
+                box_end = style.find(';', box_start) + 1
+                original_box_shadow = style[box_start:box_end]
+                o_bs = original_box_shadow
+
+        script = """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
+        try:
+            self.execute_script(script)
+        except Exception:
+            self.activate_jquery()
+            self.execute_script(script)
+        loops = int(loops)
+        for n in xrange(loops):
+            script = """jQuery('%s').css('box-shadow',
+                '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = """jQuery('%s').css('box-shadow',
+                '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = """jQuery('%s').css('box-shadow',
+                '0px 0px 6px 6px rgba(0, 0, 255, 1)');""" % selector
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = """jQuery('%s').css('box-shadow',
+                '0px 0px 6px 6px rgba(0, 255, 0, 1)');""" % selector
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = """jQuery('%s').css('box-shadow',
+                '0px 0px 6px 6px rgba(128, 128, 0, 1)');""" % selector
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = """jQuery('%s').css('box-shadow',
+                '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
+            self.execute_script(script)
+            time.sleep(0.02)
+
+        script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
+        self.execute_script(script)
+        time.sleep(0.065)
+
     def scroll_to(self, selector, by=By.CSS_SELECTOR):
         ''' Fast scroll to destination '''
         element = self.wait_for_element_visible(
