@@ -702,6 +702,9 @@ class BaseCase(unittest.TestCase):
         scroll_script = "window.scrollTo(0, %s);" % element_location
         self.execute_script(scroll_script)
         time.sleep(0.01)
+        if difference > 430 or difference < -300:
+            # Add small recovery time for long-distance slow-scrolling
+            time.sleep(0.1)
 
 
 # PyTest-Specific Code #
