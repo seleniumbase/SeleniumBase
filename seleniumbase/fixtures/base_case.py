@@ -689,9 +689,9 @@ class BaseCase(unittest.TestCase):
         element_location = element_location - 130
         if element_location < 0:
             element_location = 0
-        difference = element_location - scroll_position
-        total_steps = int(abs(difference) / 50.0) + 2.0
-        step_value = float(difference) / total_steps
+        distance = element_location - scroll_position
+        total_steps = int(abs(distance) / 50.0) + 2.0
+        step_value = float(distance) / total_steps
         new_position = scroll_position
         for y in xrange(int(total_steps)):
             time.sleep(0.01)
@@ -702,7 +702,7 @@ class BaseCase(unittest.TestCase):
         scroll_script = "window.scrollTo(0, %s);" % element_location
         self.execute_script(scroll_script)
         time.sleep(0.01)
-        if difference > 430 or difference < -300:
+        if distance > 430 or distance < -300:
             # Add small recovery time for long-distance slow-scrolling
             time.sleep(0.1)
 
