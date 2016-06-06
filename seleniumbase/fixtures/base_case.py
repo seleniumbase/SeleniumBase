@@ -352,6 +352,9 @@ class BaseCase(unittest.TestCase):
         return xpath_to_css.convert_xpath_to_css(xpath)
 
     def convert_to_css_selector(self, selector, by):
+        """ This method converts a selector to a CSS_SELECTOR.
+            jQuery commands require a CSS_SELECTOR for finding elements.
+            This method should only be used for jQuery actions. """
         if by == By.CSS_SELECTOR:
             return selector
         elif by == By.ID:
@@ -364,6 +367,10 @@ class BaseCase(unittest.TestCase):
             return selector
         elif by == By.XPATH:
             return self.convert_xpath_to_css(selector)
+        elif by == By.LINK_TEXT:
+            return 'a:contains("%s")' % selector
+        elif by == By.PARTIAL_LINK_TEXT:
+            return 'a:contains("%s")' % selector
         else:
             raise Exception(
                 "Exception: Could not convert [%s](by=%s) to CSS_SELECTOR!" % (
