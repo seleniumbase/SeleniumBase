@@ -63,11 +63,16 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
-        self._demo_mode_scroll_if_active(selector, by)
+        self._demo_mode_highlight_if_active(selector, by)
+        pre_action_url = self.driver.current_url
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
-        self._demo_mode_pause_if_active()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
 
     def click_chain(self, selectors_list, by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT, spacing=0):
@@ -109,12 +114,16 @@ class BaseCase(unittest.TestCase):
             raise Exception("Link text [%s] was not found!" % link_text)
         # Not using phantomjs
         element = self.wait_for_link_text_visible(link_text, timeout=timeout)
-        if self.demo_mode:
-            self._slow_scroll_to_element(element)
+        self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
+        pre_action_url = self.driver.current_url
         element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
-        self._demo_mode_pause_if_active()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
 
     def get_text(self, selector, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
@@ -139,9 +148,14 @@ class BaseCase(unittest.TestCase):
             Similar to update_text(), but won't clear the text field first. """
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
-        self._demo_mode_scroll_if_active(selector, by)
+        self._demo_mode_highlight_if_active(selector, by)
+        pre_action_url = self.driver.current_url
         element.send_keys(new_value)
-        self._demo_mode_pause_if_active()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
 
     def send_keys(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
@@ -160,16 +174,21 @@ class BaseCase(unittest.TestCase):
         """
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
-        self._demo_mode_scroll_if_active(selector, by)
+        self._demo_mode_highlight_if_active(selector, by)
         element.clear()
         self._demo_mode_pause_if_active(tiny=True)
+        pre_action_url = self.driver.current_url
         element.send_keys(new_value)
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
             selector = self.jq_format(selector)
             self.set_value(selector, new_value, by=by)
-        self._demo_mode_pause_if_active()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
 
     def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT, retry=False):
@@ -333,7 +352,13 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
-        click_script = "jQuery('%s').click()" % selector
+
+        # Only get the first match
+        last_syllable = selector.split(' ')[-1]
+        if ':' not in last_syllable:
+            selector += ':first'
+
+        click_script = """jQuery('%s').click()""" % selector
         try:
             self.execute_script(click_script)
         except Exception:
@@ -379,11 +404,17 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, value, by=By.CSS_SELECTOR):
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
-        self._demo_mode_scroll_if_active(selector, by)
+        self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
         val = json.dumps(value)
-        set_value_script = "jQuery('%s').val(%s)" % (selector, val)
+
+        # Only get the first match
+        last_syllable = selector.split(' ')[-1]
+        if ':' not in last_syllable:
+            selector += ':first'
+
+        set_value_script = """jQuery('%s').val(%s)""" % (selector, val)
         try:
             self.execute_script(set_value_script)
         except Exception:
@@ -398,9 +429,15 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
-        self._demo_mode_scroll_if_active(selector, by)
+        self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
+
+        # Only get the first match
+        last_syllable = selector.split(' ')[-1]
+        if ':' not in last_syllable:
+            selector += ':first'
+
         update_text_script = """jQuery('%s').val('%s')""" % (
             selector, self.jq_format(new_value))
         try:
@@ -421,7 +458,7 @@ class BaseCase(unittest.TestCase):
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
-        self._demo_mode_scroll_if_active(selector, by)
+        self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         return page_actions.hover_on_element(self.driver, selector)
@@ -435,13 +472,17 @@ class BaseCase(unittest.TestCase):
             click_by = By.XPATH
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
-        self._demo_mode_scroll_if_active(hover_selector, hover_by)
+        self._demo_mode_highlight_if_active(hover_selector, hover_by)
         self.scroll_to(hover_selector, by=hover_by)
-        # Settle down from the scrolling before hovering
+        pre_action_url = self.driver.current_url
         element = page_actions.hover_and_click(
                 self.driver, hover_selector, click_selector,
                 hover_by, click_by, timeout)
-        self._demo_mode_pause_if_active()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
         return element
 
     ############
@@ -620,36 +661,47 @@ class BaseCase(unittest.TestCase):
             if not tiny:
                 time.sleep(wait_time)
             else:
-                time.sleep(wait_time/2.4)
+                time.sleep(wait_time/3.4)
 
     def _demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
             self.slow_scroll_to(selector, by=by)
 
+    def _demo_mode_highlight_if_active(self, selector, by):
+        if self.demo_mode:
+            # Includes a slow-scroll to
+            self.highlight(selector, by=by)
+
     def _scroll_to_element(self, element):
-        scroll_script = "window.scrollTo(0, %s);" % element.location['y']
+        element_location = element.location['y']
+        element_location = element_location - 130
+        if element_location < 0:
+            element_location = 0
+        scroll_script = "window.scrollTo(0, %s);" % element_location
         # The old jQuery scroll_script required by=By.CSS_SELECTOR
         # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
         self.execute_script(scroll_script)
         self._demo_mode_pause_if_active(tiny=True)
 
     def _slow_scroll_to_element(self, element):
-        location = element.location['y']
         scroll_position = self.execute_script("return window.scrollY;")
-        difference = location - scroll_position
-        total_steps = int(abs(difference) / 50.0) + 4.0
+        element_location = element.location['y']
+        element_location = element_location - 130
+        if element_location < 0:
+            element_location = 0
+        difference = element_location - scroll_position
+        total_steps = int(abs(difference) / 50.0) + 2.0
         step_value = float(difference) / total_steps
         new_position = scroll_position
         for y in xrange(int(total_steps)):
-            time.sleep(0.012)
+            time.sleep(0.01)
             new_position += step_value
             scroll_script = "window.scrollTo(0, %s);" % new_position
             self.execute_script(scroll_script)
-        time.sleep(0.012)
-        scroll_script = "window.scrollTo(0, %s);" % element.location['y']
+        time.sleep(0.01)
+        scroll_script = "window.scrollTo(0, %s);" % element_location
         self.execute_script(scroll_script)
-        time.sleep(0.012)
-        self._demo_mode_pause_if_active(tiny=True)
+        time.sleep(0.01)
 
 
 # PyTest-Specific Code #
