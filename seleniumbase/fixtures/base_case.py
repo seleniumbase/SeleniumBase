@@ -695,7 +695,7 @@ class BaseCase(unittest.TestCase):
             step_value = float(distance) / total_steps
             new_position = scroll_position
             for y in xrange(int(total_steps)):
-                time.sleep(0.0115)
+                time.sleep(0.0114)
                 new_position += step_value
                 scroll_script = "window.scrollTo(0, %s);" % new_position
                 self.execute_script(scroll_script)
@@ -705,7 +705,7 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         if distance > 430 or distance < -300:
             # Add small recovery time for long-distance slow-scrolling
-            time.sleep(0.165)
+            time.sleep(0.162)
 
 
 # PyTest-Specific Code #
