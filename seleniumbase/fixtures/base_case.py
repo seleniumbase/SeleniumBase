@@ -690,21 +690,22 @@ class BaseCase(unittest.TestCase):
         if element_location < 0:
             element_location = 0
         distance = element_location - scroll_position
-        total_steps = int(abs(distance) / 50.0) + 2.0
-        step_value = float(distance) / total_steps
-        new_position = scroll_position
-        for y in xrange(int(total_steps)):
-            time.sleep(0.01)
-            new_position += step_value
-            scroll_script = "window.scrollTo(0, %s);" % new_position
-            self.execute_script(scroll_script)
+        if distance != 0:
+            total_steps = int(abs(distance) / 50.0) + 2.0
+            step_value = float(distance) / total_steps
+            new_position = scroll_position
+            for y in xrange(int(total_steps)):
+                time.sleep(0.0115)
+                new_position += step_value
+                scroll_script = "window.scrollTo(0, %s);" % new_position
+                self.execute_script(scroll_script)
         time.sleep(0.01)
         scroll_script = "window.scrollTo(0, %s);" % element_location
         self.execute_script(scroll_script)
         time.sleep(0.01)
         if distance > 430 or distance < -300:
             # Add small recovery time for long-distance slow-scrolling
-            time.sleep(0.1)
+            time.sleep(0.165)
 
 
 # PyTest-Specific Code #
