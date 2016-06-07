@@ -880,6 +880,14 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        if self.page_check_failures:
+            # self.process_checks() was not called after checks were made.
+            # We will log those now here, but without raising an exception.
+            exception_output = ''
+            exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
+            for tb in self.page_check_failures:
+                exception_output += "%s\n" % tb
+            logging.exception(exception_output)
         if self.is_pytest:
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
