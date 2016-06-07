@@ -669,7 +669,7 @@ class BaseCase(unittest.TestCase):
 
     def _demo_mode_highlight_if_active(self, selector, by):
         if self.demo_mode:
-            # Includes a slow-scroll to
+            # Includes self.slow_scroll_to(selector, by=by) by default
             self.highlight(selector, by=by)
 
     def _scroll_to_element(self, element):
