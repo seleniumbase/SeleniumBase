@@ -45,6 +45,8 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         self.environment = None
+        self.page_check_count = 0
+        self.page_check_failures = []
 
     def open(self, url):
         self.driver.get(url)
@@ -651,6 +653,74 @@ class BaseCase(unittest.TestCase):
 
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
+
+    ############
+
+    def _get_exception_message(self):
+        """ This method extracts the message from an exception if there
+            was an exception that occurred during the test, assuming
+            that the exception was in a try/except block and not thrown. """
+        exception_info = sys.exc_info()[1]
+        if hasattr(exception_info, 'msg'):
+            exc_message = exception_info.msg
+        elif hasattr(exception_info, 'message'):
+            exc_message = exception_info.message
+        else:
+            exc_message = '(Unknown Exception)'
+        return exc_message
+
+    def _package_check(self):
+        current_url = self.driver.current_url
+        message = self._get_exception_message()
+        self.page_check_failures.append(
+                "CHECK #%s: (%s)\n %s" % (
+                    self.page_check_count, current_url, message))
+
+    def check_assert_element(self, selector, by=By.CSS_SELECTOR,
+                             timeout=settings.TINY_TIMEOUT):
+        """ A non-terminating assertion for an element on a page.
+            Any and all exceptions will be saved until the process_checks()
+            method is called from inside a test, likely at the end of it. """
+        self.page_check_count += 1
+        try:
+            self.wait_for_element_visible(selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self._package_check()
+            return False
+
+    def check_assert_text(self, text, selector, by=By.CSS_SELECTOR,
+                          timeout=settings.TINY_TIMEOUT):
+        """ A non-terminating assertion for text from an element on a page.
+            Any and all exceptions will be saved until the process_checks()
+            method is called from inside a test, likely at the end of it. """
+        self.page_check_count += 1
+        try:
+            self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self._package_check()
+            return False
+
+    def process_checks(self):
+        """ To be used at the end of any test that uses checks, which are
+            non-terminating verifications that will only raise an exception
+            after this method is called. Useful for pages with multiple
+            elements to be checked when you want to find as many failures
+            as possible on a page before making fixes.
+            Might be more useful if this method is called after processing
+            all the checks for a single html page, otherwise the screenshot
+            in the logs file won't match the location of the checks. """
+        if self.page_check_failures:
+            exception_output = ''
+            exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
+            all_failing_checks = self.page_check_failures
+            self.page_check_failures = []
+            for tb in all_failing_checks:
+                exception_output += "%s\n" % tb
+            raise Exception(exception_output)
+
+    ############
 
     def _demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:
