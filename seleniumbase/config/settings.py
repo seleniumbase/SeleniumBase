@@ -8,7 +8,8 @@ NOSETESTS USERS: IF YOU MAKE CHANGES TO THIS FILE, YOU NEED TO RERUN
 
 # #####>>>>>----- REQUIRED/IMPORTANT SETTINGS -----<<<<<#####
 
-# Default times to wait for page elements to appear before performing actions
+# Default seconds to wait for page elements to appear before performing actions
+TINY_TIMEOUT = 0.1
 SMALL_TIMEOUT = 5
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
