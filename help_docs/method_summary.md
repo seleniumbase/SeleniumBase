@@ -153,4 +153,14 @@ self.wait_for_and_dismiss_alert(timeout=settings.LARGE_TIMEOUT)
 self.wait_for_and_switch_to_alert(timeout=settings.LARGE_TIMEOUT)
 
 self.save_screenshot(name, folder=None)
+
+########
+
+self.check_assert_element(selector, by=By.CSS_SELECTOR,
+    timeout=settings.TINY_TIMEOUT)
+
+self.check_assert_text(text, selector, by=By.CSS_SELECTOR,
+    timeout=settings.TINY_TIMEOUT)
+
+self.process_checks()
 ```
