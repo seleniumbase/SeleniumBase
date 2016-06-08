@@ -56,6 +56,9 @@ sudo apt-get install -y --force-yes xvfb
 sudo apt-get install -y --force-yes build-essential chrpath libssl-dev libxft-dev
 sudo apt-get install -y --force-yes libfreetype6 libfreetype6-dev
 sudo apt-get install -y --force-yes libfontconfig1 libfontconfig1-dev
+sudo apt-get install -y --force-yes libmysqlclient-dev
+sudo apt-get install -y --force-yes python-dev
+sudo apt-get install -y --force-yes python-MySQLdb
 
 # Install PhantomJS
 cd ~
