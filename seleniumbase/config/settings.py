@@ -55,10 +55,10 @@ WAIT_FOR_RSC_ON_CLICKS = False
 
 # MySQL DB Credentials
 # (For saving data from tests)
-DB_HOST = "[TEST DB HOST]"  # Ex: "127.0.0.1"
-DB_USERNAME = "[TEST DB USERNAME]"  # Ex: "root"
-DB_PASSWORD = "[TEST DB PASSWORD]"  # Ex: "test"
-DB_SCHEMA = "[TEST DB SCHEMA]"  # Ex: "test"
+DB_HOST = "127.0.0.1"
+DB_USERNAME = "root"
+DB_PASSWORD = "test"
+DB_SCHEMA = "test"
 
 
 # Amazon S3 Bucket Credentials
