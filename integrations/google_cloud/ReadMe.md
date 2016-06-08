@@ -64,7 +64,7 @@ cd /SeleniumBase
 #### 11. Install the requirements for SeleniumBase
 
 ```bash
-sudo pip install -r requirements.txt
+sudo pip install -r server_requirements.txt
 ```
 
 #### 12. Install SeleniumBase
