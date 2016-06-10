@@ -27,9 +27,9 @@ A reliable solution for fast & simple browser automation and testing.
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
-* Download web browsers such as [Firefox (Since v47.0 has a bug, use 46.*)](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/), and either [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Chromium](https://download-chromium.appspot.com/).
+* Download web browsers such as [Firefox (use v46.*, v47.0 is buggy)](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/), and either [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Chromium](https://download-chromium.appspot.com/).
 
-(NOTE: Firefox 47.0+ is currenly experiencing issues with Selenium. [Get Firefox 46.* instead](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/). For more information regarding this, [read this post](http://stackoverflow.com/questions/37693106/selenium-2-53-not-working-on-firefox-47) from Stack Overflow. Then [read about "Marionette"](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver), which is the future of FirefoxDriver.)
+(NOTE: Firefox 47.0 is currenly experiencing issues with Selenium. [Get Firefox 46.* instead](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/). For more information regarding this, [read this post](http://stackoverflow.com/questions/37693106/selenium-2-53-not-working-on-firefox-47) from Stack Overflow. Then [read about "Marionette"](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver), which is the future of FirefoxDriver.)
 
 * If you want to run automation on browsers other than Firefox, you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads), [PhantomJS](http://phantomjs.org/download.html), and [Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212) separately. (Firefox drivers come with Selenium by default.)
 
