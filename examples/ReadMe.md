@@ -1,7 +1,13 @@
 ## Running SeleniumBase Scripts
 
-Here are some example run commands for the files in this folder and what they do:
-(Note: You can replace ``nosetests`` with ``py.test`` for any of these.)
+To makes things easier, here's a simple GUI program that allows you to kick off a few example scripts by pressing a button:
+
+```bash
+python gui_test_runner.py
+```
+
+**For running scripts the usual way, here are some of the example run commands:**
+(Note: You can replace ``nosetests`` with ``py.test`` for most of these.)
 
 Run the example test in Firefox
 ```bash
