@@ -135,7 +135,7 @@ def build_report(report_log_path, page_results_list,
         tf_color = "#EE3A3A"
 
     summary_table = '''<div><table><thead><tr>
-        <th>TEST REPORT SUMMARY</th>
+        <th>TESTING SUMMARY</th>
         <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
         </tr></thead><tbody>
         <tr style="color:#00BB00"><td>TESTS PASSING: <td>%s</tr>
