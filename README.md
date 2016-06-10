@@ -193,7 +193,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 ```bash
 nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
 ```
-![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report.png "Example Test Report")
+![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Test Report")
 
 (NOTE: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes. You'll want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
 
