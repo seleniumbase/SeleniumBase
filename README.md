@@ -20,7 +20,7 @@ A reliable solution for fast & simple browser automation and testing.
 
 (**Linux users**: Run [Linuxfile.sh](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian GNU/Linux machine.)
 
-(**Docker users**: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md) for running SeleniumBase with Docker.)
+(**Docker users**: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md) for running on a Docker machine.)
 
 
 #### **Step 0:** Install Python/pip, Web Browsers, and Web Drivers
