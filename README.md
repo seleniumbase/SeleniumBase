@@ -1,4 +1,4 @@
-![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo2c.png "SeleniumBase")
+![](http://cdn2.hubspot.net/hubfs/100006/images/results_logo4_medium.png "SeleniumBase") ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo2c.png "SeleniumBase") ![](http://cdn2.hubspot.net/hubfs/100006/images/results_logo4_medium.png "SeleniumBase")
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/SeleniumBase/stargazers)
 
@@ -198,7 +198,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 ```bash
 nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
 ```
-![](http://cdn2.hubspot.net/hubfs/100006/images/TestReport4.png "Example Test Report")
+![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report.png "Example Test Report")
 
 (NOTE: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes. You'll want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
 
