@@ -14,7 +14,7 @@ A reliable solution for fast & simple browser automation and testing.
 * Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with [command-line options](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-(To learn about organizations automating with SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).)
+(To learn about businesses using SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).)
 
 ### Part I: Setup Instructions for Mac and Windows
 
