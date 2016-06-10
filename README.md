@@ -16,9 +16,11 @@ A reliable solution for fast & simple browser automation and testing.
 
 (To learn about organizations automating with SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).)
 
-### Part I: MAC SETUP INSTRUCTIONS
-####(WINDOWS users: Ignore "brew install", which is MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
-####(DOCKER users: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
+### Part I: Setup Instructions for Mac and Windows
+
+#####(**Linux users**: Run the included [Linuxfile.sh](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to install everything you need on Debian GNU/Linux.)
+
+#####(**Docker users**: Follow the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md) instructions.)
 
 
 #### **Step 0:** Install Python/pip, Web Browsers, and Web Drivers
@@ -29,7 +31,7 @@ A reliable solution for fast & simple browser automation and testing.
 
 * If you want to run automation on browsers other than Firefox, you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads), [PhantomJS](http://phantomjs.org/download.html), and [Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212) separately. (Firefox drivers come with Selenium by default.)
 
-* For everything you download (such as ``pip`` and ``Chromedriver``) make sure those files get on your system PATH. (``Environmental Variables`` on a Windows machine)
+* For everything you download (such as ``pip`` and ``Chromedriver``) make sure those files get on your system [PATH](http://java.com/en/download/help/path.xml). (``Environmental Variables`` on a Windows machine)
 
 * On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
