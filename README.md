@@ -20,33 +20,26 @@ A reliable solution for fast & simple browser automation and testing.
 ####(WINDOWS users: Ignore "brew install", which is MAC-only. Instead, download the files you need and put them on your [PATH](http://java.com/en/download/help/path.xml).)
 ####(DOCKER users: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md))
 
-#### **Step 0a:** Get basic requirements
 
-If you don't already have ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper`` installed and accessible from your terminal (command prompt), you'll need to **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
+#### **Step 0:** Install Python/pip, Web Browsers, and Web Drivers
 
+* To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
-#### **Step 0b:** Get web browsers to run automation on
+* Download web browsers such as [Firefox](https://www.mozilla.org/en-US/firefox/new/) and either [Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Chromium](https://download-chromium.appspot.com/).
 
-If you haven't already, [Download Firefox](https://www.mozilla.org/en-US/firefox/new/), and either [Download Chrome](https://www.google.com/chrome/browser/desktop/index.html) or [Download Chromium](https://download-chromium.appspot.com/).
+* If you want to run automation on browsers other than Firefox, you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads), [PhantomJS](http://phantomjs.org/download.html), and [Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212) separately. (Firefox drivers come with Selenium by default.)
 
-#### **Step 0c:** Get drivers for the web browsers that require them
+* For everything you download (such as ``pip`` and ``Chromedriver``) make sure those files get on your system PATH. (``Environmental Variables`` on a Windows machine)
 
-If you want to run automation on browsers other than Firefox (such as Chrome), you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/) and [PhantomJS](http://phantomjs.org/) separately. (Firefox drivers are already included with Selenium by default, which makes life a bit easier.)
-
-On a Mac you can install those drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
+* On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
 Mac:
 ```bash
 brew install chromedriver phantomjs
 ```
 
-Windows:
-* [Download Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and put it on your PATH.
-* OPTIONAL: [Download PhantomJS](https://bitbucket.org/ariya/phantomjs/downloads) (only if you want to run headless browser automation)
-* OPTIONAL: [Download Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212) (Windows 10 only!)
-* For everything you download, put those files in your PATH. (``Environmental Variables`` on a Windows machine)
+* To verify that the web drivers are working, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
 
-If you want to verify that you successfully installed the web drivers, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
 
 #### **Step 1:** Clone SeleniumBase to your local machine
 
