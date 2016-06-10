@@ -16,9 +16,9 @@ A reliable solution for fast & simple browser automation and testing.
 
 (To learn about businesses using SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).)
 
-### Part I: Setup Instructions for Mac and Windows
+### Part I: Setup Instructions for Mac, Ubuntu, and Windows
 
-(**Linux users**: Run [Linuxfile.sh](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian GNU/Linux machine.)
+(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)
 
 (**Docker users**: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md) for running on a Docker machine.)
 
@@ -60,7 +60,7 @@ If you're not sure how to create a virtual environment, **[follow these instruct
 
 #### **Step 3:** Install SeleniumBase
 
-Since [SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this:
+Since [SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this: (``sudo`` may be required.)
 ```bash
 pip install seleniumbase
 ```
