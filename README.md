@@ -583,7 +583,7 @@ You may also be wondering when you would use the Delayed Data Manager. Here's on
 
 
 Congratulations! If you've made it this far, it means you have a pretty good idea about how to move forward!
-Feel free to check out other exciting open source projects on GitHub:
+Feel free to check out these other exciting open source projects on GitHub by some smart people I know:
 [https://github.com/hubspot](https://github.com/hubspot)
 
 Happy Automating!
@@ -592,4 +592,4 @@ Happy Automating!
 
 
 ### Legal Disclaimer
-Automation is a powerful thing. It allows you to take full control of web browsers and do almost anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this framework and the automation that you create. You may also want to see a professional when it comes to setting up your automation environment if you require assistance.
+Automation is a powerful thing. It allows you to take full control of web browsers and do almost anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this platform and the automation that you create.
