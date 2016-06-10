@@ -1,59 +1,67 @@
 ## Running SeleniumBase Scripts
 
-Here are some example run commands for the files in this folder and what they do:
-(Note: You can replace ``nosetests`` with ``py.test`` for any of these.)
+To makes things easier, here's a simple GUI program that allows you to kick off a few example scripts by pressing a button:
 
-Run the example test in Firefox
+```bash
+python gui_test_runner.py
+```
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/GUI_Test_Runner_3.png "GUI Test Runner")
+
+**For running scripts the usual way, here are some of the example run commands:**
+(Note: You can replace ``nosetests`` with ``py.test`` for most of these.)
+
+Run the example test in Firefox:
 ```bash
 nosetests my_first_test.py --with-selenium --browser=firefox
 ```
 
-Run the example test in Chrome
+Run the example test in Chrome:
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome
 ```
 
-Run the example test in PhantomJS
+Run the example test in PhantomJS:
 ```bash
 nosetests my_first_test.py --with-selenium --browser=phantomjs
 ```
 
-Run the example test suite in Firefox and generate an html report (nosetests-only)
+Run the example test suite in Firefox and generate an html report: (nosetests-only)
 ```bash
 nosetests my_test_suite.py --with-selenium --browser=firefox --with-testing_base --report
 ```
 
-Run the example test suite in Chrome and generate an html report (nosetests-only)
+Run the example test suite in Chrome and generate an html report: (nosetests-only)
 ```bash
 nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base --report
 ```
 
-Run the example test suite in PhantomJS and generate an html report (nosetests-only)
+Run the example test suite in PhantomJS and generate an html report: (nosetests-only)
 ```bash
 nosetests my_test_suite.py --with-selenium --browser=phantomjs --with-testing_base --report
 ```
 
-Run a test with all the configuration specifed by a config file
+Run a test with all the configuration specifed by a config file:
 ```bash
 nosetests my_first_test.py --config=example_config.cfg
 ```
 
-Example test with the use of python decorators
+Example test with the use of python decorators:
 ```bash
 nosetests rate_limiting_test.py
 ```
 
-Run the example test slowly
+Run the example test slowly:
 ```bash
 nosetests my_first_test.py --browser=firefox --with-selenium --demo_mode
 ```
 
-Run a failing test with pdb mode enabled (If a test failure occurs, test enters pdb mode)
+Run a failing test with pdb mode enabled: (If a test failure occurs, test enters pdb mode)
 ```bash
 nosetests test_fail.py --browser=firefox --with-selenium --pdb --pdb-failures
 ```
 
-Run a failing test with logging
+Run a failing test with logging:
 ```bash
 nosetests test_fail.py --browser=firefox --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots
 ```
