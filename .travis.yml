@@ -10,8 +10,8 @@ before_script:
   - "flake8 seleniumbase/*/*.py"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-script:
   - "firefox --version"
+script:
   - "nosetests examples/my_first_test.py --with-selenium --browser=firefox"
 env:
   matrix:
