@@ -6,7 +6,11 @@ To makes things easier, here's a simple GUI program that allows you to kick off 
 python gui_test_runner.py
 ```
 
+(NOTE: With the exception of [my_first_test.py](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py), which should pass, many other tests in this folder fail on purpose to demonstrate features such as screenshots on failure, exception logging, and test reports.)
+
 ![](http://cdn2.hubspot.net/hubfs/100006/images/GUI_Test_Runner_3.png "GUI Test Runner")
+
+If you run scripts with logging enabled, (using ``--with-testing_base``), you’ll see two folders appear: “logs” and “archived logs”. The “logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “logs” folder will get pushed to the “archived_logs” folder if you have have the ``ARCHIVE_EXISTING_LOGS`` feature enabled in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py). Make sure to run ``python setup.py install`` for your changes to take effect if you make any changes to that file.
 
 **For running scripts the usual way, here are some of the example run commands:**
 (Note: You can replace ``nosetests`` with ``py.test`` for most of these.)
@@ -66,6 +70,4 @@ Run a failing test with logging:
 nosetests test_fail.py --browser=firefox --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots
 ```
 
-If you run scripts with logging enabled, you’ll see two folders appear: “logs” and “archived logs”. The “logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “logs” folder will get pushed to the “archived_logs” folder.
-
-You may also see .pyc files appear as you run tests. That’s compiled bytecode, which is a natural result of running Python code.
+If you see any ``*.pyc`` files appear as you run tests, that's perfectly normal. Compiled bytecode is a natural result of running Python code.
