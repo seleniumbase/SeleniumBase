@@ -1,6 +1,6 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/results_logo4_medium.png "SeleniumBase") ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo2c.png "SeleniumBase")
 
-[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/SeleniumBase/stargazers)
+[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![MIT License](http://img.shields.io/badge/license-MIT-orange.svg "MIT License")](https://github.com/mdmintz/SeleniumBase/blob/master/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/SeleniumBase/stargazers)
 
 A reliable solution for fast & simple browser automation and testing.
 
