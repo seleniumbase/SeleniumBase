@@ -27,7 +27,7 @@ A reliable solution for fast & simple browser automation and testing.
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
-* Download web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html)(or [Chromium](https://download-chromium.appspot.com/)), and [Firefox (use v46.* because v47.0 is buggy)](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/).
+* Download web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html) (or [Chromium](https://download-chromium.appspot.com/)) and [Firefox (use v46.* because v47.0 is buggy)](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/).
 
 (NOTE: Firefox 47.0 is currenly experiencing issues with Selenium. [Get Firefox 46.* instead](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/). For more information regarding this, [read this post](http://stackoverflow.com/questions/37693106/selenium-2-53-not-working-on-firefox-47) from Stack Overflow. There's a [new version of Firefox driver](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver) coming soon.
 
