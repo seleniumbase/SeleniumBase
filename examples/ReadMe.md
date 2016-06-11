@@ -70,4 +70,4 @@ Run a failing test with logging:
 nosetests test_fail.py --browser=firefox --with-selenium --with-testing_base --with-basic_test_info --with-page_source --with-screen_shots
 ```
 
-If you see any ``*.pyc`` files appear as you run tests, that's perfectly normal. Compiled bytecode is a natural result of running Python code.
+(NOTE: If you see any ``*.pyc`` files appear as you run tests, that's perfectly normal. Compiled bytecode is a natural result of running Python code.)
