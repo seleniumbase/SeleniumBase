@@ -1,5 +1,7 @@
 ## Running SeleniumBase Scripts
 
+(NOTE: If you didn't install SeleniumBase properly, these scripts won't work. Installation steps include "``pip install seleniumbase``" and/or "``python setup.py install``" from the top-level directory.)
+
 To makes things easier, here's a simple GUI program that allows you to kick off a few example scripts by pressing a button:
 
 ```bash
