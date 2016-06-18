@@ -12,7 +12,7 @@ python gui_test_runner.py
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/GUI_Test_Runner_3.png "GUI Test Runner")
 
-If you run scripts with logging enabled, (using ``--with-testing_base``), you’ll see two folders appear: “logs” and “archived logs”. The “logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “logs” folder will get pushed to the “archived_logs” folder if you have have the ``ARCHIVE_EXISTING_LOGS`` feature enabled in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py). Make sure to run ``python setup.py install`` for your changes to take effect if you make any changes to that file.
+If you run scripts with logging enabled, (using ``--with-testing_base``), you’ll see two folders appear: “latest_logs” and “archived_logs”. The “latest_logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “latest_logs” folder will get pushed to the “archived_logs” folder if you have have the ``ARCHIVE_EXISTING_LOGS`` feature enabled in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py). Make sure to run ``python setup.py install`` for your changes to take effect if you make any changes to that file.
 
 **For running scripts the usual way, here are some of the example run commands:**
 (Note: You can replace ``nosetests`` with ``py.test`` for most of these.)

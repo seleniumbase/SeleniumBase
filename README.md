@@ -258,7 +258,7 @@ Now run it:
 nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base -s
 ```
 
-You'll notice that a logs folder was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder.
+You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 Have you made it this far? Congratulations!!! Now you're ready to dive in at full speed!
 

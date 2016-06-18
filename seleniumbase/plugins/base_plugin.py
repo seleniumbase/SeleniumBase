@@ -46,7 +46,7 @@ class Base(Plugin):
             help='Extra data to pass from the command line.')
         parser.add_option(
             '--log_path', dest='log_path',
-            default='logs/',
+            default='latest_logs/',
             help='Where the log files are saved.')
         parser.add_option(
             '--report', action="store_true", dest='report',
