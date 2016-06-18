@@ -33,7 +33,7 @@ def pytest_addoption(parser):
                      default=False,
                      help="Use to save logs (screenshots) when tests fail.")
     parser.addoption('--log_path', dest='log_path',
-                     default='logs/',
+                     default='latest_logs/',
                      help='Where the log files are saved.')
     parser.addoption('--with-db_reporting', action="store_true",
                      dest='with_db_reporting',

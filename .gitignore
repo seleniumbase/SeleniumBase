@@ -5,8 +5,6 @@
 *.egg-info
 dist
 build
-logs
-archived_logs
 ghostdriver.log
 eggs
 parts
@@ -38,6 +36,13 @@ nosetests.xml
 
 # Other
 selenium-server-standalone.jar
+downloaded_files
+archived_files
+logs
+latest_logs
+log_archives
+archived_logs
 latest_report
 report_archives
+archived_reports
 temp
