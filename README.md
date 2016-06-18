@@ -10,7 +10,7 @@ A reliable solution for fast & simple browser automation and testing.
 
 #### Features include:
 * [A Python library](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
-* [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/logs_for_test_fail) automatically.
+* [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/example_logs) automatically.
 * Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with [command-line options](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
