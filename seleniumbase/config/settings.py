@@ -25,8 +25,12 @@ DEFAULT_DEMO_MODE_TIMEOUT = 1.2
 # This has no effect on Jenkins/S3/MySQL, which may still be saving test logs.
 ARCHIVE_EXISTING_LOGS = False
 
+# If True, existing downloads from past runs will be saved and take up space.
+# If False, only the downloads from the most recent run will be saved locally.
+ARCHIVE_EXISTING_DOWNLOADS = False
+
 # Default names for files saved during test failures when logging is turned on.
-# (These files will get saved to the "logs/" folder)
+# (These files will get saved to the "latest_logs/" folder)
 # Usage: "--with-testing_base"
 SCREENSHOT_NAME = "screenshot.jpg"
 BASIC_INFO_NAME = "basic_test_info.txt"
@@ -35,7 +39,7 @@ PAGE_SOURCE_NAME = "page_source.html"
 # Default names for folders and files saved when reports are turned on.
 # Usage: "--report" (Also requires: "--with-testing_base")
 LATEST_REPORT_DIR = "latest_report"
-REPORT_ARCHIVE_DIR = "report_archives"
+REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"
 RESULTS_TABLE = "results_table.csv"
 
