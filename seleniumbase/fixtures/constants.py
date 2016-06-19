@@ -12,6 +12,11 @@ class Environment:
     TEST = "test"
 
 
+class Files:
+    DOWNLOADS_FOLDER = "downloaded_files"
+    ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
+
+
 class Browser:
     FIREFOX = "firefox"
     INTERNET_EXPLORER = "ie"
