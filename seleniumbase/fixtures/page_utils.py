@@ -1,6 +1,7 @@
 """
 This module contains useful utility methods.
 """
+import requests
 
 
 def jq_format(code):
@@ -28,3 +29,13 @@ def get_domain_url(url):
     base_url = simple_url.split('/')[0]
     domain_url = url_header + '://' + base_url
     return domain_url
+
+
+def _download_file_to(file_url, destination_folder, new_file_name=None):
+    if new_file_name:
+        file_name = new_file_name
+    else:
+        file_name = file_url.split('/')[-1]
+    r = requests.get(file_url)
+    with open(destination_folder + '/' + file_name, "wb") as code:
+        code.write(r.content)

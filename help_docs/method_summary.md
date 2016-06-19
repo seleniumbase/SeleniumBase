@@ -63,6 +63,10 @@ self.jq_format(code)
 
 self.get_domain_url(url)
 
+self.download_file(file_url, destination_folder=None)
+
+self.save_file_as(file_url, new_file_name, destination_folder=None)
+
 self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
