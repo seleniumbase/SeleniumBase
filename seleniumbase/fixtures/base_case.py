@@ -375,6 +375,23 @@ class BaseCase(unittest.TestCase):
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
 
+    def download_file(self, file_url, destination_folder=None):
+        """ Downloads the file from the url to the destination folder.
+            If no destination folder is specified, the default one is used. """
+        if not destination_folder:
+            destination_folder = constants.Files.DOWNLOADS_FOLDER
+        page_utils._download_file_to(file_url, destination_folder)
+        return True
+
+    def save_file_as(self, file_url, new_file_name, destination_folder=None):
+        """ Similar to self.download_file(), except that you get to rename the
+            file being downloaded to whatever you want. """
+        if not destination_folder:
+            destination_folder = constants.Files.DOWNLOADS_FOLDER
+        page_utils._download_file_to(
+            file_url, destination_folder, new_file_name)
+        return True
+
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
 
