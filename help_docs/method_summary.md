@@ -71,9 +71,10 @@ self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
 
-self.set_value(selector, value, by=By.CSS_SELECTOR)
+self.set_value(selector, new_value, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
 
-self.jquery_update_text_value(selector, new_value, by=By.CSS_SELECTOR
+self.jquery_update_text_value(selector, new_value, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
 self.jquery_update_text(selector, new_value, by=By.CSS_SELECTOR,
