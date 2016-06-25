@@ -352,15 +352,18 @@ class BaseCase(unittest.TestCase):
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
-        self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
+        self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if self.is_element_visible(selector, by=by):
+            self._demo_mode_highlight_if_active(selector, by)
 
         # Only get the first match
         last_syllable = selector.split(' ')[-1]
         if ':' not in last_syllable:
             selector += ':first'
 
-        click_script = """jQuery('%s').click()""" % selector
+        click_script = """jQuery('%s')[0].click()""" % selector
         try:
             self.execute_script(click_script)
         except Exception:
