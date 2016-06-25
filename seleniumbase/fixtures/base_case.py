@@ -333,16 +333,18 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
         time.sleep(0.065)
 
-    def scroll_to(self, selector, by=By.CSS_SELECTOR):
+    def scroll_to(self, selector, by=By.CSS_SELECTOR,
+                  timeout=settings.SMALL_TIMEOUT):
         ''' Fast scroll to destination '''
         element = self.wait_for_element_visible(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+            selector, by=by, timeout=timeout)
         self._scroll_to_element(element)
 
-    def slow_scroll_to(self, selector, by=By.CSS_SELECTOR):
+    def slow_scroll_to(self, selector, by=By.CSS_SELECTOR,
+                       timeout=settings.SMALL_TIMEOUT):
         ''' Slow motion scroll to destination '''
         element = self.wait_for_element_visible(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+            selector, by=by, timeout=timeout)
         self._slow_scroll_to_element(element)
 
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
