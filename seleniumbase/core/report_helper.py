@@ -212,16 +212,17 @@ def build_report(report_log_path, page_results_list,
     results_file = add_results_page(report_html)
     archived_results_file = report_log_path + '/' + HTML_REPORT
     shutil.copyfile(results_file, archived_results_file)
-    print "\n* The latest html report page is located at:\n" + results_file
-    print "\n* Files saved for this report are located at:\n" + report_log_path
-    print ""
+    print("\n* The latest html report page is located at:\n" + results_file)
+    print(
+        "\n* Files saved for this report are located at:\n" + report_log_path)
+    print("")
     if not hide_report:
         if browser_type == 'chrome':
             browser = webdriver.Chrome()
         else:
             browser = webdriver.Firefox()
         browser.get("file://%s" % archived_results_file)
-        print "\n*** Close the html report window to continue. ***"
+        print("\n*** Close the html report window to continue. ***")
         while len(browser.window_handles):
             time.sleep(0.1)
         browser.quit()

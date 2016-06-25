@@ -14,7 +14,7 @@ class MyTestSuite(BaseCase):
 
     def test_2(self):
         # This test should FAIL
-        print "\n(This test fails on purpose)"
+        print("\n(This test fails on purpose)")
         self.open("http://xkcd.com/1675/")
         raise Exception("FAKE EXCEPTION: This test fails on purpose.")
 
@@ -26,6 +26,6 @@ class MyTestSuite(BaseCase):
 
     def test_4(self):
         # This test should FAIL
-        print "\n(This test fails on purpose)"
+        print("\n(This test fails on purpose)")
         self.open("http://xkcd.com/1670/")
         self.find_element("FakeElement.DoesNotExist", timeout=0.5)

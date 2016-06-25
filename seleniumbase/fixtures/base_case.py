@@ -974,7 +974,7 @@ class BaseCase(unittest.TestCase):
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)
                 index_file = s3_bucket.upload_index_file(test_id, guid)
-                print "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+                print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 logging.error(
                     "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 if self.with_db_reporting:
