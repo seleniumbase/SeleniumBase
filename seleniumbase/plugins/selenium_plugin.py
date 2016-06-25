@@ -121,8 +121,8 @@ class SeleniumBrowser(Plugin):
                 test.test.demo_mode = self.options.demo_mode
                 test.test.demo_sleep = self.options.demo_sleep
             except Exception as err:
-                print "Error starting/connecting to Selenium:"
-                print err
+                print("Error starting/connecting to Selenium:")
+                print(err)
                 os.kill(os.getpid(), 9)
         else:
             connected = False
@@ -139,21 +139,21 @@ class SeleniumBrowser(Plugin):
                     connected = True
                     break
                 except Exception as err:
-                    print "Attempt #%s to connect to Selenium failed" % i
+                    print("Attempt #%s to connect to Selenium failed" % i)
                     if i < 3:
-                        print "Retrying in 3 seconds..."
+                        print("Retrying in 3 seconds...")
                         time.sleep(3)
             if not connected:
-                print "Error starting/connecting to Selenium:"
-                print err
-                print "\n\n"
+                print("Error starting/connecting to Selenium:")
+                print(err)
+                print("\n\n")
                 os.kill(os.getpid(), 9)
 
     def afterTest(self, test):
         try:
             self.driver.quit()
         except:
-            print "No driver to quit."
+            print("No driver to quit.")
         if self.options.headless:
             if self.headless_active:
                 self.display.stop()

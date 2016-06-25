@@ -132,8 +132,8 @@ class Base(Plugin):
     def add_fails_or_errors(self, test):
         if self.report_on:
             if test.id() == 'nose.failure.Failure.runTest':
-                print ">>> ERROR: Could not locate tests to run!"
-                print ">>> The Test Report WILL NOT be generated!"
+                print(">>> ERROR: Could not locate tests to run!")
+                print(">>> The Test Report WILL NOT be generated!")
                 self.import_error = True
                 return
             self.failures.append(test.id())
@@ -154,9 +154,9 @@ class Base(Plugin):
         if (err[0] == errors.BlockedTest or
                 err[0] == errors.SkipTest or
                 err[0] == errors.DeprecatedTest):
-            print err[1].__str__().split('''-------------------- >> '''
+            print(err[1].__str__().split('''-------------------- >> '''
                                          '''begin captured logging'''
-                                         ''' << --------------------''', 1)[0]
+                                         ''' << --------------------''', 1)[0])
         else:
             self.__log_all_options_if_none_specified(test)
         self.add_fails_or_errors(test)

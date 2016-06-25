@@ -333,16 +333,18 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
         time.sleep(0.065)
 
-    def scroll_to(self, selector, by=By.CSS_SELECTOR):
+    def scroll_to(self, selector, by=By.CSS_SELECTOR,
+                  timeout=settings.SMALL_TIMEOUT):
         ''' Fast scroll to destination '''
         element = self.wait_for_element_visible(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+            selector, by=by, timeout=timeout)
         self._scroll_to_element(element)
 
-    def slow_scroll_to(self, selector, by=By.CSS_SELECTOR):
+    def slow_scroll_to(self, selector, by=By.CSS_SELECTOR,
+                       timeout=settings.SMALL_TIMEOUT):
         ''' Slow motion scroll to destination '''
         element = self.wait_for_element_visible(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+            selector, by=by, timeout=timeout)
         self._slow_scroll_to_element(element)
 
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
@@ -352,15 +354,18 @@ class BaseCase(unittest.TestCase):
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
-        self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
+        self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if self.is_element_visible(selector, by=by):
+            self._demo_mode_highlight_if_active(selector, by)
 
         # Only get the first match
         last_syllable = selector.split(' ')[-1]
         if ':' not in last_syllable:
             selector += ':first'
 
-        click_script = """jQuery('%s').click()""" % selector
+        click_script = """jQuery('%s')[0].click()""" % selector
         try:
             self.execute_script(click_script)
         except Exception:
@@ -420,20 +425,22 @@ class BaseCase(unittest.TestCase):
                 "Exception: Could not convert [%s](by=%s) to CSS_SELECTOR!" % (
                     selector, by))
 
-    def set_value(self, selector, value, by=By.CSS_SELECTOR):
+    def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
+                  timeout=settings.SMALL_TIMEOUT):
+        """ This method uses jQuery to update a text field. """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
-        self._demo_mode_highlight_if_active(selector, by)
-        self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
-        val = json.dumps(value)
+        self._demo_mode_highlight_if_active(selector, by)
+        self.scroll_to(selector, by=by, timeout=timeout)
+        value = json.dumps(new_value)
 
         # Only get the first match
         last_syllable = selector.split(' ')[-1]
         if ':' not in last_syllable:
             selector += ':first'
 
-        set_value_script = """jQuery('%s').val(%s)""" % (selector, val)
+        set_value_script = """jQuery('%s').val(%s)""" % (selector, value)
         try:
             self.execute_script(set_value_script)
         except Exception:
@@ -444,6 +451,10 @@ class BaseCase(unittest.TestCase):
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
                                  timeout=settings.SMALL_TIMEOUT):
+        """ This method uses jQuery to update a text field.
+            If the new_value string ends with the newline character,
+            WebDriver will finish the call, which simulates pressing
+            {Enter/Return} after the text is entered.  """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         element = self.wait_for_element_visible(
@@ -471,6 +482,8 @@ class BaseCase(unittest.TestCase):
 
     def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
+        """ The shorter version of jquery_update_text_value()
+            (The longer version remains for backwards compatibility.) """
         self.jquery_update_text_value(
             selector, new_value, by=by, timeout=timeout)
 
@@ -961,7 +974,7 @@ class BaseCase(unittest.TestCase):
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)
                 index_file = s3_bucket.upload_index_file(test_id, guid)
-                print "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+                print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 logging.error(
                     "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 if self.with_db_reporting:

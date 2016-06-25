@@ -19,11 +19,11 @@ def download_selenium():
     try:
         local_file = open(JAR_FILE, 'wb')
         remote_file = urllib.urlopen(SELENIUM_JAR)
-        print 'Downloading Selenium Server JAR File...\n'
+        print('Downloading Selenium Server JAR File...\n')
         local_file.write(remote_file.read())
         local_file.close()
         remote_file.close()
-        print 'Download Complete!\n'
+        print('Download Complete!\n')
     except Exception, details:
         raise Exception("Error while downloading Selenium Server. Details: %s"
                         % details)
@@ -91,4 +91,4 @@ def execute_selenium(host, port, file_path):
     try:
         return start_selenium_server(JAR_FILE, port, file_path)
     except StartSeleniumException:
-        print "Selenium Server might already be running. Continuing... "
+        print("Selenium Server might already be running. Continuing... ")
