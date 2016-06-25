@@ -425,20 +425,22 @@ class BaseCase(unittest.TestCase):
                 "Exception: Could not convert [%s](by=%s) to CSS_SELECTOR!" % (
                     selector, by))
 
-    def set_value(self, selector, value, by=By.CSS_SELECTOR):
+    def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
+                  timeout=settings.SMALL_TIMEOUT):
+        """ This method uses jQuery to update a text field. """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
-        self._demo_mode_highlight_if_active(selector, by)
-        self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
-        val = json.dumps(value)
+        self._demo_mode_highlight_if_active(selector, by)
+        self.scroll_to(selector, by=by, timeout=timeout)
+        value = json.dumps(new_value)
 
         # Only get the first match
         last_syllable = selector.split(' ')[-1]
         if ':' not in last_syllable:
             selector += ':first'
 
-        set_value_script = """jQuery('%s').val(%s)""" % (selector, val)
+        set_value_script = """jQuery('%s').val(%s)""" % (selector, value)
         try:
             self.execute_script(set_value_script)
         except Exception:
