@@ -451,6 +451,10 @@ class BaseCase(unittest.TestCase):
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
                                  timeout=settings.SMALL_TIMEOUT):
+        """ This method uses jQuery to update a text field.
+            If the new_value string ends with the newline character,
+            WebDriver will finish the call, which simulates pressing
+            {Enter/Return} after the text is entered.  """
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         element = self.wait_for_element_visible(
@@ -478,6 +482,8 @@ class BaseCase(unittest.TestCase):
 
     def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
+        """ The shorter version of jquery_update_text_value()
+            (The longer version remains for backwards compatibility.) """
         self.jquery_update_text_value(
             selector, new_value, by=by, timeout=timeout)
 
