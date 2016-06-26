@@ -17,9 +17,9 @@ def get_timestamp():
     return str(int(time.time() * 1000))
 
 
-def process_successes(test, test_count):
+def process_successes(test, test_count, duration):
     return(
-        '"%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
+        '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,
             "Passed!",
             "*",
@@ -27,11 +27,12 @@ def process_successes(test, test_count):
             "*",
             test.browser,
             get_timestamp()[:-3],
+            duration,
             test.id(),
             "*"))
 
 
-def process_failures(test, test_count, browser_type):
+def process_failures(test, test_count, browser_type, duration):
     bad_page_image = "failure_%s.jpg" % test_count
     bad_page_data = "failure_%s.txt" % test_count
     page_actions.save_screenshot(
@@ -48,7 +49,7 @@ def process_failures(test, test_count, browser_type):
         else:
             pass
     return(
-        '"%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
+        '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,
             "FAILED!",
             bad_page_data,
@@ -56,6 +57,7 @@ def process_failures(test, test_count, browser_type):
             test.driver.current_url,
             test.browser,
             get_timestamp()[:-3],
+            duration,
             test.id(),
             exc_info))
 
@@ -92,7 +94,7 @@ def add_bad_page_log_file(page_results_list):
     log_file = "%s/%s" % (file_path, RESULTS_TABLE)
     f = open(log_file, 'w')
     h_p1 = '''"Num","Result","Stacktrace","Screenshot",'''
-    h_p2 = '''"URL","Browser","Epoch Time",'''
+    h_p2 = '''"URL","Browser","Epoch Time","Duration",'''
     h_p3 = '''"Test Case Address","Additional Info"\n'''
     page_header = h_p1 + h_p2 + h_p3
     f.write(page_header)

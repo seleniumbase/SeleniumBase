@@ -81,6 +81,7 @@ class Base(Plugin):
                 shutil.rmtree(archived_logs)
         self.successes = []
         self.failures = []
+        self.duration = float(0)
         self.page_results_list = []
         self.test_count = 0
         self.import_error = False
@@ -95,6 +96,7 @@ class Base(Plugin):
         test.test.data = self.options.data
         test.test.args = self.options
         self.test_count += 1
+        self.duration = float(time.time())
 
     def finalize(self, result):
         if self.report_on:
@@ -125,12 +127,17 @@ class Base(Plugin):
 
     def addSuccess(self, test, capt):
         if self.report_on:
+            self.duration = str(
+                "%0.3fs" % (float(time.time()) - float(self.duration)))
             self.successes.append(test.id())
             self.page_results_list.append(
-                report_helper.process_successes(test, self.test_count))
+                report_helper.process_successes(
+                    test, self.test_count, self.duration))
 
     def add_fails_or_errors(self, test):
         if self.report_on:
+            self.duration = str(
+                "%0.3fs" % (float(time.time()) - float(self.duration)))
             if test.id() == 'nose.failure.Failure.runTest':
                 print(">>> ERROR: Could not locate tests to run!")
                 print(">>> The Test Report WILL NOT be generated!")
@@ -139,7 +146,8 @@ class Base(Plugin):
             self.failures.append(test.id())
             br = self.options.browser
             self.page_results_list.append(
-                report_helper.process_failures(test, self.test_count, br))
+                report_helper.process_failures(
+                    test, self.test_count, br, self.duration))
 
     def addFailure(self, test, err, capt=None, tbinfo=None):
         self.__log_all_options_if_none_specified(test)
