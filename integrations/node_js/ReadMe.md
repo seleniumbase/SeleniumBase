@@ -1,6 +1,6 @@
 ## Creating a SeleniumBase Test Launcher using NodeJS
 
-Great news: It's really easy to create a customized web app for kicking off SeleniumBase jobs using NodeJS. This tutorial will walk you through all the steps that you need.
+Great news: It's really easy to create a customized web app for kicking off SeleniumBase jobs using NodeJS. This tutorial will walk you through all the steps that you need. (I'll assume that you've already installed SeleniumBase by following the instructions from the [top-level ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/README.md) file.) 
 
 #### 1. Install NodeJS
 
