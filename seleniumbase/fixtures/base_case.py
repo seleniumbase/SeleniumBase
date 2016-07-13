@@ -707,7 +707,7 @@ class BaseCase(unittest.TestCase):
                     self.page_check_count, current_url, message))
 
     def check_assert_element(self, selector, by=By.CSS_SELECTOR,
-                             timeout=settings.TINY_TIMEOUT):
+                             timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for an element on a page.
             Any and all exceptions will be saved until the process_checks()
             method is called from inside a test, likely at the end of it. """
@@ -720,7 +720,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     def check_assert_text(self, text, selector, by=By.CSS_SELECTOR,
-                          timeout=settings.TINY_TIMEOUT):
+                          timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for text from an element on a page.
             Any and all exceptions will be saved until the process_checks()
             method is called from inside a test, likely at the end of it. """
