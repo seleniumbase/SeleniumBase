@@ -55,7 +55,7 @@ class App:
         self.run6 = Button(
             frame, command=self.run_6,
             text=("nosetests non_terminating_checks_test.py"
-                  " --with-selenium --demo_mode")).pack()
+                  " --with-selenium")).pack()
         self.title7 = Label(
             frame,
             text="MySQL DB Reporting Tests: (See ReadMe.md for Setup Steps!)",
@@ -91,8 +91,7 @@ class App:
 
     def run_6(self):
         os.system(
-            'nosetests non_terminating_checks_test.py'
-            ' --with-selenium --demo_mode')
+            'nosetests non_terminating_checks_test.py --with-selenium')
 
     def run_7(self):
         os.system(
