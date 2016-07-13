@@ -27,6 +27,8 @@ npm install
 node server.js
 ```
 
+(You can always stop the server by using ``CTRL-C``.)
+
 #### 5. Open the SeleniumBase Test Launcher web app
 
 * Navigate to [http://127.0.0.1:3000/](http://127.0.0.1:3000/)
