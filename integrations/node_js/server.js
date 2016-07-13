@@ -12,6 +12,14 @@ function run_my_first_test_in_chrome() {
     exec("nosetests my_first_test.py --with-selenium --browser=chrome");
 }
 
+function run_my_first_test_in_firefox_with_demo_mode() {
+    exec("nosetests my_first_test.py --with-selenium --demo_mode");
+}
+
+function run_my_first_test_in_chrome_with_demo_mode() {
+    exec("nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode");
+}
+
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 })
@@ -26,6 +34,18 @@ app.get('/run_my_first_test_in_chrome', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     res.redirect('/');
     run_my_first_test_in_chrome()
+})
+
+app.get('/run_my_first_test_in_firefox_with_demo_mode', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+    res.redirect('/');
+    run_my_first_test_in_firefox_with_demo_mode()
+})
+
+app.get('/run_my_first_test_in_chrome_with_demo_mode', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+    res.redirect('/');
+    run_my_first_test_in_chrome_with_demo_mode()
 })
 
 app.listen(3000, "127.0.0.1", function() {
