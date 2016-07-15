@@ -55,6 +55,22 @@ WAIT_FOR_RSC_ON_PAGE_LOADS = False
 WAIT_FOR_RSC_ON_CLICKS = False
 
 
+# #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
+# ##### (Used when importing MasterQA as the parent class)
+
+# The default message that appears when you don't specify a custom message
+MASTERQA_DEFAULT_VALIDATION_MESSAGE = "Does the page look good?"
+
+# The time delay (in seconds) before the validation pop-up appears
+MASTERQA_WAIT_TIME_BEFORE_VERIFY = 1.0
+
+# If True, the automation will start in full-screen mode
+MASTERQA_START_IN_FULL_SCREEN_MODE = True
+
+# The maximimum idle time allowed (in seconds) before timing out and exiting
+MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT = 600
+
+
 # #####>>>>>----- RECOMMENDED SETTINGS -----<<<<<#####
 # ##### (For database reporting and saving test logs)
 
