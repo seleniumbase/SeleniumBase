@@ -1,6 +1,6 @@
-## MasterQA (SeleniumBase Augmented QA Mode)
+## MasterQA (SeleniumBase Hybrid Mode)
 
-MasterQA is a hybrid mode for SeleniumBase that allows users to visually verify web pages after automation does the real work for them.
+MasterQA combines web automation with manual verification to greatly improve QA productivity.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
