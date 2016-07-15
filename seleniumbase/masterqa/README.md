@@ -1,4 +1,4 @@
-## MasterQA (SeleniumBase Hybrid Mode)
+# MasterQA (SeleniumBase Hybrid Mode)
 
 MasterQA combines web automation with manual verification to greatly improve QA productivity.
 
