@@ -34,6 +34,7 @@ setup(
               'seleniumbase.core',
               'seleniumbase.plugins',
               'seleniumbase.fixtures',
+              'seleniumbase.masterqa',
               'seleniumbase.common',
               'seleniumbase.config'],
     entry_points={
