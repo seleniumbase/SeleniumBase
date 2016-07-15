@@ -1,6 +1,6 @@
 # MasterQA (SeleniumBase Hybrid Mode)
 
-MasterQA combines web automation with manual verification to greatly improve QA productivity.
+## MasterQA combines web automation with manual verification to greatly improve QA productivity.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
@@ -19,7 +19,7 @@ cd examples
 nosetests masterqa_test.py --with-selenium
 ```
 
-(Answer questions when prompted. At the end of your test run, you'll get a report of your test results, with links to log files and screenshots. Add ``--browser=chrome`` to your nosetests run command in order to run the test in Chrome instead of Firefox)
+At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.)
 
 ### Follow the [example test](https://github.com/mdmintz/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
 
