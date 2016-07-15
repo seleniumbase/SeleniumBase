@@ -16,10 +16,10 @@ python setup.py install
 
 cd examples
 
-nosetests masterqa_test.py --with-selenium  # (Answer questions when prompted)
+nosetests masterqa_test.py --with-selenium
 ```
 
-(At the end of your test run, you'll get a report of your test results, with links to log files and screenshots. Add ``--browser=chrome`` to your nosetests run command in order to run the test in Chrome instead of Firefox)
+(Answer questions when prompted. At the end of your test run, you'll get a report of your test results, with links to log files and screenshots. Add ``--browser=chrome`` to your nosetests run command in order to run the test in Chrome instead of Firefox)
 
 ### Follow the [example test](https://github.com/mdmintz/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
 
