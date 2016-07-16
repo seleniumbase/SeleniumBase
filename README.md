@@ -2,7 +2,7 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/SeleniumBase/stargazers) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/mdmintz/SeleniumBase/blob/master/LICENSE)
 
-A reliable solution for fast & simple browser automation and testing.
+A platform for reliable browser automation ([and manual testing with MasterQA](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/masterqa)).
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
