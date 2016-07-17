@@ -4,7 +4,7 @@
 
 A reliable browser automation platform for functional & regression testing ([and manual testing with MasterQA](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/masterqa)).
 
-Say "goodbye" to flaky Selenium scripts forever!
+Say "GOOD-BYE!" to flaky Selenium scripts!
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
