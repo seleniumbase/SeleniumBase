@@ -19,7 +19,7 @@ python setup.py install
 
 cd examples
 
-nosetests masterqa_test.py --with-selenium
+nosetests masterqa_test.py --with-selenium  # (This defaults to Firefox)
 ```
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.)
