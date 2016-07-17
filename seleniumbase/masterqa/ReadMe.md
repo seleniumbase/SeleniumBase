@@ -1,7 +1,7 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-5.png "MasterQA")
 ## Automation-Assisted Manual QA
 
-### When you can't fully automate your testing, have automation assist your manual testing. MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
+### When you can't fully automate your testing, have automation assist your manual efforts. MasterQA combines [SeleniumBase](http://seleniumbase.github.io/SeleniumBase/) automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 
