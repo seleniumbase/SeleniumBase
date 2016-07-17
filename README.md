@@ -1,33 +1,33 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/results_logo4_medium.png "SeleniumBase") ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo2c.png "SeleniumBase")
 
-[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/SeleniumBase/stargazers) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/mdmintz/SeleniumBase/blob/master/LICENSE)
+[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
 
-A reliable browser automation platform for functional & regression testing ([and manual testing with MasterQA](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/masterqa)).
+A reliable browser automation platform for functional & regression testing ([and manual testing with MasterQA](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/masterqa)).
 
 Say "goodbye" to flaky Selenium scripts forever!
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
-(Above: Actual demo of [my_first_test.py](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
+(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
 
 #### Features include:
-* [A Python library](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
-* [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/example_logs) automatically.
-* Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/node_js), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
-* Customizable with [command-line options](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
+* [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
+* [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
+* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Jenkins on Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
+* Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-SeleniumBase is also great for automating tedious business tasks! (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+SeleniumBase is also great for automating tedious business tasks! (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 ### Part I: Setup Instructions for Mac, Ubuntu, and Windows
 
-(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)
+(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)
 
-(**Docker users**: See the [Docker ReadMe](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md) for running on a Docker machine.)
+(**Docker users**: See the [Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md) for running on a Docker machine.)
 
 
 #### **Step 0:** Install Python/pip, Web Browsers, and Web Drivers
 
-* To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
+* To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
 * Download web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html) (or [Chromium](https://download-chromium.appspot.com/)) and also [Firefox v46.*](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/) (or [Firefox ESR](https://www.mozilla.org/en-US/firefox/organizations/)) because Firefox v47.0 is buggy. (If you go with Firefox 46.*, make sure to turn off auto-updates or else you'll be back at v47 quickly!)
 
@@ -37,20 +37,20 @@ SeleniumBase is also great for automating tedious business tasks! (*To learn abo
 
 * For everything you download (such as ``pip`` and ``Chromedriver``) make sure those files get on your system [PATH](http://java.com/en/download/help/path.xml). (``Environmental Variables`` on a Windows machine)
 
-* On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/requirements_installation.md).
+* On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
 Mac:
 ```bash
 brew install chromedriver phantomjs
 ```
 
-* To verify that the web drivers are working, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
+* To verify that the web drivers are working, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
 
 
 #### **Step 1:** Clone SeleniumBase to your local machine
 
 ```bash
-git clone https://github.com/mdmintz/SeleniumBase.git
+git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 ```
 
@@ -59,7 +59,7 @@ cd SeleniumBase
 
 #### **Step 2:** Create & activate a virtual environment for seleniumbase (MAC/LINUX)
 
-If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
+If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
 
 
 #### **Step 3:** Install SeleniumBase
@@ -79,7 +79,7 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
-If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/mysql_installation.md).
+If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md).
 
 
 #### **Step 4:** Verify that SeleniumBase was successfully installed by running the example test
@@ -142,7 +142,7 @@ You can add ``--demo_mode`` on the command line, which pauses the browser for ab
 nosetests my_first_test.py --with-selenium -s --demo_mode
 ```
 
-You can override the default wait time by either updating [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
+You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
 
 If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
@@ -188,7 +188,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 ```
 
-(NOTE: If you're using pytest instead nosetests for running your own integration tests outside of the SeleniumBase file path, you'll need a copy of [conftest.py](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) inside your folder structure because the pytest configuration is defined there locally at runtime.)
+(NOTE: If you're using pytest instead nosetests for running your own integration tests outside of the SeleniumBase file path, you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) inside your folder structure because the pytest configuration is defined there locally at runtime.)
 
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
@@ -207,7 +207,7 @@ If you're planning on using the full power of this test framework, there are a f
 
 * Setup your [Jenkins](http://jenkins-ci.org/) build server for running your tests at regular intervals. (Or you can use any build server you want.)
 
-* Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance.)
+* Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance.)
 
 * Install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to make life easier by giving you a nice GUI tool that you can use to read & write from your DB directly.
 
@@ -218,14 +218,14 @@ If you have Xvfb running in the background, you can add ``--headless`` to your r
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
-* If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the [hipchat_reporting plugin](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/hipchat_reporting_plugin.py) (nosetests only).
+* If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the [hipchat_reporting plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/hipchat_reporting_plugin.py) (nosetests only).
 
 * Be sure to tell SeleniumBase to use these added features when you set them up. That's easy to do. You would be running tests like this:
 
 ```bash
 nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-db_reporting --with-s3_logging -s
 ```
-(NOTE: Don't use ``--with-db_reporting`` or ``--with-s3_logging`` if you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py))
+(NOTE: Don't use ``--with-db_reporting`` or ``--with-s3_logging`` if you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py))
 
 When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests run into your MySQL DB. The s3_logging plugin uploads basic test info, screenshots, and page source into your S3 storage folder.
 
@@ -260,7 +260,7 @@ Now run it:
 nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base -s
 ```
 
-You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
+You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 Have you made it this far? Congratulations!!! Now you're ready to dive in at full speed!
 
@@ -557,7 +557,7 @@ def write_data_to_db(self, theId, theValue, theUrl):
                                "theUrl":theUrl})
 ```
 
-Access credentials are stored in [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
+Access credentials are stored in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
 
 The following example below (taken from the Delayed Data Manager) shows how data can be pulled from the database.
 
