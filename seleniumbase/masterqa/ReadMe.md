@@ -5,11 +5,11 @@
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 
-(Above: Actual screens from [masterqa_test.py](https://github.com/mdmintz/SeleniumBase/blob/master/examples/masterqa_test.py) running against [xkcd.com](http://xkcd.com/1522/))
+(Above: Actual screens from [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) running against [xkcd.com](http://xkcd.com/1522/))
 
 ### Install SeleniumBase and run the example test:
 ```bash
-git clone https://github.com/mdmintz/SeleniumBase.git
+git clone https://github.com/seleniumbase/SeleniumBase.git
 
 cd SeleniumBase
 
@@ -24,7 +24,7 @@ nosetests masterqa_test.py --with-selenium
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.)
 
-### Follow the [example test](https://github.com/mdmintz/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
+### Follow the [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
 
 ```python
 from seleniumbase import MasterQA
