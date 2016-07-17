@@ -21,7 +21,7 @@
 
 ```bash
 cd /
-sudo git clone https://github.com/mdmintz/SeleniumBase.git
+sudo git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
 #### 5. Enter the "linux" folder
@@ -99,7 +99,7 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 #### 17. Setup your new Jenkins job
 
 * Under "Source Code Management", select "Git".
-* For the "Repository URL", put: ``https://github.com/mdmintz/SeleniumBase.git``. (You'll eventually be using your own clone of the repository here.)
+* For the "Repository URL", put: ``https://github.com/seleniumbase/SeleniumBase.git``. (You'll eventually be using your own clone of the repository here.)
 * Under "Build", click the "Add build step" dropdown and then select "Execute shell".
 * For the "Command", put:
 ```bash
@@ -150,11 +150,11 @@ If you have a web application that you want to test, you'll be able to create Se
 
 #### 25. Create the necessary tables in your MySQL schema
 
-* Run a SQL script in your MySQL schema using [testcaserepository.sql](https://raw.githubusercontent.com/mdmintz/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
+* Run a SQL script in your MySQL schema using [testcaserepository.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
 
 #### 26. Have your local clone of SeleniumBase connect to your MySQL DB
 
-* Update the MySQL connection details in your [settings.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py) file to use the credentials that you saved in Step 21.
+* Update the MySQL connection details in your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) file to use the credentials that you saved in Step 21.
 * Run the following command again from the top-level SeleniumBase folder to make sure that SeleniumBase uses the updated credentials:
 
 ```bash

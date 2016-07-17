@@ -1,6 +1,6 @@
 ### SeleniumBase method summary
 
-Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
+Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
 
 In order to maintain backwards compatibility with scripts using earlier verions of SeleniumBase, some methods that had their names shortened can also be called by their original method name. *(Ex: wait_for_element_visible was later shortened to wait_for_element and then to find_element, but the longer method names remained to keep older scripts from failing.)*
 
