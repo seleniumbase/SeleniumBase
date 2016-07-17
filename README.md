@@ -2,7 +2,9 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/mdmintz/SeleniumBase.svg?branch=master)](https://travis-ci.org/mdmintz/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/mdmintz/seleniumbase.svg "GitHub stars")](https://github.com/mdmintz/SeleniumBase/stargazers) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/mdmintz/SeleniumBase/blob/master/LICENSE)
 
-A platform for reliable browser automation ([and manual testing with MasterQA](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/masterqa)).
+A reliable browser automation platform for functional & regression testing ([and manual testing with MasterQA](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/masterqa)).
+
+Say "goodbye" to flaky Selenium scripts forever!
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
@@ -11,10 +13,10 @@ A platform for reliable browser automation ([and manual testing with MasterQA](h
 #### Features include:
 * [A Python library](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/mdmintz/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/mdmintz/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/mdmintz/SeleniumBase/tree/master/examples/example_logs) automatically.
-* Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
+* Easy integration with [Selenium Grid](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/mdmintz/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/node_js), [Jenkins on Google Cloud](https://github.com/mdmintz/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with [command-line options](https://github.com/mdmintz/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/mdmintz/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-(To learn about businesses using SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).)
+SeleniumBase is also great for automating tedious business tasks! (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/mdmintz/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 ### Part I: Setup Instructions for Mac, Ubuntu, and Windows
 

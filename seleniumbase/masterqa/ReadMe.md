@@ -1,8 +1,11 @@
-# MasterQA (Automation-Assisted Manual QA)
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-5.png "MasterQA")
+## Automation-Assisted Manual QA
 
-### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
+### When you can't fully automate your testing, have automation assist your manual testing. MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
+![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
+
+(Above: Actual screens from [masterqa_test.py](https://github.com/mdmintz/SeleniumBase/blob/master/examples/masterqa_test.py) running against [xkcd.com](http://xkcd.com/1522/))
 
 ### Install SeleniumBase and run the example test:
 ```bash
