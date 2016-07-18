@@ -4,7 +4,7 @@
 
 A reliable browser automation platform for functional & regression testing ([and manual testing with MasterQA](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/masterqa)).
 
-Say "GOOD-BYE!" to flaky Selenium scripts...
+The days of flaky Selenium tests are over.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
@@ -16,7 +16,7 @@ Say "GOOD-BYE!" to flaky Selenium scripts...
 * Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Jenkins on Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
 * Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-SeleniumBase is also great for automating tedious business tasks! (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 ### Part I: Setup Instructions for Mac, Ubuntu, and Windows
 
