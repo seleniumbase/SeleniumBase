@@ -25,6 +25,7 @@ class SeleniumBrowser(Plugin):
     self.options.headless -- the option to run headlessly (--headless)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
+    self.options.highlights -- # of highlight animations shown (--highlights)
     """
     name = 'selenium'  # Usage: --with-selenium
 
@@ -64,6 +65,10 @@ class SeleniumBrowser(Plugin):
                           default=None,
                           help="""Setting this overrides the Demo Mode sleep
                                time that happens after browser actions.""")
+        parser.add_option('--highlights', action='store',
+                          dest='highlights', default=None,
+                          help="""Setting this overrides the default number of
+                               highlight loops to have.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -120,6 +125,7 @@ class SeleniumBrowser(Plugin):
                 test.test.browser = "%s%s" % (self.options.browser, version)
                 test.test.demo_mode = self.options.demo_mode
                 test.test.demo_sleep = self.options.demo_sleep
+                test.test.highlights = self.options.highlights
             except Exception as err:
                 print("Error starting/connecting to Selenium:")
                 print(err)
