@@ -74,6 +74,10 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the Demo Mode sleep
                           time that happens after browser actions.""")
+    parser.addoption('--highlights', action='store', dest='highlights',
+                     default=None,
+                     help="""Setting this overrides the default number of
+                          highlight animation loops to have per call.""")
 
 
 def pytest_configure(config):
