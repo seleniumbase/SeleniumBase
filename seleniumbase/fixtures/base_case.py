@@ -847,7 +847,7 @@ class BaseCase(unittest.TestCase):
             self.data = pytest.config.option.data
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
-            self.highlight_loops = pytest.config.option.highlight_loops
+            self.highlights = pytest.config.option.highlights
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
