@@ -68,7 +68,7 @@ class SeleniumBrowser(Plugin):
         parser.add_option('--highlights', action='store',
                           dest='highlights', default=None,
                           help="""Setting this overrides the default number of
-                               highlight loops to have.""")
+                               highlight animation loops to have per call.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
