@@ -3,11 +3,33 @@
 
 ### MasterQA combines [SeleniumBase](http://seleniumbase.github.io/SeleniumBase/) automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
-When you can't fully automate your testing, use MasterQA to speed up your manual testing. 
+When you can't fully automate your testing, use MasterQA to speed up your manual testing. [Here's an example of a basic MasterQA test script](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py): (You'll notice that the Python syntax mostly uses natural language, with the addition of a CSS_selector used in the update_text method.)
+
+```python
+from seleniumbase import MasterQA
+
+class MasterQATests(MasterQA):
+
+    def test_masterqa(self):
+        self.open("http://xkcd.com/1700/")
+        self.verify("Do you see a webcomic?")
+        self.click_link_text('Store')
+        self.verify("Do you see items for sale?")
+        self.update_text("input#top-search-input", "poster\n")
+        self.verify("Do you see posters in the search results?")
+```
+
+By the time you reach http://xkcd.com/1700/ (Step 1 in the screenshot below) and hit the first verification line, ``self.verify("Do you see a webcomic?")``, that will cause a popup to ask the tester: "Do you see a webcomic?" (Step 2 in the screenshot below):
+
+![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
+
+Here's another example that demonstrates the results page that appears after answering all the questions (assuiming you don't always answer with OK):
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 
 (Above: Actual screens from [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) running against [xkcd.com](http://xkcd.com/1522/))
+
+Here's how to install and run MasterQA from scratch:
 
 ### Install SeleniumBase and run the example test:
 ```bash
@@ -26,7 +48,7 @@ nosetests masterqa_test.py --with-selenium  # (This defaults to Firefox)
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.)
 
-### Follow the [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
+### Follow the [longer example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
 
 ```python
 from seleniumbase import MasterQA
