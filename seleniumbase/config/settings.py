@@ -24,7 +24,7 @@ DEFAULT_DEMO_MODE_TIMEOUT = 1.0
 # Number of times to repeat the highlight animation. (Seen during Demo Mode)
 # Each loop is about 0.18 seconds.
 # This value can be overwritten on the command line by using --highlights=TIMES
-HIGHLIGHT_LOOPS = 3
+HIGHLIGHTS = 4
 
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.

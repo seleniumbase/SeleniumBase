@@ -262,14 +262,14 @@ class BaseCase(unittest.TestCase):
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
-                  loops=settings.HIGHLIGHT_LOOPS, scroll=True):
+                  loops=settings.HIGHLIGHTS, scroll=True):
         """ This method uses fancy javascript to highlight an element.
             Used during demo_mode.
             @Params
             selector - the selector of the element to find
             by - the type of selector to search by (Default: CSS)
             loops - # of times to repeat the highlight animation
-                    (Default: 3. Each loop lasts for about 0.18s)
+                    (Default: 4. Each loop lasts for about 0.18s)
             scroll - the option to scroll to the element first (Default: True)
         """
         element = self.find_element(
