@@ -1,5 +1,5 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
-## Automation-Assisted Manual QA
+## Automation-Driven Manual QA
 
 ### MasterQA combines [SeleniumBase](http://seleniumbase.github.io/SeleniumBase/) automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
