@@ -31,19 +31,15 @@ Here's another example that demonstrates the results page that appears after ans
 
 Here's how to install and run MasterQA from scratch:
 
-### Install SeleniumBase and run the example test:
+### Install SeleniumBase and run the example tests:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
-
 cd SeleniumBase
-
 pip install -r requirements.txt
-
 python setup.py install
-
 cd examples
-
-nosetests masterqa_test.py --with-selenium  # (This defaults to Firefox)
+nosetests basic_masterqa_test.py --with-selenium
+nosetests masterqa_test.py --with-selenium
 ```
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.)
