@@ -19,7 +19,12 @@ EXTREME_TIMEOUT = 30
 # Use Demo Mode when you want others to see what your automation is doing
 # Usage: --demo_mode when run from the command line when using --with-selenium
 # This value can be overwritten on the command line by using --demo_sleep=FLOAT
-DEFAULT_DEMO_MODE_TIMEOUT = 1.2
+DEFAULT_DEMO_MODE_TIMEOUT = 1.0
+
+# Number of times to repeat the highlight animation. (Seen during Demo Mode)
+# Each loop is about 0.18 seconds.
+# This value can be overwritten on the command line by using --highlights=TIMES
+HIGHLIGHT_LOOPS = 3
 
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
