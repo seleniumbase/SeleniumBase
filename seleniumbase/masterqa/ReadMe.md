@@ -19,7 +19,7 @@ class MasterQATests(MasterQA):
         self.verify("Do you see posters in the search results?")
 ```
 
-When the browser reaches http://xkcd.com/1700/ after calling ``self.open("http://xkcd.com/1700/")`` (Step 1 in the screenshot below) and hits the first verification line, ``self.verify("Do you see a webcomic?")``, a pop-up appears asking the manual QA tester: "Do you see a webcomic?" (Step 2 in the screenshot below):
+When the web browser reaches http://xkcd.com/1700/ from the SeleniumBase call ``self.open("http://xkcd.com/1700/")`` (Step 1 in the screenshot below) and hits the first verification line ``self.verify("Do you see a webcomic?")``, a pop-up appears asking the manual QA tester: "Do you see a webcomic?" (Step 2 in the screenshot below):
 
 ![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
 
