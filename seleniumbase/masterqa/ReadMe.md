@@ -23,7 +23,7 @@ By the time you reach http://xkcd.com/1700/ after calling ``self.open("http://xk
 
 ![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
 
-Here's another example that demonstrates the results page that appears after answering all the questions (assuiming you don't always answer with OK):
+Here's another example, which demonstrates the results page that appears after responding to all the verification questions. (You'll notice that failed verifications will generate links to screenshots and log files.)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 
