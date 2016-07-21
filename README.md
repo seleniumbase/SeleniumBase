@@ -4,7 +4,7 @@
 
 **Reliable Browser Automation & Testing Platform**
 
-Great for Test Automation ([and speeding up manual testing with MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)).
+SeleniumBase makes test automation easy ([and can speed up manual testing with MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)).
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
 
