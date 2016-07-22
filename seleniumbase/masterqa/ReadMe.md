@@ -1,7 +1,7 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 ## Automation-Driven Manual QA
 
-### MasterQA combines [SeleniumBase](http://seleniumbase.github.io/SeleniumBase/) automation with manual verification to greatly improve the productivity and sanity of QA teams.
+### MasterQA combines [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
 When you can't fully automate your testing, use MasterQA to speed up your manual testing. [Here's an example of a basic MasterQA test script](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py): (You'll notice that the Python syntax mostly uses natural language, with the addition of a CSS_selector used in the update_text method.)
 
