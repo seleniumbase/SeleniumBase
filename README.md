@@ -6,7 +6,7 @@
 
 SeleniumBase makes test automation reliable ([and speeds up manual testing with MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)).
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/automation2.gif "SeleniumBase")
+![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
 (Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
 
