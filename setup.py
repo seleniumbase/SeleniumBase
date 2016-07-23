@@ -1,12 +1,12 @@
 """
-The setup package to install the SeleniumBase Test Framework plugins
+The setup package to install SeleniumBase dependencies and plugins
 """
 
 from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.2.3',
+    version='1.2.4',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
