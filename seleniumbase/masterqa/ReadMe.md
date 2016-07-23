@@ -18,7 +18,7 @@ After the web browser performs various automated actions, a pop-up window will a
 
 ![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
 
-At the end of a full test run, as seen from [this other example]((https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py)), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
+At the end of a full test run, as seen from [this other example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 
