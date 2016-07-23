@@ -1,6 +1,6 @@
 ## Docker setup instructions for SeleniumBase
 
-#### 1. Install Docker Toolbox from https://www.docker.com/products/docker-toolbox
+#### 1. Install the Docker Toolbox from https://www.docker.com/products/docker-toolbox
 
 #### 2. Create your SeleniumBase Docker environment:
 
@@ -14,13 +14,13 @@
 
     eval "$(docker-machine env seleniumbase)"
 
-#### 4. Go to the SeleniumBase home directory, which is where ``"Dockerfile"`` is located. (Assumes you've already cloned the SeleniumBase repo.)
+#### 4. Go to the SeleniumBase home directory on the command line, which is where [Dockerfile](https://github.com/seleniumbase/SeleniumBase/blob/master/Dockerfile) is located. (This assumes you've already cloned the SeleniumBase repo.)
 
 #### 5. Create your Docker image from your Dockerfile: (Get ready to wait awhile)
 
     docker build -t seleniumbase .
 
-#### 6. Run a test inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
+#### 6. Run [the example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
 
     docker run seleniumbase ./run_docker_test_in_firefox.sh
 
