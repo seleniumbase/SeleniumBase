@@ -3,7 +3,7 @@
 
 MasterQA uses [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation to speed up manual QA when total automation isn't possible (or desired).
 
-Here's a code example from [this larger MasterQA script](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
+Here's the main code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
 ```python
 self.open("http://xkcd.com/1700/")
@@ -24,7 +24,7 @@ At the end of a full test run, as seen from [this other example]((https://github
 
 You may have noticed the ``Incomplete Test Runs`` row on the results page. If the value for that is not zero, it means that one of the automated steps failed. This could happen if you tell your script to perform an action on an element that doesn't exist. Now that we're mixing automation with manual QA, it's good to tell apart the failures from each. The results_table CSV file contains a spreadsheet with the details of each failure (if any) for both manual and automated steps.
 
-### How to run the example tests from scratch:
+#### How to run the example tests from scratch:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
@@ -37,7 +37,7 @@ nosetests masterqa_test.py --with-selenium
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.) Close the Results Page window when you're done.
 
-### Follow the [longer example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
+### Follow [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
 
 ```python
 from seleniumbase import MasterQA
