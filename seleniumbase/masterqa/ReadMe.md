@@ -3,7 +3,7 @@
 
 MasterQA uses [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation to speed up manual QA when total automation isn't possible (or desired).
 
-Here's the main code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
+Here's the main code of [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
 ```python
 self.open("http://xkcd.com/1700/")
