@@ -10,15 +10,15 @@ self.open("http://xkcd.com/1700/")
 self.verify("Do you see a webcomic?")
 self.click_link_text('Store')
 self.verify("Do you see items for sale?")
-self.update_text("input#top-search-input", "poster\n")
-self.verify("Do you see posters in the search results?")
+self.update_text("input.search-input", "Robots\n")
+self.verify("Do you see robots in the search results?")
 ```
 
 After the web browser performs various automated actions, a pop-up window will ask the tester questions for each verification command. *(See the screenshot below)*
 
 ![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
 
-At the end of a full test run, as seen from [this other example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
+At the end of a full test run, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 

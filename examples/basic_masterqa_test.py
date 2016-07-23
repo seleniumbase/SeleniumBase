@@ -8,5 +8,5 @@ class MasterQATests(MasterQA):
         self.verify("Do you see a webcomic?")
         self.click_link_text('Store')
         self.verify("Do you see items for sale?")
-        self.update_text("input#top-search-input", "poster\n")
-        self.verify("Do you see posters in the search results?")
+        self.update_text("input.search-input", "Robots\n")
+        self.verify("Do you see robots in the search results?")
