@@ -1,9 +1,9 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 ## Automation-Driven Manual QA
 
-### MasterQA combines [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation with manual verification to greatly improve the productivity and sanity of QA teams.
+### MasterQA combines [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation with manual verification to greatly improve QA productivity.
 
-When you can't fully automate your testing, use MasterQA to speed up your manual testing. [Here's an example of a basic MasterQA test script](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py): (You'll notice that the Python syntax mostly uses natural language, with the addition of a CSS_selector used in the update_text method.)
+When you can't fully automate your testing, use MasterQA to speed up your manual testing. ([Here's an example of a basic MasterQA test script](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py).)
 
 ```python
 from seleniumbase import MasterQA
@@ -19,11 +19,11 @@ class MasterQATests(MasterQA):
         self.verify("Do you see posters in the search results?")
 ```
 
-When the web browser reaches http://xkcd.com/1700/ from the SeleniumBase call ``self.open("http://xkcd.com/1700/")`` (Step 1 in the screenshot below) and hits the first verification line ``self.verify("Do you see a webcomic?")``, a pop-up appears asking the manual QA tester: "Do you see a webcomic?" (Step 2 in the screenshot below):
+After the web browser reaches http://xkcd.com/1700/ a pop-up appears asking the manual QA tester: "Do you see a webcomic?" (See steps in the screenshot below):
 
 ![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
 
-Here's another example, which demonstrates the results page that appears after responding to all the verification questions. (You'll notice that failed verifications will generate links to screenshots and log files.)
+Here's another example, which demonstrates the results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
 
