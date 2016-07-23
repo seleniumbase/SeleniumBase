@@ -67,6 +67,7 @@ WAIT_FOR_RSC_ON_CLICKS = False
 MASTERQA_DEFAULT_VALIDATION_MESSAGE = "Does the page look good?"
 
 # The time delay (in seconds) before the validation pop-up appears
+# This value can be overwritten on the command line. Ex: --verify_delay=0.5
 MASTERQA_WAIT_TIME_BEFORE_VERIFY = 1.0
 
 # If True, the automation will start in full-screen mode

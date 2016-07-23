@@ -848,6 +848,7 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
+            self.verify_delay = pytest.config.option.verify_delay
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
