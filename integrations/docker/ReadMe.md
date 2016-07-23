@@ -14,7 +14,7 @@
 
     eval "$(docker-machine env seleniumbase)"
 
-#### 4. Go to the SeleniumBase home directory. (That's where "Dockerfile" is located)
+#### 4. Go to the SeleniumBase home directory, which is where ``"Dockerfile"`` is located. (Assumes you've already cloned the SeleniumBase repo.)
 
 #### 5. Create your Docker image from your Dockerfile: (Get ready to wait awhile)
 
