@@ -63,7 +63,10 @@ class __MasterQATestCase__(BaseCase):
             instructions = str(args[0])
 
         # Give the human enough time to see the page first
-        time.sleep(WAIT_TIME_BEFORE_VERIFY)
+        wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
+        if self.verify_delay:
+            wait_time_before_verify = float(self.verify_delay)
+        time.sleep(wait_time_before_verify)
         question = "Approve?"
         if instructions and "?" not in instructions:
             question = instructions + " Approve?"
@@ -268,7 +271,10 @@ class __MasterQATestCase__(BaseCase):
         self.open("file://%s" % archived_results_file)
         if auto_close_results_page:
             # Long enough to notice the results before closing the page
-            time.sleep(WAIT_TIME_BEFORE_VERIFY)
+            wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
+            if self.verify_delay:
+                wait_time_before_verify = float(self.verify_delay)
+            time.sleep(wait_time_before_verify)
         else:
             # The user can decide when to close the results page
             print "\n*** Close the html report window to continue ***"

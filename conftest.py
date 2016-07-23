@@ -78,6 +78,10 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default number of
                           highlight animation loops to have per call.""")
+    parser.addoption('--verify_delay', action='store', dest='verify_delay',
+                     default=None,
+                     help="""Setting this overrides the default wait time
+                          before each MasterQA verification pop-up.""")
 
 
 def pytest_configure(config):

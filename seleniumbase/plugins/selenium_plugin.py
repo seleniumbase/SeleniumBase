@@ -18,7 +18,7 @@ class SeleniumBrowser(Plugin):
     The plugin for Selenium tests. Takes in key arguments and then
     creates a WebDriver object. All arguments are passed to the tests.
 
-    The following variables are made to the tests:
+    The following command line options are available to the tests:
     self.options.browser -- the browser to use (--browser)
     self.options.server -- the server used by the test (--server)
     self.options.port -- the port used by the test (--port)
@@ -26,6 +26,7 @@ class SeleniumBrowser(Plugin):
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
+    self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     """
     name = 'selenium'  # Usage: --with-selenium
 
@@ -69,6 +70,10 @@ class SeleniumBrowser(Plugin):
                           dest='highlights', default=None,
                           help="""Setting this overrides the default number of
                                highlight animation loops to have per call.""")
+        parser.add_option('--verify_delay', action='store',
+                          dest='verify_delay', default=None,
+                          help="""Setting this overrides the default wait time
+                               before each MasterQA verification pop-up.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -126,6 +131,7 @@ class SeleniumBrowser(Plugin):
                 test.test.demo_mode = self.options.demo_mode
                 test.test.demo_sleep = self.options.demo_sleep
                 test.test.highlights = self.options.highlights
+                test.test.verify_delay = self.options.verify_delay  # MasterQA
             except Exception as err:
                 print("Error starting/connecting to Selenium:")
                 print(err)
