@@ -6,7 +6,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.2.2',
+    version='1.2.3',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
@@ -15,11 +15,11 @@ setup(
     license='The MIT License',
     install_requires=[
         'pip>=8.1.2',
-        'setuptools>=18.5',
+        'setuptools>=24.3.0',
         'selenium>=2.53.6',
         'nose==1.3.7',
-        'pytest==2.9.1',
-        'flake8==2.5.4',
+        'pytest==2.9.2',
+        'flake8==2.6.2',
         'requests==2.10.0',
         'urllib3==1.15.1',
         'BeautifulSoup==3.2.1',
