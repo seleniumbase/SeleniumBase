@@ -3,6 +3,8 @@
 
 MasterQA uses [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation to speed up manual QA when total automation isn't possible (or desired).
 
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif)
+
 Here's the main code of [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
 ```python
@@ -37,34 +39,7 @@ nosetests masterqa_test.py --with-selenium
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.) Close the Results Page window when you're done.
 
-### Follow [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
-
-```python
-from seleniumbase import MasterQA
-
-class MasterQATests(MasterQA):
-
-    def test_xkcd(self):
-        self.open("http://xkcd.com/1512/")
-        for i in xrange(4):
-            self.click('a[rel="next"]')
-        for i in xrange(3):
-            self.click('a[rel="prev"]')
-        self.verify()
-        self.open("http://xkcd.com/1520/")
-        for i in xrange(2):
-            self.click('a[rel="next"]')
-        self.verify("Can you find the moon?")
-        self.click('a[rel="next"]')
-        self.verify("Do the drones look safe?")
-        self.click_link_text('Blag')
-        self.update_text("input#s", "Robots!\n")
-        self.verify("Does it say 'Hooray robots' on the page?")
-        self.open("http://xkcd.com/213/")
-        for i in xrange(5):
-            self.click('a[rel="prev"]')
-        self.verify("Does the page say 'Abnormal Expressions'?")
-```
+### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to learn how to write your own MasterQA tests:
 
 You'll notice that tests are written based on [SeleniumBase](http://seleniumbase.com), with the key difference of using a different import: ``from seleniumbase import MasterQA`` rather than ``from seleniumbase import BaseCase``. Now the test class will import ``MasterQA`` instead of ``BaseCase``.
 
