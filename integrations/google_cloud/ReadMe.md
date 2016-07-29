@@ -1,19 +1,25 @@
 ## Google Cloud setup instructions for SeleniumBase (using Jenkins)
 
-#### 1. Go to the Google Cloud Launcher
+#### 1. Open the Google Cloud Platform's Cloud Launcher
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_7.png "Cloud Launcher")
 
 * Navigate to [https://console.cloud.google.com/launcher](https://console.cloud.google.com/launcher)
 * (If you already have an active Google Cloud project, the Google Cloud Launcher will probably default to using that)
 
 #### 2. Launch a Jenkins Instance
 
-* Under "Featured Solutions", Click on "Jenkins"
+![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_jenkins_3.png "Finding Jenkins")
+
+* Under "Cloud Launcher", Click on "Jenkins"
 * Click on "Launch on Compute Engine"
 * Give the instance a name
 * Give the instance a zone
 * Click "Create"
 
 #### 3. Connect with your new Jenkins instance
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_ssh.png "SSH into your Jenkins instance")
 
 * SSH into your new instance by selecting: "SSH" => "Open in browser window" from the instance page.
 
@@ -91,8 +97,10 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 
 #### 16. Create a new Jenkins job
 
+![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_jenkins_new_job_2.png "Create a Jenkins job")
+
 * Click on "New Item"
-* Give your new Jenkins job a name (ex: "First_Test")
+* Give your new Jenkins job a name (ex: "My_First_Test")
 * Select "Freestyle project"
 * Click "OK"
 
