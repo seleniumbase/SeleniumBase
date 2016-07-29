@@ -1,7 +1,7 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 ## Automation-Driven Manual QA
 
-MasterQA uses [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation to speed up manual QA when total automation isn't possible (or desired).
+MasterQA uses [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation to speed up manual QA by having testers verify web pages after automation performs setup steps.
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif)
 
