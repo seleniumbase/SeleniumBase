@@ -1,11 +1,13 @@
-## Google Cloud setup instructions for SeleniumBase (using Jenkins)
+### Building a test automation cloud on Google Cloud Platform with SeleniumBase and Jenkins
 
-#### 1. Open the Google Cloud Platform's Cloud Launcher
+This is based on a live demo I gave at the [Google Cloud Boston Meetup in June 2016](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/).
+
+#### 1. Open the Google Cloud Platform Cloud Launcher
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_7.png "Cloud Launcher")
 
 * Navigate to [https://console.cloud.google.com/launcher](https://console.cloud.google.com/launcher)
-* (If you already have an active Google Cloud project, the Google Cloud Launcher will probably default to using that)
+* (If you already have an active Google Cloud project, the Google Cloud Launcher will probably default to using that. If you don't, sign up for the free trial to get started.)
 
 #### 2. Launch a Jenkins Instance
 
