@@ -1,4 +1,4 @@
-### Building a test automation cloud on Google Cloud Platform with SeleniumBase and Jenkins
+### Building a browser automation cloud on Google Cloud Platform with SeleniumBase and Jenkins
 
 (This walkthrough is based on a live demo from the [June 2016 Google Cloud Boston Meetup](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true))
 
