@@ -189,5 +189,3 @@ nosetests examples/my_test_suite.py --with-selenium --headless --browser=chrome 
 * If all goes well, you should be seeing new rows appear in your MySQL DB.
 
 #### Step 29. Congratulations! If you made it this far, you're awesome!
-
-*(This walkthrough is the detailed version of the live demo I gave at the [June 2016 Google Cloud Meetup in Cambridge/Boston](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true))*
