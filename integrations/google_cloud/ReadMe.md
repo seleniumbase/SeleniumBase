@@ -1,6 +1,6 @@
-### How to build your own test automation server on [Google Cloud Platform](https://cloud.google.com/) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) and [Jenkins](https://jenkins.io/)
+### Build your own test automation server on [Google Cloud Platform](https://cloud.google.com/) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) and [Jenkins](https://jenkins.io/)
 
-*(This walkthrough is the detailed version of the live demo I gave at the [June 2016 Google Cloud Meetup in Cambridge/Boston](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true). By the end, you'll learn how to setup a Linux machine for running headless browser tests on Chrome and Firefox. From Google Cloud, [the Jenkins machine is listed as $14.20/month](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins), and that can handle **10 parallel browser tests** running as often as you want. This is amazingly **30 times less expensive** than using competitors such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/features/#features-cross-browser) for the same purpose.)*
+(This tutorial, [from a previous GCP Meetup live demo](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true), will teach you how to setup a Linux server for running automated browser tests. The cost of running this server is [$14.20/month on Google Cloud](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins) (enough to handle **6 parallel tests**). This is amazingly **20 times LESS expensive** than using competitors such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/pricing) **for the SAME number of parallel tests**.)
 
 #### Step 1. Open the Google Cloud Platform Cloud Launcher
 
@@ -189,3 +189,5 @@ nosetests examples/my_test_suite.py --with-selenium --headless --browser=chrome 
 * If all goes well, you should be seeing new rows appear in your MySQL DB.
 
 #### Step 29. Congratulations! If you made it this far, you're awesome!
+
+*(This walkthrough is the detailed version of the live demo I gave at the [June 2016 Google Cloud Meetup in Cambridge/Boston](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true))*
