@@ -84,20 +84,26 @@ sudo python setup.py install
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
 ```bash
+py.test examples/my_first_test.py --with-selenium --headless --browser=chrome
+```
+
+#### Step 14. If you like nosetests better than pytest, that works too
+
+```bash
 nosetests examples/my_first_test.py --with-selenium --headless --browser=chrome
 ```
 
-#### Step 14. You can also verify that Firefox works too
+#### Step 15. You can also verify that the example test runs on Firefox
 
 ```bash
 nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 ```
 
-#### Step 15. Login to Jenkins
+#### Step 16. Login to Jenkins
 
 * (The url, as well as username and password, should be accessible from your Google Cloud Platform VM instance page.)
 
-#### Step 16. Create a new Jenkins job
+#### Step 17. Create a new Jenkins job
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_jenkins_new_job_2.png "Create a Jenkins job")
 
@@ -106,7 +112,7 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 * Select "Freestyle project"
 * Click "OK"
 
-#### Step 17. Setup your new Jenkins job
+#### Step 18. Setup your new Jenkins job
 
 * Under "Source Code Management", select "Git".
 * For the "Repository URL", put: ``https://github.com/seleniumbase/SeleniumBase.git``. (You'll eventually be using your own clone of the repository here.)
@@ -117,12 +123,12 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=chrome
 ```
 * Click "Save" when you're done.
 
-#### Step 18. Run your new Jenkins job
+#### Step 19. Run your new Jenkins job
 
 * Click on "Build Now"
 * (If all the setup was done correctly, you should see a blue dot appear after a few seconds, indicating that the test job passed.)
 
-#### Step 19. Future Work
+#### Step 20. Future Work
 
 If you have a web application that you want to test, you'll be able to create SeleniumBase tests and add them to Jenkins as you saw here. You may want to create a Deploy job, which downloads the latest version of your repository, and then kicks off all tests to run after that. You could then tell that Deploy job to auto-run whenever a change is pushed to your repository by using: "Poll SCM". All your tests would then be able to run by using: "Build after other projects are built". You can also use MySQL to save test results in the DB so that you can query the data at any time.
 
@@ -130,7 +136,7 @@ If you have a web application that you want to test, you'll be able to create Se
 
 ## MySQL DB setup instructions
 
-#### Step 20. Return to the Google Cloud Launcher and launch a MySQL Instance
+#### Step 21. Return to the Google Cloud Launcher and launch a MySQL Instance
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_mysql.png "Finding MySQL")
 
@@ -140,7 +146,7 @@ If you have a web application that you want to test, you'll be able to create Se
 * Give the instance a zone
 * Click "Create"
 
-#### Step 21. Get the Connection credentials for your new MySQL DB
+#### Step 22. Get the Connection credentials for your new MySQL DB
 
 * Under the Google Cloud Platform menu, go to "Compute Engine"
 * Find your new MySQL instance and then write down the value written in the "External IP" section.
@@ -148,23 +154,23 @@ If you have a web application that you want to test, you'll be able to create Se
 * Find your new MySQL instance and then click on it.
 * Write down the values for Admin username and password. (Username should be "root")
 
-#### Step 22. Get a MySQL GUI tool so that you can connect to your MySQL DB
+#### Step 23. Get a MySQL GUI tool so that you can connect to your MySQL DB
 
 * You can download [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) for this.
 
-#### Step 23. Create a new connection to your MySQL DB
+#### Step 24. Create a new connection to your MySQL DB
 
 * Use the MySQL DB credentials that you saved in Step 21 for this.
 
-#### Step 24. Create a new schema in your MySQL DB
+#### Step 25. Create a new schema in your MySQL DB
 
 * You can name your schema ``test``.
 
-#### Step 25. Create the necessary tables in your MySQL schema
+#### Step 26. Create the necessary tables in your MySQL schema
 
 * Run a SQL script in your MySQL schema using [testcaserepository.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
 
-#### Step 26. Have your local clone of SeleniumBase connect to your MySQL DB
+#### Step 27. Have your local clone of SeleniumBase connect to your MySQL DB
 
 * Update the MySQL connection details in your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) file to use the credentials that you saved in Step 21.
 * Run the following command again from the top-level SeleniumBase folder to make sure that SeleniumBase uses the updated credentials:
@@ -173,7 +179,7 @@ If you have a web application that you want to test, you'll be able to create Se
 sudo python setup.py install
 ```
 
-#### Step 27. Have your SeleniumBase Jenkins jobs use your MySQL DB
+#### Step 28. Have your SeleniumBase Jenkins jobs use your MySQL DB
 
 * For the "Execute shell", use the following as your updated "Command":
 
@@ -183,9 +189,9 @@ nosetests examples/my_test_suite.py --with-selenium --headless --browser=chrome 
 
 * Click "Save" when you're done.
 
-#### Step 28. Run your new Jenkins job
+#### Step 29. Run your new Jenkins job
 
 * Click on "Build Now"
 * If all goes well, you should be seeing new rows appear in your MySQL DB.
 
-#### Step 29. Congratulations! If you made it this far, you're awesome!
+#### Step 30. Congratulations! If you made it this far, you're awesome!
