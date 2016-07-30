@@ -1,4 +1,4 @@
-### Build your own browser-based test automation server on [Google Cloud Platform](https://cloud.google.com/) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) and [Jenkins](https://jenkins.io/)
+### Building a browser-based test automation server on [Google Cloud Platform](https://cloud.google.com/) with [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
 (This tutorial, [from a previous GCP Meetup live demo](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true), will teach you how to setup a Linux server for running automated browser tests. The cost of running this server is [$14.20/month on Google Cloud](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins) (enough to handle **6 parallel tests**). This is amazingly **20 times LESS expensive** than using competitors such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/pricing) **for the SAME number of parallel tests**.)
 
@@ -7,7 +7,7 @@
 * Navigate to [https://console.cloud.google.com/launcher](https://console.cloud.google.com/launcher)
 * (If you already have an active Google Cloud project, the Google Cloud Launcher will probably default to using that. If you don't, [sign up for the free trial of Google Cloud Platform here](https://console.cloud.google.com/freetrial) to get started.)
 
-#### Step 2. Launch a Jenkins Instance
+#### Step 2. Launch a Jenkins instance
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_jenkins_3.png "Finding Jenkins")
 
