@@ -1,15 +1,13 @@
-### Building a browser automation cloud on Google Cloud Platform with SeleniumBase and Jenkins
+### How to build your own test automation server on [Google Cloud Platform](https://cloud.google.com/) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) and [Jenkins](https://jenkins.io/)
 
-(This walkthrough is based on a live demo from the [June 2016 Google Cloud Boston Meetup](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true))
+*(This walkthrough is the detailed version of the live demo I gave at the [June 2016 Google Cloud Meetup in Cambridge/Boston](http://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true). By the end, you'll learn how to setup a Linux machine for running headless browser tests on Chrome and Firefox. From Google Cloud, [the Jenkins machine is listed as $14.20/month](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins), and that can handle **10 parallel browser tests** running as often as you want. This is amazingly **30 times less expensive** than using competitors such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/features/#features-cross-browser) for the same purpose.)*
 
-#### 1. Open the Google Cloud Platform Cloud Launcher
-
-![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_7.png "Cloud Launcher")
+#### Step 1. Open the Google Cloud Platform Cloud Launcher
 
 * Navigate to [https://console.cloud.google.com/launcher](https://console.cloud.google.com/launcher)
-* (If you already have an active Google Cloud project, the Google Cloud Launcher will probably default to using that. If you don't, sign up for the free trial to get started.)
+* (If you already have an active Google Cloud project, the Google Cloud Launcher will probably default to using that. If you don't, [sign up for the free trial of Google Cloud Platform here](https://console.cloud.google.com/freetrial) to get started.)
 
-#### 2. Launch a Jenkins Instance
+#### Step 2. Launch a Jenkins Instance
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_jenkins_3.png "Finding Jenkins")
 
@@ -19,85 +17,87 @@
 * Give the instance a zone
 * Click "Create"
 
-#### 3. Connect with your new Jenkins instance
+#### Step 3. Connect with your new Jenkins instance
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_ssh.png "SSH into your Jenkins instance")
 
 * SSH into your new instance by selecting: "SSH" => "Open in browser window" from the instance page.
 
-#### 4. Clone the SeleniumBase repository from the root ("/") directory.
+#### Step 4. Clone the SeleniumBase repository from the root ("/") directory.
 
 ```bash
 cd /
 sudo git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
-#### 5. Enter the "linux" folder
+#### Step 5. Enter the "linux" folder
 
 ```bash
 cd SeleniumBase/integrations/linux/
 ```
 
-#### 6. Give Jenkins (aka "tomcat" user) sudo access
+#### Step 6. Give Jenkins (aka "tomcat" user) sudo access
 
 ```bash
 ./jenkins_permissions.sh
 ```
 
-#### 7. Become "tomcat" (the Jenkins user) and enter a "bash" shell
+#### Step 7. Become "tomcat" (the Jenkins user) and enter a "bash" shell
 
 ```bash
 sudo su tomcat
 bash
 ```
 
-#### 8. Install dependencies
+#### Step 8. Install dependencies
 
 ```bash
 ./Linuxfile.sh
 ```
 
-#### 9. Start up the headless browser display mechanism (Xvfb)
+#### Step 9. Start up the headless browser display mechanism (Xvfb)
 
 ```bash
 ./Xvfb_launcher.sh
 ```
 
-#### 10. Go to the SeleniumBase directory
+#### Step 10. Go to the SeleniumBase directory
 
 ```bash
 cd /SeleniumBase
 ```
 
-#### 11. Install the requirements for SeleniumBase
+#### Step 11. Install the requirements for SeleniumBase
 
 ```bash
 sudo pip install -r server_requirements.txt
 ```
 
-#### 12. Install SeleniumBase
+#### Step 12. Install SeleniumBase
 
 ```bash
 sudo python setup.py install
 ```
 
-#### 13. Run an example test in Chrome to make sure everything's working properly
+#### Step 13. Run an example test in Chrome to make sure everything's working properly
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
 ```bash
 nosetests examples/my_first_test.py --with-selenium --headless --browser=chrome
 ```
 
-#### 14. You can also verify that Firefox works too
+#### Step 14. You can also verify that Firefox works too
 
 ```bash
 nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 ```
 
-#### 15. Login to Jenkins
+#### Step 15. Login to Jenkins
 
 * (The url, as well as username and password, should be accessible from your Google Cloud Platform VM instance page.)
 
-#### 16. Create a new Jenkins job
+#### Step 16. Create a new Jenkins job
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_jenkins_new_job_2.png "Create a Jenkins job")
 
@@ -106,7 +106,7 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 * Select "Freestyle project"
 * Click "OK"
 
-#### 17. Setup your new Jenkins job
+#### Step 17. Setup your new Jenkins job
 
 * Under "Source Code Management", select "Git".
 * For the "Repository URL", put: ``https://github.com/seleniumbase/SeleniumBase.git``. (You'll eventually be using your own clone of the repository here.)
@@ -117,12 +117,12 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=chrome
 ```
 * Click "Save" when you're done.
 
-#### 18. Run your new Jenkins job
+#### Step 18. Run your new Jenkins job
 
 * Click on "Build Now"
 * (If all the setup was done correctly, you should see a blue dot appear after a few seconds, indicating that the test job passed.)
 
-#### 19. Future Work
+#### Step 19. Future Work
 
 If you have a web application that you want to test, you'll be able to create SeleniumBase tests and add them to Jenkins as you saw here. You may want to create a Deploy job, which downloads the latest version of your repository, and then kicks off all tests to run after that. You could then tell that Deploy job to auto-run whenever a change is pushed to your repository by using: "Poll SCM". All your tests would then be able to run by using: "Build after other projects are built". You can also use MySQL to save test results in the DB so that you can query the data at any time.
 
@@ -130,7 +130,9 @@ If you have a web application that you want to test, you'll be able to create Se
 
 ## MySQL DB setup instructions
 
-#### 20. Return to the Google Cloud Launcher and launch a MySQL Instance
+#### Step 20. Return to the Google Cloud Launcher and launch a MySQL Instance
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_mysql.png "Finding MySQL")
 
 * Under "Featured Solutions", Click on "MySQL"
 * Click on "Launch on Compute Engine"
@@ -138,7 +140,7 @@ If you have a web application that you want to test, you'll be able to create Se
 * Give the instance a zone
 * Click "Create"
 
-#### 21. Get the Connection credentials for your new MySQL DB
+#### Step 21. Get the Connection credentials for your new MySQL DB
 
 * Under the Google Cloud Platform menu, go to "Compute Engine"
 * Find your new MySQL instance and then write down the value written in the "External IP" section.
@@ -146,23 +148,23 @@ If you have a web application that you want to test, you'll be able to create Se
 * Find your new MySQL instance and then click on it.
 * Write down the values for Admin username and password. (Username should be "root")
 
-#### 22. Get a MySQL GUI tool so that you can connect to your MySQL DB
+#### Step 22. Get a MySQL GUI tool so that you can connect to your MySQL DB
 
 * You can download [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) for this.
 
-#### 23. Create a new connection to your MySQL DB
+#### Step 23. Create a new connection to your MySQL DB
 
 * Use the MySQL DB credentials that you saved in Step 21 for this.
 
-#### 24. Create a new schema in your MySQL DB
+#### Step 24. Create a new schema in your MySQL DB
 
 * You can name your schema ``test``.
 
-#### 25. Create the necessary tables in your MySQL schema
+#### Step 25. Create the necessary tables in your MySQL schema
 
 * Run a SQL script in your MySQL schema using [testcaserepository.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
 
-#### 26. Have your local clone of SeleniumBase connect to your MySQL DB
+#### Step 26. Have your local clone of SeleniumBase connect to your MySQL DB
 
 * Update the MySQL connection details in your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) file to use the credentials that you saved in Step 21.
 * Run the following command again from the top-level SeleniumBase folder to make sure that SeleniumBase uses the updated credentials:
@@ -171,7 +173,7 @@ If you have a web application that you want to test, you'll be able to create Se
 sudo python setup.py install
 ```
 
-#### 27. Have your SeleniumBase Jenkins jobs use your MySQL DB
+#### Step 27. Have your SeleniumBase Jenkins jobs use your MySQL DB
 
 * For the "Execute shell", use the following as your updated "Command":
 
@@ -181,9 +183,9 @@ nosetests examples/my_test_suite.py --with-selenium --headless --browser=chrome 
 
 * Click "Save" when you're done.
 
-#### 28. Run your new Jenkins job
+#### Step 28. Run your new Jenkins job
 
 * Click on "Build Now"
 * If all goes well, you should be seeing new rows appear in your MySQL DB.
 
-#### 29. Congratulations! If you made it this far, you've become a SeleniumBase pro!
+#### Step 29. Congratulations! If you made it this far, you're awesome!
