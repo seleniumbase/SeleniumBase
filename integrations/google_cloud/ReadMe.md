@@ -36,7 +36,7 @@ sudo git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/integrations/linux/
 ```
 
-#### Step 6. Give Jenkins (aka "tomcat" user) sudo access
+#### Step 6. Give Jenkins (aka "tomcat" user) sudo access (See [jenkins_permissions.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/jenkins_permissions.sh) for details)
 
 ```bash
 ./jenkins_permissions.sh
@@ -49,13 +49,13 @@ sudo su tomcat
 bash
 ```
 
-#### Step 8. Install dependencies
+#### Step 8. Install dependencies (See [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) for details)
 
 ```bash
 ./Linuxfile.sh
 ```
 
-#### Step 9. Start up the headless browser display mechanism (Xvfb)
+#### Step 9. Start up the headless browser display mechanism: Xvfb (See [Xvfb_launcher.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Xvfb_launcher.sh) for details)
 
 ```bash
 ./Xvfb_launcher.sh
@@ -67,19 +67,19 @@ bash
 cd /SeleniumBase
 ```
 
-#### Step 11. Install the requirements for SeleniumBase
+#### Step 11. Install the [requirements](https://github.com/seleniumbase/SeleniumBase/blob/master/server_requirements.txt) for SeleniumBase
 
 ```bash
-sudo pip install -r server_requirements.txt
+sudo pip install -r server_requirements.txt --upgrade
 ```
 
-#### Step 12. Install SeleniumBase
+#### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
 
 ```bash
 sudo python setup.py install
 ```
 
-#### Step 13. Run an example test in Chrome to make sure everything's working properly
+#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to make sure everything's working properly
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
