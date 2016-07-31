@@ -79,7 +79,7 @@ sudo pip install -r server_requirements.txt --upgrade
 sudo python setup.py install
 ```
 
-#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to make sure everything's working properly
+#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (Takes ~10 seconds)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
