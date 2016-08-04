@@ -342,6 +342,14 @@ self.find_element("a.my_class", timeout=5).click()
 self.click("a.my_class")  # DO IT THIS WAY!
 ```
 
+Using dots to signify class names is a simplified way of using ``*=`` within a CSS selector. That simplified version looks like this:
+
+```python
+self.click('a[class*="my_class"]')
+```
+
+**ProTip™:** You can use ``*=`` to search for any partial value in a CSS selector.
+
 #### Asserting visibility of text inside an element on a page within some number of seconds:
 
 ```python
