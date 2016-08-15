@@ -923,6 +923,13 @@ class BaseCase(unittest.TestCase):
             for tb in self.page_check_failures:
                 exception_output += "%s\n" % tb
             logging.exception(exception_output)
+        self.is_pytest = None
+        try:
+            # This raises an exception if the test is not coming from pytest
+            self.is_pytest = pytest.config.option.is_pytest
+        except Exception:
+            # Not using pytest (probably nosetests)
+            self.is_pytest = False
         if self.is_pytest:
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
