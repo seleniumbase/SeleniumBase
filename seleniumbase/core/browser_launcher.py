@@ -18,6 +18,8 @@ def get_driver(browser_name):
             profile.set_preference("reader.parse-on-load.enabled", False)
             profile.set_preference("pdfjs.disabled", True)
             profile.set_preference(
+                "security.mixed_content.block_active_content", False)
+            profile.set_preference(
                 "browser.download.manager.showAlertOnComplete", True)
             profile.set_preference("browser.download.panel.shown", True)
             profile.set_preference(
@@ -46,6 +48,7 @@ def get_driver(browser_name):
             prefs = {"download.default_directory": downloads_path}
             chrome_options.add_experimental_option("prefs", prefs)
             chrome_options.add_argument("--allow-file-access-from-files")
+            chrome_options.add_argument("--allow-running-insecure-content")
             return webdriver.Chrome(chrome_options=chrome_options)
         except Exception:
             return webdriver.Chrome()
