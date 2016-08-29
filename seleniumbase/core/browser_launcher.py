@@ -17,7 +17,8 @@ def get_driver(browser_name):
             profile = webdriver.FirefoxProfile()
             profile.set_preference("reader.parse-on-load.enabled", False)
             profile.set_preference("pdfjs.disabled", True)
-            profile.set_preference("security.mixed_content.block_active_content", False)
+            profile.set_preference(
+                "security.mixed_content.block_active_content", False)
             profile.set_preference(
                 "browser.download.manager.showAlertOnComplete", True)
             profile.set_preference("browser.download.panel.shown", True)
