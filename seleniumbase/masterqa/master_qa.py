@@ -77,6 +77,11 @@ class __MasterQATestCase__(BaseCase):
             text = self.execute_script(
                 '''if(confirm("%s")){return "Success!"}
                 else{return "Failure!"}''' % question)
+        elif self.browser == 'chrome':
+            self.execute_script('''if(confirm("%s"))
+                {window.master_qa_result="Success!"}
+                else{window.master_qa_result="Failure!"}''' % question)
+            text = self.execute_script('''return window.master_qa_result''')
         else:
             self.execute_script('''if(confirm("%s")){window.alert("Success!")}
                 else{window.alert("Failure!")}''' % question)
