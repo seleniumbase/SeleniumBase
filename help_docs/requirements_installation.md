@@ -39,20 +39,16 @@ brew install git
 
 ### [Virtualenv](http://virtualenv.readthedocs.org/en/latest/) or [Virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
 
-Mac: (The old regular way):
+(Note: ``virtualenvwrapper`` makes things much easier, but install ``virtualenv`` first.)
 
+Mac:
 ```bash
-sudo easy_install virtualenv
-```
-
-Mac: (The new fancy way):
-
-```bash
-sudo easy_install virtualenvwrapper
+sudo easy_install --upgrade virtualenv
+sudo easy_install --upgrade virtualenvwrapper
 ```
 
 Windows:
-
 ```bash
-pip install virtualenv
+pip install --upgrade virtualenv
+pip install --upgrade virtualenvwrapper-win
 ```
