@@ -62,7 +62,7 @@ sudo apt-get install -y --force-yes python-MySQLdb
 
 # Install PhantomJS
 cd ~
-export PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
+export PHANTOM_JS="phantomjs-2.1.1-linux-x86_64"
 sudo wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
 sudo tar xvjf $PHANTOM_JS.tar.bz2
 sudo mv -f $PHANTOM_JS /usr/local/share
