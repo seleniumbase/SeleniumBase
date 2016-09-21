@@ -19,6 +19,7 @@ setup(
         'selenium>=2.53.6',
         'nose>=1.3.7',
         'pytest>=3.0.1',
+        'six>=1.10.0',
         'flake8==3.0.4',
         'requests==2.11.1',
         'urllib3==1.16',
