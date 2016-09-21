@@ -47,17 +47,17 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
 #================
 # Install Chrome
 #================
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list \
-  && apt-get update \
-  && apt-get install -y google-chrome-stable \
-  && rm -rf /var/lib/apt/lists/*
+RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get -yqq update && \
+    apt-get -yqq install google-chrome-stable && \
+    rm -rf /var/lib/apt/lists/*
 
 #==================
 # Configure Chrome
 #==================
 RUN dpkg-divert --add --rename --divert /opt/google/chrome/google-chrome.real /opt/google/chrome/google-chrome && \
-    echo "#!/bin/bash\nexec /opt/google/chrome/google-chrome.real --disable-setuid-sandbox \"\$@\"" > /opt/google/chrome/google-chrome && \
+    echo "#!/bin/bash\nexec /opt/google/chrome/google-chrome.real --disable-setuid-sandbox --no-sandbox \"\$@\"" > /opt/google/chrome/google-chrome && \
     chmod 755 /opt/google/chrome/google-chrome
 
 #=================
@@ -96,7 +96,9 @@ RUN exec "$@"
 #=====================
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
-RUN cd /SeleniumBase && ls && pip install seleniumbase
+COPY requirements.txt /SeleniumBase/requirements.txt
+COPY setup.py /SeleniumBase/setup.py
+RUN cd /SeleniumBase && ls && pip install -r requirements.txt
 
 #==========================================
 # Create entrypoint and grab example tests
