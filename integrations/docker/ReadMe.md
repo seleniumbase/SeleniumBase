@@ -28,19 +28,23 @@
 
     docker run seleniumbase ./run_docker_test_in_chrome.sh
 
-#### 8. You can also enter Docker and stay inside the shell:
+#### 8. Now run the same test with PhantomJS inside your Docker:
+
+    docker run seleniumbase ./run_docker_test_in_phantomjs.sh
+
+#### 9. You can also enter Docker and stay inside the shell:
 
     docker run -i -t seleniumbase
 
-#### 9. Now you can run the example test from inside the Docker shell:
+#### 10. Now you can run the example test from inside the Docker shell:
 
     ./run_docker_test_in_chrome.sh
 
-#### 10. When you're satisfied, you may exit the Docker shell:
+#### 11. When you're satisfied, you may exit the Docker shell:
 
     exit
 
-#### 11. (Optional) Since Docker images and containers take up a lot of space, you may want to clean up your machine from time to time when they’re not being used:
+#### 12. (Optional) Since Docker images and containers take up a lot of space, you may want to clean up your machine from time to time when they’re not being used:
 http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-containers
 Here are a few of those cleanup commands:
 
@@ -57,7 +61,7 @@ Finally, if you want to wipe out your SeleniumBase Docker virtualbox, use these 
     docker-machine kill seleniumbase
     docker-machine rm seleniumbase
 
-#### 12. (Optional) More reading on Docker can be found here:
+#### 13. (Optional) More reading on Docker can be found here:
 * https://docs.docker.com
 * https://docs.docker.com/mac/started/
 * https://docs.docker.com/installation/mac/
