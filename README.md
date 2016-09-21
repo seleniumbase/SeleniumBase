@@ -57,7 +57,7 @@ cd SeleniumBase
 (A Git GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
 
 
-#### **Step 2:** Create & activate a virtual environment for seleniumbase (MAC/LINUX)
+#### **Step 2:** Create & activate a virtual environment for SeleniumBase
 
 If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
 
