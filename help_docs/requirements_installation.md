@@ -1,4 +1,4 @@
-## Installation Instructions for Python, pip, brew, git, and virtualenv (or virtualenvwrapper)
+## Installation instructions for Python, pip, brew, git, virtualenv, and virtualenvwrapper
 
 
 ### [Python 2.7](https://www.python.org/downloads/)
@@ -11,7 +11,7 @@ If you're a WINDOWS user, [download the latest 2.* version from here](https://ww
 
 If "pip" did not come with your Python installation, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
 
-On a Mac, you can also install pip easily with the following command:
+On a MAC, you can also install pip easily with the following command:
 ```bash
 sudo easy_install pip
 ```
@@ -37,17 +37,17 @@ brew install git
 
 (WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/downloads).)
 
-### [Virtualenv](http://virtualenv.readthedocs.org/en/latest/) or [Virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
+### [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
 
-(Note: ``virtualenvwrapper`` makes things much easier, but install ``virtualenv`` first.)
+(NOTE: Virtual environments allow each your Python projects to have a unique set of packaged dependencies.)
 
-Mac:
+MAC:
 ```bash
 sudo easy_install --upgrade virtualenv
 sudo easy_install --upgrade virtualenvwrapper
 ```
 
-Windows:
+WINDOWS:
 ```bash
 pip install --upgrade virtualenv
 pip install --upgrade virtualenvwrapper-win
