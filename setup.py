@@ -6,7 +6,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.2.11',
+    version='1.2.12',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
@@ -15,7 +15,7 @@ setup(
     license='The MIT License',
     install_requires=[
         'pip>=8.1.2',
-        'setuptools>=27.3.0',
+        'setuptools>=28.2.0',
         'selenium>=2.53.6',
         'nose>=1.3.7',
         'pytest>=3.0.2',
@@ -28,7 +28,7 @@ setup(
         'chardet==2.3.0',
         'simplejson==3.8.2',
         'boto==2.42.0',
-        'ipdb==0.10.1',
+        'ipdb==0.9.4',
         'pyvirtualdisplay==0.2',
         ],
     packages=['seleniumbase',
