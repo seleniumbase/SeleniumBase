@@ -389,7 +389,6 @@ class BaseCase(unittest.TestCase):
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(file_url, destination_folder)
-        return True
 
     def save_file_as(self, file_url, new_file_name, destination_folder=None):
         """ Similar to self.download_file(), except that you get to rename the
@@ -398,7 +397,6 @@ class BaseCase(unittest.TestCase):
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name)
-        return True
 
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
