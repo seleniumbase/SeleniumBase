@@ -28,7 +28,7 @@ setup(
         'chardet==2.3.0',
         'simplejson==3.8.2',
         'boto==2.42.0',
-        'ipdb==0.10.1',
+        'ipdb==0.9.4',
         'pyvirtualdisplay==0.2',
         ],
     packages=['seleniumbase',
