@@ -30,6 +30,7 @@ from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 
 
 class BaseCase(unittest.TestCase):
@@ -68,6 +69,26 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_highlight_if_active(selector, by)
         pre_action_url = self.driver.current_url
         element.click()
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
+
+    def double_click(self, selector, by=By.CSS_SELECTOR,
+                     timeout=settings.SMALL_TIMEOUT):
+        if selector.startswith('/') or selector.startswith('./'):
+            by = By.XPATH
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout=timeout)
+        self._demo_mode_highlight_if_active(selector, by)
+        pre_action_url = self.driver.current_url
+        actions = ActionChains(self.driver)
+        actions.move_to_element(element)
+        actions.double_click(element)
+        actions.perform()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:

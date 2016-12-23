@@ -11,6 +11,8 @@ self.open_url(url)
 
 self.click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
+self.double_click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
 self.click_chain(selectors_list, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT, spacing=0)
 
