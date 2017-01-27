@@ -37,9 +37,10 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 
 * For everything you download (such as ``pip`` and ``Chromedriver``) make sure those files get on your system [PATH](http://java.com/en/download/help/path.xml). (``Environmental Variables`` on a Windows machine)
 
+Mac:
+
 * On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
-Mac:
 ```bash
 brew install chromedriver phantomjs
 ```
