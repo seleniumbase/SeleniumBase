@@ -116,9 +116,9 @@ Here's how to run the example script using various web browsers:
 ```bash
 cd examples/
 
-nosetests my_first_test.py --with-selenium --browser=firefox -s
-
 nosetests my_first_test.py --with-selenium --browser=chrome -s
+
+nosetests my_first_test.py --with-selenium --browser=firefox -s
 
 nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 ```
@@ -139,7 +139,7 @@ If the example is moving too fast for your eyes to see what's going on, there ar
 You can add ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action:
 
 ```bash
-nosetests my_first_test.py --with-selenium -s --demo_mode
+nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
@@ -147,7 +147,7 @@ You can override the default wait time by either updating [settings.py](https://
 If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
 ```bash
-nosetests my_first_test.py --with-selenium -s --demo_mode --demo_sleep=1.2
+nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode --demo_sleep=1.2
 ```
 
 You can also add either of the following to your scripts to slow down the tests:
@@ -195,7 +195,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 **Creating Visual Test Suite Reports** (for nosetest users *ONLY*): The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used)
 
 ```bash
-nosetests my_test_suite.py --with-selenium --with-testing_base --report -s
+nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base --report -s
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Test Report")
 
