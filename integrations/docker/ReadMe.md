@@ -1,6 +1,12 @@
 ## Docker setup instructions for SeleniumBase
 
-#### 1. Install the Docker Toolbox from https://www.docker.com/products/docker-toolbox
+#### 1. Install the Docker Toolbox:
+
+You can get that from here:
+https://www.docker.com/products/docker-toolbox
+
+You might also want to install the Docker Engine:
+https://docs.docker.com/engine/installation/
 
 #### 2. Create your SeleniumBase Docker environment:
 
@@ -45,7 +51,10 @@
     exit
 
 #### 12. (Optional) Since Docker images and containers take up a lot of space, you may want to clean up your machine from time to time when they’re not being used:
+
+Details on that can be found here:
 http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-containers
+
 Here are a few of those cleanup commands:
 
     docker images | grep "<none>" | awk '{print $3}' | xargs docker rmi
@@ -60,6 +69,9 @@ Finally, if you want to wipe out your SeleniumBase Docker virtualbox, use these 
 
     docker-machine kill seleniumbase
     docker-machine rm seleniumbase
+
+For more cleanup commands, check out:
+https://codefresh.io/blog/everyday-hacks-docker/
 
 #### 13. (Optional) More reading on Docker can be found here:
 * https://docs.docker.com
