@@ -81,6 +81,8 @@ class __MasterQATestCase__(BaseCase):
             self.execute_script('''if(confirm("%s"))
                 {window.master_qa_result="Success!"}
                 else{window.master_qa_result="Failure!"}''' % question)
+            time.sleep(0.05)
+            self.wait_for_special_alert_absent()
             text = self.execute_script('''return window.master_qa_result''')
         else:
             self.execute_script('''if(confirm("%s")){window.alert("Success!")}
