@@ -107,11 +107,12 @@ RUN exec "$@"
 #=====================
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
-COPY requirements.txt /SeleniumBase/requirements.txt
-COPY setup.py /SeleniumBase/setup.py
+COPY docker_requirements.txt /SeleniumBase/docker_requirements.txt
+COPY server_setup.py /SeleniumBase/server_setup.py
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
-RUN cd /SeleniumBase && ls && pip install -r requirements.txt
+RUN cd /SeleniumBase && ls && pip install -r docker_requirements.txt
+RUN cd /SeleniumBase && python server_setup.py install
 
 #==========================================
 # Create entrypoint and grab example tests
