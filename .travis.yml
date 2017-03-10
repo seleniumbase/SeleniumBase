@@ -6,7 +6,9 @@ install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt"
   - "python setup.py install"
+sudo: required
 before_script:
+  - "sudo apt-get update -qq"
   - "flake8 seleniumbase/*/*.py"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
