@@ -50,18 +50,6 @@ sudo ln -s /opt/firefox/firefox /usr/bin/firefox
 sudo rm -f /tmp/firefox-esr.tar.bz2
 sudo apt-get -f install -y --force-yes firefox
 
-# Install Geckodriver / Firefox Driver
-export BASE_URL=https://github.com/mozilla/geckodriver/releases/download
-export VERSION=$(curl -sL https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep tag_name | cut -d '"' -f 4)
-sudo curl -sL $BASE_URL/$VERSION/geckodriver-$VERSION-linux64.tar.gz | sudo tar -xz
-sudo chmod +x geckodriver
-sudo rm -f /usr/local/share/geckodriver
-sudo rm -f /usr/local/bin/geckodriver
-sudo rm -f /usr/bin/geckodriver
-sudo mv -f geckodriver /usr/local/share/geckodriver
-sudo ln -s /usr/local/share/geckodriver /usr/local/bin/geckodriver
-sudo ln -s /usr/local/share/geckodriver /usr/bin/geckodriver
-
 # Install more dependencies
 sudo apt-get update
 sudo apt-get install -y --force-yes xvfb
