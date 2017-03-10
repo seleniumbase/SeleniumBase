@@ -28,8 +28,10 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 
 
@@ -68,7 +70,14 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
         pre_action_url = self.driver.current_url
-        element.click()
+        try:
+            element.click()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=timeout)
+            element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -85,10 +94,20 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
         pre_action_url = self.driver.current_url
-        actions = ActionChains(self.driver)
-        actions.move_to_element(element)
-        actions.double_click(element)
-        actions.perform()
+        try:
+            actions = ActionChains(self.driver)
+            actions.move_to_element(element)
+            actions.double_click(element)
+            actions.perform()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=timeout)
+            actions = ActionChains(self.driver)
+            actions.move_to_element(element)
+            actions.double_click(element)
+            actions.perform()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -139,7 +158,14 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_link_text_visible(link_text, timeout=timeout)
         self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
         pre_action_url = self.driver.current_url
-        element.click()
+        try:
+            element.click()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_link_text_visible(
+                link_text, timeout=timeout)
+            element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -152,13 +178,28 @@ class BaseCase(unittest.TestCase):
                  timeout=settings.SMALL_TIMEOUT):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
-        return element.text
+        try:
+            element_text = element.text
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout)
+            element_text = element.text
+        return element_text
 
     def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
-        attribute_value = element.get_attribute(attribute)
+        try:
+            attribute_value = element.get_attribute(attribute)
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = page_actions.wait_for_element_present(
+                self.driver, selector, by, timeout)
+            attribute_value = element.get_attribute(attribute)
         if attribute_value is not None:
             return attribute_value
         else:
@@ -173,7 +214,28 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
         pre_action_url = self.driver.current_url
-        element.send_keys(new_value)
+        try:
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self._demo_mode_pause_if_active()
@@ -198,10 +260,39 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
-        element.clear()
+        try:
+            element.clear()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            element.clear()
         self._demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
-        element.send_keys(new_value)
+        try:
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            element.clear()
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
@@ -362,7 +453,14 @@ class BaseCase(unittest.TestCase):
         ''' Fast scroll to destination '''
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
-        self._scroll_to_element(element)
+        try:
+            self._scroll_to_element(element)
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            self._scroll_to_element(element)
 
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR,
                        timeout=settings.SMALL_TIMEOUT):
