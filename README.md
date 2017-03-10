@@ -31,7 +31,9 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 
 * Download web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html) (or [Chromium](https://download-chromium.appspot.com/)) and [Firefox](https://www.mozilla.org/firefox/new/).
 
-* To run browser automation on Chrome, you'll need to download **[Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)** and put it on your System **[PATH](http://java.com/en/download/help/path.xml)**.
+To run automation on various web browsers, you'll need to download a driver file for each one and place it on your System **[PATH](http://java.com/en/download/help/path.xml)**:
+
+* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path.
 
 * For Firefox, get [Geckodriver](https://github.com/mozilla/geckodriver/releases) on your System Path.
 
