@@ -7,7 +7,10 @@ install:
   - "pip install -r server_requirements.txt"
   - "python server_setup.py install"
 before_script:
+  - "flake8 seleniumbase/*.py"
   - "flake8 seleniumbase/*/*.py"
+  - "flake8 seleniumbase/*/*/*.py"
+  - "flake8 seleniumbase/*/*/*/*.py"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
