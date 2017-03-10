@@ -11,8 +11,8 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
-  - "wget http://chromedriver.googlecode.com/files/chromedriver_linux32_23.0.1240.0.zip"
-  - "unzip chromedriver_linux32_23.0.1240.0.zip"
+  - "wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux32.zip"
+  - "unzip chromedriver_linux32.zip"
   - "sudo mv chromedriver /usr/bin"
   - "nosetests examples/my_first_test.py --with-selenium --browser=chrome"
 env:
