@@ -12,6 +12,7 @@ TEST = "test"
 class Apps:
     TESTCASE_REPOSITORY = "testcase_repository"
 
+
 APP_CREDS = {
 
     Apps.TESTCASE_REPOSITORY: {
