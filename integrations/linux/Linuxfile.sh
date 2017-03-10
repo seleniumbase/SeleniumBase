@@ -53,7 +53,7 @@ sudo apt-get -f install -y --force-yes firefox
 # Install Geckodriver / Firefox Driver
 export BASE_URL=https://github.com/mozilla/geckodriver/releases/download
 export VERSION=$(curl -sL https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep tag_name | cut -d '"' -f 4)
-sudo curl -sL $BASE_URL/$VERSION/geckodriver-$VERSION-linux64.tar.gz | tar -xz
+sudo curl -sL $BASE_URL/$VERSION/geckodriver-$VERSION-linux64.tar.gz | sudo tar -xz
 sudo chmod +x geckodriver
 sudo rm -f /usr/local/share/geckodriver
 sudo rm -f /usr/local/bin/geckodriver
