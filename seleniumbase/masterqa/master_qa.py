@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 import time
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 from seleniumbase import BaseCase
 from seleniumbase.core.style_sheet import style
@@ -85,11 +86,16 @@ class __MasterQATestCase__(BaseCase):
             self.wait_for_special_alert_absent()
             text = self.execute_script('''return window.master_qa_result''')
         else:
-            self.execute_script('''if(confirm("%s")){window.alert("Success!")}
-                else{window.alert("Failure!")}''' % question)
+            try:
+                self.execute_script(
+                    '''if(confirm("%s")){window.master_qa_result="Success!"}
+                    else{window.master_qa_result="Failure!"}''' % question)
+            except WebDriverException:
+                # Fix for https://github.com/mozilla/geckodriver/issues/431
+                pass
             time.sleep(0.05)
             self.wait_for_special_alert_absent()
-            text = self.wait_for_and_accept_alert()
+            text = self.execute_script('''return window.master_qa_result''')
         self.manual_check_count += 1
         if "Success!" in text:
             self.manual_check_successes += 1
