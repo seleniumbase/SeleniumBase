@@ -1,6 +1,7 @@
 from selenium import webdriver
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 def get_driver(browser_name):
@@ -31,7 +32,9 @@ def get_driver(browser_name):
                 ("application/pdf, application/zip, application/octet-stream, "
                  "text/csv, text/xml, application/xml, text/plain, "
                  "text/octet-stream"))
-            return webdriver.Firefox(profile)
+            firefox_capabilities = DesiredCapabilities.FIREFOX
+            return webdriver.Firefox(
+                firefox_profile=profile, capabilities=firefox_capabilities)
         except:
             return webdriver.Firefox()
     if browser_name == constants.Browser.INTERNET_EXPLORER:
