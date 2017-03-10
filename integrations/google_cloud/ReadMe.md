@@ -76,7 +76,7 @@ sudo pip install -r server_requirements.txt --upgrade
 #### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
 
 ```bash
-sudo python setup.py install
+sudo python server_setup.py install
 ```
 
 #### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (Takes ~10 seconds)

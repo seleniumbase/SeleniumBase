@@ -101,6 +101,7 @@ class App:
             'nosetests my_test_suite.py --with-selenium'
             ' --browser=chrome --with-db_reporting')
 
+
 if __name__ == "__main__":
     root = Tk()
     root.minsize(612, 444)

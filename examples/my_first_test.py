@@ -8,11 +8,11 @@ class MyTestClass(BaseCase):
         self.assert_element('img[alt="Python"]')      # Asserts element on page
         self.click('a[rel="license"]')                 # Clicks element on page
         xkcd_license = self.get_text('center')    # Gets text from page element
-        assert('reuse any of my drawings' in xkcd_license)
+        self.assertTrue('reuse any of my drawings' in xkcd_license)
         self.open('http://xkcd.com/1481/')
         image_object = self.find_element('#comic img')    # Returns the element
         caption = image_object.get_attribute('title')  # Gets attr from element
-        assert('connections to the server' in caption)
+        self.assertTrue('connections to the server' in caption)
         self.click_link_text('Blag')          # Clicks link containing the text
         self.assert_text('The blag', 'header h2')     # Asserts text in element
         self.update_text('input#s', 'Robots!\n')  # Updates textfield with text

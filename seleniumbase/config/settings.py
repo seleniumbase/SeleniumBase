@@ -49,15 +49,17 @@ REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"
 RESULTS_TABLE = "results_table.csv"
 
-''' This adds wait_for_ready_state_complete() after various browser actions.
-    By default, Selenium waits for the 'interactive' state before continuing.
-    Setting this to True may improve reliability at the cost of speed.
-    WARNING: Some websites are in a perpetual "interactive" state due to
-    dynamic content that never fully finishes loading (Use "False" there). '''
+'''
+This adds wait_for_ready_state_complete() after various browser actions.
+By default, Selenium waits for the 'interactive' state before continuing.
+Setting this to True may improve reliability at the cost of speed.
+WARNING: Some websites are in a perpetual "interactive" state due to
+dynamic content that never fully finishes loading (Use "False" there).
+'''
 # Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
-WAIT_FOR_RSC_ON_PAGE_LOADS = False
+WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
-WAIT_FOR_RSC_ON_CLICKS = False
+WAIT_FOR_RSC_ON_CLICKS = True
 
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
