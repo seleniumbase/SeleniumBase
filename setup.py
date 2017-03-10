@@ -26,7 +26,6 @@ setup(
         'BeautifulSoup==3.2.1',
         'unittest2==1.1.0',
         'chardet==2.3.0',
-        'simplejson==3.10.0',
         'boto==2.46.1',
         'ipdb==0.10.2',
         'pyvirtualdisplay==0.2.1',
