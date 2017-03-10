@@ -73,6 +73,17 @@ RUN apt-get -qy --no-install-recommends install \
   && ln -s /opt/firefox/firefox /usr/bin/firefox \
   && rm -f /tmp/firefox-esr.tar.bz2
 
+#======================================
+# Install Geckodriver / Firefox Driver
+#======================================
+RUN export BASE_URL=https://github.com/mozilla/geckodriver/releases/download \
+  && export VERSION=$(curl -sL \
+    https://api.github.com/repos/mozilla/geckodriver/releases/latest | \
+    grep tag_name | cut -d '"' -f 4) \
+  && curl -sL \
+  $BASE_URL/$VERSION/geckodriver-$VERSION-linux64.tar.gz | tar -xz \
+&& mv geckodriver /usr/local/bin/geckodriver
+
 #===================
 # Install PhantomJS
 #===================
@@ -98,6 +109,8 @@ COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
 COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt
 
 #==========================================
