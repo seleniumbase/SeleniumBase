@@ -1,5 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
+Uses the older Selenium 2.53.6 for compatibility reasons
 """
 
 from setuptools import setup, find_packages  # noqa
