@@ -11,10 +11,10 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
-  - "firefox --version"
-  - "nosetests examples/my_first_test.py --with-selenium --browser=firefox"
+  - "chrome --version"
+  - "nosetests examples/my_first_test.py --with-selenium --browser=chrome"
 env:
   matrix:
-  - BROWSER=firefox
+  - BROWSER=chrome
 notifications:
   email: false
