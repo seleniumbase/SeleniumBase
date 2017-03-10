@@ -390,6 +390,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     for x in range(int(timeout * 10)):
         ready_state = driver.execute_script("return document.readyState")
         if ready_state == u'complete':
+            time.sleep(0.01)  # Better be sure everything is done loading
             return True
         else:
             now_ms = time.time() * 1000.0
