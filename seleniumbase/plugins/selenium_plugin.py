@@ -37,9 +37,10 @@ class SeleniumBrowser(Plugin):
             '--browser', action='store',
             dest='browser',
             choices=constants.Browser.VERSION.keys(),
-            default=constants.Browser.FIREFOX,
-            help="""Specifies the web browser. Default: Firefox.
-                    If you want to use Chrome, indicate that.""")
+            default=constants.Browser.GOOGLE_CHROME,
+            help="""Specifies the web browser to use. Default: Chrome.
+                    If you want to use Firefox, explicitly indicate that.
+                    Example: (--browser=firefox)""")
         parser.add_option(
             '--browser_version', action='store',
             dest='browser_version',
