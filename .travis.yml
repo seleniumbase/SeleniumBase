@@ -16,7 +16,8 @@ script:
   - "echo $PATH"
   - "wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux32.zip"
   - "unzip chromedriver_linux32.zip"
-  - "sudo mv chromedriver /usr/local/bin"
+  - "sudo chmod +x chromedriver"
+  - "sudo mv chromedriver /usr/bin/chromedriver"
   - "nosetests examples/my_first_test.py --with-selenium --browser=chrome"
 env:
   matrix:
