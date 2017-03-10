@@ -2,9 +2,9 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Automation Platform for Testing and Business**
+**Web Automation Platform for Testing and More**
 
-(And the power to [speed up your manual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md))
+(And the power to [speed up manual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md))
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
@@ -29,13 +29,17 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
-* Download web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html) (or [Chromium](https://download-chromium.appspot.com/)) and also [Firefox v46.*](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/) (or [Firefox ESR](https://www.mozilla.org/en-US/firefox/organizations/)) because Firefox versions 47.0 and above are no longer compatible with normal Selenium WebDriver. (If you go with Firefox 46.*, make sure to turn off auto-updates or else you'll be back at v47+ quickly!)
+* Download web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html) (or [Chromium](https://download-chromium.appspot.com/)) and [Firefox](https://www.mozilla.org/firefox/new/).
 
-(NOTE: Firefox versions 47.0 and above are no longer compatible with normal Selenium WebDriver. [Get Firefox 46.*](https://ftp.mozilla.org/pub/firefox/releases/46.0.1/) instead, or you can [Get Firefox ESR](https://www.mozilla.org/en-US/firefox/organizations/). (If you go with Firefox 46.*, make sure to turn off auto-updates or else you'll be back at v47 quickly!) For more information regarding this, [read this post](http://stackoverflow.com/questions/37693106/selenium-2-53-not-working-on-firefox-47) from Stack Overflow. There's a [new version of Firefox driver](https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver) coming soon.
+* To run browser automation on Chrome, you'll need to download **[Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)** and put it on your System **[PATH](http://java.com/en/download/help/path.xml)**.
 
-* If you want to run automation on browsers other than Firefox, you'll need to download [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads), [PhantomJS](http://phantomjs.org/download.html), [Edge Driver (Microsoft WebDriver)](https://www.microsoft.com/en-us/download/details.aspx?id=48212), and/or [Safari Driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/using_safari_driver.md) separately. (Firefox drivers come with Selenium by default.)
+* For Firefox, get [Geckodriver](https://github.com/mozilla/geckodriver/releases) on your System Path.
 
-* For everything you download (such as ``pip`` and ``Chromedriver``) make sure those files get on your system [PATH](http://java.com/en/download/help/path.xml). (``Environmental Variables`` on a Windows machine)
+* For Microsoft Edge, get [Edge Driver (Microsoft WebDriver)](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) on your System Path.
+
+* For Safari, get [Safari Driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/using_safari_driver.md) on your System Path.
+
+* For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System Path.
 
 Mac:
 
@@ -124,7 +128,7 @@ nosetests my_first_test.py --with-selenium --browser=firefox -s
 nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 ```
 
-After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Firefox will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
+After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
 
 NOTE: The following two lines of code can be simplified...
 ``` python
