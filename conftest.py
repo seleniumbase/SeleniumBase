@@ -13,7 +13,7 @@ def pytest_addoption(parser):
                      dest='browser',
                      choices=constants.Browser.VERSION.keys(),
                      default=constants.Browser.GOOGLE_CHROME,
-                     help="""Specifies the web browser to use. Default=Chrome.
+                     help="""Specifies the web browser to use. Default: Chrome.
                           If you want to use Firefox, explicitly indicate that.
                           Example: (--browser=firefox)""")
     parser.addoption('--is_pytest', action="store_true",
