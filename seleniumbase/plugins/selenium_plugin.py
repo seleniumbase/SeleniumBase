@@ -33,47 +33,56 @@ class SeleniumBrowser(Plugin):
     def options(self, parser, env):
         super(SeleniumBrowser, self).options(parser, env=env)
 
-        parser.add_option('--browser', action='store',
-                          dest='browser',
-                          choices=constants.Browser.VERSION.keys(),
-                          default=constants.Browser.FIREFOX,
-                          help="""Specifies the browser. Default: FireFox.
-                               If you want to use Chrome, indicate that.""")
-        parser.add_option('--browser_version', action='store',
-                          dest='browser_version',
-                          default="latest",
-                          help="""The browser version to use. Explicitly select
-                               a version number or use "latest".""")
-        parser.add_option('--server', action='store', dest='servername',
-                          default='localhost',
-                          help="""Designates the server used by the test.
-                               Default: localhost.""")
-        parser.add_option('--port', action='store', dest='port',
-                          default='4444',
-                          help="""Designates the port used by the test.
-                               Default: 4444.""")
-        parser.add_option('--headless', action="store_true",
-                          dest='headless',
-                          default=False,
-                          help="""Using this makes Webdriver run headlessly,
-                               which is useful inside a Linux Docker.""")
-        parser.add_option('--demo_mode', action="store_true",
-                          dest='demo_mode',
-                          default=False,
-                          help="""Using this slows down the automation so that
-                               you can see what it's actually doing.""")
-        parser.add_option('--demo_sleep', action='store', dest='demo_sleep',
-                          default=None,
-                          help="""Setting this overrides the Demo Mode sleep
-                               time that happens after browser actions.""")
-        parser.add_option('--highlights', action='store',
-                          dest='highlights', default=None,
-                          help="""Setting this overrides the default number of
-                               highlight animation loops to have per call.""")
-        parser.add_option('--verify_delay', action='store',
-                          dest='verify_delay', default=None,
-                          help="""Setting this overrides the default wait time
-                               before each MasterQA verification pop-up.""")
+        parser.add_option(
+            '--browser', action='store',
+            dest='browser',
+            choices=constants.Browser.VERSION.keys(),
+            default=constants.Browser.FIREFOX,
+            help="""Specifies the web browser. Default: Firefox.
+                    If you want to use Chrome, indicate that.""")
+        parser.add_option(
+            '--browser_version', action='store',
+            dest='browser_version',
+            default="latest",
+            help="""The browser version to use. Explicitly select
+                    a version number or use "latest".""")
+        parser.add_option(
+            '--server', action='store', dest='servername',
+            default='localhost',
+            help="""Designates the server used by the test.
+                    Default: localhost.""")
+        parser.add_option(
+            '--port', action='store', dest='port',
+            default='4444',
+            help="""Designates the port used by the test.
+                    Default: 4444.""")
+        parser.add_option(
+            '--headless', action="store_true",
+            dest='headless',
+            default=False,
+            help="""Using this makes Webdriver run headlessly,
+                    which is useful inside a Linux Docker.""")
+        parser.add_option(
+            '--demo_mode', action="store_true",
+            dest='demo_mode',
+            default=False,
+            help="""Using this slows down the automation so that
+                    you can see what it's actually doing.""")
+        parser.add_option(
+            '--demo_sleep', action='store', dest='demo_sleep',
+            default=None,
+            help="""Setting this overrides the Demo Mode sleep
+                    time that happens after browser actions.""")
+        parser.add_option(
+            '--highlights', action='store',
+            dest='highlights', default=None,
+            help="""Setting this overrides the default number of
+                    highlight animation loops to have per call.""")
+        parser.add_option(
+            '--verify_delay', action='store',
+            dest='verify_delay', default=None,
+            help="""Setting this overrides the default wait time
+                    before each MasterQA verification pop-up.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
