@@ -13,9 +13,10 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
+  - "echo $PATH"
   - "wget https://chromedriver.storage.googleapis.com/2.28/chromedriver_linux32.zip"
   - "unzip chromedriver_linux32.zip"
-  - "sudo mv chromedriver /usr/bin"
+  - "sudo mv chromedriver /usr/local/bin"
   - "nosetests examples/my_first_test.py --with-selenium --browser=chrome"
 env:
   matrix:
