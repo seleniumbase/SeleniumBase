@@ -49,6 +49,8 @@ To run automation on various web browsers, you'll need to download a driver file
 
 * For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System Path.
 
+(NOTE: For older versions of Firefox such as 46.0 and earlier, you don't need Geckodriver. The older driver comes prepackaged with Selenium.)
+
 Mac:
 
 * On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md).
