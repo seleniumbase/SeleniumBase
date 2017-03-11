@@ -39,4 +39,8 @@ Example:
 ```bash
 nosetests my_first_test.py --with-selenium --with-db_reporting
 ```
-Note: Few challenges noted during installation of mysql-python using pip, You can also download unofficial ``.whl`` format of MySQL-Python and Mysqlclient from [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python).
+Note: Few challenges noted during installation of mysql-python using pip, You can also try following steps to install from alternative source:
+* download unofficial ``.whl`` format of MySQL-Python and Mysqlclient from [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python).
+* open a console then cd to where you've downloaded your file
+* run the command ``pip install filename.whl``
+* In a scenario of pip.exe is not recognized, you may find it in the "Scripts" directory from where python has been installed
