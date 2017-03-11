@@ -20,9 +20,9 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 
 ### Part I: Setup Instructions for Mac, Ubuntu, and Windows
 
-(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)
+*(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)*
 
-(**Docker users**: See the [Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md) for running on a Docker machine.)
+*(**Docker users**: See the [Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md) to setup your Docker machine.)*
 
 
 #### **Step 0a:** Setup your Python/pip environment:
