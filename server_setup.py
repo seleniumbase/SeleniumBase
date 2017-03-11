@@ -8,7 +8,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.3.2',
+    version='1.3.3',
     description='Reliable Browser Automation',
     long_description='Reliable Browser Automation',
     platforms='All',
