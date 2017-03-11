@@ -15,7 +15,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
 script:
   - "firefox --version"
-  - "nosetests examples/my_first_test.py --with-selenium --browser=firefox"
+  - "nosetests examples/my_first_test.py --with-selenium --browser=firefox -s"
 env:
   matrix:
   - BROWSER=firefox
