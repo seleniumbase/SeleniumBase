@@ -73,17 +73,6 @@ RUN apt-get -qy --no-install-recommends install \
   && ln -s /opt/firefox/firefox /usr/bin/firefox \
   && rm -f /tmp/firefox-esr.tar.bz2
 
-#======================================
-# Install Geckodriver / Firefox Driver
-#======================================
-RUN export BASE_URL=https://github.com/mozilla/geckodriver/releases/download \
-  && export VERSION=$(curl -sL \
-    https://api.github.com/repos/mozilla/geckodriver/releases/latest | \
-    grep tag_name | cut -d '"' -f 4) \
-  && curl -sL \
-  $BASE_URL/$VERSION/geckodriver-$VERSION-linux64.tar.gz | tar -xz \
-&& mv geckodriver /usr/local/bin/geckodriver
-
 #===================
 # Install PhantomJS
 #===================
@@ -107,12 +96,12 @@ RUN exec "$@"
 #=====================
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
-COPY docker_requirements.txt /SeleniumBase/docker_requirements.txt
-COPY server_setup.py /SeleniumBase/server_setup.py
+COPY requirements.txt /SeleniumBase/requirements.txt
+COPY setup.py /SeleniumBase/setup.py
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
-RUN cd /SeleniumBase && ls && pip install -r docker_requirements.txt
-RUN cd /SeleniumBase && python server_setup.py install
+RUN cd /SeleniumBase && ls && pip install -r requirements.txt
+RUN cd /SeleniumBase && python setup.py install
 
 #==========================================
 # Create entrypoint and grab example tests
