@@ -3,6 +3,7 @@ The setup package to install SeleniumBase dependencies and plugins
 """
 
 from setuptools import setup, find_packages  # noqa
+import os
 
 setup(
     name='seleniumbase',
@@ -52,3 +53,5 @@ setup(
             ]
         }
     )
+print("Installation Complete!")
+print(os.system("cat SeleniumBase.egg-info/PKG-INFO"))
