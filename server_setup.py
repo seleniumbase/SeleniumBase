@@ -8,10 +8,10 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.3.2',
+    version='1.3.3',
     description='Reliable Browser Automation',
-    long_description='Reliable Browser Automation',
-    platforms='All',
+    long_description='Reliable Browser Automation for Testing and More',
+    platforms='Mac * Windows * Linux * Docker',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',
@@ -57,5 +57,5 @@ setup(
         }
     )
 
-print(os.system("cat SeleniumBase.egg-info/PKG-INFO"))
+print(os.system("cat seleniumbase.egg-info/PKG-INFO"))
 print("\n*** SeleniumBase Installation Complete! ***\n")
