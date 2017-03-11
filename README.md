@@ -49,7 +49,7 @@ To run automation on various web browsers, you'll need to download a driver file
 
 * For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System Path.
 
-* In case you do not have access rights to update system variables, You can use  [Anaconda Version of Python 2](https://www.continuum.io/downloads) which is an opensource, All web drivers can be placed under ``Anaconda Installation path/Scripts/`` e.g: ``Anaconda2\Scripts\``
+* In case you do not have access rights to update system variables, You can use  [Anaconda Version of Python 2](https://www.continuum.io/downloads) which is opensource, All web drivers can be placed under ``Anaconda Installation path/Scripts/`` e.g: ``Anaconda2\Scripts\``
 
 
 Mac:
