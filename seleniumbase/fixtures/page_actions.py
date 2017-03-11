@@ -24,12 +24,13 @@ import os
 import sys
 import time
 import traceback
-from seleniumbase.config import settings
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
 from selenium.webdriver.remote.errorhandler import NoSuchElementException
 from selenium.webdriver.remote.errorhandler import NoAlertPresentException
+from seleniumbase.config import settings
 
 
 def is_element_present(driver, selector, by=By.CSS_SELECTOR):
@@ -388,7 +389,12 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        ready_state = driver.execute_script("return document.readyState")
+        try:
+            ready_state = driver.execute_script("return document.readyState")
+        except WebDriverException:
+            # Bug fix for: [Permission denied to access property "document"]
+            time.sleep(0.03)
+            return
         if ready_state == u'complete':
             time.sleep(0.01)  # Better be sure everything is done loading
             return True
