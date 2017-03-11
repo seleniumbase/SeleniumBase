@@ -176,6 +176,7 @@ class BaseCase(unittest.TestCase):
 
     def get_text(self, selector, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
+        self.wait_for_ready_state_complete()
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
         try:
@@ -190,6 +191,7 @@ class BaseCase(unittest.TestCase):
 
     def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
+        self.wait_for_ready_state_complete()
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
         try:
@@ -323,10 +325,12 @@ class BaseCase(unittest.TestCase):
         return page_actions.is_element_visible(self.driver, selector, by)
 
     def is_link_text_visible(self, link_text):
+        self.wait_for_ready_state_complete()
         return page_actions.is_element_visible(self.driver, link_text,
                                                by=By.LINK_TEXT)
 
     def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
+        self.wait_for_ready_state_complete()
         if selector.startswith('/') or selector.startswith('./'):
             by = By.XPATH
         return page_actions.is_text_visible(self.driver, text, selector, by)
