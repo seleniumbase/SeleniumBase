@@ -51,8 +51,7 @@ To run automation on various web browsers, you'll need to download a driver file
 
 (NOTE: For older versions of Firefox such as 46.0 and earlier, you don't need Geckodriver. The older driver comes prepackaged with Selenium.)
 
-* In case you do not have access rights to update system variables, You can use  [Anaconda Version of Python 2](https://www.continuum.io/downloads) which is opensource, All web drivers can be placed under ``Anaconda Installation path/Scripts/`` e.g: ``Anaconda2\Scripts\``
-
+(NOTE: If you don't have access rights to update system variables, you can use the [Anaconda Version of Python 2](https://www.continuum.io/downloads). In that case, place web drivers in ``Anaconda_Installation_Path/Scripts/``)
 
 Mac:
 
