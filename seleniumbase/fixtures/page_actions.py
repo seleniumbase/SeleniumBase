@@ -394,7 +394,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
         except WebDriverException:
             # Bug fix for: [Permission denied to access property "document"]
             time.sleep(0.03)
-            return
+            return True
         if ready_state == u'complete':
             time.sleep(0.01)  # Better be sure everything is done loading
             return True
