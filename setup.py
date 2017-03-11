@@ -3,7 +3,7 @@ The setup package to install SeleniumBase dependencies and plugins
 """
 
 from setuptools import setup, find_packages  # noqa
-import os  # noqa
+import os
 
 setup(
     name='seleniumbase',
