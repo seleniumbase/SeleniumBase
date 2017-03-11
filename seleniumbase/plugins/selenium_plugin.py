@@ -174,6 +174,8 @@ class SeleniumBrowser(Plugin):
     def afterTest(self, test):
         try:
             self.driver.quit()
+        except AttributeError:
+            pass
         except:
             print("No driver to quit.")
         if self.options.headless:
