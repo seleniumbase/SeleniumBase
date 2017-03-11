@@ -1,13 +1,13 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-Uses the older Selenium 2.53.6 for compatibility reasons
+(Uses the older Selenium 2.53.6 for compatibility reasons)
 """
 
 from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.3.0',
+    version='1.3.1',
     url='http://seleniumbase.com',
     author='Michael Mintz',
     author_email='@mintzworld',

@@ -1,7 +1,8 @@
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 def get_driver(browser_name):
@@ -33,8 +34,17 @@ def get_driver(browser_name):
                  "text/csv, text/xml, application/xml, text/plain, "
                  "text/octet-stream"))
             firefox_capabilities = DesiredCapabilities.FIREFOX
-            return webdriver.Firefox(
-                firefox_profile=profile, capabilities=firefox_capabilities)
+            try:
+                # Use Geckodriver for Firefox if it's on the PATH
+                firefox_capabilities['marionette'] = True
+                firefox_driver = webdriver.Firefox(
+                    firefox_profile=profile, capabilities=firefox_capabilities)
+            except WebDriverException:
+                # Don't use Geckodriver: Only works for old versions of Firefox
+                firefox_capabilities['marionette'] = False
+                firefox_driver = webdriver.Firefox(
+                    firefox_profile=profile, capabilities=firefox_capabilities)
+            return firefox_driver
         except:
             return webdriver.Firefox()
     if browser_name == constants.Browser.INTERNET_EXPLORER:
