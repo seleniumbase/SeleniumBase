@@ -39,3 +39,4 @@ Example:
 ```bash
 nosetests my_first_test.py --with-selenium --with-db_reporting
 ```
+Note: Few challenges noted during installation of mysql-python using pip, You can also download unofficial ``.whl`` format of MySQL-Python and Mysqlclient from [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python).
