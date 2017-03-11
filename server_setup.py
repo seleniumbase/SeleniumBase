@@ -57,5 +57,5 @@ setup(
         }
     )
 
-print(os.system("cat SeleniumBase.egg-info/PKG-INFO"))
+print(os.system("cat seleniumbase.egg-info/PKG-INFO"))
 print("\n*** SeleniumBase Installation Complete! ***\n")
