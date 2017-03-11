@@ -52,3 +52,4 @@ setup(
             ]
         }
     )
+print("Finished Installing SeleniumBase!")
