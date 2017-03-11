@@ -49,6 +49,9 @@ To run automation on various web browsers, you'll need to download a driver file
 
 * For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System Path.
 
+* In case you do not have access rights to update system variables, You can use  [Anaconda Version of Python 2](https://www.continuum.io/downloads) which is an opensource, All web drivers can be placed under ``Anaconda Installation path/Scripts/`` e.g: ``Anaconda2\Scripts\``
+
+
 Mac:
 
 * On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md).
