@@ -2,13 +2,11 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Web Automation Made Simple and Reliable**
+**Web Automation Made Simple & Reliable**
 
-(SeleniumBase also includes [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md), which is an automated/manual hybrid solution for speeding up manual testing.)
+(Below: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
-
-(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
 
 #### Features include:
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
@@ -17,6 +15,8 @@
 * Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+
+SeleniumBase includes **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, an automated/manual hybrid solution for speeding up manual testing.
 
 ### Part I: Setup Instructions for Mac, Ubuntu, and Windows
 
