@@ -8,8 +8,8 @@ from setuptools import setup, find_packages  # noqa
 setup(
     name='seleniumbase',
     version='1.3.3',
-    description='Reliable Browser Automation',
-    long_description='Reliable Browser Automation for Testing and More',
+    description='Web Automation Made Simple and Reliable',
+    long_description='Automation Framework for Reliable Web Testing',
     platforms='Mac * Windows * Linux * Docker',
     url='http://seleniumbase.com',
     author='Michael Mintz',
