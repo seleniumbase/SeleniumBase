@@ -19,7 +19,7 @@ setup(
     license='The MIT License',
     install_requires=[
         'pip>=9.0.1',
-        'setuptools>=34.3.1',
+        'setuptools>=34.3.2',
         'selenium==2.53.6',
         'nose>=1.3.7',
         'pytest>=3.0.6',
