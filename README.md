@@ -4,11 +4,12 @@
 
 **Web Automation Made Simple & Reliable**
 
-(Below: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
-
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
+(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in Demo Mode, which automatically highlights page elements being acted on.)
+
 #### Features include:
+* A fully-functional test framework for running GUI tests with Python's nosetests and pytest.
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
 * [A flexible CLI](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) for customizing your test runs from the command line.
@@ -153,8 +154,7 @@ assert(TEXT_SEGMENT in text)
 self.assert_text(TEXT_SEGMENT, CSS_SELECTOR)
 ```
 
-If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
-You can add ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action:
+If the example test is moving too fast for your eyes to see what's going on, you can run it in Demo Mode by adding ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action, and highlights the element being acted on:
 
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
