@@ -10,7 +10,7 @@ python gui_test_runner.py
 
 (NOTE: With the exception of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), which should pass, many other tests in this folder fail on purpose to demonstrate features such as screenshots on failure, exception logging, and test reports.)
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/GUI_Test_Runner_4.png "GUI Test Runner")
+![](http://cdn2.hubspot.net/hubfs/100006/images/GUI_Test_Runner_5.png "GUI Test Runner")
 
 If you run scripts with logging enabled, (using ``--with-testing_base``), you’ll see two folders appear: “latest_logs” and “archived_logs”. The “latest_logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “latest_logs” folder will get pushed to the “archived_logs” folder if you have have the ``ARCHIVE_EXISTING_LOGS`` feature enabled in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). Make sure to run ``python setup.py install`` for your changes to take effect if you make any changes to that file.
 
