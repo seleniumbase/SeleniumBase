@@ -91,7 +91,7 @@ pip install seleniumbase --upgrade
 You can also customize your local version of SeleniumBase. If you change the Python requirements or make any changes to the SeleniumBase library files, just run the following commands from the SeleniumBase top-level directory for your changes to take effect:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt --upgrade
 ```
 
 ```bash
