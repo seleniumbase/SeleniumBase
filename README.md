@@ -8,7 +8,7 @@
 
 (Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in Demo Mode, which automatically highlights page elements being acted on.)
 
-#### Features include:
+#### **Features include:**
 * A fully-functional test framework for running GUI tests with Python's nosetests and pytest.
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
@@ -20,7 +20,7 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 
 SeleniumBase also includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing.
 
-### Part I: Setup Instructions for Mac, Ubuntu, and Windows
+### **Part I: Setup Instructions for Mac, Ubuntu, and Windows**
 
 *(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)*
 
