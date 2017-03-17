@@ -2,23 +2,25 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Web Automation Platform for Testing and More**
-
-(And the power to [speed up manual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md))
+**Web Automation Made Simple & Reliable**
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
-(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
+(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in Demo Mode, which automatically highlights page elements being acted on.)
 
-#### Features include:
+#### **Features include:**
+* A complete test framework for running GUI tests with Python's nosetests and pytest.
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
+* A flexible command line interface [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) and [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) for customizing test runs.
+* [A global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for making SeleniumBase unique to your specific test environment.
 * Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
-* Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) and a [global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-### Part I: Setup Instructions for Mac, Ubuntu, and Windows
+SeleniumBase also includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing.
+
+### **Part I: Setup Instructions for Mac, Ubuntu, and Windows**
 
 *(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)*
 
@@ -89,7 +91,7 @@ pip install seleniumbase --upgrade
 You can also customize your local version of SeleniumBase. If you change the Python requirements or make any changes to the SeleniumBase library files, just run the following commands from the SeleniumBase top-level directory for your changes to take effect:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt --upgrade
 ```
 
 ```bash
@@ -152,8 +154,7 @@ assert(TEXT_SEGMENT in text)
 self.assert_text(TEXT_SEGMENT, CSS_SELECTOR)
 ```
 
-If the example is moving too fast for your eyes to see what's going on, there are a few things you can do.
-You can add ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action:
+If the example test is moving too fast for your eyes to see what's going on, you can run it in Demo Mode by adding ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action, and highlights the element being acted on:
 
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
