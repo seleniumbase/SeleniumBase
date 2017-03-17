@@ -132,33 +132,28 @@ def build_report(report_log_path, page_results_list,
     failures_count = len(failures)
     total_test_count = successes_count + failures_count
 
-    tf_color = "#11BB11"
-    if failures_count > 0:
-        tf_color = "#EE3A3A"
-
-    summary_table = '''<div><table><thead><tr>
-        <th>TESTING SUMMARY</th>
-        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-        </tr></thead><tbody>
-        <tr style="color:#00BB00"><td>TESTS PASSING: <td>%s</tr>
-        <tr style="color:%s"     ><td>TESTS FAILING: <td>%s</tr>
-        <tr style="color:#4D4DDD"><td>TOTAL TESTS: <td>%s</tr>
-        </tbody></table>''' % (successes_count,
-                               tf_color,
-                               failures_count,
-                               total_test_count)
-
-    summary_table = '''<h1 id="ContextHeader" class="sectionHeader" title="">
-        %s</h1>''' % summary_table
+    summary_table = """<body>
+        <div class="header">TESTING SUMMARY</div>
+        <h1 id="ContextHeader" class="sectionHeader" title="">
+        <div>
+        <div style="margin-top: 60px;">
+          <div class="summary">
+              <div class="summart-report-passed"><span style="display: block;">TESTS PASSED</span><span class="summart-report-header">%s</span></div>
+              <div class="summart-report-failed"><span style="display: block;">TESTS FAILED</span><span class="summart-report-header">%s</span></div>
+              <div class="summart-report-total"><span class="summart-report-header">TOTAL TESTS</span><span style="display: block;">%s</span></div>
+          </div>
+        </div>
+        </h1>""" % (successes_count, failures_count,total_test_count)
 
     log_link_shown = '../%s%s/' % (
         ARCHIVE_DIR, web_log_path.split(ARCHIVE_DIR)[1])
     csv_link = '%s/%s' % (web_log_path, RESULTS_TABLE)
     csv_link_shown = '%s' % RESULTS_TABLE
-    log_table = '''<p><p><p><p><h2><table><tbody>
-        <tr><td>LOG FILES LINK:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>
-        <tr><td>RESULTS TABLE:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>
-        </tbody></table></h2><p><p><p><p>''' % (
+    log_table = '''
+    <h2><table><tbody>
+        <tr><td class="log-result">LOG FILES LINK:&nbsp;&nbsp;<td class="log-result-op" style="border-top: 0px;"><a href="%s">%s</a></tr>
+        <tr><td class="log-result">RESULTS TABLE:&nbsp;&nbsp;<td class="log-result-op"><a href="%s">%s</a></tr>
+        </tbody></table></h2>''' % (
         web_log_path, log_link_shown, csv_link, csv_link_shown)
 
     failure_table = '<h2><table><tbody></div>'
@@ -223,6 +218,7 @@ def build_report(report_log_path, page_results_list,
             browser = webdriver.Chrome()
         else:
             browser = webdriver.Firefox()
+        browser.maximize_window()
         browser.get("file://%s" % archived_results_file)
         print("\n*** Close the html report window to continue. ***")
         while len(browser.window_handles):
