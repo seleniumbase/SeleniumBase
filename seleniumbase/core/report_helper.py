@@ -138,12 +138,22 @@ def build_report(report_log_path, page_results_list,
         <div>
         <div style="margin-top: 60px;">
           <div class="summary">
-              <div class="summart-report-passed"><span style="display: block;">TESTS PASSED</span><span class="summart-report-header">%s</span></div>
-              <div class="summart-report-failed"><span style="display: block;">TESTS FAILED</span><span class="summart-report-header">%s</span></div>
-              <div class="summart-report-total"><span class="summart-report-header">TOTAL TESTS</span><span style="display: block;">%s</span></div>
+              <div class="summart-report-passed">
+                 <span style="display: block;">TESTS PASSED
+                 </span><span class="summart-report-header">%s
+                 </span></div>
+              <div class="summart-report-failed">
+              <span style="display: block;">TESTS FAILED
+              </span>
+              <span class="summart-report-header">%s
+              </span></div>
+              <div class="summart-report-total">
+              <span class="summart-report-header">TOTAL TESTS
+              </span>
+              <span style="display: block;">%s</span></div>
           </div>
         </div>
-        </h1>""" % (successes_count, failures_count,total_test_count)
+        </h1>""" % (successes_count, failures_count, total_test_count)
 
     log_link_shown = '../%s%s/' % (
         ARCHIVE_DIR, web_log_path.split(ARCHIVE_DIR)[1])
@@ -151,8 +161,11 @@ def build_report(report_log_path, page_results_list,
     csv_link_shown = '%s' % RESULTS_TABLE
     log_table = '''
     <h2><table><tbody>
-        <tr><td class="log-result">LOG FILES LINK:&nbsp;&nbsp;<td class="log-result-op" style="border-top: 0px;"><a href="%s">%s</a></tr>
-        <tr><td class="log-result">RESULTS TABLE:&nbsp;&nbsp;<td class="log-result-op"><a href="%s">%s</a></tr>
+        <tr><td class="log-result">LOG FILES LINK:&nbsp;&nbsp;
+        <td class="log-result-op" style="border-top: 0px;">
+        <a href="%s">%s</a></tr>
+        <tr><td class="log-result">RESULTS TABLE:&nbsp;&nbsp;
+        <td class="log-result-op"><a href="%s">%s</a></tr>
         </tbody></table></h2>''' % (
         web_log_path, log_link_shown, csv_link, csv_link_shown)
 
