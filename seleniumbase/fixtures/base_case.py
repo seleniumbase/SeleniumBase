@@ -210,6 +210,18 @@ class BaseCase(unittest.TestCase):
             raise Exception("Element [%s] has no attribute [%s]!" % (
                 selector, attribute))
 
+    def get_current_url(self):
+        return self.driver.current_url
+
+    def get_page_source(self):
+        return self.driver.page_source
+
+    def get_image_url(self, selector, by=By.CSS_SELECTOR,
+                      timeout=settings.SMALL_TIMEOUT):
+        """ Extracts the URL from an image element on the page. """
+        return self.get_attribute(selector,
+                                  attribute='src', by=by, timeout=timeout)
+
     def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
