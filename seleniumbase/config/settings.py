@@ -44,6 +44,7 @@ PAGE_SOURCE_NAME = "page_source.html"
 
 # Default names for folders and files saved when reports are turned on.
 # Usage: "--report" (Also requires: "--with-testing_base")
+# These settings are also used with MasterQA
 LATEST_REPORT_DIR = "latest_report"
 REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"

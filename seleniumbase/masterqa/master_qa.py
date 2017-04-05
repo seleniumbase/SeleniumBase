@@ -8,10 +8,10 @@ from seleniumbase import BaseCase
 from seleniumbase.core.style_sheet import style
 from seleniumbase.config import settings
 
-LATEST_REPORT_DIR = "latest_report"
-ARCHIVE_DIR = "report_archives"
-RESULTS_PAGE = "results.html"
-BAD_PAGE_LOG = "results_table.csv"
+LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
+ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
+RESULTS_PAGE = settings.HTML_REPORT
+BAD_PAGE_LOG = settings.RESULTS_TABLE
 DEFAULT_VALIDATION_MESSAGE = settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE
 WAIT_TIME_BEFORE_VERIFY = settings.MASTERQA_WAIT_TIME_BEFORE_VERIFY
 START_IN_FULL_SCREEN_MODE = settings.MASTERQA_START_IN_FULL_SCREEN_MODE
