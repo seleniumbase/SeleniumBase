@@ -23,6 +23,12 @@ self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
+self.get_current_url()
+
+self.get_page_source()
+
+self.get_image_url(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
 self.add_text(selector, new_value, timeout=settings.SMALL_TIMEOUT)
 
 self.send_keys(selector, new_value, timeout=settings.SMALL_TIMEOUT)
@@ -87,6 +93,15 @@ self.hover_on_element(selector)
 self.hover_and_click(hover_selector, click_selector,
     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
+
+self.pick_select_option_by_text(dropdown_selector, option,
+    dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
+self.pick_select_option_by_index(dropdown_selector, option,
+    dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
+self.pick_select_option_by_value(dropdown_selector, option,
+    dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
