@@ -8,10 +8,10 @@ from seleniumbase import BaseCase
 from seleniumbase.core.style_sheet import style
 from seleniumbase.config import settings
 
-LATEST_REPORT_DIR = "latest_report"
-ARCHIVE_DIR = "report_archives"
-RESULTS_PAGE = "results.html"
-BAD_PAGE_LOG = "results_table.csv"
+LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
+ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
+RESULTS_PAGE = settings.HTML_REPORT
+BAD_PAGE_LOG = settings.RESULTS_TABLE
 DEFAULT_VALIDATION_MESSAGE = settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE
 WAIT_TIME_BEFORE_VERIFY = settings.MASTERQA_WAIT_TIME_BEFORE_VERIFY
 START_IN_FULL_SCREEN_MODE = settings.MASTERQA_START_IN_FULL_SCREEN_MODE
@@ -263,13 +263,17 @@ class __MasterQATestCase__(BaseCase):
             if line[1] == '"FAILED!"' or line[1] == '"ERROR!"':
                 if not any_screenshots:
                     any_screenshots = True
-                    failure_table += '''<thead><tr><th>SCREENSHOT FILE
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </th><th>LOCATION OF FAILURE</th></tr></thead>'''
+                    failure_table += '''<thead><tr>
+                        <th>SCREENSHOT FILE&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th>LOCATION OF FAILURE</th>
+                        </tr></thead>'''
+                display_url = line[3]
+                if len(display_url) > 60:
+                    display_url = display_url[0:58] + '...'
                 line = '<a href="%s">%s</a>' % (
                     "file://" + log_path + '/' + line[2], line[2]) + '''
-                    &nbsp;&nbsp;<td>
-                    ''' + '<a href="%s">%s</a>' % (line[3], line[3])
+                    &nbsp;&nbsp;&nbsp;&nbsp;<td>
+                    ''' + '<a href="%s">%s</a>' % (line[3], display_url)
                 line = line.replace('"', '')
                 failure_table += '<tr><td>%s</tr>\n' % line
         failure_table += '</tbody></table>'

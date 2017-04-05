@@ -32,6 +32,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver import ActionChains
 
 
@@ -209,6 +210,18 @@ class BaseCase(unittest.TestCase):
         else:
             raise Exception("Element [%s] has no attribute [%s]!" % (
                 selector, attribute))
+
+    def get_current_url(self):
+        return self.driver.current_url
+
+    def get_page_source(self):
+        return self.driver.page_source
+
+    def get_image_url(self, selector, by=By.CSS_SELECTOR,
+                      timeout=settings.SMALL_TIMEOUT):
+        """ Extracts the URL from an image element on the page. """
+        return self.get_attribute(selector,
+                                  attribute='src', by=by, timeout=timeout)
 
     def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
@@ -645,6 +658,30 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active(tiny=True)
         return element
 
+    def pick_select_option_by_text(self, dropdown_selector, option,
+                                   dropdown_by=By.CSS_SELECTOR,
+                                   timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by option text. """
+        self._pick_select_option(dropdown_selector, option,
+                                 dropdown_by=dropdown_by, option_by="text",
+                                 timeout=timeout)
+
+    def pick_select_option_by_index(self, dropdown_selector, option,
+                                    dropdown_by=By.CSS_SELECTOR,
+                                    timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by option index. """
+        self._pick_select_option(dropdown_selector, option,
+                                 dropdown_by=dropdown_by, option_by="index",
+                                 timeout=timeout)
+
+    def pick_select_option_by_value(self, dropdown_selector, option,
+                                    dropdown_by=By.CSS_SELECTOR,
+                                    timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by option value. """
+        self._pick_select_option(dropdown_selector, option,
+                                 dropdown_by=dropdown_by, option_by="value",
+                                 timeout=timeout)
+
     ############
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
@@ -877,6 +914,44 @@ class BaseCase(unittest.TestCase):
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             raise Exception(exception_output)
+
+    ############
+
+    def _pick_select_option(self, dropdown_selector, option,
+                            dropdown_by=By.CSS_SELECTOR, option_by="text",
+                            timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by specification.
+            Option specifications are by "text", "index", or "value".
+            Defaults to "text" if option_by is unspecified or unknown. """
+        element = self.find_element(
+            dropdown_selector, by=dropdown_by, timeout=timeout)
+        self._demo_mode_highlight_if_active(dropdown_selector, dropdown_by)
+        pre_action_url = self.driver.current_url
+        try:
+            if option_by == "index":
+                Select(element).select_by_index(option)
+            elif option_by == "value":
+                Select(element).select_by_value(option)
+            else:
+                Select(element).select_by_visible_text(option)
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.find_element(
+                dropdown_selector, by=dropdown_by, timeout=timeout)
+            if option_by == "index":
+                Select(element).select_by_index(option)
+            elif option_by == "value":
+                Select(element).select_by_value(option)
+            else:
+                Select(element).select_by_visible_text(option)
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
 
     ############
 
