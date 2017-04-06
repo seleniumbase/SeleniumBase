@@ -174,6 +174,12 @@ self.wait_for_and_dismiss_alert(timeout=settings.LARGE_TIMEOUT)
 
 self.wait_for_and_switch_to_alert(timeout=settings.LARGE_TIMEOUT)
 
+self.switch_to_frame(frame, timeout=settings.SMALL_TIMEOUT)
+
+self.switch_to_window(window, timeout=settings.SMALL_TIMEOUT)
+
+self.switch_to_default_content()
+
 self.save_screenshot(name, folder=None)
 
 ########
