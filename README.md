@@ -160,7 +160,7 @@ nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
 
 <a id="seleniumbase_demo_mode"></a>
-If the example test is moving too fast for your eyes to see what's going on, you can run it in Demo Mode by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
+If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
