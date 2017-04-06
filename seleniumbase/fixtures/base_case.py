@@ -846,6 +846,15 @@ class BaseCase(unittest.TestCase):
     def wait_for_and_switch_to_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
 
+    def switch_to_frame(self, frame, timeout=settings.SMALL_TIMEOUT):
+        page_actions.switch_to_frame(self.driver, frame, timeout)
+
+    def switch_to_window(self, window, timeout=settings.SMALL_TIMEOUT):
+        page_actions.switch_to_window(self.driver, window, timeout)
+
+    def switch_to_default_content(self):
+        self.driver.switch_to.default_content()
+
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
 
