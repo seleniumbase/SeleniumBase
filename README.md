@@ -10,9 +10,9 @@
 
 **Table of Contents / Quick Navigation:**
 > * [Feature List](#feature_list)
-> * [Install Dependencies & Drivers](#dependency_installation)
+> * [Dependency Setup](#dependency_installation)
 > * [Install SeleniumBase](#seleniumbase_installation)
-> * [Basic Usage](#seleniumbase_basic_usage)
+> * [Basic Usage & Examples](#seleniumbase_basic_usage)
 > * [Utilize Advanced Features](#utilizing_advanced_features)
 > * [Method Specifications](#detailed_method_specifications)
 
