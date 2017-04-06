@@ -113,11 +113,10 @@ python setup.py install
 If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md).
 
 
-#### **Step 4:** Verify that SeleniumBase was successfully installed by running the example test
+<a id="seleniumbase_basic_usage"></a>
+#### **Step 4:** Verify SeleniumBase installation by running the example script
 
-You can verify the installation of SeleniumBase by running a simple script to perform basic actions such as navigating to a web page, clicking, waiting for page elements to appear, typing in text, scraping text on a page, and verifying text. In most web browsers, you can right-click on a page and select "Inspect Element" to see the CSS selector details that you need to create such a script. With CSS selectors, dots represent class names and pound signs represent IDs.
-
-Here's what the code looks like from the first example script that you'll be running:
+##### **Here's what the example script looks like:**
 
 ```python
 from seleniumbase import BaseCase
@@ -143,8 +142,8 @@ class MyTestClass(BaseCase):
         self.assert_text('Automation', 'div#ctitle')
 ```
 
-<a id="seleniumbase_basic_usage"></a>
-Here's how to run the example script on various web browsers:
+##### **Here's how to run the example script on various web browsers:**
+
 (NOTE: You can interchange **nosetests** with **py.test** [as seen here](#pytest_basic_usage).)
 
 ```bash
@@ -323,6 +322,8 @@ To click an element on the page:
 ```python
 self.click("div#my_id")
 ```
+
+**ProTip™:** In most web browsers, you can right-click on a page and select ``Inspect Element`` to see the CSS selector details that you'll need to create your own scripts.
 
 #### Typing Text
 
