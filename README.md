@@ -18,8 +18,8 @@
 
 
 <a id="feature_list"></a>
-#### **Features include:**
-* A complete test framework for running GUI tests with Python's nosetests and pytest.
+### **SeleniumBase Features:**
+* A complete test framework for running GUI tests with Python's ``nosetests`` and ``py.test``.
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
 * A flexible command line interface [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) and [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) for customizing test runs.
