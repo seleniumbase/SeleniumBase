@@ -60,21 +60,21 @@ class MyTestClass(BaseCase):
         #
         # 3. There's usually more than one way to do the same thing. Ex:
         #    [
-        #        xkcd_license = self.get_text('center')
-        #        assert('reuse any of my drawings' in xkcd_license)
+        #        header_text = self.get_text('header h2')
+        #        self.assertTrue('The blag of the webcomic' in header_text)
         #    ]
         #    Can be simplified to:
         #    [
-        #        self.assert_text('reuse any of my drawings', 'center')
+        #        self.assert_text('The blag of the webcomic', 'header_text')
         #    ]
         #
         #    And the following line:
         #    [
-        #        xkcd_license = self.get_text('center')
+        #        header_text = self.get_text('header h2')
         #    ]
         #    Can also be written as:
         #    [
-        #        xkcd_license = self.find_element('center').text
+        #        header_text = self.find_element('header h2').text
         #    ]
         #    ...and in many more ways!
         #

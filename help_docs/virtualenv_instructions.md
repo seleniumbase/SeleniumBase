@@ -1,6 +1,10 @@
 ### Virtual Environment Setup Instructions
 
-Mac: (If you're using ``virtualenv``):
+* If you haven't yet installed ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions first](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
+
+MAC:
+
+(If using ``virtualenv``):
 
 ```bash
 mkdir -p ~/Envs
@@ -8,13 +12,13 @@ virtualenv ~/Envs/seleniumbase
 source ~/Envs/seleniumbase/bin/activate
 ```
 
-Mac: (If you're using ``virtualenvwrapper``):
+(If using ``virtualenvwrapper``):
 
 ```bash
 mkvirtualenv seleniumbase
 ```
 
-Windows: (Just use ``virtualenvwrapper``)
+WINDOWS:
 
 ```bash
 mkvirtualenv seleniumbase
@@ -26,14 +30,14 @@ If you ever need to leave your virtual environment, use the following command:
 deactivate
 ```
 
-You can always jump back in later:
+You can always jump back into your virtual environment later:
 
-(If you're using ``virtualenv``):
+(If using ``virtualenv``):
 ```bash
 source ~/Envs/seleniumbase/bin/activate
 ```
 
-(If you're using ``virtualenvwrapper``):
+(If using ``virtualenvwrapper``):
 ```bash
 workon seleniumbase
 ```

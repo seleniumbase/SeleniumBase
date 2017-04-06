@@ -8,6 +8,16 @@
 
 (Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in Demo Mode, which automatically highlights page elements being acted on.)
 
+> **Table of Contents / Quick Navigation:**
+>> * [Feature List](#feature_list)
+>> * [Install Dependencies & Drivers](#dependency_installation)
+>> * [Install SeleniumBase](#seleniumbase_installation)
+>> * [Basic Usage](#seleniumbase_basic_usage)
+>> * [Utilize Advanced Features](#utilizing_advanced_features)
+>> * [Method Specifications](#detailed_method_specifications)
+
+
+<a id="feature_list"></a>
 #### **Features include:**
 * A complete test framework for running GUI tests with Python's nosetests and pytest.
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
@@ -27,6 +37,7 @@ SeleniumBase also includes an automated/manual hybrid solution called **[MasterQ
 *(**Docker users**: See the [Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md) to setup your Docker machine.)*
 
 
+<a id="dependency_installation"></a>
 #### **Step 0a:** Setup your Python/pip environment:
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
@@ -66,6 +77,7 @@ brew install chromedriver phantomjs
 * To verify that the web drivers are working, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
 
 
+<a id="seleniumbase_installation"></a>
 #### **Step 1:** Clone SeleniumBase to your local machine
 
 ```bash
@@ -131,7 +143,9 @@ class MyTestClass(BaseCase):
         self.assert_text('Automation', 'div#ctitle')
 ```
 
-Here's how to run the example script using various web browsers:
+<a id="seleniumbase_basic_usage"></a>
+Here's how to run the example script on various web browsers:
+(NOTE: You can interchange **nosetests** with **py.test** [as seen here](#pytest_basic_usage).)
 
 ```bash
 cd examples/
@@ -144,16 +158,6 @@ nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 ```
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
-
-NOTE: The following two lines of code can be simplified...
-``` python
-text = self.get_text(CSS_SELECTOR)
-assert(TEXT_SEGMENT in text)
-```
-...into this one line:
-``` python
-self.assert_text(TEXT_SEGMENT, CSS_SELECTOR)
-```
 
 If the example test is moving too fast for your eyes to see what's going on, you can run it in Demo Mode by adding ``--demo_mode`` on the command line, which pauses the browser for about a second (by default) after each action, and highlights the element being acted on:
 
@@ -197,9 +201,13 @@ Here are some other useful nosetest arguments that you may want to append to you
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
-Due to high demand, pytest support has been added. You can run the above sample script in pytest like this:
+
+<a id="pytest_basic_usage"></a>
+You can also run the example script with **py.test** like this:
 
 ```bash
+cd examples/
+
 py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
 
 py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
@@ -207,7 +215,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 ```
 
-(NOTE: If you're using pytest instead nosetests for running your own integration tests outside of the SeleniumBase file path, you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) inside your folder structure because the pytest configuration is defined there locally at runtime.)
+(NOTE: If you're using **pytest** instead nosetests for running your own integration tests outside of the SeleniumBase file path, **you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) inside your folder structure** because the pytest configuration is defined there locally at runtime.)
 
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
@@ -220,15 +228,17 @@ nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base 
 
 (NOTE: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes. You'll want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
 
-#### **Step 5:** Complete the setup
+
+<a id="utilizing_advanced_features"></a>
+#### **Step 5:** Complete the setup / Utilize advanced features
 
 If you're planning on using the full power of this test framework, there are a few more things you'll want to do:
 
 * Setup your [Jenkins](http://jenkins-ci.org/) build server for running your tests at regular intervals. (Or you can use any build server you want.)
 
-* Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance.)
-
 * Install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to make life easier by giving you a nice GUI tool that you can use to read & write from your DB directly.
+
+* Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance.)
 
 * Setup your Selenium Grid and update your *.cfg file to point there. An example config file called selenium_server_config_example.cfg has been provided for you in the integrations/selenium_grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
 
@@ -244,7 +254,7 @@ If you have Xvfb running in the background, you can add ``--headless`` to your r
 ```bash
 nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-db_reporting --with-s3_logging -s
 ```
-(NOTE: Don't use ``--with-db_reporting`` or ``--with-s3_logging`` if you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py))
+(NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
 When the testing_base plugin is used, if there's a test failure, the basic_test_info plugin records test logs, the page_source plugin records the page source of the last web page seen by the test, and the screen_shots plugin records the image of the last page seen by the test where the failure occurred. Make sure you always include testing_base whenever you include a plugin that logs test data. The db_reporting plugin records the status of all tests run into your MySQL DB. The s3_logging plugin uploads basic test info, screenshots, and page source into your S3 storage folder.
 
@@ -281,21 +291,20 @@ nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base -s
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
-Have you made it this far? Congratulations!!! Now you're ready to dive in at full speed!
 
+<a id="detailed_method_specifications"></a>
+### Part II: Detailed Method Specifications and Examples
 
-### Part II: Detailed Method Specifications, Examples
-
-#### Navigating to a Page, Plus Some Other Useful Related Commands
+#### Navigating to a web page (and related commands)
 
 ```python
-self.open("https://xkcd.com/378/")  # Instant navigation to any web page.
+self.open("https://xkcd.com/378/")  # This method opens the specified page.
 
-self.driver.refresh()  # refresh/reload the current page.
+self.driver.refresh()  # This method reloads the current page.
 
-where_am_i = self.driver.current_url  # this variable changes as the current page changes.
+self.driver.current_url  # This variable changes as the current page changes.
 
-source = self.driver.page_source   # this variable changes as the page source changes.
+self.driver.page_source  # This variable changes as the page source changes.
 ```
 
 **ProTip™:** You may need to use the page_source method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills if you're confused.)
