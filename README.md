@@ -117,7 +117,7 @@ If you wish to use the MySQL functionality with SeleniumBase to store test resul
 <a id="seleniumbase_basic_usage"></a>
 #### **Step 4:** Verify SeleniumBase installation by running the example script
 
-##### **Here's what the example script looks like:**
+**Here's what the example script looks like:**
 
 ```python
 from seleniumbase import BaseCase
@@ -143,7 +143,7 @@ class MyTestClass(BaseCase):
         self.assert_text('Automation', 'div#ctitle')
 ```
 
-##### **Here's how to run the example script on various web browsers:**
+**Here's how to run the example script on various web browsers:**
 
 (NOTE: You can interchange **nosetests** with **py.test** [as seen here](#pytest_basic_usage).)
 
