@@ -45,6 +45,7 @@ brew install git
 
 (WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/downloads).)
 
+<a id="virtual_environment"></a>
 ### [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
 
 (NOTE: Virtual environments allow each your Python projects to have a unique set of packaged dependencies.)

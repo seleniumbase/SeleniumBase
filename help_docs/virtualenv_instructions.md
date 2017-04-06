@@ -1,6 +1,6 @@
 ### Virtual Environment Setup Instructions
 
-* If you haven't yet installed ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions first](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
+* If you haven't yet installed ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions first](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md#virtual_environment)**.
 
 MAC:
 
