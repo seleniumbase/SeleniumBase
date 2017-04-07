@@ -12,8 +12,8 @@
 > * [Feature List](#feature_list)
 > * [Dependency Setup](#dependency_installation)
 > * [Install SeleniumBase](#seleniumbase_installation)
-> * [Basic Usage & Examples](#seleniumbase_basic_usage)
-> * [Utilize Advanced Features](#utilizing_advanced_features)
+> * [Basic Example & Usage](#seleniumbase_basic_usage)
+> * [Using Integrations](#utilizing_advanced_features)
 > * [Method Specifications](#detailed_method_specifications)
 
 
@@ -231,13 +231,13 @@ nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base 
 
 
 <a id="utilizing_advanced_features"></a>
-#### **Step 5:** Complete the setup / Utilize advanced features
+#### **Step 5:** Complete the setup / Use integrations
 
-If you're planning on using the full power of this test framework, there are a few more things you'll want to do:
+If you'd like to use the full power of SeleniumBase, there are a few more things you can do:
 
 * Setup your [Jenkins](http://jenkins-ci.org/) build server for running your tests at regular intervals. (Or you can use any build server you want.)
 
-* Install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to make life easier by giving you a nice GUI tool that you can use to read & write from your DB directly.
+* If you're using the SeleniumBase MySQL feature, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
 
 * Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance.)
 
