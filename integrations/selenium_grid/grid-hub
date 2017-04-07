@@ -31,21 +31,21 @@ fi
 
 case "$1" in
     start)
-        echo "Starting Selenium-WebDriver Grid2 hub..."
+        echo "Starting Selenium-WebDriver Grid hub..."
         if [ -f $WEBDRIVER_HUB_PIDFILE ]; then
-            echo "${FAIL_MSG} Selenium-WebDriver Grid2 hub already running with PID $(cat $WEBDRIVER_HUB_PIDFILE). Run 'grid-hub stop' or 'grid-hub restart'."
+            echo "${FAIL_MSG} Selenium-WebDriver Grid hub already running with PID $(cat $WEBDRIVER_HUB_PIDFILE). Run 'grid-hub stop' or 'grid-hub restart'."
             exit 1
         else
             START_HUB_CMD="java -Djava.util.logging.config.file=test/logging.properties -jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_HUB_PARAMS}"
             $START_HUB_CMD &
             PID=$!
             echo $PID > "${WEBDRIVER_HUB_PIDFILE}"
-            echo "${SUCCESS_MSG} Selenium-WebDriver Grid2 hub started successfully."
+            echo "${SUCCESS_MSG} Selenium-WebDriver Grid hub started successfully."
             echo "To see full log output, remove the java.util.logging.config.file parameter from script/grid-hub"
         fi
         ;;
     stop)
-        echo "Stopping Selenium-WebDriver Grid2 hub..."
+        echo "Stopping Selenium-WebDriver Grid hub..."
         if [ -f $WEBDRIVER_HUB_PIDFILE ]; then
             PID=$(cat $WEBDRIVER_HUB_PIDFILE)
             kill $PID
@@ -55,11 +55,11 @@ case "$1" in
                 echo "${FAIL_MSG} Tried to kill the hub with PID ${PID}, but was unsuccessful. You need to kill it with something stronger, like 'kill -9'"
                 exit 1
             else
-                echo "${SUCCESS_MSG} Selenium-WebDriver Grid2 hub stopped successfully."
+                echo "${SUCCESS_MSG} Selenium-WebDriver Grid hub stopped successfully."
                 exit 0
             fi
         else
-            echo "${SUCCESS_MSG} Selenium-WebDriver Grid2 hub has already been stopped."
+            echo "${SUCCESS_MSG} Selenium-WebDriver Grid hub has already been stopped."
             exit 0
         fi
         ;;
