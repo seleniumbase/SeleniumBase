@@ -31,21 +31,21 @@ fi
 
 case "$1" in
     start)
-        echo "Starting Selenium-WebDriver Grid2 node..."
+        echo "Starting Selenium-WebDriver Grid node..."
         if [ -f $WEBDRIVER_NODE_PIDFILE ]; then
-            echo "${FAIL_MSG} Selenium-WebDriver Grid2 node already running with PID $(cat $WEBDRIVER_NODE_PIDFILE). Run 'grid-node stop' or 'grid-node restart'."
+            echo "${FAIL_MSG} Selenium-WebDriver Grid node already running with PID $(cat $WEBDRIVER_NODE_PIDFILE). Run 'grid-node stop' or 'grid-node restart'."
             exit 1
         else
             START_NODE_CMD="java -Djava.util.logging.config.file=test/logging.properties -jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_NODE_PARAMS}"
             $START_NODE_CMD &
             PID=$!
             echo $PID > "${WEBDRIVER_NODE_PIDFILE}"
-            echo "${SUCCESS_MSG} Selenium-WebDriver Grid2 node started successfully."
+            echo "${SUCCESS_MSG} Selenium-WebDriver Grid node started successfully."
             echo "To see full log output, remove the java.util.logging.config.file parameter from script/grid-node"
         fi
         ;;
     stop)
-        echo "Stopping Selenium-WebDriver Grid2 node..."
+        echo "Stopping Selenium-WebDriver Grid node..."
         if [ -f $WEBDRIVER_NODE_PIDFILE ]; then
             PID=$(cat $WEBDRIVER_NODE_PIDFILE)
             kill $PID
@@ -55,11 +55,11 @@ case "$1" in
                 echo "${FAIL_MSG} Tried to kill the node with PID ${PID}, but was unsuccessful. You need to kill it with something stronger, like 'kill -9'"
                 exit 1
             else
-                echo "${SUCCESS_MSG} Selenium-WebDriver Grid2 node stopped successfully."
+                echo "${SUCCESS_MSG} Selenium-WebDriver Grid node stopped successfully."
                 exit 0
             fi
         else
-            echo "${SUCCESS_MSG} Selenium-WebDriver Grid2 node has already been stopped."
+            echo "${SUCCESS_MSG} Selenium-WebDriver Grid node has already been stopped."
             exit 0
         fi
         ;;
