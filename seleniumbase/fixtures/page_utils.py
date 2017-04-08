@@ -31,6 +31,17 @@ def get_domain_url(url):
     return domain_url
 
 
+def is_xpath_selector(selector):
+    """
+    A basic method to determine if a selector is an xpath selector.
+    """
+    if (selector.startswith('/') or
+            selector.startswith('./') or
+            selector.startswith('(')):
+        return True
+    return False
+
+
 def _download_file_to(file_url, destination_folder, new_file_name=None):
     if new_file_name:
         file_name = new_file_name
