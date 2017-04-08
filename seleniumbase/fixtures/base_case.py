@@ -1,7 +1,21 @@
 """
-These methods improve on and expand existing WebDriver commands.
-Improvements include making WebDriver commands more robust and more reliable
-by giving page elements enough time to load before taking action on them.
+BaseCase gathers SeleniumBase libraries into a single file for easy calling.
+Usage:
+
+    from seleniumbase import BaseCase
+    class MyTestClass(BaseCase):
+        test_anything(self):
+            # Write your code here. Example:
+            self.open("https://github.com/")
+            self.update_text("input.header-search-input", "SeleniumBase\n")
+            self.click('a[href="/seleniumbase/SeleniumBase"]')
+            self.assert_element("div.repository-content")
+            ....
+
+The methods here expand and improve existing WebDriver commands.
+Improvements include making WebDriver more robust and more reliable.
+Page elements are given enough time to load before taking action on them.
+Code becomes greatly simplified and easier to maintain.
 """
 
 import getpass
