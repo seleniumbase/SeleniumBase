@@ -65,7 +65,7 @@ class BaseCase(unittest.TestCase):
 
     def click(self, selector, by=By.CSS_SELECTOR,
               timeout=settings.SMALL_TIMEOUT):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
@@ -89,7 +89,7 @@ class BaseCase(unittest.TestCase):
 
     def double_click(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.SMALL_TIMEOUT):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
@@ -330,12 +330,12 @@ class BaseCase(unittest.TestCase):
                                timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.is_element_visible(self.driver, selector, by)
 
@@ -348,12 +348,12 @@ class BaseCase(unittest.TestCase):
     def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.find_visible_elements(self.driver, selector, by)
 
@@ -494,8 +494,11 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by)
         self.click(selector, by=by)
 
+    def click_xpath(self, xpath):
+        self.click(xpath, by=By.XPATH)
+
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         selector = self.convert_to_css_selector(selector, by=by)
         self.wait_for_element_present(
@@ -569,7 +572,7 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
         """ This method uses jQuery to update a text field. """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         selector = self.convert_to_css_selector(selector, by=by)
         self._demo_mode_highlight_if_active(selector, by)
@@ -596,7 +599,7 @@ class BaseCase(unittest.TestCase):
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
             {Enter/Return} after the text is entered.  """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
@@ -639,9 +642,9 @@ class BaseCase(unittest.TestCase):
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
-        if hover_selector.startswith('/') or hover_selector.startswith('./'):
+        if page_utils.is_xpath_selector(hover_selector):
             hover_by = By.XPATH
-        if click_selector.startswith('/') or click_selector.startswith('./'):
+        if page_utils.is_xpath_selector(click_selector):
             click_by = By.XPATH
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
@@ -688,7 +691,7 @@ class BaseCase(unittest.TestCase):
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
             The element does not need be visible (it may be hidden). """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
@@ -711,7 +714,7 @@ class BaseCase(unittest.TestCase):
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
             The element must be visible (it cannot be hidden). """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
@@ -741,7 +744,7 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
@@ -799,7 +802,7 @@ class BaseCase(unittest.TestCase):
             A hidden element still counts as appearing in the page HTML.
             If an element with "hidden" status is acceptable,
             use wait_for_element_not_visible() instead. """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_absent(
             self.driver, selector, by, timeout)
@@ -819,7 +822,7 @@ class BaseCase(unittest.TestCase):
         """ Waits for an element to no longer be visible on a page.
             The element can be non-existant in the HTML or hidden on the page
             to qualify as not visible. """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
