@@ -65,6 +65,8 @@ self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.scroll_click(selector, by=By.CSS_SELECTOR)
 
+self.click_xpath(xpath)
+
 self.jquery_click(selector, by=By.CSS_SELECTOR)
 
 self.jq_format(code)
