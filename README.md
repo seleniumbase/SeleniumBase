@@ -8,13 +8,13 @@
 
 (Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in [Demo Mode](#seleniumbase_demo_mode).)
 
-**Table of Contents / Quick Navigation:**
-> * [Feature List](#feature_list)
-> * [Dependency Setup](#dependency_installation)
-> * [Install SeleniumBase](#seleniumbase_installation)
-> * [Basic Example & Usage](#seleniumbase_basic_usage)
-> * [Using Integrations](#utilizing_advanced_features)
-> * [Method Specifications](#detailed_method_specifications)
+> **Table of Contents / Navigation:**
+> - [**Feature List**](#feature_list)
+> - [**Dependency Setup**](#dependency_installation)
+> - [**Install SeleniumBase**](#seleniumbase_installation)
+> - [**Basic Example & Usage**](#seleniumbase_basic_usage)
+> - [**Using Integrations**](#utilizing_advanced_features)
+> - [**Method Specifications**](#detailed_method_specifications)
 
 
 <a id="feature_list"></a>
@@ -24,7 +24,7 @@
 * A flexible CLI [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) and [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) for customizing test runs.
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
 * [A global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for making SeleniumBase unique to specific environmental needs.
-* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
+* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js).
 
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
@@ -301,17 +301,17 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 ```python
 self.open("https://xkcd.com/378/")  # This method opens the specified page.
 
-self.driver.refresh()  # This method reloads the current page.
+self.refresh_page()  # This method reloads the current page.
 
-self.driver.current_url  # This variable changes as the current page changes.
+self.get_current_url()  # This method returns the current page URL.
 
-self.driver.page_source  # This variable changes as the page source changes.
+self.get_page_source()  # This method returns the current page source.
 ```
 
 **ProTip™:** You may need to use the page_source method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills if you're confused.)
 Ex:
 ```python
-source = self.driver.page_source
+source = self.get_page_source()
 first_image_open_tag = source.find('<img>')
 first_image_close_tag = source.find'</img>', first_image_open_tag)
 everything_inside_first_image_tags = source[first_image_open_tag+len('<img>'):first_image_close_tag]
@@ -411,7 +411,7 @@ is_element_present(selector)  # is an element present on a page
 if self.is_element_present('div#top_secret img.tracking_cookie'):
     self.contact_cookie_monster()  # Not a real method unless you define it somewhere
 else:
-    current_url = self.driver.current_url
+    current_url = self.get_current_url()
     self.contact_the_nsa(url=current_url, message="Dark Zone Found")  # Not a real method unless you define it somewhere
 ```
 Another example:
@@ -452,19 +452,17 @@ What if your test opens up a new tab/window and now you have more than one page?
 Ex:
 
 ```python
-self.driver.switch_to.window(self.driver.window_handles[1])  # this switches to the new tab
+self.switch_to_window(1)  # this switches to the new tab (0 is the first one)
 ```
-
-driver.window_handles is a list that will continually get updated when new windows/tabs appear (index numbering is auto-incrementing from 0, which represents the main window)
 
 **ProTip™:** iFrames follow the same principle as new windows - you need to specify the iFrame if you want to take action on something in there
 Ex:
 
 ```python
-self.driver.switch_to.frame('ContentManagerTextBody_ifr')
+self.switch_to_frame('ContentManagerTextBody_ifr')
 # Now you can act inside the iFrame
-# Do something cool (here)
-self.driver.switch_to.default_content()  # exit the iFrame when you're done
+# .... Do something cool (here)
+self.switch_to_default_content()  # exit the iFrame when you're done
 ```
 
 #### Handle Pop-Up Alerts
@@ -546,6 +544,17 @@ class MyTestClass(BaseCase):
 
 ``check_assert_element()`` and ``check_assert_text()`` will save any exceptions that would be raised.
 To flush out all the failed checks into a single exception, make sure to call ``self.process_checks()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_checks()`` at the end of all your checks for a single page. This way, the screenshot from your log file will make the location where the checks were made.
+
+#### Accessing raw WebDriver
+
+If you need access to any commands that come with standard WebDriver, you can call them directly like this:
+```python
+self.driver.delete_all_cookies()
+capabilities = self.driver.capabilities
+self.driver.find_elements_by_partial_link_text("GitHub")
+```
+(In general, you'll want to use the SeleniumBase versions of methods when available.)
+
 
 ### Part III: More Details
 

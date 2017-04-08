@@ -23,9 +23,17 @@ self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
+self.refresh_page()
+
 self.get_current_url()
 
 self.get_page_source()
+
+self.get_page_title()
+
+self.go_back()
+
+self.go_forward()
 
 self.get_image_url(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
@@ -64,6 +72,8 @@ self.scroll_to(selector, by=By.CSS_SELECTOR)
 self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.scroll_click(selector, by=By.CSS_SELECTOR)
+
+self.click_xpath(xpath)
 
 self.jquery_click(selector, by=By.CSS_SELECTOR)
 
