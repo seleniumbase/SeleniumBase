@@ -35,7 +35,26 @@ class XpathException(Exception):
     pass
 
 
-def convert_xpath_to_css(xpath):
+def _filter_xpath_grouping(xpath):
+    """
+    This method removes the outer parentheses for xpath grouping.
+    The xpath converter will break otherwise.
+    Example:
+    "(//button[@type='submit'])[1]" becomes "//button[@type='submit'][1]"
+    """
+
+    # First remove the first open parentheses
+    xpath = xpath[1:]
+
+    # Next remove the last closed parentheses
+    index = xpath.rfind(')')
+    if index == -1:
+        raise XpathException("Invalid or unsupported Xpath: %s" % xpath)
+    xpath = xpath[:index] + xpath[index+1:]
+    return xpath
+
+
+def _get_raw_css_from_xpath(xpath):
     css = ""
     position = 0
 
@@ -86,3 +105,23 @@ def convert_xpath_to_css(xpath):
     else:
         css = css.strip()
         return css
+
+
+def convert_xpath_to_css(xpath):
+    if xpath.startswith('('):
+        xpath = _filter_xpath_grouping(xpath)
+
+    css = _get_raw_css_from_xpath(xpath)
+
+    attribute_defs = re.findall('(\[\w+\=\S+\])', css)
+    for attr_def in attribute_defs:
+        if (attr_def.count('[') == 1 and attr_def.count(']') == 1 and
+                attr_def.count('=') == 1 and attr_def.count('"') == 0 and
+                attr_def.count("'") == 0) and attr_def.count(' ') == 0:
+            # Now safe to manipulate
+            q1 = attr_def.find('=') + 1
+            q2 = attr_def.find(']')
+            new_attr_def = attr_def[:q1] + "'" + attr_def[q1:q2] + "']"
+            css = css.replace(attr_def, new_attr_def)
+
+    return css
