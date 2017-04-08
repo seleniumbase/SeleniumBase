@@ -9,6 +9,8 @@ self.open(url)
 
 self.open_url(url)
 
+self.refresh_page()
+
 self.click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 self.double_click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)

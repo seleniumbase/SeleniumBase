@@ -63,6 +63,9 @@ class BaseCase(unittest.TestCase):
             use this alternative. """
         self.open(url)
 
+    def refresh_page(self):
+        self.driver.refresh()
+
     def click(self, selector, by=By.CSS_SELECTOR,
               timeout=settings.SMALL_TIMEOUT):
         if page_utils.is_xpath_selector(selector):
