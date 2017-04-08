@@ -9,8 +9,6 @@ self.open(url)
 
 self.open_url(url)
 
-self.refresh_page()
-
 self.click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 self.double_click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
@@ -25,9 +23,17 @@ self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
+self.refresh_page()
+
 self.get_current_url()
 
 self.get_page_source()
+
+self.get_page_title()
+
+self.go_back()
+
+self.go_forward()
 
 self.get_image_url(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 

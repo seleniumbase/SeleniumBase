@@ -63,9 +63,6 @@ class BaseCase(unittest.TestCase):
             use this alternative. """
         self.open(url)
 
-    def refresh_page(self):
-        self.driver.refresh()
-
     def click(self, selector, by=By.CSS_SELECTOR,
               timeout=settings.SMALL_TIMEOUT):
         if page_utils.is_xpath_selector(selector):
@@ -214,11 +211,23 @@ class BaseCase(unittest.TestCase):
             raise Exception("Element [%s] has no attribute [%s]!" % (
                 selector, attribute))
 
+    def refresh_page(self):
+        self.driver.refresh()
+
     def get_current_url(self):
         return self.driver.current_url
 
     def get_page_source(self):
         return self.driver.page_source
+
+    def get_page_title(self):
+        return self.driver.title
+
+    def go_back(self):
+        self.driver.back()
+
+    def go_forward(self):
+        self.driver.forward()
 
     def get_image_url(self, selector, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
