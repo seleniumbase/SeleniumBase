@@ -9,8 +9,7 @@
 (Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in [Demo Mode](#seleniumbase_demo_mode).)
 
 > **Table of Contents / Navigation:**
-> - [**Feature List**](#feature_list)
-> - [**Dependency Setup**](#dependency_installation)
+> - [**Install Requirements**](#dependency_installation)
 > - [**Install SeleniumBase**](#seleniumbase_installation)
 > - [**Basic Example & Usage**](#seleniumbase_basic_usage)
 > - [**Using Integrations**](#utilizing_advanced_features)
@@ -301,6 +300,10 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 ```python
 self.open("https://xkcd.com/378/")  # This method opens the specified page.
 
+self.go_back()  # This method navigates the browser to the previous page.
+
+self.go_forward()  # This method navigates the browser forward in history.
+
 self.refresh_page()  # This method reloads the current page.
 
 self.get_current_url()  # This method returns the current page URL.
@@ -308,7 +311,7 @@ self.get_current_url()  # This method returns the current page URL.
 self.get_page_source()  # This method returns the current page source.
 ```
 
-**ProTip™:** You may need to use the page_source method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills if you're confused.)
+**ProTip™:** You may need to use the get_page_source() method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills for that.)
 Ex:
 ```python
 source = self.get_page_source()
