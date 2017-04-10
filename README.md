@@ -12,7 +12,8 @@
 > - [**Install Requirements**](#dependency_installation)
 > - [**Install SeleniumBase**](#seleniumbase_installation)
 > - [**Basic Example & Usage**](#seleniumbase_basic_usage)
-> - [**Using Integrations**](#utilizing_advanced_features)
+> - [**Generating Test Reports**](#creating_visual_reports)
+> - [**Production Environments**](#utilizing_advanced_features)
 > - [**Method Specifications**](#detailed_method_specifications)
 
 
@@ -214,15 +215,16 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 
 py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 ```
+(NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
 
 (NOTE: If you're using **pytest** instead nosetests for running your own integration tests outside of the SeleniumBase file path, **you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) inside your folder structure** because the pytest configuration is defined there locally at runtime.)
 
-(NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures for screenshots, page source, and basic test info.)
 
+<a id="creating_visual_reports"></a>
 **Creating Visual Test Suite Reports** (for nosetest users *ONLY*): The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used)
 
 ```bash
-nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base --report -s
+nosetests my_test_suite.py --with-selenium --with-testing_base --report --browser=chrome -s
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Test Report")
 
@@ -230,20 +232,19 @@ nosetests my_test_suite.py --with-selenium --browser=chrome --with-testing_base 
 
 
 <a id="utilizing_advanced_features"></a>
-#### **Step 5:** Complete the setup / Use integrations
+#### **Step 5:** Using production environments & integrations
 
-If you'd like to use the full power of SeleniumBase, there are a few more things you can do:
+Here are some things you can do to setup a production environment for your testing:
 
-* Setup your [Jenkins](http://jenkins-ci.org/) build server for running your tests at regular intervals. (Or you can use any build server you want.)
+* You can setup a [Jenkins](http://jenkins-ci.org/) build server for running tests at regular intervals. (Or you can use any build server you want.)
 
-* If you're using the SeleniumBase MySQL feature, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
+* You can setup a Selenium Grid for multitasking the running of all your tests. To do this, just spin up some remote machines with WebDriver installed, then update the *.cfg file of your build server to point there. When doing so, add the command line option to use that file like this: ``--config=[MY_CONFIG_FILE].cfg``). An example config file called selenium_server_config_example.cfg has been provided for you in the integrations/selenium_grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
+
+* There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). [There's a plugin for Xvfb in Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin). If you have Xvfb running in the background, you can add ``--headless`` to your run command in order to utilize it. For information about the Xvfb plugin for Jenkins, [click here](http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/). To see a real-world Jenkins example of headless browser automation in action, [check out the SeleniumBase Google Cloud ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), which covers this topic with screenshots.
+
+* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save test results from test runs, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
 
 * Setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. This test framework already has the code you need to connect to it. (Modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance.)
-
-* Setup your Selenium Grid and update your *.cfg file to point there. An example config file called selenium_server_config_example.cfg has been provided for you in the integrations/selenium_grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
-
-* There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). [There's a plugin for Xvfb in Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin).
-If you have Xvfb running in the background, you can add ``--headless`` to your run command in order to utilize it. For information about the Xvfb plugin for Jenkins, [click here](http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/).
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
