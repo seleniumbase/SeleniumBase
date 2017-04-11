@@ -1,7 +1,5 @@
 ## Converting Selenium IDE recordings into SeleniumBase test scripts
 
-#### Intro:
-
 [Selenium IDE](http://docs.seleniumhq.org/projects/ide/) is a tool that allows you to record and playback actions performed inside a web browser. It's available as a [downloadable Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/selenium-ide/). Selenium IDE comes with an option to export recordings as various WebDriver test scripts, one of which is ``Python2/unittest/WebDriver``. Unfortunately, these natively-exported scripts tend to be very messy and don't run reliably. The purpose of this converter is to clean up and improve the scripts so that they can be used in production-level environments.
 
 #### Step 1: Make a recording with Selenium IDE
@@ -12,13 +10,13 @@
 
 * ``File`` => ``Export Test Case As`` => ``Python 2 / unittest / WebDriver``
 
-#### Step 3: Drop your exported file into the ``selenium_ide`` folder.
+#### Step 3: Drop your exported file into the ``selenium_ide`` folder
 
 * Just copy & paste!
 
 (The full path of the folder is ``SeleniumBase/integrations/selenium_ide``)
 
-#### Step 4: Run ``convert_ide.py`` on the Python file
+#### Step 4: Run ``convert_ide.py`` on the exported Python script
 
 ```bash
 python convert_ide.py [MY_TEST.py]
