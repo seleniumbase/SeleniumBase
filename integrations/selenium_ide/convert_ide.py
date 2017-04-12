@@ -87,14 +87,28 @@ def main():
             continue
 
         # Handle page loads
-        data = re.findall(
-            '^\s*driver\.get\(self\.base_url \+ \"/\"\)\s*$', line)
+        data = re.match(
+            '^(\s*)driver\.get\((self\.base_url \+ \"/\S*\")\)\s*$', line)
         if data:
-            data = data[0].replace("self.base_url", '"%s"' % ide_base_url)
-            if ' + "/"' in data:
-                data = data.replace(' + "/"', '')
-            data = data.replace('driver.get(', 'self.open(')
-            seleniumbase_lines.append(data)
+            whitespace = data.group(1)
+            url = data.group(2)
+            url = url.replace("self.base_url", '"%s"' % ide_base_url)
+            if '/" + "/' in url:
+                url = url.replace('/" + "/', '/')
+            if "/' + '/" in url:
+                url = url.replace("/' + '/", "/")
+            command = '''%sself.open(%s)''' % (whitespace, url)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle more page loads
+        data = re.match(
+            '^(\s*)driver\.get\(\"(\S*)\"\)\s*$', line)
+        if data:
+            whitespace = data.group(1)
+            url = data.group(2)
+            command = '''%sself.open('%s')''' % (whitespace, url)
+            seleniumbase_lines.append(command)
             continue
 
         # Handle .find_element_by_id() + .click()
@@ -220,11 +234,13 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Replace "self.base_url" with actual url if not already done
+        if 'self.base_url' in line:
+            line = line.replace("self.base_url", '"%s"' % ide_base_url)
+
         # Convert driver. to self.driver. if not already done
         if 'driver.' in line and 'self.driver' not in line:
-            command = line.replace('driver.', 'self.driver.')
-            seleniumbase_lines.append(command)
-            continue
+            line = line.replace('driver.', 'self.driver.')
 
         # Add all other lines to final script without making changes
         seleniumbase_lines.append(line)
@@ -243,6 +259,8 @@ def main():
     out_file = codecs.open(converted_file_name, "w+")
     out_file.writelines(seleniumbase_code)
     out_file.close()
+    print("%s successfully created from %s\n" % (
+        converted_file_name, webdriver_python_file))
 
 
 if __name__ == "__main__":
