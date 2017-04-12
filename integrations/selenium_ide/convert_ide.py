@@ -40,6 +40,12 @@ def main():
     code_lines = all_code.split('\n')
     for line in code_lines:
 
+        # Handle utf-8 encoding if present
+        data = re.findall('^\s*# -\*- coding: utf-8 -\*-\s*$', line)
+        if data:
+            has_unicode = True
+            continue
+
         # Handle class definition
         data = re.findall('^class\s\S+\(unittest\.TestCase\):\s*$', line)
         if data:
