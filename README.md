@@ -1,4 +1,4 @@
-![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo23.png "SeleniumBase")
+![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo25.png "SeleniumBase")
 
 **A Smart Framework for Test Automation**
 
