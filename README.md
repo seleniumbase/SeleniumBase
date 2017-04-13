@@ -2,9 +2,9 @@
 
 **A Framework For Making Selenium Great**
 
-[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)
 
-**Quickly Automate Any Website Testing:**
+**<font color="22AADD">Quickly <font color="0077CC">Automate Web Testing <font color="00BB66"> _like a pro<font color="00AACC">:_**
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
@@ -638,17 +638,23 @@ def get_delayed_test_data(self, testcase_address, done=0):
 
 Now you know how to pull data from your MySQL DB.
 
-You may also be wondering when you would use the Delayed Data Manager. Here's one example: If you scheduled an email to go out 12 hours from now and you wanted to check that the email gets received (but you don't want the Selenium test of a Jenkins job to sit idle for 12 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
+Delayed Data Manager usage example: If you scheduled an email to go out 12 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 12 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
 
 
-Congratulations! If you've made it this far, it means you have a pretty good idea about how to move forward!
-Feel free to check out these other exciting open source projects on GitHub by some smart people I know:
+### Wrap-Up
+
+Congratulations! You now know how to **Automate like a Pro!**
+
+Questions or Comments? [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) (Click the link to join the SeleniumBase chat on Gitter.)
+
+Here are other exciting open source projects on GitHub by smart people I've worked with:
 [https://github.com/hubspot](https://github.com/hubspot)
 
-Happy Automating!
-
-~ Michael Mintz (https://github.com/mdmintz)
+~ Michael Mintz (https://github.com/mdmintz) (https://www.linkedin.com/in/mdmintz)
 
 
-### Legal Disclaimer
-Automation is a powerful thing. It allows you to take full control of web browsers and do almost anything that a human could do, but faster. It can be used for both good and evil. With great power comes great responsibility. You are fully responsible for how you use this platform and the automation that you create.
+### License & Disclaimer
+
+[![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) (The MIT License)
+
+"With great power comes great responsibility" ... And SeleniumBase gives you the power.
