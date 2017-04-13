@@ -645,12 +645,12 @@ Delayed Data Manager usage example: If you scheduled an email to go out 12 hours
 
 Congratulations! You now know how to **Automate like a Pro!**
 
-Questions or Comments? [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) (Click the link to join the SeleniumBase chat on Gitter.)
+Questions or Comments? [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Here are other exciting open source projects on GitHub by smart people I've worked with:
 [https://github.com/hubspot](https://github.com/hubspot)
 
-~ Michael Mintz (https://github.com/mdmintz) (https://www.linkedin.com/in/mdmintz)
+~ Michael Mintz [https://github.com/mdmintz](https://github.com/mdmintz) [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)
 
 
 ### License & Disclaimer
