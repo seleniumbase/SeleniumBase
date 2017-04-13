@@ -1,10 +1,8 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo19.png "SeleniumBase")
 
-**A Framework For Making Selenium Great**
+**A Smart Framework for Test Automation**
 
 [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)
-
-**Quickly Automate Web Testing *like a pro*:**
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
