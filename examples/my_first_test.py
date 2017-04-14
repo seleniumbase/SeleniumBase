@@ -40,9 +40,13 @@ class MyTestClass(BaseCase):
         #        >>> dir(By)
         #        ['CLASS_NAME', 'CSS_SELECTOR', 'ID', 'LINK_TEXT', 'NAME', ...
         #    }
-        #    XPath is used by default if the arg starts with "/" or "./". Ex:
+        #    XPath is used by default if the arg starts with "/", "./", or "(":
         #    [
         #        self.click('/html/body/div[3]/div[4]/p[2]/a')
+        #    ]
+        #    But if you want XPath-clicking to be more clear in the code, use:
+        #    [
+        #        self.click_xpath('/html/body/div[3]/div[4]/p[2]/a')
         #    ]
         #
         #    If you're completely new to CSS selectors, right-click on a
@@ -66,6 +70,16 @@ class MyTestClass(BaseCase):
         #    Can be simplified to:
         #    [
         #        self.assert_text('The blag of the webcomic', 'header_text')
+        #    ]
+        #
+        #    The following lines:
+        #    [
+        #        image_object = self.find_element('#comic img')
+        #        caption = image_object.get_attribute('title')
+        #    ]
+        #    Can also be written as:
+        #    [
+        #        caption = self.get_attribute('#comic img', 'title')
         #    ]
         #
         #    And the following line:
