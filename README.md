@@ -2,7 +2,7 @@
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-**Automate More with Less Code**
+**Automate and Test More with Less Code**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png)
 
