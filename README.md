@@ -35,7 +35,7 @@ SeleniumBase helps keep your WebDriver code short and clean. This long line:
 ```python
 driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
-...Becomes the following line in SeleniumBase:
+...becomes the following in SeleniumBase:
 ```python
 self.update_text("textarea", "text")
 ```
