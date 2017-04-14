@@ -357,6 +357,12 @@ self.find_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # 
 self.get_text("header h2")
 ```
 
+#### Getting the attribute value from an element on a page
+
+```python
+self.get_attribute("#comic img", "title")
+```
+
 #### Asserting existance of an element on a page within some number of seconds:
 
 ```python
