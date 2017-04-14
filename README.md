@@ -14,8 +14,8 @@
 
 > **Table of Contents / Navigation:**
 > - [**Install Requirements**](#dependency_installation)
-> - [**Install SeleniumBase**](#seleniumbase_installation)
-> - [**Basic Example & Usage**](#seleniumbase_basic_usage)
+> - [**SeleniumBase Installation**](#seleniumbase_installation)
+> - [**Basic Example and Usage**](#seleniumbase_basic_usage)
 > - [**Generating Test Reports**](#creating_visual_reports)
 > - [**Production Environments**](#utilizing_advanced_features)
 > - [**Method Specifications**](#detailed_method_specifications)
@@ -83,7 +83,7 @@ brew install chromedriver phantomjs
 
 
 <a id="seleniumbase_installation"></a>
-#### **Step 1:** Clone SeleniumBase to your local machine
+### **Step 1:** Clone SeleniumBase to your local machine
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
