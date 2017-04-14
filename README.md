@@ -43,7 +43,7 @@ These simplifications greatly help with code maintainability.
 
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-**MasterQA**: SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
+**Hybrid Automation**: SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
 
 
 ### **Part I: Setup Instructions for Mac, Ubuntu, and Windows**
