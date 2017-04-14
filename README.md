@@ -1,12 +1,14 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo25.png "SeleniumBase")
 
-**Quickly Automate Web Testing _like a pro!_**
+[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-[![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)
+**Do Much More with Selenium Automation**
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
 (Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/) in [Demo Mode](#seleniumbase_demo_mode).)
+
+### **Get Started with SeleniumBase**
 
 > **Table of Contents / Navigation:**
 > - [**Install Requirements**](#dependency_installation)
@@ -16,9 +18,8 @@
 > - [**Production Environments**](#utilizing_advanced_features)
 > - [**Method Specifications**](#detailed_method_specifications)
 
-
 <a id="feature_list"></a>
-### **SeleniumBase Features:**
+### **Features:**
 * A complete [test framework](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase) for running browser-based GUI tests.
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * A flexible CLI [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) and [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) for customizing test runs.
@@ -40,7 +41,7 @@ SeleniumBase also includes an automated/manual hybrid solution called **[MasterQ
 
 
 <a id="dependency_installation"></a>
-#### **Step 0a:** Setup your Python/pip environment:
+#### **Step 0a:** Setup your [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) Python/pip environment:
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
