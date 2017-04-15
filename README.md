@@ -2,7 +2,7 @@
 
 **Simple & Powerful Automation Framework**
 
-**_Makes [WebDriver](http://www.seleniumhq.org/projects/webdriver/) Better and Easier to Use_**
+**_Makes [WebDriver](http://www.seleniumhq.org/) Better and Easier to Use_**
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -35,8 +35,7 @@ nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 
 **No more flaky tests!** SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-**SeleniumBase helps keep your code clean.**
-This long line of WebDriver code...
+**SeleniumBase helps keep your code clean.** This long line of WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
