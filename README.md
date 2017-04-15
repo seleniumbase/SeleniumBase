@@ -23,7 +23,7 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png)
 
-**Customize scripts from the command line**
+**Customize scripts from the command line:**
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 ```
@@ -31,7 +31,7 @@ nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
-**No more flaky tests!** *Load-waiting is built-in!*
+**No more flaky tests!** *Load-waiting is built-in.*
 
 SeleniumBase helps keep your WebDriver code short and clean. This long line:
 ```python
@@ -59,6 +59,7 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 * [A tool to convert Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_ide) into clean & reliable SeleniumBase scripts.
 
 
+<a id="dependency_installation"></a>
 ### **Part I: Setup Instructions for Mac, Ubuntu, and Windows**
 
 *(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)*
@@ -66,7 +67,6 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 *(**Docker users**: See the [Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md) to setup your Docker machine.)*
 
 
-<a id="dependency_installation"></a>
 #### **Step 0a:** Setup your [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) Python/pip environment:
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
