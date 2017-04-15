@@ -2,7 +2,7 @@
 
 **Simple & Powerful Automation Framework**
 
-[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
+[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Get Started with SeleniumBase
 > **Table of Contents / Navigation:**
@@ -19,9 +19,9 @@
 <a id="main_introduction"></a>
 ### Intro and Demo
 
-**Automate and Test More with Less Code**
+**Automate & Test More with Simple Code**
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png)
+![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 
 **Customize scripts from the command line:**
 ```bash
@@ -29,11 +29,13 @@ nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 ```
 **Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):**
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
+![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
 
-**No more flaky tests!** *Load-waiting is built-in.*
+**No more flaky tests!** (*Built-in load-waiting.*)
+No more random ``time.sleep()`` needed!
 
-SeleniumBase helps keep your WebDriver code short and clean. This long line:
+**SeleniumBase helps keep your code clean.**
+This long line of WebDriver code...
 ```python
 driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
@@ -41,9 +43,8 @@ driver.find_element_by_css_selector("textarea").send_keys("text")
 ```python
 self.update_text("textarea", "text")
 ```
-(These simplifications greatly help with code maintainability.)
 
-SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+**Business Mindset**: SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 **Hybrid Automation**: SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
 
