@@ -10,7 +10,6 @@
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 ```
-
 **Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):**
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
