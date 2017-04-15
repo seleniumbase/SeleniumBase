@@ -33,7 +33,7 @@ nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
 
-**No more flaky tests!** SeleniumBase automatically waits for elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
+**No more flaky tests!** SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
 **SeleniumBase helps keep your code clean.**
 This long line of WebDriver code...
