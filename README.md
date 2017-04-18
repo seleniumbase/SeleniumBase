@@ -1,6 +1,6 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo25.png "SeleniumBase")
 
-**Simple & Powerful Automation Framework**
+**A Complete Python Automation Framework**
 
 **_Boosts [Selenium](http://www.seleniumhq.org/) Functionality & Reliability_**
 
