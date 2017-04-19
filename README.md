@@ -13,6 +13,7 @@ Expands Selenium-WebDriver Functionality.
 > - [**Install Requirements**](#dependency_installation)
 > - [**SeleniumBase Installation**](#seleniumbase_installation)
 > - [**Basic Example and Usage**](#seleniumbase_basic_usage)
+> - [**How SeleniumBase Works**](#how_seleniumbase_works)
 > - [**Generating Test Reports**](#creating_visual_reports)
 > - [**Production Environments**](#utilizing_advanced_features)
 > - [**Method Specifications**](#detailed_method_specifications)
@@ -63,7 +64,7 @@ You can still use ``self.driver`` in your code.
 
 
 <a id="dependency_installation"></a>
-### **Part I: Setup Instructions for Mac, Ubuntu, and Windows**
+### **Setup Instructions for Mac, Ubuntu, and Windows**
 
 *(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)*
 
@@ -174,7 +175,7 @@ class MyTestClass(BaseCase):
         self.assert_text('Automation', 'div#ctitle')
 ```
 
-**Here's how to run the example script on various web browsers:**
+**Here's how to run the example script on various web browsers by using nosetests:**
 
 (NOTE: You can interchange **nosetests** with **py.test** [as seen here](#pytest_basic_usage).)
 
@@ -189,6 +190,8 @@ nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 ```
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
+
+(NOTE: If you're confused about how SeleniumBase works with Nosetests and Pytest, jump to the [**How SeleniumBase Works**](#how_seleniumbase_works) section to learn more about it.)
 
 <a id="seleniumbase_demo_mode"></a>
 If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
@@ -235,7 +238,7 @@ Here are some other useful nosetest arguments that you may want to append to you
 
 
 <a id="pytest_basic_usage"></a>
-You can also run the example script with **py.test** like this:
+Here's how to run the example script with **py.test**:
 
 ```bash
 cd examples/
@@ -251,8 +254,30 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 (NOTE: If you're using **pytest** instead nosetests for running your own integration tests outside of the SeleniumBase file path, **you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) inside your folder structure** because the pytest configuration is defined there locally at runtime.)
 
 
+<a id="how_seleniumbase_works"></a>
+#### **How SeleniumBase Works:**
+
+At the core, SeleniumBase works by extending Nosetests and Pytest as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Nosetest/Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class.
+
+Once you've activated the main SeleniumBase plugin with "``--with-selenium``", you can use "``--browser=chrome``" to specify the web browser to use (Default = "Chrome"). You can also include additional plugins for additional features such as "``--with-testing_base``" (for logging data/screenshots on test failures) and "``--demo_mode``" (for highlighting elements & slowing test runs). There are also other plugins available such as "``--with-db_reporting``", "``--with-s3_logging``", and more.
+
+(NOTE: Nosetests and Pytest work by automatically running any Python method that starts with "``test``" from the file that you specified on the command line. You can also run all tests from a specific class in a file, or even pick out an individual test to run.)
+
+To use SeleniumBase calls you need the following:
+```python
+from seleniumbase import BaseCase
+```
+And then have your test classes inherit BaseCase:
+```python
+class MyTestClass(BaseCase):
+```
+(*See the example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), for reference.*)
+
+
 <a id="creating_visual_reports"></a>
-**Creating Visual Test Suite Reports** (for nosetest users *ONLY*): The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used)
+#### **Creating Visual Test Suite Reports** (for nosetest users *ONLY*):
+
+The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
 ```bash
 nosetests my_test_suite.py --with-selenium --with-testing_base --report --browser=chrome -s
@@ -263,7 +288,7 @@ nosetests my_test_suite.py --with-selenium --with-testing_base --report --browse
 
 
 <a id="utilizing_advanced_features"></a>
-#### **Step 5:** Using production environments & integrations
+#### **Using production environments & integrations**
 
 Here are some things you can do to setup a production environment for your testing:
 
@@ -325,7 +350,7 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 
 
 <a id="detailed_method_specifications"></a>
-### Part II: Detailed Method Specifications and Examples
+### **Detailed Method Specifications and Examples**
 
 #### Navigating to a web page (and related commands)
 
@@ -595,23 +620,6 @@ capabilities = self.driver.capabilities
 self.driver.find_elements_by_partial_link_text("GitHub")
 ```
 (In general, you'll want to use the SeleniumBase versions of methods when available.)
-
-
-### Part III: More Details
-
-Nosetests automatically runs any python method that starts with "test" from the file you selected. You can also select specific tests to run from files or classes. For example, the code in the early examples could've been run using "nosetests my_first_test.py:MyTestClass.test_basic ... ...". If you wanted to run all tests in MyTestClass, you can use: "nosetests my_first_test.py:MyTestClass ... ...", which is useful when you have multiple tests in the same file. Don't forget the plugins. Use "-s" if you want better logging in the console output.
-
-To use the SeleniumBase Test Framework calls, don't forget to include the following import:
-
-```python
-from seleniumbase import BaseCase
-```
-
-And you'll need to inherit BaseCase in your classes like so:
-
-```python
-class MyTestClass(BaseCase):
-```
 
 ####  Checking Email: 
 Let's say you have a test that sends an email, and now you want to check that the email was received:
