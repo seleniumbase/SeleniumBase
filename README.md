@@ -35,7 +35,7 @@ nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 
 **No more flaky tests!** SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-**SeleniumBase helps keep your code clean.** This long line of WebDriver code...
+**SeleniumBase helps keep your code clean!** This long line of WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
@@ -52,11 +52,11 @@ You can still use ``self.driver`` in your code.
 
 <a id="feature_list"></a>
 ### **Full Feature List**
-* A complete test automation framework for running browser-based GUI tests.
-* [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
+* A test framework for building & running [reliable browser-based GUI scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
+* [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for helping you do much more with Selenium-WebDriver.
 * A flexible CLI [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) and [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) for customizing test runs.
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
-* [A global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for making SeleniumBase unique to specific environmental needs.
+* [A global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for making SeleniumBase unique to your specific environmental needs.
 * Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js).
 * Backwards-compatible with [WebDriver](http://www.seleniumhq.org/projects/webdriver/). (Use ``self.driver`` anywhere.)
 * [A tool to convert Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_ide) into clean & reliable SeleniumBase scripts.
