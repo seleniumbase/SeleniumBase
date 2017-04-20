@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.3.10',
+    version='1.3.11',
     description='Test Automation Framework - seleniumbase.com',
     long_description='Automation Framework for Simple & Reliable Web Testing',
     platforms='Mac * Windows * Linux * Docker',
@@ -18,7 +18,8 @@ setup(
     license='The MIT License',
     install_requires=[
         'pip>=9.0.1',
-        'setuptools>=34.3.3',
+        'setuptools>=35.0.1',
+        'ipython==5.3.0',
         'selenium==3.3.1',
         'nose>=1.3.7',
         'pytest>=3.0.7',
@@ -28,7 +29,7 @@ setup(
         'urllib3>=1.20',
         'BeautifulSoup>=3.2.1',
         'unittest2>=1.1.0',
-        'chardet>=2.3.0',
+        'chardet>=3.0.2',
         'boto>=2.46.1',
         'ipdb>=0.10.2',
         'pyvirtualdisplay>=0.2.1',
