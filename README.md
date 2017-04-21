@@ -288,7 +288,7 @@ nosetests my_test_suite.py --with-selenium --with-testing_base --report --browse
 
 
 <a id="utilizing_advanced_features"></a>
-### **Using production environments & integrations**
+### **Using Production Environments & Integrations:**
 
 Here are some things you can do to setup a production environment for your testing:
 
@@ -350,7 +350,7 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 
 
 <a id="detailed_method_specifications"></a>
-### **Detailed Method Specifications and Examples**
+### **Detailed Method Specifications and Examples:**
 
 #### Navigating to a web page (and related commands)
 
