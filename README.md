@@ -121,12 +121,12 @@ cd SeleniumBase
 (A Git GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
 
 
-#### **Step 2:** Create & activate a virtual environment for SeleniumBase
+### **Step 2:** Create & activate a virtual environment for SeleniumBase
 
 If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
 
 
-#### **Step 3:** Install SeleniumBase
+### **Step 3:** Install SeleniumBase
 
 Since [SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this: (Using ``"sudo"`` may be required.)
 ```bash
@@ -147,7 +147,7 @@ If you wish to use the MySQL functionality with SeleniumBase to store test resul
 
 
 <a id="seleniumbase_basic_usage"></a>
-#### **Step 4:** Verify SeleniumBase installation by running the example script
+### **Step 4:** Verify SeleniumBase installation by running the example script
 
 **Here's what the example script looks like:**
 
@@ -255,7 +255,7 @@ py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs
 
 
 <a id="how_seleniumbase_works"></a>
-#### **How SeleniumBase Works:**
+### **How SeleniumBase Works:**
 
 At the core, SeleniumBase works by extending Nosetests and Pytest as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Nosetest/Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class.
 
@@ -275,7 +275,7 @@ class MyTestClass(BaseCase):
 
 
 <a id="creating_visual_reports"></a>
-#### **Creating Visual Test Suite Reports** (for nosetest users *ONLY*):
+### **Creating Visual Test Suite Reports** (for nosetest users *ONLY*):
 
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
@@ -288,7 +288,7 @@ nosetests my_test_suite.py --with-selenium --with-testing_base --report --browse
 
 
 <a id="utilizing_advanced_features"></a>
-#### **Using production environments & integrations**
+### **Using production environments & integrations**
 
 Here are some things you can do to setup a production environment for your testing:
 
