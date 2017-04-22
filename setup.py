@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.3.11',
+    version='1.3.12',
     description='Test Automation Framework - seleniumbase.com',
     long_description='Automation Framework for Simple & Reliable Web Testing',
     platforms='Mac * Windows * Linux * Docker',
@@ -31,7 +31,7 @@ setup(
         'unittest2>=1.1.0',
         'chardet>=3.0.2',
         'boto>=2.46.1',
-        'ipdb>=0.10.2',
+        'ipdb==0.10.2',
         'pyvirtualdisplay>=0.2.1',
         ],
     packages=['seleniumbase',
