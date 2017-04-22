@@ -111,7 +111,7 @@ brew install chromedriver phantomjs
 
 
 <a id="seleniumbase_installation"></a>
-### **Step 1:** Clone SeleniumBase to your local machine
+### **Step 1:** Clone SeleniumBase locally
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -121,9 +121,9 @@ cd SeleniumBase
 (A Git GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
 
 
-### **Step 2:** Create & activate a virtual environment for SeleniumBase
+### **Step 2:** Create a virtual environment
 
-If you're not sure how to create a virtual environment, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to learn how.
+If you're not sure how, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. For an overview of virtual environments and why you should use them, **[click here](http://docs.python-guide.org/en/latest/dev/virtualenvs/)**.
 
 
 ### **Step 3:** Install SeleniumBase
@@ -147,7 +147,7 @@ If you wish to use the MySQL functionality with SeleniumBase to store test resul
 
 
 <a id="seleniumbase_basic_usage"></a>
-### **Step 4:** Verify SeleniumBase installation by running the example script
+### **Step 4:** Run the example script
 
 **Here's what the example script looks like:**
 
