@@ -111,7 +111,7 @@ brew install chromedriver phantomjs
 
 
 <a id="seleniumbase_installation"></a>
-### **Step 1:** Clone SeleniumBase locally
+### **Step 1:** Clone SeleniumBase Locally
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -121,33 +121,28 @@ cd SeleniumBase
 (A Git GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
 
 
-### **Step 2:** Create a virtual environment
+### **Step 2:** Create a Virtual Environment
 
 If you're not sure how, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. For an overview of virtual environments and why you should use them, **[click here](http://docs.python-guide.org/en/latest/dev/virtualenvs/)**.
 
 
 ### **Step 3:** Install SeleniumBase
 
-Since [SeleniumBase is in Pypi](https://pypi.python.org/pypi/seleniumbase), you can install it like this: (Using ``"sudo"`` may be required.)
+To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use:
 ```bash
 pip install seleniumbase --upgrade
 ```
 
-You can also customize your local version of SeleniumBase. If you change the Python requirements or make any changes to the SeleniumBase library files, just run the following commands from the SeleniumBase top-level directory for your changes to take effect:
-
+To install your local customized version of SeleniumBase use:
 ```bash
 pip install -r requirements.txt --upgrade
-```
 
-```bash
 python setup.py install
 ```
 
-If you wish to use the MySQL functionality with SeleniumBase to store test results and data in the database, you'll need to [follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md).
-
 
 <a id="seleniumbase_basic_usage"></a>
-### **Step 4:** Run the example script
+### **Step 4:** Run the Example Script
 
 **Here's what the example script looks like:**
 
@@ -177,7 +172,7 @@ class MyTestClass(BaseCase):
 
 **Here's how to run the example script on various web browsers by using nosetests:**
 
-(NOTE: You can interchange **nosetests** with **py.test** [as seen here](#pytest_basic_usage).)
+(NOTE: You can interchange **nosetests** with **pytest** [as seen here](#pytest_basic_usage).)
 
 ```bash
 cd examples/
@@ -238,20 +233,20 @@ Here are some other useful nosetest arguments that you may want to append to you
 
 
 <a id="pytest_basic_usage"></a>
-Here's how to run the example script with **py.test**:
+Here's how to run the example script with **pytest**:
 
 ```bash
 cd examples/
 
-py.test my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
+pytest my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
 
-py.test my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
+pytest my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
 
-py.test my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
+pytest my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
 ```
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
 
-(NOTE: If you're using **pytest** instead nosetests for running your own integration tests outside of the SeleniumBase file path, **you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) inside your folder structure** because the pytest configuration is defined there locally at runtime.)
+(NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) at the base of the new folder structure** because the pytest configuration is defined there locally at runtime. You'll also want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) there too.)
 
 
 <a id="how_seleniumbase_works"></a>
@@ -298,7 +293,7 @@ Here are some things you can do to setup a production environment for your testi
 
 * There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). [There's a plugin for Xvfb in Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin). If you have Xvfb running in the background, you can add ``--headless`` to your run command in order to utilize it. For information about the Xvfb plugin for Jenkins, [click here](http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/). To see a real-world Jenkins example of headless browser automation in action, [check out the SeleniumBase Google Cloud ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), which covers this topic with screenshots.
 
-* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save test results from test runs, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
+* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
 
 * If you're using AWS, you can setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has all the code you need to connect to it. (You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved.)
 
