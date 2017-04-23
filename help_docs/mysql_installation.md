@@ -27,6 +27,7 @@ If you were able to successfully install MySQL, you can now install the remainin
 ```bash
 pip install -r server_requirements.txt
 ```
+(NOTE: This install uses Selenium 2.53.6 rather than the usual Selenium 3+ from the standard requirements file due to compatibility issues with running browser tests on headless server machines.)
 
 #### Configure your MySQL DB for SeleniumBase
 
