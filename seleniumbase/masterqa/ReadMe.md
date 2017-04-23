@@ -1,9 +1,8 @@
-![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
-## Automation-Driven Manual QA
+# MasterQA
 
-MasterQA uses [SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) automation to speed up manual QA by having testers verify web pages after automation performs setup steps.
+### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif)
+![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
 Here's the main code of [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
@@ -23,7 +22,7 @@ After the web browser performs various automated actions, a pop-up window will a
 
 At the end of a full test run, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif)
 
 You may have noticed the ``Incomplete Test Runs`` row on the results page. If the value for that is not zero, it means that one of the automated steps failed. This could happen if you tell your script to perform an action on an element that doesn't exist. Now that we're mixing automation with manual QA, it's good to tell apart the failures from each. The results_table CSV file contains a spreadsheet with the details of each failure (if any) for both manual and automated steps.
 
@@ -38,7 +37,7 @@ nosetests basic_masterqa_test.py --with-selenium
 nosetests masterqa_test.py --with-selenium
 ```
 
-At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.) Close the Results Page window when you're done.
+At the end of your test run, you'll receive a report with results, screenshots, and log files. Close the Results Page window when you're done.
 
 ### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to learn how to write your own MasterQA tests:
 
@@ -51,5 +50,7 @@ self.verify()
 
 self.verify("Can you find the moon?")
 ```
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 
 MasterQA is powered by [SeleniumBase](http://seleniumbase.com), the most advanced open-source automation platform on the [Planet](https://en.wikipedia.org/wiki/Earth).
