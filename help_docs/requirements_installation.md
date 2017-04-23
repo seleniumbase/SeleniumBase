@@ -3,16 +3,23 @@
 
 ### [Python 2.7](https://www.python.org/downloads/)
 
-If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.13 is the one I've been using on my Mac.
+If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 instead.
 
-If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2713/).
+If you're a WINDOWS user, [download Python 2.7 from here](https://www.python.org/downloads/release/python-2713/).
 
 
 ### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
+You might already have pip installed, but if you don't:
+
 On a MAC, run the following command:
 ```bash
 sudo easy_install pip
+```
+
+If you're not using the latest version of pip & setuptools, you'll need to upgrade:
+```bash
+pip install -U pip setuptools
 ```
 
 On WINDOWS, run the following command:
