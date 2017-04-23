@@ -4,7 +4,7 @@
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
-Here's the main code of [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
+Here's some example code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
 ```python
 self.open("http://xkcd.com/1700/")
