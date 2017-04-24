@@ -22,7 +22,7 @@ Boosts Selenium-WebDriver Functionality.
 <a id="main_introduction"></a>
 ### Intro and Demo
 
-**Automate & Test More with Simple Code:**
+**Easy Code Helps You Be More Productive:**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 
