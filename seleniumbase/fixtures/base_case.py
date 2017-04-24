@@ -189,6 +189,60 @@ class BaseCase(unittest.TestCase):
             else:
                 self._demo_mode_pause_if_active(tiny=True)
 
+    def click_partial_link_text(self, partial_link_text,
+                                timeout=settings.SMALL_TIMEOUT):
+        """ This method clicks the partial link text on a page. """
+        # If using phantomjs, might need to extract and open the link directly
+        if self.browser == 'phantomjs':
+            if self.is_partial_link_text_visible(partial_link_text):
+                element = self.wait_for_partial_link_text(partial_link_text)
+                element.click()
+                return
+            source = self.driver.page_source
+            soup = BeautifulSoup(source)
+            html_links = soup.fetch('a')
+            for html_link in html_links:
+                if partial_link_text in html_link.text:
+                    for html_attribute in html_link.attrs:
+                        if html_attribute[0] == 'href':
+                            href = html_attribute[1]
+                            if href.startswith('//'):
+                                link = "http:" + href
+                            elif href.startswith('/'):
+                                url = self.driver.current_url
+                                domain_url = self.get_domain_url(url)
+                                link = domain_url + href
+                            else:
+                                link = href
+                            self.open(link)
+                            return
+                    raise Exception(
+                        'Could not parse link from partial link_text '
+                        '[%s]' % partial_link_text)
+            raise Exception(
+                "Partial link text [%s] was not found!" % partial_link_text)
+        # Not using phantomjs
+        element = self.wait_for_partial_link_text(
+            partial_link_text, timeout=timeout)
+        self._demo_mode_highlight_if_active(
+            partial_link_text, by=By.PARTIAL_LINK_TEXT)
+        pre_action_url = self.driver.current_url
+        try:
+            element.click()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_partial_link_text(
+                partial_link_text, timeout=timeout)
+            element.click()
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
+
     def get_text(self, selector, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
         self.wait_for_ready_state_complete()
@@ -370,6 +424,12 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         return page_actions.is_element_visible(self.driver, link_text,
                                                by=By.LINK_TEXT)
+
+    def is_partial_link_text_visible(self, partial_link_text):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        return page_actions.is_element_visible(self.driver, partial_link_text,
+                                               by=By.PARTIAL_LINK_TEXT)
 
     def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
@@ -818,6 +878,30 @@ class BaseCase(unittest.TestCase):
             As above, will raise an exception if nothing can be found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
         self.wait_for_link_text_visible(link_text, timeout=timeout)
+        return True
+
+    # For backwards compatibility, earlier method names of the next
+    # four methods have remained even though they do the same thing,
+    # with the exception of assert_*, which won't return the element,
+    # but like the others, will raise an exception if the call fails.
+
+    def wait_for_partial_link_text(self, partial_link_text,
+                                   timeout=settings.LARGE_TIMEOUT):
+        return self.wait_for_element_visible(
+            partial_link_text, by=By.PARTIAL_LINK_TEXT, timeout=timeout)
+
+    def find_partial_link_text(self, partial_link_text,
+                               timeout=settings.LARGE_TIMEOUT):
+        """ Same as wait_for_partial_link_text() - returns the element """
+        return self.wait_for_partial_link_text(
+            partial_link_text, timeout=timeout)
+
+    def assert_partial_link_text(self, partial_link_text,
+                                 timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_partial_link_text(), but returns nothing.
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
         return True
 
     ############
