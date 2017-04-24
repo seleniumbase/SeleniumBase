@@ -18,6 +18,8 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR,
 
 self.click_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
 
+self.click_partial_link_text(partial_link_text, timeout=settings.SMALL_TIMEOUT)
+
 self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
@@ -52,6 +54,8 @@ self.is_element_present(selector, by=By.CSS_SELECTOR)
 self.is_element_visible(selector, by=By.CSS_SELECTOR)
 
 self.is_link_text_visible(link_text)
+
+self.is_partial_link_text_visible(partial_link_text)
 
 self.is_text_visible(text, selector, by=By.CSS_SELECTOR)
 
@@ -157,6 +161,17 @@ self.wait_for_link_text(link_text, timeout=settings.LARGE_TIMEOUT)
 self.find_link_text(link_text, timeout=settings.LARGE_TIMEOUT)
 
 self.assert_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
+
+########
+
+self.wait_for_partial_link_text(partial_link_text,
+    timeout=settings.LARGE_TIMEOUT)
+
+self.find_partial_link_text(partial_link_text,
+    timeout=settings.LARGE_TIMEOUT)
+
+self.assert_partial_link_text(partial_link_text,
+    timeout=settings.SMALL_TIMEOUT)
 
 ########
 
