@@ -22,7 +22,8 @@ A reliable solution for fast & simple browser automation and testing.<br>
 <a id="main_introduction"></a>
 ### Intro and Demo
 
-<b>Simple Python syntax makes coding easy:</b>
+<b>Simple Python syntax makes coding easy:</b><br>
+(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for locating elements on a page to interact with.</i>)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 
@@ -34,9 +35,11 @@ nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
 
-<b>No more flaky tests!</b> SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
+<b>No more flaky tests:</b><br>
+SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-<b>SeleniumBase helps keep your code clean!</b> This long line of WebDriver code...
+<b>SeleniumBase helps keep your code clean:</b><br>
+This long line of WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
@@ -46,9 +49,11 @@ self.update_text("textarea", "text")
 ```
 You can still use ``self.driver`` in your code.
 
-<b>Business Mindset</b>: SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+<b>Business Mindset</b>:<br>
+SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-<b>Hybrid Automation</b>: SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
+<b>Hybrid Automation</b>:<br>
+SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
 
 
 <a id="feature_list"></a>
