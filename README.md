@@ -1,4 +1,4 @@
-![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo25.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/LogoBlue2.png "SeleniumBase")
 
 A Complete Python Automation Framework.
 
