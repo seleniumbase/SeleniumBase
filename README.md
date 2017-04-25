@@ -21,7 +21,7 @@ Easy Web Automation to Boost Productivity.
 <a id="main_introduction"></a>
 ### Intro and Demo
 
-**Simple Python Syntax Makes Coding Easier:**
+**Simple Python Syntax Makes Coding Easy:**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 
