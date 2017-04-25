@@ -1,6 +1,6 @@
 ![](https://cdn2.hubspot.net/hubfs/100006/images/LogoBlue2.png "SeleniumBase")
 
-Easy Web Automation to Boost Productivity.
+A reliable solution for fast & simple browser automation and testing with Selenium-WebDriver.
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -21,21 +21,21 @@ Easy Web Automation to Boost Productivity.
 <a id="main_introduction"></a>
 ### Intro and Demo
 
-**Simple Python Syntax Makes Coding Easy:**
+<b>Simple Python syntax makes coding easy:</b>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 
-**Customize scripts from the command line:**
+<b>Customize scripts from the command line:</b>
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
 ```
-**Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):**
+<b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b>
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
 
-**No more flaky tests!** SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
+<b>No more flaky tests!</b> SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-**SeleniumBase helps keep your code clean!** This long line of WebDriver code...
+<b>SeleniumBase helps keep your code clean!</b> This long line of WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
@@ -45,9 +45,9 @@ self.update_text("textarea", "text")
 ```
 You can still use ``self.driver`` in your code.
 
-**Business Mindset**: SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+<b>Business Mindset</b>: SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-**Hybrid Automation**: SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
+<b>Hybrid Automation</b>: SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only needs to validate what is seen. **[Learn more about it here.](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**
 
 
 <a id="feature_list"></a>
