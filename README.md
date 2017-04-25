@@ -23,7 +23,7 @@ A reliable solution for fast & simple browser automation and testing.<br>
 ### Intro and Demo
 
 <b>Simple Python syntax makes coding easy:</b><br>
-(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for locating page elements.</i>)
+(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 
