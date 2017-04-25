@@ -2,15 +2,16 @@ import os
 import shutil
 import sys
 import time
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 from seleniumbase import BaseCase
 from seleniumbase.core.style_sheet import style
 from seleniumbase.config import settings
 
-LATEST_REPORT_DIR = "latest_report"
-ARCHIVE_DIR = "report_archives"
-RESULTS_PAGE = "results.html"
-BAD_PAGE_LOG = "results_table.csv"
+LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
+ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
+RESULTS_PAGE = settings.HTML_REPORT
+BAD_PAGE_LOG = settings.RESULTS_TABLE
 DEFAULT_VALIDATION_MESSAGE = settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE
 WAIT_TIME_BEFORE_VERIFY = settings.MASTERQA_WAIT_TIME_BEFORE_VERIFY
 START_IN_FULL_SCREEN_MODE = settings.MASTERQA_START_IN_FULL_SCREEN_MODE
@@ -63,7 +64,10 @@ class __MasterQATestCase__(BaseCase):
             instructions = str(args[0])
 
         # Give the human enough time to see the page first
-        time.sleep(WAIT_TIME_BEFORE_VERIFY)
+        wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
+        if self.verify_delay:
+            wait_time_before_verify = float(self.verify_delay)
+        time.sleep(wait_time_before_verify)
         question = "Approve?"
         if instructions and "?" not in instructions:
             question = instructions + " Approve?"
@@ -74,12 +78,24 @@ class __MasterQATestCase__(BaseCase):
             text = self.execute_script(
                 '''if(confirm("%s")){return "Success!"}
                 else{return "Failure!"}''' % question)
-        else:
-            self.execute_script('''if(confirm("%s")){window.alert("Success!")}
-                else{window.alert("Failure!")}''' % question)
+        elif self.browser == 'chrome':
+            self.execute_script('''if(confirm("%s"))
+                {window.master_qa_result="Success!"}
+                else{window.master_qa_result="Failure!"}''' % question)
             time.sleep(0.05)
             self.wait_for_special_alert_absent()
-            text = self.wait_for_and_accept_alert()
+            text = self.execute_script('''return window.master_qa_result''')
+        else:
+            try:
+                self.execute_script(
+                    '''if(confirm("%s")){window.master_qa_result="Success!"}
+                    else{window.master_qa_result="Failure!"}''' % question)
+            except WebDriverException:
+                # Fix for https://github.com/mozilla/geckodriver/issues/431
+                pass
+            time.sleep(0.05)
+            self.wait_for_special_alert_absent()
+            text = self.execute_script('''return window.master_qa_result''')
         self.manual_check_count += 1
         if "Success!" in text:
             self.manual_check_successes += 1
@@ -247,13 +263,17 @@ class __MasterQATestCase__(BaseCase):
             if line[1] == '"FAILED!"' or line[1] == '"ERROR!"':
                 if not any_screenshots:
                     any_screenshots = True
-                    failure_table += '''<thead><tr><th>SCREENSHOT FILE
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </th><th>LOCATION OF FAILURE</th></tr></thead>'''
+                    failure_table += '''<thead><tr>
+                        <th>SCREENSHOT FILE&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th>LOCATION OF FAILURE</th>
+                        </tr></thead>'''
+                display_url = line[3]
+                if len(display_url) > 60:
+                    display_url = display_url[0:58] + '...'
                 line = '<a href="%s">%s</a>' % (
                     "file://" + log_path + '/' + line[2], line[2]) + '''
-                    &nbsp;&nbsp;<td>
-                    ''' + '<a href="%s">%s</a>' % (line[3], line[3])
+                    &nbsp;&nbsp;&nbsp;&nbsp;<td>
+                    ''' + '<a href="%s">%s</a>' % (line[3], display_url)
                 line = line.replace('"', '')
                 failure_table += '<tr><td>%s</tr>\n' % line
         failure_table += '</tbody></table>'
@@ -268,7 +288,10 @@ class __MasterQATestCase__(BaseCase):
         self.open("file://%s" % archived_results_file)
         if auto_close_results_page:
             # Long enough to notice the results before closing the page
-            time.sleep(WAIT_TIME_BEFORE_VERIFY)
+            wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
+            if self.verify_delay:
+                wait_time_before_verify = float(self.verify_delay)
+            time.sleep(wait_time_before_verify)
         else:
             # The user can decide when to close the results page
             print "\n*** Close the html report window to continue ***"

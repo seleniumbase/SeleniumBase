@@ -2,21 +2,21 @@
 
 *You can do this by checking inside a Python command prompt. (NOTE: xkcd is a webcomic)*
 
-#### Verifying FirefoxDriver (comes with Selenium by default)
+#### Verifying ChromeDriver
 ```bash
 python
 >>> from selenium import webdriver
->>> browser = webdriver.Firefox()
+>>> browser = webdriver.Chrome()
 >>> browser.get("http://xkcd.com/1337/")
 >>> browser.close()
 >>> exit()
 ```
 
-#### Verifying ChromeDriver (you had to install this separately)
+#### Verifying FirefoxDriver (Geckodriver)
 ```bash
 python
 >>> from selenium import webdriver
->>> browser = webdriver.Chrome()
+>>> browser = webdriver.Firefox()
 >>> browser.get("http://xkcd.com/1337/")
 >>> browser.close()
 >>> exit()

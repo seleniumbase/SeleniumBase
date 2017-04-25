@@ -12,22 +12,17 @@ def pytest_addoption(parser):
     parser.addoption('--browser', action="store",
                      dest='browser',
                      choices=constants.Browser.VERSION.keys(),
-                     default=constants.Browser.FIREFOX,
-                     help="""Specifies the web browser to use. Default=FireFox.
-                          If you want to use Chrome, explicitly indicate that.
-                          Example: (--browser=chrome)""")
-    parser.addoption('--is_pytest', action="store_true",
-                     dest='is_pytest',
-                     default=True,
-                     help="""This is used by the BaseCase class to tell apart
-                          pytest runs from nosetest runs.""")
-    parser.addoption('--data', dest='data',
-                     default=None,
-                     help='Extra data to pass from the command line.')
+                     default=constants.Browser.GOOGLE_CHROME,
+                     help="""Specifies the web browser to use. Default: Chrome.
+                          If you want to use Firefox, explicitly indicate that.
+                          Example: (--browser=firefox)""")
     parser.addoption('--with-selenium', action="store_true",
                      dest='with_selenium',
                      default=False,
                      help="Use if tests need to be run with a web browser.")
+    parser.addoption('--data', dest='data',
+                     default=None,
+                     help='Extra data to pass from the command line.')
     parser.addoption('--with-testing_base', action="store_true",
                      dest='with_testing_base',
                      default=False,
@@ -65,6 +60,11 @@ def pytest_addoption(parser):
                      default=False,
                      help="""Using this makes Webdriver run headlessly,
                           which is useful inside a Linux Docker.""")
+    parser.addoption('--is_pytest', action="store_true",
+                     dest='is_pytest',
+                     default=True,
+                     help="""This is used by the BaseCase class to tell apart
+                          pytest runs from nosetest runs. (Automatic)""")
     parser.addoption('--demo_mode', action="store_true",
                      dest='demo_mode',
                      default=False,
@@ -74,6 +74,14 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the Demo Mode sleep
                           time that happens after browser actions.""")
+    parser.addoption('--highlights', action='store', dest='highlights',
+                     default=None,
+                     help="""Setting this overrides the default number of
+                          highlight animation loops to have per call.""")
+    parser.addoption('--verify_delay', action='store', dest='verify_delay',
+                     default=None,
+                     help="""Setting this overrides the default wait time
+                          before each MasterQA verification pop-up.""")
 
 
 def pytest_configure(config):

@@ -9,6 +9,14 @@ import time
 SELENIUM_JAR = ("http://selenium-release.storage.googleapis.com"
                 "/2.53/selenium-server-standalone-2.53.0.jar")
 JAR_FILE = "selenium-server-standalone-2.53.0.jar"
+try:
+    import selenium
+    if selenium.__version__[0] == '3':
+        SELENIUM_JAR = ("http://selenium-release.storage.googleapis.com"
+                        "/3.3/selenium-server-standalone-3.3.1.jar")
+        JAR_FILE = "selenium-server-standalone-3.3.1.jar"
+except Exception:
+    pass
 
 
 def download_selenium():

@@ -1,57 +1,45 @@
-![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-5.png "MasterQA")
-## Automation-Assisted Manual QA
+# MasterQA
 
-### When you can't fully automate your testing, have automation assist your manual testing. MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
+### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA Example")
+![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
-(Above: Actual screens from [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) running against [xkcd.com](http://xkcd.com/1522/))
+Here's some example code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
-### Install SeleniumBase and run the example test:
+```python
+self.open("http://xkcd.com/1700/")
+self.verify("Do you see a webcomic?")
+self.click_link_text('Store')
+self.click_link_text('all the things')
+self.verify("Do you see items for sale?")
+self.update_text("input.search-input", "Robots\n")
+self.verify("Do you see robots in the search results?")
+```
+
+After the web browser performs various automated actions, a pop-up window will ask the tester questions for each verification command. *(See the screenshot below)*
+
+![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
+
+At the end of a full test run, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif)
+
+You may have noticed the ``Incomplete Test Runs`` row on the results page. If the value for that is not zero, it means that one of the automated steps failed. This could happen if you tell your script to perform an action on an element that doesn't exist. Now that we're mixing automation with manual QA, it's good to tell apart the failures from each. The results_table CSV file contains a spreadsheet with the details of each failure (if any) for both manual and automated steps.
+
+#### How to run the example tests from scratch:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
-
 cd SeleniumBase
-
 pip install -r requirements.txt
-
 python setup.py install
-
 cd examples
-
+nosetests basic_masterqa_test.py --with-selenium
 nosetests masterqa_test.py --with-selenium
 ```
 
-At the end of your test run, you'll receive a report with results, screenshots, and log files. (Add ``--browser=chrome`` to your run command in order to use Chrome instead of Firefox, which requires Chromedriver installed.)
+At the end of your test run, you'll receive a report with results, screenshots, and log files. Close the Results Page window when you're done.
 
-### Follow the [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to write your own tests:
-
-```python
-from seleniumbase import MasterQA
-
-class MasterQATests(MasterQA):
-
-    def test_xkcd(self):
-        self.open("http://xkcd.com/1512/")
-        for i in xrange(4):
-            self.click('a[rel="next"]')
-        for i in xrange(3):
-            self.click('a[rel="prev"]')
-        self.verify()
-        self.open("http://xkcd.com/1520/")
-        for i in xrange(2):
-            self.click('a[rel="next"]')
-        self.verify("Can you find the moon?")
-        self.click('a[rel="next"]')
-        self.verify("Do the drones look safe?")
-        self.click_link_text('Blag')
-        self.update_text("input#s", "Robots!\n")
-        self.verify("Does it say 'Hooray robots' on the page?")
-        self.open("http://xkcd.com/213/")
-        for i in xrange(5):
-            self.click('a[rel="prev"]')
-        self.verify("Does the page say 'Abnormal Expressions'?")
-```
+### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to learn how to write your own MasterQA tests:
 
 You'll notice that tests are written based on [SeleniumBase](http://seleniumbase.com), with the key difference of using a different import: ``from seleniumbase import MasterQA`` rather than ``from seleniumbase import BaseCase``. Now the test class will import ``MasterQA`` instead of ``BaseCase``.
 
@@ -62,5 +50,7 @@ self.verify()
 
 self.verify("Can you find the moon?")
 ```
+
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 
 MasterQA is powered by [SeleniumBase](http://seleniumbase.com), the most advanced open-source automation platform on the [Planet](https://en.wikipedia.org/wiki/Earth).

@@ -5,7 +5,7 @@ var app = express();
 var exec = require('child_process').exec;
 
 function run_my_first_test_in_firefox() {
-    exec("nosetests my_first_test.py --with-selenium");
+    exec("nosetests my_first_test.py --with-selenium --browser=firefox");
 }
 
 function run_my_first_test_in_chrome() {
@@ -13,7 +13,7 @@ function run_my_first_test_in_chrome() {
 }
 
 function run_my_first_test_in_firefox_with_demo_mode() {
-    exec("nosetests my_first_test.py --with-selenium --demo_mode");
+    exec("nosetests my_first_test.py --with-selenium --browser=firefox --demo_mode");
 }
 
 function run_my_first_test_in_chrome_with_demo_mode() {

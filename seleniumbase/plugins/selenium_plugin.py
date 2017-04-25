@@ -18,52 +18,72 @@ class SeleniumBrowser(Plugin):
     The plugin for Selenium tests. Takes in key arguments and then
     creates a WebDriver object. All arguments are passed to the tests.
 
-    The following variables are made to the tests:
+    The following command line options are available to the tests:
     self.options.browser -- the browser to use (--browser)
     self.options.server -- the server used by the test (--server)
     self.options.port -- the port used by the test (--port)
     self.options.headless -- the option to run headlessly (--headless)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
+    self.options.highlights -- # of highlight animations shown (--highlights)
+    self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     """
     name = 'selenium'  # Usage: --with-selenium
 
     def options(self, parser, env):
         super(SeleniumBrowser, self).options(parser, env=env)
 
-        parser.add_option('--browser', action='store',
-                          dest='browser',
-                          choices=constants.Browser.VERSION.keys(),
-                          default=constants.Browser.FIREFOX,
-                          help="""Specifies the browser. Default: FireFox.
-                               If you want to use Chrome, indicate that.""")
-        parser.add_option('--browser_version', action='store',
-                          dest='browser_version',
-                          default="latest",
-                          help="""The browser version to use. Explicitly select
-                               a version number or use "latest".""")
-        parser.add_option('--server', action='store', dest='servername',
-                          default='localhost',
-                          help="""Designates the server used by the test.
-                               Default: localhost.""")
-        parser.add_option('--port', action='store', dest='port',
-                          default='4444',
-                          help="""Designates the port used by the test.
-                               Default: 4444.""")
-        parser.add_option('--headless', action="store_true",
-                          dest='headless',
-                          default=False,
-                          help="""Using this makes Webdriver run headlessly,
-                               which is useful inside a Linux Docker.""")
-        parser.add_option('--demo_mode', action="store_true",
-                          dest='demo_mode',
-                          default=False,
-                          help="""Using this slows down the automation so that
-                               you can see what it's actually doing.""")
-        parser.add_option('--demo_sleep', action='store', dest='demo_sleep',
-                          default=None,
-                          help="""Setting this overrides the Demo Mode sleep
-                               time that happens after browser actions.""")
+        parser.add_option(
+            '--browser', action='store',
+            dest='browser',
+            choices=constants.Browser.VERSION.keys(),
+            default=constants.Browser.GOOGLE_CHROME,
+            help="""Specifies the web browser to use. Default: Chrome.
+                    If you want to use Firefox, explicitly indicate that.
+                    Example: (--browser=firefox)""")
+        parser.add_option(
+            '--browser_version', action='store',
+            dest='browser_version',
+            default="latest",
+            help="""The browser version to use. Explicitly select
+                    a version number or use "latest".""")
+        parser.add_option(
+            '--server', action='store', dest='servername',
+            default='localhost',
+            help="""Designates the server used by the test.
+                    Default: localhost.""")
+        parser.add_option(
+            '--port', action='store', dest='port',
+            default='4444',
+            help="""Designates the port used by the test.
+                    Default: 4444.""")
+        parser.add_option(
+            '--headless', action="store_true",
+            dest='headless',
+            default=False,
+            help="""Using this makes Webdriver run headlessly,
+                    which is useful inside a Linux Docker.""")
+        parser.add_option(
+            '--demo_mode', action="store_true",
+            dest='demo_mode',
+            default=False,
+            help="""Using this slows down the automation so that
+                    you can see what it's actually doing.""")
+        parser.add_option(
+            '--demo_sleep', action='store', dest='demo_sleep',
+            default=None,
+            help="""Setting this overrides the Demo Mode sleep
+                    time that happens after browser actions.""")
+        parser.add_option(
+            '--highlights', action='store',
+            dest='highlights', default=None,
+            help="""Setting this overrides the default number of
+                    highlight animation loops to have per call.""")
+        parser.add_option(
+            '--verify_delay', action='store',
+            dest='verify_delay', default=None,
+            help="""Setting this overrides the default wait time
+                    before each MasterQA verification pop-up.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -120,6 +140,8 @@ class SeleniumBrowser(Plugin):
                 test.test.browser = "%s%s" % (self.options.browser, version)
                 test.test.demo_mode = self.options.demo_mode
                 test.test.demo_sleep = self.options.demo_sleep
+                test.test.highlights = self.options.highlights
+                test.test.verify_delay = self.options.verify_delay  # MasterQA
             except Exception as err:
                 print("Error starting/connecting to Selenium:")
                 print(err)
@@ -152,6 +174,8 @@ class SeleniumBrowser(Plugin):
     def afterTest(self, test):
         try:
             self.driver.quit()
+        except AttributeError:
+            pass
         except:
             print("No driver to quit.")
         if self.options.headless:

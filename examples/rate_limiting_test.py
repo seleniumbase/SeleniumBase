@@ -1,8 +1,13 @@
-from seleniumbase import BaseCase
+"""
+This test demonstrates the use of the "rate_limited" decorator.
+You can use this decorator on any method to rate-limit it.
+"""
+
+import unittest
 from seleniumbase.common import decorators
 
 
-class MyTestClass(BaseCase):
+class MyTestClass(unittest.TestCase):
 
     @decorators.rate_limited(3.5)  # The arg is max calls per second
     def print_item(self, item):

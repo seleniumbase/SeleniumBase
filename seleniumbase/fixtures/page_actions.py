@@ -24,12 +24,15 @@ import os
 import sys
 import time
 import traceback
-from seleniumbase.config import settings
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
 from selenium.webdriver.remote.errorhandler import NoSuchElementException
 from selenium.webdriver.remote.errorhandler import NoAlertPresentException
+from selenium.webdriver.remote.errorhandler import NoSuchFrameException
+from selenium.webdriver.remote.errorhandler import NoSuchWindowException
+from seleniumbase.config import settings
 
 
 def is_element_present(driver, selector, by=By.CSS_SELECTOR):
@@ -388,8 +391,14 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        ready_state = driver.execute_script("return document.readyState")
+        try:
+            ready_state = driver.execute_script("return document.readyState")
+        except WebDriverException:
+            # Bug fix for: [Permission denied to access property "document"]
+            time.sleep(0.03)
+            return True
         if ready_state == u'complete':
+            time.sleep(0.01)  # Better be sure everything is done loading
             return True
         else:
             now_ms = time.time() * 1000.0
@@ -450,3 +459,65 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
                 break
             time.sleep(0.1)
     raise Exception("Alert was not present after %s seconds!" % timeout)
+
+
+def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
+    """
+    Wait for an iframe to appear, and switch to it. This should be usable
+    as a drop-in replacement for driver.switch_to.frame().
+    @Params
+    driver - the webdriver object (required)
+    frame - the frame element, name, or index
+    timeout - the time to wait for the alert in seconds
+    """
+
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        try:
+            driver.switch_to.frame(frame)
+            return True
+        except NoSuchFrameException:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    raise Exception("Frame was not present after %s seconds!" % timeout)
+
+
+def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
+    """
+    Wait for a window to appear, and switch to it. This should be usable
+    as a drop-in replacement for driver.switch_to.window().
+    @Params
+    driver - the webdriver object (required)
+    window - the window index or window handle
+    timeout - the time to wait for the window in seconds
+    """
+
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    if isinstance(window, int):
+        for x in range(int(timeout * 10)):
+            try:
+                window_handle = driver.window_handles[window]
+                driver.switch_to.window(window_handle)
+                return True
+            except IndexError:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        raise Exception("Window was not present after %s seconds!" % timeout)
+    else:
+        window_handle = window
+        for x in range(int(timeout * 10)):
+            try:
+                driver.switch_to.window(window_handle)
+                return True
+            except NoSuchWindowException:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        raise Exception("Window was not present after %s seconds!" % timeout)

@@ -19,7 +19,12 @@ EXTREME_TIMEOUT = 30
 # Use Demo Mode when you want others to see what your automation is doing
 # Usage: --demo_mode when run from the command line when using --with-selenium
 # This value can be overwritten on the command line by using --demo_sleep=FLOAT
-DEFAULT_DEMO_MODE_TIMEOUT = 1.2
+DEFAULT_DEMO_MODE_TIMEOUT = 1.0
+
+# Number of times to repeat the highlight animation. (Seen during Demo Mode)
+# Each loop is about 0.18 seconds.
+# This value can be overwritten on the command line by using --highlights=TIMES
+HIGHLIGHTS = 4
 
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
@@ -39,20 +44,23 @@ PAGE_SOURCE_NAME = "page_source.html"
 
 # Default names for folders and files saved when reports are turned on.
 # Usage: "--report" (Also requires: "--with-testing_base")
+# These settings are also used with MasterQA
 LATEST_REPORT_DIR = "latest_report"
 REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"
 RESULTS_TABLE = "results_table.csv"
 
-''' This adds wait_for_ready_state_complete() after various browser actions.
-    By default, Selenium waits for the 'interactive' state before continuing.
-    Setting this to True may improve reliability at the cost of speed.
-    WARNING: Some websites are in a perpetual "interactive" state due to
-    dynamic content that never fully finishes loading (Use "False" there). '''
+'''
+This adds wait_for_ready_state_complete() after various browser actions.
+By default, Selenium waits for the 'interactive' state before continuing.
+Setting this to True may improve reliability at the cost of speed.
+WARNING: Some websites are in a perpetual "interactive" state due to
+dynamic content that never fully finishes loading (Use "False" there).
+'''
 # Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
-WAIT_FOR_RSC_ON_PAGE_LOADS = False
+WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
-WAIT_FOR_RSC_ON_CLICKS = False
+WAIT_FOR_RSC_ON_CLICKS = True
 
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
@@ -62,6 +70,7 @@ WAIT_FOR_RSC_ON_CLICKS = False
 MASTERQA_DEFAULT_VALIDATION_MESSAGE = "Does the page look good?"
 
 # The time delay (in seconds) before the validation pop-up appears
+# This value can be overwritten on the command line. Ex: --verify_delay=0.5
 MASTERQA_WAIT_TIME_BEFORE_VERIFY = 1.0
 
 # If True, the automation will start in full-screen mode

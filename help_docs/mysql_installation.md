@@ -27,6 +27,7 @@ If you were able to successfully install MySQL, you can now install the remainin
 ```bash
 pip install -r server_requirements.txt
 ```
+(NOTE: This install uses Selenium 2.53.6 rather than the usual Selenium 3+ from the standard requirements file due to compatibility issues with running browser tests on headless server machines.)
 
 #### Configure your MySQL DB for SeleniumBase
 
@@ -39,3 +40,15 @@ Example:
 ```bash
 nosetests my_first_test.py --with-selenium --with-db_reporting
 ```
+
+#### Windows mysql-python troubleshooting:
+
+If you're having trouble with Windows mysql-python installation using pip, you can also try the following steps to install from an alternative source:
+
+* Download the unofficial ``.whl`` format of MySQL-Python and Mysqlclient from [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python).
+
+* Open a console and then cd to where you've downloaded the MySQL-Python .whl file.
+
+* Run the command ``pip install FILENAME.whl``
+
+* If pip.exe is not recognized, you may find it in the "Scripts" directory from where python has been installed.

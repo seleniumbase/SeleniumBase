@@ -4,18 +4,19 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open('http://xkcd.com/353/')                       # Opens the url
-        self.assert_element('img[alt="Python"]')      # Asserts element on page
-        self.click('a[rel="license"]')                 # Clicks element on page
-        xkcd_license = self.get_text('center')    # Gets text from page element
-        assert('reuse any of my drawings' in xkcd_license)
+        self.open('http://xkcd.com/353/')            # Navigate to the web page
+        self.assert_element('img[alt="Python"]')       # Assert element on page
+        self.click('a[rel="license"]')                  # Click element on page
+        self.assert_text('copy and reuse', 'div center')  # Assert element text
         self.open('http://xkcd.com/1481/')
         image_object = self.find_element('#comic img')    # Returns the element
-        caption = image_object.get_attribute('title')  # Gets attr from element
-        assert('connections to the server' in caption)
-        self.click_link_text('Blag')          # Clicks link containing the text
-        self.assert_text('The blag', 'header h2')     # Asserts text in element
-        self.update_text('input#s', 'Robots!\n')  # Updates textfield with text
+        caption = image_object.get_attribute('title')   # Get element attribute
+        self.assertTrue('connections to the server' in caption)
+        self.click_link_text('Blag')              # Click on link with the text
+        self.assert_text('xkcd', '#site-title')
+        header_text = self.get_text('header h2')  # Grab text from page element
+        self.assertTrue('The blag of the webcomic' in header_text)
+        self.update_text('input#s', 'Robots!\n')  # Fill in field with the text
         self.assert_text('Hooray robots!', '#content')
         self.open('http://xkcd.com/1319/')
         self.assert_text('Automation', 'div#ctitle')
@@ -39,9 +40,13 @@ class MyTestClass(BaseCase):
         #        >>> dir(By)
         #        ['CLASS_NAME', 'CSS_SELECTOR', 'ID', 'LINK_TEXT', 'NAME', ...
         #    }
-        #    XPath is used by default if the arg starts with "/" or "./". Ex:
+        #    XPath is used by default if the arg starts with "/", "./", or "(":
         #    [
         #        self.click('/html/body/div[3]/div[4]/p[2]/a')
+        #    ]
+        #    But if you want XPath-clicking to be more clear in the code, use:
+        #    [
+        #        self.click_xpath('/html/body/div[3]/div[4]/p[2]/a')
         #    ]
         #
         #    If you're completely new to CSS selectors, right-click on a
@@ -59,21 +64,31 @@ class MyTestClass(BaseCase):
         #
         # 3. There's usually more than one way to do the same thing. Ex:
         #    [
-        #        xkcd_license = self.get_text('center')
-        #        assert('reuse any of my drawings' in xkcd_license)
+        #        header_text = self.get_text('header h2')
+        #        self.assertTrue('The blag of the webcomic' in header_text)
         #    ]
         #    Can be simplified to:
         #    [
-        #        self.assert_text('reuse any of my drawings', 'center')
+        #        self.assert_text('The blag of the webcomic', 'header_text')
+        #    ]
+        #
+        #    The following lines:
+        #    [
+        #        image_object = self.find_element('#comic img')
+        #        caption = image_object.get_attribute('title')
+        #    ]
+        #    Can also be written as:
+        #    [
+        #        caption = self.get_attribute('#comic img', 'title')
         #    ]
         #
         #    And the following line:
         #    [
-        #        xkcd_license = self.get_text('center')
+        #        header_text = self.get_text('header h2')
         #    ]
         #    Can also be written as:
         #    [
-        #        xkcd_license = self.find_element('center').text
+        #        header_text = self.find_element('header h2').text
         #    ]
         #    ...and in many more ways!
         #

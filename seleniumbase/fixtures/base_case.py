@@ -1,7 +1,21 @@
 """
-These methods improve on and expand existing WebDriver commands.
-Improvements include making WebDriver commands more robust and more reliable
-by giving page elements enough time to load before taking action on them.
+BaseCase gathers SeleniumBase libraries into a single file for easy calling.
+Usage:
+
+    from seleniumbase import BaseCase
+    class MyTestClass(BaseCase):
+        test_anything(self):
+            # Write your code here. Example:
+            self.open("https://github.com/")
+            self.update_text("input.header-search-input", "SeleniumBase\n")
+            self.click('a[href="/seleniumbase/SeleniumBase"]')
+            self.assert_element("div.repository-content")
+            ....
+
+The methods here expand and improve existing WebDriver commands.
+Improvements include making WebDriver more robust and more reliable.
+Page elements are given enough time to load before taking action on them.
+Code becomes greatly simplified and easier to maintain.
 """
 
 import getpass
@@ -28,8 +42,12 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver import ActionChains
 
 
 class BaseCase(unittest.TestCase):
@@ -61,13 +79,50 @@ class BaseCase(unittest.TestCase):
 
     def click(self, selector, by=By.CSS_SELECTOR,
               timeout=settings.SMALL_TIMEOUT):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
         pre_action_url = self.driver.current_url
-        element.click()
+        try:
+            element.click()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=timeout)
+            element.click()
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
+
+    def double_click(self, selector, by=By.CSS_SELECTOR,
+                     timeout=settings.SMALL_TIMEOUT):
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout=timeout)
+        self._demo_mode_highlight_if_active(selector, by)
+        pre_action_url = self.driver.current_url
+        try:
+            actions = ActionChains(self.driver)
+            actions.move_to_element(element)
+            actions.double_click(element)
+            actions.perform()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=timeout)
+            actions = ActionChains(self.driver)
+            actions.move_to_element(element)
+            actions.double_click(element)
+            actions.perform()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -118,7 +173,68 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_link_text_visible(link_text, timeout=timeout)
         self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
         pre_action_url = self.driver.current_url
-        element.click()
+        try:
+            element.click()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_link_text_visible(
+                link_text, timeout=timeout)
+            element.click()
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
+
+    def click_partial_link_text(self, partial_link_text,
+                                timeout=settings.SMALL_TIMEOUT):
+        """ This method clicks the partial link text on a page. """
+        # If using phantomjs, might need to extract and open the link directly
+        if self.browser == 'phantomjs':
+            if self.is_partial_link_text_visible(partial_link_text):
+                element = self.wait_for_partial_link_text(partial_link_text)
+                element.click()
+                return
+            source = self.driver.page_source
+            soup = BeautifulSoup(source)
+            html_links = soup.fetch('a')
+            for html_link in html_links:
+                if partial_link_text in html_link.text:
+                    for html_attribute in html_link.attrs:
+                        if html_attribute[0] == 'href':
+                            href = html_attribute[1]
+                            if href.startswith('//'):
+                                link = "http:" + href
+                            elif href.startswith('/'):
+                                url = self.driver.current_url
+                                domain_url = self.get_domain_url(url)
+                                link = domain_url + href
+                            else:
+                                link = href
+                            self.open(link)
+                            return
+                    raise Exception(
+                        'Could not parse link from partial link_text '
+                        '[%s]' % partial_link_text)
+            raise Exception(
+                "Partial link text [%s] was not found!" % partial_link_text)
+        # Not using phantomjs
+        element = self.wait_for_partial_link_text(
+            partial_link_text, timeout=timeout)
+        self._demo_mode_highlight_if_active(
+            partial_link_text, by=By.PARTIAL_LINK_TEXT)
+        pre_action_url = self.driver.current_url
+        try:
+            element.click()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_partial_link_text(
+                partial_link_text, timeout=timeout)
+            element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -129,20 +245,63 @@ class BaseCase(unittest.TestCase):
 
     def get_text(self, selector, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
-        return element.text
+        try:
+            element_text = element.text
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout)
+            element_text = element.text
+        return element_text
 
     def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
-        attribute_value = element.get_attribute(attribute)
+        try:
+            attribute_value = element.get_attribute(attribute)
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = page_actions.wait_for_element_present(
+                self.driver, selector, by, timeout)
+            attribute_value = element.get_attribute(attribute)
         if attribute_value is not None:
             return attribute_value
         else:
             raise Exception("Element [%s] has no attribute [%s]!" % (
                 selector, attribute))
+
+    def refresh_page(self):
+        self.driver.refresh()
+
+    def get_current_url(self):
+        return self.driver.current_url
+
+    def get_page_source(self):
+        return self.driver.page_source
+
+    def get_page_title(self):
+        return self.driver.title
+
+    def go_back(self):
+        self.driver.back()
+
+    def go_forward(self):
+        self.driver.forward()
+
+    def get_image_url(self, selector, by=By.CSS_SELECTOR,
+                      timeout=settings.SMALL_TIMEOUT):
+        """ Extracts the URL from an image element on the page. """
+        return self.get_attribute(selector,
+                                  attribute='src', by=by, timeout=timeout)
 
     def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
@@ -152,7 +311,28 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
         pre_action_url = self.driver.current_url
-        element.send_keys(new_value)
+        try:
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self._demo_mode_pause_if_active()
@@ -177,10 +357,39 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
-        element.clear()
+        try:
+            element.clear()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            element.clear()
         self._demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
-        element.send_keys(new_value)
+        try:
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            element.clear()
+            if not new_value.endswith('\n'):
+                element.send_keys(new_value)
+            else:
+                new_value = new_value[:-1]
+                element.send_keys(new_value)
+                element.send_keys(Keys.RETURN)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
@@ -201,26 +410,36 @@ class BaseCase(unittest.TestCase):
                                timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.is_element_visible(self.driver, selector, by)
 
     def is_link_text_visible(self, link_text):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
         return page_actions.is_element_visible(self.driver, link_text,
                                                by=By.LINK_TEXT)
 
+    def is_partial_link_text_visible(self, partial_link_text):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        return page_actions.is_element_visible(self.driver, partial_link_text,
+                                               by=By.PARTIAL_LINK_TEXT)
+
     def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.find_visible_elements(self.driver, selector, by)
 
@@ -248,7 +467,7 @@ class BaseCase(unittest.TestCase):
             pass
         self.execute_script(
             '''var script = document.createElement("script"); '''
-            '''script.src = "http://code.jquery.com/jquery-2.2.4.min.js"; '''
+            '''script.src = "http://code.jquery.com/jquery-3.1.0.min.js"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
         for x in xrange(30):
@@ -261,14 +480,15 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
-    def highlight(self, selector, by=By.CSS_SELECTOR, loops=4, scroll=True):
+    def highlight(self, selector, by=By.CSS_SELECTOR,
+                  loops=settings.HIGHLIGHTS, scroll=True):
         """ This method uses fancy javascript to highlight an element.
             Used during demo_mode.
             @Params
             selector - the selector of the element to find
             by - the type of selector to search by (Default: CSS)
-            loops - # of times to repeat the highlight animation (Default: 4)
-                   (4 loops is about 0.70 seconds. Your mileage may vary)
+            loops - # of times to repeat the highlight animation
+                    (Default: 4. Each loop lasts for about 0.18s)
             scroll - the option to scroll to the element first (Default: True)
         """
         element = self.find_element(
@@ -302,6 +522,8 @@ class BaseCase(unittest.TestCase):
         except Exception:
             self.activate_jquery()
             self.execute_script(script)
+        if self.highlights:
+            loops = self.highlights
         loops = int(loops)
         for n in xrange(loops):
             script = """jQuery('%s').css('box-shadow',
@@ -338,7 +560,14 @@ class BaseCase(unittest.TestCase):
         ''' Fast scroll to destination '''
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
-        self._scroll_to_element(element)
+        try:
+            self._scroll_to_element(element)
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            self._scroll_to_element(element)
 
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR,
                        timeout=settings.SMALL_TIMEOUT):
@@ -351,8 +580,11 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by)
         self.click(selector, by=by)
 
+    def click_xpath(self, xpath):
+        self.click(xpath, by=By.XPATH)
+
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         selector = self.convert_to_css_selector(selector, by=by)
         self.wait_for_element_present(
@@ -386,7 +618,6 @@ class BaseCase(unittest.TestCase):
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(file_url, destination_folder)
-        return True
 
     def save_file_as(self, file_url, new_file_name, destination_folder=None):
         """ Similar to self.download_file(), except that you get to rename the
@@ -395,7 +626,6 @@ class BaseCase(unittest.TestCase):
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name)
-        return True
 
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
@@ -428,7 +658,7 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
         """ This method uses jQuery to update a text field. """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         selector = self.convert_to_css_selector(selector, by=by)
         self._demo_mode_highlight_if_active(selector, by)
@@ -455,7 +685,7 @@ class BaseCase(unittest.TestCase):
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
             {Enter/Return} after the text is entered.  """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
@@ -498,9 +728,9 @@ class BaseCase(unittest.TestCase):
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
-        if hover_selector.startswith('/') or hover_selector.startswith('./'):
+        if page_utils.is_xpath_selector(hover_selector):
             hover_by = By.XPATH
-        if click_selector.startswith('/') or click_selector.startswith('./'):
+        if page_utils.is_xpath_selector(click_selector):
             click_by = By.XPATH
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
@@ -517,13 +747,37 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active(tiny=True)
         return element
 
+    def pick_select_option_by_text(self, dropdown_selector, option,
+                                   dropdown_by=By.CSS_SELECTOR,
+                                   timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by option text. """
+        self._pick_select_option(dropdown_selector, option,
+                                 dropdown_by=dropdown_by, option_by="text",
+                                 timeout=timeout)
+
+    def pick_select_option_by_index(self, dropdown_selector, option,
+                                    dropdown_by=By.CSS_SELECTOR,
+                                    timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by option index. """
+        self._pick_select_option(dropdown_selector, option,
+                                 dropdown_by=dropdown_by, option_by="index",
+                                 timeout=timeout)
+
+    def pick_select_option_by_value(self, dropdown_selector, option,
+                                    dropdown_by=By.CSS_SELECTOR,
+                                    timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by option value. """
+        self._pick_select_option(dropdown_selector, option,
+                                 dropdown_by=dropdown_by, option_by="value",
+                                 timeout=timeout)
+
     ############
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
             The element does not need be visible (it may be hidden). """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
@@ -546,7 +800,7 @@ class BaseCase(unittest.TestCase):
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
             The element must be visible (it cannot be hidden). """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
@@ -576,7 +830,7 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
@@ -626,6 +880,30 @@ class BaseCase(unittest.TestCase):
         self.wait_for_link_text_visible(link_text, timeout=timeout)
         return True
 
+    # For backwards compatibility, earlier method names of the next
+    # four methods have remained even though they do the same thing,
+    # with the exception of assert_*, which won't return the element,
+    # but like the others, will raise an exception if the call fails.
+
+    def wait_for_partial_link_text(self, partial_link_text,
+                                   timeout=settings.LARGE_TIMEOUT):
+        return self.wait_for_element_visible(
+            partial_link_text, by=By.PARTIAL_LINK_TEXT, timeout=timeout)
+
+    def find_partial_link_text(self, partial_link_text,
+                               timeout=settings.LARGE_TIMEOUT):
+        """ Same as wait_for_partial_link_text() - returns the element """
+        return self.wait_for_partial_link_text(
+            partial_link_text, timeout=timeout)
+
+    def assert_partial_link_text(self, partial_link_text,
+                                 timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_partial_link_text(), but returns nothing.
+            As above, will raise an exception if nothing can be found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
+        return True
+
     ############
 
     def wait_for_element_absent(self, selector, by=By.CSS_SELECTOR,
@@ -634,7 +912,7 @@ class BaseCase(unittest.TestCase):
             A hidden element still counts as appearing in the page HTML.
             If an element with "hidden" status is acceptable,
             use wait_for_element_not_visible() instead. """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_absent(
             self.driver, selector, by, timeout)
@@ -654,7 +932,7 @@ class BaseCase(unittest.TestCase):
         """ Waits for an element to no longer be visible on a page.
             The element can be non-existant in the HTML or hidden on the page
             to qualify as not visible. """
-        if selector.startswith('/') or selector.startswith('./'):
+        if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
@@ -680,6 +958,15 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_and_switch_to_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
+
+    def switch_to_frame(self, frame, timeout=settings.SMALL_TIMEOUT):
+        page_actions.switch_to_frame(self.driver, frame, timeout)
+
+    def switch_to_window(self, window, timeout=settings.SMALL_TIMEOUT):
+        page_actions.switch_to_window(self.driver, window, timeout)
+
+    def switch_to_default_content(self):
+        self.driver.switch_to.default_content()
 
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
@@ -749,6 +1036,44 @@ class BaseCase(unittest.TestCase):
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             raise Exception(exception_output)
+
+    ############
+
+    def _pick_select_option(self, dropdown_selector, option,
+                            dropdown_by=By.CSS_SELECTOR, option_by="text",
+                            timeout=settings.SMALL_TIMEOUT):
+        """ Picks an HTML <select> option by specification.
+            Option specifications are by "text", "index", or "value".
+            Defaults to "text" if option_by is unspecified or unknown. """
+        element = self.find_element(
+            dropdown_selector, by=dropdown_by, timeout=timeout)
+        self._demo_mode_highlight_if_active(dropdown_selector, dropdown_by)
+        pre_action_url = self.driver.current_url
+        try:
+            if option_by == "index":
+                Select(element).select_by_index(option)
+            elif option_by == "value":
+                Select(element).select_by_value(option)
+            else:
+                Select(element).select_by_visible_text(option)
+        except StaleElementReferenceException:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.find_element(
+                dropdown_selector, by=dropdown_by, timeout=timeout)
+            if option_by == "index":
+                Select(element).select_by_index(option)
+            elif option_by == "value":
+                Select(element).select_by_value(option)
+            else:
+                Select(element).select_by_visible_text(option)
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self._demo_mode_pause_if_active()
+            else:
+                self._demo_mode_pause_if_active(tiny=True)
 
     ############
 
@@ -844,6 +1169,8 @@ class BaseCase(unittest.TestCase):
             self.data = pytest.config.option.data
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
+            self.highlights = pytest.config.option.highlights
+            self.verify_delay = pytest.config.option.verify_delay
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
@@ -918,6 +1245,13 @@ class BaseCase(unittest.TestCase):
             for tb in self.page_check_failures:
                 exception_output += "%s\n" % tb
             logging.exception(exception_output)
+        self.is_pytest = None
+        try:
+            # This raises an exception if the test is not coming from pytest
+            self.is_pytest = pytest.config.option.is_pytest
+        except Exception:
+            # Not using pytest (probably nosetests)
+            self.is_pytest = False
         if self.is_pytest:
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,

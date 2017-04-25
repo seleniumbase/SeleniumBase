@@ -62,7 +62,7 @@ sudo apt-get install -y --force-yes python-MySQLdb
 
 # Install PhantomJS
 cd ~
-export PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"
+export PHANTOM_JS="phantomjs-2.1.1-linux-x86_64"
 sudo wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
 sudo tar xvjf $PHANTOM_JS.tar.bz2
 sudo mv -f $PHANTOM_JS /usr/local/share
@@ -75,7 +75,7 @@ sudo apt-get -f install -y --force-yes
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # Install Chromedriver
-sudo wget -N http://chromedriver.storage.googleapis.com/2.20/chromedriver_linux64.zip -P ~/Downloads
+sudo wget -N http://chromedriver.storage.googleapis.com/2.28/chromedriver_linux64.zip -P ~/Downloads
 sudo unzip -o ~/Downloads/chromedriver_linux64.zip -d ~/Downloads
 sudo chmod +x ~/Downloads/chromedriver
 sudo rm -f /usr/local/share/chromedriver

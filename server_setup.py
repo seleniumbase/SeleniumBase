@@ -1,5 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
+(Uses the older Selenium 2.53.6 for compatibility reasons)
 """
 
 import os
@@ -20,7 +21,7 @@ setup(
         'pip>=9.0.1',
         'setuptools>=35.0.1',
         'ipython==5.3.0',
-        'selenium==3.3.1',
+        'selenium==2.53.6',
         'nose>=1.3.7',
         'pytest>=3.0.7',
         'six>=1.10.0',

@@ -1,21 +1,36 @@
-## Installation Instructions for Python, pip, brew, git, and virtualenv (or virtualenvwrapper)
+## Installation instructions for Python, pip, brew, git, virtualenv, and virtualenvwrapper
 
 
 ### [Python 2.7](https://www.python.org/downloads/)
 
-If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 (both of these major versions are being improved in parallel). Python 2.7.10 is the one I've been using on my Mac.
+If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 instead.
 
-If you're a WINDOWS user, [download the latest 2.* version from here](https://www.python.org/downloads/release/python-2710/).
+If you're a WINDOWS user, [download Python 2.7 from here](https://www.python.org/downloads/release/python-2713/).
+
 
 ### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
-If "pip" did not come with your Python installation, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
+You might already have pip installed, but if you don't:
 
-On a Mac, you can also install pip easily with the following command:
+On a MAC, run the following command:
 ```bash
 sudo easy_install pip
 ```
-Then make sure it's on your path.
+
+If you're not using the latest version of pip & setuptools, you'll need to upgrade:
+```bash
+pip install -U pip setuptools
+```
+
+On WINDOWS, run the following command:
+```bash
+python -m pip install -U pip setuptools
+```
+
+If you're having any trouble with that, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
+
+When done, make sure pip is on your path. ($PATH on Mac/Linux. System Environment Variables on WINDOWS.)
+
 
 ### [Homebrew](http://brew.sh/) (MAC-ONLY) (OPTIONAL)
 
@@ -37,22 +52,19 @@ brew install git
 
 (WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/downloads).)
 
-### [Virtualenv](http://virtualenv.readthedocs.org/en/latest/) or [Virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
+<a id="virtual_environment"></a>
+### [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
 
-Mac: (The old regular way):
+(NOTE: Virtual environments allow each your Python projects to have a unique set of packaged dependencies.)
 
+MAC:
 ```bash
-sudo easy_install virtualenv
+sudo easy_install --upgrade virtualenv
+sudo easy_install --upgrade virtualenvwrapper
 ```
 
-Mac: (The new fancy way):
-
+WINDOWS:
 ```bash
-sudo easy_install virtualenvwrapper
-```
-
-Windows:
-
-```bash
-pip install virtualenv
+pip install --upgrade virtualenv
+pip install --upgrade virtualenvwrapper-win
 ```
