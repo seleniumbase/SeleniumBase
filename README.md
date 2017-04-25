@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/LogoBlue2.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/LogoBlue2.png "SeleniumBase")![](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase" )
 
 <b>Web Automation Made Easy and Reliable.</b>
 
