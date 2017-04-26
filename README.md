@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/NewLogo4.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/NewLogo5.png "SeleniumBase")
 
 <b>Web Automation Made Easy and Reliable.</b>
 
@@ -19,7 +19,7 @@
 
 
 <a id="main_introduction"></a>
-### Intro and Demo
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") Intro and Demo
 
 <b>Simple Python syntax makes coding easy:</b><br>
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -56,7 +56,7 @@ SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](ht
 
 
 <a id="feature_list"></a>
-### **Full Feature List**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Full Feature List**
 * A test framework for building & running [reliable browser-based GUI scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for helping you do much more with Selenium-WebDriver.
 * A flexible CLI [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) and [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) for customizing test runs.
@@ -68,7 +68,7 @@ SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](ht
 
 
 <a id="dependency_installation"></a>
-### **Setup Instructions for Mac, Ubuntu, and Windows**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Setup Instructions for Mac, Ubuntu, and Windows**
 
 *(**Debian Linux users**: Run [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh) to setup your Debian Linux machine.)*
 
@@ -115,7 +115,7 @@ brew install chromedriver phantomjs
 
 
 <a id="seleniumbase_installation"></a>
-### **Step 1:** Clone SeleniumBase Locally
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase Locally
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -127,7 +127,7 @@ cd SeleniumBase
 
 ### **Step 2:** Create a Virtual Environment
 
-If you're not sure how, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. For an overview of virtual environments and why you should use them, **[click here](http://docs.python-guide.org/en/latest/dev/virtualenvs/)**.
+If you're not sure how to create one, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**.<br>For an overview of virtual environments and why it's good practice to use them, see **[http://docs.python-guide.org/en/latest/dev/virtualenvs/](http://docs.python-guide.org/en/latest/dev/virtualenvs/)**.
 
 
 ### **Step 3:** Install SeleniumBase
@@ -146,7 +146,7 @@ python setup.py install
 
 
 <a id="seleniumbase_basic_usage"></a>
-### **Step 4:** Run the Example Script
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Step 4:** Run the Example Script
 
 **Here's what the example script looks like:**
 
@@ -254,7 +254,7 @@ pytest my_first_test.py --with-selenium --with-testing_base --browser=phantomjs 
 
 
 <a id="how_seleniumbase_works"></a>
-### **How SeleniumBase Works:**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **How SeleniumBase Works:**
 
 At the core, SeleniumBase works by extending Nosetests and Pytest as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Nosetest/Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class.
 
@@ -274,7 +274,7 @@ class MyTestClass(BaseCase):
 
 
 <a id="creating_visual_reports"></a>
-### **Creating Visual Test Suite Reports** (for nosetest users *ONLY*):
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Creating Visual Test Suite Reports** (for nosetest users *ONLY*):
 
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
@@ -287,7 +287,7 @@ nosetests my_test_suite.py --with-selenium --with-testing_base --report --browse
 
 
 <a id="utilizing_advanced_features"></a>
-### **Using Production Environments & Integrations:**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Using Production Environments & Integrations:**
 
 Here are some things you can do to setup a production environment for your testing:
 
@@ -349,7 +349,7 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 
 
 <a id="detailed_method_specifications"></a>
-### **Detailed Method Specifications and Examples:**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Detailed Method Specifications and Examples:**
 
 #### Navigating to a web page (and related commands)
 
@@ -682,20 +682,22 @@ Now you know how to pull data from your MySQL DB.
 Delayed Data Manager usage example: If you scheduled an email to go out 12 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 12 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
 
 
-### Wrap-Up
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") Wrap-Up
 
 Congratulations! You now know how to **Automate like a Pro!**
 
 Questions or Comments? [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Here are other exciting open source projects on GitHub by smart people I've worked with:
+Here are some other exciting open source projects on GitHub by smart people I've worked with:
 [https://github.com/hubspot](https://github.com/hubspot)
 
 ~ Michael Mintz [https://github.com/mdmintz](https://github.com/mdmintz) [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)
 
 
-### License & Disclaimer
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") License & Disclaimer
 
 [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) (The MIT License)
 
 "With great power comes great responsibility" ... And SeleniumBase gives you the power.
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/NewLogo4.png "SeleniumBase")
