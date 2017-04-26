@@ -115,7 +115,7 @@ brew install chromedriver phantomjs
 
 
 <a id="seleniumbase_installation"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase Locally
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
