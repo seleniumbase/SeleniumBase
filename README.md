@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/NewLogo5.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/LogoBlue3.png "SeleniumBase")
 
 <b>Web Automation Made Easy and Reliable.</b>
 
@@ -699,5 +699,3 @@ Here are some other exciting open source projects on GitHub by smart people I've
 [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) (The MIT License)
 
 "With great power comes great responsibility" ... And SeleniumBase gives you the power.
-
-![](https://cdn2.hubspot.net/hubfs/100006/images/NewLogo4.png "SeleniumBase")
