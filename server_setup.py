@@ -54,7 +54,8 @@ setup(
             's3_logging = seleniumbase.plugins.s3_logging_plugin:S3Logging',
             ('hipchat_reporting = seleniumbase.plugins'
              '.hipchat_reporting_plugin:HipchatReporting'),
-            ]
+            ],
+        'pytest11': ['seleniumbase = seleniumbase.plugins.pytest_plugin']
         }
     )
 

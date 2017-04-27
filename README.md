@@ -59,7 +59,7 @@ SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](ht
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Full Feature List**
 * A test framework for building & running [reliable browser-based GUI scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) for helping you do much more with Selenium-WebDriver.
-* A flexible CLI [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) and [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) for customizing test runs.
+* A flexible CLI [in Nosetests](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/selenium_plugin.py) and [in Pytest](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) for customizing test runs.
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
 * [A global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for making SeleniumBase unique to your specific environmental needs.
 * Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js).
@@ -250,7 +250,7 @@ pytest my_first_test.py --with-selenium --with-testing_base --browser=phantomjs 
 ```
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
 
-(NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [conftest.py](https://github.com/seleniumbase/SeleniumBase/blob/master/conftest.py) at the base of the new folder structure** because the pytest configuration is defined there locally at runtime. You'll also want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) there too.)
+(NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure.**
 
 
 <a id="how_seleniumbase_works"></a>
