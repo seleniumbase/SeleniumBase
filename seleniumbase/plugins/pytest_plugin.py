@@ -9,6 +9,7 @@ from seleniumbase.fixtures import constants
 
 
 def pytest_addoption(parser):
+    parser = parser.getgroup('SeleniumBase', 'SeleniumBase specific configuration options')
     parser.addoption('--browser', action="store",
                      dest='browser',
                      choices=constants.Browser.VERSION.keys(),
