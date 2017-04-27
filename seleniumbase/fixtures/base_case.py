@@ -65,6 +65,7 @@ class BaseCase(unittest.TestCase):
         self.environment = None
         self.page_check_count = 0
         self.page_check_failures = []
+        self._html_report_extra = []
 
     def open(self, url):
         self.driver.get(url)
@@ -1230,6 +1231,20 @@ class BaseCase(unittest.TestCase):
                 data_payload.message = "Unknown Error: See Stacktrace"
         self.testcase_manager.update_testcase_data(data_payload)
 
+    def _add_pytest_html_extra(self):
+        try:
+            pytest_html = pytest.config.pluginmanager.getplugin('html')
+            if self.with_selenium and pytest_html:
+                driver = self.driver
+                extra_url = pytest_html.extras.url(driver.current_url)
+                screenshot = driver.get_screenshot_as_base64()
+                extra_image = pytest_html.extras.image(screenshot,
+                                                       name='Screenshot')
+                self._html_report_extra.append(extra_url)
+                self._html_report_extra.append(extra_image)
+        except:
+            pass
+
     def tearDown(self):
         """
         pytest-specific code
@@ -1258,7 +1273,10 @@ class BaseCase(unittest.TestCase):
                                     self._testMethodName)
             if self.with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
-                if self.with_testing_base and (sys.exc_info()[1] is not None):
+                is_exception = sys.exc_info()[1] is not None
+                if is_exception:
+                    self._add_pytest_html_extra()
+                if self.with_testing_base and is_exception:
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)

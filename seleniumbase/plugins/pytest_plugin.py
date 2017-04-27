@@ -2,6 +2,7 @@
 
 import optparse
 import os
+import pytest
 import shutil
 import time
 from seleniumbase.config import settings
@@ -124,3 +125,17 @@ def pytest_runtest_setup():
 def pytest_runtest_teardown():
     """ This runs after every test with pytest """
     pass
+
+
+@pytest.mark.hookwrapper
+def pytest_runtest_makereport(item, call):
+    pytest_html = item.config.pluginmanager.getplugin('html')
+    outcome = yield
+    report = outcome.get_result()
+    if pytest_html and report.when == 'call':
+        try:
+            extra_report = item._testcase._html_report_extra
+            extra = getattr(report, 'extra', [])
+            report.extra = extra + extra_report
+        except:
+            pass

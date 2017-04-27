@@ -23,6 +23,7 @@ setup(
         'selenium==3.4.0',
         'nose>=1.3.7',
         'pytest>=3.0.7',
+        'pytest-html>=1.14.2',
         'six>=1.10.0',
         'flake8>=3.3.0',
         'requests>=2.13.0',
