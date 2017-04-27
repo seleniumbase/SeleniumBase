@@ -56,7 +56,6 @@ setup(
              '.hipchat_reporting_plugin:HipchatReporting'),
             ],
         'pytest11': ['seleniumbase = seleniumbase.plugins.pytest_plugin']
-
         }
     )
 
