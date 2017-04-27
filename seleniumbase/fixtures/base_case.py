@@ -448,11 +448,11 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script(script)
 
     def set_window_size(self, width, height):
-        return self.driver.set_window_size(width, height)
+        self.driver.set_window_size(width, height)
         self._demo_mode_pause_if_active()
 
     def maximize_window(self):
-        return self.driver.maximize_window()
+        self.driver.maximize_window()
         self._demo_mode_pause_if_active()
 
     def activate_jquery(self):
@@ -1206,7 +1206,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
-                self.display = Display(visible=0, size=(1200, 800))
+                self.display = Display(visible=0, size=(1920, 1200))
                 self.display.start()
                 self.headless_active = True
             if self.with_selenium:
