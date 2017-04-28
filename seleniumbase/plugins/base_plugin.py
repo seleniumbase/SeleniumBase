@@ -53,10 +53,10 @@ class Base(Plugin):
             default=False,
             help='Create a fancy report at the end of the test suite.')
         parser.add_option(
-            '--hide_report', action="store_true",
-            dest='hide_report',
+            '--show_report', action="store_true",
+            dest='show_report',
             default=False,
-            help="If true while using report, it won't pop up after tests run")
+            help="If true when using report, will display it after tests run.")
 
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)
@@ -65,7 +65,7 @@ class Base(Plugin):
         self.options = options
         log_path = options.log_path
         self.report_on = options.report
-        self.hide_report = options.hide_report
+        self.show_report = options.show_report
         if log_path.endswith("/"):
             log_path = log_path[:-1]
         if not os.path.exists(log_path):
@@ -108,7 +108,7 @@ class Base(Plugin):
                     self.page_results_list,
                     self.successes, self.failures,
                     self.options.browser,
-                    self.hide_report)
+                    self.show_report)
 
     def __log_all_options_if_none_specified(self, test):
         """
