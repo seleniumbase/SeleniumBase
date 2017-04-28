@@ -42,7 +42,8 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import (StaleElementReferenceException,
+                                        TimeoutException)
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -959,31 +960,32 @@ class BaseCase(unittest.TestCase):
         return is_ready
 
     def wait_for_angularjs(self, timeout=settings.EXTREME_TIMEOUT, **kwargs):
-        if not settings.WAIT_FOR_ANGULARJS: return
+        if not settings.WAIT_FOR_ANGULARJS:
+            return
+
         NG_WRAPPER = '%(prefix)s' \
-                     'var $elm=document.querySelector(\'[data-ng-app],' \
-                     '[ng-app],.ng-scope\')||document;' \
+                     'var $elm=document.querySelector(' \
+                     '\'[data-ng-app],[ng-app],.ng-scope\')||document;' \
                      'if(window.angular && angular.getTestability){' \
                      'angular.getTestability($elm).whenStable(%(handler)s)' \
                      '}else{' \
                      'var $inj;try{$inj=angular.element($elm).injector()||' \
                      'angular.injector([\'ng\'])}catch(ex){' \
-                     '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||$inj;' \
-                     '$inj.get(\'$browser\').notifyWhenNoOutstandingRequests(' \
-                     '%(handler)s)}' \
+                     '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||' \
+                     '$inj;$inj.get(\'$browser\').' \
+                     'notifyWhenNoOutstandingRequests(%(handler)s)}' \
                      '%(suffix)s'
-        prefix = kwargs.pop('prefix',
-                            'var cb=arguments[arguments.length-1];' \
-                            'if(window.angular){'),
+        def_pre = 'var cb=arguments[arguments.length-1];if(window.angular){'
+        prefix = kwargs.pop('prefix', def_pre)
         handler = kwargs.pop('handler', 'function(){cb(true)}')
         suffix = kwargs.pop('suffix', '}else{cb(false)}')
-        script = self.NG_WRAPPER % {'prefix': prefix,
-                                    'handler': handler,
-                                    'suffix': suffix}
+        script = NG_WRAPPER % {'prefix': prefix,
+                               'handler': handler,
+                               'suffix': suffix}
         try:
             self.execute_async_script(script, timeout=timeout)
         except TimeoutException:
-            pass # lets hope things are better when we try to use it
+            pass  # lets hope things are better when we try to use it
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_actions.wait_for_and_accept_alert(self.driver, timeout)
