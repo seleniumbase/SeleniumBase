@@ -46,5 +46,8 @@ archived_logs
 latest_report
 report_archives
 archived_reports
+html_report.html
+report.html
+assets
 temp
 node_modules
