@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/LogoTitle7.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/LogoTitle8.png "SeleniumBase")
 
 Automated Testing Framework in Python based on Selenium WebDriver
 
