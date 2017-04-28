@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/LogoTitle2.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/LogoTitle4.png "SeleniumBase")
 
 <b>Browser Automation & Testing Simplified.</b>
 
@@ -274,17 +274,30 @@ class MyTestClass(BaseCase):
 
 
 <a id="creating_visual_reports"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Creating Visual Test Suite Reports** (for nosetest users *ONLY*):
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
+
+(NOTE: The command line args are different for Nosetests vs Pytest)
+
+#### **Nosetest Reports:**
 
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
 ```bash
 nosetests my_test_suite.py --with-selenium --with-testing_base --report --browser=chrome -s
 ```
-![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Test Report")
+![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
 (NOTE: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes. You'll want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
 
+#### **Pytest Reports:**
+
+Using ``--html=html_report.html`` gives you a fancy report of the name specified after your test suite completes.
+
+```bash
+pytest my_test_suite.py --with-selenium --html=html_report.html
+```
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
 <a id="utilizing_advanced_features"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") **Using Production Environments & Integrations:**
