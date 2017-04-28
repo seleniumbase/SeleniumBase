@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/LogoTitle8.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8.png "SeleniumBase")
 
 Automated Testing Framework in Python based on Selenium WebDriver
 
@@ -712,3 +712,5 @@ Here are some other exciting open source projects on GitHub by smart people I've
 [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) (The MIT License)
 
 "With great power comes great responsibility" ... And SeleniumBase gives you the power.
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/LogoTitle8.png "SeleniumBase")
