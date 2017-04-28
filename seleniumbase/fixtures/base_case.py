@@ -447,6 +447,10 @@ class BaseCase(unittest.TestCase):
     def execute_script(self, script):
         return self.driver.execute_script(script)
 
+    def execute_async_script(self, script, timeout=settings.EXTREME_TIMEOUT):
+        self.driver.set_script_timeout(timeout)
+        return self.driver.execute_async_script(script)
+
     def set_window_size(self, width, height):
         self.driver.set_window_size(width, height)
         self._demo_mode_pause_if_active()
@@ -949,7 +953,37 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_ready_state_complete(self, timeout=settings.EXTREME_TIMEOUT):
-        return page_actions.wait_for_ready_state_complete(self.driver, timeout)
+        is_ready = page_actions.wait_for_ready_state_complete(self.driver,
+                                                              timeout)
+        self.wait_for_angularjs()
+        return is_ready
+
+    def wait_for_angularjs(self, timeout=settings.EXTREME_TIMEOUT, **kwargs):
+        if not settings.WAIT_FOR_ANGULARJS: return
+        NG_WRAPPER = '%(prefix)s' \
+                     'var $elm=document.querySelector(\'[data-ng-app],' \
+                     '[ng-app],.ng-scope\')||document;' \
+                     'if(window.angular && angular.getTestability){' \
+                     'angular.getTestability($elm).whenStable(%(handler)s)' \
+                     '}else{' \
+                     'var $inj;try{$inj=angular.element($elm).injector()||' \
+                     'angular.injector([\'ng\'])}catch(ex){' \
+                     '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||$inj;' \
+                     '$inj.get(\'$browser\').notifyWhenNoOutstandingRequests(' \
+                     '%(handler)s)}' \
+                     '%(suffix)s'
+        prefix = kwargs.pop('prefix',
+                            'var cb=arguments[arguments.length-1];' \
+                            'if(window.angular){'),
+        handler = kwargs.pop('handler', 'function(){cb(true)}')
+        suffix = kwargs.pop('suffix', '}else{cb(false)}')
+        script = self.NG_WRAPPER % {'prefix': prefix,
+                                    'handler': handler,
+                                    'suffix': suffix}
+        try:
+            self.execute_async_script(script, timeout=timeout)
+        except TimeoutException:
+            pass # lets hope things are better when we try to use it
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         return page_actions.wait_for_and_accept_alert(self.driver, timeout)

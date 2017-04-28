@@ -62,6 +62,16 @@ WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = True
 
+'''
+This adds wait_for_angularjs() after wait_for_ready_state_complete()
+after various browser actions.  Setting this to True may improve reliability
+of AngularJs applications at the cost of speed.
+NOTE: This requires WAIT_FOR_RSC_ON_PAGE_LOADS and/or WAIT_FOR_RSC_ON_CLICKS
+to be True since it's part of wait_for_ready_state_complete().
+'''
+# Called after each wait_for_ready_state_complete()
+WAIT_FOR_ANGULARJS = False
+
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)
