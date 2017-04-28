@@ -22,9 +22,9 @@ Automated Testing Framework in Python based on Selenium WebDriver
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/SBLogoTiny.png "SeleniumBase") Intro and Demo
 
 <b>Simple Python syntax makes coding easy:</b><br>
-(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
+(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 <b>Customize scripts from the command line:</b>
 ```bash
