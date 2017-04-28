@@ -125,7 +125,7 @@ def add_results_page(html):
 
 def build_report(report_log_path, page_results_list,
                  successes, failures, browser_type,
-                 hide_report):
+                 show_report):
 
     web_log_path = "file://%s" % report_log_path
     successes_count = len(successes)
@@ -218,11 +218,11 @@ def build_report(report_log_path, page_results_list,
     print(
         "\n* Files saved for this report are located at:\n" + report_log_path)
     print("")
-    if not hide_report:
-        if browser_type == 'chrome':
-            browser = webdriver.Chrome()
-        else:
+    if show_report:
+        if browser_type == 'firefox':
             browser = webdriver.Firefox()
+        else:
+            browser = webdriver.Chrome()
         browser.get("file://%s" % archived_results_file)
         print("\n*** Close the html report window to continue. ***")
         while len(browser.window_handles):

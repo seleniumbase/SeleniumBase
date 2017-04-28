@@ -287,14 +287,14 @@ nosetests my_test_suite.py --with-selenium --with-testing_base --report --browse
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
-(NOTE: You can add ``--hide_report`` to immediately archive the report rather than displaying it after the test suite completes. You'll want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
+(NOTE: You can add ``--show_report`` to immediately display the report after the test suite completes. You don't want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
 
 #### **Pytest Reports:**
 
-Using ``--html=html_report.html`` gives you a fancy report of the name specified after your test suite completes.
+Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
-pytest my_test_suite.py --with-selenium --html=html_report.html
+pytest my_test_suite.py --with-selenium --html=report.html
 ```
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
