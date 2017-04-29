@@ -21,6 +21,7 @@ Code becomes greatly simplified and easier to maintain.
 import getpass
 import json
 import logging
+import math
 import os
 import pytest
 import sys
@@ -81,6 +82,8 @@ class BaseCase(unittest.TestCase):
 
     def click(self, selector, by=By.CSS_SELECTOR,
               timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
@@ -105,6 +108,8 @@ class BaseCase(unittest.TestCase):
 
     def double_click(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = page_actions.wait_for_element_visible(
@@ -137,6 +142,8 @@ class BaseCase(unittest.TestCase):
                     timeout=settings.SMALL_TIMEOUT, spacing=0):
         """ This method clicks on a list of elements in succession.
             'spacing' is the amount of time to wait between clicks. (sec) """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         for selector in selectors_list:
             self.click(selector, by=by, timeout=timeout)
             if spacing > 0:
@@ -145,6 +152,8 @@ class BaseCase(unittest.TestCase):
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
         """ This method clicks link text on a page """
         # If using phantomjs, might need to extract and open the link directly
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if self.browser == 'phantomjs':
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(link_text)
@@ -195,6 +204,8 @@ class BaseCase(unittest.TestCase):
                                 timeout=settings.SMALL_TIMEOUT):
         """ This method clicks the partial link text on a page. """
         # If using phantomjs, might need to extract and open the link directly
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if self.browser == 'phantomjs':
             if self.is_partial_link_text_visible(partial_link_text):
                 element = self.wait_for_partial_link_text(partial_link_text)
@@ -247,6 +258,8 @@ class BaseCase(unittest.TestCase):
 
     def get_text(self, selector, by=By.CSS_SELECTOR,
                  timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_visible(
@@ -263,6 +276,8 @@ class BaseCase(unittest.TestCase):
 
     def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_present(
@@ -302,6 +317,8 @@ class BaseCase(unittest.TestCase):
     def get_image_url(self, selector, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
         """ Extracts the URL from an image element on the page. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.get_attribute(selector,
                                   attribute='src', by=by, timeout=timeout)
 
@@ -309,6 +326,8 @@ class BaseCase(unittest.TestCase):
                  timeout=settings.SMALL_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
@@ -344,6 +363,8 @@ class BaseCase(unittest.TestCase):
     def send_keys(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
         """ Same as add_text() -> more reliable, but less name confusion. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.add_text(selector, new_value, by=by, timeout=timeout)
 
     def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -356,6 +377,8 @@ class BaseCase(unittest.TestCase):
             timeout - how long to wait for the selector to be visible
             retry - if True, use jquery if the selenium text update fails
         """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
@@ -408,6 +431,8 @@ class BaseCase(unittest.TestCase):
         """ The shorter version of update_text_value(), which
             clears existing text and adds new text into the text field.
             We want to keep the old version for backward compatibility. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.update_text_value(selector, new_value, by=by,
                                timeout=timeout, retry=retry)
 
@@ -449,6 +474,8 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script(script)
 
     def execute_async_script(self, script, timeout=settings.EXTREME_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.driver.set_script_timeout(timeout)
         return self.driver.execute_async_script(script)
 
@@ -564,6 +591,8 @@ class BaseCase(unittest.TestCase):
     def scroll_to(self, selector, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
         ''' Fast scroll to destination '''
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         try:
@@ -578,6 +607,8 @@ class BaseCase(unittest.TestCase):
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR,
                        timeout=settings.SMALL_TIMEOUT):
         ''' Slow motion scroll to destination '''
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._slow_scroll_to_element(element)
@@ -664,6 +695,8 @@ class BaseCase(unittest.TestCase):
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
         """ This method uses jQuery to update a text field. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         selector = self.convert_to_css_selector(selector, by=by)
@@ -691,6 +724,8 @@ class BaseCase(unittest.TestCase):
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
             {Enter/Return} after the text is entered.  """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         element = self.wait_for_element_visible(
@@ -720,6 +755,8 @@ class BaseCase(unittest.TestCase):
                            timeout=settings.SMALL_TIMEOUT):
         """ The shorter version of jquery_update_text_value()
             (The longer version remains for backwards compatibility.) """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.jquery_update_text_value(
             selector, new_value, by=by, timeout=timeout)
 
@@ -734,6 +771,8 @@ class BaseCase(unittest.TestCase):
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(hover_selector):
             hover_by = By.XPATH
         if page_utils.is_xpath_selector(click_selector):
@@ -757,6 +796,8 @@ class BaseCase(unittest.TestCase):
                                    dropdown_by=By.CSS_SELECTOR,
                                    timeout=settings.SMALL_TIMEOUT):
         """ Picks an HTML <select> option by option text. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self._pick_select_option(dropdown_selector, option,
                                  dropdown_by=dropdown_by, option_by="text",
                                  timeout=timeout)
@@ -765,6 +806,8 @@ class BaseCase(unittest.TestCase):
                                     dropdown_by=By.CSS_SELECTOR,
                                     timeout=settings.SMALL_TIMEOUT):
         """ Picks an HTML <select> option by option index. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self._pick_select_option(dropdown_selector, option,
                                  dropdown_by=dropdown_by, option_by="index",
                                  timeout=timeout)
@@ -773,6 +816,8 @@ class BaseCase(unittest.TestCase):
                                     dropdown_by=By.CSS_SELECTOR,
                                     timeout=settings.SMALL_TIMEOUT):
         """ Picks an HTML <select> option by option value. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self._pick_select_option(dropdown_selector, option,
                                  dropdown_by=dropdown_by, option_by="value",
                                  timeout=timeout)
@@ -783,6 +828,8 @@ class BaseCase(unittest.TestCase):
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
             The element does not need be visible (it may be hidden). """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_present(
@@ -794,6 +841,8 @@ class BaseCase(unittest.TestCase):
             Waits for an element to appear in the HTML of a page.
             The element does not need be visible (it may be hidden).
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_element_present(selector, by=by, timeout=timeout)
         return True
 
@@ -814,11 +863,15 @@ class BaseCase(unittest.TestCase):
     def wait_for_element(self, selector, by=By.CSS_SELECTOR,
                          timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of wait_for_element_visible() """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
     def find_element(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.LARGE_TIMEOUT):
         """ Same as wait_for_element_visible() - returns the element """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
     def assert_element(self, selector, by=By.CSS_SELECTOR,
@@ -826,6 +879,8 @@ class BaseCase(unittest.TestCase):
         """ Similar to wait_for_element_visible(), but returns nothing.
             As above, will raise an exception if nothing can be found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
         return True
 
@@ -836,6 +891,8 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_text_visible(
@@ -844,12 +901,16 @@ class BaseCase(unittest.TestCase):
     def wait_for_text(self, text, selector, by=By.CSS_SELECTOR,
                       timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of wait_for_text_visible() """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
     def find_text(self, text, selector, by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
         """ Same as wait_for_text_visible() - returns the element """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
@@ -858,6 +919,8 @@ class BaseCase(unittest.TestCase):
         """ Similar to wait_for_text_visible(), but returns nothing.
             As above, will raise an exception if nothing can be found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
         return True
 
@@ -868,21 +931,29 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_link_text_visible(self, link_text,
                                    timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_element_visible(
             link_text, by=By.LINK_TEXT, timeout=timeout)
 
     def wait_for_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of wait_for_link_text_visible() """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_link_text_visible(link_text, timeout=timeout)
 
     def find_link_text(self, link_text, timeout=settings.LARGE_TIMEOUT):
         """ Same as wait_for_link_text_visible() - returns the element """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_link_text_visible(link_text, timeout=timeout)
 
     def assert_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_link_text_visible(), but returns nothing.
             As above, will raise an exception if nothing can be found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_link_text_visible(link_text, timeout=timeout)
         return True
 
@@ -893,12 +964,16 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_partial_link_text(self, partial_link_text,
                                    timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_element_visible(
             partial_link_text, by=By.PARTIAL_LINK_TEXT, timeout=timeout)
 
     def find_partial_link_text(self, partial_link_text,
                                timeout=settings.LARGE_TIMEOUT):
         """ Same as wait_for_partial_link_text() - returns the element """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return self.wait_for_partial_link_text(
             partial_link_text, timeout=timeout)
 
@@ -907,6 +982,8 @@ class BaseCase(unittest.TestCase):
         """ Similar to wait_for_partial_link_text(), but returns nothing.
             As above, will raise an exception if nothing can be found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
         return True
 
@@ -918,6 +995,8 @@ class BaseCase(unittest.TestCase):
             A hidden element still counts as appearing in the page HTML.
             If an element with "hidden" status is acceptable,
             use wait_for_element_not_visible() instead. """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_absent(
@@ -928,6 +1007,8 @@ class BaseCase(unittest.TestCase):
         """ Similar to wait_for_element_absent() - returns nothing.
             As above, will raise an exception if the element stays present.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
 
@@ -938,6 +1019,8 @@ class BaseCase(unittest.TestCase):
         """ Waits for an element to no longer be visible on a page.
             The element can be non-existant in the HTML or hidden on the page
             to qualify as not visible. """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.wait_for_element_not_visible(
@@ -948,18 +1031,24 @@ class BaseCase(unittest.TestCase):
         """ Similar to wait_for_element_not_visible() - returns nothing.
             As above, will raise an exception if the element stays visible.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         return True
 
     ############
 
     def wait_for_ready_state_complete(self, timeout=settings.EXTREME_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         is_ready = page_actions.wait_for_ready_state_complete(self.driver,
                                                               timeout)
         self.wait_for_angularjs()
         return is_ready
 
     def wait_for_angularjs(self, timeout=settings.EXTREME_TIMEOUT, **kwargs):
+        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         if not settings.WAIT_FOR_ANGULARJS:
             return
 
@@ -988,18 +1077,28 @@ class BaseCase(unittest.TestCase):
             pass  # lets hope things are better when we try to use it
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return page_actions.wait_for_and_accept_alert(self.driver, timeout)
 
     def wait_for_and_dismiss_alert(self, timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
 
     def wait_for_and_switch_to_alert(self, timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
 
     def switch_to_frame(self, frame, timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         page_actions.switch_to_frame(self.driver, frame, timeout)
 
     def switch_to_window(self, window, timeout=settings.SMALL_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
         page_actions.switch_to_window(self.driver, window, timeout)
 
     def switch_to_default_content(self):
@@ -1007,6 +1106,20 @@ class BaseCase(unittest.TestCase):
 
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
+
+    ############
+
+    def _get_new_timeout(self, timeout):
+        """ When using --timeout_multiplier=#.# """
+        try:
+            timeout_multiplier = float(self.timeout_multiplier)
+            if timeout_multiplier <= 0.5:
+                timeout_multiplier = 0.5
+            timeout = int(math.ceil(timeout_multiplier * timeout))
+            return timeout
+        except:
+            # Wrong data type for timeout_multiplier (expecting int or float)
+            return timeout
 
     ############
 
@@ -1208,6 +1321,7 @@ class BaseCase(unittest.TestCase):
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
             self.verify_delay = pytest.config.option.verify_delay
+            self.timeout_multiplier = pytest.config.option.timeout_multiplier
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None

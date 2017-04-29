@@ -85,6 +85,12 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default wait time
                           before each MasterQA verification pop-up.""")
+    parser.addoption('--timeout_multiplier', action='store',
+                     dest='timeout_multiplier',
+                     default=None,
+                     help="""Setting this overrides the default timeout
+                          by the multiplier when waiting for page elements.
+                          Unused when tests overide the default value.""")
 
 
 def pytest_configure(config):
