@@ -27,6 +27,7 @@ class SeleniumBrowser(Plugin):
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
+    self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
     """
     name = 'selenium'  # Usage: --with-selenium
 
@@ -84,6 +85,13 @@ class SeleniumBrowser(Plugin):
             dest='verify_delay', default=None,
             help="""Setting this overrides the default wait time
                     before each MasterQA verification pop-up.""")
+        parser.add_option(
+            '--timeout_multiplier', action='store',
+            dest='timeout_multiplier',
+            default=None,
+            help="""Setting this overrides the default timeout
+                    by the multiplier when waiting for page elements.
+                    Unused when tests overide the default value.""")
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
@@ -142,6 +150,7 @@ class SeleniumBrowser(Plugin):
                 test.test.demo_sleep = self.options.demo_sleep
                 test.test.highlights = self.options.highlights
                 test.test.verify_delay = self.options.verify_delay  # MasterQA
+                test.test.timeout_multiplier = self.options.timeout_multiplier
             except Exception as err:
                 print("Error starting/connecting to Selenium:")
                 print(err)
