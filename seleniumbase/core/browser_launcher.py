@@ -22,17 +22,19 @@ def get_driver(browser_name):
             profile.set_preference(
                 "security.mixed_content.block_active_content", False)
             profile.set_preference(
-                "browser.download.manager.showAlertOnComplete", True)
-            profile.set_preference("browser.download.panel.shown", True)
+                "browser.download.manager.showAlertOnComplete", False)
+            profile.set_preference("browser.download.panel.shown", False)
             profile.set_preference(
-                "browser.download.animateNotifications", True)
+                "browser.download.animateNotifications", False)
             profile.set_preference("browser.download.dir", downloads_path)
             profile.set_preference("browser.download.folderList", 2)
             profile.set_preference(
                 "browser.helperApps.neverAsk.saveToDisk",
                 ("application/pdf, application/zip, application/octet-stream, "
                  "text/csv, text/xml, application/xml, text/plain, "
-                 "text/octet-stream"))
+                 "text/octet-stream",
+                 "application/"
+                 "vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
             firefox_capabilities = DesiredCapabilities.FIREFOX
             try:
                 # Use Geckodriver for Firefox if it's on the PATH
