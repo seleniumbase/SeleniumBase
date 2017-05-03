@@ -12,7 +12,7 @@ DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
 ARCHIVE_DIR = constants.Files.ARCHIVED_DOWNLOADS_FOLDER
 
 abs_path = os.path.abspath('.')
-downloads_path = abs_path + "/" + DOWNLOADS_DIR
+downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
 
 
 def get_downloads_folder():
@@ -23,7 +23,8 @@ def reset_downloads_folder():
     ''' Clears the downloads folder.
         If settings.ARCHIVE_EXISTING_DOWNLOADS is set to True, archives it. '''
     if os.path.exists(downloads_path):
-        archived_downloads_folder = "%s/../%s/" % (downloads_path, ARCHIVE_DIR)
+        archived_downloads_folder = os.path.join(downloads_path, '..',
+                                                 ARCHIVE_DIR)
         if not os.path.exists(archived_downloads_folder):
             os.makedirs(archived_downloads_folder)
         archived_downloads_folder = "%sdownloads_%s" % (
