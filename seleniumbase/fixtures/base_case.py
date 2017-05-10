@@ -1449,7 +1449,12 @@ class BaseCase(unittest.TestCase):
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
                 # Finally close the browser
-                self.driver.quit()
+                try:
+                    self.driver.quit()
+                except AttributeError:
+                    pass
+                except:
+                    print("No driver to quit.")
             if self.headless:
                 if self.headless_active:
                     self.display.stop()
