@@ -20,7 +20,7 @@ setup(
         'pip>=9.0.1',
         'setuptools>=35.0.1',
         'ipython==5.3.0',
-        'selenium==3.4.1',
+        'selenium==3.4.0',
         'nose>=1.3.7',
         'pytest>=3.0.7',
         'pytest-html>=1.14.2',
