@@ -27,7 +27,7 @@ SeleniumBase is everything you need to automate and test any website.
 <b>Simple Python syntax makes coding easy:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
-(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
+<br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 <b>Customize scripts from the command line:</b>
 ```bash
