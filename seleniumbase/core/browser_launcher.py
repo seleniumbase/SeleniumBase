@@ -32,7 +32,7 @@ def get_driver(browser_name):
                 "browser.helperApps.neverAsk.saveToDisk",
                 ("application/pdf, application/zip, application/octet-stream, "
                  "text/csv, text/xml, application/xml, text/plain, "
-                 "text/octet-stream",
+                 "text/octet-stream, "
                  "application/"
                  "vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
             firefox_capabilities = DesiredCapabilities.FIREFOX
