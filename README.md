@@ -31,7 +31,9 @@ SeleniumBase is everything you need to automate and test any website.
 
 <b>Customize scripts from the command line:</b>
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
+nosetests my_first_test.py --demo_mode -s --with-selenium --browser=chrome
+
+pytest my_first_test.py --demo_mode -s
 ```
 <b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b>
 
@@ -191,7 +193,7 @@ nosetests my_first_test.py --with-selenium --browser=firefox -s
 nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 ```
 
-After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests. If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
+After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests with nosetests (not needed when using pytest). If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
 
 (NOTE: If you're confused about how SeleniumBase works with Nosetests and Pytest, jump to the [**How SeleniumBase Works**](#how_seleniumbase_works) section to learn more about it.)
 
@@ -245,11 +247,11 @@ Here's how to run the example script with **pytest**:
 ```bash
 cd examples/
 
-pytest my_first_test.py --with-selenium --with-testing_base --browser=firefox -s
+pytest my_first_test.py --with-testing_base --browser=firefox -s
 
-pytest my_first_test.py --with-selenium --with-testing_base --browser=chrome -s
+pytest my_first_test.py --with-testing_base --browser=chrome -s
 
-pytest my_first_test.py --with-selenium --with-testing_base --browser=phantomjs -s
+pytest my_first_test.py --with-testing_base --browser=phantomjs -s
 ```
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
 
