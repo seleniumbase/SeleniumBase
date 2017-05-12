@@ -31,7 +31,7 @@ SeleniumBase is everything you need to automate and test any website.
 
 <b>Customize scripts from the command line:</b>
 ```bash
-nosetests my_first_test.py --demo_mode -s --with-selenium --browser=chrome
+nosetests my_first_test.py --demo_mode --with-selenium --browser=chrome -s
 
 pytest my_first_test.py --demo_mode -s
 ```
