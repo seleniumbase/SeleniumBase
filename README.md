@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_5.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_6.png "SeleniumBase")
 # SeleniumBase
 
 <b>All-in-One Automated Testing Software</b>
