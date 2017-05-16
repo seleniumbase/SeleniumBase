@@ -128,9 +128,22 @@ def pytest_runtest_setup():
     pass
 
 
-def pytest_runtest_teardown():
-    """ This runs after every test with pytest """
-    pass
+def pytest_runtest_teardown(item):
+    try:
+        self = item._testcase
+        try:
+            if hasattr(self, 'driver') and self.driver:
+                self.driver.quit()
+        except:
+            pass
+        try:
+            if hasattr(self, 'headless') and self.headless:
+                if self.headless_active:
+                    self.display.stop()
+        except:
+            pass
+    except:
+        pass
 
 
 @pytest.mark.hookwrapper
