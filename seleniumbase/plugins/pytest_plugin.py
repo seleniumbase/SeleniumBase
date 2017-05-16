@@ -130,8 +130,6 @@ def pytest_runtest_setup():
 
 def pytest_runtest_teardown(item):
     try:
-        # if not(hasattr(item, '_testcase') and item._testcase):
-        #     return
         self = item._testcase
         try:
             if hasattr(self, 'driver') and self.driver:
