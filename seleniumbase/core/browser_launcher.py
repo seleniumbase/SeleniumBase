@@ -5,6 +5,29 @@ from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
 
 
+def _create_firefox_profile():
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("reader.parse-on-load.enabled", False)
+    profile.set_preference("pdfjs.disabled", True)
+    profile.set_preference(
+        "security.mixed_content.block_active_content", False)
+    profile.set_preference(
+        "browser.download.manager.showAlertOnComplete", False)
+    profile.set_preference("browser.download.panel.shown", False)
+    profile.set_preference(
+        "browser.download.animateNotifications", False)
+    profile.set_preference("browser.download.dir", downloads_path)
+    profile.set_preference("browser.download.folderList", 2)
+    profile.set_preference(
+        "browser.helperApps.neverAsk.saveToDisk",
+        ("application/pdf, application/zip, application/octet-stream, "
+         "text/csv, text/xml, application/xml, text/plain, "
+         "text/octet-stream, "
+         "application/"
+         "vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+    return profile
+
+
 def get_driver(browser_name):
     '''
     Spins up a new web browser and returns the driver.
@@ -16,33 +39,17 @@ def get_driver(browser_name):
 
     if browser_name == constants.Browser.FIREFOX:
         try:
-            profile = webdriver.FirefoxProfile()
-            profile.set_preference("reader.parse-on-load.enabled", False)
-            profile.set_preference("pdfjs.disabled", True)
-            profile.set_preference(
-                "security.mixed_content.block_active_content", False)
-            profile.set_preference(
-                "browser.download.manager.showAlertOnComplete", False)
-            profile.set_preference("browser.download.panel.shown", False)
-            profile.set_preference(
-                "browser.download.animateNotifications", False)
-            profile.set_preference("browser.download.dir", downloads_path)
-            profile.set_preference("browser.download.folderList", 2)
-            profile.set_preference(
-                "browser.helperApps.neverAsk.saveToDisk",
-                ("application/pdf, application/zip, application/octet-stream, "
-                 "text/csv, text/xml, application/xml, text/plain, "
-                 "text/octet-stream, "
-                 "application/"
-                 "vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-            firefox_capabilities = DesiredCapabilities.FIREFOX
             try:
                 # Use Geckodriver for Firefox if it's on the PATH
+                profile = _create_firefox_profile()
+                firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = True
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile, capabilities=firefox_capabilities)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
+                profile = _create_firefox_profile()
+                firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = False
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile, capabilities=firefox_capabilities)
