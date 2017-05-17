@@ -5,7 +5,7 @@ from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
 
 
-def _create_firefox_profile():
+def _create_firefox_profile(downloads_path):
     profile = webdriver.FirefoxProfile()
     profile.set_preference("reader.parse-on-load.enabled", False)
     profile.set_preference("pdfjs.disabled", True)
@@ -41,14 +41,14 @@ def get_driver(browser_name):
         try:
             try:
                 # Use Geckodriver for Firefox if it's on the PATH
-                profile = _create_firefox_profile()
+                profile = _create_firefox_profile(downloads_path)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = True
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile, capabilities=firefox_capabilities)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
-                profile = _create_firefox_profile()
+                profile = _create_firefox_profile(downloads_path)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = False
                 firefox_driver = webdriver.Firefox(
