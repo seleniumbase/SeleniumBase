@@ -13,10 +13,12 @@ before_script:
   - "flake8 seleniumbase/*/*/*/*.py"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+  - "which phantomjs"
 script:
   - "firefox --version"
   - "nosetests examples/my_first_test.py --with-selenium --browser=firefox -s"
   - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
+  - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs -s"
 env:
   matrix:
   - BROWSER=firefox
