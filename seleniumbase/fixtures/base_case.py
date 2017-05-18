@@ -1455,9 +1455,11 @@ class BaseCase(unittest.TestCase):
                     pass
                 except:
                     print("No driver to quit.")
+                self.driver = None
             if self.headless:
                 if self.headless_active:
                     self.display.stop()
+                    self.display = None
             if self.with_db_reporting:
                 if sys.exc_info()[1] is not None:
                     self.__insert_test_result(constants.State.ERROR, True)
