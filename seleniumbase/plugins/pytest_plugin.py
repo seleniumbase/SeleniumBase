@@ -4,9 +4,7 @@ import optparse
 import os
 import pytest
 import shutil
-import sys
 import time
-from contextlib import contextmanager
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
@@ -133,34 +131,23 @@ def pytest_runtest_setup():
 def pytest_runtest_teardown(item):
     """ This runs after every test with pytest """
 
-    # Make sure the web driver has exited properly
-    with suppress_stdout():
+    # Make sure webdriver has exited properly and any headless display
+    try:
+        self = item._testcase
         try:
-            self = item._testcase
-            try:
-                if hasattr(self, 'driver') and self.driver:
-                    self.driver.quit()
-            except:
-                pass
-            try:
-                if hasattr(self, 'headless') and self.headless:
-                    if self.headless_active:
-                        self.display.stop()
-            except:
-                pass
+            if hasattr(self, 'driver') and self.driver:
+                self.driver.quit()
         except:
             pass
-
-
-@contextmanager
-def suppress_stdout():
-    with open(os.devnull, "w") as devnull:
-        old_stdout = sys.stdout
-        sys.stdout = devnull
         try:
-            yield
-        finally:
-            sys.stdout = old_stdout
+            if hasattr(self, 'headless') and self.headless:
+                if self.headless_active:
+                    if hasattr(self, 'display') and self.display:
+                        self.display.stop()
+        except:
+            pass
+    except:
+        pass
 
 
 @pytest.mark.hookwrapper
