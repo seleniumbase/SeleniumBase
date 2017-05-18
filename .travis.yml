@@ -22,7 +22,7 @@ script:
   - "firefox --version"
   - "nosetests examples/my_first_test.py --with-selenium --browser=firefox -s"
   - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
-  - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs -s"
+  - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
 env:
   matrix:
   - BROWSER=firefox
