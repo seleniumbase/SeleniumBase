@@ -67,7 +67,13 @@ def get_driver(browser_name):
     if browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = webdriver.ChromeOptions()
-            prefs = {"download.default_directory": downloads_path}
+            prefs = {
+                "download.default_directory": downloads_path,
+                "credentials_enable_service": False,
+                "profile": {
+                    "password_manager_enabled": False
+                }
+            }
             chrome_options.add_experimental_option("prefs", prefs)
             chrome_options.add_argument("--allow-file-access-from-files")
             chrome_options.add_argument("--allow-running-insecure-content")
