@@ -107,9 +107,13 @@ RUN cd /SeleniumBase && python setup.py install
 # Create entrypoint and grab example tests
 #==========================================
 COPY integrations/docker/docker-entrypoint.sh /
+RUN chmod +x docker-entrypoint.sh
 COPY integrations/docker/run_docker_test_in_firefox.sh /
+RUN chmod +x run_docker_test_in_firefox.sh
 COPY integrations/docker/run_docker_test_in_chrome.sh /
+RUN  chmod +x run_docker_test_in_chrome.sh
 COPY integrations/docker/run_docker_test_in_phantomjs.sh /
+RUN  chmod +x run_docker_test_in_phantomjs.sh
 COPY integrations/docker/docker_config.cfg /SeleniumBase/examples/
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/bin/bash"]
