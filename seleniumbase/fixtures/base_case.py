@@ -1174,7 +1174,7 @@ class BaseCase(unittest.TestCase):
             non-terminating verifications that only raise exceptions
             after this method is called. This is useful for pages with multiple
             elements to be checked when you want to find as many bugs
-            as possible in a single test run before having 
+            as possible in a single test run before having
             all the exceptions get raised simultaneously.
             Might be more useful if this method is called after processing
             all the checks on a single html page so that the failure screenshot
