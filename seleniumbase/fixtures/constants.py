@@ -16,8 +16,10 @@ class Files:
     DOWNLOADS_FOLDER = "downloaded_files"
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
 
+
 class ValidBrowsers:
     valid_browsers = ["firefox", "ie", "edge", "safari", "chrome", "phantomjs"]
+
 
 class Browser:
     FIREFOX = "firefox"
