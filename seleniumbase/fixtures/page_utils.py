@@ -13,7 +13,7 @@ def jq_format(code):
     code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
     code = code.replace('\"', '\\\"').replace('\'', '\\\'')
     code = code.replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f')
-    code = code.replace('\b', '\\b').replace('\u', '\\u').replace('\r', '\\r')
+    code = code.replace('\b', '\\b').replace(r'\u', '\\u').replace('\r', '\\r')
     return code
 
 
