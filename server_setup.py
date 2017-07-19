@@ -14,7 +14,7 @@ setup(
     platforms='Mac * Windows * Linux * Docker',
     url='http://seleniumbase.com',
     author='Michael Mintz',
-    author_email='@mintzworld',
+    author_email='mdmintz@gmail.com',
     maintainer='Michael Mintz',
     license='The MIT License',
     install_requires=[
