@@ -7,13 +7,13 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.3.25',
+    version='1.3.26',
     description='Test Automation Framework - http://seleniumbase.com',
     long_description='Automation Framework for Simple & Reliable Web Testing',
     platforms='Mac * Windows * Linux * Docker',
     url='http://seleniumbase.com',
     author='Michael Mintz',
-    author_email='@mintzworld',
+    author_email='mdmintz@gmail.com',
     maintainer='Michael Mintz',
     license='The MIT License',
     install_requires=[

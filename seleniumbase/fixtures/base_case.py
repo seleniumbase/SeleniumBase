@@ -1169,15 +1169,17 @@ class BaseCase(unittest.TestCase):
             self._package_check()
             return False
 
-    def process_checks(self):
-        """ To be used at the end of any test that uses checks, which are
-            non-terminating verifications that will only raise an exception
-            after this method is called. Useful for pages with multiple
-            elements to be checked when you want to find as many failures
-            as possible on a page before making fixes.
+    def process_checks(self, print_only=False):
+        """ To be used with any test that uses check_asserts, which are
+            non-terminating verifications that only raise exceptions
+            after this method is called. This is useful for pages with multiple
+            elements to be checked when you want to find as many bugs
+            as possible in a single test run before having
+            all the exceptions get raised simultaneously.
             Might be more useful if this method is called after processing
-            all the checks for a single html page, otherwise the screenshot
-            in the logs file won't match the location of the checks. """
+            all the checks on a single html page so that the failure screenshot
+            matches the location of the checks.
+            If "print_only" is set to True, the exception won't get raised. """
         if self.page_check_failures:
             exception_output = ''
             exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
@@ -1185,7 +1187,10 @@ class BaseCase(unittest.TestCase):
             self.page_check_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
-            raise Exception(exception_output)
+            if print_only:
+                print(exception_output)
+            else:
+                raise Exception(exception_output)
 
     ############
 
@@ -1397,19 +1402,19 @@ class BaseCase(unittest.TestCase):
 
     def tearDown(self):
         """
-        pytest-specific code
         Be careful if a subclass of BaseCase overrides setUp()
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
         if self.page_check_failures:
-            # self.process_checks() was not called after checks were made.
-            # We will log those now here, but without raising an exception.
-            exception_output = ''
-            exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
-            for tb in self.page_check_failures:
-                exception_output += "%s\n" % tb
-            logging.exception(exception_output)
+            print(
+                "\nWhen using self.check_assert_***() methods in your tests, "
+                "remember to call self.process_checks() afterwards. "
+                "Now calling in tearDown()...\nFailures Detected:")
+            if not sys.exc_info()[1]:
+                self.process_checks()
+            else:
+                self.process_checks(print_only=True)
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
@@ -1418,6 +1423,7 @@ class BaseCase(unittest.TestCase):
             # Not using pytest (probably nosetests)
             self.is_pytest = False
         if self.is_pytest:
+            # pytest-specific code
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
