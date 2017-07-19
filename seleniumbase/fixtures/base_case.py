@@ -29,7 +29,7 @@ import time
 import traceback
 import unittest
 import uuid
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
@@ -160,23 +160,22 @@ class BaseCase(unittest.TestCase):
                 element.click()
                 return
             source = self.driver.page_source
-            soup = BeautifulSoup(source)
-            html_links = soup.fetch('a')
+            soup = BeautifulSoup(source, "html.parser")
+            html_links = soup.find_all('a')
             for html_link in html_links:
                 if html_link.text == link_text:
-                    for html_attribute in html_link.attrs:
-                        if html_attribute[0] == 'href':
-                            href = html_attribute[1]
-                            if href.startswith('//'):
-                                link = "http:" + href
-                            elif href.startswith('/'):
-                                url = self.driver.current_url
-                                domain_url = self.get_domain_url(url)
-                                link = domain_url + href
-                            else:
-                                link = href
-                            self.open(link)
-                            return
+                    if html_link.has_attr('href'):
+                        href = html_link.get('href')
+                        if href.startswith('//'):
+                            link = "http:" + href
+                        elif href.startswith('/'):
+                            url = self.driver.current_url
+                            domain_url = self.get_domain_url(url)
+                            link = domain_url + href
+                        else:
+                            link = href
+                        self.open(link)
+                        return
                     raise Exception(
                         'Could not parse link from link_text [%s]' % link_text)
             raise Exception("Link text [%s] was not found!" % link_text)
