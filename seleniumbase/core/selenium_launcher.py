@@ -4,6 +4,7 @@ import subprocess
 import os
 import socket
 import urllib
+import sys
 import time
 
 SELENIUM_JAR = ("http://selenium-release.storage.googleapis.com"
@@ -32,9 +33,9 @@ def download_selenium():
         local_file.close()
         remote_file.close()
         print('Download Complete!\n')
-    except Exception, details:
+    except Exception:
         raise Exception("Error while downloading Selenium Server. Details: %s"
-                        % details)
+                        % sys.exc_info()[1])
 
 
 def is_running_locally(host, port):
@@ -78,8 +79,9 @@ def stop_selenium_server(selenium_server_process):
     try:
         selenium_server_process.terminate()
         return selenium_server_process.poll() == 143
-    except Exception, details:
-        raise Exception("Cannot kill selenium process, details: " + details)
+    except Exception:
+        raise Exception(
+            "Cannot kill selenium process. Details: " + sys.exc_info()[1])
 
 
 class StartSeleniumException(Exception):
