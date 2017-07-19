@@ -502,7 +502,7 @@ class BaseCase(unittest.TestCase):
             '''script.src = "http://code.jquery.com/jquery-3.1.0.min.js"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
-        for x in xrange(30):
+        for x in range(30):
             # jQuery needs a small amount of time to activate. (At most 3s)
             try:
                 self.execute_script("jQuery('html')")
@@ -557,7 +557,7 @@ class BaseCase(unittest.TestCase):
         if self.highlights:
             loops = self.highlights
         loops = int(loops)
-        for n in xrange(loops):
+        for n in range(loops):
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
             self.execute_script(script)
@@ -1273,7 +1273,7 @@ class BaseCase(unittest.TestCase):
             total_steps = int(abs(distance) / 50.0) + 2.0
             step_value = float(distance) / total_steps
             new_position = scroll_position
-            for y in xrange(int(total_steps)):
+            for y in range(int(total_steps)):
                 time.sleep(0.0114)
                 new_position += step_value
                 scroll_script = "window.scrollTo(0, %s);" % new_position
