@@ -29,7 +29,7 @@ setup(
         'flake8>=3.3.0',
         'requests>=2.13.0',
         'urllib3>=1.20',
-        'BeautifulSoup>=3.2.1',
+        'BeautifulSoup4==4.6.0',
         'unittest2>=1.1.0',
         'chardet>=3.0.2',
         'boto>=2.46.1',
