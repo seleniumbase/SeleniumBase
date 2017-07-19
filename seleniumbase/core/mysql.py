@@ -1,9 +1,9 @@
 """
 Wrapper for MySQL functions to make life easier
+Due to compatibility issues, might only work for Python 2.7 right now
 """
 
 import time
-import mysql_conf as conf
 
 
 class DatabaseManager():
@@ -16,6 +16,7 @@ class DatabaseManager():
         """
         Gets database information from mysql_conf.py and creates a connection.
         """
+        import mysql_conf as conf  # This had problems when using Python 3
         import MySQLdb
         db_server, db_user, db_pass, db_schema = \
             conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
