@@ -28,7 +28,6 @@ setup(
         'six>=1.10.0',
         'flake8>=3.3.0',
         'requests>=2.18.1',
-        'urllib3==1.21.1',
         'BeautifulSoup4==4.6.0',
         'unittest2>=1.1.0',
         'chardet>=3.0.2',
