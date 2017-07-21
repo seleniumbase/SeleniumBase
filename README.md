@@ -24,7 +24,7 @@ SeleniumBase makes it easy to run WebDriver automation with [pytest](https://doc
 <a id="main_introduction"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Intro and Demo
 
-<b>Simple Python syntax makes coding easy:</b><br>
+<b>Simple [Python](https://www.python.org/) syntax makes coding easy:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
