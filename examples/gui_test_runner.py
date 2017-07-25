@@ -3,7 +3,12 @@ GUI TEST RUNNER
 Run by Typing: "python gui_test_runner.py"
 '''
 
-from Tkinter import Tk, Frame, Button, Label
+try:
+    # Python 2
+    from Tkinter import Tk, Frame, Button, Label
+except:
+    # Python 3
+    from tkinter import Tk, Frame, Button, Label
 import os
 
 

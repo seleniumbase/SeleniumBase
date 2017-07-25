@@ -123,7 +123,7 @@ class Base(Plugin):
             test_logpath = self.options.log_path + "/" + test.id()
             log_helper.log_screenshot(test_logpath, test.driver)
             log_helper.log_test_failure_data(
-                test_logpath, test.driver, test.browser)
+                test, test_logpath, test.driver, test.browser)
             log_helper.log_page_source(test_logpath, test.driver)
 
     def addSuccess(self, test, capt):

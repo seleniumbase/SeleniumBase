@@ -1126,13 +1126,23 @@ class BaseCase(unittest.TestCase):
         """ This method extracts the message from an exception if there
             was an exception that occurred during the test, assuming
             that the exception was in a try/except block and not thrown. """
-        exception_info = sys.exc_info()[1]
-        if hasattr(exception_info, 'msg'):
-            exc_message = exception_info.msg
-        elif hasattr(exception_info, 'message'):
-            exc_message = exception_info.message
+        if sys.version.startswith('3') and hasattr(self, '_outcome'):
+            exception_info = self._outcome.errors
+            if exception_info:
+                try:
+                    exc_message = exception_info[0][1][1]
+                except:
+                    exc_message = "(Unknown Exception)"
+            else:
+                exc_message = "(Unknown Exception)"
         else:
-            exc_message = '(Unknown Exception)'
+            exception_info = sys.exc_info()[1]
+            if hasattr(exception_info, 'msg'):
+                exc_message = exception_info.msg
+            elif hasattr(exception_info, 'message'):
+                exc_message = exception_info.message
+            else:
+                exc_message = '(Unknown Exception)'
         return exc_message
 
     def _package_check(self):
@@ -1405,12 +1415,18 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        has_exception = False
+        if sys.version.startswith('3') and hasattr(self, '_outcome'):
+            if self._outcome.errors:
+                has_exception = True
+        else:
+            has_exception = sys.exc_info()[1] is not None
         if self.page_check_failures:
             print(
                 "\nWhen using self.check_assert_***() methods in your tests, "
                 "remember to call self.process_checks() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
-            if not sys.exc_info()[1]:
+            if not has_exception:
                 self.process_checks()
             else:
                 self.process_checks(print_only=True)
@@ -1428,10 +1444,9 @@ class BaseCase(unittest.TestCase):
                                     self._testMethodName)
             if self.with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
-                is_exception = sys.exc_info()[1] is not None
-                if is_exception:
+                if has_exception:
                     self._add_pytest_html_extra()
-                if self.with_testing_base and is_exception:
+                if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
@@ -1441,7 +1456,7 @@ class BaseCase(unittest.TestCase):
                         # Log everything if nothing specified (if testing_base)
                         log_helper.log_screenshot(test_logpath, self.driver)
                         log_helper.log_test_failure_data(
-                            test_logpath, self.driver, self.browser)
+                            self, test_logpath, self.driver, self.browser)
                         log_helper.log_page_source(test_logpath, self.driver)
                     else:
                         if self.with_screen_shots:
@@ -1449,7 +1464,7 @@ class BaseCase(unittest.TestCase):
                                 test_logpath, self.driver)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
-                                test_logpath, self.driver, self.browser)
+                                self, test_logpath, self.driver, self.browser)
                         if self.with_page_source:
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
@@ -1466,14 +1481,14 @@ class BaseCase(unittest.TestCase):
                     self.display.stop()
                     self.display = None
             if self.with_db_reporting:
-                if sys.exc_info()[1] is not None:
+                if has_exception:
                     self.__insert_test_result(constants.State.ERROR, True)
                 else:
                     self.__insert_test_result(constants.State.PASS, False)
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
-            if self.with_s3_logging and (sys.exc_info()[1] is not None):
+            if self.with_s3_logging and has_exception:
                 """ After each testcase, upload logs to the S3 bucket. """
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
