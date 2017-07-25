@@ -10,7 +10,7 @@ def log_screenshot(test_logpath, driver):
     driver.get_screenshot_as_file(screenshot_path)
 
 
-def log_test_failure_data(test_logpath, driver, browser):
+def log_test_failure_data(test, test_logpath, driver, browser):
     basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
@@ -18,10 +18,24 @@ def log_test_failure_data(test_logpath, driver, browser):
     data_to_save = []
     data_to_save.append("Last_Page: %s" % last_page)
     data_to_save.append("Browser: %s " % browser)
-    data_to_save.append("Traceback: " + ''.join(
-        traceback.format_exception(sys.exc_info()[0],
-                                   sys.exc_info()[1],
-                                   sys.exc_info()[2])))
+    if sys.version.startswith('3') and hasattr(test, '_outcome'):
+        if test._outcome.errors:
+            try:
+                exc_message = test._outcome.errors[0][1][1].msg
+                traceback_address = test._outcome.errors[0][1][2]
+                traceback_list = traceback.format_list(
+                    traceback.extract_tb(traceback_address)[1:])
+                traceback_message = ''.join(traceback_list).strip()
+            except:
+                exc_message = "(Unknown Exception)"
+                traceback_message = "(Unknown Traceback)"
+            data_to_save.append("Traceback: " + traceback_message)
+            data_to_save.append("Exception: " + exc_message)
+    else:
+        data_to_save.append("Traceback: " + ''.join(
+            traceback.format_exception(sys.exc_info()[0],
+                                       sys.exc_info()[1],
+                                       sys.exc_info()[2])))
     log_file.writelines("\r\n".join(data_to_save))
     log_file.close()
 

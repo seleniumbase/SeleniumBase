@@ -1405,12 +1405,18 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        is_exception = False
+        if sys.version.startswith('3') and hasattr(self, '_outcome'):
+            if self._outcome.errors:
+                is_exception = True
+        else:
+            is_exception = sys.exc_info()[1] is not None
         if self.page_check_failures:
             print(
                 "\nWhen using self.check_assert_***() methods in your tests, "
                 "remember to call self.process_checks() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
-            if not sys.exc_info()[1]:
+            if not is_exception:
                 self.process_checks()
             else:
                 self.process_checks(print_only=True)
@@ -1428,7 +1434,6 @@ class BaseCase(unittest.TestCase):
                                     self._testMethodName)
             if self.with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
-                is_exception = sys.exc_info()[1] is not None
                 if is_exception:
                     self._add_pytest_html_extra()
                 if self.with_testing_base and is_exception:
@@ -1441,7 +1446,7 @@ class BaseCase(unittest.TestCase):
                         # Log everything if nothing specified (if testing_base)
                         log_helper.log_screenshot(test_logpath, self.driver)
                         log_helper.log_test_failure_data(
-                            test_logpath, self.driver, self.browser)
+                            self, test_logpath, self.driver, self.browser)
                         log_helper.log_page_source(test_logpath, self.driver)
                     else:
                         if self.with_screen_shots:
@@ -1449,7 +1454,7 @@ class BaseCase(unittest.TestCase):
                                 test_logpath, self.driver)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
-                                test_logpath, self.driver, self.browser)
+                                self, test_logpath, self.driver, self.browser)
                         if self.with_page_source:
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
