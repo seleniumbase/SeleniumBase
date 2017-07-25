@@ -1415,18 +1415,18 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
-        is_exception = False
+        has_exception = False
         if sys.version.startswith('3') and hasattr(self, '_outcome'):
             if self._outcome.errors:
-                is_exception = True
+                has_exception = True
         else:
-            is_exception = sys.exc_info()[1] is not None
+            has_exception = sys.exc_info()[1] is not None
         if self.page_check_failures:
             print(
                 "\nWhen using self.check_assert_***() methods in your tests, "
                 "remember to call self.process_checks() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
-            if not is_exception:
+            if not has_exception:
                 self.process_checks()
             else:
                 self.process_checks(print_only=True)
@@ -1444,9 +1444,9 @@ class BaseCase(unittest.TestCase):
                                     self._testMethodName)
             if self.with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
-                if is_exception:
+                if has_exception:
                     self._add_pytest_html_extra()
-                if self.with_testing_base and is_exception:
+                if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
@@ -1481,14 +1481,14 @@ class BaseCase(unittest.TestCase):
                     self.display.stop()
                     self.display = None
             if self.with_db_reporting:
-                if is_exception:
+                if has_exception:
                     self.__insert_test_result(constants.State.ERROR, True)
                 else:
                     self.__insert_test_result(constants.State.PASS, False)
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
-            if self.with_s3_logging and is_exception:
+            if self.with_s3_logging and has_exception:
                 """ After each testcase, upload logs to the S3 bucket. """
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
