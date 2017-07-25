@@ -1471,14 +1471,14 @@ class BaseCase(unittest.TestCase):
                     self.display.stop()
                     self.display = None
             if self.with_db_reporting:
-                if sys.exc_info()[1] is not None:
+                if is_exception:
                     self.__insert_test_result(constants.State.ERROR, True)
                 else:
                     self.__insert_test_result(constants.State.PASS, False)
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
-            if self.with_s3_logging and (sys.exc_info()[1] is not None):
+            if self.with_s3_logging and is_exception:
                 """ After each testcase, upload logs to the S3 bucket. """
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
