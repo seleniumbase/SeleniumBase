@@ -1,11 +1,11 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_8.png "SeleniumBase")
+![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
 # SeleniumBase
 
-<b>All-in-One Automated Testing Software</b>
+<b>All-in-One Test Automation Framework</b>
 
-SeleniumBase is everything you need to automate and test any website.
+SeleniumBase makes it easy to run WebDriver automation with [pytest](https://docs.pytest.org/en/latest/) and [nosetests](http://nose.readthedocs.io/en/latest/).
 
-[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers) [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase
 
@@ -24,7 +24,7 @@ SeleniumBase is everything you need to automate and test any website.
 <a id="main_introduction"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Intro and Demo
 
-<b>Simple Python syntax makes coding easy:</b><br>
+<b>Simple [Python](https://www.python.org/) syntax makes coding easy:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -80,7 +80,7 @@ SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](ht
 *(**Docker users**: See the [Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md) to setup your Docker machine.)*
 
 
-#### **Step 0a:** Setup your [![Python version](https://img.shields.io/badge/python-2.7-22AADD.svg "Python version")](https://docs.python.org/2/) Python/pip environment:
+#### **Step 0a:** Setup your [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) Python/pip environment:
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
@@ -148,6 +148,8 @@ pip install -r requirements.txt --upgrade
 
 python setup.py install
 ```
+
+(NOTE: If you're using Python 3.* instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python`` in the above commands.)
 
 
 <a id="seleniumbase_basic_usage"></a>
@@ -456,13 +458,13 @@ self.find_element("a.my_class", timeout=5).click()
 self.click("a.my_class")  # DO IT THIS WAY!
 ```
 
-Using dots to signify class names is a simplified way of using ``*=`` within a CSS selector. That simplified version looks like this:
+**ProTip™:** You can use dots to signify class names (Ex: ``div.class_name``) as a simplified version of ``div[class="class_name"]`` within a CSS selector. 
+
+You can also use ``*=`` to search for any partial value in a CSS selector as shown below:
 
 ```python
-self.click('a[class*="my_class"]')
+self.click('a[name*="partial_name"]')
 ```
-
-**ProTip™:** You can use ``*=`` to search for any partial value in a CSS selector.
 
 #### Asserting visibility of text inside an element on a page within some number of seconds:
 

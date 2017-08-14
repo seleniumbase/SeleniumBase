@@ -29,7 +29,7 @@ import time
 import traceback
 import unittest
 import uuid
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
@@ -160,23 +160,22 @@ class BaseCase(unittest.TestCase):
                 element.click()
                 return
             source = self.driver.page_source
-            soup = BeautifulSoup(source)
-            html_links = soup.fetch('a')
+            soup = BeautifulSoup(source, "html.parser")
+            html_links = soup.find_all('a')
             for html_link in html_links:
                 if html_link.text == link_text:
-                    for html_attribute in html_link.attrs:
-                        if html_attribute[0] == 'href':
-                            href = html_attribute[1]
-                            if href.startswith('//'):
-                                link = "http:" + href
-                            elif href.startswith('/'):
-                                url = self.driver.current_url
-                                domain_url = self.get_domain_url(url)
-                                link = domain_url + href
-                            else:
-                                link = href
-                            self.open(link)
-                            return
+                    if html_link.has_attr('href'):
+                        href = html_link.get('href')
+                        if href.startswith('//'):
+                            link = "http:" + href
+                        elif href.startswith('/'):
+                            url = self.driver.current_url
+                            domain_url = self.get_domain_url(url)
+                            link = domain_url + href
+                        else:
+                            link = href
+                        self.open(link)
+                        return
                     raise Exception(
                         'Could not parse link from link_text [%s]' % link_text)
             raise Exception("Link text [%s] was not found!" % link_text)
@@ -503,7 +502,7 @@ class BaseCase(unittest.TestCase):
             '''script.src = "http://code.jquery.com/jquery-3.1.0.min.js"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
-        for x in xrange(30):
+        for x in range(30):
             # jQuery needs a small amount of time to activate. (At most 3s)
             try:
                 self.execute_script("jQuery('html')")
@@ -558,7 +557,7 @@ class BaseCase(unittest.TestCase):
         if self.highlights:
             loops = self.highlights
         loops = int(loops)
-        for n in xrange(loops):
+        for n in range(loops):
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
             self.execute_script(script)
@@ -1127,13 +1126,23 @@ class BaseCase(unittest.TestCase):
         """ This method extracts the message from an exception if there
             was an exception that occurred during the test, assuming
             that the exception was in a try/except block and not thrown. """
-        exception_info = sys.exc_info()[1]
-        if hasattr(exception_info, 'msg'):
-            exc_message = exception_info.msg
-        elif hasattr(exception_info, 'message'):
-            exc_message = exception_info.message
+        if sys.version.startswith('3') and hasattr(self, '_outcome'):
+            exception_info = self._outcome.errors
+            if exception_info:
+                try:
+                    exc_message = exception_info[0][1][1]
+                except:
+                    exc_message = "(Unknown Exception)"
+            else:
+                exc_message = "(Unknown Exception)"
         else:
-            exc_message = '(Unknown Exception)'
+            exception_info = sys.exc_info()[1]
+            if hasattr(exception_info, 'msg'):
+                exc_message = exception_info.msg
+            elif hasattr(exception_info, 'message'):
+                exc_message = exception_info.message
+            else:
+                exc_message = '(Unknown Exception)'
         return exc_message
 
     def _package_check(self):
@@ -1169,15 +1178,17 @@ class BaseCase(unittest.TestCase):
             self._package_check()
             return False
 
-    def process_checks(self):
-        """ To be used at the end of any test that uses checks, which are
-            non-terminating verifications that will only raise an exception
-            after this method is called. Useful for pages with multiple
-            elements to be checked when you want to find as many failures
-            as possible on a page before making fixes.
+    def process_checks(self, print_only=False):
+        """ To be used with any test that uses check_asserts, which are
+            non-terminating verifications that only raise exceptions
+            after this method is called. This is useful for pages with multiple
+            elements to be checked when you want to find as many bugs
+            as possible in a single test run before having
+            all the exceptions get raised simultaneously.
             Might be more useful if this method is called after processing
-            all the checks for a single html page, otherwise the screenshot
-            in the logs file won't match the location of the checks. """
+            all the checks on a single html page so that the failure screenshot
+            matches the location of the checks.
+            If "print_only" is set to True, the exception won't get raised. """
         if self.page_check_failures:
             exception_output = ''
             exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
@@ -1185,7 +1196,10 @@ class BaseCase(unittest.TestCase):
             self.page_check_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
-            raise Exception(exception_output)
+            if print_only:
+                print(exception_output)
+            else:
+                raise Exception(exception_output)
 
     ############
 
@@ -1269,7 +1283,7 @@ class BaseCase(unittest.TestCase):
             total_steps = int(abs(distance) / 50.0) + 2.0
             step_value = float(distance) / total_steps
             new_position = scroll_position
-            for y in xrange(int(total_steps)):
+            for y in range(int(total_steps)):
                 time.sleep(0.0114)
                 new_position += step_value
                 scroll_script = "window.scrollTo(0, %s);" % new_position
@@ -1397,19 +1411,25 @@ class BaseCase(unittest.TestCase):
 
     def tearDown(self):
         """
-        pytest-specific code
         Be careful if a subclass of BaseCase overrides setUp()
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        has_exception = False
+        if sys.version.startswith('3') and hasattr(self, '_outcome'):
+            if self._outcome.errors:
+                has_exception = True
+        else:
+            has_exception = sys.exc_info()[1] is not None
         if self.page_check_failures:
-            # self.process_checks() was not called after checks were made.
-            # We will log those now here, but without raising an exception.
-            exception_output = ''
-            exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
-            for tb in self.page_check_failures:
-                exception_output += "%s\n" % tb
-            logging.exception(exception_output)
+            print(
+                "\nWhen using self.check_assert_***() methods in your tests, "
+                "remember to call self.process_checks() afterwards. "
+                "Now calling in tearDown()...\nFailures Detected:")
+            if not has_exception:
+                self.process_checks()
+            else:
+                self.process_checks(print_only=True)
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
@@ -1418,15 +1438,15 @@ class BaseCase(unittest.TestCase):
             # Not using pytest (probably nosetests)
             self.is_pytest = False
         if self.is_pytest:
+            # pytest-specific code
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
             if self.with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
-                is_exception = sys.exc_info()[1] is not None
-                if is_exception:
+                if has_exception:
                     self._add_pytest_html_extra()
-                if self.with_testing_base and is_exception:
+                if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
@@ -1436,7 +1456,7 @@ class BaseCase(unittest.TestCase):
                         # Log everything if nothing specified (if testing_base)
                         log_helper.log_screenshot(test_logpath, self.driver)
                         log_helper.log_test_failure_data(
-                            test_logpath, self.driver, self.browser)
+                            self, test_logpath, self.driver, self.browser)
                         log_helper.log_page_source(test_logpath, self.driver)
                     else:
                         if self.with_screen_shots:
@@ -1444,7 +1464,7 @@ class BaseCase(unittest.TestCase):
                                 test_logpath, self.driver)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
-                                test_logpath, self.driver, self.browser)
+                                self, test_logpath, self.driver, self.browser)
                         if self.with_page_source:
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
@@ -1461,14 +1481,14 @@ class BaseCase(unittest.TestCase):
                     self.display.stop()
                     self.display = None
             if self.with_db_reporting:
-                if sys.exc_info()[1] is not None:
+                if has_exception:
                     self.__insert_test_result(constants.State.ERROR, True)
                 else:
                     self.__insert_test_result(constants.State.PASS, False)
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
-            if self.with_s3_logging and (sys.exc_info()[1] is not None):
+            if self.with_s3_logging and has_exception:
                 """ After each testcase, upload logs to the S3 bucket. """
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)

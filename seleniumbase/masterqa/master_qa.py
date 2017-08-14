@@ -196,19 +196,19 @@ class __MasterQATestCase__(BaseCase):
     def process_manual_check_results(self, auto_close_results_page=False):
         perfection = True
         failures_count = self.manual_check_count - self.manual_check_successes
-        print "\n\n*** Test Result: ***"
+        print("\n\n*** Test Result: ***")
         if self.manual_check_successes == self.manual_check_count:
             pass
         else:
-            print "WARNING!!! There were page issues detected!"
+            print("WARNING!!! There were page issues detected!")
             perfection = False
 
         if self.incomplete_runs > 0:
-            print "WARNING!!! Not all tests finished running!"
+            print("WARNING!!! Not all tests finished running!")
             perfection = False
 
         if perfection:
-            print "SUCCESS!!! Everything checks out OKAY!"
+            print("SUCCESS!!! Everything checks out OKAY!")
         else:
             pass
         self.add_bad_page_log_file()  # Includes successful results
@@ -284,7 +284,8 @@ class __MasterQATestCase__(BaseCase):
         results_file = self.add_results_page(report_html)
         archived_results_file = log_path + '/' + RESULTS_PAGE
         shutil.copyfile(results_file, archived_results_file)
-        print "\n*** The results html page is located at: ***\n" + results_file
+        print(
+            "\n*** The results html page is located at: ***\n" + results_file)
         self.open("file://%s" % archived_results_file)
         if auto_close_results_page:
             # Long enough to notice the results before closing the page
@@ -294,7 +295,7 @@ class __MasterQATestCase__(BaseCase):
             time.sleep(wait_time_before_verify)
         else:
             # The user can decide when to close the results page
-            print "\n*** Close the html report window to continue ***"
+            print("\n*** Close the html report window to continue ***")
             while len(self.driver.window_handles):
                 time.sleep(0.1)
 

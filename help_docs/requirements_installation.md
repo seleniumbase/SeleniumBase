@@ -1,11 +1,11 @@
 ## Installation instructions for Python, pip, brew, git, virtualenv, and virtualenvwrapper
 
 
-### [Python 2.7](https://www.python.org/downloads/)
+### [Python 2.7 or 3.*](https://www.python.org/downloads/)
 
-If you're a MAC user, that should already come preinstalled on your machine. Although Python 3 exists, you'll want Python 2 instead.
+If you're a MAC user, Python should already come preinstalled on your machine. You can use both Python 2.7 or Python 3 with SeleniumBase. If you're on a MAC and have [Homebrew](https://brew.sh/) installed (but not Python 3) you can use: ``brew install python3`` if you wish to use Python 3 instead of Python 2.7. Or you can just get everything from [https://www.python.org/downloads/](https://www.python.org/downloads/).
 
-If you're a WINDOWS user, [download Python 2.7 from here](https://www.python.org/downloads/release/python-2713/).
+If you're a WINDOWS user, [download Python 2.7 from here](https://www.python.org/downloads/release/python-2713/) OR [download Python 3.6.2 from here](https://www.python.org/downloads/release/python-362/).
 
 
 ### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
@@ -37,7 +37,7 @@ When done, make sure pip is on your path. ($PATH on Mac/Linux. System Environmen
 Homebrew allows you to install things more easily, such as Git, Chromedriver, and PhantomJS.
 
 ```bash
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update
 ```
 

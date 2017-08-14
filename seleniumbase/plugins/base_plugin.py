@@ -81,6 +81,7 @@ class Base(Plugin):
                 shutil.rmtree(archived_logs)
         self.successes = []
         self.failures = []
+        self.start_time = float(0)
         self.duration = float(0)
         self.page_results_list = []
         self.test_count = 0
@@ -96,7 +97,7 @@ class Base(Plugin):
         test.test.data = self.options.data
         test.test.args = self.options
         self.test_count += 1
-        self.duration = float(time.time())
+        self.start_time = float(time.time())
 
     def finalize(self, result):
         if self.report_on:
@@ -122,13 +123,13 @@ class Base(Plugin):
             test_logpath = self.options.log_path + "/" + test.id()
             log_helper.log_screenshot(test_logpath, test.driver)
             log_helper.log_test_failure_data(
-                test_logpath, test.driver, test.browser)
+                test, test_logpath, test.driver, test.browser)
             log_helper.log_page_source(test_logpath, test.driver)
 
     def addSuccess(self, test, capt):
         if self.report_on:
             self.duration = str(
-                "%0.3fs" % (float(time.time()) - float(self.duration)))
+                "%0.3fs" % (float(time.time()) - float(self.start_time)))
             self.successes.append(test.id())
             self.page_results_list.append(
                 report_helper.process_successes(
@@ -137,7 +138,7 @@ class Base(Plugin):
     def add_fails_or_errors(self, test):
         if self.report_on:
             self.duration = str(
-                "%0.3fs" % (float(time.time()) - float(self.duration)))
+                "%0.3fs" % (float(time.time()) - float(self.start_time)))
             if test.id() == 'nose.failure.Failure.runTest':
                 print(">>> ERROR: Could not locate tests to run!")
                 print(">>> The Test Report WILL NOT be generated!")
