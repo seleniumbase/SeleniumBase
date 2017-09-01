@@ -157,6 +157,7 @@ class SeleniumBrowser(Plugin):
                 os.kill(os.getpid(), 9)
         else:
             connected = False
+            error = "(Unknown)"
             for i in range(1, 4):
                 try:
                     self.driver = self.__select_browser(self.options.browser)
@@ -170,13 +171,14 @@ class SeleniumBrowser(Plugin):
                     connected = True
                     break
                 except Exception as err:
+                    error = err
                     print("Attempt #%s to connect to Selenium failed" % i)
                     if i < 3:
                         print("Retrying in 3 seconds...")
                         time.sleep(3)
             if not connected:
                 print("Error starting/connecting to Selenium:")
-                print(err)
+                print(error)
                 print("\n\n")
                 os.kill(os.getpid(), 9)
 
