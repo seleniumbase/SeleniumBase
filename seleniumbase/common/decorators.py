@@ -31,7 +31,7 @@ def retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32):
             while local_tries > 1:
                 try:
                     return func(*args, **kwargs)
-                except Exception, e:
+                except Exception as e:
                     if local_delay > max_delay:
                         local_delay = max_delay
                     logging.exception('%s: Retrying in %d seconds...'

@@ -3,4 +3,4 @@ The log files you see here were generated when test_fail.py ran and failed. You 
 Expected Log Files:
 basic_test_info.txt
 page_source.html
-screenshot.jpg
+screenshot.png
