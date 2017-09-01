@@ -111,7 +111,7 @@ class __MasterQATestCase__(BaseCase):
                     "*"))
             return 1
         else:
-            bad_page_name = "failed_check_%s.jpg" % self.manual_check_count
+            bad_page_name = "failed_check_%s.png" % self.manual_check_count
             self.save_screenshot(bad_page_name, folder=LATEST_REPORT_DIR)
             self.page_results_list.append(
                 '"%s","%s","%s","%s","%s","%s","%s","%s"' % (
@@ -150,7 +150,7 @@ class __MasterQATestCase__(BaseCase):
                 exc_info = '(Unknown Exception)'
 
         self.incomplete_runs += 1
-        error_page = "automation_failure_%s.jpg" % self.incomplete_runs
+        error_page = "automation_failure_%s.png" % self.incomplete_runs
         self.save_screenshot(error_page, folder=LATEST_REPORT_DIR)
         self.page_results_list.append(
             '"%s","%s","%s","%s","%s","%s","%s","%s"' % (

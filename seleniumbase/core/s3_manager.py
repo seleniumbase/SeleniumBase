@@ -40,8 +40,10 @@ class S3LoggingBucket(object):
         content_type = "text/plain"
         if file_name.endswith(".html"):
             content_type = "text/html"
-        if file_name.endswith(".jpg"):
-            content_type = "image/jpg"
+        elif file_name.endswith(".jpg"):
+            content_type = "image/jpeg"
+        elif file_name.endswith(".png"):
+            content_type = "image/png"
         upload_key.set_contents_from_filename(
             file_path,
             headers={"Content-Type": content_type})
