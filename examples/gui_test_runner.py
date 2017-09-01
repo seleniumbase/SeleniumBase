@@ -53,7 +53,8 @@ class App:
         self.run5 = Button(
             frame, command=self.run_5,
             text=("nosetests my_test_suite.py --with-selenium"
-                  " --browser=chrome --with-testing_base --report")).pack()
+                  " --browser=chrome --with-testing_base "
+                  "--report --show_report")).pack()
         self.title6 = Label(
             frame,
             text="Basic Failing Test Run showing the Multiple-Checks feature:",
@@ -94,7 +95,7 @@ class App:
     def run_5(self):
         os.system(
             'nosetests my_test_suite.py --with-selenium'
-            ' --browser=chrome --with-testing_base --report')
+            ' --browser=chrome --with-testing_base --report --show_report')
 
     def run_6(self):
         os.system(
@@ -109,6 +110,6 @@ class App:
 
 if __name__ == "__main__":
     root = Tk()
-    root.minsize(612, 444)
+    root.minsize(700, 444)
     app = App(root)
     root.mainloop()
