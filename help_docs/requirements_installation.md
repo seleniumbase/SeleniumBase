@@ -29,8 +29,7 @@ python -m pip install -U pip setuptools
 
 If you're having any trouble with that, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
 
-When done, make sure pip is on your path. ($PATH on Mac/Linux. System Environment Variables on WINDOWS.)
-
+When done, make sure the location of pip is on your path, which is `$PATH` for Mac/Linux. (On Windows, it's the System Variables `Path` within System Environment Variables. Ex: Add "C:/Python27/Scripts/" to the end of the `Path` variable.)
 
 ### [Homebrew](http://brew.sh/) (MAC-ONLY) (OPTIONAL)
 
