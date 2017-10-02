@@ -78,6 +78,7 @@ def get_driver(browser_name):
             chrome_options.add_experimental_option("prefs", prefs)
             chrome_options.add_argument("--allow-file-access-from-files")
             chrome_options.add_argument("--allow-running-insecure-content")
+            chrome_options.add_argument("--disable-infobars")
             if settings.START_CHROME_IN_FULL_SCREEN_MODE:
                 # Run Chrome in full screen mode on WINDOWS
                 chrome_options.add_argument("--start-maximized")
