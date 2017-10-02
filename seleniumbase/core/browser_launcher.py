@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
 
@@ -77,6 +78,12 @@ def get_driver(browser_name):
             chrome_options.add_experimental_option("prefs", prefs)
             chrome_options.add_argument("--allow-file-access-from-files")
             chrome_options.add_argument("--allow-running-insecure-content")
+            chrome_options.add_argument("--disable-infobars")
+            if settings.START_CHROME_IN_FULL_SCREEN_MODE:
+                # Run Chrome in full screen mode on WINDOWS
+                chrome_options.add_argument("--start-maximized")
+                # Run Chrome in full screen mode on MAC/Linux
+                chrome_options.add_argument("--kiosk")
             return webdriver.Chrome(chrome_options=chrome_options)
         except Exception:
             return webdriver.Chrome()

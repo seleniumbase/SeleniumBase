@@ -72,6 +72,9 @@ to be True since it's part of wait_for_ready_state_complete().
 # Called after each wait_for_ready_state_complete()
 WAIT_FOR_ANGULARJS = False
 
+# Option to start Chrome in full screen mode by default
+START_CHROME_IN_FULL_SCREEN_MODE = False
+
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)
