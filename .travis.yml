@@ -1,18 +1,15 @@
-
 dist: trusty
 sudo: required
-env:
-  global:
-    - DISPLAY=:99.0
-    - PYTEST_ADDOPTS="--verbose --instafail"
-    - FF_ESR_BINARY=$HOME/firefox-latest-esr/firefox/firefox-bin
-    - FF_NIGHTLY_BINARY=$HOME/firefox-latest-nightly/firefox/firefox-bin
+language: python
+addons:
+  firefox: "46.0.1"
 python:
   - "2.7"
 install:
   - "pip install --upgrade pip"
   - "pip install -r server_requirements.txt"
   - "python server_setup.py install"
+  - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 seleniumbase/*.py"
   - "flake8 seleniumbase/*/*.py"
@@ -25,12 +22,12 @@ before_script:
   - "if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi"
   - "if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
   - "phantomjs --version"
-  - export GECKODRIVER_DOWNLOAD=`curl -s 'https://api.github.com/repos/mozilla/geckodriver/releases/latest' | python -c "import sys, json; r = json.load(sys.stdin); print([a for a in r['assets'] if 'linux64' in a['name']][0]['browser_download_url']);"`
-  - curl -L -o geckodriver.tar.gz $GECKODRIVER_DOWNLOAD
-  - gunzip -c geckodriver.tar.gz | tar xopf -
-  - chmod +x geckodriver && sudo mv geckodriver /usr/local/bin
 script:
   - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
   - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
+env:
+  matrix:
+  - BROWSER=phantomjs
+  - BROWSER=firefox
 notifications:
   email: false
