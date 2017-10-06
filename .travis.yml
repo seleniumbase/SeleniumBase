@@ -2,7 +2,7 @@ dist: trusty
 sudo: required
 language: python
 addons:
-  firefox: latest
+  firefox: 46
   apt:
     sources:
      - google-chrome
@@ -30,7 +30,7 @@ before_script:
   - "phantomjs --version"
 script:
   - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
-  - "pytest examples/my_first_test.py --with-selenium --browser=chrome -s"
+  - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
 env:
   matrix:
   - BROWSER=phantomjs
