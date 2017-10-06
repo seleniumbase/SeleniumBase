@@ -30,6 +30,7 @@ before_script:
   - "phantomjs --version"
 script:
   - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
+  - "pytest examples/my_first_test.py --with-selenium --browser=chrome -s"
 env:
   matrix:
   - BROWSER=phantomjs
