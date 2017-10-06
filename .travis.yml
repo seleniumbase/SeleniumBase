@@ -25,9 +25,5 @@ before_script:
 script:
   - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
   - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
-env:
-  matrix:
-  - BROWSER=phantomjs
-  - BROWSER=firefox
 notifications:
   email: false
