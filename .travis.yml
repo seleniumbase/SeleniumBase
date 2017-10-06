@@ -2,7 +2,7 @@ dist: trusty
 sudo: required
 language: python
 addons:
-  firefox: 46
+  firefox: "46.0"
   apt:
     sources:
      - google-chrome
