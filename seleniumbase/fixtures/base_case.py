@@ -624,7 +624,8 @@ class BaseCase(unittest.TestCase):
         self._slow_scroll_to_element(element)
 
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
-        self.scroll_to(selector, by=by)
+        # DEPRECATED - self.click() now scrolls to the element before clicking
+        # self.scroll_to(selector, by=by)
         self.click(selector, by=by)
 
     def click_xpath(self, xpath):
