@@ -89,6 +89,8 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self._scroll_to_element(element)
         pre_action_url = self.driver.current_url
         try:
             element.click()
@@ -115,6 +117,8 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self._scroll_to_element(element)
         pre_action_url = self.driver.current_url
         try:
             actions = ActionChains(self.driver)
@@ -330,6 +334,8 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self._scroll_to_element(element)
         pre_action_url = self.driver.current_url
         try:
             if not new_value.endswith('\n'):
@@ -381,6 +387,8 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self._scroll_to_element(element)
         try:
             element.clear()
         except StaleElementReferenceException:
@@ -590,6 +598,9 @@ class BaseCase(unittest.TestCase):
     def scroll_to(self, selector, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
         ''' Fast scroll to destination '''
+        if self.demo_mode:
+            self.slow_scroll_to(selector, by=by, timeout=timeout)
+            return
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         element = self.wait_for_element_visible(
@@ -613,7 +624,8 @@ class BaseCase(unittest.TestCase):
         self._slow_scroll_to_element(element)
 
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
-        self.scroll_to(selector, by=by)
+        # DEPRECATED - self.click() now scrolls to the element before clicking
+        # self.scroll_to(selector, by=by)
         self.click(selector, by=by)
 
     def click_xpath(self, xpath):
