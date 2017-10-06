@@ -1,5 +1,13 @@
+dist: trusty
+sudo: required
 language: python
-sudo: false
+addons:
+  firefox: latest
+  apt:
+    sources:
+     - google-chrome
+    packages:
+     - google-chrome-stable fluxbox
 python:
   - "2.7"
 install:
@@ -12,6 +20,7 @@ before_script:
   - "flake8 seleniumbase/*/*/*.py"
   - "flake8 seleniumbase/*/*/*/*.py"
   - "export DISPLAY=:99.0"
+  - "fluxbox >/dev/null 2>&1 &"
   - "sh -e /etc/init.d/xvfb start"
   - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
   - "if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
