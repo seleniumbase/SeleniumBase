@@ -44,7 +44,8 @@ from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
 from selenium.common.exceptions import (StaleElementReferenceException,
-                                        TimeoutException)
+                                        TimeoutException,
+                                        WebDriverException)
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -1281,7 +1282,10 @@ class BaseCase(unittest.TestCase):
         scroll_script = "window.scrollTo(0, %s);" % element_location
         # The old jQuery scroll_script required by=By.CSS_SELECTOR
         # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
-        self.execute_script(scroll_script)
+        try:
+            self.execute_script(scroll_script)
+        except WebDriverException:
+            pass  # Older versions of Firefox experienced issues here
         self._demo_mode_pause_if_active(tiny=True)
 
     def _slow_scroll_to_element(self, element):
