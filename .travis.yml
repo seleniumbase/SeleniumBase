@@ -9,6 +9,7 @@ install:
   - "pip install --upgrade pip"
   - "pip install -r server_requirements.txt"
   - "python server_setup.py install"
+  - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 seleniumbase/*.py"
   - "flake8 seleniumbase/*/*.py"
