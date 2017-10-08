@@ -508,7 +508,7 @@ class BaseCase(unittest.TestCase):
             pass
         self.execute_script(
             '''var script = document.createElement("script"); '''
-            '''script.src = "http://code.jquery.com/jquery-3.1.0.min.js"; '''
+            '''script.src = "http://code.jquery.com/jquery-3.2.1.min.js"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
         for x in range(30):
