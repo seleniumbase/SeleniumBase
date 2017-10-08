@@ -1,15 +1,13 @@
-dist: trusty
-sudo: required
 language: python
-addons:
-  firefox: "46.0.1"
+sudo: false
 python:
   - "2.7"
+addons:
+  firefox: "46.0.1"
 install:
   - "pip install --upgrade pip"
   - "pip install -r server_requirements.txt"
   - "python server_setup.py install"
-  - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 seleniumbase/*.py"
   - "flake8 seleniumbase/*/*.py"
@@ -17,10 +15,15 @@ before_script:
   - "flake8 seleniumbase/*/*/*/*.py"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - "phantomjs --version"
-  - "firefox --version"
+  - "export PATH=$PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH"
+  - "if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
+  - "if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi"
+  - "if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
 script:
-  - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
+  - "firefox --version"
+  - "nosetests examples/my_first_test.py --with-selenium --browser=firefox -s"
   - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
+  - "phantomjs --version"
+  - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
 notifications:
   email: false
