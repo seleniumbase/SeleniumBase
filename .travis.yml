@@ -1,13 +1,10 @@
 language: python
-sudo: false
+sudo: required
 python:
   - "2.7"
 addons:
   firefox: "46.0.1"
   chrome: stable
-env:
-  global:
-    - CHROMEDRIVER_VERSION="2.32"
 install:
   - "pip install --upgrade pip"
   - "pip install -r server_requirements.txt"
@@ -23,8 +20,10 @@ before_script:
   - "if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
   - "if [ $(phantomjs --version) != '2.1.1' ]; then wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2; fi"
   - "if [ $(phantomjs --version) != '2.1.1' ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
-  - "mkdir chromedriver; wget -q -t 3 https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip; unzip chromedriver_linux64 -d chromedriver;"
-  - "export CHROMEDRIVER_PATH=./chromedriver/chromedriver;"
+  - wget http://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - sudo cp chromedriver /usr/local/bin/
+  - sudo chmod +x /usr/local/bin/chromedriver
 script:
   - "nosetests examples/my_first_test.py --with-selenium --browser=chrome -s"
   - "firefox --version"
