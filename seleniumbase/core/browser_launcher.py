@@ -54,6 +54,14 @@ def get_driver(browser_name):
                 firefox_capabilities['marionette'] = False
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile, capabilities=firefox_capabilities)
+            except AttributeError:
+                # Handle the same way as WebDriverException
+                # Don't use Geckodriver: Only works for old versions of Firefox
+                profile = _create_firefox_profile(downloads_path)
+                firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
+                firefox_capabilities['marionette'] = False
+                firefox_driver = webdriver.Firefox(
+                    firefox_profile=profile, capabilities=firefox_capabilities)
             return firefox_driver
         except:
             return webdriver.Firefox()
