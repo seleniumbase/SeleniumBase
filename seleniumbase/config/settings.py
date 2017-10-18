@@ -94,7 +94,7 @@ MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT = 600
 
 
 # #####>>>>>----- RECOMMENDED SETTINGS -----<<<<<#####
-# ##### (For database reporting and saving test logs)
+# ##### (For database reporting, saving test logs, and password encryption)
 
 # MySQL DB Credentials
 # (For saving data from tests)
@@ -111,6 +111,16 @@ S3_LOG_BUCKET = "[S3 BUCKET NAME]"
 S3_BUCKET_URL = "https://s3.amazonaws.com/[S3 BUCKET NAME]/"
 S3_SELENIUM_ACCESS_KEY = "[S3 ACCESS KEY]"
 S3_SELENIUM_SECRET_KEY = "[S3 SECRET KEY]"
+
+
+# ENCRYPTION SETTINGS
+# (Used for string/password obfuscation)
+# (You should reset the Encryption Key for every clone of SeleniumBase)
+ENCRYPTION_KEY = "Pg^.l!8UdJ+Y7dMIe&fl*%!p9@ej]/#tL~3E4%6?"
+# These tokens are added to the beginning and end of obfuscated passwords.
+# Helps identify which strings/passwords have been obfuscated.
+OBFUSCATION_START_TOKEN = "$^*ENCRYPT="
+OBFUSCATION_END_TOKEN = "?&#$"
 
 
 # #####>>>>>----- OPTIONAL SETTINGS -----<<<<<#####
