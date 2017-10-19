@@ -1,9 +1,8 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
 # SeleniumBase
 
 <b>All-in-One Test Automation Framework</b>
 
-SeleniumBase makes it easy to run WebDriver automation with [pytest](https://docs.pytest.org/en/latest/) and [nosetests](http://nose.readthedocs.io/en/latest/).
+SeleniumBase makes it easy to run Selenium/WebDriver automation with [pytest](https://docs.pytest.org/en/latest/) and [nosetests](http://nose.readthedocs.io/en/latest/).
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
@@ -20,6 +19,7 @@ SeleniumBase makes it easy to run WebDriver automation with [pytest](https://doc
 > - [**Production Environments**](#utilizing_advanced_features)
 > - [**Method Specifications**](#detailed_method_specifications)
 
+![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
 
 <a id="main_introduction"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Intro and Demo
@@ -269,9 +269,9 @@ pytest my_first_test.py --with-testing_base --browser=phantomjs -s
 <a id="how_seleniumbase_works"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **How SeleniumBase Works:**
 
-At the core, SeleniumBase works by extending Nosetests and Pytest as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Nosetest/Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class.
+At the core, SeleniumBase works by extending Nosetests and Pytest as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Nosetest/Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class. (NOTE: By default, Pytest now activates the SeleniumBase selenium plugin by default if the test class inherits the SeleniumBase BaseCase class.)
 
-Once you've activated the main SeleniumBase plugin with "``--with-selenium``", you can use "``--browser=chrome``" to specify the web browser to use (Default = "Chrome"). You can also include additional plugins for additional features such as "``--with-testing_base``" (for logging data/screenshots on test failures) and "``--demo_mode``" (for highlighting elements & slowing test runs). There are also other plugins available such as "``--with-db_reporting``", "``--with-s3_logging``", and more.
+Once you've activated the main selenium plugin, you can use "``--browser=chrome``" to specify the web browser to use (Default = "Chrome"). You can also include additional plugins for additional features such as "``--with-testing_base``" (for logging data/screenshots on test failures) and "``--demo_mode``" (for highlighting elements & slowing test runs). There are also other plugins available such as "``--with-db_reporting``", "``--with-s3_logging``", and more.
 
 (NOTE: Nosetests and Pytest work by automatically running any Python method that starts with "``test``" from the file that you specified on the command line. You can also run all tests from a specific class in a file, or even pick out an individual test to run.)
 
