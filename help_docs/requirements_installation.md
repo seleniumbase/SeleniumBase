@@ -33,10 +33,14 @@ When done, make sure the location of pip is on your path, which is `$PATH` for M
 
 ### [Homebrew](http://brew.sh/) (MAC-ONLY) (OPTIONAL)
 
-Homebrew allows you to install things more easily, such as Git, Chromedriver, and PhantomJS.
+The Homebrew package manager allows you to install things more easily on MacOS, such as Git, Chromedriver, and PhantomJS.
 
+Here's the command line script to install Homebrew (*from [https://brew.sh/](https://brew.sh/)*):
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+If you haven't updated Homebrew in awhile, you probably should. Here's how:
+```bash
 brew update
 ```
 
