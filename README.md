@@ -126,7 +126,9 @@ brew upgrade chromedriver
 
 
 <a id="seleniumbase_installation"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **SeleniumBase Installation Steps**
+
+### **Step 1:** Clone SeleniumBase
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
