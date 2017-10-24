@@ -45,7 +45,7 @@ nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
 SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
 <b>SeleniumBase helps keep your code clean:</b><br>
-This long line of WebDriver code...
+This long line of messy WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
@@ -53,7 +53,8 @@ self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```python
 self.update_text("textarea", "text")
 ```
-You can still use ``self.driver`` in your code.
+It's not only cleaner, but more robust too!
+(<i>You can still use ``self.driver`` in your scripts as needed.</i>)
 
 <b>Business Mindset</b>:<br>
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
