@@ -2,7 +2,7 @@
 
 ### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif "MasterQA")
 
 Here's some example code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
@@ -22,7 +22,7 @@ After the web browser performs various automated actions, a pop-up window will a
 
 At the end of a full test run, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif)
+![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
 You may have noticed the ``Incomplete Test Runs`` row on the results page. If the value for that is not zero, it means that one of the automated steps failed. This could happen if you tell your script to perform an action on an element that doesn't exist. Now that we're mixing automation with manual QA, it's good to tell apart the failures from each. The results_table CSV file contains a spreadsheet with the details of each failure (if any) for both manual and automated steps.
 
