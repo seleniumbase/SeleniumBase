@@ -24,13 +24,13 @@ class App:
             frame, text="Basic Test Run in Chrome:", fg="blue").pack()
         self.run1 = Button(
             frame, command=self.run_1,
-            text=("nosetests my_first_test.py --with-selenium"
+            text=("pytest my_first_test.py --with-selenium"
                   " --browser=chrome")).pack()
         self.title2 = Label(
             frame, text="Basic Test Run in Firefox:", fg="blue").pack()
         self.run2 = Button(
             frame, command=self.run_2,
-            text=("nosetests my_first_test.py"
+            text=("pytest my_first_test.py"
                   " --with-selenium --browser=firefox")).pack()
         self.title3 = Label(
             frame, text="Basic Test Run in Demo Mode:", fg="blue").pack()
@@ -76,11 +76,11 @@ class App:
 
     def run_1(self):
         os.system(
-            'nosetests my_first_test.py --with-selenium --browser=chrome')
+            'pytest my_first_test.py --with-selenium --browser=chrome')
 
     def run_2(self):
         os.system(
-            'nosetests my_first_test.py --with-selenium --browser=firefox')
+            'pytest my_first_test.py --with-selenium --browser=firefox')
 
     def run_3(self):
         os.system(
