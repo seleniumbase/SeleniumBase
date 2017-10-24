@@ -2,7 +2,7 @@
 
 <b>All-in-One Test Automation Framework</b>
 
-Easily run Selenium/WebDriver automation in *[Python](https://www.python.org/)* with [Pytest](https://docs.pytest.org/en/latest/) or [Nosetests](http://nose.readthedocs.io/en/latest/).
+Easily build & run Selenium/WebDriver scripts in [Python](https://www.python.org/) with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/)!
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
