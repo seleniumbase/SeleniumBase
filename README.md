@@ -1,8 +1,9 @@
 # SeleniumBase
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
-Selenium automation made simple. Runs Python scripts using WebDriver with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/). Easy integration with [Jenkins](https://jenkins.io/).
 
-<b>Simple [Python](https://www.python.org/) syntax makes coding easy:</b><br>
+Selenium automation made simple. Runs Python/WebDriver scripts with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/). Easy integration with [Jenkins](https://jenkins.io/).
+
+<b>Simple [Python](https://www.python.org/) syntax makes coding easier:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -32,14 +33,15 @@ self.driver.find_element_by_css_selector("textarea").send_keys("text")
 self.update_text("textarea", "text")
 ```
 
-<b>Business Mindset</b>:<br>
+<b>Business Mindset:</b>:<br>
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+
+#### For a full list of SeleniumBase features, **[Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase:
 
 > **Table of Contents / Navigation:**
-> - [**SeleniumBase Features**](#feature_list)
 > - [**Install Requirements**](#dependency_installation)
 > - [**SeleniumBase Installation**](#seleniumbase_installation)
 > - [**Basic Example and Usage**](#seleniumbase_basic_usage)
@@ -49,18 +51,6 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 > - [**Method Specifications**](#detailed_method_specifications)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
-
-<a id="feature_list"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **SeleniumBase Features**
-* A test automation framework for building & running reliable Selenium scripts.
-* A hybrid-automation solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)** for speeding up manual testing.
-* [Python libraries](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase) for helping you do more with Selenium-WebDriver.
-* A flexible command line interface for customizing test runs.
-* [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
-* [A global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for making SeleniumBase unique to your specific environmental needs.
-* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js).
-* Backwards-compatible with [WebDriver](http://www.seleniumhq.org/projects/webdriver/). (Use ``self.driver`` anywhere.)
-* [A tool to convert Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_ide) into clean & reliable SeleniumBase scripts.
 
 
 <a id="dependency_installation"></a>
@@ -262,7 +252,7 @@ pytest my_first_test.py --with-testing_base --browser=phantomjs -s
 <a id="how_seleniumbase_works"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **How SeleniumBase Works:**
 
-At the core, SeleniumBase works by extending Nosetests and Pytest as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Nosetest/Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class. (NOTE: By default, Pytest now activates the SeleniumBase selenium plugin by default if the test class inherits the SeleniumBase BaseCase class.)
+At the core, SeleniumBase works by extending Pytest and Nosetests as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Pytest/Nosetest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class, [found here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). (NOTE: By default, Pytest now activates the SeleniumBase selenium plugin by default if the test class inherits the SeleniumBase BaseCase class.)
 
 Once you've activated the main selenium plugin, you can use "``--browser=chrome``" to specify the web browser to use (Default = "Chrome"). You can also include additional plugins for additional features such as "``--with-testing_base``" (for logging data/screenshots on test failures) and "``--demo_mode``" (for highlighting elements & slowing test runs). There are also other plugins available such as "``--with-db_reporting``", "``--with-s3_logging``", and more.
 
