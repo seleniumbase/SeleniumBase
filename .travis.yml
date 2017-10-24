@@ -3,12 +3,12 @@ sudo: false
 python:
   - "2.7"
 addons:
-  firefox: "46.0.1"
+  firefox: "56.0"
   chrome: stable
 install:
   - "pip install --upgrade pip"
-  - "pip install -r server_requirements.txt"
-  - "python server_setup.py install"
+  - "pip install -r requirements.txt"
+  - "python setup.py install"
   - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 seleniumbase/*.py"
@@ -17,6 +17,7 @@ before_script:
   - "flake8 seleniumbase/*/*/*/*.py"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+  - "wget https://github.com/mozilla/geckodriver/releases/download/v0.19.0/geckodriver-v0.19.0-linux64.tar.gz -O /tmp/geckodriver.tar.gz && tar -C /opt -xzf /tmp/geckodriver.tar.gz && sudo chmod 755 /opt/geckodriver && sudo ln -fs /opt/geckodriver /usr/bin/geckodriver && sudo ln -fs /opt/geckodriver /usr/local/bin/geckodriver"
   - "wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2;"
   - "tar -xvf ./phantomjs-2.1.1-linux-x86_64.tar.bz2;"
   - "export PATH=$PWD/phantomjs-2.1.1-linux-x86_64/bin:$PATH;"

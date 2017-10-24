@@ -2,7 +2,7 @@
 
 <b>All-in-One Test Automation Framework</b>
 
-Easily run Selenium/WebDriver automation in *[Python](https://www.python.org/)* with [Pytest](https://docs.pytest.org/en/latest/) or [Nosetests](http://nose.readthedocs.io/en/latest/).
+Easily build & run Selenium/WebDriver scripts in [Python](https://www.python.org/) with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/)!
 
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
@@ -31,10 +31,12 @@ Easily run Selenium/WebDriver automation in *[Python](https://www.python.org/)* 
 
 <b>Customize scripts from the command line:</b>
 ```bash
-pytest my_first_test.py --demo_mode -s
+pytest my_first_test.py --browser=chrome
 
-nosetests my_first_test.py --demo_mode --with-selenium --browser=chrome -s
+nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
 ```
+(<i>The Selenium plugin, ``--with-selenium``, is enabled by default when using pytest to run test classes that inherit [BaseCase](#seleniumbase_basic_usage), thanks to [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini). You can do the same for nosetests by adding ``with-selenium=1`` under ``[nosetests]`` in a [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/setup.cfg) file located in the folder where you call nosetests.</i>)
+
 <b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b>
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
