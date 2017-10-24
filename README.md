@@ -31,10 +31,12 @@ Easily run Selenium/WebDriver automation in *[Python](https://www.python.org/)* 
 
 <b>Customize scripts from the command line:</b>
 ```bash
-pytest my_first_test.py --demo_mode -s
+pytest my_first_test.py --browser=chrome
 
-nosetests my_first_test.py --demo_mode --with-selenium --browser=chrome -s
+nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
 ```
+(<i>The Selenium plugin, ``--with-selenium``, is enabled by default when using pytest to run test classes that inherit [BaseCase](#seleniumbase_basic_usage), thanks to [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini). You can do the same for nosetests by adding ``with-selenium=1`` under ``[nosetests]`` in a [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/setup.cfg) file located in the folder where you call nosetests.</i>)
+
 <b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b>
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
