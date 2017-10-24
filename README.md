@@ -53,8 +53,7 @@ self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```python
 self.update_text("textarea", "text")
 ```
-It's not only cleaner, but more robust too!
-(<i>You can still use ``self.driver`` in your scripts as needed.</i>)
+It's not only cleaner, but more robust too! <br>(<i>You can still use ``self.driver`` in your scripts as needed.</i>)
 
 <b>Business Mindset</b>:<br>
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
