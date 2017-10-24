@@ -7,8 +7,8 @@ addons:
   chrome: stable
 install:
   - "pip install --upgrade pip"
-  - "pip install -r server_requirements.txt"
-  - "python server_setup.py install"
+  - "pip install -r requirements.txt"
+  - "python setup.py install"
   - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 seleniumbase/*.py"
