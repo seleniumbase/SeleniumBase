@@ -26,13 +26,13 @@ https://docs.docker.com/engine/installation/
 
     docker build -t seleniumbase .
 
-#### 6. Run [the example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
-
-    docker run seleniumbase ./run_docker_test_in_firefox.sh
-
-#### 7. Now run the same test with Chrome inside your Docker:
+#### 6. Run [the example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) with Chrome inside your Docker: (Once the test completes after a few seconds, you'll automatically exit the Docker shell)
 
     docker run seleniumbase ./run_docker_test_in_chrome.sh
+
+#### 7. Now run the same test with Firefox inside your Docker:
+
+    docker run seleniumbase ./run_docker_test_in_firefox.sh
 
 #### 8. Now run the same test with PhantomJS inside your Docker:
 
