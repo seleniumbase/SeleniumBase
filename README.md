@@ -36,10 +36,10 @@ self.update_text("textarea", "text")
 <b>Integrate with your favorite tools:</b><br>
 SeleniumBase has built-in integrations with Docker, Google Cloud, Amazon AWS, Linux, NodeJS, Selenium Grid, and Selenium IDE. To learn about some of them, **[Click Here](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations)**. (For details about the Amazon AWS integration, **[Click Here](#amazon_section)**.)
 
-<b>Automate your tasks on the Web:</b>:<br>
+<b>Automate your tasks on the Web:</b><br>
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-<b>Do more with automation than before:</b>:<br>
+<b>Do more with automation than before:</b><br>
 For a full list of SeleniumBase features, **[Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.
 
 
