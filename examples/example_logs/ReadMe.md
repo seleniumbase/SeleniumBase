@@ -10,9 +10,9 @@ nosetests test_fail.py --with-selenium --with-testing_base --browser=firefox
 ```
 
 **Expected log files generated during failures:**
-[basic_test_info.txt](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/basic_test_info.txt)
-[page_source.html](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/page_source.html)
-[screenshot.png](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/screenshot.png)
+* [basic_test_info.txt](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/basic_test_info.txt)
+* [page_source.html](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/page_source.html)
+* [screenshot.png](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/screenshot.png)
 
 ---
 **In addition to logging, you can also generate test reports:**
