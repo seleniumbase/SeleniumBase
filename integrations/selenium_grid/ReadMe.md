@@ -16,7 +16,7 @@ Now you can add a Grid Node to the Grid Hub:
 ```bash
 ./grid-node start
 ```
-(NOTE: If the Grid Node is not running on the same machine as the Grid Hub, update the address from the script.)
+(NOTE: If the Grid Node is not running on the same machine as the Grid Hub, update the address listed for WEBDRIVER_NODE_PARAMS in the [grid-node](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/selenium_grid/grid-node) script.)
 You should be able to see the Grid Console up and running from here: [http://0.0.0.0:4444/grid/console](http://0.0.0.0:4444/grid/console) (NOTE: That's the address if you're running locally from localhost.)
 
 You can remove a Grid Node from the Grid Hub with:
@@ -27,6 +27,10 @@ You can stop the Grid Hub at anytime with:
 ```bash
 ./grid-hub stop
 ```
+
+When running with nosetests, configure a "``setup.cfg``" file with your grid hub info. (See the example [selenium_server_config_example.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/selenium_grid/selenium_server_config_example.cfg) file.)
+
+When running with pytest, add the server and port info to a "``pytest.ini``" file. (Or add that data directly on the command line when you run your tests.)
 
 #### More detailed info about connecting to the Selenium Grid Hub can be found here:
 * [https://theintern.github.io/intern/#selenium-grid](https://theintern.github.io/intern/#selenium-grid)
