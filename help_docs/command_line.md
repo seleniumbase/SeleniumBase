@@ -7,7 +7,7 @@ pytest my_first_test.py --browser=chrome
 
 nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
 ```
-(<i>The Selenium plugin, ``--with-selenium``, is enabled by default when using pytest to run test classes that inherit [BaseCase](#seleniumbase_basic_usage), thanks to [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini). You can do the same for nosetests by adding ``with-selenium=1`` under ``[nosetests]`` in a [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/setup.cfg) file located in the folder where you call nosetests.</i>)
+(<i>The Selenium plugin, ``--with-selenium``, is enabled by default when using pytest to run test classes that inherit the [BaseCase](#seleniumbase_basic_usage) class, thanks to [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini). You can do the same for nosetests by adding ``with-selenium=1`` under ``[nosetests]`` in a [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/setup.cfg) file located in the folder where you call nosetests.</i>)
 
 **Here's how to run the example script on various web browsers by using nosetests:**
 

@@ -3,7 +3,7 @@
 
 Selenium automation made simple. Runs Python/WebDriver scripts with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/). Easy integration with [Jenkins](https://jenkins.io/).
 
-<b>Simple [Python](https://www.python.org/) syntax makes coding easier:</b><br>
+<b>Simple [Python](https://www.python.org/) syntax eases coding:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -23,7 +23,7 @@ nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
 <b>Prevent flaky tests:</b><br>
 SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-<b>SeleniumBase helps keep your code clean:</b><br>
+<b>Keep your code clean:</b><br>
 This long line of messy WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
@@ -33,24 +33,46 @@ self.driver.find_element_by_css_selector("textarea").send_keys("text")
 self.update_text("textarea", "text")
 ```
 
-<b>Business Mindset:</b>:<br>
+<b>Integrate with your favorite tools:</b><br>
+SeleniumBase has built-in integrations with Docker, Google Cloud, Amazon AWS, Linux, NodeJS, Selenium Grid, and Selenium IDE. To learn about some of them, **[Click Here](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations)**. (For details about the Amazon AWS integration, **[Click Here](#amazon_section)**.)
+
+<b>Automate your tasks on the Web:</b>:<br>
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-#### For a full list of SeleniumBase features, **[Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.
+<b>Do more with automation than before:</b>:<br>
+For a full list of SeleniumBase features, **[Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase:
 
 > **Table of Contents / Navigation:**
+> - [**How SeleniumBase Works**](#how_seleniumbase_works)
 > - [**Install Requirements**](#dependency_installation)
 > - [**SeleniumBase Installation**](#seleniumbase_installation)
 > - [**Basic Example and Usage**](#seleniumbase_basic_usage)
-> - [**How SeleniumBase Works**](#how_seleniumbase_works)
 > - [**Generating Test Reports**](#creating_visual_reports)
 > - [**Production Environments**](#utilizing_advanced_features)
 > - [**Method Specifications**](#detailed_method_specifications)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
+
+
+<a id="how_seleniumbase_works"></a>
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **How SeleniumBase Works:**
+
+At the core, SeleniumBase works by extending Pytest and Nosetests as a direct plugin to each one. This plugin is activated by using "``--with-selenium``", which is on by default with Pytest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the BaseCase class, [found here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Now you can use "``--browser=chrome``" to specify the web browser to use (Default = "Chrome"). You can also include additional plugins for additional features such as "``--with-testing_base``" (for logging data/screenshots on test failures) and "``--demo_mode``" (for highlighting elements & slowing test runs). There are also other plugins available such as "``--with-db_reporting``", "``--with-s3_logging``", and more.
+
+(NOTE: Pytest and Nosetests work by automatically running any Python method that starts with "``test``" from the file that you specified on the command line. You can also run all tests from a specific class in a file, or even pick out an individual test to run.)
+
+To use SeleniumBase calls you need the following:
+```python
+from seleniumbase import BaseCase
+```
+And then have your test classes inherit BaseCase:
+```python
+class MyTestClass(BaseCase):
+```
+(*See the example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), for reference.*)
 
 
 <a id="dependency_installation"></a>
@@ -186,8 +208,6 @@ nosetests my_first_test.py --with-selenium --browser=phantomjs -s
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests with nosetests (not needed when using pytest). If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
 
-(NOTE: If you're confused about how SeleniumBase works with Nosetests and Pytest, jump to the [**How SeleniumBase Works**](#how_seleniumbase_works) section to learn more about it.)
-
 <a id="seleniumbase_demo_mode"></a>
 If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
@@ -249,26 +269,6 @@ pytest my_first_test.py --with-testing_base --browser=phantomjs -s
 (NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure, already provided here.**
 
 
-<a id="how_seleniumbase_works"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **How SeleniumBase Works:**
-
-At the core, SeleniumBase works by extending Pytest and Nosetests as a direct plugin to each one. This plugin is activated by using "``--with-selenium``" as a command line argument when running Pytest/Nosetest. When activated, Selenium-WebDriver automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the base class, [found here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). (NOTE: By default, Pytest now activates the SeleniumBase selenium plugin by default if the test class inherits the SeleniumBase BaseCase class.)
-
-Once you've activated the main selenium plugin, you can use "``--browser=chrome``" to specify the web browser to use (Default = "Chrome"). You can also include additional plugins for additional features such as "``--with-testing_base``" (for logging data/screenshots on test failures) and "``--demo_mode``" (for highlighting elements & slowing test runs). There are also other plugins available such as "``--with-db_reporting``", "``--with-s3_logging``", and more.
-
-(NOTE: Nosetests and Pytest work by automatically running any Python method that starts with "``test``" from the file that you specified on the command line. You can also run all tests from a specific class in a file, or even pick out an individual test to run.)
-
-To use SeleniumBase calls you need the following:
-```python
-from seleniumbase import BaseCase
-```
-And then have your test classes inherit BaseCase:
-```python
-class MyTestClass(BaseCase):
-```
-(*See the example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), for reference.*)
-
-
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
 
@@ -295,6 +295,7 @@ pytest my_test_suite.py --with-selenium --html=report.html
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
+
 <a id="utilizing_advanced_features"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using Production Environments & Integrations:**
 
@@ -308,14 +309,14 @@ Here are some things you can do to setup a production environment for your testi
 
 * If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
 
-* If you're using AWS, you can setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has all the code you need to connect to it. (You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved.)
-
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
 * If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the [hipchat_reporting plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/hipchat_reporting_plugin.py) (nosetests only).
 
-* Be sure to tell SeleniumBase to use these added features when you set them up. That's easy to do. You would be running tests like this:
+<a id="amazon_section"></a>
+* If you're using AWS, you can setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has all the code you need to connect to it. You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command line when you run your tests.
 
+Here's an example of running tests with additional features enabled:
 ```bash
 nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-db_reporting --with-s3_logging -s
 ```
