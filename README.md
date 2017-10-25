@@ -1,9 +1,9 @@
 # SeleniumBase
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-Selenium automation made simple. Runs Python/WebDriver scripts with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/). Works with [Jenkins](https://jenkins.io/).
+Fast & reliable test automation. Runs with [Pytest](https://docs.pytest.org/en/latest/) & [Nosetests](http://nose.readthedocs.io/en/latest/). [Jenkins](https://jenkins.io/)-friendly.
 
-<b>Simple [Python](https://www.python.org/) syntax eases coding:</b><br>
+<b>Simple [Python](https://www.python.org/) code speeds development:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
