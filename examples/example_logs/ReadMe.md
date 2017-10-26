@@ -1,6 +1,6 @@
 ### Logging & Reports Tutorial
 
-The log files you see in [this "example_logs" folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed with logging turned on. (Include ``--with-testing_base`` on the command line in your test runs.) By default, a folder named ``latest_logs/`` will appear in the location where you ran the tests. If you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs will get moved to the ``archived_logs/`` folder instead of getting deleted.
+The log files in ["example_logs/"](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed with logging on. (Usage ``--with-testing_base`` on the command line.) By default, logs are saved to ``latest_logs/``. If ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs get saved to ``archived_logs/``.
 
 **Usage examples:**
 ```bash

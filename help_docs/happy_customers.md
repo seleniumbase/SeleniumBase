@@ -12,8 +12,8 @@
 
 **Case Study** (*HubSpot*):
 
-HubSpot saved over one million U.S. dollars by using SeleniumBase to automate the migration of website pages from one content management system to another.
+HubSpot saved over one million USD by using SeleniumBase to automate the migration of website pages from one content management system to another.
 
-Learn how HubSpot uses SeleniumBase for website testing by reading: [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot)
+Learn how HubSpot uses SeleniumBase for website testing by reading: [Automated Testing with Selenium](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot#hs_cos_wrapper_name)
 
-For more reading about automation at HubSpot, see: [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete)
+For more reading about automation at HubSpot, see: [The Classic "QA Team" is Obsolete](http://product.hubspot.com/blog/the-classic-qa-team-is-obsolete#hs_cos_wrapper_name)
