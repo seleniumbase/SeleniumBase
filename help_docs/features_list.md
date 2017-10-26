@@ -4,7 +4,7 @@
 * Run tests locally, from [Jenkins](https://jenkins.io/) headlessly, or remotely with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid).
 * Uses a flexible command line interface to customize & control test runs.
 * Has [Python libraries](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase) for helping you do more with Selenium-WebDriver.
-* Has [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging data and screenshots automatically. ([Click to learn how](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs))
+* Has [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging data and screenshots automatically. ([Click to learn how](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md))
 * Uses a [global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) to make SeleniumBase unique to your specific environment needs.
 * Backwards-compatible with [WebDriver](http://www.seleniumhq.org/projects/webdriver/). (Use ``self.driver`` anywhere.)
 * Includes a hybrid-automation solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)** to speed up manual testing.
