@@ -1,9 +1,11 @@
 # SeleniumBase
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-Reliable test automation. Built-in [logging with screenshots & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). (<i>See [all features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
+Enterprise test automation. Fast setup. Built-in [logging, screenshots, & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). (<i>See [all features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
-<b>Simple [Python](https://www.python.org/) code speeds development:</b><br>
+Trusted by businesses such as HubSpot. (*[Learn more here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md)*)
+
+<b>Write tests using simple [Python](https://www.python.org/) code:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -21,8 +23,8 @@ nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase Demo")
 
-<b>Prevent flaky tests:</b><br>
-SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
+<b>Prevent flaky tests with reliable code:</b><br>
+SeleniumBase Python methods automatically wait for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
 <b>Keep your code clean:</b><br>
 This long line of messy WebDriver code...
@@ -37,8 +39,8 @@ self.update_text("textarea", "text")
 <b>Integrate with your favorite tools:</b><br>
 SeleniumBase has built-in integrations with Docker, Google Cloud, Amazon AWS, Linux, NodeJS, Selenium Grid, and Selenium IDE. To learn about some of them, **[click here](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations)**. (*For details about the Amazon AWS integration, **[click here](#amazon_section)**.*)
 
-<b>Automate your tasks on the Web:</b><br>
-SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, **[click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md)**.*)
+<b>Automate your tasks on The Web:</b><br>
+SeleniumBase makes it easy to automate tedious web tasks. Anything done manually in a web browser can be automated.
 
 <b>Do more with automation than before:</b><br>
 (<i>For a full list of SeleniumBase features, **[click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.</i>)
