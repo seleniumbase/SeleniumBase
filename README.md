@@ -13,7 +13,7 @@ Reliable test automation. [Built-in logging & reports](https://github.com/seleni
 ```bash
 pytest my_first_test.py --browser=chrome
 
-nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
+nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox
 ```
 (<i>**[Click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)** to learn more about using the command line interface.</i>)
 
@@ -201,11 +201,11 @@ class MyTestClass(BaseCase):
 ```bash
 cd examples/
 
-nosetests my_first_test.py --with-selenium --browser=chrome -s
+nosetests my_first_test.py --with-selenium --browser=chrome
 
-nosetests my_first_test.py --with-selenium --browser=firefox -s
+nosetests my_first_test.py --with-selenium --browser=firefox
 
-nosetests my_first_test.py --with-selenium --browser=phantomjs -s
+nosetests my_first_test.py --with-selenium --browser=phantomjs
 ```
 
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests with nosetests (not needed when using pytest). If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
@@ -214,7 +214,7 @@ After the test completes, in the console output you'll see a dot (``.``) on a ne
 If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
+nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
@@ -222,7 +222,7 @@ You can override the default wait time by either updating [settings.py](https://
 If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode --demo_sleep=1.2
+nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode --demo_sleep=1.2
 ```
 
 You can also use the following in your scripts to slow down the tests:
@@ -242,7 +242,7 @@ If you need to debug things on the fly (in case of errors), use this:
 nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures -s
 ```
 
-The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next).
+The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.
 
 Here are some other useful nosetest arguments for appending to your run commands:
 
@@ -260,11 +260,11 @@ Here's how to run the example script with **pytest**:
 ```bash
 cd examples/
 
-pytest my_first_test.py --with-testing_base --browser=firefox -s
+pytest my_first_test.py --with-testing_base --browser=firefox
 
-pytest my_first_test.py --with-testing_base --browser=chrome -s
+pytest my_first_test.py --with-testing_base --browser=chrome
 
-pytest my_first_test.py --with-testing_base --browser=phantomjs -s
+pytest my_first_test.py --with-testing_base --browser=phantomjs
 ```
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
 
@@ -329,7 +329,7 @@ When the testing_base plugin is used, if there's a test failure, the basic_test_
 To simplify that long run command, you can create a *.cfg file, such as the one provided in the example, and enter your plugins there so that you can run everything by typing:
 
 ```bash
-nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg -s
+nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg
 ```
 
 You can simplify that even more by using a setup.cfg file, such as the one provided for you in the examples folder. If you kick off a test run from within the folder that setup.cfg is location in, that file will automatically be used as your configuration, meaning that you wouldn't have to type out all the plugins that you want to use (or include a config file) everytime you run tests.
@@ -337,7 +337,7 @@ You can simplify that even more by using a setup.cfg file, such as the one provi
 If you tell nosetests to run an entire file, it will run every method in that python file that starts with "test". You can be more specific on what to run by doing something like:
 
 ```bash
-nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[MY_CONFIG_FILE].cfg -s
+nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[MY_CONFIG_FILE].cfg
 ```
 
 Let's try an example of a test that fails. Copy the following into a file called fail_test.py:
@@ -354,7 +354,7 @@ class MyTestClass(BaseCase):
 Now run it:
 
 ```bash
-nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base -s
+nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base
 ```
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
