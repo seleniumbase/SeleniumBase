@@ -1,14 +1,15 @@
 # SeleniumBase
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-Reliable test automation. [Built-in logging & reports](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs). Runs with [Pytest](https://docs.pytest.org/en/latest/) or [Nosetest](http://nose.readthedocs.io/en/latest/).
+Reliable test automation. [Built-in logging & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). <i>(See the **[full list of features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.)</i>
 
 <b>Simple [Python](https://www.python.org/) code speeds development:</b><br>
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
 <br>(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-<b>Customize scripts from the command line:</b>
+<b>Customize scripts from the command line:</b><br>
+(<i>SeleniumBase runs with [pytest](https://docs.pytest.org/en/latest/) or [nosetests](http://nose.readthedocs.io/en/latest/)</i>)
 ```bash
 pytest my_first_test.py --browser=chrome
 
@@ -40,7 +41,7 @@ SeleniumBase has built-in integrations with Docker, Google Cloud, Amazon AWS, Li
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, **[click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md)**.*)
 
 <b>Do more with automation than before:</b><br>
-See the **[longer list](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)** of SeleniumBase features.
+(<i>For a full list of SeleniumBase features, **[click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.</i>)
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase:
@@ -272,28 +273,28 @@ pytest my_first_test.py --with-testing_base --browser=phantomjs -s
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
 
-(NOTE: The command line args are different for Nosetests vs Pytest)
-
-#### **Nosetest Reports:**
-
-The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
-
-```bash
-nosetests my_test_suite.py --with-selenium --with-testing_base --report --browser=chrome -s
-```
-![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
-
-(NOTE: You can add ``--show_report`` to immediately display the report after the test suite completes. You don't want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
+(NOTE: The command line args are different for Pytest vs Nosetests)
 
 #### **Pytest Reports:**
 
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
-pytest my_test_suite.py --with-selenium --html=report.html
+pytest my_test_suite.py --html=report.html
 ```
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
+
+#### **Nosetest Reports:**
+
+The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
+
+```bash
+nosetests my_test_suite.py --with-selenium --with-testing_base --report
+```
+![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
+
+(NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
 
 <a id="utilizing_advanced_features"></a>

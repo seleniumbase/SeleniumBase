@@ -1,6 +1,6 @@
 ### Logging & Reports Tutorial
 
-The log files you see in this folder were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed with logging turned on. (Include ``--with-testing_base`` on the command line in your test runs.) By default, a folder named ``latest_logs/`` will appear in the location where you ran the tests. If you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs will get moved to the ``archived_logs/`` folder instead of getting deleted.
+The log files you see in [this "example_logs" folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed with logging turned on. (Include ``--with-testing_base`` on the command line in your test runs.) By default, a folder named ``latest_logs/`` will appear in the location where you ran the tests. If you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs will get moved to the ``archived_logs/`` folder instead of getting deleted.
 
 **Usage examples:**
 ```bash
@@ -37,4 +37,4 @@ nosetests my_test_suite.py --with-selenium --with-testing_base --report --browse
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
-(NOTE: You can add ``--show_report`` to immediately display the report after the test suite completes. You don't want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
+(NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)

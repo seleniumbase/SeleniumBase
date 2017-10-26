@@ -37,13 +37,11 @@ pytest my_first_test.py --browser=phantomjs -s
 ```
 (NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**, already provided here.
 
-
 **Example tests using Logging**:
 ```bash
 pytest my_test_suite.py --with-testing_base --browser=chrome -s
 ```
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
-
 
 **Demo Mode:**
 
@@ -97,14 +95,13 @@ pytest my_test_suite.py --with-selenium --html=report.html
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
-
 #### **Nosetest Reports:**
 
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
 ```bash
-nosetests my_test_suite.py --with-selenium --with-testing_base --report --browser=chrome -s
+nosetests my_test_suite.py --with-selenium --with-testing_base --report
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
-(NOTE: You can add ``--show_report`` to immediately display the report after the test suite completes. You don't want to use this when running tests remotely because otherwise the test run will hang indefinitely until someone manually exits the report.)
+(NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
