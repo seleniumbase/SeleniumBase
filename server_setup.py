@@ -9,8 +9,8 @@ from setuptools import setup, find_packages  # noqa
 setup(
     name='seleniumbase',
     version='1.4.10',
-    description='Test Automation Framework - http://seleniumbase.com',
-    long_description='Simple & Reliable Web Automation for Pytest & Nosetests',
+    description='Enterprise-Level Selenium Test Framework - seleniumbase.com',
+    long_description='Enterprise-Level Selenium Test Automation Framework',
     platforms='Mac * Windows * Linux * Docker',
     url='http://seleniumbase.com',
     author='Michael Mintz',

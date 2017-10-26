@@ -1,4 +1,17 @@
-### Command Line Interface Help
+### The Command Line Interface
+
+In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), which allows you to customize the test framework, SeleniumBase gives you the flexibility to customize & control test runs from the command line:
+
+* Set your browser there (default = Chrome)
+* Change the automation speed (with Demo Mode)
+* Choose betweeen pytest & nose unittest runners
+* Specify what to log and where to store logs
+* Choose additional variables to pass into tests
+* Choose whether to enter Debug Mode on failures
+* Choose a database to save results to
+* Choose a Selenium Grid to connect to
+
+...and more!
 
 **Examples:** (These are run from the **[examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)** folder.):
 
