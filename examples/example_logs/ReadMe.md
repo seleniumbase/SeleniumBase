@@ -1,4 +1,4 @@
-### Logging, Screenshots, and Reports examples
+#### Logging, Screenshots, & Reports examples
 
 Log files in [example_logs/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran & failed with logging on (add ``--with-testing_base`` to the run command). By default, logs are saved to ``latest_logs/``. If ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs get saved to ``archived_logs/``.
 
