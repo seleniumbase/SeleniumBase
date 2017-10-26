@@ -1,7 +1,7 @@
 # SeleniumBase
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-Enterprise test automation. Fast setup. Built-in [logging, screenshots, & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). (<i>See [all features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
+Enterprise test automation. [Fast setup](#seleniumbase_installation). Saves [detailed logs & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). (<i>See [all features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
 Trusted by businesses such as HubSpot. (*[Learn more here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md)*)
 
