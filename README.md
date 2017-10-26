@@ -160,6 +160,7 @@ pip install -r requirements.txt --upgrade
 
 python setup.py install
 ```
+(<i>This part is required each time you make changes to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)</i>)
 
 (NOTE: If you're using Python 3.* instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python`` in the above commands.)
 
