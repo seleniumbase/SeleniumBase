@@ -5,7 +5,7 @@
 ```bash
 pytest my_first_test.py --browser=chrome
 
-nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
+nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox
 ```
 (<i>The Selenium plugin, ``--with-selenium``, is enabled by default when using pytest to run test classes that inherit the [BaseCase](#seleniumbase_basic_usage) class, thanks to [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini). You can do the same for nosetests by adding ``with-selenium=1`` under ``[nosetests]`` in a [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/setup.cfg) file located in the folder where you call nosetests.</i>)
 
@@ -16,11 +16,11 @@ nosetests my_first_test.py --with-selenium --demo_mode --browser=firefox -s
 ```bash
 cd examples/
 
-nosetests my_first_test.py --with-selenium --browser=chrome -s
+nosetests my_first_test.py --with-selenium --browser=chrome
 
-nosetests my_first_test.py --with-selenium --browser=firefox -s
+nosetests my_first_test.py --with-selenium --browser=firefox
 
-nosetests my_first_test.py --with-selenium --browser=phantomjs -s
+nosetests my_first_test.py --with-selenium --browser=phantomjs
 ```
 After the test completes, in the console output you'll see a dot (``.``) on a new line, representing a passing test. (On test failures you'll see an ``F`` instead, and on test errors you'll see an ``E``). It looks more like a moving progress bar when you're running a ton of unit tests side by side. This is part of nosetests. After all tests complete (in this case there is only one), you'll see the "``Ran 1 test in ...``" line, followed by an "``OK``" if all nosetests passed. The ``--with-selenium`` option is required for running GUI tests with nosetests (not needed when using pytest). If no browser is specified, Chrome will become the default. The ``-s`` option is optional, and that makes sure that any standard output is printed immediately on the command line when tests have print statements in them, which makes debugging much easier.
 
@@ -29,17 +29,17 @@ After the test completes, in the console output you'll see a dot (``.``) on a ne
 ```bash
 cd examples/
 
-pytest my_first_test.py --browser=firefox -s
+pytest my_first_test.py --browser=firefox
 
-pytest my_first_test.py --browser=chrome -s
+pytest my_first_test.py --browser=chrome
 
-pytest my_first_test.py --browser=phantomjs -s
+pytest my_first_test.py --browser=phantomjs
 ```
 (NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**, already provided here.
 
 **Example tests using Logging**:
 ```bash
-pytest my_test_suite.py --with-testing_base --browser=chrome -s
+pytest my_test_suite.py --with-testing_base --browser=chrome
 ```
 (NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
 
@@ -48,7 +48,7 @@ pytest my_test_suite.py --with-testing_base --browser=chrome -s
 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode
+nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
@@ -56,7 +56,7 @@ You can override the default wait time by either updating [settings.py](https://
 If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome -s --demo_mode --demo_sleep=1.2
+nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode --demo_sleep=1.2
 ```
 
 **You can also use the following in your scripts to slow down the tests:**
@@ -75,7 +75,7 @@ You may also want to have your test sleep in other situations where you need to 
 nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures -s
 ```
 
-The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next).
+The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.
 
 **Here are some other useful nosetest arguments for appending to your run commands:**
 
