@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.4.10',
+    version='1.4.11',
     description='Enterprise-Level Selenium Test Framework - seleniumbase.com',
     long_description='Enterprise-Level Selenium Test Automation Framework',
     platforms='Mac * Windows * Linux * Docker',
