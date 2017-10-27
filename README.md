@@ -3,7 +3,7 @@
 
 [Flexible](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) test automation. [Logging, reports, & screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md) built-in. Lots of [integrations](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
-Free forever. [Set up in minutes](#seleniumbase_installation).<br>100% open source.
+Free forever. [Set up in minutes](#seleniumbase_installation).<br>100% open source. Fully customizable.
 
 ---
 <b>Write tests using simple [Python](https://www.python.org/) code:</b><br>
