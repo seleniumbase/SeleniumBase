@@ -1,6 +1,20 @@
 ### Virtual Environment Setup Instructions
 
-* If you haven't yet installed ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions first](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md#virtual_environment)**.
+#### First install [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) or [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) (<i>if not installed</i>):
+
+MAC / Linux:
+```bash
+sudo easy_install --upgrade virtualenv
+sudo easy_install --upgrade virtualenvwrapper
+```
+
+WINDOWS:
+```bash
+pip install --upgrade virtualenv
+pip install --upgrade virtualenvwrapper-win
+```
+
+#### Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:
 
 MAC:
 
