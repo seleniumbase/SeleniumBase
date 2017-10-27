@@ -1,9 +1,9 @@
 # SeleniumBase
 [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-[Flexible](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) test automation. [Fast setup](#seleniumbase_installation). Saves [detailed logs & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). (<i>Learn [more features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
+[Flexible](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) test automation. Built-in [logging, reports, & screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md). Includes [lots of integrations](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
-Trusted by [businesses such as HubSpot](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).
+Free and open-source forever. [Set up in minutes](#seleniumbase_installation).
 
 ---
 <b>Write tests using simple [Python](https://www.python.org/) code:</b><br>
@@ -40,11 +40,10 @@ self.update_text("textarea", "text")
 <b>Integrate with your favorite tools:</b><br>
 SeleniumBase has built-in integrations with Docker, Google Cloud, Amazon AWS, Linux, NodeJS, Selenium Grid, and Selenium IDE. To learn about some of them, **[click here](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations)**. (*For details about the Amazon AWS integration, **[click here](#amazon_section)**.*)
 
-<b>Automate your tasks on The Web:</b><br>
-SeleniumBase makes it easy to automate tedious web tasks. Anything done manually in a web browser can be automated.
+<b>Use automation to accomplish your goals:</b><br>
+(<i>**[See the big list of SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**</i>)
 
-<b>Do more with automation than before:</b><br>
-(<i>For a full list of SeleniumBase features, **[click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**.</i>)
+<i>Trusted by [businesses such as HubSpot](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).</i>
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase:
@@ -135,7 +134,9 @@ brew upgrade chromedriver
 <a id="seleniumbase_installation"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **SeleniumBase Installation Steps**
 
-### **Step 1:** Clone SeleniumBase
+(<i>If you don't have **Python** and **web drivers** installed, [go to *Step 0*](#dependency_installation).<i>)
+
+### **Step 1:** Clone SeleniumBase [using *Git*](https://git-scm.com/)
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
