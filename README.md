@@ -43,7 +43,7 @@ SeleniumBase has built-in integrations with Docker, Google Cloud, Amazon AWS, Li
 <b>Use automation to accomplish your goals:</b><br>
 (<i>**[See the big list of SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)**</i>)
 
-Trusted by [businesses such as HubSpot](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md)
+Trusted by [businesses such as HubSpot](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md). (<i>SeleniumBase was created by an engineer who previously built [HubSpot's UI testing framework](http://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot#hs_cos_wrapper_name).</i>)
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase:
