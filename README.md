@@ -24,30 +24,30 @@
 Before installation, [make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/instructions_overview.md).
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase [with *Git*](https://git-scm.com/)
+### **Step 1:** Clone SeleniumBase
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 ```
 
-(A Git GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
+(A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 2:** Create a Virtual Environment
+### **Step 2:** Create a Virtual Environment
 
-To create a Python virtual environment, **[read this](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**.<br><br>For an official overview of virtual environments, see [http://docs.python-guide.org/en/latest/dev/virtualenvs/](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
+To learn how to create one, **[read this](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**.<br><br>(<i>See [http://docs.python-guide.org/en/latest/dev/virtualenvs/](http://docs.python-guide.org/en/latest/dev/virtualenvs/) for more details.</i>)
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 3:** Install SeleniumBase
+### **Step 3:** Install SeleniumBase
 
-To install your local version of SeleniumBase use:
+To install a clone of SeleniumBase, use:
 ```bash
 pip install -r requirements.txt --upgrade
 
 python setup.py install
 ```
-(<i>This part is required each time you make changes to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)</i>)
+(<i>Repeat this step if you make changes to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or to SeleniumBase libraries.</i>)
 
 To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use:
 ```bash
