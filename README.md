@@ -8,6 +8,8 @@
 
 (Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
 
+(Above: Demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) testing [xkcd.com](http://xkcd.com/353/))
+
 #### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Features include**:
 * [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
@@ -17,7 +19,7 @@
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Get Started**:
 
-(*Docker users: See [the Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).<br>Debian Linux users: See [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh)*)
+(*If using Docker, see [the Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).*)
 
 ### Setup Instructions for Mac, Ubuntu, & Windows:
 
@@ -31,12 +33,12 @@ git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 ```
 
-(A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may make things easier.)
+(A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may help.)
 
 
 ### **Step 2:** Create a Virtual Environment
 
-To learn how to create one, **[read this](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**.<br><br>(<i>See [http://docs.python-guide.org/en/latest/dev/virtualenvs/](http://docs.python-guide.org/en/latest/dev/virtualenvs/) for more details.</i>)
+To learn how to create one, **[read this](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**.<br><br><i>[docs.python-guide.org/en/latest/dev/virtualenvs/](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more details.</i>
 
 
 ### **Step 3:** Install SeleniumBase
@@ -68,19 +70,19 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open('http://xkcd.com/353/')            # Navigate to the web page
-        self.assert_element('img[alt="Python"]')       # Assert element on page
-        self.click('a[rel="license"]')                  # Click element on page
-        self.assert_text('copy and reuse', 'div center')  # Assert element text
+        self.open('http://xkcd.com/353/')
+        self.assert_element('img[alt="Python"]')
+        self.click('a[rel="license"]')
+        self.assert_text('copy and reuse', 'div center')
         self.open('http://xkcd.com/1481/')
-        image_object = self.find_element('#comic img')    # Returns the element
-        caption = image_object.get_attribute('title')   # Get element attribute
+        image_object = self.find_element('#comic img')
+        caption = image_object.get_attribute('title')
         self.assertTrue('connections to the server' in caption)
-        self.click_link_text('Blag')              # Click on link with the text
+        self.click_link_text('Blag')
         self.assert_text('xkcd', '#site-title')
-        header_text = self.get_text('header h2')  # Grab text from page element
+        header_text = self.get_text('header h2')
         self.assertTrue('The blag of the webcomic' in header_text)
-        self.update_text('input#s', 'Robots!\n')  # Fill in field with the text
+        self.update_text('input#s', 'Robots!\n')
         self.assert_text('Hooray robots!', '#content')
         self.open('http://xkcd.com/1319/')
         self.assert_text('Automation', 'div#ctitle')
