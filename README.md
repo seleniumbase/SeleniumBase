@@ -28,6 +28,7 @@ Before installation, [make sure Python and web drivers are already installed](ht
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
+
 cd SeleniumBase
 ```
 
