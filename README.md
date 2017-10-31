@@ -17,9 +17,9 @@
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Get Started**:
 
-#### **Setup Instructions for Mac, Ubuntu, and Windows:**
-
 (*Docker users: See [the Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md). Debian Linux users: See [Linuxfile.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/Linuxfile.sh)*)
+
+### Setup Instructions for Mac, Ubuntu, & Windows:
 
 Before installation, [make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/instructions_overview.md).
 
