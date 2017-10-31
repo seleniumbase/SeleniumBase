@@ -217,3 +217,9 @@ self.check_assert_text(text, selector, by=By.CSS_SELECTOR,
 
 self.process_checks()
 ```
+
+########
+
+Example Test:
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
