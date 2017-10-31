@@ -37,7 +37,7 @@ cd SeleniumBase
 
 ### **Step 2:** Create a Virtual Environment
 
-To learn how to create one, **[read this](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**.<br><br><i>[docs.python-guide.org/en/latest/dev/virtualenvs/](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more details.</i>
+To learn how to create one, [see the ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).<br><br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more details.</i>
 
 
 ### **Step 3:** Install SeleniumBase
