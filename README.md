@@ -11,7 +11,7 @@
 #### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Features include**:
 * [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data and screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
-* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py).
+* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
 * Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) and a [global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 * See the [full list of SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
@@ -31,7 +31,7 @@ git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 ```
 
-(A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may help.)
+(<i>A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may help.</i>)
 
 
 ### **Step 2:** Create a Virtual Environment
@@ -203,7 +203,7 @@ Here are some things you can do to setup a production environment for your testi
 * If you use [HipChat](https://www.hipchat.com/), you can easily have your Jenkins jobs display results there by using the [Jenkins HipChat Plugin](https://wiki.jenkins-ci.org/display/JENKINS/HipChat+Plugin). Another way is by using the [hipchat_reporting plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/hipchat_reporting_plugin.py) (nosetests only).
 
 <a id="amazon_section"></a>
-* If you're using AWS, you can setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has all the code you need to connect to it. You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command line when you run your tests.
+* If you're using AWS, you can setup an [Amazon S3](http://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has [all the code you need to connect to S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py). You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command line when you run your tests.
 
 Here's an example of running tests with additional features enabled:
 ```bash
