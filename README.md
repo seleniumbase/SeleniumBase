@@ -21,7 +21,7 @@
 
 ### Setup Instructions for Mac, Ubuntu, & Windows:
 
-Before installation, [make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/instructions_overview.md).
+Before installation, [make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md).
 
 
 ### **Step 1:** Clone SeleniumBase
