@@ -264,6 +264,8 @@ class BaseCase(unittest.TestCase):
                  timeout=settings.SMALL_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_visible(
@@ -282,6 +284,8 @@ class BaseCase(unittest.TestCase):
                       timeout=settings.SMALL_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_present(
@@ -332,6 +336,8 @@ class BaseCase(unittest.TestCase):
             Similar to update_text(), but won't clear the text field first. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
@@ -371,6 +377,8 @@ class BaseCase(unittest.TestCase):
         """ Same as add_text() -> more reliable, but less name confusion. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         self.add_text(selector, new_value, by=by, timeout=timeout)
 
     def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -385,6 +393,8 @@ class BaseCase(unittest.TestCase):
         """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
@@ -441,6 +451,8 @@ class BaseCase(unittest.TestCase):
             We want to keep the old version for backward compatibility. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         self.update_text_value(selector, new_value, by=by,
                                timeout=timeout, retry=retry)
 
