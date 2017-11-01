@@ -4,3 +4,5 @@ Depending on your Mac settings, some files may be hidden from view in your Finde
 ```bash
 defaults write com.apple.finder AppleShowAllFiles -bool true
 ```
+
+More info on that **[here](https://www.defaults-write.com/show-hidden-files-in-os-x-finder/)**.
