@@ -1,6 +1,6 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/SB_Logo2c.png "SeleniumBase")
 
-[![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Python version](https://img.shields.io/badge/python-2.x,_3.x-22AADD.svg "Python version")](https://docs.python.org/2/) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![MIT License](http://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **Web Automation & Testing Framework**
 
@@ -55,7 +55,7 @@ To install SeleniumBase from the [Python Package Index](https://pypi.python.org/
 pip install seleniumbase --upgrade
 ```
 
-(NOTE: If you're using Python 3.* instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python`` in the above commands.)
+(NOTE: If you're using Python 3.x instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python`` in the above commands.)
 
 
 <a id="seleniumbase_basic_usage"></a>
