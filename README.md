@@ -10,8 +10,8 @@
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Features**:
 * [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) for quickly building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
-* Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) and a [global configuration file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
-* [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data & screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs).
+* [Command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) and a [global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for customization.
+* [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) to auto-log [data & screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs).
 * Works with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
 * (<i>[See more SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
