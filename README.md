@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Web Automation & Testing Framework**
+**Test Automation Framework in Python**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
