@@ -1,6 +1,6 @@
 ![](https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8s.png "SeleniumBase")
 
-[![Python version](https://img.shields.io/badge/python-2.x,_3.x-22AADD.svg "Python version")](https://docs.python.org/2/) [![pypi](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![MIT License](https://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **Web Automation & Testing Framework**
 
@@ -597,6 +597,6 @@ Here are some other exciting open source projects on GitHub by smart people I've
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") License
 
-[![MIT License](https://img.shields.io/badge/license-MIT-22BBCC.svg "MIT License")](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) (The MIT License)
+[The MIT License!](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")

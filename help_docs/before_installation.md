@@ -1,6 +1,6 @@
 ## Before installing SeleniumBase, you need:
 
-#### **Step 0a:** Setup your [![Python version](https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg "Python version")](https://docs.python.org/2/) Python/pip environment:
+#### **Step 0a:** Setup your [Python](https://docs.python.org/2/)/pip environment:
 
 * To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
 
