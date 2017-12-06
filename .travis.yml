@@ -8,7 +8,7 @@ addons:
 install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt"
-  - "python setup.py install"
+  - "python setup.py develop"
   - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 seleniumbase/*.py"

@@ -101,7 +101,7 @@ COPY setup.py /SeleniumBase/setup.py
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
-RUN cd /SeleniumBase && python setup.py install
+RUN cd /SeleniumBase && python setup.py develop
 
 #==========================================
 # Create entrypoint and grab example tests
