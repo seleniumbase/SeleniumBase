@@ -46,9 +46,9 @@ To install a clone of SeleniumBase, use:
 ```bash
 pip install -r requirements.txt --upgrade
 
-python setup.py install
+python setup.py develop
 ```
-(<i>Repeat this step if you make changes to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or to SeleniumBase libraries.</i>)
+(<i>Repeat this step if you make changes to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or to SeleniumBase libraries. If you're installing SeleniumBase on a machine that uses an older version of Firefox, such as version 46 or earlier, use `server_requirements.txt` and `server_setup.py`.</i>)
 
 To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use:
 ```bash
@@ -112,7 +112,7 @@ pytest my_first_test.py --with-selenium --browser=chrome --demo_mode
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
 
-If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
+If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py develop`` for those changes to take effect.
 
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode --demo_sleep=1.2
