@@ -465,6 +465,8 @@ self.execute_script('jQuery, window.scrollTo(0, 600)')  # Scrolling the page
 
 self.execute_script("jQuery('#annoying-widget').hide()")  # Hiding elements on a page
 
+self.execute_script("jQuery('#hidden-widget').show(0)")  # Showing hidden elements on a page
+
 self.execute_script("jQuery('#annoying-button a').remove()")  # Removing elements on a page
 
 self.execute_script("jQuery('%s').mouseover()" % (mouse_over_item))  # Mouse-over elements on a page
