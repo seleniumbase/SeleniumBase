@@ -38,6 +38,7 @@ from seleniumbase.core.testcase_manager import ExecutionQueryPayload
 from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import browser_launcher
+from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
@@ -687,6 +688,23 @@ class BaseCase(unittest.TestCase):
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name)
+
+    def get_downloads_folder(self):
+        """ Returns the OS path of the Downloads Folder.
+            (Works with Chrome and Firefox only, for now.) """
+        return download_helper.get_downloads_folder()
+
+    def get_path_of_downloaded_file(self, file):
+        """ Returns the OS path of the downloaded file. """
+        return os.path.join(self.get_downloads_folder(), file)
+
+    def is_downloaded_file_present(self, file):
+        """ Checks if the file exists in the Downloads Folder. """
+        return os.path.exists(self.get_path_of_downloaded_file(file))
+
+    def assert_downloaded_file(self, file):
+        """ Asserts that the file exists in the Downloads Folder. """
+        assert os.path.exists(self.get_path_of_downloaded_file(file))
 
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)

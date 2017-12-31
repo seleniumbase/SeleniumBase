@@ -89,6 +89,14 @@ self.download_file(file_url, destination_folder=None)
 
 self.save_file_as(file_url, new_file_name, destination_folder=None)
 
+self.get_downloads_folder(file):
+
+self.get_path_of_downloaded_file(file):
+
+self.is_downloaded_file_present(file):
+
+self.assert_downloaded_file(file):
+
 self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
