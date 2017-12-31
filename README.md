@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Test Automation Framework for Python**
+**A Test Automation Framework for Python**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
@@ -586,7 +586,7 @@ Delayed Data Manager usage example: If you scheduled an email to go out 12 hours
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up
 
-Congratulations! You now know how to **Automate like a Pro!**
+Congratulations on making it through this ReadMe tutorial!
 
 Questions or Comments? [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -594,11 +594,7 @@ Here are some other exciting open source projects on GitHub by smart people I've
 [https://github.com/hubspot](https://github.com/hubspot)
 
 ~ Michael Mintz<br>
-[https://github.com/mdmintz](https://github.com/mdmintz)<br>[https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)
-
-
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") License
-
-[The MIT License!](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
+[https://github.com/mdmintz](https://github.com/mdmintz)<br>
+[https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
