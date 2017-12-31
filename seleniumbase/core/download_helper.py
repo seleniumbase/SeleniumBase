@@ -27,9 +27,12 @@ def reset_downloads_folder():
                                                  ARCHIVE_DIR)
         if not os.path.exists(archived_downloads_folder):
             os.makedirs(archived_downloads_folder)
-        archived_downloads_folder = "%sdownloads_%s" % (
+        new_archived_downloads_sub_folder = "%s/downloads_%s" % (
             archived_downloads_folder, int(time.time()))
-        shutil.move(downloads_path, archived_downloads_folder)
+        shutil.move(downloads_path, new_archived_downloads_sub_folder)
         os.makedirs(downloads_path)
         if not settings.ARCHIVE_EXISTING_DOWNLOADS:
-            shutil.rmtree(archived_downloads_folder)
+            try:
+                shutil.rmtree(new_archived_downloads_sub_folder)
+            except OSError:
+                pass
