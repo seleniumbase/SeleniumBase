@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses the newer Selenium 3.6.0)
+(Uses the newer Selenium 3.8.0)
 """
 
 import os
@@ -8,7 +8,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.4.14',
+    version='1.4.15',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
