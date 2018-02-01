@@ -101,7 +101,7 @@ MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT = 600
 DB_HOST = "127.0.0.1"
 DB_USERNAME = "root"
 DB_PASSWORD = "test"
-DB_SCHEMA = "test"
+DB_SCHEMA = "test_db"
 
 
 # Amazon S3 Bucket Credentials
