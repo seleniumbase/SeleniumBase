@@ -112,8 +112,6 @@ pytest my_first_test.py --with-selenium --browser=chrome --demo_mode
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
 
-If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py develop`` for those changes to take effect.
-
 ```bash
 nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode --demo_sleep=1.2
 ```
@@ -157,6 +155,8 @@ pytest my_first_test.py --with-testing_base --browser=chrome
 ```
 
 (NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure, already provided here.**
+
+If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
 
 <a id="creating_visual_reports"></a>
@@ -349,10 +349,10 @@ self.click('a[name*="partial_name"]')
 #### Asserting visibility of text inside an element on a page within some number of seconds:
 
 ```python
-self.wait_for_text_visible("Make it so!", "div#trek div.picard div.quotes", timeout=3)
-self.wait_for_text_visible("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=1)
+self.assert_text("Make it so!", "div#trek div.picard div.quotes")
+self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=3)
 ```
-(NOTE: The short versions of this are ``self.find_text(TEXT, ELEMENT)`` and ``self.assert_text(TEXT, ELEMENT)``)
+(NOTE: ``self.find_text(TEXT, ELEMENT)`` and ``self.wait_for_text(TEXT, ELEMENT)`` also do this. For backwords compatibility, older method names were kept, but the default timeout may be different.)
 
 #### Asserting Anything
 

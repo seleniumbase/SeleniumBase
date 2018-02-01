@@ -23,6 +23,17 @@ def pytest_addoption(parser):
                      dest='with_selenium',
                      default=False,
                      help="Use if tests need to be run with a web browser.")
+    parser.addoption('--env', action='store',
+                     dest='environment',
+                     choices=(
+                        constants.Environment.QA,
+                        constants.Environment.STAGING,
+                        constants.Environment.PRODUCTION,
+                        constants.Environment.MASTER,
+                        constants.Environment.LOCAL,
+                        constants.Environment.TEST),
+                     default=constants.Environment.TEST,
+                     help="The environment to run the tests in.")
     parser.addoption('--data', dest='data',
                      default=None,
                      help='Extra data to pass from the command line.')
@@ -39,7 +50,8 @@ def pytest_addoption(parser):
                      help="Use to record test data in the MySQL database.")
     parser.addoption('--database_env', action='store',
                      dest='database_env',
-                     choices=('prod', 'qa', 'test'),
+                     choices=(
+                        'prod', 'qa', 'staging', 'test', 'local', 'master'),
                      default='test',
                      help=optparse.SUPPRESS_HELP)
     parser.addoption('--with-s3_logging', action="store_true",

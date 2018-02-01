@@ -1,6 +1,6 @@
 ## Running SeleniumBase Scripts
 
-(NOTE: If you didn't install SeleniumBase properly, these scripts won't work. Installation steps include "``pip install seleniumbase``" and/or "``python setup.py install``" from the top-level directory.)
+(NOTE: If you didn't install SeleniumBase properly, these scripts won't work. Installation steps include "``pip install seleniumbase``" and/or "``python setup.py develop``" from the top-level directory.)
 
 To makes things easier, here's a simple GUI program that allows you to kick off a few example scripts by pressing a button:
 
@@ -14,7 +14,7 @@ python gui_test_runner.py
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/GUI_Test_Runner_5.png "GUI Test Runner")
 
-If you run scripts with logging enabled, (using ``--with-testing_base``), you’ll see two folders appear: “latest_logs” and “archived_logs”. The “latest_logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “latest_logs” folder will get pushed to the “archived_logs” folder if you have have the ``ARCHIVE_EXISTING_LOGS`` feature enabled in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). Make sure to run ``python setup.py install`` for your changes to take effect if you make any changes to that file.
+If you run scripts with logging enabled, (using ``--with-testing_base``), you’ll see two folders appear: “latest_logs” and “archived_logs”. The “latest_logs” folder will contain log files from the most recent test run, but logs will only be created if the test run is failing. Afterwards, logs from the “latest_logs” folder will get pushed to the “archived_logs” folder if you have have the ``ARCHIVE_EXISTING_LOGS`` feature enabled in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 **For running scripts the usual way, here are some of the example run commands:**
 
