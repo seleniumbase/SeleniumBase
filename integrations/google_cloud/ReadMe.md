@@ -76,7 +76,7 @@ sudo pip install -r server_requirements.txt --upgrade
 #### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
 
 ```bash
-sudo python server_setup.py install
+sudo python server_setup.py develop
 ```
 
 #### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (Takes ~10 seconds)
@@ -146,7 +146,7 @@ If you have a web application that you want to test, you'll be able to create Se
 * Give the instance a zone
 * Click "Create"
 
-#### Step 22. Get the Connection credentials for your new MySQL DB
+#### Step 22. Get the Connection credentials for your new MySQL Instance
 
 * Under the Google Cloud Platform menu, go to "Compute Engine"
 * Find your new MySQL instance and then write down the value written in the "External IP" section.
@@ -154,23 +154,23 @@ If you have a web application that you want to test, you'll be able to create Se
 * Find your new MySQL instance and then click on it.
 * Write down the values for Admin username and password. (Username should be "root")
 
-#### Step 23. Get a MySQL GUI tool so that you can connect to your MySQL DB
+#### Step 23. Get a MySQL GUI tool so that you can connect to your MySQL Instance
 
 * You can download [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) for this.
 
-#### Step 24. Create a new connection to your MySQL DB
+#### Step 24. Create a new connection to your MySQL Instance
 
 * Use the MySQL DB credentials that you saved in Step 21 for this.
 
-#### Step 25. Create a new schema in your MySQL DB
+#### Step 25. Create a new database/schema in your MySQL Instance
 
-* You can name your schema ``test``.
+* You can name your database/schema ``test_db``.
 
-#### Step 26. Create the necessary tables in your MySQL schema
+#### Step 26. Create the necessary tables in your MySQL database/schema
 
-* Run a SQL script in your MySQL schema using [testcaserepository.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
+* Run a SQL script in your MySQL database/schema using [testcaserepository.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
 
-#### Step 27. Have your local clone of SeleniumBase connect to your MySQL DB
+#### Step 27. Have your local clone of SeleniumBase connect to your MySQL Instance
 
 * Update the MySQL connection details in your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) file to use the credentials that you saved in Step 21.
 * Run the following command again from the top-level SeleniumBase folder to make sure that SeleniumBase uses the updated credentials:
@@ -179,7 +179,7 @@ If you have a web application that you want to test, you'll be able to create Se
 sudo python setup.py install
 ```
 
-#### Step 28. Have your SeleniumBase Jenkins jobs use your MySQL DB
+#### Step 28. Have your SeleniumBase Jenkins jobs use your MySQL Instance
 
 * For the "Execute shell", use the following as your updated "Command":
 
@@ -192,6 +192,6 @@ nosetests examples/my_test_suite.py --with-selenium --headless --browser=chrome 
 #### Step 29. Run your new Jenkins job
 
 * Click on "Build Now"
-* If all goes well, you should be seeing new rows appear in your MySQL DB.
+* If all goes well, you should be seeing new rows appear in your MySQL DB tables.
 
 #### Step 30. Congratulations! If you made it this far, you're awesome!
