@@ -37,7 +37,8 @@ class DBReporting(Plugin):
         super(DBReporting, self).options(parser, env=env)
         parser.add_option('--database_environment', action='store',
                           dest='database_env',
-                          choices=('prod', 'qa', 'test'),
+                          choices=('prod', 'qa', 'staging',
+                                   'test', 'local', 'master'),
                           default='test',
                           help=SUPPRESS_HELP)
 
