@@ -27,7 +27,7 @@ class CheckoutPage(object):
 # Now you can do something like this in your test files:
 
 from master_class import MasterTestCase
-from pom_lib.page_selectors import HomePage, ShoppingPage, CheckoutPage
+from pom_lib.page_objects import HomePage, ShoppingPage, CheckoutPage
 
 class MyTests(MasterTestCase):
 
