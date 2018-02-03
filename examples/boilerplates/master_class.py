@@ -1,6 +1,6 @@
 '''
 You can use this as a boilerplate for your test framework.
-Define your customized library methods here.
+Define your customized library methods in a master class like this.
 Then have all your test classes inherit it.
 The master class will inherit SeleniumBase methods from BaseCase.
 '''
@@ -13,7 +13,14 @@ class MasterTestCase(BaseCase):
     def setUp(self):
         super(MasterTestCase, self).setUp()
 
+    def login_to_site(self):
+        # Add frequently used methods like this in your master class.
+        # This reduces the amount of duplicated code in your tests.
+        # If the UI changes, the fix only needs to be applied in one place.
+        pass
+
     def example_method(self):
+        # Add your code here.
         pass
 
 
@@ -25,5 +32,6 @@ from master_class import MasterTestCase
 class MyTests(MasterTestCase):
 
     def test_example(self):
+        self.login_to_site()
         self.example_method()
 '''

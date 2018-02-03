@@ -1,7 +1,7 @@
 '''
 Example of using the Page Object Model (POM) for tests, using page selectors.
 Helps make your code more Readable, Maintainable, and Reusable.
-Import a file like this in your test files.
+Import a file like this at the top of your test files.
 '''
 
 
@@ -27,7 +27,7 @@ class CheckoutPage(object):
 # Now you can do something like this in your test files:
 
 from master_class import MasterTestCase
-from pom_lib.page_objects import HomePage, ShoppingPage, CheckoutPage
+from page_objects import HomePage, ShoppingPage, CheckoutPage
 
 class MyTests(MasterTestCase):
 
