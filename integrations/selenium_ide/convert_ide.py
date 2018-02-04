@@ -240,6 +240,96 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.is_element_present(By.LINK_TEXT, *)
+        data = re.match(
+            '''^(\s*)([\S\s]*)self\.is_element_present\(By.LINK_TEXT, '''
+            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+        if data:
+            whitespace = data.group(1)
+            pre = data.group(2)
+            link_text = '''%s''' % data.group(3)
+            post = data.group(4)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%s%sself.is_link_text_present(%s"%s")%s''' % (
+                whitespace, pre, uni, link_text, post)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.is_element_present(By.NAME, *)
+        data = re.match(
+            '''^(\s*)([\S\s]*)self\.is_element_present\(By.NAME, '''
+            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+        if data:
+            whitespace = data.group(1)
+            pre = data.group(2)
+            name = '''%s''' % data.group(3)
+            post = data.group(4)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%s%sself.is_element_present('[name="%s"]')%s''' % (
+                whitespace, pre, name, post)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.is_element_present(By.ID, *)
+        data = re.match(
+            '''^(\s*)([\S\s]*)self\.is_element_present\(By.ID, '''
+            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+        if data:
+            whitespace = data.group(1)
+            pre = data.group(2)
+            the_id = '''%s''' % data.group(3)
+            post = data.group(4)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%s%sself.is_element_present("#%s")%s''' % (
+                whitespace, pre, the_id, post)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.is_element_present(By.CLASS, *)
+        data = re.match(
+            '''^(\s*)([\S\s]*)self\.is_element_present\(By.CLASS, '''
+            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+        if data:
+            whitespace = data.group(1)
+            pre = data.group(2)
+            the_class = '''%s''' % data.group(3)
+            post = data.group(4)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%s%sself.is_element_present(".%s")%s''' % (
+                whitespace, pre, the_class, post)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.is_element_present(By.XPATH, *)
+        data = re.match(
+            '''^(\s*)([\S\s]*)self\.is_element_present\(By.XPATH, '''
+            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+        if data:
+            whitespace = data.group(1)
+            pre = data.group(2)
+            xpath = '''%s''' % data.group(3)
+            post = data.group(4)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%s%sself.is_element_present("%s")%s''' % (
+                whitespace, pre, xpath, post)
+            seleniumbase_lines.append(command)
+            continue
+
         # Replace "self.base_url" with actual url if not already done
         if 'self.base_url' in line:
             line = line.replace("self.base_url", '"%s"' % ide_base_url)
@@ -250,6 +340,57 @@ def main():
 
         # Add all other lines to final script without making changes
         seleniumbase_lines.append(line)
+
+    # Chunk processing of inefficient waiting from Selenium IDE
+    in_inefficient_wait = False
+    whitespace = ""
+    lines = seleniumbase_lines
+    seleniumbase_lines = []
+    for line in lines:
+        data = re.match('^(\s*)for i in range\(60\):\s*$', line)
+        if data:
+            in_inefficient_wait = True
+            whitespace = data.group(1)
+            continue
+
+        data = re.match('^(\s*)else: self.fail\("time out"\)\s*$', line)
+        if data:
+            in_inefficient_wait = False
+            continue
+
+        if in_inefficient_wait:
+            data = re.match('''^\s*if self.is_element_present\("([\S\s]+)"\)'''
+                            ''': break\s*$''', line)
+            if data:
+                selector = data.group(1)
+                command = '%sself.wait_for_element("%s")' % (
+                    whitespace, selector)
+                seleniumbase_lines.append(command)
+                continue
+
+            data = re.match('''^\s*if self.is_element_present\('([\S\s]+)'\)'''
+                            ''': break\s*$''', line)
+            if data:
+                selector = data.group(1)
+                command = "%sself.wait_for_element('%s')" % (
+                    whitespace, selector)
+                seleniumbase_lines.append(command)
+                continue
+
+            data = re.match('''^\s*if self.is_link_text_present'''
+                            '''\("([\S\s]+)"\): break\s*$''', line)
+            if data:
+                uni = ""
+                if '(u"' in line:
+                    uni = "u"
+                link_text = data.group(1)
+                command = '''%sself.wait_for_link_text(%s"%s")''' % (
+                    whitespace, uni, link_text)
+                seleniumbase_lines.append(command)
+                continue
+        else:
+            seleniumbase_lines.append(line)
+            continue
 
     seleniumbase_code = ""
     if has_unicode:
