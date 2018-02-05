@@ -1420,7 +1420,8 @@ class BaseCase(unittest.TestCase):
                 self.display.start()
                 self.headless_active = True
             if self.with_selenium:
-                self.driver = browser_launcher.get_driver(self.browser)
+                self.driver = browser_launcher.get_driver(self.browser,
+                                                          self.headless)
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()

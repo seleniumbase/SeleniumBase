@@ -28,6 +28,7 @@ nosetests.xml
 
 # py.test
 .cache/*
+.pytest_cache/*
 .pytest_config
 
 # Developer
