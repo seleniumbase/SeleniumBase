@@ -36,7 +36,7 @@ def main():
     all_code = f.read()
     f.close()
     if "def test_" not in all_code:
-        raise Exception("Not a valid Python test file!")
+        raise Exception("Not a valid Python unittest.TestCase file!")
     code_lines = all_code.split('\n')
     for line in code_lines:
 
