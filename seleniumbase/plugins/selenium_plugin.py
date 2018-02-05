@@ -134,7 +134,7 @@ class SeleniumBrowser(Plugin):
             from how Selenium is run remotely, such as from Jenkins. """
 
         if self.options.headless:
-            self.display = Display(visible=0, size=(1200, 800))
+            self.display = Display(visible=0, size=(1920, 1200))
             self.display.start()
             self.headless_active = True
         if self.options.servername == "localhost":
