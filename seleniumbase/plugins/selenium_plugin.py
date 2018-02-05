@@ -201,4 +201,5 @@ class SeleniumBrowser(Plugin):
                 self.options.port),
                 self.browser_settings)
         else:
-            return browser_launcher.get_driver(browser_name)
+            return browser_launcher.get_driver(browser_name,
+                                               self.options.headless)

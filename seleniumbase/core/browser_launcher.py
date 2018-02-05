@@ -29,7 +29,7 @@ def _create_firefox_profile(downloads_path):
     return profile
 
 
-def get_driver(browser_name):
+def get_driver(browser_name, headless=False):
     '''
     Spins up a new web browser and returns the driver.
     Tests that run with pytest spin up the browser from here.
@@ -45,8 +45,12 @@ def get_driver(browser_name):
                 profile = _create_firefox_profile(downloads_path)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = True
+                options = webdriver.FirefoxOptions()
+                if headless:
+                    options.add_argument('-headless')
                 firefox_driver = webdriver.Firefox(
-                    firefox_profile=profile, capabilities=firefox_capabilities)
+                    firefox_profile=profile, capabilities=firefox_capabilities,
+                    firefox_options=options)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
                 profile = _create_firefox_profile(downloads_path)
@@ -79,6 +83,8 @@ def get_driver(browser_name):
             chrome_options.add_argument("--allow-file-access-from-files")
             chrome_options.add_argument("--allow-running-insecure-content")
             chrome_options.add_argument("--disable-infobars")
+            if headless:
+                chrome_options.add_argument("--headless")
             if settings.START_CHROME_IN_FULL_SCREEN_MODE:
                 # Run Chrome in full screen mode on WINDOWS
                 chrome_options.add_argument("--start-maximized")
