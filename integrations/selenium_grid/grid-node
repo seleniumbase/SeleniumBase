@@ -21,7 +21,7 @@ fi
 ################################################################################
 
 WEBDRIVER_SERVER_JAR=./selenium-server-standalone.jar
-WEBDRIVER_NODE_PARAMS="-role webdriver -hubHost 127.0.0.1 -hubPort 4444 -host 127.0.0.1 -browserName=firefox"
+WEBDRIVER_NODE_PARAMS="-role webdriver -hubHost 127.0.0.1 -hubPort 4444 -host 127.0.0.1 -browser browserName=firefox,maxInstances=5,version=ANY,platform=ANY -browser browserName=chrome,maxInstances=5,version=ANY,platform=ANY"
 WEBDRIVER_NODE_PIDFILE="/tmp/webdriver_node.pid"
 
 if [ ! -f $WEBDRIVER_SERVER_JAR ]; then
