@@ -28,8 +28,8 @@ before_script:
   - sudo cp chromedriver /usr/local/bin/
   - sudo chmod +x /usr/local/bin/chromedriver
 script:
-  - "nosetests examples/my_first_test.py --with-selenium --browser=chrome -s"
-  - "pytest examples/my_first_test.py --with-selenium --browser=firefox -s"
-  - "pytest examples/my_first_test.py --with-selenium --browser=phantomjs"
+  - "nosetests examples/my_first_test.py --browser=chrome -s"
+  - "pytest examples/my_first_test.py --browser=firefox -s"
+  - "pytest examples/my_first_test.py --browser=phantomjs"
 notifications:
   email: false
