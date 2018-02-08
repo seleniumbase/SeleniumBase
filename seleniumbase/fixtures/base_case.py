@@ -1099,7 +1099,7 @@ class BaseCase(unittest.TestCase):
         self.wait_for_angularjs()
         return is_ready
 
-    def wait_for_angularjs(self, timeout=settings.EXTREME_TIMEOUT, **kwargs):
+    def wait_for_angularjs(self, timeout=settings.LARGE_TIMEOUT, **kwargs):
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if not settings.WAIT_FOR_ANGULARJS:
