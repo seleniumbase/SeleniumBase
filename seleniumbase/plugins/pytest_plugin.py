@@ -21,7 +21,7 @@ def pytest_addoption(parser):
                           Example: (--browser=firefox)""")
     parser.addoption('--with-selenium', action="store_true",
                      dest='with_selenium',
-                     default=False,
+                     default=True,
                      help="Use if tests need to be run with a web browser.")
     parser.addoption('--env', action='store',
                      dest='environment',
