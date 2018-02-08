@@ -26,7 +26,7 @@ setup(
         'pytest==3.4.0',
         'pytest-html==1.16.1',
         'six==1.10.0',
-        'flake8==3.4.1',
+        'flake8==3.5.0',
         'requests==2.18.4',
         'BeautifulSoup4==4.6.0',
         'unittest2==1.1.0',
