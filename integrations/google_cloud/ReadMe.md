@@ -84,19 +84,19 @@ sudo python server_setup.py develop
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
 ```bash
-py.test examples/my_first_test.py --with-selenium --headless --browser=chrome
+pytest examples/my_first_test.py --headless --browser=chrome
 ```
 
 #### Step 14. If you like nosetests better than pytest, that works too
 
 ```bash
-nosetests examples/my_first_test.py --with-selenium --headless --browser=chrome
+nosetests examples/my_first_test.py --headless --browser=chrome
 ```
 
 #### Step 15. You can also verify that the example test runs on Firefox
 
 ```bash
-nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
+nosetests examples/my_first_test.py --headless --browser=firefox
 ```
 
 #### Step 16. Login to Jenkins
@@ -119,7 +119,7 @@ nosetests examples/my_first_test.py --with-selenium --headless --browser=firefox
 * Under "Build", click the "Add build step" dropdown and then select "Execute shell".
 * For the "Command", put:
 ```bash
-nosetests examples/my_first_test.py --with-selenium --headless --browser=chrome
+nosetests examples/my_first_test.py --headless --browser=chrome
 ```
 * Click "Save" when you're done.
 
@@ -184,7 +184,7 @@ sudo python setup.py install
 * For the "Execute shell", use the following as your updated "Command":
 
 ```bash
-nosetests examples/my_test_suite.py --with-selenium --headless --browser=chrome --with-db_reporting --with-testing_base
+nosetests examples/my_test_suite.py --headless --browser=chrome --with-db_reporting --with-testing_base
 ```
 
 * Click "Save" when you're done.

@@ -9,7 +9,7 @@
 (<i>Demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) testing [xkcd.com](http://xkcd.com/353/)</i>)
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Features**:
-* [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) to help you build reliable [WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py). (<i>Python 2.7 or 3.3+</i>)
+* [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) to help you build reliable [WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py). (<i>Python 2.7 or 3.4+</i>)
 * [Command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) and a global [config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) to customize runs.
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data & screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs).
 * Works with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
@@ -95,11 +95,11 @@ class MyTestClass(BaseCase):
 ```bash
 cd examples/
 
-pytest my_first_test.py --with-selenium --browser=chrome
+pytest my_first_test.py --browser=chrome
 
-nosetests my_first_test.py --with-selenium --browser=firefox
+nosetests my_first_test.py --browser=firefox
 
-nosetests my_first_test.py --with-selenium --browser=phantomjs
+nosetests my_first_test.py --browser=phantomjs
 ```
 (<i>If no browser is specified, Chrome is used by default.</i>)
 
@@ -107,13 +107,13 @@ nosetests my_first_test.py --with-selenium --browser=phantomjs
 If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
 ```bash
-pytest my_first_test.py --with-selenium --browser=chrome --demo_mode
+pytest my_first_test.py --browser=chrome --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode --demo_sleep=1.2
+nosetests my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
 ```
 
 You can also use the following in your scripts to slow down the tests:
@@ -130,7 +130,7 @@ You may also want to have your test sleep in other situations where you need to 
 If you need to debug things on the fly (in case of errors), use this:
 
 ```bash
-nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures -s
+nosetests my_first_test.py --browser=chrome --pdb --pdb-failures -s
 ```
 
 The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.
@@ -179,7 +179,7 @@ pytest my_test_suite.py --html=report.html
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
 ```bash
-nosetests my_test_suite.py --with-selenium --with-testing_base --report
+nosetests my_test_suite.py --with-testing_base --report
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
@@ -208,7 +208,7 @@ Here are some things you can do to setup a production environment for your testi
 
 Here's an example of running tests with additional features enabled:
 ```bash
-nosetests [YOUR_TEST_FILE].py --browser=chrome --with-selenium --with-testing_base --with-db_reporting --with-s3_logging -s
+nosetests [YOUR_TEST_FILE].py --browser=chrome --with-testing_base --with-db_reporting --with-s3_logging -s
 ```
 (NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
@@ -242,7 +242,7 @@ class MyTestClass(BaseCase):
 Now run it:
 
 ```bash
-nosetests test_fail.py --browser=chrome --with-selenium --with-testing_base
+nosetests test_fail.py --browser=chrome --with-testing_base
 ```
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).

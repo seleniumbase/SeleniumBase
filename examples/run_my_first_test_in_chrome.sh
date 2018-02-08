@@ -1,1 +1,1 @@
-nosetests my_first_test.py --browser=chrome --with-selenium --logging-level=INFO -s
+nosetests my_first_test.py --browser=chrome --logging-level=INFO -s

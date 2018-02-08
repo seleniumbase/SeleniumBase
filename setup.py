@@ -8,7 +8,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.4.17',
+    version='1.5.0',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
@@ -19,7 +19,7 @@ setup(
     license='The MIT License',
     install_requires=[
         'pip>=9.0.1',
-        'setuptools>=38.2.4',
+        'setuptools>=38.5.1',
         'ipython==5.4.1',
         'selenium==3.8.0',
         'nose==1.3.7',

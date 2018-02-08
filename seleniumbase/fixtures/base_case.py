@@ -45,6 +45,7 @@ from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
 from selenium.common.exceptions import (StaleElementReferenceException,
+                                        ElementNotInteractableException,
                                         TimeoutException,
                                         WebDriverException)
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -96,7 +97,8 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             element.click()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
@@ -127,7 +129,8 @@ class BaseCase(unittest.TestCase):
             actions.move_to_element(element)
             actions.double_click(element)
             actions.perform()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
@@ -191,7 +194,8 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             element.click()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_link_text_visible(
@@ -247,7 +251,8 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             element.click()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_partial_link_text(
@@ -273,7 +278,8 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
         try:
             element_text = element.text
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = page_actions.wait_for_element_visible(
@@ -293,7 +299,8 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
         try:
             attribute_value = element.get_attribute(attribute)
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = page_actions.wait_for_element_present(
@@ -354,7 +361,8 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = self.wait_for_element_visible(
@@ -403,7 +411,8 @@ class BaseCase(unittest.TestCase):
             self._scroll_to_element(element)
         try:
             element.clear()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = self.wait_for_element_visible(
@@ -420,7 +429,8 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = self.wait_for_element_visible(
@@ -621,7 +631,8 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         try:
             self._scroll_to_element(element)
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_element_visible(
@@ -1088,7 +1099,7 @@ class BaseCase(unittest.TestCase):
         self.wait_for_angularjs()
         return is_ready
 
-    def wait_for_angularjs(self, timeout=settings.EXTREME_TIMEOUT, **kwargs):
+    def wait_for_angularjs(self, timeout=settings.LARGE_TIMEOUT, **kwargs):
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if not settings.WAIT_FOR_ANGULARJS:
@@ -1116,7 +1127,7 @@ class BaseCase(unittest.TestCase):
         try:
             self.execute_async_script(script, timeout=timeout)
         except TimeoutException:
-            pass  # lets hope things are better when we try to use it
+            pass
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -1263,7 +1274,8 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.find_element(
@@ -1342,12 +1354,10 @@ class BaseCase(unittest.TestCase):
             # Add small recovery time for long-distance slow-scrolling
             time.sleep(0.162)
 
-
-# PyTest-Specific Code #
+    ############
 
     def setUp(self):
         """
-        pytest-specific code
         Be careful if a subclass of BaseCase overrides setUp()
         You'll need to add the following line to the subclass setUp() method:
         super(SubClassOfBaseCase, self).setUp()
@@ -1360,6 +1370,7 @@ class BaseCase(unittest.TestCase):
             # Not using pytest (probably nosetests)
             self.is_pytest = False
         if self.is_pytest:
+            # pytest-specific code
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
@@ -1373,6 +1384,8 @@ class BaseCase(unittest.TestCase):
             self.with_basic_test_info = (
                 pytest.config.option.with_basic_test_info)
             self.with_page_source = pytest.config.option.with_page_source
+            self.servername = pytest.config.option.servername
+            self.port = pytest.config.option.port
             self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
@@ -1382,6 +1395,10 @@ class BaseCase(unittest.TestCase):
             self.highlights = pytest.config.option.highlights
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier
+            self.use_grid = False
+            if self.servername != "localhost":
+                # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+                self.use_grid = True
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
@@ -1419,9 +1436,13 @@ class BaseCase(unittest.TestCase):
                 self.display = Display(visible=0, size=(1920, 1200))
                 self.display.start()
                 self.headless_active = True
-            if self.with_selenium:
-                self.driver = browser_launcher.get_driver(self.browser,
-                                                          self.headless)
+
+        # Launch WebDriver for both Pytest and Nosetests
+        self.driver = browser_launcher.get_driver(self.browser,
+                                                  self.headless,
+                                                  self.use_grid,
+                                                  self.servername,
+                                                  self.port)
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
@@ -1559,3 +1580,13 @@ class BaseCase(unittest.TestCase):
                     data_payload.guid = self.testcase_guid
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
+        else:
+            # Using Nosetests
+            try:
+                # Finally close the browser
+                self.driver.quit()
+            except AttributeError:
+                pass
+            except:
+                print("No driver to quit.")
+            self.driver = None
