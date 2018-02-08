@@ -26,7 +26,7 @@ def main():
             time.sleep(0.07)
             print(encryption.decrypt(password))
             time.sleep(0.21)
-    except:
+    except KeyboardInterrupt:
         print("\nExiting...\n")
 
 

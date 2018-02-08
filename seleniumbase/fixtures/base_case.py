@@ -1170,7 +1170,7 @@ class BaseCase(unittest.TestCase):
                 timeout_multiplier = 0.5
             timeout = int(math.ceil(timeout_multiplier * timeout))
             return timeout
-        except:
+        except Exception:
             # Wrong data type for timeout_multiplier (expecting int or float)
             return timeout
 
@@ -1185,7 +1185,7 @@ class BaseCase(unittest.TestCase):
             if exception_info:
                 try:
                     exc_message = exception_info[0][1][1]
-                except:
+                except Exception:
                     exc_message = "(Unknown Exception)"
             else:
                 exc_message = "(Unknown Exception)"
@@ -1474,7 +1474,7 @@ class BaseCase(unittest.TestCase):
                                                        name='Screenshot')
                 self._html_report_extra.append(extra_url)
                 self._html_report_extra.append(extra_image)
-        except:
+        except Exception:
             pass
 
     def tearDown(self):
@@ -1541,8 +1541,8 @@ class BaseCase(unittest.TestCase):
                     self.driver.quit()
                 except AttributeError:
                     pass
-                except:
-                    print("No driver to quit.")
+                except Exception:
+                    pass
                 self.driver = None
             if self.headless:
                 if self.headless_active:
@@ -1587,6 +1587,6 @@ class BaseCase(unittest.TestCase):
                 self.driver.quit()
             except AttributeError:
                 pass
-            except:
-                print("No driver to quit.")
+            except Exception:
+                pass
             self.driver = None

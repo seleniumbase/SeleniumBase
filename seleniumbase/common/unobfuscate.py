@@ -16,7 +16,7 @@ def main():
     try:
         # Python 2 has the raw_input() method. Python 3 does not.
         input_method = raw_input  # noqa: ignore=F821
-    except:
+    except Exception:
         input_method = input  # Using Python 3
     try:
         while(1):
@@ -26,7 +26,7 @@ def main():
             time.sleep(0.07)
             print(encryption.decrypt(code))
             time.sleep(0.21)
-    except:
+    except KeyboardInterrupt:
         print("\nExiting...\n")
 
 

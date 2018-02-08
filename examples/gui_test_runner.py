@@ -6,7 +6,7 @@ Run by Typing: "python gui_test_runner.py"
 try:
     # Python 2
     from Tkinter import Tk, Frame, Button, Label
-except:
+except Exception:
     # Python 3
     from tkinter import Tk, Frame, Button, Label
 import os

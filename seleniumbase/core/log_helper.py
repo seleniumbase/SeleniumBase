@@ -26,7 +26,7 @@ def log_test_failure_data(test, test_logpath, driver, browser):
                 traceback_list = traceback.format_list(
                     traceback.extract_tb(traceback_address)[1:])
                 traceback_message = ''.join(traceback_list).strip()
-            except:
+            except Exception:
                 exc_message = "(Unknown Exception)"
                 traceback_message = "(Unknown Traceback)"
             data_to_save.append("Traceback: " + traceback_message)

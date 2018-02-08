@@ -125,7 +125,7 @@ class SeleniumBrowser(Plugin):
             self.driver.quit()
         except AttributeError:
             pass
-        except:
+        except Exception:
             pass
         if self.options.headless:
             if self.headless_active:
