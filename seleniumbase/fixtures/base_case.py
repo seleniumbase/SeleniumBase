@@ -1127,7 +1127,7 @@ class BaseCase(unittest.TestCase):
         try:
             self.execute_async_script(script, timeout=timeout)
         except TimeoutException:
-            pass  # lets hope things are better when we try to use it
+            pass
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -1354,12 +1354,10 @@ class BaseCase(unittest.TestCase):
             # Add small recovery time for long-distance slow-scrolling
             time.sleep(0.162)
 
-
-# PyTest-Specific Code #
+    ############
 
     def setUp(self):
         """
-        pytest-specific code
         Be careful if a subclass of BaseCase overrides setUp()
         You'll need to add the following line to the subclass setUp() method:
         super(SubClassOfBaseCase, self).setUp()
@@ -1372,6 +1370,7 @@ class BaseCase(unittest.TestCase):
             # Not using pytest (probably nosetests)
             self.is_pytest = False
         if self.is_pytest:
+            # pytest-specific code
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
