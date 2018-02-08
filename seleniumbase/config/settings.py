@@ -11,7 +11,7 @@ ALL USERS: IF YOU MAKE CHANGES TO THIS FILE, YOU NEED TO RERUN
 # Default seconds to wait for page elements to appear before performing actions
 TINY_TIMEOUT = 0.1
 MINI_TIMEOUT = 2
-SMALL_TIMEOUT = 5
+SMALL_TIMEOUT = 6
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 

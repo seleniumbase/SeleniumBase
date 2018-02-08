@@ -159,16 +159,16 @@ def pytest_runtest_teardown(item):
         try:
             if hasattr(self, 'driver') and self.driver:
                 self.driver.quit()
-        except:
+        except Exception:
             pass
         try:
             if hasattr(self, 'headless') and self.headless:
                 if self.headless_active:
                     if hasattr(self, 'display') and self.display:
                         self.display.stop()
-        except:
+        except Exception:
             pass
-    except:
+    except Exception:
         pass
 
 
@@ -182,5 +182,5 @@ def pytest_runtest_makereport(item, call):
             extra_report = item._testcase._html_report_extra
             extra = getattr(report, 'extra', [])
             report.extra = extra + extra_report
-        except:
+        except Exception:
             pass

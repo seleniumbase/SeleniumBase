@@ -10,8 +10,8 @@ already_uploaded_files = []
 
 class S3LoggingBucket(object):
     """
-    A class to upload our log files from tests to S3, from
-    whence we can share them.
+    A class to upload log files from tests to S3.
+    Those files can then be shared easily.
     """
 
     def __init__(self,
@@ -26,16 +26,16 @@ class S3LoggingBucket(object):
         self.bucket_url = bucket_url
 
     def get_key(self, _name):
-        """create a new Key instance with the given name"""
+        """ Create a new Key instance with the given name. """
         return Key(bucket=self.bucket, name=_name)
 
     def get_bucket(self):
-        """return the bucket we're using"""
+        """ Return the bucket being used. """
         return self.bucket
 
     def upload_file(self, file_name, file_path):
-        """upload a given file from the file_path to the bucket
-        with the new name/path file_name"""
+        """ Upload a given file from the file_path to the bucket
+        with the new name/path file_name. """
         upload_key = Key(bucket=self.bucket, name=file_name)
         content_type = "text/plain"
         if file_name.endswith(".html"):
@@ -51,13 +51,13 @@ class S3LoggingBucket(object):
             upload_key.generate_url(expires_in=3600).split("?")[0]
         try:
             upload_key.make_public()
-        except:
+        except Exception:
             pass
         return file_name
 
     def upload_index_file(self, test_address, timestamp):
-        """create an index.html file with links to all the log files we
-        just uploaded"""
+        """ Create an index.html file with links to all the log files we
+        just uploaded. """
         global already_uploaded_files
         already_uploaded_files = list(set(already_uploaded_files))
         already_uploaded_files.sort()
@@ -74,8 +74,8 @@ class S3LoggingBucket(object):
         return "%s%s" % (self.bucket_url, file_name)
 
     def save_uploaded_file_names(self, files):
-        """We keep record of file names that have been uploaded. We upload log
-        files related to each test after its execution. Once we're done, we
-        use already_uploaded_files to create an index file"""
+        """ Keep a record of all file names that've been uploaded. Upload log
+        files related to each test after its execution. Once done, use
+        already_uploaded_files to create an index file. """
         global already_uploaded_files
         already_uploaded_files.extend(files)

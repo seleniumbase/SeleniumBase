@@ -19,7 +19,7 @@ def str_xor(string, key):
     try:
         result = "".join(
             [chr(ord(c1) ^ ord(c2)) for (c1, c2) in zip(string, key)])
-    except:
+    except Exception:
         string = string.decode('utf-8')
         result = "".join(
             [chr(ord(c1) ^ ord(c2)) for (c1, c2) in zip(string, key)])
@@ -80,7 +80,7 @@ def ord_string_sum(string):
     try:
         for c in string:
             count += ord(c)
-    except:
+    except Exception:
         string = string.decode('utf-8')
         for c in string:
             count += ord(c)

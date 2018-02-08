@@ -339,10 +339,10 @@ class BaseCase(unittest.TestCase):
                                   attribute='src', by=by, timeout=timeout)
 
     def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                 timeout=settings.SMALL_TIMEOUT):
+                 timeout=settings.LARGE_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
@@ -382,16 +382,16 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active(tiny=True)
 
     def send_keys(self, selector, new_value, by=By.CSS_SELECTOR,
-                  timeout=settings.SMALL_TIMEOUT):
+                  timeout=settings.LARGE_TIMEOUT):
         """ Same as add_text() -> more reliable, but less name confusion. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         self.add_text(selector, new_value, by=by, timeout=timeout)
 
     def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                          timeout=settings.SMALL_TIMEOUT, retry=False):
+                          timeout=settings.LARGE_TIMEOUT, retry=False):
         """ This method updates an element's text value with a new value.
             @Params
             selector - the selector with the value to update
@@ -400,7 +400,7 @@ class BaseCase(unittest.TestCase):
             timeout - how long to wait for the selector to be visible
             retry - if True, use jquery if the selenium text update fails
         """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
@@ -456,11 +456,11 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active(tiny=True)
 
     def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                    timeout=settings.SMALL_TIMEOUT, retry=False):
+                    timeout=settings.LARGE_TIMEOUT, retry=False):
         """ The shorter version of update_text_value(), which
             clears existing text and adds new text into the text field.
             We want to keep the old version for backward compatibility. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
@@ -746,9 +746,9 @@ class BaseCase(unittest.TestCase):
                     selector, by))
 
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                  timeout=settings.SMALL_TIMEOUT):
+                  timeout=settings.LARGE_TIMEOUT):
         """ This method uses jQuery to update a text field. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
@@ -772,12 +772,12 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                                 timeout=settings.SMALL_TIMEOUT):
+                                 timeout=settings.LARGE_TIMEOUT):
         """ This method uses jQuery to update a text field.
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
             {Enter/Return} after the text is entered.  """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
@@ -805,10 +805,10 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_pause_if_active()
 
     def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                           timeout=settings.SMALL_TIMEOUT):
+                           timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of jquery_update_text_value()
             (The longer version remains for backwards compatibility.) """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self.jquery_update_text_value(
             selector, new_value, by=by, timeout=timeout)
@@ -847,9 +847,9 @@ class BaseCase(unittest.TestCase):
 
     def pick_select_option_by_text(self, dropdown_selector, option,
                                    dropdown_by=By.CSS_SELECTOR,
-                                   timeout=settings.SMALL_TIMEOUT):
+                                   timeout=settings.LARGE_TIMEOUT):
         """ Picks an HTML <select> option by option text. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self._pick_select_option(dropdown_selector, option,
                                  dropdown_by=dropdown_by, option_by="text",
@@ -857,9 +857,9 @@ class BaseCase(unittest.TestCase):
 
     def pick_select_option_by_index(self, dropdown_selector, option,
                                     dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.SMALL_TIMEOUT):
+                                    timeout=settings.LARGE_TIMEOUT):
         """ Picks an HTML <select> option by option index. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self._pick_select_option(dropdown_selector, option,
                                  dropdown_by=dropdown_by, option_by="index",
@@ -867,9 +867,9 @@ class BaseCase(unittest.TestCase):
 
     def pick_select_option_by_value(self, dropdown_selector, option,
                                     dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.SMALL_TIMEOUT):
+                                    timeout=settings.LARGE_TIMEOUT):
         """ Picks an HTML <select> option by option value. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self._pick_select_option(dropdown_selector, option,
                                  dropdown_by=dropdown_by, option_by="value",
@@ -1170,7 +1170,7 @@ class BaseCase(unittest.TestCase):
                 timeout_multiplier = 0.5
             timeout = int(math.ceil(timeout_multiplier * timeout))
             return timeout
-        except:
+        except Exception:
             # Wrong data type for timeout_multiplier (expecting int or float)
             return timeout
 
@@ -1185,7 +1185,7 @@ class BaseCase(unittest.TestCase):
             if exception_info:
                 try:
                     exc_message = exception_info[0][1][1]
-                except:
+                except Exception:
                     exc_message = "(Unknown Exception)"
             else:
                 exc_message = "(Unknown Exception)"
@@ -1474,7 +1474,7 @@ class BaseCase(unittest.TestCase):
                                                        name='Screenshot')
                 self._html_report_extra.append(extra_url)
                 self._html_report_extra.append(extra_image)
-        except:
+        except Exception:
             pass
 
     def tearDown(self):
@@ -1541,8 +1541,8 @@ class BaseCase(unittest.TestCase):
                     self.driver.quit()
                 except AttributeError:
                     pass
-                except:
-                    print("No driver to quit.")
+                except Exception:
+                    pass
                 self.driver = None
             if self.headless:
                 if self.headless_active:
@@ -1587,6 +1587,6 @@ class BaseCase(unittest.TestCase):
                 self.driver.quit()
             except AttributeError:
                 pass
-            except:
-                print("No driver to quit.")
+            except Exception:
+                pass
             self.driver = None

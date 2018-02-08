@@ -147,7 +147,7 @@ def get_local_driver(browser_name, headless):
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile, capabilities=firefox_capabilities)
             return firefox_driver
-        except:
+        except Exception:
             return webdriver.Firefox()
     if browser_name == constants.Browser.INTERNET_EXPLORER:
         return webdriver.Ie()
