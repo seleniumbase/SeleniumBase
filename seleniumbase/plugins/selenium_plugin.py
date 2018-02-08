@@ -3,13 +3,8 @@ This plugin gives the power of Selenium to nosetests
 by providing a WebDriver object for the tests to use.
 """
 
-import time
-import os
 from nose.plugins import Plugin
-from selenium import webdriver
 from pyvirtualdisplay import Display
-from seleniumbase.core import selenium_launcher
-from seleniumbase.core import browser_launcher
 from seleniumbase.fixtures import constants
 
 
@@ -95,111 +90,43 @@ class SeleniumBrowser(Plugin):
 
     def configure(self, options, conf):
         super(SeleniumBrowser, self).configure(options, conf)
-        if not self.enabled:
-            return
-
-        # Determine the browser version to use, and configure settings
-        self.browser_settings = {
-            "browserName": options.browser,
-            'name': self.conf.testNames[0],
-            'build': os.getenv('BUILD_TAG'),
-            'project': os.getenv('JOB_NAME')
-        }
-
-        if options.browser == constants.Browser.INTERNET_EXPLORER:
-            self.browser_settings["platform"] = "WINDOWS"
-            self.browser_settings["browserName"] = "internet explorer"
-
-        if options.browser_version == 'latest':
-            version = constants.Browser.LATEST[options.browser]
-            if version is not None:
-                self.browser_settings["version"] = version
-        else:
-            version_options = constants.Browser.VERSION[options.browser]
-            if (version_options is not None and
-                    options.browser_version in version_options):
-                self.browser_settings["version"] = options.browser_version
-
+        self.enabled = True  # Used if test class inherits BaseCase
         self.options = options
-        self.headless_active = False
-
-        if (self.options.servername == "localhost" and
-                self.options.browser == constants.Browser.HTML_UNIT):
-            selenium_launcher.execute_selenium(self.options.servername,
-                                               self.options.port,
-                                               self.options.log_path)
+        self.headless_active = False  # Default setting
 
     def beforeTest(self, test):
         """ Running Selenium locally will be handled differently
             from how Selenium is run remotely, such as from Jenkins. """
 
+        test.test.browser = self.options.browser
+        test.test.headless = self.options.headless
+        test.test.servername = self.options.servername
+        test.test.port = self.options.port
+        test.test.demo_mode = self.options.demo_mode
+        test.test.demo_sleep = self.options.demo_sleep
+        test.test.highlights = self.options.highlights
+        test.test.verify_delay = self.options.verify_delay  # MasterQA
+        test.test.timeout_multiplier = self.options.timeout_multiplier
+        test.test.use_grid = False
+        if test.test.servername != "localhost":
+            # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+            test.test.use_grid = True
         if self.options.headless:
             self.display = Display(visible=0, size=(1920, 1200))
             self.display.start()
             self.headless_active = True
-        if self.options.servername == "localhost":
-            try:
-                self.driver = self.__select_browser(self.options.browser)
-                test.test.driver = self.driver
-                if "version" in self.browser_settings.keys():
-                    version = self.browser_settings["version"]
-                else:
-                    version = ""
-                test.test.browser = "%s%s" % (self.options.browser, version)
-                test.test.demo_mode = self.options.demo_mode
-                test.test.demo_sleep = self.options.demo_sleep
-                test.test.highlights = self.options.highlights
-                test.test.verify_delay = self.options.verify_delay  # MasterQA
-                test.test.timeout_multiplier = self.options.timeout_multiplier
-            except Exception as err:
-                print("Error starting/connecting to Selenium:")
-                print(err)
-                os.kill(os.getpid(), 9)
-        else:
-            connected = False
-            error = "(Unknown)"
-            for i in range(1, 4):
-                try:
-                    self.driver = self.__select_browser(self.options.browser)
-                    test.test.driver = self.driver
-                    if "version" in self.browser_settings.keys():
-                        version = self.browser_settings["version"]
-                    else:
-                        version = ""
-                    test.test.browser = "%s%s" % (
-                        self.options.browser, version)
-                    connected = True
-                    break
-                except Exception as err:
-                    error = err
-                    print("Attempt #%s to connect to Selenium failed" % i)
-                    if i < 3:
-                        print("Retrying in 3 seconds...")
-                        time.sleep(3)
-            if not connected:
-                print("Error starting/connecting to Selenium:")
-                print(error)
-                print("\n\n")
-                os.kill(os.getpid(), 9)
+        # The driver will be received later
+        self.driver = None
+        test.test.driver = self.driver
 
     def afterTest(self, test):
         try:
+            # If the browser window is still open, close it now.
             self.driver.quit()
         except AttributeError:
             pass
         except:
-            print("No driver to quit.")
+            pass
         if self.options.headless:
             if self.headless_active:
                 self.display.stop()
-
-    def __select_browser(self, browser_name):
-        if (self.options.servername != "localhost" or
-                self.options.browser == constants.Browser.HTML_UNIT):
-            return webdriver.Remote("http://%s:%s/wd/hub" % (
-                self.options.servername,
-                self.options.port),
-                self.browser_settings)
-        else:
-            return browser_launcher.get_driver(browser_name,
-                                               self.options.headless)

@@ -1436,9 +1436,13 @@ class BaseCase(unittest.TestCase):
                 self.display = Display(visible=0, size=(1920, 1200))
                 self.display.start()
                 self.headless_active = True
-            if self.with_selenium:
-                self.driver = browser_launcher.get_driver(self.browser,
-                                                          self.headless)
+
+        # Launch WebDriver for both Pytest and Nosetests
+        self.driver = browser_launcher.get_driver(self.browser,
+                                                  self.headless,
+                                                  self.use_grid,
+                                                  self.servername,
+                                                  self.port)
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
@@ -1576,3 +1580,13 @@ class BaseCase(unittest.TestCase):
                     data_payload.guid = self.testcase_guid
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
+        else:
+            # Using Nosetests
+            try:
+                # Finally close the browser
+                self.driver.quit()
+            except AttributeError:
+                pass
+            except:
+                print("No driver to quit.")
+            self.driver = None
