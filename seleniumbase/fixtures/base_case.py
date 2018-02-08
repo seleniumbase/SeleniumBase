@@ -1384,6 +1384,8 @@ class BaseCase(unittest.TestCase):
             self.with_basic_test_info = (
                 pytest.config.option.with_basic_test_info)
             self.with_page_source = pytest.config.option.with_page_source
+            self.servername = pytest.config.option.servername
+            self.port = pytest.config.option.port
             self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
@@ -1393,6 +1395,10 @@ class BaseCase(unittest.TestCase):
             self.highlights = pytest.config.option.highlights
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier
+            self.use_grid = False
+            if self.servername != "localhost":
+                # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+                self.use_grid = True
             if self.with_db_reporting:
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None

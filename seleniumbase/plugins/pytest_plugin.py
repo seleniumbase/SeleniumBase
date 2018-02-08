@@ -70,6 +70,16 @@ def pytest_addoption(parser):
                      dest='with_page_source',
                      default=False,
                      help="Use to save page source on test failure.")
+    parser.addoption('--server', action='store',
+                     dest='servername',
+                     default='localhost',
+                     help="""Designates the server used by the test.
+                          Default: localhost.""")
+    parser.addoption('--port', action='store',
+                     dest='port',
+                     default='4444',
+                     help="""Designates the port used by the test.
+                          Default: 4444.""")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
