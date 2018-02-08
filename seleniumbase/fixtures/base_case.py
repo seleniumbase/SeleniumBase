@@ -45,6 +45,7 @@ from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
 from selenium.common.exceptions import (StaleElementReferenceException,
+                                        ElementNotInteractableException,
                                         TimeoutException,
                                         WebDriverException)
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -96,7 +97,8 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             element.click()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
@@ -127,7 +129,8 @@ class BaseCase(unittest.TestCase):
             actions.move_to_element(element)
             actions.double_click(element)
             actions.perform()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
@@ -191,7 +194,8 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             element.click()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_link_text_visible(
@@ -247,7 +251,8 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             element.click()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_partial_link_text(
@@ -273,7 +278,8 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
         try:
             element_text = element.text
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = page_actions.wait_for_element_visible(
@@ -293,7 +299,8 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout)
         try:
             attribute_value = element.get_attribute(attribute)
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = page_actions.wait_for_element_present(
@@ -354,7 +361,8 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = self.wait_for_element_visible(
@@ -403,7 +411,8 @@ class BaseCase(unittest.TestCase):
             self._scroll_to_element(element)
         try:
             element.clear()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = self.wait_for_element_visible(
@@ -420,7 +429,8 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
             element = self.wait_for_element_visible(
@@ -621,7 +631,8 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         try:
             self._scroll_to_element(element)
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_element_visible(
@@ -1263,7 +1274,8 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
-        except StaleElementReferenceException:
+        except (StaleElementReferenceException,
+                ElementNotInteractableException):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.find_element(
