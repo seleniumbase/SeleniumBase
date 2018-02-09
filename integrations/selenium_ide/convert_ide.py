@@ -46,7 +46,13 @@ def main():
             has_unicode = True
             continue
 
-        # Handle class definition
+        # Keep SeleniumBase classes if already used in the test script
+        data = re.findall('^class\s\S+\(BaseCase\):\s*$', line)
+        if data:
+            seleniumbase_lines.append(line)
+            continue
+
+        # Have unittest.TestCase classes inherit BaseCase instead
         data = re.findall('^class\s\S+\(unittest\.TestCase\):\s*$', line)
         if data:
             data = data[0].replace("unittest.TestCase", "BaseCase")
