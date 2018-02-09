@@ -193,6 +193,21 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle .find_element_by_xpath() + .send_keys()
+        data = re.match(
+            '''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
+            '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            css_selector = '%s' % data.group(2)
+            text = data.group(3)
+            command = '''%sself.update_text("%s", '%s')''' % (
+                whitespace, css_selector, text)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle Select / by_css_selector() / select_by_visible_text()
         data = re.match(
             '''^(\s*)Select\(driver\.find_element_by_css_selector\('''
@@ -219,7 +234,7 @@ def main():
             if '(u"' in line:
                 uni = "u"
                 has_unicode = True
-            command = '''%sself.click_xpath(%s"%s")''' % (
+            command = '''%sself.click(%s"%s")''' % (
                 whitespace, uni, xpath)
             seleniumbase_lines.append(command)
             continue
@@ -312,6 +327,24 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.is_element_present(By.CSS_SELECTOR, *)
+        data = re.match(
+            '''^(\s*)([\S\s]*)self\.is_element_present\(By.CSS_SELECTOR, '''
+            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+        if data:
+            whitespace = data.group(1)
+            pre = data.group(2)
+            css_selector = '''%s''' % data.group(3)
+            post = data.group(4)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%s%sself.is_element_present("%s")%s''' % (
+                whitespace, pre, css_selector, post)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.is_element_present(By.XPATH, *)
         data = re.match(
             '''^(\s*)([\S\s]*)self\.is_element_present\(By.XPATH, '''
@@ -391,6 +424,50 @@ def main():
         else:
             seleniumbase_lines.append(line)
             continue
+
+    # Remove duplicate functionality (wait_for_element)
+    lines = seleniumbase_lines
+    seleniumbase_lines = []
+    num_lines = len(lines)
+    for line_num in range(len(lines)):
+        data = re.match('''^\s*self.wait_for_element'''
+                        '''\((["|'])([\S\s]+)(["|'])\)'''
+                        '''\s*$''', lines[line_num])
+        if data:
+            # quote_type = data.group(1)
+            selector = data.group(2)
+            if int(line_num) < num_lines - 1:
+                regex_string = (r'''^\s*self.click\(["|']'''
+                                + re.escape(selector) + r'''["|']\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num+1])
+                if data2:
+                    continue
+                regex_string = (r'''^\s*self.update_text\(["|']'''
+                                + re.escape(selector)
+                                + r'''["|'], [\S\s]+\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num+1])
+                if data2:
+                    continue
+        seleniumbase_lines.append(lines[line_num])
+
+    # Remove duplicate functionality (wait_for_link_text)
+    lines = seleniumbase_lines
+    seleniumbase_lines = []
+    num_lines = len(lines)
+    for line_num in range(len(lines)):
+        data = re.match('''^\s*self.wait_for_link_text'''
+                        '''\((["|'])([\S\s]+)(["|'])\)'''
+                        '''\s*$''', lines[line_num])
+        if data:
+            # quote_type = data.group(1)
+            link_text = data.group(2)
+            if int(line_num) < num_lines - 2:
+                regex_string = (r'''^\s*self.click_link_text\(["|']'''
+                                + re.escape(link_text) + r'''["|']\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num+1])
+                if data2:
+                    continue
+        seleniumbase_lines.append(lines[line_num])
 
     seleniumbase_code = ""
     if has_unicode:
