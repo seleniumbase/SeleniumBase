@@ -1,8 +1,9 @@
 """
 You'll probably want to customize this to your own environment and needs.
 
-ALL USERS: IF YOU MAKE CHANGES TO THIS FILE, YOU NEED TO RERUN
-``python setup.py install`` IN ORDER FOR YOUR CHANGES TO TAKE EFFECT!
+If you used ``python setup.py install`` instead of ``python setup.py develop``,
+you may need to rerun ``python setup.py install`` in order for your changes
+to take effect (unless you switch to using ``develop``).
 """
 
 
