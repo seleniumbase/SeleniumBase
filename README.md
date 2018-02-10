@@ -48,7 +48,7 @@ pip install -r requirements.txt --upgrade
 
 python setup.py develop
 ```
-(<i>Repeat this step if you make changes to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or to SeleniumBase libraries. If you're installing SeleniumBase on a machine that uses an older version of Firefox, such as version 46 or earlier, use `server_requirements.txt` and `server_setup.py`.</i>)
+(<i>If you're installing SeleniumBase on a server machine that uses an older version of Firefox, such as version 46 or earlier, you may need to use `server_requirements.txt` and `server_setup.py`.</i>)
 
 To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use:
 ```bash
