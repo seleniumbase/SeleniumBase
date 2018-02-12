@@ -480,11 +480,13 @@ self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "
 self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
 
-In the following example, javascript is used to plant code on a page that Selenium can then touch after that:
+In the following example, JavaScript is used to plant code on a page that Selenium can then touch after that:
 ```python
-self.open(SOME_PAGE_TO_PLAY_WITH)
-referral_link = '<a class="analytics test" href="%s">Free-Referral Button!</a>' % DESTINATION_URL
-self.execute_script("document.body.innerHTML = \"%s\"" % referral_link)
+start_page = "https://xkcd.com/465/"
+destination_page = "https://github.com/seleniumbase/SeleniumBase"
+self.open(start_page)
+referral_link = '''<a class='analytics test' href='%s'>Free-Referral Button!</a>''' % destination_page
+self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
 
