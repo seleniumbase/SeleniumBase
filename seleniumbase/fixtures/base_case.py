@@ -494,6 +494,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Returns a list of matching WebElements that are visible. """
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         return page_actions.find_visible_elements(self.driver, selector, by)
