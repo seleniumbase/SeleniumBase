@@ -872,6 +872,36 @@ class BaseCase(unittest.TestCase):
                                  dropdown_by=dropdown_by, option_by="value",
                                  timeout=timeout)
 
+    def generate_referral(self, start_page, destination_page):
+        """ This method opens the start_page, creates a referral link there,
+            and clicks on that link, which goes to the destination_page.
+            (This generates real traffic for testing analytics software.) """
+        if not page_utils.is_valid_url(destination_page):
+            raise Exception(
+                "Exception: destination_page [%s] is not a valid URL!"
+                % destination_page)
+        if start_page:
+            if not page_utils.is_valid_url(start_page):
+                raise Exception(
+                    "Exception: start_page [%s] is not a valid URL! "
+                    "(Use an empty string or None to start from current page.)"
+                    % start_page)
+            self.open(start_page)
+            time.sleep(0.03)
+        referral_link = ('''<a class='analytics referral test' href='%s'>'''
+                         '''Generate Free Referral!</a>''' % destination_page)
+        self.execute_script(
+            '''document.body.innerHTML = \"%s\"''' % referral_link)
+        time.sleep(0.05)
+        self.click("a.analytics")  # Clicks the generated button
+        time.sleep(0.03)
+
+    def generate_traffic(self, start_page, destination_page, loops=1):
+        """ Similar to generate_referral(), but can do multiple loops. """
+        for loop in range(loops):
+            self.generate_referral(start_page, destination_page)
+            time.sleep(0.05)
+
     ############
 
     def wait_for_element_present(self, selector, by=By.CSS_SELECTOR,
