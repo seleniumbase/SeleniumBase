@@ -27,7 +27,13 @@ On WINDOWS, run the following command:
 python -m pip install -U pip setuptools
 ```
 
-If you're having any trouble with that, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
+On LINUX / CentOS 7, run the following commands:
+```bash
+yum -y update
+yum -y install python-pip
+```
+
+If you're having any trouble getting pip, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
 
 When done, make sure the location of pip is on your path, which is `$PATH` for Mac/Linux. (On Windows, it's the System Variables `Path` within System Environment Variables. Ex: Add "C:/Python27/Scripts/" to the end of the `Path` variable.)
 

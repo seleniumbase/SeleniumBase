@@ -29,13 +29,29 @@ Mac:
 * On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md).
 
 ```bash
-brew install chromedriver phantomjs
+brew install chromedriver
 ```
 
 (NOTE: If your existing version of chromedriver is less than 2.32, **upgrading is recommended!**)
 
 ```bash
 brew upgrade chromedriver
+```
+
+Linux:
+
+```bash
+wget http://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+mv chromedriver /usr/local/bin/
+chmod +x /usr/local/bin/chromedriver
+```
+
+```bash
+wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
+tar xvfz geckodriver-v0.19.1-linux64.tar.gz
+mv geckodriver /usr/local/bin/
+chmod +x /usr/local/bin/geckodriver
 ```
 
 * To verify that the web drivers are working, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.

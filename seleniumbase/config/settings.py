@@ -9,27 +9,16 @@ to take effect (unless you switch to using ``develop``).
 
 # #####>>>>>----- REQUIRED/IMPORTANT SETTINGS -----<<<<<#####
 
-# Default seconds to wait for page elements to appear before performing actions
-TINY_TIMEOUT = 0.1
+# Default maximum time (in seconds) to wait for page elements to appear.
+# Different methods/actions in base_case.py use different timeouts.
+# If the element to be acted on does not appear in time, the test fails.
 MINI_TIMEOUT = 2
 SMALL_TIMEOUT = 6
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 
-# Default time to wait after each browser action performed during Demo Mode
-# Use Demo Mode when you want others to see what your automation is doing
-# Usage: --demo_mode when run from the command line when using --with-selenium
-# This value can be overwritten on the command line by using --demo_sleep=FLOAT
-DEFAULT_DEMO_MODE_TIMEOUT = 1.0
-
-# Number of times to repeat the highlight animation. (Seen during Demo Mode)
-# Each loop is about 0.18 seconds.
-# This value can be overwritten on the command line by using --highlights=TIMES
-HIGHLIGHTS = 4
-
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
-# This has no effect on Jenkins/S3/MySQL, which may still be saving test logs.
 ARCHIVE_EXISTING_LOGS = False
 
 # If True, existing downloads from past runs will be saved and take up space.
@@ -44,8 +33,7 @@ BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
 
 # Default names for folders and files saved when reports are turned on.
-# Usage: "--report" (Also requires: "--with-testing_base")
-# These settings are also used with MasterQA
+# Usage: "--report" and "--with-testing_base" together. (NOSETESTS only)
 LATEST_REPORT_DIR = "latest_report"
 REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"
@@ -53,10 +41,7 @@ RESULTS_TABLE = "results_table.csv"
 
 '''
 This adds wait_for_ready_state_complete() after various browser actions.
-By default, Selenium waits for the 'interactive' state before continuing.
 Setting this to True may improve reliability at the cost of speed.
-WARNING: Some websites are in a perpetual "interactive" state due to
-dynamic content that never fully finishes loading (Use "False" there).
 '''
 # Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
@@ -64,17 +49,22 @@ WAIT_FOR_RSC_ON_PAGE_LOADS = True
 WAIT_FOR_RSC_ON_CLICKS = True
 
 '''
-This adds wait_for_angularjs() after wait_for_ready_state_complete()
-after various browser actions.  Setting this to True may improve reliability
-of AngularJs applications at the cost of speed.
-NOTE: This requires WAIT_FOR_RSC_ON_PAGE_LOADS and/or WAIT_FOR_RSC_ON_CLICKS
-to be True since it's part of wait_for_ready_state_complete().
+This adds wait_for_angularjs() after various browser actions.
+(Requires WAIT_FOR_RSC_ON_PAGE_LOADS and WAIT_FOR_RSC_ON_CLICKS to also be on.)
 '''
-# Called after each wait_for_ready_state_complete()
 WAIT_FOR_ANGULARJS = True
 
 # Option to start Chrome in full screen mode by default
 START_CHROME_IN_FULL_SCREEN_MODE = False
+
+# Default time to wait after each browser action performed during Demo Mode.
+# Use Demo Mode when you want others to see what your automation is doing.
+# Usage: "--demo_mode". (Can be overwritten by using "--demo_sleep=TIME".)
+DEFAULT_DEMO_MODE_TIMEOUT = 1.0
+
+# Number of times to repeat the demo_mode highlight animation.
+# Each loop is about 0.18 seconds. (Override by using "--highlights=TIMES".)
+HIGHLIGHTS = 4
 
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
