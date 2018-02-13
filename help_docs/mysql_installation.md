@@ -15,6 +15,12 @@ Windows:
 
 That installs the MySQL library so that you can use database commands in your code. To make that useful, you'll want to have a MySQL DB that you can connect to.
 
+#### Install the MySQL-Python connector
+
+```bash
+pip install MySQL-python==1.2.5
+```
+
 #### Access your MySQL DB
 
 If you want a visual tool to help make your MySQL life easier, [try MySQL Workbench](http://dev.mysql.com/downloads/workbench/).
