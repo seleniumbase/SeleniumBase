@@ -21,7 +21,7 @@
 
 ### Setup Instructions for Mac, Ubuntu, & Windows:
 
-Before installation, [make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md).
+Before installation, **[make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.
 
 
 ### **Step 1:** Clone SeleniumBase
@@ -48,7 +48,7 @@ pip install -r requirements.txt --upgrade
 
 python setup.py develop
 ```
-(<i>If you're installing SeleniumBase on a server machine that uses an older version of Firefox, such as version 46 or earlier, you may need to use `server_requirements.txt` and `server_setup.py`.</i>)
+(<i>If ChromeDriver and/or GeckoDriver aren't installed, use `server_requirements.txt` and `server_setup.py`. SeleniumBase will be limited to Firefox while using the older Selenium v2.</i>)
 
 To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use:
 ```bash
