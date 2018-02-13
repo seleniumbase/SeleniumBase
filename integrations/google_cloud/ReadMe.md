@@ -173,10 +173,10 @@ If you have a web application that you want to test, you'll be able to create Se
 #### Step 27. Have your local clone of SeleniumBase connect to your MySQL Instance
 
 * Update the MySQL connection details in your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) file to use the credentials that you saved in Step 21.
-* Run the following command again from the top-level SeleniumBase folder to make sure that SeleniumBase uses the updated credentials:
+* If you haven't already installed the MySQL-Python connector, run the following command below:
 
 ```bash
-sudo python setup.py install
+pip install MySQL-python==1.2.5
 ```
 
 #### Step 28. Have your SeleniumBase Jenkins jobs use your MySQL Instance
