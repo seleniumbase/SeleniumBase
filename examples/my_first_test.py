@@ -9,8 +9,7 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')                  # Click element on page
         self.assert_text('copy and reuse', 'div center')  # Assert element text
         self.open('http://xkcd.com/1481/')
-        image_object = self.find_element('#comic img')    # Returns the element
-        caption = image_object.get_attribute('title')   # Get element attribute
+        caption = self.get_attribute('#comic img', 'title')     # Get attribute
         self.assertTrue('connections to the server' in caption)
         self.click_link_text('Blag')              # Click on link with the text
         self.assert_text('xkcd', '#site-title')
@@ -72,14 +71,14 @@ class MyTestClass(BaseCase):
         #        self.assert_text('The blag of the webcomic', 'header_text')
         #    ]
         #
-        #    The following lines:
+        #    The following line:
         #    [
-        #        image_object = self.find_element('#comic img')
-        #        caption = image_object.get_attribute('title')
+        #        caption = self.get_attribute('#comic img', 'title')
         #    ]
         #    Can also be written as:
         #    [
-        #        caption = self.get_attribute('#comic img', 'title')
+        #        image_object = self.find_element('#comic img')
+        #        caption = image_object.get_attribute('title')
         #    ]
         #
         #    And the following line:
