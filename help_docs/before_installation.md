@@ -38,4 +38,20 @@ brew install chromedriver
 brew upgrade chromedriver
 ```
 
+Linux:
+
+```bash
+wget http://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+mv chromedriver /usr/local/bin/
+chmod +x /usr/local/bin/chromedriver
+```
+
+```bash
+wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
+tar xvfz geckodriver-v0.19.1-linux64.tar.gz
+mv geckodriver /usr/local/bin/
+chmod +x /usr/local/bin/geckodriver
+```
+
 * To verify that the web drivers are working, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
