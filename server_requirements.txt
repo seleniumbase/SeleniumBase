@@ -14,4 +14,3 @@ chardet==3.0.4
 boto==2.48.0
 ipdb==0.10.2
 pyvirtualdisplay==0.2.1
-MySQL-python==1.2.5
