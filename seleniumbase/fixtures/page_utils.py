@@ -1,6 +1,7 @@
 """
 This module contains useful utility methods.
 """
+import re
 import requests
 
 
@@ -40,6 +41,21 @@ def is_xpath_selector(selector):
             selector.startswith('(')):
         return True
     return False
+
+
+def is_valid_url(url):
+    regex = re.compile(
+        r'^(?:http)s?://'  # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+'
+        r'(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+        r'(?::\d+)?'  # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    if regex.match(url):
+        return True
+    else:
+        return False
 
 
 def _download_file_to(file_url, destination_folder, new_file_name=None):
