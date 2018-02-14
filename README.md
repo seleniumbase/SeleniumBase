@@ -148,12 +148,16 @@ The ``--with-testing_base`` plugin gives you full logging on test failures, whic
 ```bash
 cd examples/
 
-pytest my_first_test.py --with-testing_base --browser=firefox
-
 pytest my_first_test.py --with-testing_base --browser=chrome
+
+pytest my_first_test.py --with-testing_base --browser=firefox
 ```
 
-(NOTE: If you're using **pytest** instead of nosetests for running tests outside of the SeleniumBase repo, **you'll need a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure, already provided here.**
+If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
+
+For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
+
+For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
 
 If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
@@ -190,11 +194,9 @@ nosetests my_test_suite.py --with-testing_base --report
 
 Here are some things you can do to setup a production environment for your testing:
 
-* You can setup a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. (Or you can use any build server you want.)
+* You can setup a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. Jenkins has many plugins available, such as [the Xvfb headless browser plugin](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin) for running tests on a machine with no GUI. If you have Xvfb running in the background, you can add ``--headless`` to your run command in order to utilize it. For more info about the Xvfb plugin, [read this](http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/). For a real-world Jenkins example of headless browser automation in action, check out [the SeleniumBase Google Cloud ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md).
 
-* You can use [Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) to scale your testing by distributing tests on several machines with parallel execution. To do this, just spin up some remote machines with WebDriver installed, then update the *.cfg file that lives with your tests on your build server to point there. When doing so, add the command line option to use that file like this: ``--config=[MY_CONFIG_FILE].cfg``). An example config file called selenium_server_config_example.cfg has been provided for you in the integrations/selenium_grid folder. The start-selenium-node.bat and start-selenium-server.sh files are for running your grid. In an example situation, your Selenium Grid server might live on a unix box and your Selenium Grid nodes might live on EC2 Windows virtual machines. When your build server runs a Selenium test, it would connect to your Selenium Grid to find out which Grid browser nodes are available to run that test. To simplify things, you can use [Browser Stack](https://www.browserstack.com/automate) as your entire Selenium Grid (and let them do all the fun work of maintaining the grid for you).
-
-* There are ways of running your tests from Jenkins without having to utilize a remote machine. One way is by using PhantomJS as your browser (it runs headlessly). Another way is by using Xvfb (another headless system). [There's a plugin for Xvfb in Jenkins](https://wiki.jenkins-ci.org/display/JENKINS/Xvfb+Plugin). If you have Xvfb running in the background, you can add ``--headless`` to your run command in order to utilize it. For information about the Xvfb plugin for Jenkins, [click here](http://qxf2.com/blog/xvfb-plugin-for-jenkins-selenium/). To see a real-world Jenkins example of headless browser automation in action, [check out the SeleniumBase Google Cloud ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), which covers this topic with screenshots.
+* You can use [the Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the SeleniumBase [selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), which should have everything you need. The [Selenium Grid ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/selenium_grid/ReadMe.md) will help you get started.
 
 * If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily. You'll also need to install the MySQL-Python connector. Depending on your system, you may have to install this a bit differently from the command below:
 
