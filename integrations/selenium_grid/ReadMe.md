@@ -33,6 +33,5 @@ When running with nosetests, configure a "``setup.cfg``" file with your grid hub
 When running with pytest, add the server and port info to a "``pytest.ini``" file. (Or add that data directly on the command line when you run your tests.)
 
 #### More detailed info about connecting to the Selenium Grid Hub can be found here:
-* [https://theintern.github.io/intern/#selenium-grid](https://theintern.github.io/intern/#selenium-grid)
 * [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
 * [https://github.com/SeleniumHQ/selenium/wiki](https://github.com/SeleniumHQ/selenium/wiki/Grid2)

@@ -147,7 +147,9 @@ def get_local_driver(browser_name, headless):
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile, capabilities=firefox_capabilities)
             return firefox_driver
-        except Exception:
+        except Exception as e:
+            if headless:
+                raise Exception(e)
             return webdriver.Firefox()
     if browser_name == constants.Browser.INTERNET_EXPLORER:
         return webdriver.Ie()
@@ -179,5 +181,7 @@ def get_local_driver(browser_name, headless):
                 # Run Chrome in full screen mode on MAC/Linux
                 chrome_options.add_argument("--kiosk")
             return webdriver.Chrome(chrome_options=chrome_options)
-        except Exception:
+        except Exception as e:
+            if headless:
+                raise Exception(e)
             return webdriver.Chrome()
