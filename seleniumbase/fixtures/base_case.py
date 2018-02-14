@@ -887,14 +887,14 @@ class BaseCase(unittest.TestCase):
                     "(Use an empty string or None to start from current page.)"
                     % start_page)
             self.open(start_page)
-            time.sleep(0.03)
+            time.sleep(0.08)
         referral_link = ('''<a class='analytics referral test' href='%s'>'''
                          '''Generate Free Referral!</a>''' % destination_page)
         self.execute_script(
             '''document.body.innerHTML = \"%s\"''' % referral_link)
-        time.sleep(0.05)
+        time.sleep(0.1)
         self.click("a.analytics")  # Clicks the generated button
-        time.sleep(0.03)
+        time.sleep(0.12)
 
     def generate_traffic(self, start_page, destination_page, loops=1):
         """ Similar to generate_referral(), but can do multiple loops. """
