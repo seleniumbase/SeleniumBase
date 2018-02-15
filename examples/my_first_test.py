@@ -7,14 +7,13 @@ class MyTestClass(BaseCase):
         self.open('http://xkcd.com/353/')            # Navigate to the web page
         self.assert_element('img[alt="Python"]')       # Assert element on page
         self.click('a[rel="license"]')                  # Click element on page
-        self.assert_text('copy and reuse', 'div center')  # Assert element text
+        text = self.get_text("div center")        # Grab text from page element
+        self.assertTrue("reuse any of my drawings" in text)
         self.open('http://xkcd.com/1481/')
-        caption = self.get_attribute('#comic img', 'title')     # Get attribute
-        self.assertTrue('connections to the server' in caption)
+        title = self.get_attribute('#comic img', 'title')   # Grab an attribute
+        self.assertTrue('connections to the server' in title)
         self.click_link_text('Blag')              # Click on link with the text
-        self.assert_text('xkcd', '#site-title')
-        header_text = self.get_text('header h2')  # Grab text from page element
-        self.assertTrue('The blag of the webcomic' in header_text)
+        self.assert_text('The blag of the webcomic', 'h2')  # Assert text in h2
         self.update_text('input#s', 'Robots!\n')  # Fill in field with the text
         self.assert_text('Hooray robots!', '#content')
         self.open('http://xkcd.com/1319/')
