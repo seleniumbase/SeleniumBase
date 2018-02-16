@@ -45,7 +45,6 @@ from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
 from selenium.common.exceptions import (StaleElementReferenceException,
-                                        TimeoutException,
                                         WebDriverException)
 from selenium.common import exceptions as selenium_exceptions
 try:
@@ -1153,8 +1152,8 @@ class BaseCase(unittest.TestCase):
                                'suffix': suffix}
         try:
             self.execute_async_script(script, timeout=timeout)
-        except TimeoutException:
-            pass
+        except Exception:
+            time.sleep(0.05)
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -1464,6 +1463,10 @@ class BaseCase(unittest.TestCase):
                 self.headless_active = True
 
         # Launch WebDriver for both Pytest and Nosetests
+        if not hasattr(self, "browser"):
+            raise Exception("""SeleniumBase plugins did not load! """
+                            """Please reinstall using:\n"""
+                            """ >>> "python setup.py develop" <<< """)
         self.driver = browser_launcher.get_driver(self.browser,
                                                   self.headless,
                                                   self.use_grid,
