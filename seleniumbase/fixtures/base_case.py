@@ -1463,6 +1463,10 @@ class BaseCase(unittest.TestCase):
                 self.headless_active = True
 
         # Launch WebDriver for both Pytest and Nosetests
+        if not hasattr(self, "browser"):
+            raise Exception("""SeleniumBase plugins did not load! """
+                            """Please reinstall using:\n"""
+                            """ >>> "python setup.py develop" <<< """)
         self.driver = browser_launcher.get_driver(self.browser,
                                                   self.headless,
                                                   self.use_grid,
