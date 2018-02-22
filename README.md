@@ -496,6 +496,7 @@ referral_link = '''<a class='analytics test' href='%s'>Free-Referral Button!</a>
 self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
+(Due to popular demand, this traffic generation example has been baked into SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
 
 #### Using non-terminating verifications:
 
