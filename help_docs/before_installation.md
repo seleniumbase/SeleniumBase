@@ -14,7 +14,7 @@
 
 To run automation on various web browsers, you'll need to download a driver file for each one and place it on your System **[PATH](http://java.com/en/download/help/path.xml)**. On a Mac, ``/usr/local/bin`` is a good spot. On Windows, make sure you set the System Path under Environment Variables to include the location where you placed the driver files:
 
-* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path. (**Version 2.32 or above is recommended!**)
+* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path. (**[Version 2.33](https://chromedriver.storage.googleapis.com/index.html?path=2.33/) or above is recommended!**)
 
 * For Firefox, get [Geckodriver](https://github.com/mozilla/geckodriver/releases) on your System Path.
 
@@ -32,7 +32,7 @@ Mac:
 brew install chromedriver
 ```
 
-(NOTE: If your existing version of chromedriver is less than 2.32, **upgrading is recommended!**)
+(NOTE: If your existing version of chromedriver is less than 2.33, **upgrading is recommended!**)
 
 ```bash
 brew upgrade chromedriver
@@ -41,7 +41,7 @@ brew upgrade chromedriver
 Linux:
 
 ```bash
-wget http://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver
