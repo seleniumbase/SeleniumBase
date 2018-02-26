@@ -16,7 +16,15 @@ self.double_click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 self.click_chain(selectors_list, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT, spacing=0)
 
+self.is_link_text_present(link_text)
+
+self.get_href_from_link_text(link_text)
+
+self.wait_for_href_from_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
+
 self.click_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
+
+self.click_link(link_text, timeout=settings.SMALL_TIMEOUT)
 
 self.click_partial_link_text(partial_link_text, timeout=settings.SMALL_TIMEOUT)
 
@@ -61,6 +69,10 @@ self.is_text_visible(text, selector, by=By.CSS_SELECTOR)
 
 self.find_visible_elements(selector, by=By.CSS_SELECTOR)
 
+self.is_element_in_frame(selector, by=By.CSS_SELECTOR)
+
+self.enter_frame_of_element(selector, by=By.CSS_SELECTOR)
+
 self.execute_script(script)
 
 self.set_window_size(width, height)
@@ -68,6 +80,8 @@ self.set_window_size(width, height)
 self.maximize_window()
 
 self.activate_jquery()
+
+self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
 
@@ -81,9 +95,23 @@ self.click_xpath(xpath)
 
 self.jquery_click(selector, by=By.CSS_SELECTOR)
 
+self.hide_element(selector, by=By.CSS_SELECTOR)
+
+self.hide_elements(selector, by=By.CSS_SELECTOR)
+
+self.show_element(selector, by=By.CSS_SELECTOR)
+
+self.show_elements(selector, by=By.CSS_SELECTOR)
+
+self.remove_element(selector, by=By.CSS_SELECTOR)
+
+self.remove_elements(selector, by=By.CSS_SELECTOR)
+
 self.jq_format(code)
 
 self.get_domain_url(url)
+
+self.safe_execute_script(script)
 
 self.download_file(file_url, destination_folder=None)
 
@@ -110,7 +138,7 @@ self.jquery_update_text_value(selector, new_value, by=By.CSS_SELECTOR,
 self.jquery_update_text(selector, new_value, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
-self.hover_on_element(selector)
+self.hover_on_element(selector, by=By.CSS_SELECTOR)
 
 self.hover_and_click(hover_selector, click_selector,
     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
