@@ -658,6 +658,24 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
+    def bring_to_front(self, selector, by=By.CSS_SELECTOR):
+        """ Updates the Z-index of a page element to bring it into view.
+            Useful when getting a WebDriverException, such as the one below:
+                { Element is not clickable at point (#, #).
+                  Other element would receive the click: ... } """
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.find_element(selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't perform action if can't convert to CSS_SELECTOR for jQuery
+            return
+
+        script = ("""document.querySelector('%s').style.zIndex = "1";"""
+                  % selector)
+        self.execute_script(script)
+
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=settings.HIGHLIGHTS, scroll=True):
         """ This method uses fancy javascript to highlight an element.
