@@ -273,7 +273,7 @@ class BaseCase(unittest.TestCase):
                 element.click()
                 return
             source = self.driver.page_source
-            soup = BeautifulSoup(source)
+            soup = BeautifulSoup(source, "html.parser")
             html_links = soup.fetch('a')
             for html_link in html_links:
                 if partial_link_text in html_link.text:
