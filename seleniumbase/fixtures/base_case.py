@@ -764,33 +764,69 @@ class BaseCase(unittest.TestCase):
         self.click(xpath, by=By.XPATH)
 
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
             self._demo_mode_highlight_if_active(selector, by)
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
-
+        selector = self._make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click()""" % selector
-        try:
-            self.execute_script(click_script)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(click_script)
+        self.safe_execute_script(click_script)
         self._demo_mode_pause_if_active()
+
+    def hide_element(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self._make_css_match_first_element_only(selector)
+        hide_script = """jQuery('%s').hide()""" % selector
+        self.safe_execute_script(hide_script)
+
+    def hide_elements(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        hide_script = """jQuery('%s').hide()""" % selector
+        self.safe_execute_script(hide_script)
+
+    def show_element(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self._make_css_match_first_element_only(selector)
+        show_script = """jQuery('%s').show(0)""" % selector
+        self.safe_execute_script(show_script)
+
+    def show_elements(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        show_script = """jQuery('%s').show(0)""" % selector
+        self.safe_execute_script(show_script)
+
+    def remove_element(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self._make_css_match_first_element_only(selector)
+        remove_script = """jQuery('%s').remove()""" % selector
+        self.safe_execute_script(remove_script)
+
+    def remove_elements(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        remove_script = """jQuery('%s').remove()""" % selector
+        self.safe_execute_script(remove_script)
 
     def jq_format(self, code):
         return page_utils.jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
+
+    def safe_execute_script(self, script):
+        try:
+            self.execute_script(script)
+        except Exception:
+            # The likely reason this fails is because: "jQuery is not defined"
+            self.activate_jquery()  # It's a good thing we can define it here
+            self.execute_script(script)
 
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
@@ -901,6 +937,8 @@ class BaseCase(unittest.TestCase):
             selector, new_value, by=by, timeout=timeout)
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         self._demo_mode_highlight_if_active(selector, by)
