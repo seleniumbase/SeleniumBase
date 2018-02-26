@@ -1043,12 +1043,14 @@ class BaseCase(unittest.TestCase):
                     % start_page)
             self.open(start_page)
             time.sleep(0.08)
-        referral_link = ('''<a class='analytics referral test' href='%s'>'''
-                         '''Generate Free Referral!</a>''' % destination_page)
+        referral_link = ('''<a class='analytics referral test' href='%s' '''
+                         '''style='font-family: Arial,sans-serif; '''
+                         '''font-size: 30px; color: #18a2cd'>'''
+                         '''* Magic Link Button! *</a>''' % destination_page)
         self.execute_script(
             '''document.body.innerHTML = \"%s\"''' % referral_link)
         time.sleep(0.1)
-        self.click("a.analytics")  # Clicks the generated button
+        self.click("a.analytics.referral.test")  # Clicks the generated button
         time.sleep(0.12)
 
     def generate_traffic(self, start_page, destination_page, loops=1):
