@@ -43,6 +43,27 @@ def is_xpath_selector(selector):
     return False
 
 
+def is_link_text_selector(selector):
+    """
+    A basic method to determine if a selector is a link text selector.
+    """
+    if (selector.startswith('link=') or
+            selector.startswith('link_text=')):
+        return True
+    return False
+
+
+def get_link_text_from_selector(selector):
+    """
+    A basic method to get the link text from a link text selector.
+    """
+    if selector.startswith('link='):
+        return selector.split('link=')[1]
+    elif selector.startswith('link_text='):
+        return selector.split('link_text=')[1]
+    return selector
+
+
 def is_valid_url(url):
     regex = re.compile(
         r'^(?:http)s?://'  # http:// or https://
