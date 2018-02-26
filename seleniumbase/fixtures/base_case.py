@@ -669,6 +669,7 @@ class BaseCase(unittest.TestCase):
                     (Default: 4. Each loop lasts for about 0.18s)
             scroll - the option to scroll to the element first (Default: True)
         """
+        selector, by = self._recalculate_selector(selector, by)
         element = self.find_element(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if scroll:
@@ -678,11 +679,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # Don't highlight if can't convert to CSS_SELECTOR for jQuery
             return
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
+        selector = self._make_css_match_first_element_only(selector)
 
         o_bs = ''  # original_box_shadow
         style = element.get_attribute('style')
@@ -695,11 +692,8 @@ class BaseCase(unittest.TestCase):
 
         script = """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
-        try:
-            self.execute_script(script)
-        except Exception:
-            self.activate_jquery()
-            self.execute_script(script)
+        self.safe_execute_script(script)
+
         if self.highlights:
             loops = self.highlights
         loops = int(loops)
@@ -869,19 +863,9 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by, timeout=timeout)
         value = json.dumps(new_value)
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
-
+        selector = self._make_css_match_first_element_only(selector)
         set_value_script = """jQuery('%s').val(%s)""" % (selector, value)
-        try:
-            self.execute_script(set_value_script)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(set_value_script)
+        self.safe_execute_script(set_value_script)
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -899,20 +883,10 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
-
+        selector = self._make_css_match_first_element_only(selector)
         update_text_script = """jQuery('%s').val('%s')""" % (
             selector, self.jq_format(new_value))
-        try:
-            self.execute_script(update_text_script)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(update_text_script)
+        self.safe_execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self._demo_mode_pause_if_active()
