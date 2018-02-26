@@ -94,6 +94,13 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+            if not self.is_link_text_visible(selector):
+                # Handle a special case of links hidden in dropdowns
+                self.click_link_text(selector, timeout=timeout)
+                return
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
@@ -161,6 +168,59 @@ class BaseCase(unittest.TestCase):
             if spacing > 0:
                 time.sleep(spacing)
 
+    def is_link_text_present(self, link_text):
+        """ Returns True if the link text appears in the HTML of the page.
+            The element doesn't need to be visible,
+            such as elements hidden inside a dropdown selection. """
+        self.wait_for_ready_state_complete()
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        html_links = soup.find_all('a')
+        for html_link in html_links:
+            if html_link.text == link_text:
+                if html_link.has_attr('href'):
+                    return True
+        return False
+
+    def get_href_from_link_text(self, link_text):
+        self.wait_for_ready_state_complete()
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        html_links = soup.find_all('a')
+        for html_link in html_links:
+            if html_link.text == link_text:
+                if html_link.has_attr('href'):
+                    href = html_link.get('href')
+                    if href.startswith('//'):
+                        link = "http:" + href
+                    elif href.startswith('/'):
+                        url = self.driver.current_url
+                        domain_url = self.get_domain_url(url)
+                        link = domain_url + href
+                    else:
+                        link = href
+                    return link
+                raise Exception(
+                    'Could not parse link from link_text [%s]' % link_text)
+        raise Exception("Link Text [%s] was not found!" % link_text)
+
+    def wait_for_href_from_link_text(self, link_text,
+                                     timeout=settings.SMALL_TIMEOUT):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 5)):
+            try:
+                href = self.get_href_from_link_text(link_text)
+                return href
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.2)
+        raise Exception(
+            "Link text [%s] was not present after %s seconds!" % (
+                link_text, timeout))
+
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
         """ This method clicks link text on a page """
         # If using phantomjs, might need to extract and open the link directly
@@ -171,38 +231,28 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(link_text)
                 element.click()
                 return
-            source = self.driver.page_source
-            soup = BeautifulSoup(source, "html.parser")
-            html_links = soup.find_all('a')
-            for html_link in html_links:
-                if html_link.text == link_text:
-                    if html_link.has_attr('href'):
-                        href = html_link.get('href')
-                        if href.startswith('//'):
-                            link = "http:" + href
-                        elif href.startswith('/'):
-                            url = self.driver.current_url
-                            domain_url = self.get_domain_url(url)
-                            link = domain_url + href
-                        else:
-                            link = href
-                        self.open(link)
-                        return
-                    raise Exception(
-                        'Could not parse link from link_text [%s]' % link_text)
-            raise Exception("Link text [%s] was not found!" % link_text)
-        # Not using phantomjs
-        element = self.wait_for_link_text_visible(link_text, timeout=timeout)
-        self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
+            self.open(self.get_href_from_link_text(link_text))
+            return
+        self.wait_for_href_from_link_text(link_text, timeout=timeout)
         pre_action_url = self.driver.current_url
         try:
-            element.click()
-        except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
-            time.sleep(0.05)
             element = self.wait_for_link_text_visible(
-                link_text, timeout=timeout)
-            element.click()
+                link_text, timeout=0.2)
+            self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
+            try:
+                element.click()
+            except (StaleElementReferenceException, ENI_Exception):
+                self.wait_for_ready_state_complete()
+                time.sleep(0.05)
+                element = self.wait_for_link_text_visible(
+                    link_text, timeout=timeout)
+                element.click()
+        except Exception:
+            # The link text is probably hidden under a dropdown menu
+            if not self._click_dropdown_link_text(link_text):
+                element = self.wait_for_link_text_visible(
+                    link_text, timeout=settings.MINI_TIMEOUT)
+                element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1282,6 +1332,32 @@ class BaseCase(unittest.TestCase):
                 raise Exception(exception_output)
 
     ############
+
+    def _click_dropdown_link_text(self, link_text):
+        """ When a link is hidden under a dropdown menu, use this. """
+        href = self.wait_for_href_from_link_text(link_text)
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        drop_down_list = soup.select('[class*=dropdown]')
+        for item in drop_down_list:
+            if link_text in item.text.split('\n') and href in item.decode():
+                dropdown_css = ""
+                for css_class in item['class']:
+                    dropdown_css += '.'
+                    dropdown_css += css_class
+                dropdown_css = item.name + dropdown_css
+                link_css = '[href="%s"]' % href
+                matching_dropdowns = self.find_visible_elements(dropdown_css)
+                for dropdown in matching_dropdowns:
+                    # The same class names might be used for multiple dropdowns
+                    try:
+                        page_actions.hover_element_and_click(
+                            self.driver, dropdown, link_css,
+                            click_by=By.CSS_SELECTOR, timeout=0.2)
+                        return True
+                    except Exception:
+                        pass
+        return False
 
     def _pick_select_option(self, dropdown_selector, option,
                             dropdown_by=By.CSS_SELECTOR, option_by="text",
