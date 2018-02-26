@@ -138,6 +138,31 @@ def hover_and_click(driver, hover_selector, click_selector,
         (click_selector, timeout))
 
 
+def hover_element_and_click(driver, element, click_selector,
+                            click_by=By.CSS_SELECTOR,
+                            timeout=settings.SMALL_TIMEOUT):
+    """
+    Similar to hover_and_click(), but assumes top element is already found.
+    """
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    hover = ActionChains(driver).move_to_element(element)
+    hover.perform()
+    for x in range(int(timeout * 10)):
+        try:
+            element = driver.find_element(by=click_by,
+                                          value="%s" % click_selector).click()
+            return element
+        except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    raise NoSuchElementException(
+        "Element {%s} was not present after %s seconds!" %
+        (click_selector, timeout))
+
+
 def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
                              timeout=settings.LARGE_TIMEOUT):
     """
