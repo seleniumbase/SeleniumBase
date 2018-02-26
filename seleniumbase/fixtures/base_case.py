@@ -794,6 +794,7 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_pause_if_active()
 
     def hide_element(self, selector, by=By.CSS_SELECTOR):
+        """ Hide the first element on the page that matches the selector. """
         selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self._make_css_match_first_element_only(selector)
@@ -801,12 +802,14 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(hide_script)
 
     def hide_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Hide all elements on the page that match the selector. """
         selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         hide_script = """jQuery('%s').hide()""" % selector
         self.safe_execute_script(hide_script)
 
     def show_element(self, selector, by=By.CSS_SELECTOR):
+        """ Show the first element on the page that matches the selector. """
         selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self._make_css_match_first_element_only(selector)
@@ -814,12 +817,14 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(show_script)
 
     def show_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Show all elements on the page that match the selector. """
         selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         show_script = """jQuery('%s').show(0)""" % selector
         self.safe_execute_script(show_script)
 
     def remove_element(self, selector, by=By.CSS_SELECTOR):
+        """ Remove the first element on the page that matches the selector. """
         selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self._make_css_match_first_element_only(selector)
@@ -827,6 +832,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def remove_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Remove all elements on the page that match the selector. """
         selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         remove_script = """jQuery('%s').remove()""" % selector
@@ -839,6 +845,9 @@ class BaseCase(unittest.TestCase):
         return page_utils.get_domain_url(url)
 
     def safe_execute_script(self, script):
+        """ When executing a script that contains a jQuery command,
+            it's important that the jQuery library has been loaded first.
+            This method will load jQuery if it wasn't already loaded. """
         try:
             self.execute_script(script)
         except Exception:
