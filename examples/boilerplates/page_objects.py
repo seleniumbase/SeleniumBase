@@ -6,6 +6,7 @@ Import a file like this at the top of your test files.
 
 
 class HomePage(object):
+    html = "html"
     ok_button = "#ok"
     cancel_button = "#cancel"
     see_items_button = "button.items"
@@ -26,13 +27,13 @@ class CheckoutPage(object):
 '''
 # Now you can do something like this in your test files:
 
-from master_class import MasterTestCase
-from page_objects import HomePage, ShoppingPage, CheckoutPage
+from .base_test_case import BaseTestCase
+from .page_objects import HomePage, ShoppingPage, CheckoutPage
 
-class MyTests(MasterTestCase):
+class MyTests(BaseTestCase):
 
     def test_example(self):
-        self.open(RANDOM_SHOPPING_WEBSITE)
+        self.login_to_site()
         self.click(HomePage.see_items_button)
         self.click(ShoppingPage.buyable_item)
         self.click(ShoppingPage.add_to_cart)
