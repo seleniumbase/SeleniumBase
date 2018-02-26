@@ -553,13 +553,67 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
         """ Returns a list of matching WebElements that are visible. """
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.find_visible_elements(self.driver, selector, by)
+
+    def is_element_in_frame(self, selector, by=By.CSS_SELECTOR):
+        """ Returns True if the selector's element is located in an iFrame.
+            Otherwise returns False. """
+        selector, by = self._recalculate_selector(selector, by)
+        if self.is_element_present(selector, by=by):
+            return False
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        iframe_list = soup.select('iframe')
+        for iframe in iframe_list:
+            iframe_identifier = None
+            if iframe.has_attr('name') and len(iframe['name']) > 0:
+                iframe_identifier = iframe['name']
+            elif iframe.has_attr('id') and len(iframe['id']) > 0:
+                iframe_identifier = iframe['id']
+            else:
+                continue
+            self.switch_to_frame(iframe_identifier)
+            if self.is_element_present(selector, by=by):
+                self.switch_to_default_content()
+                return True
+            self.switch_to_default_content()
+        return False
+
+    def enter_frame_of_element(self, selector, by=By.CSS_SELECTOR):
+        """ Returns the frame name of the selector's element if in an iFrame.
+            Also enters the iFrame if the element was inside an iFrame.
+            If the element is not in an iFrame, returns None. """
+        selector, by = self._recalculate_selector(selector, by)
+        if self.is_element_present(selector, by=by):
+            return None
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        iframe_list = soup.select('iframe')
+        for iframe in iframe_list:
+            iframe_identifier = None
+            if iframe.has_attr('name') and len(iframe['name']) > 0:
+                iframe_identifier = iframe['name']
+            elif iframe.has_attr('id') and len(iframe['id']) > 0:
+                iframe_identifier = iframe['id']
+            else:
+                continue
+            self.switch_to_frame(iframe_identifier)
+            if self.is_element_present(selector, by=by):
+                return iframe_identifier
+            self.switch_to_default_content()
+        return None
 
     def execute_script(self, script):
         return self.driver.execute_script(script)
