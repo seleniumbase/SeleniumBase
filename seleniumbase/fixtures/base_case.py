@@ -261,6 +261,10 @@ class BaseCase(unittest.TestCase):
             else:
                 self._demo_mode_pause_if_active(tiny=True)
 
+    def click_link(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        """ Same as self.click_link_text() """
+        self.click_link_text(link_text, timeout=timeout)
+
     def click_partial_link_text(self, partial_link_text,
                                 timeout=settings.SMALL_TIMEOUT):
         """ This method clicks the partial link text on a page. """
@@ -343,6 +347,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_present(
@@ -516,11 +523,17 @@ class BaseCase(unittest.TestCase):
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.is_element_visible(self.driver, selector, by)
 
     def is_link_text_visible(self, link_text):
@@ -961,6 +974,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
@@ -986,6 +1002,9 @@ class BaseCase(unittest.TestCase):
             The element must be visible (it cannot be hidden). """
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
@@ -1024,6 +1043,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
@@ -1152,6 +1174,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
 
