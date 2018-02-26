@@ -1321,6 +1321,22 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def _recalculate_selector(self, selector, by):
+        # Try to determine the type of selector automatically
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        return (selector, by)
+
+    def _make_css_match_first_element_only(self, selector):
+        # Only get the first match
+        last_syllable = selector.split(' ')[-1]
+        if ':' not in last_syllable and ':contains' not in selector:
+            selector += ':first'
+        return selector
+
     def _demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:
             if self.demo_sleep:
