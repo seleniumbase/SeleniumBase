@@ -1,3 +1,4 @@
+import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -112,10 +113,13 @@ def get_remote_driver(browser_name, headless, servername, port):
             desired_capabilities=(
                 webdriver.DesiredCapabilities.SAFARI))
     if browser_name == constants.Browser.PHANTOM_JS:
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=(
-                webdriver.DesiredCapabilities.PHANTOMJS))
+        with warnings.catch_warnings():
+            # Ignore "PhantomJS has been deprecated" UserWarning
+            warnings.simplefilter("ignore", category=UserWarning)
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=(
+                    webdriver.DesiredCapabilities.PHANTOMJS))
 
 
 def get_local_driver(browser_name, headless):
@@ -158,7 +162,10 @@ def get_local_driver(browser_name, headless):
     if browser_name == constants.Browser.SAFARI:
         return webdriver.Safari()
     if browser_name == constants.Browser.PHANTOM_JS:
-        return webdriver.PhantomJS()
+        with warnings.catch_warnings():
+            # Ignore "PhantomJS has been deprecated" UserWarning
+            warnings.simplefilter("ignore", category=UserWarning)
+            return webdriver.PhantomJS()
     if browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = webdriver.ChromeOptions()

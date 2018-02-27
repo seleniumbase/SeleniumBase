@@ -94,6 +94,13 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+            if not self.is_link_text_visible(selector):
+                # Handle a special case of links hidden in dropdowns
+                self.click_link_text(selector, timeout=timeout)
+                return
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self._demo_mode_highlight_if_active(selector, by)
@@ -161,6 +168,59 @@ class BaseCase(unittest.TestCase):
             if spacing > 0:
                 time.sleep(spacing)
 
+    def is_link_text_present(self, link_text):
+        """ Returns True if the link text appears in the HTML of the page.
+            The element doesn't need to be visible,
+            such as elements hidden inside a dropdown selection. """
+        self.wait_for_ready_state_complete()
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        html_links = soup.find_all('a')
+        for html_link in html_links:
+            if html_link.text == link_text:
+                if html_link.has_attr('href'):
+                    return True
+        return False
+
+    def get_href_from_link_text(self, link_text):
+        self.wait_for_ready_state_complete()
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        html_links = soup.find_all('a')
+        for html_link in html_links:
+            if html_link.text == link_text:
+                if html_link.has_attr('href'):
+                    href = html_link.get('href')
+                    if href.startswith('//'):
+                        link = "http:" + href
+                    elif href.startswith('/'):
+                        url = self.driver.current_url
+                        domain_url = self.get_domain_url(url)
+                        link = domain_url + href
+                    else:
+                        link = href
+                    return link
+                raise Exception(
+                    'Could not parse link from link_text [%s]' % link_text)
+        raise Exception("Link Text [%s] was not found!" % link_text)
+
+    def wait_for_href_from_link_text(self, link_text,
+                                     timeout=settings.SMALL_TIMEOUT):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 5)):
+            try:
+                href = self.get_href_from_link_text(link_text)
+                return href
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.2)
+        raise Exception(
+            "Link text [%s] was not present after %s seconds!" % (
+                link_text, timeout))
+
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
         """ This method clicks link text on a page """
         # If using phantomjs, might need to extract and open the link directly
@@ -171,38 +231,28 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(link_text)
                 element.click()
                 return
-            source = self.driver.page_source
-            soup = BeautifulSoup(source, "html.parser")
-            html_links = soup.find_all('a')
-            for html_link in html_links:
-                if html_link.text == link_text:
-                    if html_link.has_attr('href'):
-                        href = html_link.get('href')
-                        if href.startswith('//'):
-                            link = "http:" + href
-                        elif href.startswith('/'):
-                            url = self.driver.current_url
-                            domain_url = self.get_domain_url(url)
-                            link = domain_url + href
-                        else:
-                            link = href
-                        self.open(link)
-                        return
-                    raise Exception(
-                        'Could not parse link from link_text [%s]' % link_text)
-            raise Exception("Link text [%s] was not found!" % link_text)
-        # Not using phantomjs
-        element = self.wait_for_link_text_visible(link_text, timeout=timeout)
-        self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
+            self.open(self.get_href_from_link_text(link_text))
+            return
+        self.wait_for_href_from_link_text(link_text, timeout=timeout)
         pre_action_url = self.driver.current_url
         try:
-            element.click()
-        except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
-            time.sleep(0.05)
             element = self.wait_for_link_text_visible(
-                link_text, timeout=timeout)
-            element.click()
+                link_text, timeout=0.2)
+            self._demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
+            try:
+                element.click()
+            except (StaleElementReferenceException, ENI_Exception):
+                self.wait_for_ready_state_complete()
+                time.sleep(0.05)
+                element = self.wait_for_link_text_visible(
+                    link_text, timeout=timeout)
+                element.click()
+        except Exception:
+            # The link text is probably hidden under a dropdown menu
+            if not self._click_dropdown_link_text(link_text):
+                element = self.wait_for_link_text_visible(
+                    link_text, timeout=settings.MINI_TIMEOUT)
+                element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -210,6 +260,10 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active()
             else:
                 self._demo_mode_pause_if_active(tiny=True)
+
+    def click_link(self, link_text, timeout=settings.SMALL_TIMEOUT):
+        """ Same as self.click_link_text() """
+        self.click_link_text(link_text, timeout=timeout)
 
     def click_partial_link_text(self, partial_link_text,
                                 timeout=settings.SMALL_TIMEOUT):
@@ -223,7 +277,7 @@ class BaseCase(unittest.TestCase):
                 element.click()
                 return
             source = self.driver.page_source
-            soup = BeautifulSoup(source)
+            soup = BeautifulSoup(source, "html.parser")
             html_links = soup.fetch('a')
             for html_link in html_links:
                 if partial_link_text in html_link.text:
@@ -293,6 +347,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_present(
@@ -466,11 +523,17 @@ class BaseCase(unittest.TestCase):
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.is_element_visible(self.driver, selector, by)
 
     def is_link_text_visible(self, link_text):
@@ -490,13 +553,67 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
         """ Returns a list of matching WebElements that are visible. """
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.find_visible_elements(self.driver, selector, by)
+
+    def is_element_in_frame(self, selector, by=By.CSS_SELECTOR):
+        """ Returns True if the selector's element is located in an iFrame.
+            Otherwise returns False. """
+        selector, by = self._recalculate_selector(selector, by)
+        if self.is_element_present(selector, by=by):
+            return False
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        iframe_list = soup.select('iframe')
+        for iframe in iframe_list:
+            iframe_identifier = None
+            if iframe.has_attr('name') and len(iframe['name']) > 0:
+                iframe_identifier = iframe['name']
+            elif iframe.has_attr('id') and len(iframe['id']) > 0:
+                iframe_identifier = iframe['id']
+            else:
+                continue
+            self.switch_to_frame(iframe_identifier)
+            if self.is_element_present(selector, by=by):
+                self.switch_to_default_content()
+                return True
+            self.switch_to_default_content()
+        return False
+
+    def enter_frame_of_element(self, selector, by=By.CSS_SELECTOR):
+        """ Returns the frame name of the selector's element if in an iFrame.
+            Also enters the iFrame if the element was inside an iFrame.
+            If the element is not in an iFrame, returns None. """
+        selector, by = self._recalculate_selector(selector, by)
+        if self.is_element_present(selector, by=by):
+            return None
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        iframe_list = soup.select('iframe')
+        for iframe in iframe_list:
+            iframe_identifier = None
+            if iframe.has_attr('name') and len(iframe['name']) > 0:
+                iframe_identifier = iframe['name']
+            elif iframe.has_attr('id') and len(iframe['id']) > 0:
+                iframe_identifier = iframe['id']
+            else:
+                continue
+            self.switch_to_frame(iframe_identifier)
+            if self.is_element_present(selector, by=by):
+                return iframe_identifier
+            self.switch_to_default_content()
+        return None
 
     def execute_script(self, script):
         return self.driver.execute_script(script)
@@ -541,6 +658,24 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
+    def bring_to_front(self, selector, by=By.CSS_SELECTOR):
+        """ Updates the Z-index of a page element to bring it into view.
+            Useful when getting a WebDriverException, such as the one below:
+                { Element is not clickable at point (#, #).
+                  Other element would receive the click: ... } """
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.find_element(selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't perform action if can't convert to CSS_SELECTOR for jQuery
+            return
+
+        script = ("""document.querySelector('%s').style.zIndex = "1";"""
+                  % selector)
+        self.execute_script(script)
+
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=settings.HIGHLIGHTS, scroll=True):
         """ This method uses fancy javascript to highlight an element.
@@ -552,6 +687,7 @@ class BaseCase(unittest.TestCase):
                     (Default: 4. Each loop lasts for about 0.18s)
             scroll - the option to scroll to the element first (Default: True)
         """
+        selector, by = self._recalculate_selector(selector, by)
         element = self.find_element(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if scroll:
@@ -561,11 +697,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # Don't highlight if can't convert to CSS_SELECTOR for jQuery
             return
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
+        selector = self._make_css_match_first_element_only(selector)
 
         o_bs = ''  # original_box_shadow
         style = element.get_attribute('style')
@@ -578,11 +710,8 @@ class BaseCase(unittest.TestCase):
 
         script = """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
-        try:
-            self.execute_script(script)
-        except Exception:
-            self.activate_jquery()
-            self.execute_script(script)
+        self.safe_execute_script(script)
+
         if self.highlights:
             loops = self.highlights
         loops = int(loops)
@@ -653,33 +782,78 @@ class BaseCase(unittest.TestCase):
         self.click(xpath, by=By.XPATH)
 
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self._recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
             self._demo_mode_highlight_if_active(selector, by)
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
-
+        selector = self._make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click()""" % selector
-        try:
-            self.execute_script(click_script)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(click_script)
+        self.safe_execute_script(click_script)
         self._demo_mode_pause_if_active()
+
+    def hide_element(self, selector, by=By.CSS_SELECTOR):
+        """ Hide the first element on the page that matches the selector. """
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self._make_css_match_first_element_only(selector)
+        hide_script = """jQuery('%s').hide()""" % selector
+        self.safe_execute_script(hide_script)
+
+    def hide_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Hide all elements on the page that match the selector. """
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        hide_script = """jQuery('%s').hide()""" % selector
+        self.safe_execute_script(hide_script)
+
+    def show_element(self, selector, by=By.CSS_SELECTOR):
+        """ Show the first element on the page that matches the selector. """
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self._make_css_match_first_element_only(selector)
+        show_script = """jQuery('%s').show(0)""" % selector
+        self.safe_execute_script(show_script)
+
+    def show_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Show all elements on the page that match the selector. """
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        show_script = """jQuery('%s').show(0)""" % selector
+        self.safe_execute_script(show_script)
+
+    def remove_element(self, selector, by=By.CSS_SELECTOR):
+        """ Remove the first element on the page that matches the selector. """
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self._make_css_match_first_element_only(selector)
+        remove_script = """jQuery('%s').remove()""" % selector
+        self.safe_execute_script(remove_script)
+
+    def remove_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Remove all elements on the page that match the selector. """
+        selector, by = self._recalculate_selector(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        remove_script = """jQuery('%s').remove()""" % selector
+        self.safe_execute_script(remove_script)
 
     def jq_format(self, code):
         return page_utils.jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
+
+    def safe_execute_script(self, script):
+        """ When executing a script that contains a jQuery command,
+            it's important that the jQuery library has been loaded first.
+            This method will load jQuery if it wasn't already loaded. """
+        try:
+            self.execute_script(script)
+        except Exception:
+            # The likely reason this fails is because: "jQuery is not defined"
+            self.activate_jquery()  # It's a good thing we can define it here
+            self.execute_script(script)
 
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
@@ -752,19 +926,9 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by, timeout=timeout)
         value = json.dumps(new_value)
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
-
+        selector = self._make_css_match_first_element_only(selector)
         set_value_script = """jQuery('%s').val(%s)""" % (selector, value)
-        try:
-            self.execute_script(set_value_script)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(set_value_script)
+        self.safe_execute_script(set_value_script)
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -782,20 +946,10 @@ class BaseCase(unittest.TestCase):
         self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
-
-        # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable:
-            selector += ':first'
-
+        selector = self._make_css_match_first_element_only(selector)
         update_text_script = """jQuery('%s').val('%s')""" % (
             selector, self.jq_format(new_value))
-        try:
-            self.execute_script(update_text_script)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(update_text_script)
+        self.safe_execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self._demo_mode_pause_if_active()
@@ -810,6 +964,8 @@ class BaseCase(unittest.TestCase):
             selector, new_value, by=by, timeout=timeout)
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         self._demo_mode_highlight_if_active(selector, by)
@@ -887,12 +1043,14 @@ class BaseCase(unittest.TestCase):
                     % start_page)
             self.open(start_page)
             time.sleep(0.08)
-        referral_link = ('''<a class='analytics referral test' href='%s'>'''
-                         '''Generate Free Referral!</a>''' % destination_page)
+        referral_link = ('''<a class='analytics referral test' href='%s' '''
+                         '''style='font-family: Arial,sans-serif; '''
+                         '''font-size: 30px; color: #18a2cd'>'''
+                         '''* Magic Link Button! *</a>''' % destination_page)
         self.execute_script(
             '''document.body.innerHTML = \"%s\"''' % referral_link)
         time.sleep(0.1)
-        self.click("a.analytics")  # Clicks the generated button
+        self.click("a.analytics.referral.test")  # Clicks the generated button
         time.sleep(0.12)
 
     def generate_traffic(self, start_page, destination_page, loops=1):
@@ -911,6 +1069,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
@@ -936,6 +1097,9 @@ class BaseCase(unittest.TestCase):
             The element must be visible (it cannot be hidden). """
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
@@ -974,6 +1138,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
@@ -1102,6 +1269,9 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
 
@@ -1283,6 +1453,32 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def _click_dropdown_link_text(self, link_text):
+        """ When a link is hidden under a dropdown menu, use this. """
+        href = self.wait_for_href_from_link_text(link_text)
+        source = self.driver.page_source
+        soup = BeautifulSoup(source, "html.parser")
+        drop_down_list = soup.select('[class*=dropdown]')
+        for item in drop_down_list:
+            if link_text in item.text.split('\n') and href in item.decode():
+                dropdown_css = ""
+                for css_class in item['class']:
+                    dropdown_css += '.'
+                    dropdown_css += css_class
+                dropdown_css = item.name + dropdown_css
+                link_css = '[href="%s"]' % href
+                matching_dropdowns = self.find_visible_elements(dropdown_css)
+                for dropdown in matching_dropdowns:
+                    # The same class names might be used for multiple dropdowns
+                    try:
+                        page_actions.hover_element_and_click(
+                            self.driver, dropdown, link_css,
+                            click_by=By.CSS_SELECTOR, timeout=0.2)
+                        return True
+                    except Exception:
+                        pass
+        return False
+
     def _pick_select_option(self, dropdown_selector, option,
                             dropdown_by=By.CSS_SELECTOR, option_by="text",
                             timeout=settings.SMALL_TIMEOUT):
@@ -1320,6 +1516,22 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active(tiny=True)
 
     ############
+
+    def _recalculate_selector(self, selector, by):
+        # Try to determine the type of selector automatically
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        return (selector, by)
+
+    def _make_css_match_first_element_only(self, selector):
+        # Only get the first match
+        last_syllable = selector.split(' ')[-1]
+        if ':' not in last_syllable and ':contains' not in selector:
+            selector += ':first'
+        return selector
 
     def _demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:

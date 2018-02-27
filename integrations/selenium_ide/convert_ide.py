@@ -256,7 +256,7 @@ def main():
             if '(u"' in line:
                 uni = "u"
                 has_unicode = True
-            command = '''%sself.click_link_text(%s"%s")''' % (
+            command = '''%sself.click(%s"link=%s")''' % (
                 whitespace, uni, link_text)
             seleniumbase_lines.append(command)
             continue
@@ -468,7 +468,7 @@ def main():
             # quote_type = data.group(1)
             link_text = data.group(2)
             if int(line_num) < num_lines - 2:
-                regex_string = (r'''^\s*self.click_link_text\(["|']'''
+                regex_string = (r'''^\s*self.click\(["|']link='''
                                 + re.escape(link_text) + r'''["|']\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num+1])
                 if data2:
@@ -489,7 +489,7 @@ def main():
     out_file = codecs.open(converted_file_name, "w+")
     out_file.writelines(seleniumbase_code)
     out_file.close()
-    print("%s successfully created from %s\n" % (
+    print('>>> "%s" successfully created from %s\n' % (
         converted_file_name, webdriver_python_file))
 
 

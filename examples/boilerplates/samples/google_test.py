@@ -3,7 +3,7 @@ Google.com testing example
 '''
 
 from seleniumbase import BaseCase
-from google_objects import HomePage, ResultsPage
+from .google_objects import HomePage, ResultsPage
 
 
 class GoogleTests(BaseCase):
