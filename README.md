@@ -178,6 +178,12 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 pytest my_test_suite.py --html=report.html
 ```
 
+You can also use ``--junitxml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+
+```bash
+pytest my_test_suite.py --junitxml=report.xml
+```
+
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
 #### **Nosetest Reports:**
