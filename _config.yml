@@ -1,3 +1,3 @@
-theme: jekyll-theme-cayman
+theme: jekyll-theme-minimal
 title: SeleniumBase
-description: WebDriver automation simplified by extending Python's unittest framework.
+description: WebDriver enhanced by Pytest extensions
