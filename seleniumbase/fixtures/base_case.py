@@ -1668,6 +1668,7 @@ class BaseCase(unittest.TestCase):
             self.with_page_source = pytest.config.option.with_page_source
             self.servername = pytest.config.option.servername
             self.port = pytest.config.option.port
+            self.proxy_string = pytest.config.option.proxy_string
             self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
@@ -1728,7 +1729,8 @@ class BaseCase(unittest.TestCase):
                                                   self.headless,
                                                   self.use_grid,
                                                   self.servername,
-                                                  self.port)
+                                                  self.port,
+                                                  self.proxy_string)
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()

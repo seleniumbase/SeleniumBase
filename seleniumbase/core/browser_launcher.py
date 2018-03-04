@@ -1,16 +1,26 @@
+import re
 import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from seleniumbase.config import settings
+from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
 
 
-def _create_firefox_profile(downloads_path):
+def _create_firefox_profile(downloads_path, proxy_string):
     profile = webdriver.FirefoxProfile()
     profile.set_preference("reader.parse-on-load.enabled", False)
     profile.set_preference("pdfjs.disabled", True)
+    if proxy_string:
+        proxy_server = proxy_string.split(':')[0]
+        proxy_port = proxy_string.split(':')[1]
+        profile.set_preference("network.proxy.type", 1)
+        profile.set_preference("network.proxy.http", proxy_server)
+        profile.set_preference("network.proxy.http_port", int(proxy_port))
+        profile.set_preference("network.proxy.ssl", proxy_server)
+        profile.set_preference("network.proxy.ssl_port", int(proxy_port))
     profile.set_preference(
         "security.mixed_content.block_active_content", False)
     profile.set_preference(
@@ -30,15 +40,43 @@ def _create_firefox_profile(downloads_path):
     return profile
 
 
-def get_driver(browser_name, headless=False, use_grid=False,
-               servername='localhost', port=4444):
-    if use_grid:
-        return get_remote_driver(browser_name, headless, servername, port)
+def display_proxy_warning(proxy_string):
+    message = ('\n\nWARNING: Proxy String ["%s"] is NOT in the expected '
+               '"ip_address:port" format, (OR the key does not exist '
+               'in proxy_list.PROXY_LIST). '
+               '*** DEFAULTING to NOT USING a Proxy Server! ***'
+               % proxy_string)
+    warnings.simplefilter('always', Warning)  # See Warnings
+    warnings.warn(message, category=Warning, stacklevel=2)
+    warnings.simplefilter('default', Warning)  # Set Default
+
+
+def validate_proxy_string(proxy_string):
+    if proxy_string in proxy_list.PROXY_LIST.keys():
+        proxy_string = proxy_list.PROXY_LIST[proxy_string]
+        if not proxy_string:
+            return None
+    valid = re.match('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
+    if valid:
+        proxy_string = valid.group()
     else:
-        return get_local_driver(browser_name, headless)
+        display_proxy_warning(proxy_string)
+        proxy_string = None
+    return proxy_string
 
 
-def get_remote_driver(browser_name, headless, servername, port):
+def get_driver(browser_name, headless=False, use_grid=False,
+               servername='localhost', port=4444, proxy_string=None):
+    if proxy_string:
+        proxy_string = validate_proxy_string(proxy_string)
+    if use_grid:
+        return get_remote_driver(
+            browser_name, headless, servername, port, proxy_string)
+    else:
+        return get_local_driver(browser_name, headless, proxy_string)
+
+
+def get_remote_driver(browser_name, headless, servername, port, proxy_string):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
@@ -58,6 +96,8 @@ def get_remote_driver(browser_name, headless, servername, port):
         chrome_options.add_argument("--disable-infobars")
         if headless:
             chrome_options.add_argument("--headless")
+        if proxy_string:
+            chrome_options.add_argument('--proxy-server=%s' % proxy_string)
         if settings.START_CHROME_IN_FULL_SCREEN_MODE:
             # Run Chrome in full screen mode on WINDOWS
             chrome_options.add_argument("--start-maximized")
@@ -71,7 +111,7 @@ def get_remote_driver(browser_name, headless, servername, port):
     if browser_name == constants.Browser.FIREFOX:
         try:
             # Use Geckodriver for Firefox if it's on the PATH
-            profile = _create_firefox_profile(downloads_path)
+            profile = _create_firefox_profile(downloads_path, proxy_string)
             firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
             firefox_capabilities['marionette'] = True
             if headless:
@@ -85,7 +125,7 @@ def get_remote_driver(browser_name, headless, servername, port):
                 browser_profile=profile)
         except WebDriverException:
             # Don't use Geckodriver: Only works for old versions of Firefox
-            profile = _create_firefox_profile(downloads_path)
+            profile = _create_firefox_profile(downloads_path, proxy_string)
             firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
             firefox_capabilities['marionette'] = False
             if headless:
@@ -122,7 +162,7 @@ def get_remote_driver(browser_name, headless, servername, port):
                     webdriver.DesiredCapabilities.PHANTOMJS))
 
 
-def get_local_driver(browser_name, headless):
+def get_local_driver(browser_name, headless, proxy_string):
     '''
     Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test.
@@ -134,7 +174,7 @@ def get_local_driver(browser_name, headless):
         try:
             try:
                 # Use Geckodriver for Firefox if it's on the PATH
-                profile = _create_firefox_profile(downloads_path)
+                profile = _create_firefox_profile(downloads_path, proxy_string)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = True
                 options = webdriver.FirefoxOptions()
@@ -145,7 +185,7 @@ def get_local_driver(browser_name, headless):
                     firefox_options=options)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
-                profile = _create_firefox_profile(downloads_path)
+                profile = _create_firefox_profile(downloads_path, proxy_string)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = False
                 firefox_driver = webdriver.Firefox(
@@ -182,12 +222,14 @@ def get_local_driver(browser_name, headless):
             chrome_options.add_argument("--disable-infobars")
             if headless:
                 chrome_options.add_argument("--headless")
+            if proxy_string:
+                chrome_options.add_argument('--proxy-server=%s' % proxy_string)
             if settings.START_CHROME_IN_FULL_SCREEN_MODE:
                 # Run Chrome in full screen mode on WINDOWS
                 chrome_options.add_argument("--start-maximized")
                 # Run Chrome in full screen mode on MAC/Linux
                 chrome_options.add_argument("--kiosk")
-            return webdriver.Chrome(chrome_options=chrome_options)
+            return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:
                 raise Exception(e)

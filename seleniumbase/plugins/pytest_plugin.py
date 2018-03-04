@@ -70,13 +70,20 @@ def pytest_addoption(parser):
     parser.addoption('--server', action='store',
                      dest='servername',
                      default='localhost',
-                     help="""Designates the server used by the test.
+                     help="""Designates the Selenium Grid server to use.
                           Default: localhost.""")
     parser.addoption('--port', action='store',
                      dest='port',
                      default='4444',
-                     help="""Designates the port used by the test.
+                     help="""Designates the Selenium Grid port to use.
                           Default: 4444.""")
+    parser.addoption('--proxy', action='store',
+                     dest='proxy_string',
+                     default=None,
+                     help="""Designates the proxy server:port to use.
+                          Format: servername:port.  OR
+                                  A dict key from proxy_list.PROXY_LIST
+                          Default: None.""")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
