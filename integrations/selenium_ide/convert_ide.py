@@ -31,6 +31,7 @@ def main():
     ide_base_url = ""
     in_test_method = False
     has_unicode = False
+    uses_keys = False
 
     f = open(webdriver_python_file, 'r')
     all_code = f.read()
@@ -147,6 +148,20 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle .find_element_by_id() + .send_keys(Keys.<KEY>)
+        data = re.match(
+            '''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
+            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+        if data:
+            uses_keys = True
+            whitespace = data.group(1)
+            css_selector = '#%s' % data.group(2)
+            key = 'Keys.%s' % data.group(3)
+            command = '''%sself.send_keys('%s', %s)''' % (
+                whitespace, css_selector, key)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle .find_element_by_name() + .click()
         data = re.match(
             '''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
@@ -168,6 +183,20 @@ def main():
             text = data.group(3)
             command = '''%sself.update_text('%s', '%s')''' % (
                 whitespace, css_selector, text)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle .find_element_by_name() + .send_keys(Keys.<KEY>)
+        data = re.match(
+            '''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
+            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+        if data:
+            uses_keys = True
+            whitespace = data.group(1)
+            css_selector = '[name="%s"]' % data.group(2)
+            key = 'Keys.%s' % data.group(3)
+            command = '''%sself.send_keys('%s', %s)''' % (
+                whitespace, css_selector, key)
             seleniumbase_lines.append(command)
             continue
 
@@ -199,6 +228,22 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle .find_element_by_css_selector() + .send_keys(Keys.<KEY>)
+        data = re.match(
+            '''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
+            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+        if data:
+            uses_keys = True
+            whitespace = data.group(1)
+            css_selector = '%s' % data.group(2)
+            key = 'Keys.%s' % data.group(3)
+            command = '''%sself.send_keys('%s', %s)''' % (
+                whitespace, css_selector, key)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle .find_element_by_xpath() + .send_keys()
         data = re.match(
             '''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
@@ -209,6 +254,22 @@ def main():
             text = data.group(3)
             command = '''%sself.update_text("%s", '%s')''' % (
                 whitespace, css_selector, text)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle .find_element_by_xpath() + .send_keys(Keys.<KEY>)
+        data = re.match(
+            '''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
+            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+        if data:
+            uses_keys = True
+            whitespace = data.group(1)
+            css_selector = '%s' % data.group(2)
+            key = 'Keys.%s' % data.group(3)
+            command = '''%sself.send_keys('%s', %s)''' % (
+                whitespace, css_selector, key)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -478,6 +539,9 @@ def main():
     seleniumbase_code = ""
     if has_unicode:
         seleniumbase_code = "# -*- coding: utf-8 -*-\n"
+    if uses_keys:
+        seleniumbase_code += (
+            "from selenium.webdriver.common.keys import Keys\n")
     for line in seleniumbase_lines:
         seleniumbase_code += line
         seleniumbase_code += "\n"
@@ -489,7 +553,7 @@ def main():
     out_file = codecs.open(converted_file_name, "w+")
     out_file.writelines(seleniumbase_code)
     out_file.close()
-    print('>>> "%s" successfully created from %s\n' % (
+    print('\n>>> [%s] was created from [%s]\n' % (
         converted_file_name, webdriver_python_file))
 
 
