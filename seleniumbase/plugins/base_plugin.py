@@ -1,16 +1,14 @@
 """
-This plugin is for saving logs and setting a test environment.
+This is the Nose plugin for saving logs and setting a test environment.
 Vars include "env" and "log_path".
 You can have tests behave differently based on the environment.
 You can access the values of these variables from the tests.
 """
 
 import os
-import shutil
 import time
 from nose.plugins import Plugin
 from nose.exc import SkipTest
-from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.core import report_helper
 from seleniumbase.fixtures import constants, errors
@@ -63,22 +61,8 @@ class Base(Plugin):
         if not self.enabled:
             return
         self.options = options
-        log_path = options.log_path
         self.report_on = options.report
         self.show_report = options.show_report
-        if log_path.endswith("/"):
-            log_path = log_path[:-1]
-        if not os.path.exists(log_path):
-            os.makedirs(log_path)
-        else:
-            archived_folder = "%s/../archived_logs/" % log_path
-            if not os.path.exists(archived_folder):
-                os.makedirs(archived_folder)
-            archived_logs = "%slogs_%s" % (archived_folder, int(time.time()))
-            shutil.move(log_path, archived_logs)
-            os.makedirs(log_path)
-            if not settings.ARCHIVE_EXISTING_LOGS:
-                shutil.rmtree(archived_logs)
         self.successes = []
         self.failures = []
         self.start_time = float(0)
@@ -86,6 +70,8 @@ class Base(Plugin):
         self.page_results_list = []
         self.test_count = 0
         self.import_error = False
+        log_path = options.log_path
+        log_helper.log_folder_setup(log_path)
         if self.report_on:
             report_helper.clear_out_old_report_logs(archive_past_runs=False)
 
