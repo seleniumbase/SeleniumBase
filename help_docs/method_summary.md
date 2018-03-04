@@ -35,11 +35,15 @@ self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
 
 self.refresh_page()
 
+self.refresh()
+
 self.get_current_url()
 
 self.get_page_source()
 
 self.get_page_title()
+
+self.get_title()
 
 self.go_back()
 

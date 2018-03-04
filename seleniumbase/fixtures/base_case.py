@@ -373,6 +373,10 @@ class BaseCase(unittest.TestCase):
     def refresh_page(self):
         self.driver.refresh()
 
+    def refresh(self):
+        """ The shorter version of self.refresh_page() """
+        self.driver.refresh()
+
     def get_current_url(self):
         return self.driver.current_url
 
@@ -380,6 +384,10 @@ class BaseCase(unittest.TestCase):
         return self.driver.page_source
 
     def get_page_title(self):
+        return self.driver.title
+
+    def get_title(self):
+        """ The shorter version of self.get_page_title() """
         return self.driver.title
 
     def go_back(self):
