@@ -58,8 +58,7 @@ class Base(Plugin):
 
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)
-        if not self.enabled:
-            return
+        self.enabled = True  # Used if test class inherits BaseCase
         self.options = options
         self.report_on = options.report
         self.show_report = options.show_report

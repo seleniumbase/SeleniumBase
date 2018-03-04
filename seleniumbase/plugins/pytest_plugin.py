@@ -36,7 +36,7 @@ def pytest_addoption(parser):
                      help='Extra data to pass from the command line.')
     parser.addoption('--with-testing_base', action="store_true",
                      dest='with_testing_base',
-                     default=False,
+                     default=True,
                      help="Use to save logs (screenshots) when tests fail.")
     parser.addoption('--log_path', dest='log_path',
                      default='latest_logs/',
