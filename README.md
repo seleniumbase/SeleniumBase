@@ -163,6 +163,7 @@ For running tests outside of the SeleniumBase repo with **Nosetests**, you'll wa
 
 If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
+To run Pytest multithreaded on multiple CPUs at the same time, add ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
