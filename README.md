@@ -1,4 +1,4 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8g.png "SeleniumBase")
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Home.png" title="SeleniumBase" height="50">
 
 **WebDriver automation simplified by extending Python's unittest framework.**
 
@@ -145,14 +145,14 @@ Here are some other useful nosetest arguments for appending to your run commands
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
-The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder:
+During test failures you'll get detailed log files, which include screenshots, page source, and basic test info, which will get added to the logs folder at ``latest_logs/``. (Unless you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), log files with be cleaned up at the start of the next test run. If the archive feature is enabled, those logs will get saved to the ``archived_logs/`` folder.) The ``my_test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 
 ```bash
 cd examples/
 
-pytest my_first_test.py --with-testing_base --browser=chrome
+pytest my_test_suite.py --browser=chrome
 
-pytest my_first_test.py --with-testing_base --browser=firefox
+pytest my_test_suite.py --browser=firefox
 ```
 
 If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
@@ -188,12 +188,12 @@ pytest my_test_suite.py --junitxml=report.xml
 
 #### **Nosetest Reports:**
 
-The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
+The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```bash
-nosetests my_test_suite.py --with-testing_base --report
+nosetests my_test_suite.py --report
 ```
-![](https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="450">
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
@@ -206,7 +206,7 @@ If you wish to use a proxy server for your browser tests (Chrome and Firefox onl
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
-To make things easier, you can add your frequently-used proxies to PROXY_LIST in [seleniumbase/config/proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
+To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
 
 ```bash
 pytest proxy_test.py --proxy=proxy1
@@ -236,7 +236,7 @@ pip install MySQL-python==1.2.5
 
 Here's an example of running tests with additional features enabled:
 ```bash
-nosetests [YOUR_TEST_FILE].py --browser=chrome --with-testing_base --with-db_reporting --with-s3_logging -s
+nosetests [YOUR_TEST_FILE].py --browser=chrome --with-db_reporting --with-s3_logging -s
 ```
 (NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
@@ -256,7 +256,7 @@ If you tell nosetests to run an entire file, it will run every method in that py
 nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[MY_CONFIG_FILE].cfg
 ```
 
-Let's try an example of a test that fails. Copy the following into a file called fail_test.py:
+Let's try an example of a test that fails:
 ```python
 """ test_fail.py """
 from seleniumbase import BaseCase
@@ -265,12 +265,13 @@ class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
         self.open("http://xkcd.com/731/")
-        self.assert_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
+        self.assert_element("div#ARMY_OF_ROBOTS", timeout=1)  # This should fail
 ```
-Now run it:
+
+You can run it from the ``examples`` folder like this:
 
 ```bash
-nosetests test_fail.py --browser=chrome --with-testing_base
+nosetests test_fail.py
 ```
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
