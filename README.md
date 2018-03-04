@@ -500,7 +500,7 @@ self.click("a.analytics")  # Clicks the generated button
 ```
 (Due to popular demand, this traffic generation example has been baked into SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
 
-#### Using non-terminating verifications:
+#### Using delayed asserts:
 
 Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where delayed asserts come in. Here's the example:
 
@@ -509,7 +509,7 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_non_terminating_asserts(self):
+    def test_delayed_asserts(self):
         self.open('http://xkcd.com/993/')
         self.wait_for_element('#comic')
         self.delayed_assert_element('img[alt="Brand Identity"]')
