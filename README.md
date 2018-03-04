@@ -198,8 +198,22 @@ nosetests my_test_suite.py --with-testing_base --report
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
 
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using a Proxy Server:**
+
+If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+
+```bash
+pytest proxy_test.py --proxy=IP_ADDRESS:PORT
+```
+
+To make things easier, you can add your frequently-used proxies to PROXY_LIST in [seleniumbase/config/proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
+
+```bash
+pytest proxy_test.py --proxy=proxy1
+```
+
 <a id="utilizing_advanced_features"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using Production Environments & Integrations:**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Production Environments & Integrations:**
 
 Here are some things you can do to setup a production environment for your testing:
 
