@@ -28,7 +28,6 @@ class Browser:
     SAFARI = "safari"
     GOOGLE_CHROME = "chrome"
     PHANTOM_JS = "phantomjs"
-    HTML_UNIT = "htmlunit"
 
     VERSION = {
         "firefox": None,
@@ -36,8 +35,7 @@ class Browser:
         "edge": None,
         "safari": None,
         "chrome": None,
-        "phantomjs": None,
-        "htmlunit": None
+        "phantomjs": None
     }
 
     LATEST = {
@@ -46,8 +44,7 @@ class Browser:
         "edge": None,
         "safari": None,
         "chrome": None,
-        "phantomjs": None,
-        "htmlunit": None
+        "phantomjs": None
     }
 
 
