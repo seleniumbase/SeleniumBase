@@ -28,11 +28,6 @@ Run the example test in Firefox:
 pytest my_first_test.py --browser=firefox
 ```
 
-Run the example test in PhantomJS:
-```bash
-pytest my_first_test.py --browser=phantomjs
-```
-
 Run the example test in Demo Mode (runs slower and adds highlights):
 ```bash
 pytest my_first_test.py --browser=chrome --demo_mode
@@ -46,11 +41,6 @@ nosetests my_test_suite.py --browser=chrome --with-testing_base --report
 Run the example test suite in Firefox and generate an html report: (nosetests-only)
 ```bash
 nosetests my_test_suite.py --browser=firefox --with-testing_base --report
-```
-
-Run the example test suite in PhantomJS and generate an html report: (nosetests-only)
-```bash
-nosetests my_test_suite.py --browser=phantomjs --with-testing_base --report
 ```
 
 Run a test with configuration specifed by a config file:

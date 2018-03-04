@@ -101,8 +101,6 @@ cd examples/
 pytest my_first_test.py --browser=chrome
 
 nosetests my_first_test.py --browser=firefox
-
-nosetests my_first_test.py --browser=phantomjs
 ```
 (<i>If no browser is specified, Chrome is used by default.</i>)
 
