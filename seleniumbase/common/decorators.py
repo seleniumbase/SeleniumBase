@@ -45,6 +45,10 @@ def retry_on_exception(tries=6, delay=1, backoff=2, max_delay=32):
 
 
 def rate_limited(max_per_second):
+    """ This decorator limits how often a method can get called in a second.
+        If the limit is exceeded, the call will be held in a queue until
+        enough time has passed.
+        Useful when trying to avoid overloading a system with rapid calls. """
     min_interval = 1.0 / float(max_per_second)
 
     def decorate(func):
