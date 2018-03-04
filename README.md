@@ -502,27 +502,27 @@ self.click("a.analytics")  # Clicks the generated button
 
 #### Using non-terminating verifications:
 
-Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where page checks come in. Here's the example:
+Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where delayed asserts come in. Here's the example:
 
 ```python
 from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_non_terminating_checks(self):
+    def test_non_terminating_asserts(self):
         self.open('http://xkcd.com/993/')
         self.wait_for_element('#comic')
-        self.check_assert_element('img[alt="Brand Identity"]')
-        self.check_assert_element('img[alt="Rocket Ship"]')  # Will Fail
-        self.check_assert_element('#comicmap')
-        self.check_assert_text('Fake Item', '#middleContainer')  # Will Fail
-        self.check_assert_text('Random', '#middleContainer')
-        self.check_assert_element('a[name="Super Fake !!!"]')  # Will Fail
-        self.process_checks()
+        self.delayed_assert_element('img[alt="Brand Identity"]')
+        self.delayed_assert_element('img[alt="Rocket Ship"]')  # Will Fail
+        self.delayed_assert_element('#comicmap')
+        self.delayed_assert_text('Fake Item', '#middleContainer')  # Will Fail
+        self.delayed_assert_text('Random', '#middleContainer')
+        self.delayed_assert_element('a[name="Super Fake !!!"]')  # Will Fail
+        self.process_delayed_asserts()
 ```
 
-``check_assert_element()`` and ``check_assert_text()`` will save any exceptions that would be raised.
-To flush out all the failed checks into a single exception, make sure to call ``self.process_checks()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_checks()`` at the end of all your checks for a single page. This way, the screenshot from your log file will make the location where the checks were made.
+``delayed_assert_element()`` and ``delayed_assert_text()`` will save any exceptions that would be raised.
+To flush out all the failed delayed asserts into a single exception, make sure to call ``self.process_delayed_asserts()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_delayed_asserts()`` at the end of all your delayed asserts for a single page. This way, the screenshot from your log file will have the location where the delayed asserts were made.
 
 #### Accessing raw WebDriver
 

@@ -31,6 +31,7 @@ import unittest
 import uuid
 from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
+from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
 from seleniumbase.core.s3_manager import S3LoggingBucket
@@ -73,8 +74,9 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         self.environment = None
-        self.page_check_count = 0
-        self.page_check_failures = []
+        self._last_url_of_delayed_assert = "data:,"
+        self._page_check_count = 0
+        self._page_check_failures = []
         self._html_report_extra = []
 
     def open(self, url):
@@ -1395,61 +1397,96 @@ class BaseCase(unittest.TestCase):
                 exc_message = '(Unknown Exception)'
         return exc_message
 
-    def _package_check(self):
+    def _add_delayed_assert_failure(self):
+        """ Add a delayed_assert failure into a list for future processing. """
         current_url = self.driver.current_url
         message = self._get_exception_message()
-        self.page_check_failures.append(
+        self._page_check_failures.append(
                 "CHECK #%s: (%s)\n %s" % (
-                    self.page_check_count, current_url, message))
+                    self._page_check_count, current_url, message))
 
-    def check_assert_element(self, selector, by=By.CSS_SELECTOR,
-                             timeout=settings.MINI_TIMEOUT):
+    def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
+                               timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for an element on a page.
-            Any and all exceptions will be saved until the process_checks()
+            Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self.page_check_count += 1
+        self._page_check_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self._last_url_of_delayed_assert:
+                timeout = 1
+            else:
+                self._last_url_of_delayed_assert = url
+        except Exception:
+            pass
         try:
             self.wait_for_element_visible(selector, by=by, timeout=timeout)
             return True
         except Exception:
-            self._package_check()
+            self._add_delayed_assert_failure()
             return False
 
-    def check_assert_text(self, text, selector, by=By.CSS_SELECTOR,
-                          timeout=settings.MINI_TIMEOUT):
+    @decorators.deprecated("Use self.delayed_assert_element() instead!")
+    def check_assert_element(self, selector, by=By.CSS_SELECTOR,
+                             timeout=settings.MINI_TIMEOUT):
+        """ DEPRECATED - Use self.delayed_assert_element() instead. """
+        return self.delayed_assert_element(selector, by=by, timeout=timeout)
+
+    def delayed_assert_text(self, text, selector, by=By.CSS_SELECTOR,
+                            timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for text from an element on a page.
-            Any and all exceptions will be saved until the process_checks()
+            Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self.page_check_count += 1
+        self._page_check_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self._last_url_of_delayed_assert:
+                timeout = 1
+            else:
+                self._last_url_of_delayed_assert = url
+        except Exception:
+            pass
         try:
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             return True
         except Exception:
-            self._package_check()
+            self._add_delayed_assert_failure()
             return False
 
-    def process_checks(self, print_only=False):
-        """ To be used with any test that uses check_asserts, which are
+    @decorators.deprecated("Use self.delayed_assert_text() instead!")
+    def check_assert_text(self, text, selector, by=By.CSS_SELECTOR,
+                          timeout=settings.MINI_TIMEOUT):
+        """ DEPRECATED - Use self.delayed_assert_text() instead. """
+        return self.delayed_assert_text(text, selector, by=by, timeout=timeout)
+
+    def process_delayed_asserts(self, print_only=False):
+        """ To be used with any test that uses delayed_asserts, which are
             non-terminating verifications that only raise exceptions
-            after this method is called. This is useful for pages with multiple
-            elements to be checked when you want to find as many bugs
-            as possible in a single test run before having
-            all the exceptions get raised simultaneously.
-            Might be more useful if this method is called after processing
-            all the checks on a single html page so that the failure screenshot
-            matches the location of the checks.
+            after this method is called.
+            This is useful for pages with multiple elements to be checked when
+            you want to find as many bugs as possible in a single test run
+            before having all the exceptions get raised simultaneously.
+            Might be more useful if this method is called after processing all
+            the delayed asserts on a single html page so that the failure
+            screenshot matches the location of the delayed asserts.
             If "print_only" is set to True, the exception won't get raised. """
-        if self.page_check_failures:
+        if self._page_check_failures:
             exception_output = ''
-            exception_output += "\n*** FAILED CHECKS FOR: %s\n" % self.id()
-            all_failing_checks = self.page_check_failures
-            self.page_check_failures = []
+            exception_output += "\n*** DELAYED ASSERTION FAILURES FOR: "
+            exception_output += "%s\n" % self.id()
+            all_failing_checks = self._page_check_failures
+            self._page_check_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             if print_only:
                 print(exception_output)
             else:
                 raise Exception(exception_output)
+
+    @decorators.deprecated("Use self.process_delayed_asserts() instead!")
+    def process_checks(self, print_only=False):
+        """ DEPRECATED - Use self.process_delayed_asserts() instead. """
+        self.process_delayed_asserts(print_only=print_only)
 
     ############
 
@@ -1730,10 +1767,10 @@ class BaseCase(unittest.TestCase):
                 has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
-        if self.page_check_failures:
+        if self._page_check_failures:
             print(
-                "\nWhen using self.check_assert_***() methods in your tests, "
-                "remember to call self.process_checks() afterwards. "
+                "\nWhen using self.delayed_assert_*() methods in your tests, "
+                "remember to call self.process_delayed_asserts() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
             if not has_exception:
                 self.process_checks()
