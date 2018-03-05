@@ -1,4 +1,4 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Home.png" title="SeleniumBase" height="50">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="50">
 
 **WebDriver automation simplified by extending Python's unittest framework.**
 
