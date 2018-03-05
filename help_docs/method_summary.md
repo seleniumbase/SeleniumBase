@@ -35,11 +35,15 @@ self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
 
 self.refresh_page()
 
+self.refresh()
+
 self.get_current_url()
 
 self.get_page_source()
 
 self.get_page_title()
+
+self.get_title()
 
 self.go_back()
 
@@ -249,13 +253,13 @@ self.save_screenshot(name, folder=None)
 
 ########
 
-self.check_assert_element(selector, by=By.CSS_SELECTOR,
+self.delayed_assert_element(selector, by=By.CSS_SELECTOR,
     timeout=settings.MINI_TIMEOUT)
 
-self.check_assert_text(text, selector, by=By.CSS_SELECTOR,
+self.delayed_assert_text(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.MINI_TIMEOUT)
 
-self.process_checks()
+self.process_delayed_asserts()
 ```
 
 ---

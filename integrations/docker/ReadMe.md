@@ -34,23 +34,19 @@ https://docs.docker.com/engine/installation/
 
     docker run seleniumbase ./run_docker_test_in_firefox.sh
 
-#### 8. Now run the same test with PhantomJS inside your Docker:
-
-    docker run seleniumbase ./run_docker_test_in_phantomjs.sh
-
-#### 9. You can also enter Docker and stay inside the shell:
+#### 8. You can also enter Docker and stay inside the shell:
 
     docker run -i -t seleniumbase
 
-#### 10. Now you can run the example test from inside the Docker shell:
+#### 9. Now you can run the example test from inside the Docker shell:
 
     ./run_docker_test_in_chrome.sh
 
-#### 11. When you're satisfied, you may exit the Docker shell:
+#### 10. When you're satisfied, you may exit the Docker shell:
 
     exit
 
-#### 12. (Optional) Since Docker images and containers take up a lot of space, you may want to clean up your machine from time to time when they’re not being used:
+#### 11. (Optional) Since Docker images and containers take up a lot of space, you may want to clean up your machine from time to time when they’re not being used:
 
 Details on that can be found here:
 http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-containers

@@ -4,7 +4,7 @@ You can use this decorator on any method to rate-limit it.
 """
 
 import unittest
-from seleniumbase.common import decorators
+from seleniumbase import decorators
 
 
 class MyTestClass(unittest.TestCase):

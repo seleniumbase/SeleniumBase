@@ -39,7 +39,7 @@ When done, make sure the location of pip is on your path, which is `$PATH` for M
 
 ### [Homebrew](http://brew.sh/) (MAC-ONLY) (OPTIONAL)
 
-The Homebrew package manager allows you to install things more easily on MacOS, such as Git, Chromedriver, and PhantomJS.
+The Homebrew package manager allows you to install things more easily on MacOS, such as Git and Chromedriver.
 
 Here's the command line script to install Homebrew (*from [https://brew.sh/](https://brew.sh/)*):
 ```bash

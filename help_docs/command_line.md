@@ -22,7 +22,7 @@ nosetests my_first_test.py --browser=firefox
 
 pytest my_first_test.py --demo_mode --browser=chrome
 
-nosetests my_test_suite.py --with-testing_base -s
+nosetests my_test_suite.py -s
 ```
 
 You can interchange **nosetests** with **pytest**. Chrome is the default browser if not specified. The ``-s`` option may produce additional output to make debugging easier.
@@ -31,16 +31,16 @@ You can interchange **nosetests** with **pytest**. Chrome is the default browser
 
 **Example tests using Logging**:
 ```bash
-pytest my_test_suite.py --with-testing_base --browser=chrome
+pytest my_test_suite.py --browser=chrome
 ```
-(NOTE: The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder.)
+(NOTE: You'll automatically get full logging on test failures, which include screenshots, page source, and basic test info in the logs folder, which is ``latest_logs/`` initially, and those logs will be saved in ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py))
 
 **Demo Mode:**
 
 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode
+nosetests my_first_test.py --browser=chrome --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
@@ -48,7 +48,7 @@ You can override the default wait time by either updating [settings.py](https://
 If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
 ```bash
-nosetests my_first_test.py --with-selenium --browser=chrome --demo_mode --demo_sleep=1.2
+nosetests my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
 ```
 
 **You can also use the following in your scripts to slow down the tests:**
@@ -64,7 +64,7 @@ You may also want to have your test sleep in other situations where you need to 
 **If you need to debug things on the fly (in case of errors), use this:**
 
 ```bash
-nosetests my_first_test.py --browser=chrome --with-selenium --pdb --pdb-failures -s
+nosetests my_first_test.py --browser=chrome --pdb --pdb-failures -s
 ```
 
 The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.
@@ -83,16 +83,16 @@ The above code (with --pdb) will leave your browser window open in case there's 
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
-pytest my_test_suite.py --with-selenium --html=report.html
+pytest my_test_suite.py --html=report.html
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
 #### **Nosetest Reports:**
 
-The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
+The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```bash
-nosetests my_test_suite.py --with-selenium --with-testing_base --report
+nosetests my_test_suite.py --report
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 

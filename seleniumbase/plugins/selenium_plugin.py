@@ -46,13 +46,21 @@ class SeleniumBrowser(Plugin):
         parser.add_option(
             '--server', action='store', dest='servername',
             default='localhost',
-            help="""Designates the server used by the test.
+            help="""Designates the Selenium Grid server to use.
                     Default: localhost.""")
         parser.add_option(
             '--port', action='store', dest='port',
             default='4444',
-            help="""Designates the port used by the test.
+            help="""Designates the Selenium Grid port to use.
                     Default: 4444.""")
+        parser.add_option(
+            '--proxy', action='store',
+            dest='proxy_string',
+            default=None,
+            help="""Designates the proxy server:port to use.
+                    Format: servername:port.  OR
+                            A dict key from proxy_list.PROXY_LIST
+                    Default: None.""")
         parser.add_option(
             '--headless', action="store_true",
             dest='headless',
@@ -102,6 +110,7 @@ class SeleniumBrowser(Plugin):
         test.test.headless = self.options.headless
         test.test.servername = self.options.servername
         test.test.port = self.options.port
+        test.test.proxy_string = self.options.proxy_string
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep
         test.test.highlights = self.options.highlights

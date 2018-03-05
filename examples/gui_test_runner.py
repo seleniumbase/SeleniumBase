@@ -44,24 +44,22 @@ class App:
             fg="blue").pack()
         self.run4 = Button(
             frame, command=self.run_4,
-            text=("nosetests test_fail.py --browser=chrome"
-                  " --with-testing_base --demo_mode")).pack()
+            text=("nosetests test_fail.py"
+                  " --browser=chrome --demo_mode")).pack()
         self.title5 = Label(
             frame,
             text="Basic Failing Test Suite Run with Test Report:",
             fg="blue").pack()
         self.run5 = Button(
             frame, command=self.run_5,
-            text=("nosetests my_test_suite.py --with-testing_base"
-                  " --report --show_report")).pack()
+            text=("nosetests my_test_suite.py --report --show_report")).pack()
         self.title6 = Label(
             frame,
             text="Basic Failing Test Run showing the Multiple-Checks feature:",
             fg="blue").pack()
         self.run6 = Button(
             frame, command=self.run_6,
-            text=("nosetests non_terminating_checks_test.py"
-                  " --browser=chrome")).pack()
+            text=("nosetests delayed_assert_test.py --browser=chrome")).pack()
         self.title7 = Label(
             frame,
             text="Use MySQL DB Reporting: (See ReadMe.md for Setup Steps!)",
@@ -88,18 +86,15 @@ class App:
 
     def run_4(self):
         os.system(
-            'nosetests test_fail.py'
-            ' --browser=chrome --with-testing_base --demo_mode')
+            'nosetests test_fail.py --browser=chrome --demo_mode')
 
     def run_5(self):
         os.system(
-            'nosetests my_test_suite.py'
-            ' --with-testing_base --report --show_report')
+            'nosetests my_test_suite.py --report --show_report')
 
     def run_6(self):
         os.system(
-            'nosetests non_terminating_checks_test.py'
-            ' --browser=chrome')
+            'nosetests delayed_assert_test.py --browser=chrome')
 
     def run_7(self):
         os.system(
@@ -109,6 +104,6 @@ class App:
 
 if __name__ == "__main__":
     root = Tk()
-    root.minsize(560, 444)
+    root.minsize(532, 444)
     app = App(root)
     root.mainloop()

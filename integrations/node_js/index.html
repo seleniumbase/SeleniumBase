@@ -1,25 +1,28 @@
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
       body {font-family: Arial, Helvetica, sans-serif;}
-      h1 {color:#2255BB; font-size: 32px;}
+      h1 {color:#3366CC; font-size: 32px;}
       input {color:#009999; font-size: 24px;
-             box-shadow: 0 0 4px gray;}
+             box-shadow: 0 0 5px teal;}
     </style>
   </head>
   <body>
+    <div class="container">
     <h1>Select an option:</h1>
-    <form method="put" action="/run_my_first_test_in_firefox">
-      <input type="submit" value="Run Test in Firefox">
-    </form>
     <form method="put" action="/run_my_first_test_in_chrome">
       <input type="submit" value="Run Test in Chrome">
     </form>
-    <form method="put" action="/run_my_first_test_in_firefox_with_demo_mode">
-      <input type="submit" value="Run Test in Firefox (Demo Mode)">
+    <form method="put" action="/run_my_first_test_in_firefox">
+      <input type="submit" value="Run Test in Firefox">
     </form>
     <form method="put" action="/run_my_first_test_in_chrome_with_demo_mode">
       <input type="submit" value="Run Test in Chrome (Demo Mode)">
     </form>
+    <form method="put" action="/run_my_first_test_in_firefox_with_demo_mode">
+      <input type="submit" value="Run Test in Firefox (Demo Mode)">
+    </form>
+    </div>
   </body>
 </html>

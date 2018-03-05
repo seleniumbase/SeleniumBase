@@ -1,5 +1,8 @@
 import codecs
+import os
+import shutil
 import sys
+import time
 import traceback
 from seleniumbase.config import settings
 
@@ -87,3 +90,31 @@ def get_html_source_with_base_href(driver, page_source):
         base_href_html = get_base_href_html(last_page)
         return '%s\n%s' % (base_href_html, page_source)
     return ''
+
+
+def log_folder_setup(log_path):
+    """ Handle Logging """
+    if log_path.endswith("/"):
+        log_path = log_path[:-1]
+    if not os.path.exists(log_path):
+        try:
+            os.makedirs(log_path)
+        except Exception:
+            pass  # Should only be reachable during multi-threaded runs
+    else:
+        archived_folder = "%s/../archived_logs/" % log_path
+        if not os.path.exists(archived_folder):
+            try:
+                os.makedirs(archived_folder)
+            except Exception:
+                pass  # Should only be reachable during multi-threaded runs
+        if not "".join(sys.argv) == "-c":
+            # Only move log files if the test run is not multi-threaded.
+            # (Running tests with "-n NUM" will create threads that only
+            # have "-c" in the sys.argv list. Easy to catch.)
+            archived_logs = "%slogs_%s" % (
+                archived_folder, int(time.time()))
+            shutil.move(log_path, archived_logs)
+            os.makedirs(log_path)
+            if not settings.ARCHIVE_EXISTING_LOGS:
+                shutil.rmtree(archived_logs)

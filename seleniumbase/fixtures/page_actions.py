@@ -230,14 +230,17 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     if not element and by != By.LINK_TEXT:
         raise ElementNotVisibleException(
-            "Element {%s} was not visible after %s seconds!" % (
-                selector, timeout))
+            "Element {%s} was not visible after %s second%s!" % (
+                selector, timeout, plural))
     if not element and by == By.LINK_TEXT:
         raise ElementNotVisibleException(
-            "Link text {%s} was not visible after %s seconds!" % (
-                selector, timeout))
+            "Link text {%s} was not visible after %s second%s!" % (
+                selector, timeout, plural))
 
 
 def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
@@ -274,10 +277,13 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     if not element:
         raise ElementNotVisibleException(
-            "Expected text {%s} for {%s} was not visible after %s seconds!" %
-            (text, selector, timeout))
+            "Expected text {%s} for {%s} was not visible after %s second%s!" %
+            (text, selector, timeout, plural))
 
 
 def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
@@ -304,8 +310,11 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
             time.sleep(0.1)
         except Exception:
             return True
-    raise Exception("Element {%s} was still present after %s seconds!" %
-                    (selector, timeout))
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    raise Exception("Element {%s} was still present after %s second%s!" %
+                    (selector, timeout, plural))
 
 
 def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
@@ -335,9 +344,12 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
                 return True
         except Exception:
             return True
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     raise Exception(
-        "Element {%s} was still visible after %s seconds!" % (
-            selector, timeout))
+        "Element {%s} was still visible after %s second%s!" % (
+            selector, timeout, plural))
 
 
 def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):

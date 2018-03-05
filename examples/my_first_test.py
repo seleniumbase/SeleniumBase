@@ -72,21 +72,21 @@ class MyTestClass(BaseCase):
         #
         #    The following line:
         #    [
-        #        caption = self.get_attribute('#comic img', 'title')
+        #        title = self.get_attribute('#comic img', 'title')
         #    ]
         #    Can also be written as:
         #    [
-        #        image_object = self.find_element('#comic img')
-        #        caption = image_object.get_attribute('title')
+        #        element = self.find_element('#comic img')
+        #        title = element.get_attribute('title')
         #    ]
         #
         #    And the following line:
         #    [
-        #        header_text = self.get_text('header h2')
+        #        text = self.get_text("div center")
         #    ]
         #    Can also be written as:
         #    [
-        #        header_text = self.find_element('header h2').text
+        #        text = self.find_element('div center').text
         #    ]
         #    ...and in many more ways!
         #

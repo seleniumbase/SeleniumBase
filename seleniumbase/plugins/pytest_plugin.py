@@ -1,11 +1,8 @@
 """ This is the pytest configuration file """
 
 import optparse
-import os
 import pytest
-import shutil
-import time
-from seleniumbase.config import settings
+from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 
 
@@ -39,7 +36,7 @@ def pytest_addoption(parser):
                      help='Extra data to pass from the command line.')
     parser.addoption('--with-testing_base', action="store_true",
                      dest='with_testing_base',
-                     default=False,
+                     default=True,
                      help="Use to save logs (screenshots) when tests fail.")
     parser.addoption('--log_path', dest='log_path',
                      default='latest_logs/',
@@ -73,13 +70,20 @@ def pytest_addoption(parser):
     parser.addoption('--server', action='store',
                      dest='servername',
                      default='localhost',
-                     help="""Designates the server used by the test.
+                     help="""Designates the Selenium Grid server to use.
                           Default: localhost.""")
     parser.addoption('--port', action='store',
                      dest='port',
                      default='4444',
-                     help="""Designates the port used by the test.
+                     help="""Designates the Selenium Grid port to use.
                           Default: 4444.""")
+    parser.addoption('--proxy', action='store',
+                     dest='proxy_string',
+                     default=None,
+                     help="""Designates the proxy server:port to use.
+                          Format: servername:port.  OR
+                                  A dict key from proxy_list.PROXY_LIST
+                          Default: None.""")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
@@ -117,27 +121,10 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     """ This runs after command line options have been parsed """
-    log_folder_setup(config)
-
-
-def log_folder_setup(config):
-    """ Handle Logging """
     with_testing_base = config.getoption('with_testing_base')
     if with_testing_base:
         log_path = config.getoption('log_path')
-        if log_path.endswith("/"):
-            log_path = log_path[:-1]
-        if not os.path.exists(log_path):
-            os.makedirs(log_path)
-        else:
-            archived_folder = "%s/../archived_logs/" % log_path
-            if not os.path.exists(archived_folder):
-                os.makedirs(archived_folder)
-            archived_logs = "%slogs_%s" % (archived_folder, int(time.time()))
-            shutil.move(log_path, archived_logs)
-            os.makedirs(log_path)
-            if not settings.ARCHIVE_EXISTING_LOGS:
-                shutil.rmtree(archived_logs)
+        log_helper.log_folder_setup(log_path)
 
 
 def pytest_unconfigure():

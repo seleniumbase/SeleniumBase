@@ -22,7 +22,7 @@ To run automation on various web browsers, you'll need to download a driver file
 
 * For Safari, get [Safari Driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/using_safari_driver.md) on your System Path.
 
-* For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System Path.
+* For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System Path. (NOTE: PhantomJS is no longer officially supported by SeleniumHQ)
 
 Mac:
 

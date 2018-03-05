@@ -1,9 +1,10 @@
-#### Some organizations that've used SeleniumBase include:
+#### Some organizations that've grown their automation with SeleniumBase include:
 * [HubSpot](http://www.hubspot.com/)
 * [Jana](http://jana.com/)
 * [Veracode](http://www.veracode.com/)
 * [CA Technologies](https://www.ca.com/)
 * [MIT](http://web.mit.edu/)
+* [iboss](https://www.iboss.com/)
 * [Akamai](https://www.akamai.com/)
 * [VMware](http://www.vmware.com/)
 * [Raid The Room](http://raidtheroom.com/)

@@ -1,10 +1,10 @@
-![](https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8s.png "SeleniumBase")
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Home.png" title="SeleniumBase" height="50">
 
 **WebDriver automation simplified by extending Python's unittest framework.**
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SeleniumBase simplifies web automation & testing with WebDriver in the same way that jQuery, AnglularJS, and ReactJS simplify web development with JavaScript. All tests using SeleniumBase's BaseCase class inherit Python's unittest.TestCase class, which allows for running tests automatically with Pytest and Nosetest. This framework can use the Page Object Model for test structure, as well as all features of WebDriver and Python's unittest.
+SeleniumBase simplifies web automation & testing with WebDriver in the same way that jQuery, AnglularJS, and ReactJS simplify web development with JavaScript. All tests using SeleniumBase's BaseCase class inherit Python's unittest.TestCase class, allowing users to run tests automatically with Pytest and Nose. Tests can use the Page Object Model for structure, as well as all features of Python and WebDriver.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
@@ -101,8 +101,6 @@ cd examples/
 pytest my_first_test.py --browser=chrome
 
 nosetests my_first_test.py --browser=firefox
-
-nosetests my_first_test.py --browser=phantomjs
 ```
 (<i>If no browser is specified, Chrome is used by default.</i>)
 
@@ -147,14 +145,14 @@ Here are some other useful nosetest arguments for appending to your run commands
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
-The ``--with-testing_base`` plugin gives you full logging on test failures, which saves screenshots, page source, and basic test info into the logs folder:
+During test failures you'll get detailed log files, which include screenshots, page source, and basic test info, which will get added to the logs folder at ``latest_logs/``. (Unless you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), log files with be cleaned up at the start of the next test run. If the archive feature is enabled, those logs will get saved to the ``archived_logs/`` folder.) The ``my_test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 
 ```bash
 cd examples/
 
-pytest my_first_test.py --with-testing_base --browser=chrome
+pytest my_test_suite.py --browser=chrome
 
-pytest my_first_test.py --with-testing_base --browser=firefox
+pytest my_test_suite.py --browser=firefox
 ```
 
 If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
@@ -165,6 +163,7 @@ For running tests outside of the SeleniumBase repo with **Nosetests**, you'll wa
 
 If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
+To run Pytest multithreaded on multiple CPUs at the same time, add ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
@@ -179,22 +178,42 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 pytest my_test_suite.py --html=report.html
 ```
 
+You can also use ``--junitxml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+
+```bash
+pytest my_test_suite.py --junitxml=report.xml
+```
+
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
 #### **Nosetest Reports:**
 
-The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
+The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```bash
-nosetests my_test_suite.py --with-testing_base --report
+nosetests my_test_suite.py --report
 ```
-![](https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="450">
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
 
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using a Proxy Server:**
+
+If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+
+```bash
+pytest proxy_test.py --proxy=IP_ADDRESS:PORT
+```
+
+To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
+
+```bash
+pytest proxy_test.py --proxy=proxy1
+```
+
 <a id="utilizing_advanced_features"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using Production Environments & Integrations:**
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Production Environments & Integrations:**
 
 Here are some things you can do to setup a production environment for your testing:
 
@@ -217,7 +236,7 @@ pip install MySQL-python==1.2.5
 
 Here's an example of running tests with additional features enabled:
 ```bash
-nosetests [YOUR_TEST_FILE].py --browser=chrome --with-testing_base --with-db_reporting --with-s3_logging -s
+nosetests [YOUR_TEST_FILE].py --browser=chrome --with-db_reporting --with-s3_logging -s
 ```
 (NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
@@ -237,7 +256,7 @@ If you tell nosetests to run an entire file, it will run every method in that py
 nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[MY_CONFIG_FILE].cfg
 ```
 
-Let's try an example of a test that fails. Copy the following into a file called fail_test.py:
+Let's try an example of a test that fails:
 ```python
 """ test_fail.py """
 from seleniumbase import BaseCase
@@ -246,12 +265,13 @@ class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
         self.open("http://xkcd.com/731/")
-        self.assert_element("div#ARMY_OF_ROBOTS", timeout=3)  # This should fail
+        self.assert_element("div#ARMY_OF_ROBOTS", timeout=1)  # This should fail
 ```
-Now run it:
+
+You can run it from the ``examples`` folder like this:
 
 ```bash
-nosetests test_fail.py --browser=chrome --with-testing_base
+nosetests test_fail.py
 ```
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
@@ -500,29 +520,29 @@ self.click("a.analytics")  # Clicks the generated button
 ```
 (Due to popular demand, this traffic generation example has been baked into SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
 
-#### Using non-terminating verifications:
+#### Using delayed asserts:
 
-Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where page checks come in. Here's the example:
+Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where delayed asserts come in. Here's the example:
 
 ```python
 from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_non_terminating_checks(self):
+    def test_delayed_asserts(self):
         self.open('http://xkcd.com/993/')
         self.wait_for_element('#comic')
-        self.check_assert_element('img[alt="Brand Identity"]')
-        self.check_assert_element('img[alt="Rocket Ship"]')  # Will Fail
-        self.check_assert_element('#comicmap')
-        self.check_assert_text('Fake Item', '#middleContainer')  # Will Fail
-        self.check_assert_text('Random', '#middleContainer')
-        self.check_assert_element('a[name="Super Fake !!!"]')  # Will Fail
-        self.process_checks()
+        self.delayed_assert_element('img[alt="Brand Identity"]')
+        self.delayed_assert_element('img[alt="Rocket Ship"]')  # Will Fail
+        self.delayed_assert_element('#comicmap')
+        self.delayed_assert_text('Fake Item', '#middleContainer')  # Will Fail
+        self.delayed_assert_text('Random', '#middleContainer')
+        self.delayed_assert_element('a[name="Super Fake !!!"]')  # Will Fail
+        self.process_delayed_asserts()
 ```
 
-``check_assert_element()`` and ``check_assert_text()`` will save any exceptions that would be raised.
-To flush out all the failed checks into a single exception, make sure to call ``self.process_checks()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_checks()`` at the end of all your checks for a single page. This way, the screenshot from your log file will make the location where the checks were made.
+``delayed_assert_element()`` and ``delayed_assert_text()`` will save any exceptions that would be raised.
+To flush out all the failed delayed asserts into a single exception, make sure to call ``self.process_delayed_asserts()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_delayed_asserts()`` at the end of all your delayed asserts for a single page. This way, the screenshot from your log file will have the location where the delayed asserts were made.
 
 #### Accessing raw WebDriver
 
