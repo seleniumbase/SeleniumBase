@@ -1,3 +1,3 @@
 theme: jekyll-theme-slate
 title: SeleniumBase
-description: WebDriver enhanced by Pytest extensions
+description: A WebDriver framework for Pytest

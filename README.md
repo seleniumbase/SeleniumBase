@@ -4,7 +4,7 @@
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SeleniumBase simplifies web automation & testing with WebDriver in the same way that jQuery, AnglularJS, and ReactJS simplify web development with JavaScript. All tests using SeleniumBase's BaseCase class inherit Python's unittest.TestCase class, allowing users to run tests automatically with Pytest and Nose. Tests can use the Page Object Model for structure, as well as all features of Python and WebDriver.
+SeleniumBase simplifies web automation & testing with WebDriver. All tests using SeleniumBase's BaseCase class inherit Python's unittest.TestCase class, allowing users to run Selenium tests easily with Pytest & Nose. The Page Object Model is easily supported.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
