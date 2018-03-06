@@ -18,9 +18,9 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR,
 
 self.is_link_text_present(link_text)
 
-self.get_href_from_link_text(link_text)
+self.get_link_text_attribute(link_text, attribute)
 
-self.wait_for_href_from_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
+self.wait_for_link_text_present(link_text, timeout=settings.SMALL_TIMEOUT)
 
 self.click_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
 
