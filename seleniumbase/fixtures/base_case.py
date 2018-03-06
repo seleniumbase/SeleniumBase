@@ -175,45 +175,37 @@ class BaseCase(unittest.TestCase):
             The element doesn't need to be visible,
             such as elements hidden inside a dropdown selection. """
         self.wait_for_ready_state_complete()
-        source = self.driver.page_source
+        source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         html_links = soup.find_all('a')
         for html_link in html_links:
-            if html_link.text == link_text:
-                if html_link.has_attr('href'):
-                    return True
+            if html_link.text.strip() == link_text.strip():
+                return True
         return False
 
-    def get_href_from_link_text(self, link_text):
+    def get_link_text_attribute(self, link_text, attribute):
         self.wait_for_ready_state_complete()
-        source = self.driver.page_source
+        source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         html_links = soup.find_all('a')
         for html_link in html_links:
-            if html_link.text == link_text:
-                if html_link.has_attr('href'):
-                    href = html_link.get('href')
-                    if href.startswith('//'):
-                        link = "http:" + href
-                    elif href.startswith('/'):
-                        url = self.driver.current_url
-                        domain_url = self.get_domain_url(url)
-                        link = domain_url + href
-                    else:
-                        link = href
-                    return link
+            if html_link.text.strip() == link_text.strip():
+                if html_link.has_attr(attribute):
+                    attribute_value = html_link.get(attribute)
+                    return attribute_value
                 raise Exception(
                     'Could not parse link from link_text [%s]' % link_text)
         raise Exception("Link Text [%s] was not found!" % link_text)
 
-    def wait_for_href_from_link_text(self, link_text,
-                                     timeout=settings.SMALL_TIMEOUT):
+    def wait_for_link_text_present(self, link_text,
+                                   timeout=settings.SMALL_TIMEOUT):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         for x in range(int(timeout * 5)):
             try:
-                href = self.get_href_from_link_text(link_text)
-                return href
+                if not self.is_link_text_present(link_text):
+                    raise Exception("Link text [%s] not found!" % link_text)
+                return
             except Exception:
                 now_ms = time.time() * 1000.0
                 if now_ms >= stop_ms:
@@ -233,10 +225,11 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_link_text_visible(link_text)
                 element.click()
                 return
-            self.open(self.get_href_from_link_text(link_text))
+            self.open(self._get_href_from_link_text(link_text))
             return
-        self.wait_for_href_from_link_text(link_text, timeout=timeout)
-        pre_action_url = self.driver.current_url
+        if not self.is_link_text_present(link_text):
+            self.wait_for_link_text_present(link_text)
+        pre_action_url = self.get_current_url()
         try:
             element = self.wait_for_link_text_visible(
                 link_text, timeout=0.2)
@@ -250,11 +243,33 @@ class BaseCase(unittest.TestCase):
                     link_text, timeout=timeout)
                 element.click()
         except Exception:
-            # The link text is probably hidden under a dropdown menu
-            if not self._click_dropdown_link_text(link_text):
-                element = self.wait_for_link_text_visible(
-                    link_text, timeout=settings.MINI_TIMEOUT)
-                element.click()
+            hidden_css = None
+            try:
+                href = self._get_href_from_link_text(link_text)
+                link_css = '[href="%s"]' % href
+                if self.is_element_visible(link_css):
+                    self.click(link_css)
+                else:
+                    hidden_css = link_css
+                    raise Exception("Element %s is not clickable!" % link_css)
+            except Exception:
+                try:
+                    ng_click = self._get_ng_click_from_link_text(link_text)
+                    link_css = '[ng-click="%s"]' % (ng_click)
+                    if self.is_element_visible(link_css):
+                        self.click(link_css)
+                    else:
+                        if not hidden_css:
+                            hidden_css = link_css
+                        raise Exception(
+                            "Element %s is not clickable!" % link_css)
+                except Exception:
+                    # The link text is probably hidden under a dropdown menu
+                    if not self._click_dropdown_link_text(link_text,
+                                                          hidden_css):
+                        element = self.wait_for_link_text_visible(
+                            link_text, timeout=settings.MINI_TIMEOUT)
+                        element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -278,7 +293,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(partial_link_text)
                 element.click()
                 return
-            source = self.driver.page_source
+            source = self.get_page_source()
             soup = BeautifulSoup(source, "html.parser")
             html_links = soup.fetch('a')
             for html_link in html_links:
@@ -583,7 +598,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self._recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return False
-        source = self.driver.page_source
+        source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         iframe_list = soup.select('iframe')
         for iframe in iframe_list:
@@ -608,7 +623,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self._recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
-        source = self.driver.page_source
+        source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         iframe_list = soup.select('iframe')
         for iframe in iframe_list:
@@ -1498,26 +1513,41 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def _click_dropdown_link_text(self, link_text):
+    def _get_href_from_link_text(self, link_text):
+        href = self.get_link_text_attribute(link_text, "href")
+        if href.startswith('//'):
+            link = "http:" + href
+        elif href.startswith('/'):
+            url = self.driver.current_url
+            domain_url = self.get_domain_url(url)
+            link = domain_url + href
+        else:
+            link = href
+        return link
+
+    def _get_ng_click_from_link_text(self, link_text):
+        ng_click = self.get_link_text_attribute(link_text, "ng-click")
+        return ng_click
+
+    def _click_dropdown_link_text(self, link_text, hidden_css):
         """ When a link is hidden under a dropdown menu, use this. """
-        href = self.wait_for_href_from_link_text(link_text)
-        source = self.driver.page_source
+        source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         drop_down_list = soup.select('[class*=dropdown]')
+        csstype = hidden_css.split('[')[1].split('=')[0]
         for item in drop_down_list:
-            if link_text in item.text.split('\n') and href in item.decode():
+            if link_text in item.text.split('\n') and csstype in item.decode():
                 dropdown_css = ""
                 for css_class in item['class']:
                     dropdown_css += '.'
                     dropdown_css += css_class
                 dropdown_css = item.name + dropdown_css
-                link_css = '[href="%s"]' % href
                 matching_dropdowns = self.find_visible_elements(dropdown_css)
                 for dropdown in matching_dropdowns:
                     # The same class names might be used for multiple dropdowns
                     try:
                         page_actions.hover_element_and_click(
-                            self.driver, dropdown, link_css,
+                            self.driver, dropdown, hidden_css,
                             click_by=By.CSS_SELECTOR, timeout=0.2)
                         return True
                     except Exception:
