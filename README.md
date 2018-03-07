@@ -1,32 +1,27 @@
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="52">
 
-**WebDriver automation simplified by extending Python's unittest framework.**
+**The top open source framework for simplifying web automation & testing with WebDriver and Pytest.**
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SeleniumBase simplifies web automation & testing with WebDriver. All tests using SeleniumBase's BaseCase class inherit Python's unittest.TestCase class, allowing users to run Selenium tests easily with Pytest & Nose. The Page Object Model is easily supported.
+SeleniumBase makes it easier to build reliable browser automation by using advanced WebDriver library methods and inheriting Python's unittest framework. Tests can be run automatically with Pytest (or Nose), and can use the Page Object Model for structure.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
 
 (<i>Demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) testing [xkcd.com](http://xkcd.com/353/)</i>)
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Features**:
-* [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) for building clean, reliable [WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py). (<i>Python 2.7 or 3.4+</i>)
+* [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) for building clean, reliable [WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [CMD options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) and a master [config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) to customize test behavior.
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data & screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
-* Backwards-compatible with WebDriver. (Use ``self.driver`` anywhere.)
-* Simple syntax makes it easy to get started quickly and be more productive.
 * Works with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
 * (<i>To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).</i>)
 * (<i>[See more SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
+
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Get Started**:
 
-(*If using Docker, see [the Docker ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).*)
-
-### Setup Instructions for Mac, Ubuntu, & Windows:
-
-Before installation, **[make sure Python and web drivers are already installed](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.
+Before installation, **[INSTALL Python and DOWNLOAD web drivers](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.
 
 
 ### **Step 1:** Clone SeleniumBase
@@ -40,7 +35,7 @@ cd SeleniumBase
 (<i>A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may help.</i>)
 
 
-### **Step 2:** Create a Virtual Environment
+### **Step 2:** Create a Python Virtual Environment (optional)
 
 To learn how to create one, [see the ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).<br><br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more details.</i>
 
