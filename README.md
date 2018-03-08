@@ -1,4 +1,4 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_Dark4.png" title="SeleniumBase" height="52">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_Dark4.png" title="SeleniumBase" height="48">
 
 All-in-one web automation platform designed to assist you with testing web applications.
 
