@@ -4,7 +4,7 @@ All-in-one web automation platform designed to assist you with testing web appli
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SeleniumBase helps you build amazing automation scripts in Python for controlling WebDriver on any cloud or local machine. Originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and more, SeleniumBase was later open sourced to benefit more users.
+SeleniumBase helps you build amazing automation scripts in Python for controlling WebDriver on any cloud or local machine. Originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete), and more, SeleniumBase was later open-sourced to benefit more users.
 
 <b>Simple Python syntax makes coding easy:</b><br>
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
