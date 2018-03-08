@@ -1,6 +1,6 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" padding="2px" height="102" margin="2px 2px">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" padding="3px" height="102" margin="3px 3px">
 
-Design and build reliable web automation with <b>SeleniumBase</b>'s all-in-one testing framework.<br><br />
+Design and build reliable web automation with <b>SeleniumBase</b>'s all-in-one testing framework.<br />
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -10,7 +10,7 @@ SeleniumBase automatically takes care of tedious WebDriver actions such as spinn
 <b>Simple Python syntax makes coding easy:</b><br>
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py_2.png" title="SeleniumBase Python Code" height="300">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py_2.png" title="SeleniumBase Python Code" height="280">
 
 <b>Run tests with Pytest or Nosetests in any browser:</b>
 
