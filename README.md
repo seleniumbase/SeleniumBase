@@ -21,7 +21,7 @@ nosetests my_test_suite.py --browser=firefox
 
 <b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b><br>
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
-(<i>If you take out all the assert statements from that test, you're left with [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py), which does a lot with very few lines of code.</i>)
+(<i>If you take out all the asserts from that test, you're left with the tiny [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py).</i>)
 
 <b>No more flaky tests:</b><br>
 SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
