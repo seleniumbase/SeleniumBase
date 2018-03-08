@@ -11,10 +11,11 @@ SeleniumBase helps you build amazing automation scripts in Python for controllin
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py.png" title="SeleniumBase Python Code" height="320">
 
-<b>Run tests with Pytest or Nosetests on any browser:</b>
+<b>Run tests with Pytest or Nosetests in any browser:</b>
 
 ```bash
 pytest my_first_test.py --browser=chrome
+
 nosetests my_test_suite.py --browser=firefox
 ```
 
