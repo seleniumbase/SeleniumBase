@@ -9,7 +9,7 @@ SeleniumBase helps you build amazing automation scripts in Python for controllin
 <b>Simple Python syntax makes coding easy:</b><br>
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py.png" title="SeleniumBase Python Code" height="300">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py_2.png" title="SeleniumBase Python Code" height="300">
 
 <b>Run tests with Pytest or Nosetests in any browser:</b>
 
