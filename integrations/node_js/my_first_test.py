@@ -12,7 +12,7 @@ class MyTestClass(BaseCase):
         self.open('http://xkcd.com/1481/')
         title = self.get_attribute('#comic img', 'title')
         self.assertTrue('connections to the server' in title)
-        self.click_link_text('Blag')
+        self.click('link=Blag')
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')
         self.assert_text('Hooray robots!', '#content')
