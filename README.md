@@ -1,4 +1,4 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" padding="2px" height="102" margin="2px 2px" border="2px solid transparent">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" height="102" border="2px solid white">
 
 Design and build reliable web automation with <b>SeleniumBase</b>'s all-in-one testing framework.<br />
 
