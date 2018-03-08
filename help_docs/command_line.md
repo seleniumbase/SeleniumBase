@@ -2,12 +2,13 @@
 
 In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), which allows you to customize the test framework, SeleniumBase gives you the flexibility to customize & control test runs from the command line:
 
-* Set your browser there (default = Chrome)
+* Set the browser for tests to use (Default: Chrome)
 * Change the automation speed (with Demo Mode)
 * Choose betweeen pytest & nose unittest runners
 * Specify what to log and where to store logs
 * Choose additional variables to pass into tests
 * Choose whether to enter Debug Mode on failures
+* Specify a proxy server to connect to
 * Choose a database to save results to
 * Choose a Selenium Grid to connect to
 
@@ -18,11 +19,19 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 ```bash
 pytest my_first_test.py
 
-nosetests my_first_test.py --browser=firefox
-
 pytest my_first_test.py --demo_mode --browser=chrome
 
-nosetests my_test_suite.py -s
+nosetests my_first_test.py --browser=firefox
+
+pytest basic_script.py -s --pdb --pdb-failures
+
+pytest my_test_suite.py --server=IP_ADDRESS -n 4
+
+pytest basic_script.py --html=report.html
+
+nosetests my_test_suite.py --report --show_report
+
+pytest my_test_suite.py --proxy=IP_ADDRESS:PORT
 ```
 
 You can interchange **nosetests** with **pytest**. Chrome is the default browser if not specified. The ``-s`` option may produce additional output to make debugging easier.
@@ -97,3 +106,17 @@ nosetests my_test_suite.py --report
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
+
+#### **Using a Proxy Server:**
+
+If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+
+```bash
+pytest proxy_test.py --proxy=IP_ADDRESS:PORT
+```
+
+To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
+
+```bash
+pytest proxy_test.py --proxy=proxy1
+```

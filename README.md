@@ -1,10 +1,12 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_Dark4.png" title="SeleniumBase" height="48">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" height="102">
 
-All-in-one web automation platform designed to assist you with testing web applications.
+<br /><div>
+Design and build reliable web automation with **SeleniumBase**'s all-in-one framework for easy end-to-end testing.</div><br>
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SeleniumBase helps you build amazing automation scripts in Python for controlling WebDriver on any cloud or local machine. Originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete), and more, SeleniumBase was later open-sourced to benefit more users.
+<b>Take the hard work out of WebDriver:</b>
+SeleniumBase automatically takes care of tedious WebDriver actions such as spinning up & closing web browsers, creating screenshots for failing tests, using a proxy server, connecting to a Selenium Grid, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
 
 <b>Simple Python syntax makes coding easy:</b><br>
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -21,12 +23,9 @@ nosetests my_test_suite.py --browser=firefox
 
 <b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b><br>
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
-(<i>If you take out all the asserts from that test, you're left with the tiny [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py).</i>)
+(<i>If you remove all the asserts from that test, you're left with [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py), which performs all the actions you can see when running the test.</i>)
 
-<b>No more flaky tests:</b><br>
-SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
-
-<b>SeleniumBase helps keep your code clean:</b><br>
+<b>No more messy code:</b><br>
 This long line of WebDriver code...
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
@@ -37,14 +36,20 @@ self.update_text("textarea", "text")
 ```
 (<i>You can still use ``self.driver`` in your code.</i>)
 
-<b>Business Mindset</b>:<br>
-SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+<b>No more flaky tests:</b><br>
+SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-<b>Hybrid Automation</b>:<br>
+<b>Assist manual QA with automation:</b><br>
 SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only validates what is seen.
 
-<b>Works with all your favorite tools:</b><br>
-[Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
+<b>Plays well with your favorite tools:</b><br>
+SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
+
+<b>Business mindset:</b><br>
+SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+
+<b>Extensive testing and made with love:</b><br>
+SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and automating business activites. Then in 2014, SeleniumBase was open-sourced to benefit users everywhere. It has grown significantly since then. For more HubSpot open-source projects, check out [github.com/hubspot](https://github.com/hubspot).
 
 (<i>[See more SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
@@ -638,20 +643,15 @@ def get_delayed_test_data(self, testcase_address, done=0):
 
 Now you know how to pull data from your MySQL DB.
 
-Delayed Data Manager usage example: If you scheduled an email to go out 12 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 12 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
+Delayed Data usage example: If you scheduled an email to go out 3 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 3 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up
 
-Congratulations on making it through this ReadMe tutorial!
+Congratulations on learning how to use **SeleniumBase**!
 
-Questions or Comments? [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-Here are some other exciting open source projects on GitHub by smart people I've worked with:
-[https://github.com/hubspot](https://github.com/hubspot)
-
-~ Michael Mintz<br>
+Questions or Comments?<br>
+[![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br>
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
-[https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4.png" title="SeleniumBase" height="180">
+[https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8g.png" title="SeleniumBase" height="36">
