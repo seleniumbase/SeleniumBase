@@ -654,4 +654,4 @@ Here are some other exciting open source projects on GitHub by smart people I've
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/logo_base_10.png "SeleniumBase")
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4.png" title="SeleniumBase" height="180">
