@@ -1,6 +1,6 @@
 # MasterQA
 
-### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams.
+### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams. (**Works only for Chrome right now.**)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif "MasterQA")
 
@@ -30,11 +30,11 @@ You may have noticed the ``Incomplete Test Runs`` row on the results page. If th
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
-pip install -r requirements.txt
-python setup.py install
+pip install -r requirements.txt --upgrade
+python setup.py develop
 cd examples
-nosetests basic_masterqa_test.py --with-selenium
-nosetests masterqa_test.py --with-selenium
+pytest basic_masterqa_test.py
+pytest masterqa_test.py
 ```
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. Close the Results Page window when you're done.
