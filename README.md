@@ -1,27 +1,57 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="52">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_Dark4.png" title="SeleniumBase" height="52">
 
-**The top open source framework for simplifying web automation & testing with WebDriver and Pytest.**
+All-in-one web automation platform designed to assist you with testing web applications.
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-SeleniumBase makes it easier to build reliable browser automation by using advanced WebDriver library methods and inheriting Python's unittest framework. Tests can be run automatically with Pytest (or Nose), and can use the Page Object Model for structure.
+SeleniumBase helps you build amazing automation scripts in Python for controlling WebDriver on any cloud or local machine. Originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and more, SeleniumBase was later open sourced to benefit more users.
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")
+<b>Simple Python syntax makes coding easy:</b><br>
+(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-(<i>Demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) testing [xkcd.com](http://xkcd.com/353/)</i>)
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py.png" title="SeleniumBase Python Code" height="320">
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Features**:
-* [Python libraries](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures) for building clean, reliable [WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
-* [CMD options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md) and a master [config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) to customize test behavior.
-* [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging [data & screenshots](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) automatically.
-* Works with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
-* (<i>To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).</i>)
-* (<i>[See more SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
+<b>Run tests with Pytest or Nosetests in any browser:</b>
+
+```bash
+pytest my_first_test.py --browser=chrome
+
+nosetests my_test_suite.py --browser=firefox
+```
+
+<b>Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):</b><br>
+![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
+(<i>If you take out all the asserts from that test, you're left with the tiny [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py).</i>)
+
+<b>No more flaky tests:</b><br>
+SeleniumBase automatically waits for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
+
+<b>SeleniumBase helps keep your code clean:</b><br>
+This long line of WebDriver code...
+```python
+self.driver.find_element_by_css_selector("textarea").send_keys("text")
+```
+...becomes the following in SeleniumBase:
+```python
+self.update_text("textarea", "text")
+```
+(<i>You can still use ``self.driver`` in your code.</i>)
+
+<b>Business Mindset</b>:<br>
+SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+
+<b>Hybrid Automation</b>:<br>
+SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only validates what is seen.
+
+<b>Works with all your favorite tools:</b><br>
+[Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
+
+(<i>[See more SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Get Started**:
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Get Started with SeleniumBase**:
 
-Before installation, **[INSTALL Python and DOWNLOAD web drivers](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.
+(Before installation, **[Install Python and Download Web Drivers](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.)
 
 
 ### **Step 1:** Clone SeleniumBase
