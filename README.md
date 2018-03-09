@@ -670,5 +670,5 @@ Questions or Comments?<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
 
 <br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40"><br>
-
+-
 <br><img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
