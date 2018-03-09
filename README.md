@@ -662,10 +662,11 @@ Delayed Data usage example: If you scheduled an email to go out 3 hours from now
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up
 
-Congratulations on learning how to use **SeleniumBase**!
+**Congratulations** on learning how to use **SeleniumBase**!
 
-Questions or Comments?<br>
+<i>**Questions or Comments?**</i><br>
 [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br>
+
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
 
