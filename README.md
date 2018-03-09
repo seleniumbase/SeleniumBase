@@ -41,7 +41,7 @@ SeleniumBase methods automatically wait for page elements to finish loading befo
 <b>Assist manual QA with automation:</b><br>
 SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only validates what is seen.
 
-<b>Plays well with your favorite tools:</b><br>
+<b>Integrate with your favorite tools:</b><br>
 SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
 
 <b>Business mindset:</b><br>
@@ -50,7 +50,7 @@ SeleniumBase makes it easy to automate tedious business tasks. (*To learn about 
 <b>Extensive testing and made with love:</b><br>
 SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and automating business activites. Then in 2014, SeleniumBase was open-sourced to benefit users everywhere. It has grown significantly since then. For more HubSpot open-source projects, check out [github.com/hubspot](https://github.com/hubspot).
 
-(<i>[See more SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
+(<i>[Read more about SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)</i>)
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Get Started with SeleniumBase**:
