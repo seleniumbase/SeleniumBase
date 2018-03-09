@@ -2,7 +2,7 @@
 
 Design and build reliable web automation with **SeleniumBase**'s all-in-one testing framework.<br />
 
-[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)
+[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
 
 <b>Take the hard work out of WebDriver:</b>
 SeleniumBase automatically takes care of tedious WebDriver actions such as spinning up & closing web browsers, creating screenshots for failing tests, using a proxy server, connecting to a Selenium Grid, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
