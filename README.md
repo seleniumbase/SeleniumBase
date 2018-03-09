@@ -2,9 +2,9 @@
 
 Design and build reliable web automation with **SeleniumBase**'s all-in-one testing framework.<br />
 
-[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
+[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br /><br>
 
-<b>Take the hard work out of WebDriver:</b>
+<b>Take the hard work out of using WebDriver:</b>
 SeleniumBase automatically takes care of tedious WebDriver actions such as spinning up & closing web browsers, creating screenshots for failing tests, using a proxy server, connecting to a Selenium Grid, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
 
 <b>Simple Python syntax makes coding easy:</b><br>
@@ -12,7 +12,7 @@ SeleniumBase automatically takes care of tedious WebDriver actions such as spinn
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py_2.png" title="SeleniumBase Python Code" height="280">
 
-<b>Run tests with Pytest or Nosetests in any browser:</b>
+<b>Run tests with Pytest or Nose in any browser:</b>
 
 ```bash
 pytest my_first_test.py --browser=chrome
