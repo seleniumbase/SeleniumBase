@@ -44,14 +44,14 @@ SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](ht
 **Integrate with your favorite tools:**<br />
 SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
 
-**Business mindset:**<br />
+**Comes with a business mindset:**<br />
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 **Extensively tested and made with love:**<br />
 SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and automating business activites. Then in 2014, SeleniumBase was open-sourced to benefit users everywhere. It has grown significantly since then. For more HubSpot open-source projects, check out [github.com/hubspot](https://github.com/hubspot).
 
-**Lots of additional features:**<br />
-([Read more about SeleniumBase features](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
+**Contains lots of additional features:**<br />
+([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
 
 <br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8g.png" title="SeleniumBase" height="36">
 
@@ -78,17 +78,24 @@ To learn how to create a Python virtual environment (OPTIONAL), [see the ReadMe]
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 3:** Install SeleniumBase
 
-To install a clone of SeleniumBase, use:
+Run the following command from the top SeleniumBase folder:
 ```bash
-pip install -r requirements.txt --upgrade
+pip install -e .
+```
+If you already have an older version installed, you may need to add ``--upgrade`` to the command in order to update the requirements. (<i>Only needed if you see errors during installation.</i>)
+
+If you want to install the requirements seperately, use:
+```
+pip install -r requirements.txt
 
 python setup.py develop
 ```
-(<i>If ChromeDriver and/or GeckoDriver aren't installed, use `server_requirements.txt` and `server_setup.py`. SeleniumBase will be limited to Firefox while using the older Selenium v2.</i>)
 
-To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use:
+(<i>If you can't install ChromeDriver or GeckoDriver, you can use `server_requirements.txt` and `server_setup.py` to run tests using the older Selenium 2.53.6 on a version of Firefox that's older than 47.</i>)
+
+To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use the following command. (You may need to add ``--upgrade`` if you have an older version already installed.):
 ```bash
-pip install seleniumbase --upgrade
+pip install seleniumbase
 ```
 
 (NOTE: If you're using Python 3.x instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python`` in the above commands.)
