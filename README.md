@@ -1,10 +1,13 @@
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" padding="2px" height="102" margin="2px 2px" hspace="2px">
 
-Easily create reliable web automation with the SeleniumBase end-to-end testing framework.<br />
+Browser automated testing with Python done efficiently.<br />
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br /><br>
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
+
+**A framework for all your testing:**<br />
+SeleniumBase is a complete end-to-end testing solution that extends Python's unittest framework by including the WebDriver APIs and adding functionality to make automation more efficient & reliable. It simplifies the process of setting up continuous integration and writing automated tests.
 
 **No more repetitive WebDriver coding:**<br />
 SeleniumBase automatically takes care of common WebDriver actions such as spinning up & closing web browsers, creating screenshots & logs for test failures, waiting for page objects to fully appear before acting on them, connecting to a Selenium Grid, using a proxy server, writing to a database, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
@@ -50,7 +53,7 @@ SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 **Extensively tested and made with love:**<br />
-SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and automating business activites. Then in 2014, SeleniumBase was open-sourced to benefit users everywhere. It has grown significantly since then. For more HubSpot open-source projects, check out [github.com/hubspot](https://github.com/hubspot).
+SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and automating business processes. In 2014, SeleniumBase was open-sourced and spun off as its own independent entity to benefit users everywhere.
 
 **Contains lots of additional features:**<br />
 ([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
@@ -59,7 +62,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 
 ## Get Started:
 
-(Before installation, you'll need to **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)** and **[download a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.)
+(Before installation, you'll need to **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)** and **[download a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.)
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase

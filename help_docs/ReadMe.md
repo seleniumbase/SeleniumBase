@@ -3,7 +3,7 @@
 > **Table of Contents / Navigation:**
 > - [**SeleniumBase Features List**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)
 > - [**How SeleniumBase Works**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md)
-> - [**Python & Webdriver Installation**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)
+> - [**Webdriver Installation**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)
 > - [**Detailed Requirements Setup**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)
 > - [**Python Virtual Env Tutorial**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)
 > - [**Verify Webdriver Installation**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
