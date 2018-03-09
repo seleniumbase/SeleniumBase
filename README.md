@@ -6,8 +6,8 @@ Design and build reliable web automation with **SeleniumBase**'s all-in-one test
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
 
-**Saves you from repetative WebDriver coding:**<br />
-SeleniumBase automatically takes care of tedious WebDriver actions such as spinning up & closing web browsers, creating screenshots for failing tests, using a proxy server, connecting to a Selenium Grid, waiting for page objects to fully appear before acting on them, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
+**No more repetitive WebDriver coding:**<br />
+SeleniumBase automatically takes care of common WebDriver actions such as spinning up & closing web browsers, creating screenshots & logs for test failures, waiting for page objects to fully appear before acting on them, connecting to a Selenium Grid, using a proxy server, writing to a database, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
 
 **Simple Python syntax makes coding easy:**<br />
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
