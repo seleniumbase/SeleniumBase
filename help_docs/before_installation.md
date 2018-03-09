@@ -1,20 +1,9 @@
-## Before installing SeleniumBase, you need:
+## Installation instructions for Chromedriver, Firefox's Geckodriver, and other drivers
 
-#### **Step 0a:** Setup your [Python](https://docs.python.org/2/)/pip environment:
-
-* To install ``python``, ``pip``, ``git``, and either ``virtualenv`` or ``virtualenvwrapper``, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)**.
-
-
-#### **Step 0b:** Install web browsers to run automation on:
-
-* Download & install web browsers such as [Chrome](https://www.google.com/chrome/browser/desktop/index.html) and/or [Firefox](https://www.mozilla.org/firefox/new/).
-
-
-#### **Step 0c:** Get web drivers for each browser you intend to run automation on:
 
 To run automation on various web browsers, you'll need to download a driver file for each one and place it on your System **[PATH](http://java.com/en/download/help/path.xml)**. On a Mac, ``/usr/local/bin`` is a good spot. On Windows, make sure you set the System Path under Environment Variables to include the location where you placed the driver files:
 
-* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path. (**[Version 2.33](https://chromedriver.storage.googleapis.com/index.html?path=2.33/) or above is recommended!**)
+* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path. (**[Version 2.36](https://chromedriver.storage.googleapis.com/index.html?path=2.36/) or above is recommended!**)
 
 * For Firefox, get [Geckodriver](https://github.com/mozilla/geckodriver/releases) on your System Path.
 
@@ -30,18 +19,22 @@ Mac:
 
 ```bash
 brew install chromedriver
+
+brew install geckodriver
 ```
 
-(NOTE: If your existing version of chromedriver is less than 2.33, **upgrading is recommended!**)
+(NOTE: If your existing version of chromedriver is less than 2.36, **upgrading is recommended!**)
 
 ```bash
 brew upgrade chromedriver
+
+brew upgrade geckodriver
 ```
 
 Linux:
 
 ```bash
-wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+wget http://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver
