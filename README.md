@@ -205,6 +205,8 @@ If you want to pass additional data from the command line to your tests, you can
 
 To run Pytest multithreaded on multiple CPUs at the same time, add ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
+
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
 
@@ -316,6 +318,8 @@ nosetests test_fail.py
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
 
 <a id="detailed_method_specifications"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Detailed Method Specifications and Examples:**
@@ -665,3 +669,4 @@ Questions or Comments?<br>
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
 <br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
+<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
