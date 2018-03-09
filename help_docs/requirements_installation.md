@@ -10,27 +10,22 @@ If you're a WINDOWS user, [download Python 2.7 from here](https://www.python.org
 
 ### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
-You might already have pip installed, but if you don't:
+You might already have pip and setuptools installed, but if you don't:
 
-On a MAC, run the following command:
+On MAC / Windows, run the following command:
 ```bash
-sudo easy_install pip
-```
-
-If you're not using the latest version of pip & setuptools, you'll need to upgrade:
-```bash
-pip install -U pip setuptools
-```
-
-On WINDOWS, run the following command:
-```bash
-python -m pip install -U pip setuptools
+python -m pip install --upgrade pip setuptools
 ```
 
 On LINUX / CentOS 7, run the following commands:
 ```bash
 yum -y update
 yum -y install python-pip
+```
+
+If you're not using the latest version of pip & setuptools, you'll need to upgrade:
+```bash
+pip install --upgrade pip setuptools
 ```
 
 If you're having any trouble getting pip, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
