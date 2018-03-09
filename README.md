@@ -4,6 +4,8 @@ Design and build reliable web automation with **SeleniumBase**'s all-in-one test
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br /><br>
 
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
+
 **Take the hard work out of using WebDriver:**<br />
 SeleniumBase automatically takes care of tedious WebDriver actions such as spinning up & closing web browsers, creating screenshots for failing tests, using a proxy server, connecting to a Selenium Grid, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
 
@@ -53,7 +55,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 **Contains lots of additional features:**<br />
 ([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
 
-<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8g.png" title="SeleniumBase" height="36">
+<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
 
 ## Get Started:
 
@@ -662,4 +664,4 @@ Questions or Comments?<br>
 [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br>
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
-<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8g.png" title="SeleniumBase" height="36">
+<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
