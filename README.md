@@ -1,6 +1,6 @@
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" align="left" padding="2px" height="102" margin="2px 2px" hspace="2px">
 
-Design and build reliable web automation with **SeleniumBase**'s all-in-one testing framework.<br />
+Easily create reliable web automation with the SeleniumBase end-to-end testing framework.<br />
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br /><br>
 
