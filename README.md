@@ -59,7 +59,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 
 ## Get Started:
 
-(Before installation, you'll need to **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)** and **[download a web driver]()**.)
+(Before installation, you'll need to **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)** and **[download a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/before_installation.md)**.)
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
