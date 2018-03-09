@@ -670,6 +670,6 @@ Delayed Data usage example: If you scheduled an email to go out 3 hours from now
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
 
-<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40"><br>
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBase_Head.png" title="SeleniumBase" height="40">
 -
-<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
