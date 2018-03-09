@@ -1,4 +1,4 @@
-## Installation instructions for Chromedriver, Firefox's Geckodriver, and other drivers
+## Installing Chromedriver, Firefox's Geckodriver, and other drivers
 
 
 To run automation on various web browsers, you'll need to download a driver file for each one and place it on your System **[PATH](http://java.com/en/download/help/path.xml)**. On a Mac, ``/usr/local/bin`` is a good spot. On Windows, make sure you set the System Path under Environment Variables to include the location where you placed the driver files:
