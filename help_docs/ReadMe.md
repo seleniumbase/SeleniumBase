@@ -4,7 +4,7 @@
 > - [**SeleniumBase Features List**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)
 > - [**How SeleniumBase Works**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md)
 > - [**Webdriver Installation**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)
-> - [**Detailed Requirements Setup**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/requirements_installation.md)
+> - [**Installing Python, Pip, & Git**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)
 > - [**Python Virtual Env Tutorial**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)
 > - [**Verify Webdriver Installation**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)
 > - [**The Command Line Tutorial**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)

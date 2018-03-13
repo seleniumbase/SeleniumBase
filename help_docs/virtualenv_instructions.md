@@ -55,3 +55,15 @@ source ~/Envs/seleniumbase/bin/activate
 ```bash
 workon seleniumbase
 ```
+
+To list all existing virtual environments:
+
+```bash
+lsvirtualenv
+```
+
+To delete a virtual environment:
+
+```bash
+rmvirtualenv VIRTUAL_ENV_NAME
+```
