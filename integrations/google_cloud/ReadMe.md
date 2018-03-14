@@ -67,10 +67,10 @@ bash
 cd /SeleniumBase
 ```
 
-#### Step 11. Install the [requirements](https://github.com/seleniumbase/SeleniumBase/blob/master/server_requirements.txt) for SeleniumBase
+#### Step 11. Install the [requirements](https://github.com/seleniumbase/SeleniumBase/blob/master/requirements.txt) for SeleniumBase
 
 ```bash
-sudo pip install -r server_requirements.txt --upgrade
+sudo pip install -r requirements.txt --upgrade
 ```
 
 #### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
