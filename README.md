@@ -1,4 +1,4 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons2f.png" title="SeleniumBase" align="left" padding="1px" height="102" margin="1px 1px" hspace="1px">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons2f.png" title="SeleniumBase" align="left" padding="1px" height="100" margin="1px 1px">
 
 Browser automated testing with Python done efficiently.<br />
 
