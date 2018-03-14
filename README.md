@@ -30,7 +30,7 @@ nosetests my_test_suite.py --browser=firefox
 (<i>If you remove all the asserts from that test, you're left with [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py), which performs all the actions you can see when running the test.</i>)
 
 **No more messy code:**<br />
-This long line of WebDriver code...
+This long line of standard WebDriver code,
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
 ```
