@@ -4,14 +4,14 @@
 
 MAC / Linux:
 ```bash
-sudo easy_install --upgrade virtualenv
-sudo easy_install --upgrade virtualenvwrapper
+python -m pip install --upgrade virtualenv
+python -m pip install --upgrade virtualenvwrapper
 ```
 
 WINDOWS:
 ```bash
-pip install --upgrade virtualenv
-pip install --upgrade virtualenvwrapper-win
+python -m pip install --upgrade virtualenv
+python -m pip install --upgrade virtualenvwrapper-win
 ```
 
 #### Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:

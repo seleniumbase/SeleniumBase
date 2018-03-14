@@ -12,20 +12,20 @@ If you're a WINDOWS user, [download Python 2.7 from here](https://www.python.org
 
 You might already have pip and setuptools installed, but if you don't:
 
-On MAC / Windows, run the following command:
+On MAC / Windows / Linux, run the following command:
+```bash
+python -m ensurepip --default-pip
+```
+
+If your existing version of pip is old, upgrade to the latest version:
 ```bash
 python -m pip install --upgrade pip setuptools
 ```
 
-On LINUX / CentOS 7, run the following commands:
+On CentOS 7 and some versions of Linux, you may need to install pip with ``yum``:
 ```bash
 yum -y update
 yum -y install python-pip
-```
-
-If you're not using the latest version of pip & setuptools, you'll need to upgrade:
-```bash
-pip install --upgrade pip setuptools
 ```
 
 If you're having any trouble getting pip, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
@@ -61,14 +61,14 @@ brew install git
 
 (NOTE: Virtual environments allow each your Python projects to have a unique set of packaged dependencies.)
 
-MAC:
+MAC / Linux:
 ```bash
-sudo easy_install --upgrade virtualenv
-sudo easy_install --upgrade virtualenvwrapper
+python -m pip install --upgrade virtualenv
+python -m pip install --upgrade virtualenvwrapper
 ```
 
 WINDOWS:
 ```bash
-pip install --upgrade virtualenv
-pip install --upgrade virtualenvwrapper-win
+python -m pip install --upgrade virtualenv
+python -m pip install --upgrade virtualenvwrapper-win
 ```
