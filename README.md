@@ -80,14 +80,16 @@ cd SeleniumBase
 
 (OPTIONAL) To learn how to create a Python virtual environment, [see the ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).<br><br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more details.</i>
 
+If you choose not to use a Python virtual environment, add the ``--user`` flag at the end of your pip and python install commands in *Step 3*. (This can help you evade issues with requiring root access on the machine you're using.)
+
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 3:** Install SeleniumBase
 
-Run the following command from the top SeleniumBase folder:
+Run the following command from the top-level SeleniumBase folder:
 ```bash
 pip install -e .
 ```
-If you already have an older version installed, you may need to add ``--upgrade`` to the command in order to update the requirements. (<i>Only needed if you see errors during installation.</i>)
+If you already have an older version installed, you may need to add ``--upgrade`` to the command in order to update previously-installed Python packages. If you're not using a virtual environment, you may need to add ``--user`` to the end of your command. (<i>Only needed if you see errors during installation.</i>)
 
 If you want to install the requirements seperately, use:
 ```
