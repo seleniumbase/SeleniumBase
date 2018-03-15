@@ -6,8 +6,8 @@ Browser automated testing with Python done efficiently.<br />
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40">
 
-**A framework for all your testing:**<br />
-SeleniumBase is a complete end-to-end testing solution that extends Python's unittest framework by including the WebDriver APIs and adding functionality to make automation more efficient & reliable. It simplifies the process of setting up continuous integration and writing automated tests.
+**A framework for all your UI testing:**<br />
+SeleniumBase is a complete end-to-end testing solution for web apps. It extends Python's unittest framework by including the WebDriver APIs and adding functionality to make automation more efficient & reliable. It simplifies the process of setting up continuous integration and writing automated tests.
 
 **No more repetitive WebDriver coding:**<br />
 SeleniumBase automatically takes care of common WebDriver actions such as spinning up & closing web browsers, creating screenshots & logs for test failures, waiting for page objects to fully appear before acting on them, connecting to a Selenium Grid, using a proxy server, writing to a database, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
