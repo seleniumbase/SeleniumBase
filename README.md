@@ -6,6 +6,8 @@ Browser automated testing with Python done efficiently.<br />
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40">
 
+[**Jump to Installation Steps**](#seleniumbase_installation), or Learn More:
+
 **A framework for all your UI testing:**<br />
 SeleniumBase is a complete end-to-end testing solution for web apps. It extends Python's unittest framework by including the WebDriver APIs and adding functionality to make automation more efficient & reliable. It simplifies the process of setting up continuous integration and writing automated tests.
 
@@ -60,6 +62,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 
 <br><img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40">
 
+<a id="seleniumbase_installation"></a>
 ## Get Started:
 
 (Before installation, you'll need to **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[download Webdriver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.)
