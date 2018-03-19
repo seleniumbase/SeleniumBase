@@ -3,7 +3,6 @@ The setup package to install SeleniumBase dependencies and plugins
 (Uses the older Selenium 2.53.6 for compatibility reasons)
 """
 
-import os
 from setuptools import setup, find_packages  # noqa
 
 setup(
@@ -60,5 +59,5 @@ setup(
         }
     )
 
-print(os.system("cat seleniumbase.egg-info/PKG-INFO"))
+# print(os.system("cat seleniumbase.egg-info/PKG-INFO"))
 print("\n*** SeleniumBase Installation Complete! ***\n")
