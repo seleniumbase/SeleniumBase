@@ -16,20 +16,12 @@ python -m pip install --upgrade virtualenvwrapper-win
 
 #### Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:
 
-MAC:
-
-(If using ``virtualenv``):
+MAC / Linux:
 
 ```bash
 mkdir -p ~/Envs
 virtualenv ~/Envs/seleniumbase
 source ~/Envs/seleniumbase/bin/activate
-```
-
-(If using ``virtualenvwrapper``):
-
-```bash
-mkvirtualenv seleniumbase
 ```
 
 WINDOWS:
@@ -68,4 +60,4 @@ To delete a virtual environment:
 rmvirtualenv VIRTUAL_ENV_NAME
 ```
 
-<br><br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more information about Python virtual environments.</i>
+<br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more information about Python virtual environments.</i>
