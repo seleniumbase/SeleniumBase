@@ -67,3 +67,5 @@ To delete a virtual environment:
 ```bash
 rmvirtualenv VIRTUAL_ENV_NAME
 ```
+
+<br><br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more information about Python virtual environments.</i>

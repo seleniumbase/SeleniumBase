@@ -9,10 +9,10 @@ Browser automated testing with Python done efficiently.<br />
 [**Get Started**](#seleniumbase_installation), or Learn More:
 
 **A framework for all your UI testing:**<br />
-SeleniumBase is a complete end-to-end testing solution for web apps. It extends Python's unittest framework by including the WebDriver APIs and adding functionality to make automation more efficient & reliable. It simplifies the process of setting up continuous integration and writing automated tests.
+SeleniumBase simplifies end-to-end UI testing by extending Python's unittest framework with WebDriver APIs and adding features to improve the process of creating and running automation.
 
-**No more repetitive WebDriver coding:**<br />
-SeleniumBase automatically takes care of common WebDriver actions such as spinning up & closing web browsers, creating screenshots & logs for test failures, waiting for page objects to fully appear before acting on them, connecting to a Selenium Grid, using a proxy server, writing to a database, etc. (<i>[Read more](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md)</i>)
+**No more repetitive WebDriver code:**<br />
+SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, and more. (<i>[Read about the command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md).</i>)
 
 **Simple Python syntax makes coding easy:**<br />
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -65,7 +65,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 
 ## Get Started:
 
-(Before installation, you'll need to **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[download Webdriver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.)
+(Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[get WebDriver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)** on your system PATH.)
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
@@ -81,29 +81,23 @@ cd SeleniumBase
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 2:** Create a Virtual Env.
 
-(OPTIONAL) To learn how to create a Python virtual environment, [see the ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).<br><br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more details.</i>
-
-If you choose not to use a Python virtual environment, add the ``--user`` flag at the end of your pip and python install commands in *Step 3*. (This can help you evade issues with requiring root access on the machine you're using.)
+(OPTIONAL) To learn how to create a Python virtual environment, [see this ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 3:** Install SeleniumBase
 
-Run the following command from the top-level SeleniumBase folder:
-```bash
-pip install -e .
-```
-If you already have an older version installed, you may need to add ``--upgrade`` to the command in order to update previously-installed Python packages. If you're not using a virtual environment, you may need to add ``--user`` to the end of your command. (<i>Only needed if you see errors during installation.</i>)
-
-If you want to install the requirements seperately, use:
+Run the following commands from the top-level SeleniumBase folder:
 ```
 pip install -r requirements.txt
 
 python setup.py develop
 ```
 
-(<i>If you can't install ChromeDriver or GeckoDriver, you can use `server_requirements.txt` and `server_setup.py` to run tests using the older Selenium 2.53.6 on a version of Firefox that's older than 47.</i>)
+If you already have an older version installed, add ``--upgrade`` to the ``pip`` command in order to update previously-installed Python packages. If you're not using a virtual environment, you may need to add ``--user`` to the end of your ``pip`` command. (<i>Do that if you see any errors during installation.</i>)
 
-To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use the following command. (You may need to add ``--upgrade`` if you have an older version already installed.):
+(<i>If you can't install ChromeDriver or GeckoDriver, use `server_requirements.txt` and `server_setup.py` to run tests using the older Selenium 2.53.6 on a version of Firefox that's older than 47.</i>)
+
+To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use the following command: (Add ``--upgrade`` and/or ``--user`` to the command as needed.)
 ```bash
 pip install seleniumbase
 ```
