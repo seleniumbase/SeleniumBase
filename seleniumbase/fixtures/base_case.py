@@ -706,6 +706,40 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
+    def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
+                           timeout=settings.SMALL_TIMEOUT):
+        """ Returns the property value of a page element's computed style.
+            Example:
+                opacity = self.get_property_value("html body a", "opacity")
+                self.assertTrue(float(opacity) > 0, "Element not visible!") """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        self.wait_for_ready_state_complete()
+        page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't run action if can't convert to CSS_Selector for JavaScript
+            raise Exception(
+                "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
+                    selector, by))
+        selector = self.jq_format(selector)
+        script = ("""var $elm = document.querySelector('%s');
+                  $val = window.getComputedStyle($elm).getPropertyValue('%s');
+                  return $val;"""
+                  % (selector, property))
+        value = self.execute_script(script)
+        if value is not None:
+            return value
+        else:
+            return ""  # Return an empty string if the property doesn't exist
+
     def bring_to_front(self, selector, by=By.CSS_SELECTOR):
         """ Updates the Z-index of a page element to bring it into view.
             Useful when getting a WebDriverException, such as the one below:
