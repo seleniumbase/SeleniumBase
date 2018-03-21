@@ -7,6 +7,7 @@ from seleniumbase.config import settings
 from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import page_utils
 
 
 def _set_chrome_options(downloads_path, proxy_string):
@@ -73,8 +74,8 @@ def _create_firefox_profile(downloads_path, proxy_string):
 
 def display_proxy_warning(proxy_string):
     message = ('\n\nWARNING: Proxy String ["%s"] is NOT in the expected '
-               '"ip_address:port" format, (OR the key does not exist '
-               'in proxy_list.PROXY_LIST). '
+               '"ip_address:port" or "server:port" format, '
+               '(OR the key does not exist in proxy_list.PROXY_LIST). '
                '*** DEFAULTING to NOT USING a Proxy Server! ***'
                % proxy_string)
     warnings.simplefilter('always', Warning)  # See Warnings
@@ -87,10 +88,24 @@ def validate_proxy_string(proxy_string):
         proxy_string = proxy_list.PROXY_LIST[proxy_string]
         if not proxy_string:
             return None
-    valid = re.match('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
-    if valid:
-        proxy_string = valid.group()
+    valid = False
+    val_ip = re.match('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
+    if not val_ip:
+        if proxy_string.startswith('http://'):
+            proxy_string = proxy_string.split('http://')[1]
+        elif proxy_string.startswith('https://'):
+            proxy_string = proxy_string.split('https://')[1]
+        elif '://' in proxy_string:
+            proxy_string = proxy_string.split('://')[1]
+        chunks = proxy_string.split(':')
+        if len(chunks) == 2:
+            if re.match('^\d+$', chunks[1]):
+                if page_utils.is_valid_url('http://' + proxy_string):
+                    valid = True
     else:
+        proxy_string = val_ip.group()
+        valid = True
+    if not valid:
         display_proxy_warning(proxy_string)
         proxy_string = None
     return proxy_string
