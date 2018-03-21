@@ -198,12 +198,12 @@ class BaseCase(unittest.TestCase):
                     return attribute_value
                 if hard_fail:
                     raise Exception(
-                        'Unable to find attribute [%s] from link text [%s]!'
+                        'Unable to find attribute {%s} from link text {%s}!'
                         % (attribute, link_text))
                 else:
                     return None
         if hard_fail:
-            raise Exception("Link text [%s] was not found!" % link_text)
+            raise Exception("Link text {%s} was not found!" % link_text)
         else:
             return None
 
@@ -214,7 +214,7 @@ class BaseCase(unittest.TestCase):
         for x in range(int(timeout * 5)):
             try:
                 if not self.is_link_text_present(link_text):
-                    raise Exception("Link text [%s] not found!" % link_text)
+                    raise Exception("Link text {%s} not found!" % link_text)
                 return
             except Exception:
                 now_ms = time.time() * 1000.0
@@ -222,7 +222,7 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(0.2)
         raise Exception(
-            "Link text [%s] was not present after %s seconds!" % (
+            "Link text {%s} was not present after %s seconds!" % (
                 link_text, timeout))
 
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
@@ -336,9 +336,9 @@ class BaseCase(unittest.TestCase):
                             return
                     raise Exception(
                         'Could not parse link from partial link_text '
-                        '[%s]' % partial_link_text)
+                        '{%s}' % partial_link_text)
             raise Exception(
-                "Partial link text [%s] was not found!" % partial_link_text)
+                "Partial link text {%s} was not found!" % partial_link_text)
         # Not using phantomjs
         element = self.wait_for_partial_link_text(
             partial_link_text, timeout=timeout)
@@ -405,7 +405,7 @@ class BaseCase(unittest.TestCase):
         if attribute_value is not None:
             return attribute_value
         else:
-            raise Exception("Element [%s] has no attribute [%s]!" % (
+            raise Exception("Element {%s} has no attribute {%s}!" % (
                 selector, attribute))
 
     def refresh_page(self):
@@ -960,7 +960,7 @@ class BaseCase(unittest.TestCase):
             return 'a:contains("%s")' % selector
         else:
             raise Exception(
-                "Exception: Could not convert [%s](by=%s) to CSS_SELECTOR!" % (
+                "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
                     selector, by))
 
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -1081,12 +1081,12 @@ class BaseCase(unittest.TestCase):
             (This generates real traffic for testing analytics software.) """
         if not page_utils.is_valid_url(destination_page):
             raise Exception(
-                "Exception: destination_page [%s] is not a valid URL!"
+                "Exception: destination_page {%s} is not a valid URL!"
                 % destination_page)
         if start_page:
             if not page_utils.is_valid_url(start_page):
                 raise Exception(
-                    "Exception: start_page [%s] is not a valid URL! "
+                    "Exception: start_page {%s} is not a valid URL! "
                     "(Use an empty string or None to start from current page.)"
                     % start_page)
             self.open(start_page)
