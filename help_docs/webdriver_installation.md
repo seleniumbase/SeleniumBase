@@ -1,9 +1,9 @@
 ## Installing Google Chromedriver, Firefox Geckodriver, and other drivers
 
 
-To run automation on various web browsers, you'll need to download a driver file for each one and place it on your System **[PATH](http://java.com/en/download/help/path.xml)**. On a Mac, ``/usr/local/bin`` is a good spot. On Windows, make sure you set the System Path under Environment Variables to include the location where you placed the driver files:
+To run automation on various web browsers, you'll need to download a driver file for each one and place it on your System **[PATH](http://java.com/en/download/help/path.xml)**. On a Mac, ``/usr/local/bin`` is a good spot. On Windows, make sure you set the System Path under Environment Variables to include the location where you placed the driver files. You may want to download newer versions of drivers as they become available.
 
-* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path. (**[Version 2.37](https://chromedriver.storage.googleapis.com/index.html?path=2.37/) or above is recommended!**)
+* For Chrome, get [Chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) on your System Path.
 
 * For Firefox, get [Geckodriver](https://github.com/mozilla/geckodriver/releases) on your System Path.
 
@@ -34,15 +34,15 @@ brew upgrade geckodriver
 Linux:
 
 ```bash
-wget http://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip
+wget http://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver
 ```
 
 ```bash
-wget https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz
-tar xvfz geckodriver-v0.19.1-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.20.0/geckodriver-v0.20.0-linux64.tar.gz
+tar xvfz geckodriver-v0.20.0-linux64.tar.gz
 mv geckodriver /usr/local/bin/
 chmod +x /usr/local/bin/geckodriver
 ```
