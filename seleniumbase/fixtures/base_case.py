@@ -717,10 +717,10 @@ class BaseCase(unittest.TestCase):
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't perform action if can't convert to CSS_SELECTOR for jQuery
+            # Don't run action if can't convert to CSS_Selector for JavaScript
             return
-
-        script = ("""document.querySelector('%s').style.zIndex = "1";"""
+        selector = self.jq_format(selector)
+        script = ("""document.querySelector('%s').style.zIndex = "100";"""
                   % selector)
         self.execute_script(script)
 
