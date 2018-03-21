@@ -7,6 +7,38 @@ from seleniumbase.config import settings
 from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import page_utils
+
+
+def _set_chrome_options(downloads_path, proxy_string):
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {
+        "download.default_directory": downloads_path,
+        "credentials_enable_service": False,
+        "profile": {
+            "password_manager_enabled": False
+        }
+    }
+    chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument("--test-type")
+    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--ignore-certificate-errors")
+    chrome_options.add_argument("--allow-file-access-from-files")
+    chrome_options.add_argument("--allow-insecure-localhost")
+    chrome_options.add_argument("--allow-running-insecure-content")
+    chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--disable-save-password-bubble")
+    chrome_options.add_argument("--disable-single-click-autofill")
+    chrome_options.add_argument("--disable-translate")
+    chrome_options.add_argument("--disable-web-security")
+    if proxy_string:
+        chrome_options.add_argument('--proxy-server=%s' % proxy_string)
+    if settings.START_CHROME_IN_FULL_SCREEN_MODE:
+        # Run Chrome in full screen mode on WINDOWS
+        chrome_options.add_argument("--start-maximized")
+        # Run Chrome in full screen mode on MAC/Linux
+        chrome_options.add_argument("--kiosk")
+    return chrome_options
 
 
 def _create_firefox_profile(downloads_path, proxy_string):
@@ -42,8 +74,8 @@ def _create_firefox_profile(downloads_path, proxy_string):
 
 def display_proxy_warning(proxy_string):
     message = ('\n\nWARNING: Proxy String ["%s"] is NOT in the expected '
-               '"ip_address:port" format, (OR the key does not exist '
-               'in proxy_list.PROXY_LIST). '
+               '"ip_address:port" or "server:port" format, '
+               '(OR the key does not exist in proxy_list.PROXY_LIST). '
                '*** DEFAULTING to NOT USING a Proxy Server! ***'
                % proxy_string)
     warnings.simplefilter('always', Warning)  # See Warnings
@@ -56,10 +88,24 @@ def validate_proxy_string(proxy_string):
         proxy_string = proxy_list.PROXY_LIST[proxy_string]
         if not proxy_string:
             return None
-    valid = re.match('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
-    if valid:
-        proxy_string = valid.group()
+    valid = False
+    val_ip = re.match('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
+    if not val_ip:
+        if proxy_string.startswith('http://'):
+            proxy_string = proxy_string.split('http://')[1]
+        elif proxy_string.startswith('https://'):
+            proxy_string = proxy_string.split('https://')[1]
+        elif '://' in proxy_string:
+            proxy_string = proxy_string.split('://')[1]
+        chunks = proxy_string.split(':')
+        if len(chunks) == 2:
+            if re.match('^\d+$', chunks[1]):
+                if page_utils.is_valid_url('http://' + proxy_string):
+                    valid = True
     else:
+        proxy_string = val_ip.group()
+        valid = True
+    if not valid:
         display_proxy_warning(proxy_string)
         proxy_string = None
     return proxy_string
@@ -82,33 +128,14 @@ def get_remote_driver(browser_name, headless, servername, port, proxy_string):
     address = "http://%s:%s/wd/hub" % (servername, port)
 
     if browser_name == constants.Browser.GOOGLE_CHROME:
-        chrome_options = webdriver.ChromeOptions()
-        prefs = {
-            "download.default_directory": downloads_path,
-            "credentials_enable_service": False,
-            "profile": {
-                "password_manager_enabled": False
-            }
-        }
-        chrome_options.add_experimental_option("prefs", prefs)
-        chrome_options.add_argument("--allow-file-access-from-files")
-        chrome_options.add_argument("--allow-running-insecure-content")
-        chrome_options.add_argument("--disable-infobars")
+        chrome_options = _set_chrome_options(downloads_path, proxy_string)
         if headless:
             chrome_options.add_argument("--headless")
-        if proxy_string:
-            chrome_options.add_argument('--proxy-server=%s' % proxy_string)
-        if settings.START_CHROME_IN_FULL_SCREEN_MODE:
-            # Run Chrome in full screen mode on WINDOWS
-            chrome_options.add_argument("--start-maximized")
-            # Run Chrome in full screen mode on MAC/Linux
-            chrome_options.add_argument("--kiosk")
         capabilities = chrome_options.to_capabilities()
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities)
-
-    if browser_name == constants.Browser.FIREFOX:
+    elif browser_name == constants.Browser.FIREFOX:
         try:
             # Use Geckodriver for Firefox if it's on the PATH
             profile = _create_firefox_profile(downloads_path, proxy_string)
@@ -136,23 +163,22 @@ def get_remote_driver(browser_name, headless, servername, port, proxy_string):
                 command_executor=address,
                 desired_capabilities=capabilities,
                 browser_profile=profile)
-
-    if browser_name == constants.Browser.INTERNET_EXPLORER:
+    elif browser_name == constants.Browser.INTERNET_EXPLORER:
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=(
                 webdriver.DesiredCapabilities.INTERNETEXPLORER))
-    if browser_name == constants.Browser.EDGE:
+    elif browser_name == constants.Browser.EDGE:
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=(
                 webdriver.DesiredCapabilities.EDGE))
-    if browser_name == constants.Browser.SAFARI:
+    elif browser_name == constants.Browser.SAFARI:
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=(
                 webdriver.DesiredCapabilities.SAFARI))
-    if browser_name == constants.Browser.PHANTOM_JS:
+    elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
             warnings.simplefilter("ignore", category=UserWarning)
@@ -195,40 +221,22 @@ def get_local_driver(browser_name, headless, proxy_string):
             if headless:
                 raise Exception(e)
             return webdriver.Firefox()
-    if browser_name == constants.Browser.INTERNET_EXPLORER:
+    elif browser_name == constants.Browser.INTERNET_EXPLORER:
         return webdriver.Ie()
-    if browser_name == constants.Browser.EDGE:
+    elif browser_name == constants.Browser.EDGE:
         return webdriver.Edge()
-    if browser_name == constants.Browser.SAFARI:
+    elif browser_name == constants.Browser.SAFARI:
         return webdriver.Safari()
-    if browser_name == constants.Browser.PHANTOM_JS:
+    elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
             warnings.simplefilter("ignore", category=UserWarning)
             return webdriver.PhantomJS()
-    if browser_name == constants.Browser.GOOGLE_CHROME:
+    elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
-            chrome_options = webdriver.ChromeOptions()
-            prefs = {
-                "download.default_directory": downloads_path,
-                "credentials_enable_service": False,
-                "profile": {
-                    "password_manager_enabled": False
-                }
-            }
-            chrome_options.add_experimental_option("prefs", prefs)
-            chrome_options.add_argument("--allow-file-access-from-files")
-            chrome_options.add_argument("--allow-running-insecure-content")
-            chrome_options.add_argument("--disable-infobars")
+            chrome_options = _set_chrome_options(downloads_path, proxy_string)
             if headless:
                 chrome_options.add_argument("--headless")
-            if proxy_string:
-                chrome_options.add_argument('--proxy-server=%s' % proxy_string)
-            if settings.START_CHROME_IN_FULL_SCREEN_MODE:
-                # Run Chrome in full screen mode on WINDOWS
-                chrome_options.add_argument("--start-maximized")
-                # Run Chrome in full screen mode on MAC/Linux
-                chrome_options.add_argument("--kiosk")
             return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:

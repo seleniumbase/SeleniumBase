@@ -198,12 +198,12 @@ class BaseCase(unittest.TestCase):
                     return attribute_value
                 if hard_fail:
                     raise Exception(
-                        'Unable to find attribute [%s] from link text [%s]!'
+                        'Unable to find attribute {%s} from link text {%s}!'
                         % (attribute, link_text))
                 else:
                     return None
         if hard_fail:
-            raise Exception("Link text [%s] was not found!" % link_text)
+            raise Exception("Link text {%s} was not found!" % link_text)
         else:
             return None
 
@@ -214,7 +214,7 @@ class BaseCase(unittest.TestCase):
         for x in range(int(timeout * 5)):
             try:
                 if not self.is_link_text_present(link_text):
-                    raise Exception("Link text [%s] not found!" % link_text)
+                    raise Exception("Link text {%s} not found!" % link_text)
                 return
             except Exception:
                 now_ms = time.time() * 1000.0
@@ -222,7 +222,7 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(0.2)
         raise Exception(
-            "Link text [%s] was not present after %s seconds!" % (
+            "Link text {%s} was not present after %s seconds!" % (
                 link_text, timeout))
 
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
@@ -336,9 +336,9 @@ class BaseCase(unittest.TestCase):
                             return
                     raise Exception(
                         'Could not parse link from partial link_text '
-                        '[%s]' % partial_link_text)
+                        '{%s}' % partial_link_text)
             raise Exception(
-                "Partial link text [%s] was not found!" % partial_link_text)
+                "Partial link text {%s} was not found!" % partial_link_text)
         # Not using phantomjs
         element = self.wait_for_partial_link_text(
             partial_link_text, timeout=timeout)
@@ -405,7 +405,7 @@ class BaseCase(unittest.TestCase):
         if attribute_value is not None:
             return attribute_value
         else:
-            raise Exception("Element [%s] has no attribute [%s]!" % (
+            raise Exception("Element {%s} has no attribute {%s}!" % (
                 selector, attribute))
 
     def refresh_page(self):
@@ -706,6 +706,40 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
+    def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
+                           timeout=settings.SMALL_TIMEOUT):
+        """ Returns the property value of a page element's computed style.
+            Example:
+                opacity = self.get_property_value("html body a", "opacity")
+                self.assertTrue(float(opacity) > 0, "Element not visible!") """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        self.wait_for_ready_state_complete()
+        page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't run action if can't convert to CSS_Selector for JavaScript
+            raise Exception(
+                "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
+                    selector, by))
+        selector = self.jq_format(selector)
+        script = ("""var $elm = document.querySelector('%s');
+                  $val = window.getComputedStyle($elm).getPropertyValue('%s');
+                  return $val;"""
+                  % (selector, property))
+        value = self.execute_script(script)
+        if value is not None:
+            return value
+        else:
+            return ""  # Return an empty string if the property doesn't exist
+
     def bring_to_front(self, selector, by=By.CSS_SELECTOR):
         """ Updates the Z-index of a page element to bring it into view.
             Useful when getting a WebDriverException, such as the one below:
@@ -717,10 +751,10 @@ class BaseCase(unittest.TestCase):
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't perform action if can't convert to CSS_SELECTOR for jQuery
+            # Don't run action if can't convert to CSS_Selector for JavaScript
             return
-
-        script = ("""document.querySelector('%s').style.zIndex = "1";"""
+        selector = self.jq_format(selector)
+        script = ("""document.querySelector('%s').style.zIndex = "100";"""
                   % selector)
         self.execute_script(script)
 
@@ -960,7 +994,7 @@ class BaseCase(unittest.TestCase):
             return 'a:contains("%s")' % selector
         else:
             raise Exception(
-                "Exception: Could not convert [%s](by=%s) to CSS_SELECTOR!" % (
+                "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
                     selector, by))
 
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -1081,12 +1115,12 @@ class BaseCase(unittest.TestCase):
             (This generates real traffic for testing analytics software.) """
         if not page_utils.is_valid_url(destination_page):
             raise Exception(
-                "Exception: destination_page [%s] is not a valid URL!"
+                "Exception: destination_page {%s} is not a valid URL!"
                 % destination_page)
         if start_page:
             if not page_utils.is_valid_url(start_page):
                 raise Exception(
-                    "Exception: start_page [%s] is not a valid URL! "
+                    "Exception: start_page {%s} is not a valid URL! "
                     "(Use an empty string or None to start from current page.)"
                     % start_page)
             self.open(start_page)

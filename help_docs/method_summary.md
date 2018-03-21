@@ -85,6 +85,9 @@ self.maximize_window()
 
 self.activate_jquery()
 
+self.get_property_value(selector, property, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
 self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
