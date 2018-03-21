@@ -91,9 +91,17 @@ def get_remote_driver(browser_name, headless, servername, port, proxy_string):
             }
         }
         chrome_options.add_experimental_option("prefs", prefs)
+        chrome_options.add_argument("--test-type")
+        chrome_options.add_argument("--no-first-run")
+        chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--allow-file-access-from-files")
+        chrome_options.add_argument("--allow-insecure-localhost")
         chrome_options.add_argument("--allow-running-insecure-content")
         chrome_options.add_argument("--disable-infobars")
+        chrome_options.add_argument("--disable-save-password-bubble")
+        chrome_options.add_argument("--disable-single-click-autofill")
+        chrome_options.add_argument("--disable-translate")
+        chrome_options.add_argument("--disable-web-security")
         if headless:
             chrome_options.add_argument("--headless")
         if proxy_string:
@@ -217,9 +225,17 @@ def get_local_driver(browser_name, headless, proxy_string):
                 }
             }
             chrome_options.add_experimental_option("prefs", prefs)
+            chrome_options.add_argument("--test-type")
+            chrome_options.add_argument("--no-first-run")
+            chrome_options.add_argument("--ignore-certificate-errors")
             chrome_options.add_argument("--allow-file-access-from-files")
+            chrome_options.add_argument("--allow-insecure-localhost")
             chrome_options.add_argument("--allow-running-insecure-content")
             chrome_options.add_argument("--disable-infobars")
+            chrome_options.add_argument("--disable-save-password-bubble")
+            chrome_options.add_argument("--disable-single-click-autofill")
+            chrome_options.add_argument("--disable-translate")
+            chrome_options.add_argument("--disable-web-security")
             if headless:
                 chrome_options.add_argument("--headless")
             if proxy_string:
