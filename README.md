@@ -1,6 +1,6 @@
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons2f.png" title="SeleniumBase" align="left" padding="1px" height="100" margin="1px 1px" hspace="2px">
 
-Browser automated testing with Python done efficiently.<br />
+Automated Web-UI testing with Python, made awesome.<br />
 
 [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br /><br>
 
