@@ -254,6 +254,9 @@ self.switch_to_default_content()
 
 self.save_screenshot(name, folder=None)
 
+self.get_new_driver(browser=None, headless=None, servername=None, port=None,
+                    proxy_string=None)
+
 ########
 
 self.delayed_assert_element(selector, by=By.CSS_SELECTOR,
