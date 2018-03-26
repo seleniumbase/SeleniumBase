@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses the newer Selenium 3.8.1)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.4+)
 """
 
 from setuptools import setup, find_packages  # noqa
@@ -17,12 +17,12 @@ setup(
     maintainer='Michael Mintz',
     license='The MIT License',
     install_requires=[
-        'pip>=9.0.1',
-        'setuptools>=38.5.2',
+        'pip>=9.0.3',
+        'setuptools>=39.0.1',
         'ipython==5.5.0',
         'selenium==3.8.1',
         'nose==1.3.7',
-        'pytest==3.4.2',
+        'pytest==3.5.0',
         'pytest-html==1.16.1',
         'pytest-xdist==1.22.2',
         'six==1.10.0',
@@ -32,7 +32,7 @@ setup(
         'unittest2==1.1.0',
         'chardet==3.0.4',
         'boto==2.48.0',
-        'ipdb==0.10.2',
+        'ipdb==0.11',
         'pyvirtualdisplay==0.2.1',
         ],
     packages=['seleniumbase',
