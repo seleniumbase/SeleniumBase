@@ -11,7 +11,7 @@ def pytest_addoption(parser):
                              'SeleniumBase specific configuration options')
     parser.addoption('--browser', action="store",
                      dest='browser',
-                     choices=constants.Browser.VERSION.keys(),
+                     choices=constants.ValidBrowsers.valid_browsers,
                      default=constants.Browser.GOOGLE_CHROME,
                      help="""Specifies the web browser to use. Default: Chrome.
                           If you want to use Firefox, explicitly indicate that.
