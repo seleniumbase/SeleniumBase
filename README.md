@@ -65,7 +65,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 
 ## Get Started:
 
-(Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[get WebDriver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)** on your system PATH.)
+Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[get a WebDriver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)** on your system PATH.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
@@ -79,30 +79,33 @@ cd SeleniumBase
 (<i>A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may help.</i>)
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 2:** Create a Virtual Env.
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 2:** Create a Virtual Environment
 
 (OPTIONAL) To learn how to create a Python virtual environment, [see this ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 3:** Install SeleniumBase
 
-Run the following commands from the top-level SeleniumBase folder:
+If you're installing SeleniumBase from a cloned copy on your machine, use:
 ```
 pip install -r requirements.txt
 
 python setup.py develop
 ```
 
-If you already have an older version installed, add ``--upgrade`` to the ``pip`` command in order to update previously-installed Python packages. If you're not using a virtual environment, you may need to add ``--user`` to the end of your ``pip`` command. (<i>Do that if you see any errors during installation.</i>)
-
-(<i>If you can't install ChromeDriver or GeckoDriver, use `server_requirements.txt` and `server_setup.py` to run tests using the older Selenium 2.53.6 on a version of Firefox that's older than 47.</i>)
-
-To install SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) use the following command: (Add ``--upgrade`` and/or ``--user`` to the command as needed.)
+If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
 ```bash
 pip install seleniumbase
 ```
 
-(NOTE: If you're using Python 3.x instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python`` in the above commands.)
+If you're installing SeleniumBase directly from GitHub, use:
+```bash
+pip install -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
+```
+
+(If you already have an older version installed, you may want to add ``--upgrade`` to your ``pip`` command to update existing Python packages. If you're not using a virtual environment, you may need to add ``--user`` to your ``pip`` command if you're getting errors during installation.)
+
+(If you want to use Python 3.x instead of Python 2.7, use ``pip3`` in place of ``pip`` and ``python3`` in place of ``python``.)
 
 
 <a id="seleniumbase_basic_usage"></a>
