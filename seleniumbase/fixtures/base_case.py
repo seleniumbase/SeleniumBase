@@ -69,10 +69,7 @@ class BaseCase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super(BaseCase, self).__init__(*args, **kwargs)
-        try:
-            self.driver = WebDriver()
-        except Exception:
-            pass
+        self.driver = None
         self.environment = None
         self._last_url_of_delayed_assert = "data:,"
         self._page_check_count = 0
