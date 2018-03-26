@@ -54,7 +54,6 @@ try:
 except Exception:
     # Selenium 2 (Keep compatibility with seleneium 2.53.6 if still being used)
     ENI_Exception = selenium_exceptions.ElementNotSelectableException
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -69,15 +68,13 @@ class BaseCase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super(BaseCase, self).__init__(*args, **kwargs)
-        try:
-            self.driver = WebDriver()
-        except Exception:
-            pass
+        self.driver = None
         self.environment = None
         self._last_url_of_delayed_assert = "data:,"
         self._page_check_count = 0
         self._page_check_failures = []
         self._html_report_extra = []
+        self._extra_drivers = []
 
     def open(self, url):
         self.driver.get(url)
@@ -1438,6 +1435,39 @@ class BaseCase(unittest.TestCase):
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
 
+    def get_new_driver(self, browser=None, headless=None,
+                       servername=None, port=None,
+                       proxy_string=None):
+        """ This method spins up an extra browser for tests that require
+            more than one. The first browser is already provided by tests
+            that import base_case.BaseCase from seleniumbase. """
+        if browser is None:
+            browser = self.browser
+        if headless is None:
+            headless = self.headless
+        if servername is None:
+            servername = self.servername
+        if port is None:
+            port = self.port
+        if proxy_string is None:
+            proxy_string = self.proxy_string
+        use_grid = False
+        if servername != "localhost":
+            # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+            use_grid = True
+        valid_browsers = constants.ValidBrowsers.valid_browsers
+        if browser not in valid_browsers:
+            raise Exception("Browser: {%s} is not a valid browser option. "
+                            "Valid options = {%s}" % (browser, valid_browsers))
+        new_driver = browser_launcher.get_driver(browser,
+                                                 headless,
+                                                 use_grid,
+                                                 servername,
+                                                 port,
+                                                 proxy_string)
+        self._extra_drivers.append(new_driver)
+        return new_driver
+
     ############
 
     def _get_new_timeout(self, timeout):
@@ -1909,8 +1939,14 @@ class BaseCase(unittest.TestCase):
                         if self.with_page_source:
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
-                # Finally close the browser
                 try:
+                    # Finally close the browser
+                    if self._extra_drivers:
+                        for extra_driver in self._extra_drivers:
+                            try:
+                                extra_driver.quit()
+                            except Exception:
+                                pass  # Extra driver was already quit
                     self.driver.quit()
                 except AttributeError:
                     pass
@@ -1957,6 +1993,12 @@ class BaseCase(unittest.TestCase):
             # Using Nosetests
             try:
                 # Finally close the browser
+                if self._extra_drivers:
+                    for extra_driver in self._extra_drivers:
+                        try:
+                            extra_driver.quit()
+                        except Exception:
+                            pass  # Extra driver was already quit
                 self.driver.quit()
             except AttributeError:
                 pass
