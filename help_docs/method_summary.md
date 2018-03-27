@@ -248,14 +248,22 @@ self.wait_for_and_switch_to_alert(timeout=settings.LARGE_TIMEOUT)
 
 self.switch_to_frame(frame, timeout=settings.SMALL_TIMEOUT)
 
+self.switch_to_default_content()
+
+self.open_new_window(switch_to=True)
+
 self.switch_to_window(window, timeout=settings.SMALL_TIMEOUT)
 
-self.switch_to_default_content()
+self.switch_to_default_window()
 
 self.save_screenshot(name, folder=None)
 
 self.get_new_driver(browser=None, headless=None, servername=None, port=None,
-                    proxy_string=None)
+                    proxy=None, switch_to=True)
+
+self.switch_to_driver(driver)
+
+self.switch_to_default_driver()
 
 ########
 
