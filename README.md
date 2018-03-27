@@ -17,7 +17,7 @@ SeleniumBase automatically handles common WebDriver actions such as spinning up 
 **Simple Python syntax makes coding easy:**<br />
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_py_2.png" title="SeleniumBase Python Code" height="280">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_image.png" title="SeleniumBase Python Code" height="280">
 
 **Run tests with Pytest or Nose in any browser:**
 

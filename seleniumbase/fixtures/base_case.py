@@ -1,10 +1,13 @@
 """
-BaseCase gathers SeleniumBase libraries into a single file for easy calling.
+The BaseCase class is the main gateway for using The SeleniumBase Framework.
+It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
+All tests using BaseCase automatically launch WebDriver browsers for tests.
+
 Usage:
 
     from seleniumbase import BaseCase
     class MyTestClass(BaseCase):
-        test_anything(self):
+        def test_anything(self):
             # Write your code here. Example:
             self.open("https://github.com/")
             self.update_text("input.header-search-input", "SeleniumBase\n")
@@ -12,9 +15,9 @@ Usage:
             self.assert_element("div.repository-content")
             ....
 
-The methods here expand and improve existing WebDriver commands.
-Improvements include making WebDriver more robust and more reliable.
-Page elements are given enough time to load before taking action on them.
+SeleniumBase methods expand and improve on existing WebDriver commands.
+Improvements include making WebDriver more robust, reliable, and flexible.
+Page elements are given enough time to load before WebDriver acts on them.
 Code becomes greatly simplified and easier to maintain.
 """
 
@@ -74,7 +77,8 @@ class BaseCase(unittest.TestCase):
         self._page_check_count = 0
         self._page_check_failures = []
         self._html_report_extra = []
-        self._extra_drivers = []
+        self._default_driver = None
+        self._drivers_list = []
 
     def open(self, url):
         self.driver.get(url)
@@ -612,8 +616,8 @@ class BaseCase(unittest.TestCase):
             by = By.LINK_TEXT
         return page_actions.find_visible_elements(self.driver, selector, by)
 
-    def is_element_in_frame(self, selector, by=By.CSS_SELECTOR):
-        """ Returns True if the selector's element is located in an iFrame.
+    def is_element_in_an_iframe(self, selector, by=By.CSS_SELECTOR):
+        """ Returns True if the selector's element is located in an iframe.
             Otherwise returns False. """
         selector, by = self._recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
@@ -636,10 +640,11 @@ class BaseCase(unittest.TestCase):
             self.switch_to_default_content()
         return False
 
-    def enter_frame_of_element(self, selector, by=By.CSS_SELECTOR):
-        """ Returns the frame name of the selector's element if in an iFrame.
-            Also enters the iFrame if the element was inside an iFrame.
-            If the element is not in an iFrame, returns None. """
+    def switch_to_frame_of_element(self, selector, by=By.CSS_SELECTOR):
+        """ Set driver control to the iframe of the element (assuming the
+            element is in a single-nested iframe) and returns the iframe name.
+            If element is not in an iframe, returns None, and nothing happens.
+            May not work if multiple iframes are nested within each other. """
         selector, by = self._recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
@@ -1420,53 +1425,89 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
 
     def switch_to_frame(self, frame, timeout=settings.SMALL_TIMEOUT):
+        """ Sets driver control to the specified browser frame. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         page_actions.switch_to_frame(self.driver, frame, timeout)
+
+    def switch_to_default_content(self):
+        """ Brings driver control outside the current iframe.
+            (If driver control is inside an iframe, the driver control
+            will be set to one level above the current frame. If the driver
+            control is not currenly in an iframe, nothing will happen.) """
+        self.driver.switch_to.default_content()
+
+    def open_new_window(self, switch_to=True):
+        """ Opens a new browser tab/window and switches to it by default. """
+        self.driver.execute_script("window.open('');")
+        time.sleep(0.01)
+        if switch_to:
+            self.switch_to_window(len(self.driver.window_handles) - 1)
 
     def switch_to_window(self, window, timeout=settings.SMALL_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         page_actions.switch_to_window(self.driver, window, timeout)
 
-    def switch_to_default_content(self):
-        self.driver.switch_to.default_content()
+    def switch_to_default_window(self):
+        self.switch_to_window(0)
 
     def save_screenshot(self, name, folder=None):
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def get_new_driver(self, browser=None, headless=None,
-                       servername=None, port=None,
-                       proxy_string=None):
+                       servername=None, port=None, proxy=None, switch_to=True):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
-            that import base_case.BaseCase from seleniumbase. """
+            that import base_case.BaseCase from seleniumbase. If parameters
+            aren't specified, the method uses the same as the default driver.
+            @Params
+            browser - the browser to use. (Ex: "chrome", "firefox")
+            headless - the option to run webdriver in headless mode
+            servername - if using a Selenium Grid, set the host address here
+            port - if using a Selenium Grid, set the host port here
+            proxy - if using a proxy server, specify the "host:port" combo here
+            switch_to - the option to switch to the new driver (default = True)
+        """
         if browser is None:
             browser = self.browser
+        browser_name = browser
         if headless is None:
             headless = self.headless
         if servername is None:
             servername = self.servername
         if port is None:
             port = self.port
-        if proxy_string is None:
-            proxy_string = self.proxy_string
         use_grid = False
         if servername != "localhost":
-            # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+            # Use Selenium Grid (Use "127.0.0.1" for localhost Grid)
             use_grid = True
+        proxy_string = proxy
+        if proxy_string is None:
+            proxy_string = self.proxy_string
         valid_browsers = constants.ValidBrowsers.valid_browsers
-        if browser not in valid_browsers:
+        if browser_name not in valid_browsers:
             raise Exception("Browser: {%s} is not a valid browser option. "
                             "Valid options = {%s}" % (browser, valid_browsers))
-        new_driver = browser_launcher.get_driver(browser,
-                                                 headless,
-                                                 use_grid,
-                                                 servername,
-                                                 port,
-                                                 proxy_string)
-        self._extra_drivers.append(new_driver)
+        new_driver = browser_launcher.get_driver(browser_name=browser_name,
+                                                 headless=headless,
+                                                 use_grid=use_grid,
+                                                 servername=servername,
+                                                 port=port,
+                                                 proxy_string=proxy_string)
+        self._drivers_list.append(new_driver)
+        if switch_to:
+            self.driver = new_driver
         return new_driver
+
+    def switch_to_driver(self, driver):
+        """ Sets self.driver to the specified driver.
+            You may need this if using self.get_new_driver() in your code. """
+        self.driver = driver
+
+    def switch_to_default_driver(self):
+        """ Sets self.driver to the default/original driver. """
+        self.driver = self._default_driver
 
     ############
 
@@ -1846,6 +1887,16 @@ class BaseCase(unittest.TestCase):
                                                   self.servername,
                                                   self.port,
                                                   self.proxy_string)
+        self._default_driver = self.driver
+        self._drivers_list.append(self.driver)
+        if self.headless:
+            # Make sure the invisible browser window is big enough
+            try:
+                self.set_window_size(1920, 1200)
+            except Exception:
+                # This shouldn't fail, but in case it does, get safely through
+                # setUp() so that WebDrivers can get closed during tearDown().
+                pass
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
@@ -1879,6 +1930,19 @@ class BaseCase(unittest.TestCase):
                 self._html_report_extra.append(extra_image)
         except Exception:
             pass
+
+    def _quit_all_drivers(self):
+        # Close all open browser windows
+        self._drivers_list.reverse()  # Last In, First Out
+        for driver in self._drivers_list:
+            try:
+                driver.quit()
+            except AttributeError:
+                pass
+            except Exception:
+                pass
+        self.driver = None
+        self._drivers_list = []
 
     def tearDown(self):
         """
@@ -1939,20 +2003,8 @@ class BaseCase(unittest.TestCase):
                         if self.with_page_source:
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
-                try:
-                    # Finally close the browser
-                    if self._extra_drivers:
-                        for extra_driver in self._extra_drivers:
-                            try:
-                                extra_driver.quit()
-                            except Exception:
-                                pass  # Extra driver was already quit
-                    self.driver.quit()
-                except AttributeError:
-                    pass
-                except Exception:
-                    pass
-                self.driver = None
+                # (Pytest) Finally close all open browser windows
+                self._quit_all_drivers()
             if self.headless:
                 if self.headless_active:
                     self.display.stop()
@@ -1990,18 +2042,5 @@ class BaseCase(unittest.TestCase):
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
-            # Using Nosetests
-            try:
-                # Finally close the browser
-                if self._extra_drivers:
-                    for extra_driver in self._extra_drivers:
-                        try:
-                            extra_driver.quit()
-                        except Exception:
-                            pass  # Extra driver was already quit
-                self.driver.quit()
-            except AttributeError:
-                pass
-            except Exception:
-                pass
-            self.driver = None
+            # (Nosetests) Finally close all open browser windows
+            self._quit_all_drivers()
