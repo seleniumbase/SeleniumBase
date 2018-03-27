@@ -1931,6 +1931,19 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
 
+    def _quit_all_drivers(self):
+        # Close all open browser windows
+        self._drivers_list.reverse()  # Last In, First Out
+        for driver in self._drivers_list:
+            try:
+                driver.quit()
+            except AttributeError:
+                pass
+            except Exception:
+                pass
+        self.driver = None
+        self._drivers_list = []
+
     def tearDown(self):
         """
         Be careful if a subclass of BaseCase overrides setUp()
@@ -1990,20 +2003,8 @@ class BaseCase(unittest.TestCase):
                         if self.with_page_source:
                             log_helper.log_page_source(
                                 test_logpath, self.driver)
-                try:
-                    # Finally close the browser
-                    if self._extra_drivers:
-                        for extra_driver in self._extra_drivers:
-                            try:
-                                extra_driver.quit()
-                            except Exception:
-                                pass  # Extra driver was already quit
-                    self.driver.quit()
-                except AttributeError:
-                    pass
-                except Exception:
-                    pass
-                self.driver = None
+                # (Pytest) Finally close all open browser windows
+                self._quit_all_drivers()
             if self.headless:
                 if self.headless_active:
                     self.display.stop()
@@ -2041,18 +2042,5 @@ class BaseCase(unittest.TestCase):
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
-            # Using Nosetests
-            try:
-                # Finally close the browser
-                if self._extra_drivers:
-                    for extra_driver in self._extra_drivers:
-                        try:
-                            extra_driver.quit()
-                        except Exception:
-                            pass  # Extra driver was already quit
-                self.driver.quit()
-            except AttributeError:
-                pass
-            except Exception:
-                pass
-            self.driver = None
+            # (Nosetests) Finally close all open browser windows
+            self._quit_all_drivers()
