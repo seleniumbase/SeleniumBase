@@ -1,10 +1,13 @@
 """
-BaseCase gathers SeleniumBase libraries into a single file for easy calling.
+The BaseCase class is the main gateway for using The SeleniumBase Framework.
+It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
+All tests using BaseCase automatically launch WebDriver browsers for tests.
+
 Usage:
 
     from seleniumbase import BaseCase
     class MyTestClass(BaseCase):
-        test_anything(self):
+        def test_anything(self):
             # Write your code here. Example:
             self.open("https://github.com/")
             self.update_text("input.header-search-input", "SeleniumBase\n")
@@ -12,9 +15,9 @@ Usage:
             self.assert_element("div.repository-content")
             ....
 
-The methods here expand and improve existing WebDriver commands.
-Improvements include making WebDriver more robust and more reliable.
-Page elements are given enough time to load before taking action on them.
+SeleniumBase methods expand and improve on existing WebDriver commands.
+Improvements include making WebDriver more robust, reliable, and flexible.
+Page elements are given enough time to load before WebDriver acts on them.
 Code becomes greatly simplified and easier to maintain.
 """
 
