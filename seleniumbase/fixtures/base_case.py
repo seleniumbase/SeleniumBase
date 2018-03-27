@@ -615,8 +615,8 @@ class BaseCase(unittest.TestCase):
             by = By.LINK_TEXT
         return page_actions.find_visible_elements(self.driver, selector, by)
 
-    def is_element_in_frame(self, selector, by=By.CSS_SELECTOR):
-        """ Returns True if the selector's element is located in an iFrame.
+    def is_element_in_an_iframe(self, selector, by=By.CSS_SELECTOR):
+        """ Returns True if the selector's element is located in an iframe.
             Otherwise returns False. """
         selector, by = self._recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
@@ -639,10 +639,11 @@ class BaseCase(unittest.TestCase):
             self.switch_to_default_content()
         return False
 
-    def enter_frame_of_element(self, selector, by=By.CSS_SELECTOR):
-        """ Returns the frame name of the selector's element if in an iFrame.
-            Also enters the iFrame if the element was inside an iFrame.
-            If the element is not in an iFrame, returns None. """
+    def switch_to_frame_of_element(self, selector, by=By.CSS_SELECTOR):
+        """ Set driver control to the iframe of the element (assuming the
+            element is in a single-nested iframe) and returns the iframe name.
+            If element is not in an iframe, returns None, and nothing happens.
+            May not work if multiple iframes are nested within each other. """
         selector, by = self._recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None

@@ -73,9 +73,9 @@ self.is_text_visible(text, selector, by=By.CSS_SELECTOR)
 
 self.find_visible_elements(selector, by=By.CSS_SELECTOR)
 
-self.is_element_in_frame(selector, by=By.CSS_SELECTOR)
+self.is_element_in_an_iframe(selector, by=By.CSS_SELECTOR)
 
-self.enter_frame_of_element(selector, by=By.CSS_SELECTOR)
+self.switch_to_frame_of_element(selector, by=By.CSS_SELECTOR)
 
 self.execute_script(script)
 
