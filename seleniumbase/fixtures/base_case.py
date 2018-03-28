@@ -779,9 +779,12 @@ class BaseCase(unittest.TestCase):
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
-            # Don't highlight if can't convert to CSS_SELECTOR for jQuery
+            # Don't highlight if can't convert to CSS_SELECTOR
             return
-        selector = self._make_css_match_first_element_only(selector)
+
+        if self.highlights:
+            loops = self.highlights
+        loops = int(loops)
 
         o_bs = ''  # original_box_shadow
         style = element.get_attribute('style')
@@ -792,13 +795,66 @@ class BaseCase(unittest.TestCase):
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
 
+        if ":contains" not in selector and ":first" not in selector:
+            selector = self.jq_format(selector)
+            self.__highlight_with_js(selector, loops, scroll, o_bs)
+        else:
+            selector = self._make_css_match_first_element_only(selector)
+            selector = self.jq_format(selector)
+            try:
+                self.__highlight_with_jquery(selector, loops, scroll, o_bs)
+            except Exception:
+                pass  # JQuery probably couldn't load. Skip highlighting.
+        time.sleep(0.065)
+
+    def __highlight_with_js(self, selector, loops, scroll, o_bs):
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
+                  % selector)
+        self.execute_script(script)
+
+        for n in range(loops):
+            script = ("""document.querySelector('%s').style =
+                      'box-shadow: 0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
+                      % selector)
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = ("""document.querySelector('%s').style =
+                      'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+                      % selector)
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = ("""document.querySelector('%s').style =
+                      'box-shadow: 0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
+                      % selector)
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = ("""document.querySelector('%s').style =
+                      'box-shadow: 0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
+                      % selector)
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = ("""document.querySelector('%s').style =
+                      'box-shadow: 0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
+                      % selector)
+            self.execute_script(script)
+            time.sleep(0.02)
+            script = ("""document.querySelector('%s').style =
+                      'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+                      % selector)
+            self.execute_script(script)
+            time.sleep(0.02)
+
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: %s';"""
+                  % (selector, o_bs))
+        self.execute_script(script)
+
+    def __highlight_with_jquery(self, selector, loops, scroll, o_bs):
         script = """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
         self.safe_execute_script(script)
 
-        if self.highlights:
-            loops = self.highlights
-        loops = int(loops)
         for n in range(loops):
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
@@ -827,7 +883,6 @@ class BaseCase(unittest.TestCase):
 
         script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
         self.execute_script(script)
-        time.sleep(0.065)
 
     def scroll_to(self, selector, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
