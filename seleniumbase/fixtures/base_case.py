@@ -698,8 +698,8 @@ class BaseCase(unittest.TestCase):
             '''script.src = "http://code.jquery.com/jquery-3.2.1.min.js"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
-        for x in range(30):
-            # jQuery needs a small amount of time to activate. (At most 3s)
+        for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+            # jQuery needs a small amount of time to activate.
             try:
                 self.execute_script("jQuery('html')")
                 return
