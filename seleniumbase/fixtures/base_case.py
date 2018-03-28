@@ -1376,7 +1376,7 @@ class BaseCase(unittest.TestCase):
             timeout = self._get_new_timeout(timeout)
         is_ready = page_actions.wait_for_ready_state_complete(self.driver,
                                                               timeout)
-        self.wait_for_angularjs()
+        self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
         return is_ready
 
     def wait_for_angularjs(self, timeout=settings.LARGE_TIMEOUT, **kwargs):
