@@ -17,8 +17,8 @@ setup(
     maintainer='Michael Mintz',
     license='The MIT License',
     install_requires=[
-        'pip>=9.0.3',
-        'setuptools>=39.0.1',
+        'pip',
+        'setuptools',
         'ipython==5.5.0',
         'selenium==3.8.1',
         'nose==1.3.7',
