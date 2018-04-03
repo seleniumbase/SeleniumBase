@@ -27,6 +27,7 @@ import logging
 import math
 import os
 import pytest
+import re
 import sys
 import time
 import traceback
@@ -549,7 +550,7 @@ class BaseCase(unittest.TestCase):
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
             logging.debug('update_text_value is falling back to jQuery!')
-            selector = self.jq_format(selector)
+            selector = re.escape(selector)
             self.set_value(selector, new_value, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
@@ -731,7 +732,7 @@ class BaseCase(unittest.TestCase):
             raise Exception(
                 "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
                     selector, by))
-        selector = self.jq_format(selector)
+        selector = re.escape(selector)
         script = ("""var $elm = document.querySelector('%s');
                   $val = window.getComputedStyle($elm).getPropertyValue('%s');
                   return $val;"""
@@ -755,7 +756,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # Don't run action if can't convert to CSS_Selector for JavaScript
             return
-        selector = self.jq_format(selector)
+        selector = re.escape(selector)
         script = ("""document.querySelector('%s').style.zIndex = "100";"""
                   % selector)
         self.execute_script(script)
@@ -796,11 +797,11 @@ class BaseCase(unittest.TestCase):
                 o_bs = original_box_shadow
 
         if ":contains" not in selector and ":first" not in selector:
-            selector = self.jq_format(selector)
+            selector = re.escape(selector)
             self.__highlight_with_js(selector, loops, scroll, o_bs)
         else:
             selector = self._make_css_match_first_element_only(selector)
-            selector = self.jq_format(selector)
+            selector = re.escape(selector)
             try:
                 self.__highlight_with_jquery(selector, loops, scroll, o_bs)
             except Exception:
@@ -978,7 +979,8 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def jq_format(self, code):
-        return page_utils.jq_format(code)
+        # DEPRECATED - Use re.escape() instead, which does the action you want.
+        return page_utils._jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
@@ -1087,7 +1089,7 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self._make_css_match_first_element_only(selector)
         update_text_script = """jQuery('%s').val('%s')""" % (
-            selector, self.jq_format(new_value))
+            selector, re.escape(new_value))
         self.safe_execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
