@@ -1058,11 +1058,14 @@ class BaseCase(unittest.TestCase):
 
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
-        """ This method uses jQuery to update a text field. """
+        """ This method uses jQuery to update a text field.
+            Similar to jquery_update_text_value(), but the element
+            doesn't need to be officially visible to work. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        orginal_selector = selector
         selector = self.convert_to_css_selector(selector, by=by)
         self._demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by, timeout=timeout)
@@ -1070,6 +1073,10 @@ class BaseCase(unittest.TestCase):
         selector = self._make_css_match_first_element_only(selector)
         set_value_script = """jQuery('%s').val(%s)""" % (selector, value)
         self.safe_execute_script(set_value_script)
+        if new_value.endswith('\n'):
+            element = self.wait_for_element_present(
+                orginal_selector, by=by, timeout=timeout)
+            element.send_keys(Keys.RETURN)
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
