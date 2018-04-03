@@ -5,19 +5,6 @@ import re
 import requests
 
 
-def jq_format(code):
-    """
-    Use before throwing raw code such as 'div[tab="advanced"]' into jQuery.
-    Selectors with quotes inside of quotes would otherwise break jQuery.
-    This is similar to "json.dumps(value)", but with one less layer of quotes.
-    """
-    code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
-    code = code.replace('\"', '\\\"').replace('\'', '\\\'')
-    code = code.replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f')
-    code = code.replace('\b', '\\b').replace(r'\u', '\\u').replace('\r', '\\r')
-    return code
-
-
 def get_domain_url(url):
     """
     Use this to convert a url like this:
@@ -87,3 +74,17 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
     r = requests.get(file_url)
     with open(destination_folder + '/' + file_name, "wb") as code:
         code.write(r.content)
+
+
+def _jq_format(code):
+    """
+    DEPRECATED - Use re.escape() instead, which performs the intended action.
+    Use before throwing raw code such as 'div[tab="advanced"]' into jQuery.
+    Selectors with quotes inside of quotes would otherwise break jQuery.
+    This is similar to "json.dumps(value)", but with one less layer of quotes.
+    """
+    code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
+    code = code.replace('\"', '\\\"').replace('\'', '\\\'')
+    code = code.replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f')
+    code = code.replace('\b', '\\b').replace(r'\u', '\\u').replace('\r', '\\r')
+    return code
