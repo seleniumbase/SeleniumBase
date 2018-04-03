@@ -1,23 +1,26 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons2f.png" title="SeleniumBase" align="left" padding="1px" height="100" margin="1px 1px" hspace="2px">
 
-Automated Web-UI testing with Python, made awesome.<br />
+## Automated Web-UI testing reimagined.
 
-[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br /><br>
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/laptop_logo.png" title="SeleniumBase" height="160">
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40"><br />
 
-[**Get Started**](#seleniumbase_installation), or Learn More:
+[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
 
-**A framework for all your UI testing:**<br />
-SeleniumBase simplifies end-to-end UI testing by extending Python's unittest framework with WebDriver APIs and adding features to improve the process of creating and running automation.
+SeleniumBase simplifies Web-UI automation by extending Python's unittest framework with WebDriver APIs and intelligent code.
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons2f.png" title="SeleniumBase" height="102">
+
+### [**Get Started**](#seleniumbase_installation), or Learn More:
 
 **No more repetitive WebDriver code:**<br />
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, and more. (<i>[Read about the command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md).</i>)
 
 **Simple Python syntax makes coding easy:**<br />
-(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_image.png" title="SeleniumBase Python Code" height="280">
+
+(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 **Run tests with Pytest or Nose in any browser:**
 
