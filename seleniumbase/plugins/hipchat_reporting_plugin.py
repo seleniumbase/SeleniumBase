@@ -1,6 +1,7 @@
-""" This plugin allows you to receive test notifications through HipChat.
-HipChat @ mentions will only occur during normal
-business hours. (You can change this)
+"""
+DEPRECATED soon. (I haven't tested this code since 2014)
+This plugin allows you to receive test notifications through HipChat.
+Mentions only occur during normal business hours. (Can be changed)
 By default, only failure notifications will be sent.
 """
 
