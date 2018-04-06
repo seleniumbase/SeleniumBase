@@ -17,10 +17,12 @@ class SeleniumBrowser(Plugin):
     self.options.browser -- the browser to use (--browser)
     self.options.server -- the server used by the test (--server)
     self.options.port -- the port used by the test (--port)
+    self.options.proxy -- designates the proxy server:port to use. (--proxy)
     self.options.headless -- the option to run headlessly (--headless)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
+    self.options.ad_block -- the option to block some display ads (--ad_block)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
     """
@@ -66,7 +68,7 @@ class SeleniumBrowser(Plugin):
             dest='headless',
             default=False,
             help="""Using this makes Webdriver run headlessly,
-                    which is useful inside a Linux Docker.""")
+                    which is required on headless machines.""")
         parser.add_option(
             '--demo_mode', action="store_true",
             dest='demo_mode',
@@ -109,9 +111,6 @@ class SeleniumBrowser(Plugin):
         self.headless_active = False  # Default setting
 
     def beforeTest(self, test):
-        """ Running Selenium locally will be handled differently
-            from how Selenium is run remotely, such as from Jenkins. """
-
         test.test.browser = self.options.browser
         test.test.headless = self.options.headless
         test.test.servername = self.options.servername

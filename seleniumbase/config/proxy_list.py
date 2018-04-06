@@ -8,7 +8,9 @@ Now you can do something like this on the command line:
 "pytest SOME_TEST.py --proxy=proxy1"
 
 Format of PROXY_LIST server entries:
-* "ip_address:port"
+* "ip_address:port" OR
+* "server:port"
+(Do NOT include the http:// or https:// in your proxy string!)
 
 Example proxies in PROXY_LIST below are not guaranteed to be active or secure.
 If you don't already have a proxy server to connect to,

@@ -88,7 +88,7 @@ def pytest_addoption(parser):
                      dest='headless',
                      default=False,
                      help="""Using this makes Webdriver run headlessly,
-                          which is useful inside a Linux Docker.""")
+                          which is required on headless machines.""")
     parser.addoption('--is_pytest', action="store_true",
                      dest='is_pytest',
                      default=True,
