@@ -1896,6 +1896,7 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
+            self.ad_block_on = pytest.config.option.ad_block_on
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier
             self.use_grid = False
