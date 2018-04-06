@@ -114,6 +114,8 @@ self.remove_element(selector, by=By.CSS_SELECTOR)
 
 self.remove_elements(selector, by=By.CSS_SELECTOR)
 
+self.ad_block()
+
 self.get_domain_url(url)
 
 self.safe_execute_script(script)
