@@ -88,7 +88,7 @@ def pytest_addoption(parser):
                      dest='headless',
                      default=False,
                      help="""Using this makes Webdriver run headlessly,
-                          which is useful inside a Linux Docker.""")
+                          which is required on headless machines.""")
     parser.addoption('--is_pytest', action="store_true",
                      dest='is_pytest',
                      default=True,
@@ -107,6 +107,11 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default number of
                           highlight animation loops to have per call.""")
+    parser.addoption('--ad_block', action="store_true",
+                     dest='ad_block_on',
+                     default=False,
+                     help="""Using this makes WebDriver block display ads
+                          that are defined in ad_block_list.AD_BLOCK_LIST.""")
     parser.addoption('--verify_delay', action='store', dest='verify_delay',
                      default=None,
                      help="""Setting this overrides the default wait time

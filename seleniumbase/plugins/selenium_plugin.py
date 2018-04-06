@@ -17,10 +17,12 @@ class SeleniumBrowser(Plugin):
     self.options.browser -- the browser to use (--browser)
     self.options.server -- the server used by the test (--server)
     self.options.port -- the port used by the test (--port)
+    self.options.proxy -- designates the proxy server:port to use. (--proxy)
     self.options.headless -- the option to run headlessly (--headless)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
+    self.options.ad_block -- the option to block some display ads (--ad_block)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
     """
@@ -66,7 +68,7 @@ class SeleniumBrowser(Plugin):
             dest='headless',
             default=False,
             help="""Using this makes Webdriver run headlessly,
-                    which is useful inside a Linux Docker.""")
+                    which is required on headless machines.""")
         parser.add_option(
             '--demo_mode', action="store_true",
             dest='demo_mode',
@@ -83,6 +85,12 @@ class SeleniumBrowser(Plugin):
             dest='highlights', default=None,
             help="""Setting this overrides the default number of
                     highlight animation loops to have per call.""")
+        parser.add_option(
+            '--ad_block', action="store_true",
+            dest='ad_block_on',
+            default=False,
+            help="""Using this makes WebDriver block display ads
+                    that are defined in ad_block_list.AD_BLOCK_LIST.""")
         parser.add_option(
             '--verify_delay', action='store',
             dest='verify_delay', default=None,
@@ -103,9 +111,6 @@ class SeleniumBrowser(Plugin):
         self.headless_active = False  # Default setting
 
     def beforeTest(self, test):
-        """ Running Selenium locally will be handled differently
-            from how Selenium is run remotely, such as from Jenkins. """
-
         test.test.browser = self.options.browser
         test.test.headless = self.options.headless
         test.test.servername = self.options.servername
@@ -114,6 +119,7 @@ class SeleniumBrowser(Plugin):
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep
         test.test.highlights = self.options.highlights
+        test.test.ad_block_on = self.options.ad_block_on
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.use_grid = False

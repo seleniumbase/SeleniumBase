@@ -10,7 +10,10 @@ from seleniumbase.config import settings
 def log_screenshot(test_logpath, driver):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
-    driver.get_screenshot_as_file(screenshot_path)
+    try:
+        driver.get_screenshot_as_file(screenshot_path)
+    except Exception:
+        print("WARNING: Unable to get screenshot for failure logs!")
 
 
 def log_test_failure_data(test, test_logpath, driver, browser):

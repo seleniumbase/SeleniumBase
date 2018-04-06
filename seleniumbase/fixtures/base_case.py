@@ -36,6 +36,7 @@ import uuid
 from bs4 import BeautifulSoup
 from pyvirtualdisplay import Display
 from seleniumbase.common import decorators
+from seleniumbase.config import ad_block_list
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
 from seleniumbase.core.s3_manager import S3LoggingBucket
@@ -75,6 +76,7 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self._last_url_of_delayed_assert = "data:,"
+        self._last_page_load_url = "data:,"
         self._page_check_count = 0
         self._page_check_failures = []
         self._html_report_extra = []
@@ -82,6 +84,7 @@ class BaseCase(unittest.TestCase):
         self._drivers_list = []
 
     def open(self, url):
+        self._last_page_load_url = None
         self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
@@ -411,11 +414,13 @@ class BaseCase(unittest.TestCase):
                 selector, attribute))
 
     def refresh_page(self):
+        self._last_page_load_url = None
         self.driver.refresh()
+        self.wait_for_ready_state_complete()
 
     def refresh(self):
         """ The shorter version of self.refresh_page() """
-        self.driver.refresh()
+        self.refresh_page()
 
     def get_current_url(self):
         return self.driver.current_url
@@ -431,10 +436,14 @@ class BaseCase(unittest.TestCase):
         return self.driver.title
 
     def go_back(self):
+        self._last_page_load_url = None
         self.driver.back()
+        self.wait_for_ready_state_complete()
 
     def go_forward(self):
+        self._last_page_load_url = None
         self.driver.forward()
+        self.wait_for_ready_state_complete()
 
     def get_image_url(self, selector, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
@@ -978,6 +987,19 @@ class BaseCase(unittest.TestCase):
         remove_script = """jQuery('%s').remove()""" % selector
         self.safe_execute_script(remove_script)
 
+    def ad_block(self):
+        for css_selector in ad_block_list.AD_BLOCK_LIST:
+            css_selector = re.escape(css_selector)
+            script = ("""var $elements = document.querySelectorAll('%s');
+                      var index = 0, length = $elements.length;
+                      for(; index < length; index++){
+                      $elements[index].remove();}"""
+                      % css_selector)
+            try:
+                self.execute_script(script)
+            except Exception:
+                pass  # Don't fail test if ad_blocking fails
+
     def jq_format(self, code):
         # DEPRECATED - Use re.escape() instead, which does the action you want.
         return page_utils._jq_format(code)
@@ -1077,6 +1099,8 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_element_present(
                 orginal_selector, by=by, timeout=timeout)
             element.send_keys(Keys.RETURN)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                self.wait_for_ready_state_complete()
         self._demo_mode_pause_if_active()
 
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
@@ -1441,6 +1465,17 @@ class BaseCase(unittest.TestCase):
         is_ready = page_actions.wait_for_ready_state_complete(self.driver,
                                                               timeout)
         self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+        if self.ad_block_on:
+            # If the ad_block feature is enabled, then block ads for new URLs
+            current_url = self.get_current_url()
+            if not current_url == self._last_page_load_url:
+                time.sleep(0.02)
+                self.ad_block()
+                time.sleep(0.01)
+                if self.is_element_present("iframe"):
+                    time.sleep(0.07)  # iframe ads take slightly longer to load
+                    self.ad_block()  # Do ad_block on slower-loading iframes
+                self._last_page_load_url = current_url
         return is_ready
 
     def wait_for_angularjs(self, timeout=settings.LARGE_TIMEOUT, **kwargs):
@@ -1896,6 +1931,7 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
+            self.ad_block_on = pytest.config.option.ad_block_on
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier
             self.use_grid = False
