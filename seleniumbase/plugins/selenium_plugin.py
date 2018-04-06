@@ -84,6 +84,12 @@ class SeleniumBrowser(Plugin):
             help="""Setting this overrides the default number of
                     highlight animation loops to have per call.""")
         parser.add_option(
+            '--ad_block', action="store_true",
+            dest='ad_block_on',
+            default=False,
+            help="""Using this makes WebDriver block display ads
+                    that are defined in ad_block_list.AD_BLOCK_LIST.""")
+        parser.add_option(
             '--verify_delay', action='store',
             dest='verify_delay', default=None,
             help="""Setting this overrides the default wait time
@@ -114,6 +120,7 @@ class SeleniumBrowser(Plugin):
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep
         test.test.highlights = self.options.highlights
+        test.test.ad_block_on = self.options.ad_block_on
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.use_grid = False
