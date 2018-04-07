@@ -131,6 +131,7 @@ def main():
         if data:
             whitespace = data.group(1)
             css_selector = '#%s' % data.group(2)
+            css_selector = css_selector.replace('[', '\\[').replace(']', '\\]')
             command = '''%sself.click('%s')''' % (whitespace, css_selector)
             seleniumbase_lines.append(command)
             continue
@@ -142,6 +143,7 @@ def main():
         if data:
             whitespace = data.group(1)
             css_selector = '#%s' % data.group(2)
+            css_selector = css_selector.replace('[', '\\[').replace(']', '\\]')
             text = data.group(3)
             command = '''%sself.update_text('%s', '%s')''' % (
                 whitespace, css_selector, text)
@@ -156,6 +158,7 @@ def main():
             uses_keys = True
             whitespace = data.group(1)
             css_selector = '#%s' % data.group(2)
+            css_selector = css_selector.replace('[', '\\[').replace(']', '\\]')
             key = 'Keys.%s' % data.group(3)
             command = '''%sself.send_keys('%s', %s)''' % (
                 whitespace, css_selector, key)
