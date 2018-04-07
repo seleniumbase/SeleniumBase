@@ -22,7 +22,6 @@ Code becomes greatly simplified and easier to maintain.
 """
 
 import getpass
-import json
 import logging
 import math
 import os
@@ -1889,8 +1888,6 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active()
             else:
                 self._demo_mode_pause_if_active(tiny=True)
-
-    ############
 
     def _recalculate_selector(self, selector, by):
         # Try to determine the type of selector automatically
