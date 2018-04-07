@@ -100,6 +100,8 @@ self.scroll_click(selector, by=By.CSS_SELECTOR)  # DEPRECATED
 
 self.click_xpath(xpath)
 
+self.js_click(selector, by=By.CSS_SELECTOR)
+
 self.jquery_click(selector, by=By.CSS_SELECTOR)
 
 self.hide_element(selector, by=By.CSS_SELECTOR)
@@ -124,13 +126,13 @@ self.download_file(file_url, destination_folder=None)
 
 self.save_file_as(file_url, new_file_name, destination_folder=None)
 
-self.get_downloads_folder(file):
+self.get_downloads_folder(file)
 
-self.get_path_of_downloaded_file(file):
+self.get_path_of_downloaded_file(file)
 
-self.is_downloaded_file_present(file):
+self.is_downloaded_file_present(file)
 
-self.assert_downloaded_file(file):
+self.assert_downloaded_file(file)
 
 self.convert_xpath_to_css(xpath)
 
@@ -138,6 +140,9 @@ self.convert_to_css_selector(selector, by)
 
 self.set_value(selector, new_value, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
+
+self.js_update_text(selector, new_value, by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT)
 
 self.jquery_update_text_value(selector, new_value, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)

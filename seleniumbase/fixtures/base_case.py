@@ -22,7 +22,6 @@ Code becomes greatly simplified and easier to maintain.
 """
 
 import getpass
-import json
 import logging
 import math
 import os
@@ -122,6 +121,17 @@ class BaseCase(unittest.TestCase):
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
             element.click()
+        except WebDriverException:
+            self.wait_for_ready_state_complete()
+            if not by == By.LINK_TEXT:
+                # Only use a JavaScript click if not clicking by Link Text
+                self.__js_click(selector, by=by)
+            else:
+                # One more attempt to click on the element
+                element = page_actions.wait_for_element_visible(
+                    self.driver, selector, by, timeout=timeout)
+                element.click()
+
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -489,6 +499,20 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
+        except Exception:
+            exc_message = self._get_exception_message()
+            update = ("Your version of ChromeDriver may be out-of-date! "
+                      "Please go to "
+                      "https://sites.google.com/a/chromium.org/chromedriver/ "
+                      "and download the latest version to your system PATH! "
+                      "Original Exception Message: %s" % exc_message)
+            using_old_chromedriver = False
+            if "unknown error: call function result missing" in exc_message:
+                using_old_chromedriver = True
+            if self.browser == 'chrome' and using_old_chromedriver:
+                raise Exception(update)
+            else:
+                raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self._demo_mode_pause_if_active()
@@ -512,7 +536,7 @@ class BaseCase(unittest.TestCase):
             new_value - the new value for setting the text field
             by - the type of selector to search by (Default: CSS)
             timeout - how long to wait for the selector to be visible
-            retry - if True, use jquery if the selenium text update fails
+            retry - if True, use JS if the selenium text update fails
         """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
@@ -531,6 +555,8 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             element.clear()
+        except Exception:
+            pass  # Clearing the text field first isn't critical
         self._demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
         try:
@@ -556,10 +582,23 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
+        except Exception:
+            exc_message = self._get_exception_message()
+            update = ("Your version of ChromeDriver may be out-of-date! "
+                      "Please go to "
+                      "https://sites.google.com/a/chromium.org/chromedriver/ "
+                      "and download the latest version to your system PATH! "
+                      "Original Exception Message: %s" % exc_message)
+            using_old_chromedriver = False
+            if "unknown error: call function result missing" in exc_message:
+                using_old_chromedriver = True
+            if self.browser == 'chrome' and using_old_chromedriver:
+                raise Exception(update)
+            else:
+                raise Exception(exc_message)
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
-            logging.debug('update_text_value is falling back to jQuery!')
-            selector = re.escape(selector)
+            logging.debug('update_text() is falling back to JavaScript!')
             self.set_value(selector, new_value, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
@@ -772,7 +811,7 @@ class BaseCase(unittest.TestCase):
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=settings.HIGHLIGHTS, scroll=True):
-        """ This method uses fancy javascript to highlight an element.
+        """ This method uses fancy JavaScript to highlight an element.
             Used during demo_mode.
             @Params
             selector - the selector of the element to find
@@ -930,13 +969,37 @@ class BaseCase(unittest.TestCase):
     def click_xpath(self, xpath):
         self.click(xpath, by=By.XPATH)
 
-    def jquery_click(self, selector, by=By.CSS_SELECTOR):
+    def js_click(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks an element using pure JS. Does not use jQuery. """
         selector, by = self._recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
+        if by == By.LINK_TEXT:
+            message = (
+                "Pure JavaScript doesn't support clicking by Link Text. "
+                "You may want to use self.jquery_click() instead, which "
+                "allows this with :contains(), assuming jQuery isn't blocked. "
+                "For now, self.js_click() will use a regular WebDriver click.")
+            logging.debug(message)
+            self.click(selector, by=by)
+            return
+        element = self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if self.is_element_visible(selector, by=by):
+            self._demo_mode_highlight_if_active(selector, by)
+            if not self.demo_mode:
+                self._scroll_to_element(element)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        self.__js_click(selector, by=by)  # The real "magic" happens here
+        self._demo_mode_pause_if_active()
+
+    def jquery_click(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks an element using jQuery. Different from using pure JS. """
+        selector, by = self._recalculate_selector(selector, by)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
             self._demo_mode_highlight_if_active(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
         selector = self._make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click()""" % selector
         self.safe_execute_script(click_script)
@@ -1056,7 +1119,8 @@ class BaseCase(unittest.TestCase):
     def convert_to_css_selector(self, selector, by):
         """ This method converts a selector to a CSS_SELECTOR.
             jQuery commands require a CSS_SELECTOR for finding elements.
-            This method should only be used for jQuery actions. """
+            This method should only be used for jQuery/JavaScript actions.
+            Pure JavaScript doesn't support using a:contains("LINK_TEXT"). """
         if by == By.CSS_SELECTOR:
             return selector
         elif by == By.ID:
@@ -1080,21 +1144,21 @@ class BaseCase(unittest.TestCase):
 
     def set_value(self, selector, new_value, by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
-        """ This method uses jQuery to update a text field.
-            Similar to jquery_update_text_value(), but the element
-            doesn't need to be officially visible to work. """
+        """ This method uses JavaScript to update a text field. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         orginal_selector = selector
-        selector = self.convert_to_css_selector(selector, by=by)
-        self._demo_mode_highlight_if_active(selector, by)
-        self.scroll_to(selector, by=by, timeout=timeout)
-        value = json.dumps(new_value)
-        selector = self._make_css_match_first_element_only(selector)
-        set_value_script = """jQuery('%s').val(%s)""" % (selector, value)
-        self.safe_execute_script(set_value_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        self._demo_mode_highlight_if_active(orginal_selector, by)
+        if not self.demo_mode:
+            self.scroll_to(orginal_selector, by=by, timeout=timeout)
+        value = re.escape(new_value)
+        css_selector = re.escape(css_selector)
+        script = ("""document.querySelector('%s').value='%s';"""
+                  % (css_selector, value))
+        self.execute_script(script)
         if new_value.endswith('\n'):
             element = self.wait_for_element_present(
                 orginal_selector, by=by, timeout=timeout)
@@ -1103,12 +1167,20 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
         self._demo_mode_pause_if_active()
 
+    def js_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                       timeout=settings.LARGE_TIMEOUT):
+        """ Same as self.set_value() """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self._get_new_timeout(timeout)
+        self.set_value(
+            selector, new_value, by=by, timeout=timeout)
+
     def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
                                  timeout=settings.LARGE_TIMEOUT):
         """ This method uses jQuery to update a text field.
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
-            {Enter/Return} after the text is entered.  """
+            {Enter/Return} after the text is entered. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
@@ -1128,7 +1200,7 @@ class BaseCase(unittest.TestCase):
 
     def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                            timeout=settings.LARGE_TIMEOUT):
-        """ The shorter version of jquery_update_text_value()
+        """ The shorter version of self.jquery_update_text_value()
             (The longer version remains for backwards compatibility.) """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
@@ -1138,6 +1210,9 @@ class BaseCase(unittest.TestCase):
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         self._demo_mode_highlight_if_active(selector, by)
@@ -1154,6 +1229,14 @@ class BaseCase(unittest.TestCase):
             hover_by = By.XPATH
         if page_utils.is_xpath_selector(click_selector):
             click_by = By.XPATH
+        if page_utils.is_link_text_selector(hover_selector):
+            hover_selector = page_utils.get_link_text_from_selector(
+                hover_selector)
+            hover_by = By.LINK_TEXT
+        if page_utils.is_link_text_selector(click_selector):
+            click_selector = page_utils.get_link_text_from_selector(
+                click_selector)
+            click_by = By.LINK_TEXT
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self._demo_mode_highlight_if_active(hover_selector, hover_by)
@@ -1740,6 +1823,24 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def __js_click(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks an element using pure JS. Does not use jQuery. """
+        selector, by = self._recalculate_selector(selector, by)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        script = ("""var simulateClick = function (elem) {
+                         var evt = new MouseEvent('click', {
+                             bubbles: true,
+                             cancelable: true,
+                             view: window
+                         });
+                         var canceled = !elem.dispatchEvent(evt);
+                     };
+                     var someLink = document.querySelector('%s');
+                     simulateClick(someLink);"""
+                  % css_selector)
+        self.execute_script(script)
+
     def _get_href_from_link_text(self, link_text, hard_fail=True):
         href = self.get_link_attribute(link_text, "href", hard_fail)
         if not href:
@@ -1814,8 +1915,6 @@ class BaseCase(unittest.TestCase):
                 self._demo_mode_pause_if_active()
             else:
                 self._demo_mode_pause_if_active(tiny=True)
-
-    ############
 
     def _recalculate_selector(self, selector, by):
         # Try to determine the type of selector automatically

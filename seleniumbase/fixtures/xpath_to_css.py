@@ -35,6 +35,27 @@ class XpathException(Exception):
     pass
 
 
+def _handle_brackets_in_strings(xpath):
+    # Edge Case: Brackets in strings.
+    # Example from GitHub.com -
+    # '<input type="text" id="user[login]">' => '//*[@id="user[login]"]'
+    # Need to tell apart string-brackets from regular brackets
+    new_xpath = ""
+    chunks = xpath.split('"')
+    len_chunks = len(chunks)
+    for chunk_num in range(len_chunks):
+        if chunk_num % 2 != 0:
+            chunks[chunk_num] = chunks[chunk_num].replace(
+                '[', '_STR_L_bracket_')
+            chunks[chunk_num] = chunks[chunk_num].replace(
+                ']', '_STR_R_bracket_')
+        new_xpath += chunks[chunk_num]
+        if chunk_num != len_chunks - 1:
+            new_xpath += '"'
+    xpath = new_xpath
+    return xpath
+
+
 def _filter_xpath_grouping(xpath):
     """
     This method removes the outer parentheses for xpath grouping.
@@ -108,6 +129,9 @@ def _get_raw_css_from_xpath(xpath):
 
 
 def convert_xpath_to_css(xpath):
+    if xpath[0] != '"' and xpath[-1] != '"' and xpath.count('"') % 2 == 0:
+        xpath = _handle_brackets_in_strings(xpath)
+
     if xpath.startswith('('):
         xpath = _filter_xpath_grouping(xpath)
 
@@ -123,5 +147,9 @@ def convert_xpath_to_css(xpath):
             q2 = attr_def.find(']')
             new_attr_def = attr_def[:q1] + "'" + attr_def[q1:q2] + "']"
             css = css.replace(attr_def, new_attr_def)
+
+    # Replace the string-brackets with escaped ones
+    css = css.replace('_STR_L_bracket_', '\\[')
+    css = css.replace('_STR_R_bracket_', '\\]')
 
     return css
