@@ -499,6 +499,20 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
+        except Exception:
+            exc_message = self._get_exception_message()
+            update = ("Your version of ChromeDriver may be out-of-date! "
+                      "Please go to "
+                      "https://sites.google.com/a/chromium.org/chromedriver/ "
+                      "and download the latest version to your system PATH! "
+                      "Original Exception Message: %s" % exc_message)
+            using_old_chromedriver = False
+            if "unknown error: call function result missing" in exc_message:
+                using_old_chromedriver = True
+            if self.browser == 'chrome' and using_old_chromedriver:
+                raise Exception(update)
+            else:
+                raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self._demo_mode_pause_if_active()
@@ -541,6 +555,8 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             element.clear()
+        except Exception:
+            pass  # Clearing the text field first isn't critical
         self._demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
         try:
