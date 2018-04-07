@@ -1210,6 +1210,9 @@ class BaseCase(unittest.TestCase):
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         self._demo_mode_highlight_if_active(selector, by)
@@ -1226,6 +1229,14 @@ class BaseCase(unittest.TestCase):
             hover_by = By.XPATH
         if page_utils.is_xpath_selector(click_selector):
             click_by = By.XPATH
+        if page_utils.is_link_text_selector(hover_selector):
+            hover_selector = page_utils.get_link_text_from_selector(
+                hover_selector)
+            hover_by = By.LINK_TEXT
+        if page_utils.is_link_text_selector(click_selector):
+            click_selector = page_utils.get_link_text_from_selector(
+                click_selector)
+            click_by = By.LINK_TEXT
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self._demo_mode_highlight_if_active(hover_selector, hover_by)
