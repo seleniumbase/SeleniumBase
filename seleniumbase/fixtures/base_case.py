@@ -500,19 +500,8 @@ class BaseCase(unittest.TestCase):
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         except Exception:
-            exc_message = self._get_exception_message()
-            update = ("Your version of ChromeDriver may be out-of-date! "
-                      "Please go to "
-                      "https://sites.google.com/a/chromium.org/chromedriver/ "
-                      "and download the latest version to your system PATH! "
-                      "Original Exception Message: %s" % exc_message)
-            using_old_chromedriver = False
-            if "unknown error: call function result missing" in exc_message:
-                using_old_chromedriver = True
-            if self.browser == 'chrome' and using_old_chromedriver:
-                raise Exception(update)
-            else:
-                raise Exception(exc_message)
+            exc_message = self._get_improved_exception_message()
+            raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self._demo_mode_pause_if_active()
@@ -583,19 +572,8 @@ class BaseCase(unittest.TestCase):
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         except Exception:
-            exc_message = self._get_exception_message()
-            update = ("Your version of ChromeDriver may be out-of-date! "
-                      "Please go to "
-                      "https://sites.google.com/a/chromium.org/chromedriver/ "
-                      "and download the latest version to your system PATH! "
-                      "Original Exception Message: %s" % exc_message)
-            using_old_chromedriver = False
-            if "unknown error: call function result missing" in exc_message:
-                using_old_chromedriver = True
-            if self.browser == 'chrome' and using_old_chromedriver:
-                raise Exception(update)
-            else:
-                raise Exception(exc_message)
+            exc_message = self._get_improved_exception_message()
+            raise Exception(exc_message)
         if (retry and element.get_attribute('value') != new_value and (
                 not new_value.endswith('\n'))):
             logging.debug('update_text() is falling back to JavaScript!')
@@ -1728,6 +1706,28 @@ class BaseCase(unittest.TestCase):
                 exc_message = exception_info.message
             else:
                 exc_message = '(Unknown Exception)'
+        return exc_message
+
+    def _get_improved_exception_message(self):
+        """
+        If Chromedriver is out-of-date, make it clear!
+        Given the high popularity of the following StackOverflow article:
+        https://stackoverflow.com/questions/49162667/unknown-error-
+                call-function-result-missing-value-for-selenium-send-keys-even
+        ... the original error message was not helpful. Tell people directly.
+        (Only expected when using driver.send_keys() with an old Chromedriver.)
+        """
+        exc_message = self._get_exception_message()
+        maybe_using_old_chromedriver = False
+        if "unknown error: call function result missing" in exc_message:
+            maybe_using_old_chromedriver = True
+        if self.browser == 'chrome' and maybe_using_old_chromedriver:
+            update = ("Your version of ChromeDriver may be out-of-date! "
+                      "Please go to "
+                      "https://sites.google.com/a/chromium.org/chromedriver/ "
+                      "and download the latest version to your system PATH! "
+                      "Original Exception Message: %s" % exc_message)
+            exc_message = update
         return exc_message
 
     def _add_delayed_assert_failure(self):
