@@ -52,8 +52,7 @@ def _handle_brackets_in_strings(xpath):
         new_xpath += chunks[chunk_num]
         if chunk_num != len_chunks - 1:
             new_xpath += '"'
-    xpath = new_xpath
-    return xpath
+    return new_xpath
 
 
 def _filter_xpath_grouping(xpath):
