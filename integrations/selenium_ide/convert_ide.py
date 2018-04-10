@@ -1,5 +1,6 @@
 """
-Converts a Selenium IDE WebDriver-exported test file into a SeleniumBase file
+Converts a Selenium IDE WebDriver-exported test file into a SeleniumBase file.
+Works with Katalon Recorder scripts: http://www.katalon.com/automation-recorder
 
 Usage:
 python convert_ide.py [MY_TEST.py]
@@ -437,7 +438,7 @@ def main():
         if 'self.base_url' in line:
             line = line.replace("self.base_url", '"%s"' % ide_base_url)
 
-        # Convert driver. to self.driver. if not already done
+        # Convert "driver." to "self.driver." if not already done
         if 'driver.' in line and 'self.driver' not in line:
             line = line.replace('driver.', 'self.driver.')
 
