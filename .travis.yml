@@ -23,7 +23,7 @@ script:
   - "pytest examples/my_first_test.py --browser=chrome -s --headless"
   - "nosetests examples/boilerplates/boilerplate_test.py --headless"
   - "pytest examples/my_first_test.py --browser=firefox -s --headless"
-  - "pytest examples/github_test.py --browser=chrome -s --headless"
+  - "pytest examples/github_test.py --browser=chrome -s --headless --with-db_reporting"
 after_script:
   - "sudo mysql -e 'DROP DATABASE test_db;'"
 notifications:
