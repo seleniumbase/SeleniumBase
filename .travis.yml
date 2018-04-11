@@ -18,7 +18,7 @@ before_script:
   - "flake8 seleniumbase/*.py && flake8 seleniumbase/*/*.py && flake8 seleniumbase/*/*/*.py && flake8 seleniumbase/*/*/*/*.py"
   # - "export DISPLAY=:99.0 && sh -e /etc/init.d/xvfb start"
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
-  - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/testcaserepository.sql"
+  - "sudo mysql -h 127.0.0.1 -u root test_db -p test < seleniumbase/core/testcaserepository.sql"
   # - "sudo mysql -e 'SET PASSWORD FOR root@localhost = test;'"
   # - "sudo mysql -e 'FLUSH PRIVILEGES;'"
   # - "sudo mysql_upgrade"
