@@ -1,5 +1,4 @@
-
-## Automated Web-UI testing reimagined.
+## Automated testing made fast, easy, and reliable.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/laptop_logo.png" title="SeleniumBase" height="160">
 
