@@ -8,7 +8,9 @@ class TestcaseManager:
 
     def insert_execution_data(self, execution_query_payload):
         """ Inserts a test execution row into the database.
-            Returns the execution guid. """
+            Returns the execution guid.
+            "execution_start_time" is defined by milliseconds since the Epoch.
+            (See https://currentmillis.com to convert that to a real date.) """
 
         query = """INSERT INTO execution
                    (guid, execution_start, total_execution_time, username)
