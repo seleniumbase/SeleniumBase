@@ -66,7 +66,7 @@ class DBReporting(Plugin):
             data_payload.browser = test.browser
         else:
             data_payload.browser = "N/A"
-        data_payload.testcaseAddress = test.id()
+        data_payload.test_address = test.id()
         application = ApplicationManager.generate_application_string(test)
         data_payload.env = application.split('.')[0]
         data_payload.start_time = application.split('.')[1]
