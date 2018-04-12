@@ -28,7 +28,7 @@ script:
   - "nosetests examples/boilerplates/boilerplate_test.py --headless"
   - "pytest examples/my_first_test.py --browser=firefox -s --headless"
   - "pytest examples/github_test.py --browser=chrome -s --headless --with-db_reporting"
-  - "sudo mysql --password=test -e 'select testcaseAddress,browser,state,runtime from test_db.testcaseRunData'"
+  - "sudo mysql --password=test -e 'select test_address,browser,state,start_time,runtime from test_db.test_run_data'"
 after_script:
   - "sudo mysql -e 'DROP DATABASE test_db;'"
 notifications:
