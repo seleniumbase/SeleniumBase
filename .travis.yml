@@ -8,7 +8,8 @@ addons:
 before_install:
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
   - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/testcaserepository.sql"
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test') where user='root'; update user set plugin='mysql_native_password'; FLUSH PRIVILEGES;"
+  - "mysqladmin -u root password test"
+  - "sudo mysql -e 'FLUSH PRIVILEGES;'"
   - "sudo service mysql restart"
 install:
   - "pip install --upgrade pip"
