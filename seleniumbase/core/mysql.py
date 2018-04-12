@@ -16,7 +16,7 @@ class DatabaseManager():
         """
         Gets database information from mysql_conf.py and creates a connection.
         """
-        import mysql_conf as conf  # This had problems when using Python 3
+        from seleniumbase.core import mysql_conf as conf
         import MySQLdb
         db_server, db_user, db_pass, db_schema = \
             conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
