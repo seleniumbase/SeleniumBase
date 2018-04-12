@@ -626,36 +626,36 @@ Let's say you have a test that needs to access the database. First make sure you
 
 ```python
 from seleniumbase.core.mysql import DatabaseManager
-def write_data_to_db(self, theId, theValue, theUrl):
+def write_data_to_db(self, the_id, the_value, the_url):
     db = DatabaseManager()
-    query = """INSERT INTO myTable(theId,theValue,theUrl)
-               VALUES (%(theId)s,%(theValue)s,%(theUrl)s)"""
-    db.execute_query_and_close(query, {"theId":theId,
-                               "theValue":theValue,
-                               "theUrl":theUrl})
+    query = """INSERT INTO myTable(the_id,the_value,the_url)
+               VALUES (%(the_id)s,%(the_value)s,%(the_url)s)"""
+    db.execute_query_and_close(query, {"the_id":the_id,
+                               "the_value":the_value,
+                               "the_url":the_url})
 ```
 
 Access credentials are stored in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
 
-The following example below (taken from the Delayed Data Manager) shows how data can be pulled from the database.
+The following example below (taken from the Delayed Test Data Manager) shows how data can be pulled from the database.
 
 ```python
 import logging
 from seleniumbase.core.mysql import DatabaseManager
 
-def get_delayed_test_data(self, testcase_address, done=0):
+def get_delayed_test_data(self, test_address, is_done=0):
     """ Returns a list of rows """
     db = DatabaseManager()
-    query = """SELECT guid,testcaseAddress,insertedAt,expectedResult,done
-               FROM delayedTestData
-               WHERE testcaseAddress=%(testcase_address)s
-               AND done=%(done)s"""
-    data = db.fetchall_query_and_close(query, {"testcase_address":testcase_address, "done":done})
+    query = """SELECT guid,test_address,inserted_at,expected_result,is_done
+               FROM delayed_test_data
+               WHERE test_address=%(test_address)s
+               AND is_done=%(is_done)s"""
+    data = db.fetchall_query_and_close(query, {"test_address":test_address, "is_done":is_done})
     if data:
         return data
     else:
-        logging.debug("Could not find any rows in delayedTestData.")
-        logging.debug("DB Query = " + query % {"testcase_address":testcase_address, "done":done})
+        logging.debug("Could not find any rows in delayed_test_data.")
+        logging.debug("DB Query = " + query % {"test_address":test_address, "is_done":is_done})
         return []
 ```
 
