@@ -1,6 +1,5 @@
 """
-This file contains database credentials for the various databases
-that the tests need to access
+This file organizes connection details to the Testcase Database.
 """
 
 from seleniumbase.config import settings

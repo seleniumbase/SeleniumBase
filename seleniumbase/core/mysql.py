@@ -8,7 +8,7 @@ import time
 
 class DatabaseManager():
     """
-    This class wraps database functions for easy use.
+    This class wraps MySQL database methods for easy use.
     It connects to the testcase database.
     """
 
@@ -40,7 +40,7 @@ class DatabaseManager():
 
     def fetchall_query_and_close(self, query, values):
         """
-        Executes a query, gets all the values and then closes up the connection
+        Executes a query, gets all the values, and closes the connection.
         """
         self.cursor.execute(query, values)
         retval = self.cursor.fetchall()
@@ -49,7 +49,7 @@ class DatabaseManager():
 
     def fetchone_query_and_close(self, query, values):
         """
-        Executes a query, gets the first value, and closes up the connection
+        Executes a query, gets the first value, and closes the connection.
         """
         self.cursor.execute(query, values)
         retval = self.cursor.fetchone()
@@ -58,7 +58,7 @@ class DatabaseManager():
 
     def execute_query_and_close(self, query, values):
         """
-        Executes a query and closes the connection
+        Executes a query and closes the connection.
         """
         retval = self.cursor.execute(query, values)
         self.__close_db()
