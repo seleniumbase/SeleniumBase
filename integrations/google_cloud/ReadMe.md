@@ -168,7 +168,7 @@ If you have a web application that you want to test, you'll be able to create Se
 
 #### Step 26. Create the necessary tables in your MySQL database/schema
 
-* Run a SQL script in your MySQL database/schema using [testcaserepository.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/testcaserepository.sql)
+* Run the [create_db_tables.sql](https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/seleniumbase/core/create_db_tables.sql) script in your MySQL database/schema to create all the required DB tables. 
 
 #### Step 27. Have your local clone of SeleniumBase connect to your MySQL Instance
 
