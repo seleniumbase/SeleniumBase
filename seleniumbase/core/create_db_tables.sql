@@ -1,3 +1,5 @@
+# Creates test_db tables for using SeleniumBase with MySQL
+
 # test_run_data table
 # -----------------------------------
 CREATE TABLE `test_run_data` (

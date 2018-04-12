@@ -7,7 +7,7 @@ addons:
   chrome: stable
 before_install:
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
-  - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/testcaserepository.sql"
+  - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/create_db_tables.sql"
   - "mysqladmin -u root password test"
   # - "mysqladmin -u root -p'old_password' password new_password"
   - "sudo service mysql restart"
