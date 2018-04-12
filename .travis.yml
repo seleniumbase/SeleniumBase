@@ -9,7 +9,6 @@ before_install:
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
   - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/testcaserepository.sql"
   - "mysqladmin -u root password test"
-  - "sudo mysql -e 'FLUSH PRIVILEGES;'"
   - "sudo service mysql restart"
 install:
   - "pip install --upgrade pip"
