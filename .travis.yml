@@ -14,7 +14,7 @@ before_install:
 install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt --upgrade"
-  - "pip install MySQL-python==1.2.5"
+  # - "pip install MySQL-python==1.2.5"
   - "python setup.py develop"
   - "sudo rm -f /etc/boto.cfg"
 before_script:
