@@ -16,7 +16,7 @@ class TestcaseManager:
                    (guid, execution_start, total_execution_time, username)
                    VALUES (%(guid)s,%(execution_start_time)s,
                            %(total_execution_time)s,%(username)s)"""
-        DatabaseManager(self.database_env).execute_query_and_close(
+        DatabaseManager(self.database_env).execute_query(
             query,
             execution_query_payload.get_params())
         return execution_query_payload.guid
@@ -26,7 +26,7 @@ class TestcaseManager:
         query = """UPDATE execution
                    SET total_execution_time=%(execution_time)s
                    WHERE guid=%(execution_guid)s """
-        DatabaseManager(self.database_env).execute_query_and_close(
+        DatabaseManager(self.database_env).execute_query(
             query,
             {"execution_guid": execution_guid,
              "execution_time": execution_time})
@@ -48,7 +48,7 @@ class TestcaseManager:
                               %(retry_count)s,
                               %(message)s,
                               %(stack_trace)s) """
-        DatabaseManager(self.database_env).execute_query_and_close(
+        DatabaseManager(self.database_env).execute_query(
             query, testcase_run_payload.get_params())
 
     def update_testcase_data(self, testcase_payload):
@@ -60,14 +60,14 @@ class TestcaseManager:
                             stack_trace=%(stack_trace)s,
                             message=%(message)s
                             WHERE guid=%(guid)s """
-        DatabaseManager(self.database_env).execute_query_and_close(
+        DatabaseManager(self.database_env).execute_query(
             query, testcase_payload.get_params())
 
     def update_testcase_log_url(self, testcase_payload):
         query = """UPDATE test_run_data
                    SET log_url=%(log_url)s
                    WHERE guid=%(guid)s """
-        DatabaseManager(self.database_env).execute_query_and_close(
+        DatabaseManager(self.database_env).execute_query(
             query, testcase_payload.get_params())
 
 

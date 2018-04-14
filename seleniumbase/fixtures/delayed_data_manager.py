@@ -22,7 +22,7 @@ class DelayedTestStorage:
                    FROM delayed_test_data
                    WHERE test_address=%(test_address)s
                    AND is_done=%(is_done)s"""
-        data = db.fetchall_query_and_close(
+        data = db.query_fetch_all(
             query, {"test_address": test_address,
                     "is_done": is_done})
         if data:
@@ -57,7 +57,7 @@ class DelayedTestStorage:
                    VALUES (%(guid)s,%(test_address)s,%(inserted_at)s,
                            %(expected_result)s,%(is_done)s,%(expires_at)s)"""
 
-        db.execute_query_and_close(
+        db.execute_query(
             query, {"guid": guid_,
                     "test_address": test_address,
                     "inserted_at": inserted_at,
@@ -79,7 +79,7 @@ class DelayedTestStorage:
                    SET is_done=TRUE
                    WHERE guid=%(guid)s
                    AND is_done=FALSE"""
-        db.execute_query_and_close(query, {"guid": guid_})
+        db.execute_query(query, {"guid": guid_})
         return True
 
 

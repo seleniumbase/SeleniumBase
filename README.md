@@ -630,9 +630,9 @@ def write_data_to_db(self, the_id, the_value, the_url):
     db = DatabaseManager()
     query = """INSERT INTO myTable(the_id,the_value,the_url)
                VALUES (%(the_id)s,%(the_value)s,%(the_url)s)"""
-    db.execute_query_and_close(query, {"the_id":the_id,
-                               "the_value":the_value,
-                               "the_url":the_url})
+    db.execute_query(query, {"the_id":the_id,
+                     "the_value":the_value,
+                     "the_url":the_url})
 ```
 
 Access credentials are stored in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
@@ -650,7 +650,7 @@ def get_delayed_test_data(self, test_address, is_done=0):
                FROM delayed_test_data
                WHERE test_address=%(test_address)s
                AND is_done=%(is_done)s"""
-    data = db.fetchall_query_and_close(query, {"test_address":test_address, "is_done":is_done})
+    data = db.fetchall_query(query, {"test_address":test_address, "is_done":is_done})
     if data:
         return data
     else:
