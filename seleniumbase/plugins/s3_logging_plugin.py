@@ -47,5 +47,5 @@ class S3Logging(Plugin):
             self.testcase_manager = TestcaseManager(self.options.database_env)
             data_payload = TestcaseDataPayload()
             data_payload.guid = test.test.testcase_guid
-            data_payload.logURL = index_file
+            data_payload.log_url = index_file
             self.testcase_manager.update_testcase_log_url(data_payload)

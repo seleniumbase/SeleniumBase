@@ -1,6 +1,5 @@
 """
-This is the Database test reporting plugin for
-recording all test run data in the database.
+This plugin is for recording test results in the Testcase Database.
 """
 
 import getpass
@@ -19,7 +18,7 @@ from seleniumbase.fixtures import errors
 
 class DBReporting(Plugin):
     """
-    The plugin for reporting test results in the database.
+    This plugin records test results in the Testcase Database.
     """
     name = 'db_reporting'  # Usage: --with-db_reporting
 
@@ -48,8 +47,8 @@ class DBReporting(Plugin):
         self.testcase_manager = TestcaseManager(self.options.database_env)
 
     def begin(self):
-        """At the start of the run, we want to record the test
-        execution information in the database."""
+        """ At the start of the run, we want to record the test
+            execution information in the database. """
         exec_payload = ExecutionQueryPayload()
         exec_payload.execution_start_time = int(time.time() * 1000)
         self.execution_start_time = exec_payload.execution_start_time
@@ -58,7 +57,7 @@ class DBReporting(Plugin):
         self.testcase_manager.insert_execution_data(exec_payload)
 
     def startTest(self, test):
-        """At the start of the test, set the testcase details."""
+        """ At the start of the test, set the testcase details. """
         data_payload = TestcaseDataPayload()
         self.testcase_guid = str(uuid.uuid4())
         data_payload.guid = self.testcase_guid
@@ -67,7 +66,7 @@ class DBReporting(Plugin):
             data_payload.browser = test.browser
         else:
             data_payload.browser = "N/A"
-        data_payload.testcaseAddress = test.id()
+        data_payload.test_address = test.id()
         application = ApplicationManager.generate_application_string(test)
         data_payload.env = application.split('.')[0]
         data_payload.start_time = application.split('.')[1]
@@ -78,8 +77,8 @@ class DBReporting(Plugin):
         test.testcase_guid = self.testcase_guid
 
     def finalize(self, result):
-        """At the end of the run, we want to
-        update the DB row with the execution time."""
+        """ At the end of the run, we want to
+        update the DB row with the execution time. """
         runtime = int(time.time() * 1000) - self.execution_start_time
         self.testcase_manager.update_execution_data(self.execution_guid,
                                                     runtime)

@@ -2062,7 +2062,7 @@ class BaseCase(unittest.TestCase):
                     data_payload.browser = self.browser
                 else:
                     data_payload.browser = "N/A"
-                data_payload.testcaseAddress = test_id
+                data_payload.test_address = test_id
                 application = ApplicationManager.generate_application_string(
                     self._testMethodName)
                 data_payload.env = application.split('.')[0]
@@ -2176,7 +2176,34 @@ class BaseCase(unittest.TestCase):
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
-            if self.with_selenium:
+            try:
+                with_selenium = self.with_selenium
+            except Exception:
+                sub_class_name = str(
+                    self.__class__.__bases__[0]).split('.')[-1].split("'")[0]
+                sub_file_name = str(self.__class__.__bases__[0]).split('.')[-2]
+                sub_file_name = sub_file_name + ".py"
+                class_name = str(self.__class__).split('.')[-1].split("'")[0]
+                file_name = str(self.__class__).split('.')[-2] + ".py"
+                class_name_used = sub_class_name
+                file_name_used = sub_file_name
+                if sub_class_name == "BaseCase":
+                    class_name_used = class_name
+                    file_name_used = file_name
+                fix_setup = "super(%s, self).setUp()" % class_name_used
+                fix_teardown = "super(%s, self).tearDown()" % class_name_used
+                message = ("You're overriding SeleniumBase's BaseCase setUp() "
+                           "method with your own setUp() method, which breaks "
+                           "SeleniumBase. You can fix this by going to your "
+                           "%s class located in your %s file and adding the "
+                           "following line of code AT THE BEGINNING of your "
+                           "setUp() method:\n%s\n\nAlso make sure "
+                           "you have added the following line of code AT THE "
+                           "END of your tearDown() method:\n%s\n"
+                           % (class_name_used, file_name_used,
+                              fix_setup, fix_teardown))
+                raise Exception(message)
+            if with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
                 if has_exception:
                     self._add_pytest_html_extra()

@@ -1,5 +1,4 @@
-
-## Automated Web-UI testing reimagined.
+## Automated testing made fast, easy, and reliable.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/laptop_logo.png" title="SeleniumBase" height="160">
 
@@ -610,7 +609,7 @@ Let's say you have a test that sends an email, and now you want to check that th
 from seleniumbase.fixtures.email_manager import EmailManager, EmailException
 num_email_results = 0
 email_subject = "This is the subject to search for (maybe include a timestamp)"
-email_manager = EmailManager("[YOUR SELENIUM GMAIL EMAIL ADDRESS]")  # the password for this is elsewhere (in the library) because this is a default email account
+email_manager = EmailManager("{YOUR SELENIUM GMAIL ACCOUNT EMAIL ADDRESS}")  # the password for this would be stored in seleniumbase/config/settings.py
 try:
     html_text = email_manager.search(SUBJECT="%s" % email_subject, timeout=300)
     num_email_results = len(html_text)
@@ -620,49 +619,6 @@ self.assertTrue(num_email_results)  # true if not zero
 ```
 
 Now you can parse through the email if you're looking for specific text or want to navigate to a link listed there.
-
-
-####  Database Powers: 
-Let's say you have a test that needs to access the database. First make sure you already have a table ready. Then try this example:
-
-```python
-from seleniumbase.core.mysql import DatabaseManager
-def write_data_to_db(self, theId, theValue, theUrl):
-    db = DatabaseManager()
-    query = """INSERT INTO myTable(theId,theValue,theUrl)
-               VALUES (%(theId)s,%(theValue)s,%(theUrl)s)"""
-    db.execute_query_and_close(query, {"theId":theId,
-                               "theValue":theValue,
-                               "theUrl":theUrl})
-```
-
-Access credentials are stored in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
-
-The following example below (taken from the Delayed Data Manager) shows how data can be pulled from the database.
-
-```python
-import logging
-from seleniumbase.core.mysql import DatabaseManager
-
-def get_delayed_test_data(self, testcase_address, done=0):
-    """ Returns a list of rows """
-    db = DatabaseManager()
-    query = """SELECT guid,testcaseAddress,insertedAt,expectedResult,done
-               FROM delayedTestData
-               WHERE testcaseAddress=%(testcase_address)s
-               AND done=%(done)s"""
-    data = db.fetchall_query_and_close(query, {"testcase_address":testcase_address, "done":done})
-    if data:
-        return data
-    else:
-        logging.debug("Could not find any rows in delayedTestData.")
-        logging.debug("DB Query = " + query % {"testcase_address":testcase_address, "done":done})
-        return []
-```
-
-Now you know how to pull data from your MySQL DB.
-
-Delayed Data usage example: If you scheduled an email to go out 3 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 3 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up
