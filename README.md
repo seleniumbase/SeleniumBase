@@ -609,7 +609,7 @@ Let's say you have a test that sends an email, and now you want to check that th
 from seleniumbase.fixtures.email_manager import EmailManager, EmailException
 num_email_results = 0
 email_subject = "This is the subject to search for (maybe include a timestamp)"
-email_manager = EmailManager("[YOUR SELENIUM GMAIL EMAIL ADDRESS]")  # the password for this is elsewhere (in the library) because this is a default email account
+email_manager = EmailManager("{YOUR SELENIUM GMAIL ACCOUNT EMAIL ADDRESS}")  # the password for this would be stored in seleniumbase/config/settings.py
 try:
     html_text = email_manager.search(SUBJECT="%s" % email_subject, timeout=300)
     num_email_results = len(html_text)
