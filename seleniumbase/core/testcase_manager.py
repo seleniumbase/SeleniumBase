@@ -12,7 +12,7 @@ class TestcaseManager:
             "execution_start_time" is defined by milliseconds since the Epoch.
             (See https://currentmillis.com to convert that to a real date.) """
 
-        query = """INSERT INTO execution
+        query = """INSERT INTO test_execution
                    (guid, execution_start, total_execution_time, username)
                    VALUES (%(guid)s,%(execution_start_time)s,
                            %(total_execution_time)s,%(username)s)"""
@@ -23,7 +23,7 @@ class TestcaseManager:
 
     def update_execution_data(self, execution_guid, execution_time):
         """ Updates an existing test execution row in the database. """
-        query = """UPDATE execution
+        query = """UPDATE test_execution
                    SET total_execution_time=%(execution_time)s
                    WHERE guid=%(execution_guid)s """
         DatabaseManager(self.database_env).execute_query(

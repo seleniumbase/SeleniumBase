@@ -19,9 +19,9 @@ CREATE TABLE `test_run_data` (
   PRIMARY KEY (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# execution table
+# test_execution table
 # -----------------------------------
-CREATE TABLE `execution` (
+CREATE TABLE `test_execution` (
   `guid` varchar(64) NOT NULL DEFAULT '',
   `total_execution_time` int(11),
   `username` varchar(255) DEFAULT NULL,
