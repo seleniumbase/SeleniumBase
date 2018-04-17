@@ -9,7 +9,7 @@ class GitHubTests(BaseCase):
     # "Please wait a few minutes before you try again."
     # To avoid this, slow down Selenium actions.
     def slow_click(self, css_selector):
-        time.sleep(0.75)
+        time.sleep(1)
         self.click(css_selector)
 
     def test_github(self):
