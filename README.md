@@ -637,7 +637,7 @@ def write_data_to_db(self, the_id, the_value, the_url):
 
 Access credentials are stored in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
 
-The following example below (taken from the Delayed Test Data Manager) shows how data can be pulled from the database.
+The following example below (taken from the Divided Test Data Manager) shows how data can be pulled from the database.
 
 ```python
 import logging
