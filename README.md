@@ -643,25 +643,25 @@ The following example below (taken from the Delayed Test Data Manager) shows how
 import logging
 from seleniumbase.core.mysql import DatabaseManager
 
-def get_delayed_test_data(self, test_address, is_done=0):
+def get_divided_test_data(self, test_address, is_done=0):
     """ Returns a list of rows """
     db = DatabaseManager()
-    query = """SELECT guid,test_address,inserted_at,expected_result,is_done
-               FROM delayed_test_data
+    query = """SELECT guid,test_address,inserted_at,test_data,is_done
+               FROM divided_test_data
                WHERE test_address=%(test_address)s
                AND is_done=%(is_done)s"""
     data = db.fetchall_query(query, {"test_address":test_address, "is_done":is_done})
     if data:
         return data
     else:
-        logging.debug("Could not find any rows in delayed_test_data.")
+        logging.debug("Could not find any rows in divided_test_data.")
         logging.debug("DB Query = " + query % {"test_address":test_address, "is_done":is_done})
         return []
 ```
 
 Now you know how to pull data from your MySQL DB.
 
-Delayed Data usage example: If you scheduled an email to go out 3 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 3 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
+Divided Test usage example: If you scheduled an email to go out 3 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 3 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up

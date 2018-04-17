@@ -29,15 +29,15 @@ CREATE TABLE `execution` (
   PRIMARY KEY (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# delayed_test_data table
+# divided_test_data table
 # -----------------------------------
-CREATE TABLE `delayed_test_data` (
+CREATE TABLE `divided_test_data` (
   `guid` varchar(64) NOT NULL DEFAULT '',
   `test_address` varchar(255) NOT NULL DEFAULT '',
   `inserted_at` bigint(20) NOT NULL,
-  `expected_result` text,
+  `test_data` text,
   `is_done` tinyint(1) DEFAULT '0',
-  `expires_at` bigint(20) DEFAULT NULL,
+  `wait_time` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`guid`),
   UNIQUE KEY `uuid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
