@@ -621,49 +621,6 @@ self.assertTrue(num_email_results)  # true if not zero
 Now you can parse through the email if you're looking for specific text or want to navigate to a link listed there.
 
 
-####  Database Powers: 
-Let's say you have a test that needs to access the database. First make sure you already have a table ready. Then try this example:
-
-```python
-from seleniumbase.core.mysql import DatabaseManager
-def write_data_to_db(self, the_id, the_value, the_url):
-    db = DatabaseManager()
-    query = """INSERT INTO myTable(the_id,the_value,the_url)
-               VALUES (%(the_id)s,%(the_value)s,%(the_url)s)"""
-    db.execute_query(query, {"the_id":the_id,
-                     "the_value":the_value,
-                     "the_url":the_url})
-```
-
-Access credentials are stored in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for your convenience (you have to add them first).
-
-The following example below (taken from the Divided Test Data Manager) shows how data can be pulled from the database.
-
-```python
-import logging
-from seleniumbase.core.mysql import DatabaseManager
-
-def get_divided_test_data(self, test_address, is_done=0):
-    """ Returns a list of rows """
-    db = DatabaseManager()
-    query = """SELECT guid,test_address,inserted_at,test_data,is_done
-               FROM divided_test_data
-               WHERE test_address=%(test_address)s
-               AND is_done=%(is_done)s"""
-    data = db.fetchall_query(query, {"test_address":test_address, "is_done":is_done})
-    if data:
-        return data
-    else:
-        logging.debug("Could not find any rows in divided_test_data.")
-        logging.debug("DB Query = " + query % {"test_address":test_address, "is_done":is_done})
-        return []
-```
-
-Now you know how to pull data from your MySQL DB.
-
-Divided Test usage example: If you scheduled an email to go out 3 hours from now and you wanted to check that the email gets received (but you don't want your test sitting idle for 3 hours) you can store the email credentials as a unique time-stamp for the email subject in the DB (along with a time for when it's safe for the email to be searched for) and then a later-running test can do the checking after the right amount of time has passed.
-
-
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up
 
 **Congratulations** on learning how to use **SeleniumBase**!

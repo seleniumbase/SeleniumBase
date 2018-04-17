@@ -28,16 +28,3 @@ CREATE TABLE `test_execution` (
   `execution_start` bigint(20) DEFAULT '0',
   PRIMARY KEY (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-# divided_test_data table
-# -----------------------------------
-CREATE TABLE `divided_test_data` (
-  `guid` varchar(64) NOT NULL DEFAULT '',
-  `test_address` varchar(255) NOT NULL DEFAULT '',
-  `inserted_at` bigint(20) NOT NULL,
-  `test_data` text,
-  `is_done` tinyint(1) DEFAULT '0',
-  `wait_time` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`guid`),
-  UNIQUE KEY `uuid` (`guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
