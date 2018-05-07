@@ -735,6 +735,174 @@ class BaseCase(unittest.TestCase):
         # Since jQuery still isn't activating, give up and raise an exception
         raise Exception("Exception: WebDriver could not activate jQuery!")
 
+    def activate_messenger(self):
+        jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
+        messenger_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                        "/messenger/1.5.0/js/messenger.min.js")
+        msgr_theme_flat_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                              "/messenger/1.5.0/js/messenger-theme-flat.js")
+        msg_theme_future_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                               "/messenger/1.5.0/js/messenger-theme-future.js")
+        msgr_theme_block_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                               "/messenger/1.5.0/js/messenger-theme-block.js")
+        msgr_theme_air_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                             "/messenger/1.5.0/js/messenger-theme-air.js")
+        msgr_theme_ice_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                             "/messenger/1.5.0/js/messenger-theme-ice.js")
+        underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                         "/underscore.js/1.4.3/underscore-min.js")
+        backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                       "/backbone.js/0.9.10/backbone-min.js")
+        spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                       "/messenger/1.5.0/css/messenger-spinner.css")
+        messenger_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                         "/messenger/1.5.0/css/messenger.css")
+        msgr_theme_flat_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                               "/messenger/1.5.0/css/messenger-theme-flat.css")
+        msgr_theme_futur_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                "/messenger/1.5.0/css/"
+                                "messenger-theme-future.css")
+        msgr_theme_block_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                "/messenger/1.5.0/css/"
+                                "messenger-theme-block.css")
+        msgr_theme_air_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                              "/messenger/1.5.0/css/messenger-theme-air.css")
+        msgr_theme_ice_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                              "/messenger/1.5.0/css/messenger-theme-ice.css")
+
+        add_css_link = (
+            '''var link = document.createElement("link"); '''
+            '''link.rel = "stylesheet"; '''
+            '''link.type = "text/css"; '''
+            '''link.href = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(link);''')
+        add_js_script = (
+            '''var script = document.createElement("script"); '''
+            '''script.src = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(script);''')
+        msg_style = ("Messenger.options = {'maxMessages': 8, "
+                     "extraClasses: 'messenger-fixed "
+                     "messenger-on-bottom messenger-on-right', "
+                     "theme: 'future'}")
+
+        jquery_script = add_js_script % jquery_js
+        messenger_css_script = add_css_link % messenger_css
+        messenger_theme_flat_css_script = add_css_link % msgr_theme_flat_css
+        messenger_theme_future_css_script = add_css_link % msgr_theme_futur_css
+        messenger_theme_block_css_script = add_css_link % msgr_theme_block_css
+        messenger_theme_air_css_script = add_css_link % msgr_theme_air_css
+        messenger_theme_ice_css_script = add_css_link % msgr_theme_ice_css
+        underscore_js_script = add_js_script % underscore_js
+        backbone_js_script = add_js_script % backbone_js
+        spinner_css_script = add_css_link % spinner_css
+        messenger_js_script = add_js_script % messenger_js
+        messenger_theme_flat_js_script = add_js_script % msgr_theme_flat_js
+        messenger_theme_future_js_script = add_js_script % msg_theme_future_js
+        messenger_theme_block_js_script = add_js_script % msgr_theme_block_js
+        messenger_theme_air_js_script = add_js_script % msgr_theme_air_js
+        messenger_theme_ice_js_script = add_js_script % msgr_theme_ice_js
+        self.execute_script(jquery_script)
+        self.execute_script(messenger_css_script)
+        self.execute_script(messenger_theme_flat_css_script)
+        self.execute_script(messenger_theme_future_css_script)
+        self.execute_script(messenger_theme_block_css_script)
+        self.execute_script(messenger_theme_air_css_script)
+        self.execute_script(messenger_theme_ice_css_script)
+        self.execute_script(underscore_js_script)
+        self.execute_script(backbone_js_script)
+        self.execute_script(spinner_css_script)
+        self.execute_script(messenger_js_script)
+        self.execute_script(messenger_theme_flat_js_script)
+        self.execute_script(messenger_theme_future_js_script)
+        self.execute_script(messenger_theme_block_js_script)
+        self.execute_script(messenger_theme_air_js_script)
+        self.execute_script(messenger_theme_ice_js_script)
+
+        for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+            # Messenger needs a small amount of time to load & activate.
+            try:
+                self.execute_script(msg_style)
+                return
+            except Exception:
+                time.sleep(0.1)
+
+    def set_messenger_theme(self, theme="default", location="default",
+                            max_messages="default"):
+        if theme == "default":
+            theme = "future"
+        if location == "default":
+            location = "bottom_right"
+        if max_messages == "default":
+            max_messages = "8"
+
+        valid_themes = ['flat', 'future', 'block', 'air', 'ice']
+        if theme not in valid_themes:
+            raise Exception("Theme: %s is not in %s!" % (theme, valid_themes))
+        valid_locations = (['top_left', 'top_center', 'top_right'
+                            'bottom_left', 'bottom_center', 'bottom_right'])
+        if location not in valid_locations:
+            raise Exception(
+                "Location: %s is not in %s!" % (location, valid_locations))
+
+        if location == 'top_left':
+            messenger_location = "messenger-on-top messenger-on-left"
+        elif location == 'top_center':
+            messenger_location = "messenger-on-top"
+        elif location == 'top_right':
+            messenger_location = "messenger-on-top messenger-on-right"
+        elif location == 'bottom_left':
+            messenger_location = "messenger-on-bottom messenger-on-left"
+        elif location == 'bottom_center':
+            messenger_location = "messenger-on-bottom"
+        elif location == 'bottom_right':
+            messenger_location = "messenger-on-bottom messenger-on-right"
+
+        msg_style = ("Messenger.options = {'maxMessages': %s, "
+                     "extraClasses: 'messenger-fixed %s', theme: '%s'}"
+                     % (max_messages, messenger_location, theme))
+        try:
+            self.execute_script(msg_style)
+        except Exception:
+            self.activate_messenger()
+            self.execute_script(msg_style)
+        time.sleep(0.1)
+
+    def post_message(self, message, style="info", duration=None):
+        """ Post a message on the screen with Messenger.
+            Arguments:
+                message: The message to display.
+                style: "info", "success", or "error".
+                duration: The time until the message vanishes.
+
+            You can also post messages by using =>
+                self.execute_script('Messenger().post("My Message")')
+             """
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
+                            '''hideAfter: %s, hideOnNavigate: true});'''
+                            % (message, style, duration))
+        try:
+            self.execute_script(messenger_script)
+        except Exception:
+            self.activate_messenger()
+            self.set_messenger_theme()
+            try:
+                self.execute_script(messenger_script)
+                return
+            except Exception:
+                time.sleep(0.2)
+                self.activate_messenger()
+                time.sleep(0.2)
+                self.set_messenger_theme()
+                time.sleep(0.5)
+                self.execute_script(messenger_script)
+
     def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
         """ Returns the property value of a page element's computed style.
@@ -824,17 +992,17 @@ class BaseCase(unittest.TestCase):
 
         if ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
-            self.__highlight_with_js(selector, loops, scroll, o_bs)
+            self.__highlight_with_js(selector, loops, o_bs)
         else:
             selector = self._make_css_match_first_element_only(selector)
             selector = re.escape(selector)
             try:
-                self.__highlight_with_jquery(selector, loops, scroll, o_bs)
+                self.__highlight_with_jquery(selector, loops, o_bs)
             except Exception:
                 pass  # JQuery probably couldn't load. Skip highlighting.
         time.sleep(0.065)
 
-    def __highlight_with_js(self, selector, loops, scroll, o_bs):
+    def __highlight_with_js(self, selector, loops, o_bs):
         script = ("""document.querySelector('%s').style =
                   'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
                   % selector)
@@ -845,39 +1013,39 @@ class BaseCase(unittest.TestCase):
                       'box-shadow: 0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
                       % selector)
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = ("""document.querySelector('%s').style =
                       'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
                       % selector)
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = ("""document.querySelector('%s').style =
                       'box-shadow: 0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
                       % selector)
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = ("""document.querySelector('%s').style =
                       'box-shadow: 0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
                       % selector)
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = ("""document.querySelector('%s').style =
                       'box-shadow: 0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
                       % selector)
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = ("""document.querySelector('%s').style =
                       'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
                       % selector)
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
 
         script = ("""document.querySelector('%s').style =
                   'box-shadow: %s';"""
                   % (selector, o_bs))
         self.execute_script(script)
 
-    def __highlight_with_jquery(self, selector, loops, scroll, o_bs):
+    def __highlight_with_jquery(self, selector, loops, o_bs):
         script = """jQuery('%s').css('box-shadow',
             '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
         self.safe_execute_script(script)
@@ -886,27 +1054,27 @@ class BaseCase(unittest.TestCase):
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(0, 0, 255, 1)');""" % selector
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(0, 255, 0, 1)');""" % selector
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(128, 128, 0, 1)');""" % selector
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
             script = """jQuery('%s').css('box-shadow',
                 '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
             self.execute_script(script)
-            time.sleep(0.02)
+            time.sleep(0.0181)
 
         script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
         self.execute_script(script)
@@ -1358,6 +1526,15 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
+
+        if self.demo_mode:
+            if page_utils.is_xpath_selector(selector):
+                by = By.XPATH
+            if page_utils.is_link_text_selector(selector):
+                selector = page_utils.get_link_text_from_selector(selector)
+                by = By.LINK_TEXT
+            messenger_post = "ASSERT %s: %s" % (by, selector)
+            self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
     # For backwards compatibility, earlier method names of the next
@@ -1401,6 +1578,16 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+
+        if self.demo_mode:
+            if page_utils.is_xpath_selector(selector):
+                by = By.XPATH
+            if page_utils.is_link_text_selector(selector):
+                selector = page_utils.get_link_text_from_selector(selector)
+                by = By.LINK_TEXT
+            messenger_post = ("ASSERT TEXT {%s} in %s: %s"
+                              % (text, by, selector))
+            self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
     # For backwards compatibility, earlier method names of the next
@@ -1434,6 +1621,10 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self._get_new_timeout(timeout)
         self.wait_for_link_text_visible(link_text, timeout=timeout)
+        if self.demo_mode:
+            messenger_post = ("ASSERT LINK TEXT {%s}." % link_text)
+            self.__highlight_with_assert_success(
+                messenger_post, link_text, by=By.LINK_TEXT)
         return True
 
     # For backwards compatibility, earlier method names of the next
@@ -1990,6 +2181,112 @@ class BaseCase(unittest.TestCase):
             # Add small recovery time for long-distance slow-scrolling
             time.sleep(0.162)
 
+    def _post_messenger_success_message(self, message, duration=None):
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        try:
+            self.post_message(
+                re.escape(message), style="success", duration=duration)
+            time.sleep(duration)
+        except Exception:
+            pass
+
+    def __highlight_with_assert_success(
+            self, message, selector, by=By.CSS_SELECTOR):
+        selector, by = self._recalculate_selector(selector, by)
+        element = self.find_element(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't highlight if can't convert to CSS_SELECTOR
+            return
+
+        o_bs = ''  # original_box_shadow
+        style = element.get_attribute('style')
+        if style:
+            if 'box-shadow: ' in style:
+                box_start = style.find('box-shadow: ')
+                box_end = style.find(';', box_start) + 1
+                original_box_shadow = style[box_start:box_end]
+                o_bs = original_box_shadow
+
+        if ":contains" not in selector and ":first" not in selector:
+            selector = re.escape(selector)
+            self.__highlight_with_js_2(message, selector, o_bs)
+        else:
+            selector = self._make_css_match_first_element_only(selector)
+            selector = re.escape(selector)
+            try:
+                self.__highlight_with_jquery_2(message, selector, o_bs)
+            except Exception:
+                pass  # JQuery probably couldn't load. Skip highlighting.
+        time.sleep(0.065)
+
+    def __highlight_with_js_2(self, message, selector, o_bs):
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
+                  % selector)
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: 0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
+                  % selector)
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+                  % selector)
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: 0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
+                  % selector)
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: 0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
+                  % selector)
+        self.execute_script(script)
+        time.sleep(0.0181)
+
+        self._post_messenger_success_message(message)
+
+        script = ("""document.querySelector('%s').style =
+                  'box-shadow: %s';"""
+                  % (selector, o_bs))
+        self.execute_script(script)
+
+    def __highlight_with_jquery_2(self, message, selector, o_bs):
+        script = """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
+        self.safe_execute_script(script)
+        time.sleep(0.0181)
+        script = """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(205, 30, 0, 1)');""" % selector
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(50, 50, 200, 1)');""" % selector
+        self.execute_script(script)
+        time.sleep(0.0181)
+        script = """jQuery('%s').css('box-shadow',
+            '0px 0px 6px 6px rgba(50, 205, 50, 1)');""" % selector
+        self.execute_script(script)
+        time.sleep(0.0181)
+
+        self._post_messenger_success_message(message)
+
+        script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
+        self.execute_script(script)
+
     ############
 
     def setUp(self):
@@ -2030,6 +2327,7 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = pytest.config.option.demo_mode
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
+            self.message_duration = pytest.config.option.message_duration
             self.ad_block_on = pytest.config.option.ad_block_on
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier
