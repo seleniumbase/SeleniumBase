@@ -13,7 +13,7 @@ before_install:
   # - "mysqladmin -u root -p'old_password' password new_password"
   - "sudo service mysql restart"
 install:
-  - "pip install --upgrade pip"
+  # - "pip install --upgrade pip"
   - "pip install -r requirements.txt --upgrade"
   - "pip install mysqlclient==1.3.12"
   - "python setup.py develop"
