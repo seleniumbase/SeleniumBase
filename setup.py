@@ -29,7 +29,6 @@ setup(
         'flake8==3.5.0',
         'requests==2.18.4',
         'beautifulsoup4==4.6.0',
-        'mysqlclient==1.3.12',
         'unittest2==1.1.0',
         'chardet==3.0.4',
         'boto==2.48.0',
