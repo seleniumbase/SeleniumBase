@@ -85,6 +85,13 @@ self.maximize_window()
 
 self.activate_jquery()
 
+self.activate_messenger()
+
+self.post_message(message, style="info", duration=None)
+
+self.set_messenger_theme(theme="default", location="default",
+    max_messages="default")
+
 self.get_property_value(selector, property, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
