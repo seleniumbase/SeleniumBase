@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.10.0',
+    version='1.10.1',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
@@ -29,7 +29,6 @@ setup(
         'flake8==3.5.0',
         'requests==2.18.4',
         'beautifulsoup4==4.6.0',
-        'mysqlclient==1.3.12',
         'unittest2==1.1.0',
         'chardet==3.0.4',
         'boto==2.48.0',
