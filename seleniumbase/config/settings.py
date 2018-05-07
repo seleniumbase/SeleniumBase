@@ -66,6 +66,9 @@ DEFAULT_DEMO_MODE_TIMEOUT = 1.0
 # Each loop is about 0.18 seconds. (Override by using "--highlights=TIMES".)
 HIGHLIGHTS = 4
 
+# Default time to keep messenger notifications visible (in seconds).
+# Messenger notifications appear when reaching assert statements in Demo Mode.
+DEFAULT_MESSAGE_DURATION = 2.55
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)

@@ -107,6 +107,12 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default number of
                           highlight animation loops to have per call.""")
+    parser.addoption('--message_duration', action="store",
+                     dest='message_duration',
+                     default=None,
+                     help="""Setting this overrides the default time that
+                          messenger notifications remain visible when reaching
+                          assert statements during Demo Mode.""")
     parser.addoption('--ad_block', action="store_true",
                      dest='ad_block_on',
                      default=False,
