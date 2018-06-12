@@ -81,6 +81,7 @@ class BaseCase(unittest.TestCase):
         self._html_report_extra = []
         self._default_driver = None
         self._drivers_list = []
+        self._tutorials = {}
 
     def open(self, url):
         self._last_page_load_url = None
@@ -734,7 +735,418 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 time.sleep(0.1)
         # Since jQuery still isn't activating, give up and raise an exception
-        raise Exception("Exception: WebDriver could not activate jQuery!")
+        raise Exception(
+            '''Unable to load jQuery on "%s" due to a possible violation '''
+            '''of the website's Content Security Policy '''
+            '''directive. ''' % self.driver.current_url)
+
+    def activate_bootstrap(self):
+        """ Allows you to use Bootstrap Tours with SeleniumBase
+            http://bootstraptour.com/
+            (Currently, SeleniumBase methods only use Shepherd Tours.)
+        """
+        bootstrap_tour_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                              "/bootstrap-tour/0.11.0/css"
+                              "/bootstrap-tour-standalone.min.css")
+        bootstrap_tour_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                             "/bootstrap-tour/0.11.0/js"
+                             "/bootstrap-tour-standalone.min.js")
+        add_css_link = (
+            '''var link = document.createElement("link"); '''
+            '''link.rel = "stylesheet"; '''
+            '''link.type = "text/css"; '''
+            '''link.href = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(link);''')
+        add_js_script = (
+            '''var script = document.createElement("script"); '''
+            '''script.src = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(script);''')
+        bootstrap_css_script = add_css_link % bootstrap_tour_css
+        bootstrap_js_script = add_js_script % bootstrap_tour_js
+
+        verify_script = ("""// Instance the tour
+                         var tour = new Tour({
+                         });""")
+
+        for x in range(4):
+            self.activate_jquery()
+            self.execute_script(bootstrap_css_script)
+            self.execute_script(bootstrap_js_script)
+            time.sleep(0.1)
+
+            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
+                # Bootstrap needs a small amount of time to load & activate.
+                try:
+                    self.execute_script(verify_script)
+                    time.sleep(0.05)
+                    return
+                except Exception:
+                    time.sleep(0.15)
+
+        raise Exception(
+            '''Unable to load jQuery on "%s" due to a possible violation '''
+            '''of the website's Content Security Policy '''
+            '''directive. ''' % self.driver.current_url)
+
+    def is_bootstrap_activated(self):
+        verify_script = ("""// Instance the tour
+                         var tour = new Tour({
+                         });""")
+        try:
+            self.execute_script(verify_script)
+            return True
+        except Exception:
+            return False
+
+    def activate_shepherd(self):
+        """ Allows you to use Shepherd Tours with SeleniumBase
+            http://github.hubspot.com/shepherd/docs/welcome/
+        """
+        sh_theme_arrows_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                               "/shepherd/1.8.1/css/shepherd-theme-arrows.css")
+        sh_theme_arrows_fix_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                   "/shepherd/1.8.1/css"
+                                   "/shepherd-theme-arrows-fix.css")
+        sh_theme_default_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                "/shepherd/1.8.1/css"
+                                "/shepherd-theme-default.css")
+        sh_theme_dark_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                             "/shepherd/1.8.1/css/shepherd-theme-dark.css")
+        sh_theme_sq_css = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                           "shepherd/1.8.1/css/shepherd-theme-square.css")
+        sh_theme_sq_dark_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                "/shepherd/1.8.1/css/"
+                                "shepherd-theme-square-dark.css")
+        tether_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                     "/tether/1.4.4/js/tether.min.js")
+        shepherd_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                       "/shepherd/1.8.1/js/shepherd.min.js")
+        underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                         "/underscore.js/1.4.3/underscore-min.js")
+        backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
+                       "/backbone.js/0.9.10/backbone-min.js")
+        spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                       "/messenger/1.5.0/css/messenger-spinner.css")
+
+        add_css_link = (
+            '''var link = document.createElement("link"); '''
+            '''link.rel = "stylesheet"; '''
+            '''link.type = "text/css"; '''
+            '''link.href = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(link);''')
+        add_js_script = (
+            '''var script = document.createElement("script"); '''
+            '''script.src = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(script);''')
+
+        add_css_style = (
+            '''var h = document.getElementsByTagName('head').item(0);'''
+            '''var s = document.createElement("style");'''
+            '''s.type = "text/css";'''
+            '''s.appendChild(document.createTextNode("%s"));'''
+            '''h.appendChild(s);''')
+
+        backdrop_style = (
+            '''
+            body.shepherd-active .shepherd-target.shepherd-enabled {
+                box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.22);
+                pointer-events:  none !important;
+                z-index: 9999;
+            }
+
+            body.shepherd-active .shepherd-orphan {
+                box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.16);
+                pointer-events:  auto;
+                z-index: 9999;
+            }
+
+            body.shepherd-active
+                .shepherd-enabled.shepherd-element-attached-top {
+                    position: relative;
+            }
+
+            body.shepherd-active
+                .shepherd-enabled.shepherd-element-attached-bottom {
+                    position: relative;
+            }
+
+            body.shepherd-active .shepherd-step {
+                pointer-events:  auto;
+                z-index: 9999;
+            }
+
+            body.shepherd-active {
+                pointer-events:  none !important;
+            }
+            ''')
+
+        shepherd_css_script = add_css_link % sh_theme_arrows_css
+        shepherd_css_script_2 = add_css_link % sh_theme_arrows_fix_css
+        shepherd_css_script_3 = add_css_link % sh_theme_default_css
+        shepherd_css_script_4 = add_css_link % sh_theme_dark_css
+        shepherd_css_script_5 = add_css_link % sh_theme_sq_css
+        shepherd_css_script_6 = add_css_link % sh_theme_sq_dark_css
+        tether_js_script = add_js_script % tether_js
+        shepherd_js_script = add_js_script % shepherd_js
+        underscore_js_script = add_js_script % underscore_js
+        backbone_js_script = add_js_script % backbone_js
+        spinner_css_script = add_css_link % spinner_css
+        backdrop_style = add_css_style % re.escape(backdrop_style)
+
+        sh_style = ("""let test_tour = new Shepherd.Tour({
+                      defaults: {
+                        classes: 'shepherd-theme-dark',
+                        scrollTo: true
+                      }
+                    });""")
+
+        self.activate_bootstrap()
+        for x in range(4):
+            # self.activate_jquery()  # Included with activate_bootstrap()
+            self.execute_script(spinner_css_script)
+            self.execute_script(shepherd_css_script)
+            self.execute_script(shepherd_css_script_2)
+            self.execute_script(shepherd_css_script_3)
+            self.execute_script(shepherd_css_script_4)
+            self.execute_script(shepherd_css_script_5)
+            self.execute_script(shepherd_css_script_6)
+            self.execute_script(tether_js_script)
+            self.execute_script(underscore_js_script)
+            self.execute_script(backbone_js_script)
+            self.execute_script(shepherd_js_script)
+            time.sleep(0.01)
+            self.execute_script(backdrop_style)
+            time.sleep(0.1)
+
+            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
+                # Shepherd needs a small amount of time to load & activate.
+                try:
+                    self.execute_script(sh_style)
+                    self.wait_for_ready_state_complete()
+                    time.sleep(0.05)
+                    return
+                except Exception:
+                    time.sleep(0.15)
+
+        raise Exception(
+            '''Unable to load jQuery on "%s" due to a possible violation '''
+            '''of the website's Content Security Policy '''
+            '''directive. ''' % self.driver.current_url)
+
+    def is_shepherd_activated(self):
+        sh_style = ("""let test_tour = new Shepherd.Tour({
+                      defaults: {
+                        classes: 'shepherd-theme-dark',
+                        scrollTo: true
+                      }
+                    });""")
+        try:
+            self.execute_script(sh_style)
+            return True
+        except Exception:
+            return False
+
+    def create_tour(self, name=None, theme=None):
+        """ Creates a tutorial tour for a website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            theme - Sets the default theme for the tutorial tour.
+                    Choose from "arrows", "dark", "default", "square", and
+                    "square-dark". ("arrows" is used if None is selected.)
+        """
+        if not name:
+            name = "default"
+
+        shepherd_theme = "shepherd-theme-arrows"
+        if theme:
+            if theme == "default":
+                shepherd_theme = "shepherd-theme-default"
+            elif theme == "dark":
+                shepherd_theme = "shepherd-theme-dark"
+            elif theme == "arrows":
+                shepherd_theme = "shepherd-theme-arrows"
+            elif theme == "square":
+                shepherd_theme = "shepherd-theme-square"
+            elif theme == "square-dark":
+                shepherd_theme = "shepherd-theme-square-dark"
+
+        tutorial = ("""let tour = new Shepherd.Tour({
+                        defaults: {
+                            classes: '%s',
+                            scrollTo: true
+                        }
+                    });""" % shepherd_theme)
+
+        self._tutorials[name] = []
+        self._tutorials[name].append(tutorial)
+
+    def add_tour_step(self, message, selector=None, name=None,
+                      title=None, theme=None, alignment=None):
+        """ Allows the user to add tutorial tour steps for a website.
+            @Params
+            message - The message to display.
+            selector - The CSS Selector of the Element to attach to.
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            title - Additional header text that appears above the message.
+            theme - Choose from "arrows", "dark", "default", "square", and
+                    "square-dark". ("arrows" is used if None is selected.)
+            alignment - Choose from "top", "bottom", "left", and "right".
+                        ("top" is the default alignment).
+        """
+        if not selector:
+            selector = "html"
+        selector = re.escape(selector)
+
+        if not name:
+            name = "default"
+        if name not in self._tutorials:
+            self.create_tour(name=name)
+
+        if not title:
+            title = ""
+        title = re.escape(title)
+
+        if message:
+            message = re.escape(message)
+        else:
+            message = ""
+
+        if theme == "default":
+            shepherd_theme = "shepherd-theme-default"
+        elif theme == "dark":
+            shepherd_theme = "shepherd-theme-dark"
+        elif theme == "arrows":
+            shepherd_theme = "shepherd-theme-arrows"
+        elif theme == "square":
+            shepherd_theme = "shepherd-theme-square"
+        elif theme == "square-dark":
+            shepherd_theme = "shepherd-theme-square-dark"
+        else:
+            shepherd_base_theme = re.search(
+                "[\S\s]+classes: '([\S\s]+)',[\S\s]+",
+                self._tutorials[name][0]).group(1)
+            shepherd_theme = shepherd_base_theme
+
+        if not alignment or (
+                alignment not in ["top", "bottom", "left", "right"]):
+            alignment = "top"
+
+        shepherd_classes = shepherd_theme
+        if selector == "html":
+            shepherd_classes += " shepherd-orphan"
+        step = ("""
+                tour.addStep('%s', {
+                    title: '%s',
+                    classes: '%s',
+                    text: '%s',
+                    attachTo: {element: '%s', on: '%s'},
+                    advanceOn: '.docs-link click'
+                });""" % (
+                name, title, shepherd_classes, message, selector, alignment))
+
+        self._tutorials[name].append(step)
+
+    def play_tour(self, name=None):
+        """ Plays a tutorial tour on the current website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to play.
+        """
+        if self.headless:
+            return  # Tutorial tours should not run in headless mode.
+
+        if not name:
+            name = "default"
+        if name not in self._tutorials:
+            raise Exception("Tour {%s} does not exist!" % name)
+
+        instructions = ""
+        for tutorial_step in self._tutorials[name]:
+            instructions += tutorial_step
+        instructions += "tour.start();"
+
+        if not self.is_shepherd_activated():
+            self.activate_shepherd()
+
+        if len(self._tutorials[name]) > 1:
+            try:
+                selector = re.search(
+                    "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
+                    self._tutorials[name][1]).group(1)
+                self.__wait_for_css_query_selector(selector)
+            except Exception:
+                self.__post_messenger_error_message(
+                    "Tour Error: {'%s'} was not found!"
+                    "" % selector,
+                    duration=settings.SMALL_TIMEOUT)
+                raise Exception(
+                    "Tour Error: {'%s'} was not found! "
+                    "Exiting due to failure on first tour step!"
+                    "" % selector)
+
+        self.execute_script(instructions)
+        tutorial_on = True
+        while tutorial_on:
+            try:
+                time.sleep(0.01)
+                result = self.execute_script(
+                    "return Shepherd.activeTour.currentStep.isOpen()")
+            except Exception:
+                tutorial_on = False
+                result = None
+            if result:
+                tutorial_on = True
+            else:
+                try:
+                    time.sleep(0.01)
+                    selector = self.execute_script(
+                        "return Shepherd.activeTour"
+                        ".currentStep.options.attachTo.element")
+                    try:
+                        self.__wait_for_css_query_selector(
+                            selector, timeout=(settings.MINI_TIMEOUT * 2))
+                    except Exception:
+                        self.remove_elements("div.shepherd-content")
+                        self.__post_messenger_error_message(
+                            "Tour Error: {'%s'} was not found!"
+                            "" % selector,
+                            duration=settings.SMALL_TIMEOUT)
+                        time.sleep(0.1)
+                    self.execute_script("Shepherd.activeTour.next()")
+                    tutorial_on = True
+                except Exception:
+                    tutorial_on = False
+                    time.sleep(0.1)
+
+    def __wait_for_css_query_selector(
+            self, selector, timeout=settings.SMALL_TIMEOUT):
+        element = None
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 10)):
+            try:
+                selector = re.escape(selector)
+                element = self.execute_script(
+                    """return document.querySelector('%s')""" % selector)
+                if element:
+                    return element
+            except Exception:
+                element = None
+            if not element:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+
+        raise Exception(
+            "Element {%s} was not present after %s seconds!" % (
+                selector, timeout))
 
     def activate_messenger(self):
         jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
