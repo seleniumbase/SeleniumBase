@@ -229,7 +229,8 @@ class BaseCase(unittest.TestCase):
         for x in range(int(timeout * 5)):
             try:
                 if not self.is_link_text_present(link_text):
-                    raise Exception("Link text {%s} not found!" % link_text)
+                    raise Exception(
+                        "Link text {%s} was not found!" % link_text)
                 return
             except Exception:
                 now_ms = time.time() * 1000.0
