@@ -76,8 +76,11 @@ class MyTestClass(BaseCase):
         #        title = element.get_attribute("title")
         #    ]
         #
-        #    For backwards-compatibilty, some methods have multiple names.
+        #    For backwards-compatibilty, some SeleniumBase methods that do the
+        #    same thing have multiple names, kept on from previous versions.
         #    Ex: wait_for_element_visible() is the same as find_element().
         #    Both search for and return the element, and raise an exception if
         #    the element does not appear on the page within the timeout limit.
+        #    And assert_element() also does this (minus returning the element).
+        #
         #    (See seleniumbase/fixtures/base_case.py for the full method list.)
