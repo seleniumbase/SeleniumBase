@@ -955,6 +955,16 @@ class BaseCase(unittest.TestCase):
                   % selector)
         self.execute_script(script)
 
+    def highlight_click(self, selector, by=By.CSS_SELECTOR,
+                        loops=2, scroll=True):
+        self.highlight(selector, by=by, loops=loops, scroll=scroll)
+        self.click(selector, by=by)
+
+    def highlight_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                              loops=2, scroll=True):
+        self.highlight(selector, by=by, loops=loops, scroll=scroll)
+        self.update_text(selector, new_value, by=by)
+
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=settings.HIGHLIGHTS, scroll=True):
         """ This method uses fancy JavaScript to highlight an element.
