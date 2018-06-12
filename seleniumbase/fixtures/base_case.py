@@ -886,7 +886,7 @@ class BaseCase(unittest.TestCase):
                 duration = self.message_duration
         messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
                             '''hideAfter: %s, hideOnNavigate: true});'''
-                            % (message, style, duration))
+                            % (re.escape(message), style, duration))
         try:
             self.execute_script(messenger_script)
         except Exception:
@@ -2181,15 +2181,27 @@ class BaseCase(unittest.TestCase):
             # Add small recovery time for long-distance slow-scrolling
             time.sleep(0.162)
 
-    def _post_messenger_success_message(self, message, duration=None):
+    def __post_messenger_success_message(self, message, duration=None):
         if not duration:
             if not self.message_duration:
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
         try:
-            self.post_message(
-                re.escape(message), style="success", duration=duration)
+            self.post_message(message, style="success", duration=duration)
+            time.sleep(duration)
+        except Exception:
+            pass
+
+    def __post_messenger_error_message(self, message, duration=None):
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        try:
+            self.set_messenger_theme(theme="block", location="top_center")
+            self.post_message(message, style="error", duration=duration)
             time.sleep(duration)
         except Exception:
             pass
@@ -2253,7 +2265,7 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
         time.sleep(0.0181)
 
-        self._post_messenger_success_message(message)
+        self.__post_messenger_success_message(message)
 
         script = ("""document.querySelector('%s').style =
                   'box-shadow: %s';"""
@@ -2282,7 +2294,7 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
         time.sleep(0.0181)
 
-        self._post_messenger_success_message(message)
+        self.__post_messenger_success_message(message)
 
         script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
         self.execute_script(script)
