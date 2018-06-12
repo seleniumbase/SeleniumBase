@@ -76,12 +76,12 @@ class BaseCase(unittest.TestCase):
         self.environment = None
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
-        self._page_check_count = 0
-        self._page_check_failures = []
-        self._html_report_extra = []
+        self.__page_check_count = 0
+        self.__page_check_failures = []
+        self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
-        self._tutorials = {}
+        self._tour_steps = {}
 
     def open(self, url):
         self.__last_page_load_url = None
@@ -951,11 +951,11 @@ class BaseCase(unittest.TestCase):
             return False
 
     def create_tour(self, name=None, theme=None):
-        """ Creates a tutorial tour for a website.
+        """ Creates a tour for a website.
             @Params
             name - If creating multiple tours, use this to select the
                    tour you wish to add steps to.
-            theme - Sets the default theme for the tutorial tour.
+            theme - Sets the default theme for the tour.
                     Choose from "arrows", "dark", "default", "square", and
                     "square-dark". ("arrows" is used if None is selected.)
         """
@@ -975,19 +975,19 @@ class BaseCase(unittest.TestCase):
             elif theme == "square-dark":
                 shepherd_theme = "shepherd-theme-square-dark"
 
-        tutorial = ("""let tour = new Shepherd.Tour({
+        new_tour = ("""let tour = new Shepherd.Tour({
                         defaults: {
                             classes: '%s',
                             scrollTo: true
                         }
                     });""" % shepherd_theme)
 
-        self._tutorials[name] = []
-        self._tutorials[name].append(tutorial)
+        self._tour_steps[name] = []
+        self._tour_steps[name].append(new_tour)
 
     def add_tour_step(self, message, selector=None, name=None,
                       title=None, theme=None, alignment=None):
-        """ Allows the user to add tutorial tour steps for a website.
+        """ Allows the user to add tour steps for a website.
             @Params
             message - The message to display.
             selector - The CSS Selector of the Element to attach to.
@@ -1005,7 +1005,7 @@ class BaseCase(unittest.TestCase):
 
         if not name:
             name = "default"
-        if name not in self._tutorials:
+        if name not in self._tour_steps:
             self.create_tour(name=name)
 
         if not title:
@@ -1030,7 +1030,7 @@ class BaseCase(unittest.TestCase):
         else:
             shepherd_base_theme = re.search(
                 "[\S\s]+classes: '([\S\s]+)',[\S\s]+",
-                self._tutorials[name][0]).group(1)
+                self._tour_steps[name][0]).group(1)
             shepherd_theme = shepherd_base_theme
 
         if not alignment or (
@@ -1050,35 +1050,35 @@ class BaseCase(unittest.TestCase):
                 });""" % (
                 name, title, shepherd_classes, message, selector, alignment))
 
-        self._tutorials[name].append(step)
+        self._tour_steps[name].append(step)
 
     def play_tour(self, name=None):
-        """ Plays a tutorial tour on the current website.
+        """ Plays a tour on the current website.
             @Params
             name - If creating multiple tours, use this to select the
                    tour you wish to play.
         """
         if self.headless:
-            return  # Tutorial tours should not run in headless mode.
+            return  # Tours should not run in headless mode.
 
         if not name:
             name = "default"
-        if name not in self._tutorials:
+        if name not in self._tour_steps:
             raise Exception("Tour {%s} does not exist!" % name)
 
         instructions = ""
-        for tutorial_step in self._tutorials[name]:
-            instructions += tutorial_step
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
         instructions += "tour.start();"
 
         if not self.is_shepherd_activated():
             self.activate_shepherd()
 
-        if len(self._tutorials[name]) > 1:
+        if len(self._tour_steps[name]) > 1:
             try:
                 selector = re.search(
                     "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
-                    self._tutorials[name][1]).group(1)
+                    self._tour_steps[name][1]).group(1)
                 self.__wait_for_css_query_selector(selector)
             except Exception:
                 self.__post_messenger_error_message(
@@ -1091,17 +1091,17 @@ class BaseCase(unittest.TestCase):
                     "" % selector)
 
         self.execute_script(instructions)
-        tutorial_on = True
-        while tutorial_on:
+        tour_on = True
+        while tour_on:
             try:
                 time.sleep(0.01)
                 result = self.execute_script(
                     "return Shepherd.activeTour.currentStep.isOpen()")
             except Exception:
-                tutorial_on = False
+                tour_on = False
                 result = None
             if result:
-                tutorial_on = True
+                tour_on = True
             else:
                 try:
                     time.sleep(0.01)
@@ -1119,9 +1119,9 @@ class BaseCase(unittest.TestCase):
                             duration=settings.SMALL_TIMEOUT)
                         time.sleep(0.1)
                     self.execute_script("Shepherd.activeTour.next()")
-                    tutorial_on = True
+                    tour_on = True
                 except Exception:
-                    tutorial_on = False
+                    tour_on = False
                     time.sleep(0.1)
 
     def __wait_for_css_query_selector(
@@ -1828,8 +1828,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.__pick_select_option(dropdown_selector, option,
-                                 dropdown_by=dropdown_by, option_by="text",
-                                 timeout=timeout)
+                                  dropdown_by=dropdown_by, option_by="text",
+                                  timeout=timeout)
 
     def pick_select_option_by_index(self, dropdown_selector, option,
                                     dropdown_by=By.CSS_SELECTOR,
@@ -1838,8 +1838,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.__pick_select_option(dropdown_selector, option,
-                                 dropdown_by=dropdown_by, option_by="index",
-                                 timeout=timeout)
+                                  dropdown_by=dropdown_by, option_by="index",
+                                  timeout=timeout)
 
     def pick_select_option_by_value(self, dropdown_selector, option,
                                     dropdown_by=By.CSS_SELECTOR,
@@ -1848,8 +1848,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.__pick_select_option(dropdown_selector, option,
-                                 dropdown_by=dropdown_by, option_by="value",
-                                 timeout=timeout)
+                                  dropdown_by=dropdown_by, option_by="value",
+                                  timeout=timeout)
 
     def generate_referral(self, start_page, destination_page):
         """ This method opens the start_page, creates a referral link there,
@@ -2348,16 +2348,16 @@ class BaseCase(unittest.TestCase):
         """ Add a delayed_assert failure into a list for future processing. """
         current_url = self.driver.current_url
         message = self.__get_exception_message()
-        self._page_check_failures.append(
+        self.__page_check_failures.append(
                 "CHECK #%s: (%s)\n %s" % (
-                    self._page_check_count, current_url, message))
+                    self.__page_check_count, current_url, message))
 
     def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
                                timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for an element on a page.
             Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self._page_check_count += 1
+        self.__page_check_count += 1
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_delayed_assert:
@@ -2384,7 +2384,7 @@ class BaseCase(unittest.TestCase):
         """ A non-terminating assertion for text from an element on a page.
             Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self._page_check_count += 1
+        self.__page_check_count += 1
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_delayed_assert:
@@ -2417,12 +2417,12 @@ class BaseCase(unittest.TestCase):
             the delayed asserts on a single html page so that the failure
             screenshot matches the location of the delayed asserts.
             If "print_only" is set to True, the exception won't get raised. """
-        if self._page_check_failures:
+        if self.__page_check_failures:
             exception_output = ''
             exception_output += "\n*** DELAYED ASSERTION FAILURES FOR: "
             exception_output += "%s\n" % self.id()
-            all_failing_checks = self._page_check_failures
-            self._page_check_failures = []
+            all_failing_checks = self.__page_check_failures
+            self.__page_check_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             if print_only:
@@ -2495,8 +2495,8 @@ class BaseCase(unittest.TestCase):
         return False
 
     def __pick_select_option(self, dropdown_selector, option,
-                            dropdown_by=By.CSS_SELECTOR, option_by="text",
-                            timeout=settings.SMALL_TIMEOUT):
+                             dropdown_by=By.CSS_SELECTOR, option_by="text",
+                             timeout=settings.SMALL_TIMEOUT):
         """ Picks an HTML <select> option by specification.
             Option specifications are by "text", "index", or "value".
             Defaults to "text" if option_by is unspecified or unknown. """
@@ -2888,7 +2888,7 @@ class BaseCase(unittest.TestCase):
                 has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
-        if self._page_check_failures:
+        if self.__page_check_failures:
             print(
                 "\nWhen using self.delayed_assert_*() methods in your tests, "
                 "remember to call self.process_delayed_asserts() afterwards. "
