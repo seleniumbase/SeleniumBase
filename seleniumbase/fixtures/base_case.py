@@ -711,6 +711,33 @@ class BaseCase(unittest.TestCase):
         self.driver.maximize_window()
         self.__demo_mode_pause_if_active()
 
+    def add_css_link(self, css_link):
+        add_css_link_script = (
+            '''var link = document.createElement("link"); '''
+            '''link.rel = "stylesheet"; '''
+            '''link.type = "text/css"; '''
+            '''link.href = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(link);''')
+        self.execute_script(add_css_link_script % css_link)
+
+    def add_js_link(self, js_link):
+        script_to_add_js = (
+            '''var script = document.createElement("script"); '''
+            '''script.src = "%s"; '''
+            '''document.getElementsByTagName("head")[0]'''
+            '''.appendChild(script);''')
+        self.execute_script(script_to_add_js % js_link)
+
+    def add_css_style(self, css_style):
+        add_css_style_script = (
+            '''var h = document.getElementsByTagName('head').item(0);'''
+            '''var s = document.createElement("style");'''
+            '''s.type = "text/css";'''
+            '''s.appendChild(document.createTextNode("%s"));'''
+            '''h.appendChild(s);''')
+        self.execute_script(add_css_style_script % re.escape(css_style))
+
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
@@ -722,11 +749,8 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # jQuery is not currently defined. Let's proceed by defining it.
             pass
-        self.execute_script(
-            '''var script = document.createElement("script"); '''
-            '''script.src = "https://code.jquery.com/jquery-3.2.1.min.js"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(script);''')
+        jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
+        self.add_js_link(jquery_js)
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # jQuery needs a small amount of time to activate.
             try:
@@ -740,7 +764,7 @@ class BaseCase(unittest.TestCase):
             '''of the website's Content Security Policy '''
             '''directive. ''' % self.driver.current_url)
 
-    def activate_bootstrap(self):
+    def __activate_bootstrap(self):
         """ Allows you to use Bootstrap Tours with SeleniumBase
             http://bootstraptour.com/
             (Currently, SeleniumBase methods only use Shepherd Tours.)
@@ -751,20 +775,6 @@ class BaseCase(unittest.TestCase):
         bootstrap_tour_js = ("https://cdnjs.cloudflare.com/ajax/libs"
                              "/bootstrap-tour/0.11.0/js"
                              "/bootstrap-tour-standalone.min.js")
-        add_css_link = (
-            '''var link = document.createElement("link"); '''
-            '''link.rel = "stylesheet"; '''
-            '''link.type = "text/css"; '''
-            '''link.href = "%s"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(link);''')
-        add_js_script = (
-            '''var script = document.createElement("script"); '''
-            '''script.src = "%s"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(script);''')
-        bootstrap_css_script = add_css_link % bootstrap_tour_css
-        bootstrap_js_script = add_js_script % bootstrap_tour_js
 
         verify_script = ("""// Instance the tour
                          var tour = new Tour({
@@ -772,8 +782,8 @@ class BaseCase(unittest.TestCase):
 
         for x in range(4):
             self.activate_jquery()
-            self.execute_script(bootstrap_css_script)
-            self.execute_script(bootstrap_js_script)
+            self.add_css_link(bootstrap_tour_css)
+            self.add_js_link(bootstrap_tour_js)
             time.sleep(0.1)
 
             for x in range(int(settings.MINI_TIMEOUT * 2.0)):
@@ -790,7 +800,7 @@ class BaseCase(unittest.TestCase):
             '''of the website's Content Security Policy '''
             '''directive. ''' % self.driver.current_url)
 
-    def is_bootstrap_activated(self):
+    def __is_bootstrap_activated(self):
         verify_script = ("""// Instance the tour
                          var tour = new Tour({
                          });""")
@@ -800,7 +810,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             return False
 
-    def activate_shepherd(self):
+    def __activate_shepherd(self):
         """ Allows you to use Shepherd Tours with SeleniumBase
             http://github.hubspot.com/shepherd/docs/welcome/
         """
@@ -829,26 +839,6 @@ class BaseCase(unittest.TestCase):
                        "/backbone.js/0.9.10/backbone-min.js")
         spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
                        "/messenger/1.5.0/css/messenger-spinner.css")
-
-        add_css_link = (
-            '''var link = document.createElement("link"); '''
-            '''link.rel = "stylesheet"; '''
-            '''link.type = "text/css"; '''
-            '''link.href = "%s"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(link);''')
-        add_js_script = (
-            '''var script = document.createElement("script"); '''
-            '''script.src = "%s"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(script);''')
-
-        add_css_style = (
-            '''var h = document.getElementsByTagName('head').item(0);'''
-            '''var s = document.createElement("style");'''
-            '''s.type = "text/css";'''
-            '''s.appendChild(document.createTextNode("%s"));'''
-            '''h.appendChild(s);''')
 
         backdrop_style = (
             '''
@@ -884,19 +874,6 @@ class BaseCase(unittest.TestCase):
             }
             ''')
 
-        shepherd_css_script = add_css_link % sh_theme_arrows_css
-        shepherd_css_script_2 = add_css_link % sh_theme_arrows_fix_css
-        shepherd_css_script_3 = add_css_link % sh_theme_default_css
-        shepherd_css_script_4 = add_css_link % sh_theme_dark_css
-        shepherd_css_script_5 = add_css_link % sh_theme_sq_css
-        shepherd_css_script_6 = add_css_link % sh_theme_sq_dark_css
-        tether_js_script = add_js_script % tether_js
-        shepherd_js_script = add_js_script % shepherd_js
-        underscore_js_script = add_js_script % underscore_js
-        backbone_js_script = add_js_script % backbone_js
-        spinner_css_script = add_css_link % spinner_css
-        backdrop_style = add_css_style % re.escape(backdrop_style)
-
         sh_style = ("""let test_tour = new Shepherd.Tour({
                       defaults: {
                         classes: 'shepherd-theme-dark',
@@ -904,22 +881,22 @@ class BaseCase(unittest.TestCase):
                       }
                     });""")
 
-        self.activate_bootstrap()
+        self.__activate_bootstrap()
         for x in range(4):
-            # self.activate_jquery()  # Included with activate_bootstrap()
-            self.execute_script(spinner_css_script)
-            self.execute_script(shepherd_css_script)
-            self.execute_script(shepherd_css_script_2)
-            self.execute_script(shepherd_css_script_3)
-            self.execute_script(shepherd_css_script_4)
-            self.execute_script(shepherd_css_script_5)
-            self.execute_script(shepherd_css_script_6)
-            self.execute_script(tether_js_script)
-            self.execute_script(underscore_js_script)
-            self.execute_script(backbone_js_script)
-            self.execute_script(shepherd_js_script)
+            # self.activate_jquery()  # Included with __activate_bootstrap()
+            self.add_css_link(spinner_css)
+            self.add_css_link(sh_theme_arrows_css)
+            self.add_css_link(sh_theme_arrows_fix_css)
+            self.add_css_link(sh_theme_default_css)
+            self.add_css_link(sh_theme_dark_css)
+            self.add_css_link(sh_theme_sq_css)
+            self.add_css_link(sh_theme_sq_dark_css)
+            self.add_js_link(tether_js)
+            self.add_js_link(underscore_js)
+            self.add_js_link(backbone_js)
+            self.add_js_link(shepherd_js)
             time.sleep(0.01)
-            self.execute_script(backdrop_style)
+            self.add_css_style(backdrop_style)
             time.sleep(0.1)
 
             for x in range(int(settings.MINI_TIMEOUT * 2.0)):
@@ -927,6 +904,7 @@ class BaseCase(unittest.TestCase):
                 try:
                     self.execute_script(sh_style)
                     self.wait_for_ready_state_complete()
+                    self.execute_script(sh_style)  # Need it twice for ordering
                     time.sleep(0.05)
                     return
                 except Exception:
@@ -937,7 +915,7 @@ class BaseCase(unittest.TestCase):
             '''of the website's Content Security Policy '''
             '''directive. ''' % self.driver.current_url)
 
-    def is_shepherd_activated(self):
+    def __is_shepherd_activated(self):
         sh_style = ("""let test_tour = new Shepherd.Tour({
                       defaults: {
                         classes: 'shepherd-theme-dark',
@@ -1071,8 +1049,8 @@ class BaseCase(unittest.TestCase):
             instructions += tour_step
         instructions += "tour.start();"
 
-        if not self.is_shepherd_activated():
-            self.activate_shepherd()
+        if not self.__is_shepherd_activated():
+            self.__activate_shepherd()
 
         if len(self._tour_steps[name]) > 1:
             try:
@@ -1183,60 +1161,33 @@ class BaseCase(unittest.TestCase):
         msgr_theme_ice_css = ("https://cdnjs.cloudflare.com/ajax/libs"
                               "/messenger/1.5.0/css/messenger-theme-ice.css")
 
-        add_css_link = (
-            '''var link = document.createElement("link"); '''
-            '''link.rel = "stylesheet"; '''
-            '''link.type = "text/css"; '''
-            '''link.href = "%s"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(link);''')
-        add_js_script = (
-            '''var script = document.createElement("script"); '''
-            '''script.src = "%s"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(script);''')
         msg_style = ("Messenger.options = {'maxMessages': 8, "
                      "extraClasses: 'messenger-fixed "
                      "messenger-on-bottom messenger-on-right', "
                      "theme: 'future'}")
 
-        jquery_script = add_js_script % jquery_js
-        messenger_css_script = add_css_link % messenger_css
-        messenger_theme_flat_css_script = add_css_link % msgr_theme_flat_css
-        messenger_theme_future_css_script = add_css_link % msgr_theme_futur_css
-        messenger_theme_block_css_script = add_css_link % msgr_theme_block_css
-        messenger_theme_air_css_script = add_css_link % msgr_theme_air_css
-        messenger_theme_ice_css_script = add_css_link % msgr_theme_ice_css
-        underscore_js_script = add_js_script % underscore_js
-        backbone_js_script = add_js_script % backbone_js
-        spinner_css_script = add_css_link % spinner_css
-        messenger_js_script = add_js_script % messenger_js
-        messenger_theme_flat_js_script = add_js_script % msgr_theme_flat_js
-        messenger_theme_future_js_script = add_js_script % msg_theme_future_js
-        messenger_theme_block_js_script = add_js_script % msgr_theme_block_js
-        messenger_theme_air_js_script = add_js_script % msgr_theme_air_js
-        messenger_theme_ice_js_script = add_js_script % msgr_theme_ice_js
-        self.execute_script(jquery_script)
-        self.execute_script(messenger_css_script)
-        self.execute_script(messenger_theme_flat_css_script)
-        self.execute_script(messenger_theme_future_css_script)
-        self.execute_script(messenger_theme_block_css_script)
-        self.execute_script(messenger_theme_air_css_script)
-        self.execute_script(messenger_theme_ice_css_script)
-        self.execute_script(underscore_js_script)
-        self.execute_script(backbone_js_script)
-        self.execute_script(spinner_css_script)
-        self.execute_script(messenger_js_script)
-        self.execute_script(messenger_theme_flat_js_script)
-        self.execute_script(messenger_theme_future_js_script)
-        self.execute_script(messenger_theme_block_js_script)
-        self.execute_script(messenger_theme_air_js_script)
-        self.execute_script(messenger_theme_ice_js_script)
+        self.add_js_link(jquery_js)
+        self.add_css_link(messenger_css)
+        self.add_css_link(msgr_theme_flat_css)
+        self.add_css_link(msgr_theme_futur_css)
+        self.add_css_link(msgr_theme_block_css)
+        self.add_css_link(msgr_theme_air_css)
+        self.add_css_link(msgr_theme_ice_css)
+        self.add_js_link(underscore_js)
+        self.add_js_link(backbone_js)
+        self.add_css_link(spinner_css)
+        self.add_js_link(messenger_js)
+        self.add_js_link(msgr_theme_flat_js)
+        self.add_js_link(msg_theme_future_js)
+        self.add_js_link(msgr_theme_block_js)
+        self.add_js_link(msgr_theme_air_js)
+        self.add_js_link(msgr_theme_ice_js)
 
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # Messenger needs a small amount of time to load & activate.
             try:
                 self.execute_script(msg_style)
+                self.wait_for_ready_state_complete()
                 return
             except Exception:
                 time.sleep(0.1)
