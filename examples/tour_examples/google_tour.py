@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class MyTourClass(BaseCase):
 
     def test_google_tour(self):
         self.open('https://google.com')
