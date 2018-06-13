@@ -1,4 +1,6 @@
-## Using SeleniumBase Tours
+## Creating SeleniumBase Tours
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif "SeleniumBase Tours")<br>
 
 SeleniumBase Tours utilize the [HubSpot Shepherd Library](http://github.hubspot.com/shepherd/docs/welcome/) for creating and running tours on any website.
 
@@ -12,7 +14,7 @@ To utilize tours, there are three methods that you need to know at the basic lev
 
 With the ``create_tour()`` method, you can pass a default theme to change the look & feel of the tour steps. Valid themes are ``dark``, ``default``, ``arrows``, ``square``, and ``square-dark``.
 
-With the ``self.add_tour_step()`` method, at minimum you must pass a message to display. Then you can specify a web element to attach to (by CSS selector). If no element is specified, the tour step will tether to the top of the screen by default. You can add an optional title above the message to display with the tour step. You can also change the theme for that step, as well as specifiy the alignment (which is the side of the element that the tour message will tether to).
+With the ``self.add_tour_step()`` method, at minimum you must pass a message to display. Then you can specify a web element to attach to (by CSS selector). If no element is specified, the tour step will tether to the top of the screen by default. You can add an optional title above the message to display with the tour step. You can also change the theme for that step, as well as specifiy the alignment (which is the side of the element that you want the tour message to tether to).
 
 Finally, you can play a tour you created by calling the ``self.play_tour()`` method.
 
