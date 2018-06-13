@@ -2,10 +2,12 @@
 
 SeleniumBase Tours utilize the [HubSpot Shepherd Library](http://github.hubspot.com/shepherd/docs/welcome/) for creating and running tours on any website.
 
-To utilize tours, there are three methods that you need to know at the basic level:
+To utilize tours, there are three methods that you need to know at the basic level (which contain optional arguments):
 
 ``self.create_tour(theme)``
+
 ``self.add_tour_step(message, css_selector, title, alignment, theme)``
+
 ``self.play_tour()``
 
 With the ``create_tour()`` method, you can pass a default theme to change the look & feel of the tour steps. Valid themes are ``dark``, ``default``, ``arrows``, ``square``, and ``square-dark``.
