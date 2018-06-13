@@ -83,7 +83,20 @@ self.set_window_size(width, height)
 
 self.maximize_window()
 
+self.add_css_link(css_link)
+
+self.add_js_link(js_link)
+
+self.add_css_style(css_style)
+
 self.activate_jquery()
+
+self.create_tour(name=None, theme=None)
+
+self.add_tour_step(message, selector=None, name=None,
+    title=None, theme=None, alignment=None)
+
+self.play_tour(name=None)
 
 self.activate_messenger()
 

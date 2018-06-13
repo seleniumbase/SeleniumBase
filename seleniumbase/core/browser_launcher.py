@@ -55,6 +55,7 @@ def _create_firefox_profile(downloads_path, proxy_string):
         profile.set_preference("network.proxy.ssl_port", int(proxy_port))
     profile.set_preference(
         "security.mixed_content.block_active_content", False)
+    profile.set_preference("security.csp.enable", False)
     profile.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
     profile.set_preference("browser.download.panel.shown", False)
