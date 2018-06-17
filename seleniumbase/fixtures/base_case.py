@@ -1321,12 +1321,14 @@ class BaseCase(unittest.TestCase):
 
     def highlight_click(self, selector, by=By.CSS_SELECTOR,
                         loops=3, scroll=True):
-        self.highlight(selector, by=by, loops=loops, scroll=scroll)
+        if not self.demo_mode:
+            self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
     def highlight_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                               loops=3, scroll=True):
-        self.highlight(selector, by=by, loops=loops, scroll=scroll)
+        if not self.demo_mode:
+            self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, new_value, by=by)
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
