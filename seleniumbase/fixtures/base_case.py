@@ -1030,14 +1030,23 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name].append(step)
 
-    def play_tour(self, name=None):
+    def play_tour(self, name=None, interval=0):
         """ Plays a tour on the current website.
             @Params
             name - If creating multiple tours, use this to select the
                    tour you wish to play.
+            interval - The delay time between autoplaying tour steps.
+                       If set to 0 (default), the tour is fully manual control.
         """
         if self.headless:
             return  # Tours should not run in headless mode.
+
+        autoplay = False
+        if interval and interval > 0:
+            autoplay = True
+            interval = float(interval)
+            if interval < 0.5:
+                interval = 0.5
 
         if not name:
             name = "default"
@@ -1070,6 +1079,11 @@ class BaseCase(unittest.TestCase):
 
         self.execute_script(instructions)
         tour_on = True
+        if autoplay:
+            start_ms = time.time() * 1000.0
+            stop_ms = start_ms + (interval * 1000.0)
+            latest_element = None
+            latest_text = None
         while tour_on:
             try:
                 time.sleep(0.01)
@@ -1080,6 +1094,33 @@ class BaseCase(unittest.TestCase):
                 result = None
             if result:
                 tour_on = True
+                if autoplay:
+                    try:
+                        element = self.execute_script(
+                            "Shepherd.activeTour.currentStep"
+                            ".options.attachTo.element")
+                        shep_text = self.execute_script(
+                            "Shepherd.activeTour.currentStep.options.text")
+                    except Exception:
+                        continue
+                    now_ms = time.time() * 1000.0
+                    if now_ms >= stop_ms:
+                        if ((element == latest_element) and
+                                (shep_text == latest_text)):
+                            self.execute_script("Shepherd.activeTour.next()")
+                            try:
+                                latest_element = self.execute_script(
+                                    "Shepherd.activeTour.currentStep"
+                                    ".options.attachTo.element")
+                                latest_text = self.execute_script(
+                                    "Shepherd.activeTour.currentStep"
+                                    ".options.text")
+                                start_ms = time.time() * 1000.0
+                                stop_ms = start_ms + (interval * 1000.0)
+                            except Exception:
+                                pass
+                            continue
+
             else:
                 try:
                     time.sleep(0.01)
@@ -1097,6 +1138,9 @@ class BaseCase(unittest.TestCase):
                             duration=settings.SMALL_TIMEOUT)
                         time.sleep(0.1)
                     self.execute_script("Shepherd.activeTour.next()")
+                    if autoplay:
+                        start_ms = time.time() * 1000.0
+                        stop_ms = start_ms + (interval * 1000.0)
                     tour_on = True
                 except Exception:
                     tour_on = False
