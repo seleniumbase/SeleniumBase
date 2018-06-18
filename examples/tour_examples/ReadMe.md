@@ -2,7 +2,7 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif "SeleniumBase Tours")<br>
 
-SeleniumBase Tours utilize the [HubSpot Shepherd Library](http://github.hubspot.com/shepherd/docs/welcome/) for creating and running tours on any website.
+SeleniumBase Tours utilize the [HubSpot Shepherd Library](http://github.hubspot.com/shepherd/docs/welcome/) for creating and running tours, demos, and walkthroughs on any website.
 
 To utilize tours, there are three methods that you need to know at the basic level (which contain optional arguments):
 
@@ -10,13 +10,13 @@ To utilize tours, there are three methods that you need to know at the basic lev
 
 ``self.add_tour_step(message, css_selector, title, alignment, theme)``
 
-``self.play_tour()``
+``self.play_tour(interval)``
 
 With the ``create_tour()`` method, you can pass a default theme to change the look & feel of the tour steps. Valid themes are ``dark``, ``default``, ``arrows``, ``square``, and ``square-dark``.
 
-With the ``self.add_tour_step()`` method, at minimum you must pass a message to display. Then you can specify a web element to attach to (by CSS selector). If no element is specified, the tour step will tether to the top of the screen by default. You can add an optional title above the message to display with the tour step. You can also change the theme for that step, as well as specifiy the alignment (which is the side of the element that you want the tour message to tether to).
+With the ``self.add_tour_step()`` method, at minimum you must pass a message to display. Then you can specify a web element to attach to (by CSS selector). If no element is specified, the tour step will tether to the top of the screen by default. You can also add an optional title above the message to display with the tour step, as well as change the theme for that step, and even specify the alignment (which is the side of the element that you want the tour message to tether to).
 
-Finally, you can play a tour you created by calling the ``self.play_tour()`` method.
+Finally, you can play a tour you created by calling the ``self.play_tour()`` method. If you specify an interval, the tour will automatically walk through each step after that many seconds have passed.
 
 ### Here's an example of using SeleniumBase Tours:
 

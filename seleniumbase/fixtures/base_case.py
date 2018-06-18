@@ -1030,14 +1030,23 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name].append(step)
 
-    def play_tour(self, name=None):
+    def play_tour(self, name=None, interval=0):
         """ Plays a tour on the current website.
             @Params
             name - If creating multiple tours, use this to select the
                    tour you wish to play.
+            interval - The delay time between autoplaying tour steps.
+                       If set to 0 (default), the tour is fully manual control.
         """
         if self.headless:
             return  # Tours should not run in headless mode.
+
+        autoplay = False
+        if interval and interval > 0:
+            autoplay = True
+            interval = float(interval)
+            if interval < 0.5:
+                interval = 0.5
 
         if not name:
             name = "default"
@@ -1070,6 +1079,11 @@ class BaseCase(unittest.TestCase):
 
         self.execute_script(instructions)
         tour_on = True
+        if autoplay:
+            start_ms = time.time() * 1000.0
+            stop_ms = start_ms + (interval * 1000.0)
+            latest_element = None
+            latest_text = None
         while tour_on:
             try:
                 time.sleep(0.01)
@@ -1080,6 +1094,33 @@ class BaseCase(unittest.TestCase):
                 result = None
             if result:
                 tour_on = True
+                if autoplay:
+                    try:
+                        element = self.execute_script(
+                            "Shepherd.activeTour.currentStep"
+                            ".options.attachTo.element")
+                        shep_text = self.execute_script(
+                            "Shepherd.activeTour.currentStep.options.text")
+                    except Exception:
+                        continue
+                    now_ms = time.time() * 1000.0
+                    if now_ms >= stop_ms:
+                        if ((element == latest_element) and
+                                (shep_text == latest_text)):
+                            self.execute_script("Shepherd.activeTour.next()")
+                            try:
+                                latest_element = self.execute_script(
+                                    "Shepherd.activeTour.currentStep"
+                                    ".options.attachTo.element")
+                                latest_text = self.execute_script(
+                                    "Shepherd.activeTour.currentStep"
+                                    ".options.text")
+                                start_ms = time.time() * 1000.0
+                                stop_ms = start_ms + (interval * 1000.0)
+                            except Exception:
+                                pass
+                            continue
+
             else:
                 try:
                     time.sleep(0.01)
@@ -1097,6 +1138,9 @@ class BaseCase(unittest.TestCase):
                             duration=settings.SMALL_TIMEOUT)
                         time.sleep(0.1)
                     self.execute_script("Shepherd.activeTour.next()")
+                    if autoplay:
+                        start_ms = time.time() * 1000.0
+                        stop_ms = start_ms + (interval * 1000.0)
                     tour_on = True
                 except Exception:
                     tour_on = False
@@ -1134,12 +1178,6 @@ class BaseCase(unittest.TestCase):
                               "/messenger/1.5.0/js/messenger-theme-flat.js")
         msg_theme_future_js = ("https://cdnjs.cloudflare.com/ajax/libs"
                                "/messenger/1.5.0/js/messenger-theme-future.js")
-        msgr_theme_block_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/messenger/1.5.0/js/messenger-theme-block.js")
-        msgr_theme_air_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/messenger/1.5.0/js/messenger-theme-air.js")
-        msgr_theme_ice_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/messenger/1.5.0/js/messenger-theme-ice.js")
         underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
                          "/underscore.js/1.4.3/underscore-min.js")
         backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
@@ -1150,9 +1188,9 @@ class BaseCase(unittest.TestCase):
                          "/messenger/1.5.0/css/messenger.css")
         msgr_theme_flat_css = ("https://cdnjs.cloudflare.com/ajax/libs"
                                "/messenger/1.5.0/css/messenger-theme-flat.css")
-        msgr_theme_futur_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/messenger/1.5.0/css/"
-                                "messenger-theme-future.css")
+        msgr_theme_future_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                 "/messenger/1.5.0/css/"
+                                 "messenger-theme-future.css")
         msgr_theme_block_css = ("https://cdnjs.cloudflare.com/ajax/libs"
                                 "/messenger/1.5.0/css/"
                                 "messenger-theme-block.css")
@@ -1169,7 +1207,7 @@ class BaseCase(unittest.TestCase):
         self.add_js_link(jquery_js)
         self.add_css_link(messenger_css)
         self.add_css_link(msgr_theme_flat_css)
-        self.add_css_link(msgr_theme_futur_css)
+        self.add_css_link(msgr_theme_future_css)
         self.add_css_link(msgr_theme_block_css)
         self.add_css_link(msgr_theme_air_css)
         self.add_css_link(msgr_theme_ice_css)
@@ -1179,9 +1217,6 @@ class BaseCase(unittest.TestCase):
         self.add_js_link(messenger_js)
         self.add_js_link(msgr_theme_flat_js)
         self.add_js_link(msg_theme_future_js)
-        self.add_js_link(msgr_theme_block_js)
-        self.add_js_link(msgr_theme_air_js)
-        self.add_js_link(msgr_theme_ice_js)
 
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # Messenger needs a small amount of time to load & activate.
@@ -1320,13 +1355,15 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def highlight_click(self, selector, by=By.CSS_SELECTOR,
-                        loops=2, scroll=True):
-        self.highlight(selector, by=by, loops=loops, scroll=scroll)
+                        loops=3, scroll=True):
+        if not self.demo_mode:
+            self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
     def highlight_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                              loops=2, scroll=True):
-        self.highlight(selector, by=by, loops=loops, scroll=scroll)
+                              loops=3, scroll=True):
+        if not self.demo_mode:
+            self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, new_value, by=by)
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
