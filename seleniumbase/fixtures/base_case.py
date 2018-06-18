@@ -1194,9 +1194,9 @@ class BaseCase(unittest.TestCase):
                          "/messenger/1.5.0/css/messenger.css")
         msgr_theme_flat_css = ("https://cdnjs.cloudflare.com/ajax/libs"
                                "/messenger/1.5.0/css/messenger-theme-flat.css")
-        msgr_theme_futur_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/messenger/1.5.0/css/"
-                                "messenger-theme-future.css")
+        msgr_theme_future_css = ("https://cdnjs.cloudflare.com/ajax/libs"
+                                 "/messenger/1.5.0/css/"
+                                 "messenger-theme-future.css")
         msgr_theme_block_css = ("https://cdnjs.cloudflare.com/ajax/libs"
                                 "/messenger/1.5.0/css/"
                                 "messenger-theme-block.css")
@@ -1213,7 +1213,7 @@ class BaseCase(unittest.TestCase):
         self.add_js_link(jquery_js)
         self.add_css_link(messenger_css)
         self.add_css_link(msgr_theme_flat_css)
-        self.add_css_link(msgr_theme_futur_css)
+        self.add_css_link(msgr_theme_future_css)
         self.add_css_link(msgr_theme_block_css)
         self.add_css_link(msgr_theme_air_css)
         self.add_css_link(msgr_theme_ice_css)
