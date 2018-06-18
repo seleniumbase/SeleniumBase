@@ -1178,12 +1178,6 @@ class BaseCase(unittest.TestCase):
                               "/messenger/1.5.0/js/messenger-theme-flat.js")
         msg_theme_future_js = ("https://cdnjs.cloudflare.com/ajax/libs"
                                "/messenger/1.5.0/js/messenger-theme-future.js")
-        msgr_theme_block_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/messenger/1.5.0/js/messenger-theme-block.js")
-        msgr_theme_air_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/messenger/1.5.0/js/messenger-theme-air.js")
-        msgr_theme_ice_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/messenger/1.5.0/js/messenger-theme-ice.js")
         underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
                          "/underscore.js/1.4.3/underscore-min.js")
         backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
@@ -1223,9 +1217,6 @@ class BaseCase(unittest.TestCase):
         self.add_js_link(messenger_js)
         self.add_js_link(msgr_theme_flat_js)
         self.add_js_link(msg_theme_future_js)
-        self.add_js_link(msgr_theme_block_js)
-        self.add_js_link(msgr_theme_air_js)
-        self.add_js_link(msgr_theme_ice_js)
 
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # Messenger needs a small amount of time to load & activate.
