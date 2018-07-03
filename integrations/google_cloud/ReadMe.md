@@ -11,7 +11,7 @@
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_cloud_launcher_jenkins_3.png "Finding Jenkins")
 
-* Under "Cloud Launcher", Click on "Jenkins"
+* Under "Cloud Launcher", Click on "Jenkins Certified by Bitnami"
 * Click on "Launch on Compute Engine"
 * Give the instance a name
 * Give the instance a zone
@@ -76,7 +76,7 @@ sudo pip install -r requirements.txt --upgrade
 #### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
 
 ```bash
-sudo python server_setup.py develop
+sudo python setup.py develop
 ```
 
 #### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (Takes ~10 seconds)

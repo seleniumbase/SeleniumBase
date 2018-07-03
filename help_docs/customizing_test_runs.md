@@ -1,4 +1,4 @@
-### The Command Line Interface
+### Customizing test runs from the command line
 
 In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), which allows you to customize the test framework, SeleniumBase gives you the flexibility to customize & control test runs from the command line:
 
@@ -21,7 +21,7 @@ pytest my_first_test.py
 
 pytest my_first_test.py --demo_mode --browser=chrome
 
-nosetests my_first_test.py --browser=firefox
+pytest my_first_test.py --browser=firefox
 
 pytest basic_script.py -s --pdb --pdb-failures
 
@@ -49,7 +49,7 @@ pytest my_test_suite.py --browser=chrome
 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
 
 ```bash
-nosetests my_first_test.py --browser=chrome --demo_mode
+pytest my_first_test.py --browser=chrome --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
@@ -57,7 +57,7 @@ You can override the default wait time by either updating [settings.py](https://
 If you ever make any changes to your local copy of ``settings.py``, you may need to run ``python setup.py install`` for those changes to take effect.
 
 ```bash
-nosetests my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
+pytest my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
 ```
 
 **You can also use the following in your scripts to slow down the tests:**
@@ -73,7 +73,7 @@ You may also want to have your test sleep in other situations where you need to 
 **If you need to debug things on the fly (in case of errors), use this:**
 
 ```bash
-nosetests my_first_test.py --browser=chrome --pdb --pdb-failures -s
+pytest my_first_test.py --browser=chrome --pdb --pdb-failures -s
 ```
 
 The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.

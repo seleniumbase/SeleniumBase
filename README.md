@@ -13,7 +13,7 @@ SeleniumBase simplifies Web-UI automation by extending Python's unittest framewo
 ### [**Get Started**](#seleniumbase_installation), or Learn More:
 
 **No more repetitive WebDriver code:**<br />
-SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, and more. (<i>[Read about the command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/command_line.md).</i>)
+SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, using a proxy server, and more. (<i>[Read about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
 **Simple Python syntax makes coding easy:**<br />
 
@@ -90,22 +90,22 @@ cd SeleniumBase
 
 If you're installing SeleniumBase from a cloned copy on your machine, use:
 ```
-pip install -U -r requirements.txt
+pip install -r requirements.txt
 
 python setup.py develop
 ```
 
 If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
 ```bash
-pip install -U seleniumbase
+pip install seleniumbase
 ```
 
 If you're installing SeleniumBase directly from GitHub, use:
 ```bash
-pip install -U -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
+pip install -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 
-(If you encounter permission errors during installation while not using a virtual environment, you may need to add ``--user`` to your ``pip`` command.)
+(If you encounter permission errors during installation while not using a virtual environment, you may need to add ``--user`` to your pip command. If you already have an older version of SeleniumBase installed, you may want to add ``--upgrade`` or ``-U`` to your pip command.)
 
 
 <a id="seleniumbase_basic_usage"></a>
