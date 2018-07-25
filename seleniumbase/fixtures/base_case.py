@@ -2892,9 +2892,9 @@ class BaseCase(unittest.TestCase):
                 "remember to call self.process_delayed_asserts() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
             if not has_exception:
-                self.process_checks()
+                self.process_delayed_asserts()
             else:
-                self.process_checks(print_only=True)
+                self.process_delayed_asserts(print_only=True)
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
