@@ -2259,6 +2259,15 @@ class BaseCase(unittest.TestCase):
         self._drivers_list.append(new_driver)
         if switch_to:
             self.driver = new_driver
+            if self.headless:
+                # Make sure the invisible browser window is big enough
+                try:
+                    self.set_window_size(1920, 1200)
+                except Exception:
+                    # This shouldn't fail, but in case it does,
+                    # get safely through setUp() so that
+                    # WebDrivers can get closed during tearDown().
+                    pass
         return new_driver
 
     def switch_to_driver(self, driver):
