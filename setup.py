@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.12.1',
+    version='1.12.2',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
@@ -25,7 +25,7 @@ setup(
         'pytest==3.6.3',
         'pytest-html==1.19.0',
         'pytest-xdist==1.22.2',
-        'six==1.10.0',
+        'six==1.11.0',
         'flake8==3.5.0',
         'requests==2.19.1',
         'beautifulsoup4==4.6.0',

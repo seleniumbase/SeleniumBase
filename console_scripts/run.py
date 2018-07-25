@@ -6,7 +6,7 @@ seleniumbase [COMMAND] [PARAMETERS]
 
 Examples:
 seleniumbase mkdir [DIRECTORY_NAME]
-seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE].py
+seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]
 seleniumbase grid-hub start
 seleniumbase grid-node start --hub=127.0.0.1
 """
@@ -20,7 +20,8 @@ from integrations.selenium_ide import convert_ide
 
 def show_usage():
     show_basic_usage()
-    print('Type "seleniumbase help" for more details.\n')
+    print('Type "seleniumbase help" for details on all commands. OR,')
+    print('Type "seleniumbase help [COMMAND]" for specific command info.\n')
 
 
 def show_basic_usage():
@@ -31,8 +32,8 @@ def show_basic_usage():
     print("")
     print("Commands:")
     print("")
-    print("    mkdir [DIRECTORY]")
-    print("    convert [FILENAME]")
+    print("    mkdir [NEW_TEST_DIRECTORY_NAME]")
+    print("    convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
     print("    grid-hub {start|stop|restart} [OPTIONS]")
     print("    grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
     print("")
@@ -56,7 +57,7 @@ def show_convert_usage():
     print("  ** convert **")
     print("")
     print("  Usage:")
-    print("            seleniumbase convert [MY_TEST.py]")
+    print("            seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
     print("  Output:")
     print("            Converts a Selenium IDE exported WebDriver unittest")
     print("            file into a SeleniumBase file. Adds _SB to the new")
@@ -147,6 +148,23 @@ def main():
             show_basic_usage()
             show_grid_node_usage()
     elif command == "help" or command == "--help":
+        if len(command_args) >= 1:
+            if command_args[0] == "mkdir":
+                print("")
+                show_mkdir_usage()
+                return
+            elif command_args[0] == "convert":
+                print("")
+                show_convert_usage()
+                return
+            elif command_args[0] == "grid-hub":
+                print("")
+                show_grid_hub_usage()
+                return
+            elif command_args[0] == "grid-node":
+                print("")
+                show_grid_node_usage()
+                return
         show_detailed_help()
     else:
         show_usage()
