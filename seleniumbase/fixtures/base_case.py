@@ -1979,10 +1979,17 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
+    def assert_text_visible(self, text, selector, by=By.CSS_SELECTOR,
+                            timeout=settings.SMALL_TIMEOUT):
+        """ Same as assert_text() """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.assert_text(text, selector, by=by, timeout=timeout)
+
     def assert_text(self, text, selector, by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT):
-        """ Similar to wait_for_text_visible(), but returns nothing.
-            As above, will raise an exception if nothing can be found.
+        """ Similar to wait_for_text_visible()
+            Raises an exception if the element or the text is not found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
