@@ -76,14 +76,18 @@ def main():
         if grid_hub_command == "start" or grid_hub_command == "restart":
             shell_command = (
                 """java -jar %s/selenium-server-standalone.jar -role node """
-                """-hub http://127.0.0.1:4444/grid/register -browser browser"""
+                """-hub http://%s:4444/grid/register -browser browser"""
                 """Name=chrome,maxInstances=5,version=ANY,seleniumProtocol="""
                 """WebDriver -browser browserName=firefox,maxInstances=5,"""
                 """version=ANY,seleniumProtocol=WebDriver -browser browser"""
                 """Name=MicrosoftEdge,maxInstances=1,version=ANY,"""
-                """platform=WIN10,seleniumProtocol=WebDriver""" % dir_path)
+                """platform=WIN10,seleniumProtocol=WebDriver"""
+                % (dir_path, server_ip))
             print("\nStarting Selenium-WebDriver Grid node...\n")
             print(shell_command)
+            print("")
+            print("""Browser Sessions: http://127.0.0.1:5555"""
+                  """/wd/hub/static/resource/hub.html""")
             print("")
             subprocess.check_call(shell_command, shell=True)
         elif grid_hub_command == "stop":
