@@ -2818,22 +2818,13 @@ class BaseCase(unittest.TestCase):
             raise Exception("""SeleniumBase plugins did not load! """
                             """Please reinstall using:\n"""
                             """ >>> "python setup.py develop" <<< """)
-        self.driver = browser_launcher.get_driver(self.browser,
-                                                  self.headless,
-                                                  self.use_grid,
-                                                  self.servername,
-                                                  self.port,
-                                                  self.proxy_string)
+        self.driver = self.get_new_driver(browser=self.browser,
+                                          headless=self.headless,
+                                          servername=self.servername,
+                                          port=self.port,
+                                          proxy=self.proxy_string,
+                                          switch_to=True)
         self._default_driver = self.driver
-        self._drivers_list.append(self.driver)
-        if self.headless:
-            # Make sure the invisible browser window is big enough
-            try:
-                self.set_window_size(1920, 1200)
-            except Exception:
-                # This shouldn't fail, but in case it does, get safely through
-                # setUp() so that WebDrivers can get closed during tearDown().
-                pass
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
