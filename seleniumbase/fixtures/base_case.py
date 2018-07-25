@@ -33,16 +33,12 @@ import traceback
 import unittest
 import uuid
 from bs4 import BeautifulSoup
-from pyvirtualdisplay import Display
 from seleniumbase.common import decorators
-from seleniumbase.config import ad_block_list
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
-from seleniumbase.core.s3_manager import S3LoggingBucket
 from seleniumbase.core.testcase_manager import ExecutionQueryPayload
 from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
-from seleniumbase.core import browser_launcher
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
@@ -1608,6 +1604,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def ad_block(self):
+        from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)
             script = ("""var $elements = document.querySelectorAll('%s');
@@ -2251,6 +2248,8 @@ class BaseCase(unittest.TestCase):
         if browser_name not in valid_browsers:
             raise Exception("Browser: {%s} is not a valid browser option. "
                             "Valid options = {%s}" % (browser, valid_browsers))
+        # Launch a web browser
+        from seleniumbase.core import browser_launcher
         new_driver = browser_launcher.get_driver(browser_name=browser_name,
                                                  headless=headless,
                                                  use_grid=use_grid,
@@ -2792,6 +2791,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
+                from pyvirtualdisplay import Display
                 self.display = Display(visible=0, size=(1920, 1200))
                 self.display.start()
                 self.headless_active = True
@@ -2965,7 +2965,8 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
             if self.with_s3_logging and has_exception:
-                """ After each testcase, upload logs to the S3 bucket. """
+                """ If enabled, upload logs to S3 during test exceptions. """
+                from seleniumbase.core.s3_manager import S3LoggingBucket
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
                 path = "%s/%s" % (self.log_path, test_id)
