@@ -74,6 +74,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_load_url = "data:,"
         self.__page_check_count = 0
         self.__page_check_failures = []
+        # Requires self._* instead of self.__* for external class use
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
