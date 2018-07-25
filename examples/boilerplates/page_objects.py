@@ -1,14 +1,18 @@
 '''
-Example of using the Page Object Model (POM) for tests, using page selectors.
+Example of using the Page Object Pattern for tests, using CSS selectors.
 Helps make your code more Readable, Maintainable, and Reusable.
 Import a file like this at the top of your test files.
 '''
 
 
-class HomePage(object):
+class Page(object):
     html = "html"
     ok_button = "#ok"
     cancel_button = "#cancel"
+    see_items_button = "button.items"
+
+
+class HomePage(object):
     see_items_button = "button.items"
 
 
@@ -33,7 +37,7 @@ from .page_objects import HomePage, ShoppingPage, CheckoutPage
 class MyTests(BaseTestCase):
 
     def test_example(self):
-        self.login_to_site()
+        self.login()
         self.click(HomePage.see_items_button)
         self.click(ShoppingPage.buyable_item)
         self.click(ShoppingPage.add_to_cart)
