@@ -69,6 +69,8 @@ def main():
             print("\nStarting Selenium-WebDriver Grid Hub...\n")
             print(shell_command)
             print("")
+            print("Grid Hub Console: http://127.0.0.1:4444/grid/console")
+            print("")
             subprocess.check_call(shell_command, shell=True)
         elif grid_hub_command == "stop":
             print("")
