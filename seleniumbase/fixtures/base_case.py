@@ -1861,7 +1861,12 @@ class BaseCase(unittest.TestCase):
             '''document.body.innerHTML = \"%s\"''' % referral_link)
         time.sleep(0.1)
         self.click("a.analytics.referral.test")  # Clicks the generated button
-        time.sleep(0.12)
+        time.sleep(0.15)
+        try:
+            self.click("html")
+            time.sleep(0.08)
+        except Exception:
+            pass
 
     def generate_traffic(self, start_page, destination_page, loops=1):
         """ Similar to generate_referral(), but can do multiple loops. """
