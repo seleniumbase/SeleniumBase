@@ -66,7 +66,7 @@ case "$1" in
             echo $PID > "${WEBDRIVER_NODE_PIDFILE}"
             echo "${SUCCESS_MSG} Selenium-WebDriver Grid node started successfully."
             echo ""
-            echo "Browser Sessions: http://${GRID_HUB_SERVER_IP}:5555/wd/hub/static/resource/hub.html"
+            echo "Browser Sessions: http://127.0.0.1:5555/wd/hub/static/resource/hub.html"
             echo ""
             # echo "To see full log output, remove the java.util.logging.config.file parameter from script/grid-node"
         fi
