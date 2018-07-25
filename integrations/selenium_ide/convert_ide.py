@@ -4,11 +4,14 @@ unittest file into SeleniumBase Python file.
 Works with Katalon Recorder scripts: http://www.katalon.com/automation-recorder
 
 Usage:
-        seleniumbase convert [MY_TEST.py]
+        seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE].py
+                (run from anywhere)
     OR
-        python convert_ide.py [MY_TEST.py]  (from the "selenium_ide/"" folder)
+        python convert_ide.py [PYTHON_WEBDRIVER_UNITTEST_FILE].py
+                (when run from the "selenium_ide/" folder)
 Output:
-        [MY_TEST_SB.py]  (Adds "_SB" to the file name)
+        [NEW_FILE_SB].py  (adds "_SB" to the original file name)
+                          (the original file is kept intact)
 """
 
 import codecs
@@ -18,7 +21,7 @@ import sys
 
 def main():
     expected_arg = ("[A Katalon/Selenium IDE recording exported as "
-                    "a Python-WebDriver script].py")
+                    "a Python-WebDriver unittest script].py")
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1] == "seleniumbase" or (
             sys.argv[0].split('\\')[-1] == "seleniumbase"):
@@ -29,9 +32,11 @@ def main():
         if num_args < 2 or num_args > 2:
             raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
                             '"python convert_ide.py %s"\n' % expected_arg)
-    if not sys.argv[num_args-1].endswith('.py'):
-        raise Exception("Not a Python file!")
     webdriver_python_file = sys.argv[num_args-1]
+    if not webdriver_python_file.endswith('.py'):
+        raise Exception("* `%s` is not a Python file! *\n"
+                        "Expecting: %s\n"
+                        % (webdriver_python_file, expected_arg))
 
     seleniumbase_lines = []
     seleniumbase_lines.append("from seleniumbase import BaseCase")
@@ -47,7 +52,10 @@ def main():
     all_code = f.read()
     f.close()
     if "def test_" not in all_code:
-        raise Exception("Not a valid Python unittest.TestCase file!")
+        raise Exception("* `%s` is not a valid Python unittest.TestCase file! "
+                        "*\nExpecting: %s\n"
+                        "Did you properly export your Selenium-IDE recording "
+                        "as a Python WebDriver unittest file?" % expected_arg)
     code_lines = all_code.split('\n')
     for line in code_lines:
 
