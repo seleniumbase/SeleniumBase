@@ -121,7 +121,6 @@ def main():
     elif num_args > 2:
         command = sys.argv[1]
         command_args = sys.argv[2:]
-    print command
 
     if command == "convert":
         if len(command_args) == 1:
