@@ -11,7 +11,7 @@ class MyTestClass(BaseCase):
         self.open("http://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")   # Grab an attribute
         self.assertTrue("86,400 seconds per day" in title)
-        self.click('link=Blag')                   # Click on link with the text
+        self.click('link=Blag')                # Click link containing the text
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')  # Fill in field with the text
         self.assert_text('Hooray robots!', '#content')
