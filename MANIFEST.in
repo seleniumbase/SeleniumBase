@@ -1,0 +1,14 @@
+include README.md
+include pytest.ini
+include setup.cfg
+include .travis.yml
+include .gitignore
+include requirements.txt
+include seleniumbase/core/create_db_tables.sql
+include integrations/selenium_grid/grid-hub
+include integrations/selenium_grid/grid-node
+include integrations/selenium_grid/font_color
+include integrations/selenium_grid/start-grid-hub.bat
+include integrations/selenium_grid/register-grid-node.bat
+include integrations/selenium_grid/start-grid-hub.sh
+include integrations/selenium_grid/register-grid-node.sh

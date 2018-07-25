@@ -1,13 +1,13 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.4+)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
 """
 
 from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.11.1',
+    version='1.12.0',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
@@ -22,12 +22,12 @@ setup(
         'ipython==5.6.0',
         'selenium==3.11.0',
         'nose==1.3.7',
-        'pytest==3.5.1',
-        'pytest-html==1.17.0',
+        'pytest==3.6.3',
+        'pytest-html==1.19.0',
         'pytest-xdist==1.22.2',
         'six==1.10.0',
         'flake8==3.5.0',
-        'requests==2.18.4',
+        'requests==2.19.1',
         'beautifulsoup4==4.6.0',
         'unittest2==1.1.0',
         'chardet==3.0.4',
@@ -36,13 +36,21 @@ setup(
         'PyVirtualDisplay==0.2.1',
         ],
     packages=['seleniumbase',
+              'seleniumbase.common',
+              'seleniumbase.config',
               'seleniumbase.core',
-              'seleniumbase.plugins',
               'seleniumbase.fixtures',
               'seleniumbase.masterqa',
-              'seleniumbase.common',
-              'seleniumbase.config'],
+              'seleniumbase.plugins',
+              'console_scripts',
+              'integrations',
+              'integrations.selenium_grid',
+              'integrations.selenium_ide',
+              ],
     entry_points={
+        'console_scripts': [
+            'seleniumbase = console_scripts.run:main',
+        ],
         'nose.plugins': [
             'base_plugin = seleniumbase.plugins.base_plugin:Base',
             'selenium = seleniumbase.plugins.selenium_plugin:SeleniumBrowser',

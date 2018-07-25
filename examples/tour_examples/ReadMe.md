@@ -2,7 +2,7 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif "SeleniumBase Tours")<br>
 
-SeleniumBase Tours utilize the [HubSpot Shepherd Library](http://github.hubspot.com/shepherd/docs/welcome/) for creating and running tours, demos, and walkthroughs on any website.
+SeleniumBase Tours utilize the [Shepherd Library](https://cdnjs.com/libraries/shepherd/1.8.1) for creating and running tours, demos, and walkthroughs on any website.
 
 To utilize tours, there are three methods that you need to know at the basic level (which contain optional arguments):
 

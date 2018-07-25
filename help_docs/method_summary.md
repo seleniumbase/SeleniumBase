@@ -221,6 +221,9 @@ self.wait_for_text(text, selector, by=By.CSS_SELECTOR,
 self.find_text(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
+self.assert_text_visible(text, selector, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
 self.assert_text(text, selector, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 

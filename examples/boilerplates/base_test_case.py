@@ -18,15 +18,14 @@ class BaseTestCase(BaseCase):
         # Add custom tearDown code for your tests BEFORE the super().tearDown()
         super(BaseTestCase, self).tearDown()
 
-    def login_to_site(self):
-        # <<< Placeholder for actual code. Add your code here. >>>
-        # Add frequently used methods like this in your base test case class.
-        # This reduces the amount of duplicated code in your tests.
-        # If the UI changes, the fix only needs to be applied in one place.
+    def login(self):
+        # <<< Placeholder. Add your code here. >>>
+        # Reduce duplicate code in tests by having reusable methods like this.
+        # If the UI changes, the fix can be applied in one place.
         pass
 
     def example_method(self):
-        # <<< Placeholder for actual code. Add your code here. >>>
+        # <<< Placeholder. Add your code here. >>>
         pass
 
 
@@ -38,6 +37,6 @@ from base_test_case import BaseTestCase
 class MyTests(BaseTestCase):
 
     def test_example(self):
-        self.login_to_site()
+        self.login()
         self.example_method()
 '''

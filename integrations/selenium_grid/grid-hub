@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# Usage: grid-hub {start|stop}
+# Usage: grid-hub {start|stop|restart}
 #
 
 source $(dirname $0)/font_color
@@ -10,7 +10,7 @@ EXPECTED_ARGS=1
 E_BADARGS=65
 
 DO_showUsage() {
-    echo "Usage: $(basename $0) {start|stop}"
+    echo "Usage: $(basename $0) {start|stop|restart}"
     exit $E_BADARGS
 }
 
@@ -20,8 +20,21 @@ fi
 
 ################################################################################
 
-WEBDRIVER_SERVER_JAR=./selenium-server-standalone.jar
-WEBDRIVER_HUB_PARAMS="-role hub -port 4444"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+GRID_HUB_VERBOSE_LOGS_FILE=${DIR}/verbose_hub_server.dat
+
+GRID_HUB_VERBOSE_LOGS="False"
+if [ -f $GRID_HUB_VERBOSE_LOGS_FILE ]; then
+    GRID_HUB_VERBOSE_LOGS=$(cat $GRID_HUB_VERBOSE_LOGS_FILE)
+fi
+
+VERBOSITY_STRING="-Djava.util.logging.config.file=test/logging.properties "
+if [ "$GRID_HUB_VERBOSE_LOGS" == "True" ]; then
+  VERBOSITY_STRING=""
+fi
+
+WEBDRIVER_SERVER_JAR=${DIR}/selenium-server-standalone.jar
+WEBDRIVER_HUB_PARAMS="-role hub -timeout 30 -browserTimeout 60 -port 4444"
 WEBDRIVER_HUB_PIDFILE="/tmp/webdriver_hub.pid"
 
 if [ ! -f $WEBDRIVER_SERVER_JAR ]; then
@@ -31,35 +44,45 @@ fi
 
 case "$1" in
     start)
-        echo "Starting Selenium-WebDriver Grid hub..."
+        echo "Starting Selenium-WebDriver Grid Hub..."
         if [ -f $WEBDRIVER_HUB_PIDFILE ]; then
-            echo "${FAIL_MSG} Selenium-WebDriver Grid hub already running with PID $(cat $WEBDRIVER_HUB_PIDFILE). Run 'grid-hub stop' or 'grid-hub restart'."
+            echo "${FAIL_MSG} Selenium-WebDriver Grid Hub already running with PID $(cat $WEBDRIVER_HUB_PIDFILE). Run 'grid-hub stop' or 'grid-hub restart'."
+            echo ""
+            echo "Grid Hub console: http://127.0.0.1:4444/grid/console"
+            echo ""
             exit 1
         else
-            START_HUB_CMD="java -Djava.util.logging.config.file=test/logging.properties -jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_HUB_PARAMS}"
+            # START_HUB_CMD="java -Djava.util.logging.config.file=test/logging.properties -jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_HUB_PARAMS}"
+            START_HUB_CMD="java ${VERBOSITY_STRING}-jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_HUB_PARAMS}"
+            echo ""
+            echo $START_HUB_CMD
+            echo ""
             $START_HUB_CMD &
             PID=$!
             echo $PID > "${WEBDRIVER_HUB_PIDFILE}"
-            echo "${SUCCESS_MSG} Selenium-WebDriver Grid hub started successfully."
-            echo "To see full log output, remove the java.util.logging.config.file parameter from script/grid-hub"
+            echo "${SUCCESS_MSG} Selenium-WebDriver Grid Hub started successfully."
+            echo ""
+            echo "Grid Hub console: http://127.0.0.1:4444/grid/console"
+            echo ""
+            # echo "To see full log output, remove the java.util.logging.config.file parameter from script/grid-hub"
         fi
         ;;
     stop)
-        echo "Stopping Selenium-WebDriver Grid hub..."
+        echo "Stopping Selenium-WebDriver Grid Hub..."
         if [ -f $WEBDRIVER_HUB_PIDFILE ]; then
             PID=$(cat $WEBDRIVER_HUB_PIDFILE)
             kill $PID
             rm $WEBDRIVER_HUB_PIDFILE
             sleep 1
             if [[ $(ps -A | egrep "^${PID}") ]]; then
-                echo "${FAIL_MSG} Tried to kill the hub with PID ${PID}, but was unsuccessful. You need to kill it with something stronger, like 'kill -9'"
+                echo "${FAIL_MSG} Tried to kill the Grid Hub with PID ${PID}, but was unsuccessful. You need to kill it with something stronger, like 'kill -9'"
                 exit 1
             else
-                echo "${SUCCESS_MSG} Selenium-WebDriver Grid hub stopped successfully."
+                echo "${SUCCESS_MSG} Selenium-WebDriver Grid Hub stopped successfully."
                 exit 0
             fi
         else
-            echo "${SUCCESS_MSG} Selenium-WebDriver Grid hub has already been stopped."
+            echo "${SUCCESS_MSG} Selenium-WebDriver Grid Hub has already been stopped."
             exit 0
         fi
         ;;

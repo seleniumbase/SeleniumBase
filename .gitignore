@@ -37,6 +37,9 @@ nosetests.xml
 
 # Other
 selenium-server-standalone.jar
+verbose_hub_server.dat
+verbose_node_server.dat
+ip_of_grid_hub.dat
 geckodriver.log
 downloaded_files
 archived_files
@@ -51,4 +54,5 @@ html_report.html
 report.html
 assets
 temp
+temp*
 node_modules

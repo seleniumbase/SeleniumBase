@@ -1,4 +1,4 @@
-## Converting Katalon-based Selenium IDE recordings into SeleniumBase test scripts
+## Converting Katalon/Selenium IDE recordings into SeleniumBase test scripts
 
 [Katelon Recorder / Selenium IDE](https://www.katalon.com/resources-center/blog/katalon-automation-recorder/) (<i>the successor to the [old Selenium IDE](http://docs.seleniumhq.org/projects/ide/)</i>) is a tool that allows you to record and playback actions performed inside a web browser. It's available as a [downloadable Chrome extension](https://chrome.google.com/webstore/detail/katalon-recorder-selenium/ljdobmomdgdljniojadhoplhkpialdid) and a [downloadable Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/katalon-automation-record/). Katelon Recorder comes with an option to export recordings as various WebDriver test scripts, one of which is ``Python 2 (WebDriver + unittest)``. Unfortunately, these natively-exported scripts can be very messy and don't always run reliably. The purpose of this converter is to clean up and improve the scripts so that they can be used in production-level environments.
 

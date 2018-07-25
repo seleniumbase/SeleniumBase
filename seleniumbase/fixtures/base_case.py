@@ -33,16 +33,12 @@ import traceback
 import unittest
 import uuid
 from bs4 import BeautifulSoup
-from pyvirtualdisplay import Display
 from seleniumbase.common import decorators
-from seleniumbase.config import ad_block_list
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
-from seleniumbase.core.s3_manager import S3LoggingBucket
 from seleniumbase.core.testcase_manager import ExecutionQueryPayload
 from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
-from seleniumbase.core import browser_launcher
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
@@ -78,6 +74,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_load_url = "data:,"
         self.__page_check_count = 0
         self.__page_check_failures = []
+        # Requires self._* instead of self.__* for external class use
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
@@ -1608,6 +1605,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def ad_block(self):
+        from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)
             script = ("""var $elements = document.querySelectorAll('%s');
@@ -1863,7 +1861,12 @@ class BaseCase(unittest.TestCase):
             '''document.body.innerHTML = \"%s\"''' % referral_link)
         time.sleep(0.1)
         self.click("a.analytics.referral.test")  # Clicks the generated button
-        time.sleep(0.12)
+        time.sleep(0.15)
+        try:
+            self.click("html")
+            time.sleep(0.08)
+        except Exception:
+            pass
 
     def generate_traffic(self, start_page, destination_page, loops=1):
         """ Similar to generate_referral(), but can do multiple loops. """
@@ -1981,10 +1984,17 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
+    def assert_text_visible(self, text, selector, by=By.CSS_SELECTOR,
+                            timeout=settings.SMALL_TIMEOUT):
+        """ Same as assert_text() """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.assert_text(text, selector, by=by, timeout=timeout)
+
     def assert_text(self, text, selector, by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT):
-        """ Similar to wait_for_text_visible(), but returns nothing.
-            As above, will raise an exception if nothing can be found.
+        """ Similar to wait_for_text_visible()
+            Raises an exception if the element or the text is not found.
             Returns True if successful. Default timeout = SMALL_TIMEOUT. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
@@ -2251,6 +2261,8 @@ class BaseCase(unittest.TestCase):
         if browser_name not in valid_browsers:
             raise Exception("Browser: {%s} is not a valid browser option. "
                             "Valid options = {%s}" % (browser, valid_browsers))
+        # Launch a web browser
+        from seleniumbase.core import browser_launcher
         new_driver = browser_launcher.get_driver(browser_name=browser_name,
                                                  headless=headless,
                                                  use_grid=use_grid,
@@ -2260,6 +2272,15 @@ class BaseCase(unittest.TestCase):
         self._drivers_list.append(new_driver)
         if switch_to:
             self.driver = new_driver
+            if self.headless:
+                # Make sure the invisible browser window is big enough
+                try:
+                    self.set_window_size(1920, 1200)
+                except Exception:
+                    # This shouldn't fail, but in case it does,
+                    # get safely through setUp() so that
+                    # WebDrivers can get closed during tearDown().
+                    pass
         return new_driver
 
     def switch_to_driver(self, driver):
@@ -2792,6 +2813,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
+                from pyvirtualdisplay import Display
                 self.display = Display(visible=0, size=(1920, 1200))
                 self.display.start()
                 self.headless_active = True
@@ -2801,22 +2823,13 @@ class BaseCase(unittest.TestCase):
             raise Exception("""SeleniumBase plugins did not load! """
                             """Please reinstall using:\n"""
                             """ >>> "python setup.py develop" <<< """)
-        self.driver = browser_launcher.get_driver(self.browser,
-                                                  self.headless,
-                                                  self.use_grid,
-                                                  self.servername,
-                                                  self.port,
-                                                  self.proxy_string)
+        self.driver = self.get_new_driver(browser=self.browser,
+                                          headless=self.headless,
+                                          servername=self.servername,
+                                          port=self.port,
+                                          proxy=self.proxy_string,
+                                          switch_to=True)
         self._default_driver = self.driver
-        self._drivers_list.append(self.driver)
-        if self.headless:
-            # Make sure the invisible browser window is big enough
-            try:
-                self.set_window_size(1920, 1200)
-            except Exception:
-                # This shouldn't fail, but in case it does, get safely through
-                # setUp() so that WebDrivers can get closed during tearDown().
-                pass
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
@@ -2882,9 +2895,9 @@ class BaseCase(unittest.TestCase):
                 "remember to call self.process_delayed_asserts() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
             if not has_exception:
-                self.process_checks()
+                self.process_delayed_asserts()
             else:
-                self.process_checks(print_only=True)
+                self.process_delayed_asserts(print_only=True)
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
@@ -2965,7 +2978,8 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)
             if self.with_s3_logging and has_exception:
-                """ After each testcase, upload logs to the S3 bucket. """
+                """ If enabled, upload logs to S3 during test exceptions. """
+                from seleniumbase.core.s3_manager import S3LoggingBucket
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
                 path = "%s/%s" % (self.log_path, test_id)

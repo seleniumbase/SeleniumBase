@@ -21,7 +21,8 @@ SeleniumBase automatically handles common WebDriver actions such as spinning up 
 
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-**Run tests with Pytest or Nose in any browser:**
+**Run tests with Pytest or Nose in any browser:**<br />
+(<i>Using **Pytest** is strongly recommended</i>)
 
 ```bash
 pytest my_first_test.py --browser=chrome
@@ -137,7 +138,7 @@ class MyTestClass(BaseCase):
 
 **Here's how to run the example script on various web browsers:**
 
-(NOTE: You can interchange **nosetests** with **pytest** at anytime.)
+(NOTE: You can interchange **pytest** with **nosetests** at anytime.)
 
 ```bash
 cd examples/
@@ -158,7 +159,7 @@ pytest my_first_test.py --browser=chrome --demo_mode
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
 
 ```bash
-nosetests my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
+pytest my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
 ```
 
 You can also use the following in your scripts to slow down the tests:
@@ -168,14 +169,14 @@ import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you w
 import ipdb; ipdb.set_trace()  # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
 ```
 
-(NOTE: If you're using pytest instead of nosetests and you want to use ipdb in your script for debugging purposes, you'll either need to add ``--capture=no`` on the command line, or use ``import pytest; pytest.set_trace()`` instead of using ipdb. More info on that [here](http://stackoverflow.com/questions/2678792/can-i-debug-with-python-debugger-when-using-py-test-somehow).)
+(NOTE: If you're using pytest instead of nosetests and you want to use ipdb in your script for debugging purposes, you'll need to add ``--capture=no`` (or ``-s``) on the command line, or use ``import pytest; pytest.set_trace()`` instead of using ipdb. More info on that [here](http://stackoverflow.com/questions/2678792/can-i-debug-with-python-debugger-when-using-py-test-somehow).)
 
 You may also want to have your test sleep in other situations where you need to have your test wait for something. If you know what you're waiting for, you should be specific by using a command that waits for something specific to happen.
 
 If you need to debug things on the fly (in case of errors), use this:
 
 ```bash
-nosetests my_first_test.py --browser=chrome --pdb --pdb-failures -s
+pytest my_first_test.py --browser=chrome --pdb --pdb-failures -s
 ```
 
 The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.
@@ -207,7 +208,7 @@ For running tests outside of the SeleniumBase repo with **Nosetests**, you'll wa
 
 If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
-To run Pytest multithreaded on multiple CPUs at the same time, add ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
 
@@ -282,7 +283,7 @@ pip install mysqlclient==1.3.12
 
 Here's an example of running tests with additional features enabled:
 ```bash
-nosetests [YOUR_TEST_FILE].py --browser=chrome --with-db_reporting --with-s3_logging -s
+pytest [YOUR_TEST_FILE].py --browser=chrome --with-db_reporting --with-s3_logging -s
 ```
 (NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
@@ -296,10 +297,11 @@ nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg
 
 You can simplify that even more by using a setup.cfg file, such as the one provided for you in the examples folder. If you kick off a test run from within the folder that setup.cfg is location in, that file will automatically be used as your configuration, meaning that you wouldn't have to type out all the plugins that you want to use (or include a config file) everytime you run tests.
 
-If you tell nosetests to run an entire file, it will run every method in that python file that starts with "test". You can be more specific on what to run by doing something like:
+If you tell pytest/nosetests to run an entire file, it will run every method in that python file that starts with "test". You can be more specific on what to run by doing something like the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)
 
 ```bash
-nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME] --config=[MY_CONFIG_FILE].cfg
+pytest [YOUR_TEST_FILE].py::[SOME_CLASS_NAME]::test_[SOME_TEST_NAME]
+nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME]
 ```
 
 Let's try an example of a test that fails:
@@ -317,7 +319,7 @@ class MyTestClass(BaseCase):
 You can run it from the ``examples`` folder like this:
 
 ```bash
-nosetests test_fail.py
+pytest test_fail.py
 ```
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).

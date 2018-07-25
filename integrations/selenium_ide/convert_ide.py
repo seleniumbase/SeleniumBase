@@ -1,11 +1,14 @@
 """
-Converts a Selenium IDE WebDriver-exported test file into a SeleniumBase file.
+Converts a Selenium IDE recording that was exported as a Python WebDriver
+unittest file into SeleniumBase Python file.
 Works with Katalon Recorder scripts: http://www.katalon.com/automation-recorder
 
 Usage:
-python convert_ide.py [MY_TEST.py]
+        seleniumbase convert [MY_TEST.py]
+    OR
+        python convert_ide.py [MY_TEST.py]  (from the "selenium_ide/"" folder)
 Output:
-[MY_TEST_SB.py]  (Adds "_SB" to the file name)
+        [MY_TEST_SB.py]  (Adds "_SB" to the file name)
 """
 
 import codecs
@@ -14,15 +17,21 @@ import sys
 
 
 def main():
-    expected_arg = "[A Selenium IDE recording exported to Python WebDriver]"
+    expected_arg = ("[A Katalon/Selenium IDE recording exported as "
+                    "a Python-WebDriver script].py")
     num_args = len(sys.argv)
-    if num_args < 2 or num_args > 2:
-        raise Exception("\n* INVALID RUN COMMAND! *  Usage:\n"
-                        "python convert_ide.py %s\n" % expected_arg)
-    elif num_args == 2:
-        if not sys.argv[1].endswith('.py'):
-            raise Exception("Not a Python file!")
-    webdriver_python_file = sys.argv[1]
+    if sys.argv[0].split('/')[-1] == "seleniumbase" or (
+            sys.argv[0].split('\\')[-1] == "seleniumbase"):
+        if num_args < 3 or num_args > 3:
+            raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
+                            '"seleniumbase convert %s"\n' % expected_arg)
+    else:
+        if num_args < 2 or num_args > 2:
+            raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
+                            '"python convert_ide.py %s"\n' % expected_arg)
+    if not sys.argv[num_args-1].endswith('.py'):
+        raise Exception("Not a Python file!")
+    webdriver_python_file = sys.argv[num_args-1]
 
     seleniumbase_lines = []
     seleniumbase_lines.append("from seleniumbase import BaseCase")

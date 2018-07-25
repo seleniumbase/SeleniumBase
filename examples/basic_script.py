@@ -1,3 +1,7 @@
+"""
+Same as my_first_test.py, but without the asserts.
+"""
+
 from seleniumbase import BaseCase
 
 
