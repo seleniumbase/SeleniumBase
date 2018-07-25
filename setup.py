@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.4+)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
 """
 
 from setuptools import setup, find_packages  # noqa
@@ -22,12 +22,12 @@ setup(
         'ipython==5.6.0',
         'selenium==3.11.0',
         'nose==1.3.7',
-        'pytest==3.5.1',
-        'pytest-html==1.17.0',
+        'pytest==3.6.3',
+        'pytest-html==1.19.0',
         'pytest-xdist==1.22.2',
         'six==1.10.0',
         'flake8==3.5.0',
-        'requests==2.18.4',
+        'requests==2.19.1',
         'beautifulsoup4==4.6.0',
         'unittest2==1.1.0',
         'chardet==3.0.4',
