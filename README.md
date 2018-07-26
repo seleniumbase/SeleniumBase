@@ -1,14 +1,13 @@
-## Automated testing made fast, easy, and reliable.
+## SeleniumBase Automation Framework
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/laptop_logo.png" title="SeleniumBase" height="160">
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40"><br />
+[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
 
-[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
+SeleniumBase makes it easy to build & run [Selenium-WebDriver](https://github.com/SeleniumHQ/selenium) automation with [Pytest](https://docs.pytest.org/en/latest/).
 
-SeleniumBase simplifies Web-UI automation by extending Python's unittest framework with WebDriver APIs and intelligent code.
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons2f.png" title="SeleniumBase" height="102">
+**Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):**<br>
+![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
 
 ### [**Get Started**](#seleniumbase_installation), or Learn More:
 
@@ -29,10 +28,6 @@ pytest my_first_test.py --browser=chrome
 
 nosetests my_test_suite.py --browser=firefox
 ```
-
-**Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):**<br>
-![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
-(<i>If you remove all the asserts from that test, you're left with [basic_script.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_script.py), which performs all the actions you can see when running the test.</i>)
 
 **No more messy code:**<br />
 This long line of standard WebDriver code,
@@ -150,16 +145,16 @@ nosetests my_first_test.py --browser=firefox
 (<i>If no browser is specified, Chrome is used by default.</i>)
 
 <a id="seleniumbase_demo_mode"></a>
-If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, and highlights page elements being acted on:
+If the example test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
 ```bash
-pytest my_first_test.py --browser=chrome --demo_mode
+pytest my_first_test.py --demo_mode
 ```
 
 You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
 
 ```bash
-pytest my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
+pytest my_first_test.py --demo_mode --demo_sleep=1.2
 ```
 
 You can also use the following in your scripts to slow down the tests:
