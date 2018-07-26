@@ -714,6 +714,7 @@ class BaseCase(unittest.TestCase):
             '''link.rel = "stylesheet"; '''
             '''link.type = "text/css"; '''
             '''link.href = "%s"; '''
+            '''link.crossorigin = "anonymous"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(link);''')
         self.execute_script(add_css_link_script % css_link)
@@ -722,6 +723,8 @@ class BaseCase(unittest.TestCase):
         script_to_add_js = (
             '''var script = document.createElement("script"); '''
             '''script.src = "%s"; '''
+            '''script.defer; '''
+            '''script.crossorigin = "anonymous"; '''
             '''document.getElementsByTagName("head")[0]'''
             '''.appendChild(script);''')
         self.execute_script(script_to_add_js % js_link)
