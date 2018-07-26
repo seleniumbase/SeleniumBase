@@ -53,6 +53,8 @@ http://stackoverflow.com/questions/17236796/how-to-remove-old-docker-containers
 
 Here are a few of those cleanup commands:
 
+    docker container prune
+    docker system prune
     docker images | grep "<none>" | awk '{print $3}' | xargs docker rmi
     docker rm 'docker ps --no-trunc -aq'
 
@@ -71,5 +73,5 @@ https://codefresh.io/blog/everyday-hacks-docker/
 
 #### 13. (Optional) More reading on Docker can be found here:
 * https://docs.docker.com
-* https://docs.docker.com/mac/started/
-* https://docs.docker.com/installation/mac/
+* https://docs.docker.com/get-started/
+* https://docs.docker.com/docker-for-mac/

@@ -1,5 +1,5 @@
 # SeleniumBase Docker Image
-FROM ubuntu:14.04
+FROM ubuntu:17.10
 
 #=======================================
 # Install Python and Basic Python Tools
@@ -14,6 +14,8 @@ RUN apt-get -qy --no-install-recommends install \
     unzip \
     wget \
     curl \
+    libxi6 \
+    libgconf-2-4 \
     vim \
     xvfb \
   && rm -rf /var/lib/apt/lists/*
@@ -21,17 +23,9 @@ RUN apt-get -qy --no-install-recommends install \
 #========================================
 # Add normal user with passwordless sudo
 #========================================
-RUN sudo useradd seluser --shell /bin/bash --create-home \
-  && sudo usermod -a -G sudo seluser \
-  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-#==============================
-# Locale and encoding settings
-#==============================
-ENV LANGUAGE en_US.UTF-8
-ENV LANG ${LANGUAGE}
-RUN locale-gen ${LANGUAGE} \
-  && dpkg-reconfigure --frontend noninteractive locales 
+#RUN sudo useradd seluser --shell /bin/bash --create-home \
+#  && sudo usermod -a -G sudo seluser \
+#  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 #======================
 # Install Chromedriver
@@ -96,6 +90,8 @@ RUN exec "$@"
 #=====================
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
+COPY console_scripts /SeleniumBase/console_scripts/
+COPY integrations /SeleniumBase/integrations/
 COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
 RUN pip install --upgrade pip
