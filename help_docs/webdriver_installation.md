@@ -20,7 +20,7 @@ To run automation on various web browsers, you'll need to download a driver file
 * On a Mac, you can install drivers more easily by using ``brew`` (aka ``homebrew``), but you have to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md).
 
 ```bash
-brew install chromedriver
+brew cask install chromedriver
 
 brew install geckodriver
 ```
@@ -28,7 +28,7 @@ brew install geckodriver
 (NOTE: If your existing version of chromedriver is less than 2.37, **upgrading is required!**)
 
 ```bash
-brew upgrade chromedriver
+brew cask upgrade chromedriver
 
 brew upgrade geckodriver
 ```
