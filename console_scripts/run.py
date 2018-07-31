@@ -5,14 +5,16 @@ Usage:
 seleniumbase [COMMAND] [PARAMETERS]
 
 Examples:
-seleniumbase mkdir [DIRECTORY_NAME]
-seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]
+seleniumbase install chromedriver
+seleniumbase mkdir gui_tests
+seleniumbase convert my_old_webdriver_unittest.py
 seleniumbase grid-hub start
 seleniumbase grid-node start --hub=127.0.0.1
 """
 
 import sys
 from console_scripts import sb_mkdir
+from console_scripts import sb_install
 from integrations.selenium_grid import grid_hub
 from integrations.selenium_grid import grid_node
 from integrations.selenium_ide import convert_ide
@@ -32,10 +34,27 @@ def show_basic_usage():
     print("")
     print("Commands:")
     print("")
+    print("    install [DRIVER_NAME]")
     print("    mkdir [NEW_TEST_DIRECTORY_NAME]")
     print("    convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
     print("    grid-hub {start|stop|restart} [OPTIONS]")
     print("    grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
+    print("")
+
+
+def show_install_usage():
+    print("  ** install **")
+    print("")
+    print("  Usage:")
+    print("            seleniumbase install [DRIVER_NAME]")
+    print("                  (Drivers: chromedriver, geckodriver, edgedriver)")
+    print("  Example:")
+    print("            seleniumbase install chromedriver")
+    print("  Output:")
+    print("            Installs the specified webdriver.")
+    print("            (chromedriver is required for Chrome automation)")
+    print("            (geckodriver is required for Firefox automation)")
+    print("            (edgedriver is required for MS Edge automation)")
     print("")
 
 
@@ -44,6 +63,8 @@ def show_mkdir_usage():
     print("")
     print("  Usage:")
     print("            seleniumbase mkdir [DIRECTORY_NAME]")
+    print("  Example:")
+    print("            seleniumbase mkdir gui_tests")
     print("  Output:")
     print("            Creates a new folder for running SeleniumBase scripts.")
     print("            The new folder contains default config files,")
@@ -105,6 +126,7 @@ def show_detailed_help():
     show_basic_usage()
     print("More Info:")
     print("")
+    show_install_usage()
     show_mkdir_usage()
     show_convert_usage()
     show_grid_hub_usage()
@@ -123,14 +145,20 @@ def main():
         command = sys.argv[1]
         command_args = sys.argv[2:]
 
-    if command == "convert":
+    if command == "install":
+        if len(command_args) >= 1:
+            sb_install.main()
+        else:
+            show_basic_usage()
+            show_install_usage()
+    elif command == "convert":
         if len(command_args) == 1:
             convert_ide.main()
         else:
             show_basic_usage()
             show_convert_usage()
     elif command == "mkdir":
-        if len(command_args) == 1:
+        if len(command_args) >= 1:
             sb_mkdir.main()
         else:
             show_basic_usage()
@@ -149,7 +177,11 @@ def main():
             show_grid_node_usage()
     elif command == "help" or command == "--help":
         if len(command_args) >= 1:
-            if command_args[0] == "mkdir":
+            if command_args[0] == "install":
+                print("")
+                show_install_usage()
+                return
+            elif command_args[0] == "mkdir":
                 print("")
                 show_mkdir_usage()
                 return
