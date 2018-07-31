@@ -4,8 +4,11 @@ Creates a new folder for running SeleniumBase scripts.
 Usage:
 seleniumbase mkdir [DIRECTORY_NAME]
 Output:
-A new folder for running SeleniumBase scripts.
-Contains default config files, boilerplates, and sample tests.
+Creates a new folder for running SeleniumBase scripts.
+The new folder contains default config files,
+sample tests for helping new users get started, and
+Python boilerplates for setting up customized
+test frameworks.
 """
 
 import codecs
@@ -13,17 +16,30 @@ import os
 import sys
 
 
+def invalid_run_command():
+    exp = ("  ** mkdir **\n\n")
+    exp += "  Usage:\n"
+    exp += "          seleniumbase mkdir [DIRECTORY_NAME]\n"
+    exp += "  Example:\n"
+    exp += "          seleniumbase mkdir gui_tests\n"
+    exp += "  Output:\n"
+    exp += "          Creates a new folder for running SeleniumBase scripts.\n"
+    exp += "          The new folder contains default config files,\n"
+    exp += "          sample tests for helping new users get started, and\n"
+    exp += "          Python boilerplates for setting up customized\n"
+    exp += "          test frameworks.\n"
+    print("")
+    raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+
+
 def main():
-    expected_arg = ("[DIRECTORY_NAME]")
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1] == "seleniumbase" or (
             sys.argv[0].split('\\')[-1] == "seleniumbase"):
         if num_args < 3 or num_args > 3:
-            raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
-                            '"seleniumbase mkdir %s"\n' % expected_arg)
+            invalid_run_command()
     else:
-        raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
-                        '"seleniumbase mkdir %s"\n' % expected_arg)
+        invalid_run_command()
     dir_name = sys.argv[num_args-1]
     if len(str(dir_name)) < 2:
         raise Exception('Directory name length must be at least 2 '
