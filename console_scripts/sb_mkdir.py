@@ -20,10 +20,10 @@ def main():
             sys.argv[0].split('\\')[-1] == "seleniumbase"):
         if num_args < 3 or num_args > 3:
             raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
-                            '"seleniumbase convert %s"\n' % expected_arg)
+                            '"seleniumbase mkdir %s"\n' % expected_arg)
     else:
         raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
-                        '"seleniumbase convert %s"\n' % expected_arg)
+                        '"seleniumbase mkdir %s"\n' % expected_arg)
     dir_name = sys.argv[num_args-1]
     if len(str(dir_name)) < 2:
         raise Exception('Directory name length must be at least 2 '
