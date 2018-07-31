@@ -2816,10 +2816,15 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
-                from pyvirtualdisplay import Display
-                self.display = Display(visible=0, size=(1920, 1200))
-                self.display.start()
-                self.headless_active = True
+                try:
+                    from pyvirtualdisplay import Display
+                    self.display = Display(visible=0, size=(1920, 1200))
+                    self.display.start()
+                    self.headless_active = True
+                except Exception:
+                    # pyvirtualdisplay might not be necessary anymore because
+                    # Chrome and Firefox now have built-in headless displays
+                    pass
 
         # Launch WebDriver for both Pytest and Nosetests
         if not hasattr(self, "browser"):

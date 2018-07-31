@@ -9,11 +9,11 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')                  # Click element on page
         self.assert_text('free to copy', 'div center')    # Assert text on page
         self.open("http://xkcd.com/1481/")
-        title = self.get_attribute("#comic img", "title")   # Grab an attribute
+        title = self.get_attribute("#comic img", "title")    # Get an attribute
         self.assertTrue("86,400 seconds per day" in title)
-        self.click('link=Blag')                # Click link containing the text
+        self.click('link=Blag')                                 # Click on link
         self.assert_text('The blag of the webcomic', 'h2')
-        self.update_text('input#s', 'Robots!\n')  # Fill in field with the text
+        self.update_text('input#s', 'Robots!\n')                    # Type text
         self.assert_text('Hooray robots!', '#content')
         self.open('http://xkcd.com/1319/')
         self.assert_text('Automation', 'div#ctitle')

@@ -1,3 +1,4 @@
+# Compiled Python Bytecode
 *.py[cod]
 
 # Packages
@@ -35,23 +36,34 @@ nosetests.xml
 .project
 .pydevproject
 
-# Other
-selenium-server-standalone.jar
-verbose_hub_server.dat
-verbose_node_server.dat
-ip_of_grid_hub.dat
-geckodriver.log
-downloaded_files
-archived_files
+# Web Drivers
+chromedriver
+geckodriver
+MicrosoftWebDriver.exe
+chromedriver.exe
+geckodriver.exe
+
+# Logs
 logs
 latest_logs
 log_archives
 archived_logs
+geckodriver.log
+
+# Reports
 latest_report
 report_archives
 archived_reports
 html_report.html
 report.html
+
+# Other
+selenium-server-standalone.jar
+verbose_hub_server.dat
+verbose_node_server.dat
+ip_of_grid_hub.dat
+downloaded_files
+archived_files
 assets
 temp
 temp*

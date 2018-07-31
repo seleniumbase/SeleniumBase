@@ -1,9 +1,31 @@
 ## Console Scripts
 
+SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old Webdriver unittest scripts into SeleniumBase code, and using the Selenium Grid.
+
+For running tests from the command line, [use **pytest** with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+
+### install
+
+* Usage:
+``seleniumbase install [DRIVER_NAME]``
+        (Drivers: chromedriver, geckodriver, edgedriver)
+
+* Example:
+``seleniumbase install chromedriver``
+
+* Output:
+Installs the specified webdriver.
+(chromedriver is required for Google Chrome automation)
+(geckodriver is required for Mozilla Firefox automation)
+(edgedriver is required for Microsoft Edge automation)
+
 ### mkdir
 
 * Usage:
 ``seleniumbase mkdir [DIRECTORY_NAME]``
+
+* Example:
+``seleniumbase mkdir gui_tests``
 
 * Output:
 Creates a new folder for running SeleniumBase scripts.
@@ -15,7 +37,7 @@ test frameworks.
 ### convert
 
 * Usage:
-``seleniumbase convert [MY_TEST.py]``
+``seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]``
 
 * Output:
 Converts a Selenium IDE exported WebDriver unittest

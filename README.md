@@ -63,7 +63,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 
 ## Get Started:
 
-Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[get a WebDriver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)** on your system PATH.
+Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[install a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.
 
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
@@ -151,32 +151,23 @@ If the example test is moving too fast for your eyes to see what's going on, you
 pytest my_first_test.py --demo_mode
 ```
 
-You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
-
-```bash
-pytest my_first_test.py --demo_mode --demo_sleep=1.2
-```
-
-You can also use the following in your scripts to slow down the tests:
+You can use the following in your scripts to help you debug issues::
 
 ```python
 import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
 import ipdb; ipdb.set_trace()  # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
+import pytest; pytest.set_trace()  # similar to ipdb, but specific to pytest
 ```
 
-(NOTE: If you're using pytest instead of nosetests and you want to use ipdb in your script for debugging purposes, you'll need to add ``--capture=no`` (or ``-s``) on the command line, or use ``import pytest; pytest.set_trace()`` instead of using ipdb. More info on that [here](http://stackoverflow.com/questions/2678792/can-i-debug-with-python-debugger-when-using-py-test-somehow).)
-
-You may also want to have your test sleep in other situations where you need to have your test wait for something. If you know what you're waiting for, you should be specific by using a command that waits for something specific to happen.
-
-If you need to debug things on the fly (in case of errors), use this:
+**To pause an active test that throws an exception or error, add ``--pdb --pdb-failures -s``:**
 
 ```bash
 pytest my_first_test.py --browser=chrome --pdb --pdb-failures -s
 ```
 
-The above code (with --pdb) will leave your browser window open in case there's a failure, which is possible if the web pages from the example change the data that's displayed on the page. (ipdb commands: 'c', 's', 'n' => continue, step, next). You may need the ``-s`` in order to see all console output.
+The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
 
-Here are some other useful nosetest arguments for appending to your run commands:
+Here are some other useful **nosetest**-specific arguments:
 
 ```bash
 --logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
@@ -185,7 +176,7 @@ Here are some other useful nosetest arguments for appending to your run commands
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
-During test failures you'll get detailed log files, which include screenshots, page source, and basic test info, which will get added to the logs folder at ``latest_logs/``. (Unless you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), log files with be cleaned up at the start of the next test run. If the archive feature is enabled, those logs will get saved to the ``archived_logs/`` folder.) The ``my_test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
+During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``my_test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 
 ```bash
 cd examples/
@@ -210,7 +201,7 @@ To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
 
-(NOTE: The command line args are different for Pytest vs Nosetests)
+(NOTE: Several command line args are different for Pytest vs Nosetests)
 
 #### **Pytest Reports:**
 

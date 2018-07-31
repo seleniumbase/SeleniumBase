@@ -1,4 +1,6 @@
+import os
 import re
+import sys
 import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -8,6 +10,36 @@ from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
+import drivers  # webdriver storage folder for SeleniumBase
+DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+LOCAL_CHROMEDRIVER = None
+LOCAL_GECKODRIVER = None
+LOCAL_EDGEDRIVER = None
+if "darwin" in sys.platform or "linux" in sys.platform:
+    LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
+    LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
+elif "win32" in sys.platform or "win64" in sys.platform:
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/MicrosoftWebDriver.exe'
+    LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
+    LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
+else:
+    # Cannot determine system
+    pass  # SeleniumBase will use web drivers from the System PATH by default
+
+
+def make_executable(file_path):
+    # Set permissions to: "If you can read it, you can execute it."
+    mode = os.stat(file_path).st_mode
+    mode |= (mode & 0o444) >> 2  # copy R bits to X
+    os.chmod(file_path, mode)
+
+
+def make_driver_executable_if_not(driver_path):
+    # Verify driver has executable permissions. If not, add them.
+    permissions = oct(os.stat(driver_path)[0])[-3:]
+    if '4' in permissions or '6' in permissions:
+        # We want at least a '5' or '7' to make sure it's executable
+        make_executable(driver_path)
 
 
 def _set_chrome_options(downloads_path, proxy_string):
@@ -132,6 +164,8 @@ def get_remote_driver(browser_name, headless, servername, port, proxy_string):
         chrome_options = _set_chrome_options(downloads_path, proxy_string)
         if headless:
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--no-sandbox")
         capabilities = chrome_options.to_capabilities()
         return webdriver.Remote(
             command_executor=address,
@@ -207,9 +241,18 @@ def get_local_driver(browser_name, headless, proxy_string):
                 options = webdriver.FirefoxOptions()
                 if headless:
                     options.add_argument('-headless')
-                firefox_driver = webdriver.Firefox(
-                    firefox_profile=profile, capabilities=firefox_capabilities,
-                    firefox_options=options)
+                if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
+                    make_driver_executable_if_not(LOCAL_GECKODRIVER)
+                    firefox_driver = webdriver.Firefox(
+                        firefox_profile=profile,
+                        capabilities=firefox_capabilities,
+                        firefox_options=options,
+                        executable_path=LOCAL_GECKODRIVER)
+                else:
+                    firefox_driver = webdriver.Firefox(
+                        firefox_profile=profile,
+                        capabilities=firefox_capabilities,
+                        firefox_options=options)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
                 profile = _create_firefox_profile(downloads_path, proxy_string)
@@ -225,7 +268,14 @@ def get_local_driver(browser_name, headless, proxy_string):
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         return webdriver.Ie()
     elif browser_name == constants.Browser.EDGE:
-        return webdriver.Edge()
+        edge_capabilities = DesiredCapabilities.EDGE.copy()
+        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+            make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+            return webdriver.Edge(
+                capabilities=edge_capabilities,
+                executable_path=LOCAL_EDGEDRIVER)
+        else:
+            return webdriver.Edge(capabilities=edge_capabilities)
     elif browser_name == constants.Browser.SAFARI:
         return webdriver.Safari()
     elif browser_name == constants.Browser.PHANTOM_JS:
@@ -238,8 +288,19 @@ def get_local_driver(browser_name, headless, proxy_string):
             chrome_options = _set_chrome_options(downloads_path, proxy_string)
             if headless:
                 chrome_options.add_argument("--headless")
-            return webdriver.Chrome(options=chrome_options)
+                chrome_options.add_argument("--disable-gpu")
+                chrome_options.add_argument("--no-sandbox")
+            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
+                make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                return webdriver.Chrome(
+                    executable_path=LOCAL_CHROMEDRIVER, options=chrome_options)
+            else:
+                return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:
                 raise Exception(e)
-            return webdriver.Chrome()
+            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
+                make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                return webdriver.Chrome(executable_path=LOCAL_CHROMEDRIVER)
+            else:
+                return webdriver.Chrome()
