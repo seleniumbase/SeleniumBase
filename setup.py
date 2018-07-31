@@ -43,6 +43,7 @@ setup(
               'seleniumbase.masterqa',
               'seleniumbase.plugins',
               'console_scripts',
+              'drivers',
               'integrations',
               'integrations.selenium_grid',
               'integrations.selenium_ide',
