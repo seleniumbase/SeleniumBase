@@ -133,8 +133,3 @@ EMAIL_USERNAME = "[TEST ACCOUNT GMAIL USERNAME]@gmail.com"
 EMAIL_PASSWORD = "[TEST ACCOUNT GMAIL PASSWORD]"
 EMAIL_IMAP_STRING = "imap.gmail.com"
 EMAIL_IMAP_PORT = 993
-
-# HipChat Reporting Credentials
-# (For HipChat notifications if your team uses HipChat)
-# (room_id and owner_to_mention get entered during nosetest options)
-HIPCHAT_AUTH_TOKEN = "[ENTER YOUR HIPCHAT AUTH TOKEN HERE]"
