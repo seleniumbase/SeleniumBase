@@ -6,6 +6,7 @@ You can access the values of these variables from the tests.
 """
 
 import os
+import sys
 import time
 from nose.plugins import Plugin
 from nose.exc import SkipTest
@@ -55,6 +56,16 @@ class Base(Plugin):
             dest='show_report',
             default=False,
             help="If true when using report, will display it after tests run.")
+        found_processes_arg = False
+        for arg in sys.argv:
+            if "--processes=" in arg:
+                found_processes_arg = True
+        if found_processes_arg:
+            print("* WARNING: Don't use multi-threading with nosetests! *")
+            parser.add_option(
+                '--processes', dest='processes',
+                default=0,
+                help="WARNING: Don't use multi-threading with nosetests!")
 
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)

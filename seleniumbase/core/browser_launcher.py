@@ -70,6 +70,8 @@ def _set_chrome_options(downloads_path, proxy_string):
         chrome_options.add_argument("--start-maximized")
         # Run Chrome in full screen mode on MAC/Linux
         chrome_options.add_argument("--kiosk")
+    if "win32" in sys.platform or "win64" in sys.platform:
+        chrome_options.add_argument("--log-level=3")
     return chrome_options
 
 
@@ -77,6 +79,8 @@ def _create_firefox_profile(downloads_path, proxy_string):
     profile = webdriver.FirefoxProfile()
     profile.set_preference("reader.parse-on-load.enabled", False)
     profile.set_preference("pdfjs.disabled", True)
+    profile.set_preference("app.update.auto", False)
+    profile.set_preference("app.update.enabled", False)
     if proxy_string:
         proxy_server = proxy_string.split(':')[0]
         proxy_port = proxy_string.split(':')[1]
