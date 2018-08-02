@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.13.1',
+    version='1.13.2',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
@@ -61,8 +61,6 @@ setup(
             ('db_reporting = '
              'seleniumbase.plugins.db_reporting_plugin:DBReporting'),
             's3_logging = seleniumbase.plugins.s3_logging_plugin:S3Logging',
-            ('hipchat_reporting = seleniumbase.plugins'
-             '.hipchat_reporting_plugin:HipchatReporting'),
             ],
         'pytest11': ['seleniumbase = seleniumbase.plugins.pytest_plugin']
         }
