@@ -1,12 +1,11 @@
 #### Logging, Screenshots, and Reports examples
 
-Log files in [example_logs/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) was run with the logging plugin. (Usage: "``--with-testing_base``".) By default, logs are saved to ``latest_logs/``. If ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs get saved to ``archived_logs/``.
+Log files in [example_logs/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed. By default, logs are saved to ``latest_logs/``. If ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), past logs get saved to ``archived_logs/``.
 
-**Usage examples:**
 ```bash
-pytest test_fail.py --with-testing_base --browser=chrome
+pytest test_fail.py --browser=chrome
 
-nosetests test_fail.py --with-selenium --with-testing_base --browser=firefox
+nosetests test_fail.py --browser=firefox
 ```
 
 **Expected log files generated during failures:**
@@ -24,7 +23,7 @@ Reports are most useful when running large test suites. Pytest and Nosetest repo
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
-pytest my_test_suite.py --with-selenium --html=report.html
+pytest my_test_suite.py --html=report.html
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
@@ -33,7 +32,7 @@ pytest my_test_suite.py --with-selenium --html=report.html
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
 ```bash
-nosetests my_test_suite.py --with-selenium --with-testing_base --report --browser=chrome
+nosetests my_test_suite.py --report --browser=chrome
 ```
 ![](http://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png "Example Nosetest Report")
 
