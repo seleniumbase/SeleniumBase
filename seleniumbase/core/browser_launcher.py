@@ -77,6 +77,8 @@ def _create_firefox_profile(downloads_path, proxy_string):
     profile = webdriver.FirefoxProfile()
     profile.set_preference("reader.parse-on-load.enabled", False)
     profile.set_preference("pdfjs.disabled", True)
+    profile.set_preference("app.update.auto", False)
+    profile.set_preference("app.update.enabled", False)
     if proxy_string:
         proxy_server = proxy_string.split(':')[0]
         proxy_port = proxy_string.split(':')[1]
