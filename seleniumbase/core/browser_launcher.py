@@ -70,6 +70,8 @@ def _set_chrome_options(downloads_path, proxy_string):
         chrome_options.add_argument("--start-maximized")
         # Run Chrome in full screen mode on MAC/Linux
         chrome_options.add_argument("--kiosk")
+    if "win32" in sys.platform or "win64" in sys.platform:
+        chrome_options.add_argument("--log-level=3")
     return chrome_options
 
 
