@@ -1,8 +1,8 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="160">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons_2.png" title="SeleniumBase" height="145">
 
 ## SeleniumBase &middot; [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
 
-SeleniumBase simplifies test automation with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
+SeleniumBase simplifies browser-based test automation with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
 
 #### Quick start in a few steps: (requires [Python](https://www.python.org/downloads/))
 
