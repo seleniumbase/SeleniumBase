@@ -319,6 +319,7 @@ def main():
         if data:
             whitespace = data.group(1)
             xpath = '%s' % data.group(2)
+            uni = ""
             if '(u"' in line:
                 uni = "u"
                 has_unicode = True
