@@ -12,16 +12,20 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 import drivers  # webdriver storage folder for SeleniumBase
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+PLATFORM = sys.platform
 LOCAL_CHROMEDRIVER = None
 LOCAL_GECKODRIVER = None
 LOCAL_EDGEDRIVER = None
-if "darwin" in sys.platform or "linux" in sys.platform:
+LOCAL_OPERADRIVER = None
+if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
-elif "win32" in sys.platform or "win64" in sys.platform:
+    LOCAL_OPERADRIVER = DRIVER_DIR + '/operadriver'
+elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     LOCAL_EDGEDRIVER = DRIVER_DIR + '/MicrosoftWebDriver.exe'
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
+    LOCAL_OPERADRIVER = DRIVER_DIR + '/operadriver.exe'
 else:
     # Cannot determine system
     pass  # SeleniumBase will use web drivers from the System PATH by default
@@ -217,6 +221,11 @@ def get_remote_driver(browser_name, headless, servername, port, proxy_string):
             command_executor=address,
             desired_capabilities=(
                 webdriver.DesiredCapabilities.SAFARI))
+    elif browser_name == constants.Browser.OPERA:
+        return webdriver.Remote(
+            command_executor=address,
+            desired_capabilities=(
+                webdriver.DesiredCapabilities.OPERA))
     elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
@@ -282,6 +291,12 @@ def get_local_driver(browser_name, headless, proxy_string):
             return webdriver.Edge(capabilities=edge_capabilities)
     elif browser_name == constants.Browser.SAFARI:
         return webdriver.Safari()
+    elif browser_name == constants.Browser.OPERA:
+        if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
+            make_driver_executable_if_not(LOCAL_OPERADRIVER)
+            return webdriver.Opera(executable_path=LOCAL_OPERADRIVER)
+        else:
+            return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning

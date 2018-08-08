@@ -18,33 +18,37 @@ class Files:
 
 
 class ValidBrowsers:
-    valid_browsers = ["firefox", "ie", "edge", "safari", "chrome", "phantomjs"]
+    valid_browsers = (
+        ["chrome", "edge", "firefox", "ie", "opera", "phantomjs", "safari"])
 
 
 class Browser:
+    GOOGLE_CHROME = "chrome"
+    EDGE = "edge"
     FIREFOX = "firefox"
     INTERNET_EXPLORER = "ie"
-    EDGE = "edge"
-    SAFARI = "safari"
-    GOOGLE_CHROME = "chrome"
+    OPERA = "opera"
     PHANTOM_JS = "phantomjs"
+    SAFARI = "safari"
 
     VERSION = {
+        "chrome": None,
+        "edge": None,
         "firefox": None,
         "ie": None,
-        "edge": None,
-        "safari": None,
-        "chrome": None,
-        "phantomjs": None
+        "opera": None,
+        "phantomjs": None,
+        "safari": None
     }
 
     LATEST = {
+        "chrome": None,
+        "edge": None,
         "firefox": None,
         "ie": None,
-        "edge": None,
-        "safari": None,
-        "chrome": None,
-        "phantomjs": None
+        "opera": None,
+        "phantomjs": None,
+        "safari": None
     }
 
 
