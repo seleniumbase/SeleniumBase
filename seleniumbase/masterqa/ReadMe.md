@@ -1,6 +1,6 @@
 # MasterQA
 
-### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams. (**Works only for Chrome right now.**)
+### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams. (**Works only for Chrome & Edge right now.**)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif "MasterQA")
 
