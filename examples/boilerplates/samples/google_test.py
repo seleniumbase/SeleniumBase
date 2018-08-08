@@ -9,7 +9,13 @@ from .google_objects import HomePage, ResultsPage
 class GoogleTests(BaseCase):
 
     def test_google_dot_com(self):
-        self.open('https://www.google.com')
+        self.open('https://google.com')
+        try:
+            # Remove the Privacy Checkup box if present.
+            self.assert_text('Privacy Checkup', HomePage.dialog_box, timeout=3)
+            self.click('link=NO, THANKS')
+        except Exception:
+            pass  # Google may have removed the Privacy Checkup. Continue test.
         self.assert_element(HomePage.search_button)
         self.assert_element(HomePage.feeling_lucky_button)
         self.update_text(HomePage.search_box, 'github\n')
