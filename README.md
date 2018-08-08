@@ -7,7 +7,7 @@ SeleniumBase simplifies test automation with [WebDriver](https://docs.microsoft.
 #### Quick start in a few steps: (requires [Python](https://www.python.org/downloads/))
 
 ```bash
-python -m pip install seleniumbase --upgrade
+python -m pip install -U seleniumbase --no-cache-dir
 seleniumbase install chromedriver
 seleniumbase mkdir browser_tests
 cd browser_tests
@@ -109,7 +109,7 @@ python setup.py develop
 
 If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
 ```bash
-pip install seleniumbase --upgrade
+pip install --no-cache-dir seleniumbase --upgrade
 ```
 
 If you're installing SeleniumBase directly from GitHub, use:
