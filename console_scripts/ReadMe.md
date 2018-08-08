@@ -25,7 +25,7 @@ Installs the specified webdriver.
 ``seleniumbase mkdir [DIRECTORY_NAME]``
 
 * Example:
-``seleniumbase mkdir gui_tests``
+``seleniumbase mkdir browser_tests``
 
 * Output:
 Creates a new folder for running SeleniumBase scripts.

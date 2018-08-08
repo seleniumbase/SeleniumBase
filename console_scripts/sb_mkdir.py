@@ -21,7 +21,7 @@ def invalid_run_command():
     exp += "  Usage:\n"
     exp += "          seleniumbase mkdir [DIRECTORY_NAME]\n"
     exp += "  Example:\n"
-    exp += "          seleniumbase mkdir gui_tests\n"
+    exp += "          seleniumbase mkdir browser_tests\n"
     exp += "  Output:\n"
     exp += "          Creates a new folder for running SeleniumBase scripts.\n"
     exp += "          The new folder contains default config files,\n"
