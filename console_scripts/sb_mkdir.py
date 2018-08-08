@@ -180,7 +180,8 @@ def main():
         data.append("class BingTests(BaseCase):")
         data.append("")
         data.append("    def test_bing(self):")
-        data.append("        self.open('https://www.bing.com/')")
+        data.append("        self.open('https://bing.com')")
+        data.append("        self.assert_text('Bing', Page.logo_box)")
         data.append("        self.update_text(Page.search_box, 'github')")
         data.append("        self.assert_element('li[query=\"github\"]')")
         data.append("        self.click(Page.search_button)")
@@ -196,6 +197,7 @@ def main():
 
         data = []
         data.append("class Page(object):")
+        data.append("    logo_box = '#sbox div[class*=logo]'")
         data.append("    search_box = 'input.b_searchbox'")
         data.append("    search_button = 'input[name=\"go\"]'")
         data.append("    search_results = '#b_results'")
@@ -213,7 +215,15 @@ def main():
         data.append("class GoogleTests(BaseCase):")
         data.append("")
         data.append("    def test_google_dot_com(self):")
-        data.append("        self.open('https://www.google.com')")
+        data.append("        self.open('https://google.com')")
+        data.append("        try:")
+        data.append("            # Remove the Privacy Checkup box if present.")
+        data.append("            self.assert_text('Privacy Checkup', "
+                    "HomePage.dialog_box, timeout=3)")
+        data.append("            self.click('link=NO, THANKS')")
+        data.append("        except Exception:")
+        data.append("            # Google may have removed it. Continue test.")
+        data.append("            pass")
         data.append("        self.assert_element(HomePage.search_button)")
         data.append(
             "        self.assert_element(HomePage.feeling_lucky_button)")
@@ -234,6 +244,7 @@ def main():
 
         data = []
         data.append("class HomePage(object):")
+        data.append("    dialog_box = '[role=\"dialog\"] div'")
         data.append("    search_box = 'input[title=\"Search\"]'")
         data.append("    search_button = 'input[value=\"Google Search\"]'")
         data.append(
