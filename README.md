@@ -1,15 +1,29 @@
-## SeleniumBase Automation Framework
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="160">
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/laptop_logo.png" title="SeleniumBase" height="160">
+## SeleniumBase &middot; [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
 
-[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
+SeleniumBase simplifies test automation with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
 
-SeleniumBase makes it easy to build & run [Selenium-WebDriver](https://github.com/SeleniumHQ/selenium) automation with [Pytest](https://docs.pytest.org/en/latest/).
+#### Quick start in a few steps: (requires [Python](https://www.python.org/downloads/))
 
-**Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in [Demo Mode](#seleniumbase_demo_mode):**<br>
+```bash
+python -m pip install seleniumbase --upgrade
+seleniumbase install chromedriver
+seleniumbase mkdir browser_tests
+cd browser_tests
+pytest my_first_test.py --browser=chrome
+```
+
+The ``seleniumbase mkdir [NAME]`` command creates a new folder with some sample tests you can run. If you wish to use a different browser, you can use ``seleniumbase install [DRIVER]`` with other drivers such as ``edgedriver`` (Microsoft Edge) or ``geckodriver`` (Firefox). Then use ``--browser=edge`` or ``--browser=firefox`` to run tests on that browser (assuming you already have that web browser installed). ``--browser=chrome`` is the default option if not specified.
+
+**Slow-motion demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running:**<br>
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
 
-### [**Get Started**](#seleniumbase_installation), or Learn More:
+There are many more examples to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) directory, which you can run easily if you clone SeleniumBase.
+
+For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
+
+### Learn More:
 
 **No more repetitive WebDriver code:**<br />
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, using a proxy server, and more. (<i>[Read about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
@@ -28,6 +42,8 @@ pytest my_first_test.py --browser=chrome
 
 nosetests my_test_suite.py --browser=firefox
 ```
+
+Python methods that start with ``test_`` will automatically be run when using ``pytest`` or ``nosetests`` on a Python file, (<i>or on folders containing Python files</i>).
 
 **No more messy code:**<br />
 This long line of standard WebDriver code,
@@ -53,15 +69,15 @@ SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/
 SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
 **Extensively tested and made with love:**<br />
-SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/the-classic-qa-team-is-obsolete) and automating business processes. In 2014, SeleniumBase was open-sourced and spun off as its own independent entity to benefit users everywhere.
+SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) and automating business processes. In 2014, SeleniumBase was open-sourced and spun off as its own independent entity to benefit users everywhere.
 
-**Contains lots of additional features:**<br />
+**Plenty of features:**<br />
 ([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
 
 <a id="seleniumbase_installation"></a>
-<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40">
+<br><img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo8g.png" title="SeleniumBase" height="40">
 
-## Get Started:
+## Detailed Instructions:
 
 Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[install a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.
 
@@ -86,14 +102,14 @@ cd SeleniumBase
 
 If you're installing SeleniumBase from a cloned copy on your machine, use:
 ```
-pip install -r requirements.txt
+pip install -r requirements.txt --upgrade
 
 python setup.py develop
 ```
 
 If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
 ```bash
-pip install seleniumbase
+pip install seleniumbase --upgrade
 ```
 
 If you're installing SeleniumBase directly from GitHub, use:
@@ -611,10 +627,10 @@ Now you can parse through the email if you're looking for specific text or want 
 
 **Congratulations** on learning how to use **SeleniumBase**!
 
-<i>**Questions or Comments?**</i><br>
+<i>**Questions or Comments?**</i><br />
 [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br>
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br>
 [https://www.linkedin.com/in/mdmintz](https://www.linkedin.com/in/mdmintz)<br>
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40"> <br> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="40"> <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">

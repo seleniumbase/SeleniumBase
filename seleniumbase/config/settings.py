@@ -60,7 +60,7 @@ START_CHROME_IN_FULL_SCREEN_MODE = False
 # Default time to wait after each browser action performed during Demo Mode.
 # Use Demo Mode when you want others to see what your automation is doing.
 # Usage: "--demo_mode". (Can be overwritten by using "--demo_sleep=TIME".)
-DEFAULT_DEMO_MODE_TIMEOUT = 1.0
+DEFAULT_DEMO_MODE_TIMEOUT = 0.5
 
 # Number of times to repeat the demo_mode highlight animation.
 # Each loop is about 0.18 seconds. (Override by using "--highlights=TIMES".)

@@ -6,7 +6,7 @@ seleniumbase [COMMAND] [PARAMETERS]
 
 Examples:
 seleniumbase install chromedriver
-seleniumbase mkdir gui_tests
+seleniumbase mkdir browser_tests
 seleniumbase convert my_old_webdriver_unittest.py
 seleniumbase grid-hub start
 seleniumbase grid-node start --hub=127.0.0.1
@@ -47,14 +47,17 @@ def show_install_usage():
     print("")
     print("  Usage:")
     print("            seleniumbase install [DRIVER_NAME]")
-    print("                  (Drivers: chromedriver, geckodriver, edgedriver)")
+    print("                  (Drivers: chromedriver, geckodriver, edgedriver")
+    print("                            iedriver, operadriver)")
     print("  Example:")
     print("            seleniumbase install chromedriver")
     print("  Output:")
     print("            Installs the specified webdriver.")
     print("            (chromedriver is required for Chrome automation)")
     print("            (geckodriver is required for Firefox automation)")
-    print("            (edgedriver is required for MS Edge automation)")
+    print("            (edgedriver is required for Microsoft Edge automation)")
+    print("            (iedriver is required for InternetExplorer automation)")
+    print("            (operadriver is required for Opera Browser automation)")
     print("")
 
 
@@ -64,7 +67,7 @@ def show_mkdir_usage():
     print("  Usage:")
     print("            seleniumbase mkdir [DIRECTORY_NAME]")
     print("  Example:")
-    print("            seleniumbase mkdir gui_tests")
+    print("            seleniumbase mkdir browser_tests")
     print("  Output:")
     print("            Creates a new folder for running SeleniumBase scripts.")
     print("            The new folder contains default config files,")

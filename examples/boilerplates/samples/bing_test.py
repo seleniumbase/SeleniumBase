@@ -9,7 +9,8 @@ from .bing_objects import Page
 class BingTests(BaseCase):
 
     def test_bing(self):
-        self.open('https://www.bing.com/')
+        self.open('https://bing.com')
+        self.assert_text('Bing', Page.logo_box)
         self.update_text(Page.search_box, 'github')
         self.assert_element('li[query="github"]')
         self.click(Page.search_button)

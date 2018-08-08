@@ -39,9 +39,12 @@ nosetests.xml
 # Web Drivers
 chromedriver
 geckodriver
+operadriver
 MicrosoftWebDriver.exe
+IEDriverServer.exe
 chromedriver.exe
 geckodriver.exe
+operadriver.exe
 
 # Logs
 logs
