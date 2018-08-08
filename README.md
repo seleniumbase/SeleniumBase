@@ -7,14 +7,15 @@ SeleniumBase simplifies test automation with [WebDriver](https://docs.microsoft.
 #### Quick start in a few steps: (requires [Python](https://www.python.org/downloads/))
 
 ```bash
-python -m pip install -U seleniumbase --no-cache-dir
+python -m pip install -U pip
+pip install -U seleniumbase --no-cache-dir
 seleniumbase install chromedriver
 seleniumbase mkdir browser_tests
 cd browser_tests
 pytest my_first_test.py --browser=chrome
 ```
 
-The ``seleniumbase mkdir [NAME]`` command creates a new folder with some sample tests you can run. If you wish to use a different browser, you can use ``seleniumbase install [DRIVER]`` with other drivers such as ``edgedriver`` (Microsoft Edge) or ``geckodriver`` (Firefox). Then use ``--browser=edge`` or ``--browser=firefox`` to run tests on that browser (assuming you already have that web browser installed). ``--browser=chrome`` is the default option if not specified.
+The ``seleniumbase mkdir [NAME]`` command creates a new folder with sample tests. To use a different browser other than Chrome, use ``seleniumbase install [DRIVER]`` with ``edgedriver`` (Microsoft Edge) or ``geckodriver`` (Firefox). Then you can use ``--browser=edge`` or ``--browser=firefox`` to run tests on those browsers. ``--browser=chrome`` is the default option.
 
 **Slow-motion demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running:**<br>
 ![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
@@ -109,7 +110,7 @@ python setup.py develop
 
 If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
 ```bash
-pip install --no-cache-dir seleniumbase --upgrade
+pip install -U seleniumbase --no-cache-dir
 ```
 
 If you're installing SeleniumBase directly from GitHub, use:
