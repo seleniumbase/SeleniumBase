@@ -8,7 +8,8 @@ For running tests from the command line, [use **pytest** with SeleniumBase](http
 
 * Usage:
 ``seleniumbase install [DRIVER_NAME]``
-        (Drivers: chromedriver, geckodriver, edgedriver)
+        (Drivers: chromedriver, geckodriver, edgedriver,
+                  iedriver, operadriver)
 
 * Example:
 ``seleniumbase install chromedriver``
@@ -18,6 +19,8 @@ Installs the specified webdriver.
 (chromedriver is required for Google Chrome automation)
 (geckodriver is required for Mozilla Firefox automation)
 (edgedriver is required for Microsoft Edge automation)
+(iedriver is required for Internet Explorer automation)
+(operadriver is required for Opera Browser automation)
 
 ### mkdir
 
