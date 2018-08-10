@@ -15,7 +15,7 @@ Output:
 
 import os
 import platform
-import requests
+# import requests
 import shutil
 import sys
 import tarfile
@@ -90,13 +90,13 @@ def main():
         latest_version = "2.40"
         download_url = ("http://chromedriver.storage.googleapis.com/"
                         "%s/%s" % (latest_version, file_name))
-        print('\nLocating the latest version of Chromedriver...')
-        if not requests.get(download_url).ok:
-            # If there's a problem with the latest Chromedriver, fall back
-            fallback_version = "2.40"
-            download_url = ("http://chromedriver.storage.googleapis.com/"
-                            "%s/%s" % (fallback_version, file_name))
-        print("Found %s" % download_url)
+        #print('\nLocating the latest version of Chromedriver...')
+        #if not requests.get(download_url).ok:
+        #    # If there's a problem with the latest Chromedriver, fall back
+        #    fallback_version = "2.40"
+        #    download_url = ("http://chromedriver.storage.googleapis.com/"
+        #                    "%s/%s" % (fallback_version, file_name))
+        #print("Found %s" % download_url)
     elif name == "geckodriver" or name == "firefoxdriver":
         latest_version = "v0.21.0"
         if "darwin" in sys_plat:
