@@ -710,24 +710,31 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def add_css_link(self, css_link):
-        add_css_link_script = (
-            '''var link = document.createElement("link"); '''
-            '''link.rel = "stylesheet"; '''
-            '''link.type = "text/css"; '''
-            '''link.href = "%s"; '''
-            '''link.crossorigin = "anonymous"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(link);''')
-        self.execute_script(add_css_link_script % css_link)
+        script_to_add_css = (
+            """function injectCSS() {
+                  var head = document.getElementsByTagName("head")[0];
+                  var link = document.createElement("link");
+                  link.rel = "stylesheet";
+                  link.type = "text/css";
+                  link.href = "%s";
+                  link.crossorigin = "anonymous";
+                  head.appendChild(link);
+               }
+               injectCSS();""")
+        self.execute_script(script_to_add_css % css_link)
 
     def add_js_link(self, js_link):
         script_to_add_js = (
-            '''var script = document.createElement("script"); '''
-            '''script.src = "%s"; '''
-            '''script.defer; '''
-            '''script.crossorigin = "anonymous"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(script);''')
+            """function injectJS() {
+                  var head = document.getElementsByTagName("head")[0];
+                  var script = document.createElement("script");
+                  script.src = "%s";
+                  script.defer;
+                  script.crossorigin = "anonymous";
+                  script.onload = function() {$("html")};
+                  head.appendChild(script);
+               }
+               injectJS();""")
         self.execute_script(script_to_add_js % js_link)
 
     def add_css_style(self, css_style):
