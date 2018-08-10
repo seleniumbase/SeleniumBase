@@ -4,6 +4,7 @@ This class containts some frequently-used constants
 
 
 class Environment:
+    # Usage Example => "--env=qa" => Then access value in tests with "self.env"
     QA = "qa"
     STAGING = "staging"
     PRODUCTION = "production"

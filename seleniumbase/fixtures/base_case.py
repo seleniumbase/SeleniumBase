@@ -70,6 +70,7 @@ class BaseCase(unittest.TestCase):
         super(BaseCase, self).__init__(*args, **kwargs)
         self.driver = None
         self.environment = None
+        self.env = None  # Add a shortened version of self.environment
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
         self.__page_check_count = 0
@@ -2754,6 +2755,8 @@ class BaseCase(unittest.TestCase):
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
+            self.environment = pytest.config.option.environment
+            self.env = self.environment  # Add a shortened version
             self.with_selenium = pytest.config.option.with_selenium
             self.headless = pytest.config.option.headless
             self.headless_active = False
