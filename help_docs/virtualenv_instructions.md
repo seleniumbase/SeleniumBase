@@ -1,30 +1,28 @@
-### Virtual Environment Setup Instructions
+## Virtual Environment Tutorial
 
-#### First install [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) or [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) (<i>if not installed</i>):
+### **Step 1**: First install [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) (<i>if not installed</i>):
 
-MAC / Linux:
+### MAC / Linux:
+
 ```bash
 python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
 ```
 
-WINDOWS:
+If you add ``source /usr/local/bin/virtualenvwrapper.sh`` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands will be available whenever you open a new command prompt. Use the ``source`` command on those files to activate any changes you make.
+
+### WINDOWS:
+
 ```bash
 python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper-win
 ```
 
-#### Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:
+### **Step 2**: Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:
 
-MAC / Linux:
-
-```bash
-mkdir -p ~/Envs
-virtualenv ~/Envs/seleniumbase
-source ~/Envs/seleniumbase/bin/activate
-```
-
-WINDOWS:
+### MAC / Linux / WINDOWS:
 
 ```bash
 mkvirtualenv seleniumbase
@@ -38,12 +36,6 @@ deactivate
 
 You can always jump back into your virtual environment later:
 
-(If using ``virtualenv``):
-```bash
-source ~/Envs/seleniumbase/bin/activate
-```
-
-(If using ``virtualenvwrapper``):
 ```bash
 workon seleniumbase
 ```
