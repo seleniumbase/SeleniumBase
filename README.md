@@ -7,9 +7,10 @@ A reliable solution for fast & simple browser automation and testing with [WebDr
 #### Quick start in a few steps: (Requires [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/))
 
 ```bash
+python -m pip install --upgrade pip
 git clone https://github.com/seleniumbase/SeleniumBase.git
+
 cd SeleniumBase
-python -m pip install pip --upgrade
 pip install -r requirements.txt --upgrade
 python setup.py develop
 
