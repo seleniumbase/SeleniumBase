@@ -37,7 +37,7 @@ brew cask install chromedriver
 brew install geckodriver
 ```
 
-(NOTE: If your existing version of chromedriver is less than 2.41, **upgrading is required** in order to keep up with the latest version of Chrome!)
+(NOTE: If your existing version of chromedriver is less than 2.40, **upgrading is required** in order to keep up with the latest version of Chrome!)
 
 ```bash
 brew cask upgrade chromedriver
@@ -50,7 +50,7 @@ brew upgrade geckodriver
 If you still need the web drivers, here are some scripts to help you install chromedriver and geckodriver on a Linux machine:
 
 ```bash
-wget http://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+wget http://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver
