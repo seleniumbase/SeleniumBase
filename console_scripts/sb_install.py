@@ -82,21 +82,23 @@ def main():
         else:
             raise Exception("Cannot determine which version of Chromedriver "
                             "to download!")
-
-        # latest_version = requests.get(
-        #     "http://chromedriver.storage.googleapis.com/LATEST_RELEASE").text
-        #
-        # ### Chromedriver 2.41 / latest may have issues. Forcing 2.40 for now.
         latest_version = "2.40"
         download_url = ("http://chromedriver.storage.googleapis.com/"
                         "%s/%s" % (latest_version, file_name))
-        print('\nLocating the latest version of Chromedriver...')
-        if not requests.get(download_url).ok:
-            # If there's a problem with the latest Chromedriver, fall back
-            fallback_version = "2.40"
-            download_url = ("http://chromedriver.storage.googleapis.com/"
-                            "%s/%s" % (fallback_version, file_name))
-        print("Found %s" % download_url)
+        # Chromedriver 2.41 (latest) may have issues. Forcing 2.40 for now.
+        get_latest = False
+        if get_latest:
+            last = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE"
+            print('\nLocating the latest version of Chromedriver...')
+            latest_version = requests.get(last).text
+            if not requests.get(download_url).ok:
+                fallback_version = "2.40"
+                download_url = ("http://chromedriver.storage.googleapis.com/"
+                                "%s/%s" % (fallback_version, file_name))
+            else:
+                download_url = ("http://chromedriver.storage.googleapis.com/"
+                                "%s/%s" % (latest_version, file_name))
+            print("Found %s" % download_url)
     elif name == "geckodriver" or name == "firefoxdriver":
         latest_version = "v0.21.0"
         if "darwin" in sys_plat:
