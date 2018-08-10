@@ -757,7 +757,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # jQuery is not currently defined. Let's proceed by defining it.
             pass
-        jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
+        jquery_js = constants.JQuery.MIN_JS
         self.add_js_link(jquery_js)
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # jQuery needs a small amount of time to activate.
@@ -777,12 +777,8 @@ class BaseCase(unittest.TestCase):
             http://bootstraptour.com/
             (Currently, SeleniumBase methods only use Shepherd Tours.)
         """
-        bootstrap_tour_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/bootstrap-tour/0.11.0/css"
-                              "/bootstrap-tour-standalone.min.css")
-        bootstrap_tour_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/bootstrap-tour/0.11.0/js"
-                             "/bootstrap-tour-standalone.min.js")
+        bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
+        bootstrap_tour_js = constants.BootstrapTour.MIN_JS
 
         verify_script = ("""// Instance the tour
                          var tour = new Tour({
@@ -822,31 +818,17 @@ class BaseCase(unittest.TestCase):
         """ Allows you to use Shepherd Tours with SeleniumBase
             http://github.hubspot.com/shepherd/docs/welcome/
         """
-        sh_theme_arrows_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/shepherd/1.8.1/css/shepherd-theme-arrows.css")
-        sh_theme_arrows_fix_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                   "/shepherd/1.8.1/css"
-                                   "/shepherd-theme-arrows-fix.css")
-        sh_theme_default_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/shepherd/1.8.1/css"
-                                "/shepherd-theme-default.css")
-        sh_theme_dark_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/shepherd/1.8.1/css/shepherd-theme-dark.css")
-        sh_theme_sq_css = ("https://cdnjs.cloudflare.com/ajax/libs/"
-                           "shepherd/1.8.1/css/shepherd-theme-square.css")
-        sh_theme_sq_dark_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/shepherd/1.8.1/css/"
-                                "shepherd-theme-square-dark.css")
-        tether_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                     "/tether/1.4.4/js/tether.min.js")
-        shepherd_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/shepherd/1.8.1/js/shepherd.min.js")
-        underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                         "/underscore.js/1.4.3/underscore-min.js")
-        backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/backbone.js/0.9.10/backbone-min.js")
-        spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/messenger/1.5.0/css/messenger-spinner.css")
+        shepherd_js = constants.Shepherd.MIN_JS
+        sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
+        sh_theme_arrows_fix_css = constants.Shepherd.THEME_ARR_FIX_CSS
+        sh_theme_default_css = constants.Shepherd.THEME_DEFAULT_CSS
+        sh_theme_dark_css = constants.Shepherd.THEME_DARK_CSS
+        sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
+        sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
+        tether_js = constants.Tether.MIN_JS
+        underscore_js = constants.Underscore.MIN_JS
+        backbone_js = constants.Backbone.MIN_JS
+        spinner_css = constants.Messenger.SPINNER_CSS
 
         backdrop_style = (
             '''
@@ -1179,33 +1161,19 @@ class BaseCase(unittest.TestCase):
                 selector, timeout))
 
     def activate_messenger(self):
-        jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
-        messenger_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                        "/messenger/1.5.0/js/messenger.min.js")
-        msgr_theme_flat_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/messenger/1.5.0/js/messenger-theme-flat.js")
-        msg_theme_future_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/messenger/1.5.0/js/messenger-theme-future.js")
-        underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                         "/underscore.js/1.4.3/underscore-min.js")
-        backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/backbone.js/0.9.10/backbone-min.js")
-        spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/messenger/1.5.0/css/messenger-spinner.css")
-        messenger_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                         "/messenger/1.5.0/css/messenger.css")
-        msgr_theme_flat_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/messenger/1.5.0/css/messenger-theme-flat.css")
-        msgr_theme_future_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                 "/messenger/1.5.0/css/"
-                                 "messenger-theme-future.css")
-        msgr_theme_block_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/messenger/1.5.0/css/"
-                                "messenger-theme-block.css")
-        msgr_theme_air_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/messenger/1.5.0/css/messenger-theme-air.css")
-        msgr_theme_ice_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/messenger/1.5.0/css/messenger-theme-ice.css")
+        jquery_js = constants.JQuery.MIN_JS
+        messenger_css = constants.Messenger.MIN_CSS
+        messenger_js = constants.Messenger.MIN_JS
+        msgr_theme_flat_js = constants.Messenger.THEME_FLAT_JS
+        msgr_theme_future_js = constants.Messenger.THEME_FUTURE_JS
+        msgr_theme_flat_css = constants.Messenger.THEME_FLAT_CSS
+        msgr_theme_future_css = constants.Messenger.THEME_FUTURE_CSS
+        msgr_theme_block_css = constants.Messenger.THEME_BLOCK_CSS
+        msgr_theme_air_css = constants.Messenger.THEME_AIR_CSS
+        msgr_theme_ice_css = constants.Messenger.THEME_ICE_CSS
+        spinner_css = constants.Messenger.SPINNER_CSS
+        underscore_js = constants.Underscore.MIN_JS
+        backbone_js = constants.Backbone.MIN_JS
 
         msg_style = ("Messenger.options = {'maxMessages': 8, "
                      "extraClasses: 'messenger-fixed "
@@ -1224,7 +1192,7 @@ class BaseCase(unittest.TestCase):
         self.add_css_link(spinner_css)
         self.add_js_link(messenger_js)
         self.add_js_link(msgr_theme_flat_js)
-        self.add_js_link(msg_theme_future_js)
+        self.add_js_link(msgr_theme_future_js)
 
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # Messenger needs a small amount of time to load & activate.
