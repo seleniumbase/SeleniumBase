@@ -2,7 +2,8 @@
 Installs the specified web driver.
 
 Usage:
-        seleniumbase install {chromedriver|geckodriver|edgedriver}
+        seleniumbase install {chromedriver|geckodriver|edgedriver|
+                              iedriver|operadriver}
 Output:
         Installs the specified webdriver.
         (chromedriver is required for Chrome automation)

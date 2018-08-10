@@ -27,6 +27,7 @@ import math
 import os
 import pytest
 import re
+import requests
 import sys
 import time
 import traceback
@@ -70,6 +71,7 @@ class BaseCase(unittest.TestCase):
         super(BaseCase, self).__init__(*args, **kwargs)
         self.driver = None
         self.environment = None
+        self.env = None  # Add a shortened version of self.environment
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
         self.__page_check_count = 0
@@ -709,24 +711,31 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def add_css_link(self, css_link):
-        add_css_link_script = (
-            '''var link = document.createElement("link"); '''
-            '''link.rel = "stylesheet"; '''
-            '''link.type = "text/css"; '''
-            '''link.href = "%s"; '''
-            '''link.crossorigin = "anonymous"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(link);''')
-        self.execute_script(add_css_link_script % css_link)
+        script_to_add_css = (
+            """function injectCSS() {
+                  var head = document.getElementsByTagName("head")[0];
+                  var link = document.createElement("link");
+                  link.rel = "stylesheet";
+                  link.type = "text/css";
+                  link.href = "%s";
+                  link.crossorigin = "anonymous";
+                  head.appendChild(link);
+               }
+               injectCSS();""")
+        self.execute_script(script_to_add_css % css_link)
 
     def add_js_link(self, js_link):
         script_to_add_js = (
-            '''var script = document.createElement("script"); '''
-            '''script.src = "%s"; '''
-            '''script.defer; '''
-            '''script.crossorigin = "anonymous"; '''
-            '''document.getElementsByTagName("head")[0]'''
-            '''.appendChild(script);''')
+            """function injectJS() {
+                  var head = document.getElementsByTagName("head")[0];
+                  var script = document.createElement("script");
+                  script.src = "%s";
+                  script.defer;
+                  script.crossorigin = "anonymous";
+                  script.onload = function() {$("html")};
+                  head.appendChild(script);
+               }
+               injectJS();""")
         self.execute_script(script_to_add_js % js_link)
 
     def add_css_style(self, css_style):
@@ -737,6 +746,35 @@ class BaseCase(unittest.TestCase):
             '''s.appendChild(document.createTextNode("%s"));'''
             '''h.appendChild(s);''')
         self.execute_script(add_css_style_script % re.escape(css_style))
+
+    def add_js_code_from_link(self, js_link):
+        if js_link.startswith("//"):
+            js_link = "http:" + js_link
+        js_code = requests.get(js_link).text
+        add_js_code_script = (
+            '''var h = document.getElementsByTagName('head').item(0);'''
+            '''var s = document.createElement("script");'''
+            '''s.type = "text/javascript";'''
+            '''s.onload = function() {$("html")};'''
+            '''s.appendChild(document.createTextNode("%s"));'''
+            '''h.appendChild(s);''')
+        self.execute_script(add_js_code_script % re.escape(js_code))
+
+    def add_meta_tag(self, http_equiv=None, content=None):
+        if http_equiv is None:
+            http_equiv = "Content-Security-Policy"
+        if content is None:
+            content = ("default-src *; style-src 'self' 'unsafe-inline'; "
+                       "script-src: 'self' 'unsafe-inline' 'unsafe-eval'")
+        script_to_add_meta = (
+            """function injectMeta() {
+               var meta = document.createElement('meta');
+               meta.httpEquiv = "%s";
+               meta.content = "%s";
+               document.getElementsByTagName('head')[0].appendChild(meta);
+            }
+            injectMeta();""" % (http_equiv, content))
+        self.execute_script(script_to_add_meta)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
@@ -749,7 +787,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # jQuery is not currently defined. Let's proceed by defining it.
             pass
-        jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
+        jquery_js = constants.JQuery.MIN_JS
         self.add_js_link(jquery_js)
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # jQuery needs a small amount of time to activate.
@@ -769,12 +807,8 @@ class BaseCase(unittest.TestCase):
             http://bootstraptour.com/
             (Currently, SeleniumBase methods only use Shepherd Tours.)
         """
-        bootstrap_tour_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/bootstrap-tour/0.11.0/css"
-                              "/bootstrap-tour-standalone.min.css")
-        bootstrap_tour_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/bootstrap-tour/0.11.0/js"
-                             "/bootstrap-tour-standalone.min.js")
+        bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
+        bootstrap_tour_js = constants.BootstrapTour.MIN_JS
 
         verify_script = ("""// Instance the tour
                          var tour = new Tour({
@@ -814,31 +848,17 @@ class BaseCase(unittest.TestCase):
         """ Allows you to use Shepherd Tours with SeleniumBase
             http://github.hubspot.com/shepherd/docs/welcome/
         """
-        sh_theme_arrows_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/shepherd/1.8.1/css/shepherd-theme-arrows.css")
-        sh_theme_arrows_fix_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                   "/shepherd/1.8.1/css"
-                                   "/shepherd-theme-arrows-fix.css")
-        sh_theme_default_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/shepherd/1.8.1/css"
-                                "/shepherd-theme-default.css")
-        sh_theme_dark_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                             "/shepherd/1.8.1/css/shepherd-theme-dark.css")
-        sh_theme_sq_css = ("https://cdnjs.cloudflare.com/ajax/libs/"
-                           "shepherd/1.8.1/css/shepherd-theme-square.css")
-        sh_theme_sq_dark_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/shepherd/1.8.1/css/"
-                                "shepherd-theme-square-dark.css")
-        tether_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                     "/tether/1.4.4/js/tether.min.js")
-        shepherd_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/shepherd/1.8.1/js/shepherd.min.js")
-        underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                         "/underscore.js/1.4.3/underscore-min.js")
-        backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/backbone.js/0.9.10/backbone-min.js")
-        spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/messenger/1.5.0/css/messenger-spinner.css")
+        shepherd_js = constants.Shepherd.MIN_JS
+        sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
+        sh_theme_arrows_fix_css = constants.Shepherd.THEME_ARR_FIX_CSS
+        sh_theme_default_css = constants.Shepherd.THEME_DEFAULT_CSS
+        sh_theme_dark_css = constants.Shepherd.THEME_DARK_CSS
+        sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
+        sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
+        tether_js = constants.Tether.MIN_JS
+        underscore_js = constants.Underscore.MIN_JS
+        backbone_js = constants.Backbone.MIN_JS
+        spinner_css = constants.Messenger.SPINNER_CSS
 
         backdrop_style = (
             '''
@@ -1171,33 +1191,19 @@ class BaseCase(unittest.TestCase):
                 selector, timeout))
 
     def activate_messenger(self):
-        jquery_js = "https://code.jquery.com/jquery-3.2.1.min.js"
-        messenger_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                        "/messenger/1.5.0/js/messenger.min.js")
-        msgr_theme_flat_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/messenger/1.5.0/js/messenger-theme-flat.js")
-        msg_theme_future_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/messenger/1.5.0/js/messenger-theme-future.js")
-        underscore_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                         "/underscore.js/1.4.3/underscore-min.js")
-        backbone_js = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/backbone.js/0.9.10/backbone-min.js")
-        spinner_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                       "/messenger/1.5.0/css/messenger-spinner.css")
-        messenger_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                         "/messenger/1.5.0/css/messenger.css")
-        msgr_theme_flat_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                               "/messenger/1.5.0/css/messenger-theme-flat.css")
-        msgr_theme_future_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                 "/messenger/1.5.0/css/"
-                                 "messenger-theme-future.css")
-        msgr_theme_block_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                                "/messenger/1.5.0/css/"
-                                "messenger-theme-block.css")
-        msgr_theme_air_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/messenger/1.5.0/css/messenger-theme-air.css")
-        msgr_theme_ice_css = ("https://cdnjs.cloudflare.com/ajax/libs"
-                              "/messenger/1.5.0/css/messenger-theme-ice.css")
+        jquery_js = constants.JQuery.MIN_JS
+        messenger_css = constants.Messenger.MIN_CSS
+        messenger_js = constants.Messenger.MIN_JS
+        msgr_theme_flat_js = constants.Messenger.THEME_FLAT_JS
+        msgr_theme_future_js = constants.Messenger.THEME_FUTURE_JS
+        msgr_theme_flat_css = constants.Messenger.THEME_FLAT_CSS
+        msgr_theme_future_css = constants.Messenger.THEME_FUTURE_CSS
+        msgr_theme_block_css = constants.Messenger.THEME_BLOCK_CSS
+        msgr_theme_air_css = constants.Messenger.THEME_AIR_CSS
+        msgr_theme_ice_css = constants.Messenger.THEME_ICE_CSS
+        spinner_css = constants.Messenger.SPINNER_CSS
+        underscore_js = constants.Underscore.MIN_JS
+        backbone_js = constants.Backbone.MIN_JS
 
         msg_style = ("Messenger.options = {'maxMessages': 8, "
                      "extraClasses: 'messenger-fixed "
@@ -1216,7 +1222,7 @@ class BaseCase(unittest.TestCase):
         self.add_css_link(spinner_css)
         self.add_js_link(messenger_js)
         self.add_js_link(msgr_theme_flat_js)
-        self.add_js_link(msg_theme_future_js)
+        self.add_js_link(msgr_theme_future_js)
 
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # Messenger needs a small amount of time to load & activate.
@@ -1293,7 +1299,6 @@ class BaseCase(unittest.TestCase):
             self.set_messenger_theme()
             try:
                 self.execute_script(messenger_script)
-                return
             except Exception:
                 time.sleep(0.2)
                 self.activate_messenger()
@@ -1350,7 +1355,7 @@ class BaseCase(unittest.TestCase):
             # Don't run action if can't convert to CSS_Selector for JavaScript
             return
         selector = re.escape(selector)
-        script = ("""document.querySelector('%s').style.zIndex = "100";"""
+        script = ("""document.querySelector('%s').style.zIndex = '9999';"""
                   % selector)
         self.execute_script(script)
 
@@ -2754,6 +2759,8 @@ class BaseCase(unittest.TestCase):
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
+            self.environment = pytest.config.option.environment
+            self.env = self.environment  # Add a shortened version
             self.with_selenium = pytest.config.option.with_selenium
             self.headless = pytest.config.option.headless
             self.headless_active = False

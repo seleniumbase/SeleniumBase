@@ -17,11 +17,18 @@ from seleniumbase.fixtures import constants, errors
 
 class Base(Plugin):
     """
-    The base_plugin includes the following variables:
-    self.options.env -- the environment for the tests to use (--env=ENV)
-    self.options.data -- any extra data to pass to the tests (--data=DATA)
-    self.options.log_path -- the directory in which the log files
-                            are saved (--log_path=LOG_PATH)
+    The base_plugin includes the following variables for nosetest runs:
+    self.env -- The environment for the tests to use (Usage: --env=ENV)
+    self.data -- Any extra data to pass to the tests (Usage: --data=DATA)
+    self.log_path -- The directory where log files get saved to
+                     (Usage: --log_path=LOG_PATH)
+    self.report -- The option to create a fancy report after tests complete
+                   (Usage: --report)
+    self.show_report -- If self.report is turned on, then the report will
+                        display immediately after tests complete their run.
+                        Only use this when running tests locally, as this will
+                        pause the test run until the report window is closed.
+                        (Usage: --show_report)
     """
     name = 'testing_base'  # Usage: --with-testing_base
 
@@ -90,6 +97,7 @@ class Base(Plugin):
         if not os.path.exists(test_logpath):
             os.makedirs(test_logpath)
         test.test.environment = self.options.environment
+        test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
         test.test.args = self.options
         self.test_count += 1

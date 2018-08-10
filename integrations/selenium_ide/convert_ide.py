@@ -148,9 +148,9 @@ def main():
             '''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '#%s' % data.group(2)
-            css_selector = css_selector.replace('[', '\\[').replace(']', '\\]')
-            command = '''%sself.click('%s')''' % (whitespace, css_selector)
+            selector = '#%s' % data.group(2)
+            selector = selector.replace('[', '\\[').replace(']', '\\]')
+            command = '''%sself.click('%s')''' % (whitespace, selector)
             seleniumbase_lines.append(command)
             continue
 
@@ -160,11 +160,11 @@ def main():
             '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '#%s' % data.group(2)
-            css_selector = css_selector.replace('[', '\\[').replace(']', '\\]')
+            selector = '#%s' % data.group(2)
+            selector = selector.replace('[', '\\[').replace(']', '\\]')
             text = data.group(3)
             command = '''%sself.update_text('%s', '%s')''' % (
-                whitespace, css_selector, text)
+                whitespace, selector, text)
             seleniumbase_lines.append(command)
             continue
 
@@ -175,11 +175,11 @@ def main():
         if data:
             uses_keys = True
             whitespace = data.group(1)
-            css_selector = '#%s' % data.group(2)
-            css_selector = css_selector.replace('[', '\\[').replace(']', '\\]')
+            selector = '#%s' % data.group(2)
+            selector = selector.replace('[', '\\[').replace(']', '\\]')
             key = 'Keys.%s' % data.group(3)
             command = '''%sself.send_keys('%s', %s)''' % (
-                whitespace, css_selector, key)
+                whitespace, selector, key)
             seleniumbase_lines.append(command)
             continue
 
@@ -189,8 +189,8 @@ def main():
             '''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '[name="%s"]' % data.group(2)
-            command = '''%sself.click('%s')''' % (whitespace, css_selector)
+            selector = '[name="%s"]' % data.group(2)
+            command = '''%sself.click('%s')''' % (whitespace, selector)
             seleniumbase_lines.append(command)
             continue
 
@@ -200,10 +200,10 @@ def main():
             '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '[name="%s"]' % data.group(2)
+            selector = '[name="%s"]' % data.group(2)
             text = data.group(3)
             command = '''%sself.update_text('%s', '%s')''' % (
-                whitespace, css_selector, text)
+                whitespace, selector, text)
             seleniumbase_lines.append(command)
             continue
 
@@ -214,10 +214,10 @@ def main():
         if data:
             uses_keys = True
             whitespace = data.group(1)
-            css_selector = '[name="%s"]' % data.group(2)
+            selector = '[name="%s"]' % data.group(2)
             key = 'Keys.%s' % data.group(3)
             command = '''%sself.send_keys('%s', %s)''' % (
-                whitespace, css_selector, key)
+                whitespace, selector, key)
             seleniumbase_lines.append(command)
             continue
 
@@ -227,8 +227,8 @@ def main():
             '''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '%s' % data.group(2)
-            command = '''%sself.click('%s')''' % (whitespace, css_selector)
+            selector = '%s' % data.group(2)
+            command = '''%sself.click('%s')''' % (whitespace, selector)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -240,10 +240,10 @@ def main():
             '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '%s' % data.group(2)
+            selector = '%s' % data.group(2)
             text = data.group(3)
             command = '''%sself.update_text('%s', '%s')''' % (
-                whitespace, css_selector, text)
+                whitespace, selector, text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -256,10 +256,10 @@ def main():
         if data:
             uses_keys = True
             whitespace = data.group(1)
-            css_selector = '%s' % data.group(2)
+            selector = '%s' % data.group(2)
             key = 'Keys.%s' % data.group(3)
             command = '''%sself.send_keys('%s', %s)''' % (
-                whitespace, css_selector, key)
+                whitespace, selector, key)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -271,10 +271,10 @@ def main():
             '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '%s' % data.group(2)
+            selector = '%s' % data.group(2)
             text = data.group(3)
             command = '''%sself.update_text("%s", '%s')''' % (
-                whitespace, css_selector, text)
+                whitespace, selector, text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -287,10 +287,10 @@ def main():
         if data:
             uses_keys = True
             whitespace = data.group(1)
-            css_selector = '%s' % data.group(2)
+            selector = '%s' % data.group(2)
             key = 'Keys.%s' % data.group(3)
-            command = '''%sself.send_keys('%s', %s)''' % (
-                whitespace, css_selector, key)
+            command = '''%sself.send_keys("%s", %s)''' % (
+                whitespace, selector, key)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -303,10 +303,42 @@ def main():
             '''\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            css_selector = '%s' % data.group(2)
+            selector = '%s' % data.group(2)
             visible_text = '%s' % data.group(3)
             command = '''%sself.pick_select_option_by_text('%s', '%s')''' % (
-                whitespace, css_selector, visible_text)
+                whitespace, selector, visible_text)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle Select / by_xpath() / select_by_visible_text()
+        data = re.match(
+            '''^(\s*)Select\(driver\.find_element_by_xpath\('''
+            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            '''\"([\S\s]+)\"\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            visible_text = '%s' % data.group(3)
+            command = '''%sself.pick_select_option_by_text("%s", '%s')''' % (
+                whitespace, selector, visible_text)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle Select / by_name() / select_by_visible_text()
+        data = re.match(
+            '''^(\s*)Select\(driver\.find_element_by_name\('''
+            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            '''\"([\S\s]+)\"\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '[name="%s"]' % data.group(2)
+            visible_text = '%s' % data.group(3)
+            command = '''%sself.pick_select_option_by_text('%s', '%s')''' % (
+                whitespace, selector, visible_text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -423,14 +455,14 @@ def main():
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
-            css_selector = '''%s''' % data.group(3)
+            selector = '''%s''' % data.group(3)
             post = data.group(4)
             uni = ""
             if '(u"' in line:
                 uni = "u"
                 has_unicode = True
             command = '''%s%sself.is_element_present("%s")%s''' % (
-                whitespace, pre, css_selector, post)
+                whitespace, pre, selector, post)
             seleniumbase_lines.append(command)
             continue
 
