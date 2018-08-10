@@ -1350,7 +1350,7 @@ class BaseCase(unittest.TestCase):
             # Don't run action if can't convert to CSS_Selector for JavaScript
             return
         selector = re.escape(selector)
-        script = ("""document.querySelector('%s').style.zIndex = "100";"""
+        script = ("""document.querySelector('%s').style.zIndex = '9999';"""
                   % selector)
         self.execute_script(script)
 
