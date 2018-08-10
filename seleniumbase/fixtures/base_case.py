@@ -27,6 +27,7 @@ import math
 import os
 import pytest
 import re
+import requests
 import sys
 import time
 import traceback
@@ -745,6 +746,35 @@ class BaseCase(unittest.TestCase):
             '''s.appendChild(document.createTextNode("%s"));'''
             '''h.appendChild(s);''')
         self.execute_script(add_css_style_script % re.escape(css_style))
+
+    def add_js_code_from_link(self, js_link):
+        if js_link.startswith("//"):
+            js_link = "http:" + js_link
+        js_code = requests.get(js_link).text
+        add_js_code_script = (
+            '''var h = document.getElementsByTagName('head').item(0);'''
+            '''var s = document.createElement("script");'''
+            '''s.type = "text/javascript";'''
+            '''s.onload = function() {$("html")};'''
+            '''s.appendChild(document.createTextNode("%s"));'''
+            '''h.appendChild(s);''')
+        self.execute_script(add_js_code_script % re.escape(js_code))
+
+    def add_meta_tag(self, http_equiv=None, content=None):
+        if http_equiv is None:
+            http_equiv = "Content-Security-Policy"
+        if content is None:
+            content = ("default-src *; style-src 'self' 'unsafe-inline'; "
+                       "script-src: 'self' 'unsafe-inline' 'unsafe-eval'")
+        script_to_add_meta = (
+            """function injectMeta() {
+               var meta = document.createElement('meta');
+               meta.httpEquiv = "%s";
+               meta.content = "%s";
+               document.getElementsByTagName('head')[0].appendChild(meta);
+            }
+            injectMeta();""" % (http_equiv, content))
+        self.execute_script(script_to_add_meta)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.

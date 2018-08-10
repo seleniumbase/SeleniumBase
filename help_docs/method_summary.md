@@ -89,6 +89,10 @@ self.add_js_link(js_link)
 
 self.add_css_style(css_style)
 
+self.add_js_code_from_link(js_link)
+
+self.add_meta_tag(http_equiv=None, content=None):
+
 self.activate_jquery()
 
 self.create_tour(name=None, theme=None)
