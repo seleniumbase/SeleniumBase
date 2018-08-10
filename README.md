@@ -1,26 +1,51 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/expanded_icons_2.png" title="SeleniumBase" height="145">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3d.png" title="SeleniumBase" height="48">
 
-## SeleniumBase &middot; [![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase)<br />
+[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-SeleniumBase simplifies browser-based test automation with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
+A reliable solution for fast & simple browser automation and testing with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
 
-#### Quick start in a few steps: (requires [Python](https://www.python.org/downloads/))
+#### Quick start in a few steps: (Requires [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/))
 
 ```bash
-python -m pip install -U pip
-pip install -U seleniumbase --no-cache-dir
+git clone https://github.com/seleniumbase/SeleniumBase.git
+cd SeleniumBase
+python -m pip install pip --upgrade
+pip install -r requirements.txt --upgrade
+python setup.py develop
+
 seleniumbase install chromedriver
-seleniumbase mkdir browser_tests
-cd browser_tests
+
+cd examples
 pytest my_first_test.py --browser=chrome
 ```
 
-The ``seleniumbase mkdir [NAME]`` command creates a new folder with sample tests. To use a different browser other than Chrome, use ``seleniumbase install [DRIVER]`` with ``edgedriver`` (Microsoft Edge) or ``geckodriver`` (Firefox). Then you can use ``--browser=edge`` or ``--browser=firefox`` to run tests on those browsers. ``--browser=chrome`` is the default option.
+SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. The following will run the same test from above using Nosetests and Firefox with geckodriver (although Pytest is recommended over Nosetests):
 
-**Slow-motion demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running:**<br>
-![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br>
+```bash
+seleniumbase install geckodriver
+nosetests my_first_test.py --browser=firefox
+```
+
+Try out Demo Mode to see what what's being tested in real time! (Chrome is the default browser if not specified.)
+
+```bash
+pytest my_first_test.py --demo_mode
+```
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br />
+(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running against [xkcd.com](http://xkcd.com/353/))
 
 There are many more examples to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) directory, which you can run easily if you clone SeleniumBase.
+
+Try out SeleniumBase Website Tours (from the ``examples/tour_examples`` folder). It's the best website onboarding experience available (and it's free too). Find the [WebSite Tours ReadMe here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+
+```bash
+cd tour_examples
+pytest google_tour.py
+```
+
+![](https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif "SeleniumBase Tours")<br />
+(Above: Actual demo of [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) running against [google.com](https://google.com))
 
 For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
 
@@ -205,13 +230,45 @@ pytest my_test_suite.py --browser=firefox
 
 If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
 
+To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+
+If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
+
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using SeleniumBase as your personal framework:**
+
+You can install SeleniumBase without cloning the repo by doing this:
+
+```bash
+python -m pip install -U pip
+pip install -U seleniumbase --no-cache-dir
+```
+
+Now you can install webdrivers by doing this:
+
+```bash
+seleniumbase install chromedriver
+seleniumbase install geckodriver
+```
+
+Remember, you'll need chromedriver if you want to run automation on Chrome, geckodriver if you want to run automation on Firefox, edgedriver for Microsoft Edge, etc.
+
+When creating your own test directories, keep these two things in mind:
+
 For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
 
 For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
 
-If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
+(You'll be able to customize those files as needed.)
 
-To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+As a shortcut, you'll be able to run ``seleniumbase mkdir [DIRECTORY_NAME]`` to create a new folder that already contains necessary files and some example tests that you can run. Example:
+
+```bash
+seleniumbase mkdir browser_tests
+cd browser_tests
+pytest my_first_test.py --browser=chrome
+```
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
 
