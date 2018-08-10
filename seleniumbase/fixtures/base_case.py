@@ -1294,7 +1294,6 @@ class BaseCase(unittest.TestCase):
             self.set_messenger_theme()
             try:
                 self.execute_script(messenger_script)
-                return
             except Exception:
                 time.sleep(0.2)
                 self.activate_messenger()
