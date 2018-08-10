@@ -1,6 +1,6 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo4d2.png" title="SeleniumBase" height="58">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Button3.png" title="SeleniumBase" height="60">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[![](https://img.shields.io/pypi/v/seleniumbase.svg)](https://pypi.python.org/pypi/seleniumbase) [![Build Status](https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master)](https://travis-ci.org/seleniumbase/SeleniumBase) [![GitHub stars](https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg "GitHub stars")](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
+[<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt="Version" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase)<br />
 
 A reliable solution for fast & simple browser automation and testing with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
 
@@ -696,4 +696,4 @@ Congratulations on getting started with SeleniumBase!
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Button3.png" title="SeleniumBase" height="58"> <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Button3.png" title="SeleniumBase" height="60"> <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
