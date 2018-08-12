@@ -96,3 +96,47 @@ style = title + '''<style type="text/css">
             padding-left: 20px;
         }
         </style>'''
+
+sh_style_test = (
+    '''
+    let test_tour = new Shepherd.Tour({
+      defaults: {
+        classes: 'shepherd-theme-dark',
+        scrollTo: true
+      }
+    });
+    ''')
+
+sh_backdrop_style = (
+    '''
+    body.shepherd-active .shepherd-target.shepherd-enabled {
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.22);
+        pointer-events:  none !important;
+        z-index: 9999;
+    }
+
+    body.shepherd-active .shepherd-orphan {
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.16);
+        pointer-events:  auto;
+        z-index: 9999;
+    }
+
+    body.shepherd-active
+        .shepherd-enabled.shepherd-element-attached-top {
+            position: relative;
+    }
+
+    body.shepherd-active
+        .shepherd-enabled.shepherd-element-attached-bottom {
+            position: relative;
+    }
+
+    body.shepherd-active .shepherd-step {
+        pointer-events:  auto;
+        z-index: 9999;
+    }
+
+    body.shepherd-active {
+        pointer-events:  none !important;
+    }
+    ''')
