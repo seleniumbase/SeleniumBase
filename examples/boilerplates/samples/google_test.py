@@ -12,7 +12,7 @@ class GoogleTests(BaseCase):
         self.open('https://google.com')
         try:
             # Remove the Privacy Checkup box if present.
-            self.assert_text('Privacy Checkup', HomePage.dialog_box, timeout=3)
+            self.assert_text('Privacy Checkup', HomePage.dialog_box, timeout=2)
             self.click('link=NO, THANKS')
         except Exception:
             pass  # Google may have removed the Privacy Checkup. Continue test.

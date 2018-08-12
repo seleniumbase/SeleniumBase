@@ -42,6 +42,7 @@ from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
+from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
@@ -732,7 +733,7 @@ class BaseCase(unittest.TestCase):
                   script.src = "%s";
                   script.defer;
                   script.crossorigin = "anonymous";
-                  script.onload = function() {$("html")};
+                  script.onload = function() { null };
                   head.appendChild(script);
                }
                injectJS();""")
@@ -755,7 +756,7 @@ class BaseCase(unittest.TestCase):
             '''var h = document.getElementsByTagName('head').item(0);'''
             '''var s = document.createElement("script");'''
             '''s.type = "text/javascript";'''
-            '''s.onload = function() {$("html")};'''
+            '''s.onload = function() { null };'''
             '''s.appendChild(document.createTextNode("%s"));'''
             '''h.appendChild(s);''')
         self.execute_script(add_js_code_script % re.escape(js_code))
@@ -860,46 +861,8 @@ class BaseCase(unittest.TestCase):
         backbone_js = constants.Backbone.MIN_JS
         spinner_css = constants.Messenger.SPINNER_CSS
 
-        backdrop_style = (
-            '''
-            body.shepherd-active .shepherd-target.shepherd-enabled {
-                box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.22);
-                pointer-events:  none !important;
-                z-index: 9999;
-            }
-
-            body.shepherd-active .shepherd-orphan {
-                box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.16);
-                pointer-events:  auto;
-                z-index: 9999;
-            }
-
-            body.shepherd-active
-                .shepherd-enabled.shepherd-element-attached-top {
-                    position: relative;
-            }
-
-            body.shepherd-active
-                .shepherd-enabled.shepherd-element-attached-bottom {
-                    position: relative;
-            }
-
-            body.shepherd-active .shepherd-step {
-                pointer-events:  auto;
-                z-index: 9999;
-            }
-
-            body.shepherd-active {
-                pointer-events:  none !important;
-            }
-            ''')
-
-        sh_style = ("""let test_tour = new Shepherd.Tour({
-                      defaults: {
-                        classes: 'shepherd-theme-dark',
-                        scrollTo: true
-                      }
-                    });""")
+        sh_style = style_sheet.sh_style_test
+        backdrop_style = style_sheet.sh_backdrop_style
 
         self.__activate_bootstrap()
         for x in range(4):
@@ -922,7 +885,7 @@ class BaseCase(unittest.TestCase):
             for x in range(int(settings.MINI_TIMEOUT * 2.0)):
                 # Shepherd needs a small amount of time to load & activate.
                 try:
-                    self.execute_script(sh_style)
+                    self.execute_script(sh_style)  # Verify Shepherd has loaded
                     self.wait_for_ready_state_complete()
                     self.execute_script(sh_style)  # Need it twice for ordering
                     time.sleep(0.05)
@@ -936,14 +899,9 @@ class BaseCase(unittest.TestCase):
             '''directive. ''' % self.driver.current_url)
 
     def __is_shepherd_activated(self):
-        sh_style = ("""let test_tour = new Shepherd.Tour({
-                      defaults: {
-                        classes: 'shepherd-theme-dark',
-                        scrollTo: true
-                      }
-                    });""")
+        sh_style = style_sheet.sh_style_test
         try:
-            self.execute_script(sh_style)
+            self.execute_script(sh_style)  # Verify Shepherd has loaded
             return True
         except Exception:
             return False
@@ -1086,7 +1044,8 @@ class BaseCase(unittest.TestCase):
                 selector = re.search(
                     "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
                     self._tour_steps[name][1]).group(1)
-                self.__wait_for_css_query_selector(selector)
+                self.__wait_for_css_query_selector(
+                    selector, timeout=(settings.SMALL_TIMEOUT))
             except Exception:
                 self.__post_messenger_error_message(
                     "Tour Error: {'%s'} was not found!"
@@ -1149,7 +1108,7 @@ class BaseCase(unittest.TestCase):
                         ".currentStep.options.attachTo.element")
                     try:
                         self.__wait_for_css_query_selector(
-                            selector, timeout=(settings.MINI_TIMEOUT * 2))
+                            selector, timeout=(settings.MINI_TIMEOUT))
                     except Exception:
                         self.remove_elements("div.shepherd-content")
                         self.__post_messenger_error_message(
