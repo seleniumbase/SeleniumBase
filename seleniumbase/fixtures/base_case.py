@@ -732,7 +732,7 @@ class BaseCase(unittest.TestCase):
                   script.src = "%s";
                   script.defer;
                   script.crossorigin = "anonymous";
-                  script.onload = function() {$("html")};
+                  script.onload = function() { null };
                   head.appendChild(script);
                }
                injectJS();""")
@@ -755,7 +755,7 @@ class BaseCase(unittest.TestCase):
             '''var h = document.getElementsByTagName('head').item(0);'''
             '''var s = document.createElement("script");'''
             '''s.type = "text/javascript";'''
-            '''s.onload = function() {$("html")};'''
+            '''s.onload = function() { null };'''
             '''s.appendChild(document.createTextNode("%s"));'''
             '''h.appendChild(s);''')
         self.execute_script(add_js_code_script % re.escape(js_code))
