@@ -1086,7 +1086,8 @@ class BaseCase(unittest.TestCase):
                 selector = re.search(
                     "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
                     self._tour_steps[name][1]).group(1)
-                self.__wait_for_css_query_selector(selector)
+                self.__wait_for_css_query_selector(
+                    selector, timeout=(settings.SMALL_TIMEOUT))
             except Exception:
                 self.__post_messenger_error_message(
                     "Tour Error: {'%s'} was not found!"
@@ -1149,7 +1150,7 @@ class BaseCase(unittest.TestCase):
                         ".currentStep.options.attachTo.element")
                     try:
                         self.__wait_for_css_query_selector(
-                            selector, timeout=(settings.MINI_TIMEOUT * 2))
+                            selector, timeout=(settings.MINI_TIMEOUT))
                     except Exception:
                         self.remove_elements("div.shepherd-content")
                         self.__post_messenger_error_message(
