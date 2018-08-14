@@ -48,6 +48,7 @@ from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
 from selenium.common.exceptions import (StaleElementReferenceException,
+                                        MoveTargetOutOfBoundsException,
                                         WebDriverException)
 from selenium.common import exceptions as selenium_exceptions
 try:
@@ -122,17 +123,18 @@ class BaseCase(unittest.TestCase):
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
             element.click()
-        except WebDriverException:
+        except (WebDriverException, MoveTargetOutOfBoundsException):
             self.wait_for_ready_state_complete()
-            if not by == By.LINK_TEXT:
-                # Only use a JavaScript click if not clicking by Link Text
+            try:
                 self.__js_click(selector, by=by)
-            else:
-                # One more attempt to click on the element
-                element = page_actions.wait_for_element_visible(
-                    self.driver, selector, by, timeout=timeout)
-                element.click()
-
+            except Exception:
+                try:
+                    self.__jquery_click(selector, by=by)
+                except Exception:
+                    # One more attempt to click on the element
+                    element = page_actions.wait_for_element_visible(
+                        self.driver, selector, by, timeout=timeout)
+                    element.click()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -2430,6 +2432,18 @@ class BaseCase(unittest.TestCase):
                      simulateClick(someLink);"""
                   % css_selector)
         self.execute_script(script)
+
+    def __jquery_click(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks an element using jQuery. Different from using pure JS. """
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if self.is_element_visible(selector, by=by):
+            self.__demo_mode_highlight_if_active(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self.__make_css_match_first_element_only(selector)
+        click_script = """jQuery('%s')[0].click()""" % selector
+        self.safe_execute_script(click_script)
 
     def __get_href_from_link_text(self, link_text, hard_fail=True):
         href = self.get_link_attribute(link_text, "href", hard_fail)
