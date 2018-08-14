@@ -13,11 +13,11 @@ seleniumbase grid-node start --hub=127.0.0.1
 """
 
 import sys
-from console_scripts import sb_mkdir
-from console_scripts import sb_install
-from integrations.selenium_grid import grid_hub
-from integrations.selenium_grid import grid_node
-from integrations.selenium_ide import convert_ide
+from seleniumbase.console_scripts import sb_mkdir
+from seleniumbase.console_scripts import sb_install
+from seleniumbase.utilities.selenium_grid import grid_hub
+from seleniumbase.utilities.selenium_grid import grid_node
+from seleniumbase.utilities.selenium_ide import convert_ide
 
 
 def show_usage():
