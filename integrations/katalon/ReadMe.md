@@ -1,1 +1,1 @@
-## This page has been moved to: [../selenium_ide/ReadMe.md](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/selenium_ide/ReadMe.md)
+### The ReadMe for the Katalon / Selenium IDE conversion tool has been moved to: [seleniumbase/utilities/selenium_ide/ReadMe.md](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md) and all related code has been moved to [seleniumbase/utilities/selenium_ide](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide)
