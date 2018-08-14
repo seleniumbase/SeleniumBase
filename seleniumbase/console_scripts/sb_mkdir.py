@@ -260,6 +260,8 @@ def main():
         file = codecs.open(file_path, "w+", "utf-8")
         file.writelines("\r\n".join(data))
         file.close()
+        print('''\n* Directory "%s" was created with config files '''
+              '''and sample tests! *\n''' % dir_name)
 
 
 if __name__ == "__main__":

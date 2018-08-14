@@ -20,7 +20,7 @@ import shutil
 import sys
 import tarfile
 import zipfile
-import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 if sys.version_info[0] == 2:
     from urllib import urlopen
 else:

@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.13.7',
+    version='1.14.0',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',
@@ -38,19 +38,19 @@ setup(
     packages=['seleniumbase',
               'seleniumbase.common',
               'seleniumbase.config',
+              'seleniumbase.console_scripts',
               'seleniumbase.core',
+              'seleniumbase.drivers',
               'seleniumbase.fixtures',
               'seleniumbase.masterqa',
               'seleniumbase.plugins',
-              'console_scripts',
-              'drivers',
-              'integrations',
-              'integrations.selenium_grid',
-              'integrations.selenium_ide',
+              'seleniumbase.utilities',
+              'seleniumbase.utilities.selenium_grid',
+              'seleniumbase.utilities.selenium_ide',
               ],
     entry_points={
         'console_scripts': [
-            'seleniumbase = console_scripts.run:main',
+            'seleniumbase = seleniumbase.console_scripts.run:main',
         ],
         'nose.plugins': [
             'base_plugin = seleniumbase.plugins.base_plugin:Base',

@@ -60,7 +60,7 @@ def main():
     file.writelines("\r\n".join(data))
     file.close()
 
-    from integrations.selenium_grid import download_selenium_server
+    from seleniumbase.utilities.selenium_grid import download_selenium_server
     download_selenium_server.main()  # Nothing happens if already exists
 
     if "linux" in sys.platform or "darwin" in sys.platform:
