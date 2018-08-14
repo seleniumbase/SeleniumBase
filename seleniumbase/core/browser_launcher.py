@@ -10,7 +10,7 @@ from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
-import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 PLATFORM = sys.platform
 LOCAL_CHROMEDRIVER = None
