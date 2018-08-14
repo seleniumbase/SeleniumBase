@@ -1,12 +1,8 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g.png" title="SeleniumBase" height="50">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt="Version" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase)<br />
 
-A reliable solution for fast & simple browser automation and testing with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
-
-**Why SeleniumBase?** WebDriver automates browsers, but it's not a stand-alone test framework. SeleniumBase saves you time by providing you with a complete framework for end-to-end testing.
-
-**Why Python?** Python is the [fastest growing programming language according to Stack Overflow](https://stackoverflow.blog/2017/09/06/incredible-growth-python/). Python's structure makes it optimal for scripting and quickly building things.
+SeleniumBase extends [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) into a full framework for end-to-end testing with [Pytest](https://github.com/pytest-dev/pytest).
 
 **Quick Start in a few steps:** (Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual env](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
 
@@ -106,7 +102,7 @@ SeleniumBase was originally built for [testing HubSpot's platform](https://produ
 ([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
 
 <a id="seleniumbase_installation"></a>
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g.png" title="SeleniumBase" height="48">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">
 
 ## Detailed Instructions:
 
@@ -696,4 +692,4 @@ Congratulations on getting started with SeleniumBase!
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g.png" title="SeleniumBase" height="60">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
