@@ -4,7 +4,7 @@
 
 SeleniumBase extends [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) into a complete framework for end-to-end testing with [Pytest](https://github.com/pytest-dev/pytest).
 
-## Quick Start
+## ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Quick Start
 
 (Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
 
@@ -52,7 +52,7 @@ pytest google_tour.py
 
 For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
 
-### Learn More:
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Learn More:
 
 #### **No more repetitive WebDriver code:**<br />
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, using a proxy server, and more. (<i>[Read about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
@@ -104,9 +104,9 @@ To learn about businesses using SeleniumBase, [Click Here](https://github.com/se
 To see a full list of SeleniumBase features, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 <a id="seleniumbase_installation"></a>
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
-## Detailed Instructions:
+## ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Detailed Instructions:
 
 Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[install a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.
 
@@ -237,7 +237,7 @@ To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or
 
 If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using SeleniumBase as your personal framework:**
 
@@ -276,7 +276,7 @@ cd browser_tests
 pytest my_first_test.py --browser=chrome
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
 <a id="creating_visual_reports"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
@@ -389,7 +389,7 @@ pytest test_fail.py
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. Take a look at what you get. Remember, this data can be saved in your MySQL DB and in S3 if you include the necessary plugins in your run command (and if you set up the neccessary connections properly). For future test runs, past test results will get stored in the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
 
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="120">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
 <a id="detailed_method_specifications"></a>
 ### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Detailed Method Specifications and Examples:**
