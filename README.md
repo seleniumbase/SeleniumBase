@@ -2,7 +2,7 @@
 
 [<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt="Version" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase)<br />
 
-SeleniumBase extends [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) into a full framework for end-to-end testing with [Pytest](https://github.com/pytest-dev/pytest).
+SeleniumBase extends [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) into a complete framework for end-to-end testing with [Pytest](https://github.com/pytest-dev/pytest).
 
 **Quick Start in a few steps:** (Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual env](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
 
