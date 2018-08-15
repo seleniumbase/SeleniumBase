@@ -4,7 +4,7 @@
 
 SeleniumBase extends [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) into a complete framework for end-to-end testing with [Pytest](https://github.com/pytest-dev/pytest).
 
-**Quick Start in a few steps:** (Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual env](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
+**Quick Start in a few steps:** (Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
 
 ```
 python -m pip install --upgrade pip
