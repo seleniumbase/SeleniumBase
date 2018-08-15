@@ -1,14 +1,12 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g.png" title="SeleniumBase" height="50">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt="Version" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase)<br />
 
-A reliable solution for fast & simple browser automation and testing with [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) & [Pytest](https://github.com/pytest-dev/pytest).
+SeleniumBase extends [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) into a complete framework for end-to-end testing with [Pytest](https://github.com/pytest-dev/pytest).
 
-**Why SeleniumBase?** WebDriver automates browsers, but it's not a stand-alone test framework. SeleniumBase saves you time by providing you with a complete framework for end-to-end testing.
+## Quick Start
 
-**Why Python?** Python is the [fastest growing programming language according to Stack Overflow](https://stackoverflow.blog/2017/09/06/incredible-growth-python/). Python's structure makes it optimal for scripting and quickly building things.
-
-**Quick Start in a few steps:** (Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual env](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
+(Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
 
 ```
 python -m pip install --upgrade pip
@@ -56,16 +54,16 @@ For more detailed steps on getting started, see the [**Detailed Instructions**](
 
 ### Learn More:
 
-**No more repetitive WebDriver code:**<br />
+#### **No more repetitive WebDriver code:**<br />
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, using a proxy server, and more. (<i>[Read about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
-**Simple Python syntax makes coding easy:**<br />
+#### **Simple Python syntax makes coding easy:**<br />
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_image.png" title="SeleniumBase Python Code" height="280">
 
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
-**Run tests with Pytest or Nose in any browser:**<br />
+#### **Run tests with Pytest or Nose in any browser:**<br />
 (<i>Using **Pytest** is strongly recommended</i>)
 
 ```
@@ -76,7 +74,7 @@ nosetests my_test_suite.py --browser=firefox
 
 Python methods that start with ``test_`` will automatically be run when using ``pytest`` or ``nosetests`` on a Python file, (<i>or on folders containing Python files</i>).
 
-**No more messy code:**<br />
+#### **No more messy code:**<br />
 This long line of standard WebDriver code,
 ```python
 self.driver.find_element_by_css_selector("textarea").send_keys("text")
@@ -87,26 +85,26 @@ self.update_text("textarea", "text")
 ```
 (<i>You can still use ``self.driver`` in your code.</i>)
 
-**No more flaky tests:**<br />
+#### **No more flaky tests:**<br />
 SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your code.
 
-**Assist manual QA with automation:**<br />
+#### **Assist manual QA with automation:**<br />
 SeleniumBase includes an automated/manual hybrid solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the web browser actions while the manual tester only validates what is seen.
 
-**Integrate with your favorite tools:**<br />
+#### **Integrate with your favorite tools:**<br />
 SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), [NodeJS](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), and [AWS](#amazon_section).
 
-**Comes with a business mindset:**<br />
-SeleniumBase makes it easy to automate tedious business tasks. (*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+#### **Automate tedious business tasks:**<br />
+Beyond test automation, SeleniumBase is perfect for automating tedious business tasks that you would perform in a web browser.
 
-**Extensively tested and made with love:**<br />
-SeleniumBase was originally built for [testing HubSpot's platform](https://product.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot) and automating business processes. In 2014, SeleniumBase was open-sourced and spun off as its own independent entity to benefit users everywhere.
+#### **Lots of Happy Customers:**<br />
+(*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
 
-**Feature-Rich:**<br />
+#### **Feature-Rich:**<br />
 ([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
 
 <a id="seleniumbase_installation"></a>
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g.png" title="SeleniumBase" height="48">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">
 
 ## Detailed Instructions:
 
@@ -256,6 +254,8 @@ Now you can install webdrivers by doing this:
 seleniumbase install chromedriver
 seleniumbase install geckodriver
 seleniumbase install edgedriver
+seleniumbase install iedriver
+seleniumbase install operadriver
 ```
 
 Remember, you'll need chromedriver if you want to run automation on Chrome, geckodriver if you want to run automation on Firefox, edgedriver for Microsoft Edge, etc.
@@ -696,4 +696,4 @@ Congratulations on getting started with SeleniumBase!
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g.png" title="SeleniumBase" height="60">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">

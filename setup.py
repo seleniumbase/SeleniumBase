@@ -7,7 +7,7 @@ from setuptools import setup, find_packages  # noqa
 
 setup(
     name='seleniumbase',
-    version='1.14.0',
+    version='1.14.1',
     description='Web Automation & Testing Framework - http://seleniumbase.com',
     long_description='Web Automation and Testing Framework - seleniumbase.com',
     platforms='Mac * Windows * Linux * Docker',

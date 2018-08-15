@@ -13,16 +13,20 @@ from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 PLATFORM = sys.platform
+IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None
 LOCAL_GECKODRIVER = None
 LOCAL_EDGEDRIVER = None
+LOCAL_IEDRIVER = None
 LOCAL_OPERADRIVER = None
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
     LOCAL_OPERADRIVER = DRIVER_DIR + '/operadriver'
 elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
+    IS_WINDOWS = True
     LOCAL_EDGEDRIVER = DRIVER_DIR + '/MicrosoftWebDriver.exe'
+    LOCAL_IEDRIVER = DRIVER_DIR + '/IEDriverServer.exe'
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
     LOCAL_OPERADRIVER = DRIVER_DIR + '/operadriver.exe'
@@ -279,8 +283,27 @@ def get_local_driver(browser_name, headless, proxy_string):
                 raise Exception(e)
             return webdriver.Firefox()
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
-        return webdriver.Ie()
+        if not IS_WINDOWS:
+            raise Exception(
+                "IE Browser is for Windows-based operating systems only!")
+        ie_caps = DesiredCapabilities.INTERNETEXPLORER.copy()
+        ie_caps['ignoreProtectedModeSettings'] = True
+        ie_caps['IntroduceInstabilityByIgnoringProtectedModeSettings'] = True
+        ie_caps['nativeEvents'] = True
+        ie_caps['ignoreZoomSetting'] = True
+        ie_caps['requireWindowFocus'] = True
+        ie_caps['INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS'] = True
+        if LOCAL_IEDRIVER and os.path.exists(LOCAL_IEDRIVER):
+            make_driver_executable_if_not(LOCAL_IEDRIVER)
+            return webdriver.Ie(
+                capabilities=ie_caps,
+                executable_path=LOCAL_IEDRIVER)
+        else:
+            return webdriver.Ie(capabilities=ie_caps)
     elif browser_name == constants.Browser.EDGE:
+        if not IS_WINDOWS:
+            raise Exception(
+                "Edge Browser is for Windows-based operating systems only!")
         edge_capabilities = DesiredCapabilities.EDGE.copy()
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             make_driver_executable_if_not(LOCAL_EDGEDRIVER)

@@ -11,7 +11,7 @@ export WORKON_HOME=$HOME/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 ```
 
-If you add ``source /usr/local/bin/virtualenvwrapper.sh`` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands will be available whenever you open a new command prompt. Use the ``source`` command on those files to activate any changes you make.
+If you add ``source /usr/local/bin/virtualenvwrapper.sh`` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands will be available whenever you open a new command prompt.
 
 ### WINDOWS:
 
