@@ -286,20 +286,22 @@ def get_local_driver(browser_name, headless, proxy_string):
         if not IS_WINDOWS:
             raise Exception(
                 "IE Browser is for Windows-based operating systems only!")
-        ie_caps = DesiredCapabilities.INTERNETEXPLORER.copy()
-        ie_caps['ignoreProtectedModeSettings'] = True
-        ie_caps['IntroduceInstabilityByIgnoringProtectedModeSettings'] = True
-        ie_caps['nativeEvents'] = True
-        ie_caps['ignoreZoomSetting'] = True
-        ie_caps['requireWindowFocus'] = True
-        ie_caps['INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS'] = True
+        from selenium.webdriver.ie.options import Options
+        ie_options = Options()
+        ie_options.ignore_protected_mode_settings = True
+        ie_options.ignore_zoom_level = True
+        ie_options.require_window_focus = True
+        ie_options.native_events = True
+        ie_options.full_page_screenshot = True
+        ie_options.persistent_hover = True
+        ie_capabilities = ie_options.to_capabilities()
         if LOCAL_IEDRIVER and os.path.exists(LOCAL_IEDRIVER):
             make_driver_executable_if_not(LOCAL_IEDRIVER)
             return webdriver.Ie(
-                capabilities=ie_caps,
+                capabilities=ie_capabilities,
                 executable_path=LOCAL_IEDRIVER)
         else:
-            return webdriver.Ie(capabilities=ie_caps)
+            return webdriver.Ie(capabilities=ie_capabilities)
     elif browser_name == constants.Browser.EDGE:
         if not IS_WINDOWS:
             raise Exception(

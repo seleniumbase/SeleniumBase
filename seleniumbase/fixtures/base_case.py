@@ -1361,6 +1361,8 @@ class BaseCase(unittest.TestCase):
 
         if self.highlights:
             loops = self.highlights
+        if self.browser == 'ie':
+            loops = 1  # Override previous setting because IE is slow
         loops = int(loops)
 
         o_bs = ''  # original_box_shadow
@@ -2576,6 +2578,10 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active(tiny=True)
 
     def __slow_scroll_to_element(self, element):
+        if self.browser == 'ie':
+            # IE breaks on slow-scrolling. Do a fast scroll instead.
+            self.__scroll_to_element(element)
+            return
         scroll_position = self.execute_script("return window.scrollY;")
         element_location = element.location['y']
         element_location = element_location - 130
