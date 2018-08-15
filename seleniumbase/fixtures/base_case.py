@@ -2601,6 +2601,7 @@ class BaseCase(unittest.TestCase):
             else:
                 duration = self.message_duration
         try:
+            self.set_messenger_theme(theme="future", location="bottom_right")
             self.post_message(message, style="success", duration=duration)
             time.sleep(duration)
         except Exception:
