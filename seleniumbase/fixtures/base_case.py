@@ -116,7 +116,12 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element)
         pre_action_url = self.driver.current_url
         try:
-            element.click()
+            if self.browser == 'ie' and by == By.LINK_TEXT:
+                # An issue with clicking Link Text on IE means using jquery
+                self.__jquery_click(selector, by=by)
+            else:
+                # Normal click
+                element.click()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
