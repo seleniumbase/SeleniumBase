@@ -22,7 +22,7 @@ cd examples
 pytest my_first_test.py --browser=chrome
 ```
 
-SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. The following will run the same test from above on Firefox (geckodriver) using nosetests (although pytest is recommended over nosetests):
+SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. The following code will run the same test from above on Firefox (geckodriver) using nosetests (<i>although pytest is recommended over nosetests</i>):
 
 ```
 seleniumbase install geckodriver
@@ -97,11 +97,11 @@ SeleniumBase is compatible with [Selenium Grid](https://github.com/seleniumbase/
 #### **Automate tedious business tasks:**<br />
 Beyond test automation, SeleniumBase is perfect for automating tedious business tasks that you would perform in a web browser.
 
-#### **Lots of Happy Customers:**<br />
-(*To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).*)
+#### **Lots of happy users & customers:**<br />
+To learn about businesses using SeleniumBase, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md).
 
 #### **Feature-Rich:**<br />
-([Read more about SeleniumBase features here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md))
+To see a full list of SeleniumBase features, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 <a id="seleniumbase_installation"></a>
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">
@@ -196,7 +196,7 @@ If the example test is moving too fast for your eyes to see what's going on, you
 pytest my_first_test.py --demo_mode
 ```
 
-You can use the following in your scripts to help you debug issues::
+You can use the following in your scripts to help you debug issues:
 
 ```python
 import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
