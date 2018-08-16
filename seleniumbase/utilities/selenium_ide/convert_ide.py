@@ -20,21 +20,21 @@ import sys
 
 
 def main():
-    expected_arg = ("[A Katalon/Selenium IDE recording exported as "
-                    "a Python-WebDriver unittest script].py")
+    expected_arg = ("[A PYTHON_WEBDRIVER_UNITTEST_FILE exported from a "
+                    "Katalon/Selenium-IDE recording].py")
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1] == "seleniumbase" or (
             sys.argv[0].split('\\')[-1] == "seleniumbase"):
         if num_args < 3 or num_args > 3:
-            raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
+            raise Exception('\n\n* INVALID RUN COMMAND! *  Usage:\n'
                             '"seleniumbase convert %s"\n' % expected_arg)
     else:
         if num_args < 2 or num_args > 2:
-            raise Exception('\n* INVALID RUN COMMAND! *  Usage:\n'
+            raise Exception('\n\n* INVALID RUN COMMAND! *  Usage:\n'
                             '"python convert_ide.py %s"\n' % expected_arg)
     webdriver_python_file = sys.argv[num_args-1]
     if not webdriver_python_file.endswith('.py'):
-        raise Exception("* `%s` is not a Python file! *\n"
+        raise Exception("\n\n`%s` is not a Python file!\n\n"
                         "Expecting: %s\n"
                         % (webdriver_python_file, expected_arg))
 
@@ -47,15 +47,17 @@ def main():
     in_test_method = False
     has_unicode = False
     uses_keys = False
+    uses_select = False
 
     f = open(webdriver_python_file, 'r')
     all_code = f.read()
     f.close()
     if "def test_" not in all_code:
-        raise Exception("* `%s` is not a valid Python unittest.TestCase file! "
-                        "*\nExpecting: %s\n"
-                        "Did you properly export your Selenium-IDE recording "
-                        "as a Python WebDriver unittest file?" % expected_arg)
+        raise Exception("\n\n`%s` is not a valid Python unittest.TestCase "
+                        "file!\n\nExpecting: %s\n\n"
+                        "Did you properly export your Katalon/Selenium-IDE "
+                        "recording as a Python WebDriver unittest file?\n"
+                        % (webdriver_python_file, expected_arg))
     code_lines = all_code.split('\n')
     for line in code_lines:
 
@@ -312,6 +314,22 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle Select / by_id() / select_by_visible_text()
+        data = re.match(
+            '''^(\s*)Select\(driver\.find_element_by_id\('''
+            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            '''\"([\S\s]+)\"\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '#%s' % data.group(2)
+            visible_text = '%s' % data.group(3)
+            command = '''%sself.pick_select_option_by_text('%s', '%s')''' % (
+                whitespace, selector, visible_text)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle Select / by_xpath() / select_by_visible_text()
         data = re.match(
             '''^(\s*)Select\(driver\.find_element_by_xpath\('''
@@ -546,6 +564,12 @@ def main():
             seleniumbase_lines.append(line)
             continue
 
+    # Is there a Select() still present?
+    lines = seleniumbase_lines
+    for line_num in range(len(lines)):
+        if "Select(self.driver" in lines[line_num]:
+            uses_select = True
+
     # Remove duplicate functionality (wait_for_element)
     lines = seleniumbase_lines
     seleniumbase_lines = []
@@ -596,6 +620,9 @@ def main():
     if uses_keys:
         seleniumbase_code += (
             "from selenium.webdriver.common.keys import Keys\n")
+    if uses_select:
+        seleniumbase_code += (
+            "from selenium.webdriver.support.ui import Select\n")
     for line in seleniumbase_lines:
         seleniumbase_code += line
         seleniumbase_code += "\n"
