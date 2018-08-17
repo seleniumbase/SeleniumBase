@@ -5,7 +5,6 @@ import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from seleniumbase.config import settings
 from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.fixtures import constants
@@ -73,11 +72,6 @@ def _set_chrome_options(downloads_path, proxy_string):
     chrome_options.add_argument("--disable-web-security")
     if proxy_string:
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
-    if settings.START_CHROME_IN_FULL_SCREEN_MODE:
-        # Run Chrome in full screen mode on WINDOWS
-        chrome_options.add_argument("--start-maximized")
-        # Run Chrome in full screen mode on MAC/Linux
-        chrome_options.add_argument("--kiosk")
     if "win32" in sys.platform or "win64" in sys.platform:
         chrome_options.add_argument("--log-level=3")
     return chrome_options

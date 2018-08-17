@@ -2252,11 +2252,22 @@ class BaseCase(unittest.TestCase):
                 # Make sure the invisible browser window is big enough
                 try:
                     self.set_window_size(1920, 1200)
+                    self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
                     # get safely through setUp() so that
                     # WebDrivers can get closed during tearDown().
                     pass
+            else:
+                if self.browser == 'chrome':
+                    try:
+                        if settings.START_CHROME_IN_FULL_SCREEN_MODE:
+                            self.driver.maximize_window()
+                        else:
+                            self.driver.set_window_size(1250, 800)
+                        self.wait_for_ready_state_complete()
+                    except Exception:
+                        pass  # Keep existing browser resolution
         return new_driver
 
     def switch_to_driver(self, driver):
