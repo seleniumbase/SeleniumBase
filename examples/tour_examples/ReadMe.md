@@ -29,16 +29,17 @@ class MyTourClass(BaseCase):
         self.open('https://google.com')
         self.wait_for_element('input[title="Search"]')
         self.create_tour(theme="dark")
-        self.add_tour_step("Click to begin the Google Tour!",
-                           title="SeleniumBase Guided Tours")
-        self.add_tour_step("Type in your search query here.",
-                           'input[title="Search"]')
-        self.add_tour_step("Then click here to search!",
-                           'input[value="Google Search"]',
-                           alignment="bottom", theme="arrows")
-        self.add_tour_step("Or click here to see the top result.",
-                           '''[value="I'm Feeling Lucky"]''',
-                           alignment="bottom", theme="arrows")
+        self.add_tour_step(
+        	"Click to begin the Google Tour!", title="SeleniumBase Tours")
+        self.add_tour_step(
+        	"Type in your search query here.", 'input[title="Search"]')
+        self.add_tour_step(
+        	"Then click here to search!", 'input[value="Google Search"]',
+            alignment="bottom", theme="arrows")
+        self.add_tour_step(
+        	"Or click here to see the top result.",
+        	'''[value="I'm Feeling Lucky"]''',
+            alignment="bottom", theme="arrows")
         self.play_tour()
 ```
 
