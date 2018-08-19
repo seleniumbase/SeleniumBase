@@ -1629,6 +1629,14 @@ class BaseCase(unittest.TestCase):
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name)
 
+    def save_data_as(self, data, file_name, destination_folder=None):
+        """ Saves the data specified to a file of the name specified.
+            If no destination folder is specified, the default one is used.
+            (The default downloads folder = "./downloaded_files") """
+        if not destination_folder:
+            destination_folder = constants.Files.DOWNLOADS_FOLDER
+        page_utils._save_data_as(data, destination_folder, file_name)
+
     def get_downloads_folder(self):
         """ Returns the OS path of the Downloads Folder.
             (Works with Chrome and Firefox only, for now.) """
