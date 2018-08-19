@@ -1615,7 +1615,8 @@ class BaseCase(unittest.TestCase):
 
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
-            If no destination folder is specified, the default one is used. """
+            If no destination folder is specified, the default one is used.
+            (The default downloads folder = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(file_url, destination_folder)
