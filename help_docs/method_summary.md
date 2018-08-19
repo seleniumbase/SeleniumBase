@@ -150,6 +150,8 @@ self.download_file(file_url, destination_folder=None)
 
 self.save_file_as(file_url, new_file_name, destination_folder=None)
 
+self.save_data_as(data, file_name, destination_folder=None)
+
 self.get_downloads_folder(file)
 
 self.get_path_of_downloaded_file(file)
