@@ -1,6 +1,7 @@
 """
 This module contains useful utility methods.
 """
+import codecs
 import re
 import requests
 
@@ -74,6 +75,12 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
     r = requests.get(file_url)
     with open(destination_folder + '/' + file_name, "wb") as code:
         code.write(r.content)
+
+
+def _save_data_as(data, destination_folder, file_name):
+    out_file = codecs.open(destination_folder + '/' + file_name, "w+")
+    out_file.writelines(data)
+    out_file.close()
 
 
 def _jq_format(code):

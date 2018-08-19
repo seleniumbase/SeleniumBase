@@ -1051,7 +1051,8 @@ class BaseCase(unittest.TestCase):
                 selector = re.search(
                     "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
                     self._tour_steps[name][1]).group(1)
-                self.__wait_for_css_query_selector(
+                selector = selector.replace('\\', '')
+                self.wait_for_element_present(
                     selector, timeout=(settings.SMALL_TIMEOUT))
             except Exception:
                 self.__post_messenger_error_message(
@@ -1614,7 +1615,8 @@ class BaseCase(unittest.TestCase):
 
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
-            If no destination folder is specified, the default one is used. """
+            If no destination folder is specified, the default one is used.
+            (The default downloads folder = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(file_url, destination_folder)
@@ -1626,6 +1628,14 @@ class BaseCase(unittest.TestCase):
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name)
+
+    def save_data_as(self, data, file_name, destination_folder=None):
+        """ Saves the data specified to a file of the name specified.
+            If no destination folder is specified, the default one is used.
+            (The default downloads folder = "./downloaded_files") """
+        if not destination_folder:
+            destination_folder = constants.Files.DOWNLOADS_FOLDER
+        page_utils._save_data_as(data, destination_folder, file_name)
 
     def get_downloads_folder(self):
         """ Returns the OS path of the Downloads Folder.
