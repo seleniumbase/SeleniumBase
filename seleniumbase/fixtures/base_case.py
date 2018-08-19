@@ -1051,7 +1051,8 @@ class BaseCase(unittest.TestCase):
                 selector = re.search(
                     "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
                     self._tour_steps[name][1]).group(1)
-                self.__wait_for_css_query_selector(
+                selector = selector.replace('\\', '')
+                self.wait_for_element_present(
                     selector, timeout=(settings.SMALL_TIMEOUT))
             except Exception:
                 self.__post_messenger_error_message(
