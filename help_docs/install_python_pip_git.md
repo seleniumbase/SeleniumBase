@@ -47,28 +47,18 @@ brew update
 
 ### [Git](http://www.git-scm.com)
 
-(NOTE: You can download the SeleniumBase repository right from GitHub and skip all the git-related commands. That's probably the fastest way if you want to quickly get a live demo of this tool up and running.)
+You can [download Git from here](http://git-scm.com/downloads).
 
-MAC-ONLY: (This step only works if you installed Homebrew in the previous step)
+MAC-ONLY shortcut: (This step only works if you installed Homebrew in the previous step)
 ```bash
 brew install git
 ```
 
-(WINDOWS users: Skip the Homebrew part and [download Git here](http://git-scm.com/downloads).)
+(You can also download the SeleniumBase repository right from GitHub and skip all the git-related commands.)
 
 <a id="virtual_environment"></a>
 ### [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
 
-(NOTE: Virtual environments allow each your Python projects to have a unique set of packaged dependencies.)
+Virtual environments allow each your Python projects to have a unique set of packaged dependencies.
 
-MAC / Linux:
-```bash
-python -m pip install --upgrade virtualenv
-python -m pip install --upgrade virtualenvwrapper
-```
-
-WINDOWS:
-```bash
-python -m pip install --upgrade virtualenv
-python -m pip install --upgrade virtualenvwrapper-win
-```
+To learn how to create a Python virtual environment, [see this ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).

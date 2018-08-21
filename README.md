@@ -1,35 +1,46 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_2f1.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_2h2.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt="Version" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://img.shields.io/badge/python-2.7,_3.*-22AADD.svg" alt="Python versions" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="http://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Automated Testing Made Easy
+A complete framework for web automation, end-to-end testing, and [user-onboarding](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). SeleniumBase uses [Pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
 
-SeleniumBase is a complete framework for end-to-end testing and [website walkthroughs](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). It uses [WebDriver](https://www.seleniumhq.org/) to control web browsers while using [Pytest](https://github.com/pytest-dev/pytest) for running Python scripts.
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start
 
-## ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Quick Start in minutes
+(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).</i>)
 
-(Requires [Python](https://www.python.org/downloads/), [Git](https://git-scm.com/), and an optional [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
-
+Clone SeleniumBase from GitHub:
 ```
-python -m pip install --upgrade pip
 git clone https://github.com/seleniumbase/SeleniumBase.git
+```
 
+Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/) if you don't have the latest versions:
+```
+python -m pip install -U pip setuptools
+```
+
+Install SeleniumBase:
+```
 cd SeleniumBase
-pip install -r requirements.txt --upgrade
+pip install -U -r requirements.txt
 python setup.py develop
+```
 
+Install a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
+```
 seleniumbase install chromedriver
+```
 
+Run a test on chrome:
+```
 cd examples
 pytest my_first_test.py --browser=chrome
 ```
 
-SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. The following code will run the same test from above on Firefox (geckodriver) using nosetests (<i>although pytest is recommended over nosetests</i>):
+You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for ``chrome``, ``edgedriver`` for ``edge``, ``geckodriver`` for ``firefox``, ``operadriver`` for ``opera``, and ``iedriver`` for ``ie``.
 
-```
-seleniumbase install geckodriver
-nosetests my_first_test.py --browser=firefox
-```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="64">
+
+SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. 
 
 Try out Demo Mode to see what what's being tested in real time! (Chrome is the default browser if not specified.)
 
@@ -54,7 +65,7 @@ pytest google_tour.py
 
 For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
 
-## ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Learn More:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Learn More:
 
 #### **No more repetitive WebDriver code:**<br />
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers, waiting for page objects to load, saving screenshots during test failures, using a proxy server, and more. (<i>[Read about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
@@ -108,33 +119,29 @@ To see a full list of SeleniumBase features, [Click Here](https://github.com/sel
 <a id="seleniumbase_installation"></a>
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
-## ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Detailed Instructions:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Detailed Instructions:
 
-Before installation, **[install Python](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** and **[install a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)**.
+Before installation, **[install Python and Git](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)**.
 
-
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 1:** Clone SeleniumBase
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Step 1:** Clone SeleniumBase
 
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
-
-cd SeleniumBase
 ```
 
 (<i>A [Git](https://git-scm.com/) GUI tool like [SourceTree](http://www.sourcetreeapp.com/) may help.</i>)
 
-
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 2:** Create a Virtual Environment
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Step 2:** Create a Virtual Environment
 
 (OPTIONAL) To learn how to create a Python virtual environment, [see this ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).
 
-
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 3:** Install SeleniumBase
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Step 3:** Install SeleniumBase
 
 If you're installing SeleniumBase from a cloned copy on your machine, use:
 ```
-pip install -r requirements.txt --upgrade
+cd SeleniumBase
 
+pip install -r requirements.txt --upgrade
 python setup.py develop
 ```
 
@@ -150,9 +157,21 @@ pip install -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=s
 
 (If you encounter permission errors during installation while not using a virtual environment, you may need to add ``--user`` to your pip command. If you already have an older version of SeleniumBase installed, you may want to add ``--upgrade`` or ``-U`` to your pip command.)
 
+<a id="seleniumbase_install_a_web_driver"></a>
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Step 4:** Install a Web Driver
+
+SeleniumBase requires a web driver to run automation on web browers. For that, you'll need to either download a web driver to your path, or **[install a web driver](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md)** with the SeleniumBase ``install`` command.
+
+```
+seleniumbase install chromedriver
+seleniumbase install geckodriver
+seleniumbase install edgedriver
+```
+
+(``geckodriver`` is the offical name of the Firefox driver)
 
 <a id="seleniumbase_basic_usage"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Step 4:** Run the Example Script
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Step 5:** Run the Example Script
 
 **Here's what the example script looks like:**
 
@@ -241,7 +260,7 @@ If you want to pass additional data from the command line to your tests, you can
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using SeleniumBase as your personal framework:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Using SeleniumBase from a [PyPI](https://pypi.org/) installation:**
 
 You can install SeleniumBase without cloning the repo by doing this:
 
@@ -250,7 +269,7 @@ python -m pip install -U pip
 pip install -U seleniumbase --no-cache-dir
 ```
 
-Now you can install webdrivers by doing this:
+You can then install webdrivers by doing this:
 
 ```
 seleniumbase install chromedriver
@@ -260,15 +279,11 @@ seleniumbase install iedriver
 seleniumbase install operadriver
 ```
 
-Remember, you'll need chromedriver if you want to run automation on Chrome, geckodriver if you want to run automation on Firefox, edgedriver for Microsoft Edge, etc.
+(You'll need chromedriver if you want to run automation on Chrome, geckodriver if you want to run automation on Firefox, edgedriver for Microsoft Edge, etc.)
 
 When creating your own test directories, keep these two things in mind:
 
-For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
-
-For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
-
-(You'll be able to customize those files as needed.)
+For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.)
 
 As a shortcut, you'll be able to run ``seleniumbase mkdir [DIRECTORY_NAME]`` to create a new folder that already contains necessary files and some example tests that you can run. Example:
 
@@ -281,7 +296,7 @@ pytest my_first_test.py --browser=chrome
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
 <a id="creating_visual_reports"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Creating Visual Test Suite Reports:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Creating Visual Test Suite Reports:**
 
 (NOTE: Several command line args are different for Pytest vs Nosetests)
 
@@ -313,7 +328,7 @@ nosetests my_test_suite.py --report
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Using a Proxy Server:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Using a Proxy Server:**
 
 If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
@@ -328,7 +343,7 @@ pytest proxy_test.py --proxy=proxy1
 ```
 
 <a id="utilizing_advanced_features"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Production Environments & Integrations:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Production Environments & Integrations:**
 
 Here are some things you can do to setup a production environment for your testing:
 
@@ -394,7 +409,7 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="100">
 
 <a id="detailed_method_specifications"></a>
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") **Detailed Method Specifications and Examples:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Detailed Method Specifications and Examples:**
 
 #### Navigating to a web page (and related commands)
 
@@ -689,7 +704,7 @@ self.assertTrue(num_email_results)  # true if not zero
 Now you can parse through the email if you're looking for specific text or want to navigate to a link listed there.
 
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Wrap-Up
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Wrap-Up
 
 Congratulations on getting started with SeleniumBase!
 

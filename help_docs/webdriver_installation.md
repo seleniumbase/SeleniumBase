@@ -1,4 +1,4 @@
-## Installing Google Chromedriver, Firefox Geckodriver, and Microsoft Edge Driver
+## Installing Google Chromedriver, Firefox Geckodriver, Microsoft Edge Driver, etc.
 
 
 To run web automation, you'll need to download a web driver for each browser you plan on using and place those on your System **[PATH](http://java.com/en/download/help/path.xml)**. Additionaly, you can place drivers in the [SeleniumBase `drivers` folder](https://github.com/seleniumbase/SeleniumBase/blob/master/drivers). If you plan on taking the latter option, here are some commands that'll automatically download the driver you need into the ``drivers`` folder once you've installed SeleniumBase:

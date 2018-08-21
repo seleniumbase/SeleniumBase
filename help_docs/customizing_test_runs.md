@@ -25,15 +25,15 @@ pytest my_first_test.py --demo_mode --browser=chrome
 
 pytest my_first_test.py --browser=firefox
 
-pytest basic_script.py -s --pdb --pdb-failures
-
-pytest basic_script.py --html=report.html
+pytest my_test_suite.py --html=report.html
 
 nosetests my_test_suite.py --report --show_report
 
 pytest my_test_suite.py --server=IP_ADDRESS -n 4
 
 pytest my_test_suite.py --proxy=IP_ADDRESS:PORT
+
+pytest test_fail.py -s --pdb --pdb-failures
 ```
 
 You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
