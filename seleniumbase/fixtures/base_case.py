@@ -872,6 +872,7 @@ class BaseCase(unittest.TestCase):
         backdrop_style = style_sheet.sh_backdrop_style
 
         self.__activate_bootstrap()
+        self.wait_for_ready_state_complete()
         for x in range(4):
             # self.activate_jquery()  # Included with __activate_bootstrap()
             self.add_css_link(spinner_css)
