@@ -191,9 +191,15 @@ self.pick_select_option_by_index(dropdown_selector, option,
 self.pick_select_option_by_value(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
+########
+
 self.generate_referral(start_page, destination_page)
 
 self.generate_traffic(start_page, destination_page, loops=1)
+
+self.generate_referral_chain(pages)
+
+self.generate_traffic_chain(pages, loops=1)
 
 ########
 

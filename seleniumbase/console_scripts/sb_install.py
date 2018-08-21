@@ -131,8 +131,8 @@ def main():
         download_url = ("https://download.microsoft.com/download/"
                         "%s/%s" % (version_code, file_name))
     elif name == "iedriver":
-        major_version = "3.11"
-        full_version = "3.11.1"
+        major_version = "3.14"
+        full_version = "3.14.0"
         if "win32" in sys_plat:
             file_name = "IEDriverServer_Win32_%s.zip" % full_version
         elif "win64" in sys_plat or "x64" in sys_plat:

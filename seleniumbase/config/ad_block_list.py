@@ -28,6 +28,7 @@ AD_BLOCK_LIST = [
     '[id*="-ad-"]',
     '[id*="_ads_"]',
     '[id*="AdFrame"]',
+    '[id*="carbonads"]',
     '[id^="ad-"]',
     '[id^="outbrain_widget"]',
     '[id^="taboola-"]',

@@ -872,6 +872,7 @@ class BaseCase(unittest.TestCase):
         backdrop_style = style_sheet.sh_backdrop_style
 
         self.__activate_bootstrap()
+        self.wait_for_ready_state_complete()
         for x in range(4):
             # self.activate_jquery()  # Included with __activate_bootstrap()
             self.add_css_link(spinner_css)
@@ -1823,6 +1824,8 @@ class BaseCase(unittest.TestCase):
                                   dropdown_by=dropdown_by, option_by="value",
                                   timeout=timeout)
 
+    ############
+
     def generate_referral(self, start_page, destination_page):
         """ This method opens the start_page, creates a referral link there,
             and clicks on that link, which goes to the destination_page.
@@ -1842,7 +1845,7 @@ class BaseCase(unittest.TestCase):
         referral_link = ('''<a class='analytics referral test' href='%s' '''
                          '''style='font-family: Arial,sans-serif; '''
                          '''font-size: 30px; color: #18a2cd'>'''
-                         '''* Magic Link Button! *</a>''' % destination_page)
+                         '''Magic Link Button</a>''' % destination_page)
         self.execute_script(
             '''document.body.innerHTML = \"%s\"''' % referral_link)
         time.sleep(0.1)
@@ -1858,6 +1861,32 @@ class BaseCase(unittest.TestCase):
         """ Similar to generate_referral(), but can do multiple loops. """
         for loop in range(loops):
             self.generate_referral(start_page, destination_page)
+            time.sleep(0.05)
+
+    def generate_referral_chain(self, pages):
+        """ Use this method to chain the action of creating button links on
+            one website page that will take you to the next page.
+            (When you want to create a referral to a website for traffic
+            generation without increasing the bounce rate, you'll want to visit
+            at least one additional page on that site with a button click.) """
+        if not type(pages) is tuple and not type(pages) is list:
+            raise Exception(
+                "Exception: Expecting a list of website pages for chaining!")
+        if len(pages) < 2:
+            raise Exception(
+                "Exception: At least two website pages required for chaining!")
+        for page in pages:
+            # Find out if any of the web pages are invalid before continuing
+            if not page_utils.is_valid_url(page):
+                raise Exception(
+                    "Exception: Website page {%s} is not a valid URL!" % page)
+        for page in pages:
+            self.generate_referral(None, page)
+
+    def generate_traffic_chain(self, pages, loops=1):
+        """ Similar to generate_referral_chain(), but for multiple loops. """
+        for loop in range(loops):
+            self.generate_referral_chain(pages)
             time.sleep(0.05)
 
     ############
