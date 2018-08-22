@@ -30,7 +30,7 @@ class MyTourClass(BaseCase):
             "Search results appear here!", title="(5-second autoplay on)")
         self.add_tour_step(
             "Let's take another tour...",
-            title="Ready for more?", theme="square")
+            title="Ready for more?", theme="arrows")
         self.play_tour(interval=5)  # tour automatically continues after 3s
 
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
@@ -63,5 +63,5 @@ class MyTourClass(BaseCase):
             alignment="left")
         self.add_tour_step(
             "Thanks for trying out SeleniumBase Tours!",
-            title="End of Guided Tour", theme="square")
+            title="End of Guided Tour", theme="arrows")
         self.play_tour()  # If interval isn't set, tour is fully manual
