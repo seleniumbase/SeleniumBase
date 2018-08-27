@@ -8,7 +8,7 @@ Example tour utilizing the Shepherd Javascript Library:
 
 Example tour utilizing the Bootstrap Javascript Library:
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/google_tour_2.gif" title="Bootstrap Tour" height="340"><br>
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/google_tour_2b.gif" title="Bootstrap Tour" height="340"><br>
 
 By default, the Shepherd Javascript Library is used when creating a tour with:
 
