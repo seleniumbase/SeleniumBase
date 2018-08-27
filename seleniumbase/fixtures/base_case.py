@@ -813,13 +813,12 @@ class BaseCase(unittest.TestCase):
     def __activate_bootstrap(self):
         """ Allows you to use Bootstrap Tours with SeleniumBase
             http://bootstraptour.com/
-            (Currently, SeleniumBase methods only use Shepherd Tours.)
         """
         bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
         bootstrap_tour_js = constants.BootstrapTour.MIN_JS
 
         verify_script = ("""// Instance the tour
-                         var tour = new Tour({
+                         var tour2 = new Tour({
                          });""")
 
         for x in range(4):
@@ -844,7 +843,7 @@ class BaseCase(unittest.TestCase):
 
     def __is_bootstrap_activated(self):
         verify_script = ("""// Instance the tour
-                         var tour = new Tour({
+                         var tour2 = new Tour({
                          });""")
         try:
             self.execute_script(verify_script)
@@ -873,6 +872,8 @@ class BaseCase(unittest.TestCase):
 
         self.__activate_bootstrap()
         self.wait_for_ready_state_complete()
+        self.add_css_style(backdrop_style)
+        self.wait_for_ready_state_complete()
         for x in range(4):
             # self.activate_jquery()  # Included with __activate_bootstrap()
             self.add_css_link(spinner_css)
@@ -886,8 +887,6 @@ class BaseCase(unittest.TestCase):
             self.add_js_link(underscore_js)
             self.add_js_link(backbone_js)
             self.add_js_link(shepherd_js)
-            time.sleep(0.01)
-            self.add_css_style(backdrop_style)
             time.sleep(0.1)
 
             for x in range(int(settings.MINI_TIMEOUT * 2.0)):
@@ -896,6 +895,7 @@ class BaseCase(unittest.TestCase):
                     self.execute_script(sh_style)  # Verify Shepherd has loaded
                     self.wait_for_ready_state_complete()
                     self.execute_script(sh_style)  # Need it twice for ordering
+                    self.wait_for_ready_state_complete()
                     time.sleep(0.05)
                     return
                 except Exception:
@@ -928,7 +928,10 @@ class BaseCase(unittest.TestCase):
 
         shepherd_theme = "shepherd-theme-arrows"
         if theme:
-            if theme == "default":
+            if theme.lower() == "bootstrap":
+                self.create_bootstrap_tour(name)
+                return
+            elif theme == "default":
                 shepherd_theme = "shepherd-theme-default"
             elif theme == "dark":
                 shepherd_theme = "shepherd-theme-dark"
@@ -939,18 +942,39 @@ class BaseCase(unittest.TestCase):
             elif theme == "square-dark":
                 shepherd_theme = "shepherd-theme-square-dark"
 
-        new_tour = ("""let tour = new Shepherd.Tour({
+        new_tour = ("""
+                    // Shepherd Tour
+                    let tour = new Shepherd.Tour({
                         defaults: {
                             classes: '%s',
                             scrollTo: true
                         }
-                    });""" % shepherd_theme)
+                    });
+                    """ % shepherd_theme)
+
+        self._tour_steps[name] = []
+        self._tour_steps[name].append(new_tour)
+
+    def create_bootstrap_tour(self, name=None):
+        """ Creates a Bootstrap tour for a website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+        """
+        if not name:
+            name = "default"
+
+        new_tour = ("""
+                    // Bootstrap Tour
+                    var tour = new Tour({
+                    steps: [
+                    """)
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
 
     def add_tour_step(self, message, selector=None, name=None,
-                      title=None, theme=None, alignment=None):
+                      title=None, theme=None, alignment=None, duration=None):
         """ Allows the user to add tour steps for a website.
             @Params
             message - The message to display.
@@ -958,10 +982,13 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours, use this to select the
                    tour you wish to add steps to.
             title - Additional header text that appears above the message.
-            theme - Choose from "arrows", "dark", "default", "square", and
+            theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
+                    Choose from "arrows", "dark", "default", "square", and
                     "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
+            duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
+                       before automatically advancing to the next tour step.
         """
         if not selector:
             selector = "html"
@@ -970,7 +997,8 @@ class BaseCase(unittest.TestCase):
         if not name:
             name = "default"
         if name not in self._tour_steps:
-            self.create_tour(name=name)
+            # By default, will create a Bootstrap tour if no tours exist
+            self.create_tour(name=name, theme="bootstrap")
 
         if not title:
             title = ""
@@ -981,6 +1009,34 @@ class BaseCase(unittest.TestCase):
         else:
             message = ""
 
+        if not alignment or (
+                alignment not in ["top", "bottom", "left", "right"]):
+            alignment = "top"
+
+        if "Bootstrap" in self._tour_steps[name][0]:
+            self.__add_bootstrap_tour_step(
+                message, selector=selector, name=name, title=title,
+                alignment=alignment, duration=duration)
+        else:
+            self.__add_shepherd_tour_step(
+                message, selector=selector, name=name, title=title,
+                theme=theme, alignment=alignment)
+
+    def __add_shepherd_tour_step(self, message, selector=None, name=None,
+                                 title=None, theme=None, alignment=None):
+        """ Allows the user to add tour steps for a website.
+            @Params
+            message - The message to display.
+            selector - The CSS Selector of the Element to attach to.
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            title - Additional header text that appears above the message.
+            theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
+                    Choose from "arrows", "dark", "default", "square", and
+                    "square-dark". ("arrows" is used if None is selected.)
+            alignment - Choose from "top", "bottom", "left", and "right".
+                        ("top" is the default alignment).
+        """
         if theme == "default":
             shepherd_theme = "shepherd-theme-default"
         elif theme == "dark":
@@ -997,10 +1053,6 @@ class BaseCase(unittest.TestCase):
                 self._tour_steps[name][0]).group(1)
             shepherd_theme = shepherd_base_theme
 
-        if not alignment or (
-                alignment not in ["top", "bottom", "left", "right"]):
-            alignment = "top"
-
         shepherd_classes = shepherd_theme
         if selector == "html":
             shepherd_classes += " shepherd-orphan"
@@ -1016,6 +1068,41 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name].append(step)
 
+    def __add_bootstrap_tour_step(self, message, selector=None, name=None,
+                                  title=None, alignment=None, duration=None):
+        """ Allows the user to add tour steps for a website.
+            @Params
+            message - The message to display.
+            selector - The CSS Selector of the Element to attach to.
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            title - Additional header text that appears above the message.
+            alignment - Choose from "top", "bottom", "left", and "right".
+                        ("top" is the default alignment).
+            duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
+                       before automatically advancing to the next tour step.
+        """
+        if selector != "html":
+            element_row = "element: '%s'," % selector
+        else:
+            element_row = ""
+        if not duration:
+            duration = "0"
+        else:
+            duration = str(float(duration) * 1000.0)
+
+        step = ("""{
+                %s
+                title: '%s',
+                content: '%s',
+                orphan: true,
+                placement: 'auto %s',
+                smartPlacement: true,
+                duration: %s,
+                },""" % (element_row, title, message, alignment, duration))
+
+        self._tour_steps[name].append(step)
+
     def play_tour(self, name=None, interval=0):
         """ Plays a tour on the current website.
             @Params
@@ -1027,22 +1114,35 @@ class BaseCase(unittest.TestCase):
         if self.headless:
             return  # Tours should not run in headless mode.
 
+        if not name:
+            name = "default"
+        if name not in self._tour_steps:
+            raise Exception("Tour {%s} does not exist!" % name)
+
+        if "Bootstrap" in self._tour_steps[name][0]:
+            self.__play_bootstrap_tour(name=name, interval=interval)
+        else:
+            self.__play_shepherd_tour(name=name, interval=interval)
+
+    def __play_shepherd_tour(self, name=None, interval=0):
+        """ Plays a tour on the current website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to play.
+            interval - The delay time between autoplaying tour steps.
+                       If set to 0 (default), the tour is fully manual control.
+        """
+        instructions = ""
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
+        instructions += "tour.start();"
+
         autoplay = False
         if interval and interval > 0:
             autoplay = True
             interval = float(interval)
             if interval < 0.5:
                 interval = 0.5
-
-        if not name:
-            name = "default"
-        if name not in self._tour_steps:
-            raise Exception("Tour {%s} does not exist!" % name)
-
-        instructions = ""
-        for tour_step in self._tour_steps[name]:
-            instructions += tour_step
-        instructions += "tour.start();"
 
         if not self.__is_shepherd_activated():
             self.__activate_shepherd()
@@ -1130,6 +1230,86 @@ class BaseCase(unittest.TestCase):
                         start_ms = time.time() * 1000.0
                         stop_ms = start_ms + (interval * 1000.0)
                     tour_on = True
+                except Exception:
+                    tour_on = False
+                    time.sleep(0.1)
+
+    def __play_bootstrap_tour(self, name=None, interval=0):
+        """ Plays a tour on the current website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to play.
+            interval - The delay time between autoplaying tour steps.
+                       If set to 0 (default), the tour is fully manual control.
+        """
+        instructions = ""
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
+        instructions += (
+            """]});
+
+            // Initialize the tour
+            tour.init();
+
+            // Start the tour
+            tour.start();
+
+            $tour = tour;
+            $tour.restart();""")
+
+        if interval and interval > 0:
+            if interval < 1:
+                interval = 1
+            interval = str(float(interval) * 1000.0)
+            instructions = instructions.replace(
+                'duration: 0,', 'duration: %s,' % interval)
+
+        if not self.__is_bootstrap_activated():
+            self.__activate_bootstrap()
+
+        if len(self._tour_steps[name]) > 1:
+            try:
+                if "element: " in self._tour_steps[name][1]:
+                    selector = re.search(
+                        "[\S\s]+element: '([\S\s]+)',[\S\s]+title: '",
+                        self._tour_steps[name][1]).group(1)
+                    selector = selector.replace('\\', '')
+                    self.wait_for_element_present(
+                        selector, timeout=(settings.SMALL_TIMEOUT))
+                else:
+                    selector = "html"
+            except Exception:
+                self.__post_messenger_error_message(
+                    "Tour Error: {'%s'} was not found!"
+                    "" % selector,
+                    duration=settings.SMALL_TIMEOUT)
+                raise Exception(
+                    "Tour Error: {'%s'} was not found! "
+                    "Exiting due to failure on first tour step!"
+                    "" % selector)
+
+        self.execute_script(instructions)
+        tour_on = True
+        while tour_on:
+            try:
+                time.sleep(0.01)
+                result = self.execute_script(
+                    "return $tour.ended()")
+            except Exception:
+                tour_on = False
+                result = None
+            if result is False:
+                tour_on = True
+            else:
+                try:
+                    time.sleep(0.01)
+                    result = self.execute_script(
+                        "return $tour.ended()")
+                    if result is False:
+                        time.sleep(0.1)
+                        continue
+                    else:
+                        return
                 except Exception:
                     tour_on = False
                     time.sleep(0.1)

@@ -91,11 +91,13 @@ self.add_css_style(css_style)
 
 self.add_js_code_from_link(js_link)
 
-self.add_meta_tag(http_equiv=None, content=None):
+self.add_meta_tag(http_equiv=None, content=None)
 
 self.activate_jquery()
 
 self.create_tour(name=None, theme=None)
+
+self.create_bootstrap_tour(name=None)
 
 self.add_tour_step(message, selector=None, name=None,
     title=None, theme=None, alignment=None)
