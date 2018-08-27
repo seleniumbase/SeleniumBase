@@ -28,10 +28,8 @@ class MyTourClass(BaseCase):
         self.create_tour(theme="dark")
         self.add_tour_step(
             "Search results appear here!", title="(5-second autoplay on)")
-        self.add_tour_step(
-            "Let's take another tour...",
-            title="Ready for more?", theme="arrows")
-        self.play_tour(interval=5)  # tour automatically continues after 3s
+        self.add_tour_step("Let's take another tour:", theme="arrows")
+        self.play_tour(interval=5)  # tour automatically continues after 5 sec
 
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
         self.wait_for_element('input#searchboxinput')
