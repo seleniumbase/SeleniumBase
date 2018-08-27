@@ -60,7 +60,7 @@ cd tour_examples
 pytest google_tour.py
 ```
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif "SeleniumBase Tours")<br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif" title="SeleniumBase Tours" height="348"><br>
 (Above: Actual demo of [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) running on [google.com](https://google.com))
 
 For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
