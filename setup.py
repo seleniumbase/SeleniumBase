@@ -23,7 +23,6 @@ setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Software Development",
         "Operating System :: Microsoft :: Windows",
-        "Operating System :: Linux",
         "Operating System :: Unix",
         "Operating System :: MacOS",
         "Programming Language :: Python",
