@@ -20,6 +20,7 @@ setup(
     version='1.15.1',
     description='All-In-One Test Automation Framework',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
     platforms=["Windows", "Linux", "Unix", "Mac OS-X"],
     author='Michael Mintz',
