@@ -2520,23 +2520,13 @@ class BaseCase(unittest.TestCase):
         """ This method extracts the message from an exception if there
             was an exception that occurred during the test, assuming
             that the exception was in a try/except block and not thrown. """
-        if sys.version.startswith('3') and hasattr(self, '_outcome'):
-            exception_info = self._outcome.errors
-            if exception_info:
-                try:
-                    exc_message = exception_info[0][1][1]
-                except Exception:
-                    exc_message = "(Unknown Exception)"
-            else:
-                exc_message = "(Unknown Exception)"
+        exception_info = sys.exc_info()[1]
+        if hasattr(exception_info, 'msg'):
+            exc_message = exception_info.msg
+        elif hasattr(exception_info, 'message'):
+            exc_message = exception_info.message
         else:
-            exception_info = sys.exc_info()[1]
-            if hasattr(exception_info, 'msg'):
-                exc_message = exception_info.msg
-            elif hasattr(exception_info, 'message'):
-                exc_message = exception_info.message
-            else:
-                exc_message = '(Unknown Exception)'
+            exc_message = '(Unknown Exception)'
         return exc_message
 
     def __get_improved_exception_message(self):
@@ -2557,6 +2547,7 @@ class BaseCase(unittest.TestCase):
                       "Please go to "
                       "https://sites.google.com/a/chromium.org/chromedriver/ "
                       "and download the latest version to your system PATH! "
+                      "Or use: ``seleniumbase install chromedriver`` . "
                       "Original Exception Message: %s" % exc_message)
             exc_message = update
         return exc_message
