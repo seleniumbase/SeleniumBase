@@ -4,12 +4,22 @@ The setup package to install SeleniumBase dependencies and plugins
 """
 
 from setuptools import setup, find_packages  # noqa
+from os import path
+
+
+this_directory = path.abspath(path.dirname(__file__))
+long_description = None
+try:
+    with open(path.join(this_directory, 'README.md'), 'rb') as f:
+        long_description = f.read().decode('utf-8')
+except IOError:
+    long_description = 'Web Automation, Testing, and User-Onboarding Framework'
 
 setup(
     name='seleniumbase',
     version='1.15.0',
     description='All-In-One Test Automation Framework',
-    long_description='Web Automation, Testing, and User-Onboarding Framework',
+    long_description=long_description,
     url='https://github.com/seleniumbase/SeleniumBase',
     platforms=["Windows", "Linux", "Unix", "Mac OS-X"],
     author='Michael Mintz',
