@@ -560,6 +560,8 @@ class BaseCase(unittest.TestCase):
         try:
             if not new_value.endswith('\n'):
                 element.send_keys(new_value)
+                if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                    self.wait_for_ready_state_complete()
             else:
                 new_value = new_value[:-1]
                 element.send_keys(new_value)
