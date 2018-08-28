@@ -50,6 +50,7 @@ setup(
         'chardet==3.0.4',
         'boto==2.48.0',
         'ipdb==0.11',
+        'parameterized==0.6.1',
         'PyVirtualDisplay==0.2.1',
         ],
     packages=['seleniumbase',
