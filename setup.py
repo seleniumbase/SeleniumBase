@@ -63,20 +63,21 @@ setup(
         'ipdb==0.11',
         'parameterized==0.6.1',
         'PyVirtualDisplay==0.2.1',
-        ],
-    packages=['seleniumbase',
-              'seleniumbase.common',
-              'seleniumbase.config',
-              'seleniumbase.console_scripts',
-              'seleniumbase.core',
-              'seleniumbase.drivers',
-              'seleniumbase.fixtures',
-              'seleniumbase.masterqa',
-              'seleniumbase.plugins',
-              'seleniumbase.utilities',
-              'seleniumbase.utilities.selenium_grid',
-              'seleniumbase.utilities.selenium_ide',
-              ],
+    ],
+    packages=[
+        'seleniumbase',
+        'seleniumbase.common',
+        'seleniumbase.config',
+        'seleniumbase.console_scripts',
+        'seleniumbase.core',
+        'seleniumbase.drivers',
+        'seleniumbase.fixtures',
+        'seleniumbase.masterqa',
+        'seleniumbase.plugins',
+        'seleniumbase.utilities',
+        'seleniumbase.utilities.selenium_grid',
+        'seleniumbase.utilities.selenium_ide',
+    ],
     entry_points={
         'console_scripts': [
             'seleniumbase = seleniumbase.console_scripts.run:main',
@@ -90,10 +91,10 @@ setup(
             ('db_reporting = '
              'seleniumbase.plugins.db_reporting_plugin:DBReporting'),
             's3_logging = seleniumbase.plugins.s3_logging_plugin:S3Logging',
-            ],
+        ],
         'pytest11': ['seleniumbase = seleniumbase.plugins.pytest_plugin']
-        }
-    )
+    }
+)
 
 # print(os.system("cat seleniumbase.egg-info/PKG-INFO"))
 print("\n*** SeleniumBase Installation Complete! ***\n")
