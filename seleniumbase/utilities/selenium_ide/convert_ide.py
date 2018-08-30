@@ -17,6 +17,7 @@ Output:
 import codecs
 import re
 import sys
+from seleniumbase.fixtures import page_utils
 
 
 def main():
@@ -581,14 +582,16 @@ def main():
         if data:
             # quote_type = data.group(1)
             selector = data.group(2)
+            selector = re.escape(selector)
+            selector = page_utils.escape_quotes_if_needed(selector)
             if int(line_num) < num_lines - 1:
                 regex_string = (r'''^\s*self.click\(["|']'''
-                                + re.escape(selector) + r'''["|']\)\s*$''')
+                                + selector + r'''["|']\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num+1])
                 if data2:
                     continue
                 regex_string = (r'''^\s*self.update_text\(["|']'''
-                                + re.escape(selector)
+                                + selector
                                 + r'''["|'], [\S\s]+\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num+1])
                 if data2:
@@ -606,9 +609,11 @@ def main():
         if data:
             # quote_type = data.group(1)
             link_text = data.group(2)
+            link_text = re.escape(link_text)
+            link_text = page_utils.escape_quotes_if_needed(link_text)
             if int(line_num) < num_lines - 2:
                 regex_string = (r'''^\s*self.click\(["|']link='''
-                                + re.escape(link_text) + r'''["|']\)\s*$''')
+                                + link_text + r'''["|']\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num+1])
                 if data2:
                     continue
