@@ -82,7 +82,7 @@ def get_base_href_html(full_url):
     ''' The base href line tells the html what the base page really is.
         This is important when trying to open the page outside it's home. '''
     base_url = get_base_url(full_url)
-    return '<base href="%s"></base>' % base_url
+    return '<base href="%s">' % base_url
 
 
 def get_html_source_with_base_href(driver, page_source):
