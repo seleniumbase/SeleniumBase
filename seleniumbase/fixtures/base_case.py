@@ -755,7 +755,9 @@ class BaseCase(unittest.TestCase):
             '''s.type = "text/css";'''
             '''s.appendChild(document.createTextNode("%s"));'''
             '''h.appendChild(s);''')
-        self.execute_script(add_css_style_script % re.escape(css_style))
+        css_style = re.escape(css_style)
+        css_style = self.__escape_quotes_if_needed(css_style)
+        self.execute_script(add_css_style_script % css_style)
 
     def add_js_code_from_link(self, js_link):
         if js_link.startswith("//"):
@@ -768,7 +770,9 @@ class BaseCase(unittest.TestCase):
             '''s.onload = function() { null };'''
             '''s.appendChild(document.createTextNode("%s"));'''
             '''h.appendChild(s);''')
-        self.execute_script(add_js_code_script % re.escape(js_code))
+        js_code = re.escape(js_code)
+        js_code = self.__escape_quotes_if_needed(js_code)
+        self.execute_script(add_js_code_script % js_code)
 
     def add_meta_tag(self, http_equiv=None, content=None):
         if http_equiv is None:
@@ -811,6 +815,12 @@ class BaseCase(unittest.TestCase):
             '''Unable to load jQuery on "%s" due to a possible violation '''
             '''of the website's Content Security Policy '''
             '''directive. ''' % self.driver.current_url)
+
+    def __are_quotes_escaped(self, string):
+        return page_utils.are_quotes_escaped(string)
+
+    def __escape_quotes_if_needed(self, string):
+        return page_utils.escape_quotes_if_needed(string)
 
     def __activate_bootstrap(self):
         """ Allows you to use Bootstrap Tours with SeleniumBase
@@ -995,6 +1005,7 @@ class BaseCase(unittest.TestCase):
         if not selector:
             selector = "html"
         selector = re.escape(selector)
+        selector = self.__escape_quotes_if_needed(selector)
 
         if not name:
             name = "default"
@@ -1005,9 +1016,11 @@ class BaseCase(unittest.TestCase):
         if not title:
             title = ""
         title = re.escape(title)
+        title = self.__escape_quotes_if_needed(title)
 
         if message:
             message = re.escape(message)
+            message = self.__escape_quotes_if_needed(message)
         else:
             message = ""
 
@@ -1324,6 +1337,7 @@ class BaseCase(unittest.TestCase):
         for x in range(int(timeout * 10)):
             try:
                 selector = re.escape(selector)
+                selector = self.__escape_quotes_if_needed(selector)
                 element = self.execute_script(
                     """return document.querySelector('%s')""" % selector)
                 if element:
@@ -1439,9 +1453,11 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
+        message = re.escape(message)
+        message = self.__escape_quotes_if_needed(message)
         messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
                             '''hideAfter: %s, hideOnNavigate: true});'''
-                            % (re.escape(message), style, duration))
+                            % (message, style, duration))
         try:
             self.execute_script(messenger_script)
         except Exception:
@@ -1481,6 +1497,7 @@ class BaseCase(unittest.TestCase):
                 "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
                     selector, by))
         selector = re.escape(selector)
+        selector = self.__escape_quotes_if_needed(selector)
         script = ("""var $elm = document.querySelector('%s');
                   $val = window.getComputedStyle($elm).getPropertyValue('%s');
                   return $val;"""
@@ -1505,6 +1522,7 @@ class BaseCase(unittest.TestCase):
             # Don't run action if can't convert to CSS_Selector for JavaScript
             return
         selector = re.escape(selector)
+        selector = self.__escape_quotes_if_needed(selector)
         script = ("""document.querySelector('%s').style.zIndex = '9999';"""
                   % selector)
         self.execute_script(script)
@@ -1560,10 +1578,12 @@ class BaseCase(unittest.TestCase):
 
         if ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
+            selector = self.__escape_quotes_if_needed(selector)
             self.__highlight_with_js(selector, loops, o_bs)
         else:
             selector = self.__make_css_match_first_element_only(selector)
             selector = re.escape(selector)
+            selector = self.__escape_quotes_if_needed(selector)
             try:
                 self.__highlight_with_jquery(selector, loops, o_bs)
             except Exception:
@@ -1703,6 +1723,7 @@ class BaseCase(unittest.TestCase):
                 self.__scroll_to_element(element)
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
         self.__js_click(selector, by=by)  # The real "magic" happens here
         self.__demo_mode_pause_if_active()
 
@@ -1768,6 +1789,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)
+            css_selector = self.__escape_quotes_if_needed(css_selector)
             script = ("""var $elements = document.querySelectorAll('%s');
                       var index = 0, length = $elements.length;
                       for(; index < length; index++){
@@ -1879,7 +1901,9 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
         value = re.escape(new_value)
+        value = self.__escape_quotes_if_needed(value)
         css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""document.querySelector('%s').value='%s';"""
                   % (css_selector, value))
         self.execute_script(script)
@@ -1915,8 +1939,11 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(selector, by=by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
+        selector = self.__escape_quotes_if_needed(selector)
+        new_value = re.escape(new_value)
+        new_value = self.__escape_quotes_if_needed(new_value)
         update_text_script = """jQuery('%s').val('%s')""" % (
-            selector, re.escape(new_value))
+            selector, new_value)
         self.safe_execute_script(update_text_script)
         if new_value.endswith('\n'):
             element.send_keys('\n')
@@ -1967,8 +1994,8 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
         element = page_actions.hover_and_click(
-                self.driver, hover_selector, click_selector,
-                hover_by, click_by, timeout)
+            self.driver, hover_selector, click_selector,
+            hover_by, click_by, timeout)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -2557,8 +2584,8 @@ class BaseCase(unittest.TestCase):
         current_url = self.driver.current_url
         message = self.__get_exception_message()
         self.__page_check_failures.append(
-                "CHECK #%s: (%s)\n %s" % (
-                    self.__page_check_count, current_url, message))
+            "CHECK #%s: (%s)\n %s" % (
+                self.__page_check_count, current_url, message))
 
     def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
                                timeout=settings.MINI_TIMEOUT):
@@ -2650,6 +2677,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""var simulateClick = function (elem) {
                          var evt = new MouseEvent('click', {
                              bubbles: true,
@@ -2775,7 +2803,7 @@ class BaseCase(unittest.TestCase):
             if not tiny:
                 time.sleep(wait_time)
             else:
-                time.sleep(wait_time/3.4)
+                time.sleep(wait_time / 3.4)
 
     def __demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
@@ -2876,10 +2904,12 @@ class BaseCase(unittest.TestCase):
 
         if ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
+            selector = self.__escape_quotes_if_needed(selector)
             self.__highlight_with_js_2(message, selector, o_bs)
         else:
             selector = self.__make_css_match_first_element_only(selector)
             selector = re.escape(selector)
+            selector = self.__escape_quotes_if_needed(selector)
             try:
                 self.__highlight_with_jquery_2(message, selector, o_bs)
             except Exception:
