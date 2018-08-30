@@ -70,7 +70,7 @@ def _filter_xpath_grouping(xpath):
     index = xpath.rfind(')')
     if index == -1:
         raise XpathException("Invalid or unsupported Xpath: %s" % xpath)
-    xpath = xpath[:index] + xpath[index+1:]
+    xpath = xpath[:index] + xpath[index + 1:]
     return xpath
 
 

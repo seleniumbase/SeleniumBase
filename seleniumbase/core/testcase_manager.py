@@ -84,7 +84,7 @@ class ExecutionQueryPayload:
             "total_execution_time": self.total_execution_time,
             "username": self.username,
             "guid": self.guid
-            }
+        }
 
 
 class TestcaseDataPayload:

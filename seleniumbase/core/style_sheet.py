@@ -2,8 +2,8 @@ title = '''<meta id="OGTitle" property="og:title" content="SeleniumBase">
         <title>Test Report</title>
         <link rel="SHORTCUT ICON"
         href="%s" /> ''' % (
-            "https://raw.githubusercontent.com/seleniumbase/SeleniumBase"
-            "/master/seleniumbase/resources/favicon.ico")
+        "https://raw.githubusercontent.com/seleniumbase/SeleniumBase"
+        "/master/seleniumbase/resources/favicon.ico")
 
 style = title + '''<style type="text/css">
         html {

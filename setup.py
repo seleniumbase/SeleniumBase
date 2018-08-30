@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.15.4',
+    version='1.15.5',
     description='All-In-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -50,7 +50,7 @@ setup(
         'ipython==5.6.0',
         'selenium==3.14.0',
         'nose==1.3.7',
-        'pytest==3.7.3',
+        'pytest==3.7.4',
         'pytest-html==1.19.0',
         'pytest-xdist==1.23.0',
         'six==1.11.0',
@@ -59,24 +59,26 @@ setup(
         'beautifulsoup4==4.6.0',
         'unittest2==1.1.0',
         'chardet==3.0.4',
+        'urllib3==1.23',
         'boto==2.48.0',
         'ipdb==0.11',
         'parameterized==0.6.1',
         'PyVirtualDisplay==0.2.1',
-        ],
-    packages=['seleniumbase',
-              'seleniumbase.common',
-              'seleniumbase.config',
-              'seleniumbase.console_scripts',
-              'seleniumbase.core',
-              'seleniumbase.drivers',
-              'seleniumbase.fixtures',
-              'seleniumbase.masterqa',
-              'seleniumbase.plugins',
-              'seleniumbase.utilities',
-              'seleniumbase.utilities.selenium_grid',
-              'seleniumbase.utilities.selenium_ide',
-              ],
+    ],
+    packages=[
+        'seleniumbase',
+        'seleniumbase.common',
+        'seleniumbase.config',
+        'seleniumbase.console_scripts',
+        'seleniumbase.core',
+        'seleniumbase.drivers',
+        'seleniumbase.fixtures',
+        'seleniumbase.masterqa',
+        'seleniumbase.plugins',
+        'seleniumbase.utilities',
+        'seleniumbase.utilities.selenium_grid',
+        'seleniumbase.utilities.selenium_ide',
+    ],
     entry_points={
         'console_scripts': [
             'seleniumbase = seleniumbase.console_scripts.run:main',
@@ -90,10 +92,10 @@ setup(
             ('db_reporting = '
              'seleniumbase.plugins.db_reporting_plugin:DBReporting'),
             's3_logging = seleniumbase.plugins.s3_logging_plugin:S3Logging',
-            ],
+        ],
         'pytest11': ['seleniumbase = seleniumbase.plugins.pytest_plugin']
-        }
-    )
+    }
+)
 
 # print(os.system("cat seleniumbase.egg-info/PKG-INFO"))
 print("\n*** SeleniumBase Installation Complete! ***\n")

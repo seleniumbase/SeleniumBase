@@ -40,7 +40,7 @@ def main():
             invalid_run_command()
     else:
         invalid_run_command()
-    dir_name = sys.argv[num_args-1]
+    dir_name = sys.argv[num_args - 1]
     if len(str(dir_name)) < 2:
         raise Exception('Directory name length must be at least 2 '
                         'characters long!')
