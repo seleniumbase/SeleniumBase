@@ -59,6 +59,7 @@ setup(
         'beautifulsoup4==4.6.0',
         'unittest2==1.1.0',
         'chardet==3.0.4',
+        'urllib3==1.23',
         'boto==2.48.0',
         'ipdb==0.11',
         'parameterized==0.6.1',

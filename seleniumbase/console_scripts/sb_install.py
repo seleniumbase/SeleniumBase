@@ -19,12 +19,10 @@ import requests
 import shutil
 import sys
 import tarfile
+import urllib3
 import zipfile
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
-if sys.version_info[0] == 2:
-    from urllib import urlopen
-else:
-    from urllib.request import urlopen
+urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 
 
@@ -190,7 +188,8 @@ def main():
     if not os.path.exists(downloads_folder):
         os.mkdir(downloads_folder)
     local_file = open(file_path, 'wb')
-    remote_file = urlopen(download_url)
+    http = urllib3.PoolManager()
+    remote_file = http.request('GET', download_url, preload_content=False)
     print('\nDownloading %s from:\n%s ...' % (file_name, download_url))
     local_file.write(remote_file.read())
     local_file.close()
