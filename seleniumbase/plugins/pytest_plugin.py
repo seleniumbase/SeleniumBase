@@ -23,12 +23,13 @@ def pytest_addoption(parser):
     parser.addoption('--env', action='store',
                      dest='environment',
                      choices=(
-                        constants.Environment.QA,
-                        constants.Environment.STAGING,
-                        constants.Environment.PRODUCTION,
-                        constants.Environment.MASTER,
-                        constants.Environment.LOCAL,
-                        constants.Environment.TEST),
+                         constants.Environment.QA,
+                         constants.Environment.STAGING,
+                         constants.Environment.PRODUCTION,
+                         constants.Environment.MASTER,
+                         constants.Environment.LOCAL,
+                         constants.Environment.TEST
+                     ),
                      default=constants.Environment.TEST,
                      help="The environment to run the tests in.")
     parser.addoption('--data', dest='data',
@@ -48,7 +49,8 @@ def pytest_addoption(parser):
     parser.addoption('--database_env', action='store',
                      dest='database_env',
                      choices=(
-                        'prod', 'qa', 'staging', 'test', 'local', 'master'),
+                         'prod', 'qa', 'staging', 'test', 'local', 'master'
+                     ),
                      default='test',
                      help=optparse.SUPPRESS_HELP)
     parser.addoption('--with-s3_logging', action="store_true",

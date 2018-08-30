@@ -45,8 +45,8 @@ def reverse_shuffle_string(string):
         return string
     new_string = ""
     odd = (len(string) % 2 == 1)
-    part1 = string[:int(len(string)/2):1]
-    part2 = string[int(len(string)/2)::1]
+    part1 = string[:int(len(string) / 2):1]
+    part2 = string[int(len(string) / 2)::1]
     for c in range(len(part1)):
         new_string += part2[c]
         new_string += part1[c]
@@ -118,18 +118,18 @@ def decrypt(string):
             rem4 = (len(string) + ord_string_sum(string)) % 2
         if len(string) % 2 != 0:
             if rem3 == 1:
-                string = (chr(ord(string[-1])-5-rem1) + string +
-                          chr(ord(string[-1])-13-rem1))
+                string = (chr(ord(string[-1]) - 5 - rem1) + string +
+                          chr(ord(string[-1]) - 13 - rem1))
             else:
-                string = (chr(ord(string[-1])-11-rem1) + string +
-                          chr(ord(string[-1])-23-rem1))
+                string = (chr(ord(string[-1]) - 11 - rem1) + string +
+                          chr(ord(string[-1]) - 23 - rem1))
         elif len(string) > 1:
             if rem4 == 1:
-                string = (chr(ord(string[0])-19+rem2) + string +
-                          chr(ord(string[0])-7-rem2))
+                string = (chr(ord(string[0]) - 19 + rem2) + string +
+                          chr(ord(string[0]) - 7 - rem2))
             else:
-                string = (chr(ord(string[0])-26+rem2) + string +
-                          chr(ord(string[0])-12-rem2))
+                string = (chr(ord(string[0]) - 26 + rem2) + string +
+                          chr(ord(string[0]) - 12 - rem2))
         rem5 = (len(string) + ord_string_sum(string)) % 23
         string = rotate(string, rem5)
         result = str_xor(shuffle_string(string)[::-1], xor_key)

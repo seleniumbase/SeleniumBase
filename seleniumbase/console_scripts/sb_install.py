@@ -62,7 +62,7 @@ def main():
             invalid_run_command()
     else:
         invalid_run_command()
-    name = sys.argv[num_args-1]
+    name = sys.argv[num_args - 1]
 
     file_name = None
     download_url = None
