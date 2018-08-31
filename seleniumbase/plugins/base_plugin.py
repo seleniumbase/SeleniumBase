@@ -155,7 +155,7 @@ class Base(Plugin):
                     test, self.test_count, br, self.duration))
 
     def addFailure(self, test, err, capt=None, tbinfo=None):
-        self.__log_all_options_if_none_specified(test)
+        # self.__log_all_options_if_none_specified(test)
         self.add_fails_or_errors(test)
 
     def addError(self, test, err, capt=None):
@@ -171,7 +171,8 @@ class Base(Plugin):
                                          '''begin captured logging'''
                                          ''' << --------------------''', 1)[0])
         else:
-            self.__log_all_options_if_none_specified(test)
+            # self.__log_all_options_if_none_specified(test)
+            pass
         self.add_fails_or_errors(test)
 
     def handleError(self, test, err, capt=None):

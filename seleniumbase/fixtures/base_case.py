@@ -3256,5 +3256,18 @@ class BaseCase(unittest.TestCase):
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
-            # (Nosetests) Finally close all open browser windows
+            # (Nosetests)
+            if has_exception:
+                test_id = "%s.%s.%s" % (self.__class__.__module__,
+                                        self.__class__.__name__,
+                                        self._testMethodName)
+                test_logpath = "latest_logs/" + test_id
+                if not os.path.exists(test_logpath):
+                    os.makedirs(test_logpath)
+                log_helper.log_test_failure_data(
+                    self, test_logpath, self.driver, self.browser)
+                if len(self._drivers_list) > 0:
+                    log_helper.log_screenshot(test_logpath, self.driver)
+                    log_helper.log_page_source(test_logpath, self.driver)
+            # Finally close all open browser windows
             self.__quit_all_drivers()
