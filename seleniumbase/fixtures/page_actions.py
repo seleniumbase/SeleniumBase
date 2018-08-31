@@ -369,16 +369,25 @@ def save_screenshot(driver, name, folder=None):
     """
     Saves a screenshot to the current directory (or to a subfolder if provided)
     If the folder provided doesn't exist, it will get created.
+    The screenshot will be in PNG format.
     """
+    if "." not in name:
+        name = name + ".png"
     if folder:
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % folder
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-        screenshot_file = "%s/%s" % (file_path, name)
+        screenshot_path = "%s/%s" % (file_path, name)
     else:
-        screenshot_file = name
-    driver.get_screenshot_as_file(screenshot_file)
+        screenshot_path = name
+    try:
+        element = driver.find_element_by_tag_name('body')
+        element_png = element.screenshot_as_png
+        with open(screenshot_path, "wb") as file:
+            file.write(element_png)
+    except Exception:
+        driver.get_screenshot_as_file(screenshot_path)
 
 
 def _get_last_page(driver):

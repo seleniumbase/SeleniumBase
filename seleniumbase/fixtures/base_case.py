@@ -2449,6 +2449,7 @@ class BaseCase(unittest.TestCase):
         self.switch_to_window(0)
 
     def save_screenshot(self, name, folder=None):
+        """ The screenshot will be in PNG format. """
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def get_new_driver(self, browser=None, headless=None,
