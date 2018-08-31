@@ -11,9 +11,15 @@ def log_screenshot(test_logpath, driver):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
     try:
-        driver.get_screenshot_as_file(screenshot_path)
+        element = driver.find_element_by_tag_name('body')
+        element_png = element.screenshot_as_png
+        with open(screenshot_path, "wb") as file:
+            file.write(element_png)
     except Exception:
-        print("WARNING: Unable to get screenshot for failure logs!")
+        try:
+            driver.get_screenshot_as_file(screenshot_path)
+        except Exception:
+            print("WARNING: Unable to get screenshot for failure logs!")
 
 
 def log_test_failure_data(test, test_logpath, driver, browser):
@@ -82,7 +88,7 @@ def get_base_href_html(full_url):
     ''' The base href line tells the html what the base page really is.
         This is important when trying to open the page outside it's home. '''
     base_url = get_base_url(full_url)
-    return '<base href="%s"></base>' % base_url
+    return '<base href="%s">' % base_url
 
 
 def get_html_source_with_base_href(driver, page_source):
