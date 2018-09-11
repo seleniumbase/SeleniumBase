@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.15.6',
+    version='1.15.7',
     description='All-In-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -50,7 +50,7 @@ setup(
         'ipython==5.6.0',
         'selenium==3.14.0',
         'nose==1.3.7',
-        'pytest==3.7.4',
+        'pytest==3.8.0',
         'pytest-html==1.19.0',
         'pytest-xdist==1.23.0',
         'six==1.11.0',
