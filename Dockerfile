@@ -90,7 +90,6 @@ RUN exec "$@"
 #=====================
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
-COPY console_scripts /SeleniumBase/console_scripts/
 COPY integrations /SeleniumBase/integrations/
 COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
