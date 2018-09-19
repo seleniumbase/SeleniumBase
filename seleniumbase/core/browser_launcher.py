@@ -257,13 +257,13 @@ def get_local_driver(browser_name, headless, proxy_string):
                     firefox_driver = webdriver.Firefox(
                         firefox_profile=profile,
                         capabilities=firefox_capabilities,
-                        firefox_options=options,
+                        options=options,
                         executable_path=LOCAL_GECKODRIVER)
                 else:
                     firefox_driver = webdriver.Firefox(
                         firefox_profile=profile,
                         capabilities=firefox_capabilities,
-                        firefox_options=options)
+                        options=options)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
                 profile = _create_firefox_profile(downloads_path, proxy_string)
