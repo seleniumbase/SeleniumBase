@@ -532,8 +532,9 @@ def main():
             continue
 
         if in_inefficient_wait:
-            data = re.match(r'''^\s*if self.is_element_present\("([\S\s]+)"\)'''
-                            r''': break\s*$''', line)
+            data = re.match(
+                r'''^\s*if self.is_element_present\("([\S\s]+)"\)'''
+                r''': break\s*$''', line)
             if data:
                 selector = data.group(1)
                 command = '%sself.wait_for_element("%s")' % (
@@ -541,8 +542,9 @@ def main():
                 seleniumbase_lines.append(command)
                 continue
 
-            data = re.match(r'''^\s*if self.is_element_present\('([\S\s]+)'\)'''
-                            r''': break\s*$''', line)
+            data = re.match(
+                r'''^\s*if self.is_element_present\('([\S\s]+)'\)'''
+                r''': break\s*$''', line)
             if data:
                 selector = data.group(1)
                 command = "%sself.wait_for_element('%s')" % (
@@ -550,8 +552,9 @@ def main():
                 seleniumbase_lines.append(command)
                 continue
 
-            data = re.match(r'''^\s*if self.is_link_text_present'''
-                            r'''\("([\S\s]+)"\): break\s*$''', line)
+            data = re.match(
+                r'''^\s*if self.is_link_text_present'''
+                r'''\("([\S\s]+)"\): break\s*$''', line)
             if data:
                 uni = ""
                 if '(u"' in line:
@@ -576,9 +579,10 @@ def main():
     seleniumbase_lines = []
     num_lines = len(lines)
     for line_num in range(len(lines)):
-        data = re.match(r'''^\s*self.wait_for_element'''
-                        r'''\((["|'])([\S\s]+)(["|'])\)'''
-                        r'''\s*$''', lines[line_num])
+        data = re.match(
+            r'''^\s*self.wait_for_element'''
+            r'''\((["|'])([\S\s]+)(["|'])\)'''
+            r'''\s*$''', lines[line_num])
         if data:
             # quote_type = data.group(1)
             selector = data.group(2)
@@ -603,9 +607,10 @@ def main():
     seleniumbase_lines = []
     num_lines = len(lines)
     for line_num in range(len(lines)):
-        data = re.match(r'''^\s*self.wait_for_link_text'''
-                        r'''\((["|'])([\S\s]+)(["|'])\)'''
-                        r'''\s*$''', lines[line_num])
+        data = re.match(
+            r'''^\s*self.wait_for_link_text'''
+            r'''\((["|'])([\S\s]+)(["|'])\)'''
+            r'''\s*$''', lines[line_num])
         if data:
             # quote_type = data.group(1)
             link_text = data.group(2)
