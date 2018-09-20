@@ -932,8 +932,8 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours, use this to select the
                    tour you wish to add steps to.
             theme - Sets the default theme for the tour.
-                    Choose from "arrows", "dark", "default", "square", and
-                    "square-dark". ("arrows" is used if None is selected.)
+                    Choose from "light"/"arrows", "dark", "default", "square",
+                    and "square-dark". ("arrows" is used if None is selected.)
         """
         if not name:
             name = "default"
@@ -947,6 +947,8 @@ class BaseCase(unittest.TestCase):
                 shepherd_theme = "shepherd-theme-default"
             elif theme == "dark":
                 shepherd_theme = "shepherd-theme-dark"
+            elif theme == "light":
+                shepherd_theme = "shepherd-theme-arrows"
             elif theme == "arrows":
                 shepherd_theme = "shepherd-theme-arrows"
             elif theme == "square":
@@ -995,8 +997,8 @@ class BaseCase(unittest.TestCase):
                    tour you wish to add steps to.
             title - Additional header text that appears above the message.
             theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
-                    Choose from "arrows", "dark", "default", "square", and
-                    "square-dark". ("arrows" is used if None is selected.)
+                    Choose from "light"/"arrows", "dark", "default", "square",
+                    and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
             duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
@@ -1047,8 +1049,8 @@ class BaseCase(unittest.TestCase):
                    tour you wish to add steps to.
             title - Additional header text that appears above the message.
             theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
-                    Choose from "arrows", "dark", "default", "square", and
-                    "square-dark". ("arrows" is used if None is selected.)
+                    Choose from "light"/"arrows", "dark", "default", "square",
+                    and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
         """
@@ -1056,6 +1058,8 @@ class BaseCase(unittest.TestCase):
             shepherd_theme = "shepherd-theme-default"
         elif theme == "dark":
             shepherd_theme = "shepherd-theme-dark"
+        elif theme == "light":
+            shepherd_theme = "shepherd-theme-arrows"
         elif theme == "arrows":
             shepherd_theme = "shepherd-theme-arrows"
         elif theme == "square":
