@@ -30,7 +30,7 @@ Here's how you play a tour:
 
 ``self.play_tour(interval)``
 
-With the ``create_tour()`` method, you can pass a default theme to change the look & feel of the tour steps. Valid themes are ``dark``, ``default``, ``arrows``, ``square``, and ``square-dark``.
+With the ``create_tour()`` method, you can pass a default theme to change the look & feel of the tour steps. Valid themes for Shepherd Tours are ``dark``, ``light`` / ``arrows``, ``default``, ``square``, and ``square-dark``.
 
 With the ``self.add_tour_step()`` method, you must first pass a message to display. You can then specify a web element to attach to (by using [CSS selectors](https://www.w3schools.com/cssref/css_selectors.asp)). If no element is specified, the tour step will tether to the top of the screen by default. You can also add an optional title above the message to display with the tour step, as well as change the theme for that step, and even specify the alignment (which is the side of the element that you want the tour message to tether to).
 
@@ -50,12 +50,20 @@ class MyTourClass(BaseCase):
         self.wait_for_element('input[title="Search"]')
 
         self.create_tour(theme="dark")
-        self.add_tour_step("Click to begin the Google Tour!", title="SeleniumBase Tours")
-        self.add_tour_step("Type in your search query here.", 'input[title="Search"]')
-        self.add_tour_step("Then click here to search!", 'input[value="Google Search"]',
-            alignment="bottom", theme="arrows")
-        self.add_tour_step("Or click here to see the top result.",
-            '''[value="I'm Feeling Lucky"]''', alignment="bottom", theme="arrows")
+        self.add_tour_step(
+            "Click to begin the Google Tour!", title="SeleniumBase Tours")
+        self.add_tour_step(
+            "Type in your search query here.", 'input[title="Search"]')
+        self.play_tour()
+
+        self.highlight_update_text('input[title="Search"]', "Google")
+        self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
+
+        self.create_tour(theme="light")
+        self.add_tour_step(
+            "Then click here to search.", 'input[value="Google Search"]')
+        self.add_tour_step(
+            "Or press [ENTER] after typing.", '[title="Search"]', theme="dark")
         self.play_tour()
 ```
 

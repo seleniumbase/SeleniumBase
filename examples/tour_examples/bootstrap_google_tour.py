@@ -12,20 +12,14 @@ class MyTourClass(BaseCase):
             "Click to begin the Google Tour!", title="SeleniumBase Tours")
         self.add_tour_step(
             "Type in your search query here.", 'input[title="Search"]')
-        self.add_tour_step(
-            "Then click here to search!", 'input[value="Google Search"]',
-            alignment="bottom")
-        self.add_tour_step(
-            "Or click here to see the top result.",
-            '''[value="I'm Feeling Lucky"]''',
-            alignment="bottom")
-        self.add_tour_step("Here's an example Google search:")
+        self.add_tour_step('Then click "Google Search" or press [ENTER].')
         self.play_tour()
 
         self.highlight_update_text('input[title="Search"]', "GitHub")
+        self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
         self.highlight_click('input[value="Google Search"]')
 
-        self.create_bootstrap_tour()  # OR self.create_tour(theme="bootstrap")
+        self.create_bootstrap_tour()
         self.add_tour_step(
             "Search results appear here!", title="(5-second autoplay on)")
         self.add_tour_step("Let's take another tour:")
@@ -34,7 +28,7 @@ class MyTourClass(BaseCase):
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
         self.wait_for_element('input#searchboxinput')
 
-        self.create_bootstrap_tour()  # OR self.create_tour(theme="bootstrap")
+        self.create_bootstrap_tour()
         self.add_tour_step("Welcome to Google Maps!")
         self.add_tour_step(
             "Type in a location here.", "#searchboxinput", title="Search Box")
