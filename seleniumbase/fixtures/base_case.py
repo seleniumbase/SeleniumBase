@@ -1068,7 +1068,7 @@ class BaseCase(unittest.TestCase):
             shepherd_theme = "shepherd-theme-square-dark"
         else:
             shepherd_base_theme = re.search(
-                "[\S\s]+classes: '([\S\s]+)',[\S\s]+",
+                r"[\S\s]+classes: '([\S\s]+)',[\S\s]+",
                 self._tour_steps[name][0]).group(1)
             shepherd_theme = shepherd_base_theme
 
@@ -1169,7 +1169,7 @@ class BaseCase(unittest.TestCase):
         if len(self._tour_steps[name]) > 1:
             try:
                 selector = re.search(
-                    "[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
+                    r"[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
                     self._tour_steps[name][1]).group(1)
                 selector = selector.replace('\\', '')
                 self.wait_for_element_present(
@@ -1290,7 +1290,7 @@ class BaseCase(unittest.TestCase):
             try:
                 if "element: " in self._tour_steps[name][1]:
                     selector = re.search(
-                        "[\S\s]+element: '([\S\s]+)',[\S\s]+title: '",
+                        r"[\S\s]+element: '([\S\s]+)',[\S\s]+title: '",
                         self._tour_steps[name][1]).group(1)
                     selector = selector.replace('\\', '')
                     self.wait_for_element_present(

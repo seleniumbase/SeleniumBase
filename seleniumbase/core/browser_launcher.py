@@ -128,7 +128,8 @@ def validate_proxy_string(proxy_string):
         if not proxy_string:
             return None
     valid = False
-    val_ip = re.match('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
+    val_ip = re.match(
+        r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$', proxy_string)
     if not val_ip:
         if proxy_string.startswith('http://'):
             proxy_string = proxy_string.split('http://')[1]
@@ -138,7 +139,7 @@ def validate_proxy_string(proxy_string):
             proxy_string = proxy_string.split('://')[1]
         chunks = proxy_string.split(':')
         if len(chunks) == 2:
-            if re.match('^\d+$', chunks[1]):
+            if re.match(r'^\d+$', chunks[1]):
                 if page_utils.is_valid_url('http://' + proxy_string):
                     valid = True
     else:
