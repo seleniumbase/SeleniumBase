@@ -63,32 +63,32 @@ def main():
     for line in code_lines:
 
         # Handle utf-8 encoding if present
-        data = re.findall('^\s*# -\*- coding: utf-8 -\*-\s*$', line)
+        data = re.findall(r'^\s*# -\*- coding: utf-8 -\*-\s*$', line)
         if data:
             has_unicode = True
             continue
 
         # Keep SeleniumBase classes if already used in the test script
-        data = re.findall('^class\s\S+\(BaseCase\):\s*$', line)
+        data = re.findall(r'^class\s\S+\(BaseCase\):\s*$', line)
         if data:
             seleniumbase_lines.append(line)
             continue
 
         # Have unittest.TestCase classes inherit BaseCase instead
-        data = re.findall('^class\s\S+\(unittest\.TestCase\):\s*$', line)
+        data = re.findall(r'^class\s\S+\(unittest\.TestCase\):\s*$', line)
         if data:
             data = data[0].replace("unittest.TestCase", "BaseCase")
             seleniumbase_lines.append(data)
             continue
 
         # Get base_url if defined
-        data = re.match('^\s*self.base_url = "(\S+)"\s*$', line)
+        data = re.match(r'^\s*self.base_url = "(\S+)"\s*$', line)
         if data:
             ide_base_url = data.group(1)
             continue
 
         # Handle method definitions
-        data = re.match('^\s*def\s(\S+)\(self[,\s\S]*\):\s*$', line)
+        data = re.match(r'^\s*def\s(\S+)\(self[,\s\S]*\):\s*$', line)
         if data:
             method_name = data.group(1)
             if method_name.startswith('test_'):
@@ -116,13 +116,13 @@ def main():
             continue
 
         # Skip edge case
-        data = re.findall('^\s*driver = self.driver\s*$', line)
+        data = re.findall(r'^\s*driver = self.driver\s*$', line)
         if data:
             continue
 
         # Handle page loads
         data = re.match(
-            '^(\s*)driver\.get\((self\.base_url \+ \"/\S*\")\)\s*$', line)
+            r'^(\s*)driver\.get\((self\.base_url \+ \"/\S*\")\)\s*$', line)
         if data:
             whitespace = data.group(1)
             url = data.group(2)
@@ -137,7 +137,7 @@ def main():
 
         # Handle more page loads
         data = re.match(
-            '^(\s*)driver\.get\(\"(\S*)\"\)\s*$', line)
+            r'^(\s*)driver\.get\(\"(\S*)\"\)\s*$', line)
         if data:
             whitespace = data.group(1)
             url = data.group(2)
@@ -147,8 +147,8 @@ def main():
 
         # Handle .find_element_by_id() + .click()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
-            '''\.click\(\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
+            r'''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '#%s' % data.group(2)
@@ -159,8 +159,8 @@ def main():
 
         # Handle .find_element_by_id() + .send_keys()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
-            '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
+            r'''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '#%s' % data.group(2)
@@ -173,8 +173,8 @@ def main():
 
         # Handle .find_element_by_id() + .send_keys(Keys.<KEY>)
         data = re.match(
-            '''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
-            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
+            r'''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
         if data:
             uses_keys = True
             whitespace = data.group(1)
@@ -188,8 +188,8 @@ def main():
 
         # Handle .find_element_by_name() + .click()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
-            '''\.click\(\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
+            r'''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '[name="%s"]' % data.group(2)
@@ -199,8 +199,8 @@ def main():
 
         # Handle .find_element_by_name() + .send_keys()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
-            '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
+            r'''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '[name="%s"]' % data.group(2)
@@ -212,8 +212,8 @@ def main():
 
         # Handle .find_element_by_name() + .send_keys(Keys.<KEY>)
         data = re.match(
-            '''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
-            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
+            r'''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
         if data:
             uses_keys = True
             whitespace = data.group(1)
@@ -226,8 +226,8 @@ def main():
 
         # Handle .find_element_by_css_selector() + .click()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
-            '''\.click\(\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
+            r'''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
@@ -239,8 +239,8 @@ def main():
 
         # Handle .find_element_by_css_selector() + .send_keys()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
-            '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
+            r'''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
@@ -254,8 +254,8 @@ def main():
 
         # Handle .find_element_by_css_selector() + .send_keys(Keys.<KEY>)
         data = re.match(
-            '''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
-            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
+            r'''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
         if data:
             uses_keys = True
             whitespace = data.group(1)
@@ -270,8 +270,8 @@ def main():
 
         # Handle .find_element_by_xpath() + .send_keys()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
-            '''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
+            r'''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
@@ -285,8 +285,8 @@ def main():
 
         # Handle .find_element_by_xpath() + .send_keys(Keys.<KEY>)
         data = re.match(
-            '''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
-            '''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_xpath\(\"([\S\s]+)\"\)'''
+            r'''\.send_keys\(Keys\.([\S]+)\)\s*$''', line)
         if data:
             uses_keys = True
             whitespace = data.group(1)
@@ -301,9 +301,9 @@ def main():
 
         # Handle Select / by_css_selector() / select_by_visible_text()
         data = re.match(
-            '''^(\s*)Select\(driver\.find_element_by_css_selector\('''
-            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
-            '''\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)Select\(driver\.find_element_by_css_selector\('''
+            r'''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            r'''\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
@@ -317,9 +317,9 @@ def main():
 
         # Handle Select / by_id() / select_by_visible_text()
         data = re.match(
-            '''^(\s*)Select\(driver\.find_element_by_id\('''
-            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
-            '''\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)Select\(driver\.find_element_by_id\('''
+            r'''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            r'''\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '#%s' % data.group(2)
@@ -333,9 +333,9 @@ def main():
 
         # Handle Select / by_xpath() / select_by_visible_text()
         data = re.match(
-            '''^(\s*)Select\(driver\.find_element_by_xpath\('''
-            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
-            '''\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)Select\(driver\.find_element_by_xpath\('''
+            r'''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            r'''\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
@@ -349,9 +349,9 @@ def main():
 
         # Handle Select / by_name() / select_by_visible_text()
         data = re.match(
-            '''^(\s*)Select\(driver\.find_element_by_name\('''
-            '''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
-            '''\"([\S\s]+)\"\)\s*$''', line)
+            r'''^(\s*)Select\(driver\.find_element_by_name\('''
+            r'''\"([\S\s]+)\"\)\)\.select_by_visible_text\('''
+            r'''\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             selector = '[name="%s"]' % data.group(2)
@@ -365,8 +365,8 @@ def main():
 
         # Handle .find_element_by_xpath() + .click()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_xpath\(u?\"([\S\s]+)\"\)'''
-            '''\.click\(\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_xpath\(u?\"([\S\s]+)\"\)'''
+            r'''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             xpath = '%s' % data.group(2)
@@ -381,8 +381,8 @@ def main():
 
         # Handle .find_element_by_link_text() + .click()
         data = re.match(
-            '''^(\s*)driver\.find_element_by_link_text\(u?\"([\S\s]+)\"\)'''
-            '''\.click\(\)\s*$''', line)
+            r'''^(\s*)driver\.find_element_by_link_text\(u?\"([\S\s]+)\"\)'''
+            r'''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
             link_text = '''%s''' % data.group(2)
@@ -397,8 +397,8 @@ def main():
 
         # Handle self.is_element_present(By.LINK_TEXT, *)
         data = re.match(
-            '''^(\s*)([\S\s]*)self\.is_element_present\(By.LINK_TEXT, '''
-            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+            r'''^(\s*)([\S\s]*)self\.is_element_present\(By.LINK_TEXT, '''
+            r'''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
@@ -415,8 +415,8 @@ def main():
 
         # Handle self.is_element_present(By.NAME, *)
         data = re.match(
-            '''^(\s*)([\S\s]*)self\.is_element_present\(By.NAME, '''
-            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+            r'''^(\s*)([\S\s]*)self\.is_element_present\(By.NAME, '''
+            r'''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
@@ -433,8 +433,8 @@ def main():
 
         # Handle self.is_element_present(By.ID, *)
         data = re.match(
-            '''^(\s*)([\S\s]*)self\.is_element_present\(By.ID, '''
-            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+            r'''^(\s*)([\S\s]*)self\.is_element_present\(By.ID, '''
+            r'''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
@@ -451,8 +451,8 @@ def main():
 
         # Handle self.is_element_present(By.CLASS, *)
         data = re.match(
-            '''^(\s*)([\S\s]*)self\.is_element_present\(By.CLASS, '''
-            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+            r'''^(\s*)([\S\s]*)self\.is_element_present\(By.CLASS, '''
+            r'''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
@@ -469,8 +469,8 @@ def main():
 
         # Handle self.is_element_present(By.CSS_SELECTOR, *)
         data = re.match(
-            '''^(\s*)([\S\s]*)self\.is_element_present\(By.CSS_SELECTOR, '''
-            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+            r'''^(\s*)([\S\s]*)self\.is_element_present\(By.CSS_SELECTOR, '''
+            r'''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
@@ -487,8 +487,8 @@ def main():
 
         # Handle self.is_element_present(By.XPATH, *)
         data = re.match(
-            '''^(\s*)([\S\s]*)self\.is_element_present\(By.XPATH, '''
-            '''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
+            r'''^(\s*)([\S\s]*)self\.is_element_present\(By.XPATH, '''
+            r'''u?\"([\S\s]+)\"\)([\S\s]*)$''', line)
         if data:
             whitespace = data.group(1)
             pre = data.group(2)
@@ -520,20 +520,21 @@ def main():
     lines = seleniumbase_lines
     seleniumbase_lines = []
     for line in lines:
-        data = re.match('^(\s*)for i in range\(60\):\s*$', line)
+        data = re.match(r'^(\s*)for i in range\(60\):\s*$', line)
         if data:
             in_inefficient_wait = True
             whitespace = data.group(1)
             continue
 
-        data = re.match('^(\s*)else: self.fail\("time out"\)\s*$', line)
+        data = re.match(r'^(\s*)else: self.fail\("time out"\)\s*$', line)
         if data:
             in_inefficient_wait = False
             continue
 
         if in_inefficient_wait:
-            data = re.match('''^\s*if self.is_element_present\("([\S\s]+)"\)'''
-                            ''': break\s*$''', line)
+            data = re.match(
+                r'''^\s*if self.is_element_present\("([\S\s]+)"\)'''
+                r''': break\s*$''', line)
             if data:
                 selector = data.group(1)
                 command = '%sself.wait_for_element("%s")' % (
@@ -541,8 +542,9 @@ def main():
                 seleniumbase_lines.append(command)
                 continue
 
-            data = re.match('''^\s*if self.is_element_present\('([\S\s]+)'\)'''
-                            ''': break\s*$''', line)
+            data = re.match(
+                r'''^\s*if self.is_element_present\('([\S\s]+)'\)'''
+                r''': break\s*$''', line)
             if data:
                 selector = data.group(1)
                 command = "%sself.wait_for_element('%s')" % (
@@ -550,8 +552,9 @@ def main():
                 seleniumbase_lines.append(command)
                 continue
 
-            data = re.match('''^\s*if self.is_link_text_present'''
-                            '''\("([\S\s]+)"\): break\s*$''', line)
+            data = re.match(
+                r'''^\s*if self.is_link_text_present'''
+                r'''\("([\S\s]+)"\): break\s*$''', line)
             if data:
                 uni = ""
                 if '(u"' in line:
@@ -576,9 +579,10 @@ def main():
     seleniumbase_lines = []
     num_lines = len(lines)
     for line_num in range(len(lines)):
-        data = re.match('''^\s*self.wait_for_element'''
-                        '''\((["|'])([\S\s]+)(["|'])\)'''
-                        '''\s*$''', lines[line_num])
+        data = re.match(
+            r'''^\s*self.wait_for_element'''
+            r'''\((["|'])([\S\s]+)(["|'])\)'''
+            r'''\s*$''', lines[line_num])
         if data:
             # quote_type = data.group(1)
             selector = data.group(2)
@@ -603,9 +607,10 @@ def main():
     seleniumbase_lines = []
     num_lines = len(lines)
     for line_num in range(len(lines)):
-        data = re.match('''^\s*self.wait_for_link_text'''
-                        '''\((["|'])([\S\s]+)(["|'])\)'''
-                        '''\s*$''', lines[line_num])
+        data = re.match(
+            r'''^\s*self.wait_for_link_text'''
+            r'''\((["|'])([\S\s]+)(["|'])\)'''
+            r'''\s*$''', lines[line_num])
         if data:
             # quote_type = data.group(1)
             link_text = data.group(2)
