@@ -10,15 +10,12 @@ class GoogleTests(BaseCase):
 
     def test_google_dot_com(self):
         self.open('https://google.com')
-        try:
-            # Remove the Privacy Checkup box if present.
-            self.assert_text('Privacy Checkup', HomePage.dialog_box, timeout=2)
-            self.click('link=NO, THANKS')
-        except Exception:
-            pass  # Google may have removed the Privacy Checkup. Continue test.
+        self.update_text(HomePage.search_box, 'github')
+        self.assert_element(HomePage.list_box)
         self.assert_element(HomePage.search_button)
         self.assert_element(HomePage.feeling_lucky_button)
-        self.update_text(HomePage.search_box, 'github\n')
+        self.click(HomePage.search_button)
         self.assert_text('github.com', ResultsPage.search_results)
         self.click_link_text('Images')
-        self.assert_element('img[alt="Image result for github"]')
+        source = self.get_page_source()
+        self.assertTrue("Image result for github" in source)

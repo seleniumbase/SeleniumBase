@@ -6,6 +6,7 @@ Google.com page objects
 class HomePage(object):
     dialog_box = '[role="dialog"] div'
     search_box = 'input[title="Search"]'
+    list_box = '[role="listbox"]'
     search_button = 'input[value="Google Search"]'
     feeling_lucky_button = '''input[value="I'm Feeling Lucky"]'''
 
