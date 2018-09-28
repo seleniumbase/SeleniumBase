@@ -21,7 +21,6 @@ Page elements are given enough time to load before WebDriver acts on them.
 Code becomes greatly simplified and easier to maintain.
 """
 
-import getpass
 import logging
 import math
 import os
@@ -30,7 +29,6 @@ import re
 import requests
 import sys
 import time
-import traceback
 import unittest
 import uuid
 from bs4 import BeautifulSoup
@@ -1863,6 +1861,18 @@ class BaseCase(unittest.TestCase):
         """ Asserts that the file exists in the Downloads Folder. """
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
+    def get_google_auth_password(self, totp_key=None):
+        """ Returns a time-based one-time password based on the
+            Google Authenticator password algorithm. Works with Authy.
+            If "totp_key" is not specified, will default to using
+            the one provided in seleniumbase/config/settings.py
+            (See https://pyotp.readthedocs.io/en/latest/ for details.) """
+        import pyotp
+        if not totp_key:
+            totp_key = settings.TOTP_KEY
+        totp = pyotp.TOTP(totp_key)
+        return str(totp.now())
+
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
 
@@ -3033,6 +3043,7 @@ class BaseCase(unittest.TestCase):
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
                 self.use_grid = True
             if self.with_db_reporting:
+                import getpass
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
                 self.execution_start_time = 0
@@ -3096,6 +3107,7 @@ class BaseCase(unittest.TestCase):
         data_payload.execution_guid = self.execution_guid
         data_payload.state = state
         if err:
+            import traceback
             tb_string = traceback.format_exc()
             if "Message: " in tb_string:
                 data_payload.message = "Message: " + tb_string.split(
