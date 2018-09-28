@@ -1861,6 +1861,18 @@ class BaseCase(unittest.TestCase):
         """ Asserts that the file exists in the Downloads Folder. """
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
+    def get_google_auth_password(self, totp_key=None):
+        """ Returns a time-based one-time password based on the
+            Google Authenticator password algorithm. Works with Authy.
+            If "totp_key" is not specified, will default to using
+            the one provided in seleniumbase/config/settings.py
+            (See https://pyotp.readthedocs.io/en/latest/ for details.) """
+        import pyotp
+        if not totp_key:
+            totp_key = settings.TOTP_KEY
+        totp = pyotp.TOTP(totp_key)
+        return str(totp.now())
+
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
 

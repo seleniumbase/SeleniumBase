@@ -88,7 +88,14 @@ MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT = 600
 
 
 # #####>>>>>----- RECOMMENDED SETTINGS -----<<<<<#####
-# ##### (For database reporting, saving test logs, and password encryption)
+# ##### (For multi-factor auth, DB/cloud logging, and password encryption)
+
+# Google Authenticator
+# (For 2-factor authentication using a time-based one-time password algorithm)
+# (See https://github.com/pyotp/pyotp and https://pypi.org/project/pyotp/ )
+# (Also works with Authy and other compatible apps.)
+TOTP_KEY = "base32secretABCD"
+
 
 # MySQL DB Credentials
 # (For saving data from tests)
