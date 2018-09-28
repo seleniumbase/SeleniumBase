@@ -32,6 +32,13 @@ If you're having any trouble getting pip, you can [GET PIP HERE](https://pip.pyp
 
 When done, make sure the location of pip is on your path, which is `$PATH` for Mac/Linux. (On Windows, it's the System Variables `Path` within System Environment Variables. Ex: Add "C:/Python27/Scripts/" to the end of the `Path` variable.)
 
+You can also get pip (or fix pip) by using:
+```bash
+curl https://bootstrap.pypa.io/get-pip.py | python
+```
+
+(If you get SSL errors while trying to install packages with pip, see [this Stackoverflow post](https://stackoverflow.com/questions/49768770/not-able-to-install-python-packages-ssl-tlsv1-alert-protocol-version), which tells you to run the above command.)
+
 ### [Homebrew](http://brew.sh/) (MAC-ONLY) (OPTIONAL)
 
 The Homebrew package manager allows you to install things more easily on MacOS, such as Git and Chromedriver.
