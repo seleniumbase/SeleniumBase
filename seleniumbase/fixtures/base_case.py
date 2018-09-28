@@ -21,7 +21,6 @@ Page elements are given enough time to load before WebDriver acts on them.
 Code becomes greatly simplified and easier to maintain.
 """
 
-import getpass
 import logging
 import math
 import os
@@ -30,7 +29,6 @@ import re
 import requests
 import sys
 import time
-import traceback
 import unittest
 import uuid
 from bs4 import BeautifulSoup
@@ -3033,6 +3031,7 @@ class BaseCase(unittest.TestCase):
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
                 self.use_grid = True
             if self.with_db_reporting:
+                import getpass
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
                 self.execution_start_time = 0
@@ -3096,6 +3095,7 @@ class BaseCase(unittest.TestCase):
         data_payload.execution_guid = self.execution_guid
         data_payload.state = state
         if err:
+            import traceback
             tb_string = traceback.format_exc()
             if "Message: " in tb_string:
                 data_payload.message = "Message: " + tb_string.split(
