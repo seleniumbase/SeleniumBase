@@ -1864,12 +1864,28 @@ class BaseCase(unittest.TestCase):
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
             Google Authenticator password algorithm. Works with Authy.
-            If "totp_key" is not specified, will default to using
-            the one provided in seleniumbase/config/settings.py
-            (See https://pyotp.readthedocs.io/en/latest/ for details.) """
+            If "totp_key" is not specified, defaults to using the one
+            provided in seleniumbase/config/settings.py
+            Google Auth passwords expire and change at 30-second intervals.
+            If the fetched password expires in the next 3 seconds, waits
+            for a fresh one before returning it (may take up to 3 seconds).
+            See https://pyotp.readthedocs.io/en/latest/ for details. """
         import pyotp
         if not totp_key:
             totp_key = settings.TOTP_KEY
+
+        epoch_interval = time.time() / 30.0
+        cycle_lifespan = float(epoch_interval) - int(epoch_interval)
+        if float(cycle_lifespan) > 0.90:
+            # Password expires in less than 3 seconds. Wait for a fresh one.
+            for i in range(60):
+                time.sleep(0.05)
+                epoch_interval = time.time() / 30.0
+                cycle_lifespan = float(epoch_interval) - int(epoch_interval)
+                if not float(cycle_lifespan) > 0.90:
+                    # The new password cycle has begun
+                    break
+
         totp = pyotp.TOTP(totp_key)
         return str(totp.now())
 
