@@ -97,6 +97,25 @@ style = title + '''<style type="text/css">
         }
         </style>'''
 
+# Bootstrap Tour Backdrop Style
+bt_backdrop_style = (
+    '''
+    .tour-tour-element {
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
+        pointer-events:  none !important;
+        z-index: 9999;
+    }
+
+    :not(.tour-tour-element) .orphan.tour-tour {
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
+    }
+
+    .tour-tour {
+        pointer-events:  auto;
+        z-index: 9999;
+    }
+    ''')
+
 sh_style_test = (
     '''
     let test_tour = new Shepherd.Tour({
@@ -107,16 +126,17 @@ sh_style_test = (
     });
     ''')
 
+# Shepherd Backdrop Style
 sh_backdrop_style = (
     '''
     body.shepherd-active .shepherd-target.shepherd-enabled {
-        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.22);
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
         pointer-events:  none !important;
         z-index: 9999;
     }
 
     body.shepherd-active .shepherd-orphan {
-        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.16);
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
         pointer-events:  auto;
         z-index: 9999;
     }

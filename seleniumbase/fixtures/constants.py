@@ -67,6 +67,14 @@ class BootstrapTour:
               "bootstrap-tour/%s/js/bootstrap-tour-standalone.min.js" % VER)
 
 
+class IntroJS:
+    VER = "2.9.3"
+    MIN_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
+               "intro.js/%s/introjs.css" % VER)
+    MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
+              "intro.js/%s/intro.min.js" % VER)
+
+
 class Shepherd:
     VER = "1.8.1"
     MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
@@ -87,7 +95,7 @@ class Shepherd:
 
 class Tether:
     VER = "1.4.4"
-    MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+    MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
               "tether/%s/js/tether.min.js" % VER)
 
 

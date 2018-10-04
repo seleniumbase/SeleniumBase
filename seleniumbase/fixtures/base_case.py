@@ -827,10 +827,13 @@ class BaseCase(unittest.TestCase):
         bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
         bootstrap_tour_js = constants.BootstrapTour.MIN_JS
 
-        verify_script = ("""// Instance the tour
+        verify_script = ("""// Verify Bootstrap Tour activated
                          var tour2 = new Tour({
                          });""")
 
+        backdrop_style = style_sheet.bt_backdrop_style
+        self.add_css_style(backdrop_style)
+        self.wait_for_ready_state_complete()
         for x in range(4):
             self.activate_jquery()
             self.add_css_link(bootstrap_tour_css)
@@ -852,9 +855,53 @@ class BaseCase(unittest.TestCase):
             '''directive. ''' % self.driver.current_url)
 
     def __is_bootstrap_activated(self):
-        verify_script = ("""// Instance the tour
+        verify_script = ("""// Verify Bootstrap Tour activated
                          var tour2 = new Tour({
                          });""")
+        try:
+            self.execute_script(verify_script)
+            return True
+        except Exception:
+            return False
+
+    def __activate_introjs(self):
+        """ Allows you to use IntroJS Tours with SeleniumBase
+            https://introjs.com/
+        """
+        intro_css = constants.IntroJS.MIN_CSS
+        intro_js = constants.IntroJS.MIN_JS
+
+        verify_script = ("""// Verify IntroJS activated
+                         var intro2 = introJs();
+                         """)
+
+        self.__activate_bootstrap()
+        self.wait_for_ready_state_complete()
+        for x in range(4):
+            self.activate_jquery()
+            self.add_css_link(intro_css)
+            self.add_js_link(intro_js)
+            time.sleep(0.1)
+
+            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
+                # IntroJS needs a small amount of time to load & activate.
+                try:
+                    self.execute_script(verify_script)
+                    self.wait_for_ready_state_complete()
+                    time.sleep(0.05)
+                    return
+                except Exception:
+                    time.sleep(0.15)
+
+        raise Exception(
+            '''Unable to load jQuery on "%s" due to a possible violation '''
+            '''of the website's Content Security Policy '''
+            '''directive. ''' % self.driver.current_url)
+
+    def __is_introjs_activated(self):
+        verify_script = ("""// Verify IntroJS activated
+                         var intro2 = introJs();
+                         """)
         try:
             self.execute_script(verify_script)
             return True
@@ -925,44 +972,75 @@ class BaseCase(unittest.TestCase):
             return False
 
     def create_tour(self, name=None, theme=None):
-        """ Creates a tour for a website.
+        """ Creates a tour for a website. By default, the Shepherd Javascript
+            Library is used with the Shepherd "Light" / "Arrows" theme.
             @Params
             name - If creating multiple tours, use this to select the
                    tour you wish to add steps to.
             theme - Sets the default theme for the tour.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
+                    Alternatively, you may use a different Javascript Library
+                    as the theme. Those include "IntroJS" & "Bootstrap".
         """
         if not name:
             name = "default"
 
-        shepherd_theme = "shepherd-theme-arrows"
         if theme:
             if theme.lower() == "bootstrap":
                 self.create_bootstrap_tour(name)
                 return
-            elif theme == "default":
+            elif theme.lower() == "intro":
+                self.create_introjs_tour(name)
+                return
+            elif theme.lower() == "introjs":
+                self.create_introjs_tour(name)
+                return
+            elif theme.lower() == "shepherd":
+                self.create_shepherd_tour(name, theme="light")
+                return
+            else:
+                self.create_shepherd_tour(name, theme)
+        else:
+            self.create_shepherd_tour(name, theme="light")
+
+    def create_shepherd_tour(self, name=None, theme=None):
+        """ Creates a Shepherd JS website tour.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            theme - Sets the default theme for the tour.
+                    Choose from "light"/"arrows", "dark", "default", "square",
+                    and "square-dark". ("light" is used if None is selected.)
+        """
+
+        shepherd_theme = "shepherd-theme-arrows"
+        if theme:
+            if theme.lower() == "default":
                 shepherd_theme = "shepherd-theme-default"
-            elif theme == "dark":
+            elif theme.lower() == "dark":
                 shepherd_theme = "shepherd-theme-dark"
-            elif theme == "light":
+            elif theme.lower() == "light":
                 shepherd_theme = "shepherd-theme-arrows"
-            elif theme == "arrows":
+            elif theme.lower() == "arrows":
                 shepherd_theme = "shepherd-theme-arrows"
-            elif theme == "square":
+            elif theme.lower() == "square":
                 shepherd_theme = "shepherd-theme-square"
-            elif theme == "square-dark":
+            elif theme.lower() == "square-dark":
                 shepherd_theme = "shepherd-theme-square-dark"
 
-        new_tour = ("""
-                    // Shepherd Tour
-                    let tour = new Shepherd.Tour({
-                        defaults: {
-                            classes: '%s',
-                            scrollTo: true
-                        }
-                    });
-                    """ % shepherd_theme)
+        if not name:
+            name = "default"
+
+        new_tour = (
+            """
+            // Shepherd Tour
+            let tour = new Shepherd.Tour({
+                defaults: {
+                    classes: '%s',
+                    scrollTo: true
+                }
+            });""" % shepherd_theme)
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
@@ -976,11 +1054,34 @@ class BaseCase(unittest.TestCase):
         if not name:
             name = "default"
 
-        new_tour = ("""
-                    // Bootstrap Tour
-                    var tour = new Tour({
-                    steps: [
-                    """)
+        new_tour = (
+            """
+            // Bootstrap Tour
+            var tour = new Tour({
+            });
+            tour.addSteps([
+            """)
+
+        self._tour_steps[name] = []
+        self._tour_steps[name].append(new_tour)
+
+    def create_introjs_tour(self, name=None):
+        """ Creates an IntroJS tour for a website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+        """
+        if not name:
+            name = "default"
+
+        new_tour = (
+            """
+            // IntroJS Tour
+            function startIntro(){
+            var intro = introJs();
+            intro.setOptions({
+            steps: [
+            """)
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
@@ -1004,22 +1105,19 @@ class BaseCase(unittest.TestCase):
         """
         if not selector:
             selector = "html"
-        selector = re.escape(selector)
         selector = self.__escape_quotes_if_needed(selector)
 
         if not name:
             name = "default"
         if name not in self._tour_steps:
-            # By default, will create a Bootstrap tour if no tours exist
-            self.create_tour(name=name, theme="bootstrap")
+            # By default, will create an IntroJS tour if no tours exist
+            self.create_tour(name=name, theme="introjs")
 
         if not title:
             title = ""
-        title = re.escape(title)
         title = self.__escape_quotes_if_needed(title)
 
         if message:
-            message = re.escape(message)
             message = self.__escape_quotes_if_needed(message)
         else:
             message = ""
@@ -1032,6 +1130,10 @@ class BaseCase(unittest.TestCase):
             self.__add_bootstrap_tour_step(
                 message, selector=selector, name=name, title=title,
                 alignment=alignment, duration=duration)
+        elif "IntroJS" in self._tour_steps[name][0]:
+            self.__add_introjs_tour_step(
+                message, selector=selector, name=name, title=title,
+                alignment=alignment)
         else:
             self.__add_shepherd_tour_step(
                 message, selector=selector, name=name, title=title,
@@ -1100,6 +1202,7 @@ class BaseCase(unittest.TestCase):
                        before automatically advancing to the next tour step.
         """
         if selector != "html":
+            selector = self.__make_css_match_first_element_only(selector)
             element_row = "element: '%s'," % selector
         else:
             element_row = ""
@@ -1117,6 +1220,34 @@ class BaseCase(unittest.TestCase):
                 smartPlacement: true,
                 duration: %s,
                 },""" % (element_row, title, message, alignment, duration))
+
+        self._tour_steps[name].append(step)
+
+    def __add_introjs_tour_step(self, message, selector=None, name=None,
+                                title=None, alignment=None):
+        """ Allows the user to add tour steps for a website.
+            @Params
+            message - The message to display.
+            selector - The CSS Selector of the Element to attach to.
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            alignment - Choose from "top", "bottom", "left", and "right".
+                        ("top" is the default alignment).
+        """
+        if selector != "html":
+            element_row = "element: '%s'," % selector
+        else:
+            element_row = ""
+
+        if title:
+            message = "<center><b>" + title + "</b></center><hr>" + message
+
+        message = '<font size=\"3\" color=\"#33475B\">' + message + '</font>'
+
+        step = ("""{%s
+                intro: '%s',
+                position: '%s'},
+                """ % (element_row, message, alignment))
 
         self._tour_steps[name].append(step)
 
@@ -1138,6 +1269,8 @@ class BaseCase(unittest.TestCase):
 
         if "Bootstrap" in self._tour_steps[name][0]:
             self.__play_bootstrap_tour(name=name, interval=interval)
+        elif "IntroJS" in self._tour_steps[name][0]:
+            self.__play_introjs_tour(name=name, interval=interval)
         else:
             self.__play_shepherd_tour(name=name, interval=interval)
 
@@ -1202,12 +1335,18 @@ class BaseCase(unittest.TestCase):
                 if autoplay:
                     try:
                         element = self.execute_script(
-                            "Shepherd.activeTour.currentStep"
+                            "return Shepherd.activeTour.currentStep"
                             ".options.attachTo.element")
                         shep_text = self.execute_script(
-                            "Shepherd.activeTour.currentStep.options.text")
+                            "return Shepherd.activeTour.currentStep"
+                            ".options.text")
                     except Exception:
                         continue
+                    if element != latest_element or shep_text != latest_text:
+                        latest_element = element
+                        latest_text = shep_text
+                        start_ms = time.time() * 1000.0
+                        stop_ms = start_ms + (interval * 1000.0)
                     now_ms = time.time() * 1000.0
                     if now_ms >= stop_ms:
                         if ((element == latest_element) and
@@ -1215,10 +1354,10 @@ class BaseCase(unittest.TestCase):
                             self.execute_script("Shepherd.activeTour.next()")
                             try:
                                 latest_element = self.execute_script(
-                                    "Shepherd.activeTour.currentStep"
+                                    "return Shepherd.activeTour.currentStep"
                                     ".options.attachTo.element")
                                 latest_text = self.execute_script(
-                                    "Shepherd.activeTour.currentStep"
+                                    "return Shepherd.activeTour.currentStep"
                                     ".options.text")
                                 start_ms = time.time() * 1000.0
                                 stop_ms = start_ms + (interval * 1000.0)
@@ -1234,7 +1373,7 @@ class BaseCase(unittest.TestCase):
                         ".currentStep.options.attachTo.element")
                     try:
                         self.__wait_for_css_query_selector(
-                            selector, timeout=(settings.MINI_TIMEOUT))
+                            selector, timeout=(settings.SMALL_TIMEOUT))
                     except Exception:
                         self.remove_elements("div.shepherd-content")
                         self.__post_messenger_error_message(
@@ -1263,7 +1402,7 @@ class BaseCase(unittest.TestCase):
         for tour_step in self._tour_steps[name]:
             instructions += tour_step
         instructions += (
-            """]});
+            """]);
 
             // Initialize the tour
             tour.init();
@@ -1290,7 +1429,7 @@ class BaseCase(unittest.TestCase):
                     selector = re.search(
                         r"[\S\s]+element: '([\S\s]+)',[\S\s]+title: '",
                         self._tour_steps[name][1]).group(1)
-                    selector = selector.replace('\\', '')
+                    selector = selector.replace('\\', '').replace(':first', '')
                     self.wait_for_element_present(
                         selector, timeout=(settings.SMALL_TIMEOUT))
                 else:
@@ -1310,8 +1449,12 @@ class BaseCase(unittest.TestCase):
         while tour_on:
             try:
                 time.sleep(0.01)
-                result = self.execute_script(
-                    "return $tour.ended()")
+                if self.browser != "firefox":
+                    result = self.execute_script(
+                        "return $tour.ended()")
+                else:
+                    self.wait_for_element_present(".tour-tour", timeout=0.4)
+                    result = False
             except Exception:
                 tour_on = False
                 result = None
@@ -1320,9 +1463,133 @@ class BaseCase(unittest.TestCase):
             else:
                 try:
                     time.sleep(0.01)
-                    result = self.execute_script(
-                        "return $tour.ended()")
+                    if self.browser != "firefox":
+                        result = self.execute_script(
+                            "return $tour.ended()")
+                    else:
+                        self.wait_for_element_present(
+                            ".tour-tour", timeout=0.4)
+                        result = False
                     if result is False:
+                        time.sleep(0.1)
+                        continue
+                    else:
+                        return
+                except Exception:
+                    tour_on = False
+                    time.sleep(0.1)
+
+    def __play_introjs_tour(self, name=None, interval=0):
+        """ Plays a tour on the current website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to play.
+        """
+        instructions = ""
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
+        instructions += (
+            """]
+            });
+            intro.setOption("disableInteraction", true);
+            intro.setOption("overlayOpacity", .29);
+            intro.setOption("scrollToElement", true);
+            intro.setOption("keyboardNavigation", true);
+            intro.setOption("exitOnEsc", false);
+            intro.setOption("exitOnOverlayClick", false);
+            intro.setOption("showStepNumbers", false);
+            intro.setOption("showProgress", false);
+            intro.start();
+            $intro = intro;
+            }
+            startIntro();
+            """)
+
+        autoplay = False
+        if interval and interval > 0:
+            autoplay = True
+            interval = float(interval)
+            if interval < 0.5:
+                interval = 0.5
+
+        if not self.__is_introjs_activated():
+            self.__activate_introjs()
+
+        if len(self._tour_steps[name]) > 1:
+            try:
+                if "element: " in self._tour_steps[name][1]:
+                    selector = re.search(
+                        r"[\S\s]+element: '([\S\s]+)',[\S\s]+intro: '",
+                        self._tour_steps[name][1]).group(1)
+                    selector = selector.replace('\\', '')
+                    self.wait_for_element_present(
+                        selector, timeout=settings.SMALL_TIMEOUT)
+                else:
+                    selector = "html"
+            except Exception:
+                self.__post_messenger_error_message(
+                    "Tour Error: {'%s'} was not found!"
+                    "" % selector,
+                    duration=settings.SMALL_TIMEOUT)
+                raise Exception(
+                    "Tour Error: {'%s'} was not found! "
+                    "Exiting due to failure on first tour step!"
+                    "" % selector)
+
+        self.execute_script(instructions)
+        tour_on = True
+        if autoplay:
+            start_ms = time.time() * 1000.0
+            stop_ms = start_ms + (interval * 1000.0)
+            latest_step = 0
+        while tour_on:
+            try:
+                time.sleep(0.01)
+                if self.browser != "firefox":
+                    result = self.execute_script(
+                        "return $intro._currentStep")
+                else:
+                    self.wait_for_element_present(
+                        ".introjs-tooltip", timeout=0.4)
+                    result = True
+            except Exception:
+                tour_on = False
+                result = None
+            if result is not None:
+                tour_on = True
+                if autoplay:
+                    try:
+                        current_step = self.execute_script(
+                            "return $intro._currentStep")
+                    except Exception:
+                        continue
+                    if current_step != latest_step:
+                        latest_step = current_step
+                        start_ms = time.time() * 1000.0
+                        stop_ms = start_ms + (interval * 1000.0)
+                    now_ms = time.time() * 1000.0
+                    if now_ms >= stop_ms:
+                        if current_step == latest_step:
+                            self.execute_script("return $intro.nextStep()")
+                            try:
+                                latest_step = self.execute_script(
+                                    "return $intro._currentStep")
+                                start_ms = time.time() * 1000.0
+                                stop_ms = start_ms + (interval * 1000.0)
+                            except Exception:
+                                pass
+                            continue
+            else:
+                try:
+                    time.sleep(0.01)
+                    if self.browser != "firefox":
+                        result = self.execute_script(
+                            "return $intro._currentStep")
+                    else:
+                        self.wait_for_element_present(
+                            ".introjs-tooltip", timeout=0.4)
+                        result = True
+                    if result is not None:
                         time.sleep(0.1)
                         continue
                     else:

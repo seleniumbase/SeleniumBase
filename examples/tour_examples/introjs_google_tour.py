@@ -7,9 +7,7 @@ class MyTourClass(BaseCase):
         self.open('https://google.com')
         self.wait_for_element('input[title="Search"]')
 
-        # Create a website tour using the ShepherdJS library with "dark" theme
-        # Same as:  self.create_shepherd_tour(theme="dark")
-        self.create_tour(theme="dark")
+        self.create_introjs_tour()  # OR self.create_tour(theme="introjs")
         self.add_tour_step(
             "Click to begin the Google Tour!", title="SeleniumBase Tours")
         self.add_tour_step(
@@ -19,9 +17,7 @@ class MyTourClass(BaseCase):
         self.highlight_update_text('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
-        # Create a website tour using the ShepherdJS library with "light" theme
-        # Same as:  self.create_shepherd_tour(theme="light")
-        self.create_tour(theme="light")
+        self.create_introjs_tour()
         self.add_tour_step(
             "Then click here to search.", 'input[value="Google Search"]')
         self.add_tour_step(
@@ -31,22 +27,17 @@ class MyTourClass(BaseCase):
         self.highlight_update_text('input[title="Search"]', "GitHub\n")
         self.wait_for_element("#search")
 
-        # Create a website tour using the Bootstrap Tour JS library
-        # Same as:  self.create_bootstrap_tour()
-        self.create_tour(theme="bootstrap")
+        self.create_introjs_tour()
         self.add_tour_step(
             "Search results appear here!", title="(5-second autoplay on)")
-        self.add_tour_step("Let's take another tour:", theme="light")
+        self.add_tour_step("Let's take another tour:")
         self.play_tour(interval=5)  # Tour automatically continues after 5 sec
 
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
         self.wait_for_element('input#searchboxinput')
 
-        # Create a website tour using the IntroJS library
-        # Same as:  self.create_introjs_tour()
-        self.create_tour(theme="introjs")
-        self.add_tour_step(
-            "Welcome to Google Maps!")
+        self.create_introjs_tour()
+        self.add_tour_step("Welcome to Google Maps!")
         self.add_tour_step(
             "Type in a location here.", "#searchboxinput", title="Search Box")
         self.add_tour_step(

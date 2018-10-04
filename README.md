@@ -48,7 +48,7 @@ Try out Demo Mode to see what what's being tested in real time! (Chrome is the d
 pytest my_first_test.py --demo_mode
 ```
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/sb_demo.gif "SeleniumBase")<br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="270"><br>
 (Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running on [xkcd.com](http://xkcd.com/353/))
 
 There are many more examples to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) directory, which you can run easily if you clone SeleniumBase.
@@ -60,7 +60,7 @@ cd tour_examples
 pytest google_tour.py
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/google_tour.gif" title="SeleniumBase Tours" height="348"><br>
+<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" height="260"><br>
 (Above: Actual demo of [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) running on [google.com](https://google.com))
 
 For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
