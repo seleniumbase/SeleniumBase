@@ -4,7 +4,7 @@ SeleniumBase Tours utilize the following three Javascript libraries for creating
 
 Example tour:
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" height="318"><br>
+<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" height="310"><br>
 
 
 ### Creating a new tour:
