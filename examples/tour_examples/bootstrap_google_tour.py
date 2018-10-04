@@ -12,18 +12,26 @@ class MyTourClass(BaseCase):
             "Click to begin the Google Tour!", title="SeleniumBase Tours")
         self.add_tour_step(
             "Type in your search query here.", 'input[title="Search"]')
-        self.add_tour_step('Then click "Google Search" or press [ENTER].')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "GitHub")
+        self.highlight_update_text('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
-        self.highlight_click('input[value="Google Search"]')
+
+        self.create_bootstrap_tour()
+        self.add_tour_step(
+            "Then click here to search.", 'input[value="Google Search"]')
+        self.add_tour_step(
+            "Or press [ENTER] after typing a query here.", '[title="Search"]')
+        self.play_tour()
+
+        self.highlight_update_text('input[title="Search"]', "GitHub\n")
+        self.wait_for_element("#search")
 
         self.create_bootstrap_tour()
         self.add_tour_step(
             "Search results appear here!", title="(5-second autoplay on)")
         self.add_tour_step("Let's take another tour:")
-        self.play_tour(interval=5)  # tour automatically continues after 5 sec
+        self.play_tour(interval=5)  # Tour automatically continues after 5 sec
 
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
         self.wait_for_element('input#searchboxinput')
