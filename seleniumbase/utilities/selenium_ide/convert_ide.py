@@ -33,7 +33,7 @@ def main():
         if num_args < 2 or num_args > 2:
             raise Exception('\n\n* INVALID RUN COMMAND! *  Usage:\n'
                             '"python convert_ide.py %s"\n' % expected_arg)
-    webdriver_python_file = sys.argv[num_args-1]
+    webdriver_python_file = sys.argv[num_args - 1]
     if not webdriver_python_file.endswith('.py'):
         raise Exception("\n\n`%s` is not a Python file!\n\n"
                         "Expecting: %s\n"
@@ -589,15 +589,15 @@ def main():
             selector = re.escape(selector)
             selector = page_utils.escape_quotes_if_needed(selector)
             if int(line_num) < num_lines - 1:
-                regex_string = (r'''^\s*self.click\(["|']'''
-                                + selector + r'''["|']\)\s*$''')
-                data2 = re.match(regex_string, lines[line_num+1])
+                regex_string = (r'''^\s*self.click\(["|']''' +
+                                selector + r'''["|']\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue
-                regex_string = (r'''^\s*self.update_text\(["|']'''
-                                + selector
-                                + r'''["|'], [\S\s]+\)\s*$''')
-                data2 = re.match(regex_string, lines[line_num+1])
+                regex_string = (r'''^\s*self.update_text\(["|']''' +
+                                selector +
+                                r'''["|'], [\S\s]+\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue
         seleniumbase_lines.append(lines[line_num])
@@ -617,9 +617,9 @@ def main():
             link_text = re.escape(link_text)
             link_text = page_utils.escape_quotes_if_needed(link_text)
             if int(line_num) < num_lines - 2:
-                regex_string = (r'''^\s*self.click\(["|']link='''
-                                + link_text + r'''["|']\)\s*$''')
-                data2 = re.match(regex_string, lines[line_num+1])
+                regex_string = (r'''^\s*self.click\(["|']link=''' +
+                                link_text + r'''["|']\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue
         seleniumbase_lines.append(lines[line_num])
