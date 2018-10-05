@@ -125,8 +125,8 @@ def hover_and_click(driver, hover_selector, click_selector,
     hover.perform()
     for x in range(int(timeout * 10)):
         try:
-            element = driver.find_element(by=click_by,
-                                          value="%s" % click_selector).click()
+            element = driver.find_element(by=click_by, value=click_selector)
+            element.click()
             return element
         except Exception:
             now_ms = time.time() * 1000.0
@@ -150,8 +150,8 @@ def hover_element_and_click(driver, element, click_selector,
     hover.perform()
     for x in range(int(timeout * 10)):
         try:
-            element = driver.find_element(by=click_by,
-                                          value="%s" % click_selector).click()
+            element = driver.find_element(by=click_by, value=click_selector)
+            element.click()
             return element
         except Exception:
             now_ms = time.time() * 1000.0
