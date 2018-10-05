@@ -19,7 +19,8 @@ class MyTourClass(BaseCase):
 
         self.create_hopscotch_tour()
         self.add_tour_step(
-            "Then click here to search.", 'input[value="Google Search"]')
+            "Then click here to search.", 'input[value="Google Search"]',
+            alignment="top")
         self.add_tour_step(
             "Or press [ENTER] after typing a query here.", '[title="Search"]')
         self.play_tour()
