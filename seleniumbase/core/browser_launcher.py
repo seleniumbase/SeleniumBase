@@ -79,6 +79,7 @@ def _set_chrome_options(downloads_path, proxy_string):
 
 def _create_firefox_profile(downloads_path, proxy_string):
     profile = webdriver.FirefoxProfile()
+    profile.accept_untrusted_certs = True
     profile.set_preference("reader.parse-on-load.enabled", False)
     profile.set_preference("pdfjs.disabled", True)
     profile.set_preference("app.update.auto", False)
