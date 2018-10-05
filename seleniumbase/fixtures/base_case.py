@@ -2482,7 +2482,8 @@ class BaseCase(unittest.TestCase):
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+            selector = self.convert_to_css_selector(selector, By.XPATH)
+            by = By.CSS_SELECTOR
         if page_utils.is_link_text_selector(selector):
             selector = page_utils.get_link_text_from_selector(selector)
             by = By.LINK_TEXT
@@ -2499,7 +2500,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(hover_selector):
-            hover_by = By.XPATH
+            hover_selector = self.convert_to_css_selector(
+                hover_selector, By.XPATH)
+            hover_by = By.CSS_SELECTOR
         if page_utils.is_xpath_selector(click_selector):
             click_by = By.XPATH
         if page_utils.is_link_text_selector(hover_selector):
