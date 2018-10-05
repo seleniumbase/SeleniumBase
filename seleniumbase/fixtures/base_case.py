@@ -1175,6 +1175,8 @@ class BaseCase(unittest.TestCase):
         """
         if not selector:
             selector = "html"
+        if page_utils.is_xpath_selector(selector):
+            selector = self.convert_to_css_selector(selector, By.XPATH)
         selector = self.__escape_quotes_if_needed(selector)
 
         if not name:
