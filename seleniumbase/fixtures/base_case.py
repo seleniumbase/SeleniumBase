@@ -864,6 +864,52 @@ class BaseCase(unittest.TestCase):
         except Exception:
             return False
 
+    def __activate_hopscotch(self):
+        """ Allows you to use Hopscotch Tours with SeleniumBase
+            http://linkedin.github.io/hopscotch/
+        """
+        hopscotch_css = constants.Hopscotch.MIN_CSS
+        hopscotch_js = constants.Hopscotch.MIN_JS
+        backdrop_style = style_sheet.hops_backdrop_style
+
+        verify_script = ("""// Verify Hopscotch activated
+                         var hops = hopscotch.isActive;
+                         """)
+
+        self.__activate_bootstrap()
+        self.wait_for_ready_state_complete()
+        self.add_css_style(backdrop_style)
+        for x in range(4):
+            self.activate_jquery()
+            self.add_css_link(hopscotch_css)
+            self.add_js_link(hopscotch_js)
+            time.sleep(0.1)
+
+            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
+                # Hopscotch needs a small amount of time to load & activate.
+                try:
+                    self.execute_script(verify_script)
+                    self.wait_for_ready_state_complete()
+                    time.sleep(0.05)
+                    return
+                except Exception:
+                    time.sleep(0.15)
+
+        raise Exception(
+            '''Unable to load jQuery on "%s" due to a possible violation '''
+            '''of the website's Content Security Policy '''
+            '''directive. ''' % self.driver.current_url)
+
+    def __is_hopscotch_activated(self):
+        verify_script = ("""// Verify Hopscotch activated
+                         var hops = hopscotch.isActive;
+                         """)
+        try:
+            self.execute_script(verify_script)
+            return True
+        except Exception:
+            return False
+
     def __activate_introjs(self):
         """ Allows you to use IntroJS Tours with SeleniumBase
             https://introjs.com/
@@ -981,7 +1027,8 @@ class BaseCase(unittest.TestCase):
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
                     Alternatively, you may use a different Javascript Library
-                    as the theme. Those include "IntroJS" & "Bootstrap".
+                    as the theme. Those include "IntroJS", "Bootstrap", and
+                    "Hopscotch".
         """
         if not name:
             name = "default"
@@ -989,6 +1036,9 @@ class BaseCase(unittest.TestCase):
         if theme:
             if theme.lower() == "bootstrap":
                 self.create_bootstrap_tour(name)
+                return
+            elif theme.lower() == "hopscotch":
+                self.create_hopscotch_tour(name)
                 return
             elif theme.lower() == "intro":
                 self.create_introjs_tour(name)
@@ -1065,6 +1115,26 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
 
+    def create_hopscotch_tour(self, name=None):
+        """ Creates an Hopscotch tour for a website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+        """
+        if not name:
+            name = "default"
+
+        new_tour = (
+            """
+            // Hopscotch Tour
+            var tour = {
+            id: "hopscotch_tour",
+            steps: [
+            """)
+
+        self._tour_steps[name] = []
+        self._tour_steps[name].append(new_tour)
+
     def create_introjs_tour(self, name=None):
         """ Creates an IntroJS tour for a website.
             @Params
@@ -1124,12 +1194,19 @@ class BaseCase(unittest.TestCase):
 
         if not alignment or (
                 alignment not in ["top", "bottom", "left", "right"]):
-            alignment = "top"
+            if "Hopscotch" not in self._tour_steps[name][0]:
+                alignment = "top"
+            else:
+                alignment = "bottom"
 
         if "Bootstrap" in self._tour_steps[name][0]:
             self.__add_bootstrap_tour_step(
                 message, selector=selector, name=name, title=title,
                 alignment=alignment, duration=duration)
+        elif "Hopscotch" in self._tour_steps[name][0]:
+            self.__add_hopscotch_tour_step(
+                message, selector=selector, name=name, title=title,
+                alignment=alignment)
         elif "IntroJS" in self._tour_steps[name][0]:
             self.__add_introjs_tour_step(
                 message, selector=selector, name=name, title=title,
@@ -1223,6 +1300,38 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name].append(step)
 
+    def __add_hopscotch_tour_step(self, message, selector=None, name=None,
+                                  title=None, alignment=None):
+        """ Allows the user to add tour steps for a website.
+            @Params
+            message - The message to display.
+            selector - The CSS Selector of the Element to attach to.
+            name - If creating multiple tours, use this to select the
+                   tour you wish to add steps to.
+            title - Additional header text that appears above the message.
+            alignment - Choose from "top", "bottom", "left", and "right".
+                        ("bottom" is the default alignment).
+        """
+        arrow_offset_row = None
+        if not selector or selector == "html":
+            selector = "head"
+            alignment = "bottom"
+            arrow_offset_row = "arrowOffset: '200',"
+        else:
+            arrow_offset_row = ""
+
+        step = ("""{
+                target: '%s',
+                title: '%s',
+                content: '%s',
+                %s
+                showPrevButton: 'true',
+                scrollDuration: '550',
+                placement: '%s'},
+                """ % (selector, title, message, arrow_offset_row, alignment))
+
+        self._tour_steps[name].append(step)
+
     def __add_introjs_tour_step(self, message, selector=None, name=None,
                                 title=None, alignment=None):
         """ Allows the user to add tour steps for a website.
@@ -1231,6 +1340,7 @@ class BaseCase(unittest.TestCase):
             selector - The CSS Selector of the Element to attach to.
             name - If creating multiple tours, use this to select the
                    tour you wish to add steps to.
+            title - Additional header text that appears above the message.
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
         """
@@ -1269,6 +1379,8 @@ class BaseCase(unittest.TestCase):
 
         if "Bootstrap" in self._tour_steps[name][0]:
             self.__play_bootstrap_tour(name=name, interval=interval)
+        elif "Hopscotch" in self._tour_steps[name][0]:
+            self.__play_hopscotch_tour(name=name, interval=interval)
         elif "IntroJS" in self._tour_steps[name][0]:
             self.__play_introjs_tour(name=name, interval=interval)
         else:
@@ -1469,6 +1581,119 @@ class BaseCase(unittest.TestCase):
                     else:
                         self.wait_for_element_present(
                             ".tour-tour", timeout=0.4)
+                        result = False
+                    if result is False:
+                        time.sleep(0.1)
+                        continue
+                    else:
+                        return
+                except Exception:
+                    tour_on = False
+                    time.sleep(0.1)
+
+    def __play_hopscotch_tour(self, name=None, interval=0):
+        """ Plays a tour on the current website.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to play.
+            interval - The delay time between autoplaying tour steps.
+                       If set to 0 (default), the tour is fully manual control.
+        """
+        instructions = ""
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
+        instructions += (
+            """]
+            };
+
+            // Start the tour!
+            hopscotch.startTour(tour);
+
+            $tour = hopscotch;""")
+
+        autoplay = False
+        if interval and interval > 0:
+            autoplay = True
+            interval = float(interval)
+            if interval < 0.5:
+                interval = 0.5
+
+        if not self.__is_hopscotch_activated():
+            self.__activate_hopscotch()
+
+        if len(self._tour_steps[name]) > 1:
+            try:
+                if "target: " in self._tour_steps[name][1]:
+                    selector = re.search(
+                        r"[\S\s]+target: '([\S\s]+)',[\S\s]+title: '",
+                        self._tour_steps[name][1]).group(1)
+                    selector = selector.replace('\\', '').replace(':first', '')
+                    self.wait_for_element_present(
+                        selector, timeout=(settings.SMALL_TIMEOUT))
+                else:
+                    selector = "html"
+            except Exception:
+                self.__post_messenger_error_message(
+                    "Tour Error: {'%s'} was not found!"
+                    "" % selector,
+                    duration=settings.SMALL_TIMEOUT)
+                raise Exception(
+                    "Tour Error: {'%s'} was not found! "
+                    "Exiting due to failure on first tour step!"
+                    "" % selector)
+
+        self.execute_script(instructions)
+        tour_on = True
+        if autoplay:
+            start_ms = time.time() * 1000.0
+            stop_ms = start_ms + (interval * 1000.0)
+            latest_step = 0
+        while tour_on:
+            try:
+                time.sleep(0.01)
+                if self.browser != "firefox":
+                    result = not self.execute_script(
+                        "return $tour.isActive")
+                else:
+                    self.wait_for_element_present(
+                        ".hopscotch-bubble", timeout=0.4)
+                    result = False
+            except Exception:
+                tour_on = False
+                result = None
+            if result is False:
+                tour_on = True
+                if autoplay:
+                    try:
+                        current_step = self.execute_script(
+                            "return $tour.getCurrStepNum()")
+                    except Exception:
+                        continue
+                    if current_step != latest_step:
+                        latest_step = current_step
+                        start_ms = time.time() * 1000.0
+                        stop_ms = start_ms + (interval * 1000.0)
+                    now_ms = time.time() * 1000.0
+                    if now_ms >= stop_ms:
+                        if current_step == latest_step:
+                            self.execute_script("return $tour.nextStep()")
+                            try:
+                                latest_step = self.execute_script(
+                                    "return $tour.getCurrStepNum()")
+                                start_ms = time.time() * 1000.0
+                                stop_ms = start_ms + (interval * 1000.0)
+                            except Exception:
+                                pass
+                            continue
+            else:
+                try:
+                    time.sleep(0.01)
+                    if self.browser != "firefox":
+                        result = not self.execute_script(
+                            "return $tour.isActive")
+                    else:
+                        self.wait_for_element_present(
+                            ".hopscotch-bubble", timeout=0.4)
                         result = False
                     if result is False:
                         time.sleep(0.1)

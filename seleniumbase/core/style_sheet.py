@@ -126,6 +126,14 @@ sh_style_test = (
     });
     ''')
 
+# Hopscotch Backdrop Style
+hops_backdrop_style = (
+    '''
+    .hopscotch-bubble-container {
+        font-size: 110%;
+    }
+    ''')
+
 # Shepherd Backdrop Style
 sh_backdrop_style = (
     '''

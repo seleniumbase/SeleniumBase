@@ -1,6 +1,6 @@
 ## SeleniumBase Website Tours
 
-SeleniumBase Tours utilize the following three Javascript libraries for creating and running tours, demos, and walkthroughs on any website: **[Shepherd JS](https://cdnjs.com/libraries/shepherd/1.8.1)**, **[Bootstrap Tour JS](https://cdnjs.com/libraries/bootstrap-tour)**, and **[Intro JS](https://cdnjs.com/libraries/intro.js)**.
+SeleniumBase Tours utilize your choice of 4 different Javascript libraries for creating & running tours, demos, and walkthroughs on any website: **[Shepherd](https://shipshapecode.github.io/shepherd/docs/welcome/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](http://linkedin.github.io/hopscotch/)**. Choose your favorite one to use!
 
 Example tour:
 
@@ -35,6 +35,13 @@ OR
 
 ``self.create_tour(theme="introjs")``
 
+To create a tour utilizing the Hopscotch JS Library, you can use either of the following:
+
+``self.create_hopscotch_tour()``
+
+OR
+
+``self.create_tour(theme="hopscotch")``
 
 ### Adding a step to a tour:
 
