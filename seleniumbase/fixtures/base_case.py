@@ -1838,6 +1838,171 @@ class BaseCase(unittest.TestCase):
                     tour_on = False
                     time.sleep(0.1)
 
+    def export_tour(self, name=None, filename="my_tour.js"):
+        """ Exports a tour as a JS file.
+            You can call self.export_tour() anywhere where you could
+            normally use self.play_tour()
+            It will include necessary resources as well, such as jQuery.
+            You'll be able to copy the tour directly into the Console of
+            any web browser to play the tour outside of SeleniumBase runs. """
+        if not name:
+            name = "default"
+        if name not in self._tour_steps:
+            raise Exception("Tour {%s} does not exist!" % name)
+        if not filename.endswith('.js'):
+            raise Exception('Tour file must end in ".js"!')
+
+        tour_type = None
+        if "Bootstrap" in self._tour_steps[name][0]:
+            tour_type = "bootstrap"
+        elif "Hopscotch" in self._tour_steps[name][0]:
+            tour_type = "hopscotch"
+        elif "IntroJS" in self._tour_steps[name][0]:
+            tour_type = "introjs"
+        elif "Shepherd" in self._tour_steps[name][0]:
+            tour_type = "shepherd"
+        else:
+            raise Exception('Unknown tour type!')
+
+        instructions = (
+            '''////////  Resources  ////////\n\n'''
+            '''function injectCSS(css_link) {'''
+            '''var head = document.getElementsByTagName("head")[0];'''
+            '''var link = document.createElement("link");'''
+            '''link.rel = "stylesheet";'''
+            '''link.type = "text/css";'''
+            '''link.href = css_link;'''
+            '''link.crossorigin = "anonymous";'''
+            '''head.appendChild(link);'''
+            '''};\n'''
+            '''function injectJS(js_link) {'''
+            '''var head = document.getElementsByTagName("head")[0];'''
+            '''var script = document.createElement("script");'''
+            '''script.src = js_link;'''
+            '''script.defer;'''
+            '''script.type="text/javascript";'''
+            '''script.crossorigin = "anonymous";'''
+            '''script.onload = function() { null };'''
+            '''head.appendChild(script);'''
+            '''};\n'''
+            '''function injectStyle(css) {'''
+            '''var head = document.getElementsByTagName("head")[0];'''
+            '''var style = document.createElement("style");'''
+            '''style.type = "text/css";'''
+            '''style.appendChild(document.createTextNode(css));'''
+            '''head.appendChild(style);'''
+            '''};\n''')
+
+        if tour_type == "bootstrap":
+            jquery_js = constants.JQuery.MIN_JS
+            bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
+            bootstrap_tour_js = constants.BootstrapTour.MIN_JS
+            backdrop_style = style_sheet.bt_backdrop_style
+            backdrop_style = backdrop_style.replace('\n', '')
+            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
+            instructions += 'injectJS("%s");' % jquery_js
+            instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
+            instructions += 'injectCSS("%s");\n' % bootstrap_tour_css
+            instructions += 'injectStyle("%s");\n' % backdrop_style
+            instructions += 'injectJS("%s");' % bootstrap_tour_js
+
+        elif tour_type == "hopscotch":
+            hopscotch_css = constants.Hopscotch.MIN_CSS
+            hopscotch_js = constants.Hopscotch.MIN_JS
+            backdrop_style = style_sheet.hops_backdrop_style
+            backdrop_style = backdrop_style.replace('\n', '')
+            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
+            instructions += 'injectCSS("%s");\n' % hopscotch_css
+            instructions += 'injectStyle("%s");\n' % backdrop_style
+            instructions += 'injectJS("%s");' % hopscotch_js
+
+        elif tour_type == "introjs":
+            intro_css = constants.IntroJS.MIN_CSS
+            intro_js = constants.IntroJS.MIN_JS
+            instructions += 'injectCSS("%s");\n' % intro_css
+            instructions += 'injectJS("%s");' % intro_js
+
+        elif tour_type == "shepherd":
+            jquery_js = constants.JQuery.MIN_JS
+            shepherd_js = constants.Shepherd.MIN_JS
+            sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
+            sh_theme_arrows_fix_css = constants.Shepherd.THEME_ARR_FIX_CSS
+            sh_theme_default_css = constants.Shepherd.THEME_DEFAULT_CSS
+            sh_theme_dark_css = constants.Shepherd.THEME_DARK_CSS
+            sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
+            sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
+            tether_js = constants.Tether.MIN_JS
+            spinner_css = constants.Messenger.SPINNER_CSS
+            backdrop_style = style_sheet.sh_backdrop_style
+            backdrop_style = backdrop_style.replace('\n', '')
+            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
+            instructions += 'injectCSS("%s");\n' % spinner_css
+            instructions += 'injectJS("%s");\n' % jquery_js
+            instructions += 'injectJS("%s");' % tether_js
+            instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
+            instructions += 'injectCSS("%s");' % sh_theme_arrows_css
+            instructions += 'injectCSS("%s");' % sh_theme_arrows_fix_css
+            instructions += 'injectCSS("%s");' % sh_theme_default_css
+            instructions += 'injectCSS("%s");' % sh_theme_dark_css
+            instructions += 'injectCSS("%s");' % sh_theme_sq_css
+            instructions += 'injectCSS("%s");\n' % sh_theme_sq_dark_css
+            instructions += 'injectStyle("%s");\n' % backdrop_style
+            instructions += 'injectJS("%s");' % shepherd_js
+
+        instructions += '\n\n////////  Tour Code  ////////\n\n'
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
+
+        if tour_type == "bootstrap":
+            instructions += (
+                """]);
+                // Initialize the tour
+                tour.init();
+                // Start the tour
+                tour.start();
+                $tour = tour;
+                $tour.restart();\n
+                """)
+        elif tour_type == "hopscotch":
+            instructions += (
+                """]
+                };
+                // Start the tour!
+                hopscotch.startTour(tour);
+                $tour = hopscotch;\n
+                """)
+        elif tour_type == "introjs":
+            instructions += (
+                """]
+                });
+                intro.setOption("disableInteraction", true);
+                intro.setOption("overlayOpacity", .29);
+                intro.setOption("scrollToElement", true);
+                intro.setOption("keyboardNavigation", true);
+                intro.setOption("exitOnEsc", false);
+                intro.setOption("exitOnOverlayClick", false);
+                intro.setOption("showStepNumbers", false);
+                intro.setOption("showProgress", false);
+                intro.start();
+                $tour = intro;
+                };
+                startIntro();\n
+                """)
+        elif tour_type == "shepherd":
+            instructions += (
+                """
+                tour.start();
+                $tour = tour;\n
+                """)
+        else:
+            pass
+
+        import codecs
+        out_file = codecs.open(filename, "w+")
+        out_file.writelines(instructions)
+        out_file.close()
+        print('\n>>> [%s] was saved!\n' % filename)
+
     def __wait_for_css_query_selector(
             self, selector, timeout=settings.SMALL_TIMEOUT):
         element = None

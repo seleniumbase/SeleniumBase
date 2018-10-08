@@ -97,3 +97,15 @@ class MyTourClass(BaseCase):
 ```bash
 pytest google_tour.py
 ```
+
+### Exporting a Tour:
+
+If you want to save the tour you created as a Javascript file, use:
+
+``self.export_tour()``
+
+OR
+
+``self.export_tour(name=None, filename="my_tour.js")``
+
+(``name`` is optional, needed only if you were creating multiple tours at once. ``filename`` is the name of the file to save the Javascript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's Javascript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
