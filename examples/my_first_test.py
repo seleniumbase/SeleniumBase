@@ -4,18 +4,18 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open('http://xkcd.com/353/')            # Navigate to the web page
+        self.open('https://xkcd.com/353/')            # Navigate to the web page
         self.assert_element('img[alt="Python"]')       # Assert element on page
         self.click('a[rel="license"]')                  # Click element on page
         self.assert_text('free to copy', 'div center')    # Assert text on page
-        self.open("http://xkcd.com/1481/")
+        self.open("https://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")    # Get an attribute
         self.assertTrue("86,400 seconds per day" in title)
         self.click('link=Blag')                                 # Click on link
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')                    # Type text
         self.assert_text('Hooray robots!', '#content')
-        self.open('http://xkcd.com/1319/')
+        self.open('https://xkcd.com/1319/')
         self.assert_text('Automation', 'div#ctitle')
 
         ####
