@@ -685,6 +685,15 @@ self.driver.find_elements_by_partial_link_text("GitHub")
 ```
 (In general, you'll want to use the SeleniumBase versions of methods when available.)
 
+#### Retry Failing Tests Automatically
+
+You can use ``--reruns #`` to retry failing tests that many times. Use ``--reruns-delay #`` to wait that many seconds between retries. Example:
+```
+pytest --reruns 5 --reruns-delay 1
+```
+
+Additionally, you can use the ``@retry_on_exception()`` decorator to specifically retry failing methods. (First import: ``from seleniumbase import decorators``) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
+
 ####  Checking Email: 
 Let's say you have a test that sends an email, and now you want to check that the email was received:
 
