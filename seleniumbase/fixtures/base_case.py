@@ -720,40 +720,46 @@ class BaseCase(unittest.TestCase):
 
     def add_css_link(self, css_link):
         script_to_add_css = (
-            """function injectCSS() {
+            """function injectCSS(css) {
                   var head = document.getElementsByTagName("head")[0];
                   var link = document.createElement("link");
                   link.rel = "stylesheet";
                   link.type = "text/css";
-                  link.href = "%s";
+                  link.href = css;
                   link.crossorigin = "anonymous";
                   head.appendChild(link);
                }
-               injectCSS();""")
+               injectCSS("%s");""")
+        css_link = self.__escape_quotes_if_needed(css_link)
         self.execute_script(script_to_add_css % css_link)
 
     def add_js_link(self, js_link):
         script_to_add_js = (
-            """function injectJS() {
+            """function injectJS(link) {
                   var head = document.getElementsByTagName("head")[0];
                   var script = document.createElement("script");
-                  script.src = "%s";
+                  script.src = link;
                   script.defer;
+                  script.type="text/javascript";
                   script.crossorigin = "anonymous";
                   script.onload = function() { null };
                   head.appendChild(script);
                }
-               injectJS();""")
+               injectJS("%s");""")
+        js_link = self.__escape_quotes_if_needed(js_link)
         self.execute_script(script_to_add_js % js_link)
 
     def add_css_style(self, css_style):
         add_css_style_script = (
-            '''var h = document.getElementsByTagName('head').item(0);'''
-            '''var s = document.createElement("style");'''
-            '''s.type = "text/css";'''
-            '''s.appendChild(document.createTextNode("%s"));'''
-            '''h.appendChild(s);''')
-        css_style = re.escape(css_style)
+            """function injectStyle(css) {
+                  var head = document.getElementsByTagName("head")[0];
+                  var style = document.createElement("style");
+                  style.type = "text/css";
+                  style.appendChild(document.createTextNode(css));
+                  head.appendChild(style);
+               }
+               injectStyle("%s");""")
+        css_style = css_style.replace('\n', '')
         css_style = self.__escape_quotes_if_needed(css_style)
         self.execute_script(add_css_style_script % css_style)
 
@@ -800,7 +806,11 @@ class BaseCase(unittest.TestCase):
             # jQuery is not currently defined. Let's proceed by defining it.
             pass
         jquery_js = constants.JQuery.MIN_JS
-        self.add_js_link(jquery_js)
+        activate_jquery_script = (
+            '''var script = document.createElement('script');'''
+            '''script.src = "%s";document.getElementsByTagName('head')[0]'''
+            '''.appendChild(script);''' % jquery_js)
+        self.execute_script(activate_jquery_script)
         for x in range(int(settings.MINI_TIMEOUT * 10.0)):
             # jQuery needs a small amount of time to activate.
             try:
@@ -966,8 +976,6 @@ class BaseCase(unittest.TestCase):
         sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
         sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
         tether_js = constants.Tether.MIN_JS
-        underscore_js = constants.Underscore.MIN_JS
-        backbone_js = constants.Backbone.MIN_JS
         spinner_css = constants.Messenger.SPINNER_CSS
 
         sh_style = style_sheet.sh_style_test
@@ -987,8 +995,6 @@ class BaseCase(unittest.TestCase):
             self.add_css_link(sh_theme_sq_css)
             self.add_css_link(sh_theme_sq_dark_css)
             self.add_js_link(tether_js)
-            self.add_js_link(underscore_js)
-            self.add_js_link(backbone_js)
             self.add_js_link(shepherd_js)
             time.sleep(0.1)
 
@@ -1085,7 +1091,7 @@ class BaseCase(unittest.TestCase):
         new_tour = (
             """
             // Shepherd Tour
-            let tour = new Shepherd.Tour({
+            var tour = new Shepherd.Tour({
                 defaults: {
                     classes: '%s',
                     scrollTo: true
@@ -1399,7 +1405,10 @@ class BaseCase(unittest.TestCase):
         instructions = ""
         for tour_step in self._tour_steps[name]:
             instructions += tour_step
-        instructions += "tour.start();"
+        instructions += ("""
+            // Start the tour
+            tour.start();
+            $tour = tour;""")
 
         autoplay = False
         if interval and interval > 0:
@@ -1524,8 +1533,11 @@ class BaseCase(unittest.TestCase):
             // Start the tour
             tour.start();
 
-            $tour = tour;
-            $tour.restart();""")
+            // Fix timing issue by restarting tour immediately
+            tour.restart();
+
+            // Save for later
+            $tour = tour;""")
 
         if interval and interval > 0:
             if interval < 1:
@@ -1727,8 +1739,9 @@ class BaseCase(unittest.TestCase):
             intro.setOption("showStepNumbers", false);
             intro.setOption("showProgress", false);
             intro.start();
-            $intro = intro;
-            }
+            $tour = intro;
+            };
+            // Start the tour
             startIntro();
             """)
 
@@ -1774,7 +1787,7 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.01)
                 if self.browser != "firefox":
                     result = self.execute_script(
-                        "return $intro._currentStep")
+                        "return $tour._currentStep")
                 else:
                     self.wait_for_element_present(
                         ".introjs-tooltip", timeout=0.4)
@@ -1787,7 +1800,7 @@ class BaseCase(unittest.TestCase):
                 if autoplay:
                     try:
                         current_step = self.execute_script(
-                            "return $intro._currentStep")
+                            "return $tour._currentStep")
                     except Exception:
                         continue
                     if current_step != latest_step:
@@ -1797,10 +1810,10 @@ class BaseCase(unittest.TestCase):
                     now_ms = time.time() * 1000.0
                     if now_ms >= stop_ms:
                         if current_step == latest_step:
-                            self.execute_script("return $intro.nextStep()")
+                            self.execute_script("return $tour.nextStep()")
                             try:
                                 latest_step = self.execute_script(
-                                    "return $intro._currentStep")
+                                    "return $tour._currentStep")
                                 start_ms = time.time() * 1000.0
                                 stop_ms = start_ms + (interval * 1000.0)
                             except Exception:
@@ -1811,7 +1824,7 @@ class BaseCase(unittest.TestCase):
                     time.sleep(0.01)
                     if self.browser != "firefox":
                         result = self.execute_script(
-                            "return $intro._currentStep")
+                            "return $tour._currentStep")
                     else:
                         self.wait_for_element_present(
                             ".introjs-tooltip", timeout=0.4)
@@ -1824,6 +1837,171 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     tour_on = False
                     time.sleep(0.1)
+
+    def export_tour(self, name=None, filename="my_tour.js"):
+        """ Exports a tour as a JS file.
+            You can call self.export_tour() anywhere where you could
+            normally use self.play_tour()
+            It will include necessary resources as well, such as jQuery.
+            You'll be able to copy the tour directly into the Console of
+            any web browser to play the tour outside of SeleniumBase runs. """
+        if not name:
+            name = "default"
+        if name not in self._tour_steps:
+            raise Exception("Tour {%s} does not exist!" % name)
+        if not filename.endswith('.js'):
+            raise Exception('Tour file must end in ".js"!')
+
+        tour_type = None
+        if "Bootstrap" in self._tour_steps[name][0]:
+            tour_type = "bootstrap"
+        elif "Hopscotch" in self._tour_steps[name][0]:
+            tour_type = "hopscotch"
+        elif "IntroJS" in self._tour_steps[name][0]:
+            tour_type = "introjs"
+        elif "Shepherd" in self._tour_steps[name][0]:
+            tour_type = "shepherd"
+        else:
+            raise Exception('Unknown tour type!')
+
+        instructions = (
+            '''////////  Resources  ////////\n\n'''
+            '''function injectCSS(css_link) {'''
+            '''var head = document.getElementsByTagName("head")[0];'''
+            '''var link = document.createElement("link");'''
+            '''link.rel = "stylesheet";'''
+            '''link.type = "text/css";'''
+            '''link.href = css_link;'''
+            '''link.crossorigin = "anonymous";'''
+            '''head.appendChild(link);'''
+            '''};\n'''
+            '''function injectJS(js_link) {'''
+            '''var head = document.getElementsByTagName("head")[0];'''
+            '''var script = document.createElement("script");'''
+            '''script.src = js_link;'''
+            '''script.defer;'''
+            '''script.type="text/javascript";'''
+            '''script.crossorigin = "anonymous";'''
+            '''script.onload = function() { null };'''
+            '''head.appendChild(script);'''
+            '''};\n'''
+            '''function injectStyle(css) {'''
+            '''var head = document.getElementsByTagName("head")[0];'''
+            '''var style = document.createElement("style");'''
+            '''style.type = "text/css";'''
+            '''style.appendChild(document.createTextNode(css));'''
+            '''head.appendChild(style);'''
+            '''};\n''')
+
+        if tour_type == "bootstrap":
+            jquery_js = constants.JQuery.MIN_JS
+            bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
+            bootstrap_tour_js = constants.BootstrapTour.MIN_JS
+            backdrop_style = style_sheet.bt_backdrop_style
+            backdrop_style = backdrop_style.replace('\n', '')
+            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
+            instructions += 'injectJS("%s");' % jquery_js
+            instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
+            instructions += 'injectCSS("%s");\n' % bootstrap_tour_css
+            instructions += 'injectStyle("%s");\n' % backdrop_style
+            instructions += 'injectJS("%s");' % bootstrap_tour_js
+
+        elif tour_type == "hopscotch":
+            hopscotch_css = constants.Hopscotch.MIN_CSS
+            hopscotch_js = constants.Hopscotch.MIN_JS
+            backdrop_style = style_sheet.hops_backdrop_style
+            backdrop_style = backdrop_style.replace('\n', '')
+            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
+            instructions += 'injectCSS("%s");\n' % hopscotch_css
+            instructions += 'injectStyle("%s");\n' % backdrop_style
+            instructions += 'injectJS("%s");' % hopscotch_js
+
+        elif tour_type == "introjs":
+            intro_css = constants.IntroJS.MIN_CSS
+            intro_js = constants.IntroJS.MIN_JS
+            instructions += 'injectCSS("%s");\n' % intro_css
+            instructions += 'injectJS("%s");' % intro_js
+
+        elif tour_type == "shepherd":
+            jquery_js = constants.JQuery.MIN_JS
+            shepherd_js = constants.Shepherd.MIN_JS
+            sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
+            sh_theme_arrows_fix_css = constants.Shepherd.THEME_ARR_FIX_CSS
+            sh_theme_default_css = constants.Shepherd.THEME_DEFAULT_CSS
+            sh_theme_dark_css = constants.Shepherd.THEME_DARK_CSS
+            sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
+            sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
+            tether_js = constants.Tether.MIN_JS
+            spinner_css = constants.Messenger.SPINNER_CSS
+            backdrop_style = style_sheet.sh_backdrop_style
+            backdrop_style = backdrop_style.replace('\n', '')
+            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
+            instructions += 'injectCSS("%s");\n' % spinner_css
+            instructions += 'injectJS("%s");\n' % jquery_js
+            instructions += 'injectJS("%s");' % tether_js
+            instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
+            instructions += 'injectCSS("%s");' % sh_theme_arrows_css
+            instructions += 'injectCSS("%s");' % sh_theme_arrows_fix_css
+            instructions += 'injectCSS("%s");' % sh_theme_default_css
+            instructions += 'injectCSS("%s");' % sh_theme_dark_css
+            instructions += 'injectCSS("%s");' % sh_theme_sq_css
+            instructions += 'injectCSS("%s");\n' % sh_theme_sq_dark_css
+            instructions += 'injectStyle("%s");\n' % backdrop_style
+            instructions += 'injectJS("%s");' % shepherd_js
+
+        instructions += '\n\n////////  Tour Code  ////////\n\n'
+        for tour_step in self._tour_steps[name]:
+            instructions += tour_step
+
+        if tour_type == "bootstrap":
+            instructions += (
+                """]);
+                // Initialize the tour
+                tour.init();
+                // Start the tour
+                tour.start();
+                $tour = tour;
+                $tour.restart();\n
+                """)
+        elif tour_type == "hopscotch":
+            instructions += (
+                """]
+                };
+                // Start the tour!
+                hopscotch.startTour(tour);
+                $tour = hopscotch;\n
+                """)
+        elif tour_type == "introjs":
+            instructions += (
+                """]
+                });
+                intro.setOption("disableInteraction", true);
+                intro.setOption("overlayOpacity", .29);
+                intro.setOption("scrollToElement", true);
+                intro.setOption("keyboardNavigation", true);
+                intro.setOption("exitOnEsc", false);
+                intro.setOption("exitOnOverlayClick", false);
+                intro.setOption("showStepNumbers", false);
+                intro.setOption("showProgress", false);
+                intro.start();
+                $tour = intro;
+                };
+                startIntro();\n
+                """)
+        elif tour_type == "shepherd":
+            instructions += (
+                """
+                tour.start();
+                $tour = tour;\n
+                """)
+        else:
+            pass
+
+        import codecs
+        out_file = codecs.open(filename, "w+")
+        out_file.writelines(instructions)
+        out_file.close()
+        print('\n>>> [%s] was saved!\n' % filename)
 
     def __wait_for_css_query_selector(
             self, selector, timeout=settings.SMALL_TIMEOUT):

@@ -118,7 +118,7 @@ bt_backdrop_style = (
 
 sh_style_test = (
     '''
-    let test_tour = new Shepherd.Tour({
+    var test_tour = new Shepherd.Tour({
       defaults: {
         classes: 'shepherd-theme-dark',
         scrollTo: true

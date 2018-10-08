@@ -49,7 +49,7 @@ pytest my_first_test.py --demo_mode
 ```
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="270"><br>
-(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running on [xkcd.com](http://xkcd.com/353/))
+(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running on [xkcd.com](https://xkcd.com/353/))
 
 There are many more examples to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) directory, which you can run easily if you clone SeleniumBase.
 
@@ -181,18 +181,18 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open('http://xkcd.com/353/')
+        self.open('https://xkcd.com/353/')
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         self.assert_text('free to copy', 'div center')
-        self.open("http://xkcd.com/1481/")
+        self.open("https://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")
         self.assertTrue("86,400 seconds per day" in title)
         self.click('link=Blag')
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')
         self.assert_text('Hooray robots!', '#content')
-        self.open('http://xkcd.com/1319/')
+        self.open('https://xkcd.com/1319/')
         self.assert_text('Automation', 'div#ctitle')
 ```
 (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
@@ -393,7 +393,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_find_army_of_robots_on_xkcd_desert_island(self):
-        self.open("http://xkcd.com/731/")
+        self.open("https://xkcd.com/731/")
         self.assert_element("div#ARMY_OF_ROBOTS", timeout=1)  # This should fail
 ```
 
@@ -661,7 +661,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_delayed_asserts(self):
-        self.open('http://xkcd.com/993/')
+        self.open('https://xkcd.com/993/')
         self.wait_for_element('#comic')
         self.delayed_assert_element('img[alt="Brand Identity"]')
         self.delayed_assert_element('img[alt="Rocket Ship"]')  # Will Fail
@@ -684,6 +684,15 @@ capabilities = self.driver.capabilities
 self.driver.find_elements_by_partial_link_text("GitHub")
 ```
 (In general, you'll want to use the SeleniumBase versions of methods when available.)
+
+#### Retry Failing Tests Automatically
+
+You can use ``--reruns #`` to retry failing tests that many times. Use ``--reruns-delay #`` to wait that many seconds between retries. Example:
+```
+pytest --reruns 5 --reruns-delay 1
+```
+
+Additionally, you can use the ``@retry_on_exception()`` decorator to specifically retry failing methods. (First import: ``from seleniumbase import decorators``) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
 
 ####  Checking Email: 
 Let's say you have a test that sends an email, and now you want to check that the email was received:

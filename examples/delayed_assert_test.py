@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_delayed_asserts(self):
-        self.open('http://xkcd.com/993/')
+        self.open('https://xkcd.com/993/')
         self.wait_for_element('#comic')
         self.delayed_assert_element('img[alt="Brand Identity"]')
         self.delayed_assert_element('img[alt="Rocket Ship"]')  # Will Fail

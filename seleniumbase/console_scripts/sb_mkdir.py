@@ -78,11 +78,11 @@ def main():
         data.append("class MyTestClass(BaseCase):")
         data.append("")
         data.append("    def test_basic(self):")
-        data.append("        self.open('http://xkcd.com/353/')")
+        data.append("        self.open('https://xkcd.com/353/')")
         data.append("        self.assert_element('img[alt=\"Python\"]')")
         data.append("        self.click('a[rel=\"license\"]')")
         data.append("        self.assert_text('free to copy', 'div center')")
-        data.append("        self.open(\"http://xkcd.com/1481/\")")
+        data.append("        self.open(\"https://xkcd.com/1481/\")")
         data.append(
             "        title = self.get_attribute(\"#comic img\", \"title\")")
         data.append(
@@ -92,7 +92,7 @@ def main():
             "        self.assert_text('The blag of the webcomic', 'h2')")
         data.append("        self.update_text('input#s', 'Robots!\\n')")
         data.append("        self.assert_text('Hooray robots!', '#content')")
-        data.append("        self.open('http://xkcd.com/1319/')")
+        data.append("        self.open('https://xkcd.com/1319/')")
         data.append("        self.assert_text('Automation', 'div#ctitle')")
         data.append("")
         file_path = "%s/%s" % (dir_name, "my_first_test.py")
