@@ -11,7 +11,7 @@
 Example demonstrating a rate-limited printing functionality:
 ```python
 import unittest
-from seleniumbase.common import decorators
+from seleniumbase import decorators
 
 
 class MyTestClass(unittest.TestCase):
