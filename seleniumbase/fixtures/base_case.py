@@ -2539,8 +2539,8 @@ class BaseCase(unittest.TestCase):
             If "totp_key" is not specified, defaults to using the one
             provided in seleniumbase/config/settings.py
             Google Auth passwords expire and change at 30-second intervals.
-            If the fetched password expires in the next 3 seconds, waits
-            for a fresh one before returning it (may take up to 3 seconds).
+            If the fetched password expires in the next 1.5 seconds, waits
+            for a new one before returning it (may take up to 1.5 seconds).
             See https://pyotp.readthedocs.io/en/latest/ for details. """
         import pyotp
         if not totp_key:
@@ -2548,13 +2548,13 @@ class BaseCase(unittest.TestCase):
 
         epoch_interval = time.time() / 30.0
         cycle_lifespan = float(epoch_interval) - int(epoch_interval)
-        if float(cycle_lifespan) > 0.90:
-            # Password expires in less than 3 seconds. Wait for a fresh one.
-            for i in range(60):
+        if float(cycle_lifespan) > 0.95:
+            # Password expires in the next 1.5 seconds. Wait for a new one.
+            for i in range(30):
                 time.sleep(0.05)
                 epoch_interval = time.time() / 30.0
                 cycle_lifespan = float(epoch_interval) - int(epoch_interval)
-                if not float(cycle_lifespan) > 0.90:
+                if not float(cycle_lifespan) > 0.95:
                     # The new password cycle has begun
                     break
 
