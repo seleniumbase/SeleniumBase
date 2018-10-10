@@ -26,7 +26,6 @@ import math
 import os
 import pytest
 import re
-import requests
 import sys
 import time
 import unittest
@@ -40,8 +39,9 @@ from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
-from seleniumbase.core import style_sheet
+from seleniumbase.core import tour_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
@@ -58,7 +58,6 @@ except Exception:
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver import ActionChains
 
 
 class BaseCase(unittest.TestCase):
@@ -148,6 +147,7 @@ class BaseCase(unittest.TestCase):
 
     def double_click(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.SMALL_TIMEOUT):
+        from selenium.webdriver import ActionChains
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
@@ -705,10 +705,7 @@ class BaseCase(unittest.TestCase):
         return self.driver.execute_script(script)
 
     def execute_async_script(self, script, timeout=settings.EXTREME_TIMEOUT):
-        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.driver.set_script_timeout(timeout)
-        return self.driver.execute_async_script(script)
+        return js_utils.execute_async_script(self.driver, script, timeout)
 
     def set_window_size(self, width, height):
         self.driver.set_window_size(width, height)
@@ -719,309 +716,31 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def add_css_link(self, css_link):
-        script_to_add_css = (
-            """function injectCSS(css) {
-                  var head = document.getElementsByTagName("head")[0];
-                  var link = document.createElement("link");
-                  link.rel = "stylesheet";
-                  link.type = "text/css";
-                  link.href = css;
-                  link.crossorigin = "anonymous";
-                  head.appendChild(link);
-               }
-               injectCSS("%s");""")
-        css_link = self.__escape_quotes_if_needed(css_link)
-        self.execute_script(script_to_add_css % css_link)
+        js_utils.add_css_link(self.driver, css_link)
 
     def add_js_link(self, js_link):
-        script_to_add_js = (
-            """function injectJS(link) {
-                  var head = document.getElementsByTagName("head")[0];
-                  var script = document.createElement("script");
-                  script.src = link;
-                  script.defer;
-                  script.type="text/javascript";
-                  script.crossorigin = "anonymous";
-                  script.onload = function() { null };
-                  head.appendChild(script);
-               }
-               injectJS("%s");""")
-        js_link = self.__escape_quotes_if_needed(js_link)
-        self.execute_script(script_to_add_js % js_link)
+        js_utils.add_js_link(self.driver, js_link)
 
     def add_css_style(self, css_style):
-        add_css_style_script = (
-            """function injectStyle(css) {
-                  var head = document.getElementsByTagName("head")[0];
-                  var style = document.createElement("style");
-                  style.type = "text/css";
-                  style.appendChild(document.createTextNode(css));
-                  head.appendChild(style);
-               }
-               injectStyle("%s");""")
-        css_style = css_style.replace('\n', '')
-        css_style = self.__escape_quotes_if_needed(css_style)
-        self.execute_script(add_css_style_script % css_style)
+        js_utils.add_css_style(self.driver, css_style)
 
     def add_js_code_from_link(self, js_link):
-        if js_link.startswith("//"):
-            js_link = "http:" + js_link
-        js_code = requests.get(js_link).text
-        add_js_code_script = (
-            '''var h = document.getElementsByTagName('head').item(0);'''
-            '''var s = document.createElement("script");'''
-            '''s.type = "text/javascript";'''
-            '''s.onload = function() { null };'''
-            '''s.appendChild(document.createTextNode("%s"));'''
-            '''h.appendChild(s);''')
-        js_code = re.escape(js_code)
-        js_code = self.__escape_quotes_if_needed(js_code)
-        self.execute_script(add_js_code_script % js_code)
+        js_utils.add_js_code_from_link(self.driver, js_link)
 
     def add_meta_tag(self, http_equiv=None, content=None):
-        if http_equiv is None:
-            http_equiv = "Content-Security-Policy"
-        if content is None:
-            content = ("default-src *; style-src 'self' 'unsafe-inline'; "
-                       "script-src: 'self' 'unsafe-inline' 'unsafe-eval'")
-        script_to_add_meta = (
-            """function injectMeta() {
-               var meta = document.createElement('meta');
-               meta.httpEquiv = "%s";
-               meta.content = "%s";
-               document.getElementsByTagName('head')[0].appendChild(meta);
-            }
-            injectMeta();""" % (http_equiv, content))
-        self.execute_script(script_to_add_meta)
+        js_utils.add_meta_tag(
+            self.driver, http_equiv=http_equiv, content=content)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
-        try:
-            # Let's first find out if jQuery is already defined.
-            self.execute_script("jQuery('html')")
-            # Since that command worked, jQuery is defined. Let's return.
-            return
-        except Exception:
-            # jQuery is not currently defined. Let's proceed by defining it.
-            pass
-        jquery_js = constants.JQuery.MIN_JS
-        activate_jquery_script = (
-            '''var script = document.createElement('script');'''
-            '''script.src = "%s";document.getElementsByTagName('head')[0]'''
-            '''.appendChild(script);''' % jquery_js)
-        self.execute_script(activate_jquery_script)
-        for x in range(int(settings.MINI_TIMEOUT * 10.0)):
-            # jQuery needs a small amount of time to activate.
-            try:
-                self.execute_script("jQuery('html')")
-                return
-            except Exception:
-                time.sleep(0.1)
-        # Since jQuery still isn't activating, give up and raise an exception
-        raise Exception(
-            '''Unable to load jQuery on "%s" due to a possible violation '''
-            '''of the website's Content Security Policy '''
-            '''directive. ''' % self.driver.current_url)
+        js_utils.activate_jquery(self.driver)
 
     def __are_quotes_escaped(self, string):
         return page_utils.are_quotes_escaped(string)
 
     def __escape_quotes_if_needed(self, string):
         return page_utils.escape_quotes_if_needed(string)
-
-    def __activate_bootstrap(self):
-        """ Allows you to use Bootstrap Tours with SeleniumBase
-            http://bootstraptour.com/
-        """
-        bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
-        bootstrap_tour_js = constants.BootstrapTour.MIN_JS
-
-        verify_script = ("""// Verify Bootstrap Tour activated
-                         var tour2 = new Tour({
-                         });""")
-
-        backdrop_style = style_sheet.bt_backdrop_style
-        self.add_css_style(backdrop_style)
-        self.wait_for_ready_state_complete()
-        for x in range(4):
-            self.activate_jquery()
-            self.add_css_link(bootstrap_tour_css)
-            self.add_js_link(bootstrap_tour_js)
-            time.sleep(0.1)
-
-            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
-                # Bootstrap needs a small amount of time to load & activate.
-                try:
-                    self.execute_script(verify_script)
-                    time.sleep(0.05)
-                    return
-                except Exception:
-                    time.sleep(0.15)
-
-        raise Exception(
-            '''Unable to load jQuery on "%s" due to a possible violation '''
-            '''of the website's Content Security Policy '''
-            '''directive. ''' % self.driver.current_url)
-
-    def __is_bootstrap_activated(self):
-        verify_script = ("""// Verify Bootstrap Tour activated
-                         var tour2 = new Tour({
-                         });""")
-        try:
-            self.execute_script(verify_script)
-            return True
-        except Exception:
-            return False
-
-    def __activate_hopscotch(self):
-        """ Allows you to use Hopscotch Tours with SeleniumBase
-            http://linkedin.github.io/hopscotch/
-        """
-        hopscotch_css = constants.Hopscotch.MIN_CSS
-        hopscotch_js = constants.Hopscotch.MIN_JS
-        backdrop_style = style_sheet.hops_backdrop_style
-
-        verify_script = ("""// Verify Hopscotch activated
-                         var hops = hopscotch.isActive;
-                         """)
-
-        self.__activate_bootstrap()
-        self.wait_for_ready_state_complete()
-        self.add_css_style(backdrop_style)
-        for x in range(4):
-            self.activate_jquery()
-            self.add_css_link(hopscotch_css)
-            self.add_js_link(hopscotch_js)
-            time.sleep(0.1)
-
-            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
-                # Hopscotch needs a small amount of time to load & activate.
-                try:
-                    self.execute_script(verify_script)
-                    self.wait_for_ready_state_complete()
-                    time.sleep(0.05)
-                    return
-                except Exception:
-                    time.sleep(0.15)
-
-        raise Exception(
-            '''Unable to load jQuery on "%s" due to a possible violation '''
-            '''of the website's Content Security Policy '''
-            '''directive. ''' % self.driver.current_url)
-
-    def __is_hopscotch_activated(self):
-        verify_script = ("""// Verify Hopscotch activated
-                         var hops = hopscotch.isActive;
-                         """)
-        try:
-            self.execute_script(verify_script)
-            return True
-        except Exception:
-            return False
-
-    def __activate_introjs(self):
-        """ Allows you to use IntroJS Tours with SeleniumBase
-            https://introjs.com/
-        """
-        intro_css = constants.IntroJS.MIN_CSS
-        intro_js = constants.IntroJS.MIN_JS
-
-        verify_script = ("""// Verify IntroJS activated
-                         var intro2 = introJs();
-                         """)
-
-        self.__activate_bootstrap()
-        self.wait_for_ready_state_complete()
-        for x in range(4):
-            self.activate_jquery()
-            self.add_css_link(intro_css)
-            self.add_js_link(intro_js)
-            time.sleep(0.1)
-
-            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
-                # IntroJS needs a small amount of time to load & activate.
-                try:
-                    self.execute_script(verify_script)
-                    self.wait_for_ready_state_complete()
-                    time.sleep(0.05)
-                    return
-                except Exception:
-                    time.sleep(0.15)
-
-        raise Exception(
-            '''Unable to load jQuery on "%s" due to a possible violation '''
-            '''of the website's Content Security Policy '''
-            '''directive. ''' % self.driver.current_url)
-
-    def __is_introjs_activated(self):
-        verify_script = ("""// Verify IntroJS activated
-                         var intro2 = introJs();
-                         """)
-        try:
-            self.execute_script(verify_script)
-            return True
-        except Exception:
-            return False
-
-    def __activate_shepherd(self):
-        """ Allows you to use Shepherd Tours with SeleniumBase
-            http://github.hubspot.com/shepherd/docs/welcome/
-        """
-        shepherd_js = constants.Shepherd.MIN_JS
-        sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
-        sh_theme_arrows_fix_css = constants.Shepherd.THEME_ARR_FIX_CSS
-        sh_theme_default_css = constants.Shepherd.THEME_DEFAULT_CSS
-        sh_theme_dark_css = constants.Shepherd.THEME_DARK_CSS
-        sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
-        sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
-        tether_js = constants.Tether.MIN_JS
-        spinner_css = constants.Messenger.SPINNER_CSS
-
-        sh_style = style_sheet.sh_style_test
-        backdrop_style = style_sheet.sh_backdrop_style
-
-        self.__activate_bootstrap()
-        self.wait_for_ready_state_complete()
-        self.add_css_style(backdrop_style)
-        self.wait_for_ready_state_complete()
-        for x in range(4):
-            # self.activate_jquery()  # Included with __activate_bootstrap()
-            self.add_css_link(spinner_css)
-            self.add_css_link(sh_theme_arrows_css)
-            self.add_css_link(sh_theme_arrows_fix_css)
-            self.add_css_link(sh_theme_default_css)
-            self.add_css_link(sh_theme_dark_css)
-            self.add_css_link(sh_theme_sq_css)
-            self.add_css_link(sh_theme_sq_dark_css)
-            self.add_js_link(tether_js)
-            self.add_js_link(shepherd_js)
-            time.sleep(0.1)
-
-            for x in range(int(settings.MINI_TIMEOUT * 2.0)):
-                # Shepherd needs a small amount of time to load & activate.
-                try:
-                    self.execute_script(sh_style)  # Verify Shepherd has loaded
-                    self.wait_for_ready_state_complete()
-                    self.execute_script(sh_style)  # Need it twice for ordering
-                    self.wait_for_ready_state_complete()
-                    time.sleep(0.05)
-                    return
-                except Exception:
-                    time.sleep(0.15)
-
-        raise Exception(
-            '''Unable to load jQuery on "%s" due to a possible violation '''
-            '''of the website's Content Security Policy '''
-            '''directive. ''' % self.driver.current_url)
-
-    def __is_shepherd_activated(self):
-        sh_style = style_sheet.sh_style_test
-        try:
-            self.execute_script(sh_style)  # Verify Shepherd has loaded
-            return True
-        except Exception:
-            return False
 
     def create_tour(self, name=None, theme=None):
         """ Creates a tour for a website. By default, the Shepherd Javascript
@@ -1386,457 +1105,22 @@ class BaseCase(unittest.TestCase):
             raise Exception("Tour {%s} does not exist!" % name)
 
         if "Bootstrap" in self._tour_steps[name][0]:
-            self.__play_bootstrap_tour(name=name, interval=interval)
+            tour_helper.play_bootstrap_tour(
+                self.driver, self._tour_steps, self.browser,
+                self.message_duration, name=name, interval=interval)
         elif "Hopscotch" in self._tour_steps[name][0]:
-            self.__play_hopscotch_tour(name=name, interval=interval)
+            tour_helper.play_hopscotch_tour(
+                self.driver, self._tour_steps, self.browser,
+                self.message_duration, name=name, interval=interval)
         elif "IntroJS" in self._tour_steps[name][0]:
-            self.__play_introjs_tour(name=name, interval=interval)
+            tour_helper.play_introjs_tour(
+                self.driver, self._tour_steps, self.browser,
+                self.message_duration, name=name, interval=interval)
         else:
-            self.__play_shepherd_tour(name=name, interval=interval)
-
-    def __play_shepherd_tour(self, name=None, interval=0):
-        """ Plays a tour on the current website.
-            @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to play.
-            interval - The delay time between autoplaying tour steps.
-                       If set to 0 (default), the tour is fully manual control.
-        """
-        instructions = ""
-        for tour_step in self._tour_steps[name]:
-            instructions += tour_step
-        instructions += ("""
-            // Start the tour
-            tour.start();
-            $tour = tour;""")
-
-        autoplay = False
-        if interval and interval > 0:
-            autoplay = True
-            interval = float(interval)
-            if interval < 0.5:
-                interval = 0.5
-
-        if not self.__is_shepherd_activated():
-            self.__activate_shepherd()
-
-        if len(self._tour_steps[name]) > 1:
-            try:
-                selector = re.search(
-                    r"[\S\s]+{element: '([\S\s]+)', on: [\S\s]+",
-                    self._tour_steps[name][1]).group(1)
-                selector = selector.replace('\\', '')
-                self.wait_for_element_present(
-                    selector, timeout=(settings.SMALL_TIMEOUT))
-            except Exception:
-                self.__post_messenger_error_message(
-                    "Tour Error: {'%s'} was not found!"
-                    "" % selector,
-                    duration=settings.SMALL_TIMEOUT)
-                raise Exception(
-                    "Tour Error: {'%s'} was not found! "
-                    "Exiting due to failure on first tour step!"
-                    "" % selector)
-
-        self.execute_script(instructions)
-        tour_on = True
-        if autoplay:
-            start_ms = time.time() * 1000.0
-            stop_ms = start_ms + (interval * 1000.0)
-            latest_element = None
-            latest_text = None
-        while tour_on:
-            try:
-                time.sleep(0.01)
-                result = self.execute_script(
-                    "return Shepherd.activeTour.currentStep.isOpen()")
-            except Exception:
-                tour_on = False
-                result = None
-            if result:
-                tour_on = True
-                if autoplay:
-                    try:
-                        element = self.execute_script(
-                            "return Shepherd.activeTour.currentStep"
-                            ".options.attachTo.element")
-                        shep_text = self.execute_script(
-                            "return Shepherd.activeTour.currentStep"
-                            ".options.text")
-                    except Exception:
-                        continue
-                    if element != latest_element or shep_text != latest_text:
-                        latest_element = element
-                        latest_text = shep_text
-                        start_ms = time.time() * 1000.0
-                        stop_ms = start_ms + (interval * 1000.0)
-                    now_ms = time.time() * 1000.0
-                    if now_ms >= stop_ms:
-                        if ((element == latest_element) and
-                                (shep_text == latest_text)):
-                            self.execute_script("Shepherd.activeTour.next()")
-                            try:
-                                latest_element = self.execute_script(
-                                    "return Shepherd.activeTour.currentStep"
-                                    ".options.attachTo.element")
-                                latest_text = self.execute_script(
-                                    "return Shepherd.activeTour.currentStep"
-                                    ".options.text")
-                                start_ms = time.time() * 1000.0
-                                stop_ms = start_ms + (interval * 1000.0)
-                            except Exception:
-                                pass
-                            continue
-
-            else:
-                try:
-                    time.sleep(0.01)
-                    selector = self.execute_script(
-                        "return Shepherd.activeTour"
-                        ".currentStep.options.attachTo.element")
-                    try:
-                        self.__wait_for_css_query_selector(
-                            selector, timeout=(settings.SMALL_TIMEOUT))
-                    except Exception:
-                        self.remove_elements("div.shepherd-content")
-                        self.__post_messenger_error_message(
-                            "Tour Error: {'%s'} was not found!"
-                            "" % selector,
-                            duration=settings.SMALL_TIMEOUT)
-                        time.sleep(0.1)
-                    self.execute_script("Shepherd.activeTour.next()")
-                    if autoplay:
-                        start_ms = time.time() * 1000.0
-                        stop_ms = start_ms + (interval * 1000.0)
-                    tour_on = True
-                except Exception:
-                    tour_on = False
-                    time.sleep(0.1)
-
-    def __play_bootstrap_tour(self, name=None, interval=0):
-        """ Plays a tour on the current website.
-            @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to play.
-            interval - The delay time between autoplaying tour steps.
-                       If set to 0 (default), the tour is fully manual control.
-        """
-        instructions = ""
-        for tour_step in self._tour_steps[name]:
-            instructions += tour_step
-        instructions += (
-            """]);
-
-            // Initialize the tour
-            tour.init();
-
-            // Start the tour
-            tour.start();
-
-            // Fix timing issue by restarting tour immediately
-            tour.restart();
-
-            // Save for later
-            $tour = tour;""")
-
-        if interval and interval > 0:
-            if interval < 1:
-                interval = 1
-            interval = str(float(interval) * 1000.0)
-            instructions = instructions.replace(
-                'duration: 0,', 'duration: %s,' % interval)
-
-        if not self.__is_bootstrap_activated():
-            self.__activate_bootstrap()
-
-        if len(self._tour_steps[name]) > 1:
-            try:
-                if "element: " in self._tour_steps[name][1]:
-                    selector = re.search(
-                        r"[\S\s]+element: '([\S\s]+)',[\S\s]+title: '",
-                        self._tour_steps[name][1]).group(1)
-                    selector = selector.replace('\\', '').replace(':first', '')
-                    self.wait_for_element_present(
-                        selector, timeout=(settings.SMALL_TIMEOUT))
-                else:
-                    selector = "html"
-            except Exception:
-                self.__post_messenger_error_message(
-                    "Tour Error: {'%s'} was not found!"
-                    "" % selector,
-                    duration=settings.SMALL_TIMEOUT)
-                raise Exception(
-                    "Tour Error: {'%s'} was not found! "
-                    "Exiting due to failure on first tour step!"
-                    "" % selector)
-
-        self.execute_script(instructions)
-        tour_on = True
-        while tour_on:
-            try:
-                time.sleep(0.01)
-                if self.browser != "firefox":
-                    result = self.execute_script(
-                        "return $tour.ended()")
-                else:
-                    self.wait_for_element_present(".tour-tour", timeout=0.4)
-                    result = False
-            except Exception:
-                tour_on = False
-                result = None
-            if result is False:
-                tour_on = True
-            else:
-                try:
-                    time.sleep(0.01)
-                    if self.browser != "firefox":
-                        result = self.execute_script(
-                            "return $tour.ended()")
-                    else:
-                        self.wait_for_element_present(
-                            ".tour-tour", timeout=0.4)
-                        result = False
-                    if result is False:
-                        time.sleep(0.1)
-                        continue
-                    else:
-                        return
-                except Exception:
-                    tour_on = False
-                    time.sleep(0.1)
-
-    def __play_hopscotch_tour(self, name=None, interval=0):
-        """ Plays a tour on the current website.
-            @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to play.
-            interval - The delay time between autoplaying tour steps.
-                       If set to 0 (default), the tour is fully manual control.
-        """
-        instructions = ""
-        for tour_step in self._tour_steps[name]:
-            instructions += tour_step
-        instructions += (
-            """]
-            };
-
-            // Start the tour!
-            hopscotch.startTour(tour);
-
-            $tour = hopscotch;""")
-
-        autoplay = False
-        if interval and interval > 0:
-            autoplay = True
-            interval = float(interval)
-            if interval < 0.5:
-                interval = 0.5
-
-        if not self.__is_hopscotch_activated():
-            self.__activate_hopscotch()
-
-        if len(self._tour_steps[name]) > 1:
-            try:
-                if "target: " in self._tour_steps[name][1]:
-                    selector = re.search(
-                        r"[\S\s]+target: '([\S\s]+)',[\S\s]+title: '",
-                        self._tour_steps[name][1]).group(1)
-                    selector = selector.replace('\\', '').replace(':first', '')
-                    self.wait_for_element_present(
-                        selector, timeout=(settings.SMALL_TIMEOUT))
-                else:
-                    selector = "html"
-            except Exception:
-                self.__post_messenger_error_message(
-                    "Tour Error: {'%s'} was not found!"
-                    "" % selector,
-                    duration=settings.SMALL_TIMEOUT)
-                raise Exception(
-                    "Tour Error: {'%s'} was not found! "
-                    "Exiting due to failure on first tour step!"
-                    "" % selector)
-
-        self.execute_script(instructions)
-        tour_on = True
-        if autoplay:
-            start_ms = time.time() * 1000.0
-            stop_ms = start_ms + (interval * 1000.0)
-            latest_step = 0
-        while tour_on:
-            try:
-                time.sleep(0.01)
-                if self.browser != "firefox":
-                    result = not self.execute_script(
-                        "return $tour.isActive")
-                else:
-                    self.wait_for_element_present(
-                        ".hopscotch-bubble", timeout=0.4)
-                    result = False
-            except Exception:
-                tour_on = False
-                result = None
-            if result is False:
-                tour_on = True
-                if autoplay:
-                    try:
-                        current_step = self.execute_script(
-                            "return $tour.getCurrStepNum()")
-                    except Exception:
-                        continue
-                    if current_step != latest_step:
-                        latest_step = current_step
-                        start_ms = time.time() * 1000.0
-                        stop_ms = start_ms + (interval * 1000.0)
-                    now_ms = time.time() * 1000.0
-                    if now_ms >= stop_ms:
-                        if current_step == latest_step:
-                            self.execute_script("return $tour.nextStep()")
-                            try:
-                                latest_step = self.execute_script(
-                                    "return $tour.getCurrStepNum()")
-                                start_ms = time.time() * 1000.0
-                                stop_ms = start_ms + (interval * 1000.0)
-                            except Exception:
-                                pass
-                            continue
-            else:
-                try:
-                    time.sleep(0.01)
-                    if self.browser != "firefox":
-                        result = not self.execute_script(
-                            "return $tour.isActive")
-                    else:
-                        self.wait_for_element_present(
-                            ".hopscotch-bubble", timeout=0.4)
-                        result = False
-                    if result is False:
-                        time.sleep(0.1)
-                        continue
-                    else:
-                        return
-                except Exception:
-                    tour_on = False
-                    time.sleep(0.1)
-
-    def __play_introjs_tour(self, name=None, interval=0):
-        """ Plays a tour on the current website.
-            @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to play.
-        """
-        instructions = ""
-        for tour_step in self._tour_steps[name]:
-            instructions += tour_step
-        instructions += (
-            """]
-            });
-            intro.setOption("disableInteraction", true);
-            intro.setOption("overlayOpacity", .29);
-            intro.setOption("scrollToElement", true);
-            intro.setOption("keyboardNavigation", true);
-            intro.setOption("exitOnEsc", false);
-            intro.setOption("exitOnOverlayClick", false);
-            intro.setOption("showStepNumbers", false);
-            intro.setOption("showProgress", false);
-            intro.start();
-            $tour = intro;
-            };
-            // Start the tour
-            startIntro();
-            """)
-
-        autoplay = False
-        if interval and interval > 0:
-            autoplay = True
-            interval = float(interval)
-            if interval < 0.5:
-                interval = 0.5
-
-        if not self.__is_introjs_activated():
-            self.__activate_introjs()
-
-        if len(self._tour_steps[name]) > 1:
-            try:
-                if "element: " in self._tour_steps[name][1]:
-                    selector = re.search(
-                        r"[\S\s]+element: '([\S\s]+)',[\S\s]+intro: '",
-                        self._tour_steps[name][1]).group(1)
-                    selector = selector.replace('\\', '')
-                    self.wait_for_element_present(
-                        selector, timeout=settings.SMALL_TIMEOUT)
-                else:
-                    selector = "html"
-            except Exception:
-                self.__post_messenger_error_message(
-                    "Tour Error: {'%s'} was not found!"
-                    "" % selector,
-                    duration=settings.SMALL_TIMEOUT)
-                raise Exception(
-                    "Tour Error: {'%s'} was not found! "
-                    "Exiting due to failure on first tour step!"
-                    "" % selector)
-
-        self.execute_script(instructions)
-        tour_on = True
-        if autoplay:
-            start_ms = time.time() * 1000.0
-            stop_ms = start_ms + (interval * 1000.0)
-            latest_step = 0
-        while tour_on:
-            try:
-                time.sleep(0.01)
-                if self.browser != "firefox":
-                    result = self.execute_script(
-                        "return $tour._currentStep")
-                else:
-                    self.wait_for_element_present(
-                        ".introjs-tooltip", timeout=0.4)
-                    result = True
-            except Exception:
-                tour_on = False
-                result = None
-            if result is not None:
-                tour_on = True
-                if autoplay:
-                    try:
-                        current_step = self.execute_script(
-                            "return $tour._currentStep")
-                    except Exception:
-                        continue
-                    if current_step != latest_step:
-                        latest_step = current_step
-                        start_ms = time.time() * 1000.0
-                        stop_ms = start_ms + (interval * 1000.0)
-                    now_ms = time.time() * 1000.0
-                    if now_ms >= stop_ms:
-                        if current_step == latest_step:
-                            self.execute_script("return $tour.nextStep()")
-                            try:
-                                latest_step = self.execute_script(
-                                    "return $tour._currentStep")
-                                start_ms = time.time() * 1000.0
-                                stop_ms = start_ms + (interval * 1000.0)
-                            except Exception:
-                                pass
-                            continue
-            else:
-                try:
-                    time.sleep(0.01)
-                    if self.browser != "firefox":
-                        result = self.execute_script(
-                            "return $tour._currentStep")
-                    else:
-                        self.wait_for_element_present(
-                            ".introjs-tooltip", timeout=0.4)
-                        result = True
-                    if result is not None:
-                        time.sleep(0.1)
-                        continue
-                    else:
-                        return
-                except Exception:
-                    tour_on = False
-                    time.sleep(0.1)
+            # "Shepherd"
+            tour_helper.play_shepherd_tour(
+                self.driver, self._tour_steps,
+                self.message_duration, name=name, interval=interval)
 
     def export_tour(self, name=None, filename="my_tour.js"):
         """ Exports a tour as a JS file.
@@ -1844,273 +1128,22 @@ class BaseCase(unittest.TestCase):
             normally use self.play_tour()
             It will include necessary resources as well, such as jQuery.
             You'll be able to copy the tour directly into the Console of
-            any web browser to play the tour outside of SeleniumBase runs. """
-        if not name:
-            name = "default"
-        if name not in self._tour_steps:
-            raise Exception("Tour {%s} does not exist!" % name)
-        if not filename.endswith('.js'):
-            raise Exception('Tour file must end in ".js"!')
-
-        tour_type = None
-        if "Bootstrap" in self._tour_steps[name][0]:
-            tour_type = "bootstrap"
-        elif "Hopscotch" in self._tour_steps[name][0]:
-            tour_type = "hopscotch"
-        elif "IntroJS" in self._tour_steps[name][0]:
-            tour_type = "introjs"
-        elif "Shepherd" in self._tour_steps[name][0]:
-            tour_type = "shepherd"
-        else:
-            raise Exception('Unknown tour type!')
-
-        instructions = (
-            '''////////  Resources  ////////\n\n'''
-            '''function injectCSS(css_link) {'''
-            '''var head = document.getElementsByTagName("head")[0];'''
-            '''var link = document.createElement("link");'''
-            '''link.rel = "stylesheet";'''
-            '''link.type = "text/css";'''
-            '''link.href = css_link;'''
-            '''link.crossorigin = "anonymous";'''
-            '''head.appendChild(link);'''
-            '''};\n'''
-            '''function injectJS(js_link) {'''
-            '''var head = document.getElementsByTagName("head")[0];'''
-            '''var script = document.createElement("script");'''
-            '''script.src = js_link;'''
-            '''script.defer;'''
-            '''script.type="text/javascript";'''
-            '''script.crossorigin = "anonymous";'''
-            '''script.onload = function() { null };'''
-            '''head.appendChild(script);'''
-            '''};\n'''
-            '''function injectStyle(css) {'''
-            '''var head = document.getElementsByTagName("head")[0];'''
-            '''var style = document.createElement("style");'''
-            '''style.type = "text/css";'''
-            '''style.appendChild(document.createTextNode(css));'''
-            '''head.appendChild(style);'''
-            '''};\n''')
-
-        if tour_type == "bootstrap":
-            jquery_js = constants.JQuery.MIN_JS
-            bootstrap_tour_css = constants.BootstrapTour.MIN_CSS
-            bootstrap_tour_js = constants.BootstrapTour.MIN_JS
-            backdrop_style = style_sheet.bt_backdrop_style
-            backdrop_style = backdrop_style.replace('\n', '')
-            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
-            instructions += 'injectJS("%s");' % jquery_js
-            instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
-            instructions += 'injectCSS("%s");\n' % bootstrap_tour_css
-            instructions += 'injectStyle("%s");\n' % backdrop_style
-            instructions += 'injectJS("%s");' % bootstrap_tour_js
-
-        elif tour_type == "hopscotch":
-            hopscotch_css = constants.Hopscotch.MIN_CSS
-            hopscotch_js = constants.Hopscotch.MIN_JS
-            backdrop_style = style_sheet.hops_backdrop_style
-            backdrop_style = backdrop_style.replace('\n', '')
-            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
-            instructions += 'injectCSS("%s");\n' % hopscotch_css
-            instructions += 'injectStyle("%s");\n' % backdrop_style
-            instructions += 'injectJS("%s");' % hopscotch_js
-
-        elif tour_type == "introjs":
-            intro_css = constants.IntroJS.MIN_CSS
-            intro_js = constants.IntroJS.MIN_JS
-            instructions += 'injectCSS("%s");\n' % intro_css
-            instructions += 'injectJS("%s");' % intro_js
-
-        elif tour_type == "shepherd":
-            jquery_js = constants.JQuery.MIN_JS
-            shepherd_js = constants.Shepherd.MIN_JS
-            sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
-            sh_theme_arrows_fix_css = constants.Shepherd.THEME_ARR_FIX_CSS
-            sh_theme_default_css = constants.Shepherd.THEME_DEFAULT_CSS
-            sh_theme_dark_css = constants.Shepherd.THEME_DARK_CSS
-            sh_theme_sq_css = constants.Shepherd.THEME_SQ_CSS
-            sh_theme_sq_dark_css = constants.Shepherd.THEME_SQ_DK_CSS
-            tether_js = constants.Tether.MIN_JS
-            spinner_css = constants.Messenger.SPINNER_CSS
-            backdrop_style = style_sheet.sh_backdrop_style
-            backdrop_style = backdrop_style.replace('\n', '')
-            backdrop_style = self.__escape_quotes_if_needed(backdrop_style)
-            instructions += 'injectCSS("%s");\n' % spinner_css
-            instructions += 'injectJS("%s");\n' % jquery_js
-            instructions += 'injectJS("%s");' % tether_js
-            instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
-            instructions += 'injectCSS("%s");' % sh_theme_arrows_css
-            instructions += 'injectCSS("%s");' % sh_theme_arrows_fix_css
-            instructions += 'injectCSS("%s");' % sh_theme_default_css
-            instructions += 'injectCSS("%s");' % sh_theme_dark_css
-            instructions += 'injectCSS("%s");' % sh_theme_sq_css
-            instructions += 'injectCSS("%s");\n' % sh_theme_sq_dark_css
-            instructions += 'injectStyle("%s");\n' % backdrop_style
-            instructions += 'injectJS("%s");' % shepherd_js
-
-        instructions += '\n\n////////  Tour Code  ////////\n\n'
-        for tour_step in self._tour_steps[name]:
-            instructions += tour_step
-
-        if tour_type == "bootstrap":
-            instructions += (
-                """]);
-                // Initialize the tour
-                tour.init();
-                // Start the tour
-                tour.start();
-                $tour = tour;
-                $tour.restart();\n
-                """)
-        elif tour_type == "hopscotch":
-            instructions += (
-                """]
-                };
-                // Start the tour!
-                hopscotch.startTour(tour);
-                $tour = hopscotch;\n
-                """)
-        elif tour_type == "introjs":
-            instructions += (
-                """]
-                });
-                intro.setOption("disableInteraction", true);
-                intro.setOption("overlayOpacity", .29);
-                intro.setOption("scrollToElement", true);
-                intro.setOption("keyboardNavigation", true);
-                intro.setOption("exitOnEsc", false);
-                intro.setOption("exitOnOverlayClick", false);
-                intro.setOption("showStepNumbers", false);
-                intro.setOption("showProgress", false);
-                intro.start();
-                $tour = intro;
-                };
-                startIntro();\n
-                """)
-        elif tour_type == "shepherd":
-            instructions += (
-                """
-                tour.start();
-                $tour = tour;\n
-                """)
-        else:
-            pass
-
-        import codecs
-        out_file = codecs.open(filename, "w+")
-        out_file.writelines(instructions)
-        out_file.close()
-        print('\n>>> [%s] was saved!\n' % filename)
-
-    def __wait_for_css_query_selector(
-            self, selector, timeout=settings.SMALL_TIMEOUT):
-        element = None
-        start_ms = time.time() * 1000.0
-        stop_ms = start_ms + (timeout * 1000.0)
-        for x in range(int(timeout * 10)):
-            try:
-                selector = re.escape(selector)
-                selector = self.__escape_quotes_if_needed(selector)
-                element = self.execute_script(
-                    """return document.querySelector('%s')""" % selector)
-                if element:
-                    return element
-            except Exception:
-                element = None
-            if not element:
-                now_ms = time.time() * 1000.0
-                if now_ms >= stop_ms:
-                    break
-                time.sleep(0.1)
-
-        raise Exception(
-            "Element {%s} was not present after %s seconds!" % (
-                selector, timeout))
+            any web browser to play the tour outside of SeleniumBase runs.
+            @Params
+            name - If creating multiple tours, use this to select the
+                   tour you wish to play.
+            filename - The name of the javascript file that you wish to
+                   save the tour to. """
+        tour_helper.export_tour(self._tour_steps, name=name, filename=filename)
 
     def activate_messenger(self):
-        jquery_js = constants.JQuery.MIN_JS
-        messenger_css = constants.Messenger.MIN_CSS
-        messenger_js = constants.Messenger.MIN_JS
-        msgr_theme_flat_js = constants.Messenger.THEME_FLAT_JS
-        msgr_theme_future_js = constants.Messenger.THEME_FUTURE_JS
-        msgr_theme_flat_css = constants.Messenger.THEME_FLAT_CSS
-        msgr_theme_future_css = constants.Messenger.THEME_FUTURE_CSS
-        msgr_theme_block_css = constants.Messenger.THEME_BLOCK_CSS
-        msgr_theme_air_css = constants.Messenger.THEME_AIR_CSS
-        msgr_theme_ice_css = constants.Messenger.THEME_ICE_CSS
-        spinner_css = constants.Messenger.SPINNER_CSS
-        underscore_js = constants.Underscore.MIN_JS
-        backbone_js = constants.Backbone.MIN_JS
-
-        msg_style = ("Messenger.options = {'maxMessages': 8, "
-                     "extraClasses: 'messenger-fixed "
-                     "messenger-on-bottom messenger-on-right', "
-                     "theme: 'future'}")
-
-        self.add_js_link(jquery_js)
-        self.add_css_link(messenger_css)
-        self.add_css_link(msgr_theme_flat_css)
-        self.add_css_link(msgr_theme_future_css)
-        self.add_css_link(msgr_theme_block_css)
-        self.add_css_link(msgr_theme_air_css)
-        self.add_css_link(msgr_theme_ice_css)
-        self.add_js_link(underscore_js)
-        self.add_js_link(backbone_js)
-        self.add_css_link(spinner_css)
-        self.add_js_link(messenger_js)
-        self.add_js_link(msgr_theme_flat_js)
-        self.add_js_link(msgr_theme_future_js)
-
-        for x in range(int(settings.MINI_TIMEOUT * 10.0)):
-            # Messenger needs a small amount of time to load & activate.
-            try:
-                self.execute_script(msg_style)
-                self.wait_for_ready_state_complete()
-                return
-            except Exception:
-                time.sleep(0.1)
+        js_utils.activate_messenger(self.driver)
 
     def set_messenger_theme(self, theme="default", location="default",
                             max_messages="default"):
-        if theme == "default":
-            theme = "future"
-        if location == "default":
-            location = "bottom_right"
-        if max_messages == "default":
-            max_messages = "8"
-
-        valid_themes = ['flat', 'future', 'block', 'air', 'ice']
-        if theme not in valid_themes:
-            raise Exception("Theme: %s is not in %s!" % (theme, valid_themes))
-        valid_locations = (['top_left', 'top_center', 'top_right'
-                            'bottom_left', 'bottom_center', 'bottom_right'])
-        if location not in valid_locations:
-            raise Exception(
-                "Location: %s is not in %s!" % (location, valid_locations))
-
-        if location == 'top_left':
-            messenger_location = "messenger-on-top messenger-on-left"
-        elif location == 'top_center':
-            messenger_location = "messenger-on-top"
-        elif location == 'top_right':
-            messenger_location = "messenger-on-top messenger-on-right"
-        elif location == 'bottom_left':
-            messenger_location = "messenger-on-bottom messenger-on-left"
-        elif location == 'bottom_center':
-            messenger_location = "messenger-on-bottom"
-        elif location == 'bottom_right':
-            messenger_location = "messenger-on-bottom messenger-on-right"
-
-        msg_style = ("Messenger.options = {'maxMessages': %s, "
-                     "extraClasses: 'messenger-fixed %s', theme: '%s'}"
-                     % (max_messages, messenger_location, theme))
-        try:
-            self.execute_script(msg_style)
-        except Exception:
-            self.activate_messenger()
-            self.execute_script(msg_style)
-        time.sleep(0.1)
+        js_utils.set_messenger_theme(
+            self.driver, theme=theme,
+            location=location, max_messages=max_messages)
 
     def post_message(self, message, style="info", duration=None):
         """ Post a message on the screen with Messenger.
@@ -2120,32 +1153,10 @@ class BaseCase(unittest.TestCase):
                 duration: The time until the message vanishes.
 
             You can also post messages by using =>
-                self.execute_script('Messenger().post("My Message")')
-             """
-        if not duration:
-            if not self.message_duration:
-                duration = settings.DEFAULT_MESSAGE_DURATION
-            else:
-                duration = self.message_duration
-        message = re.escape(message)
-        message = self.__escape_quotes_if_needed(message)
-        messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
-                            '''hideAfter: %s, hideOnNavigate: true});'''
-                            % (message, style, duration))
-        try:
-            self.execute_script(messenger_script)
-        except Exception:
-            self.activate_messenger()
-            self.set_messenger_theme()
-            try:
-                self.execute_script(messenger_script)
-            except Exception:
-                time.sleep(0.2)
-                self.activate_messenger()
-                time.sleep(0.2)
-                self.set_messenger_theme()
-                time.sleep(0.5)
-                self.execute_script(messenger_script)
+                self.execute_script('Messenger().post("My Message")') """
+        js_utils.post_message(
+            self.driver, message, self.message_duration,
+            style=style, duration=duration)
 
     def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
@@ -2265,81 +1276,10 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.065)
 
     def __highlight_with_js(self, selector, loops, o_bs):
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
-                  % selector)
-        self.execute_script(script)
-
-        for n in range(loops):
-            script = ("""document.querySelector('%s').style =
-                      'box-shadow: 0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
-                      % selector)
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = ("""document.querySelector('%s').style =
-                      'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
-                      % selector)
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = ("""document.querySelector('%s').style =
-                      'box-shadow: 0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
-                      % selector)
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = ("""document.querySelector('%s').style =
-                      'box-shadow: 0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
-                      % selector)
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = ("""document.querySelector('%s').style =
-                      'box-shadow: 0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
-                      % selector)
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = ("""document.querySelector('%s').style =
-                      'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
-                      % selector)
-            self.execute_script(script)
-            time.sleep(0.0181)
-
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: %s';"""
-                  % (selector, o_bs))
-        self.execute_script(script)
+        js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
 
     def __highlight_with_jquery(self, selector, loops, o_bs):
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
-        self.safe_execute_script(script)
-
-        for n in range(loops):
-            script = """jQuery('%s').css('box-shadow',
-                '0px 0px 6px 6px rgba(255, 0, 0, 1)');""" % selector
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = """jQuery('%s').css('box-shadow',
-                '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = """jQuery('%s').css('box-shadow',
-                '0px 0px 6px 6px rgba(0, 0, 255, 1)');""" % selector
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = """jQuery('%s').css('box-shadow',
-                '0px 0px 6px 6px rgba(0, 255, 0, 1)');""" % selector
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = """jQuery('%s').css('box-shadow',
-                '0px 0px 6px 6px rgba(128, 128, 0, 1)');""" % selector
-            self.execute_script(script)
-            time.sleep(0.0181)
-            script = """jQuery('%s').css('box-shadow',
-                '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
-            self.execute_script(script)
-            time.sleep(0.0181)
-
-        script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
-        self.execute_script(script)
+        js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
     def scroll_to(self, selector, by=By.CSS_SELECTOR,
                   timeout=settings.SMALL_TIMEOUT):
@@ -3064,8 +2004,7 @@ class BaseCase(unittest.TestCase):
     def wait_for_ready_state_complete(self, timeout=settings.EXTREME_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        is_ready = page_actions.wait_for_ready_state_complete(self.driver,
-                                                              timeout)
+        is_ready = js_utils.wait_for_ready_state_complete(self.driver, timeout)
         self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
         if self.ad_block_on:
             # If the ad_block feature is enabled, then block ads for new URLs
@@ -3081,34 +2020,7 @@ class BaseCase(unittest.TestCase):
         return is_ready
 
     def wait_for_angularjs(self, timeout=settings.LARGE_TIMEOUT, **kwargs):
-        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if not settings.WAIT_FOR_ANGULARJS:
-            return
-
-        NG_WRAPPER = '%(prefix)s' \
-                     'var $elm=document.querySelector(' \
-                     '\'[data-ng-app],[ng-app],.ng-scope\')||document;' \
-                     'if(window.angular && angular.getTestability){' \
-                     'angular.getTestability($elm).whenStable(%(handler)s)' \
-                     '}else{' \
-                     'var $inj;try{$inj=angular.element($elm).injector()||' \
-                     'angular.injector([\'ng\'])}catch(ex){' \
-                     '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||' \
-                     '$inj;$inj.get(\'$browser\').' \
-                     'notifyWhenNoOutstandingRequests(%(handler)s)}' \
-                     '%(suffix)s'
-        def_pre = 'var cb=arguments[arguments.length-1];if(window.angular){'
-        prefix = kwargs.pop('prefix', def_pre)
-        handler = kwargs.pop('handler', 'function(){cb(true)}')
-        suffix = kwargs.pop('suffix', '}else{cb(false)}')
-        script = NG_WRAPPER % {'prefix': prefix,
-                               'handler': handler,
-                               'suffix': suffix}
-        try:
-            self.execute_async_script(script, timeout=timeout)
-        except Exception:
-            time.sleep(0.05)
+        js_utils.wait_for_angularjs(self.driver, timeout, **kwargs)
 
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -3495,10 +2407,7 @@ class BaseCase(unittest.TestCase):
 
     def __make_css_match_first_element_only(self, selector):
         # Only get the first match
-        last_syllable = selector.split(' ')[-1]
-        if ':' not in last_syllable and ':contains' not in selector:
-            selector += ':first'
-        return selector
+        return page_utils.make_css_match_first_element_only(selector)
 
     def __demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:
@@ -3521,72 +2430,19 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by)
 
     def __scroll_to_element(self, element):
-        element_location = element.location['y']
-        element_location = element_location - 130
-        if element_location < 0:
-            element_location = 0
-        scroll_script = "window.scrollTo(0, %s);" % element_location
-        # The old jQuery scroll_script required by=By.CSS_SELECTOR
-        # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
-        try:
-            self.execute_script(scroll_script)
-        except WebDriverException:
-            pass  # Older versions of Firefox experienced issues here
+        js_utils.scroll_to_element(self.driver, element)
         self.__demo_mode_pause_if_active(tiny=True)
 
     def __slow_scroll_to_element(self, element):
-        if self.browser == 'ie':
-            # IE breaks on slow-scrolling. Do a fast scroll instead.
-            self.__scroll_to_element(element)
-            return
-        scroll_position = self.execute_script("return window.scrollY;")
-        element_location = element.location['y']
-        element_location = element_location - 130
-        if element_location < 0:
-            element_location = 0
-        distance = element_location - scroll_position
-        if distance != 0:
-            total_steps = int(abs(distance) / 50.0) + 2.0
-            step_value = float(distance) / total_steps
-            new_position = scroll_position
-            for y in range(int(total_steps)):
-                time.sleep(0.0114)
-                new_position += step_value
-                scroll_script = "window.scrollTo(0, %s);" % new_position
-                self.execute_script(scroll_script)
-        time.sleep(0.01)
-        scroll_script = "window.scrollTo(0, %s);" % element_location
-        self.execute_script(scroll_script)
-        time.sleep(0.01)
-        if distance > 430 or distance < -300:
-            # Add small recovery time for long-distance slow-scrolling
-            time.sleep(0.162)
+        js_utils.slow_scroll_to_element(self.driver, element, self.browser)
 
     def __post_messenger_success_message(self, message, duration=None):
-        if not duration:
-            if not self.message_duration:
-                duration = settings.DEFAULT_MESSAGE_DURATION
-            else:
-                duration = self.message_duration
-        try:
-            self.set_messenger_theme(theme="future", location="bottom_right")
-            self.post_message(message, style="success", duration=duration)
-            time.sleep(duration)
-        except Exception:
-            pass
+        js_utils.post_messenger_success_message(
+            self.driver, message, self.message_duration, duration=duration)
 
     def __post_messenger_error_message(self, message, duration=None):
-        if not duration:
-            if not self.message_duration:
-                duration = settings.DEFAULT_MESSAGE_DURATION
-            else:
-                duration = self.message_duration
-        try:
-            self.set_messenger_theme(theme="block", location="top_center")
-            self.post_message(message, style="error", duration=duration)
-            time.sleep(duration)
-        except Exception:
-            pass
+        js_utils.post_messenger_error_message(
+            self.driver, message, self.message_duration, duration=duration)
 
     def __highlight_with_assert_success(
             self, message, selector, by=By.CSS_SELECTOR):
@@ -3623,65 +2479,12 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.065)
 
     def __highlight_with_js_2(self, message, selector, o_bs):
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
-                  % selector)
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
-                  % selector)
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
-                  % selector)
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
-                  % selector)
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
-                  % selector)
-        self.execute_script(script)
-        time.sleep(0.0181)
-
-        self.__post_messenger_success_message(message)
-
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: %s';"""
-                  % (selector, o_bs))
-        self.execute_script(script)
+        js_utils.highlight_with_js_2(
+            self.driver, message, selector, o_bs, self.message_duration)
 
     def __highlight_with_jquery_2(self, message, selector, o_bs):
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
-        self.safe_execute_script(script)
-        time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(205, 30, 0, 1)');""" % selector
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(128, 0, 128, 1)');""" % selector
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(50, 50, 200, 1)');""" % selector
-        self.execute_script(script)
-        time.sleep(0.0181)
-        script = """jQuery('%s').css('box-shadow',
-            '0px 0px 6px 6px rgba(50, 205, 50, 1)');""" % selector
-        self.execute_script(script)
-        time.sleep(0.0181)
-
-        self.__post_messenger_success_message(message)
-
-        script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
-        self.execute_script(script)
+        js_utils.highlight_with_jquery_2(
+            self.driver, message, selector, o_bs, self.message_duration)
 
     ############
 

@@ -24,7 +24,6 @@ import os
 import sys
 import time
 import traceback
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
@@ -424,35 +423,6 @@ def save_test_failure_data(driver, name, browser_type, folder=None):
                                    sys.exc_info()[2])))
     failure_data_file.writelines("\r\n".join(data_to_save))
     failure_data_file.close()
-
-
-def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
-    """
-    The DOM (Document Object Model) has a property called "readyState".
-    When the value of this becomes "complete", page resources are considered
-    fully loaded (although AJAX and other loads might still be happening).
-    This method will wait until document.readyState == "complete".
-    """
-
-    start_ms = time.time() * 1000.0
-    stop_ms = start_ms + (timeout * 1000.0)
-    for x in range(int(timeout * 10)):
-        try:
-            ready_state = driver.execute_script("return document.readyState")
-        except WebDriverException:
-            # Bug fix for: [Permission denied to access property "document"]
-            time.sleep(0.03)
-            return True
-        if ready_state == u'complete':
-            time.sleep(0.01)  # Better be sure everything is done loading
-            return True
-        else:
-            now_ms = time.time() * 1000.0
-            if now_ms >= stop_ms:
-                break
-            time.sleep(0.1)
-    raise Exception(
-        "Page elements never fully loaded after %s seconds!" % timeout)
 
 
 def wait_for_and_accept_alert(driver, timeout=settings.LARGE_TIMEOUT):
