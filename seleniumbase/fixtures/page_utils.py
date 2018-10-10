@@ -114,11 +114,20 @@ def escape_quotes_if_needed(string):
     return string
 
 
+def make_css_match_first_element_only(selector):
+    # Only get the first match
+    last_syllable = selector.split(' ')[-1]
+    if ':' not in last_syllable and ':contains' not in selector:
+        selector += ':first'
+    return selector
+
+
 def _jq_format(code):
     """
     DEPRECATED - Use re.escape() instead, which performs the intended action.
     Use before throwing raw code such as 'div[tab="advanced"]' into jQuery.
     Selectors with quotes inside of quotes would otherwise break jQuery.
+    If you just want to escape quotes, there's escape_quotes_if_needed().
     This is similar to "json.dumps(value)", but with one less layer of quotes.
     """
     code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
