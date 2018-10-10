@@ -8,6 +8,7 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose additional variables to pass into tests
 * Change the automation speed (with Demo Mode)
 * Choose whether to run tests multi-threaded
+* Choose a BrowserStack server to run on
 * Choose a Selenium Grid to connect to
 * Choose a database to save results to
 * Choose a proxy server to connect to
@@ -29,7 +30,9 @@ pytest my_test_suite.py --html=report.html
 
 nosetests my_test_suite.py --report --show_report
 
-pytest my_test_suite.py --server=IP_ADDRESS -n 4
+pytest my_test_suite.py --headless -n 4
+
+pytest my_test_suite.py --server=IP_ADDRESS --port=4444
 
 pytest my_test_suite.py --proxy=IP_ADDRESS:PORT
 
@@ -39,6 +42,16 @@ pytest test_fail.py -s --pdb --pdb-failures
 You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
 
 (NOTE: If you're using **pytest** for running tests outside of the SeleniumBase repo, **you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**. If using **nosetests**, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).)
+
+#### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid (or your own):**
+
+Here's how to connect to a BrowserStack server for running tests:
+
+```bash
+pytest my_first_test.py --server=username:key@hub.browserstack.com --port=80
+```
+
+Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
 #### **Example tests using Logging:**
 
