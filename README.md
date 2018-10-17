@@ -336,6 +336,12 @@ If you wish to use a proxy server for your browser tests (Chrome and Firefox onl
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
+If the proxy server that you wish to use requires authentication, you can do the following (Chrome only):
+
+```
+pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+```
+
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
 
 ```
