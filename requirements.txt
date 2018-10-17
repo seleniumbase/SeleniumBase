@@ -2,7 +2,7 @@ pip
 ipython
 setuptools
 selenium==3.14.1
-pytest>=3.8.2
+pytest>=3.9.1
 pytest-cov>=2.6.0
 pytest-html>=1.19.0
 pytest-rerunfailures>=4.2
