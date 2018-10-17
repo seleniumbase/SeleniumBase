@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open('https://xkcd.com/353/')            # Navigate to the web page
+        self.open('https://xkcd.com/353/')           # Navigate to the web page
         self.assert_element('img[alt="Python"]')       # Assert element on page
         self.click('a[rel="license"]')                  # Click element on page
         self.assert_text('free to copy', 'div center')    # Assert text on page

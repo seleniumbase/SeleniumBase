@@ -17,6 +17,5 @@ class MyTestClass(BaseCase):
         self.add_tour_step("Click for the license here.", 'a[rel="license"]')
         self.add_tour_step("This selects a random comic.", 'a[href*="random"]')
         self.add_tour_step("Thanks for taking this tour!")
-        # self.export_tour()  # Use this to export the tour as a .js file
+        # self.export_tour()  # Use this to export the tour as [my_tour.js]
         self.play_tour()
-

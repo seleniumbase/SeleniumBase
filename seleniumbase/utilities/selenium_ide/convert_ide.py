@@ -636,7 +636,7 @@ def main():
     for line in seleniumbase_lines:
         seleniumbase_code += line
         seleniumbase_code += "\n"
-    # print seleniumbase_code  # (For debugging)
+    # print(seleniumbase_code)  # (For debugging)
 
     # Create SeleniumBase test file
     base_file_name = webdriver_python_file.split('.py')[0]
