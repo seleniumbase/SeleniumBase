@@ -33,7 +33,7 @@ def log_test_failure_data(test, test_logpath, driver, browser):
     if sys.version.startswith('3') and hasattr(test, '_outcome'):
         if test._outcome.errors:
             try:
-                exc_message = test._outcome.errors[0][1][1].msg
+                exc_message = test._outcome.errors[0][1][1]
                 traceback_address = test._outcome.errors[0][1][2]
                 traceback_list = traceback.format_list(
                     traceback.extract_tb(traceback_address)[1:])
@@ -42,7 +42,7 @@ def log_test_failure_data(test, test_logpath, driver, browser):
                 exc_message = "(Unknown Exception)"
                 traceback_message = "(Unknown Traceback)"
             data_to_save.append("Traceback: " + traceback_message)
-            data_to_save.append("Exception: " + exc_message)
+            data_to_save.append("Exception: " + str(exc_message))
     else:
         data_to_save.append("Traceback: " + ''.join(
             traceback.format_exception(sys.exc_info()[0],

@@ -3,6 +3,7 @@
 import optparse
 import pytest
 from seleniumbase.core import log_helper
+from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
 
@@ -84,6 +85,7 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Designates the proxy server:port to use.
                           Format: servername:port.  OR
+                                  username:password@servername:port  OR
                                   A dict key from proxy_list.PROXY_LIST
                           Default: None.""")
     parser.addoption('--headless', action="store_true",
@@ -138,11 +140,12 @@ def pytest_configure(config):
     if with_testing_base:
         log_path = config.getoption('log_path')
         log_helper.log_folder_setup(log_path)
+    proxy_helper.remove_proxy_zip_if_present()
 
 
 def pytest_unconfigure():
-    """ This runs after all tests have completed with pytest """
-    pass
+    """ This runs after all tests have completed with pytest. """
+    proxy_helper.remove_proxy_zip_if_present()
 
 
 def pytest_runtest_setup():

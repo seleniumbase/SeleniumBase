@@ -1,16 +1,20 @@
 import os
 import re
 import sys
+import threading
+import time
 import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
+from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PLATFORM = sys.platform
 IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None
@@ -49,7 +53,31 @@ def make_driver_executable_if_not(driver_path):
         make_executable(driver_path)
 
 
-def _set_chrome_options(downloads_path, proxy_string):
+def _add_chrome_proxy_extension(
+        chrome_options, proxy_string, proxy_user, proxy_pass):
+    """ Implementation of https://stackoverflow.com/a/35293284 for
+        https://stackoverflow.com/questions/12848327/
+        (Run Selenium on a proxy server that requires authentication.)
+        The retry_on_exception is only needed for multithreaded runs
+        because proxy.zip is a common file shared between all tests
+        in a single run. """
+    if not "".join(sys.argv) == "-c":
+        # Single-threaded
+        proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
+    else:
+        # Pytest multi-threaded test
+        lock = threading.Lock()
+        with lock:
+            if not os.path.exists(PROXY_ZIP_PATH):
+                proxy_helper.create_proxy_zip(
+                    proxy_string, proxy_user, proxy_pass)
+            time.sleep(0.3)
+    chrome_options.add_extension(PROXY_ZIP_PATH)
+    return chrome_options
+
+
+def _set_chrome_options(
+        downloads_path, proxy_string, proxy_auth, proxy_user, proxy_pass):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
@@ -71,6 +99,10 @@ def _set_chrome_options(downloads_path, proxy_string):
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
     if proxy_string:
+        if proxy_auth:
+            chrome_options = _add_chrome_proxy_extension(
+                chrome_options, proxy_string, proxy_user, proxy_pass)
+            chrome_options.add_extension(DRIVER_DIR + "/proxy.zip")
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
     if "win32" in sys.platform or "win64" in sys.platform:
         chrome_options.add_argument("--log-level=3")
@@ -155,22 +187,55 @@ def validate_proxy_string(proxy_string):
 
 def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None):
+    proxy_auth = False
+    proxy_user = None
+    proxy_pass = None
     if proxy_string:
+        username_and_password = None
+        if "@" in proxy_string:
+            # Format => username:password@hostname:port
+            try:
+                username_and_password = proxy_string.split('@')[0]
+                proxy_string = proxy_string.split('@')[1]
+                proxy_user = username_and_password.split(':')[0]
+                proxy_pass = username_and_password.split(':')[1]
+            except Exception:
+                raise Exception(
+                    'The format for using a proxy server with authentication '
+                    'is: "username:password@hostname:port". If using a proxy '
+                    'server without auth, the format is: "hostname:port".')
+            if browser_name != constants.Browser.GOOGLE_CHROME:
+                raise Exception(
+                    "Chrome is required when using a proxy server that has "
+                    "authentication! (If using a proxy server without auth, "
+                    "either Chrome or Firefox may be used.)")
         proxy_string = validate_proxy_string(proxy_string)
+        if proxy_string and proxy_user and proxy_pass:
+            if not os.path.exists(PROXY_ZIP_PATH):
+                proxy_helper.create_proxy_zip(
+                    proxy_string, proxy_user, proxy_pass)
+            proxy_auth = True
     if use_grid:
         return get_remote_driver(
-            browser_name, headless, servername, port, proxy_string)
+            browser_name, headless, servername, port, proxy_string, proxy_auth,
+            proxy_user, proxy_pass)
     else:
-        return get_local_driver(browser_name, headless, proxy_string)
+        return get_local_driver(
+            browser_name, headless, proxy_string, proxy_auth,
+            proxy_user, proxy_pass)
 
 
-def get_remote_driver(browser_name, headless, servername, port, proxy_string):
+def get_remote_driver(
+        browser_name, headless, servername, port, proxy_string, proxy_auth,
+        proxy_user, proxy_pass):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
 
     if browser_name == constants.Browser.GOOGLE_CHROME:
-        chrome_options = _set_chrome_options(downloads_path, proxy_string)
+        chrome_options = _set_chrome_options(
+            downloads_path, proxy_string, proxy_auth,
+            proxy_user, proxy_pass)
         if headless:
             chrome_options.add_argument("--headless")
             chrome_options.add_argument("--disable-gpu")
@@ -237,7 +302,9 @@ def get_remote_driver(browser_name, headless, servername, port, proxy_string):
                     webdriver.DesiredCapabilities.PHANTOMJS))
 
 
-def get_local_driver(browser_name, headless, proxy_string):
+def get_local_driver(
+        browser_name, headless, proxy_string, proxy_auth,
+        proxy_user, proxy_pass):
     '''
     Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test.
@@ -326,7 +393,9 @@ def get_local_driver(browser_name, headless, proxy_string):
             return webdriver.PhantomJS()
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
-            chrome_options = _set_chrome_options(downloads_path, proxy_string)
+            chrome_options = _set_chrome_options(
+                downloads_path, proxy_string, proxy_auth,
+                proxy_user, proxy_pass)
             if headless:
                 chrome_options.add_argument("--headless")
                 chrome_options.add_argument("--disable-gpu")

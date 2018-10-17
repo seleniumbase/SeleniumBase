@@ -36,6 +36,8 @@ pytest my_test_suite.py --server=IP_ADDRESS --port=4444
 
 pytest my_test_suite.py --proxy=IP_ADDRESS:PORT
 
+pytest my_test_suite.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+
 pytest test_fail.py -s --pdb --pdb-failures
 ```
 
