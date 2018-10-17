@@ -66,8 +66,8 @@ setup(
         'requests>=2.19.1',
         'unittest2>=1.1.0',
         'chardet>=3.0.4',
-        'urllib3>=1.23',
         'boto>=2.49.0',
+        'urllib3==1.23',  # Keep at ==1.23
         'nose==1.3.7',  # Keep at ==1.3.7
         'ipdb==0.11',
         'flake8==3.5.0',
