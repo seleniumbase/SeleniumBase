@@ -5,6 +5,7 @@ by providing a WebDriver object for the tests to use.
 
 from nose.plugins import Plugin
 from pyvirtualdisplay import Display
+from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
 
@@ -62,6 +63,7 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""Designates the proxy server:port to use.
                     Format: servername:port.  OR
+                            username:password@servername:port  OR
                             A dict key from proxy_list.PROXY_LIST
                     Default: None.""")
         parser.add_option(
@@ -116,6 +118,7 @@ class SeleniumBrowser(Plugin):
         self.enabled = True  # Used if test class inherits BaseCase
         self.options = options
         self.headless_active = False  # Default setting
+        proxy_helper.remove_proxy_zip_if_present()
 
     def beforeTest(self, test):
         test.test.browser = self.options.browser
@@ -141,6 +144,10 @@ class SeleniumBrowser(Plugin):
         # The driver will be received later
         self.driver = None
         test.test.driver = self.driver
+
+    def finalize(self, result):
+        """ This runs after all tests have completed with nosetests. """
+        proxy_helper.remove_proxy_zip_if_present()
 
     def afterTest(self, test):
         try:
