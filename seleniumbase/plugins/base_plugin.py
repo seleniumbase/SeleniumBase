@@ -40,6 +40,7 @@ class Base(Plugin):
             choices=(
                 constants.Environment.QA,
                 constants.Environment.STAGING,
+                constants.Environment.DEVELOP,
                 constants.Environment.PRODUCTION,
                 constants.Environment.MASTER,
                 constants.Environment.LOCAL,

@@ -7,6 +7,7 @@ class Environment:
     # Usage Example => "--env=qa" => Then access value in tests with "self.env"
     QA = "qa"
     STAGING = "staging"
+    DEVELOP = "develop"
     PRODUCTION = "production"
     MASTER = "master"
     LOCAL = "local"

@@ -12,6 +12,7 @@ def pytest_addoption(parser):
                              'SeleniumBase specific configuration options')
     parser.addoption('--browser', action="store",
                      dest='browser',
+                     type=str.lower,
                      choices=constants.ValidBrowsers.valid_browsers,
                      default=constants.Browser.GOOGLE_CHROME,
                      help="""Specifies the web browser to use. Default: Chrome.
@@ -23,9 +24,11 @@ def pytest_addoption(parser):
                      help="Use if tests need to be run with a web browser.")
     parser.addoption('--env', action='store',
                      dest='environment',
+                     type=str.lower,
                      choices=(
                          constants.Environment.QA,
                          constants.Environment.STAGING,
+                         constants.Environment.DEVELOP,
                          constants.Environment.PRODUCTION,
                          constants.Environment.MASTER,
                          constants.Environment.LOCAL,
@@ -50,7 +53,8 @@ def pytest_addoption(parser):
     parser.addoption('--database_env', action='store',
                      dest='database_env',
                      choices=(
-                         'prod', 'qa', 'staging', 'test', 'local', 'master'
+                         'production', 'qa', 'staging', 'develop',
+                         'test', 'local', 'master'
                      ),
                      default='test',
                      help=optparse.SUPPRESS_HELP)
