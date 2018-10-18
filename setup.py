@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.16.8',
+    version='1.16.9',
     description='All-In-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -51,9 +51,15 @@ setup(
     ],
     install_requires=[
         'pip',
-        'ipython',
         'setuptools',
+        'ipython',
+        'six',
+        'nose',
+        'ipdb',
+        'chardet',
+        'unittest2',
         'selenium==3.14.1',
+        'requests>=2.20.0',
         'pytest>=3.9.1',
         'pytest-cov>=2.6.0',
         'pytest-html>=1.19.0',
@@ -61,14 +67,8 @@ setup(
         'pytest-xdist>=1.23.2',
         'parameterized==0.6.1',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
-        'six>=1.11.0',
         'pyotp>=2.2.6',
-        'requests>=2.19.1',
-        'unittest2>=1.1.0',
-        'chardet>=3.0.4',
         'boto>=2.49.0',
-        'nose==1.3.7',  # Keep at ==1.3.7
-        'ipdb==0.11',
         'flake8==3.5.0',
         'PyVirtualDisplay==0.2.1',
     ],
