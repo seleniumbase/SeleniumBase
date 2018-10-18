@@ -6,14 +6,14 @@ A complete framework for web automation, end-to-end testing, and [user-onboardin
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start
 
-(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).</i>)
+(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
 
 Clone SeleniumBase from GitHub:
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
-Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/) if you don't have the latest versions:
+Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/) if you don't have the latest versions: (You may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
 ```
 python -m pip install -U pip setuptools
 ```
