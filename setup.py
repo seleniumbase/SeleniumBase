@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.16.6',
+    version='1.16.7',
     description='All-In-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -67,7 +67,6 @@ setup(
         'unittest2>=1.1.0',
         'chardet>=3.0.4',
         'boto>=2.49.0',
-        'urllib3==1.23',  # Keep at ==1.23
         'nose==1.3.7',  # Keep at ==1.3.7
         'ipdb==0.11',
         'flake8==3.5.0',
