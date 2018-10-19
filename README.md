@@ -8,37 +8,40 @@ A complete framework for web automation, end-to-end testing, and [user-onboardin
 
 (<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
 
-Clone SeleniumBase from GitHub:
+#### Clone SeleniumBase from GitHub:
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
-Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/) if you don't have the latest versions: (You may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).)
+#### Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/) to the latest versions:
+
+* (You may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md), or use "[sudo](https://en.wikipedia.org/wiki/Sudo)" on a UNIX-based OS.)
 ```
 python -m pip install -U pip setuptools
 ```
 
-Install SeleniumBase:
+#### Install SeleniumBase:
 ```
 cd SeleniumBase
 pip install -U -r requirements.txt
-python setup.py develop
+python setup.py install
 ```
+* (<i>If you'll be customizing seleniumbase, use:</i><br> ``python setup.py develop``<br><i>See https://stackoverflow.com/a/19048754</i>)
 
-Install a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
+#### Install a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
 ```
 seleniumbase install chromedriver
 ```
 
-Run a test on chrome:
+#### Run a test on chrome:
 ```
 cd examples
 pytest my_first_test.py --browser=chrome
 ```
 
-You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for ``chrome``, ``edgedriver`` for ``edge``, ``geckodriver`` for ``firefox``, ``operadriver`` for ``opera``, and ``iedriver`` for ``ie``.
+(You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="64">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
 
 SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. 
 
@@ -51,9 +54,11 @@ pytest my_first_test.py --demo_mode
 <img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="270"><br>
 (Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running on [xkcd.com](https://xkcd.com/353/))
 
-There are many more examples to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) directory, which you can run easily if you clone SeleniumBase.
+There are <b>many more examples</b> to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) folder, which you can run easily if you clone SeleniumBase.
 
-Try out SeleniumBase Website Tours (from the ``examples/tour_examples`` folder). It's the best website onboarding experience available (and it's free too). Find the [WebSite Tours ReadMe here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
+
+Check out [SeleniumBase Website Tours](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's the best website onboarding experience available (and it's free too). Find the [Tours ReadMe here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
 ```
 cd tour_examples
@@ -62,6 +67,8 @@ pytest google_tour.py
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" height="260"><br>
 (Above: Actual demo of [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) running on [google.com](https://google.com))
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
 
 For more detailed steps on getting started, see the [**Detailed Instructions**](#seleniumbase_installation) section.
 
@@ -142,7 +149,7 @@ If you're installing SeleniumBase from a cloned copy on your machine, use:
 cd SeleniumBase
 
 pip install -r requirements.txt --upgrade
-python setup.py develop
+python setup.py install
 ```
 
 If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
