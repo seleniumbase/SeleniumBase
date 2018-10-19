@@ -82,7 +82,7 @@ def main():
         latest_version = "2.40"
         download_url = ("http://chromedriver.storage.googleapis.com/"
                         "%s/%s" % (latest_version, file_name))
-        # Chromedriver 2.41 (latest) may have issues. Forcing 2.40 for now.
+        # Forcing Chromedriver v2.40 for now, even though it's not the latest.
         get_latest = False
         if get_latest:
             last = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE"
@@ -97,7 +97,7 @@ def main():
                                 "%s/%s" % (latest_version, file_name))
             print("Found %s" % download_url)
     elif name == "geckodriver" or name == "firefoxdriver":
-        latest_version = "v0.22.0"
+        latest_version = "v0.23.0"
         if "darwin" in sys_plat:
             file_name = "geckodriver-%s-macos.tar.gz" % latest_version
         elif "linux" in sys_plat:
@@ -106,9 +106,7 @@ def main():
                 file_name = "geckodriver-%s-linux64.tar.gz" % latest_version
             else:
                 file_name = "geckodriver-%s-linux32.tar.gz" % latest_version
-        elif "win32" in sys_plat:
-            file_name = "geckodriver-%s-win32.zip" % latest_version
-        elif "win64" in sys_plat or "x64" in sys_plat:
+        elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "geckodriver-%s-win64.zip" % latest_version
         else:
             raise Exception("Cannot determine which version of Geckodriver "
