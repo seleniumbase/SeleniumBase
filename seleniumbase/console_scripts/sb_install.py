@@ -54,13 +54,13 @@ def make_executable(file_path):
 
 def main():
     num_args = len(sys.argv)
-    if sys.argv[0].split('/')[-1] == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1] == "seleniumbase"):
+    if sys.argv[0].split('/')[-1].lower() == "seleniumbase" or (
+            sys.argv[0].split('\\')[-1].lower() == "seleniumbase"):
         if num_args < 3 or num_args > 3:
             invalid_run_command()
     else:
         invalid_run_command()
-    name = sys.argv[num_args - 1]
+    name = sys.argv[num_args - 1].lower()
 
     file_name = None
     download_url = None
