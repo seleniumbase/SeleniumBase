@@ -106,9 +106,7 @@ def main():
                 file_name = "geckodriver-%s-linux64.tar.gz" % latest_version
             else:
                 file_name = "geckodriver-%s-linux32.tar.gz" % latest_version
-        elif "win32" in sys_plat:
-            file_name = "geckodriver-%s-win32.zip" % latest_version
-        elif "win64" in sys_plat or "x64" in sys_plat:
+        elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "geckodriver-%s-win64.zip" % latest_version
         else:
             raise Exception("Cannot determine which version of Geckodriver "
