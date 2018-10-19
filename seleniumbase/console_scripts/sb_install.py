@@ -82,7 +82,7 @@ def main():
         latest_version = "2.40"
         download_url = ("http://chromedriver.storage.googleapis.com/"
                         "%s/%s" % (latest_version, file_name))
-        # Chromedriver 2.41 (latest) may have issues. Forcing 2.40 for now.
+        # Forcing Chromedriver v2.40 for now, even though it's not the latest.
         get_latest = False
         if get_latest:
             last = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE"
