@@ -97,7 +97,7 @@ def main():
                                 "%s/%s" % (latest_version, file_name))
             print("Found %s" % download_url)
     elif name == "geckodriver" or name == "firefoxdriver":
-        latest_version = "v0.22.0"
+        latest_version = "v0.23.0"
         if "darwin" in sys_plat:
             file_name = "geckodriver-%s-macos.tar.gz" % latest_version
         elif "linux" in sys_plat:
