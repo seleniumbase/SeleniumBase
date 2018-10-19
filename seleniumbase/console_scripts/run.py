@@ -137,6 +137,8 @@ def show_detailed_help():
 
 
 def main():
+    command = None
+    command_args = None
     num_args = len(sys.argv)
     if num_args == 1:
         show_usage()
@@ -147,6 +149,7 @@ def main():
     elif num_args > 2:
         command = sys.argv[1]
         command_args = sys.argv[2:]
+    command = command.lower()
 
     if command == "install":
         if len(command_args) >= 1:
