@@ -26,7 +26,7 @@ cd SeleniumBase
 pip install -U -r requirements.txt
 python setup.py install
 ```
-* (<i>If you'll be customizing seleniumbase, use:</i><br> ``python setup.py develop``<br><i>See https://stackoverflow.com/a/19048754</i>)
+* Use ``python setup.py develop`` if configuring seleniumbase in a virtual environment.
 
 #### Install a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
 ```

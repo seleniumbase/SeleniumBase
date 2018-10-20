@@ -4,7 +4,7 @@ If you're installing SeleniumBase from a cloned copy on your machine, use:
 ```
 pip install -U -r requirements.txt
 
-python setup.py develop
+python setup.py install
 ```
 
 If you're installing SeleniumBase directly [from PyPI (the Python Package Index)](https://pypi.python.org/pypi/seleniumbase), use:
