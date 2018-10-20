@@ -31,7 +31,7 @@ You may have noticed the ``Incomplete Test Runs`` row on the results page. If th
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 pip install -r requirements.txt --upgrade
-python setup.py develop
+python setup.py install
 cd examples
 pytest basic_masterqa_test.py
 pytest masterqa_test.py

@@ -2585,7 +2585,7 @@ class BaseCase(unittest.TestCase):
         if not hasattr(self, "browser"):
             raise Exception("""SeleniumBase plugins did not load! """
                             """Please reinstall using:\n"""
-                            """ >>> "python setup.py develop" <<< """)
+                            """ >>> "python setup.py install" <<< """)
         self.driver = self.get_new_driver(browser=self.browser,
                                           headless=self.headless,
                                           servername=self.servername,
