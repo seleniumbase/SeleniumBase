@@ -14,11 +14,10 @@ git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 
 #### Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/) to the latest versions:
-
-* (You may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md), or use "[sudo](https://en.wikipedia.org/wiki/Sudo)" on a UNIX-based OS.)
 ```
 python -m pip install -U pip setuptools
 ```
+* (You may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md), or use "[sudo](https://en.wikipedia.org/wiki/Sudo)" on a UNIX-based OS.)
 
 #### Install SeleniumBase:
 ```
@@ -26,7 +25,7 @@ cd SeleniumBase
 pip install -U -r requirements.txt
 python setup.py install
 ```
-* Use ``python setup.py develop`` if configuring seleniumbase in a virtual environment.
+* (Use ``python setup.py develop`` if configuring seleniumbase inside a virtual environment.)
 
 #### Install a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
 ```
@@ -39,7 +38,7 @@ cd examples
 pytest my_first_test.py --browser=chrome
 ```
 
-(You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
+* (You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
 
