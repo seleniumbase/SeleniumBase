@@ -757,8 +757,8 @@ class BaseCase(unittest.TestCase):
         """ Creates a tour for a website. By default, the Shepherd Javascript
             Library is used with the Shepherd "Light" / "Arrows" theme.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             theme - Sets the default theme for the tour.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
@@ -793,8 +793,8 @@ class BaseCase(unittest.TestCase):
     def create_shepherd_tour(self, name=None, theme=None):
         """ Creates a Shepherd JS website tour.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             theme - Sets the default theme for the tour.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("light" is used if None is selected.)
@@ -826,7 +826,27 @@ class BaseCase(unittest.TestCase):
                     classes: '%s',
                     scrollTo: true
                 }
-            });""" % shepherd_theme)
+            });
+            var allButtons = {
+                skip: {
+                    text: "Skip",
+                    action: tour.cancel,
+                    classes: 'shepherd-button-secondary tour-button-left'
+                },
+                back: {
+                    text: "Back",
+                    action: tour.back,
+                    classes: 'shepherd-button-secondary'
+                },
+                next: {
+                    text: "Next",
+                    action: tour.next,
+                    classes: 'shepherd-button-primary tour-button-right'
+                },
+            };
+            var firstStepButtons = [allButtons.skip, allButtons.next];
+            var midTourButtons = [allButtons.back, allButtons.next];
+            """ % shepherd_theme)
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
@@ -834,8 +854,8 @@ class BaseCase(unittest.TestCase):
     def create_bootstrap_tour(self, name=None):
         """ Creates a Bootstrap tour for a website.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -854,8 +874,8 @@ class BaseCase(unittest.TestCase):
     def create_hopscotch_tour(self, name=None):
         """ Creates an Hopscotch tour for a website.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -874,8 +894,8 @@ class BaseCase(unittest.TestCase):
     def create_introjs_tour(self, name=None):
         """ Creates an IntroJS tour for a website.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -898,8 +918,8 @@ class BaseCase(unittest.TestCase):
             @Params
             message - The message to display.
             selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
             theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
                     Choose from "light"/"arrows", "dark", "default", "square",
@@ -960,8 +980,8 @@ class BaseCase(unittest.TestCase):
             @Params
             message - The message to display.
             selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
             theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
                     Choose from "light"/"arrows", "dark", "default", "square",
@@ -990,15 +1010,21 @@ class BaseCase(unittest.TestCase):
         shepherd_classes = shepherd_theme
         if selector == "html":
             shepherd_classes += " shepherd-orphan"
+        buttons = "firstStepButtons"
+        if len(self._tour_steps[name]) > 1:
+            buttons = "midTourButtons"
+
         step = ("""
                 tour.addStep('%s', {
                     title: '%s',
                     classes: '%s',
                     text: '%s',
                     attachTo: {element: '%s', on: '%s'},
+                    buttons: %s,
                     advanceOn: '.docs-link click'
                 });""" % (
-                name, title, shepherd_classes, message, selector, alignment))
+                name, title, shepherd_classes, message, selector, alignment,
+                buttons))
 
         self._tour_steps[name].append(step)
 
@@ -1008,8 +1034,8 @@ class BaseCase(unittest.TestCase):
             @Params
             message - The message to display.
             selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
@@ -1044,8 +1070,8 @@ class BaseCase(unittest.TestCase):
             @Params
             message - The message to display.
             selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("bottom" is the default alignment).
@@ -1076,8 +1102,8 @@ class BaseCase(unittest.TestCase):
             @Params
             message - The message to display.
             selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours, use this to select the
-                   tour you wish to add steps to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
@@ -1102,8 +1128,8 @@ class BaseCase(unittest.TestCase):
     def play_tour(self, name=None, interval=0):
         """ Plays a tour on the current website.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to play.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             interval - The delay time between autoplaying tour steps.
                        If set to 0 (default), the tour is fully manual control.
         """
@@ -1141,8 +1167,8 @@ class BaseCase(unittest.TestCase):
             You'll be able to copy the tour directly into the Console of
             any web browser to play the tour outside of SeleniumBase runs.
             @Params
-            name - If creating multiple tours, use this to select the
-                   tour you wish to play.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
             filename - The name of the javascript file that you wish to
                    save the tour to. """
         tour_helper.export_tour(self._tour_steps, name=name, filename=filename)

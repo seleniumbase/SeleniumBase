@@ -27,10 +27,12 @@ class MyTourClass(BaseCase):
         self.highlight_update_text('input[title="Search"]', "GitHub\n")
         self.wait_for_element("#search")
 
-        self.create_shepherd_tour(theme="dark")
+        self.create_shepherd_tour(theme="square-dark")
         self.add_tour_step(
             "Search results appear here!", title="(5-second autoplay on)")
-        self.add_tour_step("Let's take another tour:", theme="light")
+        self.add_tour_step(
+            "The next tour begins in a few seconds...", theme="square",
+            title="(5-second autoplay on)")
         self.play_tour(interval=5)  # Tour automatically continues after 5 sec
 
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
