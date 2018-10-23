@@ -826,7 +826,27 @@ class BaseCase(unittest.TestCase):
                     classes: '%s',
                     scrollTo: true
                 }
-            });""" % shepherd_theme)
+            });
+            var allButtons = {
+                skip: {
+                    text: "Skip",
+                    action: tour.cancel,
+                    classes: 'shepherd-button-secondary tour-button-left'
+                },
+                back: {
+                    text: "Back",
+                    action: tour.back,
+                    classes: 'shepherd-button-secondary'
+                },
+                next: {
+                    text: "Next",
+                    action: tour.next,
+                    classes: 'shepherd-button-primary tour-button-right'
+                },
+            };
+            var firstStepButtons = [allButtons.skip, allButtons.next];
+            var midTourButtons = [allButtons.back, allButtons.next];
+            """ % shepherd_theme)
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
@@ -990,15 +1010,21 @@ class BaseCase(unittest.TestCase):
         shepherd_classes = shepherd_theme
         if selector == "html":
             shepherd_classes += " shepherd-orphan"
+        buttons = "firstStepButtons"
+        if len(self._tour_steps[name]) > 1:
+            buttons = "midTourButtons"
+
         step = ("""
                 tour.addStep('%s', {
                     title: '%s',
                     classes: '%s',
                     text: '%s',
                     attachTo: {element: '%s', on: '%s'},
+                    buttons: %s,
                     advanceOn: '.docs-link click'
                 });""" % (
-                name, title, shepherd_classes, message, selector, alignment))
+                name, title, shepherd_classes, message, selector, alignment,
+                buttons))
 
         self._tour_steps[name].append(step)
 
