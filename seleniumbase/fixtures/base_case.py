@@ -643,8 +643,19 @@ class BaseCase(unittest.TestCase):
             by = By.LINK_TEXT
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
+    def find_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Returns a list of matching WebElements. """
+        self.wait_for_ready_state_complete()
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        return self.driver.find_elements(by=by, value=selector)
+
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
         """ Returns a list of matching WebElements that are visible. """
+        self.wait_for_ready_state_complete()
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         if page_utils.is_link_text_selector(selector):
@@ -1648,35 +1659,115 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         return element
 
+    def __select_option(self, dropdown_selector, option,
+                        dropdown_by=By.CSS_SELECTOR, option_by="text",
+                        timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by specification.
+            Option specifications are by "text", "index", or "value".
+            Defaults to "text" if option_by is unspecified or unknown. """
+        if page_utils.is_xpath_selector(dropdown_selector):
+            dropdown_by = By.XPATH
+        element = self.find_element(
+            dropdown_selector, by=dropdown_by, timeout=timeout)
+        self.__demo_mode_highlight_if_active(dropdown_selector, dropdown_by)
+        pre_action_url = self.driver.current_url
+        try:
+            if option_by == "index":
+                Select(element).select_by_index(option)
+            elif option_by == "value":
+                Select(element).select_by_value(option)
+            else:
+                Select(element).select_by_visible_text(option)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.find_element(
+                dropdown_selector, by=dropdown_by, timeout=timeout)
+            if option_by == "index":
+                Select(element).select_by_index(option)
+            elif option_by == "value":
+                Select(element).select_by_value(option)
+            else:
+                Select(element).select_by_visible_text(option)
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+
+    def select_option_by_text(self, dropdown_selector, option,
+                              dropdown_by=By.CSS_SELECTOR,
+                              timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by option text.
+            @Params
+            dropdown_selector - the <select> selector
+            option - the text of the option """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__select_option(dropdown_selector, option,
+                             dropdown_by=dropdown_by, option_by="text",
+                             timeout=timeout)
+
+    def select_option_by_index(self, dropdown_selector, option,
+                               dropdown_by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by option index.
+            @Params
+            dropdown_selector - the <select> selector
+            option - the index number of the option """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__select_option(dropdown_selector, option,
+                             dropdown_by=dropdown_by, option_by="index",
+                             timeout=timeout)
+
+    def select_option_by_value(self, dropdown_selector, option,
+                               dropdown_by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by option value.
+            @Params
+            dropdown_selector - the <select> selector
+            option - the value property of the option """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__select_option(dropdown_selector, option,
+                             dropdown_by=dropdown_by, option_by="value",
+                             timeout=timeout)
+
+    @decorators.deprecated("Use self.select_option_by_text() instead!")
     def pick_select_option_by_text(self, dropdown_selector, option,
                                    dropdown_by=By.CSS_SELECTOR,
-                                   timeout=settings.LARGE_TIMEOUT):
-        """ Picks an HTML <select> option by option text. """
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+                                   timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by option text. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.__pick_select_option(dropdown_selector, option,
-                                  dropdown_by=dropdown_by, option_by="text",
-                                  timeout=timeout)
+        self.__select_option(dropdown_selector, option,
+                             dropdown_by=dropdown_by, option_by="text",
+                             timeout=timeout)
 
+    @decorators.deprecated("Use self.select_option_by_index() instead!")
     def pick_select_option_by_index(self, dropdown_selector, option,
                                     dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.LARGE_TIMEOUT):
-        """ Picks an HTML <select> option by option index. """
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+                                    timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by option index. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.__pick_select_option(dropdown_selector, option,
-                                  dropdown_by=dropdown_by, option_by="index",
-                                  timeout=timeout)
+        self.__select_option(dropdown_selector, option,
+                             dropdown_by=dropdown_by, option_by="index",
+                             timeout=timeout)
 
+    @decorators.deprecated("Use self.select_option_by_value() instead!")
     def pick_select_option_by_value(self, dropdown_selector, option,
                                     dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.LARGE_TIMEOUT):
-        """ Picks an HTML <select> option by option value. """
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+                                    timeout=settings.SMALL_TIMEOUT):
+        """ Selects an HTML <select> option by option value. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.__pick_select_option(dropdown_selector, option,
-                                  dropdown_by=dropdown_by, option_by="value",
-                                  timeout=timeout)
+        self.__select_option(dropdown_selector, option,
+                             dropdown_by=dropdown_by, option_by="value",
+                             timeout=timeout)
 
     ############
 
@@ -2359,42 +2450,6 @@ class BaseCase(unittest.TestCase):
                     except Exception:
                         pass
         return False
-
-    def __pick_select_option(self, dropdown_selector, option,
-                             dropdown_by=By.CSS_SELECTOR, option_by="text",
-                             timeout=settings.SMALL_TIMEOUT):
-        """ Picks an HTML <select> option by specification.
-            Option specifications are by "text", "index", or "value".
-            Defaults to "text" if option_by is unspecified or unknown. """
-        element = self.find_element(
-            dropdown_selector, by=dropdown_by, timeout=timeout)
-        self.__demo_mode_highlight_if_active(dropdown_selector, dropdown_by)
-        pre_action_url = self.driver.current_url
-        try:
-            if option_by == "index":
-                Select(element).select_by_index(option)
-            elif option_by == "value":
-                Select(element).select_by_value(option)
-            else:
-                Select(element).select_by_visible_text(option)
-        except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
-            time.sleep(0.05)
-            element = self.find_element(
-                dropdown_selector, by=dropdown_by, timeout=timeout)
-            if option_by == "index":
-                Select(element).select_by_index(option)
-            elif option_by == "value":
-                Select(element).select_by_value(option)
-            else:
-                Select(element).select_by_visible_text(option)
-        if settings.WAIT_FOR_RSC_ON_CLICKS:
-            self.wait_for_ready_state_complete()
-        if self.demo_mode:
-            if self.driver.current_url != pre_action_url:
-                self.__demo_mode_pause_if_active()
-            else:
-                self.__demo_mode_pause_if_active(tiny=True)
 
     def __recalculate_selector(self, selector, by):
         # Try to determine the type of selector automatically

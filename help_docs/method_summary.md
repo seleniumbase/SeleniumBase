@@ -71,6 +71,8 @@ self.is_partial_link_text_visible(partial_link_text)
 
 self.is_text_visible(text, selector, by=By.CSS_SELECTOR)
 
+self.find_elements(selector, by=By.CSS_SELECTOR)
+
 self.find_visible_elements(selector, by=By.CSS_SELECTOR)
 
 self.is_element_in_an_iframe(selector, by=By.CSS_SELECTOR)
@@ -194,13 +196,13 @@ self.hover_and_click(hover_selector, click_selector,
     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
-self.pick_select_option_by_text(dropdown_selector, option,
+self.select_option_by_text(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.pick_select_option_by_index(dropdown_selector, option,
+self.select_option_by_index(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.pick_select_option_by_value(dropdown_selector, option,
+self.select_option_by_value(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
