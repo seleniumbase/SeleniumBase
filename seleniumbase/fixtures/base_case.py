@@ -643,8 +643,19 @@ class BaseCase(unittest.TestCase):
             by = By.LINK_TEXT
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
+    def find_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Returns a list of matching WebElements. """
+        self.wait_for_ready_state_complete()
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        return self.driver.find_elements(by=by, value=selector)
+
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR):
         """ Returns a list of matching WebElements that are visible. """
+        self.wait_for_ready_state_complete()
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         if page_utils.is_link_text_selector(selector):
