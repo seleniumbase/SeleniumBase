@@ -194,13 +194,13 @@ self.hover_and_click(hover_selector, click_selector,
     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
-self.pick_select_option_by_text(dropdown_selector, option,
+self.select_option_by_text(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.pick_select_option_by_index(dropdown_selector, option,
+self.select_option_by_index(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.pick_select_option_by_value(dropdown_selector, option,
+self.select_option_by_value(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
