@@ -128,7 +128,7 @@ class __MasterQATestCase__(BaseCase):
     def wait_for_special_alert_absent(self, timeout=MAX_IDLE_TIME_BEFORE_QUIT):
         for x in range(int(timeout * 20)):
             try:
-                alert = self.driver.switch_to_alert()
+                alert = self.driver.switch_to.alert
                 dummy_variable = alert.text  # Raises exception if no alert
                 if "?" not in dummy_variable:
                     return
