@@ -1,4 +1,5 @@
 import os
+import random
 import re
 import sys
 import threading
@@ -15,6 +16,7 @@ from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
+PROXY_ZIP_PATH_2 = proxy_helper.PROXY_ZIP_PATH_2
 PLATFORM = sys.platform
 IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None
@@ -57,10 +59,7 @@ def _add_chrome_proxy_extension(
         chrome_options, proxy_string, proxy_user, proxy_pass):
     """ Implementation of https://stackoverflow.com/a/35293284 for
         https://stackoverflow.com/questions/12848327/
-        (Run Selenium on a proxy server that requires authentication.)
-        The retry_on_exception is only needed for multithreaded runs
-        because proxy.zip is a common file shared between all tests
-        in a single run. """
+        (Run Selenium on a proxy server that requires authentication.) """
     if not "".join(sys.argv) == "-c":
         # Single-threaded
         proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
@@ -68,11 +67,16 @@ def _add_chrome_proxy_extension(
         # Pytest multi-threaded test
         lock = threading.Lock()
         with lock:
+            time.sleep(random.uniform(0.02, 0.15))
             if not os.path.exists(PROXY_ZIP_PATH):
                 proxy_helper.create_proxy_zip(
                     proxy_string, proxy_user, proxy_pass)
-            time.sleep(0.3)
-    chrome_options.add_extension(PROXY_ZIP_PATH)
+            time.sleep(random.uniform(0.1, 0.2))
+    proxy_zip = PROXY_ZIP_PATH
+    if not os.path.exists(PROXY_ZIP_PATH):
+        # Handle "Permission denied" on the default proxy.zip path
+        proxy_zip = PROXY_ZIP_PATH_2
+    chrome_options.add_extension(proxy_zip)
     return chrome_options
 
 
@@ -102,7 +106,6 @@ def _set_chrome_options(
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
-            chrome_options.add_extension(DRIVER_DIR + "/proxy.zip")
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
     return chrome_options
 
@@ -209,9 +212,6 @@ def get_driver(browser_name, headless=False, use_grid=False,
                     "either Chrome or Firefox may be used.)")
         proxy_string = validate_proxy_string(proxy_string)
         if proxy_string and proxy_user and proxy_pass:
-            if not os.path.exists(PROXY_ZIP_PATH):
-                proxy_helper.create_proxy_zip(
-                    proxy_string, proxy_user, proxy_pass)
             proxy_auth = True
     if use_grid:
         return get_remote_driver(

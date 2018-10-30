@@ -1,9 +1,12 @@
 import os
 import threading
 import zipfile
+from seleniumbase.fixtures import constants
 from seleniumbase import drivers
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 PROXY_ZIP_PATH = "%s/%s" % (DRIVER_DIR, "proxy.zip")
+DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
+PROXY_ZIP_PATH_2 = "%s/%s" % (DOWNLOADS_DIR, "proxy.zip")
 
 
 def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
@@ -15,7 +18,6 @@ def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
     """
     proxy_host = proxy_string.split(':')[0]
     proxy_port = proxy_string.split(':')[1]
-    proxy_zip = DRIVER_DIR + '/proxy.zip'
     background_js = (
         """var config = {\n"""
         """    mode: "fixed_servers",\n"""
@@ -64,7 +66,15 @@ def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
         '''}''')
     lock = threading.RLock()  # Support multi-threaded test runs with Pytest
     with lock:
-        zf = zipfile.ZipFile(proxy_zip, mode='w')
+        try:
+            zf = zipfile.ZipFile(PROXY_ZIP_PATH, mode='w')
+        except IOError:
+            # Handle "Permission denied" on the default proxy.zip path
+            abs_path = os.path.abspath('.')
+            downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
+            if not os.path.exists(downloads_path):
+                os.mkdir(downloads_path)
+            zf = zipfile.ZipFile(PROXY_ZIP_PATH_2, mode='w')
         zf.writestr("background.js", background_js)
         zf.writestr("manifest.json", manifest_json)
         zf.close()
@@ -78,5 +88,7 @@ def remove_proxy_zip_if_present():
     try:
         if os.path.exists(PROXY_ZIP_PATH):
             os.remove(PROXY_ZIP_PATH)
+        elif os.path.exists(PROXY_ZIP_PATH_2):
+            os.remove(PROXY_ZIP_PATH_2)
     except Exception:
         pass
