@@ -2234,7 +2234,7 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 # Make sure the invisible browser window is big enough
                 try:
-                    self.set_window_size(1920, 1200)
+                    self.set_window_size(1440, 1080)
                     self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
@@ -2247,7 +2247,7 @@ class BaseCase(unittest.TestCase):
                         if settings.START_CHROME_IN_FULL_SCREEN_MODE:
                             self.driver.maximize_window()
                         else:
-                            self.driver.set_window_size(1250, 800)
+                            self.driver.set_window_size(1250, 840)
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
@@ -2654,7 +2654,7 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 try:
                     from pyvirtualdisplay import Display
-                    self.display = Display(visible=0, size=(1920, 1200))
+                    self.display = Display(visible=0, size=(1440, 1080))
                     self.display.start()
                     self.headless_active = True
                 except Exception:
