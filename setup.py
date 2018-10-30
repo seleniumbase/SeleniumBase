@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.16.15',
+    version='1.16.16',
     description='All-In-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -61,11 +61,11 @@ setup(
         'selenium==3.14.1',
         'requests==2.20.0',  # Changing this may effect "urllib3"
         'urllib3==1.24',  # Keep this lib in sync with "requests"
-        'pytest>=3.9.2',
+        'pytest>=3.9.3',
         'pytest-cov>=2.6.0',
         'pytest-html>=1.19.0',
         'pytest-rerunfailures>=4.2',
-        'pytest-xdist>=1.23.2',
+        'pytest-xdist>=1.24.0',
         'parameterized==0.6.1',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'pyotp>=2.2.6',

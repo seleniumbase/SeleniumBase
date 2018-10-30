@@ -9,11 +9,11 @@ unittest2
 selenium==3.14.1
 requests==2.20.0
 urllib3==1.24
-pytest>=3.9.2
+pytest>=3.9.3
 pytest-cov>=2.6.0
 pytest-html>=1.19.0
 pytest-rerunfailures>=4.2
-pytest-xdist>=1.23.2
+pytest-xdist>=1.24.0
 parameterized==0.6.1
 beautifulsoup4>=4.6.0
 pyotp>=2.2.6
