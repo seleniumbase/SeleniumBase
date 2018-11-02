@@ -1,24 +1,21 @@
 # MasterQA
 
-### MasterQA combines SeleniumBase automation with manual verification to greatly improve the productivity and sanity of QA teams. (**Works only for Chrome & Edge right now.**)
+### MasterQA bridges the gap between manual QA and automated QA by combining manual verification steps with SeleniumBase automation scripts.
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_gif.gif "MasterQA")
+![](https://cdn2.hubspot.net/hubfs/100006/images/masterqa3.gif "MasterQA")
 
 Here's some example code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 
 ```python
-self.open("http://xkcd.com/1700/")
+self.open("https://xkcd.com/1700/")
 self.verify("Do you see a webcomic?")
-self.click_link_text('Store')
-self.click_link_text('all the things')
-self.verify("Do you see items for sale?")
-self.update_text("input.search-input", "Robots\n")
-self.verify("Do you see robots in the search results?")
+self.highlight_click('link=Blag')
+self.verify('Do you see a blog archive?')
+self.highlight_update_text("input#s", "Dragons\n")
+self.verify('Do you see "dragons" in the search results?')
 ```
 
-After the web browser performs various automated actions, a pop-up window will ask the tester questions for each verification command. *(See the screenshot below)*
-
-![](http://cdn2.hubspot.net/hubfs/100006/xkcd_new_bug_chrome3.png "MasterQA Example")
+After the web browser performs various automated actions, a pop-up window will ask the user questions for each verification command.
 
 At the end of a full test run, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
@@ -32,7 +29,7 @@ git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 pip install -r requirements.txt --upgrade
 python setup.py install
-cd examples
+cd examples/master_qa
 pytest basic_masterqa_test.py
 pytest masterqa_test.py
 ```
