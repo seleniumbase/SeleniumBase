@@ -748,10 +748,10 @@ class BaseCase(unittest.TestCase):
         js_utils.activate_jquery(self.driver)
 
     def __are_quotes_escaped(self, string):
-        return page_utils.are_quotes_escaped(string)
+        return js_utils.are_quotes_escaped(string)
 
     def __escape_quotes_if_needed(self, string):
-        return page_utils.escape_quotes_if_needed(string)
+        return js_utils.escape_quotes_if_needed(string)
 
     def create_tour(self, name=None, theme=None):
         """ Creates a tour for a website. By default, the Shepherd Javascript
@@ -1173,6 +1173,9 @@ class BaseCase(unittest.TestCase):
                    save the tour to. """
         tour_helper.export_tour(self._tour_steps, name=name, filename=filename)
 
+    def activate_jquery_confirm(self):
+        js_utils.activate_jquery_confirm(self.driver)
+
     def activate_messenger(self):
         js_utils.activate_messenger(self.driver)
 
@@ -1453,7 +1456,7 @@ class BaseCase(unittest.TestCase):
 
     def jq_format(self, code):
         # DEPRECATED - Use re.escape() instead, which does the action you want.
-        return page_utils._jq_format(code)
+        return js_utils._jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)

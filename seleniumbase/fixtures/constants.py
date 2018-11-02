@@ -85,6 +85,14 @@ class IntroJS:
               "intro.js/%s/intro.min.js" % VER)
 
 
+class JqueryConfirm:
+    VER = "3.3.2"
+    MIN_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
+               "jquery-confirm/%s/jquery-confirm.min.css" % VER)
+    MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
+              "jquery-confirm/%s/jquery-confirm.min.js" % VER)
+
+
 class Shepherd:
     VER = "1.8.1"
     MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"

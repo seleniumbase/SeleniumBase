@@ -10,7 +10,6 @@ from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
-from seleniumbase.fixtures import page_utils
 
 
 def raise_unable_to_load_jquery_exception(driver):
@@ -691,7 +690,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
         bootstrap_tour_js = constants.BootstrapTour.MIN_JS
         backdrop_style = style_sheet.bt_backdrop_style
         backdrop_style = backdrop_style.replace('\n', '')
-        backdrop_style = page_utils.escape_quotes_if_needed(backdrop_style)
+        backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectJS("%s");' % jquery_js
         instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
         instructions += 'injectCSS("%s");\n' % bootstrap_tour_css
@@ -703,7 +702,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
         hopscotch_js = constants.Hopscotch.MIN_JS
         backdrop_style = style_sheet.hops_backdrop_style
         backdrop_style = backdrop_style.replace('\n', '')
-        backdrop_style = page_utils.escape_quotes_if_needed(backdrop_style)
+        backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % hopscotch_css
         instructions += 'injectStyle("%s");\n' % backdrop_style
         instructions += 'injectJS("%s");' % hopscotch_js
@@ -727,7 +726,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
         spinner_css = constants.Messenger.SPINNER_CSS
         backdrop_style = style_sheet.sh_backdrop_style
         backdrop_style = backdrop_style.replace('\n', '')
-        backdrop_style = page_utils.escape_quotes_if_needed(backdrop_style)
+        backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % spinner_css
         instructions += 'injectJS("%s");\n' % jquery_js
         instructions += 'injectJS("%s");' % tether_js

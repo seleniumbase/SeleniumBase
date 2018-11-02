@@ -17,7 +17,7 @@ Output:
 import codecs
 import re
 import sys
-from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import js_utils
 
 
 def main():
@@ -587,7 +587,7 @@ def main():
             # quote_type = data.group(1)
             selector = data.group(2)
             selector = re.escape(selector)
-            selector = page_utils.escape_quotes_if_needed(selector)
+            selector = js_utils.escape_quotes_if_needed(selector)
             if int(line_num) < num_lines - 1:
                 regex_string = (r'''^\s*self.click\(["|']''' +
                                 selector + r'''["|']\)\s*$''')
@@ -615,7 +615,7 @@ def main():
             # quote_type = data.group(1)
             link_text = data.group(2)
             link_text = re.escape(link_text)
-            link_text = page_utils.escape_quotes_if_needed(link_text)
+            link_text = js_utils.escape_quotes_if_needed(link_text)
             if int(line_num) < num_lines - 2:
                 regex_string = (r'''^\s*self.click\(["|']link=''' +
                                 link_text + r'''["|']\)\s*$''')

@@ -83,55 +83,9 @@ def _save_data_as(data, destination_folder, file_name):
     out_file.close()
 
 
-def are_quotes_escaped(string):
-    if (string.count("\\'") != string.count("'") or
-            string.count('\\"') != string.count('"')):
-        return True
-    return False
-
-
-def escape_quotes_if_needed(string):
-    """
-    re.escape() works differently in Python 3.7.0 than earlier versions:
-
-    Python 3.6.5:
-    >>> import re
-    >>> re.escape('"')
-    '\\"'
-
-    Python 3.7.0:
-    >>> import re
-    >>> re.escape('"')
-    '"'
-
-    SeleniumBase needs quotes to be properly escaped for Javascript calls.
-    """
-    if are_quotes_escaped(string):
-        if string.count("'") != string.count("\\'"):
-            string = string.replace("'", "\\'")
-        if string.count('"') != string.count('\\"'):
-            string = string.replace('"', '\\"')
-    return string
-
-
 def make_css_match_first_element_only(selector):
     # Only get the first match
     last_syllable = selector.split(' ')[-1]
     if ':' not in last_syllable and ':contains' not in selector:
         selector += ':first'
     return selector
-
-
-def _jq_format(code):
-    """
-    DEPRECATED - Use re.escape() instead, which performs the intended action.
-    Use before throwing raw code such as 'div[tab="advanced"]' into jQuery.
-    Selectors with quotes inside of quotes would otherwise break jQuery.
-    If you just want to escape quotes, there's escape_quotes_if_needed().
-    This is similar to "json.dumps(value)", but with one less layer of quotes.
-    """
-    code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
-    code = code.replace('\"', '\\\"').replace('\'', '\\\'')
-    code = code.replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f')
-    code = code.replace('\b', '\\b').replace(r'\u', '\\u').replace('\r', '\\r')
-    return code
