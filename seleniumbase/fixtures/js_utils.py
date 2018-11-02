@@ -337,6 +337,35 @@ def add_meta_tag(driver, http_equiv=None, content=None):
     driver.execute_script(script_to_add_meta)
 
 
+def is_jquery_confirm_activated(driver):
+    try:
+        driver.execute_script("jconfirm")  # Fails if jq_confirm is not defined
+        return True
+    except Exception:
+        return False
+
+
+def activate_jquery_confirm(driver):
+    jquery_js = constants.JQuery.MIN_JS
+    jq_confirm_css = constants.JqueryConfirm.MIN_CSS
+    jq_confirm_js = constants.JqueryConfirm.MIN_JS
+
+    if not is_jquery_activated(driver):
+        add_js_link(driver, jquery_js)
+    add_css_link(driver, jq_confirm_css)
+    add_js_link(driver, jq_confirm_js)
+
+    for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+        # jQuery-Confirm needs a small amount of time to load & activate.
+        try:
+            driver.execute_script("jconfirm")
+            wait_for_ready_state_complete(driver)
+            wait_for_angularjs(driver)
+            return
+        except Exception:
+            time.sleep(0.1)
+
+
 def activate_messenger(driver):
     jquery_js = constants.JQuery.MIN_JS
     messenger_css = constants.Messenger.MIN_CSS

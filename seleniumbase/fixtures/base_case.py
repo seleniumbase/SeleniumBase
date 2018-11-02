@@ -1173,6 +1173,9 @@ class BaseCase(unittest.TestCase):
                    save the tour to. """
         tour_helper.export_tour(self._tour_steps, name=name, filename=filename)
 
+    def activate_jquery_confirm(self):
+        js_utils.activate_jquery_confirm(self.driver)
+
     def activate_messenger(self):
         js_utils.activate_messenger(self.driver)
 

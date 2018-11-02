@@ -114,6 +114,8 @@ self.play_tour(name=None)
 
 self.export_tour(name=None, filename="my_tour.js")
 
+self.activate_jquery_confirm()
+
 self.activate_messenger()
 
 self.post_message(message, style="info", duration=None)
