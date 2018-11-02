@@ -8,7 +8,14 @@ import time
 from selenium.common.exceptions import WebDriverException
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
-from seleniumbase.fixtures import page_utils
+
+
+def is_jquery_activated(driver):
+    try:
+        driver.execute_script("jQuery('html')")  # Fails if jq is not defined
+        return True
+    except Exception:
+        return False
 
 
 def activate_jquery(driver):
@@ -40,6 +47,37 @@ def activate_jquery(driver):
         '''Unable to load jQuery on "%s" due to a possible violation '''
         '''of the website's Content Security Policy '''
         '''directive. ''' % driver.current_url)
+
+
+def are_quotes_escaped(string):
+    if (string.count("\\'") != string.count("'") or
+            string.count('\\"') != string.count('"')):
+        return True
+    return False
+
+
+def escape_quotes_if_needed(string):
+    """
+    re.escape() works differently in Python 3.7.0 than earlier versions:
+
+    Python 3.6.5:
+    >>> import re
+    >>> re.escape('"')
+    '\\"'
+
+    Python 3.7.0:
+    >>> import re
+    >>> re.escape('"')
+    '"'
+
+    SeleniumBase needs quotes to be properly escaped for Javascript calls.
+    """
+    if are_quotes_escaped(string):
+        if string.count("'") != string.count("\\'"):
+            string = string.replace("'", "\\'")
+        if string.count('"') != string.count('\\"'):
+            string = string.replace('"', '\\"')
+    return string
 
 
 def safe_execute_script(driver, script):
@@ -125,7 +163,7 @@ def wait_for_css_query_selector(
     for x in range(int(timeout * 10)):
         try:
             selector = re.escape(selector)
-            selector = page_utils.escape_quotes_if_needed(selector)
+            selector = escape_quotes_if_needed(selector)
             element = driver.execute_script(
                 """return document.querySelector('%s')""" % selector)
             if element:
@@ -230,7 +268,7 @@ def add_css_link(driver, css_link):
               head.appendChild(link);
            }
            injectCSS("%s");""")
-    css_link = page_utils.escape_quotes_if_needed(css_link)
+    css_link = escape_quotes_if_needed(css_link)
     driver.execute_script(script_to_add_css % css_link)
 
 
@@ -247,7 +285,7 @@ def add_js_link(driver, js_link):
               head.appendChild(script);
            }
            injectJS("%s");""")
-    js_link = page_utils.escape_quotes_if_needed(js_link)
+    js_link = escape_quotes_if_needed(js_link)
     driver.execute_script(script_to_add_js % js_link)
 
 
@@ -262,7 +300,7 @@ def add_css_style(driver, css_style):
            }
            injectStyle("%s");""")
     css_style = css_style.replace('\n', '')
-    css_style = page_utils.escape_quotes_if_needed(css_style)
+    css_style = escape_quotes_if_needed(css_style)
     driver.execute_script(add_css_style_script % css_style)
 
 
@@ -278,7 +316,7 @@ def add_js_code_from_link(driver, js_link):
         '''s.appendChild(document.createTextNode("%s"));'''
         '''h.appendChild(s);''')
     js_code = js_code.replace('\n', '')
-    js_code = page_utils.escape_quotes_if_needed(js_code)
+    js_code = escape_quotes_if_needed(js_code)
     driver.execute_script(add_js_code_script % js_code)
 
 
@@ -395,7 +433,7 @@ def post_message(driver, message, msg_dur, style="info", duration=None):
         else:
             duration = msg_dur
     message = re.escape(message)
-    message = page_utils.escape_quotes_if_needed(message)
+    message = escape_quotes_if_needed(message)
     messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
                         '''hideAfter: %s, hideOnNavigate: true});'''
                         % (message, style, duration))
@@ -548,3 +586,18 @@ def slow_scroll_to_element(driver, element, browser):
     if distance > 430 or distance < -300:
         # Add small recovery time for long-distance slow-scrolling
         time.sleep(0.162)
+
+
+def _jq_format(code):
+    """
+    DEPRECATED - Use re.escape() instead, which performs the intended action.
+    Use before throwing raw code such as 'div[tab="advanced"]' into jQuery.
+    Selectors with quotes inside of quotes would otherwise break jQuery.
+    If you just want to escape quotes, there's escape_quotes_if_needed().
+    This is similar to "json.dumps(value)", but with one less layer of quotes.
+    """
+    code = code.replace('\\', '\\\\').replace('\t', '\\t').replace('\n', '\\n')
+    code = code.replace('\"', '\\\"').replace('\'', '\\\'')
+    code = code.replace('\v', '\\v').replace('\a', '\\a').replace('\f', '\\f')
+    code = code.replace('\b', '\\b').replace(r'\u', '\\u').replace('\r', '\\r')
+    return code
