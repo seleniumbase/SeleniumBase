@@ -10,12 +10,91 @@ from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
 
+def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
+    """
+    The DOM (Document Object Model) has a property called "readyState".
+    When the value of this becomes "complete", page resources are considered
+    fully loaded (although AJAX and other loads might still be happening).
+    This method will wait until document.readyState == "complete".
+    """
+
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        try:
+            ready_state = driver.execute_script("return document.readyState")
+        except WebDriverException:
+            # Bug fix for: [Permission denied to access property "document"]
+            time.sleep(0.03)
+            return True
+        if ready_state == u'complete':
+            time.sleep(0.01)  # Better be sure everything is done loading
+            return True
+        else:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    raise Exception(
+        "Page elements never fully loaded after %s seconds!" % timeout)
+
+
+def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
+    driver.set_script_timeout(timeout)
+    return driver.execute_async_script(script)
+
+
+def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
+    if not settings.WAIT_FOR_ANGULARJS:
+        return
+
+    NG_WRAPPER = '%(prefix)s' \
+                 'var $elm=document.querySelector(' \
+                 '\'[data-ng-app],[ng-app],.ng-scope\')||document;' \
+                 'if(window.angular && angular.getTestability){' \
+                 'angular.getTestability($elm).whenStable(%(handler)s)' \
+                 '}else{' \
+                 'var $inj;try{$inj=angular.element($elm).injector()||' \
+                 'angular.injector([\'ng\'])}catch(ex){' \
+                 '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||' \
+                 '$inj;$inj.get(\'$browser\').' \
+                 'notifyWhenNoOutstandingRequests(%(handler)s)}' \
+                 '%(suffix)s'
+    def_pre = 'var cb=arguments[arguments.length-1];if(window.angular){'
+    prefix = kwargs.pop('prefix', def_pre)
+    handler = kwargs.pop('handler', 'function(){cb(true)}')
+    suffix = kwargs.pop('suffix', '}else{cb(false)}')
+    script = NG_WRAPPER % {'prefix': prefix,
+                           'handler': handler,
+                           'suffix': suffix}
+    try:
+        execute_async_script(driver, script, timeout=timeout)
+    except Exception:
+        time.sleep(0.05)
+
+
 def is_jquery_activated(driver):
     try:
         driver.execute_script("jQuery('html')")  # Fails if jq is not defined
         return True
     except Exception:
         return False
+
+
+def wait_for_jquery_active(driver, timeout=None):
+    if not timeout:
+        timeout = int(settings.MINI_TIMEOUT * 10.0)
+    else:
+        timeout = int(timeout * 10.0)
+    for x in range(timeout):
+        # jQuery needs a small amount of time to activate.
+        try:
+            driver.execute_script("jQuery('html')")
+            wait_for_ready_state_complete(driver)
+            wait_for_angularjs(driver)
+            return
+        except Exception:
+            time.sleep(0.1)
 
 
 def activate_jquery(driver):
@@ -90,69 +169,6 @@ def safe_execute_script(driver, script):
         # The likely reason this fails is because: "jQuery is not defined"
         activate_jquery(driver)  # It's a good thing we can define it here
         driver.execute_script(script)
-
-
-def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
-    """
-    The DOM (Document Object Model) has a property called "readyState".
-    When the value of this becomes "complete", page resources are considered
-    fully loaded (although AJAX and other loads might still be happening).
-    This method will wait until document.readyState == "complete".
-    """
-
-    start_ms = time.time() * 1000.0
-    stop_ms = start_ms + (timeout * 1000.0)
-    for x in range(int(timeout * 10)):
-        try:
-            ready_state = driver.execute_script("return document.readyState")
-        except WebDriverException:
-            # Bug fix for: [Permission denied to access property "document"]
-            time.sleep(0.03)
-            return True
-        if ready_state == u'complete':
-            time.sleep(0.01)  # Better be sure everything is done loading
-            return True
-        else:
-            now_ms = time.time() * 1000.0
-            if now_ms >= stop_ms:
-                break
-            time.sleep(0.1)
-    raise Exception(
-        "Page elements never fully loaded after %s seconds!" % timeout)
-
-
-def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
-    driver.set_script_timeout(timeout)
-    return driver.execute_async_script(script)
-
-
-def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
-    if not settings.WAIT_FOR_ANGULARJS:
-        return
-
-    NG_WRAPPER = '%(prefix)s' \
-                 'var $elm=document.querySelector(' \
-                 '\'[data-ng-app],[ng-app],.ng-scope\')||document;' \
-                 'if(window.angular && angular.getTestability){' \
-                 'angular.getTestability($elm).whenStable(%(handler)s)' \
-                 '}else{' \
-                 'var $inj;try{$inj=angular.element($elm).injector()||' \
-                 'angular.injector([\'ng\'])}catch(ex){' \
-                 '$inj=angular.injector([\'ng\'])};$inj.get=$inj.get||' \
-                 '$inj;$inj.get(\'$browser\').' \
-                 'notifyWhenNoOutstandingRequests(%(handler)s)}' \
-                 '%(suffix)s'
-    def_pre = 'var cb=arguments[arguments.length-1];if(window.angular){'
-    prefix = kwargs.pop('prefix', def_pre)
-    handler = kwargs.pop('handler', 'function(){cb(true)}')
-    suffix = kwargs.pop('suffix', '}else{cb(false)}')
-    script = NG_WRAPPER % {'prefix': prefix,
-                           'handler': handler,
-                           'suffix': suffix}
-    try:
-        execute_async_script(driver, script, timeout=timeout)
-    except Exception:
-        time.sleep(0.05)
 
 
 def wait_for_css_query_selector(
@@ -352,10 +368,11 @@ def activate_jquery_confirm(driver):
 
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
+        wait_for_jquery_active(driver, timeout=0.6)
     add_css_link(driver, jq_confirm_css)
     add_js_link(driver, jq_confirm_js)
 
-    for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+    for x in range(7):
         # jQuery-Confirm needs a small amount of time to load & activate.
         try:
             driver.execute_script("jconfirm")
