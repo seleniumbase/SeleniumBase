@@ -2,7 +2,7 @@
 
 ### MasterQA bridges the gap between manual QA and automated QA by combining manual verification steps with SeleniumBase automation scripts.
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/masterqa3.gif "MasterQA")
+![](https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif "MasterQA")
 
 Here's some example code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/basic_masterqa_test.py):
 

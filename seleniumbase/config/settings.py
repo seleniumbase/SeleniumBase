@@ -76,9 +76,9 @@ DEFAULT_MESSAGE_DURATION = 2.55
 # The default message that appears when you don't specify a custom message
 MASTERQA_DEFAULT_VALIDATION_MESSAGE = "Does the page look good?"
 
-# The time delay (in seconds) before the validation pop-up appears
-# This value can be overwritten on the command line. Ex: --verify_delay=0.5
-MASTERQA_WAIT_TIME_BEFORE_VERIFY = 0.75
+# The time delay (in seconds) before the MasterQA validation pop-up appears.
+# This value can be overwritten on the command line. Ex: --verify_delay=1.0
+MASTERQA_WAIT_TIME_BEFORE_VERIFY = 0.5
 
 # If True, the automation will start in full-screen mode
 MASTERQA_START_IN_FULL_SCREEN_MODE = False

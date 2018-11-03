@@ -60,18 +60,24 @@ class __MasterQATestCase__(BaseCase):
 
     def jq_confirm_dialog(self, question):
         count = self.manual_check_count + 1
-        question = js_utils.escape_quotes_if_needed(question)
+        title_content = ('<center><font color="#7700bb">Manual Check #%s:'
+                         '</font></center><hr><font color="#0066ff">%s</font>'
+                         '' % (count, question))
+        title_content = js_utils.escape_quotes_if_needed(title_content)
         jqcd = ("""jconfirm({
-                    boxWidth: '30%%',
+                    boxWidth: '32.5%%',
                     useBootstrap: false,
                     containerFluid: false,
-                    theme: 'light',
+                    animationBounce: 1,
+                    type: 'default',
+                    theme: 'bootstrap',
+                    typeAnimated: true,
                     animation: 'scale',
                     draggable: true,
-                    dragWindowGap: 0,
+                    dragWindowGap: 1,
                     container: 'body',
-                    title: 'Manual Check #%s:',
-                    content: '<h3><b>%s</b></h3>',
+                    title: '%s',
+                    content: '',
                     buttons: {
                         fail_button: {
                             btnClass: 'btn-red',
@@ -88,7 +94,7 @@ class __MasterQATestCase__(BaseCase):
                             }
                         }
                     }
-                });""" % (count, question))
+                });""" % title_content)
         self.execute_script(jqcd)
 
     def manual_page_check(self, *args):
@@ -106,11 +112,10 @@ class __MasterQATestCase__(BaseCase):
             question = instructions
 
         use_jqc = False
+        self.wait_for_ready_state_complete()
         if js_utils.is_jquery_confirm_activated(self.driver):
             use_jqc = True
         else:
-            if self.browser == "firefox":
-                js_utils.activate_jquery(self.driver)
             js_utils.activate_jquery_confirm(self.driver)
             get_jqc = None
             try:
@@ -374,10 +379,7 @@ class __MasterQATestCase__(BaseCase):
         self.open("file://%s" % archived_results_file)
         if auto_close_results_page:
             # Long enough to notice the results before closing the page
-            wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
-            if self.verify_delay:
-                wait_time_before_verify = float(self.verify_delay)
-            time.sleep(wait_time_before_verify)
+            time.sleep(1.0)
         else:
             # The user can decide when to close the results page
             print("\n*** Close the html report window to continue ***")
