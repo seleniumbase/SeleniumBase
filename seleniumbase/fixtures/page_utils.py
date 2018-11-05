@@ -24,9 +24,8 @@ def is_xpath_selector(selector):
     """
     A basic method to determine if a selector is an xpath selector.
     """
-    if (selector.startswith('/') or
-            selector.startswith('./') or
-            selector.startswith('(')):
+    if (selector.startswith('/') or selector.startswith('./') or (
+            selector.startswith('('))):
         return True
     return False
 
@@ -35,8 +34,7 @@ def is_link_text_selector(selector):
     """
     A basic method to determine if a selector is a link text selector.
     """
-    if (selector.startswith('link=') or
-            selector.startswith('link_text=')):
+    if (selector.startswith('link=') or selector.startswith('link_text=')):
         return True
     return False
 

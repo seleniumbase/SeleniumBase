@@ -138,9 +138,9 @@ def convert_xpath_to_css(xpath):
 
     attribute_defs = re.findall(r'(\[\w+\=\S+\])', css)
     for attr_def in attribute_defs:
-        if (attr_def.count('[') == 1 and attr_def.count(']') == 1 and
-                attr_def.count('=') == 1 and attr_def.count('"') == 0 and
-                attr_def.count("'") == 0) and attr_def.count(' ') == 0:
+        if (attr_def.count('[') == 1 and attr_def.count(']') == 1 and (
+                attr_def.count('=') == 1) and attr_def.count('"') == 0 and (
+                attr_def.count("'") == 0)) and attr_def.count(' ') == 0:
             # Now safe to manipulate
             q1 = attr_def.find('=') + 1
             q2 = attr_def.find(']')

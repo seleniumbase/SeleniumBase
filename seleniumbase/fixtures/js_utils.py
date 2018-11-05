@@ -129,8 +129,8 @@ def activate_jquery(driver):
 
 
 def are_quotes_escaped(string):
-    if (string.count("\\'") != string.count("'") or
-            string.count('\\"') != string.count('"')):
+    if (string.count("\\'") != string.count("'") or (
+            string.count('\\"') != string.count('"'))):
         return True
     return False
 
