@@ -589,14 +589,14 @@ def main():
             selector = re.escape(selector)
             selector = js_utils.escape_quotes_if_needed(selector)
             if int(line_num) < num_lines - 1:
-                regex_string = (r'''^\s*self.click\(["|']''' +
-                                selector + r'''["|']\)\s*$''')
+                regex_string = (r'''^\s*self.click\(["|']'''
+                                '' + selector + r'''["|']\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue
-                regex_string = (r'''^\s*self.update_text\(["|']''' +
-                                selector +
-                                r'''["|'], [\S\s]+\)\s*$''')
+                regex_string = (r'''^\s*self.update_text\(["|']'''
+                                '' + selector + ''
+                                '' + r'''["|'], [\S\s]+\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue
@@ -617,8 +617,8 @@ def main():
             link_text = re.escape(link_text)
             link_text = js_utils.escape_quotes_if_needed(link_text)
             if int(line_num) < num_lines - 2:
-                regex_string = (r'''^\s*self.click\(["|']link=''' +
-                                link_text + r'''["|']\)\s*$''')
+                regex_string = (r'''^\s*self.click\(["|']link='''
+                                '' + link_text + r'''["|']\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue

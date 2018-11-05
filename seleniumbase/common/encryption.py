@@ -118,18 +118,18 @@ def decrypt(string):
             rem4 = (len(string) + ord_string_sum(string)) % 2
         if len(string) % 2 != 0:
             if rem3 == 1:
-                string = (chr(ord(string[-1]) - 5 - rem1) + string +
-                          chr(ord(string[-1]) - 13 - rem1))
+                string = (chr(ord(string[-1]) - 5 - rem1) + string + ''
+                          '' + chr(ord(string[-1]) - 13 - rem1))
             else:
-                string = (chr(ord(string[-1]) - 11 - rem1) + string +
-                          chr(ord(string[-1]) - 23 - rem1))
+                string = (chr(ord(string[-1]) - 11 - rem1) + string + ''
+                          '' + chr(ord(string[-1]) - 23 - rem1))
         elif len(string) > 1:
             if rem4 == 1:
-                string = (chr(ord(string[0]) - 19 + rem2) + string +
-                          chr(ord(string[0]) - 7 - rem2))
+                string = (chr(ord(string[0]) - 19 + rem2) + string + ''
+                          '' + chr(ord(string[0]) - 7 - rem2))
             else:
-                string = (chr(ord(string[0]) - 26 + rem2) + string +
-                          chr(ord(string[0]) - 12 - rem2))
+                string = (chr(ord(string[0]) - 26 + rem2) + string + ''
+                          '' + chr(ord(string[0]) - 12 - rem2))
         rem5 = (len(string) + ord_string_sum(string)) % 23
         string = rotate(string, rem5)
         result = str_xor(shuffle_string(string)[::-1], xor_key)

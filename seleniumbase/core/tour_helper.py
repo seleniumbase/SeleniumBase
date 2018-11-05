@@ -278,8 +278,8 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
                     stop_ms = start_ms + (interval * 1000.0)
                 now_ms = time.time() * 1000.0
                 if now_ms >= stop_ms:
-                    if ((element == latest_element) and
-                            (shep_text == latest_text)):
+                    if ((element == latest_element) and (
+                            shep_text == latest_text)):
                         driver.execute_script("Shepherd.activeTour.next()")
                         try:
                             latest_element = driver.execute_script(

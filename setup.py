@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.17.1',
+    version='1.17.2',
     description='All-in-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -70,7 +70,7 @@ setup(
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'pyotp>=2.2.6',
         'boto>=2.49.0',
-        'flake8==3.5.0',
+        'flake8==3.6.0',
         'PyVirtualDisplay==0.2.1',
     ],
     packages=[

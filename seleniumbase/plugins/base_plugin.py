@@ -122,9 +122,9 @@ class Base(Plugin):
         specified (basic_test_info, screen_shots, page_source), then save them
         all by default. Otherwise, save only selected ones from their plugins.
         """
-        if ((not self.options.enable_plugin_basic_test_info) and
-                (not self.options.enable_plugin_screen_shots) and
-                (not self.options.enable_plugin_page_source)):
+        if ((not self.options.enable_plugin_basic_test_info) and (
+                not self.options.enable_plugin_screen_shots) and (
+                not self.options.enable_plugin_page_source)):
             test_logpath = self.options.log_path + "/" + test.id()
             log_helper.log_screenshot(test_logpath, test.driver)
             log_helper.log_test_failure_data(
@@ -165,9 +165,9 @@ class Base(Plugin):
         error states, we want to make sure that they don't show up in
         the nose output as errors.
         """
-        if (err[0] == errors.BlockedTest or
-                err[0] == errors.SkipTest or
-                err[0] == errors.DeprecatedTest):
+        if (err[0] == errors.BlockedTest or (
+                err[0] == errors.SkipTest) or (
+                err[0] == errors.DeprecatedTest)):
             print(err[1].__str__().split('''-------------------- >> '''
                                          '''begin captured logging'''
                                          ''' << --------------------''', 1)[0])

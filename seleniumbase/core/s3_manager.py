@@ -64,7 +64,7 @@ class S3LoggingBucket(object):
         index = self.get_key(file_name)
         index_str = []
         for completed_file in already_uploaded_files:
-            index_str.append("<a href='" + self.bucket_url +
+            index_str.append("<a href='" + self.bucket_url + ""
                              "%s'>%s</a>" % (completed_file, completed_file))
         index.set_contents_from_string(
             "<br>".join(index_str),

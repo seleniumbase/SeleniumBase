@@ -2793,9 +2793,9 @@ class BaseCase(unittest.TestCase):
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
                         os.makedirs(test_logpath)
-                    if ((not self.with_screen_shots) and
-                            (not self.with_basic_test_info) and
-                            (not self.with_page_source)):
+                    if ((not self.with_screen_shots) and (
+                            not self.with_basic_test_info) and (
+                            not self.with_page_source)):
                         # Log everything if nothing specified (if testing_base)
                         log_helper.log_screenshot(test_logpath, self.driver)
                         log_helper.log_test_failure_data(
