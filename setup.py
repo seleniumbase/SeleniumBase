@@ -70,7 +70,7 @@ setup(
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'pyotp>=2.2.6',
         'boto>=2.49.0',
-        'flake8==3.5.0',
+        'flake8==3.6.0',
         'PyVirtualDisplay==0.2.1',
     ],
     packages=[
