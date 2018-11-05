@@ -231,10 +231,10 @@ import ipdb; ipdb.set_trace()  # waits for your command. n = next line of curren
 import pytest; pytest.set_trace()  # similar to ipdb, but specific to pytest
 ```
 
-**To pause an active test that throws an exception or error, add ``--pdb --pdb-failures -s``:**
+**To pause an active test that throws an exception or error, add ``--pdb -s``:**
 
 ```
-pytest my_first_test.py --browser=chrome --pdb --pdb-failures -s
+pytest my_first_test.py --browser=chrome --pdb -s
 ```
 
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).

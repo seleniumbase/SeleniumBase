@@ -38,7 +38,7 @@ pytest my_test_suite.py --proxy=IP_ADDRESS:PORT
 
 pytest my_test_suite.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 
-pytest test_fail.py -s --pdb --pdb-failures
+pytest test_fail.py --pdb -s
 ```
 
 You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
@@ -93,10 +93,10 @@ import ipdb; ipdb.set_trace()  # waits for your command. n = next line of curren
 import pytest; pytest.set_trace()  # similar to ipdb, but specific to pytest
 ```
 
-**To pause an active test that throws an exception or error, add ``--pdb --pdb-failures -s``:**
+**To pause an active test that throws an exception or error, add ``--pdb -s``:**
 
 ```bash
-pytest my_first_test.py --browser=chrome --pdb --pdb-failures -s
+pytest my_first_test.py --browser=chrome --pdb -s
 ```
 
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).

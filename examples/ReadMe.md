@@ -52,7 +52,7 @@ pytest test_fail.py --browser=chrome
 
 Run a failing test with Debugging-mode enabled: (If a test failure occurs, pdb activates)
 ```bash
-pytest test_fail.py --browser=chrome --pdb --pdb-failures -s
+pytest test_fail.py --browser=chrome --pdb -s
 ```
 
 For more advanced run commands, such as using a proxy server,  see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
