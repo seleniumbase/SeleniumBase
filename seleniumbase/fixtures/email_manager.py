@@ -478,7 +478,7 @@ class EmailManager:
                 except KeyError:
                     pass
             return text  # leave as is
-        return re.sub("&#?\w+;", fixup, html)
+        return re.sub(r"&#?\w+;", fixup, html)
 
     def decode_quoted_printable(self, html):
         """

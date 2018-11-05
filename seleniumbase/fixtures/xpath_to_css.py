@@ -5,27 +5,27 @@ Convert XPath selectors into CSS selectors
 import re
 
 _sub_regexes = {
-    "tag": "([a-zA-Z][a-zA-Z0-9]{0,10}|\*)",
-    "attribute": "[.a-zA-Z_:][-\w:.]*(\(\))?)",
-    "value": "\s*[\w/:][-/\w\s,:;.]*"
+    "tag": r"([a-zA-Z][a-zA-Z0-9]{0,10}|\*)",
+    "attribute": r"[.a-zA-Z_:][-\w:.]*(\(\))?)",
+    "value": r"\s*[\w/:][-/\w\s,:;.]*"
 }
 
 _validation_re = (
-    "(?P<node>"
-    "("
-    "^id\([\"\']?(?P<idvalue>%(value)s)[\"\']?\)"
-    "|"
-    "(?P<nav>//?)(?P<tag>%(tag)s)"
-    "(\[("
-    "(?P<matched>(?P<mattr>@?%(attribute)s=[\"\']"
-    "(?P<mvalue>%(value)s))[\"\']"
-    "|"
-    "(?P<contained>contains\((?P<cattr>@?%(attribute)s,\s*[\"\']"
-    "(?P<cvalue>%(value)s)[\"\']\))"
-    ")\])?"
-    "(\[(?P<nth>\d)\])?"
-    ")"
-    ")" % _sub_regexes
+    r"(?P<node>"
+    r"("
+    r"^id\([\"\']?(?P<idvalue>%(value)s)[\"\']?\)"
+    r"|"
+    r"(?P<nav>//?)(?P<tag>%(tag)s)"
+    r"(\[("
+    r"(?P<matched>(?P<mattr>@?%(attribute)s=[\"\']"
+    r"(?P<mvalue>%(value)s))[\"\']"
+    r"|"
+    r"(?P<contained>contains\((?P<cattr>@?%(attribute)s,\s*[\"\']"
+    r"(?P<cvalue>%(value)s)[\"\']\))"
+    r")\])?"
+    r"(\[(?P<nth>\d)\])?"
+    r")"
+    r")" % _sub_regexes
 )
 
 prog = re.compile(_validation_re)
@@ -136,7 +136,7 @@ def convert_xpath_to_css(xpath):
 
     css = _get_raw_css_from_xpath(xpath)
 
-    attribute_defs = re.findall('(\[\w+\=\S+\])', css)
+    attribute_defs = re.findall(r'(\[\w+\=\S+\])', css)
     for attr_def in attribute_defs:
         if (attr_def.count('[') == 1 and attr_def.count(']') == 1 and
                 attr_def.count('=') == 1 and attr_def.count('"') == 0 and
