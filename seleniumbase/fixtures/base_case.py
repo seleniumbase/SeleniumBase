@@ -1174,6 +1174,7 @@ class BaseCase(unittest.TestCase):
         tour_helper.export_tour(self._tour_steps, name=name, filename=filename)
 
     def activate_jquery_confirm(self):
+        """ See https://craftpip.github.io/jquery-confirm/ for usage. """
         js_utils.activate_jquery_confirm(self.driver)
 
     def activate_messenger(self):
