@@ -29,10 +29,16 @@ Now you can run your tests on the Selenium Grid:
 pytest my_test_suite.py --server=IP_ADDRESS --port=4444
 ```
 
-You can also run your tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid (and not worry about managing your own Selenium Grid):
+You can also run your tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid server (and not worry about managing your own Selenium Grid):
 
 ```
 pytest my_first_test.py --server=username:key@hub.browserstack.com --port=80
+```
+
+And you can run your tests on the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid server:
+
+```
+pytest my_first_test.py --server=username:key@ondemand.saucelabs.com --port=80
 ```
 
 
