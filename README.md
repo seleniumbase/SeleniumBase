@@ -314,13 +314,13 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 pytest my_test_suite.py --html=report.html
 ```
 
+![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
+
 You can also use ``--junitxml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
 ```
 pytest my_test_suite.py --junitxml=report.xml
 ```
-
-![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
 #### **Nosetest Reports:**
 
@@ -622,7 +622,7 @@ If the web page you're on already has jQuery loaded, you can start executing jQu
 You'd know this because the web page would contain something like the following in the HTML:
 
 ```html
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 ```
 
 It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:
@@ -630,6 +630,8 @@ It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To 
 ```python
 self.activate_jquery()
 ```
+
+Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, use Firefox with SeleniumBase, which overrides the CSP to allow loading of any JS library.
 
 Here are some examples of using jQuery in your scripts:
 ```python
