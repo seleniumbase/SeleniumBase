@@ -2734,7 +2734,7 @@ class BaseCase(unittest.TestCase):
         """
         has_exception = False
         if sys.version.startswith('3') and hasattr(self, '_outcome'):
-            if self._outcome.errors:
+            if hasattr(self._outcome, 'errors') and self._outcome.errors:
                 has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
