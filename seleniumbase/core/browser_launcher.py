@@ -240,7 +240,13 @@ def get_remote_driver(
             downloads_path, proxy_string, proxy_auth,
             proxy_user, proxy_pass)
         if headless:
-            chrome_options.add_argument("--headless")
+            if not proxy_auth:
+                # Headless Chrome doesn't support extensions, which are
+                # required when using a proxy server that has authentication.
+                # Instead, base_case.py will use PyVirtualDisplay when not
+                # using Chrome's built-in headless mode. See link for details:
+                # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
+                chrome_options.add_argument("--headless")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--no-sandbox")
         capabilities = chrome_options.to_capabilities()
