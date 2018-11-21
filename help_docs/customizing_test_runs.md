@@ -10,6 +10,7 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose whether to run tests multi-threaded
 * Choose a BrowserStack server to run on
 * Choose a Sauce Labs server to run on
+* Choose a TestingBot server to run on
 * Choose a Selenium Grid to connect to
 * Choose a database to save results to
 * Choose a proxy server to connect to
@@ -46,7 +47,7 @@ You can interchange **pytest** with **nosetests**, but using pytest is strongly 
 
 (NOTE: If you're using **pytest** for running tests outside of the SeleniumBase repo, **you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**. If using **nosetests**, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).)
 
-#### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, (or your own):**
+#### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, (or your own):**
 
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
 
@@ -58,6 +59,12 @@ Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
 
 ```bash
 pytest my_first_test.py --server=username:key@ondemand.saucelabs.com --port=80
+```
+
+Here's how to connect to a TestingBot Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=username:key@hub.testingbot.com --port=80
 ```
 
 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
