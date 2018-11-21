@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.17.4',
+    version='1.17.5',
     description='All-in-One Test Automation Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -41,6 +41,7 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: Unix",
         "Operating System :: MacOS",
+        "Framework :: Pytest",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
@@ -59,7 +60,7 @@ setup(
         'chardet',
         'unittest2',
         'selenium==3.141.0',
-        'requests==2.20.0',  # Changing this may effect "urllib3"
+        'requests==2.20.1',  # Changing this may effect "urllib3"
         'urllib3==1.24.1',  # Keep this lib in sync with "requests"
         'pytest>=4.0.0',
         'pytest-cov>=2.6.0',

@@ -119,7 +119,9 @@ class Tether:
 
 class ValidBrowsers:
     valid_browsers = (
-        ["chrome", "edge", "firefox", "ie", "opera", "phantomjs", "safari"])
+        ["chrome", "edge", "firefox", "ie",
+         "opera", "phantomjs", "safari",
+         "android", "iphone", "ipad", "remote"])
 
 
 class Browser:
@@ -130,6 +132,10 @@ class Browser:
     OPERA = "opera"
     PHANTOM_JS = "phantomjs"
     SAFARI = "safari"
+    ANDROID = "android"
+    IPHONE = "iphone"
+    IPAD = "ipad"
+    REMOTE = "remote"
 
     VERSION = {
         "chrome": None,
@@ -138,7 +144,11 @@ class Browser:
         "ie": None,
         "opera": None,
         "phantomjs": None,
-        "safari": None
+        "safari": None,
+        "android": None,
+        "iphone": None,
+        "ipad": None,
+        "remote": None
     }
 
     LATEST = {
@@ -148,7 +158,11 @@ class Browser:
         "ie": None,
         "opera": None,
         "phantomjs": None,
-        "safari": None
+        "safari": None,
+        "android": None,
+        "iphone": None,
+        "ipad": None,
+        "remote": None
     }
 
 

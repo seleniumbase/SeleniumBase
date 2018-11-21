@@ -11,6 +11,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from seleniumbase.config import proxy_list
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
+from seleniumbase.core import capabilities_parser
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
@@ -187,7 +188,8 @@ def validate_proxy_string(proxy_string):
 
 
 def get_driver(browser_name, headless=False, use_grid=False,
-               servername='localhost', port=4444, proxy_string=None):
+               servername='localhost', port=4444, proxy_string=None,
+               cap_file=None):
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -216,7 +218,7 @@ def get_driver(browser_name, headless=False, use_grid=False,
     if use_grid:
         return get_remote_driver(
             browser_name, headless, servername, port, proxy_string, proxy_auth,
-            proxy_user, proxy_pass)
+            proxy_user, proxy_pass, cap_file)
     else:
         return get_local_driver(
             browser_name, headless, proxy_string, proxy_auth,
@@ -225,20 +227,31 @@ def get_driver(browser_name, headless=False, use_grid=False,
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
-        proxy_user, proxy_pass):
+        proxy_user, proxy_pass, cap_file):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
+    desired_caps = {}
+    if cap_file:
+        desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
 
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
             downloads_path, proxy_string, proxy_auth,
             proxy_user, proxy_pass)
         if headless:
-            chrome_options.add_argument("--headless")
+            if not proxy_auth:
+                # Headless Chrome doesn't support extensions, which are
+                # required when using a proxy server that has authentication.
+                # Instead, base_case.py will use PyVirtualDisplay when not
+                # using Chrome's built-in headless mode. See link for details:
+                # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
+                chrome_options.add_argument("--headless")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--no-sandbox")
         capabilities = chrome_options.to_capabilities()
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities)
@@ -251,6 +264,8 @@ def get_remote_driver(
             if headless:
                 firefox_capabilities['moz:firefoxOptions'] = (
                     {'args': ['-headless']})
+            for key in desired_caps.keys():
+                firefox_capabilities[key] = desired_caps[key]
             capabilities = firefox_capabilities
             address = "http://%s:%s/wd/hub" % (servername, port)
             return webdriver.Remote(
@@ -265,39 +280,76 @@ def get_remote_driver(
             if headless:
                 firefox_capabilities['moz:firefoxOptions'] = (
                     {'args': ['-headless']})
+            for key in desired_caps.keys():
+                firefox_capabilities[key] = desired_caps[key]
             capabilities = firefox_capabilities
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
                 browser_profile=profile)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
+        capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=(
-                webdriver.DesiredCapabilities.INTERNETEXPLORER))
+            desired_capabilities=capabilities)
     elif browser_name == constants.Browser.EDGE:
+        capabilities = webdriver.DesiredCapabilities.EDGE
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=(
-                webdriver.DesiredCapabilities.EDGE))
+            desired_capabilities=capabilities)
     elif browser_name == constants.Browser.SAFARI:
+        capabilities = webdriver.DesiredCapabilities.SAFARI
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=(
-                webdriver.DesiredCapabilities.SAFARI))
+            desired_capabilities=capabilities)
     elif browser_name == constants.Browser.OPERA:
+        capabilities = webdriver.DesiredCapabilities.OPERA
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=(
-                webdriver.DesiredCapabilities.OPERA))
+            desired_capabilities=capabilities)
     elif browser_name == constants.Browser.PHANTOM_JS:
+        capabilities = webdriver.DesiredCapabilities.PHANTOMJS
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
             warnings.simplefilter("ignore", category=UserWarning)
             return webdriver.Remote(
                 command_executor=address,
-                desired_capabilities=(
-                    webdriver.DesiredCapabilities.PHANTOMJS))
+                desired_capabilities=capabilities)
+    elif browser_name == constants.Browser.ANDROID:
+        capabilities = webdriver.DesiredCapabilities.ANDROID
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
+        return webdriver.Remote(
+            command_executor=address,
+            desired_capabilities=capabilities)
+    elif browser_name == constants.Browser.IPHONE:
+        capabilities = webdriver.DesiredCapabilities.IPHONE
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
+        return webdriver.Remote(
+            command_executor=address,
+            desired_capabilities=capabilities)
+    elif browser_name == constants.Browser.IPAD:
+        capabilities = webdriver.DesiredCapabilities.IPAD
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
+        return webdriver.Remote(
+            command_executor=address,
+            desired_capabilities=capabilities)
+    elif browser_name == constants.Browser.REMOTE:
+        return webdriver.Remote(
+            command_executor=address,
+            desired_capabilities=desired_caps)
 
 
 def get_local_driver(
@@ -418,3 +470,6 @@ def get_local_driver(
                 return webdriver.Chrome(executable_path=LOCAL_CHROMEDRIVER)
             else:
                 return webdriver.Chrome()
+    else:
+        raise Exception(
+            "%s is not a valid browser option for this system!" % browser_name)

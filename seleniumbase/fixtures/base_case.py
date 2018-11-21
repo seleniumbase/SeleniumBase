@@ -2191,7 +2191,8 @@ class BaseCase(unittest.TestCase):
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def get_new_driver(self, browser=None, headless=None,
-                       servername=None, port=None, proxy=None, switch_to=True):
+                       servername=None, port=None, proxy=None, switch_to=True,
+                       cap_file=None):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
             that import base_case.BaseCase from seleniumbase. If parameters
@@ -2204,6 +2205,27 @@ class BaseCase(unittest.TestCase):
             proxy - if using a proxy server, specify the "host:port" combo here
             switch_to - the option to switch to the new driver (default = True)
         """
+        if self.browser == "remote" and self.servername == "localhost":
+            raise Exception('Cannot use "remote" browser driver on localhost!'
+                            ' Did you mean to connect to a remote Grid server'
+                            ' such as BrowserStack or Sauce Labs? In that'
+                            ' case, you must specify the "server" and "port"'
+                            ' parameters on the command line! '
+                            'Example: '
+                            '--server=user:key@hub.browserstack.com --port=80')
+        browserstack_ref = (
+            'https://browserstack.com/automate/capabilities')
+        sauce_labs_ref = (
+            'https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/')
+        if self.browser == "remote" and not self.cap_file:
+            raise Exception('Need to specify a desired capabilities file when '
+                            'using "--browser=remote". Add "--cap_file=FILE". '
+                            'File should be in the Python format used by: '
+                            '%s OR '
+                            '%s '
+                            'See SeleniumBase/examples/sample_cap_file_BS.py '
+                            'and SeleniumBase/examples/sample_cap_file_SL.py'
+                            % (browserstack_ref, sauce_labs_ref))
         if browser is None:
             browser = self.browser
         browser_name = browser
@@ -2220,6 +2242,8 @@ class BaseCase(unittest.TestCase):
         proxy_string = proxy
         if proxy_string is None:
             proxy_string = self.proxy_string
+        if cap_file is None:
+            cap_file = self.cap_file
         valid_browsers = constants.ValidBrowsers.valid_browsers
         if browser_name not in valid_browsers:
             raise Exception("Browser: {%s} is not a valid browser option. "
@@ -2231,7 +2255,8 @@ class BaseCase(unittest.TestCase):
                                                  use_grid=use_grid,
                                                  servername=servername,
                                                  port=port,
-                                                 proxy_string=proxy_string)
+                                                 proxy_string=proxy_string,
+                                                 cap_file=cap_file)
         self._drivers_list.append(new_driver)
         if switch_to:
             self.driver = new_driver
@@ -2606,6 +2631,7 @@ class BaseCase(unittest.TestCase):
             self.servername = pytest.config.option.servername
             self.port = pytest.config.option.port
             self.proxy_string = pytest.config.option.proxy_string
+            self.cap_file = pytest.config.option.cap_file
             self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser
@@ -2676,7 +2702,8 @@ class BaseCase(unittest.TestCase):
                                           servername=self.servername,
                                           port=self.port,
                                           proxy=self.proxy_string,
-                                          switch_to=True)
+                                          switch_to=True,
+                                          cap_file=self.cap_file)
         self._default_driver = self.driver
 
     def __insert_test_result(self, state, err):

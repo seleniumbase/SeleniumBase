@@ -48,6 +48,12 @@ class SeleniumBrowser(Plugin):
             help="""The browser version to use. Explicitly select
                     a version number or use "latest".""")
         parser.add_option(
+            '--cap_file', action='store',
+            dest='cap_file',
+            default=None,
+            help="""The file that stores browser desired capabilities
+                    for BrowserStack or Sauce Labs web drivers.""")
+        parser.add_option(
             '--server', action='store', dest='servername',
             default='localhost',
             help="""Designates the Selenium Grid server to use.
@@ -122,6 +128,7 @@ class SeleniumBrowser(Plugin):
 
     def beforeTest(self, test):
         test.test.browser = self.options.browser
+        test.test.cap_file = self.options.cap_file
         test.test.headless = self.options.headless
         test.test.servername = self.options.servername
         test.test.port = self.options.port
