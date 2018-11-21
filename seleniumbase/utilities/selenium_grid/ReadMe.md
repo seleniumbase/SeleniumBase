@@ -35,10 +35,16 @@ You can also run your tests on [BrowserStack](https://www.browserstack.com/autom
 pytest my_first_test.py --server=username:key@hub.browserstack.com --port=80
 ```
 
-And you can run your tests on the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid server:
+You can run your tests on the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid server:
 
 ```
 pytest my_first_test.py --server=username:key@ondemand.saucelabs.com --port=80
+```
+
+And you can run your tests on the [TestingBot](https://testingbot.com/features) Selenium Grid server:
+
+```
+pytest my_first_test.py --server=username:key@hub.testingbot.com --port=80
 ```
 
 
