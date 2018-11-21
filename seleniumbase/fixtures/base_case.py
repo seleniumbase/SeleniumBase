@@ -2606,6 +2606,7 @@ class BaseCase(unittest.TestCase):
             self.servername = pytest.config.option.servername
             self.port = pytest.config.option.port
             self.proxy_string = pytest.config.option.proxy_string
+            self.cap_file = pytest.config.option.cap_file
             self.database_env = pytest.config.option.database_env
             self.log_path = pytest.config.option.log_path
             self.browser = pytest.config.option.browser

@@ -39,6 +39,10 @@ def pytest_addoption(parser):
     parser.addoption('--data', dest='data',
                      default=None,
                      help='Extra data to pass from the command line.')
+    parser.addoption('--cap_file', dest='cap_file',
+                     default=None,
+                     help="""The file that stores browser desired capabilities
+                          for BrowserStack or Sauce Labs web drivers.""")
     parser.addoption('--with-testing_base', action="store_true",
                      dest='with_testing_base',
                      default=True,
