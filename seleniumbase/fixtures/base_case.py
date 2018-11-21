@@ -633,7 +633,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.is_element_visible(self.driver, partial_link_text,
                                                by=By.PARTIAL_LINK_TEXT)
 
-    def is_text_visible(self, text, selector, by=By.CSS_SELECTOR):
+    def is_text_visible(self, text, selector="html", by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         if page_utils.is_xpath_selector(selector):
@@ -1946,7 +1946,7 @@ class BaseCase(unittest.TestCase):
     # with the exception of assert_*, which won't return the element,
     # but like the others, will raise an exception if the call fails.
 
-    def wait_for_text_visible(self, text, selector, by=By.CSS_SELECTOR,
+    def wait_for_text_visible(self, text, selector="html", by=By.CSS_SELECTOR,
                               timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
@@ -1958,7 +1958,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
-    def wait_for_text(self, text, selector, by=By.CSS_SELECTOR,
+    def wait_for_text(self, text, selector="html", by=By.CSS_SELECTOR,
                       timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of wait_for_text_visible() """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -1966,7 +1966,7 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
-    def find_text(self, text, selector, by=By.CSS_SELECTOR,
+    def find_text(self, text, selector="html", by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
         """ Same as wait_for_text_visible() - returns the element """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -1974,14 +1974,14 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_text_visible(
             text, selector, by=by, timeout=timeout)
 
-    def assert_text_visible(self, text, selector, by=By.CSS_SELECTOR,
+    def assert_text_visible(self, text, selector="html", by=By.CSS_SELECTOR,
                             timeout=settings.SMALL_TIMEOUT):
         """ Same as assert_text() """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         return self.assert_text(text, selector, by=by, timeout=timeout)
 
-    def assert_text(self, text, selector, by=By.CSS_SELECTOR,
+    def assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_text_visible()
             Raises an exception if the element or the text is not found.
@@ -2378,7 +2378,7 @@ class BaseCase(unittest.TestCase):
         """ DEPRECATED - Use self.delayed_assert_element() instead. """
         return self.delayed_assert_element(selector, by=by, timeout=timeout)
 
-    def delayed_assert_text(self, text, selector, by=By.CSS_SELECTOR,
+    def delayed_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
                             timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for text from an element on a page.
             Failures will be saved until the process_delayed_asserts()
@@ -2400,7 +2400,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     @decorators.deprecated("Use self.delayed_assert_text() instead!")
-    def check_assert_text(self, text, selector, by=By.CSS_SELECTOR,
+    def check_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
                           timeout=settings.MINI_TIMEOUT):
         """ DEPRECATED - Use self.delayed_assert_text() instead. """
         return self.delayed_assert_text(text, selector, by=by, timeout=timeout)

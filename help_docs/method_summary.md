@@ -69,7 +69,7 @@ self.is_link_text_visible(link_text)
 
 self.is_partial_link_text_visible(partial_link_text)
 
-self.is_text_visible(text, selector, by=By.CSS_SELECTOR)
+self.is_text_visible(text, selector="html", by=By.CSS_SELECTOR)
 
 self.find_elements(selector, by=By.CSS_SELECTOR)
 
@@ -240,19 +240,19 @@ self.assert_element(
 
 ########
 
-self.wait_for_text_visible(text, selector, by=By.CSS_SELECTOR,
+self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
-self.wait_for_text(text, selector, by=By.CSS_SELECTOR,
+self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
-self.find_text(text, selector, by=By.CSS_SELECTOR,
+self.find_text(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
-self.assert_text_visible(text, selector, by=By.CSS_SELECTOR,
+self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
-self.assert_text(text, selector, by=By.CSS_SELECTOR,
+self.assert_text(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
 ########
@@ -315,7 +315,7 @@ self.switch_to_default_window()
 self.save_screenshot(name, folder=None)
 
 self.get_new_driver(browser=None, headless=None, servername=None, port=None,
-                    proxy=None, switch_to=True)
+                    proxy=None, switch_to=True, cap_file=None)
 
 self.switch_to_driver(driver)
 
@@ -326,7 +326,7 @@ self.switch_to_default_driver()
 self.delayed_assert_element(selector, by=By.CSS_SELECTOR,
     timeout=settings.MINI_TIMEOUT)
 
-self.delayed_assert_text(text, selector, by=By.CSS_SELECTOR,
+self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.MINI_TIMEOUT)
 
 self.process_delayed_asserts()
