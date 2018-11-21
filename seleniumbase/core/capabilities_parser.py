@@ -17,7 +17,7 @@ def get_desired_capabilities(cap_file):
         if "desired_cap = {" in line:
             line = line.split("desired_cap = {")[1]
 
-        # 'key' : 'value'
+        # 'KEY' : 'VALUE'
         data = re.match(r"^\s*'([\S\s]+)'\s*:\s*'([\S\s]+)'\s*[,}]?\s*$", line)
         if data:
             key = data.group(1)
@@ -26,7 +26,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # "key" : "value"
+        # "KEY" : "VALUE"
         data = re.match(r'^\s*"([\S\s]+)"\s*:\s*"([\S\s]+)"\s*[,}]?\s*$', line)
         if data:
             key = data.group(1)
@@ -35,7 +35,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # 'key' : "value"
+        # 'KEY' : "VALUE"
         data = re.match(
             r'''^\s*'([\S\s]+)'\s*:\s*"([\S\s]+)"\s*[,}]?\s*$''', line)
         if data:
@@ -45,7 +45,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # "key" : 'value'
+        # "KEY" : 'VALUE'
         data = re.match(
             r'''^\s*"([\S\s]+)"\s*:\s*'([\S\s]+)'\s*[,}]?\s*$''', line)
         if data:
@@ -55,7 +55,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # caps['key'] = 'value'
+        # caps['KEY'] = 'VALUE'
         data = re.match(r"^\s*caps\['([\S\s]+)'\]\s*=\s*'([\S\s]+)'\s*$", line)
         if data:
             key = data.group(1)
@@ -64,7 +64,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # caps["key"] = "value"
+        # caps["KEY"] = "VALUE"
         data = re.match(r'^\s*caps\["([\S\s]+)"\]\s*=\s*"([\S\s]+)"\s*$', line)
         if data:
             key = data.group(1)
@@ -73,7 +73,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # caps['key'] = "value"
+        # caps['KEY'] = "VALUE"
         data = re.match(
             r'''^\s*caps\['([\S\s]+)'\]\s*=\s*"([\S\s]+)"\s*$''', line)
         if data:
@@ -83,7 +83,7 @@ def get_desired_capabilities(cap_file):
             num_capabilities += 1
             continue
 
-        # caps["key"] = 'value'
+        # caps["KEY"] = 'VALUE'
         data = re.match(
             r'''^\s*caps\["([\S\s]+)"\]\s*=\s*'([\S\s]+)'\s*$''', line)
         if data:
