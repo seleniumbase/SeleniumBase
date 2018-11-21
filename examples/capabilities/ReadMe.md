@@ -2,11 +2,36 @@
 
 You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote SeleniumGrid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), or [TestingBot](https://testingbot.com/support/other/test-options).
 
-A sample run command may look like this: (When run from the ``SeleniumBase/examples/`` folder):
+A sample run command may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
 ```bash
 pytest my_first_test.py --browser=remote --server=username:key@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
 ```
+
+(You'll need to specify ``--server=SERVER``, ``--port=PORT``, and ``--cap_file=CAP_FILE.py``)
+
+Here's an example desired capabilities file:
+```python
+desired_cap = {
+    'os': 'OS X',
+    'os_version': 'Sierra',
+    'browser': 'Chrome',
+    'browser_version': '70.0',
+    'browserstack.local': 'false',
+    'browserstack.selenium_version': '3.14.0',
+    'browserstack.chrome.driver': '2.43'
+}
+```
+
+A desired capabilities file can also look like this:
+```python
+caps = {}
+caps['browserName'] = "chrome"
+caps['platform'] = "macOS 10.12"
+caps['version'] = "70.0"
+```
+
+You can generate desired capabilities for [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), and [TestingBot](https://testingbot.com/support/other/test-options) by following the links to their websites.
 
 A regex parser was built into SeleniumBase to capture all lines from the specified desired capabilities file in the following formats:
 ``'KEY': 'VALUE'``
