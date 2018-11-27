@@ -151,8 +151,9 @@ def main():
             r'''\.click\(\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            selector = '#%s' % data.group(2)
+            selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
+            selector = selector.replace('.', '\\.')
             command = '''%sself.click('%s')''' % (whitespace, selector)
             seleniumbase_lines.append(command)
             continue
@@ -163,8 +164,9 @@ def main():
             r'''\.send_keys\(\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            selector = '#%s' % data.group(2)
+            selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
+            selector = selector.replace('.', '\\.')
             text = data.group(3)
             command = '''%sself.update_text('%s', '%s')''' % (
                 whitespace, selector, text)
@@ -178,8 +180,9 @@ def main():
         if data:
             uses_keys = True
             whitespace = data.group(1)
-            selector = '#%s' % data.group(2)
+            selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
+            selector = selector.replace('.', '\\.')
             key = 'Keys.%s' % data.group(3)
             command = '''%sself.send_keys('%s', %s)''' % (
                 whitespace, selector, key)
@@ -308,7 +311,7 @@ def main():
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
             visible_text = '%s' % data.group(3)
-            command = '''%sself.pick_select_option_by_text('%s', '%s')''' % (
+            command = '''%sself.select_option_by_text('%s', '%s')''' % (
                 whitespace, selector, visible_text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
@@ -322,9 +325,11 @@ def main():
             r'''\"([\S\s]+)\"\)\s*$''', line)
         if data:
             whitespace = data.group(1)
-            selector = '#%s' % data.group(2)
+            selector = '#%s' % data.group(2).replace('#', '\\#')
+            selector = selector.replace('[', '\\[').replace(']', '\\]')
+            selector = selector.replace('.', '\\.')
             visible_text = '%s' % data.group(3)
-            command = '''%sself.pick_select_option_by_text('%s', '%s')''' % (
+            command = '''%sself.select_option_by_text('%s', '%s')''' % (
                 whitespace, selector, visible_text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
@@ -340,7 +345,7 @@ def main():
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
             visible_text = '%s' % data.group(3)
-            command = '''%sself.pick_select_option_by_text("%s", '%s')''' % (
+            command = '''%sself.select_option_by_text("%s", '%s')''' % (
                 whitespace, selector, visible_text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
@@ -356,7 +361,7 @@ def main():
             whitespace = data.group(1)
             selector = '[name="%s"]' % data.group(2)
             visible_text = '%s' % data.group(3)
-            command = '''%sself.pick_select_option_by_text('%s', '%s')''' % (
+            command = '''%sself.select_option_by_text('%s', '%s')''' % (
                 whitespace, selector, visible_text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')

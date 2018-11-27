@@ -43,8 +43,8 @@ test frameworks.
 ``seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]``
 
 * Output:
-Converts a Selenium IDE exported WebDriver unittest
-file into a SeleniumBase file. Adds _SB to the new
+Converts a Selenium IDE exported WebDriver unittest file
+into a SeleniumBase file. Adds ``_SB`` to the new
 file name while keeping the original file intact.
 Works with Katalon Recorder scripts.
 See: http://www.katalon.com/automation-recorder
