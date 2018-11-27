@@ -53,7 +53,6 @@ setup(
     install_requires=[
         'pip',
         'setuptools',
-        'ipython',
         'six',
         'nose',
         'ipdb',

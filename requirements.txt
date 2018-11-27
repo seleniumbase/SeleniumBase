@@ -1,6 +1,5 @@
 pip
 setuptools
-ipython
 six
 nose
 ipdb
