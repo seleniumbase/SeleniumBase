@@ -1,6 +1,6 @@
 ## Installation instructions for Python, pip, brew, git, virtualenv, and virtualenvwrapper
 
-### [Python 2.7 or 3.*](https://www.python.org/downloads/)
+### [Python 2.7 or 3.x](https://www.python.org/downloads/)
 
 If you're a MAC user, Python should already come preinstalled on your machine. You can use both Python 2.7 or Python 3.6+ with SeleniumBase. If you're on a MAC and have [Homebrew](https://brew.sh/) installed, you can use: ``brew install python3`` to install Python 3. Or you can just get everything from [https://www.python.org/downloads/](https://www.python.org/downloads/).
 
