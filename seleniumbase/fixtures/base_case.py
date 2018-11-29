@@ -2150,6 +2150,8 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         is_ready = js_utils.wait_for_ready_state_complete(self.driver, timeout)
         self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+        if self.js_checking_on:
+            self.assert_no_js_errors()
         if self.ad_block_on:
             # If the ad_block feature is enabled, then block ads for new URLs
             current_url = self.get_current_url()
@@ -2663,6 +2665,7 @@ class BaseCase(unittest.TestCase):
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
             self.message_duration = pytest.config.option.message_duration
+            self.js_checking_on = pytest.config.option.js_checking_on
             self.ad_block_on = pytest.config.option.ad_block_on
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier
