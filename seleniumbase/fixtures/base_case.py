@@ -1514,6 +1514,29 @@ class BaseCase(unittest.TestCase):
         """ Asserts that the file exists in the Downloads Folder. """
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
+    def assert_no_js_errors(self):
+        """ Asserts that there are no Javascript errors on the page.
+            Only looks for "SEVERE"-level errors.
+            Works best when using Chrome.
+            Does NOT work on Firefox:
+                * See https://github.com/SeleniumHQ/selenium/issues/1161
+            Based on the following Stack Overflow solution:
+                * https://stackoverflow.com/a/41150512/7058266 """
+        try:
+            browser_logs = self.driver.get_log('browser')
+        except (ValueError, WebDriverException):
+            # If unable to get browser logs, skip the assert and return.
+            return
+
+        errors = []
+        for entry in browser_logs:
+            if entry['level'] == 'SEVERE':
+                errors.append(entry)
+        if len(errors) > 0:
+            current_url = self.get_current_url()
+            raise Exception(
+                "Javascript errors found on %s => %s" % (current_url, errors))
+
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
             Google Authenticator password algorithm. Works with Authy.
