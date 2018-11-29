@@ -754,7 +754,7 @@ class BaseCase(unittest.TestCase):
         return js_utils.escape_quotes_if_needed(string)
 
     def create_tour(self, name=None, theme=None):
-        """ Creates a tour for a website. By default, the Shepherd Javascript
+        """ Creates a tour for a website. By default, the Shepherd JavaScript
             Library is used with the Shepherd "Light" / "Arrows" theme.
             @Params
             name - If creating multiple tours at the same time,
@@ -762,7 +762,7 @@ class BaseCase(unittest.TestCase):
             theme - Sets the default theme for the tour.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
-                    Alternatively, you may use a different Javascript Library
+                    Alternatively, you may use a different JavaScript Library
                     as the theme. Those include "IntroJS", "Bootstrap", and
                     "Hopscotch".
         """
@@ -1169,7 +1169,7 @@ class BaseCase(unittest.TestCase):
             @Params
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
-            filename - The name of the javascript file that you wish to
+            filename - The name of the JavaScript file that you wish to
                    save the tour to. """
         tour_helper.export_tour(self._tour_steps, name=name, filename=filename)
 
@@ -1515,7 +1515,7 @@ class BaseCase(unittest.TestCase):
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
     def assert_no_js_errors(self):
-        """ Asserts that there are no Javascript errors on the page.
+        """ Asserts that there are no JavaScript errors on the page.
             Only looks for "SEVERE"-level errors.
             Works best when using Chrome.
             Does NOT work on Firefox:
@@ -1535,7 +1535,7 @@ class BaseCase(unittest.TestCase):
         if len(errors) > 0:
             current_url = self.get_current_url()
             raise Exception(
-                "Javascript errors found on %s => %s" % (current_url, errors))
+                "JavaScript errors found on %s => %s" % (current_url, errors))
 
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the

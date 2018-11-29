@@ -128,7 +128,7 @@ def pytest_addoption(parser):
     parser.addoption('--check_js', action="store_true",
                      dest='js_checking_on',
                      default=False,
-                     help="""The option to check for Javascript errors after
+                     help="""The option to check for JavaScript errors after
                           every page load.""")
     parser.addoption('--ad_block', action="store_true",
                      dest='ad_block_on',
