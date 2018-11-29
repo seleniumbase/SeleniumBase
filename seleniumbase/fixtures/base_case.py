@@ -1515,10 +1515,9 @@ class BaseCase(unittest.TestCase):
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
     def assert_no_js_errors(self):
-        """ Asserts that there are no JavaScript errors on the page.
-            Only looks for "SEVERE"-level errors.
-            Works best when using Chrome.
-            Does NOT work on Firefox:
+        """ Asserts that there are no JavaScript "SEVERE"-level page errors.
+            Works ONLY for Chrome (non-headless) and Chrome-based browsers.
+            Does NOT work on Firefox, Edge, IE, and some other browsers:
                 * See https://github.com/SeleniumHQ/selenium/issues/1161
             Based on the following Stack Overflow solution:
                 * https://stackoverflow.com/a/41150512/7058266 """
