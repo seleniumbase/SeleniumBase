@@ -174,6 +174,8 @@ self.is_downloaded_file_present(file)
 
 self.assert_downloaded_file(file)
 
+self.assert_no_js_errors()
+
 self.get_google_auth_password(totp_key=None)
 
 self.convert_xpath_to_css(xpath)

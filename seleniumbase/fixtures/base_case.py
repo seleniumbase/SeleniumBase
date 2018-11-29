@@ -1514,6 +1514,29 @@ class BaseCase(unittest.TestCase):
         """ Asserts that the file exists in the Downloads Folder. """
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
+    def assert_no_js_errors(self):
+        """ Asserts that there are no Javascript errors on the page.
+            Only looks for "SEVERE"-level errors.
+            Works best when using Chrome.
+            Does NOT work on Firefox:
+                * See https://github.com/SeleniumHQ/selenium/issues/1161
+            Based on the following Stack Overflow solution:
+                * https://stackoverflow.com/a/41150512/7058266 """
+        try:
+            browser_logs = self.driver.get_log('browser')
+        except (ValueError, WebDriverException):
+            # If unable to get browser logs, skip the assert and return.
+            return
+
+        errors = []
+        for entry in browser_logs:
+            if entry['level'] == 'SEVERE':
+                errors.append(entry)
+        if len(errors) > 0:
+            current_url = self.get_current_url()
+            raise Exception(
+                "Javascript errors found on %s => %s" % (current_url, errors))
+
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
             Google Authenticator password algorithm. Works with Authy.
@@ -2127,6 +2150,8 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         is_ready = js_utils.wait_for_ready_state_complete(self.driver, timeout)
         self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+        if self.js_checking_on:
+            self.assert_no_js_errors()
         if self.ad_block_on:
             # If the ad_block feature is enabled, then block ads for new URLs
             current_url = self.get_current_url()
@@ -2640,6 +2665,7 @@ class BaseCase(unittest.TestCase):
             self.demo_sleep = pytest.config.option.demo_sleep
             self.highlights = pytest.config.option.highlights
             self.message_duration = pytest.config.option.message_duration
+            self.js_checking_on = pytest.config.option.js_checking_on
             self.ad_block_on = pytest.config.option.ad_block_on
             self.verify_delay = pytest.config.option.verify_delay
             self.timeout_multiplier = pytest.config.option.timeout_multiplier

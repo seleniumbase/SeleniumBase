@@ -24,6 +24,7 @@ class SeleniumBrowser(Plugin):
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
     self.options.message_duration -- Messenger alert time (--message_duration)
+    self.options.js_checking_on -- option to check for js errors (--check_js)
     self.options.ad_block -- the option to block some display ads (--ad_block)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
@@ -101,6 +102,12 @@ class SeleniumBrowser(Plugin):
                     messenger notifications remain visible when reaching
                     assert statements during Demo Mode.""")
         parser.add_option(
+            '--check_js', action="store_true",
+            dest='js_checking_on',
+            default=False,
+            help="""The option to check for Javascript errors after
+                    every page load.""")
+        parser.add_option(
             '--ad_block', action="store_true",
             dest='ad_block_on',
             default=False,
@@ -137,6 +144,7 @@ class SeleniumBrowser(Plugin):
         test.test.demo_sleep = self.options.demo_sleep
         test.test.highlights = self.options.highlights
         test.test.message_duration = self.options.message_duration
+        test.test.js_checking_on = self.options.js_checking_on
         test.test.ad_block_on = self.options.ad_block_on
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.timeout_multiplier = self.options.timeout_multiplier
