@@ -663,6 +663,36 @@ class BaseCase(unittest.TestCase):
             by = By.LINK_TEXT
         return page_actions.find_visible_elements(self.driver, selector, by)
 
+    def click_visible_elements(self, selector, by=By.CSS_SELECTOR):
+        """ Finds all matching page elements and clicks visible ones in order.
+            If a click reloads or opens a new page, the clicking will stop.
+            Works best for actions such as clicking all checkboxes on a page.
+            Example:  self.click_visible_elements('input[type="checkbox"]')
+        """
+        elements = self.find_elements(selector, by=by)
+        count = 0
+        for element in elements:
+            count += 1
+            if count == 1:
+                self.wait_for_ready_state_complete()
+                if self.is_element_visible(selector, by=by):
+                    self.click(selector, by=by)
+            else:
+                self.wait_for_ready_state_complete()
+                try:
+                    if element.is_displayed():
+                        self.__scroll_to_element(element)
+                        element.click()
+                except (StaleElementReferenceException, ENI_Exception):
+                    self.wait_for_ready_state_complete()
+                    time.sleep(0.05)
+                    try:
+                        if element.is_displayed():
+                            self.__scroll_to_element(element)
+                            element.click()
+                    except (StaleElementReferenceException, ENI_Exception):
+                        return  # Probably on new page / Elements are all stale
+
     def is_element_in_an_iframe(self, selector, by=By.CSS_SELECTOR):
         """ Returns True if the selector's element is located in an iframe.
             Otherwise returns False. """
