@@ -15,14 +15,14 @@ Format of PROXY_LIST server entries:
 Example proxies in PROXY_LIST below are not guaranteed to be active or secure.
 If you don't already have a proxy server to connect to,
 you can try finding one from one of following sites:
-* https://www.proxynova.com/proxy-server-list/port-8080/
+* https://www.proxynova.com/proxy-server-list/country-us/
 * https://www.us-proxy.org/
 * https://hidemy.name/en/proxy-list/?country=US&type=h#list
 * http://proxyservers.pro/proxy/list/protocol/http/country/US/
 """
 
 PROXY_LIST = {
-    "example1": "104.248.122.30:8080",  # (Example) - set your own proxy here
+    "example1": "192.241.132.219:80",  # (Example) - set your own proxy here
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,
