@@ -39,8 +39,8 @@ def is_available_locally():
     return os.path.isfile(FULL_EXPECTED_PATH)
 
 
-def main():
-    if not is_available_locally():
+def main(force_download=True):
+    if force_download or not is_available_locally():
         download_selenium_server()
         for filename in os.listdir("."):
             # If multiple copies exist, keep only the latest and rename it.

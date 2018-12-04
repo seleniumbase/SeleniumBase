@@ -61,7 +61,7 @@ def main():
     file.close()
 
     from seleniumbase.utilities.selenium_grid import download_selenium_server
-    download_selenium_server.main()  # Nothing happens if already exists
+    download_selenium_server.main(force_download=False)  # Only runs if needed
 
     if "linux" in sys.platform or "darwin" in sys.platform:
         if grid_hub_command == "start":
