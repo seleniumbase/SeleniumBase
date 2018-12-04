@@ -49,6 +49,19 @@ file name while keeping the original file intact.
 Works with Katalon Recorder scripts.
 See: http://www.katalon.com/automation-recorder
 
+### download
+
+* Usage:
+``seleniumbase download [ITEM]``
+        (Options: server)
+
+* Example:
+``seleniumbase download server``
+
+* Output:
+Downloads the specified item.
+(server is required for using your own Selenium Grid)
+
 ### grid-hub
 
 * Usage:

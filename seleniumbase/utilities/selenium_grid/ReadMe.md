@@ -4,16 +4,22 @@ The Selenium Grid Hub lets you distribute tests to run in parallel across multip
 
 ### Running the Selenium Grid Hub
 
-The following commands will work once you've installed seleniumbase, which comes with the seleniumbase console scripts interface.
+The following commands will work once you've installed seleniumbase.
 
-Grid Hub server controls:
+#### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Downloading the Selenium Server JAR file:
+```
+seleniumbase download server
+```
+* (Required for using your own Selenium Grid)
+
+#### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Grid Hub server controls:
 ```
 seleniumbase grid-hub {start|stop|restart} [OPTIONS]
 ```
 Options:
 * ``-v``, ``--verbose``  (Increases verbosity of logging output.)
 
-Grid node server controlls:
+#### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Grid node server controls:
 ```
 seleniumbase grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]
 ```
