@@ -8,6 +8,7 @@ Examples:
 seleniumbase install chromedriver
 seleniumbase mkdir browser_tests
 seleniumbase convert my_old_webdriver_unittest.py
+seleniumbase download server
 seleniumbase grid-hub start
 seleniumbase grid-node start --hub=127.0.0.1
 """
@@ -15,6 +16,7 @@ seleniumbase grid-node start --hub=127.0.0.1
 import sys
 from seleniumbase.console_scripts import sb_mkdir
 from seleniumbase.console_scripts import sb_install
+from seleniumbase.utilities.selenium_grid import download_selenium_server
 from seleniumbase.utilities.selenium_grid import grid_hub
 from seleniumbase.utilities.selenium_grid import grid_node
 from seleniumbase.utilities.selenium_ide import convert_ide
@@ -91,6 +93,20 @@ def show_convert_usage():
     print("")
 
 
+def show_download_usage():
+    print("  ** download **")
+    print("")
+    print("  Usage:")
+    print("            seleniumbase download [ITEM]")
+    print("                  (Options: server")
+    print("  Example:")
+    print("            seleniumbase download server")
+    print("  Output:")
+    print("            Downloads the specified item.")
+    print("            (server is required for using your own Selenium Grid)")
+    print("")
+
+
 def show_grid_hub_usage():
     print("  ** grid-hub **")
     print("")
@@ -132,6 +148,7 @@ def show_detailed_help():
     show_install_usage()
     show_mkdir_usage()
     show_convert_usage()
+    show_download_usage()
     show_grid_hub_usage()
     show_grid_node_usage()
 
@@ -169,6 +186,12 @@ def main():
         else:
             show_basic_usage()
             show_mkdir_usage()
+    elif command == "download":
+        if len(command_args) >= 1:
+            download_selenium_server.main(force_download=True)
+        else:
+            show_basic_usage()
+            show_download_usage()
     elif command == "grid-hub":
         if len(command_args) >= 1:
             grid_hub.main()
@@ -194,6 +217,10 @@ def main():
             elif command_args[0] == "convert":
                 print("")
                 show_convert_usage()
+                return
+            elif command_args[0] == "download":
+                print("")
+                show_download_usage()
                 return
             elif command_args[0] == "grid-hub":
                 print("")
