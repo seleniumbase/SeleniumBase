@@ -8,8 +8,8 @@ else:
     from urllib.request import urlopen
 
 SELENIUM_JAR = ("http://selenium-release.storage.googleapis.com"
-                "/3.14/selenium-server-standalone-3.14.0.jar")
-JAR_FILE = "selenium-server-standalone-3.14.0.jar"
+                "/3.141/selenium-server-standalone-3.141.59.jar")
+JAR_FILE = "selenium-server-standalone-3.141.59.jar"
 RENAMED_JAR_FILE = "selenium-server-standalone.jar"
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
