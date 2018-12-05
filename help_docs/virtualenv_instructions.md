@@ -7,11 +7,11 @@
 ```bash
 python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper
+source `which virtualenvwrapper.sh`
 export WORKON_HOME=$HOME/.virtualenvs
-source /usr/local/bin/virtualenvwrapper.sh
 ```
 
-If you add ``source /usr/local/bin/virtualenvwrapper.sh`` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands will be available whenever you open a new command prompt.
+If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands such as ``mkvirtualenv`` will be available whenever you open a new command prompt.
 
 ### WINDOWS:
 
