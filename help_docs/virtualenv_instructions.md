@@ -27,6 +27,9 @@ python -m pip install --upgrade virtualenvwrapper-win
 ```bash
 mkvirtualenv seleniumbase
 ```
+(If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
+
+---
 
 If you ever need to leave your virtual environment, use the following command:
 
