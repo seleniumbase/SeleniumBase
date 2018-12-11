@@ -27,12 +27,12 @@ pytest my_first_test.py --browser=chrome --demo_mode
 
 Run the example test suite and generate an pytest report: (pytest-only)
 ```bash
-pytest basic_script.py --html=report.html
+pytest test_suite.py --html=report.html
 ```
 
 Run the example test suite and generate a nosetest report: (nosetests-only)
 ```bash
-nosetests my_test_suite.py --report --show_report
+nosetests test_suite.py --report --show_report
 ```
 
 Run a test using a nosetest configuration file: (nosetests-only)

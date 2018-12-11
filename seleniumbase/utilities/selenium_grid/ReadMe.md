@@ -32,7 +32,7 @@ When the Grid Hub Console is up and running, you'll be able to find it here: [ht
 Now you can run your tests on the Selenium Grid:
 
 ```
-pytest my_test_suite.py --server=IP_ADDRESS --port=4444
+pytest test_suite.py --server=IP_ADDRESS --port=4444
 ```
 
 You can also run your tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid server (and not worry about managing your own Selenium Grid):
