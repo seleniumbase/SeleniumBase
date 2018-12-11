@@ -23,7 +23,7 @@ Reports are most useful when running large test suites. Pytest and Nosetest repo
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
-pytest my_test_suite.py --html=report.html
+pytest test_suite.py --html=report.html
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
@@ -32,7 +32,7 @@ pytest my_test_suite.py --html=report.html
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
 ```bash
-nosetests my_test_suite.py --report --browser=chrome
+nosetests test_suite.py --report --browser=chrome
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="420">
 

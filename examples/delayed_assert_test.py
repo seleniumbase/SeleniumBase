@@ -1,8 +1,10 @@
+import pytest
 from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
 
+    @pytest.mark.expected_failure
     def test_delayed_asserts(self):
         self.open('https://xkcd.com/993/')
         self.wait_for_element('#comic')

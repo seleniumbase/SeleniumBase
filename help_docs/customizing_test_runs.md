@@ -28,17 +28,17 @@ pytest my_first_test.py --demo_mode --browser=chrome
 
 pytest my_first_test.py --browser=firefox
 
-pytest my_test_suite.py --html=report.html
+pytest test_suite.py --html=report.html
 
-nosetests my_test_suite.py --report --show_report
+nosetests test_suite.py --report --show_report
 
-pytest my_test_suite.py --headless -n 4
+pytest test_suite.py --headless -n 4
 
-pytest my_test_suite.py --server=IP_ADDRESS --port=4444
+pytest test_suite.py --server=IP_ADDRESS --port=4444
 
-pytest my_test_suite.py --proxy=IP_ADDRESS:PORT
+pytest test_suite.py --proxy=IP_ADDRESS:PORT
 
-pytest my_test_suite.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+pytest test_suite.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 
 pytest test_fail.py --pdb -s
 ```
@@ -72,7 +72,7 @@ Or you can create your own Selenium Grid for test distribution. ([See this ReadM
 #### **Example tests using Logging:**
 
 ```bash
-pytest my_test_suite.py --browser=chrome
+pytest test_suite.py --browser=chrome
 ```
 (During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run.)
 
@@ -120,7 +120,7 @@ The code above will leave your browser window open in case there's a failure. (i
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
-pytest my_test_suite.py --html=report.html
+pytest test_suite.py --html=report.html
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
@@ -129,7 +129,7 @@ pytest my_test_suite.py --html=report.html
 The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```bash
-nosetests my_test_suite.py --report
+nosetests test_suite.py --report
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="420">
 

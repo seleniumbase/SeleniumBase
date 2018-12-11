@@ -79,7 +79,7 @@ sudo pip install -r requirements.txt --upgrade
 sudo python setup.py develop
 ```
 
-#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (Takes ~10 seconds)
+#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (May take up to 10 seconds)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
@@ -119,7 +119,7 @@ nosetests examples/my_first_test.py --headless --browser=firefox
 * Under "Build", click the "Add build step" dropdown and then select "Execute shell".
 * For the "Command", put:
 ```bash
-nosetests examples/my_first_test.py --headless --browser=chrome
+pytest examples/my_first_test.py --headless --browser=chrome
 ```
 * Click "Save" when you're done.
 
@@ -179,7 +179,7 @@ If you have a web application that you want to test, you'll be able to create Se
 * For the "Execute shell", use the following as your updated "Command":
 
 ```bash
-nosetests examples/my_test_suite.py --headless --browser=chrome --with-db_reporting --with-testing_base
+pytest examples/test_suite.py --headless --browser=chrome --with-db_reporting --with-testing_base
 ```
 
 * Click "Save" when you're done.

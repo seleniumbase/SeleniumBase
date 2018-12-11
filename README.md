@@ -88,7 +88,7 @@ SeleniumBase automatically handles common WebDriver actions such as spinning up 
 ```
 pytest my_first_test.py --browser=chrome
 
-nosetests my_test_suite.py --browser=firefox
+nosetests test_suite.py --browser=firefox
 ```
 
 Python methods that start with ``test_`` will automatically be run when using ``pytest`` or ``nosetests`` on a Python file, (<i>or on folders containing Python files</i>).
@@ -248,14 +248,14 @@ Here are some other useful **nosetest**-specific arguments:
 --with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
-During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``my_test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
+During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 
 ```
 cd examples/
 
-pytest my_test_suite.py --browser=chrome
+pytest test_suite.py --browser=chrome
 
-pytest my_test_suite.py --browser=firefox
+pytest test_suite.py --browser=firefox
 ```
 
 If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
@@ -311,7 +311,7 @@ pytest my_first_test.py --browser=chrome
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```
-pytest my_test_suite.py --html=report.html
+pytest test_suite.py --html=report.html
 ```
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
@@ -319,7 +319,7 @@ pytest my_test_suite.py --html=report.html
 You can also use ``--junitxml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
 ```
-pytest my_test_suite.py --junitxml=report.xml
+pytest test_suite.py --junitxml=report.xml
 ```
 
 #### **Nosetest Reports:**
@@ -327,7 +327,7 @@ pytest my_test_suite.py --junitxml=report.xml
 The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```
-nosetests my_test_suite.py --report
+nosetests test_suite.py --report
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="420">
 

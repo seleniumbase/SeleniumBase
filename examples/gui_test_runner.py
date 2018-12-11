@@ -52,7 +52,7 @@ class App:
             fg="blue").pack()
         self.run5 = Button(
             frame, command=self.run_5,
-            text=("nosetests my_test_suite.py --report --show_report")).pack()
+            text=("nosetests test_suite.py --report --show_report")).pack()
         self.title6 = Label(
             frame,
             text="Basic Failing Test Run showing the Multiple-Checks feature:",
@@ -66,7 +66,7 @@ class App:
             fg="blue").pack()
         self.run7 = Button(
             frame, command=self.run_7,
-            text=("nosetests my_test_suite.py"
+            text=("nosetests test_suite.py"
                   " --browser=chrome --with-db_reporting")).pack()
         self.end_title = Label(frame, text="", fg="black").pack()
         self.quit = Button(frame, text="QUIT", command=frame.quit).pack()
@@ -90,7 +90,7 @@ class App:
 
     def run_5(self):
         os.system(
-            'nosetests my_test_suite.py --report --show_report')
+            'nosetests test_suite.py --report --show_report')
 
     def run_6(self):
         os.system(
@@ -98,7 +98,7 @@ class App:
 
     def run_7(self):
         os.system(
-            'nosetests my_test_suite.py'
+            'nosetests test_suite.py'
             ' --browser=chrome --with-db_reporting')
 
 
