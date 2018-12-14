@@ -14,6 +14,7 @@ seleniumbase grid-node start --hub=127.0.0.1
 """
 
 import sys
+from seleniumbase.console_scripts import logo_helper
 from seleniumbase.console_scripts import sb_mkdir
 from seleniumbase.console_scripts import sb_install
 from seleniumbase.utilities.selenium_grid import download_selenium_server
@@ -24,21 +25,25 @@ from seleniumbase.utilities.selenium_ide import convert_ide
 
 def show_usage():
     show_basic_usage()
-    print('Type "seleniumbase help" for details on all commands. OR,')
-    print('Type "seleniumbase help [COMMAND]" for specific command info.\n')
+    print('Type "seleniumbase --help" for details on all commands.')
+    print('Type "seleniumbase help [COMMAND]" for specific command info.')
+    print('Type "pytest [FILE_OR_DIR]" to run tests in the given location.')
+    print('Type "pytest --help" to learn more about running tests.\n')
 
 
 def show_basic_usage():
+    seleniumbase_logo = logo_helper.get_seleniumbase_logo()
+    print(seleniumbase_logo)
     print("")
-    print(">>>>>>>>>>>>")
+    print('Usage: "seleniumbase [COMMAND] [PARAMETERS]"')
+    print(' * (Example: "seleniumbase install chromedriver")')
     print("")
-    print('Usage: "seleniumbase [command] [parameters]"')
-    print("")
-    print("Commands:")
+    print("Commands with parameters:")
     print("")
     print("    install [DRIVER_NAME]")
     print("    mkdir [NEW_TEST_DIRECTORY_NAME]")
     print("    convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
+    print("    download server")
     print("    grid-hub {start|stop|restart} [OPTIONS]")
     print("    grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
     print("")
