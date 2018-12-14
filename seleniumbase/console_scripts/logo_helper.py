@@ -18,8 +18,10 @@ def get_seleniumbase_logo():
     c1 = colorama.Fore.BLUE + colorama.Back.CYAN
     c2 = colorama.Fore.CYAN + colorama.Back.BLUE
     cr = colorama.Style.RESET_ALL
-    sb = c1
+    sb = " "
+    sb += c1
     sb += "\n"
+    sb += c1
     sb += "   ______     __           _                 "
     sb += c2
     sb += "____                "
