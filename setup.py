@@ -68,6 +68,7 @@ setup(
         'pytest-xdist>=1.24.1',
         'parameterized==0.6.1',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
+        'colorama==0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
         'flake8==3.6.0',
