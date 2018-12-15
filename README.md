@@ -1,12 +1,12 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_2h2.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/badge/python-2.7,_3.x-22AADD.svg" alt="Python versions" />](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg" alt="Closed Issues" />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/badge/pypi-seleniumbase-forestgreen.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="http://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
+[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase)<br />
 
-A complete framework for web automation, end-to-end testing, and [interactive walkthroughs](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). SeleniumBase uses [Pytest](https://docs.pytest.org/en/latest/) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
+A fast, simple, and reliable framework for automating UI testing and [prototyping JS tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). SeleniumBase uses [Pytest](https://docs.pytest.org/en/latest/) for running Python scripts, and [WebDriver](https://www.seleniumhq.org/) for controlling web browsers. [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start
 
-(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
+(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/) [<img src="https://img.shields.io/badge/python-2.7,_3.x-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
 
 #### Clone SeleniumBase from GitHub:
 ```
@@ -26,6 +26,7 @@ pip install -U -r requirements.txt
 python setup.py install
 ```
 * (Use ``python setup.py develop`` if configuring seleniumbase inside a virtual environment.)
+* (You can also get seleniumbase from the Python Package Index, [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase))
 
 #### Install a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
 ```
@@ -151,7 +152,7 @@ pip install -r requirements.txt --upgrade
 python setup.py install
 ```
 
-If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase), use:
+If you're installing SeleniumBase from the [Python Package Index](https://pypi.python.org/pypi/seleniumbase) [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase), use:
 ```
 pip install -U seleniumbase --no-cache-dir
 ```
@@ -729,11 +730,14 @@ Now you can parse through the email if you're looking for specific text or want 
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Wrap-Up
 
-Congratulations on getting started with SeleniumBase!
+#### Congratulations on getting started with SeleniumBase!
 
 <i>**Questions or Comments?**</i><br />
 [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
 
+If you see something, say something! We are very active in resolving issues. [<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg" alt="Closed Issues" />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed)
+
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
+[<img src="http://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)

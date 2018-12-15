@@ -27,8 +27,7 @@ def show_usage():
     show_basic_usage()
     print('Type "seleniumbase --help" for details on all commands.')
     print('Type "seleniumbase help [COMMAND]" for specific command info.')
-    print('Type "pytest [FILE_OR_DIR]" to run tests in the given location.')
-    print('Type "pytest --help" to learn more about running tests.\n')
+    print('Use "pytest" for running tests.\n')
 
 
 def show_basic_usage():
@@ -38,15 +37,14 @@ def show_basic_usage():
     print('Usage: "seleniumbase [COMMAND] [PARAMETERS]"')
     print(' * (Example: "seleniumbase install chromedriver")')
     print("")
-    print("Commands with parameters:")
-    print("")
-    print("  seleniumbase")
-    print("     install [DRIVER_NAME]")
-    print("     mkdir [NEW_TEST_DIRECTORY_NAME]")
-    print("     convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
-    print("     download server")
-    print("     grid-hub {start|stop|restart} [OPTIONS]")
-    print("     grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
+    print("Commands:")
+    print("   seleniumbase")
+    print("      install [DRIVER_NAME]")
+    print("      mkdir [NEW_TEST_DIRECTORY_NAME]")
+    print("      convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
+    print("      download server")
+    print("      grid-hub {start|stop|restart} [OPTIONS]")
+    print("      grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
     print("")
 
 
@@ -104,7 +102,7 @@ def show_download_usage():
     print("")
     print("  Usage:")
     print("            seleniumbase download [ITEM]")
-    print("                  (Options: server")
+    print("                  (Choices: server)")
     print("  Example:")
     print("            seleniumbase download server")
     print("  Output:")
