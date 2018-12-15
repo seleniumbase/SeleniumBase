@@ -1,6 +1,6 @@
 ## SeleniumBase Website Tours
 
-SeleniumBase Tours utilize your choice of 4 different Javascript libraries for creating & running tours, demos, and walkthroughs on any website: **[Shepherd](https://shipshapecode.github.io/shepherd/docs/welcome/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](http://linkedin.github.io/hopscotch/)**. Choose your favorite one to use!
+SeleniumBase Tours utilize your choice of 4 different JavaScript libraries for creating & running tours, demos, and walkthroughs on any website: **[Shepherd](https://shipshapecode.github.io/shepherd/docs/welcome/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](http://linkedin.github.io/hopscotch/)**. Choose your favorite one to use!
 
 Example tour:
 
@@ -9,17 +9,17 @@ Example tour:
 
 ### Creating a new tour:
 
-By default, Shepherd JS is used when creating a tour with:
-
-``self.create_tour()``
-
-You can also do:
+#### To create a tour utilizing the Shepherd JS Library, use one of the following:
 
 ``self.create_shepherd_tour()``
 
-With the ``create_tour()`` and ``create_shepherd_tour()`` methods, you can pass a default theme to change the look & feel of the tour steps. Valid themes for Shepherd Tours are ``dark``, ``light`` / ``arrows``, ``default``, ``square``, and ``square-dark``.
+OR
 
-To create a tour utilizing the Bootstrap Tour Library, you can use either of the following:
+``self.create_tour(theme="shepherd")``
+
+You can pass a custom theme to change the look & feel of Shepherd tours. Valid themes for Shepherd Tours are ``dark``, ``light`` / ``arrows``, ``default``, ``square``, and ``square-dark``.
+
+#### To create a tour utilizing the Bootstrap Tour Library, use one of the following:
 
 ``self.create_bootstrap_tour()``
 
@@ -27,7 +27,7 @@ OR
 
 ``self.create_tour(theme="bootstrap")``
 
-To create a tour utilizing the Intro JS Library, you can use either of the following:
+#### To create a tour utilizing the Intro JS Library, use one of the following:
 
 ``self.create_introjs_tour()``
 
@@ -35,7 +35,7 @@ OR
 
 ``self.create_tour(theme="introjs")``
 
-To create a tour utilizing the Hopscotch JS Library, you can use either of the following:
+#### To create a tour utilizing the Hopscotch JS Library, use one of the following:
 
 ``self.create_hopscotch_tour()``
 
@@ -45,7 +45,7 @@ OR
 
 ### Adding a step to a tour:
 
-To add a tour step, use the following: (Only ``message`` is required. The other args are optional.)
+#### To add a tour step, use the following:
 
 ``self.add_tour_step(message, css_selector, title, alignment, theme)``
 
@@ -100,7 +100,7 @@ pytest google_tour.py
 
 ### Exporting a Tour:
 
-If you want to save the tour you created as a Javascript file, use:
+If you want to save the tour you created as a JavaScript file, use:
 
 ``self.export_tour()``
 
@@ -108,4 +108,4 @@ OR
 
 ``self.export_tour(name=None, filename="my_tour.js")``
 
-(``name`` is optional, needed only if you were creating multiple tours at once. ``filename`` is the name of the file to save the Javascript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's Javascript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
+(``name`` is optional unless you gave custom names to your tours when you created them. ``filename`` is the name of the file to save the JavaScript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's JavaScript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
