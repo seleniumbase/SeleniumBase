@@ -144,6 +144,8 @@ self.js_click(selector, by=By.CSS_SELECTOR)
 
 self.jquery_click(selector, by=By.CSS_SELECTOR)
 
+self.submit(selector, by=By.CSS_SELECTOR)
+
 self.hide_element(selector, by=By.CSS_SELECTOR)
 
 self.hide_elements(selector, by=By.CSS_SELECTOR)
