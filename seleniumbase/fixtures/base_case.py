@@ -1425,6 +1425,15 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
+    def submit(self, selector, by=By.CSS_SELECTOR):
+        """ Alternative to self.driver.find_element_by_*(SELECTOR).submit() """
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        element.submit()
+        self.__demo_mode_pause_if_active()
+
     def hide_element(self, selector, by=By.CSS_SELECTOR):
         """ Hide the first element on the page that matches the selector. """
         selector, by = self.__recalculate_selector(selector, by)
