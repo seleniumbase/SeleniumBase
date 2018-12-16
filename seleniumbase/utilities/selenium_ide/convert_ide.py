@@ -158,6 +158,19 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle .find_element_by_id() + .submit()
+        data = re.match(
+            r'''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
+            r'''\.submit\(\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '#%s' % data.group(2).replace('#', '\\#')
+            selector = selector.replace('[', '\\[').replace(']', '\\]')
+            selector = selector.replace('.', '\\.')
+            command = '''%sself.submit('%s')''' % (whitespace, selector)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle .find_element_by_id() + .send_keys()
         data = re.match(
             r'''^(\s*)driver\.find_element_by_id\(\"(\S+)\"\)'''
@@ -200,6 +213,17 @@ def main():
             seleniumbase_lines.append(command)
             continue
 
+        # Handle .find_element_by_name() + .submit()
+        data = re.match(
+            r'''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
+            r'''\.submit\(\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '[name="%s"]' % data.group(2)
+            command = '''%sself.submit('%s')''' % (whitespace, selector)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle .find_element_by_name() + .send_keys()
         data = re.match(
             r'''^(\s*)driver\.find_element_by_name\(\"(\S+)\"\)'''
@@ -235,6 +259,19 @@ def main():
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
             command = '''%sself.click('%s')''' % (whitespace, selector)
+            if command.count('\\"') == command.count('"'):
+                command = command.replace('\\"', '"')
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle .find_element_by_css_selector() + .submit()
+        data = re.match(
+            r'''^(\s*)driver\.find_element_by_css_selector\(\"([\S\s]+)\"\)'''
+            r'''\.submit\(\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            command = '''%sself.submit('%s')''' % (whitespace, selector)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
@@ -380,6 +417,22 @@ def main():
                 uni = "u"
                 has_unicode = True
             command = '''%sself.click(%s"%s")''' % (
+                whitespace, uni, xpath)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle .find_element_by_xpath() + .submit()
+        data = re.match(
+            r'''^(\s*)driver\.find_element_by_xpath\(u?\"([\S\s]+)\"\)'''
+            r'''\.submit\(\)\s*$''', line)
+        if data:
+            whitespace = data.group(1)
+            xpath = '%s' % data.group(2)
+            uni = ""
+            if '(u"' in line:
+                uni = "u"
+                has_unicode = True
+            command = '''%sself.submit(%s"%s")''' % (
                 whitespace, uni, xpath)
             seleniumbase_lines.append(command)
             continue
