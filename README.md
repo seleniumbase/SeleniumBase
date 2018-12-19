@@ -2,7 +2,7 @@
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-A fast, simple, and reliable framework for automating UI testing and [prototyping JS tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). SeleniumBase uses [Pytest](https://docs.pytest.org/en/latest/) and [WebDriver](https://www.seleniumhq.org/) for running Python scripts to control web browsers.
+A reliable test automation framework that extends [Pytest](https://docs.pytest.org/en/latest/) and uses [Selenium-WebDriver](https://www.seleniumhq.org/).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start
 
@@ -58,7 +58,7 @@ There are <b>many more examples</b> to try out from the [SeleniumBase/examples](
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
 
-Check out [SeleniumBase Website Tours](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's the best website onboarding experience available (and it's free too). Find the [Tours ReadMe here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+Check out [SeleniumBase Website Tours](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's the most efficient website onboarding experience available (and it's free too). Find the [Tours ReadMe here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
 ```
 cd tour_examples
