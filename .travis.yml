@@ -1,8 +1,11 @@
 language: python
 sudo: false
-python:
-  - "2.7"
-  - "3.7"
+matrix:
+  include:
+    - python: 2.7
+    - python: 3.7
+      dist: xenial
+      sudo: true
 addons:
   firefox: "62.0.3"
   chrome: stable
