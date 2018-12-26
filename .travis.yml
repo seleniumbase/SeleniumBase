@@ -2,9 +2,9 @@ language: python
 sudo: false
 python:
   - "2.7"
-#  - "3.6"
+  - "3.7"
 addons:
-  firefox: "60.0"
+  firefox: "62.0.3"
   chrome: stable
 before_install:
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
