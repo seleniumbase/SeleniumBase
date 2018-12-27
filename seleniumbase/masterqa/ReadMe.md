@@ -1,6 +1,6 @@
-# MasterQA
+![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 
-### MasterQA bridges the gap between manual QA and automated QA by combining manual verification steps with SeleniumBase automation scripts.
+### MasterQA combines SeleniumBase automation with manual verification steps to bridge the gap between manual QA and automated QA.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif "MasterQA")
 
@@ -48,6 +48,6 @@ self.verify()
 self.verify("Can you find the moon?")
 ```
 
-![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
+---
 
 MasterQA is powered by [SeleniumBase](http://seleniumbase.com), the most advanced open-source automation framework on the [Planet](https://en.wikipedia.org/wiki/Earth).
