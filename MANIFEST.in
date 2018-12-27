@@ -4,6 +4,10 @@ include setup.cfg
 include .travis.yml
 include .gitignore
 include requirements.txt
+include install.sh
+include install.bat
+include virtualenv_install.sh
+include virtualenv_install.bat
 include seleniumbase/core/create_db_tables.sql
 include seleniumbase/utilities/selenium_grid/grid-hub
 include seleniumbase/utilities/selenium_grid/grid-node
