@@ -4,7 +4,7 @@
 
 Reliable Browser Automation & Testing with [Selenium-WebDriver](https://www.seleniumhq.org/) and [Pytest](https://docs.pytest.org/en/latest/).
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="155"><img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="155">
+<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="152"><img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="152">
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start
 
