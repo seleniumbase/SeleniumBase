@@ -17,7 +17,7 @@ If you're installing SeleniumBase directly [from GitHub](https://github.com/sele
 pip install -U -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 
-If you're installing SeleniumBase directly [from Anaconda Cloud](https://anaconda.org/seleniumbase/dashboard), use:
+If you're installing SeleniumBase directly [from Anaconda Cloud](https://anaconda.org/seleniumbase/seleniumbase), use:
 ```bash
 pip install -U -i https://pypi.anaconda.org/seleniumbase/simple seleniumbase
 ```

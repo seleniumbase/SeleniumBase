@@ -4,6 +4,8 @@
 
 ### MAC / Linux:
 
+(*Shortcut*: Run "``source virtualenv_install.sh``" from the top-level SeleniumBase folder to perform the following steps.)
+
 ```bash
 python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper
@@ -14,6 +16,8 @@ export WORKON_HOME=$HOME/.virtualenvs
 If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands such as ``mkvirtualenv`` will be available whenever you open a new command prompt.
 
 ### WINDOWS:
+
+(*Shortcut*: Run "``virtualenv_install.bat``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
 python -m pip install --upgrade virtualenv

@@ -13,12 +13,12 @@ try:
     with open(path.join(this_directory, 'README.md'), 'rb') as f:
         long_description = f.read().decode('utf-8')
 except IOError:
-    long_description = 'Reliable Browser Automation and Testing Framework'
+    long_description = 'Reliable Browser Automation & Testing Framework'
 
 setup(
     name='seleniumbase',
     version='1.17.17',
-    description='Reliable Browser Automation and Testing Framework',
+    description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',

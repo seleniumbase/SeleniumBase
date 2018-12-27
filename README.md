@@ -1,8 +1,8 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_2h2.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
+[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="http://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-Reliable browser automation and testing framework that uses [Selenium-WebDriver](https://www.seleniumhq.org/) and extends [Pytest](https://docs.pytest.org/en/latest/).
+Reliable Browser Automation & Testing with [Selenium-WebDriver](https://www.seleniumhq.org/) and [Pytest](https://docs.pytest.org/en/latest/).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start
 
@@ -17,7 +17,7 @@ git clone https://github.com/seleniumbase/SeleniumBase.git
 ```
 python -m pip install -U pip setuptools
 ```
-* (You may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md), or use "[sudo](https://en.wikipedia.org/wiki/Sudo)" on a UNIX-based OS.)
+* (Depending on your user permissions, you may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md), or use "[sudo](https://en.wikipedia.org/wiki/Sudo)" on a UNIX-based OS if you're getting errors during installation.)
 
 #### Install SeleniumBase:
 ```
@@ -33,7 +33,7 @@ python setup.py install
 seleniumbase install chromedriver
 ```
 
-#### Run a test on chrome:
+#### Run a test on Chrome:
 ```
 cd examples
 pytest my_first_test.py --browser=chrome
@@ -367,7 +367,7 @@ Here are some things you can do to setup a production environment for your testi
 * If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](http://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily. You'll also need to install the MySQL Python client. Depending on your system, you may need to install additional requirements for this (such as on Windows). See [Stackoverflow](https://stackoverflow.com/questions/43102442/whats-the-difference-between-mysqldb-mysqlclient-and-mysql-connector-python) for more info.
 
 ```
-pip install mysqlclient==1.3.12
+pip install mysqlclient==1.3.14
 ```
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
@@ -739,5 +739,4 @@ If you see something, say something! We are very active in resolving issues. [<i
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150">
-[<img src="http://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150"> <br /> [<img src="http://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
