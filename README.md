@@ -4,7 +4,10 @@
 
 Reliable Browser Automation & Testing with [Selenium-WebDriver](https://www.seleniumhq.org/) and [Pytest](https://docs.pytest.org/en/latest/).
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase Example" height="152"><img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Test Report Example" height="152">
+<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="270"><br />
+```
+pytest examples/my_first_test.py --demo_mode
+```
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start:
 
@@ -35,32 +38,19 @@ python setup.py install
 seleniumbase install chromedriver
 ```
 
+* (You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
+
 #### Run a test on Chrome:
 ```
 cd examples
 pytest my_first_test.py --browser=chrome
 ```
 
-* (You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
+* (Chrome is the default browser if not specified with ``--browser``)
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
 
-SeleniumBase has a very flexible [command line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) to change how your tests run. 
-
-Try out Demo Mode to see what what's being tested in real time! (Chrome is the default browser if not specified.)
-
-```
-pytest my_first_test.py --demo_mode
-```
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="270"><br>
-(Above: Actual demo of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) running on [xkcd.com](https://xkcd.com/353/))
-
-There are <b>many more examples</b> to try out from the [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples) folder, which you can run easily if you clone SeleniumBase.
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32">
-
-Check out [SeleniumBase Website Tours](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's the most efficient website onboarding experience available (and it's free too). Find the [Tours ReadMe here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+Check out [SeleniumBase Website Tours](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience. See the [Tours ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for more details.
 
 ```
 cd tour_examples
@@ -182,7 +172,7 @@ seleniumbase install edgedriver
 <a id="seleniumbase_basic_usage"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> **Step 5:** Run the Example Script
 
-**Here's what the example script looks like:**
+**Here's what the example script, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), looks like:**
 
 ```python
 from seleniumbase import BaseCase
