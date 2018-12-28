@@ -4,11 +4,12 @@
 
 Reliable Browser Automation & Testing with [Selenium-WebDriver](https://www.seleniumhq.org/) and [Pytest](https://docs.pytest.org/en/latest/).
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="235"><br />
-(<i>Above: [Sample test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) in demo mode</i>)<br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="236"><br />
+(<i>Above: [Sample test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</i>)<br />
 ```
 pytest my_first_test.py --demo_mode
 ```
+(<i>Demo mode adds JavaScript for highlighting page elements and displaying assert notifications.</i>)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Quick Start:
 
