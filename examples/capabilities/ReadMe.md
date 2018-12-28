@@ -2,10 +2,14 @@
 
 You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote SeleniumGrid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), or [TestingBot](https://testingbot.com/support/other/test-options).
 
-A sample run command may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
+Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
 ```bash
-pytest my_first_test.py --browser=remote --server=username:key@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
+pytest my_first_test.py --browser=remote --server=USERNAME:KEY@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
+```
+
+```bash
+pytest my_first_test.py --browser=remote --server=USERNAME:KEY@ondemand.saucelabs.com --port=80 --cap_file=capabilities/sample_cap_file_SL.py
 ```
 
 (Parameters: ``--browser=remote``, ``--server=SERVER``, ``--port=PORT``, and ``--cap_file=CAP_FILE.py``)
