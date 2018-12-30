@@ -154,7 +154,10 @@ def main():
             selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
             selector = selector.replace('.', '\\.')
-            command = '''%sself.click('%s')''' % (whitespace, selector)
+            raw = ""
+            if "\\[" in selector or "\\]" in selector or "\\." in selector:
+                raw = "r"
+            command = '''%sself.click(%s'%s')''' % (whitespace, raw, selector)
             seleniumbase_lines.append(command)
             continue
 
@@ -167,7 +170,10 @@ def main():
             selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
             selector = selector.replace('.', '\\.')
-            command = '''%sself.submit('%s')''' % (whitespace, selector)
+            raw = ""
+            if "\\[" in selector or "\\]" in selector or "\\." in selector:
+                raw = "r"
+            command = '''%sself.submit(%s'%s')''' % (whitespace, raw, selector)
             seleniumbase_lines.append(command)
             continue
 
@@ -180,9 +186,12 @@ def main():
             selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
             selector = selector.replace('.', '\\.')
+            raw = ""
+            if "\\[" in selector or "\\]" in selector or "\\." in selector:
+                raw = "r"
             text = data.group(3)
-            command = '''%sself.update_text('%s', '%s')''' % (
-                whitespace, selector, text)
+            command = '''%sself.update_text(%s'%s', '%s')''' % (
+                whitespace, raw, selector, text)
             seleniumbase_lines.append(command)
             continue
 
@@ -196,9 +205,12 @@ def main():
             selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
             selector = selector.replace('.', '\\.')
+            raw = ""
+            if "\\[" in selector or "\\]" in selector or "\\." in selector:
+                raw = "r"
             key = 'Keys.%s' % data.group(3)
-            command = '''%sself.send_keys('%s', %s)''' % (
-                whitespace, selector, key)
+            command = '''%sself.send_keys(%s'%s', %s)''' % (
+                whitespace, raw, selector, key)
             seleniumbase_lines.append(command)
             continue
 
@@ -365,9 +377,12 @@ def main():
             selector = '#%s' % data.group(2).replace('#', '\\#')
             selector = selector.replace('[', '\\[').replace(']', '\\]')
             selector = selector.replace('.', '\\.')
+            raw = ""
+            if "\\[" in selector or "\\]" in selector or "\\." in selector:
+                raw = "r"
             visible_text = '%s' % data.group(3)
-            command = '''%sself.select_option_by_text('%s', '%s')''' % (
-                whitespace, selector, visible_text)
+            command = '''%sself.select_option_by_text(%s'%s', '%s')''' % (
+                whitespace, raw, selector, visible_text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
             seleniumbase_lines.append(command)
