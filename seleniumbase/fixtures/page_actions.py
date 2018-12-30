@@ -36,8 +36,7 @@ from seleniumbase.config import settings
 
 def is_element_present(driver, selector, by=By.CSS_SELECTOR):
     """
-    Searches for the specified element by the given selector.  Returns whether
-    the element object if the element is present on the page.
+    Returns whether the specified element selector is present on the page.
     @Params
     driver - the webdriver object (required)
     selector - the locator that is used (required)
@@ -54,8 +53,7 @@ def is_element_present(driver, selector, by=By.CSS_SELECTOR):
 
 def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
     """
-    Searches for the specified element by the given selector.  Returns whether
-    the element object if the element is present and visible on the page.
+    Returns whether the specified element selector is visible on the page.
     @Params
     driver - the webdriver object (required)
     selector - the locator that is used (required)
@@ -72,9 +70,7 @@ def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
 
 def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
     """
-    Searches for the specified element by the given selector. Returns whether
-    the element object if the element is present and visible on the page and
-    contains the given text.
+    Returns whether the specified text is visible in the specified selector.
     @Params
     driver - the webdriver object (required)
     text - the text string to search for

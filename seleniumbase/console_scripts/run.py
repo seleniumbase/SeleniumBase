@@ -27,7 +27,7 @@ def show_usage():
     show_basic_usage()
     print('Type "seleniumbase --help" for details on all commands.')
     print('Type "seleniumbase help [COMMAND]" for specific command info.')
-    print('Use "pytest" for running tests.\n')
+    print('* Use "pytest" for running tests. *\n')
 
 
 def show_basic_usage():
@@ -35,16 +35,17 @@ def show_basic_usage():
     print(seleniumbase_logo)
     print("")
     print('Usage: "seleniumbase [COMMAND] [PARAMETERS]"')
-    print(' * (Example: "seleniumbase install chromedriver")')
     print("")
     print("Commands:")
-    print("   seleniumbase")
-    print("      install [DRIVER_NAME]")
-    print("      mkdir [NEW_TEST_DIRECTORY_NAME]")
-    print("      convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
-    print("      download server")
-    print("      grid-hub {start|stop|restart} [OPTIONS]")
-    print("      grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
+    print('   "seleniumbase" +')
+    print("       install [DRIVER_NAME]")
+    print("       mkdir [NEW_TEST_DIRECTORY_NAME]")
+    print("       convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
+    print("       download server")
+    print("       grid-hub {start|stop|restart} [OPTIONS]")
+    print("       grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]")
+    print("")
+    print('  * (Example: "seleniumbase install chromedriver") *')
     print("")
 
 
