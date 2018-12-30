@@ -2549,6 +2549,12 @@ class BaseCase(unittest.TestCase):
         source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         drop_down_list = soup.select('[class*=dropdown]')
+        for item in soup.select('[class*=HeaderMenu]'):
+            drop_down_list.append(item)
+        for item in soup.select('[class*=menu-item]'):
+            drop_down_list.append(item)
+        for item in soup.select('[class*=chevron]'):
+            drop_down_list.append(item)
         csstype = link_css.split('[')[1].split('=')[0]
         for item in drop_down_list:
             if link_text in item.text.split('\n') and csstype in item.decode():
@@ -2563,7 +2569,7 @@ class BaseCase(unittest.TestCase):
                     try:
                         page_actions.hover_element_and_click(
                             self.driver, dropdown, link_text,
-                            click_by=By.LINK_TEXT, timeout=0.1)
+                            click_by=By.LINK_TEXT, timeout=0.2)
                         return True
                     except Exception:
                         pass
