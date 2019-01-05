@@ -8,6 +8,7 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose additional variables to pass into tests
 * Change the automation speed (with Demo Mode)
 * Choose whether to run tests multi-threaded
+* Choose whether to retry failing tests
 * Choose a BrowserStack server to run on
 * Choose a Sauce Labs server to run on
 * Choose a TestingBot server to run on
@@ -33,6 +34,8 @@ pytest test_suite.py --html=report.html
 nosetests test_suite.py --report --show_report
 
 pytest test_suite.py --headless -n 4
+
+pytest test_suite.py --reruns 1 --reruns-delay 2
 
 pytest test_suite.py --server=IP_ADDRESS --port=4444
 
@@ -97,6 +100,13 @@ If you want to pass additional data from the command line to your tests, you can
 #### **Running tests multithreaded:**
 
 To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+
+#### **Retrying failing tests automatically:**
+
+You can use ``--reruns NUM`` to retry failing tests that many times. Use ``--reruns-delay SECONDS`` to wait that many seconds between retries. Example:
+```
+pytest --reruns 5 --reruns-delay 1
+```
 
 #### **Debugging tests:**
 
