@@ -260,7 +260,7 @@ class BaseCase(unittest.TestCase):
             self.open(self.__get_href_from_link_text(link_text))
             return
         if not self.is_link_text_present(link_text):
-            self.wait_for_link_text_present(link_text)
+            self.wait_for_link_text_present(link_text, timeout=timeout)
         pre_action_url = self.get_current_url()
         try:
             element = self.wait_for_link_text_visible(
