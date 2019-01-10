@@ -254,7 +254,8 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         if self.browser == 'phantomjs':
             if self.is_link_text_visible(link_text):
-                element = self.wait_for_link_text_visible(link_text)
+                element = self.wait_for_link_text_visible(
+                    link_text, timeout=timeout)
                 element.click()
                 return
             self.open(self.__get_href_from_link_text(link_text))
