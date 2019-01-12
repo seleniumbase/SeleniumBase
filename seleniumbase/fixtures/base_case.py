@@ -1879,14 +1879,16 @@ class BaseCase(unittest.TestCase):
                     % start_page)
             self.open(start_page)
             time.sleep(0.08)
-        referral_link = ('''<a class='analytics referral test' href='%s' '''
+            self.wait_for_ready_state_complete()
+        referral_link = ('''<body>'''
+                         '''<a class='analytics referral test' href='%s' '''
                          '''style='font-family: Arial,sans-serif; '''
                          '''font-size: 30px; color: #18a2cd'>'''
-                         '''Magic Link Button</a>''' % destination_page)
+                         '''Magic Link Button</a></body>''' % destination_page)
         self.execute_script(
-            '''document.body.innerHTML = \"%s\"''' % referral_link)
-        time.sleep(0.1)
-        self.click("a.analytics.referral.test")  # Clicks the generated button
+            '''document.body.outerHTML = \"%s\"''' % referral_link)
+        self.click(
+            "a.analytics.referral.test", timeout=2)  # Clicks generated button
         time.sleep(0.15)
         try:
             self.click("html")
