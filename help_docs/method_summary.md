@@ -120,7 +120,11 @@ self.activate_jquery_confirm()
 
 self.activate_messenger()
 
-self.post_message(message, style="info", duration=None)
+self.post_message(message, duration=None, pause=True, style="info")
+
+self.post_success_message(message, duration=None, pause=True)
+
+self.post_error_message(message, duration=None, pause=True)
 
 self.set_messenger_theme(theme="default", location="default",
     max_messages="default")
