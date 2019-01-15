@@ -1213,22 +1213,78 @@ class BaseCase(unittest.TestCase):
 
     def set_messenger_theme(self, theme="default", location="default",
                             max_messages="default"):
+        """ Sets a theme for posting messages.
+            Themes: ["flat", "future", "block", "air", "ice"]
+            Locations: ["top_left", "top_center", "top_right",
+                        "bottom_left", "bottom_center", "bottom_right"]
+            max_messages is the limit of concurrent messages to display. """
+        if not theme:
+            theme = "default"  # "future"
+        if not location:
+            location = "default"  # "bottom_right"
+        if not max_messages:
+            max_messages = "default"  # "8"
         js_utils.set_messenger_theme(
             self.driver, theme=theme,
             location=location, max_messages=max_messages)
 
-    def post_message(self, message, style="info", duration=None):
+    def post_message(self, message, duration=None, pause=True, style="info"):
         """ Post a message on the screen with Messenger.
             Arguments:
                 message: The message to display.
+                duration: The time until the message vanishes. (Default: 2.55s)
+                pause: If True, the program waits until the message completes.
                 style: "info", "success", or "error".
-                duration: The time until the message vanishes.
 
             You can also post messages by using =>
-                self.execute_script('Messenger().post("My Message")') """
+                self.execute_script('Messenger().post("My Message")')
+        """
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
         js_utils.post_message(
-            self.driver, message, self.message_duration,
-            style=style, duration=duration)
+            self.driver, message, duration, style=style)
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
+
+    def post_success_message(self, message, duration=None, pause=True):
+        """ Post a success message on the screen with Messenger.
+            Arguments:
+                message: The success message to display.
+                duration: The time until the message vanishes. (Default: 2.55s)
+                pause: If True, the program waits until the message completes.
+        """
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        js_utils.post_message(
+            self.driver, message, duration, style="success")
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
+
+    def post_error_message(self, message, duration=None, pause=True):
+        """ Post an error message on the screen with Messenger.
+            Arguments:
+                message: The error message to display.
+                duration: The time until the message vanishes. (Default: 2.55s)
+                pause: If True, the program waits until the message completes.
+        """
+        if not duration:
+            if not self.message_duration:
+                duration = settings.DEFAULT_MESSAGE_DURATION
+            else:
+                duration = self.message_duration
+        js_utils.post_message(
+            self.driver, message, duration, style="error")
+        if pause:
+            duration = float(duration) + 0.15
+            time.sleep(float(duration))
 
     def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
@@ -2617,14 +2673,6 @@ class BaseCase(unittest.TestCase):
 
     def __slow_scroll_to_element(self, element):
         js_utils.slow_scroll_to_element(self.driver, element, self.browser)
-
-    def __post_messenger_success_message(self, message, duration=None):
-        js_utils.post_messenger_success_message(
-            self.driver, message, self.message_duration, duration=duration)
-
-    def __post_messenger_error_message(self, message, duration=None):
-        js_utils.post_messenger_error_message(
-            self.driver, message, self.message_duration, duration=duration)
 
     def __highlight_with_assert_success(
             self, message, selector, by=By.CSS_SELECTOR):

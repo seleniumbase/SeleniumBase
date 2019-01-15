@@ -470,19 +470,17 @@ def set_messenger_theme(driver, theme="default", location="default",
     time.sleep(0.1)
 
 
-def post_message(driver, message, msg_dur, style="info", duration=None):
+def post_message(driver, message, msg_dur, style="info"):
     """ A helper method to post a message on the screen with Messenger.
         (Should only be called from post_message() in base_case.py) """
-    if not duration:
-        if not msg_dur:
-            duration = settings.DEFAULT_MESSAGE_DURATION
-        else:
-            duration = msg_dur
+    if not msg_dur:
+        msg_dur = settings.DEFAULT_MESSAGE_DURATION
+    msg_dur = float(msg_dur)
     message = re.escape(message)
     message = escape_quotes_if_needed(message)
     messenger_script = ('''Messenger().post({message: "%s", type: "%s", '''
                         '''hideAfter: %s, hideOnNavigate: true});'''
-                        % (message, style, duration))
+                        % (message, style, msg_dur))
     try:
         driver.execute_script(messenger_script)
     except Exception:
@@ -499,32 +497,28 @@ def post_message(driver, message, msg_dur, style="info", duration=None):
             driver.execute_script(messenger_script)
 
 
-def post_messenger_success_message(driver, message, msg_dur, duration=None):
-    if not duration:
-        if not msg_dur:
-            duration = settings.DEFAULT_MESSAGE_DURATION
-        else:
-            duration = msg_dur
+def post_messenger_success_message(driver, message, msg_dur):
+    if not msg_dur:
+        msg_dur = settings.DEFAULT_MESSAGE_DURATION
+    msg_dur = float(msg_dur)
     try:
         set_messenger_theme(driver, theme="future", location="bottom_right")
         post_message(
-            driver, message, msg_dur, style="success", duration=duration)
-        time.sleep(duration)
+            driver, message, msg_dur, style="success")
+        time.sleep(msg_dur + 0.07)
     except Exception:
         pass
 
 
-def post_messenger_error_message(driver, message, msg_dur, duration=None):
-    if not duration:
-        if not msg_dur:
-            duration = settings.DEFAULT_MESSAGE_DURATION
-        else:
-            duration = msg_dur
+def post_messenger_error_message(driver, message, msg_dur):
+    if not msg_dur:
+        msg_dur = settings.DEFAULT_MESSAGE_DURATION
+    msg_dur = float(msg_dur)
     try:
         set_messenger_theme(driver, theme="block", location="top_center")
         post_message(
-            driver, message, msg_dur, style="error", duration=duration)
-        time.sleep(duration)
+            driver, message, msg_dur, style="error")
+        time.sleep(msg_dur + 0.07)
     except Exception:
         pass
 

@@ -239,7 +239,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
         except Exception:
             js_utils.post_messenger_error_message(
                 driver, "Tour Error: {'%s'} was not found!" % selector,
-                msg_dur, duration=settings.SMALL_TIMEOUT)
+                msg_dur)
             raise Exception(
                 "Tour Error: {'%s'} was not found! "
                 "Exiting due to failure on first tour step!"
@@ -308,7 +308,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
                     driver.execute_script(remove_script)
                     js_utils.post_messenger_error_message(
                         driver, "Tour Error: {'%s'} was not found!" % selector,
-                        msg_dur, duration=settings.SMALL_TIMEOUT)
+                        msg_dur)
                     time.sleep(0.1)
                 driver.execute_script("Shepherd.activeTour.next()")
                 if autoplay:
@@ -362,7 +362,7 @@ def play_bootstrap_tour(
         except Exception:
             js_utils.post_messenger_error_message(
                 driver, "Tour Error: {'%s'} was not found!" % selector,
-                msg_dur, duration=settings.SMALL_TIMEOUT)
+                msg_dur)
             raise Exception(
                 "Tour Error: {'%s'} was not found! "
                 "Exiting due to failure on first tour step!"
@@ -442,7 +442,7 @@ def play_hopscotch_tour(
         except Exception:
             js_utils.post_messenger_error_message(
                 driver, "Tour Error: {'%s'} was not found!" % selector,
-                msg_dur, duration=settings.SMALL_TIMEOUT)
+                msg_dur)
             raise Exception(
                 "Tour Error: {'%s'} was not found! "
                 "Exiting due to failure on first tour step!"
@@ -561,7 +561,7 @@ def play_introjs_tour(
         except Exception:
             js_utils.post_messenger_error_message(
                 driver, "Tour Error: {'%s'} was not found!" % selector,
-                msg_dur, duration=settings.SMALL_TIMEOUT)
+                msg_dur)
             raise Exception(
                 "Tour Error: {'%s'} was not found! "
                 "Exiting due to failure on first tour step!"
