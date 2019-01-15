@@ -1,11 +1,11 @@
 """ The main purpose of this file is to demonstrate running SeleniumBase
     scripts without the use of Pytest by calling the script directly
     with Python or from a Python interactive interpreter. Based on
-    whether relative imports work or don't work, it will autodetect
-    how this file was run. With pure Python, it will need to initialize
+    whether relative imports work or don't, the script can autodetect
+    how this file was run. With pure Python, it will initialize
     all the variables that would've been automatically initialized
-    by the Pytest plugin. The same thing is required for the setUp()
-    and tearDown() methods, which are now called from the script itself.
+    by the Pytest plugin. The setUp() and tearDown() methods are also
+    now called from the script itself.
 
     One big advantage to running tests with Pytest is that most of this
     is done for you automatically, with the option to update any of the
