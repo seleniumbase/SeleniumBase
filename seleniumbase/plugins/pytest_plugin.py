@@ -2,6 +2,7 @@
 
 import optparse
 import pytest
+from seleniumbase import config as sb_config
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
@@ -149,10 +150,35 @@ def pytest_addoption(parser):
 
 def pytest_configure(config):
     """ This runs after command line options have been parsed """
-    with_testing_base = config.getoption('with_testing_base')
-    if with_testing_base:
-        log_path = config.getoption('log_path')
-        log_helper.log_folder_setup(log_path)
+    sb_config.is_pytest = True
+    sb_config.browser = config.getoption('browser')
+    sb_config.data = config.getoption('data')
+    sb_config.environment = config.getoption('environment')
+    sb_config.with_selenium = config.getoption('with_selenium')
+    sb_config.headless = config.getoption('headless')
+    sb_config.with_testing_base = config.getoption('with_testing_base')
+    sb_config.with_db_reporting = config.getoption('with_db_reporting')
+    sb_config.with_s3_logging = config.getoption('with_s3_logging')
+    sb_config.with_screen_shots = config.getoption('with_screen_shots')
+    sb_config.with_basic_test_info = config.getoption('with_basic_test_info')
+    sb_config.with_page_source = config.getoption('with_page_source')
+    sb_config.servername = config.getoption('servername')
+    sb_config.port = config.getoption('port')
+    sb_config.proxy_string = config.getoption('proxy_string')
+    sb_config.cap_file = config.getoption('cap_file')
+    sb_config.database_env = config.getoption('database_env')
+    sb_config.log_path = config.getoption('log_path')
+    sb_config.demo_mode = config.getoption('demo_mode')
+    sb_config.demo_sleep = config.getoption('demo_sleep')
+    sb_config.highlights = config.getoption('highlights')
+    sb_config.message_duration = config.getoption('message_duration')
+    sb_config.js_checking_on = config.getoption('js_checking_on')
+    sb_config.ad_block_on = config.getoption('ad_block_on')
+    sb_config.verify_delay = config.getoption('verify_delay')
+    sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
+
+    if sb_config.with_testing_base:
+        log_helper.log_folder_setup(sb_config.log_path)
     proxy_helper.remove_proxy_zip_if_present()
 
 
