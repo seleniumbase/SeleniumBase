@@ -189,7 +189,7 @@ def main():
             show_basic_usage()
             show_mkdir_usage()
     elif command == "download":
-        if len(command_args) >= 1:
+        if len(command_args) >= 1 and command_args[0].lower() == "server":
             download_selenium_server.main(force_download=True)
         else:
             show_basic_usage()
