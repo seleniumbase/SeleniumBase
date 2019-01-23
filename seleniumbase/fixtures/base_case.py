@@ -31,6 +31,7 @@ import time
 import unittest
 import uuid
 from bs4 import BeautifulSoup
+from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core.application_manager import ApplicationManager
@@ -2727,7 +2728,7 @@ class BaseCase(unittest.TestCase):
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
-            self.is_pytest = pytest.config.option.is_pytest
+            self.is_pytest = sb_config.is_pytest
         except Exception:
             # Not using pytest (probably nosetests)
             self.is_pytest = False
@@ -2736,34 +2737,33 @@ class BaseCase(unittest.TestCase):
             test_id = "%s.%s.%s" % (self.__class__.__module__,
                                     self.__class__.__name__,
                                     self._testMethodName)
-            self.environment = pytest.config.option.environment
+            self.browser = sb_config.browser
+            self.data = sb_config.data
+            self.demo_mode = sb_config.demo_mode
+            self.demo_sleep = sb_config.demo_sleep
+            self.highlights = sb_config.highlights
+            self.environment = sb_config.environment
             self.env = self.environment  # Add a shortened version
-            self.with_selenium = pytest.config.option.with_selenium
-            self.headless = pytest.config.option.headless
+            self.with_selenium = sb_config.with_selenium  # Should be True
+            self.headless = sb_config.headless
             self.headless_active = False
-            self.with_testing_base = pytest.config.option.with_testing_base
-            self.with_db_reporting = pytest.config.option.with_db_reporting
-            self.with_s3_logging = pytest.config.option.with_s3_logging
-            self.with_screen_shots = pytest.config.option.with_screen_shots
-            self.with_basic_test_info = (
-                pytest.config.option.with_basic_test_info)
-            self.with_page_source = pytest.config.option.with_page_source
-            self.servername = pytest.config.option.servername
-            self.port = pytest.config.option.port
-            self.proxy_string = pytest.config.option.proxy_string
-            self.cap_file = pytest.config.option.cap_file
-            self.database_env = pytest.config.option.database_env
-            self.log_path = pytest.config.option.log_path
-            self.browser = pytest.config.option.browser
-            self.data = pytest.config.option.data
-            self.demo_mode = pytest.config.option.demo_mode
-            self.demo_sleep = pytest.config.option.demo_sleep
-            self.highlights = pytest.config.option.highlights
-            self.message_duration = pytest.config.option.message_duration
-            self.js_checking_on = pytest.config.option.js_checking_on
-            self.ad_block_on = pytest.config.option.ad_block_on
-            self.verify_delay = pytest.config.option.verify_delay
-            self.timeout_multiplier = pytest.config.option.timeout_multiplier
+            self.log_path = sb_config.log_path
+            self.with_testing_base = sb_config.with_testing_base
+            self.with_basic_test_info = sb_config.with_basic_test_info
+            self.with_screen_shots = sb_config.with_screen_shots
+            self.with_page_source = sb_config.with_page_source
+            self.with_db_reporting = sb_config.with_db_reporting
+            self.with_s3_logging = sb_config.with_s3_logging
+            self.servername = sb_config.servername
+            self.port = sb_config.port
+            self.proxy_string = sb_config.proxy_string
+            self.cap_file = sb_config.cap_file
+            self.database_env = sb_config.database_env
+            self.message_duration = sb_config.message_duration
+            self.js_checking_on = sb_config.js_checking_on
+            self.ad_block_on = sb_config.ad_block_on
+            self.verify_delay = sb_config.verify_delay
+            self.timeout_multiplier = sb_config.timeout_multiplier
             self.use_grid = False
             if self.servername != "localhost":
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
@@ -2898,7 +2898,7 @@ class BaseCase(unittest.TestCase):
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
-            self.is_pytest = pytest.config.option.is_pytest
+            self.is_pytest = sb_config.is_pytest
         except Exception:
             # Not using pytest (probably nosetests)
             self.is_pytest = False
