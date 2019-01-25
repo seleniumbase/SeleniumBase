@@ -69,6 +69,11 @@ Here's how to connect to a TestingBot Selenium Grid server for running tests:
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
+Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
+```
 
 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
