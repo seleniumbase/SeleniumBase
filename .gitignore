@@ -33,6 +33,7 @@ nosetests.xml
 .pytest_config
 
 # Developer
+.idea
 .project
 .pydevproject
 
