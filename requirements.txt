@@ -13,7 +13,7 @@ pytest-cov>=2.6.1
 pytest-html>=1.20.0
 pytest-rerunfailures>=6.0
 pytest-xdist>=1.26.0
-parameterized==0.6.1
+parameterized==0.6.3
 beautifulsoup4>=4.6.0
 colorama==0.4.1
 pyotp>=2.2.7
