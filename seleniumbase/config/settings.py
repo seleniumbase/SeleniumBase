@@ -25,9 +25,8 @@ ARCHIVE_EXISTING_LOGS = False
 # If False, only the downloads from the most recent run will be saved locally.
 ARCHIVE_EXISTING_DOWNLOADS = False
 
-# Default names for files saved during test failures when logging is turned on.
+# Default names for files saved during test failures.
 # (These files will get saved to the "latest_logs/" folder)
-# Usage: "--with-testing_base"
 SCREENSHOT_NAME = "screenshot.png"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
