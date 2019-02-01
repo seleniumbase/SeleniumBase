@@ -69,6 +69,11 @@ HIGHLIGHTS = 4
 # Messenger notifications appear when reaching assert statements in Demo Mode.
 DEFAULT_MESSAGE_DURATION = 2.55
 
+# If True, an Exception is raised immediately for invalid proxy string syntax.
+# If False, a Warning will appear after the test, with no proxy server used.
+# (This applies when using --proxy=[PROXY_STRING] for using a proxy server.)
+RAISE_INVALID_PROXY_STRING_EXCEPTION = True
+
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)
 
