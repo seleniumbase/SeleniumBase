@@ -87,6 +87,7 @@ def _set_chrome_options(
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
+        "local_discovery.notifications_enabled": False,
         "credentials_enable_service": False,
         "profile": {
             "password_manager_enabled": False
