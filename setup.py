@@ -17,8 +17,8 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.18.2',
-    description='Reliable Browser Automation & Testing Framework',
+    version='1.19.0',
+    description='Easy, Fast, Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
@@ -61,17 +61,17 @@ setup(
         'selenium==3.141.0',
         'requests==2.21.0',  # Changing this may effect "urllib3"
         'urllib3==1.24.1',  # Keep this lib in sync with "requests"
-        'pytest>=4.1.1',
+        'pytest>=4.2.0',
         'pytest-cov>=2.6.1',
         'pytest-html>=1.20.0',
         'pytest-rerunfailures>=6.0',
-        'pytest-xdist>=1.26.0',
+        'pytest-xdist>=1.26.1',
         'parameterized==0.6.3',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'colorama==0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'flake8==3.6.0',
+        'flake8==3.7.3',
         'PyVirtualDisplay==0.2.1',
     ],
     packages=[

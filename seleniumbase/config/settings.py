@@ -25,9 +25,8 @@ ARCHIVE_EXISTING_LOGS = False
 # If False, only the downloads from the most recent run will be saved locally.
 ARCHIVE_EXISTING_DOWNLOADS = False
 
-# Default names for files saved during test failures when logging is turned on.
+# Default names for files saved during test failures.
 # (These files will get saved to the "latest_logs/" folder)
-# Usage: "--with-testing_base"
 SCREENSHOT_NAME = "screenshot.png"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
@@ -69,6 +68,11 @@ HIGHLIGHTS = 4
 # Default time to keep messenger notifications visible (in seconds).
 # Messenger notifications appear when reaching assert statements in Demo Mode.
 DEFAULT_MESSAGE_DURATION = 2.55
+
+# If True, an Exception is raised immediately for invalid proxy string syntax.
+# If False, a Warning will appear after the test, with no proxy server used.
+# (This applies when using --proxy=[PROXY_STRING] for using a proxy server.)
+RAISE_INVALID_PROXY_STRING_EXCEPTION = True
 
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)

@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from seleniumbase.config import proxy_list
+from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.core import capabilities_parser
@@ -86,6 +87,7 @@ def _set_chrome_options(
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
+        "local_discovery.notifications_enabled": False,
         "credentials_enable_service": False,
         "profile": {
             "password_manager_enabled": False
@@ -150,12 +152,16 @@ def _create_firefox_profile(downloads_path, proxy_string):
 def display_proxy_warning(proxy_string):
     message = ('\n\nWARNING: Proxy String ["%s"] is NOT in the expected '
                '"ip_address:port" or "server:port" format, '
-               '(OR the key does not exist in proxy_list.PROXY_LIST). '
-               '*** DEFAULTING to NOT USING a Proxy Server! ***'
+               '(OR the key does not exist in '
+               'seleniumbase.config.proxy_list.PROXY_LIST).'
                % proxy_string)
-    warnings.simplefilter('always', Warning)  # See Warnings
-    warnings.warn(message, category=Warning, stacklevel=2)
-    warnings.simplefilter('default', Warning)  # Set Default
+    if settings.RAISE_INVALID_PROXY_STRING_EXCEPTION:
+        raise Exception(message)
+    else:
+        message += ' *** DEFAULTING to NOT USING a Proxy Server! ***'
+        warnings.simplefilter('always', Warning)  # See Warnings
+        warnings.warn(message, category=Warning, stacklevel=2)
+        warnings.simplefilter('default', Warning)  # Set Default
 
 
 def validate_proxy_string(proxy_string):
