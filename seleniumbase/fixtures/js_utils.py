@@ -6,6 +6,7 @@ import re
 import requests
 import time
 from selenium.common.exceptions import WebDriverException
+from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
@@ -628,6 +629,7 @@ def slow_scroll_to_element(driver, element, browser):
         time.sleep(0.162)
 
 
+@decorators.deprecated("Use re.escape() instead, which does what you want!")
 def _jq_format(code):
     """
     DEPRECATED - Use re.escape() instead, which performs the intended action.
