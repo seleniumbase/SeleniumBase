@@ -631,7 +631,7 @@ def play_introjs_tour(
                 time.sleep(0.1)
 
 
-def export_tour(tour_steps, name=None, filename="my_tour.js"):
+def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
     """ Exports a tour as a JS file.
         It will include necessary resources as well, such as jQuery.
         You'll be able to copy the tour directly into the Console of
@@ -642,6 +642,8 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
         raise Exception("Tour {%s} does not exist!" % name)
     if not filename.endswith('.js'):
         raise Exception('Tour file must end in ".js"!')
+    if not url:
+        url = "data:,"
 
     tour_type = None
     if "Bootstrap" in tour_steps[name][0]:
@@ -656,6 +658,10 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
         raise Exception('Unknown tour type!')
 
     instructions = (
+        '''////////  Load Tour Start Page (if not there now)  ////////\n\n'''
+        '''if (window.location.href != "%s") {\n'''
+        '''    window.location.href="%s";\n'''
+        '''}\n\n'''
         '''////////  Resources  ////////\n\n'''
         '''function injectCSS(css_link) {'''
         '''var head = document.getElementsByTagName("head")[0];'''
@@ -682,7 +688,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
         '''style.type = "text/css";'''
         '''style.appendChild(document.createTextNode(css));'''
         '''head.appendChild(style);'''
-        '''};\n''')
+        '''};\n''' % (url, url))
 
     if tour_type == "bootstrap":
         jquery_js = constants.JQuery.MIN_JS
@@ -752,16 +758,14 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
             // Start the tour
             tour.start();
             $tour = tour;
-            $tour.restart();\n
-            """)
+            $tour.restart();\n""")
     elif tour_type == "hopscotch":
         instructions += (
             """]
             };
             // Start the tour!
             hopscotch.startTour(tour);
-            $tour = hopscotch;\n
-            """)
+            $tour = hopscotch;\n""")
     elif tour_type == "introjs":
         instructions += (
             """]
@@ -777,14 +781,12 @@ def export_tour(tour_steps, name=None, filename="my_tour.js"):
             intro.start();
             $tour = intro;
             };
-            startIntro();\n
-            """)
+            startIntro();\n""")
     elif tour_type == "shepherd":
         instructions += (
             """
             tour.start();
-            $tour = tour;\n
-            """)
+            $tour = tour;\n""")
     else:
         pass
 

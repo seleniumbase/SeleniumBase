@@ -1181,10 +1181,10 @@ class BaseCase(unittest.TestCase):
                 self.driver, self._tour_steps,
                 self.message_duration, name=name, interval=interval)
 
-    def export_tour(self, name=None, filename="my_tour.js"):
+    def export_tour(self, name=None, filename="my_tour.js", url=None):
         """ Exports a tour as a JS file.
-            You can call self.export_tour() anywhere where you could
-            normally use self.play_tour()
+            You can call self.export_tour() anywhere where you would
+            normally use self.play_tour() to play a tour.
             It will include necessary resources as well, such as jQuery.
             You'll be able to copy the tour directly into the Console of
             any web browser to play the tour outside of SeleniumBase runs.
@@ -1193,7 +1193,10 @@ class BaseCase(unittest.TestCase):
                    use this to select the tour you wish to add steps to.
             filename - The name of the JavaScript file that you wish to
                    save the tour to. """
-        tour_helper.export_tour(self._tour_steps, name=name, filename=filename)
+        if not url:
+            url = self.get_current_url()
+        tour_helper.export_tour(
+            self._tour_steps, name=name, filename=filename, url=url)
 
     def activate_jquery_confirm(self):
         """ See https://craftpip.github.io/jquery-confirm/ for usage. """

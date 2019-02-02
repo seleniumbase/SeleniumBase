@@ -114,7 +114,7 @@ self.add_tour_step(message, selector=None, name=None,
 
 self.play_tour(name=None)
 
-self.export_tour(name=None, filename="my_tour.js")
+self.export_tour(name=None, filename="my_tour.js", url=None)
 
 self.activate_jquery_confirm()
 
