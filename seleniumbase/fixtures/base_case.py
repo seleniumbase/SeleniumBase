@@ -1615,6 +1615,18 @@ class BaseCase(unittest.TestCase):
         """ Asserts that the file exists in the Downloads Folder. """
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
+    def assert_true(self, expr, msg=None):
+        self.assertTrue(expr, msg=None)
+
+    def assert_false(self, expr, msg=None):
+        self.assertFalse(expr, msg=None)
+
+    def assert_equal(self, first, second, msg=None):
+        self.assertEqual(first, second, msg=None)
+
+    def assert_not_equal(self, first, second, msg=None):
+        self.assertNotEqual(first, second, msg=None)
+
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
             Works ONLY for Chrome (non-headless) and Chrome-based browsers.
