@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.19.0',
+    version='1.19.1',
     description='Easy, Fast, Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -71,7 +71,7 @@ setup(
         'colorama==0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'flake8==3.7.3',
+        'flake8==3.7.4',
         'PyVirtualDisplay==0.2.1',
     ],
     packages=[

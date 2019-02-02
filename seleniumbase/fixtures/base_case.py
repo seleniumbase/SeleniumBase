@@ -30,12 +30,9 @@ import sys
 import time
 import unittest
 import uuid
-from bs4 import BeautifulSoup
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
-from seleniumbase.core.application_manager import ApplicationManager
-from seleniumbase.core.testcase_manager import ExecutionQueryPayload
 from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import download_helper
@@ -196,9 +193,7 @@ class BaseCase(unittest.TestCase):
         """ Returns True if the link text appears in the HTML of the page.
             The element doesn't need to be visible,
             such as elements hidden inside a dropdown selection. """
-        self.wait_for_ready_state_complete()
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
             if html_link.text.strip() == link_text.strip():
@@ -209,9 +204,7 @@ class BaseCase(unittest.TestCase):
         """ Finds a link by link text and then returns the attribute's value.
             If the link text or attribute cannot be found, an exception will
             get raised if hard_fail is True (otherwise None is returned). """
-        self.wait_for_ready_state_complete()
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
             if html_link.text.strip() == link_text.strip():
@@ -340,8 +333,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(partial_link_text)
                 element.click()
                 return
-            source = self.get_page_source()
-            soup = BeautifulSoup(source, "html.parser")
+            soup = self.get_beautiful_soup()
             html_links = soup.fetch('a')
             for html_link in html_links:
                 if partial_link_text in html_link.text:
@@ -701,8 +693,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return False
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         iframe_list = soup.select('iframe')
         for iframe in iframe_list:
             iframe_identifier = None
@@ -727,8 +718,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         iframe_list = soup.select('iframe')
         for iframe in iframe_list:
             iframe_identifier = None
@@ -1438,12 +1428,15 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__slow_scroll_to_element(element)
 
+    @decorators.deprecated("Use self.click() - It now scrolls before clicking")
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
         # DEPRECATED - self.click() now scrolls to the element before clicking
-        # self.scroll_to(selector, by=by)
+        # self.scroll_to(selector, by=by)  # Redundant
         self.click(selector, by=by)
 
     def click_xpath(self, xpath):
+        # Technically self.click() will automatically detect an xpath selector,
+        # so self.click_xpath() is just a longer name for the same action.
         self.click(xpath, by=By.XPATH)
 
     def js_click(self, selector, by=By.CSS_SELECTOR):
@@ -1552,12 +1545,23 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
 
+    @decorators.deprecated("Use re.escape() instead! It does what you want!")
     def jq_format(self, code):
-        # DEPRECATED - Use re.escape() instead, which does the action you want.
+        # DEPRECATED - re.escape() already does that thing you want!
         return js_utils._jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
+
+    def get_beautiful_soup(self, source=None):
+        """ BeautifulSoup is a toolkit for dissecting an HTML document
+            and extracting what you need. It's great for screen-scraping! """
+        from bs4 import BeautifulSoup
+        if not source:
+            self.wait_for_ready_state_complete()
+            source = self.get_page_source()
+        soup = BeautifulSoup(source, "html.parser")
+        return soup
 
     def safe_execute_script(self, script):
         """ When executing a script that contains a jQuery command,
@@ -1610,6 +1614,18 @@ class BaseCase(unittest.TestCase):
     def assert_downloaded_file(self, file):
         """ Asserts that the file exists in the Downloads Folder. """
         assert os.path.exists(self.get_path_of_downloaded_file(file))
+
+    def assert_true(self, expr, msg=None):
+        self.assertTrue(expr, msg=None)
+
+    def assert_false(self, expr, msg=None):
+        self.assertFalse(expr, msg=None)
+
+    def assert_equal(self, first, second, msg=None):
+        self.assertEqual(first, second, msg=None)
+
+    def assert_not_equal(self, first, second, msg=None):
+        self.assertNotEqual(first, second, msg=None)
 
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
@@ -1879,39 +1895,6 @@ class BaseCase(unittest.TestCase):
             @Params
             dropdown_selector - the <select> selector
             option - the value property of the option """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__select_option(dropdown_selector, option,
-                             dropdown_by=dropdown_by, option_by="value",
-                             timeout=timeout)
-
-    @decorators.deprecated("Use self.select_option_by_text() instead!")
-    def pick_select_option_by_text(self, dropdown_selector, option,
-                                   dropdown_by=By.CSS_SELECTOR,
-                                   timeout=settings.SMALL_TIMEOUT):
-        """ Selects an HTML <select> option by option text. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__select_option(dropdown_selector, option,
-                             dropdown_by=dropdown_by, option_by="text",
-                             timeout=timeout)
-
-    @decorators.deprecated("Use self.select_option_by_index() instead!")
-    def pick_select_option_by_index(self, dropdown_selector, option,
-                                    dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.SMALL_TIMEOUT):
-        """ Selects an HTML <select> option by option index. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__select_option(dropdown_selector, option,
-                             dropdown_by=dropdown_by, option_by="index",
-                             timeout=timeout)
-
-    @decorators.deprecated("Use self.select_option_by_value() instead!")
-    def pick_select_option_by_value(self, dropdown_selector, option,
-                                    dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.SMALL_TIMEOUT):
-        """ Selects an HTML <select> option by option value. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.__select_option(dropdown_selector, option,
@@ -2495,12 +2478,6 @@ class BaseCase(unittest.TestCase):
             self.__add_delayed_assert_failure()
             return False
 
-    @decorators.deprecated("Use self.delayed_assert_element() instead!")
-    def check_assert_element(self, selector, by=By.CSS_SELECTOR,
-                             timeout=settings.MINI_TIMEOUT):
-        """ DEPRECATED - Use self.delayed_assert_element() instead. """
-        return self.delayed_assert_element(selector, by=by, timeout=timeout)
-
     def delayed_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
                             timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for text from an element on a page.
@@ -2521,12 +2498,6 @@ class BaseCase(unittest.TestCase):
         except Exception:
             self.__add_delayed_assert_failure()
             return False
-
-    @decorators.deprecated("Use self.delayed_assert_text() instead!")
-    def check_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
-                          timeout=settings.MINI_TIMEOUT):
-        """ DEPRECATED - Use self.delayed_assert_text() instead. """
-        return self.delayed_assert_text(text, selector, by=by, timeout=timeout)
 
     def process_delayed_asserts(self, print_only=False):
         """ To be used with any test that uses delayed_asserts, which are
@@ -2551,11 +2522,6 @@ class BaseCase(unittest.TestCase):
                 print(exception_output)
             else:
                 raise Exception(exception_output)
-
-    @decorators.deprecated("Use self.process_delayed_asserts() instead!")
-    def process_checks(self, print_only=False):
-        """ DEPRECATED - Use self.process_delayed_asserts() instead. """
-        self.process_delayed_asserts(print_only=print_only)
 
     ############
 
@@ -2606,8 +2572,7 @@ class BaseCase(unittest.TestCase):
 
     def __click_dropdown_link_text(self, link_text, link_css):
         """ When a link may be hidden under a dropdown menu, use this. """
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         drop_down_list = soup.select('[class*=dropdown]')
         for item in soup.select('[class*=HeaderMenu]'):
             drop_down_list.append(item)
@@ -2769,6 +2734,10 @@ class BaseCase(unittest.TestCase):
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
                 self.use_grid = True
             if self.with_db_reporting:
+                from seleniumbase.core.application_manager import (
+                    ApplicationManager)
+                from seleniumbase.core.testcase_manager import (
+                    ExecutionQueryPayload)
                 import getpass
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None

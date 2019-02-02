@@ -36,6 +36,7 @@ nosetests.xml
 .idea
 .project
 .pydevproject
+.vscode
 
 # Web Drivers
 chromedriver
