@@ -1552,12 +1552,23 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
 
+    @decorators.deprecated("Use re.escape() instead! It does what you want!")
     def jq_format(self, code):
-        # DEPRECATED - Use re.escape() instead, which does the action you want.
+        # DEPRECATED - re.escape() already does that thing you want!
         return js_utils._jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
+
+    def get_beautiful_soup(self, source=None):
+        """ BeautifulSoup is a toolkit for dissecting an HTML document
+            and extracting what you need. It's great for screen-scraping! """
+        from bs4 import BeautifulSoup
+        if not source:
+            self.wait_for_ready_state_complete()
+            source = self.get_page_source()
+        soup = BeautifulSoup(source, "html.parser")
+        return soup
 
     def safe_execute_script(self, script):
         """ When executing a script that contains a jQuery command,
