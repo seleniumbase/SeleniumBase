@@ -196,9 +196,7 @@ class BaseCase(unittest.TestCase):
         """ Returns True if the link text appears in the HTML of the page.
             The element doesn't need to be visible,
             such as elements hidden inside a dropdown selection. """
-        self.wait_for_ready_state_complete()
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
             if html_link.text.strip() == link_text.strip():
@@ -209,9 +207,7 @@ class BaseCase(unittest.TestCase):
         """ Finds a link by link text and then returns the attribute's value.
             If the link text or attribute cannot be found, an exception will
             get raised if hard_fail is True (otherwise None is returned). """
-        self.wait_for_ready_state_complete()
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
             if html_link.text.strip() == link_text.strip():
@@ -340,8 +336,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_partial_link_text(partial_link_text)
                 element.click()
                 return
-            source = self.get_page_source()
-            soup = BeautifulSoup(source, "html.parser")
+            soup = self.get_beautiful_soup()
             html_links = soup.fetch('a')
             for html_link in html_links:
                 if partial_link_text in html_link.text:
@@ -701,8 +696,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return False
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         iframe_list = soup.select('iframe')
         for iframe in iframe_list:
             iframe_identifier = None
@@ -727,8 +721,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
             return None
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         iframe_list = soup.select('iframe')
         for iframe in iframe_list:
             iframe_identifier = None
@@ -2570,8 +2563,7 @@ class BaseCase(unittest.TestCase):
 
     def __click_dropdown_link_text(self, link_text, link_css):
         """ When a link may be hidden under a dropdown menu, use this. """
-        source = self.get_page_source()
-        soup = BeautifulSoup(source, "html.parser")
+        soup = self.get_beautiful_soup()
         drop_down_list = soup.select('[class*=dropdown]')
         for item in soup.select('[class*=HeaderMenu]'):
             drop_down_list.append(item)
