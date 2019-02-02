@@ -30,12 +30,9 @@ import sys
 import time
 import unittest
 import uuid
-from bs4 import BeautifulSoup
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
-from seleniumbase.core.application_manager import ApplicationManager
-from seleniumbase.core.testcase_manager import ExecutionQueryPayload
 from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import download_helper
@@ -2725,6 +2722,10 @@ class BaseCase(unittest.TestCase):
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
                 self.use_grid = True
             if self.with_db_reporting:
+                from seleniumbase.core.application_manager import (
+                    ApplicationManager)
+                from seleniumbase.core.testcase_manager import (
+                    ExecutionQueryPayload)
                 import getpass
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
