@@ -1896,39 +1896,6 @@ class BaseCase(unittest.TestCase):
                              dropdown_by=dropdown_by, option_by="value",
                              timeout=timeout)
 
-    @decorators.deprecated("Use self.select_option_by_text() instead!")
-    def pick_select_option_by_text(self, dropdown_selector, option,
-                                   dropdown_by=By.CSS_SELECTOR,
-                                   timeout=settings.SMALL_TIMEOUT):
-        """ Selects an HTML <select> option by option text. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__select_option(dropdown_selector, option,
-                             dropdown_by=dropdown_by, option_by="text",
-                             timeout=timeout)
-
-    @decorators.deprecated("Use self.select_option_by_index() instead!")
-    def pick_select_option_by_index(self, dropdown_selector, option,
-                                    dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.SMALL_TIMEOUT):
-        """ Selects an HTML <select> option by option index. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__select_option(dropdown_selector, option,
-                             dropdown_by=dropdown_by, option_by="index",
-                             timeout=timeout)
-
-    @decorators.deprecated("Use self.select_option_by_value() instead!")
-    def pick_select_option_by_value(self, dropdown_selector, option,
-                                    dropdown_by=By.CSS_SELECTOR,
-                                    timeout=settings.SMALL_TIMEOUT):
-        """ Selects an HTML <select> option by option value. """
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.__select_option(dropdown_selector, option,
-                             dropdown_by=dropdown_by, option_by="value",
-                             timeout=timeout)
-
     ############
 
     def generate_referral(self, start_page, destination_page):
@@ -2506,12 +2473,6 @@ class BaseCase(unittest.TestCase):
             self.__add_delayed_assert_failure()
             return False
 
-    @decorators.deprecated("Use self.delayed_assert_element() instead!")
-    def check_assert_element(self, selector, by=By.CSS_SELECTOR,
-                             timeout=settings.MINI_TIMEOUT):
-        """ DEPRECATED - Use self.delayed_assert_element() instead. """
-        return self.delayed_assert_element(selector, by=by, timeout=timeout)
-
     def delayed_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
                             timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for text from an element on a page.
@@ -2532,12 +2493,6 @@ class BaseCase(unittest.TestCase):
         except Exception:
             self.__add_delayed_assert_failure()
             return False
-
-    @decorators.deprecated("Use self.delayed_assert_text() instead!")
-    def check_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
-                          timeout=settings.MINI_TIMEOUT):
-        """ DEPRECATED - Use self.delayed_assert_text() instead. """
-        return self.delayed_assert_text(text, selector, by=by, timeout=timeout)
 
     def process_delayed_asserts(self, print_only=False):
         """ To be used with any test that uses delayed_asserts, which are
@@ -2562,11 +2517,6 @@ class BaseCase(unittest.TestCase):
                 print(exception_output)
             else:
                 raise Exception(exception_output)
-
-    @decorators.deprecated("Use self.process_delayed_asserts() instead!")
-    def process_checks(self, print_only=False):
-        """ DEPRECATED - Use self.process_delayed_asserts() instead. """
-        self.process_delayed_asserts(print_only=print_only)
 
     ############
 
