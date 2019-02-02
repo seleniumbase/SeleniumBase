@@ -140,8 +140,6 @@ self.scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
 
-self.scroll_click(selector, by=By.CSS_SELECTOR)  # DEPRECATED
-
 self.click_xpath(xpath)
 
 self.js_click(selector, by=By.CSS_SELECTOR)
@@ -166,6 +164,8 @@ self.ad_block()
 
 self.get_domain_url(url)
 
+self.get_beautiful_soup(source=None)
+
 self.safe_execute_script(script)
 
 self.download_file(file_url, destination_folder=None)
@@ -181,6 +181,14 @@ self.get_path_of_downloaded_file(file)
 self.is_downloaded_file_present(file)
 
 self.assert_downloaded_file(file)
+
+self.assert_true(expr, msg=None)
+
+self.assert_false(expr, msg=None)
+
+self.assert_equal(first, second, msg=None)
+
+self.assert_not_equal(first, second, msg=None)
 
 self.assert_no_js_errors()
 
