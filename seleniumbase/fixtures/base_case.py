@@ -1438,12 +1438,15 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__slow_scroll_to_element(element)
 
+    @decorators.deprecated("Use self.click() - It now scrolls before clicking")
     def scroll_click(self, selector, by=By.CSS_SELECTOR):
         # DEPRECATED - self.click() now scrolls to the element before clicking
-        # self.scroll_to(selector, by=by)
+        # self.scroll_to(selector, by=by)  # Redundant
         self.click(selector, by=by)
 
     def click_xpath(self, xpath):
+        # Technically self.click() will automatically detect an xpath selector,
+        # so self.click_xpath() is just a longer name for the same action.
         self.click(xpath, by=By.XPATH)
 
     def js_click(self, selector, by=By.CSS_SELECTOR):
