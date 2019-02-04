@@ -18,7 +18,7 @@ except IOError:
 setup(
     name='seleniumbase',
     version='1.19.2',
-    description='Easy, Fast, Reliable Browser Automation & Testing Framework',
+    description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
