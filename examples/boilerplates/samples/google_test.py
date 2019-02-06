@@ -18,4 +18,4 @@ class GoogleTests(BaseCase):
         self.assert_text('github.com', ResultsPage.search_results)
         self.click_link_text('Images')
         source = self.get_page_source()
-        self.assertTrue("Image result for github" in source)
+        self.assert_true("Image result for github" in source)

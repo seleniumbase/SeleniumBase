@@ -187,7 +187,7 @@ class MyTestClass(BaseCase):
         self.assert_text('free to copy', 'div center')
         self.open("https://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")
-        self.assertTrue("86,400 seconds per day" in title)
+        self.assert_true("86,400 seconds per day" in title)
         self.click('link=Blag')
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')
@@ -523,9 +523,9 @@ self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeo
 #### Asserting Anything
 
 ```python
-self.assertTrue(myvar1 == something)
+self.assert_true(myvar1 == something)
 
-self.assertEqual(var1, var2)
+self.assert_equal(var1, var2)
 ```
 
 #### Useful Conditional Statements (with creative examples in action)
@@ -715,7 +715,7 @@ try:
     num_email_results = len(html_text)
 except EmailException:
     num_email_results = 0
-self.assertTrue(num_email_results)  # true if not zero
+self.assert_true(num_email_results)  # true if not zero
 ```
 
 Now you can parse through the email if you're looking for specific text or want to navigate to a link listed there.

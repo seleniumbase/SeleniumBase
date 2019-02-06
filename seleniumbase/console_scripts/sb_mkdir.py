@@ -86,7 +86,7 @@ def main():
         data.append(
             "        title = self.get_attribute(\"#comic img\", \"title\")")
         data.append(
-            "        self.assertTrue(\"86,400 seconds per day\" in title)")
+            "        self.assert_true(\"86,400 seconds per day\" in title)")
         data.append("        self.click('link=Blag')")
         data.append(
             "        self.assert_text('The blag of the webcomic', 'h2')")
@@ -230,7 +230,7 @@ def main():
         data.append("        self.click_link_text('Images')")
         data.append("        source = self.get_page_source()")
         data.append(
-            "        self.assertTrue('Image result for github' in source)")
+            "        self.assert_true('Image result for github' in source)")
         data.append("")
         file_path = "%s/%s" % (dir_name_3, "google_test.py")
         file = codecs.open(file_path, "w+", "utf-8")

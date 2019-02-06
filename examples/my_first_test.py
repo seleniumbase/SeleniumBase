@@ -10,7 +10,7 @@ class MyTestClass(BaseCase):
         self.assert_text('free to copy', 'div center')    # Assert text on page
         self.open("https://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")    # Get an attribute
-        self.assertTrue("86,400 seconds per day" in title)
+        self.assert_true("86,400 seconds per day" in title)
         self.click('link=Blag')                                 # Click on link
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')                    # Type text
@@ -58,7 +58,7 @@ class MyTestClass(BaseCase):
         #    Is the same as:
         #    [
         #        text = self.get_text("div center")
-        #        self.assertTrue("free to copy" in text)
+        #        self.assert_true("free to copy" in text)
         #    ]
         #    Or:
         #    [
