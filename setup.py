@@ -71,7 +71,7 @@ setup(
         'colorama==0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'flake8==3.7.5',
+        'flake8>=3.6.0,<3.8.0',
         'PyVirtualDisplay==0.2.1',
     ],
     packages=[
