@@ -10,7 +10,7 @@ class MyTestClass(BaseCase):
         self.assert_text('free to copy', 'div center')
         self.open("http://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")
-        self.assertTrue("86,400 seconds per day" in title)
+        self.assert_true("86,400 seconds per day" in title)
         self.click('link=Blag')
         self.assert_text('The blag of the webcomic', 'h2')
         self.update_text('input#s', 'Robots!\n')
