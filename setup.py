@@ -66,7 +66,7 @@ setup(
         'pytest-html>=1.20.0',
         'pytest-rerunfailures>=6.0',
         'pytest-xdist>=1.26.1',
-        'parameterized==0.6.3',
+        'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'colorama==0.4.1',
         'pyotp>=2.2.7',
