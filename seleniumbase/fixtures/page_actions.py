@@ -261,12 +261,11 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     for x in range(int(timeout * 10)):
         try:
             element = driver.find_element(by=by, value=selector)
-            if element.is_displayed():
-                if text in element.text:
-                    return element
-                else:
-                    element = None
-                    raise Exception()
+            if element.is_displayed() and text in element.text:
+                return element
+            else:
+                element = None
+                raise Exception()
         except Exception:
             now_ms = time.time() * 1000.0
             if now_ms >= stop_ms:
