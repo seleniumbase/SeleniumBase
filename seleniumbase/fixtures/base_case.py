@@ -437,13 +437,16 @@ class BaseCase(unittest.TestCase):
         return self.driver.current_url
 
     def get_page_source(self):
+        self.wait_for_ready_state_complete()
         return self.driver.page_source
 
     def get_page_title(self):
+        self.wait_for_ready_state_complete()
         return self.driver.title
 
     def get_title(self):
         """ The shorter version of self.get_page_title() """
+        self.wait_for_ready_state_complete()
         return self.driver.title
 
     def go_back(self):
