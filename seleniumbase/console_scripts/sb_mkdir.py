@@ -93,7 +93,7 @@ def main():
         data.append("        self.update_text('input#s', 'Robots!\\n')")
         data.append("        self.assert_text('Hooray robots!', '#content')")
         data.append("        self.open('https://xkcd.com/1319/')")
-        data.append("        self.assert_text('Automation', 'div#ctitle')")
+        data.append("        self.assert_exact_text('Automation', '#ctitle')")
         data.append("")
         file_path = "%s/%s" % (dir_name, "my_first_test.py")
         file = codecs.open(file_path, "w+", "utf-8")

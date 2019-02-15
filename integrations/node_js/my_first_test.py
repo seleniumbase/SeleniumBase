@@ -16,4 +16,4 @@ class MyTestClass(BaseCase):
         self.update_text('input#s', 'Robots!\n')
         self.assert_text('Hooray robots!', '#content')
         self.open('http://xkcd.com/1319/')
-        self.assert_text('Automation', 'div#ctitle')
+        self.assert_exact_text('Automation', '#ctitle')

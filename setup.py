@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.19.5',
+    version='1.19.6',
     description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -61,7 +61,7 @@ setup(
         'selenium==3.141.0',
         'requests==2.21.0',  # Changing this may effect "urllib3"
         'urllib3==1.24.1',  # Keep this lib in sync with "requests"
-        'pytest>=4.2.0',
+        'pytest>=4.2.1',
         'pytest-cov>=2.6.1',
         'pytest-html>=1.20.0',
         'pytest-rerunfailures>=6.0',
@@ -71,7 +71,6 @@ setup(
         'colorama==0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'more-itertools>=5.0.0,<6.0.0',  # Keep this for Python 2 compatibility
         'flake8>=3.6.0,<3.8.0',
         'PyVirtualDisplay==0.2.1',
     ],
