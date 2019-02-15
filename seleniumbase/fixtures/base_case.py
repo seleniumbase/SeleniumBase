@@ -2068,6 +2068,19 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
+    def wait_for_exact_text_visible(self, text, selector="html",
+                                    by=By.CSS_SELECTOR,
+                                    timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        if page_utils.is_link_text_selector(selector):
+            selector = page_utils.get_link_text_from_selector(selector)
+            by = By.LINK_TEXT
+        return page_actions.wait_for_exact_text_visible(
+            self.driver, text, selector, by, timeout)
+
     def wait_for_text(self, text, selector="html", by=By.CSS_SELECTOR,
                       timeout=settings.LARGE_TIMEOUT):
         """ The shorter version of wait_for_text_visible() """
@@ -2099,6 +2112,29 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+
+        if self.demo_mode:
+            if page_utils.is_xpath_selector(selector):
+                by = By.XPATH
+            if page_utils.is_link_text_selector(selector):
+                selector = page_utils.get_link_text_from_selector(selector)
+                by = By.LINK_TEXT
+            messenger_post = ("ASSERT TEXT {%s} in %s: %s"
+                              % (text, by, selector))
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        return True
+
+    def assert_exact_text(self, text, selector="html", by=By.CSS_SELECTOR,
+                          timeout=settings.SMALL_TIMEOUT):
+        """ Similar to assert_text(), but the text must be exact, rather than
+            exist as a subset of the full text.
+            (Extra whitespace at the beginning or the end doesn't count.)
+            Raises an exception if the element or the text is not found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_exact_text_visible(
+            text, selector, by=by, timeout=timeout)
 
         if self.demo_mode:
             if page_utils.is_xpath_selector(selector):

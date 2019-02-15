@@ -280,6 +280,49 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
             (text, selector, timeout, plural))
 
 
+def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
+                                timeout=settings.LARGE_TIMEOUT):
+    """
+    Searches for the specified element by the given selector. Returns the
+    element object if the text matches exactly with the text in the element,
+    and the text is visible.
+    Raises an exception if the text or element do not appear
+    in the specified timeout.
+    @Params
+    driver - the webdriver object (required)
+    text - the exact text that is expected for the element (required)
+    selector - the locator that is used (required)
+    by - the method to search for the locator (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for elements in seconds
+    @Returns
+    A web element object that contains the text searched for
+    """
+
+    element = None
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        try:
+            element = driver.find_element(by=by, value=selector)
+            if element.is_displayed() and text.strip() == element.text.strip():
+                return element
+            else:
+                element = None
+                raise Exception()
+        except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    if not element:
+        raise ElementNotVisibleException(
+            "Expected exact text {%s} for {%s} was not visible "
+            "after %s second%s!" % (text, selector, timeout, plural))
+
+
 def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
                             timeout=settings.LARGE_TIMEOUT):
     """
