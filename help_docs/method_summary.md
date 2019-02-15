@@ -261,6 +261,9 @@ self.assert_element(
 self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
+self.wait_for_exact_text_visible(text, selector="html", by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT)
+
 self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT)
 
@@ -271,6 +274,9 @@ self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
 self.assert_text(text, selector="html", by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+self.assert_exact_text(text, selector="html", by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
 ########
