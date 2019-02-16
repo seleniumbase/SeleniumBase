@@ -256,6 +256,9 @@ self.find_element(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 self.assert_element(
     selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
+self.assert_element_visible(
+    selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
 ########
 
 self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR,
