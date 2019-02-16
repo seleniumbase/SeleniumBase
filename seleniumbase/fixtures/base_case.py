@@ -2051,6 +2051,15 @@ class BaseCase(unittest.TestCase):
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
+    def assert_element_visible(self, selector, by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ Same as self.assert_element()
+            As above, will raise an exception if nothing can be found. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.assert_element(selector, by=by, timeout=timeout)
+        return True
+
     # For backwards compatibility, earlier method names of the next
     # four methods have remained even though they do the same thing,
     # with the exception of assert_*, which won't return the element,
