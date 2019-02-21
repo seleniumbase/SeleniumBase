@@ -71,16 +71,17 @@ def main():
     inner_folder = None
 
     if name == "chromedriver":
+        latest_version = "2.46"
         if "darwin" in sys_plat:
             file_name = "chromedriver_mac64.zip"
         elif "linux" in sys_plat:
+            latest_version = "2.40"  # Linux machines may need the old driver
             file_name = "chromedriver_linux64.zip"
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
         else:
             raise Exception("Cannot determine which version of Chromedriver "
                             "to download!")
-        latest_version = "2.40"
         download_url = ("http://chromedriver.storage.googleapis.com/"
                         "%s/%s" % (latest_version, file_name))
         # Forcing Chromedriver v2.40 for now, even though it's not the latest.
@@ -98,7 +99,7 @@ def main():
                                 "%s/%s" % (latest_version, file_name))
             print("Found %s" % download_url)
     elif name == "geckodriver" or name == "firefoxdriver":
-        latest_version = "v0.23.0"
+        latest_version = "v0.24.0"
         if "darwin" in sys_plat:
             file_name = "geckodriver-%s-macos.tar.gz" % latest_version
         elif "linux" in sys_plat:
@@ -140,7 +141,7 @@ def main():
                         "%s/%s" % (major_version, file_name))
     elif name == "operadriver" or name == "operachromiumdriver":
         name = "operadriver"
-        latest_version = "v.2.37"
+        latest_version = "v.2.40"
         if "darwin" in sys_plat:
             file_name = "operadriver_mac64.zip"
             platform_code = "mac64"
