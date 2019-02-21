@@ -53,9 +53,6 @@ This adds wait_for_angularjs() after various browser actions.
 '''
 WAIT_FOR_ANGULARJS = True
 
-# Option to start Chrome in full screen mode by default
-START_CHROME_IN_FULL_SCREEN_MODE = False
-
 # Default time to wait after each browser action performed during Demo Mode.
 # Use Demo Mode when you want others to see what your automation is doing.
 # Usage: "--demo_mode". (Can be overwritten by using "--demo_sleep=TIME".)
