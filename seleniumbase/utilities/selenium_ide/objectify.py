@@ -35,7 +35,7 @@ def invalid_objectify_run_command():
     exp += "         seleniumbase objectify [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Options:\n"
     exp += "         -c, --comments  (Add object selectors to the comments.)\n"
-    exp += "               (Default: No added comments.)\n"
+    exp += "                         (Default: No added comments.)\n"
     exp += "  Output:\n"
     exp += "         Converts a SeleniumBase Python file into one that uses\n"
     exp += "         the Page Object Pattern by converting page selectors\n"
@@ -52,7 +52,7 @@ def invalid_inject_objects_run_command():
     exp += "         seleniumbase inject-objects [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Options:\n"
     exp += "         -c, --comments  (Add object selectors to the comments.)\n"
-    exp += "               (Default: No added comments.)\n"
+    exp += "                         (Default: No added comments.)\n"
     exp += "  Output:\n"
     exp += '         Takes the page objects found in the "page_objects.py"\n'
     exp += "         file and uses those to replace matching selectors in\n"
@@ -77,7 +77,7 @@ def invalid_revert_objects_run_command():
     exp += "         seleniumbase revert-objects [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Options:\n"
     exp += "         -c, --comments  (Keep existing comments for the lines.)\n"
-    exp += "               (Default: No comments are kept.)\n"
+    exp += "                         (Default: No comments are kept.)\n"
     exp += "  Output:\n"
     exp += '         Reverts the changes made by "seleniumbase objectify" or\n'
     exp += '         "seleniumbase inject-objects" when run against a\n'
