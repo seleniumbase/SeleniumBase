@@ -139,7 +139,7 @@ def main():
 
         data = []
         data.append("class Page(object):")
-        data.append("    html = 'html'")
+        data.append('    html = "html"')
         data.append("")
         file_path = "%s/%s" % (dir_name_2, "page_objects.py")
         file = codecs.open(file_path, "w+", "utf-8")
