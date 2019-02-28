@@ -6,6 +6,7 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose betweeen pytest & nose unittest runners
 * Choose whether to enter Debug Mode on failures
 * Choose additional variables to pass into tests
+* Choose the User-Agent for the browser to use
 * Change the automation speed (with Demo Mode)
 * Choose whether to run tests multi-threaded
 * Choose whether to retry failing tests
@@ -39,9 +40,11 @@ pytest test_suite.py --reruns 1 --reruns-delay 2
 
 pytest test_suite.py --server=IP_ADDRESS --port=4444
 
-pytest test_suite.py --proxy=IP_ADDRESS:PORT
+pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 
-pytest test_suite.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+
+pytest user_agent_test.py --agent="USER-AGENT STRING"
 
 pytest test_fail.py --pdb -s
 ```
@@ -177,4 +180,12 @@ To make things easier, you can add your frequently-used proxies to PROXY_LIST in
 
 ```bash
 pytest proxy_test.py --proxy=proxy1
+```
+
+#### **Changing the User-Agent:**
+
+If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT STRING"`` as an argument on the command line.
+
+```bash
+pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
