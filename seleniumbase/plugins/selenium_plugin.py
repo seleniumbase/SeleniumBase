@@ -19,6 +19,7 @@ class SeleniumBrowser(Plugin):
     self.options.server -- the server used by the test (--server)
     self.options.port -- the port used by the test (--port)
     self.options.proxy -- designates the proxy server:port to use. (--proxy)
+    self.options.agent -- designates the User Agent for the browser. (--agent)
     self.options.headless -- the option to run headlessly (--headless)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
@@ -72,6 +73,13 @@ class SeleniumBrowser(Plugin):
                     Format: servername:port.  OR
                             username:password@servername:port  OR
                             A dict key from proxy_list.PROXY_LIST
+                    Default: None.""")
+        parser.add_option(
+            '--agent', action='store',
+            dest='user_agent',
+            default=None,
+            help="""Designates the User-Agent for the browser to use.
+                    Format: A string.
                     Default: None.""")
         parser.add_option(
             '--headless', action="store_true",
@@ -140,6 +148,7 @@ class SeleniumBrowser(Plugin):
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.proxy_string = self.options.proxy_string
+        test.test.user_agent = self.options.user_agent
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep
         test.test.highlights = self.options.highlights

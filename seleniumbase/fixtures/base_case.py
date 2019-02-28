@@ -2348,8 +2348,8 @@ class BaseCase(unittest.TestCase):
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def get_new_driver(self, browser=None, headless=None,
-                       servername=None, port=None, proxy=None, switch_to=True,
-                       cap_file=None):
+                       servername=None, port=None, proxy=None, agent=None,
+                       switch_to=True, cap_file=None):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
             that import base_case.BaseCase from seleniumbase. If parameters
@@ -2399,6 +2399,9 @@ class BaseCase(unittest.TestCase):
         proxy_string = proxy
         if proxy_string is None:
             proxy_string = self.proxy_string
+        user_agent = agent
+        if user_agent is None:
+            user_agent = self.user_agent
         if cap_file is None:
             cap_file = self.cap_file
         valid_browsers = constants.ValidBrowsers.valid_browsers
@@ -2413,6 +2416,7 @@ class BaseCase(unittest.TestCase):
                                                  servername=servername,
                                                  port=port,
                                                  proxy_string=proxy_string,
+                                                 user_agent=user_agent,
                                                  cap_file=cap_file)
         self._drivers_list.append(new_driver)
         if switch_to:
@@ -2776,6 +2780,7 @@ class BaseCase(unittest.TestCase):
             self.servername = sb_config.servername
             self.port = sb_config.port
             self.proxy_string = sb_config.proxy_string
+            self.user_agent = sb_config.user_agent
             self.cap_file = sb_config.cap_file
             self.database_env = sb_config.database_env
             self.message_duration = sb_config.message_duration
@@ -2846,6 +2851,7 @@ class BaseCase(unittest.TestCase):
                                           servername=self.servername,
                                           port=self.port,
                                           proxy=self.proxy_string,
+                                          agent=self.user_agent,
                                           switch_to=True,
                                           cap_file=self.cap_file)
         self._default_driver = self.driver
