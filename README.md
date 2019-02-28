@@ -348,6 +348,16 @@ To make things easier, you can add your frequently-used proxies to PROXY_LIST in
 pytest proxy_test.py --proxy=proxy1
 ```
 
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Changing the User-Agent:**
+
+If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command line.
+
+```bash
+pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
+```
+
+
 <a id="utilizing_advanced_features"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Production Environments & Integrations:**
 

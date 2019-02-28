@@ -2,5 +2,5 @@
 set -e
 # Run example test from inside Docker image
 echo "Running example SeleniumBase test from Docker with headless Chrome..."
-cd /SeleniumBase/examples/ && nosetests my_first_test.py --config=docker_config.cfg --browser=chrome --headless
+cd /SeleniumBase/examples/ && pytest my_first_test.py --browser=chrome --headless
 exec "$@"

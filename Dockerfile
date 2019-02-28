@@ -20,24 +20,6 @@ RUN apt-get -qy --no-install-recommends install \
     xvfb \
   && rm -rf /var/lib/apt/lists/*
 
-#========================================
-# Add normal user with passwordless sudo
-#========================================
-#RUN sudo useradd seluser --shell /bin/bash --create-home \
-#  && sudo usermod -a -G sudo seluser \
-#  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-#======================
-# Install Chromedriver
-#======================
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
-    mkdir -p /opt/chromedriver-$CHROMEDRIVER_VERSION && \
-    curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
-    unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver-$CHROMEDRIVER_VERSION && \
-    rm /tmp/chromedriver_linux64.zip && \
-    chmod +x /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver && \
-    ln -fs /opt/chromedriver-$CHROMEDRIVER_VERSION/chromedriver /usr/local/bin/chromedriver
-
 #================
 # Install Chrome
 #================
@@ -67,15 +49,6 @@ RUN apt-get -qy --no-install-recommends install \
   && ln -s /opt/firefox/firefox /usr/bin/firefox \
   && rm -f /tmp/firefox-esr.tar.bz2
 
-#===================
-# Install PhantomJS
-#===================
-# RUN cd /usr/local/share && wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
-# RUN cd /usr/local/share && tar xjf phantomjs-2.1.1-linux-x86_64.tar.bz2
-# RUN ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs
-# RUN ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
-# RUN ln -s /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
-
 #===========================
 # Configure Virtual Display
 #===========================
@@ -97,6 +70,8 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
 RUN cd /SeleniumBase && python setup.py develop
+RUN seleniumbase install chromedriver
+RUN seleniumbase install geckodriver
 
 #==========================================
 # Create entrypoint and grab example tests

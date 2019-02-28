@@ -618,6 +618,50 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.set_value(SELECTOR, TEXT)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.set_value'''
+                r'''\(r?(['"][\S\s]+['"]),\s?(['"][\S\s]+['"])\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.set_value'''
+                r'''\(r?([\S\s]+),\s?(['"][\S\s]+['"])\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            raw = ""
+            if "(r'" in line or '(r"' in line:
+                raw = "r"
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            text = data.group(3)
+            comments = data.group(4)
+            command = '''%sself.set_value(%s%s, %s)%s''' % (
+                whitespace, raw, selector, text, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.set_value(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.set_value(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.assert_text(TEXT, SELECTOR)
         if not object_dict:
             data = re.match(

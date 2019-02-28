@@ -97,6 +97,12 @@ def pytest_addoption(parser):
                                   username:password@servername:port  OR
                                   A dict key from proxy_list.PROXY_LIST
                           Default: None.""")
+    parser.addoption('--agent', action='store',
+                     dest='user_agent',
+                     default=None,
+                     help="""Designates the User-Agent for the browser to use.
+                          Format: A string.
+                          Default: None.""")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
@@ -155,6 +161,7 @@ def pytest_configure(config):
     sb_config.data = config.getoption('data')
     sb_config.environment = config.getoption('environment')
     sb_config.with_selenium = config.getoption('with_selenium')
+    sb_config.user_agent = config.getoption('user_agent')
     sb_config.headless = config.getoption('headless')
     sb_config.with_testing_base = config.getoption('with_testing_base')
     sb_config.with_db_reporting = config.getoption('with_db_reporting')
