@@ -71,11 +71,11 @@ self.is_partial_link_text_visible(partial_link_text)
 
 self.is_text_visible(text, selector="html", by=By.CSS_SELECTOR)
 
-self.find_elements(selector, by=By.CSS_SELECTOR)
+self.find_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
-self.find_visible_elements(selector, by=By.CSS_SELECTOR)
+self.find_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
-self.click_visible_elements(selector, by=By.CSS_SELECTOR)
+self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
 self.is_element_in_an_iframe(selector, by=By.CSS_SELECTOR)
 
