@@ -47,7 +47,13 @@ def pytest_addoption(parser):
     parser.addoption('--with-testing_base', action="store_true",
                      dest='with_testing_base',
                      default=True,
-                     help="Use to save logs (screenshots) when tests fail.")
+                     help="""Use to save logs and screenshots when tests fail.
+                          It's no longer needed to add the following arguments:
+                          --with-screen_shots
+                          --with-basic_test_info
+                          --with-page_source
+                          (Those modes are all active by default now when
+                          --with-testing_base is active. (Default: active)""")
     parser.addoption('--log_path', dest='log_path',
                      default='latest_logs/',
                      help='Where the log files are saved.')
@@ -70,15 +76,18 @@ def pytest_addoption(parser):
     parser.addoption('--with-screen_shots', action="store_true",
                      dest='with_screen_shots',
                      default=False,
-                     help="Use to save screenshots on test failure.")
+                     help="""Use to save screenshots on test failure.
+                          (When "--with-testing_base" is True, this is on.)""")
     parser.addoption('--with-basic_test_info', action="store_true",
                      dest='with_basic_test_info',
                      default=False,
-                     help="Use to save basic test info on test failure.")
+                     help="""Use to save basic test info on test failure.
+                          (When "--with-testing_base" is True, this is on.)""")
     parser.addoption('--with-page_source', action="store_true",
                      dest='with_page_source',
                      default=False,
-                     help="Use to save page source on test failure.")
+                     help="""Use to save page source on test failure.
+                          (When "--with-testing_base" is True, this is on.)""")
     parser.addoption('--server', action='store',
                      dest='servername',
                      default='localhost',
@@ -146,6 +155,11 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default wait time
                           before each MasterQA verification pop-up.""")
+    parser.addoption('--save_screenshot', action='store_true',
+                     dest='save_screenshot',
+                     default=False,
+                     help="""Take a screenshot on last page after the last step
+                          of the test. (Added to the "latest_logs" folder.)""")
     parser.addoption('--timeout_multiplier', action='store',
                      dest='timeout_multiplier',
                      default=None,
@@ -182,6 +196,7 @@ def pytest_configure(config):
     sb_config.js_checking_on = config.getoption('js_checking_on')
     sb_config.ad_block_on = config.getoption('ad_block_on')
     sb_config.verify_delay = config.getoption('verify_delay')
+    sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
 
     if sb_config.with_testing_base:
