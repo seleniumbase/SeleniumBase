@@ -28,6 +28,7 @@ class SeleniumBrowser(Plugin):
     self.options.js_checking_on -- option to check for js errors (--check_js)
     self.options.ad_block -- the option to block some display ads (--ad_block)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
+    self.options.save_screenshot -- save screen after test (--save_screenshot)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
     """
     name = 'selenium'  # Usage: --with-selenium
@@ -127,6 +128,12 @@ class SeleniumBrowser(Plugin):
             help="""Setting this overrides the default wait time
                     before each MasterQA verification pop-up.""")
         parser.add_option(
+            '--save_screenshot', action="store_true",
+            dest='save_screenshot',
+            default=False,
+            help="""Take a screenshot on last page after the last step
+                    of the test. (Added to the "latest_logs" folder.)""")
+        parser.add_option(
             '--timeout_multiplier', action='store',
             dest='timeout_multiplier',
             default=None,
@@ -156,6 +163,7 @@ class SeleniumBrowser(Plugin):
         test.test.js_checking_on = self.options.js_checking_on
         test.test.ad_block_on = self.options.ad_block_on
         test.test.verify_delay = self.options.verify_delay  # MasterQA
+        test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.use_grid = False
         if test.test.servername != "localhost":

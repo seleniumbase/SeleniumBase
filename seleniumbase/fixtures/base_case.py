@@ -2801,6 +2801,7 @@ class BaseCase(unittest.TestCase):
             self.js_checking_on = sb_config.js_checking_on
             self.ad_block_on = sb_config.ad_block_on
             self.verify_delay = sb_config.verify_delay
+            self.save_screenshot_after_test = sb_config.save_screenshot
             self.timeout_multiplier = sb_config.timeout_multiplier
             self.use_grid = False
             if self.servername != "localhost":
@@ -2981,6 +2982,12 @@ class BaseCase(unittest.TestCase):
                 # Save a screenshot if logging is on when an exception occurs
                 if has_exception:
                     self.__add_pytest_html_extra()
+                if self.with_testing_base and not has_exception and (
+                        self.save_screenshot_after_test):
+                    test_logpath = self.log_path + "/" + test_id
+                    if not os.path.exists(test_logpath):
+                        os.makedirs(test_logpath)
+                    log_helper.log_screenshot(test_logpath, self.driver)
                 if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
@@ -3056,5 +3063,13 @@ class BaseCase(unittest.TestCase):
                 if len(self._drivers_list) > 0:
                     log_helper.log_screenshot(test_logpath, self.driver)
                     log_helper.log_page_source(test_logpath, self.driver)
+            elif self.save_screenshot_after_test:
+                test_id = "%s.%s.%s" % (self.__class__.__module__,
+                                        self.__class__.__name__,
+                                        self._testMethodName)
+                test_logpath = "latest_logs/" + test_id
+                if not os.path.exists(test_logpath):
+                    os.makedirs(test_logpath)
+                log_helper.log_screenshot(test_logpath, self.driver)
             # Finally close all open browser windows
             self.__quit_all_drivers()
