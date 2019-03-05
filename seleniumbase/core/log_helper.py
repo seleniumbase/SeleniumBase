@@ -101,7 +101,7 @@ def get_html_source_with_base_href(driver, page_source):
     return ''
 
 
-def log_folder_setup(log_path):
+def log_folder_setup(log_path, archive_logs=False):
     """ Handle Logging """
     if log_path.endswith("/"):
         log_path = log_path[:-1]
@@ -125,5 +125,5 @@ def log_folder_setup(log_path):
                 archived_folder, int(time.time()))
             shutil.move(log_path, archived_logs)
             os.makedirs(log_path)
-            if not settings.ARCHIVE_EXISTING_LOGS:
+            if not settings.ARCHIVE_EXISTING_LOGS and not archive_logs:
                 shutil.rmtree(archived_logs)
