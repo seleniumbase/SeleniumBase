@@ -57,6 +57,10 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', dest='log_path',
                      default='latest_logs/',
                      help='Where the log files are saved.')
+    parser.addoption('--archive_logs', action="store_true",
+                     dest='archive_logs',
+                     default=False,
+                     help="Archive old log files instead of deleting them.")
     parser.addoption('--with-db_reporting', action="store_true",
                      dest='with_db_reporting',
                      default=False,
@@ -189,6 +193,7 @@ def pytest_configure(config):
     sb_config.cap_file = config.getoption('cap_file')
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = config.getoption('log_path')
+    sb_config.archive_logs = config.getoption('archive_logs')
     sb_config.demo_mode = config.getoption('demo_mode')
     sb_config.demo_sleep = config.getoption('demo_sleep')
     sb_config.highlights = config.getoption('highlights')
@@ -200,7 +205,7 @@ def pytest_configure(config):
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
 
     if sb_config.with_testing_base:
-        log_helper.log_folder_setup(sb_config.log_path)
+        log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
     proxy_helper.remove_proxy_zip_if_present()
 
 

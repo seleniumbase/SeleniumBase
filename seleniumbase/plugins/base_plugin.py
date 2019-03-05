@@ -17,20 +17,18 @@ from seleniumbase.fixtures import constants, errors
 
 class Base(Plugin):
     """
-    The base_plugin includes the following variables for nosetest runs:
-    self.env -- The environment for the tests to use (Usage: --env=ENV)
-    self.data -- Any extra data to pass to the tests (Usage: --data=DATA)
-    self.log_path -- The directory where log files get saved to
-                     (Usage: --log_path=LOG_PATH)
-    self.report -- The option to create a fancy report after tests complete
-                   (Usage: --report)
-    self.show_report -- If self.report is turned on, then the report will
-                        display immediately after tests complete their run.
-                        Only use this when running tests locally, as this will
-                        pause the test run until the report window is closed.
-                        (Usage: --show_report)
+    The base_plugin includes the following command-line options for nosetests:
+    --env=ENV  (Set a test environment. Use "self.env" to access env in tests.)
+    --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
+    --log_path=LOG_PATH  (The directory where log files get saved to.)
+    --archive_logs  (Archive old log files instead of deleting them.)
+    --report  (The option to create a fancy report after tests complete.)
+    --show_report   If self.report is turned on, then the report will
+                    display immediately after tests complete their run.
+                    Only use this when running tests locally, as this will
+                    pause the test run until the report window is closed.
     """
-    name = 'testing_base'  # Usage: --with-testing_base
+    name = 'testing_base'  # Usage: --with-testing_base  (Enabled by default)
 
     def options(self, parser, env):
         super(Base, self).options(parser, env=env)
@@ -55,6 +53,11 @@ class Base(Plugin):
             '--log_path', dest='log_path',
             default='latest_logs/',
             help='Where the log files are saved.')
+        parser.add_option(
+            '--archive_logs', action="store_true",
+            dest='archive_logs',
+            default=False,
+            help="Archive old log files instead of deleting them.")
         parser.add_option(
             '--report', action="store_true", dest='report',
             default=False,
@@ -89,7 +92,8 @@ class Base(Plugin):
         self.test_count = 0
         self.import_error = False
         log_path = options.log_path
-        log_helper.log_folder_setup(log_path)
+        archive_logs = options.archive_logs
+        log_helper.log_folder_setup(log_path, archive_logs)
         if self.report_on:
             report_helper.clear_out_old_report_logs(archive_past_runs=False)
 
