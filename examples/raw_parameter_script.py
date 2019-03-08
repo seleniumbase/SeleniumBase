@@ -32,8 +32,11 @@ except (ImportError, ValueError):
     b.port = 4444
     b.data = None
     b.environment = "test"
+    b.user_agent = None
     b.database_env = "test"
     b.log_path = "latest_logs/"
+    b.archive_logs = False
+    b.save_screenshot_after_test = False
     b.timeout_multiplier = None
     b.with_db_reporting = False
     b.with_s3_logging = False
