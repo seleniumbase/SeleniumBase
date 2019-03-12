@@ -19,7 +19,7 @@ you can try finding one from one of following sites:
 """
 
 PROXY_LIST = {
-    "example1": "40.114.109.214:3128",  # (Example) - set your own proxy here
+    "example1": "167.99.151.183:8080",  # (Example) - set your own proxy here
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,
