@@ -447,9 +447,9 @@ self.get_page_source()  # This method returns the current page source.
 Ex:
 ```python
 source = self.get_page_source()
-first_image_open_tag = source.find('<img>')
-first_image_close_tag = source.find'</img>', first_image_open_tag)
-everything_inside_first_image_tags = source[first_image_open_tag+len('<img>'):first_image_close_tag]
+head_open_tag = source.find('<head>')
+head_close_tag = source.find('</head>', head_open_tag)
+everything_inside_head = source[head_open_tag+len('<head>'):head_close_tag]
 ```
 
 #### Clicking
