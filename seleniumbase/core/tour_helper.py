@@ -2,6 +2,7 @@
 This module contains methods for running website tours.
 These helper methods SHOULD NOT be called directly from tests.
 """
+import os
 import re
 import time
 from selenium.webdriver.common.by import By
@@ -10,6 +11,8 @@ from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
+
+EXPORTED_TOURS_FOLDER = "tours_exported"
 
 
 def raise_unable_to_load_jquery_exception(driver):
@@ -790,8 +793,17 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
     else:
         pass
 
+    exported_tours_folder = EXPORTED_TOURS_FOLDER
+    if exported_tours_folder.endswith("/"):
+        exported_tours_folder = exported_tours_folder[:-1]
+    if not os.path.exists(exported_tours_folder):
+        try:
+            os.makedirs(exported_tours_folder)
+        except Exception:
+            pass
     import codecs
-    out_file = codecs.open(filename, "w+")
+    file_path = exported_tours_folder + "/" + filename
+    out_file = codecs.open(file_path, "w+")
     out_file.writelines(instructions)
     out_file.close()
-    print('\n>>> [%s] was saved!\n' % filename)
+    print('\n>>> [%s] was saved!\n' % file_path)
