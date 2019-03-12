@@ -62,6 +62,9 @@ archived_reports
 html_report.html
 report.html
 
+# Tours
+tours_exported
+
 # Other
 selenium-server-standalone.jar
 proxy.zip

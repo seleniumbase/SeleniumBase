@@ -31,8 +31,8 @@ SCREENSHOT_NAME = "screenshot.png"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
 
-# Default names for folders and files saved when reports are turned on.
-# Usage: "--report" and "--with-testing_base" together. (NOSETESTS only)
+# Default names for files and folders saved when using nosetests reports.
+# Usage: "--report". (NOSETESTS only)
 LATEST_REPORT_DIR = "latest_report"
 REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"

@@ -63,4 +63,5 @@ class MyTourClass(BaseCase):
         self.add_tour_step(
             "Thanks for trying out SeleniumBase Tours!",
             title="End of Guided Tour")
+        self.export_tour(filename="hopscotch_google_maps_tour.js")
         self.play_tour()
