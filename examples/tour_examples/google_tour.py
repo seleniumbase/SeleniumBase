@@ -71,4 +71,5 @@ class MyTourClass(BaseCase):
         self.add_tour_step(
             "Thanks for trying out SeleniumBase Tours!",
             title="End of Guided Tour")
+        self.export_tour()
         self.play_tour()
