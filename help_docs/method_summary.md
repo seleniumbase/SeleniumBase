@@ -33,6 +33,15 @@ self.get_text(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 self.get_attribute(selector, attribute, by=By.CSS_SELECTOR,
     timeout=settings.SMALL_TIMEOUT)
 
+self.set_attribute(selector, attribute, value, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+self.remove_attribute(selector, attribute, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
+self.get_property_value(selector, property, by=By.CSS_SELECTOR,
+    timeout=settings.SMALL_TIMEOUT)
+
 self.refresh_page()
 
 self.refresh()
@@ -128,9 +137,6 @@ self.post_error_message(message, duration=None, pause=True)
 
 self.set_messenger_theme(theme="default", location="default",
     max_messages="default")
-
-self.get_property_value(selector, property, by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
 
 self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
