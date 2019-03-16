@@ -3025,12 +3025,19 @@ class BaseCase(unittest.TestCase):
                         self.save_screenshot_after_test):
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
-                        os.makedirs(test_logpath)
+                        try:
+                            os.makedirs(test_logpath)
+                        except Exception:
+                            pass  # Only reachable during multi-threaded runs
                     log_helper.log_screenshot(test_logpath, self.driver)
+                    self.__add_pytest_html_extra()
                 if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
                     if not os.path.exists(test_logpath):
-                        os.makedirs(test_logpath)
+                        try:
+                            os.makedirs(test_logpath)
+                        except Exception:
+                            pass  # Only reachable during multi-threaded runs
                     if ((not self.with_screen_shots) and (
                             not self.with_basic_test_info) and (
                             not self.with_page_source)):
@@ -3096,7 +3103,10 @@ class BaseCase(unittest.TestCase):
                                         self._testMethodName)
                 test_logpath = "latest_logs/" + test_id
                 if not os.path.exists(test_logpath):
-                    os.makedirs(test_logpath)
+                    try:
+                        os.makedirs(test_logpath)
+                    except Exception:
+                        pass  # Only reachable during multi-threaded runs
                 log_helper.log_test_failure_data(
                     self, test_logpath, self.driver, self.browser)
                 if len(self._drivers_list) > 0:
@@ -3108,7 +3118,10 @@ class BaseCase(unittest.TestCase):
                                         self._testMethodName)
                 test_logpath = "latest_logs/" + test_id
                 if not os.path.exists(test_logpath):
-                    os.makedirs(test_logpath)
+                    try:
+                        os.makedirs(test_logpath)
+                    except Exception:
+                        pass  # Only reachable during multi-threaded runs
                 log_helper.log_screenshot(test_logpath, self.driver)
             # Finally close all open browser windows
             self.__quit_all_drivers()

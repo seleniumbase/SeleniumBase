@@ -66,7 +66,10 @@ def clear_out_old_report_logs(archive_past_runs=True, get_log_folder=False):
     abs_path = os.path.abspath('.')
     file_path = abs_path + "/%s" % LATEST_REPORT_DIR
     if not os.path.exists(file_path):
-        os.makedirs(file_path)
+        try:
+            os.makedirs(file_path)
+        except Exception:
+            pass  # Should only be reachable during multi-threaded runs
 
     if archive_past_runs:
         archive_timestamp = int(time.time())
