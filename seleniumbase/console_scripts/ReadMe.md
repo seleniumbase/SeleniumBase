@@ -1,4 +1,4 @@
-## Console Scripts
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Console Scripts
 
 SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old Webdriver unittest scripts into SeleniumBase code, and using the Selenium Grid.
 

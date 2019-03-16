@@ -1,4 +1,4 @@
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") SeleniumBase Help Documents:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> SeleniumBase Help Documents
 
 > **Table of Contents / Navigation:**
 > - [**SeleniumBase Features List**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)
