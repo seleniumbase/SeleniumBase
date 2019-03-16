@@ -35,7 +35,10 @@ def reset_downloads_folder():
 
 def reset_downloads_folder_assistant(archived_downloads_folder):
     if not os.path.exists(archived_downloads_folder):
-        os.makedirs(archived_downloads_folder)
+        try:
+            os.makedirs(archived_downloads_folder)
+        except Exception:
+            pass  # Should only be reachable during multi-threaded test runs
     new_archived_downloads_sub_folder = "%s/downloads_%s" % (
         archived_downloads_folder, int(time.time()))
     if os.path.exists(downloads_path):

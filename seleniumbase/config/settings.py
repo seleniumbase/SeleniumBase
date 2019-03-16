@@ -19,6 +19,7 @@ EXTREME_TIMEOUT = 30
 
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
+# You can also archive existing logs on the command line with: "--archive_logs"
 ARCHIVE_EXISTING_LOGS = False
 
 # If True, existing downloads from past runs will be saved and take up space.
@@ -26,7 +27,7 @@ ARCHIVE_EXISTING_LOGS = False
 ARCHIVE_EXISTING_DOWNLOADS = False
 
 # Default names for files saved during test failures.
-# (These files will get saved to the "latest_logs/" folder)
+# (These files will get saved to the "latest_logs/" folder.)
 SCREENSHOT_NAME = "screenshot.png"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
@@ -65,6 +66,11 @@ HIGHLIGHTS = 4
 # Default time to keep messenger notifications visible (in seconds).
 # Messenger notifications appear when reaching assert statements in Demo Mode.
 DEFAULT_MESSAGE_DURATION = 2.55
+
+# If True, the Content Security Policy will be disabled on Chrome and Firefox.
+# If False, each website's default Content Security Policy will be used.
+# (A website's CSP may prevent SeleniumBase from loading custom JavaScript.)
+DISABLE_CONTENT_SECURITY_POLICY = True
 
 # If True, an Exception is raised immediately for invalid proxy string syntax.
 # If False, a Warning will appear after the test, with no proxy server used.
