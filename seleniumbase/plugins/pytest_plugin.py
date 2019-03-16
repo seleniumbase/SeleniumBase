@@ -48,12 +48,12 @@ def pytest_addoption(parser):
                      dest='with_testing_base',
                      default=True,
                      help="""Use to save logs and screenshots when tests fail.
-                          It's no longer needed to add the following arguments:
-                          --with-screen_shots
-                          --with-basic_test_info
+                          The following options are now active by default
+                          with --with-testing_base (which is on by default):
+                          --with-screen_shots ,
+                          --with-basic_test_info ,
                           --with-page_source
-                          (Those modes are all active by default now when
-                          --with-testing_base is active. (Default: active)""")
+                          """)
     parser.addoption('--log_path', dest='log_path',
                      default='latest_logs/',
                      help='Where the log files are saved.')
@@ -81,17 +81,17 @@ def pytest_addoption(parser):
                      dest='with_screen_shots',
                      default=False,
                      help="""Use to save screenshots on test failure.
-                          (When "--with-testing_base" is True, this is on.)""")
+                          (Automatically on when using --with-testing_base)""")
     parser.addoption('--with-basic_test_info', action="store_true",
                      dest='with_basic_test_info',
                      default=False,
                      help="""Use to save basic test info on test failure.
-                          (When "--with-testing_base" is True, this is on.)""")
+                          (Automatically on when using --with-testing_base)""")
     parser.addoption('--with-page_source', action="store_true",
                      dest='with_page_source',
                      default=False,
                      help="""Use to save page source on test failure.
-                          (When "--with-testing_base" is True, this is on.)""")
+                          (Automatically on when using --with-testing_base)""")
     parser.addoption('--server', action='store',
                      dest='servername',
                      default='localhost',
