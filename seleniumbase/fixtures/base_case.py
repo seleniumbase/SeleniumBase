@@ -1699,10 +1699,13 @@ class BaseCase(unittest.TestCase):
             # If unable to get browser logs, skip the assert and return.
             return
 
+        messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
         errors = []
         for entry in browser_logs:
             if entry['level'] == 'SEVERE':
-                errors.append(entry)
+                if messenger_library not in entry['message']:
+                    # Add errors if not caused by SeleniumBase dependencies
+                    errors.append(entry)
         if len(errors) > 0:
             current_url = self.get_current_url()
             raise Exception(
