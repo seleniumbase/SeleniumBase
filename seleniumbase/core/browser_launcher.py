@@ -16,7 +16,10 @@ from seleniumbase.core import capabilities_parser
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+from seleniumbase import extensions  # browser extensions storage folder
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
+DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_PATH_2 = proxy_helper.PROXY_ZIP_PATH_2
 PLATFORM = sys.platform
@@ -82,6 +85,14 @@ def _add_chrome_proxy_extension(
     return chrome_options
 
 
+def _add_chrome_disable_csp_extension(chrome_options):
+    """ Disable Chrome's Content-Security-Policy with a browser extension.
+        See https://github.com/PhilGrayson/chrome-csp-disable for details. """
+    disable_csp_zip = DISABLE_CSP_ZIP_PATH
+    chrome_options.add_extension(disable_csp_zip)
+    return chrome_options
+
+
 def _set_chrome_options(
         downloads_path, proxy_string, proxy_auth,
         proxy_user, proxy_pass, user_agent):
@@ -108,6 +119,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
+    if settings.DISABLE_CONTENT_SECURITY_POLICY:
+        chrome_options = _add_chrome_disable_csp_extension(chrome_options)
     if proxy_string:
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
@@ -135,7 +148,8 @@ def _create_firefox_profile(downloads_path, proxy_string, user_agent):
         profile.set_preference("general.useragent.override", user_agent)
     profile.set_preference(
         "security.mixed_content.block_active_content", False)
-    profile.set_preference("security.csp.enable", False)
+    if settings.DISABLE_CONTENT_SECURITY_POLICY:
+        profile.set_preference("security.csp.enable", False)
     profile.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
     profile.set_preference("browser.privatebrowsing.autostart", True)

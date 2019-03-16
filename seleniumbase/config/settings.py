@@ -67,6 +67,11 @@ HIGHLIGHTS = 4
 # Messenger notifications appear when reaching assert statements in Demo Mode.
 DEFAULT_MESSAGE_DURATION = 2.55
 
+# If True, the Content Security Policy will be disabled on Chrome and Firefox.
+# If False, each website's default Content Security Policy will be used.
+# (A website's CSP may prevent SeleniumBase from loading custom JavaScript.)
+DISABLE_CONTENT_SECURITY_POLICY = True
+
 # If True, an Exception is raised immediately for invalid proxy string syntax.
 # If False, a Warning will appear after the test, with no proxy server used.
 # (This applies when using --proxy=[PROXY_STRING] for using a proxy server.)
