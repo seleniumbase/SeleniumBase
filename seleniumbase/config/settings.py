@@ -19,6 +19,7 @@ EXTREME_TIMEOUT = 30
 
 # If True, existing logs from past test runs will be saved and take up space.
 # If False, only the logs from the most recent test run will be saved locally.
+# You can also archive existing logs on the command line with: "--archive_logs"
 ARCHIVE_EXISTING_LOGS = False
 
 # If True, existing downloads from past runs will be saved and take up space.
@@ -26,7 +27,7 @@ ARCHIVE_EXISTING_LOGS = False
 ARCHIVE_EXISTING_DOWNLOADS = False
 
 # Default names for files saved during test failures.
-# (These files will get saved to the "latest_logs/" folder)
+# (These files will get saved to the "latest_logs/" folder.)
 SCREENSHOT_NAME = "screenshot.png"
 BASIC_INFO_NAME = "basic_test_info.txt"
 PAGE_SOURCE_NAME = "page_source.html"
