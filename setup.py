@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.21.7',
+    version='1.21.8',
     description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -81,6 +81,7 @@ setup(
         'seleniumbase.console_scripts',
         'seleniumbase.core',
         'seleniumbase.drivers',
+        'seleniumbase.extensions',
         'seleniumbase.fixtures',
         'seleniumbase.masterqa',
         'seleniumbase.plugins',
@@ -88,6 +89,7 @@ setup(
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',
     ],
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'seleniumbase = seleniumbase.console_scripts.run:main',

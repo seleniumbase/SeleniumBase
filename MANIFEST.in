@@ -9,6 +9,7 @@ include install.bat
 include virtualenv_install.sh
 include virtualenv_install.bat
 include seleniumbase/core/create_db_tables.sql
+include seleniumbase/extensions/*.zip
 include seleniumbase/utilities/selenium_grid/grid-hub
 include seleniumbase/utilities/selenium_grid/grid-node
 include seleniumbase/utilities/selenium_grid/font_color
