@@ -81,6 +81,7 @@ setup(
         'seleniumbase.console_scripts',
         'seleniumbase.core',
         'seleniumbase.drivers',
+        'seleniumbase.extensions',
         'seleniumbase.fixtures',
         'seleniumbase.masterqa',
         'seleniumbase.plugins',
@@ -88,6 +89,7 @@ setup(
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',
     ],
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'seleniumbase = seleniumbase.console_scripts.run:main',
