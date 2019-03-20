@@ -28,6 +28,7 @@ class SeleniumBrowser(Plugin):
     self.options.js_checking_on -- option to check for js errors (--check_js)
     self.options.ad_block -- the option to block some display ads (--ad_block)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
+    self.options.disable_csp -- disable Content Security Policy (--disable_csp)
     self.options.save_screenshot -- save screen after test (--save_screenshot)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
     """
@@ -128,6 +129,16 @@ class SeleniumBrowser(Plugin):
             help="""Setting this overrides the default wait time
                     before each MasterQA verification pop-up.""")
         parser.add_option(
+            '--disable_csp', action="store_true",
+            dest='disable_csp',
+            default=False,
+            help="""Using this disables the Content Security Policy of
+                    websites, which may interfere with some features of
+                    SeleniumBase, such as loading custom JavaScript
+                    libraries for various testing actions.
+                    Setting this to True (--disable_csp) overrides the
+                    value set in seleniumbase/config/settings.py""")
+        parser.add_option(
             '--save_screenshot', action="store_true",
             dest='save_screenshot',
             default=False,
@@ -163,6 +174,7 @@ class SeleniumBrowser(Plugin):
         test.test.js_checking_on = self.options.js_checking_on
         test.test.ad_block_on = self.options.ad_block_on
         test.test.verify_delay = self.options.verify_delay  # MasterQA
+        test.test.disable_csp = self.options.disable_csp
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.use_grid = False

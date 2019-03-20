@@ -159,6 +159,15 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default wait time
                           before each MasterQA verification pop-up.""")
+    parser.addoption('--disable_csp', action="store_true",
+                     dest='disable_csp',
+                     default=False,
+                     help="""Using this disables the Content Security Policy of
+                          websites, which may interfere with some features of
+                          SeleniumBase, such as loading custom JavaScript
+                          libraries for various testing actions.
+                          Setting this to True (--disable_csp) overrides the
+                          value set in seleniumbase/config/settings.py""")
     parser.addoption('--save_screenshot', action='store_true',
                      dest='save_screenshot',
                      default=False,
@@ -201,6 +210,7 @@ def pytest_configure(config):
     sb_config.js_checking_on = config.getoption('js_checking_on')
     sb_config.ad_block_on = config.getoption('ad_block_on')
     sb_config.verify_delay = config.getoption('verify_delay')
+    sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
 
