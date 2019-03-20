@@ -392,7 +392,7 @@ class MasterQA(__MasterQATestCase__):
     def setUp(self):
         self.check_count = 0
         self.auto_close_results_page = False
-        super(__MasterQATestCase__, self).setUp()
+        super(__MasterQATestCase__, self).setUp(masterqa_mode=True)
         self.manual_check_setup()
         if self.headless:
             self.auto_close_results_page = True

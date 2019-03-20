@@ -2458,6 +2458,10 @@ class BaseCase(unittest.TestCase):
         user_agent = agent
         if user_agent is None:
             user_agent = self.user_agent
+        if disable_csp is None:
+            disable_csp = self.disable_csp
+        if self.demo_mode or self.masterqa_mode:
+            disable_csp = True
         if cap_file is None:
             cap_file = self.cap_file
         valid_browsers = constants.ValidBrowsers.valid_browsers
@@ -2799,12 +2803,13 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def setUp(self):
+    def setUp(self, masterqa_mode=False):
         """
         Be careful if a subclass of BaseCase overrides setUp()
         You'll need to add the following line to the subclass setUp() method:
         super(SubClassOfBaseCase, self).setUp()
         """
+        self.masterqa_mode = masterqa_mode
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
