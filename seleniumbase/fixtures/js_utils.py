@@ -125,8 +125,9 @@ def activate_jquery(driver):
     # Since jQuery still isn't activating, give up and raise an exception
     raise Exception(
         '''Unable to load jQuery on "%s" due to a possible violation '''
-        '''of the website's Content Security Policy '''
-        '''directive. ''' % driver.current_url)
+        '''of the website's Content Security Policy directive. '''
+        '''To override this policy, add "--disable_csp" on the '''
+        '''command-line when running your tests.''' % driver.current_url)
 
 
 def are_quotes_escaped(string):
