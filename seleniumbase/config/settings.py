@@ -67,10 +67,20 @@ HIGHLIGHTS = 4
 # Messenger notifications appear when reaching assert statements in Demo Mode.
 DEFAULT_MESSAGE_DURATION = 2.55
 
-# If True, the Content Security Policy will be disabled on Chrome and Firefox.
+# If True, the Content Security Policy will be disabled on Firefox.
 # If False, each website's default Content Security Policy will be used.
 # (A website's CSP may prevent SeleniumBase from loading custom JavaScript.)
-DISABLE_CONTENT_SECURITY_POLICY = True
+# If using demo_mode or MasterQA, this value will become True regardless.
+# You can also disable the CSP on the command line by using "--disable_csp".
+DISABLE_CSP_ON_FIREFOX = True
+
+# If True, the Content Security Policy will be disabled on Chrome.
+# If False, each website's default Content Security Policy will be used.
+# (A website's CSP may prevent SeleniumBase from loading custom JavaScript.)
+# If using demo_mode or MasterQA, this value will become True regardless,
+# with the exception of running in headless mode, in which case it'll be False.
+# You can also disable the CSP on the command line by using "--disable_csp".
+DISABLE_CSP_ON_CHROME = False
 
 # If True, an Exception is raised immediately for invalid proxy string syntax.
 # If False, a Warning will appear after the test, with no proxy server used.

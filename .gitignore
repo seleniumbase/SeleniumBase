@@ -61,6 +61,7 @@ report_archives
 archived_reports
 html_report.html
 report.html
+report.xml
 
 # Tours
 tours_exported

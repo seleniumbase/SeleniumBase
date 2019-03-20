@@ -2405,7 +2405,7 @@ class BaseCase(unittest.TestCase):
 
     def get_new_driver(self, browser=None, headless=None,
                        servername=None, port=None, proxy=None, agent=None,
-                       switch_to=True, cap_file=None):
+                       switch_to=True, cap_file=None, disable_csp=None):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
             that import base_case.BaseCase from seleniumbase. If parameters
@@ -2458,6 +2458,10 @@ class BaseCase(unittest.TestCase):
         user_agent = agent
         if user_agent is None:
             user_agent = self.user_agent
+        if disable_csp is None:
+            disable_csp = self.disable_csp
+        if self.demo_mode or self.masterqa_mode:
+            disable_csp = True
         if cap_file is None:
             cap_file = self.cap_file
         valid_browsers = constants.ValidBrowsers.valid_browsers
@@ -2473,7 +2477,8 @@ class BaseCase(unittest.TestCase):
                                                  port=port,
                                                  proxy_string=proxy_string,
                                                  user_agent=user_agent,
-                                                 cap_file=cap_file)
+                                                 cap_file=cap_file,
+                                                 disable_csp=disable_csp)
         self._drivers_list.append(new_driver)
         if switch_to:
             self.driver = new_driver
@@ -2798,12 +2803,13 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def setUp(self):
+    def setUp(self, masterqa_mode=False):
         """
         Be careful if a subclass of BaseCase overrides setUp()
         You'll need to add the following line to the subclass setUp() method:
         super(SubClassOfBaseCase, self).setUp()
         """
+        self.masterqa_mode = masterqa_mode
         self.is_pytest = None
         try:
             # This raises an exception if the test is not coming from pytest
@@ -2843,6 +2849,7 @@ class BaseCase(unittest.TestCase):
             self.js_checking_on = sb_config.js_checking_on
             self.ad_block_on = sb_config.ad_block_on
             self.verify_delay = sb_config.verify_delay
+            self.disable_csp = sb_config.disable_csp
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.timeout_multiplier = sb_config.timeout_multiplier
             self.use_grid = False
@@ -2910,7 +2917,8 @@ class BaseCase(unittest.TestCase):
                                           proxy=self.proxy_string,
                                           agent=self.user_agent,
                                           switch_to=True,
-                                          cap_file=self.cap_file)
+                                          cap_file=self.cap_file,
+                                          disable_csp=self.disable_csp)
         self._default_driver = self.driver
 
     def __insert_test_result(self, state, err):

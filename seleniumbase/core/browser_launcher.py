@@ -95,7 +95,7 @@ def _add_chrome_disable_csp_extension(chrome_options):
 
 def _set_chrome_options(
         downloads_path, headless, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent):
+        proxy_user, proxy_pass, user_agent, disable_csp):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
@@ -119,7 +119,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
-    if settings.DISABLE_CONTENT_SECURITY_POLICY and not headless:
+    if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome doesn't support extensions, which are required
         # for disabling the Content Security Policy on Chrome
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
@@ -131,7 +131,8 @@ def _set_chrome_options(
     return chrome_options
 
 
-def _create_firefox_profile(downloads_path, proxy_string, user_agent):
+def _create_firefox_profile(
+        downloads_path, proxy_string, user_agent, disable_csp):
     profile = webdriver.FirefoxProfile()
     profile.accept_untrusted_certs = True
     profile.set_preference("reader.parse-on-load.enabled", False)
@@ -150,7 +151,7 @@ def _create_firefox_profile(downloads_path, proxy_string, user_agent):
         profile.set_preference("general.useragent.override", user_agent)
     profile.set_preference(
         "security.mixed_content.block_active_content", False)
-    if settings.DISABLE_CONTENT_SECURITY_POLICY:
+    if settings.DISABLE_CSP_ON_FIREFOX or disable_csp:
         profile.set_preference("security.csp.enable", False)
     profile.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
@@ -216,7 +217,7 @@ def validate_proxy_string(proxy_string):
 
 def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None,
-               user_agent=None, cap_file=None):
+               user_agent=None, cap_file=None, disable_csp=None):
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -245,16 +246,16 @@ def get_driver(browser_name, headless=False, use_grid=False,
     if use_grid:
         return get_remote_driver(
             browser_name, headless, servername, port, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, cap_file)
+            proxy_user, proxy_pass, user_agent, cap_file, disable_csp)
     else:
         return get_local_driver(
             browser_name, headless, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent)
+            proxy_user, proxy_pass, user_agent, disable_csp)
 
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, cap_file):
+        proxy_user, proxy_pass, user_agent, cap_file, disable_csp):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
@@ -264,7 +265,7 @@ def get_remote_driver(
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
             downloads_path, headless, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent)
+            proxy_user, proxy_pass, user_agent, disable_csp)
         if headless:
             if not proxy_auth:
                 # Headless Chrome doesn't support extensions, which are
@@ -285,7 +286,7 @@ def get_remote_driver(
         try:
             # Use Geckodriver for Firefox if it's on the PATH
             profile = _create_firefox_profile(
-                downloads_path, proxy_string, user_agent)
+                downloads_path, proxy_string, user_agent, disable_csp)
             firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
             firefox_capabilities['marionette'] = True
             if headless:
@@ -302,7 +303,7 @@ def get_remote_driver(
         except WebDriverException:
             # Don't use Geckodriver: Only works for old versions of Firefox
             profile = _create_firefox_profile(
-                downloads_path, proxy_string, user_agent)
+                downloads_path, proxy_string, user_agent, disable_csp)
             firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
             firefox_capabilities['marionette'] = False
             if headless:
@@ -382,7 +383,7 @@ def get_remote_driver(
 
 def get_local_driver(
         browser_name, headless, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent):
+        proxy_user, proxy_pass, user_agent, disable_csp):
     '''
     Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test.
@@ -395,7 +396,7 @@ def get_local_driver(
             try:
                 # Use Geckodriver for Firefox if it's on the PATH
                 profile = _create_firefox_profile(
-                    downloads_path, proxy_string, user_agent)
+                    downloads_path, proxy_string, user_agent, disable_csp)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = True
                 options = webdriver.FirefoxOptions()
@@ -416,7 +417,7 @@ def get_local_driver(
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
                 profile = _create_firefox_profile(
-                    downloads_path, proxy_string, user_agent)
+                    downloads_path, proxy_string, user_agent, disable_csp)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = False
                 firefox_driver = webdriver.Firefox(
@@ -475,7 +476,7 @@ def get_local_driver(
         try:
             chrome_options = _set_chrome_options(
                 downloads_path, headless, proxy_string, proxy_auth,
-                proxy_user, proxy_pass, user_agent)
+                proxy_user, proxy_pass, user_agent, disable_csp)
             if headless:
                 # Headless Chrome doesn't support extensions, which are
                 # required when using a proxy server that has authentication.
