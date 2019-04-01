@@ -61,11 +61,11 @@ setup(
         'selenium==3.141.0',
         'requests==2.21.0',  # Changing this may effect "urllib3"
         'urllib3==1.24.1',  # Keep this lib in sync with "requests"
-        'pytest>=4.3.1',
+        'pytest>=4.4.0',
         'pytest-cov>=2.6.1',
         'pytest-html>=1.20.0',
-        'pytest-rerunfailures>=6.0',
-        'pytest-xdist>=1.26.1',
+        'pytest-rerunfailures>=7.0',
+        'pytest-xdist>=1.27.0',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'colorama==0.4.1',
