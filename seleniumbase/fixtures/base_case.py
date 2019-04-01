@@ -71,8 +71,8 @@ class BaseCase(unittest.TestCase):
         self.env = None  # Add a shortened version of self.environment
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
-        self.__page_check_count = 0
-        self.__page_check_failures = []
+        self.__delayed_assert_count = 0
+        self.__delayed_assert_failures = []
         # Requires self._* instead of self.__* for external class use
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
@@ -2287,7 +2287,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     # For backwards compatibility, earlier method names of the next
-    # four methods have remained even though they do the same thing,
+    # three methods have remained even though they do the same thing,
     # with the exception of assert_*, which won't return the element,
     # but like the others, will raise an exception if the call fails.
 
@@ -2609,16 +2609,16 @@ class BaseCase(unittest.TestCase):
         """ Add a delayed_assert failure into a list for future processing. """
         current_url = self.driver.current_url
         message = self.__get_exception_message()
-        self.__page_check_failures.append(
+        self.__delayed_assert_failures.append(
             "CHECK #%s: (%s)\n %s" % (
-                self.__page_check_count, current_url, message))
+                self.__delayed_assert_count, current_url, message))
 
     def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
                                timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for an element on a page.
             Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self.__page_check_count += 1
+        self.__delayed_assert_count += 1
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_delayed_assert:
@@ -2639,7 +2639,7 @@ class BaseCase(unittest.TestCase):
         """ A non-terminating assertion for text from an element on a page.
             Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self.__page_check_count += 1
+        self.__delayed_assert_count += 1
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_delayed_assert:
@@ -2666,12 +2666,12 @@ class BaseCase(unittest.TestCase):
             the delayed asserts on a single html page so that the failure
             screenshot matches the location of the delayed asserts.
             If "print_only" is set to True, the exception won't get raised. """
-        if self.__page_check_failures:
+        if self.__delayed_assert_failures:
             exception_output = ''
             exception_output += "\n*** DELAYED ASSERTION FAILURES FOR: "
             exception_output += "%s\n" % self.id()
-            all_failing_checks = self.__page_check_failures
-            self.__page_check_failures = []
+            all_failing_checks = self.__delayed_assert_failures
+            self.__delayed_assert_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             if print_only:
@@ -3017,7 +3017,7 @@ class BaseCase(unittest.TestCase):
                 has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
-        if self.__page_check_failures:
+        if self.__delayed_assert_failures:
             print(
                 "\nWhen using self.delayed_assert_*() methods in your tests, "
                 "remember to call self.process_delayed_asserts() afterwards. "
