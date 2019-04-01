@@ -19,6 +19,10 @@ class Files:
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
 
 
+class VisualBaseline:
+    STORAGE_FOLDER = "visual_baseline"
+
+
 class JQuery:
     VER = "3.3.1"
     # MIN_JS = "//cdnjs.cloudflare.com/ajax/libs/jquery/%s/jquery.min.js" % VER
