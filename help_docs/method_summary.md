@@ -353,7 +353,7 @@ self.switch_to_window(window, timeout=settings.SMALL_TIMEOUT)
 
 self.switch_to_default_window()
 
-self.check_window(name="default", level=1, baseline=False)
+self.check_window(name="default", level=0, baseline=False)
 
 self.save_screenshot(name, folder=None)
 
