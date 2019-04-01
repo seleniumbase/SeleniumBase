@@ -1622,6 +1622,43 @@ class BaseCase(unittest.TestCase):
         soup = BeautifulSoup(source, "html.parser")
         return soup
 
+    def get_unique_links(self):
+        """ Get all unique links in the html of the page source.
+            Page links include those obtained from:
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        page_url = self.get_current_url()
+        soup = self.get_beautiful_soup(self.get_page_source())
+        links = page_utils._get_unique_links(page_url, soup)
+        return links
+
+    def get_link_status_code(self, link, allow_redirects=False, timeout=5):
+        """ Get the status code of a link.
+            If the timeout is exceeded, will return a 404.
+            For a list of available status codes, see:
+            https://en.wikipedia.org/wiki/List_of_HTTP_status_codes """
+        status_code = page_utils._get_link_status_code(
+            link, allow_redirects=allow_redirects, timeout=timeout)
+        return status_code
+
+    def assert_no_404_errors(self):
+        """ Assert no 404 errors from page links obtained from:
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        links = self.get_unique_links()
+        for link in links:
+            status_code = str(self.get_link_status_code(link))
+            bad_link_str = 'Error: "%s" returned a 404!' % link
+            self.assert_not_equal(status_code, "404", bad_link_str)
+
+    def print_unique_links_with_status_codes(self):
+        """ Finds all unique links in the html of the page source
+            and then prints out those links with their status codes.
+            Format:  ["link"  ->  "status_code"]  (per line)
+            Page links include those obtained from:
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        page_url = self.get_current_url()
+        soup = self.get_beautiful_soup(self.get_page_source())
+        page_utils._print_unique_links_with_status_codes(page_url, soup)
+
     def safe_execute_script(self, script):
         """ When executing a script that contains a jQuery command,
             it's important that the jQuery library has been loaded first.
