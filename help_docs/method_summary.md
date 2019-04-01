@@ -172,6 +172,14 @@ self.get_domain_url(url)
 
 self.get_beautiful_soup(source=None)
 
+self.get_unique_links()
+
+self.get_link_status_code(link, allow_redirects=False, timeout=5)
+
+self.assert_no_404_errors()
+
+self.print_unique_links_with_status_codes()
+
 self.safe_execute_script(script)
 
 self.download_file(file_url, destination_folder=None)
@@ -344,6 +352,8 @@ self.open_new_window(switch_to=True)
 self.switch_to_window(window, timeout=settings.SMALL_TIMEOUT)
 
 self.switch_to_default_window()
+
+self.check_window(name="default", level=1, baseline=False)
 
 self.save_screenshot(name, folder=None)
 
