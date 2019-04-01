@@ -13,6 +13,8 @@ def get_domain_url(url):
     Into this:
     https://blog.xkcd.com
     """
+    if "http://" not in url and "https://" not in url:
+        return url
     url_header = url.split('://')[0]
     simple_url = url.split('://')[1]
     base_url = simple_url.split('/')[0]
@@ -71,6 +73,8 @@ def _get_unique_links(page_url, soup):
     Includes:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src" links.
     """
+    if "http://" not in page_url and "https://" not in page_url:
+        return []
     prefix = 'http:'
     if page_url.startswith('https:'):
         prefix = 'https:'
