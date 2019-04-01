@@ -66,6 +66,9 @@ report.xml
 # Tours
 tours_exported
 
+# Automated Visual Testing
+visual_baseline
+
 # Other
 selenium-server-standalone.jar
 proxy.zip

@@ -30,6 +30,7 @@ class SeleniumBrowser(Plugin):
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     self.options.disable_csp -- disable Content Security Policy (--disable_csp)
     self.options.save_screenshot -- save screen after test (--save_screenshot)
+    self.options.visual_baseline -- set the visual baseline (--visual_baseline)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
     """
     name = 'selenium'  # Usage: --with-selenium
@@ -145,6 +146,14 @@ class SeleniumBrowser(Plugin):
             help="""Take a screenshot on last page after the last step
                     of the test. (Added to the "latest_logs" folder.)""")
         parser.add_option(
+            '--visual_baseline', action='store_true',
+            dest='visual_baseline',
+            default=False,
+            help="""Setting this resets the visual baseline for
+                    Automated Visual Testing with SeleniumBase.
+                    When a test calls self.check_window(), it will
+                    rebuild its files in the visual_baseline folder.""")
+        parser.add_option(
             '--timeout_multiplier', action='store',
             dest='timeout_multiplier',
             default=None,
@@ -176,6 +185,7 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.save_screenshot_after_test = self.options.save_screenshot
+        test.test.visual_baseline = self.options.visual_baseline
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.use_grid = False
         if test.test.servername != "localhost":

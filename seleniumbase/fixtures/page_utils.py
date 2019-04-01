@@ -65,6 +65,91 @@ def is_valid_url(url):
         return False
 
 
+def _get_unique_links(page_url, soup):
+    """
+    Returns all unique links.
+    Includes:
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src" links.
+    """
+    prefix = 'http:'
+    if page_url.startswith('https:'):
+        prefix = 'https:'
+    simple_url = page_url.split('://')[1]
+    base_url = simple_url.split('/')[0]
+    full_base_url = prefix + "//" + base_url
+
+    raw_links = []
+    raw_unique_links = []
+
+    # Get "href" from all "a" tags
+    links = soup.find_all('a')
+    for link in links:
+        raw_links.append(link.get('href'))
+
+    # Get "src" from all "img" tags
+    img_links = soup.find_all('img')
+    for img_link in img_links:
+        raw_links.append(img_link.get('src'))
+
+    # Get "href" from all "link" tags
+    links = soup.find_all('link')
+    for link in links:
+        raw_links.append(link.get('href'))
+
+    # Get "src" from all "script" tags
+    img_links = soup.find_all('script')
+    for img_link in img_links:
+        raw_links.append(img_link.get('src'))
+
+    for link in raw_links:
+        if link not in raw_unique_links:
+            raw_unique_links.append(link)
+
+    unique_links = []
+    for link in raw_unique_links:
+        if link and len(link) > 1:
+            if link.startswith('//'):
+                link = prefix + link
+            elif link.startswith('/'):
+                link = full_base_url + link
+            elif link.startswith('#'):
+                link = full_base_url + link
+            else:
+                pass
+            unique_links.append(link)
+
+    return unique_links
+
+
+def _get_link_status_code(link, allow_redirects=False, timeout=5):
+    """ Get the status code of a link.
+        If the timeout is exceeded, will return a 404.
+        For a list of available status codes, see:
+        https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+    """
+    status_code = None
+    try:
+        response = requests.get(
+            link, allow_redirects=allow_redirects, timeout=timeout)
+        status_code = response.status_code
+    except Exception:
+        status_code = 404
+    return status_code
+
+
+def _print_unique_links_with_status_codes(page_url, soup):
+    """ Finds all unique links in the html of the page source
+        and then prints out those links with their status codes.
+        Format:  ["link"  ->  "status_code"]  (per line)
+        Page links include those obtained from:
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+    """
+    links = _get_unique_links(page_url, soup)
+    for link in links:
+        status_code = _get_link_status_code(link)
+        print(link, " -> ", status_code)
+
+
 def _download_file_to(file_url, destination_folder, new_file_name=None):
     if new_file_name:
         file_name = new_file_name

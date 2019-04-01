@@ -21,6 +21,8 @@ Page elements are given enough time to load before WebDriver acts on them.
 Code becomes greatly simplified and easier to maintain.
 """
 
+import codecs
+import json
 import logging
 import math
 import os
@@ -38,6 +40,7 @@ from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.core import tour_helper
+from seleniumbase.core import visual_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
@@ -71,8 +74,8 @@ class BaseCase(unittest.TestCase):
         self.env = None  # Add a shortened version of self.environment
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
-        self.__page_check_count = 0
-        self.__page_check_failures = []
+        self.__delayed_assert_count = 0
+        self.__delayed_assert_failures = []
         # Requires self._* instead of self.__* for external class use
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
@@ -1622,6 +1625,43 @@ class BaseCase(unittest.TestCase):
         soup = BeautifulSoup(source, "html.parser")
         return soup
 
+    def get_unique_links(self):
+        """ Get all unique links in the html of the page source.
+            Page links include those obtained from:
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        page_url = self.get_current_url()
+        soup = self.get_beautiful_soup(self.get_page_source())
+        links = page_utils._get_unique_links(page_url, soup)
+        return links
+
+    def get_link_status_code(self, link, allow_redirects=False, timeout=5):
+        """ Get the status code of a link.
+            If the timeout is exceeded, will return a 404.
+            For a list of available status codes, see:
+            https://en.wikipedia.org/wiki/List_of_HTTP_status_codes """
+        status_code = page_utils._get_link_status_code(
+            link, allow_redirects=allow_redirects, timeout=timeout)
+        return status_code
+
+    def assert_no_404_errors(self):
+        """ Assert no 404 errors from page links obtained from:
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        links = self.get_unique_links()
+        for link in links:
+            status_code = str(self.get_link_status_code(link))
+            bad_link_str = 'Error: "%s" returned a 404!' % link
+            self.assert_not_equal(status_code, "404", bad_link_str)
+
+    def print_unique_links_with_status_codes(self):
+        """ Finds all unique links in the html of the page source
+            and then prints out those links with their status codes.
+            Format:  ["link"  ->  "status_code"]  (per line)
+            Page links include those obtained from:
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        page_url = self.get_current_url()
+        soup = self.get_beautiful_soup(self.get_page_source())
+        page_utils._print_unique_links_with_status_codes(page_url, soup)
+
     def safe_execute_script(self, script):
         """ When executing a script that contains a jQuery command,
             it's important that the jQuery library has been loaded first.
@@ -1675,16 +1715,16 @@ class BaseCase(unittest.TestCase):
         assert os.path.exists(self.get_path_of_downloaded_file(file))
 
     def assert_true(self, expr, msg=None):
-        self.assertTrue(expr, msg=None)
+        self.assertTrue(expr, msg=msg)
 
     def assert_false(self, expr, msg=None):
-        self.assertFalse(expr, msg=None)
+        self.assertFalse(expr, msg=msg)
 
     def assert_equal(self, first, second, msg=None):
-        self.assertEqual(first, second, msg=None)
+        self.assertEqual(first, second, msg=msg)
 
     def assert_not_equal(self, first, second, msg=None):
-        self.assertNotEqual(first, second, msg=None)
+        self.assertNotEqual(first, second, msg=msg)
 
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
@@ -2250,7 +2290,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     # For backwards compatibility, earlier method names of the next
-    # four methods have remained even though they do the same thing,
+    # three methods have remained even though they do the same thing,
     # with the exception of assert_*, which won't return the element,
     # but like the others, will raise an exception if the call fails.
 
@@ -2398,6 +2438,198 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_window(self):
         self.switch_to_window(0)
+
+    def check_window(self, name="default", level=0, baseline=False):
+        """ ***  Automated Visual Testing with SeleniumBase  ***
+
+            The first time a test calls self.check_window() for a unique "name"
+            parameter provided, it will set a visual baseline, meaning that it
+            creates a folder, saves the URL to a file, saves the current window
+            screenshot to a file, and creates the following three files
+            with the listed data saved:
+            tags_level1.txt  ->  HTML tags from the window
+            tags_level2.txt  ->  HTML tags + attributes from the window
+            tags_level3.txt  ->  HTML tags + attributes/values from the window
+
+            Baseline folders are named based on the test name and the name
+            parameter passed to self.check_window(). The same test can store
+            multiple baseline folders.
+
+            If the baseline is being set/reset, the "level" doesn't matter.
+
+            After the first run of self.check_window(), it will compare the
+            HTML tags of the latest window to the one from the initial run.
+            Here's how the level system works:
+            * level=0 ->
+                DRY RUN ONLY - Will perform a comparison to the baseline, and
+                               print out any differences that are found, but
+                               won't fail the test even if differences exist.
+            * level=1 ->
+                HTML tags are compared to tags_level1.txt
+            * level=2 ->
+                HTML tags are compared to tags_level1.txt and
+                HTML tags/attributes are compared to tags_level2.txt
+            * level=3 ->
+                HTML tags are compared to tags_level1.txt and
+                HTML tags + attributes are compared to tags_level2.txt and
+                HTML tags + attributes/values are compared to tags_level3.txt
+            As shown, Level-3 is the most strict, Level-1 is the least strict.
+            If the comparisons from the latest window to the existing baseline
+            don't match, the current test will fail, except for Level-0 tests.
+
+            You can reset the visual baseline on the command line by using:
+                --visual_baseline
+            As long as "--visual_baseline" is used on the command line while
+            running tests, the self.check_window() method cannot fail because
+            it will rebuild the visual baseline rather than comparing the html
+            tags of the latest run to the existing baseline. If there are any
+            expected layout changes to a website that you're testing, you'll
+            need to reset the baseline to prevent unnecessary failures.
+
+            self.check_window() will fail with "Page Domain Mismatch Failure"
+            if the page domain doesn't match the domain of the baseline.
+
+            If you want to use self.check_window() to compare a web page to
+            a later version of itself from within the same test run, you can
+            add the parameter "baseline=True" to the first time you call
+            self.check_window() in a test to use that as the baseline. This
+            only makes sense if you're calling self.check_window() more than
+            once with the same name parameter in the same test.
+
+            Automated Visual Testing with self.check_window() is not very
+            effective for websites that have dynamic content that changes
+            the layout and structure of web pages. For those, you're much
+            better off using regular SeleniumBase functional testing.
+
+            Example usage:
+                self.check_window(name="testing", level=0)
+                self.check_window(name="xkcd_home", level=1)
+                self.check_window(name="github_page", level=2)
+                self.check_window(name="wikipedia_page", level=3)
+        """
+        if level == "0":
+            level = 0
+        if level == "1":
+            level = 1
+        if level == "2":
+            level = 2
+        if level == "3":
+            level = 3
+        if level != 0 and level != 1 and level != 2 and level != 3:
+            raise Exception('Parameter "level" must be set to 0, 1, 2, or 3!')
+
+        module = self.__class__.__module__
+        if '.' in module and len(module.split('.')[-1]) > 1:
+            module = module.split('.')[-1]
+        test_id = "%s.%s" % (module, self._testMethodName)
+        if not name or len(name) < 1:
+            name = "default"
+        name = str(name)
+        visual_helper.visual_baseline_folder_setup()
+        baseline_dir = constants.VisualBaseline.STORAGE_FOLDER
+        visual_baseline_path = baseline_dir + "/" + test_id + "/" + name
+        page_url_file = visual_baseline_path + "/page_url.txt"
+        screenshot_file = visual_baseline_path + "/screenshot.png"
+        level_1_file = visual_baseline_path + "/tags_level_1.txt"
+        level_2_file = visual_baseline_path + "/tags_level_2.txt"
+        level_3_file = visual_baseline_path + "/tags_level_3.txt"
+
+        set_baseline = False
+        if baseline or self.visual_baseline:
+            set_baseline = True
+        if not os.path.exists(visual_baseline_path):
+            set_baseline = True
+            try:
+                os.makedirs(visual_baseline_path)
+            except Exception:
+                pass  # Only reachable during multi-threaded test runs
+        if not os.path.exists(page_url_file):
+            set_baseline = True
+        if not os.path.exists(screenshot_file):
+            set_baseline = True
+        if not os.path.exists(level_1_file):
+            set_baseline = True
+        if not os.path.exists(level_2_file):
+            set_baseline = True
+        if not os.path.exists(level_3_file):
+            set_baseline = True
+
+        page_url = self.get_current_url()
+        soup = self.get_beautiful_soup()
+        html_tags = soup.body.find_all()
+        level_1 = [[tag.name] for tag in html_tags]
+        level_1 = json.loads(json.dumps(level_1))  # Tuples become lists
+        level_2 = [[tag.name, sorted(tag.attrs.keys())] for tag in html_tags]
+        level_2 = json.loads(json.dumps(level_2))  # Tuples become lists
+        level_3 = [[tag.name, sorted(tag.attrs.items())] for tag in html_tags]
+        level_3 = json.loads(json.dumps(level_3))  # Tuples become lists
+
+        if set_baseline:
+            self.save_screenshot("screenshot.png", visual_baseline_path)
+            out_file = codecs.open(page_url_file, "w+")
+            out_file.writelines(page_url)
+            out_file.close()
+            out_file = codecs.open(level_1_file, "w+")
+            out_file.writelines(json.dumps(level_1))
+            out_file.close()
+            out_file = codecs.open(level_2_file, "w+")
+            out_file.writelines(json.dumps(level_2))
+            out_file.close()
+            out_file = codecs.open(level_3_file, "w+")
+            out_file.writelines(json.dumps(level_3))
+            out_file.close()
+
+        if not set_baseline:
+            f = open(page_url_file, 'r')
+            page_url_data = f.read().strip()
+            f.close()
+            f = open(level_1_file, 'r')
+            level_1_data = json.loads(f.read())
+            f.close()
+            f = open(level_2_file, 'r')
+            level_2_data = json.loads(f.read())
+            f.close()
+            f = open(level_3_file, 'r')
+            level_3_data = json.loads(f.read())
+            f.close()
+
+            domain_fail = (
+                "Page Domain Mismatch Failure: "
+                "Current Page Domain doesn't match the Page Domain of the "
+                "Baseline! Can't compare two completely different sites! "
+                "Run with --visual_baseline to reset the baseline!")
+            level_1_failure = (
+                "\n\n*** Exception: <Level 1> Visual Diff Failure:\n"
+                "* HTML tags don't match the baseline!")
+            level_2_failure = (
+                "\n\n*** Exception: <Level 2> Visual Diff Failure:\n"
+                "* HTML tag attributes don't match the baseline!")
+            level_3_failure = (
+                "\n\n*** Exception: <Level 3> Visual Diff Failure:\n"
+                "* HTML tag attribute values don't match the baseline!")
+
+            page_domain = self.get_domain_url(page_url)
+            page_data_domain = self.get_domain_url(page_url_data)
+            unittest.TestCase.maxDiff = 1000
+            if level == 1 or level == 2 or level == 3:
+                self.assert_equal(page_domain, page_data_domain, domain_fail)
+                self.assert_equal(level_1, level_1_data, level_1_failure)
+            unittest.TestCase.maxDiff = None
+            if level == 2 or level == 3:
+                self.assert_equal(level_2, level_2_data, level_2_failure)
+            if level == 3:
+                self.assert_equal(level_3, level_3_data, level_3_failure)
+            if level == 0:
+                try:
+                    unittest.TestCase.maxDiff = 1000
+                    self.assert_equal(
+                        page_domain, page_data_domain, domain_fail)
+                    self.assert_equal(level_1, level_1_data, level_1_failure)
+                    unittest.TestCase.maxDiff = None
+                    self.assert_equal(level_2, level_2_data, level_2_failure)
+                    self.assert_equal(level_3, level_3_data, level_3_failure)
+                except Exception as e:
+                    print(e)  # Level-0 Dry Run (Only print the differences)
 
     def save_screenshot(self, name, folder=None):
         """ The screenshot will be in PNG format. """
@@ -2572,16 +2804,16 @@ class BaseCase(unittest.TestCase):
         """ Add a delayed_assert failure into a list for future processing. """
         current_url = self.driver.current_url
         message = self.__get_exception_message()
-        self.__page_check_failures.append(
+        self.__delayed_assert_failures.append(
             "CHECK #%s: (%s)\n %s" % (
-                self.__page_check_count, current_url, message))
+                self.__delayed_assert_count, current_url, message))
 
     def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
                                timeout=settings.MINI_TIMEOUT):
         """ A non-terminating assertion for an element on a page.
             Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self.__page_check_count += 1
+        self.__delayed_assert_count += 1
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_delayed_assert:
@@ -2602,7 +2834,7 @@ class BaseCase(unittest.TestCase):
         """ A non-terminating assertion for text from an element on a page.
             Failures will be saved until the process_delayed_asserts()
             method is called from inside a test, likely at the end of it. """
-        self.__page_check_count += 1
+        self.__delayed_assert_count += 1
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_delayed_assert:
@@ -2629,12 +2861,12 @@ class BaseCase(unittest.TestCase):
             the delayed asserts on a single html page so that the failure
             screenshot matches the location of the delayed asserts.
             If "print_only" is set to True, the exception won't get raised. """
-        if self.__page_check_failures:
+        if self.__delayed_assert_failures:
             exception_output = ''
             exception_output += "\n*** DELAYED ASSERTION FAILURES FOR: "
             exception_output += "%s\n" % self.id()
-            all_failing_checks = self.__page_check_failures
-            self.__page_check_failures = []
+            all_failing_checks = self.__delayed_assert_failures
+            self.__delayed_assert_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             if print_only:
@@ -2851,6 +3083,7 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
             self.save_screenshot_after_test = sb_config.save_screenshot
+            self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
             self.use_grid = False
             if self.servername != "localhost":
@@ -2980,7 +3213,7 @@ class BaseCase(unittest.TestCase):
                 has_exception = True
         else:
             has_exception = sys.exc_info()[1] is not None
-        if self.__page_check_failures:
+        if self.__delayed_assert_failures:
             print(
                 "\nWhen using self.delayed_assert_*() methods in your tests, "
                 "remember to call self.process_delayed_asserts() afterwards. "

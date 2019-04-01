@@ -173,6 +173,13 @@ def pytest_addoption(parser):
                      default=False,
                      help="""Take a screenshot on last page after the last step
                           of the test. (Added to the "latest_logs" folder.)""")
+    parser.addoption('--visual_baseline', action='store_true',
+                     dest='visual_baseline',
+                     default=False,
+                     help="""Setting this resets the visual baseline for
+                          Automated Visual Testing with SeleniumBase.
+                          When a test calls self.check_window(), it will
+                          rebuild its files in the visual_baseline folder.""")
     parser.addoption('--timeout_multiplier', action='store',
                      dest='timeout_multiplier',
                      default=None,
@@ -212,6 +219,7 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.save_screenshot = config.getoption('save_screenshot')
+    sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
 
     if sb_config.with_testing_base:
