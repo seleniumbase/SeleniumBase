@@ -26,7 +26,6 @@ import json
 import logging
 import math
 import os
-import pytest
 import re
 import sys
 import time
@@ -3185,13 +3184,21 @@ class BaseCase(unittest.TestCase):
 
     def __add_pytest_html_extra(self):
         try:
-            pytest_html = pytest.config.pluginmanager.getplugin('html')
-            if self.with_selenium and pytest_html:
-                driver = self.driver
-                extra_url = pytest_html.extras.url(driver.current_url)
-                screenshot = driver.get_screenshot_as_base64()
-                extra_image = pytest_html.extras.image(screenshot,
-                                                       name='Screenshot')
+            if self.with_selenium:
+                if not self.__last_page_screenshot:
+                    self.__set_last_page_screenshot()
+                extra_url = {}
+                extra_url['name'] = 'URL'
+                extra_url['format'] = 'url'
+                extra_url['content'] = self.get_current_url()
+                extra_url['mime_type'] = None
+                extra_url['extension'] = None
+                extra_image = {}
+                extra_image['name'] = 'Screenshot'
+                extra_image['format'] = 'image'
+                extra_image['content'] = self.__last_page_screenshot
+                extra_image['mime_type'] = 'image/png'
+                extra_image['extension'] = 'png'
                 self._html_report_extra.append(extra_url)
                 self._html_report_extra.append(extra_image)
         except Exception:
