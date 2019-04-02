@@ -37,6 +37,7 @@ except (ImportError, ValueError):
     b.log_path = "latest_logs/"
     b.archive_logs = False
     b.disable_csp = False
+    b.visual_baseline = False
     b.save_screenshot_after_test = False
     b.timeout_multiplier = None
     b.with_db_reporting = False
