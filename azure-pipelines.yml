@@ -28,23 +28,21 @@ jobs:
   - script: python -m pip install --upgrade pip && pip install -r requirements.txt
     displayName: 'Install dependencies'
 
-  - script: sudo apt install google-chrome-stable
-    displayName: 'Install Chrome'
-
-  - script: sudo apt-get install firefox
-    displayName: 'Install Firefox'
-
-  - script: seleniumbase install chromedriver
-    displayName: 'Install Chromedriver'
-
-  - script: seleniumbase install geckodriver
-    displayName: 'Install Geckodriver (Firefox driver)'
+  - script: |
+      sudo apt install google-chrome-stable
+      sudo apt-get install firefox
+    displayName: 'Install Chrome and Firefox'
 
   - script: |
-      pip install pytest
-      pytest examples/my_first_test.py --browser=chrome --headless --junitxml=junit/test-results.xml
-      pytest examples/my_first_test.py --browser=firefox --headless --junitxml=junit/test-results.xml
-    displayName: 'pytest'
+      seleniumbase install chromedriver
+      seleniumbase install geckodriver
+    displayName: 'Install chromedriver and geckodriver (Firefox Webdriver)'
+
+  - script: pytest examples/my_first_test.py --browser=chrome --headless -v -s --doctest-modules --junitxml=junit/test-results.xml
+    displayName: 'pytest examples/my_first_test.py --browser=chrome --headless'
+
+  - script: pytest examples/my_first_test.py --browser=firefox --headless -v -s --doctest-modules --junitxml=junit/test-results.xml
+    displayName: 'pytest examples/my_first_test.py --browser=firefox --headless'
 
   - task: PublishTestResults@2
     inputs:
