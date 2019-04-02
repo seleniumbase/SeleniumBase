@@ -32,6 +32,10 @@ nosetests.xml
 .pytest_cache/*
 .pytest_config
 
+# Azure Pipelines
+junit
+test-results.xml
+
 # Developer
 .idea
 .project
