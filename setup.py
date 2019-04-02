@@ -64,6 +64,7 @@ setup(
         'pytest>=4.4.0',
         'pytest-cov>=2.6.1',
         'pytest-html>=1.20.0',
+        'pytest-metadata>=1.8.0',
         'pytest-rerunfailures>=7.0',
         'pytest-xdist>=1.27.0',
         'parameterized>=0.7.0',
