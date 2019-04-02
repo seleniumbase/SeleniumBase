@@ -74,6 +74,7 @@ class BaseCase(unittest.TestCase):
         self.env = None  # Add a shortened version of self.environment
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
+        self.__last_page_screenshot = None
         self.__delayed_assert_count = 0
         self.__delayed_assert_failures = []
         # Requires self._* instead of self.__* for external class use
@@ -3154,6 +3155,14 @@ class BaseCase(unittest.TestCase):
                                           disable_csp=self.disable_csp)
         self._default_driver = self.driver
 
+    def __set_last_page_screenshot(self):
+        if not self.__last_page_screenshot:
+            try:
+                element = self.driver.find_element_by_tag_name('body')
+                self.__last_page_screenshot = element.screenshot_as_base64
+            except Exception:
+                pass
+
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
@@ -3273,7 +3282,12 @@ class BaseCase(unittest.TestCase):
                             os.makedirs(test_logpath)
                         except Exception:
                             pass  # Only reachable during multi-threaded runs
-                    log_helper.log_screenshot(test_logpath, self.driver)
+                    if not self.__last_page_screenshot:
+                        self.__set_last_page_screenshot()
+                    log_helper.log_screenshot(
+                        test_logpath,
+                        self.driver,
+                        self.__last_page_screenshot)
                     self.__add_pytest_html_extra()
                 if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
@@ -3286,14 +3300,23 @@ class BaseCase(unittest.TestCase):
                             not self.with_basic_test_info) and (
                             not self.with_page_source)):
                         # Log everything if nothing specified (if testing_base)
-                        log_helper.log_screenshot(test_logpath, self.driver)
+                        if not self.__last_page_screenshot:
+                            self.__set_last_page_screenshot()
+                        log_helper.log_screenshot(
+                            test_logpath,
+                            self.driver,
+                            self.__last_page_screenshot)
                         log_helper.log_test_failure_data(
                             self, test_logpath, self.driver, self.browser)
                         log_helper.log_page_source(test_logpath, self.driver)
                     else:
                         if self.with_screen_shots:
+                            if not self.__last_page_screenshot:
+                                self.__set_last_page_screenshot()
                             log_helper.log_screenshot(
-                                test_logpath, self.driver)
+                                test_logpath,
+                                self.driver,
+                                self.__last_page_screenshot)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
                                 self, test_logpath, self.driver, self.browser)
@@ -3354,7 +3377,12 @@ class BaseCase(unittest.TestCase):
                 log_helper.log_test_failure_data(
                     self, test_logpath, self.driver, self.browser)
                 if len(self._drivers_list) > 0:
-                    log_helper.log_screenshot(test_logpath, self.driver)
+                    if not self.__last_page_screenshot:
+                        self.__set_last_page_screenshot()
+                    log_helper.log_screenshot(
+                        test_logpath,
+                        self.driver,
+                        self.__last_page_screenshot)
                     log_helper.log_page_source(test_logpath, self.driver)
             elif self.save_screenshot_after_test:
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
@@ -3366,6 +3394,11 @@ class BaseCase(unittest.TestCase):
                         os.makedirs(test_logpath)
                     except Exception:
                         pass  # Only reachable during multi-threaded runs
-                log_helper.log_screenshot(test_logpath, self.driver)
+                if not self.__last_page_screenshot:
+                    self.__set_last_page_screenshot()
+                log_helper.log_screenshot(
+                    test_logpath,
+                    self.driver,
+                    self.__last_page_screenshot)
             # Finally close all open browser windows
             self.__quit_all_drivers()
