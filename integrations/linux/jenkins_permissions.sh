@@ -1,10 +1,9 @@
-# This file will add "tomcat" to the sudoers file.
-# "tomcat" is the Jenkins user name by default
+# This file will add "jenkins" to the sudoers file.
 
-# To become tomcat from a different user, use the following:
-# sudo su tomcat
+# To become jenkins from a different user, use the following:
+# sudo su jenkins
 # bash
 
-sudo sh -c "echo \"%tomcat ALL=(ALL:ALL) ALL\" >> /etc/sudoers"
-sudo sh -c "echo \"%tomcat ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
-sudo sh -c "echo \"tomcat ALL=NOPASSWD: ALL\" >> /etc/sudoers"
+sudo sh -c "echo \"%jenkins ALL=(ALL:ALL) ALL\" >> /etc/sudoers"
+sudo sh -c "echo \"%jenkins ALL=(ALL) NOPASSWD: ALL\" >> /etc/sudoers"
+sudo sh -c "echo \"jenkins ALL=NOPASSWD: ALL\" >> /etc/sudoers"

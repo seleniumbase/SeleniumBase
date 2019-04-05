@@ -36,10 +36,10 @@ sudo git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/integrations/linux/
 ```
 
-#### Step 6. Give Jenkins (aka "tomcat" user) sudo access (See [jenkins_permissions.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/jenkins_permissions.sh) for details)
+#### Step 6. Give Jenkins (aka "tomcat" user) sudo access (See [tomcat_permissions.sh](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/linux/tomcat_permissions.sh) for details)
 
 ```bash
-./jenkins_permissions.sh
+./tomcat_permissions.sh
 ```
 
 #### Step 7. Become "tomcat" (the Jenkins user) and enter a "bash" shell
