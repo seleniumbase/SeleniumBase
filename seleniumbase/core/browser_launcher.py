@@ -107,6 +107,7 @@ def _set_chrome_options(
     }
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_argument("--test-type")
+    chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.add_argument("--allow-file-access-from-files")
