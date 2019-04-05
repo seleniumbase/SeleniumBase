@@ -7,15 +7,17 @@ import traceback
 from seleniumbase.config import settings
 
 
-def log_screenshot(test_logpath, driver, screenshot=None):
+def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
     try:
         if not screenshot:
             element = driver.find_element_by_tag_name('body')
-            screenshot = element.screenshot_as_png
+            screenshot = element.screenshot_as_base64
         with open(screenshot_path, "wb") as file:
             file.write(screenshot)
+        if get:
+            return screenshot
     except Exception:
         try:
             driver.get_screenshot_as_file(screenshot_path)

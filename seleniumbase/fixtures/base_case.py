@@ -3158,7 +3158,10 @@ class BaseCase(unittest.TestCase):
         if not self.__last_page_screenshot:
             try:
                 element = self.driver.find_element_by_tag_name('body')
-                self.__last_page_screenshot = element.screenshot_as_base64
+                if self.is_pytest:
+                    self.__last_page_screenshot = element.screenshot_as_base64
+                else:
+                    self.__last_page_screenshot = element.screenshot_as_png
             except Exception:
                 pass
 
@@ -3407,5 +3410,11 @@ class BaseCase(unittest.TestCase):
                     test_logpath,
                     self.driver,
                     self.__last_page_screenshot)
+            if self.report_on:
+                self._last_page_screenshot = self.__last_page_screenshot
+                try:
+                    self._last_page_url = self.get_current_url()
+                except Exception:
+                    self._last_page_url = "(Error: Unknown URL)"
             # Finally close all open browser windows
             self.__quit_all_drivers()
