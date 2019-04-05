@@ -105,6 +105,7 @@ class Base(Plugin):
         test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
         test.test.args = self.options
+        test.test.report_on = self.report_on
         self.test_count += 1
         self.start_time = float(time.time())
 

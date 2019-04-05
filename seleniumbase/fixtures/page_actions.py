@@ -424,7 +424,10 @@ def save_screenshot(driver, name, folder=None):
         with open(screenshot_path, "wb") as file:
             file.write(element_png)
     except Exception:
-        driver.get_screenshot_as_file(screenshot_path)
+        if driver:
+            driver.get_screenshot_as_file(screenshot_path)
+        else:
+            pass
 
 
 def _get_last_page(driver):

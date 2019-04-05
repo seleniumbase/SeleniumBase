@@ -6,11 +6,22 @@ from selenium import webdriver
 from seleniumbase.config import settings
 from seleniumbase.core.style_sheet import style
 from seleniumbase.fixtures import page_actions
+from seleniumbase import drivers
 
 LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
 ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
 HTML_REPORT = settings.HTML_REPORT
 RESULTS_TABLE = settings.RESULTS_TABLE
+DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+PLATFORM = sys.platform
+LOCAL_CHROMEDRIVER = None
+LOCAL_GECKODRIVER = None
+if "darwin" in PLATFORM or "linux" in PLATFORM:
+    LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
+    LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
+elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
+    LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
+    LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
 
 
 def get_timestamp():
@@ -35,8 +46,9 @@ def process_successes(test, test_count, duration):
 def process_failures(test, test_count, browser_type, duration):
     bad_page_image = "failure_%s.png" % test_count
     bad_page_data = "failure_%s.txt" % test_count
-    page_actions.save_screenshot(
-        test.driver, bad_page_image, folder=LATEST_REPORT_DIR)
+    screenshot_path = "%s/%s" % (LATEST_REPORT_DIR, bad_page_image)
+    with open(screenshot_path, "wb") as file:
+        file.write(test._last_page_screenshot)
     page_actions.save_test_failure_data(
         test.driver, bad_page_data, browser_type, folder=LATEST_REPORT_DIR)
     exc_info = '(Unknown Failure)'
@@ -54,7 +66,7 @@ def process_failures(test, test_count, browser_type, duration):
             "FAILED!",
             bad_page_data,
             bad_page_image,
-            test.driver.current_url,
+            test._last_page_url,
             test.browser,
             get_timestamp()[:-3],
             duration,
@@ -222,10 +234,25 @@ def build_report(report_log_path, page_results_list,
         "\n* Files saved for this report are located at:\n" + report_log_path)
     print("")
     if show_report:
+        browser = None
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference("app.update.auto", False)
+        profile.set_preference("app.update.enabled", False)
+        profile.set_preference("browser.privatebrowsing.autostart", True)
         if browser_type == 'firefox':
-            browser = webdriver.Firefox()
+            if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
+                browser = webdriver.Firefox(
+                    firefox_profile=profile, executable_path=LOCAL_GECKODRIVER)
+            else:
+                browser = webdriver.Firefox(firefox_profile=profile)
         else:
-            browser = webdriver.Chrome()
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--disable-infobars")
+            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
+                browser = webdriver.Chrome(
+                    executable_path=LOCAL_CHROMEDRIVER, options=chrome_options)
+            else:
+                browser = webdriver.Chrome(options=chrome_options)
         browser.get("file://%s" % archived_results_file)
         print("\n*** Close the html report window to continue. ***")
         while len(browser.window_handles):
