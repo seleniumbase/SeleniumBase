@@ -182,6 +182,10 @@ self.print_unique_links_with_status_codes()
 
 self.safe_execute_script(script)
 
+self.create_folder(folder)
+
+self.save_element_as_image_file(selector, file_name, folder=None)
+
 self.download_file(file_url, destination_folder=None)
 
 self.save_file_as(file_url, new_file_name, destination_folder=None)
