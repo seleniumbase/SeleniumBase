@@ -1,16 +1,16 @@
 ### Running browser-based test automation with [Azure Pipelines](https://dev.azure.com/seleniumbase/seleniumbase/_build?definitionId=1&_a=summary) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
 
-### Step 0. Fork [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) to get started quickly.
+### Step 0. Fork the [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) repo on GitHub to get started quickly.
 
-(You'll be using your own repository eventually.)
+* **(You'll be using your own repository eventually.)**
 
 
 ### Step 1. Get Azure Pipelines from the GitHub Marketplace
 
-Navigate to [https://github.com/marketplace/azure-pipelines](https://github.com/marketplace/azure-pipelines)
+#### Navigate to [https://github.com/marketplace/azure-pipelines](https://github.com/marketplace/azure-pipelines)
 
-* Set up a new plan (it's free) and follow the steps...
+* **Set up a new plan (it's free) and follow the steps...**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_azure_pipelines_1.png "GitHub Azure Pipelines")
 
@@ -21,9 +21,9 @@ Navigate to [https://github.com/marketplace/azure-pipelines](https://github.com/
 
 ### Step 2. Go to Microsoft Azure DevOps to set up your environment
 
-Navigate to [https://azure.microsoft.com/en-us/services/devops/?nav=min](https://azure.microsoft.com/en-us/services/devops/?nav=min)
+* **Navigate to [https://azure.microsoft.com/en-us/services/devops/?nav=min](https://azure.microsoft.com/en-us/services/devops/?nav=min)**
 
-* Follow the steps...
+* **Follow the steps...**
 
 #### "Start free with Pipelines" if you don't already have an account:
 
@@ -50,7 +50,7 @@ Navigate to [https://azure.microsoft.com/en-us/services/devops/?nav=min](https:/
 
 ### Step 3. Congratulations! Your browser tests are now running!
 
-Here's what a SeleniumBase sample run in Azure Pipelines may look like:
+* **Here's what a SeleniumBase sample run in Azure Pipelines may look like:**
 
 [https://dev.azure.com/seleniumbase/seleniumbase/\_build/results?buildId=15](https://dev.azure.com/seleniumbase/seleniumbase/_build/results?buildId=15)
 
