@@ -20,7 +20,7 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/jenkins_on_azure_02.png "Jenkins on Azure")
 
-#### Continue to "Additional Settings" when you're done with "Basic Settings".
+#### Continue to "Additional Settings" when you're done with "Basics".
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/jenkins_on_azure_03.png "Jenkins on Azure")
 
