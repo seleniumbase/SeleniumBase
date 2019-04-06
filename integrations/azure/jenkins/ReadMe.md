@@ -1,5 +1,6 @@
 ### Building a browser-based test automation server with [Jenkins on Azure](https://azuremarketplace.microsoft.com/en-au/marketplace/apps/azure-oss.jenkins) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
+----------
 
 ### Step 0. Fork the [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) repo on GitHub to get started quickly.
 

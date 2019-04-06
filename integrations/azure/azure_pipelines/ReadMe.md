@@ -1,5 +1,6 @@
 ### Running browser-based test automation with [Azure Pipelines](https://dev.azure.com/seleniumbase/seleniumbase/_build?definitionId=1&_a=summary) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
+----------
 
 ### Step 0. Fork the [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) repo on GitHub to get started quickly.
 
@@ -56,6 +57,6 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_6.png "Azure DevOps")
 
-#### Now, every time you create a pull request, your Azure Pipelines will run your tests automatically.
+#### Every time you create a pull request now, Azure Pipelines will run your tests automatically.
 
-To learn more, study [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) and see how the [azure-pipelines.yml](https://github.com/seleniumbase/SeleniumBase/blob/master/azure-pipelines.yml) file works.
+**To learn more, study [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) and see how the [azure-pipelines.yml](https://github.com/seleniumbase/SeleniumBase/blob/master/azure-pipelines.yml) file works.**
