@@ -1673,6 +1673,39 @@ class BaseCase(unittest.TestCase):
             self.activate_jquery()  # It's a good thing we can define it here
             self.execute_script(script)
 
+    def create_folder(self, folder):
+        """ Creates a folder of the given name if it doesn't already exist. """
+        if folder.endswith("/"):
+            folder = folder[:-1]
+        if len(folder) < 1:
+            raise Exception("Minimum folder name length = 1.")
+        if not os.path.exists(folder):
+            try:
+                os.makedirs(folder)
+            except Exception:
+                pass
+
+    def save_element_as_image_file(self, selector, file_name, folder=None):
+        """ Take a screenshot of an element and save it as an image file.
+            If no folder is specified, will save it to the current folder. """
+        element = self.find_element(selector)
+        element_png = element.screenshot_as_png
+        if len(file_name.split('.')[0]) < 1:
+            raise Exception("Error: file_name length must be > 0.")
+        if not file_name.endswith(".png"):
+            file_name = file_name + ".png"
+        image_file_path = None
+        if folder:
+            if folder.endswith("/"):
+                folder = folder[:-1]
+            if len(folder) > 0:
+                self.create_folder(folder)
+                image_file_path = "%s/%s" % (folder, file_name)
+        if not image_file_path:
+            image_file_path = file_name
+        with open(image_file_path, "wb") as file:
+            file.write(element_png)
+
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
             If no destination folder is specified, the default one is used.
