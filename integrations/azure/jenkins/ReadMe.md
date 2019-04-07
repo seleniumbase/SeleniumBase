@@ -181,7 +181,8 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 * **Select "Execute shell".**
 * **For the "Command", paste:**
 ```bash
-pytest examples/my_first_test.py --headless --browser=chrome
+cd examples
+pytest my_first_test.py --headless
 ```
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/jenkins_on_azure_16.png "Jenkins on Azure")
