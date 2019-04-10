@@ -12,5 +12,5 @@
 > - [**SeleniumBase Method Summary**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)
 > - [**MySQL Installation Overview**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md)
 > - [**Safari Driver Detailed Info**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/using_safari_driver.md)
-> - [**Seeing Hidden Files on a Mac**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/hidden_files_info.md)
+> - [**Seeing Hidden Files on macOS**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/hidden_files_info.md)
 > - [**SeleniumBase Case Studies**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md)

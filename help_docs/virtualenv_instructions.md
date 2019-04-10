@@ -2,7 +2,7 @@
 
 ### **Step 1**: First install [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) (<i>if not installed</i>):
 
-### MAC / Linux:
+### macOS / Linux:
 
 (*Shortcut*: Run "``source virtualenv_install.sh``" from the top-level SeleniumBase folder to perform the following steps.)
 
@@ -13,9 +13,9 @@ source `which virtualenvwrapper.sh`
 export WORKON_HOME=$HOME/.virtualenvs
 ```
 
-If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~/.bash_profile`` on a Mac, or ``~/.bashrc`` on Linux), virtualenvwrapper commands such as ``mkvirtualenv`` will be available whenever you open a new command prompt.
+If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~/.bash_profile`` on macOS, or ``~/.bashrc`` on Linux), virtualenvwrapper commands such as ``mkvirtualenv`` will be available whenever you open a new command prompt.
 
-### WINDOWS:
+### Windows:
 
 (*Shortcut*: Run "``virtualenv_install.bat``" from the top-level SeleniumBase folder to perform the following steps.)
 
@@ -26,7 +26,7 @@ python -m pip install --upgrade virtualenvwrapper-win
 
 ### **Step 2**: Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:
 
-### MAC / Linux / WINDOWS:
+### macOS / Linux / Windows:
 
 ```bash
 mkvirtualenv seleniumbase

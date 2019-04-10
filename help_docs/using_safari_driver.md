@@ -1,6 +1,6 @@
-### Info about using Safari Driver for running automated tests on a MAC
+### Info about using Safari Driver for running automated tests on macOS
 
-(NOTE: SafariDriver requires Safari 10 running on OSX El Capitan or greater)
+(NOTE: SafariDriver requires Safari 10 running on OS X 10.11 El Capitan or greater)
 
 You can find info on Safari Driver if you scroll down to that section on the [SeleniumHQ downloads page](https://www.seleniumhq.org/download/).
 
