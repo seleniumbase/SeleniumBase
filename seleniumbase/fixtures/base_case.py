@@ -3113,6 +3113,10 @@ class BaseCase(unittest.TestCase):
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
+            self.pytest_html_report = sb_config.pytest_html_report
+            self.report_on = False
+            if self.pytest_html_report:
+                self.report_on = True
             self.use_grid = False
             if self.servername != "localhost":
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)

@@ -221,6 +221,7 @@ def pytest_configure(config):
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
+    sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
 
     if sb_config.with_testing_base:
         log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
