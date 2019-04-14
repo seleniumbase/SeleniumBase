@@ -3190,7 +3190,7 @@ class BaseCase(unittest.TestCase):
         if not self.__last_page_screenshot:
             try:
                 element = self.driver.find_element_by_tag_name('body')
-                if self.is_pytest:
+                if self.is_pytest and self.report_on:
                     self.__last_page_screenshot = element.screenshot_as_base64
                 else:
                     self.__last_page_screenshot = element.screenshot_as_png
@@ -3222,20 +3222,21 @@ class BaseCase(unittest.TestCase):
             if self.with_selenium:
                 if not self.__last_page_screenshot:
                     self.__set_last_page_screenshot()
-                extra_url = {}
-                extra_url['name'] = 'URL'
-                extra_url['format'] = 'url'
-                extra_url['content'] = self.get_current_url()
-                extra_url['mime_type'] = None
-                extra_url['extension'] = None
-                extra_image = {}
-                extra_image['name'] = 'Screenshot'
-                extra_image['format'] = 'image'
-                extra_image['content'] = self.__last_page_screenshot
-                extra_image['mime_type'] = 'image/png'
-                extra_image['extension'] = 'png'
-                self._html_report_extra.append(extra_url)
-                self._html_report_extra.append(extra_image)
+                if self.report_on:
+                    extra_url = {}
+                    extra_url['name'] = 'URL'
+                    extra_url['format'] = 'url'
+                    extra_url['content'] = self.get_current_url()
+                    extra_url['mime_type'] = None
+                    extra_url['extension'] = None
+                    extra_image = {}
+                    extra_image['name'] = 'Screenshot'
+                    extra_image['format'] = 'image'
+                    extra_image['content'] = self.__last_page_screenshot
+                    extra_image['mime_type'] = 'image/png'
+                    extra_image['extension'] = 'png'
+                    self._html_report_extra.append(extra_url)
+                    self._html_report_extra.append(extra_image)
         except Exception:
             pass
 
