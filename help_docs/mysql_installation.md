@@ -38,7 +38,7 @@ You'll want to update your [settings.py](https://github.com/seleniumbase/Seleniu
 Add the ``--with-db_reporting`` argument on the command line when you want tests to write to your MySQL database.
 Example:
 ```bash
-nosetests my_first_test.py --with-db_reporting
+pytest my_first_test.py --with-db_reporting
 ```
 
 #### Windows mysql-python troubleshooting:
