@@ -12,6 +12,7 @@
 * Backwards-compatible with [WebDriver](http://www.seleniumhq.org/projects/webdriver/). (Use ``self.driver`` anywhere.)
 * Can run tests through a proxy server. (Use ``--proxy=IP_ADDRESS:PORT``)
 * Can use an authenticated proxy server. (``--proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT``)
+* Can change the web browser's user agent string. (Use ``--agent=USER_AGENT_STRING``)
 * Can handle Google Authenticator logins by using the [Python one-time password library](https://pyotp.readthedocs.io/en/latest/).
 * Includes a hybrid-automation solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)** to speed up manual testing.
 * Integrates with [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Amazon S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
