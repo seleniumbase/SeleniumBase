@@ -29,12 +29,6 @@ If you want a visual tool to help make your MySQL life easier, [try MySQL Workbe
 
 You can use the [testcaserepository.sql](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcaserepository.sql) file to create the necessary tables for storing test data.
 
-If you were able to successfully install MySQL, you can now install the remaining MySQL requirements:
-```bash
-pip install -r requirements.txt
-```
-(NOTE: This install uses Selenium 2.53.6 rather than the usual Selenium 3+ from the standard requirements file due to compatibility issues with running browser tests on headless server machines.)
-
 #### Configure your MySQL DB for SeleniumBase
 
 You'll want to update your [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) file with your MySQL DB credentials so that tests can write to the database when they run.

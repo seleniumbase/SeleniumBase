@@ -49,15 +49,10 @@ from selenium.common.exceptions import (StaleElementReferenceException,
                                         MoveTargetOutOfBoundsException,
                                         WebDriverException)
 from selenium.common import exceptions as selenium_exceptions
-try:
-    # Selenium 3 (ElementNotInteractableException does not exist in selenium 2)
-    ENI_Exception = selenium_exceptions.ElementNotInteractableException
-except Exception:
-    # Selenium 2 (Keep compatibility with seleneium 2.53.6 if still being used)
-    ENI_Exception = selenium_exceptions.ElementNotSelectableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
 class BaseCase(unittest.TestCase):
