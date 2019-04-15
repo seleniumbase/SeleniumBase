@@ -126,7 +126,16 @@ For a full list of SeleniumBase features, [Click Here](https://github.com/seleni
 
 **Here's how to run the example script on various web browsers:**
 
-(NOTE: You can interchange **pytest** with **nosetests** at anytime.)
+First, install a web driver for each web browser you intend to use:
+```
+seleniumbase install chromedriver
+seleniumbase install geckodriver
+seleniumbase install edgedriver
+seleniumbase install iedriver
+seleniumbase install operadriver
+```
+
+Next, choose between **pytest** and **nosetests** test runners. (<i>Interchangeable</i>)
 ```
 cd examples/
 
@@ -136,7 +145,8 @@ nosetests my_first_test.py --browser=firefox
 ```
 (<i>If no browser is specified, Chrome is used by default.</i>)
 
-<a id="seleniumbase_demo_mode"></a>
+<a id="seleniumbase_demo_mode"></a> **Use Demo Mode to help you see what tests are asserting.**
+
 If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
 ```
