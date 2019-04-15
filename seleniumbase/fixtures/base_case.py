@@ -31,6 +31,13 @@ import sys
 import time
 import unittest
 import uuid
+from selenium.common.exceptions import (StaleElementReferenceException,
+                                        MoveTargetOutOfBoundsException,
+                                        WebDriverException)
+from selenium.common import exceptions as selenium_exceptions
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
@@ -45,13 +52,6 @@ from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
-from selenium.common.exceptions import (StaleElementReferenceException,
-                                        MoveTargetOutOfBoundsException,
-                                        WebDriverException)
-from selenium.common import exceptions as selenium_exceptions
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
