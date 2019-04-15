@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ This is the pytest configuration file """
 
 import optparse
@@ -221,6 +222,7 @@ def pytest_configure(config):
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
+    sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
 
     if sb_config.with_testing_base:
         log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
@@ -268,6 +270,7 @@ def pytest_runtest_makereport(item, call):
         try:
             extra_report = item._testcase._html_report_extra
             extra = getattr(report, 'extra', [])
-            report.extra = extra + extra_report
+            if extra_report[1]["content"]:
+                report.extra = extra + extra_report
         except Exception:
             pass

@@ -18,6 +18,15 @@ lib
 lib64
 __pycache__
 
+# Python3 pyvenv
+pyvenv.cfg
+.Python
+include
+pip-delete-this-directory.txt
+pip-selfcheck.json
+ipython.1.gz
+nosetests.1
+
 # Installer logs
 pip-log.txt
 .swp

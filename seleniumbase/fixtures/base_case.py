@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
 It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
@@ -31,6 +32,13 @@ import sys
 import time
 import unittest
 import uuid
+from selenium.common.exceptions import (StaleElementReferenceException,
+                                        MoveTargetOutOfBoundsException,
+                                        WebDriverException)
+from selenium.common import exceptions as selenium_exceptions
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
@@ -45,19 +53,7 @@ from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
-from selenium.common.exceptions import (StaleElementReferenceException,
-                                        MoveTargetOutOfBoundsException,
-                                        WebDriverException)
-from selenium.common import exceptions as selenium_exceptions
-try:
-    # Selenium 3 (ElementNotInteractableException does not exist in selenium 2)
-    ENI_Exception = selenium_exceptions.ElementNotInteractableException
-except Exception:
-    # Selenium 2 (Keep compatibility with seleneium 2.53.6 if still being used)
-    ENI_Exception = selenium_exceptions.ElementNotSelectableException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
+ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
 class BaseCase(unittest.TestCase):
@@ -74,6 +70,7 @@ class BaseCase(unittest.TestCase):
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
         self.__last_page_screenshot = None
+        self.__last_page_screenshot_png = None
         self.__delayed_assert_count = 0
         self.__delayed_assert_failures = []
         # Requires self._* instead of self.__* for external class use
@@ -3118,6 +3115,10 @@ class BaseCase(unittest.TestCase):
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
+            self.pytest_html_report = sb_config.pytest_html_report
+            self.report_on = False
+            if self.pytest_html_report:
+                self.report_on = True
             self.use_grid = False
             if self.servername != "localhost":
                 # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
@@ -3188,15 +3189,32 @@ class BaseCase(unittest.TestCase):
         self._default_driver = self.driver
 
     def __set_last_page_screenshot(self):
-        if not self.__last_page_screenshot:
+        """ self.__last_page_screenshot is only for pytest html report logs
+            self.__last_page_screenshot_png is for all screenshot log files """
+        if not self.__last_page_screenshot and (
+                not self.__last_page_screenshot_png):
             try:
                 element = self.driver.find_element_by_tag_name('body')
-                if self.is_pytest:
+                if self.is_pytest and self.report_on:
+                    self.__last_page_screenshot_png = (
+                        self.driver.get_screenshot_as_png())
                     self.__last_page_screenshot = element.screenshot_as_base64
                 else:
-                    self.__last_page_screenshot = element.screenshot_as_png
+                    self.__last_page_screenshot_png = element.screenshot_as_png
             except Exception:
-                pass
+                if not self.__last_page_screenshot:
+                    if self.is_pytest and self.report_on:
+                        try:
+                            self.__last_page_screenshot = (
+                                self.driver.get_screenshot_as_base64())
+                        except Exception:
+                            pass
+                if not self.__last_page_screenshot_png:
+                    try:
+                        self.__last_page_screenshot_png = (
+                            self.driver.get_screenshot_as_png())
+                    except Exception:
+                        pass
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
@@ -3223,20 +3241,21 @@ class BaseCase(unittest.TestCase):
             if self.with_selenium:
                 if not self.__last_page_screenshot:
                     self.__set_last_page_screenshot()
-                extra_url = {}
-                extra_url['name'] = 'URL'
-                extra_url['format'] = 'url'
-                extra_url['content'] = self.get_current_url()
-                extra_url['mime_type'] = None
-                extra_url['extension'] = None
-                extra_image = {}
-                extra_image['name'] = 'Screenshot'
-                extra_image['format'] = 'image'
-                extra_image['content'] = self.__last_page_screenshot
-                extra_image['mime_type'] = 'image/png'
-                extra_image['extension'] = 'png'
-                self._html_report_extra.append(extra_url)
-                self._html_report_extra.append(extra_image)
+                if self.report_on:
+                    extra_url = {}
+                    extra_url['name'] = 'URL'
+                    extra_url['format'] = 'url'
+                    extra_url['content'] = self.get_current_url()
+                    extra_url['mime_type'] = None
+                    extra_url['extension'] = None
+                    extra_image = {}
+                    extra_image['name'] = 'Screenshot'
+                    extra_image['format'] = 'image'
+                    extra_image['content'] = self.__last_page_screenshot
+                    extra_image['mime_type'] = 'image/png'
+                    extra_image['extension'] = 'png'
+                    self._html_report_extra.append(extra_url)
+                    self._html_report_extra.append(extra_image)
         except Exception:
             pass
 
@@ -3325,12 +3344,12 @@ class BaseCase(unittest.TestCase):
                             os.makedirs(test_logpath)
                         except Exception:
                             pass  # Only reachable during multi-threaded runs
-                    if not self.__last_page_screenshot:
+                    if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
-                        self.__last_page_screenshot)
+                        self.__last_page_screenshot_png)
                     self.__add_pytest_html_extra()
                 if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
@@ -3343,23 +3362,23 @@ class BaseCase(unittest.TestCase):
                             not self.with_basic_test_info) and (
                             not self.with_page_source)):
                         # Log everything if nothing specified (if testing_base)
-                        if not self.__last_page_screenshot:
+                        if not self.__last_page_screenshot_png:
                             self.__set_last_page_screenshot()
                         log_helper.log_screenshot(
                             test_logpath,
                             self.driver,
-                            self.__last_page_screenshot)
+                            self.__last_page_screenshot_png)
                         log_helper.log_test_failure_data(
                             self, test_logpath, self.driver, self.browser)
                         log_helper.log_page_source(test_logpath, self.driver)
                     else:
                         if self.with_screen_shots:
-                            if not self.__last_page_screenshot:
+                            if not self.__last_page_screenshot_png:
                                 self.__set_last_page_screenshot()
                             log_helper.log_screenshot(
                                 test_logpath,
                                 self.driver,
-                                self.__last_page_screenshot)
+                                self.__last_page_screenshot_png)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
                                 self, test_logpath, self.driver, self.browser)
@@ -3420,12 +3439,12 @@ class BaseCase(unittest.TestCase):
                 log_helper.log_test_failure_data(
                     self, test_logpath, self.driver, self.browser)
                 if len(self._drivers_list) > 0:
-                    if not self.__last_page_screenshot:
+                    if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
-                        self.__last_page_screenshot)
+                        self.__last_page_screenshot_png)
                     log_helper.log_page_source(test_logpath, self.driver)
             elif self.save_screenshot_after_test:
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
@@ -3437,14 +3456,14 @@ class BaseCase(unittest.TestCase):
                         os.makedirs(test_logpath)
                     except Exception:
                         pass  # Only reachable during multi-threaded runs
-                if not self.__last_page_screenshot:
+                if not self.__last_page_screenshot_png:
                     self.__set_last_page_screenshot()
                 log_helper.log_screenshot(
                     test_logpath,
                     self.driver,
-                    self.__last_page_screenshot)
+                    self.__last_page_screenshot_png)
             if self.report_on:
-                self._last_page_screenshot = self.__last_page_screenshot
+                self._last_page_screenshot = self.__last_page_screenshot_png
                 try:
                     self._last_page_url = self.get_current_url()
                 except Exception:

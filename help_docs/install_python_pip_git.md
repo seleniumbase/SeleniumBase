@@ -1,4 +1,10 @@
-## Installation instructions for Python, pip, brew, git, virtualenv, and virtualenvwrapper
+## Installation instructions for Git, Python, and Pip
+
+### [Git](http://www.git-scm.com)
+
+You can [download Git from here](http://git-scm.com/downloads).
+
+(You can also download the SeleniumBase repository right from GitHub and skip all the git-related commands.)
 
 ### [Python 2.7 or 3.x](https://www.python.org/downloads/)
 
@@ -42,34 +48,3 @@ curl https://bootstrap.pypa.io/get-pip.py | python
 ```
 
 (If you get SSL errors while trying to install packages with pip, see [this Stackoverflow post](https://stackoverflow.com/questions/49768770/not-able-to-install-python-packages-ssl-tlsv1-alert-protocol-version), which tells you to run the above command.)
-
-### [Homebrew](http://brew.sh/) (macOS-ONLY) (OPTIONAL)
-
-The Homebrew package manager allows you to install things more easily on macOS, such as Git and Chromedriver.
-
-Here's the command line script to install Homebrew (*from [https://brew.sh/](https://brew.sh/)*):
-```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-If you haven't updated Homebrew in awhile, you probably should. Here's how:
-```bash
-brew update
-```
-
-### [Git](http://www.git-scm.com)
-
-You can [download Git from here](http://git-scm.com/downloads).
-
-macOS-ONLY shortcut: (This step only works if you installed Homebrew in the previous step)
-```bash
-brew install git
-```
-
-(You can also download the SeleniumBase repository right from GitHub and skip all the git-related commands.)
-
-<a id="virtual_environment"></a>
-### [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/)
-
-Virtual environments allow each your Python projects to have a unique set of packaged dependencies.
-
-To learn how to create a Python virtual environment, [see this ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).

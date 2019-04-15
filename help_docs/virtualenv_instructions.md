@@ -24,14 +24,27 @@ python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper-win
 ```
 
-### **Step 2**: Now use VirtualEnv or VirtualEnvWrapper to create a virtual environment:
+### **Step 2**: Now create a virtual environment:
 
 #### macOS / Linux / Windows:
 
+* Using ``mkvirtualenv``:
 ```bash
-mkvirtualenv seleniumbase
+mkvirtualenv seleniumbase_venv
 ```
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
+
+* Using ``virtualenv``:
+```bash
+virtualenv seleniumbase_venv
+source seleniumbase_venv/bin/activate
+```
+
+* (Python 3) Using ``mvenv``:
+```bash
+python3 -mvenv seleniumbase_venv
+source seleniumbase_venv/bin/activate
+```
 
 ---
 
@@ -44,7 +57,7 @@ deactivate
 You can always jump back into your virtual environment later:
 
 ```bash
-workon seleniumbase
+workon seleniumbase_venv
 ```
 
 To list all existing virtual environments:
