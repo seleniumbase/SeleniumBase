@@ -270,6 +270,7 @@ def pytest_runtest_makereport(item, call):
         try:
             extra_report = item._testcase._html_report_extra
             extra = getattr(report, 'extra', [])
-            report.extra = extra + extra_report
+            if extra_report[1]["content"]:
+                report.extra = extra + extra_report
         except Exception:
             pass

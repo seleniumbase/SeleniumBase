@@ -70,6 +70,7 @@ class BaseCase(unittest.TestCase):
         self.__last_url_of_delayed_assert = "data:,"
         self.__last_page_load_url = "data:,"
         self.__last_page_screenshot = None
+        self.__last_page_screenshot_png = None
         self.__delayed_assert_count = 0
         self.__delayed_assert_failures = []
         # Requires self._* instead of self.__* for external class use
@@ -3188,15 +3189,32 @@ class BaseCase(unittest.TestCase):
         self._default_driver = self.driver
 
     def __set_last_page_screenshot(self):
-        if not self.__last_page_screenshot:
+        """ self.__last_page_screenshot is only for pytest html report logs
+            self.__last_page_screenshot_png is for all screenshot log files """
+        if not self.__last_page_screenshot and (
+                not self.__last_page_screenshot_png):
             try:
                 element = self.driver.find_element_by_tag_name('body')
                 if self.is_pytest and self.report_on:
+                    self.__last_page_screenshot_png = (
+                        self.driver.get_screenshot_as_png())
                     self.__last_page_screenshot = element.screenshot_as_base64
                 else:
-                    self.__last_page_screenshot = element.screenshot_as_png
+                    self.__last_page_screenshot_png = element.screenshot_as_png
             except Exception:
-                pass
+                if not self.__last_page_screenshot:
+                    if self.is_pytest and self.report_on:
+                        try:
+                            self.__last_page_screenshot = (
+                                self.driver.get_screenshot_as_base64())
+                        except Exception:
+                            pass
+                if not self.__last_page_screenshot_png:
+                    try:
+                        self.__last_page_screenshot_png = (
+                            self.driver.get_screenshot_as_png())
+                    except Exception:
+                        pass
 
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
@@ -3326,12 +3344,12 @@ class BaseCase(unittest.TestCase):
                             os.makedirs(test_logpath)
                         except Exception:
                             pass  # Only reachable during multi-threaded runs
-                    if not self.__last_page_screenshot:
+                    if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
-                        self.__last_page_screenshot)
+                        self.__last_page_screenshot_png)
                     self.__add_pytest_html_extra()
                 if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
@@ -3344,23 +3362,23 @@ class BaseCase(unittest.TestCase):
                             not self.with_basic_test_info) and (
                             not self.with_page_source)):
                         # Log everything if nothing specified (if testing_base)
-                        if not self.__last_page_screenshot:
+                        if not self.__last_page_screenshot_png:
                             self.__set_last_page_screenshot()
                         log_helper.log_screenshot(
                             test_logpath,
                             self.driver,
-                            self.__last_page_screenshot)
+                            self.__last_page_screenshot_png)
                         log_helper.log_test_failure_data(
                             self, test_logpath, self.driver, self.browser)
                         log_helper.log_page_source(test_logpath, self.driver)
                     else:
                         if self.with_screen_shots:
-                            if not self.__last_page_screenshot:
+                            if not self.__last_page_screenshot_png:
                                 self.__set_last_page_screenshot()
                             log_helper.log_screenshot(
                                 test_logpath,
                                 self.driver,
-                                self.__last_page_screenshot)
+                                self.__last_page_screenshot_png)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
                                 self, test_logpath, self.driver, self.browser)
@@ -3421,12 +3439,12 @@ class BaseCase(unittest.TestCase):
                 log_helper.log_test_failure_data(
                     self, test_logpath, self.driver, self.browser)
                 if len(self._drivers_list) > 0:
-                    if not self.__last_page_screenshot:
+                    if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
-                        self.__last_page_screenshot)
+                        self.__last_page_screenshot_png)
                     log_helper.log_page_source(test_logpath, self.driver)
             elif self.save_screenshot_after_test:
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
@@ -3438,14 +3456,14 @@ class BaseCase(unittest.TestCase):
                         os.makedirs(test_logpath)
                     except Exception:
                         pass  # Only reachable during multi-threaded runs
-                if not self.__last_page_screenshot:
+                if not self.__last_page_screenshot_png:
                     self.__set_last_page_screenshot()
                 log_helper.log_screenshot(
                     test_logpath,
                     self.driver,
-                    self.__last_page_screenshot)
+                    self.__last_page_screenshot_png)
             if self.report_on:
-                self._last_page_screenshot = self.__last_page_screenshot
+                self._last_page_screenshot = self.__last_page_screenshot_png
                 try:
                     self._last_page_url = self.get_current_url()
                 except Exception:
