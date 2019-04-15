@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
 It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
