@@ -12,77 +12,43 @@ pytest my_first_test.py --demo_mode
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
 
-(<i>Requires **[Git and Python/Pip](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** [<img src="https://img.shields.io/badge/python-2.7,_3.x-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
+(<i>Requires **[Python/Pip](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** [<img src="https://img.shields.io/badge/python-2.7,_3.x-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
 
-**Make sure you're using the latest versions of Pip and Setuptools:**
-```
-python -m pip install -U pip setuptools
-```
-* (Depending on your user permissions, you may need to add ``--user`` to the command if you're not inside a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md), or use "[sudo](https://en.wikipedia.org/wiki/Sudo)" on a UNIX-based OS if you're getting errors during installation.)
-
-#### Clone SeleniumBase from GitHub:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Git clone and install SeleniumBase:
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
-```
-(<i>A Git GUI tool like [SourceTree](https://www.sourcetreeapp.com/) or [GitHub Desktop](https://desktop.github.com/) may help.</i>)
-
-#### Install SeleniumBase:
-If installing SeleniumBase from a local clone, use:
-```
 cd SeleniumBase
-pip install -r requirements.txt -U
-python setup.py install
-```
-* (Use ``python setup.py develop`` if inside a virtual environment.)
-
-If installing SeleniumBase from [PyPI](https://pypi.python.org/pypi/seleniumbase) [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase), use:
-```
-pip install seleniumbase -U --no-cache-dir
+pip install .
 ```
 
-If installing SeleniumBase from GitHub, use:
+You can also install SeleniumBase from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
+```
+pip install seleniumbase
+```
+* (Add ``--upgrade`` to get the latest packages and ``--no-cache-dir`` to force a reinstall.)
+
+You can also install a specific GitHub branch of SeleniumBase:
 ```
 pip install -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 
-#### Download a web driver to your System Path or to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a web driver:
 
-SeleniumBase can download a driver to the seleniumbase/drivers folder with the ``install`` command:
+SeleniumBase can download a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
 ```
 seleniumbase install chromedriver
 ```
 * (You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
 
-#### Run a test on Chrome:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Run a test on Chrome:
 ```
 cd examples
 pytest my_first_test.py --browser=chrome
 ```
 * (Chrome is the default browser if not specified with ``--browser``)
 
-**Here's what [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) looks like:**
-
-```python
-from seleniumbase import BaseCase
-
-class MyTestClass(BaseCase):
-
-    def test_basic(self):
-        self.open("https://xkcd.com/353/")
-        self.assert_element('img[alt="Python"]')
-        self.click('a[rel="license"]')
-        self.assert_text("free to copy", "div center")
-        self.open("https://xkcd.com/1481/")
-        title = self.get_attribute("#comic img", "title")
-        self.assert_true("86,400 seconds per day" in title)
-        self.click("link=Blag")
-        self.assert_text("The blag of the webcomic", "h2")
-        self.update_text("input#s", "Robots!\n")
-        self.assert_text("Hooray robots!", "#content")
-        self.open("https://xkcd.com/1319/")
-        self.assert_exact_text("Automation", "#ctitle")
-```
-(<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
+**Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a simple test looks like:**
+* (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
