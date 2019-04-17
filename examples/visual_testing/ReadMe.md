@@ -46,7 +46,7 @@ If you want to use ``self.check_window()`` to compare a web page to a later vers
 Automated Visual Testing with ``self.check_window()`` is not very effective for websites that have dynamic content because that changes the layout and structure of web pages. For those pages, you're much better off using regular SeleniumBase functional testing.
 
 Example usage of ``self.check_window()``:
-```
+```python
     self.check_window(name="testing", level=0)
     self.check_window(name="xkcd_home", level=1)
     self.check_window(name="github_page", level=2)
@@ -58,7 +58,7 @@ Example usage of ``self.check_window()``:
 ```
 
 Full example test:
-```
+```python
 from seleniumbase import BaseCase
 
 
