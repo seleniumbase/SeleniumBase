@@ -1,6 +1,6 @@
-### Automated Visual Testing (Layout Testing)
+### Automated Visual Testing (Layout Change Detection)
 
-Automated visual testing can help you determine when something has changed the layout of a web page. Rather than comparing screenshots, a more effective way is to detect layout differences by comparing HTML tags and properties. If a change is detected, it could mean that something broke on the webpage, or possibly something harmless like a website redesign or dynamic content.
+Automated visual testing can help you detect when something has changed the layout of a web page. Rather than comparing screenshots, a more effective way is to detect layout differences by comparing HTML tags and properties. If a change is detected, it could mean that something broke on the webpage, or possibly something harmless like a website redesign or dynamic content.
 
 To handle automated visual testing, SeleniumBase uses the ``self.check_window()`` method, which can set visual baselines for comparison and then compare the latest versions of web pages to the existing baseline.
 
@@ -11,7 +11,7 @@ The first time a test calls ``self.check_window()`` with a unique "name" paramet
 * tags_level2.txt  ->  HTML tags + attributes from the window
 * tags_level3.txt  ->  HTML tags + attributes/values from the window
 
-After the first run of ``self.check_window()``, it will compare the HTML tags of the latest window to the one from the initial baseline run.
+After the first time ``self.check_window()`` is called, later calls will compare the HTML tags and properties of the latest window to the ones from the first call (<i>or to the ones from the call when the baseline was last reset</i>).
 
 Here's an example call:
 ```
