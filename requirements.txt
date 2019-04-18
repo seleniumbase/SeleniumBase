@@ -7,7 +7,7 @@ chardet
 unittest2
 selenium==3.141.0
 requests==2.21.0
-urllib3==1.24.1
+urllib3==1.24.2
 pytest>=4.4.1
 pytest-cov>=2.6.1
 pytest-forked>=1.0.2
