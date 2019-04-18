@@ -140,6 +140,17 @@ def _create_firefox_profile(
     profile.set_preference("pdfjs.disabled", True)
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
+    profile.set_preference("extensions.update.enabled", False)
+    profile.set_preference("devtools.errorconsole.enabled", True)
+    profile.set_preference(
+        "datareporting.healthreport.logging.consoleEnabled", False)
+    profile.set_preference("datareporting.healthreport.service.enabled", False)
+    profile.set_preference(
+        "datareporting.healthreport.service.firstRun", False)
+    profile.set_preference("datareporting.healthreport.uploadEnabled", False)
+    profile.set_preference("datareporting.policy.dataSubmissionEnabled", False)
+    profile.set_preference(
+        "datareporting.policy.dataSubmissionPolicyAccepted", False)
     if proxy_string:
         proxy_server = proxy_string.split(':')[0]
         proxy_port = proxy_string.split(':')[1]
@@ -156,6 +167,8 @@ def _create_firefox_profile(
         profile.set_preference("security.csp.enable", False)
     profile.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
+    profile.set_preference("browser.shell.checkDefaultBrowser", False)
+    profile.set_preference("browser.startup.page", 0)
     profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("browser.download.panel.shown", False)
     profile.set_preference(

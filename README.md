@@ -18,7 +18,7 @@ pytest my_first_test.py --demo_mode
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
-pip install .
+pip install -e .
 ```
 
 You can also install SeleniumBase from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
@@ -233,6 +233,11 @@ If you wish to change the User-Agent for your browser tests (Chrome and Firefox 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
+
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32">  **Building Guided Tours for Websites:**
+
+Learn about [SeleniumBase Interactive Walkthroughs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience. See the [Tours ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for more details.
 
 
 <a id="utilizing_advanced_features"></a>
