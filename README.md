@@ -25,7 +25,7 @@ You can also install SeleniumBase from [PyPI](https://pypi.python.org/pypi/selen
 ```
 pip install seleniumbase
 ```
-* (Add ``--upgrade`` to get the latest packages and ``--no-cache-dir`` to force a reinstall.)
+* (Add ``--upgrade`` to get the latest packages and ``--force-reinstall`` with ``--no-cache-dir`` to force a reinstall without using the existing cache.)
 
 You can also install a specific GitHub branch of SeleniumBase:
 ```
