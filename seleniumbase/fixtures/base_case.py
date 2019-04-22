@@ -1640,14 +1640,24 @@ class BaseCase(unittest.TestCase):
             link, allow_redirects=allow_redirects, timeout=timeout)
         return status_code
 
-    def assert_no_404_errors(self):
+    def assert_link_status_code_is_not_404(self, link):
+        status_code = str(self.get_link_status_code(link))
+        bad_link_str = 'Error: "%s" returned a 404!' % link
+        self.assert_not_equal(status_code, "404", bad_link_str)
+
+    def assert_no_404_errors(self, multithreaded=True):
         """ Assert no 404 errors from page links obtained from:
             "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
         links = self.get_unique_links()
-        for link in links:
-            status_code = str(self.get_link_status_code(link))
-            bad_link_str = 'Error: "%s" returned a 404!' % link
-            self.assert_not_equal(status_code, "404", bad_link_str)
+        if multithreaded:
+            from multiprocessing.dummy import Pool as ThreadPool
+            pool = ThreadPool(10)
+            pool.map(self.assert_link_status_code_is_not_404, links)
+            pool.close()
+            pool.join()
+        else:
+            for link in links:
+                self.assert_link_status_code_is_not_404(link)
 
     def print_unique_links_with_status_codes(self):
         """ Finds all unique links in the html of the page source
