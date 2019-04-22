@@ -68,6 +68,7 @@ setup(
         'pytest-metadata>=1.8.0',
         'pytest-rerunfailures>=7.0',
         'pytest-xdist>=1.28.0',
+        'pytest-ordering>=0.6',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
         'colorama==0.4.1',
