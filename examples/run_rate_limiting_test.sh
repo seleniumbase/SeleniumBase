@@ -1,1 +1,0 @@
-nosetests rate_limiting_test.py -s
