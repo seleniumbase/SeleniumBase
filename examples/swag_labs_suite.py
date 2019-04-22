@@ -60,7 +60,7 @@ class SwagLabsTests(BaseCase):
         self.update_text("#postal-code", "01720")
 
         # Checkout - Overview
-        self.click('input.btn_primary')
+        self.click("input.btn_primary")
         self.assert_exact_text("Checkout: Overview", "div.subheader")
         self.assert_element("link=CANCEL")
         self.assert_text(item_name, "div.inventory_item_name")
