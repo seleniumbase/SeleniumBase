@@ -1,1 +1,0 @@
-nosetests my_first_test.py --browser=firefox --logging-level=INFO -s
