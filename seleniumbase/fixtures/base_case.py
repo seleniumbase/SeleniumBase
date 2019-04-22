@@ -3031,6 +3031,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # Don't highlight if can't convert to CSS_SELECTOR
             return
+        self.__slow_scroll_to_element(element)
 
         o_bs = ''  # original_box_shadow
         style = element.get_attribute('style')
