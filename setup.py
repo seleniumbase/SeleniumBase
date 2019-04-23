@@ -70,11 +70,11 @@ setup(
         'pytest-ordering>=0.6',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
-        'colorama==0.4.1',
+        'colorama>=0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'flake8>=3.6.0,<3.8.0',
-        'PyVirtualDisplay==0.2.1',
+        'flake8>=3.7.7',
+        'PyVirtualDisplay>=0.2.1',
     ],
     packages=[
         'seleniumbase',
