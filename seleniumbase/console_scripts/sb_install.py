@@ -16,13 +16,11 @@ Output:
 import os
 import platform
 import requests
-import urllib3  # Some systems don't have requests.packages.urllib3
 import shutil
 import sys
 import tarfile
 import zipfile
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
-urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 
 
@@ -186,13 +184,11 @@ def main():
     file_path = downloads_folder + '/' + file_name
     if not os.path.exists(downloads_folder):
         os.mkdir(downloads_folder)
-    local_file = open(file_path, 'wb')
-    http = urllib3.PoolManager()
-    remote_file = http.request('GET', download_url, preload_content=False)
+
     print('\nDownloading %s from:\n%s ...' % (file_name, download_url))
-    local_file.write(remote_file.read())
-    local_file.close()
-    remote_file.close()
+    remote_file = requests.get(download_url)
+    with open(file_path, 'wb') as file:
+        file.write(remote_file.content)
     print('Download Complete!\n')
 
     if file_name.endswith(".zip"):
