@@ -16,7 +16,7 @@ before_install:
 install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt --upgrade"
-  - "pip install mysqlclient==1.3.14"
+  - "pip install mysqlclient==1.4.2"
   - "python setup.py develop"
   - "sudo rm -f /etc/boto.cfg"
 before_script:
