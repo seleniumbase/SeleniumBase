@@ -28,6 +28,9 @@ jobs:
   - script: python -m pip install --upgrade pip && pip install -r requirements.txt
     displayName: 'Install dependencies'
 
+  - script: python setup.py develop
+    displayName: 'Install SeleniumBase'
+
   - script: |
       sudo apt install google-chrome-stable
       sudo apt-get install firefox

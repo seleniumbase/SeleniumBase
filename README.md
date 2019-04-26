@@ -18,7 +18,8 @@ pytest my_first_test.py --demo_mode
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
-pip install -e .
+pip install -r requirements.txt
+python setup.py develop
 ```
 
 You can also install SeleniumBase from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
@@ -29,7 +30,7 @@ pip install seleniumbase
 
 You can also install a specific GitHub branch of SeleniumBase:
 ```
-pip install -e git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
+pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a web driver:
