@@ -23,4 +23,3 @@ pyotp>=2.2.7
 boto>=2.49.0
 flake8>=3.7.7
 PyVirtualDisplay>=0.2.1
--e .
