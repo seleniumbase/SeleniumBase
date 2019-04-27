@@ -124,13 +124,17 @@ pytest examples/my_first_test.py --headless --browser=chrome
 
 #### Navigate to http://JENKINS_IP_ADDRESS/jenkins-on-azure/
 
+(Depending on your version of Jenkins, you may see the following screen, or nothing at all.)
+
 ![](https://cdn2.hubspot.net/hubfs/100006/images/jenkins_on_azure_09.png "Jenkins on Azure")
 
-#### You'll notice that Jenkins is currently set to use only ``http``, which makes it less secure.
+#### Initially, Jenkins uses only ``http``, which makes it less secure.
 
-#### You'll need to set up SSH Port Forwarding in order to make it secure.
+#### You'll need to set up SSH Port Forwarding in order to secure it.
 
-* **To do this, copy/paste the string and run it in a command prompt, swapping out the username with the one you set up when creating the Jenkins instance in Azure.**
+* **To do this, copy/paste the string and run it in a command prompt, swapping out the username and DNS name with the ones you set up when creating the Jenkins instance in Azure.**
+
+``ssh -L 127.0.0.1:8080:localhost:8080 USERNAME@DNS_NAME``
 
 
 ### Step 16. Login to Jenkins
