@@ -132,7 +132,7 @@ pytest examples/my_first_test.py --headless --browser=chrome
 
 #### You'll need to set up SSH Port Forwarding in order to secure it.
 
-* **To do this, copy/paste the string and run it in a command prompt, swapping out the username and DNS name with the ones you set up when creating the Jenkins instance in Azure.**
+* **To do this, copy/paste the string and run it in a NEW command prompt on your local machine (NOT from an SSH terminal session), swapping out the username and DNS name with the ones you set up when creating the Jenkins instance in Azure.**
 
 ``ssh -L 127.0.0.1:8080:localhost:8080 USERNAME@DNS_NAME``
 
