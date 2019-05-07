@@ -7,9 +7,9 @@
 * **(You'll be using your own repository eventually.)**
 
 
-### Step 1. Get Jenkins from the Azure Marketplace
+### Step 1. Find Jenkins in the Azure Marketplace
 
-#### Go to [https://azuremarketplace.microsoft.com/en-au/marketplace/apps/azure-oss.jenkins](https://azuremarketplace.microsoft.com/en-au/marketplace/apps/azure-oss.jenkins) to get Jenkins.
+#### Search for ["Jenkins" in the Azure Marketplace](https://portal.azure.com/#blade/Microsoft_Azure_Marketplace/GalleryFeaturedMenuItemBlade/selectedMenuItemId/home/searchQuery/jenkins/resetMenuId/) and select the ``Jenkins (Publisher: Microsoft)`` result to get to the Jenkins Start page.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/jenkins_on_azure_01.png "Jenkins on Azure")
 

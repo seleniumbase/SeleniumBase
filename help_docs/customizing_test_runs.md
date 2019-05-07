@@ -13,6 +13,7 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose a BrowserStack server to run on
 * Choose a Sauce Labs server to run on
 * Choose a TestingBot server to run on
+* Choose a CrossBrowserTesting server
 * Choose a Selenium Grid to connect to
 * Choose a database to save results to
 * Choose a proxy server to connect to
