@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.23.6',
+    version='1.23.7',
     description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -59,7 +59,7 @@ setup(
         'chardet',
         'unittest2',
         'selenium==3.141.0',
-        'urllib3==1.24.2',
+        'urllib3==1.24.3',
         'requests>=2.21.0',
         'pytest>=4.4.1',
         'pytest-cov>=2.6.1',
