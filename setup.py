@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.23.7',
+    version='1.23.8',
     description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -66,11 +66,12 @@ setup(
         'pytest-forked>=1.0.2',
         'pytest-html>=1.20.0',
         'pytest-metadata>=1.8.0',
+        'pytest-ordering>=0.6',
         'pytest-rerunfailures>=7.0',
         'pytest-xdist>=1.28.0',
-        'pytest-ordering>=0.6',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
+        'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',

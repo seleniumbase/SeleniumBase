@@ -21,12 +21,13 @@ cd SeleniumBase
 pip install -r requirements.txt
 python setup.py develop
 ```
+* ("``pip install -e .``" also works from the top-level SeleniumBase folder.)
 
-You can also install SeleniumBase from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
+SeleniumBase can also be installed from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
 ```
 pip install seleniumbase
 ```
-* (Add ``--upgrade`` to get the latest packages and ``--force-reinstall`` with ``--no-cache-dir`` to force a reinstall without using the existing cache.)
+* (Add ``--upgrade`` to get the latest packages. Add ``--force-reinstall`` with ``--no-cache-dir`` to force a clean installation.)
 
 You can also install a specific GitHub branch of SeleniumBase:
 ```
