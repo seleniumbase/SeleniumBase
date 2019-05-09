@@ -51,18 +51,20 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     install_requires=[
-        'pip',
+        'pip>=19.1.1',
         'setuptools',
         'six',
         'nose',
         'ipdb',
-        'chardet',
         'unittest2',
-        'selenium==3.141.0',
-        'urllib3==1.24.3',
+        'idna==2.8',  # Must stay in sync with "requests"
+        'chardet==3.0.4',  # Must stay in sync with "requests"
+        'urllib3==1.24.3',  # Must stay in sync with "requests"
         'requests>=2.21.0',
-        'pytest>=4.4.1',
-        'pytest-cov>=2.6.1',
+        'selenium==3.141.0',
+        'pluggy>=0.11.0',
+        'pytest>=4.4.2',
+        'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
         'pytest-html>=1.20.0',
         'pytest-metadata>=1.8.0',
@@ -70,7 +72,7 @@ setup(
         'pytest-rerunfailures>=7.0',
         'pytest-xdist>=1.28.0',
         'parameterized>=0.7.0',
-        'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using bs4
+        'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
         'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
         'pyotp>=2.2.7',
