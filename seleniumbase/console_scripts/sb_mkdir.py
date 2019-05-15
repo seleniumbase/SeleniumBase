@@ -54,7 +54,7 @@ def main():
         data.append("[pytest]")
         data.append("addopts = --capture=no --ignore conftest.py "
                     "-p no:cacheprovider")
-        data.append("filterwarnings = ignore::DeprecationWarning")
+        data.append("filterwarnings = ignore::pytest.PytestWarning")
         file_path = "%s/%s" % (dir_name, "pytest.ini")
         file = codecs.open(file_path, "w+", "utf-8")
         file.writelines("\r\n".join(data))

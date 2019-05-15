@@ -10,7 +10,7 @@ urllib3==1.24.3
 requests>=2.21.0
 selenium==3.141.0
 pluggy>=0.11.0
-pytest>=4.4.2
+pytest>=4.5.0
 pytest-cov>=2.7.1
 pytest-forked>=1.0.2
 pytest-html>=1.20.0
