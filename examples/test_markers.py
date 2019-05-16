@@ -4,7 +4,7 @@
         pytest -v -m marker_test_suite                 # Runs A, B, C, D
         pytest -v -m marker1                           # Runs A
         pytest -v -m marker2                           # Runs B, C
-        pytest -v -m xkcd_code                         # Runs C
+        pytest -v -m marker3                           # Runs C
         pytest test_markers.py -v -m "not marker2"     # Runs A, D
 
     (The "-v" will display the names of tests as they run.)
@@ -29,7 +29,7 @@ class MarkerTestSuite(BaseCase):
         self.assert_text("New Bug", "div#ctitle")
 
     @pytest.mark.marker2
-    @pytest.mark.xkcd_code  # Tests can have multiple markers
+    @pytest.mark.marker3  # Tests can have multiple markers
     def test_C(self):
         self.open("https://xkcd.com/844/")
         self.assert_text("Good Code", "div#ctitle")
