@@ -1,5 +1,5 @@
 # SeleniumBase Docker Image
-FROM ubuntu:17.10
+FROM ubuntu:18.04
 
 #=======================================
 # Install Python and Basic Python Tools
