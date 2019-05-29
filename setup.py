@@ -52,7 +52,7 @@ setup(
     ],
     install_requires=[
         'pip>=19.1.1',
-        'setuptools',
+        'setuptools>=41.0.1',
         'six',
         'nose',
         'ipdb',
@@ -78,7 +78,8 @@ setup(
         'pyotp>=2.2.7',
         'boto>=2.49.0',
         'flake8>=3.7.7',
-        'PyVirtualDisplay>=0.2.1',
+        'certifi>=2019.3.9',
+        'PyVirtualDisplay==0.2.1',  # Keep at 0.2.1 (later versions are slow)
     ],
     packages=[
         'seleniumbase',
