@@ -24,7 +24,7 @@ class VisualBaseline:
 
 
 class JQuery:
-    VER = "3.3.1"
+    VER = "3.4.1"
     # MIN_JS = "//cdnjs.cloudflare.com/ajax/libs/jquery/%s/jquery.min.js" % VER
     MIN_JS = "//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js" % VER
 
