@@ -59,10 +59,10 @@ setup(
         'unittest2',
         'idna==2.8',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.24.3',  # Must stay in sync with "requests"
-        'requests>=2.21.0',
+        'urllib3==1.25.3',  # Must stay in sync with "requests"
+        'requests>=2.22.0',
         'selenium==3.141.0',
-        'pluggy>=0.11.0',
+        'pluggy>=0.12.0',
         'pytest>=4.5.0',
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
