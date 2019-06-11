@@ -8,21 +8,20 @@ You can [download Git from here](http://git-scm.com/downloads).
 
 (You can also download SeleniumBase from GitHub without using git-related commands.)
 
-### [Python 2.7 or 3.x](https://www.python.org/downloads/)
+### [Python 2.7 or 3.x](https://www.python.org)
 
-#### macOS:
-
-Python should already come preinstalled. You can use both Python 2.7 or Python 3.6+ with SeleniumBase. If you have [Homebrew](https://brew.sh/) installed, you can use: ``brew install python3`` to install Python 3. Or you can just get everything from [https://www.python.org/downloads/](https://www.python.org/downloads/).
-
-The official docs.python-guide.org instructions here: [Installing Python 2 on Mac OS X](https://docs.python-guide.org/starting/install/osx/) and [Installing Python 3 on Mac OS X](https://docs.python-guide.org/starting/install3/osx/#install3-osx). (NOTE: Apple has rebranded OS X as macOS but this has not been reflected in the official docs.python-guide.org instructions yet.)
-
-#### Windows:
-
-You can [download Python 2.7 from here](https://www.python.org/downloads/release/python-2713/) OR [download Python 3.6.6 from here](https://www.python.org/downloads/release/python-366/).
+You can download Python from [https://www.python.org/downloads/](https://www.python.org/downloads/) if it's not already preinstalled on your machine.
 
 ### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
 You might already have pip and setuptools installed, but if you don't:
+
+```bash
+python -m easy_install -U pip
+pip install -U setuptools
+```
+
+If that didn't work, here are some more commands you can try:
 
 On macOS / Windows / Linux, run the following command:
 ```bash
