@@ -12,9 +12,25 @@ pytest my_first_test.py --demo_mode
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
 
-(<i>Requires **[Python/Pip](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
+You'll need **[Python](https://www.python.org/downloads/)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/)
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Git clone and install SeleniumBase:
+Optionally, you may want a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
+
+With Python installed and on your System PATH, you can get the latest ``pip`` with:
+```
+python -m easy_install -U pip
+```
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
+```
+pip install seleniumbase
+```
+* Add ``--upgrade`` to upgrade an existing installation.
+* Add ``--force-reinstall`` for a clean install.
+
+You can also install SeleniumBase from a ``git clone``:
 ```
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
@@ -22,12 +38,6 @@ pip install -r requirements.txt
 python setup.py develop
 ```
 * ("``pip install -e .``" also works from the top-level SeleniumBase folder.)
-
-SeleniumBase can also be installed from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
-```
-pip install seleniumbase
-```
-* (Add ``--upgrade`` to get the latest packages. Add ``--force-reinstall`` with ``--no-cache-dir`` to force a clean installation.)
 
 You can also install a specific GitHub branch of SeleniumBase:
 ```
@@ -68,8 +78,8 @@ self.update_text("textarea", "text")
 ```
 (<i>You can still use ``self.driver`` in your code.</i>)
 
-#### **Run tests with Pytest or Nose in any browser:**<br />
-(<i>Using **Pytest** is strongly recommended</i>)
+#### **Run tests with ``pytest`` or ``nose`` in any browser:**<br />
+(<i>Using **pytest** is strongly recommended</i>)
 ```
 pytest my_first_test.py --browser=chrome
 

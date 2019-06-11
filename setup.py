@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.23.12',
+    version='1.23.13',
     description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -51,8 +51,8 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     install_requires=[
-        'pip>=19.1.1',
-        'setuptools>=41.0.1',
+        'pip',
+        'setuptools',
         'six',
         'nose',
         'ipdb',
@@ -63,7 +63,7 @@ setup(
         'requests>=2.22.0',
         'selenium==3.141.0',
         'pluggy>=0.12.0',
-        'pytest>=4.5.0',
+        'pytest>=4.6.2',
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
         'pytest-html>=1.20.0',
