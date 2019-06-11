@@ -63,7 +63,7 @@ setup(
         'requests>=2.22.0',
         'selenium==3.141.0',
         'pluggy>=0.12.0',
-        'pytest>=4.5.0',
+        'pytest>=4.6.2',
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
         'pytest-html>=1.20.0',
