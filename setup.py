@@ -51,8 +51,8 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     install_requires=[
-        'pip>=19.1.1',
-        'setuptools>=41.0.1',
+        'pip',
+        'setuptools',
         'six',
         'nose',
         'ipdb',
