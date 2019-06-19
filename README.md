@@ -21,9 +21,9 @@ With Python installed and on your System PATH, you can get the latest ``pip`` wi
 python -m easy_install -U pip
 ```
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Virtual Environment (optional):
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Virtual Environment: (Optional)
 
-Optionally, you may want to use a **[Python Virtual Environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to isolate Python dependencies between projects.
+You may want to use a **[Python Virtual Environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to isolate Python dependencies between projects. (The official virtualenv tutorial can be found **[here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
 ```
