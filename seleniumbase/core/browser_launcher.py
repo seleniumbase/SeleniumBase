@@ -106,6 +106,8 @@ def _set_chrome_options(
         }
     }
     chrome_options.add_experimental_option("prefs", prefs)
+    if headless:
+        chrome_options.add_experimental_option("w3c", False)
     chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
@@ -139,6 +141,8 @@ def _set_chrome_options(
             chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-setuid-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
     return chrome_options
 
 
