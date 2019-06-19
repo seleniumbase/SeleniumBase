@@ -129,6 +129,16 @@ def _set_chrome_options(
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
+    if headless:
+        if not proxy_auth:
+            # Headless Chrome doesn't support extensions, which are
+            # required when using a proxy server that has authentication.
+            # Instead, base_case.py will use PyVirtualDisplay when not
+            # using Chrome's built-in headless mode. See link for details:
+            # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
+            chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--no-sandbox")
     return chrome_options
 
 
@@ -280,16 +290,6 @@ def get_remote_driver(
         chrome_options = _set_chrome_options(
             downloads_path, headless, proxy_string, proxy_auth,
             proxy_user, proxy_pass, user_agent, disable_csp)
-        if headless:
-            if not proxy_auth:
-                # Headless Chrome doesn't support extensions, which are
-                # required when using a proxy server that has authentication.
-                # Instead, base_case.py will use PyVirtualDisplay when not
-                # using Chrome's built-in headless mode. See link for details:
-                # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
-                chrome_options.add_argument("--headless")
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--no-sandbox")
         capabilities = chrome_options.to_capabilities()
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -491,16 +491,6 @@ def get_local_driver(
             chrome_options = _set_chrome_options(
                 downloads_path, headless, proxy_string, proxy_auth,
                 proxy_user, proxy_pass, user_agent, disable_csp)
-            if headless:
-                # Headless Chrome doesn't support extensions, which are
-                # required when using a proxy server that has authentication.
-                # Instead, base_case.py will use PyVirtualDisplay when not
-                # using Chrome's built-in headless mode. See link for details:
-                # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
-                if not proxy_auth:
-                    chrome_options.add_argument("--headless")
-                chrome_options.add_argument("--disable-gpu")
-                chrome_options.add_argument("--no-sandbox")
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
                 return webdriver.Chrome(
