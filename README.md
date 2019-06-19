@@ -14,14 +14,16 @@ pytest my_first_test.py --demo_mode
 
 You'll need **[Python](https://www.python.org/downloads/)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/)
 
-Optionally, you may want a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.
-
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
 
 With Python installed and on your System PATH, you can get the latest ``pip`` with:
 ```
 python -m easy_install -U pip
 ```
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Virtual Environment (optional):
+
+Optionally, you may want to use a **[Python Virtual Environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** to isolate Python dependencies between projects.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
 ```
