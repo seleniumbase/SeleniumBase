@@ -39,7 +39,7 @@ cd SeleniumBase
 pip install -r requirements.txt
 python setup.py develop
 ```
-* ("``pip install -e .``" also works from the top-level SeleniumBase folder.)
+* "``pip install -e .``" also works from the top-level SeleniumBase folder.
 
 You can also install a specific GitHub branch of SeleniumBase:
 ```
@@ -52,17 +52,18 @@ SeleniumBase can download a web driver to the [seleniumbase/drivers](https://git
 ```
 seleniumbase install chromedriver
 ```
-* (You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
+* You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Run a test on Chrome:
 ```
 cd examples
 pytest my_first_test.py --browser=chrome
 ```
-* (Chrome is the default browser if not specified with ``--browser``)
+* Chrome is the default browser if not specified with ``--browser=BROWSER``.
+* You MUST add ``--headless`` for your tests to run on a headless machine (No GUI). You can also run in headless mode on any machine.
 
 **Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a simple test looks like:**
-* (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
+* <i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
