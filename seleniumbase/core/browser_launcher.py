@@ -4,6 +4,7 @@ import re
 import sys
 import threading
 import time
+import urllib3
 import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -17,6 +18,7 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
+urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")

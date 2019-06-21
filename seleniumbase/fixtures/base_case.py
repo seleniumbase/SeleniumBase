@@ -30,6 +30,7 @@ import os
 import re
 import sys
 import time
+import urllib3
 import unittest
 import uuid
 from selenium.common.exceptions import (StaleElementReferenceException,
@@ -53,6 +54,7 @@ from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
+urllib3.disable_warnings()
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 

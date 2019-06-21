@@ -19,8 +19,10 @@ import requests
 import shutil
 import sys
 import tarfile
+import urllib3
 import zipfile
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 
 
