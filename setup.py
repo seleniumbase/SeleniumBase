@@ -66,10 +66,11 @@ setup(
         'pytest>=4.6.3',
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
-        'pytest-html>=1.21.0',
+        'pytest-html>=1.21.1',
         'pytest-metadata>=1.8.0',
         'pytest-ordering>=0.6',
         'pytest-rerunfailures>=7.0',
+        'pytest-timeout>=1.3.3',
         'pytest-xdist>=1.29.0',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
@@ -78,7 +79,7 @@ setup(
         'pyotp>=2.2.7',
         'boto>=2.49.0',
         'flake8>=3.7.7',
-        'certifi>=2019.3.9',
+        'certifi>=2019.6.16',
         'PyVirtualDisplay==0.2.1',  # Keep at 0.2.1 (later versions are slow)
     ],
     packages=[
