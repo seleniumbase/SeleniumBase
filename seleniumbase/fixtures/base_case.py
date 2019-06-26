@@ -1497,12 +1497,6 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__slow_scroll_to_element(element)
 
-    @decorators.deprecated("Use self.click() - It now scrolls before clicking")
-    def scroll_click(self, selector, by=By.CSS_SELECTOR):
-        # DEPRECATED - self.click() now scrolls to the element before clicking
-        # self.scroll_to(selector, by=by)  # Redundant
-        self.click(selector, by=by)
-
     def click_xpath(self, xpath):
         # Technically self.click() will automatically detect an xpath selector,
         # so self.click_xpath() is just a longer name for the same action.
@@ -1613,11 +1607,6 @@ class BaseCase(unittest.TestCase):
                 self.execute_script(script)
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
-
-    @decorators.deprecated("Use re.escape() instead! It does what you want!")
-    def jq_format(self, code):
-        # DEPRECATED - re.escape() already does that thing you want!
-        return js_utils._jq_format(code)
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
@@ -1893,8 +1882,8 @@ class BaseCase(unittest.TestCase):
         self.set_value(
             selector, new_value, by=by, timeout=timeout)
 
-    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                                 timeout=settings.LARGE_TIMEOUT):
+    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                           timeout=settings.LARGE_TIMEOUT):
         """ This method uses jQuery to update a text field.
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
@@ -1918,15 +1907,6 @@ class BaseCase(unittest.TestCase):
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self.__demo_mode_pause_if_active()
-
-    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                           timeout=settings.LARGE_TIMEOUT):
-        """ The shorter version of self.jquery_update_text_value()
-            (The longer version remains for backwards compatibility.) """
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.jquery_update_text_value(
-            selector, new_value, by=by, timeout=timeout)
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
@@ -3083,6 +3063,44 @@ class BaseCase(unittest.TestCase):
     def __highlight_with_jquery_2(self, message, selector, o_bs):
         js_utils.highlight_with_jquery_2(
             self.driver, message, selector, o_bs, self.message_duration)
+
+    ############
+
+    # Deprecated Methods (Replace these if they're still in your code!)
+
+    @decorators.deprecated(
+        "scroll_click() is deprecated. Use self.click() - It scrolls for you!")
+    def scroll_click(self, selector, by=By.CSS_SELECTOR):
+        # DEPRECATED - self.click() now scrolls to the element before clicking.
+        # self.scroll_to(selector, by=by)  # Redundant
+        self.click(selector, by=by)
+
+    @decorators.deprecated(
+        "update_text_value() is deprecated. Use self.update_text() instead!")
+    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
+                          timeout=settings.LARGE_TIMEOUT, retry=False):
+        # DEPRECATED - self.update_text() should be used instead.
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(
+            selector, new_value, by=by, timeout=timeout, retry=retry)
+
+    @decorators.deprecated(
+        "jquery_update_text_value() is deprecated. Use jquery_update_text()")
+    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
+                                 timeout=settings.LARGE_TIMEOUT):
+        # DEPRECATED - self.jquery_update_text() should be used instead.
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.jquery_update_text(selector, new_value, by=by, timeout=timeout)
+
+    @decorators.deprecated(
+        "jq_format() is deprecated. Use re.escape() instead!")
+    def jq_format(self, code):
+        # DEPRECATED - re.escape() already performs the intended action!
+        return js_utils._jq_format(code)
 
     ############
 
