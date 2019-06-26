@@ -130,3 +130,9 @@ def log_folder_setup(log_path, archive_logs=False):
             os.makedirs(log_path)
             if not settings.ARCHIVE_EXISTING_LOGS and not archive_logs:
                 shutil.rmtree(archived_logs)
+            elif len(os.listdir(archived_logs)) == 0:
+                # Don't archive an empty directory
+                shutil.rmtree(archived_logs)
+            else:
+                # Logs are saved/archived
+                pass
