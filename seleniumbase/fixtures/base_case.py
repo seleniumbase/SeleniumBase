@@ -151,6 +151,21 @@ class BaseCase(unittest.TestCase):
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
 
+    def slow_click(self, selector, by=By.CSS_SELECTOR,
+                   timeout=settings.SMALL_TIMEOUT):
+        """ Similar to click(), but pauses for a brief moment before clicking.
+            When used in combination with setting the user-agent, you can often
+            bypass bot-detection by tricking websites into thinking that you're
+            not a bot. (Useful on websites that block web automation tools.)
+            To set the user-agent, use: ``--agent=AGENT``.
+            Here's an example message from GitHub's bot-blocker:
+            ``You have triggered an abuse detection mechanism...`` """
+        if not self.demo_mode:
+            self.click(selector, by=by, timeout=timeout, delay=1.05)
+        else:
+            # Demo Mode already includes a small delay
+            self.click(selector, by=by, timeout=timeout, delay=0.25)
+
     def double_click(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.SMALL_TIMEOUT):
         from selenium.webdriver import ActionChains
