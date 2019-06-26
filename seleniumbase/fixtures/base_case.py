@@ -543,7 +543,7 @@ class BaseCase(unittest.TestCase):
         return self.get_attribute(selector,
                                   attribute='src', by=by, timeout=timeout)
 
-    def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def add_text(self, selector, text, by=By.CSS_SELECTOR,
                  timeout=settings.LARGE_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
@@ -558,11 +558,11 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element)
         pre_action_url = self.driver.current_url
         try:
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                text = text[:-1]
+                element.send_keys(text)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -571,11 +571,11 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.06)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                text = text[:-1]
+                element.send_keys(text)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -588,24 +588,27 @@ class BaseCase(unittest.TestCase):
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
 
-    def send_keys(self, selector, new_value, by=By.CSS_SELECTOR,
+    def send_keys(self, selector, text, by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
         """ Same as add_text() -> more reliable, but less name confusion. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
-        self.add_text(selector, new_value, by=by, timeout=timeout)
+        self.add_text(selector, text, by=by, timeout=timeout)
 
-    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                          timeout=settings.LARGE_TIMEOUT, retry=False):
-        """ This method updates an element's text value with a new value.
+    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                    timeout=settings.LARGE_TIMEOUT, retry=False):
+        """ This method updates an element's text field with new text.
+            Has two parts:
+            1. Clears the text field.
+            2. Types in new text into the text field.
             @Params
-            selector - the selector with the value to update
-            new_value - the new value for setting the text field
-            by - the type of selector to search by (Default: CSS)
+            selector - the selector of the text field
+            new_value - the new value to type into the text field
+            by - the type of selector to search by (Default: CSS Selector)
             timeout - how long to wait for the selector to be visible
-            retry - if True, use JS if the selenium text update fails
+            retry - if True, use JS if the Selenium text update fails
         """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
@@ -666,17 +669,16 @@ class BaseCase(unittest.TestCase):
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
 
-    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                    timeout=settings.LARGE_TIMEOUT, retry=False):
-        """ The shorter version of update_text_value(), which
-            clears existing text and adds new text into the text field.
+    def type(self, selector, text, by=By.CSS_SELECTOR,
+             timeout=settings.LARGE_TIMEOUT, retry=False):
+        """ The short version of update_text(), which clears existing text
+            and adds new text into the text field.
             We want to keep the old version for backward compatibility. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
-        self.update_text_value(selector, new_value, by=by,
-                               timeout=timeout, retry=retry)
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
