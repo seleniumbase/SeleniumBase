@@ -82,6 +82,7 @@ class BaseCase(unittest.TestCase):
         self._tour_steps = {}
 
     def open(self, url):
+        """ Navigates the current browser window to the specified page. """
         self.__last_page_load_url = None
         self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
