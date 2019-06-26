@@ -1,5 +1,4 @@
 from seleniumbase import BaseCase
-import time
 
 
 class GitHubTests(BaseCase):
@@ -7,10 +6,8 @@ class GitHubTests(BaseCase):
     # Selenium can trigger GitHub's abuse detection mechanism:
     # "You have triggered an abuse detection mechanism."
     # "Please wait a few minutes before you try again."
-    # To avoid this, slow down Selenium actions.
-    def slow_click(self, css_selector):
-        time.sleep(1.05)
-        self.click(css_selector)
+    # To avoid this, slow_click() is being used to
+    # slow down Selenium actions.
 
     def test_github(self):
         self.open("https://github.com/")

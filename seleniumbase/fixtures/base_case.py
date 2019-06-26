@@ -82,6 +82,7 @@ class BaseCase(unittest.TestCase):
         self._tour_steps = {}
 
     def open(self, url):
+        """ Navigates the current browser window to the specified page. """
         self.__last_page_load_url = None
         self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
@@ -89,12 +90,15 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def open_url(self, url):
-        """ In case people are mixing up self.open() with open(),
-            use this alternative. """
+        """ Same as open() """
+        self.open(url)
+
+    def visit(self, url):
+        """ Same as open() """
         self.open(url)
 
     def click(self, selector, by=By.CSS_SELECTOR,
-              timeout=settings.SMALL_TIMEOUT):
+              timeout=settings.SMALL_TIMEOUT, delay=0):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
@@ -112,6 +116,8 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode:
             self.__scroll_to_element(element)
         pre_action_url = self.driver.current_url
+        if delay and delay > 0:
+            time.sleep(delay)
         try:
             if self.browser == 'ie' and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
@@ -144,6 +150,21 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+
+    def slow_click(self, selector, by=By.CSS_SELECTOR,
+                   timeout=settings.SMALL_TIMEOUT):
+        """ Similar to click(), but pauses for a brief moment before clicking.
+            When used in combination with setting the user-agent, you can often
+            bypass bot-detection by tricking websites into thinking that you're
+            not a bot. (Useful on websites that block web automation tools.)
+            To set the user-agent, use: ``--agent=AGENT``.
+            Here's an example message from GitHub's bot-blocker:
+            ``You have triggered an abuse detection mechanism...`` """
+        if not self.demo_mode:
+            self.click(selector, by=by, timeout=timeout, delay=1.05)
+        else:
+            # Demo Mode already includes a small delay
+            self.click(selector, by=by, timeout=timeout, delay=0.25)
 
     def double_click(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.SMALL_TIMEOUT):
@@ -543,7 +564,7 @@ class BaseCase(unittest.TestCase):
         return self.get_attribute(selector,
                                   attribute='src', by=by, timeout=timeout)
 
-    def add_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def add_text(self, selector, text, by=By.CSS_SELECTOR,
                  timeout=settings.LARGE_TIMEOUT):
         """ The more-reliable version of driver.send_keys()
             Similar to update_text(), but won't clear the text field first. """
@@ -558,11 +579,11 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element)
         pre_action_url = self.driver.current_url
         try:
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                text = text[:-1]
+                element.send_keys(text)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -571,11 +592,11 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.06)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                text = text[:-1]
+                element.send_keys(text)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -588,24 +609,27 @@ class BaseCase(unittest.TestCase):
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
 
-    def send_keys(self, selector, new_value, by=By.CSS_SELECTOR,
+    def send_keys(self, selector, text, by=By.CSS_SELECTOR,
                   timeout=settings.LARGE_TIMEOUT):
         """ Same as add_text() -> more reliable, but less name confusion. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
-        self.add_text(selector, new_value, by=by, timeout=timeout)
+        self.add_text(selector, text, by=by, timeout=timeout)
 
-    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                          timeout=settings.LARGE_TIMEOUT, retry=False):
-        """ This method updates an element's text value with a new value.
+    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                    timeout=settings.LARGE_TIMEOUT, retry=False):
+        """ This method updates an element's text field with new text.
+            Has two parts:
+            1. Clears the text field.
+            2. Types in new text into the text field.
             @Params
-            selector - the selector with the value to update
-            new_value - the new value for setting the text field
-            by - the type of selector to search by (Default: CSS)
+            selector - the selector of the text field
+            new_value - the new value to type into the text field
+            by - the type of selector to search by (Default: CSS Selector)
             timeout - how long to wait for the selector to be visible
-            retry - if True, use JS if the selenium text update fails
+            retry - if True, use JS if the Selenium text update fails
         """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
@@ -666,17 +690,16 @@ class BaseCase(unittest.TestCase):
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
 
-    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                    timeout=settings.LARGE_TIMEOUT, retry=False):
-        """ The shorter version of update_text_value(), which
-            clears existing text and adds new text into the text field.
+    def type(self, selector, text, by=By.CSS_SELECTOR,
+             timeout=settings.LARGE_TIMEOUT, retry=False):
+        """ The short version of update_text(), which clears existing text
+            and adds new text into the text field.
             We want to keep the old version for backward compatibility. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
-        self.update_text_value(selector, new_value, by=by,
-                               timeout=timeout, retry=retry)
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
@@ -1489,12 +1512,6 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__slow_scroll_to_element(element)
 
-    @decorators.deprecated("Use self.click() - It now scrolls before clicking")
-    def scroll_click(self, selector, by=By.CSS_SELECTOR):
-        # DEPRECATED - self.click() now scrolls to the element before clicking
-        # self.scroll_to(selector, by=by)  # Redundant
-        self.click(selector, by=by)
-
     def click_xpath(self, xpath):
         # Technically self.click() will automatically detect an xpath selector,
         # so self.click_xpath() is just a longer name for the same action.
@@ -1606,11 +1623,6 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
 
-    @decorators.deprecated("Use re.escape() instead! It does what you want!")
-    def jq_format(self, code):
-        # DEPRECATED - re.escape() already does that thing you want!
-        return js_utils._jq_format(code)
-
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
 
@@ -1693,6 +1705,22 @@ class BaseCase(unittest.TestCase):
                 os.makedirs(folder)
             except Exception:
                 pass
+
+    def choose_file(self, selector, file_path, by=By.CSS_SELECTOR,
+                    timeout=settings.LARGE_TIMEOUT):
+        """ This method is used to choose a file to upload to a website.
+            It works by populating a file-chooser "input" field of type="file".
+            A relative file_path will get converted into an absolute file_path.
+
+            Example usage:
+                self.choose_file('input[type="file"], "my_dir/my_file.txt")
+        """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        abs_path = os.path.abspath(file_path)
+        self.add_text(selector, abs_path, by=by, timeout=timeout)
 
     def save_element_as_image_file(self, selector, file_name, folder=None):
         """ Take a screenshot of an element and save it as an image file.
@@ -1885,8 +1913,8 @@ class BaseCase(unittest.TestCase):
         self.set_value(
             selector, new_value, by=by, timeout=timeout)
 
-    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                                 timeout=settings.LARGE_TIMEOUT):
+    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+                           timeout=settings.LARGE_TIMEOUT):
         """ This method uses jQuery to update a text field.
             If the new_value string ends with the newline character,
             WebDriver will finish the call, which simulates pressing
@@ -1910,15 +1938,6 @@ class BaseCase(unittest.TestCase):
         if new_value.endswith('\n'):
             element.send_keys('\n')
         self.__demo_mode_pause_if_active()
-
-    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
-                           timeout=settings.LARGE_TIMEOUT):
-        """ The shorter version of self.jquery_update_text_value()
-            (The longer version remains for backwards compatibility.) """
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.jquery_update_text_value(
-            selector, new_value, by=by, timeout=timeout)
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         if page_utils.is_xpath_selector(selector):
@@ -3075,6 +3094,44 @@ class BaseCase(unittest.TestCase):
     def __highlight_with_jquery_2(self, message, selector, o_bs):
         js_utils.highlight_with_jquery_2(
             self.driver, message, selector, o_bs, self.message_duration)
+
+    ############
+
+    # Deprecated Methods (Replace these if they're still in your code!)
+
+    @decorators.deprecated(
+        "scroll_click() is deprecated. Use self.click() - It scrolls for you!")
+    def scroll_click(self, selector, by=By.CSS_SELECTOR):
+        # DEPRECATED - self.click() now scrolls to the element before clicking.
+        # self.scroll_to(selector, by=by)  # Redundant
+        self.click(selector, by=by)
+
+    @decorators.deprecated(
+        "update_text_value() is deprecated. Use self.update_text() instead!")
+    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
+                          timeout=settings.LARGE_TIMEOUT, retry=False):
+        # DEPRECATED - self.update_text() should be used instead.
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(
+            selector, new_value, by=by, timeout=timeout, retry=retry)
+
+    @decorators.deprecated(
+        "jquery_update_text_value() is deprecated. Use jquery_update_text()")
+    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
+                                 timeout=settings.LARGE_TIMEOUT):
+        # DEPRECATED - self.jquery_update_text() should be used instead.
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.jquery_update_text(selector, new_value, by=by, timeout=timeout)
+
+    @decorators.deprecated(
+        "jq_format() is deprecated. Use re.escape() instead!")
+    def jq_format(self, code):
+        # DEPRECATED - re.escape() already performs the intended action!
+        return js_utils._jq_format(code)
 
     ############
 
