@@ -90,12 +90,15 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def open_url(self, url):
-        """ In case people are mixing up self.open() with open(),
-            use this alternative. """
+        """ Same as open() """
+        self.open(url)
+
+    def visit(self, url):
+        """ Same as open() """
         self.open(url)
 
     def click(self, selector, by=By.CSS_SELECTOR,
-              timeout=settings.SMALL_TIMEOUT):
+              timeout=settings.SMALL_TIMEOUT, delay=0):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
@@ -113,6 +116,8 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode:
             self.__scroll_to_element(element)
         pre_action_url = self.driver.current_url
+        if delay and delay > 0:
+            time.sleep(delay)
         try:
             if self.browser == 'ie' and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
