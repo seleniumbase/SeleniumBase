@@ -1706,6 +1706,22 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
+    def choose_file(self, selector, file_path, by=By.CSS_SELECTOR,
+                    timeout=settings.LARGE_TIMEOUT):
+        """ This method is used to choose a file to upload to a website.
+            It works by populating a file-chooser "input" field of type="file".
+            A relative file_path will get converted into an absolute file_path.
+
+            Example usage:
+                self.choose_file('input[type="file"], "my_dir/my_file.txt")
+        """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        abs_path = os.path.abspath(file_path)
+        self.add_text(selector, abs_path, by=by, timeout=timeout)
+
     def save_element_as_image_file(self, selector, file_name, folder=None):
         """ Take a screenshot of an element and save it as an image file.
             If no folder is specified, will save it to the current folder. """
