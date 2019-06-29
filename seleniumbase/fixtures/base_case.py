@@ -1403,7 +1403,8 @@ class BaseCase(unittest.TestCase):
                   Other element would receive the click: ... } """
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
-        self.find_element(selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        self.wait_for_element_visible(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
@@ -1439,7 +1440,7 @@ class BaseCase(unittest.TestCase):
             scroll - the option to scroll to the element first (Default: True)
         """
         selector, by = self.__recalculate_selector(selector, by)
-        element = self.find_element(
+        element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if scroll:
             self.__slow_scroll_to_element(element)
@@ -1725,7 +1726,7 @@ class BaseCase(unittest.TestCase):
     def save_element_as_image_file(self, selector, file_name, folder=None):
         """ Take a screenshot of an element and save it as an image file.
             If no folder is specified, will save it to the current folder. """
-        element = self.find_element(selector)
+        element = self.wait_for_element_visible(selector)
         element_png = element.screenshot_as_png
         if len(file_name.split('.')[0]) < 1:
             raise Exception("Error: file_name length must be > 0.")
@@ -1995,7 +1996,7 @@ class BaseCase(unittest.TestCase):
             Defaults to "text" if option_by is unspecified or unknown. """
         if page_utils.is_xpath_selector(dropdown_selector):
             dropdown_by = By.XPATH
-        element = self.find_element(
+        element = self.wait_for_element_visible(
             dropdown_selector, by=dropdown_by, timeout=timeout)
         self.__demo_mode_highlight_if_active(dropdown_selector, dropdown_by)
         pre_action_url = self.driver.current_url
@@ -2009,7 +2010,7 @@ class BaseCase(unittest.TestCase):
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
-            element = self.find_element(
+            element = self.wait_for_element_visible(
                 dropdown_selector, by=dropdown_by, timeout=timeout)
             if option_by == "index":
                 Select(element).select_by_index(option)
@@ -3063,7 +3064,7 @@ class BaseCase(unittest.TestCase):
     def __highlight_with_assert_success(
             self, message, selector, by=By.CSS_SELECTOR):
         selector, by = self.__recalculate_selector(selector, by)
-        element = self.find_element(
+        element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         try:
             selector = self.convert_to_css_selector(selector, by=by)
