@@ -247,50 +247,39 @@ self.generate_traffic_chain(pages, loops=1)
 
 ########
 
-self.wait_for_element_present(selector, by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.assert_element_present(selector, by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
+self.get_element(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
+
+self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
-self.wait_for_element_visible(selector, by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.wait_for_element(selector, by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_element(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
 self.find_element(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.assert_element(
-    selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+self.assert_element(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.assert_element_visible(
-    selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
-self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.wait_for_exact_text_visible(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_exact_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.find_text(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
+self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.assert_text(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
+self.assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
-self.assert_exact_text(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
+self.assert_exact_text(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
@@ -304,30 +293,23 @@ self.assert_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
-self.wait_for_partial_link_text(partial_link_text,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_partial_link_text(partial_link_text, timeout=settings.LARGE_TIMEOUT)
 
-self.find_partial_link_text(partial_link_text,
-    timeout=settings.LARGE_TIMEOUT)
+self.find_partial_link_text(partial_link_text, timeout=settings.LARGE_TIMEOUT)
 
-self.assert_partial_link_text(partial_link_text,
-    timeout=settings.SMALL_TIMEOUT)
+self.assert_partial_link_text(partial_link_text, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
-self.wait_for_element_absent(selector, by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_element_absent(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.assert_element_absent(selector, by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
+self.assert_element_absent(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
-self.wait_for_element_not_visible(selector, by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT)
+self.wait_for_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT)
 
-self.assert_element_not_visible(selector, by=By.CSS_SELECTOR,
-    timeout=settings.SMALL_TIMEOUT)
+self.assert_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
 ########
 
@@ -362,11 +344,9 @@ self.switch_to_default_driver()
 
 ########
 
-self.delayed_assert_element(selector, by=By.CSS_SELECTOR,
-    timeout=settings.MINI_TIMEOUT)
+self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=settings.MINI_TIMEOUT)
 
-self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR,
-    timeout=settings.MINI_TIMEOUT)
+self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=settings.MINI_TIMEOUT)
 
 self.process_delayed_asserts()
 ```
