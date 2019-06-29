@@ -2147,6 +2147,14 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
+    def get_element(self, selector, by=By.CSS_SELECTOR,
+                    timeout=settings.LARGE_TIMEOUT):
+        """ Same as wait_for_element_present() - returns the element.
+            The element does not need be visible (it may be hidden). """
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_element_present(selector, by=by, timeout=timeout)
+
     def assert_element_present(self, selector, by=By.CSS_SELECTOR,
                                timeout=settings.SMALL_TIMEOUT):
         """ Similar to wait_for_element_present(), but returns nothing.
