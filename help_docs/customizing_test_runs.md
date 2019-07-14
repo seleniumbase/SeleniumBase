@@ -7,9 +7,11 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose whether to enter Debug Mode on failures
 * Choose additional variables to pass into tests
 * Choose the User-Agent for the browser to use
-* Change the automation speed (with Demo Mode)
+* Choose the automation speed (with Demo Mode)
 * Choose whether to run tests multi-threaded
 * Choose whether to retry failing tests
+* Choose a Chrome User Data Directory to use
+* Choose a Chrome Extension to load
 * Choose a BrowserStack server to run on
 * Choose a Sauce Labs server to run on
 * Choose a TestingBot server to run on
