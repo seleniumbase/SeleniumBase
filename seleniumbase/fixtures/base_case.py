@@ -2722,7 +2722,9 @@ class BaseCase(unittest.TestCase):
 
     def get_new_driver(self, browser=None, headless=None,
                        servername=None, port=None, proxy=None, agent=None,
-                       switch_to=True, cap_file=None, disable_csp=None):
+                       switch_to=True, cap_file=None, disable_csp=None,
+                       enable_sync=None, user_data_dir=None,
+                       extension_zip=None, extension_dir=None):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
             that import base_case.BaseCase from seleniumbase. If parameters
@@ -2734,6 +2736,12 @@ class BaseCase(unittest.TestCase):
             port - if using a Selenium Grid, set the host port here
             proxy - if using a proxy server, specify the "host:port" combo here
             switch_to - the option to switch to the new driver (default = True)
+            cap_file - the file containing desired capabilities for the browser
+            disable_csp - an option to disable Chrome's Content Security Policy
+            enable_sync - the option to enable the "Chrome Sync" feature
+            user_data_dir - Chrome's User Data Directory to use (Chrome-only)
+            extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
+            extension_dir - A Chrome Extension folder to use (Chrome-only)
         """
         if self.browser == "remote" and self.servername == "localhost":
             raise Exception('Cannot use "remote" browser driver on localhost!'
@@ -2777,6 +2785,14 @@ class BaseCase(unittest.TestCase):
             user_agent = self.user_agent
         if disable_csp is None:
             disable_csp = self.disable_csp
+        if enable_sync is None:
+            enable_sync = self.enable_sync
+        if user_data_dir is None:
+            user_data_dir = self.user_data_dir
+        if extension_zip is None:
+            extension_zip = self.extension_zip
+        if extension_dir is None:
+            extension_dir = self.extension_dir
         if self.demo_mode or self.masterqa_mode:
             disable_csp = True
         if cap_file is None:
@@ -2795,7 +2811,11 @@ class BaseCase(unittest.TestCase):
                                                  proxy_string=proxy_string,
                                                  user_agent=user_agent,
                                                  cap_file=cap_file,
-                                                 disable_csp=disable_csp)
+                                                 disable_csp=disable_csp,
+                                                 enable_sync=enable_sync,
+                                                 user_data_dir=user_data_dir,
+                                                 extension_zip=extension_zip,
+                                                 extension_dir=extension_dir)
         self._drivers_list.append(new_driver)
         if switch_to:
             self.driver = new_driver
@@ -3213,6 +3233,10 @@ class BaseCase(unittest.TestCase):
             self.ad_block_on = sb_config.ad_block_on
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
+            self.enable_sync = sb_config.enable_sync
+            self.user_data_dir = sb_config.user_data_dir
+            self.extension_zip = sb_config.extension_zip
+            self.extension_dir = sb_config.extension_dir
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
@@ -3286,7 +3310,11 @@ class BaseCase(unittest.TestCase):
                                           agent=self.user_agent,
                                           switch_to=True,
                                           cap_file=self.cap_file,
-                                          disable_csp=self.disable_csp)
+                                          disable_csp=self.disable_csp,
+                                          enable_sync=self.enable_sync,
+                                          user_data_dir=self.user_data_dir,
+                                          extension_zip=self.extension_zip,
+                                          extension_dir=self.extension_dir)
         self._default_driver = self.driver
 
     def __set_last_page_screenshot(self):
