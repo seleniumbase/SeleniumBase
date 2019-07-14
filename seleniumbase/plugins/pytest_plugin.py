@@ -45,6 +45,10 @@ def pytest_addoption(parser):
                      default=None,
                      help="""The file that stores browser desired capabilities
                           for BrowserStack or Sauce Labs web drivers.""")
+    parser.addoption('--user_data_dir', dest='user_data_dir',
+                     default=None,
+                     help="""The Chrome User Data Directory to use. (Profile)
+                          If the directory doesn't exist, it'll be created.""")
     parser.addoption('--with-testing_base', action="store_true",
                      dest='with_testing_base',
                      default=True,
@@ -117,6 +121,18 @@ def pytest_addoption(parser):
                      help="""Designates the User-Agent for the browser to use.
                           Format: A string.
                           Default: None.""")
+    parser.addoption('--extension_zip', action='store',
+                     dest='extension_zip',
+                     default=None,
+                     help="""Designates the Chrome Extension ZIP file to load.
+                          Format: A .zip file containing the Chrome extension.
+                          Default: None.""")
+    parser.addoption('--extension_dir', action='store',
+                     dest='extension_dir',
+                     default=None,
+                     help="""Designates the Chrome Extension folder to load.
+                          Format: A directory containing the Chrome extension.
+                          Default: None.""")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
                      default=False,
@@ -169,6 +185,10 @@ def pytest_addoption(parser):
                           libraries for various testing actions.
                           Setting this to True (--disable_csp) overrides the
                           value set in seleniumbase/config/settings.py""")
+    parser.addoption('--enable_sync', action="store_true",
+                     dest='enable_sync',
+                     default=False,
+                     help="""Using this enables the "Chrome Sync" feature.""")
     parser.addoption('--save_screenshot', action='store_true',
                      dest='save_screenshot',
                      default=False,
@@ -198,6 +218,8 @@ def pytest_configure(config):
     sb_config.with_selenium = config.getoption('with_selenium')
     sb_config.user_agent = config.getoption('user_agent')
     sb_config.headless = config.getoption('headless')
+    sb_config.extension_zip = config.getoption('extension_zip')
+    sb_config.extension_dir = config.getoption('extension_dir')
     sb_config.with_testing_base = config.getoption('with_testing_base')
     sb_config.with_db_reporting = config.getoption('with_db_reporting')
     sb_config.with_s3_logging = config.getoption('with_s3_logging')
@@ -208,6 +230,7 @@ def pytest_configure(config):
     sb_config.port = config.getoption('port')
     sb_config.proxy_string = config.getoption('proxy_string')
     sb_config.cap_file = config.getoption('cap_file')
+    sb_config.user_data_dir = config.getoption('user_data_dir')
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = config.getoption('log_path')
     sb_config.archive_logs = config.getoption('archive_logs')
@@ -219,6 +242,7 @@ def pytest_configure(config):
     sb_config.ad_block_on = config.getoption('ad_block_on')
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
+    sb_config.enable_sync = config.getoption('enable_sync')
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')

@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.5+)
 """
 
 from setuptools import setup, find_packages  # noqa
@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.24.1',
+    version='1.25.0',
     description='Reliable Browser Automation & Testing Framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -54,6 +54,7 @@ setup(
     install_requires=[
         'pip',
         'setuptools',
+        'wheel',
         'six',
         'nose',
         'ipdb',
@@ -79,7 +80,7 @@ setup(
         'colorama>=0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'flake8>=3.7.7',
+        'flake8>=3.7.8',
         'certifi>=2019.6.16',
         'PyVirtualDisplay==0.2.1',  # Keep at 0.2.1 (later versions are slow)
     ],

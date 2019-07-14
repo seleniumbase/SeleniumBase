@@ -33,10 +33,13 @@ except (ImportError, ValueError):
     b.data = None
     b.environment = "test"
     b.user_agent = None
+    b.extension_zip = None
+    b.extension_dir = None
     b.database_env = "test"
     b.log_path = "latest_logs/"
     b.archive_logs = False
     b.disable_csp = False
+    b.enable_sync = False
     b.visual_baseline = False
     b.save_screenshot_after_test = False
     b.timeout_multiplier = None
@@ -49,6 +52,7 @@ except (ImportError, ValueError):
     b.demo_mode = False
     b.demo_sleep = 1
     b.message_duration = 2
+    b.user_data_dir = None
     b.proxy_string = None
     b.ad_block_on = False
     b.highlights = None

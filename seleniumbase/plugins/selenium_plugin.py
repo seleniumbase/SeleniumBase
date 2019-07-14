@@ -16,10 +16,14 @@ class SeleniumBrowser(Plugin):
 
     The following command line options are available to the tests:
     self.options.browser -- the browser to use (--browser)
+    self.options.cap_file -- browser's desired capabilities file (--cap_file)
+    self.options.user_data_dir -- set Chrome's user data dir (--user_data_dir)
     self.options.server -- the server used by the test (--server)
     self.options.port -- the port used by the test (--port)
     self.options.proxy -- designates the proxy server:port to use. (--proxy)
     self.options.agent -- designates the User Agent for the browser. (--agent)
+    self.options.extension_zip -- load a Chrome Extension ZIP (--extension_zip)
+    self.options.extension_dir -- load a Chrome Extension DIR (--extension_dir)
     self.options.headless -- the option to run headlessly (--headless)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
@@ -29,6 +33,7 @@ class SeleniumBrowser(Plugin):
     self.options.ad_block -- the option to block some display ads (--ad_block)
     self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
     self.options.disable_csp -- disable Content Security Policy (--disable_csp)
+    self.options.enable_sync -- option to enable "Chrome Sync" (--enable_sync)
     self.options.save_screenshot -- save screen after test (--save_screenshot)
     self.options.visual_baseline -- set the visual baseline (--visual_baseline)
     self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
@@ -59,6 +64,12 @@ class SeleniumBrowser(Plugin):
             help="""The file that stores browser desired capabilities
                     for BrowserStack or Sauce Labs web drivers.""")
         parser.add_option(
+            '--user_data_dir', action='store',
+            dest='user_data_dir',
+            default=None,
+            help="""The Chrome User Data Directory to use. (Chrome Profile)
+                    If the directory doesn't exist, it'll be created.""")
+        parser.add_option(
             '--server', action='store', dest='servername',
             default='localhost',
             help="""Designates the Selenium Grid server to use.
@@ -83,6 +94,20 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""Designates the User-Agent for the browser to use.
                     Format: A string.
+                    Default: None.""")
+        parser.add_option(
+            '--extension_zip', action='store',
+            dest='extension_zip',
+            default=None,
+            help="""Designates the Chrome Extension ZIP file to load.
+                    Format: A .zip file containing the Chrome extension.
+                    Default: None.""")
+        parser.add_option(
+            '--extension_dir', action='store',
+            dest='extension_dir',
+            default=None,
+            help="""Designates the Chrome Extension folder to load.
+                    Format: A directory containing the Chrome extension.
                     Default: None.""")
         parser.add_option(
             '--headless', action="store_true",
@@ -140,6 +165,11 @@ class SeleniumBrowser(Plugin):
                     Setting this to True (--disable_csp) overrides the
                     value set in seleniumbase/config/settings.py""")
         parser.add_option(
+            '--enable_sync', action="store_true",
+            dest='enable_sync',
+            default=False,
+            help="""Using this enables the "Chrome Sync" feature.""")
+        parser.add_option(
             '--save_screenshot', action="store_true",
             dest='save_screenshot',
             default=False,
@@ -174,6 +204,9 @@ class SeleniumBrowser(Plugin):
         test.test.headless = self.options.headless
         test.test.servername = self.options.servername
         test.test.port = self.options.port
+        test.test.user_data_dir = self.options.user_data_dir
+        test.test.extension_zip = self.options.extension_zip
+        test.test.extension_dir = self.options.extension_dir
         test.test.proxy_string = self.options.proxy_string
         test.test.user_agent = self.options.user_agent
         test.test.demo_mode = self.options.demo_mode
@@ -184,6 +217,7 @@ class SeleniumBrowser(Plugin):
         test.test.ad_block_on = self.options.ad_block_on
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
+        test.test.enable_sync = self.options.enable_sync
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
         test.test.timeout_multiplier = self.options.timeout_multiplier

@@ -97,7 +97,8 @@ def _add_chrome_disable_csp_extension(chrome_options):
 
 def _set_chrome_options(
         downloads_path, headless, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, disable_csp):
+        proxy_user, proxy_pass, user_agent, disable_csp, enable_sync,
+        user_data_dir, extension_zip, extension_dir):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
@@ -108,6 +109,19 @@ def _set_chrome_options(
         }
     }
     chrome_options.add_experimental_option("prefs", prefs)
+    if enable_sync:
+        chrome_options.add_experimental_option(
+            "excludeSwitches", ["disable-sync"])
+        chrome_options.add_argument("--enable-sync")
+    if user_data_dir:
+        abs_path = os.path.abspath(user_data_dir)
+        chrome_options.add_argument("user-data-dir=%s" % abs_path)
+    if extension_zip:
+        abs_path = os.path.abspath(extension_zip)
+        chrome_options.add_extension(abs_path)
+    if extension_dir:
+        abs_path = os.path.abspath(extension_dir)
+        chrome_options.add_argument("--load-extension=%s" % abs_path)
     chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
@@ -245,7 +259,9 @@ def validate_proxy_string(proxy_string):
 
 def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None,
-               user_agent=None, cap_file=None, disable_csp=None):
+               user_agent=None, cap_file=None, disable_csp=None,
+               enable_sync=None, user_data_dir=None,
+               extension_zip=None, extension_dir=None):
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -271,19 +287,27 @@ def get_driver(browser_name, headless=False, use_grid=False,
         proxy_string = validate_proxy_string(proxy_string)
         if proxy_string and proxy_user and proxy_pass:
             proxy_auth = True
+    if browser_name == "chrome" and user_data_dir and len(user_data_dir) < 3:
+        raise Exception(
+            "Name length of Chrome's User Data Directory must be >= 3.")
     if use_grid:
         return get_remote_driver(
-            browser_name, headless, servername, port, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, cap_file, disable_csp)
+            browser_name, headless, servername, port,
+            proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+            cap_file, disable_csp, enable_sync, user_data_dir,
+            extension_zip, extension_dir)
     else:
         return get_local_driver(
-            browser_name, headless, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, disable_csp)
+            browser_name, headless,
+            proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+            disable_csp, enable_sync, user_data_dir,
+            extension_zip, extension_dir)
 
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, cap_file, disable_csp):
+        proxy_user, proxy_pass, user_agent, cap_file, disable_csp,
+        enable_sync, user_data_dir, extension_zip, extension_dir):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
@@ -293,7 +317,8 @@ def get_remote_driver(
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
             downloads_path, headless, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, disable_csp)
+            proxy_user, proxy_pass, user_agent, disable_csp, enable_sync,
+            user_data_dir, extension_zip, extension_dir)
         capabilities = chrome_options.to_capabilities()
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -400,8 +425,10 @@ def get_remote_driver(
 
 
 def get_local_driver(
-        browser_name, headless, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, disable_csp):
+        browser_name, headless,
+        proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+        disable_csp, enable_sync, user_data_dir,
+        extension_zip, extension_dir):
     '''
     Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test.
@@ -493,8 +520,10 @@ def get_local_driver(
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(
-                downloads_path, headless, proxy_string, proxy_auth,
-                proxy_user, proxy_pass, user_agent, disable_csp)
+                downloads_path, headless,
+                proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+                disable_csp, enable_sync, user_data_dir,
+                extension_zip, extension_dir)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
                 return webdriver.Chrome(

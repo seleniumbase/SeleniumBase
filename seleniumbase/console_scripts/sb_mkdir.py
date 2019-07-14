@@ -217,7 +217,7 @@ def main():
         data.append("class GoogleTests(BaseCase):")
         data.append("")
         data.append("    def test_google_dot_com(self):")
-        data.append("        self.open('https://google.com')")
+        data.append("        self.open('https://google.com/ncr')")
         data.append(
             "        self.update_text(HomePage.search_box, 'github')")
         data.append("        self.assert_element(HomePage.list_box)")
