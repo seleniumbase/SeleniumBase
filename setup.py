@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.5+)
 """
 
 from setuptools import setup, find_packages  # noqa
