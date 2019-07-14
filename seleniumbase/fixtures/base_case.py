@@ -1443,7 +1443,14 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if scroll:
-            self.__slow_scroll_to_element(element)
+            try:
+                self.__slow_scroll_to_element(element)
+            except (StaleElementReferenceException, ENI_Exception):
+                self.wait_for_ready_state_complete()
+                time.sleep(0.05)
+                element = self.wait_for_element_visible(
+                    selector, by=by, timeout=settings.SMALL_TIMEOUT)
+                self.__slow_scroll_to_element(element)
         try:
             selector = self.convert_to_css_selector(selector, by=by)
         except Exception:
@@ -1509,9 +1516,17 @@ class BaseCase(unittest.TestCase):
         ''' Slow motion scroll to destination '''
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
-        self.__slow_scroll_to_element(element)
+        try:
+            self.__slow_scroll_to_element(element)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            self.__slow_scroll_to_element(element)
 
     def click_xpath(self, xpath):
         # Technically self.click() will automatically detect an xpath selector,
@@ -3071,7 +3086,14 @@ class BaseCase(unittest.TestCase):
         except Exception:
             # Don't highlight if can't convert to CSS_SELECTOR
             return
-        self.__slow_scroll_to_element(element)
+        try:
+            self.__slow_scroll_to_element(element)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=settings.SMALL_TIMEOUT)
+            self.__slow_scroll_to_element(element)
 
         o_bs = ''  # original_box_shadow
         style = element.get_attribute('style')
