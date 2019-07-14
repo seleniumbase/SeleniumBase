@@ -54,6 +54,7 @@ setup(
     install_requires=[
         'pip',
         'setuptools',
+        'wheel',
         'six',
         'nose',
         'ipdb',
@@ -79,7 +80,7 @@ setup(
         'colorama>=0.4.1',
         'pyotp>=2.2.7',
         'boto>=2.49.0',
-        'flake8>=3.7.7',
+        'flake8>=3.7.8',
         'certifi>=2019.6.16',
         'PyVirtualDisplay==0.2.1',  # Keep at 0.2.1 (later versions are slow)
     ],
