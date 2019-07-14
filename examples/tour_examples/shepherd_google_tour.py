@@ -51,7 +51,7 @@ class MyTourClass(BaseCase):
             "#searchbox-directions", alignment="bottom", theme="dark")
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "div.widget-minimap", alignment="right")
+            "#minimap div.widget-minimap", alignment="right")
         self.add_tour_step(
             "Click here to zoom in.", "#widget-zoom-in", alignment="left")
         self.add_tour_step(
