@@ -117,6 +117,7 @@ def _set_chrome_options(
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
     if extension_zip:
+        # Can be a comma-separated list of .ZIP or .CRX files
         extension_zip_list = extension_zip.split(',')
         for extension_zip_item in extension_zip_list:
             abs_path = os.path.abspath(extension_zip_item)

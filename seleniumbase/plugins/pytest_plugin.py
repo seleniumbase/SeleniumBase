@@ -125,13 +125,15 @@ def pytest_addoption(parser):
                      dest='extension_zip',
                      default=None,
                      help="""Designates the Chrome Extension ZIP file to load.
-                          Format: A .zip file containing the Chrome extension.
+                          Format: A comma-separated list of .zip or .crx files
+                          containing the Chrome extensions to load.
                           Default: None.""")
     parser.addoption('--extension_dir', action='store',
                      dest='extension_dir',
                      default=None,
                      help="""Designates the Chrome Extension folder to load.
                           Format: A directory containing the Chrome extension.
+                          (Can also be a comma-separated list of directories.)
                           Default: None.""")
     parser.addoption('--headless', action="store_true",
                      dest='headless',
