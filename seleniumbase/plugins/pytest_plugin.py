@@ -12,7 +12,8 @@ from seleniumbase.fixtures import constants
 def pytest_addoption(parser):
     parser = parser.getgroup('SeleniumBase',
                              'SeleniumBase specific configuration options')
-    parser.addoption('--browser', action="store",
+    parser.addoption('--browser',
+                     action="store",
                      dest='browser',
                      type=str.lower,
                      choices=constants.ValidBrowsers.valid_browsers,
@@ -20,11 +21,13 @@ def pytest_addoption(parser):
                      help="""Specifies the web browser to use. Default: Chrome.
                           If you want to use Firefox, explicitly indicate that.
                           Example: (--browser=firefox)""")
-    parser.addoption('--with-selenium', action="store_true",
+    parser.addoption('--with-selenium',
+                     action="store_true",
                      dest='with_selenium',
                      default=True,
                      help="Use if tests need to be run with a web browser.")
-    parser.addoption('--env', action='store',
+    parser.addoption('--env',
+                     action='store',
                      dest='environment',
                      type=str.lower,
                      choices=(
@@ -38,18 +41,22 @@ def pytest_addoption(parser):
                      ),
                      default=constants.Environment.TEST,
                      help="The environment to run the tests in.")
-    parser.addoption('--data', dest='data',
+    parser.addoption('--data',
+                     dest='data',
                      default=None,
                      help='Extra data to pass from the command line.')
-    parser.addoption('--cap_file', dest='cap_file',
+    parser.addoption('--cap_file', '--cap-file',
+                     dest='cap_file',
                      default=None,
                      help="""The file that stores browser desired capabilities
                           for BrowserStack or Sauce Labs web drivers.""")
-    parser.addoption('--user_data_dir', dest='user_data_dir',
+    parser.addoption('--user_data_dir', '--user-data-dir',
+                     dest='user_data_dir',
                      default=None,
                      help="""The Chrome User Data Directory to use. (Profile)
                           If the directory doesn't exist, it'll be created.""")
-    parser.addoption('--with-testing_base', action="store_true",
+    parser.addoption('--with-testing_base', '--with-testing-base',
+                     action="store_true",
                      dest='with_testing_base',
                      default=True,
                      help="""Use to save logs and screenshots when tests fail.
@@ -59,18 +66,22 @@ def pytest_addoption(parser):
                           --with-basic_test_info ,
                           --with-page_source
                           """)
-    parser.addoption('--log_path', dest='log_path',
+    parser.addoption('--log_path', '--log-path',
+                     dest='log_path',
                      default='latest_logs/',
                      help='Where the log files are saved.')
-    parser.addoption('--archive_logs', action="store_true",
+    parser.addoption('--archive_logs', '--archive-logs',
+                     action="store_true",
                      dest='archive_logs',
                      default=False,
                      help="Archive old log files instead of deleting them.")
-    parser.addoption('--with-db_reporting', action="store_true",
+    parser.addoption('--with-db_reporting', '--with-db-reporting',
+                     action="store_true",
                      dest='with_db_reporting',
                      default=False,
                      help="Use to record test data in the MySQL database.")
-    parser.addoption('--database_env', action='store',
+    parser.addoption('--database_env', '--database-env',
+                     action='store',
                      dest='database_env',
                      choices=(
                          'production', 'qa', 'staging', 'develop',
@@ -78,36 +89,43 @@ def pytest_addoption(parser):
                      ),
                      default='test',
                      help=optparse.SUPPRESS_HELP)
-    parser.addoption('--with-s3_logging', action="store_true",
+    parser.addoption('--with-s3_logging', '--with-s3-logging',
+                     action="store_true",
                      dest='with_s3_logging',
                      default=False,
                      help="Use to save test log files in Amazon S3.")
-    parser.addoption('--with-screen_shots', action="store_true",
+    parser.addoption('--with-screen_shots', '--with-screen-shots',
+                     action="store_true",
                      dest='with_screen_shots',
                      default=False,
                      help="""Use to save screenshots on test failure.
                           (Automatically on when using --with-testing_base)""")
-    parser.addoption('--with-basic_test_info', action="store_true",
+    parser.addoption('--with-basic_test_info', '--with-basic-test-info',
+                     action="store_true",
                      dest='with_basic_test_info',
                      default=False,
                      help="""Use to save basic test info on test failure.
                           (Automatically on when using --with-testing_base)""")
-    parser.addoption('--with-page_source', action="store_true",
+    parser.addoption('--with-page_source', '--with-page-source',
+                     action="store_true",
                      dest='with_page_source',
                      default=False,
                      help="""Use to save page source on test failure.
                           (Automatically on when using --with-testing_base)""")
-    parser.addoption('--server', action='store',
+    parser.addoption('--server',
+                     action='store',
                      dest='servername',
                      default='localhost',
                      help="""Designates the Selenium Grid server to use.
                           Default: localhost.""")
-    parser.addoption('--port', action='store',
+    parser.addoption('--port',
+                     action='store',
                      dest='port',
                      default='4444',
                      help="""Designates the Selenium Grid port to use.
                           Default: 4444.""")
-    parser.addoption('--proxy', action='store',
+    parser.addoption('--proxy',
+                     action='store',
                      dest='proxy_string',
                      default=None,
                      help="""Designates the proxy server:port to use.
@@ -121,64 +139,79 @@ def pytest_addoption(parser):
                      help="""Designates the User-Agent for the browser to use.
                           Format: A string.
                           Default: None.""")
-    parser.addoption('--extension_zip', action='store',
+    parser.addoption('--extension_zip', '--extension-zip',
+                     action='store',
                      dest='extension_zip',
                      default=None,
                      help="""Designates the Chrome Extension ZIP file to load.
                           Format: A comma-separated list of .zip or .crx files
                           containing the Chrome extensions to load.
                           Default: None.""")
-    parser.addoption('--extension_dir', action='store',
+    parser.addoption('--extension_dir', '--extension-dir',
+                     action='store',
                      dest='extension_dir',
                      default=None,
                      help="""Designates the Chrome Extension folder to load.
                           Format: A directory containing the Chrome extension.
                           (Can also be a comma-separated list of directories.)
                           Default: None.""")
-    parser.addoption('--headless', action="store_true",
+    parser.addoption('--headless',
+                     action="store_true",
                      dest='headless',
                      default=False,
                      help="""Using this makes Webdriver run headlessly,
                           which is required on headless machines.""")
-    parser.addoption('--is_pytest', action="store_true",
+    parser.addoption('--is_pytest', '--is-pytest',
+                     action="store_true",
                      dest='is_pytest',
                      default=True,
                      help="""This is used by the BaseCase class to tell apart
                           pytest runs from nosetest runs. (Automatic)""")
-    parser.addoption('--demo_mode', action="store_true",
+    parser.addoption('--demo_mode', '--demo-mode',
+                     action="store_true",
                      dest='demo_mode',
                      default=False,
                      help="""Using this slows down the automation so that
                           you can see what it's actually doing.""")
-    parser.addoption('--demo_sleep', action='store', dest='demo_sleep',
+    parser.addoption('--demo_sleep', '--demo-sleep',
+                     action='store',
+                     dest='demo_sleep',
                      default=None,
                      help="""Setting this overrides the Demo Mode sleep
                           time that happens after browser actions.""")
-    parser.addoption('--highlights', action='store', dest='highlights',
+    parser.addoption('--highlights',
+                     action='store',
+                     dest='highlights',
                      default=None,
                      help="""Setting this overrides the default number of
                           highlight animation loops to have per call.""")
-    parser.addoption('--message_duration', action="store",
+    parser.addoption('--message_duration', '--message-duration',
+                     action="store",
                      dest='message_duration',
                      default=None,
                      help="""Setting this overrides the default time that
                           messenger notifications remain visible when reaching
                           assert statements during Demo Mode.""")
-    parser.addoption('--check_js', action="store_true",
+    parser.addoption('--check_js', '--check-js',
+                     action="store_true",
                      dest='js_checking_on',
                      default=False,
                      help="""The option to check for JavaScript errors after
                           every page load.""")
-    parser.addoption('--ad_block', action="store_true",
+    parser.addoption('--ad_block', '--ad-block',
+                     action="store_true",
                      dest='ad_block_on',
                      default=False,
                      help="""Using this makes WebDriver block display ads
                           that are defined in ad_block_list.AD_BLOCK_LIST.""")
-    parser.addoption('--verify_delay', action='store', dest='verify_delay',
+    parser.addoption('--verify_delay', '--verify-delay',
+                     action='store',
+                     dest='verify_delay',
                      default=None,
                      help="""Setting this overrides the default wait time
                           before each MasterQA verification pop-up.""")
-    parser.addoption('--disable_csp', action="store_true",
+    parser.addoption('--disable_csp', '--disable-csp',
+                     action="store_true",
                      dest='disable_csp',
                      default=False,
                      help="""Using this disables the Content Security Policy of
@@ -187,23 +220,27 @@ def pytest_addoption(parser):
                           libraries for various testing actions.
                           Setting this to True (--disable_csp) overrides the
                           value set in seleniumbase/config/settings.py""")
-    parser.addoption('--enable_sync', action="store_true",
+    parser.addoption('--enable_sync', '--enable-sync',
+                     action="store_true",
                      dest='enable_sync',
                      default=False,
                      help="""Using this enables the "Chrome Sync" feature.""")
-    parser.addoption('--save_screenshot', action='store_true',
+    parser.addoption('--save_screenshot', '--save-screenshot',
+                     action='store_true',
                      dest='save_screenshot',
                      default=False,
                      help="""Take a screenshot on last page after the last step
                           of the test. (Added to the "latest_logs" folder.)""")
-    parser.addoption('--visual_baseline', action='store_true',
+    parser.addoption('--visual_baseline', '--visual-baseline',
+                     action='store_true',
                      dest='visual_baseline',
                      default=False,
                      help="""Setting this resets the visual baseline for
                           Automated Visual Testing with SeleniumBase.
                           When a test calls self.check_window(), it will
                           rebuild its files in the visual_baseline folder.""")
-    parser.addoption('--timeout_multiplier', action='store',
+    parser.addoption('--timeout_multiplier', '--timeout-multiplier',
+                     action='store',
                      dest='timeout_multiplier',
                      default=None,
                      help="""Setting this overrides the default timeout
