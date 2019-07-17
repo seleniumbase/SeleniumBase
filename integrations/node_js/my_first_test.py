@@ -7,7 +7,7 @@ class MyTestClass(BaseCase):
         self.open("https://xkcd.com/353/")
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
-        self.assert_text("free to copy", "div center")
+        self.assert_text("free to copy and reuse")
         self.open("https://xkcd.com/1481/")
         title = self.get_attribute("#comic img", "title")
         self.assert_true("86,400 seconds per day" in title)

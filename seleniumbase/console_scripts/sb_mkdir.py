@@ -82,7 +82,7 @@ def main():
         data.append('        self.open("https://xkcd.com/353/")')
         data.append("        self.assert_element('img[alt=\"Python\"]')")
         data.append("        self.click('a[rel=\"license\"]')")
-        data.append('        self.assert_text("free to copy", "div center")')
+        data.append('        self.assert_text("free to copy and reuse")')
         data.append('        self.open("https://xkcd.com/1481/")')
         data.append(
             "        title = self.get_attribute(\"#comic img\", \"title\")")
