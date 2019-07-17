@@ -526,6 +526,8 @@ def post_messenger_error_message(driver, message, msg_dur):
 
 
 def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
+    if selector == "html":
+        selector = "body"
     script = ("""document.querySelector('%s').style =
               'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
@@ -560,6 +562,8 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
 
 
 def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
+    if selector == "html":
+        selector = "body"
     script = """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
     safe_execute_script(driver, script)
