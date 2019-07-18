@@ -43,7 +43,7 @@ class MyTestClass(BaseCase):
         #
         # 2. Most methods have the optional `timeout` argument. Ex:
         #    [
-        #        self.get_text('div center', timeout=15)
+        #        self.get_text("#content", timeout=15)
         #    ]
         #    The `timeout` argument tells the method how many seconds to wait
         #    for an element to appear before raising an exception. This is
@@ -53,17 +53,17 @@ class MyTestClass(BaseCase):
         #
         # 3. There's usually more than one way to do the same thing. Ex:
         #    [
-        #        self.assert_text('free to copy', 'div center')
+        #        self.assert_text("Hooray robots!", "#content")
         #    ]
         #    Is the same as:
         #    [
-        #        text = self.get_text("div center")
-        #        self.assert_true("free to copy" in text)
+        #        text = self.get_text("#content")
+        #        self.assert_true("Hooray robots!" in text)
         #    ]
         #    Or:
         #    [
-        #        text = self.find_element('div center').text
-        #        assert("free to copy" in text)
+        #        text = self.find_element("#content").text
+        #        assert("Hooray robots!" in text)
         #    ]
         #
         #    And the following line:
