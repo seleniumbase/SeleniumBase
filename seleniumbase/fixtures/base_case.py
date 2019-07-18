@@ -54,6 +54,8 @@ from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import xpath_to_css
+logging.getLogger("requests").setLevel(logging.ERROR)
+logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
@@ -1464,7 +1466,14 @@ class BaseCase(unittest.TestCase):
         loops = int(loops)
 
         o_bs = ''  # original_box_shadow
-        style = element.get_attribute('style')
+        try:
+            style = element.get_attribute('style')
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_element_visible(
+                selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+            style = element.get_attribute('style')
         if style:
             if 'box-shadow: ' in style:
                 box_start = style.find('box-shadow: ')
@@ -3116,7 +3125,14 @@ class BaseCase(unittest.TestCase):
             self.__slow_scroll_to_element(element)
 
         o_bs = ''  # original_box_shadow
-        style = element.get_attribute('style')
+        try:
+            style = element.get_attribute('style')
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.05)
+            element = self.wait_for_element_visible(
+                selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+            style = element.get_attribute('style')
         if style:
             if 'box-shadow: ' in style:
                 box_start = style.find('box-shadow: ')
