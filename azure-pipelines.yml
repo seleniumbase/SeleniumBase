@@ -48,13 +48,13 @@ jobs:
       pytest nothing.py
     displayName: 'Make sure pytest is working'
 
-  - script: pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junitxml=junit/test-results.xml
+  - script: pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest boilerplate_test.py --browser=chrome --headless'
 
-  - script: pytest examples/my_first_test.py --browser=chrome --headless -v -s --junitxml=junit/test-results.xml
+  - script: pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
 
-  - script: pytest examples/my_first_test.py --browser=firefox --headless -v -s --junitxml=junit/test-results.xml
+  - script: pytest examples/my_first_test.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest my_first_test.py --browser=firefox --headless'
 
   - task: PublishTestResults@2
