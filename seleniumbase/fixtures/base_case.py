@@ -103,14 +103,16 @@ class BaseCase(unittest.TestCase):
               timeout=settings.SMALL_TIMEOUT, delay=0):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
             if not self.is_link_text_visible(selector):
                 # Handle a special case of links hidden in dropdowns
                 self.click_link_text(selector, timeout=timeout)
+                return
+        if page_utils.is_partial_link_text_selector(selector):
+            if not self.is_partial_link_text_visible(selector):
+                # Handle a special case of partial links hidden in dropdowns
+                self.click_partial_link_text(selector, timeout=timeout)
                 return
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
@@ -427,11 +429,7 @@ class BaseCase(unittest.TestCase):
         """ This method uses JavaScript to get the value of an attribute. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_present(
@@ -496,11 +494,7 @@ class BaseCase(unittest.TestCase):
                 self.assertTrue(float(opacity) > 0, "Element not visible!") """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
@@ -704,19 +698,11 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_element_visible(self.driver, selector, by)
 
     def is_link_text_visible(self, link_text):
@@ -734,22 +720,14 @@ class BaseCase(unittest.TestCase):
     def is_text_visible(self, text, selector="html", by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def find_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
         """ Returns a list of matching WebElements.
             If "limit" is set and > 0, will only return that many elements. """
         self.wait_for_ready_state_complete()
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         elements = self.driver.find_elements(by=by, value=selector)
         if limit and limit > 0 and len(elements) > limit:
             elements = elements[:limit]
@@ -759,11 +737,7 @@ class BaseCase(unittest.TestCase):
         """ Returns a list of matching WebElements that are visible.
             If "limit" is set and > 0, will only return that many elements. """
         self.wait_for_ready_state_complete()
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         v_elems = page_actions.find_visible_elements(self.driver, selector, by)
         if limit and limit > 0 and len(v_elems) > limit:
             v_elems = v_elems[:limit]
@@ -1965,12 +1939,10 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self.__recalculate_selector(selector, by)
         if page_utils.is_xpath_selector(selector):
             selector = self.convert_to_css_selector(selector, By.XPATH)
             by = By.CSS_SELECTOR
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -1983,20 +1955,12 @@ class BaseCase(unittest.TestCase):
                         timeout=settings.SMALL_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(hover_selector):
-            hover_selector = self.convert_to_css_selector(
-                hover_selector, By.XPATH)
-            hover_by = By.CSS_SELECTOR
-        if page_utils.is_xpath_selector(click_selector):
-            click_by = By.XPATH
-        if page_utils.is_link_text_selector(hover_selector):
-            hover_selector = page_utils.get_link_text_from_selector(
-                hover_selector)
-            hover_by = By.LINK_TEXT
-        if page_utils.is_link_text_selector(click_selector):
-            click_selector = page_utils.get_link_text_from_selector(
-                click_selector)
-            click_by = By.LINK_TEXT
+        hover_selector, hover_by = self.__recalculate_selector(
+            hover_selector, hover_by)
+        hover_selector = self.convert_to_css_selector(
+            hover_selector, hover_by)
+        click_selector, click_by = self.__recalculate_selector(
+            click_selector, click_by)
         self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self.__demo_mode_highlight_if_active(hover_selector, hover_by)
@@ -2164,11 +2128,7 @@ class BaseCase(unittest.TestCase):
             The element does not need be visible (it may be hidden). """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
@@ -2200,11 +2160,7 @@ class BaseCase(unittest.TestCase):
                                  timeout=settings.LARGE_TIMEOUT):
         """ Waits for an element to appear in the HTML of a page.
             The element must be visible (it cannot be hidden). """
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
@@ -2232,11 +2188,7 @@ class BaseCase(unittest.TestCase):
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
         if self.demo_mode:
-            if page_utils.is_xpath_selector(selector):
-                by = By.XPATH
-            if page_utils.is_link_text_selector(selector):
-                selector = page_utils.get_link_text_from_selector(selector)
-                by = By.LINK_TEXT
+            selector, by = self.__recalculate_selector(selector, by)
             messenger_post = "ASSERT %s: %s" % (by, selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
@@ -2259,11 +2211,7 @@ class BaseCase(unittest.TestCase):
                               timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
@@ -2272,11 +2220,7 @@ class BaseCase(unittest.TestCase):
                                     timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_exact_text_visible(
             self.driver, text, selector, by, timeout)
 
@@ -2313,11 +2257,7 @@ class BaseCase(unittest.TestCase):
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
 
         if self.demo_mode:
-            if page_utils.is_xpath_selector(selector):
-                by = By.XPATH
-            if page_utils.is_link_text_selector(selector):
-                selector = page_utils.get_link_text_from_selector(selector)
-                by = By.LINK_TEXT
+            selector, by = self.__recalculate_selector(selector, by)
             messenger_post = ("ASSERT TEXT {%s} in %s: %s"
                               % (text, by, selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
@@ -2336,11 +2276,7 @@ class BaseCase(unittest.TestCase):
             text, selector, by=by, timeout=timeout)
 
         if self.demo_mode:
-            if page_utils.is_xpath_selector(selector):
-                by = By.XPATH
-            if page_utils.is_link_text_selector(selector):
-                selector = page_utils.get_link_text_from_selector(selector)
-                by = By.LINK_TEXT
+            selector, by = self.__recalculate_selector(selector, by)
             messenger_post = ("ASSERT TEXT {%s} in %s: %s"
                               % (text, by, selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
@@ -2447,11 +2383,7 @@ class BaseCase(unittest.TestCase):
             to qualify as not visible. """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        if page_utils.is_link_text_selector(selector):
-            selector = page_utils.get_link_text_from_selector(selector)
-            by = By.LINK_TEXT
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_not_visible(
             self.driver, selector, by, timeout)
 
@@ -3072,6 +3004,13 @@ class BaseCase(unittest.TestCase):
         if page_utils.is_link_text_selector(selector):
             selector = page_utils.get_link_text_from_selector(selector)
             by = By.LINK_TEXT
+        if page_utils.is_partial_link_text_selector(selector):
+            selector = page_utils.get_partial_link_text_from_selector(selector)
+            by = By.PARTIAL_LINK_TEXT
+        if page_utils.is_name_selector(selector):
+            name = page_utils.get_name_from_selector(selector)
+            selector = '[name="%s"]' % name
+            by = By.CSS_SELECTOR
         return (selector, by)
 
     def __make_css_match_first_element_only(self, selector):

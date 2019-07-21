@@ -36,7 +36,28 @@ def is_link_text_selector(selector):
     """
     A basic method to determine if a selector is a link text selector.
     """
-    if (selector.startswith('link=') or selector.startswith('link_text=')):
+    if (selector.startswith('link=') or selector.startswith('link_text=') or (
+            selector.startswith('text='))):
+        return True
+    return False
+
+
+def is_partial_link_text_selector(selector):
+    """
+    A basic method to determine if a selector is a partial link text selector.
+    """
+    if (selector.startswith('partial_link=') or (
+            selector.startswith('partial_link_text=') or (
+            selector.startswith('partial_text=')))):
+        return True
+    return False
+
+
+def is_name_selector(selector):
+    """
+    A basic method to determine if a selector is a name selector.
+    """
+    if selector.startswith('name='):
         return True
     return False
 
@@ -49,6 +70,30 @@ def get_link_text_from_selector(selector):
         return selector.split('link=')[1]
     elif selector.startswith('link_text='):
         return selector.split('link_text=')[1]
+    elif selector.startswith('text='):
+        return selector.split('text=')[1]
+    return selector
+
+
+def get_partial_link_text_from_selector(selector):
+    """
+    A basic method to get the partial link text from a partial link selector.
+    """
+    if selector.startswith('partial_link='):
+        return selector.split('partial_link=')[1]
+    elif selector.startswith('partial_link_text='):
+        return selector.split('partial_link_text=')[1]
+    elif selector.startswith('partial_text='):
+        return selector.split('partial_text=')[1]
+    return selector
+
+
+def get_name_from_selector(selector):
+    """
+    A basic method to get the name from a name selector.
+    """
+    if selector.startswith('name='):
+        return selector.split('name=')[1]
     return selector
 
 
