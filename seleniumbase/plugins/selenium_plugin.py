@@ -131,7 +131,7 @@ class SeleniumBrowser(Plugin):
             help="""Using this makes Webdriver run headlessly,
                     which is required on headless machines.""")
         parser.add_option(
-            '--demo_mode', '--demo-mode',
+            '--demo_mode', '--demo-mode', '--demo',
             action="store_true",
             dest='demo_mode',
             default=False,

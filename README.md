@@ -202,10 +202,10 @@ pytest test_suite.py --html=report.html
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
-You can also use ``--junitxml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
 ```
-pytest test_suite.py --junitxml=report.xml
+pytest test_suite.py --junit-xml=report.xml
 ```
 
 #### **Nosetest Reports:**
