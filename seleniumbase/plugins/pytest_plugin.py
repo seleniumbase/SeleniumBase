@@ -167,7 +167,7 @@ def pytest_addoption(parser):
                      default=True,
                      help="""This is used by the BaseCase class to tell apart
                           pytest runs from nosetest runs. (Automatic)""")
-    parser.addoption('--demo_mode', '--demo-mode',
+    parser.addoption('--demo_mode', '--demo-mode', '--demo',
                      action="store_true",
                      dest='demo_mode',
                      default=False,
