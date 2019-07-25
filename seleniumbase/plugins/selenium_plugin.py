@@ -3,8 +3,8 @@ This plugin gives the power of Selenium to nosetests
 by providing a WebDriver object for the tests to use.
 """
 
+import sys
 from nose.plugins import Plugin
-from pyvirtualdisplay import Display
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
@@ -25,6 +25,7 @@ class SeleniumBrowser(Plugin):
     self.options.extension_zip -- load a Chrome Extension ZIP (--extension_zip)
     self.options.extension_dir -- load a Chrome Extension DIR (--extension_dir)
     self.options.headless -- the option to run headlessly (--headless)
+    self.options.headed -- the option to run with a GUI on Linux (--headed)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
@@ -128,8 +129,18 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest='headless',
             default=False,
-            help="""Using this makes Webdriver run headlessly,
-                    which is required on headless machines.""")
+            help="""Using this makes Webdriver run web browsers headlessly,
+                    which is required on headless machines.
+                    Default: False on Mac/Windows. True on Linux.""")
+        parser.add_option(
+            '--headed', '--gui',
+            action="store_true",
+            dest='headed',
+            default=False,
+            help="""Using this makes Webdriver run web browsers with
+                    a GUI when running tests on Linux machines.
+                    (The default setting on Linux is headless.)
+                    (The default setting on Mac or Windows is headed.)""")
         parser.add_option(
             '--demo_mode', '--demo-mode', '--demo',
             action="store_true",
@@ -233,6 +244,7 @@ class SeleniumBrowser(Plugin):
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.headless = self.options.headless
+        test.test.headed = self.options.headed
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.user_data_dir = self.options.user_data_dir
@@ -256,10 +268,26 @@ class SeleniumBrowser(Plugin):
         if test.test.servername != "localhost":
             # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
             test.test.use_grid = True
+        if "linux" in sys.platform and (
+                not self.options.headed and not self.options.headless):
+            print(
+                "(Running with --headless on Linux. "
+                "Use --headed or --gui to override.)")
+            self.options.headless = True
+            test.test.headless = True
+        if not self.options.headless:
+            self.options.headed = True
+            test.test.headed = True
         if self.options.headless:
-            self.display = Display(visible=0, size=(1920, 1200))
-            self.display.start()
-            self.headless_active = True
+            try:
+                from pyvirtualdisplay import Display
+                self.display = Display(visible=0, size=(1440, 1080))
+                self.display.start()
+                self.headless_active = True
+            except Exception:
+                # pyvirtualdisplay might not be necessary anymore because
+                # Chrome and Firefox now have built-in headless displays
+                pass
         # The driver will be received later
         self.driver = None
         test.test.driver = self.driver
@@ -278,4 +306,9 @@ class SeleniumBrowser(Plugin):
             pass
         if self.options.headless:
             if self.headless_active:
-                self.display.stop()
+                try:
+                    self.display.stop()
+                except AttributeError:
+                    pass
+                except Exception:
+                    pass

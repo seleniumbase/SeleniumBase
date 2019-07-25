@@ -9,6 +9,8 @@ self.open(url)
 
 self.open_url(url)
 
+self.get(url)
+
 self.visit(url)
 
 self.click(selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT, delay=0)

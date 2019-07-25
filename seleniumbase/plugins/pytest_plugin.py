@@ -3,6 +3,7 @@
 
 import optparse
 import pytest
+import sys
 from seleniumbase import config as sb_config
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
@@ -159,8 +160,18 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='headless',
                      default=False,
-                     help="""Using this makes Webdriver run headlessly,
-                          which is required on headless machines.""")
+                     help="""Using this makes Webdriver run web browsers
+                          headlessly, which is required on headless machines.
+                          Default: False on Mac/Windows. True on Linux.""")
+    parser.addoption('--headed', '--gui',
+                     action="store_true",
+                     dest='headed',
+                     default=False,
+                     help="""Using this makes Webdriver run web browsers with
+                          a GUI when running tests on Linux machines.
+                          (The default setting on Linux is headless.)
+                          (The default setting on Mac or Windows is headed.)
+                          """)
     parser.addoption('--is_pytest', '--is-pytest',
                      action="store_true",
                      dest='is_pytest',
@@ -257,6 +268,7 @@ def pytest_configure(config):
     sb_config.with_selenium = config.getoption('with_selenium')
     sb_config.user_agent = config.getoption('user_agent')
     sb_config.headless = config.getoption('headless')
+    sb_config.headed = config.getoption('headed')
     sb_config.extension_zip = config.getoption('extension_zip')
     sb_config.extension_dir = config.getoption('extension_dir')
     sb_config.with_testing_base = config.getoption('with_testing_base')
@@ -285,7 +297,16 @@ def pytest_configure(config):
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
-    sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
+    sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
+
+    if "linux" in sys.platform and (
+            not sb_config.headed and not sb_config.headless):
+        print(
+            "(Running with --headless on Linux. "
+            "Use --headed or --gui to override.)")
+        sb_config.headless = True
+    if not sb_config.headless:
+        sb_config.headed = True
 
     if sb_config.with_testing_base:
         log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)

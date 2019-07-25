@@ -92,11 +92,15 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def open_url(self, url):
-        """ Same as open() """
+        """ Same as open() - Original saved for backwards compatibility. """
+        self.open(url)
+
+    def get(self, url):
+        """ Same as open() - WebDriver uses this method name. """
         self.open(url)
 
     def visit(self, url):
-        """ Same as open() """
+        """ Same as open() - Some JS frameworks use this method name. """
         self.open(url)
 
     def click(self, selector, by=By.CSS_SELECTOR,
@@ -3170,6 +3174,7 @@ class BaseCase(unittest.TestCase):
             self.with_selenium = sb_config.with_selenium  # Should be True
             self.headless = sb_config.headless
             self.headless_active = False
+            self.headed = sb_config.headed
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base
             self.with_basic_test_info = sb_config.with_basic_test_info
@@ -3473,7 +3478,12 @@ class BaseCase(unittest.TestCase):
                 self.__quit_all_drivers()
             if self.headless:
                 if self.headless_active:
-                    self.display.stop()
+                    try:
+                        self.display.stop()
+                    except AttributeError:
+                        pass
+                    except Exception:
+                        pass
                     self.display = None
             if self.with_db_reporting:
                 if has_exception:

@@ -28,6 +28,7 @@ except (ImportError, ValueError):
     b = MyTestClass("test_basic")
     b.browser = "chrome"
     b.headless = False
+    b.headed = False
     b.servername = "localhost"
     b.port = 4444
     b.data = None
