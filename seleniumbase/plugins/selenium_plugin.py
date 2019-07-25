@@ -25,6 +25,7 @@ class SeleniumBrowser(Plugin):
     self.options.extension_zip -- load a Chrome Extension ZIP (--extension_zip)
     self.options.extension_dir -- load a Chrome Extension DIR (--extension_dir)
     self.options.headless -- the option to run headlessly (--headless)
+    self.options.headed -- the option to run with a GUI on Linux (--headed)
     self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
     self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
     self.options.highlights -- # of highlight animations shown (--highlights)
@@ -128,8 +129,18 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest='headless',
             default=False,
-            help="""Using this makes Webdriver run headlessly,
-                    which is required on headless machines.""")
+            help="""Using this makes Webdriver run web browsers headlessly,
+                    which is required on headless machines.
+                    Default: False on Mac/Windows. True on Linux.""")
+        parser.add_option(
+            '--headed', '--gui',
+            action="store_true",
+            dest='headed',
+            default=False,
+            help="""Using this makes Webdriver run web browsers with
+                    a GUI when running tests on Linux machines.
+                    (The default setting on Linux is headless.)
+                    (The default setting on Mac or Windows is headed.)""")
         parser.add_option(
             '--demo_mode', '--demo-mode', '--demo',
             action="store_true",
@@ -233,6 +244,7 @@ class SeleniumBrowser(Plugin):
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.headless = self.options.headless
+        test.test.headed = self.options.headed
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.user_data_dir = self.options.user_data_dir

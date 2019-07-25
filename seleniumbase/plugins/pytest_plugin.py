@@ -159,8 +159,18 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='headless',
                      default=False,
-                     help="""Using this makes Webdriver run headlessly,
-                          which is required on headless machines.""")
+                     help="""Using this makes Webdriver run web browsers
+                          headlessly, which is required on headless machines.
+                          Default: False on Mac/Windows. True on Linux.""")
+    parser.addoption('--headed', '--gui',
+                     action="store_true",
+                     dest='headed',
+                     default=False,
+                     help="""Using this makes Webdriver run web browsers with
+                          a GUI when running tests on Linux machines.
+                          (The default setting on Linux is headless.)
+                          (The default setting on Mac or Windows is headed.)
+                          """)
     parser.addoption('--is_pytest', '--is-pytest',
                      action="store_true",
                      dest='is_pytest',
@@ -257,6 +267,7 @@ def pytest_configure(config):
     sb_config.with_selenium = config.getoption('with_selenium')
     sb_config.user_agent = config.getoption('user_agent')
     sb_config.headless = config.getoption('headless')
+    sb_config.headed = config.getoption('headed')
     sb_config.extension_zip = config.getoption('extension_zip')
     sb_config.extension_dir = config.getoption('extension_dir')
     sb_config.with_testing_base = config.getoption('with_testing_base')

@@ -3170,6 +3170,7 @@ class BaseCase(unittest.TestCase):
             self.with_selenium = sb_config.with_selenium  # Should be True
             self.headless = sb_config.headless
             self.headless_active = False
+            self.headed = sb_config.headed
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base
             self.with_basic_test_info = sb_config.with_basic_test_info
