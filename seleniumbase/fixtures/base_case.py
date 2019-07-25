@@ -92,11 +92,15 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def open_url(self, url):
-        """ Same as open() """
+        """ Same as open() - Original saved for backwards compatibility. """
+        self.open(url)
+
+    def get(self, url):
+        """ Same as open() - WebDriver uses this method name. """
         self.open(url)
 
     def visit(self, url):
-        """ Same as open() """
+        """ Same as open() - Some JS frameworks use this method name. """
         self.open(url)
 
     def click(self, selector, by=By.CSS_SELECTOR,
