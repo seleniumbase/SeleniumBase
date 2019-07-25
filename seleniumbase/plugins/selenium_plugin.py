@@ -3,8 +3,8 @@ This plugin gives the power of Selenium to nosetests
 by providing a WebDriver object for the tests to use.
 """
 
+import sys
 from nose.plugins import Plugin
-from pyvirtualdisplay import Display
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
@@ -268,10 +268,26 @@ class SeleniumBrowser(Plugin):
         if test.test.servername != "localhost":
             # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
             test.test.use_grid = True
+        if "linux" in sys.platform and (
+                not self.options.headed and not self.options.headless):
+            print(
+                "(Running with --headless on Linux. "
+                "Use --headed or --gui to override.)")
+            self.options.headless = True
+            test.test.headless = True
+        if not self.options.headless:
+            self.options.headed = True
+            test.test.headed = True
         if self.options.headless:
-            self.display = Display(visible=0, size=(1920, 1200))
-            self.display.start()
-            self.headless_active = True
+            try:
+                from pyvirtualdisplay import Display
+                self.display = Display(visible=0, size=(1440, 1080))
+                self.display.start()
+                self.headless_active = True
+            except Exception:
+                # pyvirtualdisplay might not be necessary anymore because
+                # Chrome and Firefox now have built-in headless displays
+                pass
         # The driver will be received later
         self.driver = None
         test.test.driver = self.driver

@@ -3,6 +3,7 @@
 
 import optparse
 import pytest
+import sys
 from seleniumbase import config as sb_config
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
@@ -296,7 +297,16 @@ def pytest_configure(config):
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
-    sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
+    sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
+
+    if "linux" in sys.platform and (
+            not sb_config.headed and not sb_config.headless):
+        print(
+            "(Running with --headless on Linux. "
+            "Use --headed or --gui to override.)")
+        sb_config.headless = True
+    if not sb_config.headless:
+        sb_config.headed = True
 
     if sb_config.with_testing_base:
         log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
