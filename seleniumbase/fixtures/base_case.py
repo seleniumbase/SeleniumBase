@@ -3478,7 +3478,12 @@ class BaseCase(unittest.TestCase):
                 self.__quit_all_drivers()
             if self.headless:
                 if self.headless_active:
-                    self.display.stop()
+                    try:
+                        self.display.stop()
+                    except AttributeError:
+                        pass
+                    except Exception:
+                        pass
                     self.display = None
             if self.with_db_reporting:
                 if has_exception:

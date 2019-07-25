@@ -290,4 +290,9 @@ class SeleniumBrowser(Plugin):
             pass
         if self.options.headless:
             if self.headless_active:
-                self.display.stop()
+                try:
+                    self.display.stop()
+                except AttributeError:
+                    pass
+                except Exception:
+                    pass
