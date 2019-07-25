@@ -1,4 +1,4 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_4d.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_6.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
@@ -60,7 +60,7 @@ cd examples
 pytest my_first_test.py --browser=chrome
 ```
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
-* You MUST add ``--headless`` for your tests to run on a headless machine (No GUI). You can also run in headless mode on any machine.
+* On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
 **Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a simple test looks like:**
 * <i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>
@@ -169,7 +169,7 @@ pytest test_suite.py --browser=chrome
 pytest test_suite.py --browser=firefox
 ```
 
-If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
+If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface (``--headless`` is the default setting on Linux). Even if your system does have a GUI interface, it may still support headless browser automation.
 
 To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
