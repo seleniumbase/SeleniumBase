@@ -700,11 +700,16 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         backdrop_style = style_sheet.bt_backdrop_style
         backdrop_style = backdrop_style.replace('\n', '')
         backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
-        instructions += 'injectJS("%s");' % jquery_js
-        instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
+        instructions += 'injectJS("%s");\n' % jquery_js
+        instructions += '\n'
+        instructions += 'function loadResources() { '
+        instructions += 'if ( typeof jQuery !== "undefined" ) {\n'
         instructions += 'injectCSS("%s");\n' % bootstrap_tour_css
         instructions += 'injectStyle("%s");\n' % backdrop_style
         instructions += 'injectJS("%s");' % bootstrap_tour_js
+        instructions += '} else { window.setTimeout("loadResources();",100); '
+        instructions += '} }\n'
+        instructions += 'loadResources()'
 
     elif tour_type == "hopscotch":
         hopscotch_css = constants.Hopscotch.MIN_CSS
@@ -738,8 +743,10 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % spinner_css
         instructions += 'injectJS("%s");\n' % jquery_js
-        instructions += 'injectJS("%s");' % tether_js
-        instructions += '\n\n////////  Resources - Load 2  ////////\n\n'
+        instructions += 'injectJS("%s");\n' % tether_js
+        instructions += '\n'
+        instructions += 'function loadResources() { '
+        instructions += 'if ( typeof jQuery !== "undefined" ) {\n'
         instructions += 'injectCSS("%s");' % sh_theme_arrows_css
         instructions += 'injectCSS("%s");' % sh_theme_arrows_fix_css
         instructions += 'injectCSS("%s");' % sh_theme_default_css
@@ -747,9 +754,25 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         instructions += 'injectCSS("%s");' % sh_theme_sq_css
         instructions += 'injectCSS("%s");\n' % sh_theme_sq_dark_css
         instructions += 'injectStyle("%s");\n' % backdrop_style
-        instructions += 'injectJS("%s");' % shepherd_js
+        instructions += 'injectJS("%s");\n' % shepherd_js
+        instructions += '} else { window.setTimeout("loadResources();",100); '
+        instructions += '} }\n'
+        instructions += 'loadResources()'
 
     instructions += '\n\n////////  Tour Code  ////////\n\n'
+    if tour_type == "bootstrap":
+        instructions += 'function loadTour() { '
+        instructions += 'if ( typeof Tour !== "undefined" ) {\n'
+    elif tour_type == "hopscotch":
+        instructions += 'function loadTour() { '
+        instructions += 'if ( typeof hopscotch !== "undefined" ) {\n'
+    elif tour_type == "introjs":
+        instructions += 'function loadTour() { '
+        instructions += 'if ( typeof introJs !== "undefined" ) {\n'
+    elif tour_type == "shepherd":
+        instructions += 'function loadTour() { '
+        instructions += 'if ( typeof Shepherd !== "undefined" ) {\n'
+
     for tour_step in tour_steps[name]:
         instructions += tour_step
 
@@ -792,6 +815,9 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
             $tour = tour;\n""")
     else:
         pass
+    instructions += '\n} else { window.setTimeout("loadTour();",100); } '
+    instructions += '}\n'
+    instructions += 'loadTour()\n'
 
     exported_tours_folder = EXPORTED_TOURS_FOLDER
     if exported_tours_folder.endswith("/"):
