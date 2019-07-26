@@ -100,6 +100,7 @@ class Base(Plugin):
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
+        test.test.log_path = self.options.log_path
         test.test.args = self.options
         test.test.report_on = self.report_on
         self.test_count += 1

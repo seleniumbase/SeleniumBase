@@ -3524,7 +3524,7 @@ class BaseCase(unittest.TestCase):
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
                                         self.__class__.__name__,
                                         self._testMethodName)
-                test_logpath = "latest_logs/" + test_id
+                test_logpath = self.log_path + "/" + test_id
                 if not os.path.exists(test_logpath):
                     try:
                         os.makedirs(test_logpath)
@@ -3544,7 +3544,7 @@ class BaseCase(unittest.TestCase):
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
                                         self.__class__.__name__,
                                         self._testMethodName)
-                test_logpath = "latest_logs/" + test_id
+                test_logpath = self.log_path + "/" + test_id
                 if not os.path.exists(test_logpath):
                     try:
                         os.makedirs(test_logpath)
