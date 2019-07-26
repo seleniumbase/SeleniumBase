@@ -111,6 +111,12 @@ class __MasterQATestCase__(BaseCase):
         elif instructions and "?" in instructions:
             question = instructions
 
+        wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
+        if self.verify_delay:
+            wait_time_before_verify = float(self.verify_delay)
+        # Allow a moment to see the full page before the dialog box pops up
+        time.sleep(wait_time_before_verify)
+
         use_jqc = False
         self.wait_for_ready_state_complete()
         if js_utils.is_jquery_confirm_activated(self.driver):
@@ -126,12 +132,6 @@ class __MasterQATestCase__(BaseCase):
                 use_jqc = False
 
         if use_jqc:
-            wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
-            if self.verify_delay:
-                wait_time_before_verify = float(self.verify_delay)
-            # Allow a moment to see the full page before the dialog box pops up
-            time.sleep(wait_time_before_verify)
-
             # Use the jquery_confirm library for manual page checks
             self.jq_confirm_dialog(question)
             time.sleep(0.02)
