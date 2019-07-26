@@ -2787,6 +2787,13 @@ class BaseCase(unittest.TestCase):
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
+            if self.start_page and len(self.start_page) >= 4:
+                if page_utils.is_valid_url(self.start_page):
+                    self.open(self.start_page)
+                else:
+                    new_start_page = "http://" + self.start_page
+                    if page_utils.is_valid_url(new_start_page):
+                        self.open(new_start_page)
         return new_driver
 
     def switch_to_driver(self, driver):
