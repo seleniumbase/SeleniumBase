@@ -2767,7 +2767,7 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 # Make sure the invisible browser window is big enough
                 try:
-                    self.set_window_size(1440, 1080)
+                    self.set_window_size(1440, 1880)
                     self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
@@ -2787,6 +2787,13 @@ class BaseCase(unittest.TestCase):
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
+            if self.start_page and len(self.start_page) >= 4:
+                if page_utils.is_valid_url(self.start_page):
+                    self.open(self.start_page)
+                else:
+                    new_start_page = "http://" + self.start_page
+                    if page_utils.is_valid_url(new_start_page):
+                        self.open(new_start_page)
         return new_driver
 
     def switch_to_driver(self, driver):
@@ -3175,6 +3182,7 @@ class BaseCase(unittest.TestCase):
             self.headless = sb_config.headless
             self.headless_active = False
             self.headed = sb_config.headed
+            self.start_page = sb_config.start_page
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base
             self.with_basic_test_info = sb_config.with_basic_test_info
@@ -3249,7 +3257,7 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 try:
                     from pyvirtualdisplay import Display
-                    self.display = Display(visible=0, size=(1440, 1080))
+                    self.display = Display(visible=0, size=(1440, 1880))
                     self.display.start()
                     self.headless_active = True
                 except Exception:
@@ -3524,7 +3532,7 @@ class BaseCase(unittest.TestCase):
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
                                         self.__class__.__name__,
                                         self._testMethodName)
-                test_logpath = "latest_logs/" + test_id
+                test_logpath = self.log_path + "/" + test_id
                 if not os.path.exists(test_logpath):
                     try:
                         os.makedirs(test_logpath)
@@ -3544,7 +3552,7 @@ class BaseCase(unittest.TestCase):
                 test_id = "%s.%s.%s" % (self.__class__.__module__,
                                         self.__class__.__name__,
                                         self._testMethodName)
-                test_logpath = "latest_logs/" + test_id
+                test_logpath = self.log_path + "/" + test_id
                 if not os.path.exists(test_logpath):
                     try:
                         os.makedirs(test_logpath)

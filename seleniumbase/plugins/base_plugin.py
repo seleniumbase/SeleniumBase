@@ -1,9 +1,5 @@
-"""
-This is the Nose plugin for saving logs and setting a test environment.
-Vars include "env" and "log_path".
-You can have tests behave differently based on the environment.
-You can access the values of these variables from the tests.
-"""
+# -*- coding: utf-8 -*-
+""" This is the Nose plugin for saving logs and setting a test environment. """
 
 import os
 import sys
@@ -17,8 +13,8 @@ from seleniumbase.fixtures import constants, errors
 
 class Base(Plugin):
     """
-    The base_plugin includes the following command-line options for nosetests:
-    --env=ENV  (Set a test environment. Use "self.env" to access env in tests.)
+    This parser plugin includes the following command-line options for Nose:
+    --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
     --log_path=LOG_PATH  (The directory where log files get saved to.)
     --archive_logs  (Archive old log files instead of deleting them.)
@@ -104,6 +100,7 @@ class Base(Plugin):
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
+        test.test.log_path = self.options.log_path
         test.test.args = self.options
         test.test.report_on = self.report_on
         self.test_count += 1

@@ -173,6 +173,12 @@ def _create_firefox_profile(
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
     profile.set_preference("extensions.update.enabled", False)
+    profile.set_preference("browser.privatebrowsing.autostart", True)
+    profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
+    profile.set_preference("extensions.PrivateBrowsing.notification", False)
+    profile.set_preference("extensions.systemAddon.update.enabled", False)
+    profile.set_preference("extensions.update.autoUpdateDefault", False)
+    profile.set_preference("extensions.update.enabled", False)
     profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference(
         "datareporting.healthreport.logging.consoleEnabled", False)
@@ -201,7 +207,6 @@ def _create_firefox_profile(
         "browser.download.manager.showAlertOnComplete", False)
     profile.set_preference("browser.shell.checkDefaultBrowser", False)
     profile.set_preference("browser.startup.page", 0)
-    profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("browser.download.panel.shown", False)
     profile.set_preference(
         "browser.download.animateNotifications", False)

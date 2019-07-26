@@ -1,7 +1,5 @@
-"""
-This plugin gives the power of Selenium to nosetests
-by providing a WebDriver object for the tests to use.
-"""
+# -*- coding: utf-8 -*-
+""" This is the nosetests Selenium plugin for test configuration. """
 
 import sys
 from nose.plugins import Plugin
@@ -11,33 +9,31 @@ from seleniumbase.fixtures import constants
 
 class SeleniumBrowser(Plugin):
     """
-    The plugin for Selenium tests. Takes in key arguments and then
-    creates a WebDriver object. All arguments are passed to the tests.
-
-    The following command line options are available to the tests:
-    self.options.browser -- the browser to use (--browser)
-    self.options.cap_file -- browser's desired capabilities file (--cap_file)
-    self.options.user_data_dir -- set Chrome's user data dir (--user_data_dir)
-    self.options.server -- the server used by the test (--server)
-    self.options.port -- the port used by the test (--port)
-    self.options.proxy -- designates the proxy server:port to use. (--proxy)
-    self.options.agent -- designates the User Agent for the browser. (--agent)
-    self.options.extension_zip -- load a Chrome Extension ZIP (--extension_zip)
-    self.options.extension_dir -- load a Chrome Extension DIR (--extension_dir)
-    self.options.headless -- the option to run headlessly (--headless)
-    self.options.headed -- the option to run with a GUI on Linux (--headed)
-    self.options.demo_mode -- the option to slow down Selenium (--demo_mode)
-    self.options.demo_sleep -- Selenium action delay in DemoMode (--demo_sleep)
-    self.options.highlights -- # of highlight animations shown (--highlights)
-    self.options.message_duration -- Messenger alert time (--message_duration)
-    self.options.js_checking_on -- option to check for js errors (--check_js)
-    self.options.ad_block -- the option to block some display ads (--ad_block)
-    self.options.verify_delay -- delay before MasterQA checks (--verify_delay)
-    self.options.disable_csp -- disable Content Security Policy (--disable_csp)
-    self.options.enable_sync -- option to enable "Chrome Sync" (--enable_sync)
-    self.options.save_screenshot -- save screen after test (--save_screenshot)
-    self.options.visual_baseline -- set the visual baseline (--visual_baseline)
-    self.options.timeout_multiplier -- increase defaults (--timeout_multiplier)
+    This parser plugin includes the following command-line options for Nose:
+    --browser=BROWSER  (The web browser to use.)
+    --cap_file=FILE  (The web browser's desired capabilities to use.)
+    --user_data_dir=DIR  (Set the Chrome user data directory to use.)
+    --server=SERVER  (The server / IP address used by the tests.)
+    --port=PORT  (The port that's used by the test server.)
+    --proxy=SERVER:PORT  (This is the proxy server:port combo used by tests.)
+    --agent=STRING  (This designates the web browser's User Agent to use.)
+    --extension_zip=ZIP  (Load a Chrome Extension .zip file, comma-separated.)
+    --extension_dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --headless  (The option to run tests headlessly. The default on Linux OS.)
+    --headed  (The option to run tests with a GUI on Linux OS.)
+    --start_page=URL  (The starting URL for the web browser when tests begin.)
+    --demo_mode  (The option to visually see test actions as they occur.)
+    --demo_sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
+    --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
+    --message_duration=SECONDS  (The time length for Messenger alerts.)
+    --check_js  (The option to check for JavaScript errors after page loads.)
+    --ad_block  (The option to block some display ads after page loads.)
+    --verify_delay=SECONDS  (The delay before MasterQA verification checks.)
+    --disable_csp  (This disables the Content Security Policy of websites.)
+    --enable_sync  (The option to enable "Chrome Sync".)
+    --save_screenshot  (The option to save a screenshot after each test.)
+    --visual_baseline  (Set the visual baseline for Visual/Layout tests.)
+    --timeout_multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
     name = 'selenium'  # Usage: --with-selenium
 
@@ -142,6 +138,14 @@ class SeleniumBrowser(Plugin):
                     (The default setting on Linux is headless.)
                     (The default setting on Mac or Windows is headed.)""")
         parser.add_option(
+            '--start_page', '--start-page', '--url',
+            action='store',
+            dest='start_page',
+            default=None,
+            help="""Designates the starting URL for the web browser
+                    when each test begins.
+                    Default: None.""")
+        parser.add_option(
             '--demo_mode', '--demo-mode', '--demo',
             action="store_true",
             dest='demo_mode',
@@ -245,6 +249,7 @@ class SeleniumBrowser(Plugin):
         test.test.cap_file = self.options.cap_file
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
+        test.test.start_page = self.options.start_page
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.user_data_dir = self.options.user_data_dir
@@ -281,7 +286,7 @@ class SeleniumBrowser(Plugin):
         if self.options.headless:
             try:
                 from pyvirtualdisplay import Display
-                self.display = Display(visible=0, size=(1440, 1080))
+                self.display = Display(visible=0, size=(1440, 1880))
                 self.display.start()
                 self.headless_active = True
             except Exception:
