@@ -175,7 +175,6 @@ def _create_firefox_profile(
     profile.set_preference("extensions.update.enabled", False)
     profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
-    profile.set_preference("extensions.PrivateBrowsing.notification", False)
     profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference(
         "datareporting.healthreport.logging.consoleEnabled", False)
