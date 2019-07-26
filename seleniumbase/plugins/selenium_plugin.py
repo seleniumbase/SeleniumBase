@@ -286,7 +286,7 @@ class SeleniumBrowser(Plugin):
         if self.options.headless:
             try:
                 from pyvirtualdisplay import Display
-                self.display = Display(visible=0, size=(1440, 1080))
+                self.display = Display(visible=0, size=(1440, 1880))
                 self.display.start()
                 self.headless_active = True
             except Exception:

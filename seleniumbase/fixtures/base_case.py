@@ -2767,7 +2767,7 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 # Make sure the invisible browser window is big enough
                 try:
-                    self.set_window_size(1440, 1080)
+                    self.set_window_size(1440, 1880)
                     self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
@@ -3257,7 +3257,7 @@ class BaseCase(unittest.TestCase):
             if self.headless:
                 try:
                     from pyvirtualdisplay import Display
-                    self.display = Display(visible=0, size=(1440, 1080))
+                    self.display = Display(visible=0, size=(1440, 1880))
                     self.display.start()
                     self.headless_active = True
                 except Exception:
