@@ -172,7 +172,13 @@ def _create_firefox_profile(
     profile.set_preference("pdfjs.disabled", True)
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
+    profile.set_preference("app.update.staging", False)
+    profile.set_preference("app.update.silent", False)
+    profile.set_preference("app.update.service.enabled", False)
+    profile.set_preference("dom.disable_beforeunload", True)
     profile.set_preference("extensions.update.enabled", False)
+    profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
+    profile.set_preference("extensions.PrivateBrowsing.notification", False)
     profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference(
         "datareporting.healthreport.logging.consoleEnabled", False)
@@ -200,9 +206,12 @@ def _create_firefox_profile(
     profile.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
     profile.set_preference("browser.shell.checkDefaultBrowser", False)
+    profile.set_preference("browser.tabs.warnOnClose", False)
     profile.set_preference("browser.startup.page", 0)
     profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("browser.download.panel.shown", False)
+    profile.set_preference(
+        "browser.safebrowsing.downloads.remote.enabled", False)
     profile.set_preference(
         "browser.download.animateNotifications", False)
     profile.set_preference("browser.download.dir", downloads_path)
