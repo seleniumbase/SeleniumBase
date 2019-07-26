@@ -11,6 +11,37 @@ from seleniumbase.fixtures import constants
 
 
 def pytest_addoption(parser):
+    """
+    This parser plugin includes the following command-line options for pytest:
+    --browser=BROWSER  (The web browser to use.)
+    --cap_file=FILE  (The web browser's desired capabilities to use.)
+    --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
+    --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
+    --user_data_dir=DIR  (Set the Chrome user data directory to use.)
+    --server=SERVER  (The server / IP address used by the tests.)
+    --port=PORT  (The port that's used by the test server.)
+    --proxy=SERVER:PORT  (This is the proxy server:port combo used by tests.)
+    --agent=STRING  (This designates the web browser's User Agent to use.)
+    --extension_zip=ZIP  (Load a Chrome Extension .zip file, comma-separated.)
+    --extension_dir=DIR  (Load a Chrome Extension directory, comma-separated.)
+    --headless  (The option to run tests headlessly. The default on Linux OS.)
+    --headed  (The option to run tests with a GUI on Linux OS.)
+    --start_page=URL  (The starting URL for the web browser when tests begin.)
+    --log_path=LOG_PATH  (The directory where log files get saved to.)
+    --archive_logs  (Archive old log files instead of deleting them.)
+    --demo_mode  (The option to visually see test actions as they occur.)
+    --demo_sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
+    --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
+    --message_duration=SECONDS  (The time length for Messenger alerts.)
+    --check_js  (The option to check for JavaScript errors after page loads.)
+    --ad_block  (The option to block some display ads after page loads.)
+    --verify_delay=SECONDS  (The delay before MasterQA verification checks.)
+    --disable_csp  (This disables the Content Security Policy of websites.)
+    --enable_sync  (The option to enable "Chrome Sync".)
+    --save_screenshot  (The option to save a screenshot after each test.)
+    --visual_baseline  (Set the visual baseline for Visual/Layout tests.)
+    --timeout_multiplier=MULTIPLIER  (Multiplies the default timeout values.)
+    """
     parser = parser.getgroup('SeleniumBase',
                              'SeleniumBase specific configuration options')
     parser.addoption('--browser',
