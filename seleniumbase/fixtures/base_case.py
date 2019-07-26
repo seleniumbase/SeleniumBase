@@ -3175,6 +3175,7 @@ class BaseCase(unittest.TestCase):
             self.headless = sb_config.headless
             self.headless_active = False
             self.headed = sb_config.headed
+            self.start_page = sb_config.start_page
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base
             self.with_basic_test_info = sb_config.with_basic_test_info

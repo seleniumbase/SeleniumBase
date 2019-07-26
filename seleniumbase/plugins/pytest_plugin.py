@@ -203,6 +203,13 @@ def pytest_addoption(parser):
                           (The default setting on Linux is headless.)
                           (The default setting on Mac or Windows is headed.)
                           """)
+    parser.addoption('--start_page', '--start-page', '--url',
+                     action='store',
+                     dest='start_page',
+                     default=None,
+                     help="""Designates the starting URL for the web browser
+                          when each test begins.
+                          Default: None.""")
     parser.addoption('--is_pytest', '--is-pytest',
                      action="store_true",
                      dest='is_pytest',
@@ -300,6 +307,7 @@ def pytest_configure(config):
     sb_config.user_agent = config.getoption('user_agent')
     sb_config.headless = config.getoption('headless')
     sb_config.headed = config.getoption('headed')
+    sb_config.start_page = config.getoption('start_page')
     sb_config.extension_zip = config.getoption('extension_zip')
     sb_config.extension_dir = config.getoption('extension_dir')
     sb_config.with_testing_base = config.getoption('with_testing_base')

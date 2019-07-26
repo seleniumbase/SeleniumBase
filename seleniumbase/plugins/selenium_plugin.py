@@ -138,6 +138,14 @@ class SeleniumBrowser(Plugin):
                     (The default setting on Linux is headless.)
                     (The default setting on Mac or Windows is headed.)""")
         parser.add_option(
+            '--start_page', '--start-page', '--url',
+            action='store',
+            dest='start_page',
+            default=None,
+            help="""Designates the starting URL for the web browser
+                    when each test begins.
+                    Default: None.""")
+        parser.add_option(
             '--demo_mode', '--demo-mode', '--demo',
             action="store_true",
             dest='demo_mode',
@@ -241,6 +249,7 @@ class SeleniumBrowser(Plugin):
         test.test.cap_file = self.options.cap_file
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
+        test.test.start_page = self.options.start_page
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.user_data_dir = self.options.user_data_dir
