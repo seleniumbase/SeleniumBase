@@ -101,6 +101,31 @@ def main():
         file.writelines("\r\n".join(data))
         file.close()
 
+        data = []
+        data.append("from seleniumbase import BaseCase")
+        data.append("from parameterized import parameterized")
+        data.append("")
+        data.append("")
+        data.append("class GoogleTestClass(BaseCase):")
+        data.append("")
+        data.append("    @parameterized.expand([")
+        data.append('        ["pypi", "https://pypi.org"],')
+        data.append('        ["wikipedia", "https://www.wikipedia.org"],')
+        data.append('        ["seleniumbase", '
+                    '"https://github.com/seleniumbase/SeleniumBase"],')
+        data.append("    ])")
+        data.append("    def test_parameterized_google_search("
+                    "self, search_term, expected_url):")
+        data.append("        self.open('https://google.com/ncr')")
+        data.append("        self.update_text('input[title=\"Search\"]', "
+                    "search_term + '\\n')")
+        data.append("        self.assert_text(expected_url, '#search')")
+        data.append("")
+        file_path = "%s/%s" % (dir_name, "parameterized_test.py")
+        file = codecs.open(file_path, "w+", "utf-8")
+        file.writelines("\r\n".join(data))
+        file.close()
+
         dir_name_2 = dir_name + "/" + "boilerplates"
         os.mkdir(dir_name_2)
 
