@@ -29,6 +29,7 @@ except (ImportError, ValueError):
     b.browser = "chrome"
     b.headless = False
     b.headed = False
+    b.start_page = None
     b.servername = "localhost"
     b.port = 4444
     b.data = None
