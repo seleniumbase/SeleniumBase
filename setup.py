@@ -17,8 +17,8 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.26.1',
-    description='Reliable Browser Automation & Testing Framework',
+    version='1.26.2',
+    description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
@@ -78,7 +78,7 @@ setup(
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
         'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
-        'pyotp>=2.2.7',
+        'pyotp>=2.3.0',
         'boto>=2.49.0',
         'flake8>=3.7.8',
         'certifi>=2019.6.16',
