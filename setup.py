@@ -97,6 +97,7 @@ setup(
         'seleniumbase.utilities',
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',
+        'seleniumbase.virtual_display',
     ],
     include_package_data=True,
     entry_points={
