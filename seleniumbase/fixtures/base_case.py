@@ -3377,7 +3377,7 @@ class BaseCase(unittest.TestCase):
         super(SubClassOfBaseCase, self).tearDown()
         """
         has_exception = False
-        if sys.version.startswith('3') and hasattr(self, '_outcome'):
+        if sys.version_info[0] >= 3 and hasattr(self, '_outcome'):
             if hasattr(self._outcome, 'errors') and self._outcome.errors:
                 has_exception = True
         else:
