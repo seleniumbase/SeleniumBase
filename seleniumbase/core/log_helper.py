@@ -33,7 +33,7 @@ def log_test_failure_data(test, test_logpath, driver, browser):
     data_to_save = []
     data_to_save.append("Last_Page: %s" % last_page)
     data_to_save.append("Browser: %s " % browser)
-    if sys.version.startswith('3') and hasattr(test, '_outcome'):
+    if sys.version_info[0] >= 3 and hasattr(test, '_outcome'):
         if test._outcome.errors:
             try:
                 exc_message = test._outcome.errors[0][1][1]

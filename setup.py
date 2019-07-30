@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.26.2',
+    version='1.26.3',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -82,7 +82,6 @@ setup(
         'boto>=2.49.0',
         'flake8>=3.7.8',
         'certifi>=2019.6.16',
-        'PyVirtualDisplay==0.2.1',  # Keep at 0.2.1 (later versions are slow)
     ],
     packages=[
         'seleniumbase',
@@ -98,6 +97,7 @@ setup(
         'seleniumbase.utilities',
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',
+        'seleniumbase.virtual_display',
     ],
     include_package_data=True,
     entry_points={
