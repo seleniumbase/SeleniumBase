@@ -3256,7 +3256,8 @@ class BaseCase(unittest.TestCase):
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
                 try:
-                    from pyvirtualdisplay import Display
+                    # from pyvirtualdisplay import Display  # Skip for own lib
+                    from seleniumbase.virtual_display.display import Display
                     self.display = Display(visible=0, size=(1440, 1880))
                     self.display.start()
                     self.headless_active = True
