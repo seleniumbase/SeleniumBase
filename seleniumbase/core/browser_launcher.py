@@ -109,6 +109,7 @@ def _set_chrome_options(
         }
     }
     chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_experimental_option("w3c", True)
     if enable_sync:
         chrome_options.add_experimental_option(
             "excludeSwitches", ["disable-sync"])
