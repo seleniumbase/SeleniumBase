@@ -71,11 +71,11 @@ def main():
     inner_folder = None
 
     if name == "chromedriver":
-        latest_version = "2.46"
+        latest_version = "2.44"  # It's not the latest, but most compatible
         if "darwin" in sys_plat:
             file_name = "chromedriver_mac64.zip"
         elif "linux" in sys_plat:
-            latest_version = "2.40"  # Linux machines may need the old driver
+            latest_version = "2.44"  # Linux machines may need the old driver
             file_name = "chromedriver_linux64.zip"
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
