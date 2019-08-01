@@ -592,7 +592,12 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
 
 
 def scroll_to_element(driver, element):
-    element_location = element.location['y']
+    element_location = None
+    try:
+        element_location = element.location['y']
+    except Exception:
+        element.location_once_scrolled_into_view
+        return
     element_location = element_location - 130
     if element_location < 0:
         element_location = 0
@@ -611,7 +616,12 @@ def slow_scroll_to_element(driver, element, browser):
         scroll_to_element(driver, element)
         return
     scroll_position = driver.execute_script("return window.scrollY;")
-    element_location = element.location['y']
+    element_location = None
+    try:
+        element_location = element.location['y']
+    except Exception:
+        element.location_once_scrolled_into_view
+        return
     element_location = element_location - 130
     if element_location < 0:
         element_location = 0
