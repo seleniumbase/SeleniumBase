@@ -384,6 +384,26 @@ def pytest_runtest_teardown(item):
         pass
 
 
+@pytest.fixture()
+def sb(request):
+    from seleniumbase import BaseCase
+
+    class BaseClass(BaseCase):
+        def base_method():
+            pass
+
+    if request.cls:
+        request.cls.sb = BaseClass("base_method")
+        request.cls.sb.setUp()
+        yield request.cls.sb
+        request.cls.sb.tearDown()
+    else:
+        sb = BaseClass("base_method")
+        sb.setUp()
+        yield sb
+        sb.tearDown()
+
+
 @pytest.mark.hookwrapper
 def pytest_runtest_makereport(item, call):
     pytest_html = item.config.pluginmanager.getplugin('html')
