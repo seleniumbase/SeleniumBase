@@ -65,7 +65,7 @@ setup(
         'requests>=2.22.0',
         'selenium==3.141.0',
         'pluggy>=0.12.0',
-        'pytest>=4.6.4',  # Keep at >=4.6.4 for Python 2 compatibility
+        'pytest>=4.6.5',  # Keep at >=4.6.5 for Python 2 compatibility
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
         'pytest-html==1.20.0',  # Keep at 1.20.0 (later versions have errors)
