@@ -88,11 +88,12 @@ def main():
             "        title = self.get_attribute(\"#comic img\", \"title\")")
         data.append(
             "        self.assert_true(\"86,400 seconds per day\" in title)")
-        data.append('        self.click("link=Blag")')
+        data.append('        self.click("link=Store")')
         data.append(
-            '        self.assert_text("The blag of the webcomic", "h2")')
-        data.append('        self.update_text("input#s", "Robots!\\n")')
-        data.append('        self.assert_text("Hooray robots!", "#content")')
+            "        self.assert_element('[alt=\"The xkcd store\"]')")
+        data.append(
+            '        self.update_text("input.search-input", "xkcd book\\n")')
+        data.append('        self.assert_text("xkcd: volume 0", "h3")')
         data.append('        self.open("https://xkcd.com/1319/")')
         data.append('        self.assert_exact_text("Automation", "#ctitle")')
         data.append("")
