@@ -53,17 +53,17 @@ class MyTestClass(BaseCase):
         #
         # 3. There's usually more than one way to do the same thing. Ex:
         #    [
-        #        self.assert_text("Hooray robots!", "#content")
+        #        self.assert_text("xkcd: volume 0", "h3")
         #    ]
         #    Is the same as:
         #    [
-        #        text = self.get_text("#content")
-        #        self.assert_true("Hooray robots!" in text)
+        #        text = self.get_text("h3")
+        #        self.assert_true("xkcd: volume 0" in text)
         #    ]
         #    Or:
         #    [
-        #        text = self.find_element("#content").text
-        #        assert("Hooray robots!" in text)
+        #        text = self.find_element("h3").text
+        #        assert("xkcd: volume 0" in text)
         #    ]
         #
         #    And the following line:
