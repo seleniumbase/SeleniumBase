@@ -11,6 +11,6 @@ class MyTestClass(BaseCase):
         self.open("https://xkcd.com/353/")
         self.click('a[rel="license"]')
         self.open("https://xkcd.com/1481/")
-        self.click("link=Blag")
-        self.update_text("input#s", "Robots!\n")
+        self.click("link=Store")
+        self.update_text("input#top-search-input", "xkcd book\n")
         self.open("https://xkcd.com/1319/")
