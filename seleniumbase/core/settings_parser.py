@@ -20,7 +20,7 @@ def set_settings(settings_file):
         data = re.match(r'^\s*([\S]+)\s*=\s*"([\S\s]+)"\s*$', line)
         if data:
             key = data.group(1)
-            value = data.group(2)
+            value = '"' + data.group(2) + '"'
             override_settings[key] = value
             num_settings += 1
             continue
@@ -29,7 +29,7 @@ def set_settings(settings_file):
         data = re.match(r"^\s*([\S]+)\s*=\s*'([\S\s]+)'\s*$", line)
         if data:
             key = data.group(1)
-            value = data.group(2)
+            value = "'" + data.group(2) + "'"
             override_settings[key] = value
             num_settings += 1
             continue
@@ -56,8 +56,12 @@ def set_settings(settings_file):
             override_settings[key] = True
         elif value == "False":
             override_settings[key] = False
+        elif len(value) > 1 and value.startswith('"') and value.endswith('"'):
+            override_settings[key] = value[1:-1]
+        elif len(value) > 1 and value.startswith("'") and value.endswith("'"):
+            override_settings[key] = value[1:-1]
         else:
-            override_settings[key] = value
+            continue
 
         if key == "MINI_TIMEOUT":
             settings.MINI_TIMEOUT = override_settings[key]
