@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" This is the Nose plugin for saving logs and setting a test environment. """
+""" This is the Nose plugin for setting a test environment and saving logs. """
 
 import os
 import sys
@@ -16,6 +16,7 @@ class Base(Plugin):
     This parser plugin includes the following command-line options for Nose:
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
+    --settings_file=FILE  (Overrides SeleniumBase settings.py values.)
     --log_path=LOG_PATH  (The directory where log files get saved to.)
     --archive_logs  (Archive old log files instead of deleting them.)
     --report  (The option to create a fancy report after tests complete.)
@@ -45,6 +46,13 @@ class Base(Plugin):
             '--data', dest='data',
             default=None,
             help='Extra data to pass from the command line.')
+        parser.add_option(
+            '--settings_file', '--settings-file', '--settings',
+            action='store',
+            dest='settings_file',
+            default=None,
+            help="""The file that stores key/value pairs for overriding
+                    values in the SeleniumBase settings.py file.""")
         parser.add_option(
             '--log_path', dest='log_path',
             default='latest_logs/',
@@ -100,6 +108,7 @@ class Base(Plugin):
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
+        test.test.settings_file = self.options.settings_file
         test.test.log_path = self.options.log_path
         test.test.args = self.options
         test.test.report_on = self.report_on

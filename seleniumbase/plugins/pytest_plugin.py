@@ -15,6 +15,7 @@ def pytest_addoption(parser):
     This parser plugin includes the following command-line options for pytest:
     --browser=BROWSER  (The web browser to use.)
     --cap_file=FILE  (The web browser's desired capabilities to use.)
+    --settings_file=FILE  (Overrides SeleniumBase settings.py values.)
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
     --user_data_dir=DIR  (Set the Chrome user data directory to use.)
@@ -82,6 +83,12 @@ def pytest_addoption(parser):
                      default=None,
                      help="""The file that stores browser desired capabilities
                           for BrowserStack or Sauce Labs web drivers.""")
+    parser.addoption('--settings_file', '--settings-file', '--settings',
+                     action='store',
+                     dest='settings_file',
+                     default=None,
+                     help="""The file that stores key/value pairs for overriding
+                          values in the SeleniumBase settings.py file.""")
     parser.addoption('--user_data_dir', '--user-data-dir',
                      dest='user_data_dir',
                      default=None,
@@ -320,6 +327,7 @@ def pytest_configure(config):
     sb_config.port = config.getoption('port')
     sb_config.proxy_string = config.getoption('proxy_string')
     sb_config.cap_file = config.getoption('cap_file')
+    sb_config.settings_file = config.getoption('settings_file')
     sb_config.user_data_dir = config.getoption('user_data_dir')
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = config.getoption('log_path')
