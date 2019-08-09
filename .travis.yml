@@ -1,5 +1,6 @@
 language: python
 sudo: false
+dist: trusty
 matrix:
   include:
     - python: 2.7
@@ -8,11 +9,11 @@ addons:
   firefox: "62.0.3"
   chrome: stable
 before_install:
-  - "mysql -u root -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
-  - "mysql -u root -h 127.0.0.1 -u root test_db < seleniumbase/core/create_db_tables.sql"
+  - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
+  - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/create_db_tables.sql"
   - "mysqladmin -u root password test"
   # - "mysqladmin -u root -p'old_password' password new_password"
-  - "service mysql restart"
+  - "sudo service mysql restart"
 install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt --upgrade"
@@ -35,7 +36,7 @@ script:
   - "pytest examples/my_first_test.py --browser=firefox -s --headless --with-db_reporting"
   - "pytest examples/my_first_test.py --browser=chrome -s --headless --with-db_reporting --demo_mode --demo_sleep=0.2"
   - "pytest examples/tour_examples/google_tour.py -s --headless --with-db_reporting"
-  - "mysql -u root --password=test -e 'select test_address,browser,state,start_time,runtime from test_db.test_run_data'"
+  - "sudo mysql --password=test -e 'select test_address,browser,state,start_time,runtime from test_db.test_run_data'"
 #after_script:
 #  - "sudo mysql -e 'DROP DATABASE test_db;'"
 notifications:
