@@ -47,6 +47,7 @@ from seleniumbase.core.testcase_manager import TestcaseDataPayload
 from seleniumbase.core.testcase_manager import TestcaseManager
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
+from seleniumbase.core import settings_parser
 from seleniumbase.core import tour_helper
 from seleniumbase.core import visual_helper
 from seleniumbase.fixtures import constants
@@ -3195,6 +3196,7 @@ class BaseCase(unittest.TestCase):
             self.proxy_string = sb_config.proxy_string
             self.user_agent = sb_config.user_agent
             self.cap_file = sb_config.cap_file
+            self.settings_file = sb_config.settings_file
             self.database_env = sb_config.database_env
             self.message_duration = sb_config.message_duration
             self.js_checking_on = sb_config.js_checking_on
@@ -3266,11 +3268,16 @@ class BaseCase(unittest.TestCase):
                     # Chrome and Firefox now have built-in headless displays
                     pass
 
-        # Launch WebDriver for both Pytest and Nosetests
+        # Verify that SeleniumBase is installed successfully
         if not hasattr(self, "browser"):
             raise Exception("""SeleniumBase plugins did not load! """
                             """Please reinstall using:\n"""
-                            """ >>> "python setup.py install" <<< """)
+                            """ >>> "pip install -r requirements.txt" <<<\n"""
+                            """ >>> "python setup.py develop" <<< """)
+        if self.settings_file:
+            settings_parser.set_settings(self.settings_file)
+
+        # Launch WebDriver for both Pytest and Nosetests
         self.driver = self.get_new_driver(browser=self.browser,
                                           headless=self.headless,
                                           servername=self.servername,

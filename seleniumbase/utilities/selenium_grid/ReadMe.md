@@ -35,25 +35,31 @@ Now you can run your tests on the Selenium Grid:
 pytest test_suite.py --server=IP_ADDRESS --port=4444
 ```
 
-You can also run your tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid server (and not worry about managing your own Selenium Grid):
+You can also run your tests on someone else's Selenium Grid to avoid managing your own. Here are some Selenium Grids that you can use (and the run command format):
+
+* [BrowserStack](https://www.browserstack.com/automate#) Selenium Grid:
 
 ```
-pytest my_first_test.py --server=username:key@hub.browserstack.com --port=80
+pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
-You can run your tests on the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid server:
+* [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid:
 
 ```
-pytest my_first_test.py --server=username:key@ondemand.saucelabs.com --port=80
+pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
 ```
 
-And you can run your tests on the [TestingBot](https://testingbot.com/features) Selenium Grid server:
+* [TestingBot](https://testingbot.com/features) Selenium Grid:
 
 ```
-pytest my_first_test.py --server=username:key@hub.testingbot.com --port=80
+pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
+* [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
+```
 
 #### More info about the Selenium Grid Hub can be found here:
 * [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
-* [https://github.com/SeleniumHQ/selenium/wiki](https://github.com/SeleniumHQ/selenium/wiki/Grid2)

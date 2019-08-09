@@ -1,5 +1,6 @@
 language: python
 sudo: false
+dist: trusty
 matrix:
   include:
     - python: 2.7

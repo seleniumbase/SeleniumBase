@@ -15,7 +15,7 @@ pytest>=4.6.5;python_version<"3"
 pytest>=5.0.1;python_version>="3"
 pytest-cov>=2.7.1
 pytest-forked>=1.0.2
-pytest-html==1.20.0
+pytest-html==1.22.0
 pytest-metadata>=1.8.0
 pytest-ordering>=0.6
 pytest-rerunfailures>=7.0
