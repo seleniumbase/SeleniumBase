@@ -8,15 +8,12 @@ class MyTestClass(BaseCase):
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
-        self.open("https://xkcd.com/1481/")
-        title = self.get_attribute("#comic img", "title")
-        self.assert_true("86,400 seconds per day" in title)
-        self.click("link=Store")
-        self.assert_element('[alt="The xkcd store"]')
+        self.go_back()
+        self.click("link=About")
+        self.assert_text("xkcd.com", "h2")
+        self.open("https://store.xkcd.com/collections/everything")
         self.update_text("input.search-input", "xkcd book\n")
-        self.assert_text("xkcd: volume 0", "h3")
-        self.open("https://xkcd.com/1319/")
-        self.assert_exact_text("Automation", "#ctitle")
+        self.assert_exact_text("xkcd: volume 0", "h3")
 
         ####
 
@@ -43,7 +40,7 @@ class MyTestClass(BaseCase):
         #
         # 2. Most methods have the optional `timeout` argument. Ex:
         #    [
-        #        self.get_text("#content", timeout=15)
+        #        self.assert_element('img[alt="Python"]', timeout=15)
         #    ]
         #    The `timeout` argument tells the method how many seconds to wait
         #    for an element to appear before raising an exception. This is
@@ -75,6 +72,10 @@ class MyTestClass(BaseCase):
         #        element = self.find_element("#comic img")
         #        title = element.get_attribute("title")
         #    ]
+        #
+        # 4. self.assert_exact_text(TEXT) ignores leading and trailing
+        #    whitespace in the TEXT assertion.
+        #    So, self.assert_exact_text("Some Text") will find [" Some Text "].
         #
         #    For backwards-compatibilty, some SeleniumBase methods that do the
         #    same thing have multiple names, kept on from previous versions.
