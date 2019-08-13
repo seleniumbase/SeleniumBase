@@ -83,19 +83,14 @@ def main():
         data.append("        self.assert_element('img[alt=\"Python\"]')")
         data.append("        self.click('a[rel=\"license\"]')")
         data.append('        self.assert_text("free to copy and reuse")')
-        data.append('        self.open("https://xkcd.com/1481/")')
-        data.append(
-            "        title = self.get_attribute(\"#comic img\", \"title\")")
-        data.append(
-            "        self.assert_true(\"86,400 seconds per day\" in title)")
-        data.append('        self.click("link=Store")')
-        data.append(
-            "        self.assert_element('[alt=\"The xkcd store\"]')")
+        data.append('        self.go_back()')
+        data.append('        self.click("link=About")')
+        data.append('        self.assert_text("xkcd.com", "h2")')
+        data.append('        self.open('
+                    '"https://store.xkcd.com/collections/everything")')
         data.append(
             '        self.update_text("input.search-input", "xkcd book\\n")')
         data.append('        self.assert_text("xkcd: volume 0", "h3")')
-        data.append('        self.open("https://xkcd.com/1319/")')
-        data.append('        self.assert_exact_text("Automation", "#ctitle")')
         data.append("")
         file_path = "%s/%s" % (dir_name, "my_first_test.py")
         file = codecs.open(file_path, "w+", "utf-8")
