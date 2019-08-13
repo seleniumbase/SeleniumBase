@@ -355,6 +355,4 @@ self.process_delayed_asserts()
 
 ---
 
-Example Test: (<i>From [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py)</i>)
-
-![](https://cdn2.hubspot.net/hubfs/100006/images/SampleCode2.png "SeleniumBase Python Code")
+Example Test: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py)
