@@ -43,6 +43,7 @@ except (ImportError, ValueError):
     b.disable_csp = False
     b.enable_sync = False
     b.visual_baseline = False
+    b.maximize_window = False
     b.save_screenshot_after_test = False
     b.timeout_multiplier = None
     b.pytest_html_report = None
@@ -54,6 +55,7 @@ except (ImportError, ValueError):
     b.demo_mode = False
     b.demo_sleep = 1
     b.message_duration = 2
+    b.settings_file = None
     b.user_data_dir = None
     b.proxy_string = None
     b.ad_block_on = False
