@@ -1,5 +1,5 @@
 pip>=19.2.2
-setuptools>=41.0.1
+setuptools>=41.1.0
 wheel>=0.33.4
 six
 nose
