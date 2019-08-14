@@ -31,6 +31,7 @@ class SeleniumBrowser(Plugin):
     --verify_delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable_csp  (This disables the Content Security Policy of websites.)
     --enable_sync  (The option to enable "Chrome Sync".)
+    --maximize_window  (The option to start with the web browser maximized.)
     --save_screenshot  (The option to save a screenshot after each test.)
     --visual_baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout_multiplier=MULTIPLIER  (Multiplies the default timeout values.)
@@ -213,6 +214,13 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables the "Chrome Sync" feature.""")
         parser.add_option(
+            '--maximize_window', '--maximize-window', '--maximize',
+            '--fullscreen',
+            action="store_true",
+            dest='maximize_window',
+            default=False,
+            help="""The option to start with the web browser maximized.""")
+        parser.add_option(
             '--save_screenshot', '--save-screenshot',
             action="store_true",
             dest='save_screenshot',
@@ -266,6 +274,7 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.enable_sync = self.options.enable_sync
+        test.test.maximize_window = self.options.maximize_window
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
         test.test.timeout_multiplier = self.options.timeout_multiplier

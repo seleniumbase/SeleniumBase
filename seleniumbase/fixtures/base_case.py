@@ -2778,7 +2778,10 @@ class BaseCase(unittest.TestCase):
             else:
                 if self.browser == 'chrome' or self.browser == 'opera':
                     try:
-                        self.driver.set_window_size(1250, 840)
+                        if self.maximize_window:
+                            self.driver.maximize_window()
+                        else:
+                            self.driver.set_window_size(1250, 840)
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
@@ -3207,6 +3210,7 @@ class BaseCase(unittest.TestCase):
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
+            self.maximize_window = sb_config.maximize_window
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier

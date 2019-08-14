@@ -39,6 +39,7 @@ def pytest_addoption(parser):
     --verify_delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable_csp  (This disables the Content Security Policy of websites.)
     --enable_sync  (The option to enable "Chrome Sync".)
+    --maximize_window  (The option to start with the web browser maximized.)
     --save_screenshot  (The option to save a screenshot after each test.)
     --visual_baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout_multiplier=MULTIPLIER  (Multiplies the default timeout values.)
@@ -281,6 +282,13 @@ def pytest_addoption(parser):
                      dest='enable_sync',
                      default=False,
                      help="""Using this enables the "Chrome Sync" feature.""")
+    parser.addoption('--maximize_window', '--maximize-window', '--maximize',
+                     '--fullscreen',
+                     action="store_true",
+                     dest='maximize_window',
+                     default=False,
+                     help="""The option to start with the browser window
+                          maximized.""")
     parser.addoption('--save_screenshot', '--save-screenshot',
                      action='store_true',
                      dest='save_screenshot',
@@ -341,6 +349,7 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.enable_sync = config.getoption('enable_sync')
+    sb_config.maximize_window = config.getoption('maximize_window')
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
