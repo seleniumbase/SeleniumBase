@@ -110,6 +110,9 @@ def _set_chrome_options(
     }
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_experimental_option("w3c", True)
+    chrome_options.add_experimental_option(
+        "excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option("useAutomationExtension", False)
     if enable_sync:
         chrome_options.add_experimental_option(
             "excludeSwitches", ["disable-sync"])
@@ -159,9 +162,10 @@ def _set_chrome_options(
             # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
             chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--no-sandbox")
         if "linux" in PLATFORM:
-            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--no-sandbox")
+    if "linux" in PLATFORM:
+        chrome_options.add_argument("--disable-dev-shm-usage")
     return chrome_options
 
 
