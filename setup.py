@@ -78,6 +78,7 @@ setup(
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
         'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
+        'pymysql>=0.9.3',
         'pyotp>=2.3.0',
         'boto>=2.49.0',
         'flake8>=3.7.8',
