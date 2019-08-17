@@ -1800,6 +1800,10 @@ class BaseCase(unittest.TestCase):
     def assert_not_equal(self, first, second, msg=None):
         self.assertNotEqual(first, second, msg=msg)
 
+    def assert_title(self, title):
+        """ Asserts that the web page title matches the expected title. """
+        assert self.get_title() == title
+
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
             Works ONLY for Chrome (non-headless) and Chrome-based browsers.
