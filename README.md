@@ -11,7 +11,7 @@ Everything you need for testing web apps!
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase is an all-in-one test automation framework that uses WebDriver APIs for spinning up web browsers while using pytest and nosetests for running tests.
+SeleniumBase is an all-in-one test automation framework that uses WebDriver APIs for spinning up web browsers while using pytest or nosetests for running tests.
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
 
@@ -67,6 +67,30 @@ pytest my_first_test.py --browser=chrome
 
 **Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a simple test looks like:**
 * <i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>
+* Here are some common SeleniumBase methods you might find in tests:
+```python
+self.open(URL)  # Navigate to the web page
+self.click(SELECTOR)  # Click a page element
+self.update_text(SELECTOR, TEXT)  # Type text (Add "\n" to text for pressing enter/return.)
+self.assert_element(SELECTOR)  # Assert element on the page
+self.assert_text(TEXT)  # Assert text on the page (has optional SELECTOR arg)
+self.assert_title(PAGE_TITLE)  # Assert page title
+self.assert_no_404_errors()  # Assert no 404 errors from files on the page
+self.assert_no_js_errors()  # Assert no JavaScript errors on page (Chrome-ONLY)
+self.execute_script(JAVASCRIPT)  # Execute javascript code
+self.go_back()  # Navigate to the previous URL
+self.get_text(SELECTOR)  # Get text from a selector
+self.get_attribute(SELECTOR, ATTRIBUTE)  # Get a specific attribute from a selector
+self.is_element_visible(SELECTOR)  # Find out if an element is visible on the page
+self.is_text_visible(TEXT)  # Find out if specific text is visible on the page (has optional SELECTOR arg)
+self.hover_and_click(HOVER_SELECTOR, CLICK_SELECTOR)  # Mouseover an element and click another element
+self.select_option_by_text(DROPDOWN_SELECTOR, OPTION_TEXT)  # Select a dropdown option
+self.switch_to_frame(FRAME_NAME)  # Switch webdriver control to an iframe on the page
+self.switch_to_default_content()  # Switch webdriver control out of the current iframe to the page
+self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
+self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
+```
+For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
@@ -119,7 +143,7 @@ seleniumbase install iedriver
 seleniumbase install operadriver
 ```
 
-Next, choose between **pytest** and **nosetests** test runners. (<i>Interchangeable</i>)
+Next, choose between **pytest** and **nosetests** test runners. (<i>Mostly interchangeable.</i>)
 ```bash
 cd examples/
 
@@ -128,44 +152,86 @@ pytest my_first_test.py --browser=chrome
 nosetests my_first_test.py --browser=firefox
 ```
 (<i>If no browser is specified, Chrome is used by default.</i>)
+With Pytest, a green dot means a test passed. An "F" means a test failed.
 
 <a id="seleniumbase_demo_mode"></a> **Use Demo Mode to help you see what tests are asserting.**
 
-If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
 ```bash
 pytest my_first_test.py --demo_mode
 ```
 
-You can use the following in your scripts to help you debug issues:
+**Pytest** includes test discovery. If you don't specify a specific file or folder to run from, ``pytest`` will search all subdirectories automatically for tests to run based on the following matching criteria:
+Python filenames that start with ``test_`` or end with ``_test.py``.
+Python methods that start with ``test_``.
+The Python class name can be anything since SeleniumBase's ``BaseCase`` class inherits from the ``unittest.TestCase`` class.
+You can see which tests are getting discovered by ``pytest`` by using:
+```bash
+pytest --collect-only -q
+```
 
+You can use the following in your scripts to help you debug issues:
+(<i>If using ipdb, make sure you add "-s" to command-line options unless already in pytest.ini</i>)
 ```python
-import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
-import ipdb; ipdb.set_trace()  # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
-import pytest; pytest.set_trace()  # similar to ipdb, but specific to pytest
+import time; time.sleep(5)  # Sleeps for 5 seconds (add this after the line you want to pause on)
+import ipdb; ipdb.set_trace()  # Waits for user input. n = next line, c = continue, s = step.
+import pytest; pytest.set_trace()  # Waits for user input. n = next line, c = continue, s = step.
 ```
 
 **To pause an active test that throws an exception or error, add ``--pdb -s``:**
-
-```
-pytest my_first_test.py --browser=chrome --pdb -s
-```
-
-The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
-
-Here are some other useful arguments:
 ```bash
--v  # Prints the full test name rather than a dot for each test.
+pytest my_first_test.py --pdb -s
+```
+The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
+
+Here are some other useful command-line options that come with Pytest:
+```bash
+-v  # Prints the full test name for each test.
+-q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
+--html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--collect-only  # Show what tests would get run without actually running them.
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+-n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 ```
 
-Here's a **nosetests**-specific argument:
+SeleniumBase provides additional Pytest command-line options for tests:
 ```bash
---logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
+--browser=BROWSER  # (The web browser to use.)
+--cap_file=FILE  # (The web browser's desired capabilities to use.)
+--settings_file=FILE  # (Overrides SeleniumBase settings.py values.)
+--env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
+--data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
+--user_data_dir=DIR  # (Set the Chrome user data directory to use.)
+--server=SERVER  # (The server / IP address used by the tests.)
+--port=PORT  # (The port that's used by the test server.)
+--proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
+--agent=STRING  # (This designates the web browser's User Agent to use.)
+--extension_zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension_dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--headless  # (The option to run tests headlessly. The default on Linux OS.)
+--headed  # (The option to run tests with a GUI on Linux OS.)
+--start_page=URL  # (The starting URL for the web browser when tests begin.)
+--log_path=LOG_PATH  # (The directory where log files get saved to.)
+--archive_logs  # (Archive old log files instead of deleting them.)
+--demo_mode  # (The option to visually see test actions as they occur.)
+--demo_sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
+--message_duration=SECONDS  # (The time length for Messenger alerts.)
+--check_js  # (The option to check for JavaScript errors after page loads.)
+--ad_block  # (The option to block some display ads after page loads.)
+--verify_delay=SECONDS  # (The delay before MasterQA verification checks.)
+--disable_csp  # (This disables the Content Security Policy of websites.)
+--enable_sync  # (The option to enable "Chrome Sync".)
+--maximize_window  # (The option to start with the web browser maximized.)
+--save_screenshot  # (The option to save a screenshot after each test.)
+--visual_baseline  # (Set the visual baseline for Visual/Layout tests.)
+--timeout_multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
+(For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
-During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
-
+During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you add --archive_logs to command-line options, or have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 ```bash
 cd examples/
 
@@ -174,11 +240,14 @@ pytest test_suite.py --browser=chrome
 pytest test_suite.py --browser=firefox
 ```
 
-If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface (``--headless`` is the default setting on Linux). Even if your system does have a GUI interface, it may still support headless browser automation.
+An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
+Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
+``--settings_file=custom_settings.py``
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, Email Testing API credentials, and other important settings used by tests.)
 
-To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
+Now inside your tests, you can use ``self.data`` to access that.
 
-If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Test Directory Customization:**
 
@@ -189,13 +258,13 @@ As a shortcut, you'll be able to run ``seleniumbase mkdir [DIRECTORY_NAME]`` to 
 ```bash
 seleniumbase mkdir browser_tests
 cd browser_tests
-pytest my_first_test.py --browser=chrome
+pytest my_first_test.py
 ```
 
 <a id="creating_visual_reports"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Creating Visual Test Suite Reports:**
 
-(NOTE: Several command line args are different for Pytest vs Nosetests)
+(NOTE: Several command-line args are different for Pytest vs Nosetests)
 
 #### **Pytest Reports:**
 
@@ -227,7 +296,7 @@ nosetests test_suite.py --report
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Using a Proxy Server:**
 
-If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command-line.
 
 ```bash
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
@@ -248,7 +317,7 @@ pytest proxy_test.py --proxy=proxy1
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Changing the User-Agent:**
 
-If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command line.
+If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
@@ -269,20 +338,16 @@ Here are some things you can do to setup a production environment for your testi
 
 * You can use [the Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the SeleniumBase [selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), which should have everything you need. The [Selenium Grid ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md) will help you get started.
 
-* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily. You'll also need to install the MySQL Python client. Depending on your system, you may need to install additional requirements for this (such as on Windows). See [Stackoverflow](https://stackoverflow.com/questions/43102442/whats-the-difference-between-mysqldb-mysqlclient-and-mysql-connector-python) for more info.
-
-```bash
-pip install mysqlclient==1.4.2
-```
+* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily. See [Stackoverflow](https://stackoverflow.com/questions/43102442/whats-the-difference-between-mysqldb-mysqlclient-and-mysql-connector-python) for more info.
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
 <a id="amazon_section"></a>
-* If you're using AWS, you can setup an [Amazon S3](https://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has [all the code you need to connect to S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py). You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command line when you run your tests.
+* If you're using AWS, you can setup an [Amazon S3](https://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has [all the code you need to connect to S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py). You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command-line when you run your tests.
 
 Here's an example of running tests with additional features enabled:
 ```bash
-pytest [YOUR_TEST_FILE].py --browser=chrome --with-db_reporting --with-s3_logging -s
+pytest [YOUR_TEST_FILE].py --with-db_reporting --with-s3_logging -s
 ```
 (NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
@@ -532,12 +597,11 @@ You'd know this because the web page would contain something like the following 
 ```
 
 It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:
-
 ```python
 self.activate_jquery()
 ```
 
-Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, use Firefox with SeleniumBase, which overrides the CSP to allow loading of any JS library.
+Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable_csp`` on the command-line.
 
 Here are some examples of using jQuery in your scripts:
 ```python

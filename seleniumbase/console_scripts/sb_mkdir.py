@@ -81,6 +81,7 @@ def main():
         data.append("    def test_basic(self):")
         data.append('        self.open("https://xkcd.com/353/")')
         data.append("        self.assert_element('img[alt=\"Python\"]')")
+        data.append('        self.assert_title("xkcd: Python")')
         data.append("        self.click('a[rel=\"license\"]')")
         data.append('        self.assert_text("free to copy and reuse")')
         data.append('        self.go_back()')

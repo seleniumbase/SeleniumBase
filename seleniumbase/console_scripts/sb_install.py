@@ -91,7 +91,7 @@ def main():
             print('\nLocating the latest version of Chromedriver...')
             latest_version = requests.get(last).text
             if not requests.get(download_url).ok:
-                fallback_version = "2.40"
+                fallback_version = "2.44"
                 download_url = ("http://chromedriver.storage.googleapis.com/"
                                 "%s/%s" % (fallback_version, file_name))
             else:
