@@ -156,13 +156,15 @@ nosetests test_suite.py --report
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
-Here are some other useful **nosetest**-specific arguments:
+Here are some other useful arguments:
+```bash
+-v  # Prints the full test name rather than a dot for each test.
+-x  # Stop running the tests after the first failure is reached.
+```
 
+Here's a **nosetests**-specific argument:
 ```bash
 --logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
--x  # Stop running the tests after the first failure is reached.
--v  # Prints the full test name rather than a dot for each test.
---with-id  # If -v is also used, will number the tests for easy counting.
 ```
 
 #### **Using a Proxy Server:**
