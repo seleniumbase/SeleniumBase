@@ -1962,6 +1962,8 @@ class BaseCase(unittest.TestCase):
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
+        """ When you want to hover over an element or dropdown menu,
+            and then click an element that appears after that. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         hover_selector, hover_by = self.__recalculate_selector(
