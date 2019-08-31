@@ -158,6 +158,31 @@ def hover_element_and_click(driver, element, click_selector,
         (click_selector, timeout))
 
 
+def hover_element_and_double_click(driver, element, click_selector,
+                                   click_by=By.CSS_SELECTOR,
+                                   timeout=settings.SMALL_TIMEOUT):
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    hover = ActionChains(driver).move_to_element(element)
+    hover.perform()
+    for x in range(int(timeout * 10)):
+        try:
+            element_2 = driver.find_element(by=click_by, value=click_selector)
+            actions = ActionChains(driver)
+            actions.move_to_element(element_2)
+            actions.double_click(element_2)
+            actions.perform()
+            return element_2
+        except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    raise NoSuchElementException(
+        "Element {%s} was not present after %s seconds!" %
+        (click_selector, timeout))
+
+
 def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
                              timeout=settings.LARGE_TIMEOUT):
     """

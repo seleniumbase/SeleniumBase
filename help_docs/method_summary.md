@@ -230,6 +230,9 @@ self.hover_on_element(selector, by=By.CSS_SELECTOR)
 self.hover_and_click(hover_selector, click_selector,
     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 
+self.hover_and_double_click(hover_selector, click_selector,
+    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
+
 self.select_option_by_text(dropdown_selector, option,
     dropdown_by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
 

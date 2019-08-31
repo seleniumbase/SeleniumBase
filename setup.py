@@ -17,7 +17,7 @@ except IOError:
 
 setup(
     name='seleniumbase',
-    version='1.30.0',
+    version='1.31.0',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -65,7 +65,7 @@ setup(
         'selenium==3.141.0',
         'pluggy>=0.12.0',
         'pytest>=4.6.5;python_version<"3"',  # For Python 2 compatibility
-        'pytest>=5.1.0;python_version>="3"',
+        'pytest>=5.1.2;python_version>="3"',
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
         'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows

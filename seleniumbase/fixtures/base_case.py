@@ -177,7 +177,7 @@ class BaseCase(unittest.TestCase):
 
     def double_click(self, selector, by=By.CSS_SELECTOR,
                      timeout=settings.SMALL_TIMEOUT):
-        from selenium.webdriver import ActionChains
+        from selenium.webdriver.common.action_chains import ActionChains
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if page_utils.is_xpath_selector(selector):
@@ -1962,6 +1962,8 @@ class BaseCase(unittest.TestCase):
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=settings.SMALL_TIMEOUT):
+        """ When you want to hover over an element or dropdown menu,
+            and then click an element that appears after that. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         hover_selector, hover_by = self.__recalculate_selector(
@@ -1984,6 +1986,35 @@ class BaseCase(unittest.TestCase):
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
         return element
+
+    def hover_and_double_click(self, hover_selector, click_selector,
+                               hover_by=By.CSS_SELECTOR,
+                               click_by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ When you want to hover over an element or dropdown menu,
+            and then double-click an element that appears after that. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        hover_selector, hover_by = self.__recalculate_selector(
+            hover_selector, hover_by)
+        hover_selector = self.convert_to_css_selector(
+            hover_selector, hover_by)
+        click_selector, click_by = self.__recalculate_selector(
+            click_selector, click_by)
+        hover_element = self.wait_for_element_visible(
+            hover_selector, by=hover_by, timeout=timeout)
+        self.__demo_mode_highlight_if_active(hover_selector, hover_by)
+        self.scroll_to(hover_selector, by=hover_by)
+        pre_action_url = self.driver.current_url
+        click_element = page_actions.hover_element_and_double_click(
+            self.driver, hover_element, click_selector,
+            click_by=By.CSS_SELECTOR, timeout=timeout)
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        return click_element
 
     def __select_option(self, dropdown_selector, option,
                         dropdown_by=By.CSS_SELECTOR, option_by="text",
@@ -2409,6 +2440,13 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_ready_state_complete(self, timeout=settings.EXTREME_TIMEOUT):
+        try:
+            # If there's an alert, skip
+            self.driver.switch_to.alert
+            return
+        except Exception:
+            # If there's no alert, continue
+            pass
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         is_ready = js_utils.wait_for_ready_state_complete(self.driver, timeout)
