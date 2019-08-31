@@ -2411,6 +2411,13 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_ready_state_complete(self, timeout=settings.EXTREME_TIMEOUT):
+        try:
+            # If there's an alert, skip
+            self.driver.switch_to.alert
+            return
+        except Exception:
+            # If there's no alert, continue
+            pass
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         is_ready = js_utils.wait_for_ready_state_complete(self.driver, timeout)
