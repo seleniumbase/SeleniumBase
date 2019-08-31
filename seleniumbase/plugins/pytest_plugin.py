@@ -285,7 +285,7 @@ def pytest_addoption(parser):
     parser.addoption('--maximize_window', '--maximize-window', '--maximize',
                      '--fullscreen',
                      action="store_true",
-                     dest='maximize_window',
+                     dest='maximize_option',
                      default=False,
                      help="""The option to start with the browser window
                           maximized.""")
@@ -349,7 +349,7 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.enable_sync = config.getoption('enable_sync')
-    sb_config.maximize_window = config.getoption('maximize_window')
+    sb_config.maximize_option = config.getoption('maximize_option')
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')

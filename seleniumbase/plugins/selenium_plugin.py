@@ -217,7 +217,7 @@ class SeleniumBrowser(Plugin):
             '--maximize_window', '--maximize-window', '--maximize',
             '--fullscreen',
             action="store_true",
-            dest='maximize_window',
+            dest='maximize_option',
             default=False,
             help="""The option to start with the web browser maximized.""")
         parser.add_option(
@@ -274,7 +274,7 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.enable_sync = self.options.enable_sync
-        test.test.maximize_window = self.options.maximize_window
+        test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
         test.test.timeout_multiplier = self.options.timeout_multiplier
