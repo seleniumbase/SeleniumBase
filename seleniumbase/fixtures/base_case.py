@@ -1987,6 +1987,35 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         return element
 
+    def hover_and_double_click(self, hover_selector, click_selector,
+                               hover_by=By.CSS_SELECTOR,
+                               click_by=By.CSS_SELECTOR,
+                               timeout=settings.SMALL_TIMEOUT):
+        """ When you want to hover over an element or dropdown menu,
+            and then double-click an element that appears after that. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        hover_selector, hover_by = self.__recalculate_selector(
+            hover_selector, hover_by)
+        hover_selector = self.convert_to_css_selector(
+            hover_selector, hover_by)
+        click_selector, click_by = self.__recalculate_selector(
+            click_selector, click_by)
+        hover_element = self.wait_for_element_visible(
+            hover_selector, by=hover_by, timeout=timeout)
+        self.__demo_mode_highlight_if_active(hover_selector, hover_by)
+        self.scroll_to(hover_selector, by=hover_by)
+        pre_action_url = self.driver.current_url
+        click_element = page_actions.hover_element_and_double_click(
+            self.driver, hover_element, click_selector,
+            click_by=By.CSS_SELECTOR, timeout=timeout)
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        return click_element
+
     def __select_option(self, dropdown_selector, option,
                         dropdown_by=By.CSS_SELECTOR, option_by="text",
                         timeout=settings.SMALL_TIMEOUT):
