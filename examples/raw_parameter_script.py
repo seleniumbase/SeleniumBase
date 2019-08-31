@@ -43,7 +43,7 @@ except (ImportError, ValueError):
     b.disable_csp = False
     b.enable_sync = False
     b.visual_baseline = False
-    b.maximize_window = False
+    b.maximize_option = False
     b.save_screenshot_after_test = False
     b.timeout_multiplier = None
     b.pytest_html_report = None
