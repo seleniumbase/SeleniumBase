@@ -3,7 +3,16 @@ Installs the specified web driver.
 
 Usage:
         seleniumbase install {chromedriver|geckodriver|edgedriver|
-                              iedriver|operadriver}
+                              iedriver|operadriver} [OPTIONS]
+Options:
+        VERSION - Specify the version (For Chromedriver ONLY)
+                      (Default Chromedriver version = 2.44)
+                  Use "latest" to get the latest Chromedriver.
+Example:
+        seleniumbase install chromedriver
+        seleniumbase install chromedriver 76.0.3809.126
+        seleniumbase install chromedriver latest
+        seleniumbase install geckodriver
 Output:
         Installs the specified webdriver.
         (chromedriver is required for Chrome automation)
@@ -24,16 +33,24 @@ import zipfile
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+DEFAULT_CHROMEDRIVER_VERSION = "2.44"
 
 
 def invalid_run_command():
     exp = ("  ** install **\n\n")
     exp += "  Usage:\n"
-    exp += "          seleniumbase install [DRIVER_NAME]\n"
+    exp += "          seleniumbase install [DRIVER_NAME] [OPTIONS]\n"
     exp += "              (Drivers: chromedriver, geckodriver, edgedriver,\n"
     exp += "                        iedriver, operadriver)\n"
+    exp += "  Options:\n"
+    exp += "          VERSION - Specify the version (For Chromedriver ONLY)."
+    exp += "                        (Default Chromedriver version = 2.44)"
+    exp += '                    Use "latest" to get the latest Chromedriver.'
     exp += "  Example:\n"
     exp += "          seleniumbase install chromedriver\n"
+    exp += "          seleniumbase install chromedriver 76.0.3809.126\n"
+    exp += "          seleniumbase install chromedriver latest\n"
+    exp += "          seleniumbase install geckodriver\n"
     exp += "  Output:\n"
     exp += "          Installs the specified webdriver.\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -56,11 +73,11 @@ def main():
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1].lower() == "seleniumbase" or (
             sys.argv[0].split('\\')[-1].lower() == "seleniumbase"):
-        if num_args < 3 or num_args > 3:
+        if num_args < 3 or num_args > 4:
             invalid_run_command()
     else:
         invalid_run_command()
-    name = sys.argv[num_args - 1].lower()
+    name = sys.argv[2].lower()
 
     file_name = None
     download_url = None
@@ -71,52 +88,56 @@ def main():
     inner_folder = None
 
     if name == "chromedriver":
-        latest_version = "2.44"  # It's not the latest, but most compatible
+        use_version = DEFAULT_CHROMEDRIVER_VERSION
+        get_latest = False
+        if num_args == 4:
+            use_version = sys.argv[3]
+            if use_version.lower() == "latest":
+                get_latest = True
         if "darwin" in sys_plat:
             file_name = "chromedriver_mac64.zip"
         elif "linux" in sys_plat:
-            latest_version = "2.44"  # Linux machines may need the old driver
             file_name = "chromedriver_linux64.zip"
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
         else:
             raise Exception("Cannot determine which version of Chromedriver "
                             "to download!")
-        download_url = ("http://chromedriver.storage.googleapis.com/"
-                        "%s/%s" % (latest_version, file_name))
-        # Forcing Chromedriver v2.40 for now, even though it's not the latest.
-        get_latest = False
+        found_chromedriver = False
         if get_latest:
             last = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE"
-            print('\nLocating the latest version of Chromedriver...')
-            latest_version = requests.get(last).text
-            if not requests.get(download_url).ok:
-                fallback_version = "2.44"
-                download_url = ("http://chromedriver.storage.googleapis.com/"
-                                "%s/%s" % (fallback_version, file_name))
-            else:
-                download_url = ("http://chromedriver.storage.googleapis.com/"
-                                "%s/%s" % (latest_version, file_name))
-            print("Found %s" % download_url)
+            url_request = requests.get(last)
+            if url_request.ok:
+                found_chromedriver = True
+                use_version = url_request.text
+        download_url = ("http://chromedriver.storage.googleapis.com/"
+                        "%s/%s" % (use_version, file_name))
+        url_request = None
+        if not found_chromedriver:
+            url_request = requests.get(download_url)
+        if found_chromedriver or url_request.ok:
+            print("\nChromedriver version for download = %s" % use_version)
+        else:
+            raise Exception("Could not find Chromedriver to download!\n")
     elif name == "geckodriver" or name == "firefoxdriver":
-        latest_version = "v0.24.0"
+        use_version = "v0.24.0"
         if "darwin" in sys_plat:
-            file_name = "geckodriver-%s-macos.tar.gz" % latest_version
+            file_name = "geckodriver-%s-macos.tar.gz" % use_version
         elif "linux" in sys_plat:
             arch = platform.architecture()[0]
             if "64" in arch:
-                file_name = "geckodriver-%s-linux64.tar.gz" % latest_version
+                file_name = "geckodriver-%s-linux64.tar.gz" % use_version
             else:
-                file_name = "geckodriver-%s-linux32.tar.gz" % latest_version
+                file_name = "geckodriver-%s-linux32.tar.gz" % use_version
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
-            file_name = "geckodriver-%s-win64.zip" % latest_version
+            file_name = "geckodriver-%s-win64.zip" % use_version
         else:
             raise Exception("Cannot determine which version of Geckodriver "
                             "(Firefox Driver) to download!")
 
         download_url = ("https://github.com/mozilla/geckodriver/"
                         "releases/download/"
-                        "%s/%s" % (latest_version, file_name))
+                        "%s/%s" % (use_version, file_name))
     elif name == "edgedriver" or name == "microsoftwebdriver":
         name = "edgedriver"
         version_code = "F/8/A/F8AF50AB-3C3A-4BC4-8773-DC27B32988DD"
@@ -141,7 +162,7 @@ def main():
                         "%s/%s" % (major_version, file_name))
     elif name == "operadriver" or name == "operachromiumdriver":
         name = "operadriver"
-        latest_version = "v.2.40"
+        use_version = "v.2.40"
         if "darwin" in sys_plat:
             file_name = "operadriver_mac64.zip"
             platform_code = "mac64"
@@ -176,7 +197,7 @@ def main():
 
         download_url = ("https://github.com/operasoftware/operachromiumdriver/"
                         "releases/download/"
-                        "%s/%s" % (latest_version, file_name))
+                        "%s/%s" % (use_version, file_name))
     else:
         invalid_run_command()
 
