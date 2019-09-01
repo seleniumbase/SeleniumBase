@@ -2388,6 +2388,11 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
+        if self.demo_mode:
+            messenger_post = (
+                "ASSERT PARTIAL LINK TEXT {%s}." % partial_link_text)
+            self.__highlight_with_assert_success(
+                messenger_post, partial_link_text, by=By.PARTIAL_LINK_TEXT)
         return True
 
     ############
