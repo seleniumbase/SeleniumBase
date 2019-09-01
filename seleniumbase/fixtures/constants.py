@@ -61,7 +61,7 @@ class Underscore:
 
 
 class Backbone:
-    VER = "1.3.3"
+    VER = "1.4.0"
     MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
               "backbone.js/%s/backbone-min.js" % VER)
 
