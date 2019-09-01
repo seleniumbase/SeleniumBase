@@ -1676,6 +1676,10 @@ class BaseCase(unittest.TestCase):
         else:
             for link in links:
                 self.assert_link_status_code_is_not_404(link)
+        if self.demo_mode:
+            messenger_post = ("ASSERT NO 404 ERRORS")
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def print_unique_links_with_status_codes(self):
         """ Finds all unique links in the html of the page source
