@@ -1661,7 +1661,7 @@ class BaseCase(unittest.TestCase):
     def assert_link_status_code_is_not_404(self, link):
         status_code = str(self.get_link_status_code(link))
         bad_link_str = 'Error: "%s" returned a 404!' % link
-        self.assert_not_equal(status_code, "404", bad_link_str)
+        self.assertNotEqual(status_code, "404", bad_link_str)
 
     def assert_no_404_errors(self, multithreaded=True):
         """ Assert no 404 errors from page links obtained from:
@@ -2685,22 +2685,22 @@ class BaseCase(unittest.TestCase):
             page_data_domain = self.get_domain_url(page_url_data)
             unittest.TestCase.maxDiff = 1000
             if level == 1 or level == 2 or level == 3:
-                self.assert_equal(page_domain, page_data_domain, domain_fail)
-                self.assert_equal(level_1, level_1_data, level_1_failure)
+                self.assertEqual(page_domain, page_data_domain, domain_fail)
+                self.assertEqual(level_1, level_1_data, level_1_failure)
             unittest.TestCase.maxDiff = None
             if level == 2 or level == 3:
-                self.assert_equal(level_2, level_2_data, level_2_failure)
+                self.assertEqual(level_2, level_2_data, level_2_failure)
             if level == 3:
-                self.assert_equal(level_3, level_3_data, level_3_failure)
+                self.assertEqual(level_3, level_3_data, level_3_failure)
             if level == 0:
                 try:
                     unittest.TestCase.maxDiff = 1000
-                    self.assert_equal(
+                    self.assertEqual(
                         page_domain, page_data_domain, domain_fail)
-                    self.assert_equal(level_1, level_1_data, level_1_failure)
+                    self.assertEqual(level_1, level_1_data, level_1_failure)
                     unittest.TestCase.maxDiff = None
-                    self.assert_equal(level_2, level_2_data, level_2_failure)
-                    self.assert_equal(level_3, level_3_data, level_3_failure)
+                    self.assertEqual(level_2, level_2_data, level_2_failure)
+                    self.assertEqual(level_3, level_3_data, level_3_failure)
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
 
