@@ -1661,7 +1661,7 @@ class BaseCase(unittest.TestCase):
     def assert_link_status_code_is_not_404(self, link):
         status_code = str(self.get_link_status_code(link))
         bad_link_str = 'Error: "%s" returned a 404!' % link
-        self.assert_not_equal(status_code, "404", bad_link_str)
+        self.assertNotEqual(status_code, "404", bad_link_str)
 
     def assert_no_404_errors(self, multithreaded=True):
         """ Assert no 404 errors from page links obtained from:
@@ -1676,6 +1676,10 @@ class BaseCase(unittest.TestCase):
         else:
             for link in links:
                 self.assert_link_status_code_is_not_404(link)
+        if self.demo_mode:
+            messenger_post = ("ASSERT NO 404 ERRORS")
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def print_unique_links_with_status_codes(self):
         """ Finds all unique links in the html of the page source
@@ -1790,19 +1794,39 @@ class BaseCase(unittest.TestCase):
 
     def assert_true(self, expr, msg=None):
         self.assertTrue(expr, msg=msg)
+        if self.demo_mode:
+            messenger_post = ("ASSERT TRUE: {%s}" % expr)
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def assert_false(self, expr, msg=None):
         self.assertFalse(expr, msg=msg)
+        if self.demo_mode:
+            messenger_post = ("ASSERT FALSE: {%s}" % expr)
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def assert_equal(self, first, second, msg=None):
         self.assertEqual(first, second, msg=msg)
+        if self.demo_mode:
+            messenger_post = ("ASSERT EQUAL: {%s == %s}" % (first, second))
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def assert_not_equal(self, first, second, msg=None):
         self.assertNotEqual(first, second, msg=msg)
+        if self.demo_mode:
+            messenger_post = ("ASSERT NOT EQUAL: {%s != %s}" % (first, second))
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
         assert self.get_title() == title
+        if self.demo_mode:
+            messenger_post = ("ASSERT TITLE: {%s}" % title)
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
@@ -1811,6 +1835,7 @@ class BaseCase(unittest.TestCase):
                 * See https://github.com/SeleniumHQ/selenium/issues/1161
             Based on the following Stack Overflow solution:
                 * https://stackoverflow.com/a/41150512/7058266 """
+        time.sleep(0.1)  # May take a moment for errors to appear after loads.
         try:
             browser_logs = self.driver.get_log('browser')
         except (ValueError, WebDriverException):
@@ -2317,7 +2342,7 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = ("ASSERT TEXT {%s} in %s: %s"
+            messenger_post = ("ASSERT EXACT TEXT {%s} in %s: %s"
                               % (text, by, selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
@@ -2387,6 +2412,11 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
+        if self.demo_mode:
+            messenger_post = (
+                "ASSERT PARTIAL LINK TEXT {%s}." % partial_link_text)
+            self.__highlight_with_assert_success(
+                messenger_post, partial_link_text, by=By.PARTIAL_LINK_TEXT)
         return True
 
     ############
@@ -2591,6 +2621,13 @@ class BaseCase(unittest.TestCase):
         if level != 0 and level != 1 and level != 2 and level != 3:
             raise Exception('Parameter "level" must be set to 0, 1, 2, or 3!')
 
+        if self.demo_mode:
+            raise Exception(
+                "WARNING: Using Demo Mode will break layout tests "
+                "that use the check_window() method due to custom "
+                "HTML edits being made on the page!\n"
+                "Please rerun without using Demo Mode!")
+
         module = self.__class__.__module__
         if '.' in module and len(module.split('.')[-1]) > 1:
             module = module.split('.')[-1]
@@ -2685,22 +2722,22 @@ class BaseCase(unittest.TestCase):
             page_data_domain = self.get_domain_url(page_url_data)
             unittest.TestCase.maxDiff = 1000
             if level == 1 or level == 2 or level == 3:
-                self.assert_equal(page_domain, page_data_domain, domain_fail)
-                self.assert_equal(level_1, level_1_data, level_1_failure)
+                self.assertEqual(page_domain, page_data_domain, domain_fail)
+                self.assertEqual(level_1, level_1_data, level_1_failure)
             unittest.TestCase.maxDiff = None
             if level == 2 or level == 3:
-                self.assert_equal(level_2, level_2_data, level_2_failure)
+                self.assertEqual(level_2, level_2_data, level_2_failure)
             if level == 3:
-                self.assert_equal(level_3, level_3_data, level_3_failure)
+                self.assertEqual(level_3, level_3_data, level_3_failure)
             if level == 0:
                 try:
                     unittest.TestCase.maxDiff = 1000
-                    self.assert_equal(
+                    self.assertEqual(
                         page_domain, page_data_domain, domain_fail)
-                    self.assert_equal(level_1, level_1_data, level_1_failure)
+                    self.assertEqual(level_1, level_1_data, level_1_failure)
                     unittest.TestCase.maxDiff = None
-                    self.assert_equal(level_2, level_2_data, level_2_failure)
-                    self.assert_equal(level_3, level_3_data, level_3_failure)
+                    self.assertEqual(level_2, level_2_data, level_2_failure)
+                    self.assertEqual(level_3, level_3_data, level_3_failure)
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
 

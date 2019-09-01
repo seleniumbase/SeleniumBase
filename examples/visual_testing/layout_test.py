@@ -20,6 +20,7 @@ class VisualLayoutTest(BaseCase):
         self.check_window(name="helloworld", level=2)
         with self.assertRaises(Exception):
             self.check_window(name="helloworld", level=3)
-        # Now that we know the exception was raised as expected,
+        # Now that we know the Exception was raised as expected,
         # let's print out the comparison results by running in Level-0.
+        # (NOTE: Running with level-0 will print but NOT raise an Exception.)
         self.check_window(name="helloworld", level=0)

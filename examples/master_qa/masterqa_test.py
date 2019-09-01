@@ -16,7 +16,7 @@ class MasterQATests(MasterQA):
         self.verify("Can you find the moon?")
         self.click('a[rel="next"]')
         self.verify("Do the drones look safe?")
-        self.click_link_text('Store')
+        self.open("https://store.xkcd.com/collections/everything")
         self.update_text("input.search-input", "book\n")
         self.verify("Do you see books in the search results?")
         self.open("https://xkcd.com/213/")
