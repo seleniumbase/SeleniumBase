@@ -2592,6 +2592,13 @@ class BaseCase(unittest.TestCase):
         if level != 0 and level != 1 and level != 2 and level != 3:
             raise Exception('Parameter "level" must be set to 0, 1, 2, or 3!')
 
+        if self.demo_mode:
+            raise Exception(
+                "WARNING: Using Demo Mode will break layout tests "
+                "that use the check_window() method due to custom "
+                "HTML edits being made on the page!\n"
+                "Please rerun without using Demo Mode!")
+
         module = self.__class__.__module__
         if '.' in module and len(module.split('.')[-1]) > 1:
             module = module.split('.')[-1]
