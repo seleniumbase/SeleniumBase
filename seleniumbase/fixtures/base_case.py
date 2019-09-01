@@ -2317,7 +2317,7 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = ("ASSERT TEXT {%s} in %s: %s"
+            messenger_post = ("ASSERT EXACT TEXT {%s} in %s: %s"
                               % (text, by, selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
