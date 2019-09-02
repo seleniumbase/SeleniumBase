@@ -6,7 +6,7 @@ class MyTestClass(BaseCase):
     def test_basic(self):
         self.open('https://xkcd.com/1117/')
         self.assert_element('img[alt="My Sky"]')
-        self.create_shepherd_tour()
+        self.create_bootstrap_tour()
         self.add_tour_step("Welcome to XKCD!")
         self.add_tour_step("This is the XKCD logo.", "#masthead img")
         self.add_tour_step("Here's the daily webcomic.", "#comic img")
@@ -17,5 +17,5 @@ class MyTestClass(BaseCase):
         self.add_tour_step("Click here for the license.", 'a[rel="license"]')
         self.add_tour_step("Click for a random comic.", 'a[href*="/random/"]')
         self.add_tour_step("Thanks for taking this tour!")
-        self.export_tour(filename="xkcd_tour.js")  # Exports the tour
+        self.export_tour(filename="bootstrap_xkcd_tour.js")  # Exports the tour
         self.play_tour()  # Plays the tour
