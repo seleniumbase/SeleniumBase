@@ -486,7 +486,7 @@ def play_hopscotch_tour(
                 now_ms = time.time() * 1000.0
                 if now_ms >= stop_ms:
                     if current_step == latest_step:
-                        driver.execute_script("return $tour.nextStep()")
+                        driver.execute_script("$tour.nextStep()")
                         try:
                             latest_step = driver.execute_script(
                                 "return $tour.getCurrStepNum()")
@@ -604,7 +604,10 @@ def play_introjs_tour(
                 now_ms = time.time() * 1000.0
                 if now_ms >= stop_ms:
                     if current_step == latest_step:
-                        driver.execute_script("return $tour.nextStep()")
+                        try:
+                            driver.execute_script("$tour.nextStep()")
+                        except Exception:
+                            driver.execute_script("$tour.exit()")
                         try:
                             latest_step = driver.execute_script(
                                 "return $tour._currentStep")

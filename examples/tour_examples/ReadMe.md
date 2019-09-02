@@ -80,20 +80,16 @@ class MyTourClass(BaseCase):
         self.wait_for_element('input[title="Search"]')
 
         self.create_tour(theme="dark")
-        self.add_tour_step(
-            "Click to begin the Google Tour!", title="SeleniumBase Tours")
-        self.add_tour_step(
-            "Type in your search query here.", 'input[title="Search"]')
+        self.add_tour_step("Welcome to Google!", title="SeleniumBase Tours")
+        self.add_tour_step("Type in your query here.", 'input[title="Search"]')
         self.play_tour()
 
         self.highlight_update_text('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
         self.create_tour(theme="light")
-        self.add_tour_step(
-            "Then click here to search.", 'input[value="Google Search"]')
-        self.add_tour_step(
-            "Or press [ENTER] after typing a query here.", '[title="Search"]')
+        self.add_tour_step("Then click to search.", '[value="Google Search"]')
+        self.add_tour_step("Or press [ENTER] after entry.", '[title="Search"]')
         self.play_tour()
 ```
 

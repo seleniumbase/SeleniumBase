@@ -19,7 +19,9 @@ you can try finding one from one of following sites:
 """
 
 PROXY_LIST = {
-    "example1": "67.205.172.239:3128",  # (Example) - set your own proxy here
+    "example1": "66.7.113.39:3128",  # (Example) - set your own proxy here
+    "example2": "35.224.31.171:8080",  # (Example) - set your own proxy here
+    "example3": "104.236.248.219:3128",  # (Example) - set your own proxy here
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,
