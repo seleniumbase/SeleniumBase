@@ -3174,7 +3174,7 @@ class BaseCase(unittest.TestCase):
         csstype = link_css.split('[')[1].split('=')[0]
         for item in drop_down_list:
             item_text_list = item.text.split('\n')
-            if link_text in item.text.split('\n') and csstype in item.decode():
+            if link_text in item_text_list and csstype in item.decode():
                 dropdown_css = ""
                 try:
                     for css_class in item['class']:
@@ -3218,7 +3218,8 @@ class BaseCase(unittest.TestCase):
             drop_down_list.append(item)
         csstype = link_css.split('[')[1].split('=')[0]
         for item in drop_down_list:
-            if link_text in item.text.split('\n') and csstype in item.decode():
+            item_text_list = item.text.split('\n')
+            if link_text in item_text_list and csstype in item.decode():
                 dropdown_css = ""
                 try:
                     for css_class in item['class']:
