@@ -434,7 +434,7 @@ def main():
                     r'''space\(\.\)=\'([\S\s]+)\'\]\)[\S\s]+''', xpath)
                 if x_match:
                     partial_link_text = x_match.group(1)
-                    xpath="partial_link=%s" % partial_link_text
+                    xpath = "partial_link=%s" % partial_link_text
             uni = ""
             if '(u"' in line:
                 uni = "u"
