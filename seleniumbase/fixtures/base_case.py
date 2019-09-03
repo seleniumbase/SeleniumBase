@@ -109,12 +109,13 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        if page_utils.is_link_text_selector(selector):
+        if page_utils.is_link_text_selector(selector) or by == By.LINK_TEXT:
             if not self.is_link_text_visible(selector):
                 # Handle a special case of links hidden in dropdowns
                 self.click_link_text(selector, timeout=timeout)
                 return
-        if page_utils.is_partial_link_text_selector(selector):
+        if page_utils.is_partial_link_text_selector(selector) or (
+                by == By.PARTIAL_LINK_TEXT):
             if not self.is_partial_link_text_visible(selector):
                 # Handle a special case of partial links hidden in dropdowns
                 self.click_partial_link_text(selector, timeout=timeout)
@@ -232,6 +233,17 @@ class BaseCase(unittest.TestCase):
                 return True
         return False
 
+    def is_partial_link_text_present(self, link_text):
+        """ Returns True if the partial link appears in the HTML of the page.
+            The element doesn't need to be visible,
+            such as elements hidden inside a dropdown selection. """
+        soup = self.get_beautiful_soup()
+        html_links = soup.find_all('a')
+        for html_link in html_links:
+            if link_text.strip() in html_link.text.strip():
+                return True
+        return False
+
     def get_link_attribute(self, link_text, attribute, hard_fail=True):
         """ Finds a link by link text and then returns the attribute's value.
             If the link text or attribute cannot be found, an exception will
@@ -254,6 +266,31 @@ class BaseCase(unittest.TestCase):
         else:
             return None
 
+    def get_partial_link_attribute(self, link_text, attribute, hard_fail=True):
+        """ Finds a link by partial link text and then returns the attribute's
+            value. If the partial link text or attribute cannot be found, an
+            exception will get raised if hard_fail is True (otherwise None
+            is returned). """
+        soup = self.get_beautiful_soup()
+        html_links = soup.find_all('a')
+        for html_link in html_links:
+            if link_text.strip() in html_link.text.strip():
+                if html_link.has_attr(attribute):
+                    attribute_value = html_link.get(attribute)
+                    return attribute_value
+                if hard_fail:
+                    raise Exception(
+                        'Unable to find attribute {%s} from '
+                        'partial link text {%s}!'
+                        % (attribute, link_text))
+                else:
+                    return None
+        if hard_fail:
+            raise Exception(
+                "Partial Link text {%s} was not found!" % link_text)
+        else:
+            return None
+
     def wait_for_link_text_present(self, link_text,
                                    timeout=settings.SMALL_TIMEOUT):
         start_ms = time.time() * 1000.0
@@ -271,6 +308,25 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.2)
         raise Exception(
             "Link text {%s} was not present after %s seconds!" % (
+                link_text, timeout))
+
+    def wait_for_partial_link_text_present(self, link_text,
+                                           timeout=settings.SMALL_TIMEOUT):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout * 5)):
+            try:
+                if not self.is_partial_link_text_present(link_text):
+                    raise Exception(
+                        "Partial Link text {%s} was not found!" % link_text)
+                return
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.2)
+        raise Exception(
+            "Partial Link text {%s} was not present after %s seconds!" % (
                 link_text, timeout))
 
     def click_link_text(self, link_text, timeout=settings.SMALL_TIMEOUT):
@@ -387,20 +443,68 @@ class BaseCase(unittest.TestCase):
                         '{%s}' % partial_link_text)
             raise Exception(
                 "Partial link text {%s} was not found!" % partial_link_text)
-        # Not using phantomjs
-        element = self.wait_for_partial_link_text(
-            partial_link_text, timeout=timeout)
-        self.__demo_mode_highlight_if_active(
-            partial_link_text, by=By.PARTIAL_LINK_TEXT)
-        pre_action_url = self.driver.current_url
-        try:
-            element.click()
-        except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
-            time.sleep(0.05)
-            element = self.wait_for_partial_link_text(
+        if not self.is_partial_link_text_present(partial_link_text):
+            self.wait_for_partial_link_text_present(
                 partial_link_text, timeout=timeout)
-            element.click()
+        pre_action_url = self.get_current_url()
+        try:
+            element = self.wait_for_partial_link_text(
+                partial_link_text, timeout=0.2)
+            self.__demo_mode_highlight_if_active(
+                partial_link_text, by=By.LINK_TEXT)
+            try:
+                element.click()
+            except (StaleElementReferenceException, ENI_Exception):
+                self.wait_for_ready_state_complete()
+                time.sleep(0.05)
+                element = self.wait_for_partial_link_text(
+                    partial_link_text, timeout=timeout)
+                element.click()
+        except Exception:
+            found_css = False
+            text_id = self.get_partial_link_attribute(
+                partial_link_text, "id", False)
+            if text_id:
+                link_css = '[id="%s"]' % partial_link_text
+                found_css = True
+
+            if not found_css:
+                href = self.__get_href_from_partial_link_text(
+                    partial_link_text, False)
+                if href:
+                    if href.startswith('/') or page_utils.is_valid_url(href):
+                        link_css = '[href="%s"]' % href
+                        found_css = True
+
+            if not found_css:
+                ngclick = self.get_partial_link_attribute(
+                    partial_link_text, "ng-click", False)
+                if ngclick:
+                    link_css = '[ng-click="%s"]' % ngclick
+                    found_css = True
+
+            if not found_css:
+                onclick = self.get_partial_link_attribute(
+                    partial_link_text, "onclick", False)
+                if onclick:
+                    link_css = '[onclick="%s"]' % onclick
+                    found_css = True
+
+            success = False
+            if found_css:
+                if self.is_element_visible(link_css):
+                    self.click(link_css)
+                    success = True
+                else:
+                    # The link text might be hidden under a dropdown menu
+                    success = self.__click_dropdown_partial_link_text(
+                        partial_link_text, link_css)
+
+            if not success:
+                element = self.wait_for_link_text_visible(
+                    partial_link_text, timeout=settings.MINI_TIMEOUT)
+                element.click()
+
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -3064,29 +3168,75 @@ class BaseCase(unittest.TestCase):
     def __click_dropdown_link_text(self, link_text, link_css):
         """ When a link may be hidden under a dropdown menu, use this. """
         soup = self.get_beautiful_soup()
-        drop_down_list = soup.select('[class*=dropdown]')
-        for item in soup.select('[class*=HeaderMenu]'):
-            drop_down_list.append(item)
-        for item in soup.select('[class*=menu-item]'):
-            drop_down_list.append(item)
-        for item in soup.select('[class*=chevron]'):
+        drop_down_list = []
+        for item in soup.select('li[class]'):
             drop_down_list.append(item)
         csstype = link_css.split('[')[1].split('=')[0]
         for item in drop_down_list:
-            if link_text in item.text.split('\n') and csstype in item.decode():
+            item_text_list = item.text.split('\n')
+            if link_text in item_text_list and csstype in item.decode():
                 dropdown_css = ""
-                for css_class in item['class']:
-                    dropdown_css += '.'
-                    dropdown_css += css_class
+                try:
+                    for css_class in item['class']:
+                        dropdown_css += '.'
+                        dropdown_css += css_class
+                except Exception:
+                    continue
                 dropdown_css = item.name + dropdown_css
                 matching_dropdowns = self.find_visible_elements(dropdown_css)
                 for dropdown in matching_dropdowns:
                     # The same class names might be used for multiple dropdowns
                     try:
-                        page_actions.hover_element_and_click(
-                            self.driver, dropdown, link_text,
-                            click_by=By.LINK_TEXT, timeout=0.2)
-                        return True
+                        if dropdown.is_displayed():
+                            page_actions.hover_element_and_click(
+                                self.driver, dropdown, link_text,
+                                click_by=By.LINK_TEXT, timeout=0.12)
+                            return True
+                    except Exception:
+                        pass
+        return False
+
+    def __get_href_from_partial_link_text(self, link_text, hard_fail=True):
+        href = self.get_partial_link_attribute(link_text, "href", hard_fail)
+        if not href:
+            return None
+        if href.startswith('//'):
+            link = "http:" + href
+        elif href.startswith('/'):
+            url = self.driver.current_url
+            domain_url = self.get_domain_url(url)
+            link = domain_url + href
+        else:
+            link = href
+        return link
+
+    def __click_dropdown_partial_link_text(self, link_text, link_css):
+        """ When a partial link may be hidden under a dropdown, use this. """
+        soup = self.get_beautiful_soup()
+        drop_down_list = []
+        for item in soup.select('li[class]'):
+            drop_down_list.append(item)
+        csstype = link_css.split('[')[1].split('=')[0]
+        for item in drop_down_list:
+            item_text_list = item.text.split('\n')
+            if link_text in item_text_list and csstype in item.decode():
+                dropdown_css = ""
+                try:
+                    for css_class in item['class']:
+                        dropdown_css += '.'
+                        dropdown_css += css_class
+                except Exception:
+                    continue
+                dropdown_css = item.name + dropdown_css
+                matching_dropdowns = self.find_visible_elements(dropdown_css)
+                for dropdown in matching_dropdowns:
+                    # The same class names might be used for multiple dropdowns
+                    try:
+                        if dropdown.is_displayed():
+                            page_actions.hover_element_and_click(
+                                self.driver, dropdown, link_text,
+                                click_by=By.PARTIAL_LINK_TEXT, timeout=0.12)
+                            return True
                     except Exception:
                         pass
         return False
