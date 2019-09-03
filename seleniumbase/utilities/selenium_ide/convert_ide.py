@@ -427,6 +427,14 @@ def main():
         if data:
             whitespace = data.group(1)
             xpath = '%s' % data.group(2)
+            if './/*[normalize-space(text())' in xpath and (
+                    "normalize-space(.)='" in xpath):
+                x_match = re.match(
+                    r'''^[\S\s]+normalize-'''
+                    r'''space\(\.\)=\'([\S\s]+)\'\]\)[\S\s]+''', xpath)
+                if x_match:
+                    partial_link_text = x_match.group(1)
+                    xpath="partial_link=%s" % partial_link_text
             uni = ""
             if '(u"' in line:
                 uni = "u"
