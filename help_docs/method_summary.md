@@ -23,9 +23,15 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIME
 
 self.is_link_text_present(link_text)
 
+self.is_partial_link_text_present(link_text)
+
 self.get_link_attribute(link_text, attribute, hard_fail)
 
+self.get_partial_link_attribute(link_text, attribute, hard_fail)
+
 self.wait_for_link_text_present(link_text, timeout=settings.SMALL_TIMEOUT)
+
+self.wait_for_partial_link_text_present(link_text, timeout=settings.SMALL_TIMEOUT)
 
 self.click_link_text(link_text, timeout=settings.SMALL_TIMEOUT)
 
