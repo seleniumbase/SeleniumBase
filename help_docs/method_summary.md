@@ -27,7 +27,7 @@ self.is_partial_link_text_present(link_text)
 
 self.get_link_attribute(link_text, attribute, hard_fail)
 
-self.get_partial_link_attribute(link_text, attribute, hard_fail)
+self.get_partial_link_text_attribute(link_text, attribute, hard_fail)
 
 self.wait_for_link_text_present(link_text, timeout=settings.SMALL_TIMEOUT)
 

@@ -266,7 +266,8 @@ class BaseCase(unittest.TestCase):
         else:
             return None
 
-    def get_partial_link_attribute(self, link_text, attribute, hard_fail=True):
+    def get_partial_link_text_attribute(self, link_text, attribute,
+                                        hard_fail=True):
         """ Finds a link by partial link text and then returns the attribute's
             value. If the partial link text or attribute cannot be found, an
             exception will get raised if hard_fail is True (otherwise None
@@ -462,7 +463,7 @@ class BaseCase(unittest.TestCase):
                 element.click()
         except Exception:
             found_css = False
-            text_id = self.get_partial_link_attribute(
+            text_id = self.get_partial_link_text_attribute(
                 partial_link_text, "id", False)
             if text_id:
                 link_css = '[id="%s"]' % partial_link_text
@@ -477,14 +478,14 @@ class BaseCase(unittest.TestCase):
                         found_css = True
 
             if not found_css:
-                ngclick = self.get_partial_link_attribute(
+                ngclick = self.get_partial_link_text_attribute(
                     partial_link_text, "ng-click", False)
                 if ngclick:
                     link_css = '[ng-click="%s"]' % ngclick
                     found_css = True
 
             if not found_css:
-                onclick = self.get_partial_link_attribute(
+                onclick = self.get_partial_link_text_attribute(
                     partial_link_text, "onclick", False)
                 if onclick:
                     link_css = '[onclick="%s"]' % onclick
@@ -3197,7 +3198,8 @@ class BaseCase(unittest.TestCase):
         return False
 
     def __get_href_from_partial_link_text(self, link_text, hard_fail=True):
-        href = self.get_partial_link_attribute(link_text, "href", hard_fail)
+        href = self.get_partial_link_text_attribute(
+            link_text, "href", hard_fail)
         if not href:
             return None
         if href.startswith('//'):
