@@ -26,7 +26,7 @@ python -m easy_install -U pip
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Virtual Environment: (Optional)
 
-You may want to use a **Python Virtual Environment** to isolate Python dependencies between projects. (The Seleniumbase virtualenv tutorial can be found **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**, and the official virtualenv tutorial can be found **[here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.)
+You may want to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the official site **[here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase)
 ```bash

@@ -5,8 +5,8 @@ class MyTestClass(BaseCase):
 
     def test_basic(self):
         self.open("https://xkcd.com/353/")
-        self.assert_element('img[alt="Python"]')
         self.assert_title("xkcd: Python")
+        self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
