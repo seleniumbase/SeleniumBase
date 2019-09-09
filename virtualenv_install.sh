@@ -24,6 +24,7 @@ then
   echo ""
   echo "Example:"
   echo "      mkvirtualenv seleniumbase "
+  echo "      mkvirtualenv seleniumbase --python=python3"
   echo ""
 else
   echo ""
