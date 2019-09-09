@@ -90,16 +90,16 @@ def remove_extra_slashes(selector):
     if selector.count('\\"') > 0:
         if selector.count('\\"') == selector.count('"'):
             selector = selector.replace('\\"', '"')
-        elif (selector.count('\\"') == selector[1:-1].count('"') and
-              "'" not in selector[1:-1]):
+        elif (selector.count('\\"') == selector[1:-1].count('"') and (
+              "'" not in selector[1:-1])):
             selector = "'" + selector[1:-1].replace('\\"', '"') + "'"
         else:
             pass
     if selector.count("\\'") > 0:
         if selector.count("\\'") == selector.count("'"):
             selector = selector.replace("\\'", "'")
-        elif (selector.count("\\'") == selector[1:-1].count("'") and
-              '"' not in selector[1:-1]):
+        elif (selector.count("\\'") == selector[1:-1].count("'") and (
+              '"' not in selector[1:-1])):
             selector = '"' + selector[1:-1].replace("\\'", "'") + '"'
         else:
             pass

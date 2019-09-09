@@ -115,14 +115,14 @@ class EasyProcess(object):
     def __repr__(self):
         msg = ('<%s cmd_param=%s cmd=%s oserror=%s return_code=%s'
                ' stdout="%s" stderr="%s" timeout_happened=%s>' % (
-                self.__class__.__name__,
-                self.cmd_param,
-                self.cmd,
-                self.oserror,
-                self.return_code,
-                self.stdout,
-                self.stderr,
-                self.timeout_happened,
+                   self.__class__.__name__,
+                   self.cmd_param,
+                   self.cmd,
+                   self.oserror,
+                   self.return_code,
+                   self.stdout,
+                   self.stderr,
+                   self.timeout_happened,
                ))
         return msg
 
