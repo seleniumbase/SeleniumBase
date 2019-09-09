@@ -54,11 +54,13 @@ test-results.xml
 # Web Drivers
 chromedriver
 geckodriver
+msedgedriver
 operadriver
 MicrosoftWebDriver.exe
 IEDriverServer.exe
 chromedriver.exe
 geckodriver.exe
+msedgedriver.exe
 operadriver.exe
 
 # Logs

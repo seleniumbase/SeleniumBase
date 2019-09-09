@@ -37,8 +37,7 @@ class XvfbDisplay(AbstractDisplay):
 
     @property
     def _cmd(self):
-        cmd = [
-               dict(black='-br', white='-wr')[self.bgcolor],
+        cmd = [dict(black='-br', white='-wr')[self.bgcolor],
                '-nolisten',
                'tcp',
                '-screen',

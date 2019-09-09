@@ -18,4 +18,5 @@ echo:   *  "rmvirtualenv [ENV_NAME]"  -  Delete a virtual environment
 echo:
 echo: Example:
 echo:       mkvirtualenv seleniumbase
+echo:       mkvirtualenv seleniumbase --python=python3
 echo:

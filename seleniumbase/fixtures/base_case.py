@@ -1704,7 +1704,13 @@ class BaseCase(unittest.TestCase):
 
     def assert_downloaded_file(self, file):
         """ Asserts that the file exists in the Downloads Folder. """
-        assert os.path.exists(self.get_path_of_downloaded_file(file))
+        self.assertTrue(os.path.exists(self.get_path_of_downloaded_file(file)),
+                        "File [%s] was not found in the downloads folder [%s]!"
+                        "" % (file, self.get_downloads_folder()))
+        if self.demo_mode:
+            messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
+            js_utils.post_messenger_success_message(
+                self.driver, messenger_post, self.message_duration)
 
     def assert_true(self, expr, msg=None):
         self.assertTrue(expr, msg=msg)
@@ -1736,7 +1742,11 @@ class BaseCase(unittest.TestCase):
 
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
-        assert self.get_title() == title
+        expected = title
+        actual = self.get_title()
+        self.assertEqual(expected, actual, "Expected page title [%s] "
+                         "does not match the actual page title [%s]!"
+                         "" % (expected, actual))
         if self.demo_mode:
             messenger_post = ("ASSERT TITLE: {%s}" % title)
             js_utils.post_messenger_success_message(
