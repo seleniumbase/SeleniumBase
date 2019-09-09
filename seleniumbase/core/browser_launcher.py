@@ -34,10 +34,11 @@ LOCAL_OPERADRIVER = None
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/msedgedriver'
     LOCAL_OPERADRIVER = DRIVER_DIR + '/operadriver'
 elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     IS_WINDOWS = True
-    LOCAL_EDGEDRIVER = DRIVER_DIR + '/MicrosoftWebDriver.exe'
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/msedgedriver.exe'
     LOCAL_IEDRIVER = DRIVER_DIR + '/IEDriverServer.exe'
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
@@ -507,17 +508,24 @@ def get_local_driver(
         else:
             return webdriver.Ie(capabilities=ie_capabilities)
     elif browser_name == constants.Browser.EDGE:
-        if not IS_WINDOWS:
-            raise Exception(
-                "Edge Browser is for Windows-based operating systems only!")
-        edge_capabilities = DesiredCapabilities.EDGE.copy()
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-            return webdriver.Edge(
-                capabilities=edge_capabilities,
-                executable_path=LOCAL_EDGEDRIVER)
+            try:
+                # The new Microsoft Edge browser is based on Chrome
+                chrome_options = _set_chrome_options(
+                    downloads_path, headless,
+                    proxy_string, proxy_auth, proxy_user, proxy_pass,
+                    user_agent, disable_csp, enable_sync, user_data_dir,
+                    extension_zip, extension_dir)
+                return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
+                                        options=chrome_options)
+            except Exception:
+                try:
+                    return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER)
+                except Exception:
+                    return webdriver.Edge(executable_path=LOCAL_EDGEDRIVER)
         else:
-            return webdriver.Edge(capabilities=edge_capabilities)
+            return webdriver.Edge()
     elif browser_name == constants.Browser.SAFARI:
         return webdriver.Safari()
     elif browser_name == constants.Browser.OPERA:
@@ -535,8 +543,8 @@ def get_local_driver(
         try:
             chrome_options = _set_chrome_options(
                 downloads_path, headless,
-                proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-                disable_csp, enable_sync, user_data_dir,
+                proxy_string, proxy_auth, proxy_user, proxy_pass,
+                user_agent, disable_csp, enable_sync, user_data_dir,
                 extension_zip, extension_dir)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)

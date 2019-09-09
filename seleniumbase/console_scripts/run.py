@@ -59,7 +59,7 @@ def show_install_usage():
     print("                 (Drivers: chromedriver, geckodriver, edgedriver")
     print("                           iedriver, operadriver)")
     print("  Options:")
-    print("           VERSION - Specify the version (For Chromedriver ONLY).")
+    print("           VERSION - Specify version (Chromedriver / EdgeDr ONLY).")
     print("                         (Default Chromedriver version = 2.44)")
     print('                     Use "latest" to get the latest Chromedriver.')
     print("  Example:")

@@ -5,7 +5,7 @@ Usage:
         seleniumbase install {chromedriver|geckodriver|edgedriver|
                               iedriver|operadriver} [OPTIONS]
 Options:
-        VERSION - Specify the version (For Chromedriver ONLY)
+        VERSION - Specify version (Chromedriver / Edgedriver ONLY)
                       (Default Chromedriver version = 2.44)
                   Use "latest" to get the latest Chromedriver.
 Example:
@@ -34,6 +34,7 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
+DEFAULT_EDGEDRIVER_VERSION = "78.0.268.0"
 
 
 def invalid_run_command():
@@ -43,7 +44,7 @@ def invalid_run_command():
     exp += "              (Drivers: chromedriver, geckodriver, edgedriver,\n"
     exp += "                        iedriver, operadriver)\n"
     exp += "  Options:\n"
-    exp += "          VERSION - Specify the version (For Chromedriver ONLY)."
+    exp += "          VERSION - Specify version (Chromedriver / EdgeDr ONLY)."
     exp += "                        (Default Chromedriver version = 2.44)"
     exp += '                    Use "latest" to get the latest Chromedriver.'
     exp += "  Example:\n"
@@ -86,6 +87,9 @@ def main():
     expected_contents = None
     platform_code = None
     inner_folder = None
+    use_version = ""
+    new_file = ""
+    f_name = ""
 
     if name == "chromedriver":
         use_version = DEFAULT_CHROMEDRIVER_VERSION
@@ -140,17 +144,26 @@ def main():
                         "%s/%s" % (use_version, file_name))
     elif name == "edgedriver" or name == "microsoftwebdriver":
         name = "edgedriver"
-        version_code = "F/8/A/F8AF50AB-3C3A-4BC4-8773-DC27B32988DD"
-        if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
-            file_name = "MicrosoftWebDriver.exe"
+        use_version = DEFAULT_EDGEDRIVER_VERSION
+        if num_args == 4:
+            use_version = sys.argv[3]
+            if use_version.lower() == "latest":
+                use_version = DEFAULT_EDGEDRIVER_VERSION
+        if "win64" in sys_plat or "x64" in sys_plat:
+            file_name = "edgedriver_win64.zip"
+        elif "win32" in sys_plat or "x86" in sys_plat:
+            file_name = "edgedriver_win32.zip"
+        elif "darwin" in sys_plat:
+            file_name = "edgedriver_mac64.zip"
         else:
             raise Exception("Sorry! Microsoft WebDriver / EdgeDriver is "
-                            "only for Windows-based operating systems!")
-        download_url = ("https://download.microsoft.com/download/"
-                        "%s/%s" % (version_code, file_name))
+                            "only for Windows or Mac operating systems!")
+        download_url = ("https://msedgedriver.azureedge.net/"
+                        "%s/%s" % (use_version, file_name))
     elif name == "iedriver":
         major_version = "3.14"
         full_version = "3.14.0"
+        use_version = full_version
         if "win32" in sys_plat:
             file_name = "IEDriverServer_Win32_%s.zip" % full_version
         elif "win64" in sys_plat or "x64" in sys_plat:
@@ -234,10 +247,16 @@ def main():
             print('Unzip Complete!\n')
             for f_name in contents:
                 new_file = downloads_folder + '/' + str(f_name)
-                print("%s saved!\n" % new_file)
-                print("Making %s executable ..." % new_file)
+                print("The file [%s] was saved to:\n%s\n" % (f_name, new_file))
+                print("Making [%s] executable ..." % f_name)
                 make_executable(new_file)
-                print("%s is now ready for use!" % new_file)
+                print("[%s] is now ready for use!\n" % f_name)
+                print('(If running on a Selenium Grid, copy [%s] to your '
+                      'System PATH.\n'
+                      ' E.g. to the "/usr/local/bin/" folder on Linux '
+                      'systems.)\n' % name)
+                print("Location of [%s %s]:\n%s" % (
+                    f_name, use_version, new_file))
             print("")
         elif name == "operadriver":
             if len(contents) != 3:
@@ -266,10 +285,13 @@ def main():
             inner_driver = downloads_folder + '/' + inner_folder + driver_file
             inner_sha = downloads_folder + '/' + inner_folder + "sha512_sum"
             shutil.copyfile(inner_driver, driver_path)
-            print("%s saved!\n" % driver_path)
-            print("Making %s executable ..." % driver_path)
+            print("The file [%s] was saved to:\n%s\n" % (
+                driver_file, driver_path))
+            print("Making [%s] executable ..." % driver_file)
             make_executable(driver_path)
-            print("%s is now ready for use!" % driver_path)
+            print("[%s] is now ready for use!\n" % driver_file)
+            print("Location of [%s %s]:\n%s" % (
+                driver_file, use_version, driver_path))
             # clean up extra files
             if os.path.exists(inner_driver):
                 os.remove(inner_driver)
@@ -301,10 +323,16 @@ def main():
             print('Unzip Complete!\n')
             for f_name in contents:
                 new_file = downloads_folder + '/' + str(f_name)
-                print("%s saved!\n" % new_file)
-                print("Making %s executable ..." % new_file)
+                print("The file [%s] was saved to:\n%s\n" % (f_name, new_file))
+                print("Making [%s] executable ..." % f_name)
                 make_executable(new_file)
-                print("%s is now ready for use!" % new_file)
+                print("[%s] is now ready for use!\n" % f_name)
+                print('(If running on a Selenium Grid, copy [%s] to your '
+                      'System PATH.\n'
+                      ' E.g. to the "/usr/local/bin/" folder on Linux '
+                      'systems.)\n' % name)
+                print("Location of [%s %s]:\n%s" % (
+                    f_name, use_version, new_file))
             print("")
         elif len(contents) == 0:
             raise Exception("Tar file %s is empty!" % tar_file_path)
@@ -313,9 +341,10 @@ def main():
     else:
         # Not a .zip file or a .tar.gz file. Just a direct download.
         if "Driver" in file_name or "driver" in file_name:
-            print("Making %s executable ..." % file_path)
+            print("Making [%s] executable ..." % file_name)
             make_executable(file_path)
-            print("%s is now ready for use!\n" % file_path)
+            print("[%s] is now ready for use!\n" % file_name)
+            print("Location of [%s]:\n%s\n" % (file_name, file_path))
 
 
 if __name__ == "__main__":
