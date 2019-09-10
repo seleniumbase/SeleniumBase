@@ -9,6 +9,7 @@ addons:
   firefox: "62.0.3"
   chrome: stable
 before_install:
+  - "sudo service mysql start"
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
   - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/create_db_tables.sql"
   - "mysqladmin -u root password test"
