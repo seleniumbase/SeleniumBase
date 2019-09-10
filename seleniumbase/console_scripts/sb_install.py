@@ -34,7 +34,9 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
-DEFAULT_EDGEDRIVER_VERSION = "78.0.268.0"
+DEFAULT_GECKODRIVER_VERSION = "v0.24.0"
+DEFAULT_EDGEDRIVER_VERSION = "77.0.235.20"
+DEFAULT_OPERADRIVER_VERSION = "v.2.40"
 
 
 def invalid_run_command():
@@ -124,7 +126,7 @@ def main():
         else:
             raise Exception("Could not find Chromedriver to download!\n")
     elif name == "geckodriver" or name == "firefoxdriver":
-        use_version = "v0.24.0"
+        use_version = DEFAULT_GECKODRIVER_VERSION
         if "darwin" in sys_plat:
             file_name = "geckodriver-%s-macos.tar.gz" % use_version
         elif "linux" in sys_plat:
@@ -142,7 +144,7 @@ def main():
         download_url = ("https://github.com/mozilla/geckodriver/"
                         "releases/download/"
                         "%s/%s" % (use_version, file_name))
-    elif name == "edgedriver" or name == "microsoftwebdriver":
+    elif name == "edgedriver" or name == "msedgedriver":
         name = "edgedriver"
         use_version = DEFAULT_EDGEDRIVER_VERSION
         if num_args == 4:
@@ -175,7 +177,7 @@ def main():
                         "%s/%s" % (major_version, file_name))
     elif name == "operadriver" or name == "operachromiumdriver":
         name = "operadriver"
-        use_version = "v.2.40"
+        use_version = DEFAULT_OPERADRIVER_VERSION
         if "darwin" in sys_plat:
             file_name = "operadriver_mac64.zip"
             platform_code = "mac64"
@@ -235,7 +237,7 @@ def main():
             if name == "operadriver":
                 raise Exception("Zip file for OperaDriver is missing content!")
             for f_name in contents:
-                # remove existing version if exists
+                # Remove existing version if exists
                 new_file = downloads_folder + '/' + str(f_name)
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):
@@ -258,6 +260,52 @@ def main():
                 print("Location of [%s %s]:\n%s" % (
                     f_name, use_version, new_file))
             print("")
+        elif name == "edgedriver" or name == "msedgedriver":
+            if "darwin" in sys_plat or "linux" in sys_plat:
+                raise Exception("Unexpected file format for msedgedriver!")
+            expected_contents = (['Driver_Notes/',
+                                  'Driver_Notes/credits.html',
+                                  'Driver_Notes/LICENSE',
+                                  'msedgedriver.exe'])
+            if len(contents) != 4:
+                raise Exception("Unexpected content in EdgeDriver Zip file!")
+            # Zip file is valid. Proceed.
+            driver_path = None
+            driver_file = None
+            for f_name in contents:
+                print(f_name)
+                # Remove existing version if exists
+                str_name = str(f_name)
+                new_file = downloads_folder + '/' + str_name
+                if str_name == "msedgedriver.exe":
+                    driver_file = str_name
+                    driver_path = new_file
+                    if os.path.exists(new_file):
+                        os.remove(new_file)
+            if not driver_file or not driver_path:
+                raise Exception("Operadriver missing from Zip file!")
+            print('Extracting %s from %s ...' % (contents, file_name))
+            zip_ref.extractall(downloads_folder)
+            zip_ref.close()
+            os.remove(zip_file_path)
+            print('Unzip Complete!\n')
+            to_remove = (['%s/Driver_Notes/credits.html' % downloads_folder,
+                          '%s/Driver_Notes/LICENSE' % downloads_folder])
+            for file_to_remove in to_remove:
+                if os.path.exists(file_to_remove):
+                    os.remove(file_to_remove)
+            if os.path.exists(downloads_folder + '/' + "Driver_Notes/"):
+                # Only works if the directory is empty
+                os.rmdir(downloads_folder + '/' + "Driver_Notes/")
+            print("The file [%s] was saved to:\n%s\n" % (
+                driver_file, driver_path))
+            print("Making [%s] executable ..." % driver_file)
+            make_executable(driver_path)
+            print("[%s] is now ready for use!\n" % driver_file)
+            print("Add folder path of Edge to System Environmental Variables!")
+            print("\nLocation of [%s %s]:\n%s" % (
+                driver_file, use_version, driver_path))
+            print("")
         elif name == "operadriver":
             if len(contents) != 3:
                 raise Exception("Unexpected content in OperaDriver Zip file!")
@@ -267,7 +315,7 @@ def main():
             driver_path = None
             driver_file = None
             for f_name in contents:
-                # remove existing version if exists
+                # Remove existing version if exists
                 str_name = str(f_name).split(inner_folder)[1]
                 new_file = downloads_folder + '/' + str_name
                 if str_name == "operadriver" or str_name == "operadriver.exe":
@@ -292,13 +340,13 @@ def main():
             print("[%s] is now ready for use!\n" % driver_file)
             print("Location of [%s %s]:\n%s" % (
                 driver_file, use_version, driver_path))
-            # clean up extra files
+            # Clean up extra files
             if os.path.exists(inner_driver):
                 os.remove(inner_driver)
             if os.path.exists(inner_sha):
                 os.remove(inner_sha)
             if os.path.exists(downloads_folder + '/' + inner_folder):
-                # only works if the directory is empty
+                # Only works if the directory is empty
                 os.rmdir(downloads_folder + '/' + inner_folder)
             print("")
         elif len(contents) == 0:
@@ -311,7 +359,7 @@ def main():
         contents = tar.getnames()
         if len(contents) == 1:
             for f_name in contents:
-                # remove existing version if exists
+                # Remove existing version if exists
                 new_file = downloads_folder + '/' + str(f_name)
                 if "Driver" in new_file or "driver" in new_file:
                     if os.path.exists(new_file):

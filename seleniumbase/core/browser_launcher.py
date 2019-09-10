@@ -510,20 +510,14 @@ def get_local_driver(
     elif browser_name == constants.Browser.EDGE:
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-            try:
-                # The new Microsoft Edge browser is based on Chrome
-                chrome_options = _set_chrome_options(
-                    downloads_path, headless,
-                    proxy_string, proxy_auth, proxy_user, proxy_pass,
-                    user_agent, disable_csp, enable_sync, user_data_dir,
-                    extension_zip, extension_dir)
-                return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
-                                        options=chrome_options)
-            except Exception:
-                try:
-                    return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER)
-                except Exception:
-                    return webdriver.Edge(executable_path=LOCAL_EDGEDRIVER)
+            # The new Microsoft Edge browser is based on Chromium
+            chrome_options = _set_chrome_options(
+                downloads_path, headless,
+                proxy_string, proxy_auth, proxy_user, proxy_pass,
+                user_agent, disable_csp, enable_sync, user_data_dir,
+                extension_zip, extension_dir)
+            return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
+                                    options=chrome_options)
         else:
             return webdriver.Edge()
     elif browser_name == constants.Browser.SAFARI:
