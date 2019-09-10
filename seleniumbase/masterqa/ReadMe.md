@@ -36,7 +36,7 @@ pytest masterqa_test.py
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. Close the Results Page window when you're done.
 
-### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/masterqa_test.py) to learn how to write your own MasterQA tests:
+### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test.py) to learn how to write your own MasterQA tests:
 
 You'll notice that tests are written based on [SeleniumBase](http://seleniumbase.com), with the key difference of using a different import: ``from seleniumbase import MasterQA`` rather than ``from seleniumbase import BaseCase``. Now the test class will import ``MasterQA`` instead of ``BaseCase``.
 
