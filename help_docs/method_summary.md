@@ -1,4 +1,5 @@
-### [<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="22">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) Method Summary
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="32">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+## Method Summary
 
 Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
 
