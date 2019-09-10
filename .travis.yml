@@ -7,7 +7,7 @@ matrix:
     - python: 3.6
 addons:
   firefox: "62.0.3"
-  chrome: stable
+  chrome: beta
 before_install:
   - "sudo mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'"
   - "sudo mysql -h 127.0.0.1 -u root test_db < seleniumbase/core/create_db_tables.sql"
