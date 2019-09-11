@@ -5,9 +5,9 @@ Usage:
         seleniumbase install {chromedriver|geckodriver|edgedriver|
                               iedriver|operadriver} [OPTIONS]
 Options:
-        VERSION - Specify version (Chromedriver / Edgedriver ONLY)
-                      (Default Chromedriver version = 2.44)
-                  Use "latest" to get the latest Chromedriver.
+        VERSION - Specify version
+                  (Default Chromedriver version = 2.44)
+                  Use "latest" for the latest version.
 Example:
         seleniumbase install chromedriver
         seleniumbase install chromedriver 76.0.3809.126
@@ -34,7 +34,7 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
-DEFAULT_GECKODRIVER_VERSION = "v0.24.0"
+DEFAULT_GECKODRIVER_VERSION = "v0.25.0"
 DEFAULT_EDGEDRIVER_VERSION = "77.0.235.20"
 DEFAULT_OPERADRIVER_VERSION = "v.2.40"
 
@@ -127,6 +127,18 @@ def main():
             raise Exception("Could not find Chromedriver to download!\n")
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
+        found_geckodriver = False
+        if num_args == 4:
+            use_version = sys.argv[3]
+            if use_version.lower() == "latest":
+                last = ("https://api.github.com/repos/"
+                        "mozilla/geckodriver/releases/latest")
+                url_request = requests.get(last)
+                if url_request.ok:
+                    found_geckodriver = True
+                    use_version = url_request.json()["tag_name"]
+                else:
+                    use_version = DEFAULT_GECKODRIVER_VERSION
         if "darwin" in sys_plat:
             file_name = "geckodriver-%s-macos.tar.gz" % use_version
         elif "linux" in sys_plat:
@@ -140,10 +152,17 @@ def main():
         else:
             raise Exception("Cannot determine which version of Geckodriver "
                             "(Firefox Driver) to download!")
-
         download_url = ("https://github.com/mozilla/geckodriver/"
                         "releases/download/"
                         "%s/%s" % (use_version, file_name))
+        url_request = None
+        if not found_geckodriver:
+            url_request = requests.get(download_url)
+        if found_geckodriver or url_request.ok:
+            print("\nGeckodriver version for download = %s" % use_version)
+        else:
+            raise Exception("\nCould not find the specified Geckodriver "
+                            "version to download!\n")
     elif name == "edgedriver" or name == "msedgedriver":
         name = "edgedriver"
         use_version = DEFAULT_EDGEDRIVER_VERSION
