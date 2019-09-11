@@ -10,7 +10,7 @@ All-in-one testing framework for automated E2E tests, [assisted-QA](https://gith
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase uses [Pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers. Test scripts can be created using [codeless scripting](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md).
+SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
 
