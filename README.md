@@ -10,7 +10,7 @@ All-in-one web automation framework for end-to-end testing, [assisted-QA](https:
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase uses [Pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers. Test scripts can be creating with [codeless scripting](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md).
+SeleniumBase uses [Pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers. Test scripts can be created using [codeless scripting](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
 
