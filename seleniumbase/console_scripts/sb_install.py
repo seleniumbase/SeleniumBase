@@ -5,16 +5,19 @@ Usage:
         seleniumbase install {chromedriver|geckodriver|edgedriver|
                               iedriver|operadriver} [OPTIONS]
 Options:
-        VERSION - Specify version
-                  (Default Chromedriver version = 2.44)
-                  Use "latest" for the latest version.
+        VERSION         Specify the version.
+                        (Default Chromedriver version = 2.44)
+                        Use "latest" for the latest version.
+        -p OR --path    Also copy the driver to /usr/local/bin
 Example:
         seleniumbase install chromedriver
+        seleniumbase install geckodriver
         seleniumbase install chromedriver 76.0.3809.126
         seleniumbase install chromedriver latest
-        seleniumbase install geckodriver
+        seleniumbase install chromedriver -p
+        seleniumbase install chromedriver latest -p
 Output:
-        Installs the specified webdriver.
+        Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
         (geckodriver is required for Firefox automation)
         (edgedriver is required for MS Edge automation)
@@ -33,10 +36,11 @@ import zipfile
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
 DEFAULT_GECKODRIVER_VERSION = "v0.25.0"
 DEFAULT_EDGEDRIVER_VERSION = "77.0.235.20"
-DEFAULT_OPERADRIVER_VERSION = "v.2.40"
+DEFAULT_OPERADRIVER_VERSION = "v.75.0.3770.100"
 
 
 def invalid_run_command():
@@ -46,16 +50,19 @@ def invalid_run_command():
     exp += "              (Drivers: chromedriver, geckodriver, edgedriver,\n"
     exp += "                        iedriver, operadriver)\n"
     exp += "  Options:\n"
-    exp += "          VERSION - Specify version (Chromedriver / EdgeDr ONLY)."
-    exp += "                        (Default Chromedriver version = 2.44)"
-    exp += '                    Use "latest" to get the latest Chromedriver.'
+    exp += "          VERSION         Specify the version.\n"
+    exp += "                          (Default Chromedriver version = 2.44)\n"
+    exp += '                          Use "latest" for the latest version.\n'
+    exp += "          -p OR --path    Also copy the driver to /usr/local/bin\n"
     exp += "  Example:\n"
     exp += "          seleniumbase install chromedriver\n"
+    exp += "          seleniumbase install geckodriver\n"
     exp += "          seleniumbase install chromedriver 76.0.3809.126\n"
     exp += "          seleniumbase install chromedriver latest\n"
-    exp += "          seleniumbase install geckodriver\n"
+    exp += "          seleniumbase install chromedriver -p\n"
+    exp += "          seleniumbase install chromedriver latest -p\n"
     exp += "  Output:\n"
-    exp += "          Installs the specified webdriver.\n"
+    exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
     exp += "          (geckodriver is required for Firefox automation)\n"
     exp += "          (edgedriver is required for Microsoft Edge automation)\n"
@@ -76,7 +83,7 @@ def main():
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1].lower() == "seleniumbase" or (
             sys.argv[0].split('\\')[-1].lower() == "seleniumbase"):
-        if num_args < 3 or num_args > 4:
+        if num_args < 3 or num_args > 5:
             invalid_run_command()
     else:
         invalid_run_command()
@@ -89,6 +96,7 @@ def main():
     expected_contents = None
     platform_code = None
     inner_folder = None
+    copy_to_path = False
     use_version = ""
     new_file = ""
     f_name = ""
@@ -96,10 +104,18 @@ def main():
     if name == "chromedriver":
         use_version = DEFAULT_CHROMEDRIVER_VERSION
         get_latest = False
-        if num_args == 4:
-            use_version = sys.argv[3]
-            if use_version.lower() == "latest":
-                get_latest = True
+        if num_args == 4 or num_args == 5:
+            if "-p" not in sys.argv[3].lower():
+                use_version = sys.argv[3]
+                if use_version.lower() == "latest":
+                    get_latest = True
+            else:
+                copy_to_path = True
+        if num_args == 5:
+            if "-p" in sys.argv[4].lower():
+                copy_to_path = True
+            else:
+                invalid_run_command()
         if "darwin" in sys_plat:
             file_name = "chromedriver_mac64.zip"
         elif "linux" in sys_plat:
@@ -128,17 +144,25 @@ def main():
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         found_geckodriver = False
-        if num_args == 4:
-            use_version = sys.argv[3]
-            if use_version.lower() == "latest":
-                last = ("https://api.github.com/repos/"
-                        "mozilla/geckodriver/releases/latest")
-                url_request = requests.get(last)
-                if url_request.ok:
-                    found_geckodriver = True
-                    use_version = url_request.json()["tag_name"]
-                else:
-                    use_version = DEFAULT_GECKODRIVER_VERSION
+        if num_args == 4 or num_args == 5:
+            if "-p" not in sys.argv[3].lower():
+                use_version = sys.argv[3]
+                if use_version.lower() == "latest":
+                    last = ("https://api.github.com/repos/"
+                            "mozilla/geckodriver/releases/latest")
+                    url_request = requests.get(last)
+                    if url_request.ok:
+                        found_geckodriver = True
+                        use_version = url_request.json()["tag_name"]
+                    else:
+                        use_version = DEFAULT_GECKODRIVER_VERSION
+            else:
+                copy_to_path = True
+        if num_args == 5:
+            if "-p" in sys.argv[4].lower():
+                copy_to_path = True
+            else:
+                invalid_run_command()
         if "darwin" in sys_plat:
             file_name = "geckodriver-%s-macos.tar.gz" % use_version
         elif "linux" in sys_plat:
@@ -166,10 +190,18 @@ def main():
     elif name == "edgedriver" or name == "msedgedriver":
         name = "edgedriver"
         use_version = DEFAULT_EDGEDRIVER_VERSION
-        if num_args == 4:
-            use_version = sys.argv[3]
-            if use_version.lower() == "latest":
-                use_version = DEFAULT_EDGEDRIVER_VERSION
+        if num_args == 4 or num_args == 5:
+            if "-p" not in sys.argv[3].lower():
+                use_version = sys.argv[3]
+                if use_version.lower() == "latest":
+                    use_version = DEFAULT_EDGEDRIVER_VERSION
+            else:
+                copy_to_path = True
+        if num_args == 5:
+            if "-p" in sys.argv[4].lower():
+                copy_to_path = True
+            else:
+                invalid_run_command()
         if "win64" in sys_plat or "x64" in sys_plat:
             file_name = "edgedriver_win64.zip"
         elif "win32" in sys_plat or "x86" in sys_plat:
@@ -197,6 +229,19 @@ def main():
     elif name == "operadriver" or name == "operachromiumdriver":
         name = "operadriver"
         use_version = DEFAULT_OPERADRIVER_VERSION
+        get_latest = False
+        if num_args == 4 or num_args == 5:
+            if "-p" not in sys.argv[3].lower():
+                use_version = sys.argv[3]
+                if use_version.lower() == "latest":
+                    use_version = DEFAULT_OPERADRIVER_VERSION
+            else:
+                copy_to_path = True
+        if num_args == 5:
+            if "-p" in sys.argv[4].lower():
+                copy_to_path = True
+            else:
+                invalid_run_command()
         if "darwin" in sys_plat:
             file_name = "operadriver_mac64.zip"
             platform_code = "mac64"
@@ -278,6 +323,10 @@ def main():
                       'systems.)\n' % name)
                 print("Location of [%s %s]:\n%s" % (
                     f_name, use_version, new_file))
+                if copy_to_path and os.path.exists(LOCAL_PATH):
+                    path_file = LOCAL_PATH + f_name
+                    shutil.copyfile(new_file, path_file)
+                    print("Also copied to: %s" % path_file)
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
             if "darwin" in sys_plat or "linux" in sys_plat:
@@ -359,6 +408,10 @@ def main():
             print("[%s] is now ready for use!\n" % driver_file)
             print("Location of [%s %s]:\n%s" % (
                 driver_file, use_version, driver_path))
+            if copy_to_path and os.path.exists(LOCAL_PATH):
+                path_file = LOCAL_PATH + driver_file
+                shutil.copyfile(driver_path, path_file)
+                print("Also copied to: %s" % path_file)
             # Clean up extra files
             if os.path.exists(inner_driver):
                 os.remove(inner_driver)
@@ -400,6 +453,10 @@ def main():
                       'systems.)\n' % name)
                 print("Location of [%s %s]:\n%s" % (
                     f_name, use_version, new_file))
+                if copy_to_path and os.path.exists(LOCAL_PATH):
+                    path_file = LOCAL_PATH + f_name
+                    shutil.copyfile(new_file, path_file)
+                    print("Also copied to: %s" % path_file)
             print("")
         elif len(contents) == 0:
             raise Exception("Tar file %s is empty!" % tar_file_path)
