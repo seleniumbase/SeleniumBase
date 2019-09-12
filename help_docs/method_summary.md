@@ -366,6 +366,10 @@ self.wait_for_and_switch_to_alert(timeout=settings.LARGE_TIMEOUT)
 
 ########
 
+self.grab_number_of_visible_elements(selector, by=By.CSS_SELECTOR)
+
+########
+
 self.check_window(name="default", level=0, baseline=False)
 
 ########
