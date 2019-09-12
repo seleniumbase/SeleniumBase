@@ -33,7 +33,7 @@ def log_test_failure_data(test, test_logpath, driver, browser):
     data_to_save = []
     data_to_save.append("Last_Page: %s" % last_page)
     data_to_save.append("Browser: %s " % browser)
-    if sys.version.startswith('3') and hasattr(test, '_outcome'):
+    if sys.version_info[0] >= 3 and hasattr(test, '_outcome'):
         if test._outcome.errors:
             try:
                 exc_message = test._outcome.errors[0][1][1]
@@ -126,7 +126,19 @@ def log_folder_setup(log_path, archive_logs=False):
             # have "-c" in the sys.argv list. Easy to catch.)
             archived_logs = "%slogs_%s" % (
                 archived_folder, int(time.time()))
+            if "_logs" not in log_path:
+                # Don't move files in a custom-named log folder (in case
+                # the user specifed a folder with important files in it)
+                # unless the folder name contains "_logs".
+                # The default name for the log folder is "latest_logs".
+                return
             shutil.move(log_path, archived_logs)
             os.makedirs(log_path)
             if not settings.ARCHIVE_EXISTING_LOGS and not archive_logs:
                 shutil.rmtree(archived_logs)
+            elif len(os.listdir(archived_logs)) == 0:
+                # Don't archive an empty directory
+                shutil.rmtree(archived_logs)
+            else:
+                # Logs are saved/archived
+                pass

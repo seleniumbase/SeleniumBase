@@ -10,7 +10,7 @@ class MyTestClass(BaseCase):
     def test_basic(self):
         self.open("https://xkcd.com/353/")
         self.click('a[rel="license"]')
-        self.open("https://xkcd.com/1481/")
-        self.click("link=Blag")
-        self.update_text("input#s", "Robots!\n")
-        self.open("https://xkcd.com/1319/")
+        self.go_back()
+        self.click("link=About")
+        self.open("https://store.xkcd.com/collections/everything")
+        self.update_text("input.search-input", "xkcd book\n")

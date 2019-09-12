@@ -1,10 +1,10 @@
 ## Converting Katalon/Selenium IDE recordings into SeleniumBase test scripts
 
-[Katelon Recorder / Selenium IDE](https://www.katalon.com/resources-center/blog/katalon-automation-recorder/) (<i>the successor to the [old Selenium IDE](http://docs.seleniumhq.org/projects/ide/)</i>) is a tool that allows you to record and playback actions performed inside a web browser. It's available as a [downloadable Chrome extension](https://chrome.google.com/webstore/detail/katalon-recorder-selenium/ljdobmomdgdljniojadhoplhkpialdid) and a [downloadable Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/katalon-automation-record/). Katelon Recorder comes with an option to export recordings as various WebDriver test scripts, one of which is ``Python 2 (WebDriver + unittest)``. Unfortunately, these natively-exported scripts can be very messy and don't always run reliably. The purpose of this converter is to clean up and improve the scripts so that they can be used in production-level environments.
+[Katalon Recorder / Selenium IDE](https://www.katalon.com/resources-center/blog/katalon-automation-recorder/) (<i>the successor to the [old Selenium IDE](http://docs.seleniumhq.org/projects/ide/)</i>) is a tool that allows you to record and playback actions performed inside a web browser. It's available as a [downloadable Chrome extension](https://chrome.google.com/webstore/detail/katalon-recorder-selenium/ljdobmomdgdljniojadhoplhkpialdid) and a [downloadable Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/katalon-automation-record/). The Katalon Recorder comes with an option to export recordings as various WebDriver test scripts, one of which is ``Python 2 (WebDriver + unittest)``. Unfortunately, these natively-exported scripts can be very messy and don't always run reliably. The purpose of this converter is to clean up and improve the scripts so that they can be used in production-level environments.
 
-#### Step 1: Make a recording with Katelon Recorder
+#### Step 1: Make a recording with the Katalon Recorder
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/katalon_recorder_2.png "Katelon Recorder example")
+![](https://cdn2.hubspot.net/hubfs/100006/images/katalon_recorder_2.png "Katalon Recorder example")
 
 #### Step 2: Export your recording as a Python 2 Webdriver script
 

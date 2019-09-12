@@ -9,8 +9,8 @@ if [ $sourced = 1 ]
 then
   python -m pip install --upgrade virtualenv
   python -m pip install --upgrade virtualenvwrapper
-  source `which virtualenvwrapper.sh`
   export WORKON_HOME=$HOME/.virtualenvs
+  source `which virtualenvwrapper.sh`
   echo ""
   echo ""
   echo "*** You may now use virtualenv commands in your command shell. ***"
@@ -24,6 +24,7 @@ then
   echo ""
   echo "Example:"
   echo "      mkvirtualenv seleniumbase "
+  echo "      mkvirtualenv seleniumbase --python=python3"
   echo ""
 else
   echo ""

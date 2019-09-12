@@ -4,19 +4,17 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
-        self.open("https://xkcd.com/353/")           # Navigate browser to page
-        self.assert_element('img[alt="Python"]')       # Assert element on page
-        self.click('a[rel="license"]')                  # Click element on page
-        self.assert_text("free to copy", "div center")    # Assert text in area
-        self.open("https://xkcd.com/1481/")
-        title = self.get_attribute("#comic img", "title")    # Get an attribute
-        self.assert_true("86,400 seconds per day" in title)
-        self.click("link=Blag")                                 # Click on link
-        self.assert_text("The blag of the webcomic", "h2")
-        self.update_text("input#s", "Robots!\n")                    # Type text
-        self.assert_text("Hooray robots!", "#content")
-        self.open("https://xkcd.com/1319/")
-        self.assert_exact_text("Automation", "#ctitle")
+        self.open("https://xkcd.com/353/")
+        self.assert_title("xkcd: Python")
+        self.assert_element('img[alt="Python"]')
+        self.click('a[rel="license"]')
+        self.assert_text("free to copy and reuse")
+        self.go_back()
+        self.click("link=About")
+        self.assert_text("xkcd.com", "h2")
+        self.open("https://store.xkcd.com/collections/everything")
+        self.update_text("input.search-input", "xkcd book\n")
+        self.assert_exact_text("xkcd: volume 0", "h3")
 
         ####
 
@@ -43,7 +41,7 @@ class MyTestClass(BaseCase):
         #
         # 2. Most methods have the optional `timeout` argument. Ex:
         #    [
-        #        self.get_text('div center', timeout=15)
+        #        self.assert_element('img[alt="Python"]', timeout=15)
         #    ]
         #    The `timeout` argument tells the method how many seconds to wait
         #    for an element to appear before raising an exception. This is
@@ -53,17 +51,17 @@ class MyTestClass(BaseCase):
         #
         # 3. There's usually more than one way to do the same thing. Ex:
         #    [
-        #        self.assert_text('free to copy', 'div center')
+        #        self.assert_text("xkcd: volume 0", "h3")
         #    ]
         #    Is the same as:
         #    [
-        #        text = self.get_text("div center")
-        #        self.assert_true("free to copy" in text)
+        #        text = self.get_text("h3")
+        #        self.assert_true("xkcd: volume 0" in text)
         #    ]
         #    Or:
         #    [
-        #        text = self.find_element('div center').text
-        #        assert("free to copy" in text)
+        #        text = self.find_element("h3").text
+        #        self.assert_true("xkcd: volume 0" in text)
         #    ]
         #
         #    And the following line:
@@ -76,11 +74,17 @@ class MyTestClass(BaseCase):
         #        title = element.get_attribute("title")
         #    ]
         #
-        #    For backwards-compatibilty, some SeleniumBase methods that do the
+        # 4. self.assert_exact_text(TEXT) ignores leading and trailing
+        #    whitespace in the TEXT assertion.
+        #    So, self.assert_exact_text("Some Text") will find [" Some Text "].
+        #
+        # 5. For backwards-compatibilty, some SeleniumBase methods that do the
         #    same thing have multiple names, kept on from previous versions.
         #    Ex: wait_for_element_visible() is the same as find_element().
         #    Both search for and return the element, and raise an exception if
         #    the element does not appear on the page within the timeout limit.
         #    And assert_element() also does this (minus returning the element).
         #
-        #    (See seleniumbase/fixtures/base_case.py for the full method list.)
+        # 6. For the full method list, see one of the following:
+        #    * SeleniumBase/seleniumbase/fixtures/base_case.py
+        #    * SeleniumBase/help_docs/method_summary.md

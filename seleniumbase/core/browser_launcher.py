@@ -4,6 +4,7 @@ import re
 import sys
 import threading
 import time
+import urllib3
 import warnings
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -17,6 +18,7 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
+urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
@@ -32,10 +34,11 @@ LOCAL_OPERADRIVER = None
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/msedgedriver'
     LOCAL_OPERADRIVER = DRIVER_DIR + '/operadriver'
 elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     IS_WINDOWS = True
-    LOCAL_EDGEDRIVER = DRIVER_DIR + '/MicrosoftWebDriver.exe'
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/msedgedriver.exe'
     LOCAL_IEDRIVER = DRIVER_DIR + '/IEDriverServer.exe'
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
@@ -95,7 +98,8 @@ def _add_chrome_disable_csp_extension(chrome_options):
 
 def _set_chrome_options(
         downloads_path, headless, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, disable_csp):
+        proxy_user, proxy_pass, user_agent, disable_csp, enable_sync,
+        user_data_dir, extension_zip, extension_dir):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
@@ -106,6 +110,27 @@ def _set_chrome_options(
         }
     }
     chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_experimental_option("w3c", True)
+    chrome_options.add_experimental_option(
+        "excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option("useAutomationExtension", False)
+    if enable_sync:
+        chrome_options.add_experimental_option(
+            "excludeSwitches", ["disable-sync"])
+        chrome_options.add_argument("--enable-sync")
+    if user_data_dir:
+        abs_path = os.path.abspath(user_data_dir)
+        chrome_options.add_argument("user-data-dir=%s" % abs_path)
+    if extension_zip:
+        # Can be a comma-separated list of .ZIP or .CRX files
+        extension_zip_list = extension_zip.split(',')
+        for extension_zip_item in extension_zip_list:
+            abs_path = os.path.abspath(extension_zip_item)
+            chrome_options.add_extension(abs_path)
+    if extension_dir:
+        # load-extension input can be a comma-separated list
+        abs_path = os.path.abspath(extension_dir)
+        chrome_options.add_argument("--load-extension=%s" % abs_path)
     chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
@@ -129,6 +154,19 @@ def _set_chrome_options(
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
+    if headless:
+        if not proxy_auth:
+            # Headless Chrome doesn't support extensions, which are
+            # required when using a proxy server that has authentication.
+            # Instead, base_case.py will use PyVirtualDisplay when not
+            # using Chrome's built-in headless mode. See link for details:
+            # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
+            chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-gpu")
+        if "linux" in PLATFORM:
+            chrome_options.add_argument("--no-sandbox")
+    if "linux" in PLATFORM:
+        chrome_options.add_argument("--disable-dev-shm-usage")
     return chrome_options
 
 
@@ -140,6 +178,12 @@ def _create_firefox_profile(
     profile.set_preference("pdfjs.disabled", True)
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
+    profile.set_preference("extensions.update.enabled", False)
+    profile.set_preference("browser.privatebrowsing.autostart", True)
+    profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
+    profile.set_preference("extensions.PrivateBrowsing.notification", False)
+    profile.set_preference("extensions.systemAddon.update.enabled", False)
+    profile.set_preference("extensions.update.autoUpdateDefault", False)
     profile.set_preference("extensions.update.enabled", False)
     profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference(
@@ -169,7 +213,6 @@ def _create_firefox_profile(
         "browser.download.manager.showAlertOnComplete", False)
     profile.set_preference("browser.shell.checkDefaultBrowser", False)
     profile.set_preference("browser.startup.page", 0)
-    profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("browser.download.panel.shown", False)
     profile.set_preference(
         "browser.download.animateNotifications", False)
@@ -231,7 +274,9 @@ def validate_proxy_string(proxy_string):
 
 def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None,
-               user_agent=None, cap_file=None, disable_csp=None):
+               user_agent=None, cap_file=None, disable_csp=None,
+               enable_sync=None, user_data_dir=None,
+               extension_zip=None, extension_dir=None):
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -257,19 +302,27 @@ def get_driver(browser_name, headless=False, use_grid=False,
         proxy_string = validate_proxy_string(proxy_string)
         if proxy_string and proxy_user and proxy_pass:
             proxy_auth = True
+    if browser_name == "chrome" and user_data_dir and len(user_data_dir) < 3:
+        raise Exception(
+            "Name length of Chrome's User Data Directory must be >= 3.")
     if use_grid:
         return get_remote_driver(
-            browser_name, headless, servername, port, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, cap_file, disable_csp)
+            browser_name, headless, servername, port,
+            proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+            cap_file, disable_csp, enable_sync, user_data_dir,
+            extension_zip, extension_dir)
     else:
         return get_local_driver(
-            browser_name, headless, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, disable_csp)
+            browser_name, headless,
+            proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+            disable_csp, enable_sync, user_data_dir,
+            extension_zip, extension_dir)
 
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, cap_file, disable_csp):
+        proxy_user, proxy_pass, user_agent, cap_file, disable_csp,
+        enable_sync, user_data_dir, extension_zip, extension_dir):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
@@ -279,17 +332,8 @@ def get_remote_driver(
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
             downloads_path, headless, proxy_string, proxy_auth,
-            proxy_user, proxy_pass, user_agent, disable_csp)
-        if headless:
-            if not proxy_auth:
-                # Headless Chrome doesn't support extensions, which are
-                # required when using a proxy server that has authentication.
-                # Instead, base_case.py will use PyVirtualDisplay when not
-                # using Chrome's built-in headless mode. See link for details:
-                # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
-                chrome_options.add_argument("--headless")
-            chrome_options.add_argument("--disable-gpu")
-            chrome_options.add_argument("--no-sandbox")
+            proxy_user, proxy_pass, user_agent, disable_csp, enable_sync,
+            user_data_dir, extension_zip, extension_dir)
         capabilities = chrome_options.to_capabilities()
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -396,8 +440,10 @@ def get_remote_driver(
 
 
 def get_local_driver(
-        browser_name, headless, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, disable_csp):
+        browser_name, headless,
+        proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+        disable_csp, enable_sync, user_data_dir,
+        extension_zip, extension_dir):
     '''
     Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test.
@@ -462,17 +508,18 @@ def get_local_driver(
         else:
             return webdriver.Ie(capabilities=ie_capabilities)
     elif browser_name == constants.Browser.EDGE:
-        if not IS_WINDOWS:
-            raise Exception(
-                "Edge Browser is for Windows-based operating systems only!")
-        edge_capabilities = DesiredCapabilities.EDGE.copy()
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-            return webdriver.Edge(
-                capabilities=edge_capabilities,
-                executable_path=LOCAL_EDGEDRIVER)
+            # The new Microsoft Edge browser is based on Chromium
+            chrome_options = _set_chrome_options(
+                downloads_path, headless,
+                proxy_string, proxy_auth, proxy_user, proxy_pass,
+                user_agent, disable_csp, enable_sync, user_data_dir,
+                extension_zip, extension_dir)
+            return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
+                                    options=chrome_options)
         else:
-            return webdriver.Edge(capabilities=edge_capabilities)
+            return webdriver.Edge()
     elif browser_name == constants.Browser.SAFARI:
         return webdriver.Safari()
     elif browser_name == constants.Browser.OPERA:
@@ -489,18 +536,10 @@ def get_local_driver(
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(
-                downloads_path, headless, proxy_string, proxy_auth,
-                proxy_user, proxy_pass, user_agent, disable_csp)
-            if headless:
-                # Headless Chrome doesn't support extensions, which are
-                # required when using a proxy server that has authentication.
-                # Instead, base_case.py will use PyVirtualDisplay when not
-                # using Chrome's built-in headless mode. See link for details:
-                # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
-                if not proxy_auth:
-                    chrome_options.add_argument("--headless")
-                chrome_options.add_argument("--disable-gpu")
-                chrome_options.add_argument("--no-sandbox")
+                downloads_path, headless,
+                proxy_string, proxy_auth, proxy_user, proxy_pass,
+                user_agent, disable_csp, enable_sync, user_data_dir,
+                extension_zip, extension_dir)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
                 return webdriver.Chrome(

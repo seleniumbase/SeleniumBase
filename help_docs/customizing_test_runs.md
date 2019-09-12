@@ -7,9 +7,11 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose whether to enter Debug Mode on failures
 * Choose additional variables to pass into tests
 * Choose the User-Agent for the browser to use
-* Change the automation speed (with Demo Mode)
+* Choose the automation speed (with Demo Mode)
 * Choose whether to run tests multi-threaded
 * Choose whether to retry failing tests
+* Choose a Chrome User Data Directory to use
+* Choose a Chrome Extension to load
 * Choose a BrowserStack server to run on
 * Choose a Sauce Labs server to run on
 * Choose a TestingBot server to run on
@@ -41,18 +43,25 @@ pytest test_suite.py --reruns 1 --reruns-delay 2
 
 pytest test_suite.py --server=IP_ADDRESS --port=4444
 
+pytest test_fail.py --pdb -s
+
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 
 pytest user_agent_test.py --agent="USER-AGENT STRING"
 
-pytest test_fail.py --pdb -s
+pytest my_first_test.py --settings_file=custom_settings.py
 ```
 
 You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
 
 (NOTE: If you're using **pytest** for running tests outside of the SeleniumBase repo, **you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**. If using **nosetests**, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).)
+
+An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
+Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
+``--settings_file=custom_settings.py``
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, Email Testing API credentials, and other important settings used by tests.)
 
 #### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, (or your own):**
 
@@ -154,14 +163,51 @@ nosetests test_suite.py --report
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
-Here are some other useful **nosetest**-specific arguments:
-
+Here are some other useful command-line options that come with Pytest:
 ```bash
---logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
+-v  # Prints the full test name for each test.
+-q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
--v  # Prints the full test name rather than a dot for each test.
---with-id  # If -v is also used, will number the tests for easy counting.
+--html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--collect-only  # Show what tests would get run without actually running them.
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+-n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 ```
+
+SeleniumBase provides additional Pytest command-line options for tests:
+```bash
+--browser=BROWSER  # (The web browser to use.)
+--cap_file=FILE  # (The web browser's desired capabilities to use.)
+--settings_file=FILE  # (Overrides SeleniumBase settings.py values.)
+--env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
+--data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
+--user_data_dir=DIR  # (Set the Chrome user data directory to use.)
+--server=SERVER  # (The server / IP address used by the tests.)
+--port=PORT  # (The port that's used by the test server.)
+--proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
+--agent=STRING  # (This designates the web browser's User Agent to use.)
+--extension_zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension_dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--headless  # (The option to run tests headlessly. The default on Linux OS.)
+--headed  # (The option to run tests with a GUI on Linux OS.)
+--start_page=URL  # (The starting URL for the web browser when tests begin.)
+--log_path=LOG_PATH  # (The directory where log files get saved to.)
+--archive_logs  # (Archive old log files instead of deleting them.)
+--demo_mode  # (The option to visually see test actions as they occur.)
+--demo_sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
+--message_duration=SECONDS  # (The time length for Messenger alerts.)
+--check_js  # (The option to check for JavaScript errors after page loads.)
+--ad_block  # (The option to block some display ads after page loads.)
+--verify_delay=SECONDS  # (The delay before MasterQA verification checks.)
+--disable_csp  # (This disables the Content Security Policy of websites.)
+--enable_sync  # (The option to enable "Chrome Sync".)
+--maximize_window  # (The option to start with the web browser maximized.)
+--save_screenshot  # (The option to save a screenshot after each test.)
+--visual_baseline  # (Set the visual baseline for Visual/Layout tests.)
+--timeout_multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
+```
+(For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
 #### **Using a Proxy Server:**
 

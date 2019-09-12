@@ -10,32 +10,37 @@ During test failures, logs and screenshots from the most recent test run will ge
 
 **Here are some example run commands to help get you started:**
 
-Run the example test in Chrome:
+Run an example test in Chrome (it's the default browser when not specified):
 ```bash
 pytest my_first_test.py --browser=chrome
 ```
 
-Run the example test in Firefox:
+Run an example test in Firefox:
 ```bash
 pytest my_first_test.py --browser=firefox
 ```
 
-Run the example test in Demo Mode (highlights page objects being acted on):
+Run an example test in Demo Mode (highlights page objects being acted on):
 ```bash
-pytest my_first_test.py --browser=chrome --demo_mode
+pytest my_first_test.py --demo_mode
 ```
 
-Run the example test suite and generate an pytest report: (pytest-only)
+Run an example test demonstrating parameterization:
+```bash
+pytest parameterized_test.py
+```
+
+Run an example test suite and generate an pytest report: (pytest-only)
 ```bash
 pytest test_suite.py --html=report.html
 ```
 
-Run the example test suite and generate a nosetest report: (nosetests-only)
+Run an example test suite and generate a nosetest report: (nosetests-only)
 ```bash
 nosetests test_suite.py --report --show_report
 ```
 
-Run a test using a nosetest configuration file: (nosetests-only)
+Run an example test using a nosetest configuration file: (nosetests-only)
 ```bash
 nosetests my_first_test.py --config=example_config.cfg
 ```
@@ -47,12 +52,22 @@ pytest rate_limiting_test.py
 
 Run a failing test: (See the ``latest_logs/`` folder afterwards for logs and screenshots)
 ```bash
-pytest test_fail.py --browser=chrome
+pytest test_fail.py
 ```
 
 Run a failing test with Debugging-mode enabled: (If a test failure occurs, pdb activates)
 ```bash
-pytest test_fail.py --browser=chrome --pdb -s
+pytest test_fail.py --pdb -s
+```
+
+Run an example test suite that demonstrates the use of pytest markers:
+```bash
+pytest -v -m marker_test_suite
+```
+
+Run a test that demonstrates how to upload a file to a website:
+```bash
+pytest upload_file_test.py
 ```
 
 For more advanced run commands, such as using a proxy server,  see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)

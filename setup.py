@@ -1,24 +1,52 @@
 """
 The setup package to install SeleniumBase dependencies and plugins
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.5+)
 """
 
 from setuptools import setup, find_packages  # noqa
-from os import path
+import os
+import sys
 
 
-this_directory = path.abspath(path.dirname(__file__))
+this_directory = os.path.abspath(os.path.dirname(__file__))
 long_description = None
 try:
-    with open(path.join(this_directory, 'README.md'), 'rb') as f:
+    with open(os.path.join(this_directory, 'README.md'), 'rb') as f:
         long_description = f.read().decode('utf-8')
 except IOError:
     long_description = 'Reliable Browser Automation & Testing Framework'
 
+if sys.argv[-1] == 'publish':
+    reply = None
+    input_method = input
+    if not sys.version_info[0] >= 3:
+        input_method = raw_input  # noqa
+    reply = str(input_method(
+        '>>> Confirm release PUBLISH to PyPI? (yes/no): ')).lower().strip()
+    if reply == 'yes':
+        print("\n*** Checking code health with flake8:\n")
+        flake8_status = os.system("flake8 --exclude=temp")
+        if flake8_status != 0:
+            print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
+            sys.exit()
+        else:
+            print("*** No flake8 issues detected. Continuing...")
+        print("\n*** Rebuilding distribution packages: ***\n")
+        os.system('rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl')
+        os.system('python setup.py sdist bdist_wheel')  # Create new tar/wheel
+        print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install 'twine>=1.14.0'")
+        print("\n*** Publishing The Release to PyPI: ***\n")
+        os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
+        print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
+    else:
+        print("\n>>> The Release was NOT PUBLISHED to PyPI! <<<\n")
+    sys.exit()
+
 setup(
     name='seleniumbase',
-    version='1.23.9',
-    description='Reliable Browser Automation & Testing Framework',
+    version='1.31.9',
+    description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
@@ -38,6 +66,8 @@ setup(
         "Topic :: Software Development :: Testing :: Acceptance",
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
         "Operating System :: Microsoft :: Windows",
         "Operating System :: Unix",
         "Operating System :: MacOS",
@@ -45,40 +75,42 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
     ],
     install_requires=[
-        'pip>=19.1.1',
+        'pip',
         'setuptools',
+        'wheel',
         'six',
         'nose',
         'ipdb',
-        'unittest2',
         'idna==2.8',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.24.3',  # Must stay in sync with "requests"
-        'requests>=2.21.0',
+        'urllib3==1.25.3',  # Must stay in sync with "requests"
+        'requests>=2.22.0',
         'selenium==3.141.0',
-        'pluggy>=0.11.0',
-        'pytest>=4.4.2',
+        'pluggy>=0.12.0',
+        'pytest>=4.6.5;python_version<"3"',  # For Python 2 compatibility
+        'pytest>=5.1.2;python_version>="3"',
         'pytest-cov>=2.7.1',
         'pytest-forked>=1.0.2',
-        'pytest-html>=1.20.0',
+        'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
         'pytest-metadata>=1.8.0',
         'pytest-ordering>=0.6',
         'pytest-rerunfailures>=7.0',
-        'pytest-xdist>=1.28.0',
+        'pytest-timeout>=1.3.3',
+        'pytest-xdist>=1.29.0',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
         'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
-        'pyotp>=2.2.7',
+        'pymysql>=0.9.3',
+        'pyotp>=2.3.0',
         'boto>=2.49.0',
-        'flake8>=3.7.7',
-        'PyVirtualDisplay>=0.2.1',
+        'flake8>=3.7.8',
+        'certifi>=2019.6.16',
     ],
     packages=[
         'seleniumbase',
@@ -94,6 +126,7 @@ setup(
         'seleniumbase.utilities',
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',
+        'seleniumbase.virtual_display',
     ],
     include_package_data=True,
     entry_points={

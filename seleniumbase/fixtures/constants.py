@@ -24,9 +24,10 @@ class VisualBaseline:
 
 
 class JQuery:
-    VER = "3.3.1"
-    # MIN_JS = "//cdnjs.cloudflare.com/ajax/libs/jquery/%s/jquery.min.js" % VER
-    MIN_JS = "//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js" % VER
+    VER = "3.4.1"
+    MIN_JS = "//cdnjs.cloudflare.com/ajax/libs/jquery/%s/jquery.min.js" % VER
+    # MIN_JS = "//ajax.aspnetcdn.com/ajax/jQuery/jquery-%s.min.js" % VER
+    # MIN_JS = "//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js" % VER
 
 
 class Messenger:
@@ -60,7 +61,7 @@ class Underscore:
 
 
 class Backbone:
-    VER = "1.3.3"
+    VER = "1.4.0"
     MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
               "backbone.js/%s/backbone-min.js" % VER)
 
@@ -90,7 +91,7 @@ class IntroJS:
 
 
 class JqueryConfirm:
-    VER = "3.3.2"
+    VER = "3.3.4"
     MIN_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
                "jquery-confirm/%s/jquery-confirm.min.css" % VER)
     MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
@@ -116,7 +117,7 @@ class Shepherd:
 
 
 class Tether:
-    VER = "1.4.4"
+    VER = "1.4.7"
     MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
               "tether/%s/js/tether.min.js" % VER)
 

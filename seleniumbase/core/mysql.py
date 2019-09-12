@@ -15,7 +15,7 @@ class DatabaseManager():
         """
         Gets database information from mysql_conf.py and creates a connection.
         """
-        import MySQLdb
+        import pymysql
         db_server, db_user, db_pass, db_schema = \
             conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
         retry_count = 3
@@ -23,7 +23,7 @@ class DatabaseManager():
         count = 0
         while count < retry_count:
             try:
-                self.conn = MySQLdb.connect(host=db_server,
+                self.conn = pymysql.connect(host=db_server,
                                             user=db_user,
                                             passwd=db_pass,
                                             db=db_schema)

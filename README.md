@@ -1,56 +1,99 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt="Build Status" />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the Gitter Chat" />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt="GitHub Stars" />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
+[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-Reliable Browser Automation & Testing with [Selenium-WebDriver](https://www.seleniumhq.org/) and [Pytest](https://docs.pytest.org/en/latest/).
+All-in-one testing framework for automated E2E tests, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/sb_demo_mode.gif" title="SeleniumBase" height="236"><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase" height="225"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in demo mode, which adds JavaScript for highlighting page actions.</i>)<br />
-```
+```bash
 pytest my_first_test.py --demo_mode
 ```
 
+SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
+
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
 
-(<i>Requires **[Python/Pip](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md)** [<img src="https://img.shields.io/badge/python-2.7,_3.x-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
+You'll need **[Python](https://www.python.org/downloads/)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Git clone and install SeleniumBase:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
+
+With Python installed and on your System PATH, you can get the latest ``pip`` with:
+```bash
+python -m easy_install -U pip
 ```
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Virtual Environment: (Optional)
+
+You may want to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the official site **[here](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
+
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase)
+```bash
+pip install seleniumbase
+```
+* Add ``--upgrade`` to upgrade an existing installation.
+* Add ``--force-reinstall`` for a clean install.
+
+You can also install SeleniumBase from a ``git clone``:
+```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
 pip install -r requirements.txt
 python setup.py develop
 ```
-* ("``pip install -e .``" also works from the top-level SeleniumBase folder.)
-
-SeleniumBase can also be installed from [PyPI](https://pypi.python.org/pypi/seleniumbase): [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt="pypi" />](https://pypi.python.org/pypi/seleniumbase)
-```
-pip install seleniumbase
-```
-* (Add ``--upgrade`` to get the latest packages. Add ``--force-reinstall`` with ``--no-cache-dir`` to force a clean installation.)
+* "``pip install -e .``" also works from the top-level SeleniumBase folder.
 
 You can also install a specific GitHub branch of SeleniumBase:
-```
+```bash
 pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a web driver:
 
 SeleniumBase can download a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
-```
+```bash
 seleniumbase install chromedriver
 ```
-* (You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.)
+* You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.
+* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
+```bash
+seleniumbase install chromedriver latest
+```
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Run a test on Chrome:
-```
+```bash
 cd examples
 pytest my_first_test.py --browser=chrome
 ```
-* (Chrome is the default browser if not specified with ``--browser``)
+* Chrome is the default browser if not specified with ``--browser=BROWSER``.
+* On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
 **Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a simple test looks like:**
-* (<i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>)
+* <i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>
+* Here are some common SeleniumBase methods you might find in tests:
+```python
+self.open(URL)  # Navigate to the web page
+self.click(SELECTOR)  # Click a page element
+self.update_text(SELECTOR, TEXT)  # Type text (Add "\n" to text for pressing enter/return.)
+self.assert_element(SELECTOR)  # Assert element is visible
+self.assert_text(TEXT)  # Assert text is visible (has optional SELECTOR arg)
+self.assert_title(PAGE_TITLE)  # Assert page title
+self.assert_no_404_errors()  # Assert no 404 errors from files on the page
+self.assert_no_js_errors()  # Assert no JavaScript errors on the page (Chrome-ONLY)
+self.execute_script(JAVASCRIPT)  # Execute javascript code
+self.go_back()  # Navigate to the previous URL
+self.get_text(SELECTOR)  # Get text from a selector
+self.get_attribute(SELECTOR, ATTRIBUTE)  # Get a specific attribute from a selector
+self.is_element_visible(SELECTOR)  # Find out if an element is visible on the page
+self.is_text_visible(TEXT)  # Find out if specific text is visible on the page (optional SELECTOR arg)
+self.hover_and_click(HOVER_SELECTOR, CLICK_SELECTOR)  # Mouseover an element and click another element
+self.select_option_by_text(DROPDOWN_SELECTOR, OPTION_TEXT)  # Select a dropdown option
+self.switch_to_frame(FRAME_NAME)  # Switch webdriver control to an iframe on the page
+self.switch_to_default_content()  # Switch webdriver control out of the current iframe
+self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
+self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
+```
+For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
@@ -58,19 +101,19 @@ pytest my_first_test.py --browser=chrome
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i>[Read more about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
 #### **Simplified code:**<br />
-Instead of using messy WebDriver commands such as:
-```python
-self.driver.find_element_by_css_selector("textarea").send_keys("text")
-```
-...you can do the following with SeleniumBase:
+SeleniumBase uses simple syntax for commands, such as:
 ```python
 self.update_text("textarea", "text")
 ```
+The same command with regular WebDriver is very messy:
+```python
+self.driver.find_element_by_css_selector("textarea").send_keys("text")
+```
 (<i>You can still use ``self.driver`` in your code.</i>)
 
-#### **Run tests with Pytest or Nose in any browser:**<br />
-(<i>Using **Pytest** is strongly recommended</i>)
-```
+#### **Run tests with ``pytest`` or ``nose`` in any browser:**<br />
+(<i>Using **pytest** is strongly recommended</i>)
+```bash
 pytest my_first_test.py --browser=chrome
 
 nosetests test_suite.py --browser=firefox
@@ -95,7 +138,7 @@ For a full list of SeleniumBase features, [Click Here](https://github.com/seleni
 **Here's how to run the example script on various web browsers:**
 
 First, install a web driver for each web browser you intend to use:
-```
+```bash
 seleniumbase install chromedriver
 seleniumbase install geckodriver
 seleniumbase install edgedriver
@@ -103,8 +146,8 @@ seleniumbase install iedriver
 seleniumbase install operadriver
 ```
 
-Next, choose between **pytest** and **nosetests** test runners. (<i>Interchangeable</i>)
-```
+Next, choose between **pytest** and **nosetests** test runners. (<i>Mostly interchangeable.</i>)
+```bash
 cd examples/
 
 pytest my_first_test.py --browser=chrome
@@ -112,43 +155,87 @@ pytest my_first_test.py --browser=chrome
 nosetests my_first_test.py --browser=firefox
 ```
 (<i>If no browser is specified, Chrome is used by default.</i>)
+With Pytest, a green dot means a test passed. An "F" means a test failed.
 
 <a id="seleniumbase_demo_mode"></a> **Use Demo Mode to help you see what tests are asserting.**
 
-If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
-```
+```bash
 pytest my_first_test.py --demo_mode
 ```
 
-You can use the following in your scripts to help you debug issues:
+**Pytest** includes test discovery. If you don't specify a specific file or folder to run from, ``pytest`` will search all subdirectories automatically for tests to run based on the following matching criteria:
+Python filenames that start with ``test_`` or end with ``_test.py``.
+Python methods that start with ``test_``.
+The Python class name can be anything since SeleniumBase's ``BaseCase`` class inherits from the ``unittest.TestCase`` class.
+You can see which tests are getting discovered by ``pytest`` by using:
+```bash
+pytest --collect-only -q
+```
 
+You can use the following in your scripts to help you debug issues:
+(<i>If using ipdb, make sure you add "-s" to command-line options unless already in pytest.ini</i>)
 ```python
-import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
-import ipdb; ipdb.set_trace()  # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
-import pytest; pytest.set_trace()  # similar to ipdb, but specific to pytest
+import time; time.sleep(5)  # Sleeps for 5 seconds (add this after the line you want to pause on)
+import ipdb; ipdb.set_trace()  # Waits for user input. n = next line, c = continue, s = step.
+import pytest; pytest.set_trace()  # Waits for user input. n = next line, c = continue, s = step.
 ```
 
 **To pause an active test that throws an exception or error, add ``--pdb -s``:**
-
+```bash
+pytest my_first_test.py --pdb -s
 ```
-pytest my_first_test.py --browser=chrome --pdb -s
-```
+The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
 
-The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
-
-Here are some other useful **nosetest**-specific arguments:
-
-```
---logging-level=INFO  # Hide DEBUG messages, which can be overwhelming.
+Here are some other useful command-line options that come with Pytest:
+```bash
+-v  # Prints the full test name for each test.
+-q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
--v  # Prints the full test name rather than a dot for each test.
---with-id  # If -v is also used, will number the tests for easy counting.
+--html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--collect-only  # Show what tests would get run without actually running them.
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+-n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 ```
 
-During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
-
+SeleniumBase provides additional Pytest command-line options for tests:
+```bash
+--browser=BROWSER  # (The web browser to use.)
+--cap_file=FILE  # (The web browser's desired capabilities to use.)
+--settings_file=FILE  # (Overrides SeleniumBase settings.py values.)
+--env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
+--data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
+--user_data_dir=DIR  # (Set the Chrome user data directory to use.)
+--server=SERVER  # (The server / IP address used by the tests.)
+--port=PORT  # (The port that's used by the test server.)
+--proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
+--agent=STRING  # (This designates the web browser's User Agent to use.)
+--extension_zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension_dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--headless  # (The option to run tests headlessly. The default on Linux OS.)
+--headed  # (The option to run tests with a GUI on Linux OS.)
+--start_page=URL  # (The starting URL for the web browser when tests begin.)
+--log_path=LOG_PATH  # (The directory where log files get saved to.)
+--archive_logs  # (Archive old log files instead of deleting them.)
+--demo_mode  # (The option to visually see test actions as they occur.)
+--demo_sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
+--message_duration=SECONDS  # (The time length for Messenger alerts.)
+--check_js  # (The option to check for JavaScript errors after page loads.)
+--ad_block  # (The option to block some display ads after page loads.)
+--verify_delay=SECONDS  # (The delay before MasterQA verification checks.)
+--disable_csp  # (This disables the Content Security Policy of websites.)
+--enable_sync  # (The option to enable "Chrome Sync".)
+--maximize_window  # (The option to start with the web browser maximized.)
+--save_screenshot  # (The option to save a screenshot after each test.)
+--visual_baseline  # (Set the visual baseline for Visual/Layout tests.)
+--timeout_multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
+(For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
+
+During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you add --archive_logs to command-line options, or have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
+```bash
 cd examples/
 
 pytest test_suite.py --browser=chrome
@@ -156,11 +243,14 @@ pytest test_suite.py --browser=chrome
 pytest test_suite.py --browser=firefox
 ```
 
-If you want to run tests headlessly, use ``--headless``, which you'll need to do if your system lacks a GUI interface. Even if your system does have a GUI interface, it may still support headless browser automation.
+An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
+Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
+``--settings_file=custom_settings.py``
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, Email Testing API credentials, and other important settings used by tests.)
 
-To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
+Now inside your tests, you can use ``self.data`` to access that.
 
-If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Test Directory Customization:**
 
@@ -168,38 +258,38 @@ For running tests outside of the SeleniumBase repo with **Pytest**, you'll want 
 
 As a shortcut, you'll be able to run ``seleniumbase mkdir [DIRECTORY_NAME]`` to create a new folder that already contains necessary files and some example tests that you can run. Example:
 
-```
+```bash
 seleniumbase mkdir browser_tests
 cd browser_tests
-pytest my_first_test.py --browser=chrome
+pytest my_first_test.py
 ```
 
 <a id="creating_visual_reports"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Creating Visual Test Suite Reports:**
 
-(NOTE: Several command line args are different for Pytest vs Nosetests)
+(NOTE: Several command-line args are different for Pytest vs Nosetests)
 
 #### **Pytest Reports:**
 
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
-```
+```bash
 pytest test_suite.py --html=report.html
 ```
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
-You can also use ``--junitxml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 
-```
-pytest test_suite.py --junitxml=report.xml
+```bash
+pytest test_suite.py --junit-xml=report.xml
 ```
 
 #### **Nosetest Reports:**
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
-```
+```bash
 nosetests test_suite.py --report
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="420">
@@ -209,28 +299,28 @@ nosetests test_suite.py --report
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Using a Proxy Server:**
 
-If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command-line.
 
-```
+```bash
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
 If the proxy server that you wish to use requires authentication, you can do the following (Chrome only):
 
-```
+```bash
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 ```
 
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
 
-```
+```bash
 pytest proxy_test.py --proxy=proxy1
 ```
 
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Changing the User-Agent:**
 
-If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command line.
+If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
@@ -251,20 +341,16 @@ Here are some things you can do to setup a production environment for your testi
 
 * You can use [the Selenium Grid](https://github.com/SeleniumHQ/selenium/wiki/Grid2) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the SeleniumBase [selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), which should have everything you need. The [Selenium Grid ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md) will help you get started.
 
-* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily. You'll also need to install the MySQL Python client. Depending on your system, you may need to install additional requirements for this (such as on Windows). See [Stackoverflow](https://stackoverflow.com/questions/43102442/whats-the-difference-between-mysqldb-mysqlclient-and-mysql-connector-python) for more info.
-
-```
-pip install mysqlclient==1.3.14
-```
+* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily. See [Stackoverflow](https://stackoverflow.com/questions/43102442/whats-the-difference-between-mysqldb-mysqlclient-and-mysql-connector-python) for more info.
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
 <a id="amazon_section"></a>
-* If you're using AWS, you can setup an [Amazon S3](https://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has [all the code you need to connect to S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py). You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command line when you run your tests.
+* If you're using AWS, you can setup an [Amazon S3](https://aws.amazon.com/s3/) account for saving your log files and screenshots for future viewing. SeleniumBase already has [all the code you need to connect to S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py). You'll need to modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details to your instance and the location in S3 where you want log files to be saved. You'll also need to add "``--with-s3_logging``" on the command-line when you run your tests.
 
 Here's an example of running tests with additional features enabled:
-```
-pytest [YOUR_TEST_FILE].py --browser=chrome --with-db_reporting --with-s3_logging -s
+```bash
+pytest [YOUR_TEST_FILE].py --with-db_reporting --with-s3_logging -s
 ```
 (NOTE: If you haven't configured your MySQL or S3 connections in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), don't use ``--with-db_reporting`` or ``--with-s3_logging``.)
 
@@ -272,7 +358,7 @@ When the testing_base plugin is used, if there's a test failure, the basic_test_
 
 To simplify that long run command, you can create a ``*.cfg`` file, such as the one provided in the example, and enter your plugins there so that you can run everything by typing:
 
-```
+```bash
 nosetests [YOUR_TEST_FILE].py --config=[MY_CONFIG_FILE].cfg
 ```
 
@@ -280,7 +366,7 @@ You can simplify that even more by using a setup.cfg file, such as the one provi
 
 If you tell pytest/nosetests to run an entire file, it will run every method in that python file that starts with "test". You can be more specific on what to run by doing something like the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)
 
-```
+```bash
 pytest [YOUR_TEST_FILE].py::[SOME_CLASS_NAME]::test_[SOME_TEST_NAME]
 nosetests [YOUR_TEST_FILE].py:[SOME_CLASS_NAME].test_[SOME_TEST_NAME]
 ```
@@ -299,7 +385,7 @@ class MyTestClass(BaseCase):
 
 You can run it from the ``examples`` folder like this:
 
-```
+```bash
 pytest test_fail.py
 ```
 
@@ -359,7 +445,7 @@ If you want to type in special keys, that's easy too. Here's an example:
 
 ```python
 from selenium.webdriver.common.keys import Keys
-self.find_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # the backspace should cancel out the space, leaving you with the newline
+self.find_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # The backspace should cancel out the space, leaving you with the newline
 ```
 
 #### Getting the text from an element on a page
@@ -434,10 +520,10 @@ if self.is_element_visible('div#warning'):
 is_element_present(selector)  # is an element present on a page
 ```python
 if self.is_element_present('div#top_secret img.tracking_cookie'):
-    self.contact_cookie_monster()  # Not a real method unless you define it somewhere
+    self.contact_cookie_monster()  # Not a real SeleniumBase method
 else:
     current_url = self.get_current_url()
-    self.contact_the_nsa(url=current_url, message="Dark Zone Found")  # Not a real method unless you define it somewhere
+    self.contact_the_nsa(url=current_url, message="Dark Zone Found")  # Not a real SeleniumBase method
 ```
 Another example:
 ```python
@@ -477,7 +563,7 @@ What if your test opens up a new tab/window and now you have more than one page?
 Ex:
 
 ```python
-self.switch_to_window(1)  # this switches to the new tab (0 is the first one)
+self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
 ```
 
 **ProTip™:** iFrames follow the same principle as new windows - you need to specify the iFrame if you want to take action on something in there
@@ -487,7 +573,7 @@ Ex:
 self.switch_to_frame('ContentManagerTextBody_ifr')
 # Now you can act inside the iFrame
 # .... Do something cool (here)
-self.switch_to_default_content()  # exit the iFrame when you're done
+self.switch_to_default_content()  # Exit the iFrame when you're done
 ```
 
 #### Handle Pop-Up Alerts
@@ -514,12 +600,11 @@ You'd know this because the web page would contain something like the following 
 ```
 
 It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:
-
 ```python
 self.activate_jquery()
 ```
 
-Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, use Firefox with SeleniumBase, which overrides the CSP to allow loading of any JS library.
+Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable_csp`` on the command-line.
 
 Here are some examples of using jQuery in your scripts:
 ```python
@@ -596,24 +681,24 @@ pytest --reruns 5 --reruns-delay 1
 
 Additionally, you can use the ``@retry_on_exception()`` decorator to specifically retry failing methods. (First import: ``from seleniumbase import decorators``) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
 
-####  Checking Email: 
+####  Email Testing / Checking Email: 
 Let's say you have a test that sends an email, and now you want to check that the email was received:
 
 ```python
 from seleniumbase.fixtures.email_manager import EmailManager, EmailException
 num_email_results = 0
 email_subject = "This is the subject to search for (maybe include a timestamp)"
-email_manager = EmailManager("{YOUR SELENIUM GMAIL ACCOUNT EMAIL ADDRESS}")  # the password for this would be stored in seleniumbase/config/settings.py
+email_manager = EmailManager("{YOUR SELENIUM GMAIL ACCOUNT EMAIL ADDRESS}")
+# The password for this would be stored in seleniumbase/config/settings.py
 try:
-    html_text = email_manager.search(SUBJECT="%s" % email_subject, timeout=300)
+    html_text = email_manager.search(SUBJECT="%s" % email_subject, timeout=60)
     num_email_results = len(html_text)
 except EmailException:
     num_email_results = 0
-self.assert_true(num_email_results)  # true if not zero
+self.assert_true(num_email_results)  # True if not zero
 ```
 
 Now you can parse through the email if you're looking for specific text or want to navigate to a link listed there.
-
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Wrap-Up
 
@@ -622,8 +707,8 @@ Now you can parse through the email if you're looking for specific text or want 
 <i>**Questions or Comments?**</i><br />
 [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
 
-If you see something, say something! We are very active in resolving issues. [<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg" alt="Closed Issues" />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed)
+If you see something, say something! We are very active in resolving issues. [<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed)
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo3g4.png" title="SeleniumBase" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> <img src="https://cdn2.hubspot.net/hubfs/100006/images/logo_base_4b.png" title="SeleniumBase" height="150"> <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt="MIT License" />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_2.png" title="SeleniumBase" height="120">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
