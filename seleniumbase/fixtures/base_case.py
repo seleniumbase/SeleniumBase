@@ -2813,7 +2813,7 @@ class BaseCase(unittest.TestCase):
 
     def grab_number_of_visible_elements(self, selector, by=By.CSS_SELECTOR):
         return len(self.find_elements(selector=selector, by=by))
-    
+
     ############
 
     def check_window(self, name="default", level=0, baseline=False):
