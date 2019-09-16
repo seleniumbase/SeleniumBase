@@ -987,14 +987,30 @@ class BaseCase(unittest.TestCase):
             hover_selector, hover_by)
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by)
-        self.wait_for_element_visible(
+        dropdown_element = self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self.__demo_mode_highlight_if_active(hover_selector, hover_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
-        element = page_actions.hover_and_click(
-            self.driver, hover_selector, click_selector,
-            hover_by, click_by, timeout)
+        outdated_driver = False
+        element = None
+        try:
+            page_actions.hover_element(self.driver, dropdown_element)
+        except Exception:
+            outdated_driver = True
+            element = self.wait_for_element_present(
+                click_selector, click_by, timeout)
+            if click_by == By.LINK_TEXT:
+                self.open(self.__get_href_from_link_text(click_selector))
+            elif click_by == By.PARTIAL_LINK_TEXT:
+                self.open(self.__get_href_from_partial_link_text(
+                    click_selector))
+            else:
+                self.js_click(click_selector, click_by)
+        if not outdated_driver:
+            element = page_actions.hover_and_click(
+                self.driver, hover_selector, click_selector,
+                hover_by, click_by, timeout)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1016,20 +1032,36 @@ class BaseCase(unittest.TestCase):
             hover_selector, hover_by)
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by)
-        hover_element = self.wait_for_element_visible(
+        dropdown_element = self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self.__demo_mode_highlight_if_active(hover_selector, hover_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
-        click_element = page_actions.hover_element_and_double_click(
-            self.driver, hover_element, click_selector,
-            click_by=By.CSS_SELECTOR, timeout=timeout)
+        outdated_driver = False
+        element = None
+        try:
+            page_actions.hover_element(self.driver, dropdown_element)
+        except Exception:
+            outdated_driver = True
+            element = self.wait_for_element_present(
+                click_selector, click_by, timeout)
+            if click_by == By.LINK_TEXT:
+                self.open(self.__get_href_from_link_text(click_selector))
+            elif click_by == By.PARTIAL_LINK_TEXT:
+                self.open(self.__get_href_from_partial_link_text(
+                    click_selector))
+            else:
+                self.js_click(click_selector, click_by)
+        if not outdated_driver:
+            element = page_actions.hover_element_and_double_click(
+                self.driver, dropdown_element, click_selector,
+                click_by=By.CSS_SELECTOR, timeout=timeout)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
-        return click_element
+        return element
 
     def __select_option(self, dropdown_selector, option,
                         dropdown_by=By.CSS_SELECTOR, option_by="text",
@@ -3242,14 +3274,24 @@ class BaseCase(unittest.TestCase):
                 matching_dropdowns = self.find_visible_elements(dropdown_css)
                 for dropdown in matching_dropdowns:
                     # The same class names might be used for multiple dropdowns
-                    try:
-                        if dropdown.is_displayed():
+                    if dropdown.is_displayed():
+                        try:
+                            try:
+                                page_actions.hover_element(
+                                    self.driver, dropdown)
+                            except Exception:
+                                # If hovering fails, driver is likely outdated
+                                # Time to go directly to the hidden link text
+                                self.open(self.__get_href_from_link_text(
+                                    link_text))
+                                return True
                             page_actions.hover_element_and_click(
                                 self.driver, dropdown, link_text,
                                 click_by=By.LINK_TEXT, timeout=0.12)
                             return True
-                    except Exception:
-                        pass
+                        except Exception:
+                            pass
+
         return False
 
     def __get_href_from_partial_link_text(self, link_text, hard_fail=True):
@@ -3288,14 +3330,24 @@ class BaseCase(unittest.TestCase):
                 matching_dropdowns = self.find_visible_elements(dropdown_css)
                 for dropdown in matching_dropdowns:
                     # The same class names might be used for multiple dropdowns
-                    try:
-                        if dropdown.is_displayed():
+                    if dropdown.is_displayed():
+                        try:
+                            try:
+                                page_actions.hover_element(
+                                    self.driver, dropdown)
+                            except Exception:
+                                # If hovering fails, driver is likely outdated
+                                # Time to go directly to the hidden link text
+                                self.open(
+                                    self.__get_href_from_partial_link_text(
+                                        link_text))
+                                return True
                             page_actions.hover_element_and_click(
                                 self.driver, dropdown, link_text,
-                                click_by=By.PARTIAL_LINK_TEXT, timeout=0.12)
+                                click_by=By.LINK_TEXT, timeout=0.12)
                             return True
-                    except Exception:
-                        pass
+                        except Exception:
+                            pass
         return False
 
     def __recalculate_selector(self, selector, by):
