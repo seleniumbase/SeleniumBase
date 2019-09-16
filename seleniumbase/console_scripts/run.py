@@ -8,12 +8,20 @@ Examples:
 seleniumbase install chromedriver
 seleniumbase mkdir browser_tests
 seleniumbase convert my_old_webdriver_unittest.py
+seleniumbase extract-objects my_first_test.py
+seleniumbase inject-objects my_first_test.py
+seleniumbase objectify my_first_test.py
+seleniumbase revert-objects my_first_test.py
+seleniumbase encrypt OR seleniumbase obfuscate
+seleniumbase decrypt OR seleniumbase unobfuscate
 seleniumbase download server
 seleniumbase grid-hub start
 seleniumbase grid-node start --hub=127.0.0.1
 """
 
 import sys
+from seleniumbase.common import obfuscate
+from seleniumbase.common import unobfuscate
 from seleniumbase.console_scripts import logo_helper
 from seleniumbase.console_scripts import sb_mkdir
 from seleniumbase.console_scripts import sb_install
@@ -44,6 +52,8 @@ def show_basic_usage():
     print("       inject-objects [SELENIUMBASE_PYTHON_FILE] [OPTIONS]")
     print("       objectify [SELENIUMBASE_PYTHON_FILE] [OPTIONS]")
     print("       revert-objects [SELENIUMBASE_PYTHON_FILE]")
+    print("       encrypt OR obfuscate")
+    print("       decrypt OR unobfuscate")
     print("       download server")
     print("       grid-hub [start|stop|restart] [OPTIONS]")
     print("       grid-node [start|stop|restart] --hub=[HUB_IP] [OPTIONS]")
@@ -171,6 +181,32 @@ def show_revert_objects_usage():
     print("")
 
 
+def show_encrypt_usage():
+    print("  ** encrypt OR obfuscate **")
+    print("")
+    print("  Usage:")
+    print("           seleniumbase encrypt")
+    print("                        OR")
+    print("           seleniumbase obfuscate")
+    print("  Output:")
+    print("           Runs the password obfuscation tool.")
+    print("           (Where you can enter a password to encrypt/obfuscate.)")
+    print("")
+
+
+def show_decrypt_usage():
+    print("  ** decrypt OR unobfuscate **")
+    print("")
+    print("  Usage:")
+    print("           seleniumbase decrypt")
+    print("                        OR")
+    print("           seleniumbase unobfuscate")
+    print("  Output:")
+    print("           Runs the password decryption/unobfuscation tool.")
+    print("           (Where you can enter an encrypted password to decrypt.)")
+    print("")
+
+
 def show_download_usage():
     print("  ** download **")
     print("")
@@ -189,7 +225,9 @@ def show_grid_hub_usage():
     print("           seleniumbase grid-hub {start|stop|restart}")
     print("  Options:")
     print("           -v, --verbose  (Increase verbosity of logging output.)")
-    print("                 (Default: Quiet logging / not verbose.)")
+    print("                          (Default: Quiet logging / not verbose.)")
+    print("  Example:")
+    print("           seleniumbase grid-hub start")
     print("  Output:")
     print("           Controls the Selenium Grid Hub Server, which allows")
     print("           for running tests on multiple machines in parallel")
@@ -205,10 +243,12 @@ def show_grid_node_usage():
     print("  Usage:")
     print("           seleniumbase grid-node {start|stop|restart} [OPTIONS]")
     print("  Options:")
-    print("           --hub=HUB_IP (The Grid Hub IP Address to connect to.)")
-    print("                 (Default: 127.0.0.1 if not set)")
+    print("           --hub=[HUB_IP] (The Grid Hub IP Address to connect to.)")
+    print("                          (Default: 127.0.0.1 if not set)")
     print("           -v, --verbose  (Increase verbosity of logging output.)")
-    print("                 (Default: Quiet logging / not verbose.)")
+    print("                          (Default: Quiet logging / not verbose.)")
+    print("  Example:")
+    print("           seleniumbase grid-node start --hub=127.0.0.1")
     print("  Output:")
     print("           Controls the Selenium Grid node, which serves as a")
     print("           worker machine for your Selenium Grid Hub server.")
@@ -253,6 +293,12 @@ def main():
         else:
             show_basic_usage()
             show_install_usage()
+    elif command == "mkdir":
+        if len(command_args) >= 1:
+            sb_mkdir.main()
+        else:
+            show_basic_usage()
+            show_mkdir_usage()
     elif command == "convert":
         if len(command_args) == 1:
             convert_ide.main()
@@ -283,12 +329,18 @@ def main():
         else:
             show_basic_usage()
             show_revert_objects_usage()
-    elif command == "mkdir":
-        if len(command_args) >= 1:
-            sb_mkdir.main()
+    elif command == "encrypt" or command == "obfuscate":
+        if len(command_args) >= 0:
+            obfuscate.main()
         else:
             show_basic_usage()
-            show_mkdir_usage()
+            show_encrypt_usage()
+    elif command == "decrypt" or command == "unobfuscate":
+        if len(command_args) >= 0:
+            unobfuscate.main()
+        else:
+            show_basic_usage()
+            show_decrypt_usage()
     elif command == "download":
         if len(command_args) >= 1 and command_args[0].lower() == "server":
             download_selenium_server.main(force_download=True)
@@ -336,6 +388,22 @@ def main():
             elif command_args[0] == "revert-objects":
                 print("")
                 show_revert_objects_usage()
+                return
+            elif command_args[0] == "encrypt":
+                print("")
+                show_encrypt_usage()
+                return
+            elif command_args[0] == "obfuscate":
+                print("")
+                show_encrypt_usage()
+                return
+            elif command_args[0] == "decrypt":
+                print("")
+                show_decrypt_usage()
+                return
+            elif command_args[0] == "unobfuscate":
+                print("")
+                show_decrypt_usage()
                 return
             elif command_args[0] == "download":
                 print("")

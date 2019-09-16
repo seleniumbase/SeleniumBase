@@ -70,16 +70,13 @@ Run a test that demonstrates how to upload a file to a website:
 pytest upload_file_test.py
 ```
 
-For more advanced run commands, such as using a proxy server,  see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
+For more advanced run commands, such as using a proxy server, see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
 
 --------
 
-To makes things easier, here's a simple GUI program that allows you to kick off a few example scripts by pressing a button:
+To makes things easier, here's a simple GUI program that allows you to run a few example scripts by pressing a button:
 
 ```bash
 python gui_test_runner.py
 ```
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/The_GUI_Runner.png" title="GUI Test Runner" height="400">
-
-(NOTE: If you see any ``*.pyc`` files appear as you run tests, that's perfectly normal. Compiled bytecode is a natural result of running Python code.)
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner">

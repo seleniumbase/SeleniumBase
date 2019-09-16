@@ -1,6 +1,7 @@
 import inspect
 import logging
 import math
+import sys
 import threading
 import time
 import warnings
@@ -60,11 +61,18 @@ def rate_limited(max_per_second):
         def rate_limited_function(*args, **kargs):
             try:
                 rate_lock.acquire(True)
-                elapsed = time.clock() - last_time_called[0]
+                elapsed = None
+                if sys.version_info[0] >= 3:
+                    elapsed = time.process_time() - last_time_called[0]
+                else:
+                    elapsed = time.clock() - last_time_called[0]
                 wait_time_remaining = min_interval - elapsed
                 if wait_time_remaining > 0:
                     time.sleep(wait_time_remaining)
-                last_time_called[0] = time.clock()
+                if sys.version_info[0] >= 3:
+                    last_time_called[0] = time.process_time()
+                else:
+                    last_time_called[0] = time.clock()
             finally:
                 rate_lock.release()
             return func(*args, **kargs)

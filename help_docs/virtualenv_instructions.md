@@ -1,21 +1,21 @@
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Virtual Environment Tutorial
 
-### **Step 1**: First install [VirtualEnv](http://virtualenv.readthedocs.org/en/latest/) and [VirtualEnvWrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) (<i>if not installed</i>):
+### **Step 1**: Install VirtualEnv and VirtualEnvWrapper:
 
-#### macOS / Linux:
+### macOS / Linux:
 
 (*Shortcut*: Run "``source virtualenv_install.sh``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
 python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper
-source `which virtualenvwrapper.sh`
 export WORKON_HOME=$HOME/.virtualenvs
+source `which virtualenvwrapper.sh`
 ```
 
 If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~/.bash_profile`` on macOS, or ``~/.bashrc`` on Linux), virtualenvwrapper commands such as ``mkvirtualenv`` will be available whenever you open a new command prompt.
 
-#### Windows:
+### Windows:
 
 (*Shortcut*: Run "``virtualenv_install.bat``" from the top-level SeleniumBase folder to perform the following steps.)
 
@@ -24,9 +24,9 @@ python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper-win
 ```
 
-### **Step 2**: Now create a virtual environment:
+### **Step 2**: Create a virtual environment:
 
-#### macOS / Linux / Windows:
+### macOS / Linux / Windows:
 
 * Using ``mkvirtualenv``:
 ```bash
@@ -72,4 +72,4 @@ To delete a virtual environment:
 rmvirtualenv VIRTUAL_ENV_NAME
 ```
 
-<br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more information about Python virtual environments.</i>
+<br><i>[python-guide.org/en/latest/dev/virtualenvs](http://docs.python-guide.org/en/latest/dev/virtualenvs/) has more information about Python virtual environments. For specific details about VirtualEnv and VirtualEnvWrapper, see [http://virtualenv.readthedocs.org/en/latest/](http://virtualenv.readthedocs.org/en/latest/) and [http://virtualenvwrapper.readthedocs.org/en/latest/](http://virtualenvwrapper.readthedocs.org/en/latest/).</i>

@@ -738,13 +738,16 @@ class BaseCase(unittest.TestCase):
 
     def set_attribute(self, selector, attribute, value, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
-        """ This method uses JavaScript to set/update an attribute. """
+        """ This method uses JavaScript to set/update an attribute.
+            Only the first matching selector from querySelector() is used. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_visible(selector, by=by):
-            self.scroll_to(selector, by=by, timeout=timeout)
+            try:
+                self.scroll_to(selector, by=by, timeout=timeout)
+            except Exception:
+                pass
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         value = re.escape(value)
@@ -756,15 +759,50 @@ class BaseCase(unittest.TestCase):
                   % (css_selector, attribute, value))
         self.execute_script(script)
 
+    def set_attributes(self, selector, attribute, value, by=By.CSS_SELECTOR):
+        """ This method uses JavaScript to set/update a common attribute.
+            All matching selectors from querySelectorAll() are used.
+            Example => (Make all links on a website redirect to Google):
+            self.set_attributes("a", "href", "https://google.com") """
+        selector, by = self.__recalculate_selector(selector, by)
+        attribute = re.escape(attribute)
+        attribute = self.__escape_quotes_if_needed(attribute)
+        value = re.escape(value)
+        value = self.__escape_quotes_if_needed(value)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = ("""var $elements = document.querySelectorAll('%s');
+                  var index = 0, length = $elements.length;
+                  for(; index < length; index++){
+                  $elements[index].setAttribute('%s','%s');}"""
+                  % (css_selector, attribute, value))
+        try:
+            self.execute_script(script)
+        except Exception:
+            pass
+
+    def set_attribute_all(self, selector, attribute, value,
+                          by=By.CSS_SELECTOR):
+        """ Same as set_attributes(), but using querySelectorAll naming scheme.
+            This method uses JavaScript to set/update a common attribute.
+            All matching selectors from querySelectorAll() are used.
+            Example => (Make all links on a website redirect to Google):
+            self.set_attribute_all("a", "href", "https://google.com") """
+        self.set_attributes(selector, attribute, value, by=by)
+
     def remove_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                          timeout=settings.SMALL_TIMEOUT):
-        """ This method uses JavaScript to remove an attribute. """
+        """ This method uses JavaScript to remove an attribute.
+            Only the first matching selector from querySelector() is used. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_visible(selector, by=by):
-            self.scroll_to(selector, by=by, timeout=timeout)
+            try:
+                self.scroll_to(selector, by=by, timeout=timeout)
+            except Exception:
+                pass
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         css_selector = self.convert_to_css_selector(selector, by=by)
@@ -773,6 +811,25 @@ class BaseCase(unittest.TestCase):
         script = ("""document.querySelector('%s').removeAttribute('%s');"""
                   % (css_selector, attribute))
         self.execute_script(script)
+
+    def remove_attributes(self, selector, attribute, by=By.CSS_SELECTOR):
+        """ This method uses JavaScript to remove a common attribute.
+            All matching selectors from querySelectorAll() are used. """
+        selector, by = self.__recalculate_selector(selector, by)
+        attribute = re.escape(attribute)
+        attribute = self.__escape_quotes_if_needed(attribute)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = ("""var $elements = document.querySelectorAll('%s');
+                  var index = 0, length = $elements.length;
+                  for(; index < length; index++){
+                  $elements[index].removeAttribute('%s');}"""
+                  % (css_selector, attribute))
+        try:
+            self.execute_script(script)
+        except Exception:
+            pass
 
     def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
@@ -949,14 +1006,30 @@ class BaseCase(unittest.TestCase):
             hover_selector, hover_by)
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by)
-        self.wait_for_element_visible(
+        dropdown_element = self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self.__demo_mode_highlight_if_active(hover_selector, hover_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
-        element = page_actions.hover_and_click(
-            self.driver, hover_selector, click_selector,
-            hover_by, click_by, timeout)
+        outdated_driver = False
+        element = None
+        try:
+            page_actions.hover_element(self.driver, dropdown_element)
+        except Exception:
+            outdated_driver = True
+            element = self.wait_for_element_present(
+                click_selector, click_by, timeout)
+            if click_by == By.LINK_TEXT:
+                self.open(self.__get_href_from_link_text(click_selector))
+            elif click_by == By.PARTIAL_LINK_TEXT:
+                self.open(self.__get_href_from_partial_link_text(
+                    click_selector))
+            else:
+                self.js_click(click_selector, click_by)
+        if not outdated_driver:
+            element = page_actions.hover_and_click(
+                self.driver, hover_selector, click_selector,
+                hover_by, click_by, timeout)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -978,20 +1051,36 @@ class BaseCase(unittest.TestCase):
             hover_selector, hover_by)
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by)
-        hover_element = self.wait_for_element_visible(
+        dropdown_element = self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
         self.__demo_mode_highlight_if_active(hover_selector, hover_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
-        click_element = page_actions.hover_element_and_double_click(
-            self.driver, hover_element, click_selector,
-            click_by=By.CSS_SELECTOR, timeout=timeout)
+        outdated_driver = False
+        element = None
+        try:
+            page_actions.hover_element(self.driver, dropdown_element)
+        except Exception:
+            outdated_driver = True
+            element = self.wait_for_element_present(
+                click_selector, click_by, timeout)
+            if click_by == By.LINK_TEXT:
+                self.open(self.__get_href_from_link_text(click_selector))
+            elif click_by == By.PARTIAL_LINK_TEXT:
+                self.open(self.__get_href_from_partial_link_text(
+                    click_selector))
+            else:
+                self.js_click(click_selector, click_by)
+        if not outdated_driver:
+            element = page_actions.hover_element_and_double_click(
+                self.driver, dropdown_element, click_selector,
+                click_by=By.CSS_SELECTOR, timeout=timeout)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
-        return click_element
+        return element
 
     def __select_option(self, dropdown_selector, option,
                         dropdown_by=By.CSS_SELECTOR, option_by="text",
@@ -3204,14 +3293,24 @@ class BaseCase(unittest.TestCase):
                 matching_dropdowns = self.find_visible_elements(dropdown_css)
                 for dropdown in matching_dropdowns:
                     # The same class names might be used for multiple dropdowns
-                    try:
-                        if dropdown.is_displayed():
+                    if dropdown.is_displayed():
+                        try:
+                            try:
+                                page_actions.hover_element(
+                                    self.driver, dropdown)
+                            except Exception:
+                                # If hovering fails, driver is likely outdated
+                                # Time to go directly to the hidden link text
+                                self.open(self.__get_href_from_link_text(
+                                    link_text))
+                                return True
                             page_actions.hover_element_and_click(
                                 self.driver, dropdown, link_text,
                                 click_by=By.LINK_TEXT, timeout=0.12)
                             return True
-                    except Exception:
-                        pass
+                        except Exception:
+                            pass
+
         return False
 
     def __get_href_from_partial_link_text(self, link_text, hard_fail=True):
@@ -3250,14 +3349,24 @@ class BaseCase(unittest.TestCase):
                 matching_dropdowns = self.find_visible_elements(dropdown_css)
                 for dropdown in matching_dropdowns:
                     # The same class names might be used for multiple dropdowns
-                    try:
-                        if dropdown.is_displayed():
+                    if dropdown.is_displayed():
+                        try:
+                            try:
+                                page_actions.hover_element(
+                                    self.driver, dropdown)
+                            except Exception:
+                                # If hovering fails, driver is likely outdated
+                                # Time to go directly to the hidden link text
+                                self.open(
+                                    self.__get_href_from_partial_link_text(
+                                        link_text))
+                                return True
                             page_actions.hover_element_and_click(
                                 self.driver, dropdown, link_text,
-                                click_by=By.PARTIAL_LINK_TEXT, timeout=0.12)
+                                click_by=By.LINK_TEXT, timeout=0.12)
                             return True
-                    except Exception:
-                        pass
+                        except Exception:
+                            pass
         return False
 
     def __recalculate_selector(self, selector, by):
@@ -3778,7 +3887,7 @@ class BaseCase(unittest.TestCase):
                 s3_bucket.save_uploaded_file_names(uploaded_files)
                 index_file = s3_bucket.upload_index_file(test_id, guid)
                 print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
-                logging.error(
+                logging.info(
                     "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 if self.with_db_reporting:
                     self.testcase_manager = TestcaseManager(self.database_env)

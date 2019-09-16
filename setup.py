@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.31.9',
+    version='1.32.0',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -110,7 +110,7 @@ setup(
         'pyotp>=2.3.0',
         'boto>=2.49.0',
         'flake8>=3.7.8',
-        'certifi>=2019.6.16',
+        'certifi>=2019.9.11',
     ],
     packages=[
         'seleniumbase',
