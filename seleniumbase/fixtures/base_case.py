@@ -756,15 +756,50 @@ class BaseCase(unittest.TestCase):
                   % (css_selector, attribute, value))
         self.execute_script(script)
 
+    def set_attributes(self, selector, attribute, value, by=By.CSS_SELECTOR):
+        """ This method uses JavaScript to set/update a common attribute.
+            All matching selectors from querySelectorAll() are used.
+            Example => (Make all links on a website redirect to Google):
+            self.set_attributes("a", "href", "https://google.com") """
+        selector, by = self.__recalculate_selector(selector, by)
+        attribute = re.escape(attribute)
+        attribute = self.__escape_quotes_if_needed(attribute)
+        value = re.escape(value)
+        value = self.__escape_quotes_if_needed(value)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = ("""var $elements = document.querySelectorAll('%s');
+                  var index = 0, length = $elements.length;
+                  for(; index < length; index++){
+                  $elements[index].setAttribute('%s','%s');}"""
+                  % (css_selector, attribute, value))
+        try:
+            self.execute_script(script)
+        except Exception:
+            pass
+
+    def set_attribute_all(self, selector, attribute, value,
+                          by=By.CSS_SELECTOR):
+        """ Same as set_attributes(), but using querySelectorAll naming scheme.
+            This method uses JavaScript to set/update a common attribute.
+            All matching selectors from querySelectorAll() are used.
+            Example => (Make all links on a website redirect to Google):
+            self.set_attribute_all("a", "href", "https://google.com") """
+        self.set_attributes(selector, attribute, value, by=by)
+
     def remove_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                          timeout=settings.SMALL_TIMEOUT):
-        """ This method uses JavaScript to remove an attribute. """
+        """ This method uses JavaScript to remove an attribute.
+            Only the first matching selector from querySelector() is used. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_visible(selector, by=by):
-            self.scroll_to(selector, by=by, timeout=timeout)
+            try:
+                self.scroll_to(selector, by=by, timeout=timeout)
+            except Exception:
+                pass
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         css_selector = self.convert_to_css_selector(selector, by=by)
