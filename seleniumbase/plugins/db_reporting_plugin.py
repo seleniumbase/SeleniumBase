@@ -5,7 +5,6 @@ This plugin is for recording test results in the Testcase Database.
 import getpass
 import time
 import uuid
-from optparse import SUPPRESS_HELP
 from nose.plugins import Plugin
 from nose.exc import SkipTest
 from seleniumbase.core.application_manager import ApplicationManager
@@ -34,12 +33,20 @@ class DBReporting(Plugin):
 
     def options(self, parser, env):
         super(DBReporting, self).options(parser, env=env)
-        parser.add_option('--database_environment', action='store',
+        parser.add_option('--database_env', '--database-env',
+                          action='store',
                           dest='database_env',
-                          choices=('production', 'qa', 'staging', 'develop',
-                                   'test', 'local', 'master'),
-                          default='test',
-                          help=SUPPRESS_HELP)
+                          choices=(
+                              constants.Environment.QA,
+                              constants.Environment.STAGING,
+                              constants.Environment.DEVELOP,
+                              constants.Environment.PRODUCTION,
+                              constants.Environment.MASTER,
+                              constants.Environment.LOCAL,
+                              constants.Environment.TEST
+                          ),
+                          default=constants.Environment.TEST,
+                          help="The database environment to run the tests in.")
 
     def configure(self, options, conf):
         super(DBReporting, self).configure(options, conf)
