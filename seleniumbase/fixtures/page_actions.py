@@ -99,6 +99,14 @@ def hover_on_element(driver, selector, by=By.CSS_SELECTOR):
     hover.perform()
 
 
+def hover_element(driver, element):
+    """
+    Similar to hover_on_element(), but uses found element, not a selector.
+    """
+    hover = ActionChains(driver).move_to_element(element)
+    hover.perform()
+
+
 def hover_and_click(driver, hover_selector, click_selector,
                     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT):
