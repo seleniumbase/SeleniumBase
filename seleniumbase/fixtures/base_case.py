@@ -738,13 +738,16 @@ class BaseCase(unittest.TestCase):
 
     def set_attribute(self, selector, attribute, value, by=By.CSS_SELECTOR,
                       timeout=settings.SMALL_TIMEOUT):
-        """ This method uses JavaScript to set/update an attribute. """
+        """ This method uses JavaScript to set/update an attribute.
+            Only the first matching selector from querySelector() is used. """
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_visible(selector, by=by):
-            self.scroll_to(selector, by=by, timeout=timeout)
+            try:
+                self.scroll_to(selector, by=by, timeout=timeout)
+            except Exception:
+                pass
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         value = re.escape(value)
