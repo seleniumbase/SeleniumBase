@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """ This is the pytest configuration file """
 
-import optparse
 import pytest
 import sys
 from seleniumbase import config as sb_config
@@ -124,11 +123,16 @@ def pytest_addoption(parser):
                      action='store',
                      dest='database_env',
                      choices=(
-                         'production', 'qa', 'staging', 'develop',
-                         'test', 'local', 'master'
+                         constants.Environment.QA,
+                         constants.Environment.STAGING,
+                         constants.Environment.DEVELOP,
+                         constants.Environment.PRODUCTION,
+                         constants.Environment.MASTER,
+                         constants.Environment.LOCAL,
+                         constants.Environment.TEST
                      ),
-                     default='test',
-                     help=optparse.SUPPRESS_HELP)
+                     default=constants.Environment.TEST,
+                     help="The database environment to run the tests in.")
     parser.addoption('--with-s3_logging', '--with-s3-logging',
                      action="store_true",
                      dest='with_s3_logging',
@@ -267,7 +271,7 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default wait time
                           before each MasterQA verification pop-up.""")
-    parser.addoption('--disable_csp', '--disable-csp',
+    parser.addoption('--disable_csp', '--disable-csp', '--no_csp', '--no-csp',
                      action="store_true",
                      dest='disable_csp',
                      default=False,

@@ -79,4 +79,4 @@ To makes things easier, here's a simple GUI program that allows you to run a few
 ```bash
 python gui_test_runner.py
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260">

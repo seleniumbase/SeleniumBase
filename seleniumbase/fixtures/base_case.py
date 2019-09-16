@@ -1285,8 +1285,9 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
-        if self.demo_mode or self.masterqa_mode:
-            disable_csp = True
+        # Due to https://stackoverflow.com/questions/23055651/ , skip extension
+        # if self.demo_mode or self.masterqa_mode:
+        #    disable_csp = True
         if cap_file is None:
             cap_file = self.cap_file
         valid_browsers = constants.ValidBrowsers.valid_browsers

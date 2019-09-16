@@ -10,11 +10,14 @@ All-in-one testing framework for automated E2E tests, [assisted-QA](https://gith
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
+SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
-You'll need **[Python](https://www.python.org/downloads/)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install Python:
+
+**[python.org/downloads/](https://www.python.org/downloads/)**
+[<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7,_3.8+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
 
