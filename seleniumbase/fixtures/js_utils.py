@@ -8,6 +8,7 @@ import time
 from selenium.common.exceptions import WebDriverException
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
+from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 
 
@@ -418,6 +419,7 @@ def activate_messenger(driver):
     add_js_link(driver, messenger_js)
     add_js_link(driver, msgr_theme_flat_js)
     add_js_link(driver, msgr_theme_future_js)
+    add_css_style(driver, style_sheet.messenger_style)
 
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):
         # Messenger needs a small amount of time to load & activate.

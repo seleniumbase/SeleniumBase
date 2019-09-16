@@ -111,8 +111,16 @@ bt_backdrop_style = (
     }
 
     .tour-tour {
-        pointer-events:  auto;
+        pointer-events: auto;
         z-index: 9999;
+    }
+    ''')
+
+messenger_style = (
+    '''
+    .messenger-message-inner {
+        font-family: "Proxima Nova","proxima-nova",Arial,sans-serif !important;
+        font-size: 15px;
     }
     ''')
 
