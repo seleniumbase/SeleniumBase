@@ -7,16 +7,18 @@ import sys
 def invalid_run_command():
     exp = ("  ** grid-hub **\n\n")
     exp += "  Usage:\n"
-    exp += "            seleniumbase grid-hub {start|stop|restart}\n"
+    exp += "        seleniumbase grid-hub {start|stop|restart}\n"
     exp += "  Options:\n"
     exp += "        -v, --verbose  (Increase verbosity of logging output.)\n"
-    exp += "              (Default: Quiet logging / not verbose.)\n"
+    exp += "                       (Default: Quiet logging / not verbose.)\n"
+    exp += "  Example:\n"
+    exp += "        seleniumbase grid-hub start\n"
     exp += "  Output:\n"
-    exp += "            Controls the Selenium Grid Hub Server, which allows\n"
-    exp += "            for running tests on multiple machines in parallel\n"
-    exp += "            to speed up test runs and reduce the total time\n"
-    exp += "            of test suite execution.\n"
-    exp += "            You can start, restart, or stop the Grid Hub Server.\n"
+    exp += "        Controls the Selenium Grid Hub Server, which allows\n"
+    exp += "        for running tests on multiple machines in parallel\n"
+    exp += "        to speed up test runs and reduce the total time\n"
+    exp += "        of test suite execution.\n"
+    exp += "        You can start, restart, or stop the Grid Hub Server.\n"
     raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
 
 

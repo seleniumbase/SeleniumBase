@@ -23,9 +23,15 @@ def main():
                 print("*** ERROR: Passwords don't match! .. Please try again!")
                 continue
             print("\nHere is the obfuscated password:")
-            time.sleep(0.07)
-            print(encryption.decrypt(password))
-            time.sleep(0.21)
+            time.sleep(0.2)
+            encrypted_password = encryption.decrypt(password)
+            print(encrypted_password)
+            time.sleep(0.2)
+            print("\nInside a test, use the following to decrypt it:\n")
+            time.sleep(0.2)
+            print("    from seleniumbase import encryption")
+            print("    encryption.decrypt(%s)" % encrypted_password)
+            time.sleep(0.2)
     except KeyboardInterrupt:
         print("\nExiting...\n")
 
