@@ -812,6 +812,25 @@ class BaseCase(unittest.TestCase):
                   % (css_selector, attribute))
         self.execute_script(script)
 
+    def remove_attributes(self, selector, attribute, by=By.CSS_SELECTOR):
+        """ This method uses JavaScript to remove a common attribute.
+            All matching selectors from querySelectorAll() are used. """
+        selector, by = self.__recalculate_selector(selector, by)
+        attribute = re.escape(attribute)
+        attribute = self.__escape_quotes_if_needed(attribute)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = ("""var $elements = document.querySelectorAll('%s');
+                  var index = 0, length = $elements.length;
+                  for(; index < length; index++){
+                  $elements[index].removeAttribute('%s');}"""
+                  % (css_selector, attribute))
+        try:
+            self.execute_script(script)
+        except Exception:
+            pass
+
     def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
                            timeout=settings.SMALL_TIMEOUT):
         """ Returns the property value of a page element's computed style.
