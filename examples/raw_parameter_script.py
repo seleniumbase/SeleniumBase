@@ -25,47 +25,47 @@ except (ImportError, ValueError):
     # Example run command:  "python raw_parameter_script.py"
     from my_first_test import MyTestClass  # (relative imports DON'T work)
 
-    b = MyTestClass("test_basic")
-    b.browser = "chrome"
-    b.headless = False
-    b.headed = False
-    b.start_page = None
-    b.servername = "localhost"
-    b.port = 4444
-    b.data = None
-    b.environment = "test"
-    b.user_agent = None
-    b.extension_zip = None
-    b.extension_dir = None
-    b.database_env = "test"
-    b.log_path = "latest_logs/"
-    b.archive_logs = False
-    b.disable_csp = False
-    b.enable_sync = False
-    b.visual_baseline = False
-    b.maximize_option = False
-    b.save_screenshot_after_test = False
-    b.timeout_multiplier = None
-    b.pytest_html_report = None
-    b.report_on = False
-    b.with_db_reporting = False
-    b.with_s3_logging = False
-    b.js_checking_on = False
-    b.is_pytest = False
-    b.demo_mode = False
-    b.demo_sleep = 1
-    b.message_duration = 2
-    b.settings_file = None
-    b.user_data_dir = None
-    b.proxy_string = None
-    b.ad_block_on = False
-    b.highlights = None
-    b.check_js = False
-    b.cap_file = None
+    sb = MyTestClass("test_basic")
+    sb.browser = "chrome"
+    sb.headless = False
+    sb.headed = False
+    sb.start_page = None
+    sb.servername = "localhost"
+    sb.port = 4444
+    sb.data = None
+    sb.environment = "test"
+    sb.user_agent = None
+    sb.extension_zip = None
+    sb.extension_dir = None
+    sb.database_env = "test"
+    sb.log_path = "latest_logs/"
+    sb.archive_logs = False
+    sb.disable_csp = False
+    sb.enable_sync = False
+    sb.visual_baseline = False
+    sb.maximize_option = False
+    sb.save_screenshot_after_test = False
+    sb.timeout_multiplier = None
+    sb.pytest_html_report = None
+    sb.report_on = False
+    sb.with_db_reporting = False
+    sb.with_s3_logging = False
+    sb.js_checking_on = False
+    sb.is_pytest = False
+    sb.demo_mode = False
+    sb.demo_sleep = 1
+    sb.message_duration = 2
+    sb.settings_file = None
+    sb.user_data_dir = None
+    sb.proxy_string = None
+    sb.ad_block_on = False
+    sb.highlights = None
+    sb.check_js = False
+    sb.cap_file = None
 
-    b.setUp()
+    sb.setUp()
     try:
-        b.test_basic()
+        sb.test_basic()
     finally:
-        b.tearDown()
-        del b
+        sb.tearDown()
+        del sb
