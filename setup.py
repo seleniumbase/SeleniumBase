@@ -110,7 +110,7 @@ setup(
         'pyotp>=2.3.0',
         'boto>=2.49.0',
         'flake8>=3.7.8',
-        'certifi>=2019.6.16',
+        'certifi>=2019.9.11',
     ],
     packages=[
         'seleniumbase',
