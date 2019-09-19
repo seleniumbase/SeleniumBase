@@ -1314,9 +1314,15 @@ def main(shell_command):
             object_name = "%s.%s" % (str(key), str(pair[0]))
             object_dict[object_name] = pair[1]
 
+    good_sel_dict = {}
+    aa, bb, cc = scan_objects_file()
+    for s_key in selector_dict.keys():
+        if s_key in bb:
+            good_sel_dict[s_key] = selector_dict[s_key]
+
     if shell_command == "inject-objects" or shell_command == "objectify":
         seleniumbase_lines, page_selectors, changed = process_test_file(
-            code_lines, selector_dict=selector_dict, add_comments=add_comments)
+            code_lines, selector_dict=good_sel_dict, add_comments=add_comments)
         added_classes = []
         for item in changed:
             if item not in added_classes:
