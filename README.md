@@ -2,7 +2,7 @@
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-All-in-one framework for automated E2E testing, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+All-in-one framework for fast & simple browser automation and end-to-end testing.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase" height="225"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in demo mode, which adds JavaScript for highlighting page actions.</i>)<br />
@@ -10,23 +10,18 @@ All-in-one framework for automated E2E testing, [assisted-QA](https://github.com
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
+SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tests, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers. SeleniumBase includes additional tools for automated email testing, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
-## Get Started:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``Python``: [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
+If you don't already have **``python``** installed, you can get it from: **[python.org/downloads](https://www.python.org/downloads/)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
+* Make sure **``python``** is on your System PATH.
 
-Get it from **[python.org/downloads](https://www.python.org/downloads/)** and add Python to your System PATH.
-
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Upgrade ``pip``:
-
+Then upgrade **``pip``** for installing **``python``** packages:
 ```bash
 python -m easy_install -U pip
 ```
-
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Create a Python Virtual Env:
-
-It is **recommended** to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[HERE](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the **[official site](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
+To isolate **``python``** dependencies between projects, you can create a Virtual Environment. See the **[ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)** for instructions. (<i>You can also read the official tutorial from **[python.org](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**</i>)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase)
 ```bash
@@ -49,13 +44,13 @@ You can also install a specific GitHub branch of SeleniumBase:
 pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=seleniumbase
 ```
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a web driver:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a webdriver:
 
-SeleniumBase can download a web driver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
+SeleniumBase can download a webdriver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
 ```bash
 seleniumbase install chromedriver
 ```
-* You need a different web driver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.
+* You need a different webdriver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.
 * If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
 ```bash
 seleniumbase install chromedriver latest
@@ -138,7 +133,7 @@ For a full list of SeleniumBase features, [Click Here](https://github.com/seleni
 
 **Here's how to run the example script on various web browsers:**
 
-First, install a web driver for each web browser you intend to use:
+First install a webdriver for each browser you intend to use:
 ```bash
 seleniumbase install chromedriver
 seleniumbase install geckodriver
