@@ -2,7 +2,7 @@
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-All-in-one testing framework for automated E2E tests, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+All-in-one framework for automated E2E testing, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase" height="225"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in demo mode, which adds JavaScript for highlighting page actions.</i>)<br />
@@ -12,23 +12,21 @@ pytest my_first_test.py --demo_mode
 
 SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
+## Get Started:
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install Python:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``Python``: [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
 
-**[python.org/downloads/](https://www.python.org/downloads/)**
-[<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7,_3.8+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
+Get it from **[python.org/downloads](https://www.python.org/downloads/)** and add Python to your System PATH.
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Upgrade ``pip``:
 
-With Python installed and on your System PATH, you can get the latest ``pip`` with:
 ```bash
 python -m easy_install -U pip
 ```
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Python Virtual Env:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Create a Python Virtual Env:
 
-It is **recommended** to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the **[official site](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
+It is **recommended** to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[HERE](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the **[official site](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase)
 ```bash
@@ -599,7 +597,7 @@ If the web page you're on already has jQuery loaded, you can start executing jQu
 You'd know this because the web page would contain something like the following in the HTML:
 
 ```html
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 ```
 
 It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:
@@ -714,4 +712,4 @@ If you see something, say something! We are very active in resolving issues. [<i
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_2.png" title="SeleniumBase" height="120">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" title="SeleniumBase" height="120">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
