@@ -16,6 +16,4 @@ class GoogleTests(BaseCase):
         self.assert_element(HomePage.feeling_lucky_button)
         self.click(HomePage.search_button)
         self.assert_text('github.com', ResultsPage.search_results)
-        self.click_link_text('Images')
-        source = self.get_page_source()
-        self.assert_true("Image result for github" in source)
+        self.assert_element(ResultsPage.images_link)
