@@ -67,17 +67,3 @@ ENCRYPTION_KEY = "Pg^.l!8UdJ+Y7dMIe&fl*%!p9@ej]/#tL~3E4%6?"
 # Helps identify which strings/passwords have been obfuscated.
 OBFUSCATION_START_TOKEN = "$^*ENCRYPT="
 OBFUSCATION_END_TOKEN = "?&#$"
-
-# Default Email Credentials
-# (If tests send out emails, you can scan and verify them by using IMAP)
-# Here's a list of imap strings for known email providers:
-# - Gmail:         imap.gmail.com
-# - Outlook/Live:  imap-mail.outlook.com
-# - Yahoo Mail:    imap.mail.yahoo.com
-# - AT&T:          imap.mail.att.net
-# - Comcast:       imap.comcast.net
-# - Verizon:       incoming.verizon.net
-EMAIL_USERNAME = "[TEST ACCOUNT GMAIL USERNAME]@gmail.com"
-EMAIL_PASSWORD = "[TEST ACCOUNT GMAIL PASSWORD]"
-EMAIL_IMAP_STRING = "imap.gmail.com"
-EMAIL_IMAP_PORT = 993
