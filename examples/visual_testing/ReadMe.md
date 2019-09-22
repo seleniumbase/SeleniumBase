@@ -1,3 +1,4 @@
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 ### Automated Visual Testing (Layout Change Detection)
 
 Automated visual testing can help you detect when something has changed the layout of a web page. Rather than comparing screenshots, a more effective way is to detect layout differences by comparing HTML tags and properties. If a change is detected, it could mean that something broke on the webpage, or possibly something harmless like a website redesign or dynamic content.

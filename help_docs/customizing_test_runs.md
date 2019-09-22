@@ -61,7 +61,7 @@ You can interchange **pytest** with **nosetests**, but using pytest is strongly 
 An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
 ``--settings_file=custom_settings.py``
-(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, Email Testing API credentials, and other important settings used by tests.)
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
 #### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, (or your own):**
 

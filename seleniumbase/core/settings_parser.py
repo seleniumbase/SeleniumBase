@@ -144,14 +144,6 @@ def set_settings(settings_file):
             settings.OBFUSCATION_START_TOKEN = override_settings[key]
         elif key == "OBFUSCATION_END_TOKEN":
             settings.OBFUSCATION_END_TOKEN = override_settings[key]
-        elif key == "EMAIL_USERNAME":
-            settings.EMAIL_USERNAME = override_settings[key]
-        elif key == "EMAIL_PASSWORD":
-            settings.EMAIL_PASSWORD = override_settings[key]
-        elif key == "EMAIL_IMAP_STRING":
-            settings.EMAIL_IMAP_STRING = override_settings[key]
-        elif key == "EMAIL_IMAP_PORT":
-            settings.EMAIL_IMAP_PORT = override_settings[key]
         else:
             continue
 
