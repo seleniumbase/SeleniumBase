@@ -178,14 +178,13 @@ def _create_firefox_profile(
     profile.set_preference("pdfjs.disabled", True)
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
-    profile.set_preference("extensions.update.enabled", False)
     profile.set_preference("browser.privatebrowsing.autostart", True)
+    profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
     profile.set_preference("extensions.PrivateBrowsing.notification", False)
     profile.set_preference("extensions.systemAddon.update.enabled", False)
     profile.set_preference("extensions.update.autoUpdateDefault", False)
     profile.set_preference("extensions.update.enabled", False)
-    profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference(
         "datareporting.healthreport.logging.consoleEnabled", False)
     profile.set_preference("datareporting.healthreport.service.enabled", False)
@@ -195,6 +194,7 @@ def _create_firefox_profile(
     profile.set_preference("datareporting.policy.dataSubmissionEnabled", False)
     profile.set_preference(
         "datareporting.policy.dataSubmissionPolicyAccepted", False)
+    profile.set_preference("toolkit.telemetry.unified", False)
     if proxy_string:
         proxy_server = proxy_string.split(':')[0]
         proxy_port = proxy_string.split(':')[1]
