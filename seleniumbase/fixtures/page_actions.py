@@ -416,14 +416,45 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
             selector, timeout, plural))
 
 
+def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR,
+                              timeout=settings.LARGE_TIMEOUT):
+    """
+    Searches for the text in the element of the given selector on the page.
+    Returns True if the text is not visible on the page within the timeout.
+    Raises an exception if the text is still present after the timeout.
+    @Params
+    driver - the webdriver object (required)
+    text - the text that is being searched for in the element (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for elements in seconds
+    @Returns
+    A web element object that contains the text searched for
+    """
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        if not is_text_visible(driver, text, selector, by=by):
+            return True
+        now_ms = time.time() * 1000.0
+        if now_ms >= stop_ms:
+            break
+        time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    raise Exception("Text {%s} in {%s} was still visible after %s "
+                    "second%s!" % (text, selector, timeout, plural))
+
+
 def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
     """
     Finds all WebElements that match a selector and are visible.
     Similar to webdriver.find_elements.
     @Params
     driver - the webdriver object (required)
-    selector - the locator that is used to search the DOM (required)
-    by - the method to search for the locator (Default: By.CSS_SELECTOR)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
     """
     elements = driver.find_elements(by=by, value=selector)
     return [element for element in elements if element.is_displayed()]

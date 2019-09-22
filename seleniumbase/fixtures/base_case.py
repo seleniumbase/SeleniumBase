@@ -2884,6 +2884,27 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def wait_for_text_not_visible(self, text, selector="html",
+                                  by=By.CSS_SELECTOR,
+                                  timeout=settings.LARGE_TIMEOUT):
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_text_not_visible(
+            self.driver, text, selector, by, timeout)
+
+    def assert_text_not_visible(self, text, selector="html",
+                                by=By.CSS_SELECTOR,
+                                timeout=settings.SMALL_TIMEOUT):
+        """ Similar to wait_for_text_not_visible()
+            Raises an exception if the element or the text is not found.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_text_not_visible(text, selector, by=by, timeout=timeout)
+
+    ############
+
     def wait_for_and_accept_alert(self, timeout=settings.LARGE_TIMEOUT):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)

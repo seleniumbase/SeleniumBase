@@ -411,6 +411,14 @@ self.assert_element_not_visible(selector, by=By.CSS_SELECTOR,
 
 ########
 
+self.wait_for_text_not_visible(text, selector="html", by=By.CSS_SELECTOR,
+                               timeout=settings.LARGE_TIMEOUT)
+
+self.assert_text_not_visible(text, selector="html", by=By.CSS_SELECTOR,
+                             timeout=settings.SMALL_TIMEOUT)
+
+########
+
 self.wait_for_and_accept_alert(timeout=settings.LARGE_TIMEOUT)
 
 self.wait_for_and_dismiss_alert(timeout=settings.LARGE_TIMEOUT)
