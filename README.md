@@ -10,7 +10,7 @@ All-in-one framework for fast & simple browser automation and end-to-end testing
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tests, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers. SeleniumBase includes additional tools for automated email testing, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tests, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers. SeleniumBase includes additional tools for automated [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), assisted-QA with [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and creating [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
@@ -242,7 +242,7 @@ pytest test_suite.py --browser=firefox
 An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
 ``--settings_file=custom_settings.py``
-(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, Email Testing API credentials, and other important settings used by tests.)
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
 To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
 Now inside your tests, you can use ``self.data`` to access that.
@@ -677,24 +677,6 @@ pytest --reruns 5 --reruns-delay 1
 
 Additionally, you can use the ``@retry_on_exception()`` decorator to specifically retry failing methods. (First import: ``from seleniumbase import decorators``) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
 
-####  Email Testing / Checking Email: 
-Let's say you have a test that sends an email, and now you want to check that the email was received:
-
-```python
-from seleniumbase.fixtures.email_manager import EmailManager, EmailException
-num_email_results = 0
-email_subject = "This is the subject to search for (maybe include a timestamp)"
-email_manager = EmailManager("{YOUR SELENIUM GMAIL ACCOUNT EMAIL ADDRESS}")
-# The password for this would be stored in seleniumbase/config/settings.py
-try:
-    html_text = email_manager.search(SUBJECT="%s" % email_subject, timeout=60)
-    num_email_results = len(html_text)
-except EmailException:
-    num_email_results = 0
-self.assert_true(num_email_results)  # True if not zero
-```
-
-Now you can parse through the email if you're looking for specific text or want to navigate to a link listed there.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Wrap-Up
 
