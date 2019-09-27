@@ -66,26 +66,28 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 #### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, (or your own):**
 
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
-
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
 Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
-
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
 ```
 
 Here's how to connect to a TestingBot Selenium Grid server for running tests:
-
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
-Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
 
+Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
+```
+
+Here's how to connect to a LambdaTest Selenium Grid server for running tests:
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
 
 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))

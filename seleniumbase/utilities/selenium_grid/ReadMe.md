@@ -38,27 +38,28 @@ pytest test_suite.py --server=IP_ADDRESS --port=4444
 You can also run your tests on someone else's Selenium Grid to avoid managing your own. Here are some Selenium Grids that you can use (and the run command format):
 
 * [BrowserStack](https://www.browserstack.com/automate#) Selenium Grid:
-
 ```
 pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
 * [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid:
-
 ```
 pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
 ```
 
 * [TestingBot](https://testingbot.com/features) Selenium Grid:
-
 ```
 pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
 * [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
-
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
+```
+
+* [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
 
 #### More info about the Selenium Grid Hub can be found here:
