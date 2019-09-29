@@ -30,14 +30,19 @@ pip install seleniumbase
 * Add ``--upgrade`` to upgrade an existing installation.
 * Add ``--force-reinstall`` for a clean install.
 
-You can also install SeleniumBase from a ``git clone``:
+You can also install seleniumbase from a ``git clone``:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
+pip install -e .
+```
+
+To install dependancies separately from seleniumbase:
+(From the ``SeleniumBase`` folder:)
+```bash
 pip install -r requirements.txt
 python setup.py develop
 ```
-* "``pip install -e .``" also works from the top-level SeleniumBase folder.
 
 You can also install a specific GitHub branch of SeleniumBase:
 ```bash
