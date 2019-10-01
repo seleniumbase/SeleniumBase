@@ -179,7 +179,7 @@ If you have a web application that you want to test, you'll be able to create Se
 * For the "Execute shell", use the following as your updated "Command":
 
 ```bash
-pytest examples/test_suite.py --headless --browser=chrome --with-db_reporting --with-testing_base
+pytest examples/test_suite.py --headless --browser=chrome --with-db_reporting
 ```
 
 * Click "Save" when you're done.
