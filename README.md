@@ -1,4 +1,4 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3g.png" title="SeleniumBase" align="center" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3j.png" title="SeleniumBase" align="center" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
@@ -14,7 +14,7 @@ SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tes
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
-If you don't already have **``python``** installed, you can get it from: **[python.org/downloads](https://www.python.org/downloads/)** [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7+-22AADD.svg" alt=" " />](https://www.python.org/downloads/)
+If you don't already have **``python``** installed, you can get it from: **[python.org/downloads](https://www.python.org/downloads/)** [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg" alt=" " />](https://www.python.org/downloads/)
 * Make sure **``python``** is on your System PATH.
 
 Then upgrade **``pip``** for installing **``python``** packages:
@@ -34,14 +34,14 @@ You can also install seleniumbase from a ``git clone``:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
-pip install -e .
+pip install .
 ```
 
 To install dependancies separately from seleniumbase:
 (From the ``SeleniumBase`` folder:)
 ```bash
 pip install -r requirements.txt
-python setup.py develop
+python setup.py install
 ```
 
 You can also install a specific GitHub branch of SeleniumBase:

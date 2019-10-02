@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.32.5',
+    version='1.32.6',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -101,7 +101,7 @@ setup(
         'pytest-ordering>=0.6',
         'pytest-rerunfailures>=7.0',
         'pytest-timeout>=1.3.3',
-        'pytest-xdist>=1.29.0',
+        'pytest-xdist>=1.30.0',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
         'pyopenssl>=19.0.0',
