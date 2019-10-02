@@ -18,7 +18,7 @@ before_install:
 install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt --upgrade"
-  - "python setup.py develop"
+  - "python setup.py install"
   - "sudo rm -f /etc/boto.cfg"
 before_script:
   - "flake8 --exclude=temp"
