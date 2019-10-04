@@ -20,6 +20,8 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+if DRIVER_DIR not in os.environ["PATH"]:
+    os.environ["PATH"] += os.pathsep + DRIVER_DIR
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
@@ -464,16 +466,10 @@ def get_local_driver(
                     options.add_argument('-headless')
                 if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
                     make_driver_executable_if_not(LOCAL_GECKODRIVER)
-                    firefox_driver = webdriver.Firefox(
-                        firefox_profile=profile,
-                        capabilities=firefox_capabilities,
-                        options=options,
-                        executable_path=LOCAL_GECKODRIVER)
-                else:
-                    firefox_driver = webdriver.Firefox(
-                        firefox_profile=profile,
-                        capabilities=firefox_capabilities,
-                        options=options)
+                firefox_driver = webdriver.Firefox(
+                    firefox_profile=profile,
+                    capabilities=firefox_capabilities,
+                    options=options)
             except WebDriverException:
                 # Don't use Geckodriver: Only works for old versions of Firefox
                 profile = _create_firefox_profile(
@@ -502,11 +498,7 @@ def get_local_driver(
         ie_capabilities = ie_options.to_capabilities()
         if LOCAL_IEDRIVER and os.path.exists(LOCAL_IEDRIVER):
             make_driver_executable_if_not(LOCAL_IEDRIVER)
-            return webdriver.Ie(
-                capabilities=ie_capabilities,
-                executable_path=LOCAL_IEDRIVER)
-        else:
-            return webdriver.Ie(capabilities=ie_capabilities)
+        return webdriver.Ie(capabilities=ie_capabilities)
     elif browser_name == constants.Browser.EDGE:
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             make_driver_executable_if_not(LOCAL_EDGEDRIVER)
@@ -525,9 +517,7 @@ def get_local_driver(
     elif browser_name == constants.Browser.OPERA:
         if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
             make_driver_executable_if_not(LOCAL_OPERADRIVER)
-            return webdriver.Opera(executable_path=LOCAL_OPERADRIVER)
-        else:
-            return webdriver.Opera()
+        return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
@@ -542,18 +532,13 @@ def get_local_driver(
                 extension_zip, extension_dir)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
-                return webdriver.Chrome(
-                    executable_path=LOCAL_CHROMEDRIVER, options=chrome_options)
-            else:
-                return webdriver.Chrome(options=chrome_options)
+            return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:
                 raise Exception(e)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
-                return webdriver.Chrome(executable_path=LOCAL_CHROMEDRIVER)
-            else:
-                return webdriver.Chrome()
+            return webdriver.Chrome()
     else:
         raise Exception(
             "%s is not a valid browser option for this system!" % browser_name)

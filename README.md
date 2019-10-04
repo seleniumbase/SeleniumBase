@@ -1,4 +1,4 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3j.png" title="SeleniumBase" align="center" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3k.png" title="SeleniumBase" align="center" height="45">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
@@ -27,19 +27,13 @@ To isolate **``python``** dependencies between projects, you can create a Virtua
 ```bash
 pip install seleniumbase
 ```
-* Add ``--upgrade`` to upgrade an existing installation.
+* Add ``--upgrade`` OR ``-U`` to upgrade an installation.
 * Add ``--force-reinstall`` for a clean install.
 
 You can also install seleniumbase from a ``git clone``:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase
-pip install .
-```
-
-To install dependancies separately from seleniumbase:
-(From the ``SeleniumBase`` folder:)
-```bash
 pip install -r requirements.txt
 python setup.py install
 ```
