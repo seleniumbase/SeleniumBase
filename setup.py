@@ -94,8 +94,8 @@ setup(
         'selenium==3.141.0',
         'pluggy>=0.12.0',
         'pytest>=4.6.5;python_version<"3"',  # For Python 2 compatibility
-        'pytest>=5.2.0;python_version>="3"',
-        'pytest-cov>=2.7.1',
+        'pytest>=5.2.1;python_version>="3"',
+        'pytest-cov>=2.8.1',
         'pytest-forked>=1.0.2',
         'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
         'pytest-metadata>=1.8.0',
