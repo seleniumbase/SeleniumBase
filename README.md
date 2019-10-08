@@ -6,7 +6,8 @@ All-in-one framework for fast & simple browser automation and end-to-end testing
 
 Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in demo mode:<br />
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase" />
+
 ```bash
 pytest my_first_test.py --demo_mode
 ```
