@@ -120,7 +120,7 @@ messenger_style = (
     '''
     .messenger-message-inner {
         font-family: "Proxima Nova","proxima-nova",Arial,sans-serif !important;
-        font-size: 15px;
+        font-size: 17px;
     }
     ''')
 
