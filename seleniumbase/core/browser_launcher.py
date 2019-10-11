@@ -21,7 +21,7 @@ from seleniumbase import extensions  # browser extensions storage folder
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 if DRIVER_DIR not in os.environ["PATH"]:
-    os.environ["PATH"] += os.pathsep + DRIVER_DIR
+    os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
