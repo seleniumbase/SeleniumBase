@@ -1690,7 +1690,8 @@ class BaseCase(unittest.TestCase):
             pool.join()
         else:
             for link in links:
-                self.assert_link_status_code_is_not_404(link)
+                if "javascript:" not in link:  # Ignore links with JavaScript
+                    self.assert_link_status_code_is_not_404(link)
         if self.demo_mode:
             messenger_post = ("ASSERT NO 404 ERRORS")
             js_utils.post_messenger_success_message(
