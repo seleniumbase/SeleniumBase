@@ -73,6 +73,22 @@ def make_driver_executable_if_not(driver_path):
         make_executable(driver_path)
 
 
+def is_chromedriver_on_path():
+    paths = os.environ["PATH"].split(os.pathsep)
+    for path in paths:
+        if os.path.exists(path + '/' + "chromedriver"):
+            return True
+    return False
+
+
+def is_geckodriver_on_path():
+    paths = os.environ["PATH"].split(os.pathsep)
+    for path in paths:
+        if os.path.exists(path + '/' + "geckodriver"):
+            return True
+    return False
+
+
 def _add_chrome_proxy_extension(
         chrome_options, proxy_string, proxy_user, proxy_pass):
     """ Implementation of https://stackoverflow.com/a/35293284 for
@@ -474,6 +490,14 @@ def get_local_driver(
                     options.add_argument('-headless')
                 if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
                     make_driver_executable_if_not(LOCAL_GECKODRIVER)
+                elif not is_geckodriver_on_path():
+                    if not "".join(sys.argv) == "-c":  # Skip if multithreaded
+                        from seleniumbase.console_scripts import sb_install
+                        sys_args = sys.argv  # Save a copy of current sys args
+                        print("\nWarning: geckodriver not found."
+                              " Installing now:")
+                        sb_install.main(override="geckodriver")
+                        sys.argv = sys_args  # Put back the original sys args
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile,
                     capabilities=firefox_capabilities,
@@ -540,6 +564,13 @@ def get_local_driver(
                 extension_zip, extension_dir)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+            elif not is_chromedriver_on_path():
+                if not "".join(sys.argv) == "-c":  # Skip if multithreaded
+                    from seleniumbase.console_scripts import sb_install
+                    sys_args = sys.argv  # Save a copy of current sys args
+                    print("\nWarning: chromedriver not found. Installing now:")
+                    sb_install.main(override="chromedriver")
+                    sys.argv = sys_args  # Put back the original sys args
             return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:
