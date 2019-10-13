@@ -6,7 +6,7 @@ Usage:
                               iedriver|operadriver} [OPTIONS]
 Options:
         VERSION         Specify the version.
-                        (Default Chromedriver version = 2.44)
+                        (Default chromedriver version = 2.44)
                         Use "latest" for the latest version.
         -p OR --path    Also copy the driver to /usr/local/bin
 Example:
@@ -51,7 +51,7 @@ def invalid_run_command():
     exp += "                        iedriver, operadriver)\n"
     exp += "  Options:\n"
     exp += "          VERSION         Specify the version.\n"
-    exp += "                          (Default Chromedriver version = 2.44)\n"
+    exp += "                          (Default chromedriver version = 2.44)\n"
     exp += '                          Use "latest" for the latest version.\n'
     exp += "          -p OR --path    Also copy the driver to /usr/local/bin\n"
     exp += "  Example:\n"
@@ -79,7 +79,12 @@ def make_executable(file_path):
     os.chmod(file_path, mode)
 
 
-def main():
+def main(override=None):
+    if override == "chromedriver":
+        sys.argv = ["seleniumbase", "install", "chromedriver"]
+    if override == "geckodriver":
+        sys.argv = ["seleniumbase", "install", "geckodriver"]
+
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1].lower() == "seleniumbase" or (
             sys.argv[0].split('\\')[-1].lower() == "seleniumbase"):
@@ -123,7 +128,7 @@ def main():
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
         else:
-            raise Exception("Cannot determine which version of Chromedriver "
+            raise Exception("Cannot determine which version of chromedriver "
                             "to download!")
         found_chromedriver = False
         if get_latest:
@@ -138,9 +143,9 @@ def main():
         if not found_chromedriver:
             url_request = requests.get(download_url)
         if found_chromedriver or url_request.ok:
-            print("\nChromedriver version for download = %s" % use_version)
+            print("\n* chromedriver version for download = %s" % use_version)
         else:
-            raise Exception("Could not find Chromedriver to download!\n")
+            raise Exception("Could not find chromedriver to download!\n")
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         found_geckodriver = False
@@ -174,7 +179,7 @@ def main():
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "geckodriver-%s-win64.zip" % use_version
         else:
-            raise Exception("Cannot determine which version of Geckodriver "
+            raise Exception("Cannot determine which version of geckodriver "
                             "(Firefox Driver) to download!")
         download_url = ("https://github.com/mozilla/geckodriver/"
                         "releases/download/"
@@ -183,9 +188,9 @@ def main():
         if not found_geckodriver:
             url_request = requests.get(download_url)
         if found_geckodriver or url_request.ok:
-            print("\nGeckodriver version for download = %s" % use_version)
+            print("\n* geckodriver version for download = %s" % use_version)
         else:
-            raise Exception("\nCould not find the specified Geckodriver "
+            raise Exception("\nCould not find the specified geckodriver "
                             "version to download!\n")
     elif name == "edgedriver" or name == "msedgedriver":
         name = "edgedriver"
@@ -314,18 +319,13 @@ def main():
             for f_name in contents:
                 new_file = downloads_folder + '/' + str(f_name)
                 print("The file [%s] was saved to:\n%s\n" % (f_name, new_file))
-                print("Making [%s] executable ..." % f_name)
+                print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
-                print("[%s] is now ready for use!\n" % f_name)
-                print('(If running on a Selenium Grid, copy [%s] to your '
-                      'System PATH.\n'
-                      ' E.g. to the "/usr/local/bin/" folder on Linux '
-                      'systems.)\n' % name)
-                print("Location of [%s %s]:\n%s" % (
-                    f_name, use_version, new_file))
+                print("[%s] is now ready for use!" % f_name)
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
                     shutil.copyfile(new_file, path_file)
+                    make_executable(path_file)
                     print("Also copied to: %s" % path_file)
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
@@ -367,12 +367,10 @@ def main():
                 os.rmdir(downloads_folder + '/' + "Driver_Notes/")
             print("The file [%s] was saved to:\n%s\n" % (
                 driver_file, driver_path))
-            print("Making [%s] executable ..." % driver_file)
+            print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
-            print("[%s] is now ready for use!\n" % driver_file)
+            print("[%s] is now ready for use!" % driver_file)
             print("Add folder path of Edge to System Environmental Variables!")
-            print("\nLocation of [%s %s]:\n%s" % (
-                driver_file, use_version, driver_path))
             print("")
         elif name == "operadriver":
             if len(contents) != 3:
@@ -403,14 +401,13 @@ def main():
             shutil.copyfile(inner_driver, driver_path)
             print("The file [%s] was saved to:\n%s\n" % (
                 driver_file, driver_path))
-            print("Making [%s] executable ..." % driver_file)
+            print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
-            print("[%s] is now ready for use!\n" % driver_file)
-            print("Location of [%s %s]:\n%s" % (
-                driver_file, use_version, driver_path))
+            print("[%s] is now ready for use!" % driver_file)
             if copy_to_path and os.path.exists(LOCAL_PATH):
                 path_file = LOCAL_PATH + driver_file
                 shutil.copyfile(driver_path, path_file)
+                make_executable(path_file)
                 print("Also copied to: %s" % path_file)
             # Clean up extra files
             if os.path.exists(inner_driver):
@@ -444,18 +441,13 @@ def main():
             for f_name in contents:
                 new_file = downloads_folder + '/' + str(f_name)
                 print("The file [%s] was saved to:\n%s\n" % (f_name, new_file))
-                print("Making [%s] executable ..." % f_name)
+                print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
-                print("[%s] is now ready for use!\n" % f_name)
-                print('(If running on a Selenium Grid, copy [%s] to your '
-                      'System PATH.\n'
-                      ' E.g. to the "/usr/local/bin/" folder on Linux '
-                      'systems.)\n' % name)
-                print("Location of [%s %s]:\n%s" % (
-                    f_name, use_version, new_file))
+                print("[%s] is now ready for use!" % f_name)
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
                     shutil.copyfile(new_file, path_file)
+                    make_executable(path_file)
                     print("Also copied to: %s" % path_file)
             print("")
         elif len(contents) == 0:
@@ -467,7 +459,7 @@ def main():
         if "Driver" in file_name or "driver" in file_name:
             print("Making [%s] executable ..." % file_name)
             make_executable(file_path)
-            print("[%s] is now ready for use!\n" % file_name)
+            print("[%s] is now ready for use!" % file_name)
             print("Location of [%s]:\n%s\n" % (file_name, file_path))
 
 
