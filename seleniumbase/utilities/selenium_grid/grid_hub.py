@@ -2,6 +2,18 @@ import codecs
 import os
 import subprocess
 import sys
+from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
+# Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
+# (Changes to the System PATH with os.environ only last during the test run)
+if not os.environ["PATH"].startswith(DRIVER_DIR):
+    # Remove existing SeleniumBase DRIVER_DIR from System PATH if present
+    os.environ["PATH"] = os.environ["PATH"].replace(DRIVER_DIR, "")
+    # If two path separators are next to each other, replace with just one
+    os.environ["PATH"] = os.environ["PATH"].replace(
+        os.pathsep + os.pathsep, os.pathsep)
+    # Put the SeleniumBase DRIVER_DIR at the beginning of the System PATH
+    os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 
 
 def invalid_run_command():
