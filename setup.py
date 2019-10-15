@@ -83,6 +83,7 @@ setup(
     install_requires=[
         'pip',
         'setuptools',
+        'setuptools-scm',
         'wheel',
         'six',
         'nose',
@@ -93,7 +94,8 @@ setup(
         'requests>=2.22.0',
         'selenium==3.141.0',
         'pluggy>=0.12.0',
-        'pytest>=4.6.5;python_version<"3"',  # For Python 2 compatibility
+        'attrs>=19.2.0',
+        'pytest>=4.6.6;python_version<"3"',  # For Python 2 compatibility
         'pytest>=5.2.1;python_version>="3"',
         'pytest-cov>=2.8.1',
         'pytest-forked>=1.1.1',
@@ -110,6 +112,7 @@ setup(
         'pymysql>=0.9.3',
         'pyotp>=2.3.0',
         'boto>=2.49.0',
+        'tqdm>=4.36.1',
         'flake8>=3.7.8',
         'certifi>=2019.9.11',
     ],
