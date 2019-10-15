@@ -1,4 +1,4 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_a.png" title="SeleniumBase" align="center" height="150">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_a.png" title="SeleniumBase" align="center" height="152">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 All-in-one framework for fast & simple browser automation and end-to-end testing.
 
