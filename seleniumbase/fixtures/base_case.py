@@ -1841,9 +1841,8 @@ class BaseCase(unittest.TestCase):
                          "does not match the actual page title [%s]!"
                          "" % (expected, actual))
         if self.demo_mode:
-            messenger_post = ("ASSERT TITLE: {%s}" % title)
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+            messenger_post = ("ASSERT TITLE = {%s}" % title)
+            self.__highlight_with_assert_success(messenger_post, "html")
 
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
