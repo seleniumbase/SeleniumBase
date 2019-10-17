@@ -1869,6 +1869,9 @@ class BaseCase(unittest.TestCase):
             current_url = self.get_current_url()
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, errors))
+        if self.demo_mode and self.browser == 'chrome':
+            messenger_post = ("ASSERT NO JS ERRORS")
+            self.__highlight_with_assert_success(messenger_post, "html")
 
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
