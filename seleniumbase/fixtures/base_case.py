@@ -1681,7 +1681,11 @@ class BaseCase(unittest.TestCase):
     def assert_no_404_errors(self, multithreaded=True):
         """ Assert no 404 errors from page links obtained from:
             "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
-        links = self.get_unique_links()
+        all_links = self.get_unique_links()
+        links = []
+        for link in all_links:
+            if "javascript:" not in link and "mailto:" not in link:
+                links.append(link)
         if multithreaded:
             from multiprocessing.dummy import Pool as ThreadPool
             pool = ThreadPool(10)
@@ -1690,12 +1694,10 @@ class BaseCase(unittest.TestCase):
             pool.join()
         else:
             for link in links:
-                if "javascript:" not in link:  # Ignore links with JavaScript
-                    self.assert_link_status_code_is_not_404(link)
+                self.assert_link_status_code_is_not_404(link)
         if self.demo_mode:
             messenger_post = ("ASSERT NO 404 ERRORS")
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+            self.__highlight_with_assert_success(messenger_post, "html")
 
     def print_unique_links_with_status_codes(self):
         """ Finds all unique links in the html of the page source
@@ -1839,9 +1841,8 @@ class BaseCase(unittest.TestCase):
                          "does not match the actual page title [%s]!"
                          "" % (expected, actual))
         if self.demo_mode:
-            messenger_post = ("ASSERT TITLE: {%s}" % title)
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+            messenger_post = ("ASSERT TITLE = {%s}" % title)
+            self.__highlight_with_assert_success(messenger_post, "html")
 
     def assert_no_js_errors(self):
         """ Asserts that there are no JavaScript "SEVERE"-level page errors.
@@ -1868,6 +1869,9 @@ class BaseCase(unittest.TestCase):
             current_url = self.get_current_url()
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, errors))
+        if self.demo_mode and self.browser == 'chrome':
+            messenger_post = ("ASSERT NO JS ERRORS")
+            self.__highlight_with_assert_success(messenger_post, "html")
 
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
