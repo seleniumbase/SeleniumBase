@@ -31,7 +31,7 @@
 
 * **Follow the steps...**
 
-#### "Start free with GitHub" if you don't already have an account:
+#### Select "Start free with GitHub >":
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_1a.png "Azure DevOps")
 
