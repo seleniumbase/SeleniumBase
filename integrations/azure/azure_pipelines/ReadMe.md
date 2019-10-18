@@ -15,10 +15,15 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_azure_pipelines_1.png "GitHub Azure Pipelines")
 
+----------
+
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_azure_pipelines_2.png "GitHub Azure Pipelines")
+
+----------
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_azure_pipelines_3.png "GitHub Azure Pipelines")
 
+----------
 
 ### Step 2. Go to Microsoft Azure DevOps to set up your environment
 
@@ -26,21 +31,29 @@
 
 * **Follow the steps...**
 
-#### "Start free with Pipelines" if you don't already have an account:
+#### "Start free with GitHub" if you don't already have an account:
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_1.png "Azure DevOps")
+![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_1a.png "Azure DevOps")
+
+----------
 
 #### Give your new project a name and set visibility to public (for your SeleniumBase fork):
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_2.png "Azure DevOps")
 
+----------
+
 #### Select that your code is hosted on GitHub:
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_3.png "Azure DevOps")
 
+----------
+
 #### Select your fork of SeleniumBase as your repository:
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_4.png "Azure DevOps")
+
+----------
 
 #### Copy the [azure-pipelines.yml](https://github.com/seleniumbase/SeleniumBase/blob/master/azure-pipelines.yml) file from SeleniumBase into the azure-pipelines.yml box to create your new pipeline:
 
@@ -48,14 +61,17 @@
 
 #### When you're done copying, click "Run".
 
+----------
 
 ### Step 3. Congratulations! Your browser tests are now running!
 
 * **Here's what a SeleniumBase sample run in Azure Pipelines may look like:**
 
-[https://dev.azure.com/seleniumbase/seleniumbase/\_build/results?buildId=15](https://dev.azure.com/seleniumbase/seleniumbase/_build/results?buildId=15)
+[https://dev.azure.com/seleniumbase/seleniumbase/\_build/results?buildId=234](https://dev.azure.com/seleniumbase/seleniumbase/_build/results?buildId=234)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/azure_devops_6.png "Azure DevOps")
+
+----------
 
 #### Every time you create a pull request now, Azure Pipelines will run your tests automatically.
 
