@@ -81,7 +81,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
-        'pip',
+        'pip>=19.3.1',  # >= 19.3.1 required for Python 3.8+
         'setuptools',
         'setuptools-scm',
         'wheel',
