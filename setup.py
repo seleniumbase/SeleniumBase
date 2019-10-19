@@ -107,6 +107,10 @@ setup(
         'pytest-xdist>=1.30.0',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
+        'atomicwrites>=1.3.0',
+        'portalocker>=1.5.1',
+        'cryptography>=2.8',
+        'asn1crypto>=1.2.0',
         'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
         'pymysql>=0.9.3',
