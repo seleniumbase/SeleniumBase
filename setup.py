@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.32.13',
+    version='1.32.14',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -81,7 +81,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
-        'pip',
+        'pip>=19.3.1',  # >= 19.3.1 required for Python 3.8+
         'setuptools',
         'setuptools-scm',
         'wheel',
@@ -107,6 +107,10 @@ setup(
         'pytest-xdist>=1.30.0',
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
+        'atomicwrites>=1.3.0',
+        'portalocker>=1.5.1',
+        'cryptography>=2.8',
+        'asn1crypto>=1.2.0',
         'pyopenssl>=19.0.0',
         'colorama>=0.4.1',
         'pymysql>=0.9.3',
