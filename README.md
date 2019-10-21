@@ -4,15 +4,21 @@ All-in-one framework for fast & simple browser automation and end-to-end testing
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
+SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tests, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers.<br />
+
 Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in demo mode:<br />
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase" />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_mov4.gif" title="SeleniumBase" />
 
 ```bash
 pytest my_first_test.py --demo_mode
 ```
 
-SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tests, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers. SeleniumBase includes additional tools for automated [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), assisted-QA with [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and creating [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+Here's the code of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_4.png" title="SeleniumBase" />
+
+SeleniumBase includes additional tools for automated [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), assisted-QA with [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and creating [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
