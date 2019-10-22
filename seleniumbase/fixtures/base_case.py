@@ -1545,8 +1545,9 @@ class BaseCase(unittest.TestCase):
         # so self.click_xpath() is just a longer name for the same action.
         self.click(xpath, by=By.XPATH)
 
-    def js_click(self, selector, by=By.CSS_SELECTOR):
-        """ Clicks an element using pure JS. Does not use jQuery. """
+    def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
+        """ Clicks an element using pure JS. Does not use jQuery.
+            If "all_matches" is False, only the first match is clicked. """
         selector, by = self.__recalculate_selector(selector, by)
         if by == By.LINK_TEXT:
             message = (
@@ -1566,8 +1567,15 @@ class BaseCase(unittest.TestCase):
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)
         css_selector = self.__escape_quotes_if_needed(css_selector)
-        self.__js_click(selector, by=by)  # The real "magic" happens here
+        if not all_matches:
+            self.__js_click(selector, by=by)  # The real "magic" happens
+        else:
+            self.__js_click_all(selector, by=by)  # The real "magic" happens
         self.__demo_mode_pause_if_active()
+
+    def js_click_all(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks all matching elements using pure JS. (No jQuery) """
+        self.js_click(selector, by=By.CSS_SELECTOR, all_matches=True)
 
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
         """ Clicks an element using jQuery. Different from using pure JS. """
@@ -1579,6 +1587,18 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click()""" % selector
+        self.safe_execute_script(click_script)
+        self.__demo_mode_pause_if_active()
+
+    def jquery_click_all(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks all matching elements using jQuery. """
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if self.is_element_visible(selector, by=by):
+            self.__demo_mode_highlight_if_active(selector, by)
+        selector = self.convert_to_css_selector(selector, by=by)
+        click_script = """jQuery('%s').click()""" % selector
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
@@ -3270,6 +3290,27 @@ class BaseCase(unittest.TestCase):
                      };
                      var someLink = document.querySelector('%s');
                      simulateClick(someLink);"""
+                  % css_selector)
+        self.execute_script(script)
+
+    def __js_click_all(self, selector, by=By.CSS_SELECTOR):
+        """ Clicks all matching elements using pure JS. (No jQuery) """
+        selector, by = self.__recalculate_selector(selector, by)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        css_selector = re.escape(css_selector)
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = ("""var simulateClick = function (elem) {
+                         var evt = new MouseEvent('click', {
+                             bubbles: true,
+                             cancelable: true,
+                             view: window
+                         });
+                         var canceled = !elem.dispatchEvent(evt);
+                     };
+                     var $elements = document.querySelectorAll('%s');
+                     var index = 0, length = $elements.length;
+                     for(; index < length; index++){
+                     simulateClick($elements[index]);}"""
                   % css_selector)
         self.execute_script(script)
 
