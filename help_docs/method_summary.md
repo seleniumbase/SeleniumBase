@@ -184,9 +184,13 @@ self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.click_xpath(xpath)
 
-self.js_click(selector, by=By.CSS_SELECTOR)
+self.js_click(selector, by=By.CSS_SELECTOR, all_matches=False)
+
+self.js_click_all(selector, by=By.CSS_SELECTOR)
 
 self.jquery_click(selector, by=By.CSS_SELECTOR)
+
+self.jquery_click_all(selector, by=By.CSS_SELECTOR)
 
 self.hide_element(selector, by=By.CSS_SELECTOR)
 

@@ -6,19 +6,16 @@ All-in-one framework for fast & simple browser automation and end-to-end testing
 
 SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running tests, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers.<br />
 
-Watch [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in demo mode:<br />
+Run [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Demo Mode to see test assertions:
+```bash
+pytest my_first_test.py --demo
+```
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_mov4.gif" title="SeleniumBase" />
 
-```bash
-pytest my_first_test.py --demo_mode
-```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_7.png" title="SeleniumBase" />
 
-Here's the code of [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_4.png" title="SeleniumBase" />
-
-SeleniumBase includes additional tools for automated [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), assisted-QA with [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and creating [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+SeleniumBase includes tools for automated [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), assisted-QA with [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and creating [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
@@ -162,10 +159,10 @@ With Pytest, a green dot means a test passed. An "F" means a test failed.
 
 <a id="seleniumbase_demo_mode"></a> **Use Demo Mode to help you see what tests are asserting.**
 
-If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
 ```bash
-pytest my_first_test.py --demo_mode
+pytest my_first_test.py --demo
 ```
 
 **Pytest** includes test discovery. If you don't specify a specific file or folder to run from, ``pytest`` will search all subdirectories automatically for tests to run based on the following matching criteria:
@@ -221,7 +218,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --start_page=URL  # (The starting URL for the web browser when tests begin.)
 --log_path=LOG_PATH  # (The directory where log files get saved to.)
 --archive_logs  # (Archive old log files instead of deleting them.)
---demo_mode  # (The option to visually see test actions as they occur.)
+--demo  # (The option to visually see test actions as they occur.)
 --demo_sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
 --message_duration=SECONDS  # (The time length for Messenger alerts.)
