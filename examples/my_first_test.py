@@ -49,7 +49,15 @@ class MyTestClass(BaseCase):
         #    If you don't specify a `timeout`, a default timeout is used.
         #    Default timeouts are configured in seleniumbase/config/settings.py
         #
-        # 3. There's usually more than one way to do the same thing. Ex:
+        # 3. SeleniumBase methods are very versatile. For example,
+        #    self.update_text(SELECTOR, TEXT) does the following:
+        #    * Waits for the element to be visible
+        #    * Waits for the element to be interactive
+        #    * Clears the text field
+        #    * Types in the new text
+        #    * Hits Enter/Submit (if the text ends in "\n")
+        #
+        # 4. There's usually more than one way to do the same thing. Ex:
         #    [
         #        self.assert_text("xkcd: volume 0", "h3")
         #    ]
@@ -74,17 +82,17 @@ class MyTestClass(BaseCase):
         #        title = element.get_attribute("title")
         #    ]
         #
-        # 4. self.assert_exact_text(TEXT) ignores leading and trailing
+        # 5. self.assert_exact_text(TEXT) ignores leading and trailing
         #    whitespace in the TEXT assertion.
         #    So, self.assert_exact_text("Some Text") will find [" Some Text "].
         #
-        # 5. For backwards-compatibilty, some SeleniumBase methods that do the
+        # 6. For backwards-compatibilty, some SeleniumBase methods that do the
         #    same thing have multiple names, kept on from previous versions.
         #    Ex: wait_for_element_visible() is the same as find_element().
         #    Both search for and return the element, and raise an exception if
         #    the element does not appear on the page within the timeout limit.
         #    And assert_element() also does this (minus returning the element).
         #
-        # 6. For the full method list, see one of the following:
+        # 7. For the full method list, see one of the following:
         #    * SeleniumBase/seleniumbase/fixtures/base_case.py
         #    * SeleniumBase/help_docs/method_summary.md
