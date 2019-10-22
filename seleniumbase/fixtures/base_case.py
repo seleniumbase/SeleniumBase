@@ -1728,7 +1728,7 @@ class BaseCase(unittest.TestCase):
             A relative file_path will get converted into an absolute file_path.
 
             Example usage:
-                self.choose_file('input[type="file"], "my_dir/my_file.txt")
+                self.choose_file('input[type="file"]', "my_dir/my_file.txt")
         """
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
