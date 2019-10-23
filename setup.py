@@ -98,7 +98,7 @@ setup(
         'pytest>=4.6.6;python_version<"3"',  # For Python 2 compatibility
         'pytest>=5.2.1;python_version>="3"',
         'pytest-cov>=2.8.1',
-        'pytest-forked>=1.1.1',
+        'pytest-forked>=1.1.3',
         'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
         'pytest-metadata>=1.8.0',
         'pytest-ordering>=0.6',
