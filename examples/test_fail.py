@@ -1,5 +1,8 @@
-""" This test was made to fail on purpose to demonstrate the
-    logging capabilities of the SeleniumBase Test Framework """
+""" This test fails on purpose to demonstrate
+    the logging capabilities of SeleniumBase.
+    >>> pytest test_fail.py --html=report.html
+    This creates ``report.html`` with details.
+    (Also find log files in ``latest_logs/``) """
 
 import pytest
 from seleniumbase import BaseCase
