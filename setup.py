@@ -96,7 +96,7 @@ setup(
         'pluggy>=0.13.0',
         'attrs>=19.3.0',
         'pytest>=4.6.6;python_version<"3"',  # For Python 2 compatibility
-        'pytest>=5.2.1;python_version>="3"',
+        'pytest>=5.2.2;python_version>="3"',
         'pytest-cov>=2.8.1',
         'pytest-forked>=1.1.3',
         'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
