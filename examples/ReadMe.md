@@ -1,3 +1,5 @@
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_f2.png" title="SeleniumBase" align="center" height="120">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+
 ## Running SeleniumBase Scripts
 
 To run tests, make sure you've already installed SeleniumBase using ``pip install seleniumbase`` OR ``pip install -r requirements.txt`` + ``python setup.py install`` from the top-level directory.

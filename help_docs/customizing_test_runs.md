@@ -1,3 +1,6 @@
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" title="SeleniumBase" height="129">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo4d4.png" title="SeleniumBase" height="56.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+
 ### Customizing test runs with **pytest** (or nosetests)
 
 In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) (which lets you customize SeleniumBase global properties) you can customize test runs from the command line:

@@ -1,3 +1,6 @@
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" title="SeleniumBase" height="129">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo4d4.png" title="SeleniumBase" height="56.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+
 <a id="feature_list"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **SeleniumBase Features:**
 * A complete test automation framework for building & running reliable testing scripts.
