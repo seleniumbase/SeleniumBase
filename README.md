@@ -1,4 +1,5 @@
-<div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png"><br /><br /></div>
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" title="SeleniumBase" height="129">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo4d4.png" title="SeleniumBase" height="56.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
@@ -7,12 +8,10 @@ Automated UI Testing with [Selenium WebDriver](https://www.seleniumhq.org/) and 
 #### Features include:
 * [A Python library](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) for building [reliable WebDriver scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py).
 * [Plugins](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) for logging [test results and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md) automatically.
-* Supports [Azure Pipelines](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [Jenkins on GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), and more.
-* Easy integration with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), and [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py).
-* Customizable with [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) and a [global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py).
-* A tool for [creating website tours and user onboarding](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
-* A tool for [automation-assisted manual verification](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md).
-* A tool for [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md).
+* Supports [Azure Pipelines](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), and more.
+* Integrates with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), and [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py).
+* Fully customizable with flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+* Tools for [user onboarding](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md), [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md).
 * To learn more about SeleniumBase features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
@@ -693,5 +692,4 @@ If you see something, say something! We are very active in resolving issues. [<i
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" title="SeleniumBase" height="129">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br />
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo4d4.png" title="SeleniumBase" height="56.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_f.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
