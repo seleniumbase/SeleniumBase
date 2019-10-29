@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.32.17',
+    version='1.32.18',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -118,7 +118,7 @@ setup(
         'boto>=2.49.0',
         'cffi>=1.13.1',
         'tqdm>=4.36.1',
-        'flake8>=3.7.8',
+        'flake8>=3.7.9',
         'certifi>=2019.9.11',
     ],
     packages=[

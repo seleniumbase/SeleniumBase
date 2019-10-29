@@ -1,6 +1,6 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_f2.png" title="SeleniumBase" align="center" height="120">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## Running SeleniumBase Scripts
+## Running Tests
 
 To run tests, make sure you've already installed SeleniumBase using ``pip install seleniumbase`` OR ``pip install -r requirements.txt`` + ``python setup.py install`` from the top-level directory.
 
@@ -12,9 +12,9 @@ During test failures, logs and screenshots from the most recent test run will ge
 
 **Here are some example run commands to help get you started:**
 
-Run an example test in Chrome (it's the default browser when not specified):
+Run an example test in Chrome (``--browser=chrome`` is the default):
 ```bash
-pytest my_first_test.py --browser=chrome
+pytest my_first_test.py
 ```
 
 Run an example test in Firefox:
@@ -76,7 +76,7 @@ For more advanced run commands, such as using a proxy server, see [../help_docs/
 
 --------
 
-To makes things easier, here's a simple GUI program that allows you to run a few example scripts by pressing a button:
+To make things easier, here's a simple GUI program that allows you to run a few example tests by pressing a button:
 
 ```bash
 python gui_test_runner.py
