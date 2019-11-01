@@ -1,5 +1,5 @@
 pip>=19.3.1
-setuptools>=41.5.1
+setuptools>=41.6.0
 setuptools-scm>=3.3.3
 wheel>=0.33.6
 six>=1.12.0
@@ -34,6 +34,6 @@ pymysql>=0.9.3
 pyotp>=2.3.0
 boto>=2.49.0
 cffi>=1.13.1
-tqdm>=4.36.1
+tqdm>=4.37.0
 flake8>=3.7.9
 certifi>=2019.9.11
