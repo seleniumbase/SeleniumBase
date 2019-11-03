@@ -29,7 +29,7 @@ def pytest_addoption(parser):
     --start_page=URL  (The starting URL for the web browser when tests begin.)
     --log_path=LOG_PATH  (The directory where log files get saved to.)
     --archive_logs  (Archive old log files instead of deleting them.)
-    --demo_mode  (The option to visually see test actions as they occur.)
+    --demo  (The option to visually see test actions as they occur.)
     --demo_sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
     --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
     --message_duration=SECONDS  (The time length for Messenger alerts.)
