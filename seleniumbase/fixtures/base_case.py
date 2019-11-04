@@ -279,7 +279,10 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.06)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
-            element.clear()
+            try:
+                element.clear()
+            except Exception:
+                pass  # Clearing the text field first isn't critical
         except Exception:
             pass  # Clearing the text field first isn't critical
         self.__demo_mode_pause_if_active(tiny=True)
