@@ -420,11 +420,15 @@ class BaseCase(unittest.TestCase):
     def go_back(self):
         self.__last_page_load_url = None
         self.driver.back()
+        if self.browser == "safari":
+            self.driver.refresh()
         self.wait_for_ready_state_complete()
 
     def go_forward(self):
         self.__last_page_load_url = None
         self.driver.forward()
+        if self.browser == "safari":
+            self.driver.refresh()
         self.wait_for_ready_state_complete()
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
