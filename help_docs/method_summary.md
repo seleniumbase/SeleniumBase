@@ -24,6 +24,8 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
 
 self.type(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 
+self.input(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
+
 self.update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None, retry=False)
 
 self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)

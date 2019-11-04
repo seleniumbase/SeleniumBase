@@ -545,6 +545,8 @@ def get_local_driver(
         else:
             return webdriver.Edge()
     elif browser_name == constants.Browser.SAFARI:
+        if "".join(sys.argv) == "-c":  # Skip if multithreaded
+            raise Exception("Can't run Safari tests in multi-threaded mode!")
         return webdriver.Safari()
     elif browser_name == constants.Browser.OPERA:
         if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):

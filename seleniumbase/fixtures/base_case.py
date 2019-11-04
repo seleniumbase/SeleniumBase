@@ -141,7 +141,13 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
-            element.click()
+            if self.browser == "safari":
+                if by == By.LINK_TEXT:
+                    self.__jquery_click(selector, by=by)
+                else:
+                    self.__js_click(selector, by=by)
+            else:
+                element.click()
         except (WebDriverException, MoveTargetOutOfBoundsException):
             self.wait_for_ready_state_complete()
             try:
@@ -242,12 +248,26 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
+    def input(self, selector, text, by=By.CSS_SELECTOR,
+              timeout=None, retry=False):
+        """ Same as update_text(). """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
     def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                     timeout=None, retry=False):
         """ This method updates an element's text field with new text.
-            Has two parts:
-            1. Clears the text field.
-            2. Types in new text into the text field.
+            Has multiple parts:
+            * Waits for the element to be visible.
+            * Waits for the element to be interactive.
+            * Clears the text field.
+            * Types in the new text.
+            * Hits Enter/Submit (if the text ends in "\n").
             @Params
             selector - the selector of the text field
             new_value - the new value to type into the text field
@@ -273,7 +293,10 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.06)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
-            element.clear()
+            try:
+                element.clear()
+            except Exception:
+                pass  # Clearing the text field first isn't critical
         except Exception:
             pass  # Clearing the text field first isn't critical
         self.__demo_mode_pause_if_active(tiny=True)
@@ -411,11 +434,15 @@ class BaseCase(unittest.TestCase):
     def go_back(self):
         self.__last_page_load_url = None
         self.driver.back()
+        if self.browser == "safari":
+            self.driver.refresh()
         self.wait_for_ready_state_complete()
 
     def go_forward(self):
         self.__last_page_load_url = None
         self.driver.forward()
+        if self.browser == "safari":
+            self.driver.refresh()
         self.wait_for_ready_state_complete()
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
@@ -1373,15 +1400,26 @@ class BaseCase(unittest.TestCase):
                     # WebDrivers can get closed during tearDown().
                     pass
             else:
-                if self.browser == 'chrome' or self.browser == 'opera':
+                if self.browser == 'chrome':
+                    width = 1250
+                    height = 840
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
                         else:
-                            self.driver.set_window_size(1250, 840)
+                            self.driver.set_window_size(width, height)
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
+                elif self.browser == 'firefox':
+                    pass  # No changes
+                elif self.browser == 'safari':
+                    if self.maximize_option:
+                        try:
+                            self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
+                        except Exception:
+                            pass  # Keep existing browser resolution
                 elif self.browser == 'edge':
                     try:
                         self.driver.maximize_window()
@@ -3582,6 +3620,12 @@ class BaseCase(unittest.TestCase):
             name = page_utils.get_name_from_selector(selector)
             selector = '[name="%s"]' % name
             by = By.CSS_SELECTOR
+        if by == By.LINK_TEXT or by == By.PARTIAL_LINK_TEXT:
+            if self.browser == "safari" and selector.lower() != selector:
+                selector = ("""//a[contains(translate(.,"ABCDEFGHIJKLMNOPQR"""
+                            """STUVWXYZ","abcdefghijklmnopqrstuvw"""
+                            """xyz"),"%s")]""" % selector.lower())
+                by = By.XPATH
         return (selector, by)
 
     def __make_css_match_first_element_only(self, selector):
