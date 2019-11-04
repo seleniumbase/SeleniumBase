@@ -141,7 +141,13 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
-            element.click()
+            if self.browser == "safari":
+                if by == By.LINK_TEXT:
+                    self.__jquery_click(selector, by=by)
+                else:
+                    self.__js_click(selector, by=by)
+            else:
+                element.click()
         except (WebDriverException, MoveTargetOutOfBoundsException):
             self.wait_for_ready_state_complete()
             try:
