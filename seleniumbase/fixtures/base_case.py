@@ -3620,6 +3620,12 @@ class BaseCase(unittest.TestCase):
             name = page_utils.get_name_from_selector(selector)
             selector = '[name="%s"]' % name
             by = By.CSS_SELECTOR
+        if by == By.LINK_TEXT or by == By.PARTIAL_LINK_TEXT:
+            if self.browser == "safari" and selector.lower() != selector:
+                selector = ("""//a[contains(translate(.,"ABCDEFGHIJKLMNOPQR"""
+                            """STUVWXYZ","abcdefghijklmnopqrstuvw"""
+                            """xyz"),"%s")]""" % selector.lower())
+                by = By.XPATH
         return (selector, by)
 
     def __make_css_match_first_element_only(self, selector):
