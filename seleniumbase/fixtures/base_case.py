@@ -248,12 +248,26 @@ class BaseCase(unittest.TestCase):
             by = By.XPATH
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
+    def input(self, selector, text, by=By.CSS_SELECTOR,
+              timeout=None, retry=False):
+        """ Same as update_text(). """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
     def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                     timeout=None, retry=False):
         """ This method updates an element's text field with new text.
-            Has two parts:
-            1. Clears the text field.
-            2. Types in new text into the text field.
+            Has multiple parts:
+            * Waits for the element to be visible.
+            * Waits for the element to be interactive.
+            * Clears the text field.
+            * Types in the new text.
+            * Hits Enter/Submit (if the text ends in "\n").
             @Params
             selector - the selector of the text field
             new_value - the new value to type into the text field
