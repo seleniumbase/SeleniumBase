@@ -1,23 +1,39 @@
-### Verify that web drivers were successfully installed
+## Verifying that web drivers are installed
 
-*You can do this by checking inside a Python command prompt. (NOTE: xkcd is a webcomic)*
+*You can do this by checking inside a Python command prompt.*
 
 #### Verifying ChromeDriver
 ```bash
 python
+```
+```python
 >>> from selenium import webdriver
->>> browser = webdriver.Chrome()
->>> browser.get("http://xkcd.com/1337/")
->>> browser.close()
+>>> driver = webdriver.Chrome()
+>>> driver.get("https://www.google.com/chrome")
+>>> driver.quit()
 >>> exit()
 ```
 
-#### Verifying FirefoxDriver (Geckodriver)
+#### Verifying Geckodriver (Firefox WebDriver)
 ```bash
 python
+```
+```python
 >>> from selenium import webdriver
->>> browser = webdriver.Firefox()
->>> browser.get("http://xkcd.com/1337/")
->>> browser.close()
+>>> driver = webdriver.Firefox()
+>>> driver.get("https://www.mozilla.org/firefox")
+>>> driver.quit()
+>>> exit()
+```
+
+#### Verifying WebDriver for Safari
+```bash
+python
+```
+```python
+>>> from selenium import webdriver
+>>> driver = webdriver.Safari()
+>>> driver.get("https://www.apple.com/safari")
+>>> driver.quit()
 >>> exit()
 ```
