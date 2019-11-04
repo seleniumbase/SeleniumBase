@@ -1386,15 +1386,26 @@ class BaseCase(unittest.TestCase):
                     # WebDrivers can get closed during tearDown().
                     pass
             else:
-                if self.browser == 'chrome' or self.browser == 'opera':
+                if self.browser == 'chrome':
+                    width = 1250
+                    height = 840
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
                         else:
-                            self.driver.set_window_size(1250, 840)
+                            self.driver.set_window_size(width, height)
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
+                elif self.browser == 'firefox':
+                    pass  # No changes
+                elif self.browser == 'safari':
+                    if self.maximize_option:
+                        try:
+                            self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
+                        except Exception:
+                            pass  # Keep existing browser resolution
                 elif self.browser == 'edge':
                     try:
                         self.driver.maximize_window()
