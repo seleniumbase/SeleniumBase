@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class SwagLabsTest(BaseCase):
+class SwagLabsTests(BaseCase):
 
     def login(self, user="standard_user"):
         """ Login to Swag Labs and assert that the login was successful. """
