@@ -1,5 +1,3 @@
-import pytest
-from parameterized import parameterized
 from seleniumbase import BaseCase
 
 
@@ -16,16 +14,11 @@ class SwagLabsTests(BaseCase):
         self.assert_element("#inventory_container")
         self.assert_text("Products", "div.product_label")
 
-    @parameterized.expand([
-        ["standard_user"],
-        ["problem_user"],
-    ])
-    @pytest.mark.run(order=1)
-    def test_swag_labs_basic_functional_flow(self, user):
+    def test_swag_labs_basic_flow(self):
         """ This test checks for basic functional flow in the Swag Labs store.
             The test is parameterized, and receives the user to use for login.
         """
-        self.login(user)
+        self.login()
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -75,15 +68,3 @@ class SwagLabsTests(BaseCase):
         self.assert_element_absent("div.inventory_item_name")
         self.click("link=CONTINUE SHOPPING")
         self.assert_element_absent("span.shopping_cart_badge")
-
-    @parameterized.expand([
-        ["standard_user"],
-        ["problem_user"],
-    ])
-    @pytest.mark.run(order=2)
-    def test_swag_labs_products_page_resource_verification(self, user):
-        """ This test checks for 404 errors on the Swag Labs products page.
-            The test is parameterized, and receives the user to use for login.
-        """
-        self.login(user)
-        self.assert_no_404_errors()
