@@ -52,6 +52,7 @@ except (ImportError, ValueError):
     sb.with_s3_logging = False
     sb.js_checking_on = False
     sb.is_pytest = False
+    sb.slow_mode = False
     sb.demo_mode = False
     sb.demo_sleep = 1
     sb.message_duration = 2
