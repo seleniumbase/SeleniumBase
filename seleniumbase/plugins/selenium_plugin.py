@@ -22,7 +22,8 @@ class SeleniumBrowser(Plugin):
     --headless  (The option to run tests headlessly. The default on Linux OS.)
     --headed  (The option to run tests with a GUI on Linux OS.)
     --start_page=URL  (The starting URL for the web browser when tests begin.)
-    --demo_mode  (The option to visually see test actions as they occur.)
+    --slow  (The option to slow down the automation.)
+    --demo  (The option to visually see test actions as they occur.)
     --demo_sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
     --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
     --message_duration=SECONDS  (The time length for Messenger alerts.)
@@ -147,12 +148,18 @@ class SeleniumBrowser(Plugin):
                     when each test begins.
                     Default: None.""")
         parser.add_option(
+            '--slow_mode', '--slow-mode', '--slow',
+            action="store_true",
+            dest='slow_mode',
+            default=False,
+            help="""Using this slows down the automation.""")
+        parser.add_option(
             '--demo_mode', '--demo-mode', '--demo',
             action="store_true",
             dest='demo_mode',
             default=False,
-            help="""Using this slows down the automation so that
-                    you can see what it's actually doing.""")
+            help="""Using this slows down the automation and lets you
+                    visually see what the tests are actually doing.""")
         parser.add_option(
             '--demo_sleep', '--demo-sleep',
             action='store',
@@ -265,6 +272,7 @@ class SeleniumBrowser(Plugin):
         test.test.extension_dir = self.options.extension_dir
         test.test.proxy_string = self.options.proxy_string
         test.test.user_agent = self.options.user_agent
+        test.test.slow_mode = self.options.slow_mode
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep
         test.test.highlights = self.options.highlights

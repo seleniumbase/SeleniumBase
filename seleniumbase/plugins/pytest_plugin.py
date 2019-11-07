@@ -29,6 +29,7 @@ def pytest_addoption(parser):
     --start_page=URL  (The starting URL for the web browser when tests begin.)
     --log_path=LOG_PATH  (The directory where log files get saved to.)
     --archive_logs  (Archive old log files instead of deleting them.)
+    --slow  (The option to slow down the automation.)
     --demo  (The option to visually see test actions as they occur.)
     --demo_sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
     --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
@@ -228,12 +229,17 @@ def pytest_addoption(parser):
                      default=True,
                      help="""This is used by the BaseCase class to tell apart
                           pytest runs from nosetest runs. (Automatic)""")
+    parser.addoption('--slow_mode', '--slow-mode', '--slow',
+                     action="store_true",
+                     dest='slow_mode',
+                     default=False,
+                     help="""Using this slows down the automation.""")
     parser.addoption('--demo_mode', '--demo-mode', '--demo',
                      action="store_true",
                      dest='demo_mode',
                      default=False,
-                     help="""Using this slows down the automation so that
-                          you can see what it's actually doing.""")
+                     help="""Using this slows down the automation and lets you
+                          visually see what the tests are actually doing.""")
     parser.addoption('--demo_sleep', '--demo-sleep',
                      action='store',
                      dest='demo_sleep',
@@ -344,6 +350,7 @@ def pytest_configure(config):
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = config.getoption('log_path')
     sb_config.archive_logs = config.getoption('archive_logs')
+    sb_config.slow_mode = config.getoption('slow_mode')
     sb_config.demo_mode = config.getoption('demo_mode')
     sb_config.demo_sleep = config.getoption('demo_sleep')
     sb_config.highlights = config.getoption('highlights')

@@ -167,6 +167,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def slow_click(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """ Similar to click(), but pauses for a brief moment before clicking.
@@ -221,6 +223,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def click_chain(self, selectors_list, by=By.CSS_SELECTOR,
                     timeout=None, spacing=0):
@@ -338,6 +342,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def add_text(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
         """ The more-reliable version of driver.send_keys()
@@ -384,6 +390,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
         """ Same as add_text() """
@@ -437,6 +445,7 @@ class BaseCase(unittest.TestCase):
         if self.browser == "safari":
             self.driver.refresh()
         self.wait_for_ready_state_complete()
+        self.__demo_mode_pause_if_active()
 
     def go_forward(self):
         self.__last_page_load_url = None
@@ -444,6 +453,7 @@ class BaseCase(unittest.TestCase):
         if self.browser == "safari":
             self.driver.refresh()
         self.wait_for_ready_state_complete()
+        self.__demo_mode_pause_if_active()
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         selector, by = self.__recalculate_selector(selector, by)
@@ -626,6 +636,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def click_link(self, link_text, timeout=None):
         """ Same as self.click_link_text() """
@@ -738,6 +750,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def get_text(self, selector, by=By.CSS_SELECTOR, timeout=None):
         if not timeout:
@@ -1094,6 +1108,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
         return element
 
     def hover_and_double_click(self, hover_selector, click_selector,
@@ -1141,6 +1157,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
         return element
 
     def __select_option(self, dropdown_selector, option,
@@ -1184,6 +1202,8 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active()
             else:
                 self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def select_option_by_text(self, dropdown_selector, option,
                               dropdown_by=By.CSS_SELECTOR,
@@ -1604,7 +1624,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if self.demo_mode:
+        if self.demo_mode or self.slow_mode:
             self.slow_scroll_to(selector, by=by, timeout=timeout)
             return
         element = self.wait_for_element_visible(
@@ -3634,14 +3654,22 @@ class BaseCase(unittest.TestCase):
 
     def __demo_mode_pause_if_active(self, tiny=False):
         if self.demo_mode:
+            wait_time = settings.DEFAULT_DEMO_MODE_TIMEOUT
             if self.demo_sleep:
                 wait_time = float(self.demo_sleep)
-            else:
-                wait_time = settings.DEFAULT_DEMO_MODE_TIMEOUT
             if not tiny:
                 time.sleep(wait_time)
             else:
                 time.sleep(wait_time / 3.4)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+
+    def __slow_mode_pause_if_active(self):
+        if self.slow_mode:
+            wait_time = settings.DEFAULT_DEMO_MODE_TIMEOUT
+            if self.demo_sleep:
+                wait_time = float(self.demo_sleep)
+            time.sleep(wait_time)
 
     def __demo_mode_scroll_if_active(self, selector, by):
         if self.demo_mode:
@@ -3651,6 +3679,19 @@ class BaseCase(unittest.TestCase):
         if self.demo_mode:
             # Includes self.slow_scroll_to(selector, by=by) by default
             self.highlight(selector, by=by)
+        elif self.slow_mode:
+            # Just do the slow scroll part of the highlight() method
+            selector, by = self.__recalculate_selector(selector, by)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=settings.SMALL_TIMEOUT)
+            try:
+                self.__slow_scroll_to_element(element)
+            except (StaleElementReferenceException, ENI_Exception):
+                self.wait_for_ready_state_complete()
+                time.sleep(0.05)
+                element = self.wait_for_element_visible(
+                    selector, by=by, timeout=settings.SMALL_TIMEOUT)
+                self.__slow_scroll_to_element(element)
 
     def __scroll_to_element(self, element):
         js_utils.scroll_to_element(self.driver, element)
@@ -3781,6 +3822,7 @@ class BaseCase(unittest.TestCase):
                                     self._testMethodName)
             self.browser = sb_config.browser
             self.data = sb_config.data
+            self.slow_mode = sb_config.slow_mode
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
             self.highlights = sb_config.highlights
@@ -3991,6 +4033,7 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        self.__slow_mode_pause_if_active()
         has_exception = False
         if sys.version_info[0] >= 3 and hasattr(self, '_outcome'):
             if hasattr(self._outcome, 'errors') and self._outcome.errors:
