@@ -1468,6 +1468,15 @@ class BaseCase(unittest.TestCase):
         """ The screenshot will be in PNG format. """
         return page_actions.save_screenshot(self.driver, name, folder)
 
+    def save_page_source(self, name, folder=None):
+        """ Saves the page HTML to the current directory (or given subfolder).
+            If the folder specified doesn't exist, it will get created.
+            @Params
+            name - The file name to save the current page's HTML to.
+            folder - The folder to save the file to. (Default = current folder)
+        """
+        return page_actions.save_page_source(self.driver, name, folder)
+
     def wait_for_ready_state_complete(self, timeout=None):
         try:
             # If there's an alert, skip
