@@ -32,6 +32,7 @@ from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 from selenium.webdriver.remote.errorhandler import NoSuchFrameException
 from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase.config import settings
+from seleniumbase.core import log_helper
 
 
 def is_element_present(driver, selector, by=By.CSS_SELECTOR):
@@ -486,6 +487,32 @@ def save_screenshot(driver, name, folder=None):
             driver.get_screenshot_as_file(screenshot_path)
         else:
             pass
+
+
+def save_page_source(driver, name, folder=None):
+    """
+    Saves the page HTML to the current directory (or given subfolder).
+    If the folder specified doesn't exist, it will get created.
+    @Params
+    name - The file name to save the current page's HTML to.
+    folder - The folder to save the file to. (Default = current folder)
+    """
+    if "." not in name:
+        name = name + ".html"
+    if folder:
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % folder
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        html_file_path = "%s/%s" % (file_path, name)
+    else:
+        html_file_path = name
+    page_source = driver.page_source
+    html_file = codecs.open(html_file_path, "w+", "utf-8")
+    rendered_source = log_helper.get_html_source_with_base_href(
+        driver, page_source)
+    html_file.write(rendered_source)
+    html_file.close()
 
 
 def _get_last_page(driver):
