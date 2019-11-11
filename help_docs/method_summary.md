@@ -157,6 +157,8 @@ self.switch_to_default_driver()
 
 self.save_screenshot(name, folder=None)
 
+self.save_page_source(name, folder=None)
+
 self.wait_for_ready_state_complete(timeout=None)
 
 self.wait_for_angularjs(timeout=None)
