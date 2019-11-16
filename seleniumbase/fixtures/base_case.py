@@ -3364,7 +3364,7 @@ class BaseCase(unittest.TestCase):
         elif hasattr(exception_info, 'message'):
             exc_message = exception_info.message
         else:
-            exc_message = '(Unknown Exception)'
+            exc_message = sys.exc_info()
         return exc_message
 
     def __get_improved_exception_message(self):
