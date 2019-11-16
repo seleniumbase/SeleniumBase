@@ -96,7 +96,7 @@ setup(
         'pluggy>=0.13.0',
         'attrs>=19.3.0',
         'pytest>=4.6.6;python_version<"3"',  # For Python 2 compatibility
-        'pytest>=5.2.2;python_version>="3"',
+        'pytest>=5.2.4;python_version>="3"',
         'pytest-cov>=2.8.1',
         'pytest-forked>=1.1.3',
         'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
@@ -108,7 +108,7 @@ setup(
         'parameterized>=0.7.0',
         'beautifulsoup4>=4.6.0',  # Keep at >=4.6.0 while using "bs4"
         'atomicwrites>=1.3.0',
-        'portalocker>=1.5.1',
+        'portalocker>=1.5.2',
         'cryptography>=2.8',
         'asn1crypto>=1.2.0',
         'pyopenssl>=19.0.0',
