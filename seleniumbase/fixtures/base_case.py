@@ -305,6 +305,8 @@ class BaseCase(unittest.TestCase):
             pass  # Clearing the text field first isn't critical
         self.__demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
+        if type(new_value) is int or type(new_value) is float:
+            new_value = str(new_value)
         try:
             if not new_value.endswith('\n'):
                 element.send_keys(new_value)
@@ -3362,7 +3364,7 @@ class BaseCase(unittest.TestCase):
         elif hasattr(exception_info, 'message'):
             exc_message = exception_info.message
         else:
-            exc_message = '(Unknown Exception)'
+            exc_message = sys.exc_info()
         return exc_message
 
     def __get_improved_exception_message(self):
