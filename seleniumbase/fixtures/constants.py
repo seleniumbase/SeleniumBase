@@ -66,6 +66,12 @@ class Backbone:
               "backbone.js/%s/backbone-min.js" % VER)
 
 
+class HtmlInspector:
+    VER = "0.8.2"
+    MIN_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
+              "html-inspector/%s/html-inspector.min.js" % VER)
+
+
 class BootstrapTour:
     VER = "0.11.0"
     MIN_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
