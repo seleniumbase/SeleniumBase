@@ -35,6 +35,7 @@ script:
   - "nosetests examples/boilerplates/boilerplate_test.py --browser=chrome --headless"
   - "pytest examples/my_first_test.py --browser=firefox -s --headless --with-db_reporting"
   - "pytest examples/my_first_test.py --browser=chrome -s --headless --with-db_reporting --demo_mode --demo_sleep=0.2"
+  - "pytest examples/test_inspect_html.py --browser=chrome -s --headless --with-db_reporting"
   - "pytest examples/tour_examples/google_tour.py -s --headless --with-db_reporting"
   - "sudo mysql --password=test -e 'select test_address,browser,state,start_time,runtime from test_db.test_run_data'"
 #after_script:

@@ -54,6 +54,9 @@ jobs:
   - script: pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
 
+  - script: pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
+
   - script: pytest examples/my_first_test.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest my_first_test.py --browser=firefox --headless'
 
