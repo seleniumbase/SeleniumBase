@@ -75,6 +75,14 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
         time.sleep(0.05)
 
 
+def is_html_inspector_activated(driver):
+    try:
+        driver.execute_script("HTMLInspector")  # Fails if not defined
+        return True
+    except Exception:
+        return False
+
+
 def is_jquery_activated(driver):
     try:
         driver.execute_script("jQuery('html')")  # Fails if jq is not defined
@@ -379,6 +387,28 @@ def activate_jquery_confirm(driver):
         # jQuery-Confirm needs a small amount of time to load & activate.
         try:
             driver.execute_script("jconfirm")
+            wait_for_ready_state_complete(driver)
+            wait_for_angularjs(driver)
+            return
+        except Exception:
+            time.sleep(0.1)
+
+
+def activate_html_inspector(driver):
+    jquery_js = constants.JQuery.MIN_JS
+    html_inspector_js = constants.HtmlInspector.MIN_JS
+
+    if is_html_inspector_activated(driver):
+        return
+    if not is_jquery_activated(driver):
+        add_js_link(driver, jquery_js)
+        wait_for_jquery_active(driver, timeout=0.6)
+    add_js_link(driver, html_inspector_js)
+
+    for x in range(7):
+        # HTML-Inspector needs a small amount of time to load & activate.
+        try:
+            driver.execute_script("HTMLInspector")
             wait_for_ready_state_complete(driver)
             wait_for_angularjs(driver)
             return

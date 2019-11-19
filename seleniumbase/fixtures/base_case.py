@@ -2022,6 +2022,49 @@ class BaseCase(unittest.TestCase):
             messenger_post = ("ASSERT NO JS ERRORS")
             self.__highlight_with_assert_success(messenger_post, "html")
 
+    def __activate_html_inspector(self):
+        js_utils.activate_html_inspector(self.driver)
+
+    def inspect_html(self):
+        """ Inspects the Page HTML with HTML-Inspector.
+            (https://github.com/philipwalton/html-inspector)
+            (https://cdnjs.com/libraries/html-inspector)
+            Prints the results and also returns them. """
+        self.__activate_html_inspector()
+        script = ("""HTMLInspector.inspect();""")
+        self.execute_script(script)
+        time.sleep(0.1)
+        browser_logs = []
+        try:
+            browser_logs = self.driver.get_log('browser')
+        except (ValueError, WebDriverException):
+            # If unable to get browser logs, skip the assert and return.
+            return("(Unable to Inspect HTML! -> Only works on Chrome!)")
+        messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
+        url = self.get_current_url()
+        header = '\n* HTML Inspection Results: %s' % url
+        results = [header]
+        row_count = 0
+        for entry in browser_logs:
+            message = entry['message']
+            if "0:6053 " in message:
+                message = message.split("0:6053")[1]
+            message = message.replace("\\u003C", "<")
+            if message.startswith(' "') and message.count('"') == 2:
+                message = message.split('"')[1]
+            message = "X - " + message
+            if messenger_library not in message:
+                if message not in results:
+                    results.append(message)
+                    row_count += 1
+        if row_count > 0:
+            results.append('* (See the Console output for details!)')
+        else:
+            results.append('* (No issues detected!)')
+        results = '\n'.join(results)
+        print(results)
+        return(results)
+
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
             Google Authenticator password algorithm. Works with Authy.

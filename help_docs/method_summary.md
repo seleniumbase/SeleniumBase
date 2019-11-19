@@ -243,6 +243,8 @@ self.assert_title(title)
 
 self.assert_no_js_errors()
 
+self.inspect_html()
+
 self.get_google_auth_password(totp_key=None)
 
 self.convert_xpath_to_css(xpath)
