@@ -102,7 +102,7 @@ setup(
         'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
         'pytest-metadata>=1.8.0',
         'pytest-ordering>=0.6',
-        'pytest-rerunfailures>=7.0',
+        'pytest-rerunfailures>=8.0',
         'pytest-timeout>=1.3.3',
         'pytest-xdist>=1.30.0',
         'parameterized>=0.7.0',
@@ -111,7 +111,7 @@ setup(
         'portalocker>=1.5.2',
         'cryptography>=2.8',
         'asn1crypto>=1.2.0',
-        'pyopenssl>=19.0.0',
+        'pyopenssl>=19.1.0',
         'colorama>=0.4.1',
         'pymysql>=0.9.3',
         'pyotp>=2.3.0',
