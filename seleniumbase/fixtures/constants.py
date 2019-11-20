@@ -41,17 +41,18 @@ class Messenger:
     THEME_FUTURE_JS = ("//cdnjs.cloudflare.com/ajax/libs/"
                        "messenger/%s/js/messenger-theme-future.js" % VER)
     THEME_FLAT_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
-                      "messenger/%s/css/messenger-theme-flat.css" % VER)
+                      "messenger/%s/css/messenger-theme-flat.min.css" % VER)
     THEME_FUTURE_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
-                        "messenger/%s/css/messenger-theme-future.css" % VER)
+                        "messenger/%s/css/"
+                        "messenger-theme-future.min.css" % VER)
     THEME_BLOCK_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
-                       "messenger/%s/css/messenger-theme-block.css" % VER)
+                       "messenger/%s/css/messenger-theme-block.min.css" % VER)
     THEME_AIR_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
-                     "messenger/%s/css/messenger-theme-air.css" % VER)
+                     "messenger/%s/css/messenger-theme-air.min.css" % VER)
     THEME_ICE_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
-                     "messenger/%s/css/messenger-theme-ice.css" % VER)
+                     "messenger/%s/css/messenger-theme-ice.min.css" % VER)
     SPINNER_CSS = ("//cdnjs.cloudflare.com/ajax/libs/"
-                   "messenger/%s/css/messenger-spinner.css" % VER)
+                   "messenger/%s/css/messenger-spinner.min.css" % VER)
 
 
 class Underscore:
