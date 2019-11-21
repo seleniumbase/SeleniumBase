@@ -1,5 +1,5 @@
 """
-This class containts some frequently-used constants
+SeleniumBase constants are stored in this file.
 """
 
 
