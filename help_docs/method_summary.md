@@ -211,6 +211,8 @@ self.assert_no_404_errors(multithreaded=True)
 
 self.print_unique_links_with_status_codes()
 
+self.assert_pdf_text(pdf, text, page=None)
+
 self.create_folder(folder)
 
 self.choose_file(selector, file_path, by=By.CSS_SELECTOR, timeout=None)
@@ -223,7 +225,7 @@ self.save_file_as(file_url, new_file_name, destination_folder=None)
 
 self.save_data_as(data, file_name, destination_folder=None)
 
-self.get_downloads_folder(file)
+self.get_downloads_folder()
 
 self.get_path_of_downloaded_file(file)
 
