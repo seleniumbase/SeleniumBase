@@ -114,6 +114,7 @@ setup(
         'pyopenssl>=19.1.0',
         'colorama>=0.4.1',
         'pymysql>=0.9.3',
+        'pypdf2>=1.26.0',
         'pyotp>=2.3.0',
         'boto>=2.49.0',
         'cffi>=1.13.2',
