@@ -93,7 +93,7 @@ setup(
         'urllib3==1.25.6',  # Must stay in sync with "requests"
         'requests>=2.22.0',
         'selenium==3.141.0',
-        'pluggy>=0.13.0',
+        'pluggy>=0.13.1',
         'attrs>=19.3.0',
         'pytest>=4.6.6;python_version<"3"',  # For Python 2 compatibility
         'pytest>=5.3.0;python_version>="3"',
@@ -118,7 +118,7 @@ setup(
         'pyotp>=2.3.0',
         'boto>=2.49.0',
         'cffi>=1.13.2',
-        'tqdm>=4.38.0',
+        'tqdm>=4.39.0',
         'flake8>=3.7.9',
         'certifi>=2019.9.11',
     ],
