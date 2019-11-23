@@ -2027,6 +2027,8 @@ class BaseCase(unittest.TestCase):
             (The default downloads folder = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
+        if not os.path.exists(destination_folder):
+            os.makedirs(destination_folder)
         page_utils._download_file_to(file_url, destination_folder)
 
     def save_file_as(self, file_url, new_file_name, destination_folder=None):
