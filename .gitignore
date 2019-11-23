@@ -84,6 +84,9 @@ tours_exported
 # Images
 images_exported
 
+# Cookies
+saved_cookies
+
 # Automated Visual Testing
 visual_baseline
 
