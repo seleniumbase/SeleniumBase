@@ -19,6 +19,10 @@ class Files:
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
 
 
+class SavedCookies:
+    STORAGE_FOLDER = "saved_cookies"
+
+
 class VisualBaseline:
     STORAGE_FOLDER = "visual_baseline"
 
