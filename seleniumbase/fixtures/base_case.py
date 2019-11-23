@@ -1532,6 +1532,14 @@ class BaseCase(unittest.TestCase):
     def delete_saved_cookies(self, name="cookies.txt"):
         """ Deletes the cookies file from the "saved_cookies" folder.
             Does NOT delete the cookies from the web browser. """
+        if name.endswith('/'):
+            raise Exception("Invalid filename for Cookies!")
+        if '/' in name:
+            name = name.split('/')[-1]
+        if len(name) < 1:
+            raise Exception("Filename for Cookies is too short!")
+        if not name.endswith(".txt"):
+            name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % folder
