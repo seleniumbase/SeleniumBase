@@ -467,7 +467,7 @@ def save_screenshot(driver, name, folder=None):
     If the folder provided doesn't exist, it will get created.
     The screenshot will be in PNG format.
     """
-    if "." not in name:
+    if not name.endswith(".png"):
         name = name + ".png"
     if folder:
         abs_path = os.path.abspath('.')
@@ -497,7 +497,7 @@ def save_page_source(driver, name, folder=None):
     name - The file name to save the current page's HTML to.
     folder - The folder to save the file to. (Default = current folder)
     """
-    if "." not in name:
+    if not name.endswith(".html"):
         name = name + ".html"
     if folder:
         abs_path = os.path.abspath('.')
