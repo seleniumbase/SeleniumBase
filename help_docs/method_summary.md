@@ -159,6 +159,14 @@ self.save_screenshot(name, folder=None)
 
 self.save_page_source(name, folder=None)
 
+self.save_cookies(name="cookies.txt")
+
+self.load_cookies(name="cookies.txt")
+
+self.delete_all_cookies()
+
+self.delete_saved_cookies(name="cookies.txt")
+
 self.wait_for_ready_state_complete(timeout=None)
 
 self.wait_for_angularjs(timeout=None)
