@@ -1,6 +1,7 @@
 #### Some organizations that've grown their automation with SeleniumBase include:
 * [HubSpot](https://www.hubspot.com/)
 * [Veracode](https://www.veracode.com/)
+* [Autodesk](https://www.autodesk.com/)
 * [CA Technologies](https://www.ca.com/)
 * [Broadcom](https://www.broadcom.com/)
 * [iboss](https://www.iboss.com/)
