@@ -1479,6 +1479,67 @@ class BaseCase(unittest.TestCase):
         """
         return page_actions.save_page_source(self.driver, name, folder)
 
+    def save_cookies(self, name="cookies.txt"):
+        """ Saves the page cookies to the "saved_cookies" folder. """
+        cookies = self.driver.get_cookies()
+        json_cookies = json.dumps(cookies)
+        if name.endswith('/'):
+            raise Exception("Invalid filename for Cookies!")
+        if '/' in name:
+            name = name.split('/')[-1]
+        if len(name) < 1:
+            raise Exception("Filename for Cookies is too short!")
+        if not name.endswith(".txt"):
+            name = name + ".txt"
+        folder = constants.SavedCookies.STORAGE_FOLDER
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % folder
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file = codecs.open(cookies_file_path, "w+")
+        cookies_file.writelines(json_cookies)
+        cookies_file.close()
+
+    def load_cookies(self, name="cookies.txt"):
+        """ Loads the page cookies from the "saved_cookies" folder. """
+        if name.endswith('/'):
+            raise Exception("Invalid filename for Cookies!")
+        if '/' in name:
+            name = name.split('/')[-1]
+        if len(name) < 1:
+            raise Exception("Filename for Cookies is too short!")
+        if not name.endswith(".txt"):
+            name = name + ".txt"
+        folder = constants.SavedCookies.STORAGE_FOLDER
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % folder
+        cookies_file_path = "%s/%s" % (file_path, name)
+        f = open(cookies_file_path, 'r')
+        json_cookies = f.read().strip()
+        f.close()
+        cookies = json.loads(json_cookies)
+        for cookie in cookies:
+            if 'expiry' in cookie:
+                del cookie['expiry']
+            self.driver.add_cookie(cookie)
+
+    def delete_all_cookies(self):
+        """ Deletes all cookies in the web browser.
+            Does NOT delete the saved cookies file. """
+        self.driver.delete_all_cookies()
+
+    def delete_saved_cookies(self, name="cookies.txt"):
+        """ Deletes the cookies file from the "saved_cookies" folder.
+            Does NOT delete the cookies from the web browser. """
+        folder = constants.SavedCookies.STORAGE_FOLDER
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % folder
+        cookies_file_path = "%s/%s" % (file_path, name)
+        if os.path.exists(cookies_file_path):
+            if cookies_file_path.endswith('.txt'):
+                os.remove(cookies_file_path)
+
     def wait_for_ready_state_complete(self, timeout=None):
         try:
             # If there's an alert, skip
