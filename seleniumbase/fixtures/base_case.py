@@ -1925,17 +1925,20 @@ class BaseCase(unittest.TestCase):
         soup = self.get_beautiful_soup(self.get_page_source())
         page_utils._print_unique_links_with_status_codes(page_url, soup)
 
-    def assert_pdf_text(self, pdf, text, page=None):
-        """ Asserts text in a PDF file.
+    def __get_pdf_reader_obj(self, pdf_file_object, strict=False):
+        import PyPDF2
+        pdf_reader_object = PyPDF2.PdfFileReader(pdf_file_object, strict)
+        return pdf_reader_object
+
+    def get_pdf_text(self, pdf, page=None):
+        """ Gets text from a PDF file.
             PDF can be either a URL or a file path on the local file system.
             @Params
             pdf - The URL or file path of the PDF file.
-            text - The expected text to verify in the PDF.
             page - The page number of the PDF to use (optional).
                     If a page number is provided, looks only at that page.
                         (1 is the first page, 2 is the second page, etc.)
-                    If no page number is provided, looks at all the pages. """
-        import PyPDF2
+                    If no page number is provided, returns all PDF text. """
         if not pdf.lower().endswith('.pdf'):
             raise Exception("%s is not a PDF file! (Expecting a .pdf)" % pdf)
         file_path = None
@@ -1950,25 +1953,41 @@ class BaseCase(unittest.TestCase):
                 raise Exception("%s is not a valid URL or file path!" % pdf)
             file_path = os.path.abspath(pdf)
         pdf_file_object = open(file_path, "rb")
-        pdf_reader = PyPDF2.PdfFileReader(pdf_file_object, strict=False)
+        pdf_reader = self.__get_pdf_reader_obj(pdf_file_object, strict=False)
         num_pages = pdf_reader.numPages
+        pdf_text = ""
         if type(page) is int:
             if page > num_pages:
                 raise Exception("Invalid page number for the PDF!")
             page = page - 1
             page_obj = pdf_reader.getPage(page)
-            pdf_page_text = page_obj.extractText()
-            if text not in pdf_page_text:
-                raise Exception("PDF [%s] is missing expected text [%s] on "
-                                "page [%s]!" % (file_path, text, page))
+            pdf_text = page_obj.extractText()
         else:
             for page_num in range(num_pages):
                 page_obj = pdf_reader.getPage(page_num)
-                pdf_page_text = page_obj.extractText()
-                if text in pdf_page_text:
-                    return
-            raise Exception("PDF [%s] is missing expected text [%s]!"
-                            "" % (file_path, text))
+                pdf_text = pdf_text + '\n' + page_obj.extractText()
+        return pdf_text
+
+    def assert_pdf_text(self, pdf, text, page=None):
+        """ Asserts text in a PDF file.
+            PDF can be either a URL or a file path on the local file system.
+            @Params
+            pdf - The URL or file path of the PDF file.
+            text - The expected text to verify in the PDF.
+            page - The page number of the PDF to use (optional).
+                    If a page number is provided, looks only at that page.
+                        (1 is the first page, 2 is the second page, etc.)
+                    If no page number is provided, looks at all the pages. """
+        pdf_text = self.get_pdf_text(pdf, page=page)
+        if type(page) is int:
+            if text not in pdf_text:
+                raise Exception("PDF [%s] is missing expected text [%s] on "
+                                "page [%s]!" % (pdf, text, page))
+        else:
+            if text not in pdf_text:
+                raise Exception("PDF [%s] is missing expected text [%s]!"
+                                "" % (pdf, text))
+        return True
 
     def create_folder(self, folder):
         """ Creates a folder of the given name if it doesn't already exist. """
