@@ -219,6 +219,8 @@ self.assert_no_404_errors(multithreaded=True)
 
 self.print_unique_links_with_status_codes()
 
+self.get_pdf_text(pdf, page=None)
+
 self.assert_pdf_text(pdf, text, page=None)
 
 self.create_folder(folder)
