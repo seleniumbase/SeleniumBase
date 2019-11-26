@@ -947,6 +947,7 @@ class BaseCase(unittest.TestCase):
         """ Returns a list of matching WebElements.
             If "limit" is set and > 0, will only return that many elements. """
         self.wait_for_ready_state_complete()
+        time.sleep(0.05)
         selector, by = self.__recalculate_selector(selector, by)
         elements = self.driver.find_elements(by=by, value=selector)
         if limit and limit > 0 and len(elements) > limit:
@@ -957,6 +958,7 @@ class BaseCase(unittest.TestCase):
         """ Returns a list of matching WebElements that are visible.
             If "limit" is set and > 0, will only return that many elements. """
         self.wait_for_ready_state_complete()
+        time.sleep(0.05)
         selector, by = self.__recalculate_selector(selector, by)
         v_elems = page_actions.find_visible_elements(self.driver, selector, by)
         if limit and limit > 0 and len(v_elems) > limit:
