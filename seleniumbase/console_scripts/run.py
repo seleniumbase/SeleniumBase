@@ -42,6 +42,7 @@ def show_usage():
 def show_basic_usage():
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
+    print("%s" % get_version()[0:1])
     print("")
     print('Usage: "seleniumbase [COMMAND] [PARAMETERS]"')
     print("Commands:")
@@ -256,6 +257,16 @@ def show_grid_node_usage():
     print("")
 
 
+def get_version():
+    import pkg_resources
+    return pkg_resources.require("seleniumbase")[0:1]
+
+
+def show_version_info():
+    version = get_version()
+    print('\n%s\n' % version)
+
+
 def show_detailed_help():
     show_basic_usage()
     print("More Info:")
@@ -359,6 +370,11 @@ def main():
         else:
             show_basic_usage()
             show_grid_node_usage()
+    elif command == "version" or command == "--version":
+        if len(command_args) == 0:
+            show_version_info()
+        else:
+            show_basic_usage()
     elif command == "help" or command == "--help":
         if len(command_args) >= 1:
             if command_args[0] == "install":
