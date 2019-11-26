@@ -100,6 +100,8 @@ self.find_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
 self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
+self.click_nth_visible_element(selector, number, by=By.CSS_SELECTOR)
+
 self.click_if_visible(selector, by=By.CSS_SELECTOR)
 
 self.is_element_in_an_iframe(selector, by=By.CSS_SELECTOR)
