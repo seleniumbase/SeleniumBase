@@ -1,10 +1,8 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_f2.png" title="SeleniumBase" align="center" height="120">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_d.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## Running Tests
 
-To run tests, make sure you've already installed SeleniumBase using ``pip install seleniumbase`` OR ``pip install -r requirements.txt`` + ``python setup.py install`` from the top-level directory.
-
-You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
+SeleniumBase tests can be run with either **pytest** or **nosetests**, but using pytest is strongly recommended. Chrome is the default browser if not specified.
 
 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)
 
