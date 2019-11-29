@@ -30,7 +30,7 @@ class MyTourClass(BaseCase):
         # Create a website tour using the Bootstrap Tour JS library
         # Same as:  self.create_bootstrap_tour()
         self.create_tour(theme="bootstrap")
-        self.add_tour_step("See results here!", title="(autoplay in 5s)")
+        self.add_tour_step("See Results Here!", title="(5-second autoplay)")
         self.add_tour_step("Here's the next tour:")
         self.play_tour(interval=5)  # Tour automatically continues after 5 sec
 

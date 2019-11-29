@@ -24,8 +24,7 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#search")
 
         self.create_shepherd_tour(theme="square-dark")
-        self.add_tour_step(
-            "See results here!", title="(autoplay in 5s)", theme="square")
+        self.add_tour_step("See Results Here!", title="(5-second autoplay)")
         self.add_tour_step("Here's the next tour:")
         self.play_tour(interval=5)  # Tour automatically continues after 5 sec
 
