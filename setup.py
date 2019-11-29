@@ -99,7 +99,8 @@ setup(
         'pytest>=5.3.1;python_version>="3"',
         'pytest-cov>=2.8.1',
         'pytest-forked>=1.1.3',
-        'pytest-html==1.22.0',  # Keep at 1.22.0 unless tested on Windows
+        'pytest-html==1.22.1;python_version<"3"',
+        'pytest-html==2.0.1;python_version>="3"',
         'pytest-metadata>=1.8.0',
         'pytest-ordering>=0.6',
         'pytest-rerunfailures>=8.0',
