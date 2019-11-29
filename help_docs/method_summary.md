@@ -221,9 +221,11 @@ self.assert_no_404_errors(multithreaded=True)
 
 self.print_unique_links_with_status_codes()
 
-self.get_pdf_text(pdf, page=None)
+self.get_pdf_text(pdf, page=None, maxpages=None, password=None,
+                  codec='utf-8', wrap=False, nav=False, override=False)
 
-self.assert_pdf_text(pdf, text, page=None)
+self.assert_pdf_text(pdf, text, page=None, maxpages=None, password=None,
+                     codec='utf-8', wrap=True, nav=False, override=False)
 
 self.create_folder(folder)
 

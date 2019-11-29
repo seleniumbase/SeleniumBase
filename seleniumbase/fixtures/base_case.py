@@ -1949,50 +1949,84 @@ class BaseCase(unittest.TestCase):
         soup = self.get_beautiful_soup(self.get_page_source())
         page_utils._print_unique_links_with_status_codes(page_url, soup)
 
-    def __get_pdf_reader_obj(self, pdf_file_object, strict=False):
-        import PyPDF2
-        pdf_reader_object = PyPDF2.PdfFileReader(pdf_file_object, strict)
-        return pdf_reader_object
+    def __fix_unicode_conversion(self, text):
+        """ Fixing Chinese characters when converting from PDF to HTML. """
+        text = text.replace(u'\u2f8f', u'\u884c')
+        text = text.replace(u'\u2f45', u'\u65b9')
+        text = text.replace(u'\u2f08', u'\u4eba')
+        text = text.replace(u'\u2f70', u'\u793a')
+        return text
 
-    def get_pdf_text(self, pdf, page=None):
+    def get_pdf_text(self, pdf, page=None, maxpages=None,
+                     password=None, codec='utf-8', wrap=False, nav=False,
+                     override=False):
         """ Gets text from a PDF file.
             PDF can be either a URL or a file path on the local file system.
             @Params
             pdf - The URL or file path of the PDF file.
-            page - The page number of the PDF to use (optional).
+            page - The page number (or a list of page numbers) of the PDF.
                     If a page number is provided, looks only at that page.
                         (1 is the first page, 2 is the second page, etc.)
-                    If no page number is provided, returns all PDF text. """
+                    If no page number is provided, returns all PDF text.
+            maxpages - Instead of providing a page number, you can provide
+                       the number of pages to use from the beginning.
+            password - If the PDF is password-protected, enter it here.
+            codec - The compression format for character encoding.
+                    (The default codec used by this method is 'utf-8'.)
+            wrap - Replaces ' \n' with ' ' so that individual sentences
+                   from a PDF don't get broken up into seperate lines when
+                   getting converted into text format.
+            nav - If PDF is a URL, navigates to the URL in the browser first.
+                  (Not needed because the PDF will be downloaded anyway.)
+            override - If the PDF file to be downloaded already exists in the
+                       downloaded_files/ folder, that PDF will be used
+                       instead of downloading it again. """
+        from pdfminer.high_level import extract_text
+        if not password:
+            password = ''
+        if not maxpages:
+            maxpages = 0
         if not pdf.lower().endswith('.pdf'):
             raise Exception("%s is not a PDF file! (Expecting a .pdf)" % pdf)
         file_path = None
         if page_utils.is_valid_url(pdf):
-            if self.get_current_url() != pdf:
-                self.open(pdf)
-            self.download_file(pdf)
+            if nav:
+                if self.get_current_url() != pdf:
+                    self.open(pdf)
             file_name = pdf.split('/')[-1]
             file_path = self.get_downloads_folder() + '/' + file_name
+            if not os.path.exists(file_path):
+                self.download_file(pdf)
+            elif override:
+                self.download_file(pdf)
         else:
             if not os.path.exists(pdf):
                 raise Exception("%s is not a valid URL or file path!" % pdf)
             file_path = os.path.abspath(pdf)
-        pdf_file_object = open(file_path, "rb")
-        pdf_reader = self.__get_pdf_reader_obj(pdf_file_object, strict=False)
-        num_pages = pdf_reader.numPages
-        pdf_text = ""
-        if type(page) is int:
-            if page > num_pages:
-                raise Exception("Invalid page number for the PDF!")
+        page_search = None  # (Pages are delimited by '\x0c')
+        if type(page) is list:
+            pages = page
+            page_search = []
+            for page in pages:
+                page_search.append(page - 1)
+        elif type(page) is int:
             page = page - 1
-            page_obj = pdf_reader.getPage(page)
-            pdf_text = page_obj.extractText()
+            if page < 0:
+                page = 0
+            page_search = [page]
         else:
-            for page_num in range(num_pages):
-                page_obj = pdf_reader.getPage(page_num)
-                pdf_text = pdf_text + '\n' + page_obj.extractText()
+            page_search = None
+        pdf_text = extract_text(
+            file_path, password='', page_numbers=page_search,
+            maxpages=maxpages, caching=False, codec=codec)
+        pdf_text = self.__fix_unicode_conversion(pdf_text)
+        if wrap:
+            pdf_text = pdf_text.replace(' \n', ' ')
         return pdf_text
 
-    def assert_pdf_text(self, pdf, text, page=None):
+    def assert_pdf_text(self, pdf, text, page=None, maxpages=None,
+                        password=None, codec='utf-8', wrap=True, nav=False,
+                        override=False):
         """ Asserts text in a PDF file.
             PDF can be either a URL or a file path on the local file system.
             @Params
@@ -2001,8 +2035,26 @@ class BaseCase(unittest.TestCase):
             page - The page number of the PDF to use (optional).
                     If a page number is provided, looks only at that page.
                         (1 is the first page, 2 is the second page, etc.)
-                    If no page number is provided, looks at all the pages. """
-        pdf_text = self.get_pdf_text(pdf, page=page)
+                    If no page number is provided, looks at all the pages.
+            maxpages - Instead of providing a page number, you can provide
+                       the number of pages to use from the beginning.
+            password - If the PDF is password-protected, enter it here.
+            codec - The compression format for character encoding.
+                    (The default codec used by this method is 'utf-8'.)
+            wrap - Replaces ' \n' with ' ' so that individual sentences
+                   from a PDF don't get broken up into seperate lines when
+                   getting converted into text format.
+            nav - If PDF is a URL, navigates to the URL in the browser first.
+                  (Not needed because the PDF will be downloaded anyway.)
+            override - If the PDF file to be downloaded already exists in the
+                       downloaded_files/ folder, that PDF will be used
+                       instead of downloading it again. """
+        text = self.__fix_unicode_conversion(text)
+        if not codec:
+            codec = 'utf-8'
+        pdf_text = self.get_pdf_text(
+            pdf, page=page, maxpages=maxpages, password=password, codec=codec,
+            wrap=wrap, nav=nav, override=override)
         if type(page) is int:
             if text not in pdf_text:
                 raise Exception("PDF [%s] is missing expected text [%s] on "

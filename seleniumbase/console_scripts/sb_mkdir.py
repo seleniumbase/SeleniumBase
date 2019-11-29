@@ -55,6 +55,7 @@ def main():
         data.append("addopts = --capture=no --ignore conftest.py "
                     "-p no:cacheprovider")
         data.append("filterwarnings = ignore::pytest.PytestWarning")
+        data.append("junit_family = legacy")
         data.append("python_files = test_*.py *_test.py *_tests.py *_suite.py")
         data.append("python_classes = Test* *Test* *Test *Tests *Suite")
         data.append("python_functions = test_*")
