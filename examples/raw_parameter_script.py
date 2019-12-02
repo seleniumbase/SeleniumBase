@@ -42,6 +42,7 @@ except (ImportError, ValueError):
     sb.archive_logs = False
     sb.disable_csp = False
     sb.enable_sync = False
+    sb._reuse_session = False
     sb.visual_baseline = False
     sb.maximize_option = False
     sb.save_screenshot_after_test = False

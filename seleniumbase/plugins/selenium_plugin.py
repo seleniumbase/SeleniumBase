@@ -287,6 +287,7 @@ class SeleniumBrowser(Plugin):
         test.test.visual_baseline = self.options.visual_baseline
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.use_grid = False
+        test.test._reuse_session = False
         if test.test.servername != "localhost":
             # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
             test.test.use_grid = True

@@ -39,6 +39,7 @@ def pytest_addoption(parser):
     --verify_delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable_csp  (This disables the Content Security Policy of websites.)
     --enable_sync  (The option to enable "Chrome Sync".)
+    --reuse_session  (The option to reuse the browser session between tests.)
     --maximize_window  (The option to start with the web browser maximized.)
     --save_screenshot  (The option to save a screenshot after each test.)
     --visual_baseline  (Set the visual baseline for Visual/Layout tests.)
@@ -292,6 +293,12 @@ def pytest_addoption(parser):
                      dest='enable_sync',
                      default=False,
                      help="""Using this enables the "Chrome Sync" feature.""")
+    parser.addoption('--reuse_session', '--reuse-session',
+                     action="store_true",
+                     dest='reuse_session',
+                     default=False,
+                     help="""The option to reuse the selenium browser window
+                          session between tests.""")
     parser.addoption('--maximize_window', '--maximize-window', '--maximize',
                      '--fullscreen',
                      action="store_true",
@@ -360,11 +367,17 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.enable_sync = config.getoption('enable_sync')
+    sb_config.reuse_session = config.getoption('reuse_session')
+    sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.maximize_option = config.getoption('maximize_option')
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
+
+    if sb_config.reuse_session:
+        if "".join(sys.argv) == "-c":  # Can't "reuse_session" if multithreaded
+            sb_config.reuse_session = False
 
     if "linux" in sys.platform and (
             not sb_config.headed and not sb_config.headless):
@@ -383,6 +396,16 @@ def pytest_configure(config):
 def pytest_unconfigure():
     """ This runs after all tests have completed with pytest. """
     proxy_helper.remove_proxy_zip_if_present()
+    if sb_config.reuse_session:
+        # Close the shared browser session
+        if sb_config.shared_driver:
+            try:
+                sb_config.shared_driver.quit()
+            except AttributeError:
+                pass
+            except Exception:
+                pass
+        sb_config.shared_driver = None
 
 
 def pytest_runtest_setup():

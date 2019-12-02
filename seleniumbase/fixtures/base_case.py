@@ -4122,6 +4122,7 @@ class BaseCase(unittest.TestCase):
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
             self.maximize_option = sb_config.maximize_option
+            self._reuse_session = sb_config.reuse_session
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
@@ -4192,21 +4193,50 @@ class BaseCase(unittest.TestCase):
         if self.settings_file:
             settings_parser.set_settings(self.settings_file)
 
-        # Launch WebDriver for both Pytest and Nosetests
-        self.driver = self.get_new_driver(browser=self.browser,
-                                          headless=self.headless,
-                                          servername=self.servername,
-                                          port=self.port,
-                                          proxy=self.proxy_string,
-                                          agent=self.user_agent,
-                                          switch_to=True,
-                                          cap_file=self.cap_file,
-                                          disable_csp=self.disable_csp,
-                                          enable_sync=self.enable_sync,
-                                          user_data_dir=self.user_data_dir,
-                                          extension_zip=self.extension_zip,
-                                          extension_dir=self.extension_dir)
-        self._default_driver = self.driver
+        has_url = False
+        if self._reuse_session:
+            if not hasattr(sb_config, 'shared_driver'):
+                sb_config.shared_driver = None
+            if sb_config.shared_driver:
+                try:
+                    self._default_driver = sb_config.shared_driver
+                    self.driver = sb_config.shared_driver
+                    self._drivers_list = [sb_config.shared_driver]
+                    url = self.get_current_url()
+                    if len(url) > 3:
+                        has_url = True
+                except Exception:
+                    pass
+
+        if self._reuse_session and sb_config.shared_driver and has_url:
+            if self.start_page and len(self.start_page) >= 4:
+                if page_utils.is_valid_url(self.start_page):
+                    self.open(self.start_page)
+                else:
+                    new_start_page = "http://" + self.start_page
+                    if page_utils.is_valid_url(new_start_page):
+                        self.open(new_start_page)
+            else:
+                if self.get_current_url() != "data:,":
+                    self.open("data:,")
+        else:
+            # Launch WebDriver for both Pytest and Nosetests
+            self.driver = self.get_new_driver(browser=self.browser,
+                                              headless=self.headless,
+                                              servername=self.servername,
+                                              port=self.port,
+                                              proxy=self.proxy_string,
+                                              agent=self.user_agent,
+                                              switch_to=True,
+                                              cap_file=self.cap_file,
+                                              disable_csp=self.disable_csp,
+                                              enable_sync=self.enable_sync,
+                                              user_data_dir=self.user_data_dir,
+                                              extension_zip=self.extension_zip,
+                                              extension_dir=self.extension_dir)
+            self._default_driver = self.driver
+            if self._reuse_session:
+                sb_config.shared_driver = self.driver
 
     def __set_last_page_screenshot(self):
         """ self.__last_page_screenshot is only for pytest html report logs
@@ -4280,6 +4310,16 @@ class BaseCase(unittest.TestCase):
             pass
 
     def __quit_all_drivers(self):
+        if self._reuse_session and sb_config.shared_driver:
+            if len(self._drivers_list) > 0:
+                sb_config.shared_driver = self._drivers_list[0]
+                self._default_driver = self._drivers_list[0]
+                self.switch_to_default_driver()
+            if len(self._drivers_list) > 1:
+                self._drivers_list = self._drivers_list[1:]
+            else:
+                self._drivers_list = []
+
         # Close all open browser windows
         self._drivers_list.reverse()  # Last In, First Out
         for driver in self._drivers_list:
@@ -4290,6 +4330,7 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
         self.driver = None
+        self._default_driver = None
         self._drivers_list = []
 
     def tearDown(self):
