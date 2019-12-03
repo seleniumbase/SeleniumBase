@@ -85,9 +85,9 @@ self.execute_script(JAVASCRIPT)  # Execute javascript code
 self.go_back()  # Navigate to the previous URL
 self.get_text(SELECTOR)  # Get text from a selector
 self.get_attribute(SELECTOR, ATTRIBUTE)  # Get a specific attribute from a selector
-self.is_element_visible(SELECTOR)  # Find out if an element is visible on the page
-self.is_text_visible(TEXT)  # Find out if specific text is visible on the page (optional SELECTOR arg)
-self.hover_and_click(HOVER_SELECTOR, CLICK_SELECTOR)  # Mouseover an element and click another element
+self.is_element_visible(SELECTOR)  # Determine if an element is visible on the page
+self.is_text_visible(TEXT)  # Determine if text is visible on the page (optional SELECTOR)
+self.hover_and_click(HOVER_SELECTOR, CLICK_SELECTOR)  # Mouseover element & click another
 self.select_option_by_text(DROPDOWN_SELECTOR, OPTION_TEXT)  # Select a dropdown option
 self.switch_to_frame(FRAME_NAME)  # Switch webdriver control to an iframe on the page
 self.switch_to_default_content()  # Switch webdriver control out of the current iframe
@@ -178,9 +178,9 @@ pytest --collect-only -q
 You can use the following in your scripts to help you debug issues:
 (<i>If using ipdb, make sure you add "-s" to command-line options unless already in pytest.ini</i>)
 ```python
-import time; time.sleep(5)  # Sleeps for 5 seconds (add this after the line you want to pause on)
-import ipdb; ipdb.set_trace()  # Waits for user input. n = next line, c = continue, s = step.
-import pytest; pytest.set_trace()  # Waits for user input. n = next line, c = continue, s = step.
+import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
+import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
 **To pause an active test that throws an exception or error, add ``--pdb -s``:**
@@ -194,7 +194,7 @@ Here are some other useful command-line options that come with Pytest:
 -v  # Prints the full test name for each test.
 -q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
---html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
@@ -203,36 +203,37 @@ Here are some other useful command-line options that come with Pytest:
 SeleniumBase provides additional Pytest command-line options for tests:
 ```bash
 --browser=BROWSER  # (The web browser to use.)
---cap_file=FILE  # (The web browser's desired capabilities to use.)
---settings_file=FILE  # (Overrides SeleniumBase settings.py values.)
+--cap-file=FILE  # (The web browser's desired capabilities to use.)
+--settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
 --env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
 --data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
---user_data_dir=DIR  # (Set the Chrome user data directory to use.)
+--user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --server=SERVER  # (The server / IP address used by the tests.)
 --port=PORT  # (The port that's used by the test server.)
 --proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
 --agent=STRING  # (This designates the web browser's User Agent to use.)
---extension_zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
---extension_dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (The option to run tests headlessly. The default on Linux OS.)
 --headed  # (The option to run tests with a GUI on Linux OS.)
---start_page=URL  # (The starting URL for the web browser when tests begin.)
---log_path=LOG_PATH  # (The directory where log files get saved to.)
---archive_logs  # (Archive old log files instead of deleting them.)
+--start-page=URL  # (The starting URL for the web browser when tests begin.)
+--log-path=LOG_PATH  # (The directory where log files get saved to.)
+--archive-logs  # (Archive old log files instead of deleting them.)
 --slow  # (The option to slow down the automation.)
 --demo  # (The option to visually see test actions as they occur.)
---demo_sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--demo-sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
---message_duration=SECONDS  # (The time length for Messenger alerts.)
---check_js  # (The option to check for JavaScript errors after page loads.)
---ad_block  # (The option to block some display ads after page loads.)
---verify_delay=SECONDS  # (The delay before MasterQA verification checks.)
---disable_csp  # (This disables the Content Security Policy of websites.)
---enable_sync  # (The option to enable "Chrome Sync".)
---maximize_window  # (The option to start with the web browser maximized.)
---save_screenshot  # (The option to save a screenshot after each test.)
---visual_baseline  # (Set the visual baseline for Visual/Layout tests.)
---timeout_multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
+--message-duration=SECONDS  # (The time length for Messenger alerts.)
+--check-js  # (The option to check for JavaScript errors after page loads.)
+--ad-block  # (The option to block some display ads after page loads.)
+--verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--disable-csp  # (This disables the Content Security Policy of websites.)
+--enable-sync  # (The option to enable "Chrome Sync".)
+--reuse-session  # (The option to reuse the browser session between tests.)
+--maximize-window  # (The option to start with the web browser maximized.)
+--save-screenshot  # (The option to save a screenshot after each test.)
+--visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
+--timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 

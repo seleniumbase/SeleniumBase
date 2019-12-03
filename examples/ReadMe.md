@@ -22,7 +22,7 @@ pytest my_first_test.py --browser=firefox
 
 Run an example test in Demo Mode (highlights page objects being acted on):
 ```bash
-pytest my_first_test.py --demo_mode
+pytest my_first_test.py --demo
 ```
 
 Run an example test demonstrating parameterization:
@@ -37,7 +37,7 @@ pytest test_suite.py --html=report.html
 
 Run an example test suite and generate a nosetest report: (nosetests-only)
 ```bash
-nosetests test_suite.py --report --show_report
+nosetests test_suite.py --report --show-report
 ```
 
 Run an example test using a nosetest configuration file: (nosetests-only)
@@ -58,6 +58,11 @@ pytest test_fail.py
 Run a failing test with Debugging-mode enabled: (If a test failure occurs, pdb activates)
 ```bash
 pytest test_fail.py --pdb -s
+```
+
+Run an example test suite that reuses the browser session between tests:
+```bash
+pytest test_suite.py --reuse-session
 ```
 
 Run an example test suite that demonstrates the use of pytest markers:
