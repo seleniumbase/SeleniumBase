@@ -16,11 +16,11 @@ class Base(Plugin):
     This parser plugin includes the following command-line options for Nose:
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
-    --settings_file=FILE  (Overrides SeleniumBase settings.py values.)
-    --log_path=LOG_PATH  (The directory where log files get saved to.)
-    --archive_logs  (Archive old log files instead of deleting them.)
+    --settings-file=FILE  (Overrides SeleniumBase settings.py values.)
+    --log-path=LOG_PATH  (The directory where log files get saved to.)
+    --archive-logs  (Archive old log files instead of deleting them.)
     --report  (The option to create a fancy report after tests complete.)
-    --show_report   If self.report is turned on, then the report will
+    --show-report   If self.report is turned on, then the report will
                     display immediately after tests complete their run.
                     Only use this when running tests locally, as this will
                     pause the test run until the report window is closed.
@@ -30,7 +30,8 @@ class Base(Plugin):
     def options(self, parser, env):
         super(Base, self).options(parser, env=env)
         parser.add_option(
-            '--env', action='store',
+            '--env',
+            action='store',
             dest='environment',
             choices=(
                 constants.Environment.QA,
@@ -43,7 +44,8 @@ class Base(Plugin):
             default=constants.Environment.TEST,
             help="The environment to run the tests in.")
         parser.add_option(
-            '--data', dest='data',
+            '--data',
+            dest='data',
             default=None,
             help='Extra data to pass from the command line.')
         parser.add_option(
@@ -54,20 +56,25 @@ class Base(Plugin):
             help="""The file that stores key/value pairs for overriding
                     values in the SeleniumBase settings.py file.""")
         parser.add_option(
-            '--log_path', dest='log_path',
+            '--log_path', '--log-path',
+            dest='log_path',
             default='latest_logs/',
             help='Where the log files are saved.')
         parser.add_option(
-            '--archive_logs', action="store_true",
+            '--archive_logs', '--archive-logs',
+            action="store_true",
             dest='archive_logs',
             default=False,
             help="Archive old log files instead of deleting them.")
         parser.add_option(
-            '--report', action="store_true", dest='report',
+            '--report',
+            action="store_true",
+            dest='report',
             default=False,
             help='Create a fancy report at the end of the test suite.')
         parser.add_option(
-            '--show_report', action="store_true",
+            '--show_report', '--show-report',
+            action="store_true",
             dest='show_report',
             default=False,
             help="If true when using report, will display it after tests run.")

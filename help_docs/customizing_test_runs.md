@@ -11,9 +11,10 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 * Choose the User-Agent for the browser to use
 * Choose the automation speed (with Demo Mode)
 * Choose whether to run tests multi-threaded
-* Choose whether to retry failing tests
-* Choose a Chrome User Data Directory to use
+* Choose whether to rerun failing tests
+* Choose whether to reuse the browser session
 * Choose a Chrome Extension to load
+* Choose a Chrome User Data Directory to use
 * Choose a BrowserStack server to run on
 * Choose a Sauce Labs server to run on
 * Choose a TestingBot server to run on
@@ -26,24 +27,27 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 
 #### **Examples:**
 
-(These are run from the **[examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)** folder.)
+These are run from the **[examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)** folder.
+(Chrome is the default browser if not specified.)
 
 ```bash
 pytest my_first_test.py
 
-pytest my_first_test.py --demo_mode --browser=chrome
+pytest my_first_test.py --demo
 
 pytest my_first_test.py --browser=firefox
 
 pytest test_suite.py --html=report.html
 
-nosetests test_suite.py --report --show_report
+nosetests test_suite.py --report --show-report
 
-pytest test_suite.py --headless -n 4
+pytest test_suite.py --headless -n=4
 
-pytest test_suite.py --reruns 1 --reruns-delay 2
+pytest test_suite.py --reruns=1 --reruns-delay=1
 
 pytest test_suite.py --server=IP_ADDRESS --port=4444
+
+pytest test_suite.py --reuse-session
 
 pytest test_fail.py --pdb -s
 
@@ -51,9 +55,9 @@ pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 
-pytest user_agent_test.py --agent="USER-AGENT STRING"
+pytest user_agent_test.py --agent="USER-AGENT-STRING"
 
-pytest my_first_test.py --settings_file=custom_settings.py
+pytest my_first_test.py --settings-file=custom_settings.py
 ```
 
 You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
@@ -62,7 +66,7 @@ You can interchange **pytest** with **nosetests**, but using pytest is strongly 
 
 An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
-``--settings_file=custom_settings.py``
+``--settings-file=custom_settings.py``
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
 #### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, (or your own):**
@@ -103,16 +107,16 @@ pytest test_suite.py --browser=chrome
 
 #### **Demo Mode:**
 
-If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo_mode`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
 ```bash
-pytest my_first_test.py --browser=chrome --demo_mode
+pytest my_first_test.py --demo
 ```
 
-You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo_sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo_sleep={NUM}`` without using ``--demo_mode``, nothing will happen.)
+You can override the default wait time by either updating [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) or by using ``--demo-sleep={NUM}`` when using Demo Mode. (NOTE: If you use ``--demo-sleep={NUM}`` without using ``--demo``, nothing will happen.)
 
 ```bash
-pytest my_first_test.py --browser=chrome --demo_mode --demo_sleep=1.2
+pytest my_first_test.py --demo --demo-sleep=1.2
 ```
 
 #### **Passing additional data to tests:**
@@ -125,24 +129,24 @@ To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or
 
 #### **Retrying failing tests automatically:**
 
-You can use ``--reruns NUM`` to retry failing tests that many times. Use ``--reruns-delay SECONDS`` to wait that many seconds between retries. Example:
+You can use ``--reruns=NUM`` to retry failing tests that many times. Use ``--reruns-delay=SECONDS`` to wait that many seconds between retries. Example:
 ```
-pytest --reruns 5 --reruns-delay 1
+pytest --reruns=2 --reruns-delay=1
 ```
 
 #### **Debugging tests:**
 
 **You can use the following code snippets in your scripts to help you debug issues:**
 ```python
-import time; time.sleep(5)  # sleep for 5 seconds (add this after the line you want to pause on)
-import ipdb; ipdb.set_trace()  # waits for your command. n = next line of current method, c = continue, s = step / next executed line (will jump)
-import pytest; pytest.set_trace()  # similar to ipdb, but specific to pytest
+import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
+import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
+import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
 **To pause an active test that throws an exception or error, add ``--pdb -s``:**
 
 ```bash
-pytest my_first_test.py --browser=chrome --pdb -s
+pytest my_first_test.py --pdb -s
 ```
 
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
@@ -181,36 +185,37 @@ Here are some other useful command-line options that come with Pytest:
 SeleniumBase provides additional Pytest command-line options for tests:
 ```bash
 --browser=BROWSER  # (The web browser to use.)
---cap_file=FILE  # (The web browser's desired capabilities to use.)
---settings_file=FILE  # (Overrides SeleniumBase settings.py values.)
+--cap-file=FILE  # (The web browser's desired capabilities to use.)
+--settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
 --env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
 --data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
---user_data_dir=DIR  # (Set the Chrome user data directory to use.)
+--user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --server=SERVER  # (The server / IP address used by the tests.)
 --port=PORT  # (The port that's used by the test server.)
 --proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
 --agent=STRING  # (This designates the web browser's User Agent to use.)
---extension_zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
---extension_dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (The option to run tests headlessly. The default on Linux OS.)
 --headed  # (The option to run tests with a GUI on Linux OS.)
---start_page=URL  # (The starting URL for the web browser when tests begin.)
---log_path=LOG_PATH  # (The directory where log files get saved to.)
---archive_logs  # (Archive old log files instead of deleting them.)
+--start-page=URL  # (The starting URL for the web browser when tests begin.)
+--log-path=LOG_PATH  # (The directory where log files get saved to.)
+--archive-logs  # (Archive old log files instead of deleting them.)
 --slow  # (The option to slow down the automation.)
 --demo  # (The option to visually see test actions as they occur.)
---demo_sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--demo-sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
---message_duration=SECONDS  # (The time length for Messenger alerts.)
---check_js  # (The option to check for JavaScript errors after page loads.)
---ad_block  # (The option to block some display ads after page loads.)
---verify_delay=SECONDS  # (The delay before MasterQA verification checks.)
---disable_csp  # (This disables the Content Security Policy of websites.)
---enable_sync  # (The option to enable "Chrome Sync".)
---maximize_window  # (The option to start with the web browser maximized.)
---save_screenshot  # (The option to save a screenshot after each test.)
---visual_baseline  # (Set the visual baseline for Visual/Layout tests.)
---timeout_multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
+--message-duration=SECONDS  # (The time length for Messenger alerts.)
+--check-js  # (The option to check for JavaScript errors after page loads.)
+--ad-block  # (The option to block some display ads after page loads.)
+--verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--disable-csp  # (This disables the Content Security Policy of websites.)
+--enable-sync  # (The option to enable "Chrome Sync".)
+--reuse-session  # (The option to reuse the browser session between tests.)
+--maximize-window  # (The option to start with the web browser maximized.)
+--save-screenshot  # (The option to save a screenshot after each test.)
+--visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
+--timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
@@ -236,7 +241,7 @@ pytest proxy_test.py --proxy=proxy1
 
 #### **Changing the User-Agent:**
 
-If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT STRING"`` as an argument on the command line.
+If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT-STRING"`` as an argument on the command line.
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
