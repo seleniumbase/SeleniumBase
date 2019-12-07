@@ -173,6 +173,8 @@ self.wait_for_ready_state_complete(timeout=None)
 
 self.wait_for_angularjs(timeout=None)
 
+self.sleep(seconds)
+
 self.activate_jquery()
 
 self.bring_to_front(selector, by=By.CSS_SELECTOR)
