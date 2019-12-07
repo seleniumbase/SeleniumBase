@@ -1608,6 +1608,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         js_utils.wait_for_angularjs(self.driver, timeout, **kwargs)
 
+    def sleep(self, seconds):
+        time.sleep(seconds)
+
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
