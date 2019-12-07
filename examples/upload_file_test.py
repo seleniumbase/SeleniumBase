@@ -8,8 +8,10 @@ class FileUploadButtonTests(BaseCase):
     def test_file_upload_button(self):
         self.open("https://www.w3schools.com/jsref/tryit.asp"
                   "?filename=tryjsref_fileupload_get")
-        self.wait_for_element('[id*="google_ads"]')
-        self.remove_elements('[id*="google_ads"]')
+        if not self.ad_block_on:
+            # If ad-blocking is disabled, block anyway.
+            self.wait_for_element('[id*="google_ads"]')
+            self.remove_elements('[id*="google_ads"]')
         self.switch_to_frame('iframeResult')
         self.add_css_style(
             'input[type="file"]{zoom: 1.5;-moz-transform: scale(1.5);}')
