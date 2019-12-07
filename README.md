@@ -4,6 +4,12 @@
 
 All-in-one framework for web automation, end-to-end testing, and website tours. SeleniumBase uses pytest for running Python scripts, while using Selenium WebDriver for controlling web browsers.
 
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
+(<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) in Demo Mode.</i>)<br />
+```
+pytest my_first_test.py --demo
+```
+
 * Contains reliable, smart-waiting code to prevent flaky tests.
 * Simplifies the process of creating UI tests for any website.
 * Includes [Plugins](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) for logging [test results and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
@@ -13,12 +19,6 @@ All-in-one framework for web automation, end-to-end testing, and website tours. 
 * Integrates with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), and [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py).
 * Supports [Azure Pipelines](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), and more.
 * To see the full list of SeleniumBase features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
-(<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) in Demo Mode.</i>)<br />
-```
-pytest my_first_test.py --demo
-```
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
