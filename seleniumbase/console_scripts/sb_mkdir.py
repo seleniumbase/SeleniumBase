@@ -78,7 +78,7 @@ def main():
         data.append("")
         data.append("[bdist_wheel]")
         data.append("universal=1")
-        file_path = "%s/%s" % (dir_name, "config.cfg")
+        file_path = "%s/%s" % (dir_name, "setup.cfg")
         file = codecs.open(file_path, "w+", "utf-8")
         file.writelines("\r\n".join(data))
         file.close()
