@@ -34,7 +34,7 @@ Often in your tests, you may need to login to a website to perform testing. This
 
 #### Usage:
 
-* First, set your custom encryption/decryption key in your local clone of [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). (If you modify they key later, you'll need to encrypt all your passwords again.)
+* First, set your custom encryption/decryption key in your local clone of [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). (If you modify the key later, you'll need to encrypt all your passwords again.)
 
 * Next, use [obfuscate.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/obfuscate.py) to obfuscate/encrypt passwords into coded strings:
 ```bash
