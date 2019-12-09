@@ -17,6 +17,8 @@ class SeleniumBrowser(Plugin):
     --port=PORT  (The port that's used by the test server.)
     --proxy=SERVER:PORT  (This is the proxy server:port combo used by tests.)
     --agent=STRING  (This designates the web browser's User Agent to use.)
+    --mobile  (The option to use the mobile emulator while running tests.)
+    --metrics=STRING  ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip file, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (The option to run tests headlessly. The default on Linux OS.)
@@ -104,6 +106,23 @@ class SeleniumBrowser(Plugin):
             help="""Designates the User-Agent for the browser to use.
                     Format: A string.
                     Default: None.""")
+        parser.add_option(
+            '--mobile', '--mobile-emulator', '--mobile_emulator',
+            action="store_true",
+            dest='mobile_emulator',
+            default=False,
+            help="""If this option is enabled, the mobile emulator
+                    will be used while running tests.""")
+        parser.add_option(
+            '--metrics', '--device-metrics', '--device_metrics',
+            action='store',
+            dest='device_metrics',
+            default=None,
+            help="""Designates the three device metrics of the mobile
+                    emulator: CSS Width, CSS Height, and Pixel-Ratio.
+                    Format: A comma-separated string with the 3 values.
+                    Example: "375,734,3"
+                    Default: None. (Will use default values if None)""")
         parser.add_option(
             '--extension_zip', '--extension-zip',
             action='store',
@@ -272,6 +291,8 @@ class SeleniumBrowser(Plugin):
         test.test.extension_dir = self.options.extension_dir
         test.test.proxy_string = self.options.proxy_string
         test.test.user_agent = self.options.user_agent
+        test.test.mobile_emulator = self.options.mobile_emulator
+        test.test.device_metrics = self.options.device_metrics
         test.test.slow_mode = self.options.slow_mode
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep

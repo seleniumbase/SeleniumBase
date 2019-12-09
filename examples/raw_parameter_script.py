@@ -35,6 +35,8 @@ except (ImportError, ValueError):
     sb.data = None
     sb.environment = "test"
     sb.user_agent = None
+    sb.mobile_emulator = False
+    sb.device_metrics = None
     sb.extension_zip = None
     sb.extension_dir = None
     sb.database_env = "test"
