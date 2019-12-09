@@ -2,69 +2,74 @@
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Customizing test runs
 
-In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) (which lets you customize SeleniumBase global properties) you can customize test runs from the command line with pytest (or nosetests):
+In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for customizing global properties, you can customize test runs [from the command-line](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py).
 
-* Choose the browser for tests to use (Default: Chrome)
-* Choose betweeen pytest & nose unittest runners
-* Choose whether to enter Debug Mode on failures
-* Choose additional variables to pass into tests
-* Choose the User-Agent for the browser to use
-* Choose the automation speed (with Demo Mode)
-* Choose whether to run tests multi-threaded
-* Choose whether to rerun failing tests
-* Choose whether to reuse the browser session
-* Choose a Chrome Extension to load
-* Choose a Chrome User Data Directory to use
-* Choose a BrowserStack server to run on
-* Choose a Sauce Labs server to run on
-* Choose a TestingBot server to run on
-* Choose a CrossBrowserTesting server
-* Choose a Selenium Grid to connect to
-* Choose a database to save results to
-* Choose a proxy server to connect to
-
-...and more!
-
-#### **Examples:**
-
-These are run from the **[examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)** folder.
-(Chrome is the default browser if not specified.)
+The following tests can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
 ```bash
+# Run my_first_test.py in Chrome (default browser)
 pytest my_first_test.py
 
-pytest my_first_test.py --demo
-
+# Run my_first_test.py in Firefox
 pytest my_first_test.py --browser=firefox
 
+# Run tests in Demo Mode to see assertions
+pytest my_first_test.py --demo
+
+# Run tests in Headless Mode (invisible browser)
+pytest test_suite.py --headless
+
+# Run tests multi-threaded using [n] threads
+pytest test_suite.py -n=4
+
+# Create a pytest html report after tests are done
 pytest test_suite.py --html=report.html
 
-nosetests test_suite.py --report --show-report
-
-pytest test_suite.py --headless -n=4
-
-pytest test_suite.py --reruns=1 --reruns-delay=1
-
-pytest test_suite.py --server=IP_ADDRESS --port=4444
-
-pytest test_suite.py --reuse-session
-
+# Enter Debug Mode on failures
 pytest test_fail.py --pdb -s
 
+# Rerun failing tests more times
+pytest test_suite.py --reruns=1
+
+# Pass extra data into tests (retrieve: self.data)
+pytest my_first_test.py --data="ABC,DEF"
+
+# Run tests on a local Selenium Grid
+pytest test_suite.py --server=127.0.0.1
+
+# Run tests on a remote Selenium Grid
+pytest test_suite.py --server=IP_ADDRESS --port=4444
+
+# Run tests on a remote Selenium Grid with authentication
+pytest test_suite.py --server=USERNAME:KEY@IP_ADDRESS --port=80
+
+# Reuse the same browser session for all tests being run
+pytest test_suite.py --reuse-session
+
+# Run tests through a proxy server
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 
+# Run tests through a proxy server with authentication
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 
+# Run tests while setting the web browser's User Agent
 pytest user_agent_test.py --agent="USER-AGENT-STRING"
 
+# Run tests using Chrome's mobile device emulator (default settings)
+pytest test_swag_labs.py --mobile
+
+# Run mobile tests specifying CSS Width, CSS Height, and Pixel-Ratio
+pytest test_swag_labs.py --mobile --metrics="411,731,3"
+
+# Run tests while changing SeleniumBase default settings
 pytest my_first_test.py --settings-file=custom_settings.py
 ```
 
-You can interchange **pytest** with **nosetests**, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
+You can interchange **pytest** with **nosetests** for most things, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
 
 (NOTE: If you're using **pytest** for running tests outside of the SeleniumBase repo, **you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**. If using **nosetests**, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).)
 
-An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
+An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
 ``--settings-file=custom_settings.py``
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
@@ -194,6 +199,8 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --port=PORT  # (The port that's used by the test server.)
 --proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
 --agent=STRING  # (This designates the web browser's User Agent to use.)
+--mobile  # (The option to use the mobile emulator while running tests.)
+--metrics=STRING  # ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (The option to run tests headlessly. The default on Linux OS.)
@@ -245,4 +252,19 @@ If you wish to change the User-Agent for your browser tests (Chrome and Firefox 
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
+```
+
+#### **Mobile Device Testing:**
+
+Use ``--mobile`` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"`` to set those values. You'll also be able to set the user agent with ``--agent="USER-AGENT-STRING"`` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
+
+```bash
+# Run tests using Chrome's mobile device emulator (default settings)
+pytest test_swag_labs.py --mobile
+
+# Run mobile tests specifying CSS Width, CSS Height, and Pixel-Ratio
+pytest test_swag_labs.py --mobile --metrics="411,731,3"
+
+# Run mobile tests specifying the user agent
+pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
