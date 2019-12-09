@@ -1,17 +1,14 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb8.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb4.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-All-in-one framework for web automation, end-to-end testing, and website tours. SeleniumBase uses pytest for running Python scripts, while using Selenium WebDriver for controlling web browsers.
+All-in-one framework for web automation, end-to-end testing, and website tours. SeleniumBase uses [pytest](https://pytest.org) for running Python scripts, while using [Selenium WebDriver](https://selenium.dev/) for controlling web browsers.
 
-* Contains reliable, smart-waiting code to prevent flaky tests.
-* Simplifies the process of creating UI tests for any website.
-* Includes [Plugins](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) for logging [test results and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
-* Multiplies the abilities of [pytest](https://pytest.org) and [Selenium WebDriver](https://selenium.dev/).
-* Uses versatile [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) and [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+* Helps you build reliable, non-flaky UI tests for any website.
+* Includes flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for running tests.
+* Comes with easy-to-use [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) for writing tests.
 * Includes tools for [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), and [web tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
-* Integrates with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), and [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py).
-* Supports [Azure Pipelines](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md), and more.
+* Integrates with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), and more.
 * To see the full list of SeleniumBase features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
@@ -212,6 +209,8 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --port=PORT  # (The port that's used by the test server.)
 --proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
 --agent=STRING  # (This designates the web browser's User Agent to use.)
+--mobile  # (The option to use the mobile emulator while running tests.)
+--metrics=STRING  # ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (The option to run tests headlessly. The default on Linux OS.)

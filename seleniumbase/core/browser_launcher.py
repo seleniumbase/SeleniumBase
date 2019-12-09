@@ -125,7 +125,8 @@ def _add_chrome_disable_csp_extension(chrome_options):
 def _set_chrome_options(
         downloads_path, headless, proxy_string, proxy_auth,
         proxy_user, proxy_pass, user_agent, disable_csp, enable_sync,
-        user_data_dir, extension_zip, extension_dir):
+        user_data_dir, extension_zip, extension_dir, mobile_emulator,
+        device_width, device_height, device_pixel_ratio):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
         "download.default_directory": downloads_path,
@@ -140,6 +141,23 @@ def _set_chrome_options(
     chrome_options.add_experimental_option(
         "excludeSwitches", ["enable-automation"])
     chrome_options.add_experimental_option("useAutomationExtension", False)
+    if mobile_emulator:
+        emulator_settings = {}
+        device_metrics = {}
+        if type(device_width) is int and type(device_height) is int and (
+                type(device_pixel_ratio) is int):
+            device_metrics["width"] = device_width
+            device_metrics["height"] = device_height
+            device_metrics["pixelRatio"] = device_pixel_ratio
+        else:
+            device_metrics["width"] = 411
+            device_metrics["height"] = 731
+            device_metrics["pixelRatio"] = 3
+        emulator_settings["deviceMetrics"] = device_metrics
+        if user_agent:
+            emulator_settings["userAgent"] = user_agent
+        chrome_options.add_experimental_option(
+            "mobileEmulation", emulator_settings)
     if enable_sync:
         chrome_options.add_experimental_option(
             "excludeSwitches", ["disable-sync"])
@@ -302,7 +320,8 @@ def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None,
                user_agent=None, cap_file=None, disable_csp=None,
                enable_sync=None, user_data_dir=None,
-               extension_zip=None, extension_dir=None):
+               extension_zip=None, extension_dir=None, mobile_emulator=False,
+               device_width=None, device_height=None, device_pixel_ratio=None):
     proxy_auth = False
     proxy_user = None
     proxy_pass = None
@@ -336,19 +355,22 @@ def get_driver(browser_name, headless=False, use_grid=False,
             browser_name, headless, servername, port,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             cap_file, disable_csp, enable_sync, user_data_dir,
-            extension_zip, extension_dir)
+            extension_zip, extension_dir, mobile_emulator,
+            device_width, device_height, device_pixel_ratio)
     else:
         return get_local_driver(
             browser_name, headless,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_sync, user_data_dir,
-            extension_zip, extension_dir)
+            extension_zip, extension_dir, mobile_emulator,
+            device_width, device_height, device_pixel_ratio)
 
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
         proxy_user, proxy_pass, user_agent, cap_file, disable_csp,
-        enable_sync, user_data_dir, extension_zip, extension_dir):
+        enable_sync, user_data_dir, extension_zip, extension_dir,
+        mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
@@ -359,7 +381,8 @@ def get_remote_driver(
         chrome_options = _set_chrome_options(
             downloads_path, headless, proxy_string, proxy_auth,
             proxy_user, proxy_pass, user_agent, disable_csp, enable_sync,
-            user_data_dir, extension_zip, extension_dir)
+            user_data_dir, extension_zip, extension_dir, mobile_emulator,
+            device_width, device_height, device_pixel_ratio)
         capabilities = chrome_options.to_capabilities()
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -469,7 +492,8 @@ def get_local_driver(
         browser_name, headless,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         disable_csp, enable_sync, user_data_dir,
-        extension_zip, extension_dir):
+        extension_zip, extension_dir,
+        mobile_emulator, device_width, device_height, device_pixel_ratio):
     '''
     Spins up a new web browser and returns the driver.
     Can also be used to spin up additional browsers for the same test.
@@ -539,7 +563,8 @@ def get_local_driver(
                 downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass,
                 user_agent, disable_csp, enable_sync, user_data_dir,
-                extension_zip, extension_dir)
+                extension_zip, extension_dir, mobile_emulator,
+                device_width, device_height, device_pixel_ratio)
             return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
                                     options=chrome_options)
         else:
@@ -563,7 +588,8 @@ def get_local_driver(
                 downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass,
                 user_agent, disable_csp, enable_sync, user_data_dir,
-                extension_zip, extension_dir)
+                extension_zip, extension_dir, mobile_emulator,
+                device_width, device_height, device_pixel_ratio)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
             elif not is_chromedriver_on_path():

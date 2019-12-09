@@ -78,6 +78,9 @@ class BaseCase(unittest.TestCase):
         self.__last_page_screenshot_png = None
         self.__delayed_assert_count = 0
         self.__delayed_assert_failures = []
+        self.__device_width = None
+        self.__device_height = None
+        self.__device_pixel_ratio = None
         # Requires self._* instead of self.__* for external class use
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
@@ -1339,7 +1342,8 @@ class BaseCase(unittest.TestCase):
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, disable_csp=None,
                        enable_sync=None, user_data_dir=None,
-                       extension_zip=None, extension_dir=None):
+                       extension_zip=None, extension_dir=None, is_mobile=False,
+                       d_width=None, d_height=None, d_p_r=None):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
             that import base_case.BaseCase from seleniumbase. If parameters
@@ -1357,6 +1361,10 @@ class BaseCase(unittest.TestCase):
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
             extension_dir - A Chrome Extension folder to use (Chrome-only)
+            is_mobile - the option to use the mobile emulator (Chrome-only)
+            d_width - the device width of the mobile emulator (Chrome-only)
+            d_height - the device height of the mobile emulator (Chrome-only)
+            d_p_r - the device pixel ratio of the mobile emulator (Chrome-only)
         """
         if self.browser == "remote" and self.servername == "localhost":
             raise Exception('Cannot use "remote" browser driver on localhost!'
@@ -1413,6 +1421,14 @@ class BaseCase(unittest.TestCase):
         #    disable_csp = True
         if cap_file is None:
             cap_file = self.cap_file
+        if is_mobile is None:
+            is_mobile = False
+        if d_width is None:
+            d_width = self.__device_width
+        if d_height is None:
+            d_height = self.__device_height
+        if d_p_r is None:
+            d_p_r = self.__device_pixel_ratio
         valid_browsers = constants.ValidBrowsers.valid_browsers
         if browser_name not in valid_browsers:
             raise Exception("Browser: {%s} is not a valid browser option. "
@@ -1431,7 +1447,11 @@ class BaseCase(unittest.TestCase):
                                                  enable_sync=enable_sync,
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
-                                                 extension_dir=extension_dir)
+                                                 extension_dir=extension_dir,
+                                                 mobile_emulator=is_mobile,
+                                                 device_width=d_width,
+                                                 device_height=d_height,
+                                                 device_pixel_ratio=d_p_r)
         self._drivers_list.append(new_driver)
         if switch_to:
             self.driver = new_driver
@@ -4112,6 +4132,8 @@ class BaseCase(unittest.TestCase):
             self.port = sb_config.port
             self.proxy_string = sb_config.proxy_string
             self.user_agent = sb_config.user_agent
+            self.mobile_emulator = sb_config.mobile_emulator
+            self.device_metrics = sb_config.device_metrics
             self.cap_file = sb_config.cap_file
             self.settings_file = sb_config.settings_file
             self.database_env = sb_config.database_env
@@ -4195,6 +4217,32 @@ class BaseCase(unittest.TestCase):
                             """ >>> "python setup.py develop" <<< """)
         if self.settings_file:
             settings_parser.set_settings(self.settings_file)
+        # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
+        if self.device_metrics:
+            metrics_string = self.device_metrics
+            metrics_string = metrics_string.replace(' ', '')
+            metrics_list = metrics_string.split(',')
+            exception_string = (
+                'Invalid input for Mobile Emulator device metrics!\n'
+                'Expecting a comma-separated string with three\n'
+                'integer values for Width, Height, and Pixel-Ratio.\n'
+                'Example: --metrics="411,731,3" ')
+            if len(metrics_list) != 3:
+                raise Exception(exception_string)
+            try:
+                self.__device_width = int(metrics_list[0])
+                self.__device_height = int(metrics_list[1])
+                self.__device_pixel_ratio = int(metrics_list[2])
+                self.mobile_emulator = True
+            except Exception:
+                raise Exception(exception_string)
+        if self.mobile_emulator:
+            if not self.user_agent:
+                # Use the Pixel 3 user agent by default if not specified
+                self.user_agent = (
+                    "Mozilla/5.0 (Linux; Android 9; Pixel 3 XL) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/76.0.3809.132 Mobile Safari/537.36")
 
         has_url = False
         if self._reuse_session:
@@ -4210,7 +4258,6 @@ class BaseCase(unittest.TestCase):
                         has_url = True
                 except Exception:
                     pass
-
         if self._reuse_session and sb_config.shared_driver and has_url:
             if self.start_page and len(self.start_page) >= 4:
                 if page_utils.is_valid_url(self.start_page):
@@ -4236,7 +4283,11 @@ class BaseCase(unittest.TestCase):
                                               enable_sync=self.enable_sync,
                                               user_data_dir=self.user_data_dir,
                                               extension_zip=self.extension_zip,
-                                              extension_dir=self.extension_dir)
+                                              extension_dir=self.extension_dir,
+                                              is_mobile=self.mobile_emulator,
+                                              d_width=self.__device_width,
+                                              d_height=self.__device_height,
+                                              d_p_r=self.__device_pixel_ratio)
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
