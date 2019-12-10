@@ -85,6 +85,14 @@ DISABLE_CSP_ON_CHROME = False
 # (This applies when using --proxy=[PROXY_STRING] for using a proxy server.)
 RAISE_INVALID_PROXY_STRING_EXCEPTION = True
 
+# Default browser resolutions when opening new windows for tests.
+# (Headless resolutions take priority, and include all browsers.)
+# (Firefox starts maximized by default when running in GUI Mode.)
+CHROME_START_WIDTH = 1250
+CHROME_START_HEIGHT = 840
+HEADLESS_START_WIDTH = 1440
+HEADLESS_START_HEIGHT = 1880
+
 # #####>>>>>----- MasterQA SETTINGS -----<<<<<#####
 # ##### (Used when importing MasterQA as the parent class)
 

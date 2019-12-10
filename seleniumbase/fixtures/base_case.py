@@ -1457,8 +1457,10 @@ class BaseCase(unittest.TestCase):
             self.driver = new_driver
             if self.headless:
                 # Make sure the invisible browser window is big enough
+                width = settings.HEADLESS_START_WIDTH
+                height = settings.HEADLESS_START_HEIGHT
                 try:
-                    self.set_window_size(1440, 1880)
+                    self.set_window_size(width, height)
                     self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
@@ -1467,8 +1469,8 @@ class BaseCase(unittest.TestCase):
                     pass
             else:
                 if self.browser == 'chrome':
-                    width = 1250
-                    height = 840
+                    width = settings.CHROME_START_WIDTH
+                    height = settings.CHROME_START_HEIGHT
                     try:
                         if self.maximize_option:
                             self.driver.maximize_window()
@@ -4198,10 +4200,12 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
+                width = settings.HEADLESS_START_WIDTH
+                height = settings.HEADLESS_START_HEIGHT
                 try:
                     # from pyvirtualdisplay import Display  # Skip for own lib
                     from seleniumbase.virtual_display.display import Display
-                    self.display = Display(visible=0, size=(1440, 1880))
+                    self.display = Display(visible=0, size=(width, height))
                     self.display.start()
                     self.headless_active = True
                 except Exception:
