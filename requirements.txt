@@ -37,7 +37,7 @@ pymysql==0.9.3
 pyotp==2.3.0
 boto==2.49.0
 cffi>=1.13.2
-tqdm>=4.40.1
+tqdm>=4.40.2
 flake8==3.7.9
 certifi>=2019.11.28
 pdfminer.six==20191110
