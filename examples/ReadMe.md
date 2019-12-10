@@ -10,7 +10,7 @@ During test failures, logs and screenshots from the most recent test run will ge
 
 **Here are some example run commands to help get you started:**
 
-Run an example test in Chrome (``--browser=chrome`` is the default):
+Run an example test in Chrome: (``--browser=chrome`` is the default)
 ```bash
 pytest my_first_test.py
 ```
@@ -20,19 +20,64 @@ Run an example test in Firefox:
 pytest my_first_test.py --browser=firefox
 ```
 
-Run an example test in Demo Mode (highlights page objects being acted on):
+Run an example test in Demo Mode: (highlight assertions)
 ```bash
 pytest my_first_test.py --demo
 ```
 
-Run an example test demonstrating parameterization:
+Run an example test in Headless Mode: (invisible web browser)
+```bash
+pytest my_first_test.py --headless
+```
+
+Run tests multi-threaded using [n] threads:
+```bash
+pytest test_suite.py -n=4
+```
+
+Run a parameterized test, which generates multiple tests out of one:
 ```bash
 pytest parameterized_test.py
 ```
 
-Run an example test suite and generate an pytest report: (pytest-only)
+Run an example test suite and generate a pytest report: (pytest-only)
 ```bash
 pytest test_suite.py --html=report.html
+```
+
+Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
+```bash
+pytest test_fail.py
+```
+
+Run an example test using Chrome's mobile device emulator: (default settings)
+```bash
+pytest test_swag_labs.py --mobile
+```
+
+Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
+```bash
+pytest test_fail.py --pdb -s
+```
+
+Run an example test suite that demonstrates the use of pytest markers:
+```bash
+pytest -v -m marker_test_suite
+```
+
+Run an example test suite that reuses the browser session between tests:
+```bash
+pytest test_suite.py --reuse-session
+```
+
+Run an example test demonstrating the ``rate_limited`` Python decorator:
+```bash
+pytest rate_limiting_test.py
+```
+
+Run an example test that demonstrates how to upload a file to a website:
+```bash
+pytest upload_file_test.py
 ```
 
 Run an example test suite and generate a nosetest report: (nosetests-only)
@@ -43,36 +88,6 @@ nosetests test_suite.py --report --show-report
 Run an example test using a nosetest configuration file: (nosetests-only)
 ```bash
 nosetests my_first_test.py --config=example_config.cfg
-```
-
-Run a test demonstrating the use of SeleniumBase Python decorators available:
-```bash
-pytest rate_limiting_test.py
-```
-
-Run a failing test: (See the ``latest_logs/`` folder afterwards for logs and screenshots)
-```bash
-pytest test_fail.py
-```
-
-Run a failing test with Debugging-mode enabled: (If a test failure occurs, pdb activates)
-```bash
-pytest test_fail.py --pdb -s
-```
-
-Run an example test suite that reuses the browser session between tests:
-```bash
-pytest test_suite.py --reuse-session
-```
-
-Run an example test suite that demonstrates the use of pytest markers:
-```bash
-pytest -v -m marker_test_suite
-```
-
-Run a test that demonstrates how to upload a file to a website:
-```bash
-pytest upload_file_test.py
 ```
 
 For more advanced run commands, such as using a proxy server, see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)

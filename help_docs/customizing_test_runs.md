@@ -13,11 +13,11 @@ pytest my_first_test.py
 # Run my_first_test.py in Firefox
 pytest my_first_test.py --browser=firefox
 
-# Run tests in Demo Mode to see assertions
+# Run a test in Demo Mode (highlight assertions)
 pytest my_first_test.py --demo
 
-# Run tests in Headless Mode (invisible browser)
-pytest test_suite.py --headless
+# Run a test in Headless Mode (invisible browser)
+pytest my_first_test.py --headless
 
 # Run tests multi-threaded using [n] threads
 pytest test_suite.py -n=4
