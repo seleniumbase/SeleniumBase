@@ -77,8 +77,6 @@ DISABLE_CSP_ON_FIREFOX = True
 # If True, the Content Security Policy will be disabled on Chrome.
 # If False, each website's default Content Security Policy will be used.
 # (A website's CSP may prevent SeleniumBase from loading custom JavaScript.)
-# If using demo_mode or MasterQA, this value will become True regardless,
-# with the exception of running in headless mode, in which case it'll be False.
 # You can also disable the CSP on the command line by using "--disable_csp".
 DISABLE_CSP_ON_CHROME = False
 
