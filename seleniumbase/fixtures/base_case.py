@@ -4219,7 +4219,7 @@ class BaseCase(unittest.TestCase):
             raise Exception("""SeleniumBase plugins did not load! """
                             """Please reinstall using:\n"""
                             """ >>> "pip install -r requirements.txt" <<<\n"""
-                            """ >>> "python setup.py develop" <<< """)
+                            """ >>> "python setup.py install" <<< """)
         if self.settings_file:
             settings_parser.set_settings(self.settings_file)
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
