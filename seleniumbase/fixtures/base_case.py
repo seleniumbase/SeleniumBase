@@ -1893,6 +1893,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def ad_block(self):
+        self.wait_for_ready_state_complete()
         from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)
@@ -4218,7 +4219,7 @@ class BaseCase(unittest.TestCase):
             raise Exception("""SeleniumBase plugins did not load! """
                             """Please reinstall using:\n"""
                             """ >>> "pip install -r requirements.txt" <<<\n"""
-                            """ >>> "python setup.py develop" <<< """)
+                            """ >>> "python setup.py install" <<< """)
         if self.settings_file:
             settings_parser.set_settings(self.settings_file)
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
