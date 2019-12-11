@@ -1893,6 +1893,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def ad_block(self):
+        self.wait_for_ready_state_complete()
         from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)
