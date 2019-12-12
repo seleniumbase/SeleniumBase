@@ -74,7 +74,9 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 ``--settings-file=custom_settings.py``
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
-#### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, (or your own):**
+#### **Running tests on [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, the [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid, the [TestingBot](https://testingbot.com/features) Selenium Grid, another grid, or your own:**
+
+(For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
 
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
 ```bash

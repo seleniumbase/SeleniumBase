@@ -1,4 +1,4 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_d.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dg.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## Running Tests
 
@@ -20,7 +20,7 @@ Run an example test in Firefox:
 pytest my_first_test.py --browser=firefox
 ```
 
-Run an example test in Demo Mode: (highlight assertions)
+Run an example test in Demo Mode: (highlights assertions)
 ```bash
 pytest my_first_test.py --demo
 ```
@@ -30,6 +30,11 @@ Run an example test in Headless Mode: (invisible web browser)
 pytest my_first_test.py --headless
 ```
 
+Run tests with verbose output per test: (improves logging)
+```bash
+pytest test_suite.py -v
+```
+
 Run tests multi-threaded using [n] threads:
 ```bash
 pytest test_suite.py -n=4
@@ -37,7 +42,7 @@ pytest test_suite.py -n=4
 
 Run a parameterized test, which generates multiple tests out of one:
 ```bash
-pytest parameterized_test.py
+pytest parameterized_test.py -v
 ```
 
 Run an example test suite and generate a pytest report: (pytest-only)
@@ -62,12 +67,12 @@ pytest test_fail.py --pdb -s
 
 Run an example test suite that demonstrates the use of pytest markers:
 ```bash
-pytest -v -m marker_test_suite
+pytest -m marker_test_suite -v
 ```
 
 Run an example test suite that reuses the browser session between tests:
 ```bash
-pytest test_suite.py --reuse-session
+pytest test_suite.py --reuse-session -v
 ```
 
 Run an example test demonstrating the ``rate_limited`` Python decorator:
