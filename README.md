@@ -7,7 +7,7 @@ All-in-one framework for web automation, end-to-end testing, and website tours. 
 * No more flaky/unreliable tests!
 * Easy-to-learn [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 * Flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
-* Both browser & mobile testing.
+* Both web app & mobile testing.
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 * To see more features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
