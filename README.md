@@ -1,13 +1,12 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dg.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_m.png" title="SeleniumBase" align="center" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
 All-in-one framework for web automation, end-to-end testing, and website tours. SeleniumBase uses [pytest](https://pytest.org) for running Python scripts, while using [Selenium WebDriver](https://selenium.dev/) for controlling web browsers.
 
-* No more flaky/unreliable tests!
-* Easy-to-learn [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* Fast & Reliable [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 * Flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
-* Both web app & mobile testing.
+* Includes web & mobile testing.
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 * To see more features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
@@ -19,7 +18,7 @@ pytest my_first_test.py --demo
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
-You'll need **[Python](https://www.python.org/downloads/)** on your System PATH. [<img src="https://img.shields.io/badge/python-2.7,_3.5+-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/)
+You'll need **[Python](https://www.python.org/downloads/)** on your System PATH. [<img src="https://img.shields.io/badge/python-2.7,_3.5,_3.6,_3.7,_3.8+-22AADD.svg" alt="Python versions" />](https://www.python.org/downloads/)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
 
@@ -92,6 +91,8 @@ self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
 self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
 For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
+
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="140">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
@@ -331,8 +332,9 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32">  **Building Guided Tours for Websites:**
 
-Learn about [SeleniumBase Interactive Walkthroughs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples) (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience. See the [Tours ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for more details.
+Learn about [SeleniumBase Interactive Walkthroughs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples/ReadMe.md) (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience.
 
+<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google">
 
 <a id="utilizing_advanced_features"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Production Environments & Integrations:**

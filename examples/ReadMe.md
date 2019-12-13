@@ -1,6 +1,6 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dg.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## Running Tests
+## Running Example Tests
 
 SeleniumBase tests can be run with either **pytest** or **nosetests**, but using pytest is strongly recommended. Chrome is the default browser if not specified.
 
