@@ -3,7 +3,7 @@
 <a id="feature_list"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Features:**
 * A complete test automation framework for building & running reliable testing scripts.
-* Uses [Pytest](https://docs.pytest.org/en/latest/) and [Nose](http://nose.readthedocs.io/en/latest/) runners for test discovery, organization, execution, and logging.
+* Uses [Pytest](https://docs.pytest.org/en/latest/) or [Nose](http://nose.readthedocs.io/en/latest/) runners for test discovery, organization, execution, and logging.
 * Includes [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md) that save you time by installing web drivers automatically, etc. 
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for creating and running walkthroughs on any website.
 * Works on multiple platforms such as macOS, Windows, Linux, and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).

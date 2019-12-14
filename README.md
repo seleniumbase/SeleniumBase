@@ -4,7 +4,7 @@
 
 All-in-one framework for web automation, end-to-end testing, and website tours. SeleniumBase uses [pytest](https://pytest.org) for running Python scripts, while using [Selenium WebDriver](https://selenium.dev/) for controlling web browsers.
 
-* Fast & Reliable [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* Fast, Reliable [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 * Flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
 * Includes web & mobile testing.
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
@@ -92,7 +92,7 @@ self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
 For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="145">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
@@ -102,11 +102,14 @@ SeleniumBase automatically handles common WebDriver actions such as spinning up 
 #### **Simplified code:**<br />
 SeleniumBase uses simple syntax for commands, such as:
 ```python
-self.update_text("textarea", "text")
+self.update_text("input", "dogs\n")
 ```
 The same command with regular WebDriver is very messy:
+(<i>And it doesn't include SeleniumBase smart-waiting.</i>)
 ```python
-self.driver.find_element_by_css_selector("textarea").send_keys("text")
+self.driver.find_element_by_css_selector("input").clear()  # Not always needed
+self.driver.find_element_by_css_selector("input").send_keys("dogs")
+self.driver.find_element_by_css_selector("input").submit()
 ```
 (<i>You can still use ``self.driver`` in your code.</i>)
 
