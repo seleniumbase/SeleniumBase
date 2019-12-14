@@ -3,7 +3,7 @@
 
 Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
 
-For backwards compatibility, older versions of method names have remained to keep old scripts working. *(Ex: wait_for_element_visible was later shortened to wait_for_element and then to find_element.)*
+For backwards compatibility, older versions of method names have remained to keep older scripts working. *(Ex: wait_for_element_visible was later shortened to wait_for_element and then to find_element. Also, add_text and send_keys are the same, etc.)*
 
 ```python
 self.open(url)
@@ -26,7 +26,8 @@ self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.submit(selector, by=By.CSS_SELECTOR)
 
-self.refresh()  # Also self.refresh_page()
+self.refresh()
+# Duplicates: self.refresh_page()
 
 self.get_current_url()
 
@@ -319,32 +320,28 @@ self.generate_traffic_chain(pages, loops=1)
 
 ########
 
-self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
-
-self.wait_for_element(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
-
 self.get_element(selector, by=By.CSS_SELECTOR, timeout=None)
-
-self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.find_element(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.wait_for_element(selector, by=By.CSS_SELECTOR, timeout=None)
+#             self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
+
+self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
 ########
 
-self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+#             self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.wait_for_exact_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
-self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-
-self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-
 self.assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_exact_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
@@ -354,18 +351,16 @@ self.wait_for_link_text_present(link_text, timeout=None)
 
 self.wait_for_partial_link_text_present(link_text, timeout=None)
 
-self.wait_for_link_text(link_text, timeout=None)
-# Duplicates: self.wait_for_link_text_visible(link_text, timeout=None)
-
 self.find_link_text(link_text, timeout=None)
+# Duplicates: self.wait_for_link_text(link_text, timeout=None)
+#             self.wait_for_link_text_visible(link_text, timeout=None)
 
 self.assert_link_text(link_text, timeout=None)
 
 ########
 
-self.wait_for_partial_link_text(partial_link_text, timeout=None)
-
 self.find_partial_link_text(partial_link_text, timeout=None)
+# Duplicates: self.wait_for_partial_link_text(partial_link_text, timeout=None)
 
 self.assert_partial_link_text(partial_link_text, timeout=None)
 
