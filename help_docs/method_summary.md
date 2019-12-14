@@ -7,12 +7,7 @@ For backwards compatibility, older versions of method names have remained to kee
 
 ```python
 self.open(url)
-
-self.open_url(url)
-
-self.get(url)
-
-self.visit(url)
+# Duplicates: self.open_url(url), self.get(url), self.visit(url)
 
 self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0)
 
@@ -22,29 +17,23 @@ self.double_click(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
 
-self.type(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
-
-self.input(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
-
 self.update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None, retry=False)
+# Duplicates: self.type(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
+#             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 
 self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
-
-self.send_keys(selector, text, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.send_keys(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.submit(selector, by=By.CSS_SELECTOR)
 
-self.refresh_page()
-
-self.refresh()
+self.refresh()  # Also self.refresh_page()
 
 self.get_current_url()
 
 self.get_page_source()
 
-self.get_page_title()
-
 self.get_title()
+# Duplicates: self.get_page_title()
 
 self.go_back()
 
@@ -70,9 +59,8 @@ self.get_link_text_attribute(link_text, attribute, hard_fail)
 
 self.get_partial_link_text_attribute(link_text, attribute, hard_fail)
 
-self.click_link_text(link_text, timeout=None)
-
 self.click_link(link_text, timeout=None)
+# Duplicates: self.click_link_text(link_text, timeout=None)
 
 self.click_partial_link_text(partial_link_text, timeout=None)
 
@@ -333,9 +321,8 @@ self.generate_traffic_chain(pages, loops=1)
 
 self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
-
 self.wait_for_element(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.get_element(selector, by=By.CSS_SELECTOR, timeout=None)
 
@@ -344,16 +331,14 @@ self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
 self.find_element(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
-
-self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
 ########
 
-self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.wait_for_exact_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-
-self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
@@ -369,9 +354,8 @@ self.wait_for_link_text_present(link_text, timeout=None)
 
 self.wait_for_partial_link_text_present(link_text, timeout=None)
 
-self.wait_for_link_text_visible(link_text, timeout=None)
-
 self.wait_for_link_text(link_text, timeout=None)
+# Duplicates: self.wait_for_link_text_visible(link_text, timeout=None)
 
 self.find_link_text(link_text, timeout=None)
 

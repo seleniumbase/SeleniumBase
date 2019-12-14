@@ -30,14 +30,14 @@ Run an example test in Headless Mode: (invisible web browser)
 pytest my_first_test.py --headless
 ```
 
-Run tests with verbose output per test: (improves logging)
+Run tests with verbose output: (includes more details)
 ```bash
 pytest test_suite.py -v
 ```
 
 Run tests multi-threaded using [n] threads:
 ```bash
-pytest test_suite.py -n=4
+pytest test_suite.py -v -n=4
 ```
 
 Run a parameterized test, which generates multiple tests out of one:
@@ -47,7 +47,7 @@ pytest parameterized_test.py -v
 
 Run an example test suite and generate a pytest report: (pytest-only)
 ```bash
-pytest test_suite.py --html=report.html
+pytest test_suite.py -v --html=report.html
 ```
 
 Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
