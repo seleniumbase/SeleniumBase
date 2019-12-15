@@ -10,88 +10,88 @@ During test failures, logs and screenshots from the most recent test run will ge
 
 **Here are some example run commands to help get you started:**
 
-* Run an example test in Chrome: (Default: ``--browser=chrome``)
+Run an example test in Chrome: (Default: ``--browser=chrome``)
 ```bash
 pytest my_first_test.py
 ```
 
-* Run an example test in Firefox:
+Run an example test in Firefox:
 ```bash
 pytest my_first_test.py --browser=firefox
 ```
 
-* Run an example test in Demo Mode: (highlight assertions)
+Run an example test in Demo Mode: (highlight assertions)
 ```bash
 pytest my_first_test.py --demo
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 
-* Run an example test in Headless Mode: (invisible browser)
+Run an example test in Headless Mode: (invisible browser)
 ```bash
 pytest my_first_test.py --headless
 ```
 
-* Run tests with verbose output: (includes more details)
+Run tests with verbose output: (includes more details)
 ```bash
 pytest test_suite.py -v
 ```
 
-* Run tests multi-threaded using [n] threads:
+Run tests multi-threaded using [n] threads:
 ```bash
 pytest test_suite.py -v -n=4
 ```
 
-* Run a parameterized test: (Generates multiple tests from one)
+Run a parameterized test: (Generates multiple tests from one)
 ```bash
 pytest parameterized_test.py -v
 ```
 
-* Run a test suite and generate a pytest report: (pytest-only)
+Run a test suite and generate a pytest report: (pytest-only)
 ```bash
 pytest test_suite.py -v --html=report.html
 ```
 
-* Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
+Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
 ```bash
 pytest test_fail.py
 ```
 
-* Run an example test using Chrome's mobile device emulator: (default settings)
+Run an example test using Chrome's mobile device emulator: (default settings)
 ```bash
 pytest test_swag_labs.py --mobile
 ```
 
-* Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
+Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
 ```bash
 pytest test_fail.py --pdb -s
 ```
 
-* Run an example test suite that demonstrates the use of pytest markers:
+Run an example test suite that demonstrates the use of pytest markers:
 ```bash
 pytest -m marker_test_suite -v
 ```
 
-* Run an example test suite that reuses the browser session between tests:
+Run an example test suite that reuses the browser session between tests:
 ```bash
 pytest test_suite.py --reuse-session -v
 ```
 
-* Run an example test demonstrating the ``rate_limited`` Python decorator:
+Run an example test demonstrating the ``rate_limited`` Python decorator:
 ```bash
 pytest rate_limiting_test.py
 ```
 
-* Run an example test that demonstrates how to upload a file to a website:
+Run an example test that demonstrates how to upload a file to a website:
 ```bash
 pytest upload_file_test.py
 ```
 
-* Run an example test suite and generate a nosetest report: (nosetests-only)
+Run an example test suite and generate a nosetest report: (nosetests-only)
 ```bash
 nosetests test_suite.py --report --show-report
 ```
 
-* Run an example test using a nosetest configuration file: (nosetests-only)
+Run an example test using a nosetest configuration file: (nosetests-only)
 ```bash
 nosetests my_first_test.py --config=example_config.cfg
 ```
