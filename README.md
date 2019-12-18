@@ -1,20 +1,21 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_m.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb16.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase)
 
 All-in-one framework for web automation, end-to-end testing, and website tours. SeleniumBase uses [pytest](https://pytest.org) for running Python scripts, while using [Selenium WebDriver](https://selenium.dev/) for controlling web browsers.
-
-* Fast, Reliable [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
-* Flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
-* Includes web & mobile testing.
-* Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
-* To see more features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) in Demo Mode.</i>)<br />
 ```
 pytest my_first_test.py --demo
 ```
+
+**Features include:**
+* Fast, Reliable [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* Flexible [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+* Includes web & mobile testing.
+* Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+* To see all features, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
