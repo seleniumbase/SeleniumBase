@@ -13,7 +13,7 @@ Automated Web UI Testing with [Selenium WebDriver](https://selenium.dev) and [py
 * Supports [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), & [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * The logging system includes screenshots.
 * Includes a tool for [building website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
-* Includes [examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md) to help you get started.
+* Lots of [examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md) to help you get started.
 * [Click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md) to see a larger list of features.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
