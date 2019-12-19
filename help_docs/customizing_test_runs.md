@@ -1,4 +1,4 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb16.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb17.png" title="SeleniumBase" height="50">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Customizing test runs
 
