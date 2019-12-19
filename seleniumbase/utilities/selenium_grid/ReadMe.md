@@ -62,5 +62,7 @@ pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port
 pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
 
+(For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
+
 #### More info about the Selenium Grid Hub can be found here:
 * [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
