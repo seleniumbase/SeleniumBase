@@ -1,26 +1,28 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e3.png" title="SeleniumBase">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb4.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://travis-ci.org/seleniumbase/SeleniumBase.svg?branch=master" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-Automated Web UI Testing with [Selenium WebDriver](https://selenium.dev) and [pytest](https://pytest.org).
+Browser End-to-End Testing Framework with [Selenium WebDriver](https://selenium.dev) and [pytest](https://pytest.org).
 
 #### Features include:
 * [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) to enhance WebDriver.
-* Runs tests on web and mobile browsers.
+* Can run tests on web & mobile browsers.
 * [Command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for test flexibility.
-* Tests can run on a remote [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md).
+* Can do parallel testing on [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md).
 * Includes tools for debugging tests easily.
 * Supports [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), & [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
-* The logging system includes screenshots.
+* A logging system that takes screenshots.
 * Includes a tool for [building website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 * Lots of [examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md) to help you get started.
-* [Click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md) to see a larger list of features.
+* [Click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md) to see a longer list of features.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) in Demo Mode.</i>)<br />
 ```
 pytest my_first_test.py --demo
 ```
+---
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
@@ -66,7 +68,7 @@ seleniumbase install chromedriver latest
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Run a test on Chrome:
 ```bash
 cd examples
-pytest my_first_test.py --browser=chrome
+pytest my_first_test.py
 ```
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
@@ -97,8 +99,6 @@ self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
 self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
 For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
-
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
 
