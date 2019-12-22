@@ -40,8 +40,7 @@ jobs:
 
   - script: |
       seleniumbase install chromedriver
-      seleniumbase install geckodriver
-    displayName: 'Install chromedriver and geckodriver (Firefox Webdriver)'
+    displayName: 'Install chromedriver'
 
   - script: |
       echo "def test_1(): pass" > nothing.py
@@ -56,9 +55,6 @@ jobs:
 
   - script: pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
-
-  - script: pytest examples/my_first_test.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
-    displayName: 'Run pytest my_first_test.py --browser=firefox --headless'
 
   - task: PublishTestResults@2
     inputs:

@@ -1,4 +1,4 @@
-name: SeleniumBase Python package test
+name: Runner CI
 
 on: [push]
 
