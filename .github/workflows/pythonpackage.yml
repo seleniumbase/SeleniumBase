@@ -1,0 +1,55 @@
+name: SeleniumBase Python package test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-16.04
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Install SeleniumBase
+      run: |
+        python setup.py install
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # Stop the build if there are flake8 issues
+        flake8 . --count --show-source --statistics --exclude=temp
+    - name: Install Chrome and Firefox
+      run: |
+        sudo apt install google-chrome-stable
+        sudo apt-get install firefox
+    - name: Install chromedriver and geckodriver (Firefox Webdriver)
+      run: |
+        seleniumbase install chromedriver
+        seleniumbase install geckodriver
+    - name: Make sure pytest is working
+      run: |
+        echo "def test_1(): pass" > nothing.py
+        pytest nothing.py
+    - name: Run pytest boilerplate_test.py --browser=chrome --headless
+      run: |
+        pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest my_first_test.py --browser=chrome --headless
+      run: |
+        pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest test_inspect_html.py --browser=chrome --headless
+      run: |
+        pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest my_first_test.py --browser=firefox --headless
+      run: |
+        pytest examples/my_first_test.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
