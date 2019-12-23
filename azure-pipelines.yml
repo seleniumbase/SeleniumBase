@@ -56,9 +56,6 @@ jobs:
   - script: pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
 
-  - script: pip install seleniumbase --no-cache-dir
-    displayName: 'Verify that SeleniumBase can be installed from PyPI'
-
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/test-results.xml'
