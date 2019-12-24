@@ -223,6 +223,7 @@ def _create_firefox_profile(
     profile.set_preference("pdfjs.disabled", True)
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
+    profile.set_preference("app.update.silent", True)
     profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("devtools.errorconsole.enabled", True)
     profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
@@ -230,6 +231,7 @@ def _create_firefox_profile(
     profile.set_preference("extensions.systemAddon.update.enabled", False)
     profile.set_preference("extensions.update.autoUpdateDefault", False)
     profile.set_preference("extensions.update.enabled", False)
+    profile.set_preference("extensions.update.silent", True)
     profile.set_preference(
         "datareporting.healthreport.logging.consoleEnabled", False)
     profile.set_preference("datareporting.healthreport.service.enabled", False)
@@ -514,27 +516,34 @@ def get_local_driver(
                 if headless:
                     options.add_argument('-headless')
                 if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
-                    make_driver_executable_if_not(LOCAL_GECKODRIVER)
+                    try:
+                        make_driver_executable_if_not(LOCAL_GECKODRIVER)
+                    except Exception as e:
+                        print("\nWarning: Could not make geckodriver"
+                              " executable: %s" % e)
                 elif not is_geckodriver_on_path():
                     if not "".join(sys.argv) == "-c":  # Skip if multithreaded
                         from seleniumbase.console_scripts import sb_install
                         sys_args = sys.argv  # Save a copy of current sys args
-                        print("\nWarning: geckodriver not found."
+                        print("\nWarning: geckodriver not found!"
                               " Installing now:")
-                        sb_install.main(override="geckodriver")
+                        try:
+                            sb_install.main(override="geckodriver")
+                        except Exception:
+                            print("\nWarning: Could not install geckodriver!")
                         sys.argv = sys_args  # Put back the original sys args
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile,
                     capabilities=firefox_capabilities,
                     options=options)
             except WebDriverException:
-                # Don't use Geckodriver: Only works for old versions of Firefox
+                # Skip Firefox options and try again
                 profile = _create_firefox_profile(
                     downloads_path, proxy_string, user_agent, disable_csp)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
-                firefox_capabilities['marionette'] = False
                 firefox_driver = webdriver.Firefox(
-                    firefox_profile=profile, capabilities=firefox_capabilities)
+                    firefox_profile=profile,
+                    capabilities=firefox_capabilities)
             return firefox_driver
         except Exception as e:
             if headless:

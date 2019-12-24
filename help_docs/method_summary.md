@@ -71,8 +71,7 @@ self.get_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None)
 self.set_attribute(selector, attribute, value, by=By.CSS_SELECTOR, timeout=None)
 
 self.set_attributes(selector, attribute, value, by=By.CSS_SELECTOR)
-
-self.set_attribute_all(selector, attribute, value, by=By.CSS_SELECTOR)
+# Duplicates: self.set_attribute_all(selector, attribute, value, by=By.CSS_SELECTOR)
 
 self.remove_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None)
 
