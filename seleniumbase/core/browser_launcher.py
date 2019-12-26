@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import re
@@ -519,8 +520,8 @@ def get_local_driver(
                     try:
                         make_driver_executable_if_not(LOCAL_GECKODRIVER)
                     except Exception as e:
-                        print("\nWarning: Could not make geckodriver"
-                              " executable: %s" % e)
+                        logging.debug("\nWarning: Could not make geckodriver"
+                                      " executable: %s" % e)
                 elif not is_geckodriver_on_path():
                     if not "".join(sys.argv) == "-c":  # Skip if multithreaded
                         from seleniumbase.console_scripts import sb_install
@@ -563,11 +564,19 @@ def get_local_driver(
         ie_options.persistent_hover = True
         ie_capabilities = ie_options.to_capabilities()
         if LOCAL_IEDRIVER and os.path.exists(LOCAL_IEDRIVER):
-            make_driver_executable_if_not(LOCAL_IEDRIVER)
+            try:
+                make_driver_executable_if_not(LOCAL_IEDRIVER)
+            except Exception as e:
+                logging.debug("\nWarning: Could not make iedriver"
+                              " executable: %s" % e)
         return webdriver.Ie(capabilities=ie_capabilities)
     elif browser_name == constants.Browser.EDGE:
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
-            make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+            try:
+                make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+            except Exception as e:
+                logging.debug("\nWarning: Could not make edgedriver"
+                              " executable: %s" % e)
             # The new Microsoft Edge browser is based on Chromium
             chrome_options = _set_chrome_options(
                 downloads_path, headless,
@@ -585,7 +594,11 @@ def get_local_driver(
         return webdriver.Safari()
     elif browser_name == constants.Browser.OPERA:
         if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
-            make_driver_executable_if_not(LOCAL_OPERADRIVER)
+            try:
+                make_driver_executable_if_not(LOCAL_OPERADRIVER)
+            except Exception as e:
+                logging.debug("\nWarning: Could not make operadriver"
+                              " executable: %s" % e)
         return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
@@ -601,7 +614,11 @@ def get_local_driver(
                 extension_zip, extension_dir, servername, mobile_emulator,
                 device_width, device_height, device_pixel_ratio)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
-                make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                try:
+                    make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                except Exception as e:
+                    logging.debug("\nWarning: Could not make chromedriver"
+                                  " executable: %s" % e)
             elif not is_chromedriver_on_path():
                 if not "".join(sys.argv) == "-c":  # Skip if multithreaded
                     from seleniumbase.console_scripts import sb_install
@@ -614,7 +631,11 @@ def get_local_driver(
             if headless:
                 raise Exception(e)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
-                make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                try:
+                    make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
+                except Exception as e:
+                    logging.debug("\nWarning: Could not make chromedriver"
+                                  " executable: %s" % e)
             return webdriver.Chrome()
     else:
         raise Exception(
