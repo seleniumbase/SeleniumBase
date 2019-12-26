@@ -107,6 +107,15 @@ def wait_for_jquery_active(driver, timeout=None):
             time.sleep(0.1)
 
 
+def raise_unable_to_load_jquery_exception(driver):
+    """ The most-likely reason for jQuery not loading on web pages. """
+    raise Exception(
+        '''Unable to load jQuery on "%s" due to a possible violation '''
+        '''of the website's Content Security Policy directive. '''
+        '''To override this policy, add "--disable-csp" on the '''
+        '''command-line when running your tests.''' % driver.current_url)
+
+
 def activate_jquery(driver):
     """ If "jQuery is not defined", use this method to activate it for use.
         This happens because jQuery is not always defined on web sites. """
@@ -132,11 +141,7 @@ def activate_jquery(driver):
         except Exception:
             time.sleep(0.1)
     # Since jQuery still isn't activating, give up and raise an exception
-    raise Exception(
-        '''Unable to load jQuery on "%s" due to a possible violation '''
-        '''of the website's Content Security Policy directive. '''
-        '''To override this policy, add "--disable_csp" on the '''
-        '''command-line when running your tests.''' % driver.current_url)
+    raise_unable_to_load_jquery_exception(driver)
 
 
 def are_quotes_escaped(string):

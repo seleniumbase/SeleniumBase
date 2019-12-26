@@ -15,14 +15,6 @@ from seleniumbase.fixtures import page_actions
 EXPORTED_TOURS_FOLDER = "tours_exported"
 
 
-def raise_unable_to_load_jquery_exception(driver):
-    """ The most-likely reason for jQuery not loading on web pages. """
-    raise Exception(
-        '''Unable to load jQuery on "%s" due to a possible violation '''
-        '''of the website's Content Security Policy '''
-        '''directive. ''' % driver.current_url)
-
-
 def activate_bootstrap(driver):
     """ Allows you to use Bootstrap Tours with SeleniumBase
         http://bootstraptour.com/
@@ -51,7 +43,7 @@ def activate_bootstrap(driver):
                 return
             except Exception:
                 time.sleep(0.15)
-    raise_unable_to_load_jquery_exception(driver)
+    js_utils.raise_unable_to_load_jquery_exception(driver)
 
 
 def is_bootstrap_activated(driver):
@@ -96,7 +88,7 @@ def activate_hopscotch(driver):
                 return
             except Exception:
                 time.sleep(0.15)
-    raise_unable_to_load_jquery_exception(driver)
+    js_utils.raise_unable_to_load_jquery_exception(driver)
 
 
 def is_hopscotch_activated(driver):
@@ -139,7 +131,7 @@ def activate_introjs(driver):
                 return
             except Exception:
                 time.sleep(0.15)
-    raise_unable_to_load_jquery_exception(driver)
+    js_utils.raise_unable_to_load_jquery_exception(driver)
 
 
 def is_introjs_activated(driver):
@@ -199,7 +191,7 @@ def activate_shepherd(driver):
                 return
             except Exception:
                 time.sleep(0.15)
-    raise_unable_to_load_jquery_exception(driver)
+    js_utils.raise_unable_to_load_jquery_exception(driver)
 
 
 def is_shepherd_activated(driver):
