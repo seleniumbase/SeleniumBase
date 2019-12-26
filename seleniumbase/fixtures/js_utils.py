@@ -307,14 +307,14 @@ def add_css_link(driver, css_link):
 def add_js_link(driver, js_link):
     script_to_add_js = (
         """function injectJS(link) {
-              var head = document.getElementsByTagName("head")[0];
+              var body = document.getElementsByTagName("body")[0];
               var script = document.createElement("script");
               script.src = link;
               script.defer;
               script.type="text/javascript";
               script.crossorigin = "anonymous";
               script.onload = function() { null };
-              head.appendChild(script);
+              body.appendChild(script);
            }
            injectJS("%s");""")
     js_link = escape_quotes_if_needed(js_link)
@@ -341,12 +341,12 @@ def add_js_code_from_link(driver, js_link):
         js_link = "http:" + js_link
     js_code = requests.get(js_link).text
     add_js_code_script = (
-        '''var h = document.getElementsByTagName('head').item(0);'''
-        '''var s = document.createElement("script");'''
-        '''s.type = "text/javascript";'''
-        '''s.onload = function() { null };'''
-        '''s.appendChild(document.createTextNode("%s"));'''
-        '''h.appendChild(s);''')
+        '''var body = document.getElementsByTagName('body').item(0);'''
+        '''var script = document.createElement("script");'''
+        '''script.type = "text/javascript";'''
+        '''script.onload = function() { null };'''
+        '''script.appendChild(document.createTextNode("%s"));'''
+        '''body.appendChild(script);''')
     js_code = js_code.replace('\n', '')
     js_code = escape_quotes_if_needed(js_code)
     driver.execute_script(add_js_code_script % js_code)
