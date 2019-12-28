@@ -39,6 +39,7 @@ from selenium.common.exceptions import (StaleElementReferenceException,
 from selenium.common import exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.webdriver.support.ui import Select
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
@@ -58,6 +59,7 @@ from seleniumbase.fixtures import xpath_to_css
 logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
+LOGGER.setLevel(logging.WARNING)
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
