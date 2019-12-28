@@ -13,6 +13,7 @@ import threading
 import time
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.ERROR)
 SECTION_LINK = 'link'
 POLL_TIME = 0.1
 USE_POLL = 0
