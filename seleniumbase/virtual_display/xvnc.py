@@ -1,9 +1,7 @@
 from seleniumbase.virtual_display.easyprocess import EasyProcess
 from seleniumbase.virtual_display.abstractdisplay import AbstractDisplay
 
-PACKAGE = 'tightvncserver'
 PROGRAM = 'Xvnc'
-URL = None
 
 
 class XvncDisplay(AbstractDisplay):
@@ -30,8 +28,10 @@ class XvncDisplay(AbstractDisplay):
 
     @classmethod
     def check_installed(cls):
-        EasyProcess([PROGRAM, '-help'], url=URL,
-                    ubuntu_package=PACKAGE).check_installed()
+        p = EasyProcess([PROGRAM, '-help'])
+        p.enable_stdout_log = False
+        p.enable_stderr_log = False
+        p.call()
 
     @property
     def _cmd(self):

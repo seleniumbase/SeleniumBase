@@ -26,7 +26,7 @@ pytest my_first_test.py --demo
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
 
-You'll need **[Python](https://www.python.org/downloads/)** on your System PATH. [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?logo=python&logoColor=lightblue" alt="Python versions" alt="Python versions" />](https://www.python.org/downloads/)
+You'll need **[Python](https://www.python.org/downloads/)** on your System PATH. [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?logo=python&logoColor=gold" alt="Python versions" alt="Python versions" />](https://www.python.org/downloads/)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
 ```bash

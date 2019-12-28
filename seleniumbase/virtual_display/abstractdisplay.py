@@ -7,10 +7,6 @@ from seleniumbase.virtual_display.easyprocess import EasyProcess
 from seleniumbase.virtual_display import xauth
 
 mutex = Lock()
-RANDOMIZE_DISPLAY_NR = False
-if RANDOMIZE_DISPLAY_NR:
-    import random
-    random.seed()
 MIN_DISPLAY_NR = 1000
 USED_DISPLAY_NR_LIST = []
 
@@ -59,8 +55,6 @@ class AbstractDisplay(EasyProcess):
             display = max(MIN_DISPLAY_NR, max(ls) + 3)
         else:
             display = MIN_DISPLAY_NR
-        if RANDOMIZE_DISPLAY_NR:
-            display += random.randint(0, 100)
         return display
 
     def redirect_display(self, on):
