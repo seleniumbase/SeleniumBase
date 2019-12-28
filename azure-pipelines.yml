@@ -30,10 +30,10 @@ jobs:
   - script: python -m pip install --upgrade pip && pip --version
     displayName: 'Install/upgrade pip'
 
-  - script: pip install seleniumbase
+  - script: python -m pip install seleniumbase
     displayName: 'Verify install from PyPI'
 
-  - script: pip install -r requirements.txt --upgrade
+  - script: python -m pip install -r requirements.txt --upgrade
     displayName: 'Install dependencies'
 
   - script: python setup.py install
@@ -53,13 +53,13 @@ jobs:
       pytest nothing.py
     displayName: 'Make sure pytest is working'
 
-  - script: pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  - script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest boilerplate_test.py --browser=chrome --headless'
 
-  - script: pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  - script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
 
-  - script: pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  - script: python -m pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
 
   - task: PublishTestResults@2
