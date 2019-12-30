@@ -189,7 +189,7 @@ def get_desired_capabilities(cap_file):
     elif cap_file.endswith('.json'):
         capabilities = json.loads(all_code)
     else:
-        raise Exception("\n\n`%s` is not a Python or JSON file!\n\n" % cap_file)
+        raise Exception("\n\n`%s` is not a Python or JSON file!\n" % cap_file)
 
     if len(capabilities.keys()) == 0:
         raise Exception("Unable to parse desired capabilities file!")
