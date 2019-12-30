@@ -2,7 +2,7 @@
 
 ## Running Example Tests
 
-SeleniumBase tests can be run with either **pytest** or **nosetests**, but using pytest is strongly recommended. Chrome is the default browser if not specified.
+SeleniumBase tests can be run with either **``pytest``** or **``nosetests``**, but using pytest is strongly recommended. Chrome is the default browser if not specified.
 
 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)
 
@@ -106,3 +106,7 @@ To make things easier, here's a simple GUI program that allows you to run a few 
 python gui_test_runner.py
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260">
+
+--------
+
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_n.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
