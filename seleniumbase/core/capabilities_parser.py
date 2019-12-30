@@ -9,11 +9,16 @@ def _parse_ast(contents):
     except SyntaxError:
         pass
     try:
+        # remove all comments
+        contents = re.sub(re.compile(r"/\*.*?\*/", re.DOTALL), "", contents)
+        contents = re.sub(re.compile(r"#.*?\n"), "", contents)
+
         # remove anything before dict declaration like: "caps = { ..."
-        # and try again
         match = re.match(r"^([^{]+)", contents)
         if match:
             contents = contents.replace(match.group(1), "")
+
+        # and try again
         return ast.literal_eval(contents)
     except SyntaxError:
         pass
