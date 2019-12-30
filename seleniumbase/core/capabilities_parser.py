@@ -1,18 +1,30 @@
 import re
+import ast
+import json
 
 
-def get_desired_capabilities(cap_file):
-    if not cap_file.endswith('.py'):
-        raise Exception("\n\n`%s` is not a Python file!\n\n" % cap_file)
+def _parse_ast(contents):
+    try:
+        return ast.literal_eval(contents)
+    except SyntaxError:
+        pass
+    try:
+        # remove anything before dict declaration like: "caps = { ..."
+        # and try again
+        match = re.match(r"^([^{]+)", contents)
+        if match:
+            contents = contents.replace(match.group(1), "")
+        return ast.literal_eval(contents)
+    except SyntaxError:
+        pass
 
-    f = open(cap_file, 'r')
-    all_code = f.read()
-    f.close()
+    return False
 
-    desired_capabilities = {}
-    num_capabilities = 0
 
-    code_lines = all_code.split('\n')
+def _parse_manual(contents):
+    capabilities = {}
+
+    code_lines = contents.split('\n')
     for line in code_lines:
         if "desired_cap = {" in line:
             line = line.split("desired_cap = {")[1]
@@ -22,8 +34,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # "KEY" : "VALUE"
@@ -31,8 +42,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # 'KEY' : "VALUE"
@@ -41,8 +51,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # "KEY" : 'VALUE'
@@ -51,8 +60,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # "KEY" : True
@@ -61,8 +69,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = True
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # 'KEY' : True
@@ -71,8 +78,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = True
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # "KEY" : False
@@ -81,8 +87,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = False
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # 'KEY' : False
@@ -91,8 +96,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = False
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps['KEY'] = 'VALUE'
@@ -100,8 +104,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps["KEY"] = "VALUE"
@@ -109,8 +112,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps['KEY'] = "VALUE"
@@ -119,8 +121,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps["KEY"] = 'VALUE'
@@ -129,8 +130,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = data.group(2)
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps["KEY"] = True
@@ -139,8 +139,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = True
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps['KEY'] = True
@@ -149,8 +148,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = True
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps["KEY"] = False
@@ -159,8 +157,7 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = False
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
         # caps['KEY'] = False
@@ -169,11 +166,27 @@ def get_desired_capabilities(cap_file):
         if data:
             key = data.group(1)
             value = False
-            desired_capabilities[key] = value
-            num_capabilities += 1
+            capabilities[key] = value
             continue
 
-    if num_capabilities == 0:
+    return capabilities
+
+
+def get_desired_capabilities(cap_file):
+    f = open(cap_file, 'r')
+    all_code = f.read()
+    f.close()
+
+    if cap_file.endswith('.py'):
+        capabilities = _parse_ast(all_code)
+        if not capabilities:
+            capabilities = _parse_manual(all_code)
+    elif cap_file.endswith('.json'):
+        capabilities = json.loads(all_code)
+    else:
+        raise Exception("\n\n`%s` is not a Python or JSON file!\n\n" % cap_file)
+
+    if len(capabilities.keys()) == 0:
         raise Exception("Unable to parse desired capabilities file!")
 
-    return desired_capabilities
+    return capabilities
