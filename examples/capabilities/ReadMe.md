@@ -14,25 +14,27 @@ pytest my_first_test.py --browser=remote --server=USERNAME:KEY@ondemand.saucelab
 
 (Parameters: ``--browser=remote``, ``--server=SERVER``, ``--port=PORT``, and ``--cap_file=CAP_FILE.py``)
 
-Here's an example desired capabilities file:
+Here's an example desired capabilities file for BrowserStack:
 ```python
 desired_cap = {
     'os': 'OS X',
-    'os_version': 'Sierra',
+    'os_version': 'High Sierra',
     'browser': 'Chrome',
-    'browser_version': '70.0',
+    'browser_version': '77.0',
     'browserstack.local': 'false',
-    'browserstack.selenium_version': '3.14.0',
-    'browserstack.chrome.driver': '2.43'
+    'browserstack.selenium_version': '3.141.59'
 }
 ```
 
-A desired capabilities file can also look like this:
+Here's an example desired capabilities file for Sauce Labs:
 ```python
-caps = {}
-caps['browserName'] = "chrome"
-caps['platform'] = "macOS 10.12"
-caps['version'] = "70.0"
+capabilities = {
+    'browserName': 'firefox',
+    'browserVersion': '70.0',
+    'platformName': 'macOS 10.13',
+    'sauce:options': {
+    }
+}
 ```
 
 (You'll notice that the browser is now being specified in the capabilities file, rather than with ``--browser=BROWSER``)
