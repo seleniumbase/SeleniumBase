@@ -3,7 +3,7 @@ import ast
 import json
 
 
-def _parse_ast(contents):
+def _analyze_ast(contents):
     try:
         return ast.literal_eval(contents)
     except SyntaxError:
@@ -26,7 +26,7 @@ def _parse_ast(contents):
     return False
 
 
-def _parse_manual(contents):
+def _analyze_manual(contents):
     capabilities = {}
 
     code_lines = contents.split('\n')
@@ -177,17 +177,35 @@ def _parse_manual(contents):
     return capabilities
 
 
-def get_desired_capabilities(cap_file):
-    f = open(cap_file, 'r')
-    all_code = f.read()
+def _read_file(file):
+    f = open(file, 'r')
+    data = f.read()
     f.close()
 
+    return data
+
+
+def _parse_py_file(cap_file):
+    all_code = _read_file(cap_file)
+    capabilities = _analyze_ast(all_code)
+
+    if not capabilities:
+        capabilities = _analyze_manual(all_code)
+
+    return capabilities
+
+
+def _parse_json_file(cap_file):
+    all_code = _read_file(cap_file)
+
+    return json.loads(all_code)
+
+
+def get_desired_capabilities(cap_file):
     if cap_file.endswith('.py'):
-        capabilities = _parse_ast(all_code)
-        if not capabilities:
-            capabilities = _parse_manual(all_code)
+        capabilities = _parse_py_file(cap_file)
     elif cap_file.endswith('.json'):
-        capabilities = json.loads(all_code)
+        capabilities = _parse_json_file(cap_file)
     else:
         raise Exception("\n\n`%s` is not a Python or JSON file!\n" % cap_file)
 
