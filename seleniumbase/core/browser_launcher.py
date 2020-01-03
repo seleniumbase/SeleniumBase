@@ -516,6 +516,8 @@ def get_local_driver(
                 options = webdriver.FirefoxOptions()
                 if headless:
                     options.add_argument('-headless')
+                    firefox_capabilities['moz:firefoxOptions'] = (
+                        {'args': ['-headless']})
                 if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
                     try:
                         make_driver_executable_if_not(LOCAL_GECKODRIVER)
@@ -530,15 +532,20 @@ def get_local_driver(
                               " Installing now:")
                         try:
                             sb_install.main(override="geckodriver")
-                        except Exception:
-                            print("\nWarning: Could not install geckodriver!")
+                        except Exception as e:
+                            print("\nWarning: Could not install geckodriver: "
+                                  "%s" % e)
                         sys.argv = sys_args  # Put back the original sys args
-                firefox_driver = webdriver.Firefox(
-                    firefox_profile=profile,
-                    capabilities=firefox_capabilities,
-                    options=options)
-            except WebDriverException:
-                # Skip Firefox options and try again
+                if "linux" in PLATFORM or not headless:
+                    firefox_driver = webdriver.Firefox(
+                        firefox_profile=profile,
+                        capabilities=firefox_capabilities)
+                else:
+                    firefox_driver = webdriver.Firefox(
+                        firefox_profile=profile,
+                        capabilities=firefox_capabilities,
+                        options=options)
+            except Exception:
                 profile = _create_firefox_profile(
                     downloads_path, proxy_string, user_agent, disable_csp)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
