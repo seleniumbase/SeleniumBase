@@ -95,7 +95,7 @@ setup(
         'selenium==3.141.0',
         'pluggy>=0.13.1',
         'attrs>=19.3.0',
-        'pytest>=4.6.8;python_version<"3"',  # For Python 2 compatibility
+        'pytest>=4.6.9;python_version<"3"',  # For Python 2 compatibility
         'pytest>=5.3.2;python_version>="3"',
         'pytest-cov>=2.8.1',
         'pytest-forked>=1.1.3',
@@ -112,7 +112,7 @@ setup(
         'atomicwrites==1.3.0',
         'portalocker==1.5.2',
         'cryptography==2.8',
-        'asn1crypto==1.2.0',
+        'asn1crypto==1.3.0',
         'pyopenssl==19.1.0',
         'pygments>=2.5.2',
         'colorama==0.4.3',
@@ -124,7 +124,8 @@ setup(
         'tqdm>=4.41.1',
         'flake8==3.7.9',
         'certifi>=2019.11.28',
-        'pdfminer.six==20191110',
+        'pdfminer.six==20191110;python_version<"3.5"',
+        'pdfminer.six==20200104;python_version>="3.5"',
     ],
     packages=[
         'seleniumbase',
