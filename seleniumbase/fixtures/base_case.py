@@ -1061,7 +1061,7 @@ class BaseCase(unittest.TestCase):
         return False
 
     def switch_to_frame_of_element(self, selector, by=By.CSS_SELECTOR):
-        """ Set driver control to the iframe of the element (assuming the
+        """ Set driver control to the iframe containing element (assuming the
             element is in a single-nested iframe) and returns the iframe name.
             If element is not in an iframe, returns None, and nothing happens.
             May not work if multiple iframes are nested within each other. """
@@ -1076,13 +1076,26 @@ class BaseCase(unittest.TestCase):
                 iframe_identifier = iframe['name']
             elif iframe.has_attr('id') and len(iframe['id']) > 0:
                 iframe_identifier = iframe['id']
+            elif iframe.has_attr('class') and len(iframe['class']) > 0:
+                iframe_class = " ".join(iframe["class"])
+                iframe_identifier = '[class="%s"]' % iframe_class
             else:
                 continue
-            self.switch_to_frame(iframe_identifier)
-            if self.is_element_present(selector, by=by):
-                return iframe_identifier
+            try:
+                self.switch_to_frame(iframe_identifier, timeout=1)
+                if self.is_element_present(selector, by=by):
+                    return iframe_identifier
+            except Exception:
+                pass
             self.switch_to_default_content()
-        return None
+        try:
+            self.switch_to_frame(selector, timeout=1)
+            return selector
+        except Exception:
+            if self.is_element_present(selector, by=by):
+                return ""
+            raise Exception("Could not switch to iframe containing "
+                            "element {%s}!" % selector)
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
         selector, by = self.__recalculate_selector(selector, by)
@@ -1310,7 +1323,13 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def switch_to_frame(self, frame, timeout=None):
-        """ Sets driver control to the specified browser frame. """
+        """
+        Wait for an iframe to appear, and switch to it. This should be
+        usable as a drop-in replacement for driver.switch_to.frame().
+        @Params
+        frame - the frame element, name, id, index, or selector
+        timeout - the time to wait for the alert in seconds
+        """
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
