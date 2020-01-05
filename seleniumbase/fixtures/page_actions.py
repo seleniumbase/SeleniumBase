@@ -33,6 +33,7 @@ from selenium.webdriver.remote.errorhandler import NoSuchFrameException
 from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
+from seleniumbase.fixtures import page_utils
 
 
 def is_element_present(driver, selector, by=By.CSS_SELECTOR):
@@ -604,11 +605,11 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
 
 def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     """
-    Wait for an iframe to appear, and switch to it. This should be usable
-    as a drop-in replacement for driver.switch_to.frame().
+    Wait for an iframe to appear, and switch to it. This should be
+    usable as a drop-in replacement for driver.switch_to.frame().
     @Params
     driver - the webdriver object (required)
-    frame - the frame element, name, or index
+    frame - the frame element, name, id, index, or selector
     timeout - the time to wait for the alert in seconds
     """
     start_ms = time.time() * 1000.0
@@ -618,6 +619,19 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
             driver.switch_to.frame(frame)
             return True
         except NoSuchFrameException:
+            if type(frame) is str:
+                by = None
+                if page_utils.is_xpath_selector(frame):
+                    by = By.XPATH
+                else:
+                    by = By.CSS_SELECTOR
+                if is_element_visible(driver, frame, by=by):
+                    try:
+                        element = driver.find_element(by=by, value=frame)
+                        driver.switch_to.frame(element)
+                        return True
+                    except Exception:
+                        pass
             now_ms = time.time() * 1000.0
             if now_ms >= stop_ms:
                 break
