@@ -34,6 +34,7 @@ class SeleniumBrowser(Plugin):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
+    --incognito  (The option to enable Chrome's Incognito mode.)
     --maximize-window  (The option to start with the web browser maximized.)
     --save-screenshot  (The option to save a screenshot after each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
@@ -240,6 +241,12 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables the "Chrome Sync" feature.""")
         parser.add_option(
+            '--incognito',
+            action="store_true",
+            dest='incognito',
+            default=False,
+            help="""Using this enables Chrome's Incognito mode.""")
+        parser.add_option(
             '--maximize_window', '--maximize-window', '--maximize',
             '--fullscreen',
             action="store_true",
@@ -303,6 +310,7 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.enable_sync = self.options.enable_sync
+        test.test.incognito = self.options.incognito
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline

@@ -41,6 +41,7 @@ def pytest_addoption(parser):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
+    --incognito  (The option to enable Chrome's Incognito mode.)
     --reuse-session  (The option to reuse the browser session between tests.)
     --maximize-window  (The option to start with the web browser maximized.)
     --save-screenshot  (The option to save a screenshot after each test.)
@@ -310,6 +311,11 @@ def pytest_addoption(parser):
                      dest='enable_sync',
                      default=False,
                      help="""Using this enables the "Chrome Sync" feature.""")
+    parser.addoption('--incognito',
+                     action="store_true",
+                     dest='incognito',
+                     default=False,
+                     help="""Using this enables Chrome's Incognito mode.""")
     parser.addoption('--reuse_session', '--reuse-session',
                      action="store_true",
                      dest='reuse_session',
@@ -386,6 +392,7 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.enable_sync = config.getoption('enable_sync')
+    sb_config.incognito = config.getoption('incognito')
     sb_config.reuse_session = config.getoption('reuse_session')
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.maximize_option = config.getoption('maximize_option')
