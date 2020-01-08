@@ -1363,7 +1363,7 @@ class BaseCase(unittest.TestCase):
     def get_new_driver(self, browser=None, headless=None,
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, disable_csp=None,
-                       enable_sync=None, user_data_dir=None,
+                       enable_sync=None, incognito=None, user_data_dir=None,
                        extension_zip=None, extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
         """ This method spins up an extra browser for tests that require
@@ -1379,7 +1379,8 @@ class BaseCase(unittest.TestCase):
             switch_to - the option to switch to the new driver (default = True)
             cap_file - the file containing desired capabilities for the browser
             disable_csp - an option to disable Chrome's Content Security Policy
-            enable_sync - the option to enable the "Chrome Sync" feature
+            enable_sync - the option to enable the Chrome Sync feature (Chrome)
+            incognito - the option to enable Chrome's Incognito mode (Chrome)
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
             extension_dir - A Chrome Extension folder to use (Chrome-only)
@@ -1432,6 +1433,8 @@ class BaseCase(unittest.TestCase):
             disable_csp = self.disable_csp
         if enable_sync is None:
             enable_sync = self.enable_sync
+        if incognito is None:
+            incognito = self.incognito
         if user_data_dir is None:
             user_data_dir = self.user_data_dir
         if extension_zip is None:
@@ -1467,6 +1470,7 @@ class BaseCase(unittest.TestCase):
                                                  cap_file=cap_file,
                                                  disable_csp=disable_csp,
                                                  enable_sync=enable_sync,
+                                                 incognito=incognito,
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
                                                  extension_dir=extension_dir,
@@ -4166,6 +4170,7 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
             self.enable_sync = sb_config.enable_sync
+            self.incognito = sb_config.incognito
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
@@ -4306,6 +4311,7 @@ class BaseCase(unittest.TestCase):
                                               cap_file=self.cap_file,
                                               disable_csp=self.disable_csp,
                                               enable_sync=self.enable_sync,
+                                              incognito=self.incognito,
                                               user_data_dir=self.user_data_dir,
                                               extension_zip=self.extension_zip,
                                               extension_dir=self.extension_dir,
