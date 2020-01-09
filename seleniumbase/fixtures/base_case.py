@@ -4453,10 +4453,10 @@ class BaseCase(unittest.TestCase):
             will still be taken after the last step of your tearDown(), where
             you should be calling "super(SubClassOfBaseCase, self).tearDown()"
         """
-        test_id = self.__get_test_id()
-        test_logpath = self.log_path + "/" + test_id
-        self.__create_log_path_as_needed(test_logpath)
         if self.__has_exception() or self.save_screenshot_after_test:
+            test_id = self.__get_test_id()
+            test_logpath = self.log_path + "/" + test_id
+            self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
             if self.is_pytest:
                 self.__add_pytest_html_extra()
