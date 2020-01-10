@@ -21,19 +21,57 @@ MAX_IDLE_TIME_BEFORE_QUIT = settings.MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT
 # This tool allows testers to quickly verify pages while assisted by automation
 
 
-class __MasterQATestCase__(BaseCase):
+class MasterQA(BaseCase):
 
-    def get_timestamp(self):
+    def setUp(self):
+        self.check_count = 0
+        self.auto_close_results_page = False
+        super(MasterQA, self).setUp(masterqa_mode=True)
+        self.__manual_check_setup()
+        if self.headless:
+            self.auto_close_results_page = True
+        if START_IN_FULL_SCREEN_MODE:
+            self.maximize_window()
+
+    def verify(self, *args):
+        warn_msg = "\nWARNING: MasterQA skips manual checks in headless mode!"
+        self.check_count += 1
+        if self.headless:
+            if self.check_count == 1:
+                print(warn_msg)
+            return
+        # This is where the magic happens
+        self.__manual_page_check(*args)
+
+    def auto_close_results(self):
+        ''' If this method is called, the results page will automatically close
+        at the end of the test run, rather than waiting on the user to close
+        the results page manually.
+        '''
+        self.auto_close_results_page = True
+
+    def tearDown(self):
+        if self.headless and self.check_count > 0:
+            print("WARNING: %s manual checks were skipped!" % self.check_count)
+        if sys.exc_info()[1]:
+            self.__add_failure(sys.exc_info()[1])
+        self.__process_manual_check_results(self.auto_close_results_page)
+        super(MasterQA, self).tearDown()
+
+    ####################
+
+    def __get_timestamp(self):
         return str(int(time.time() * 1000))
 
-    def manual_check_setup(self):
+    def __manual_check_setup(self):
         self.manual_check_count = 0
         self.manual_check_successes = 0
         self.incomplete_runs = 0
         self.page_results_list = []
-        self.clear_out_old_logs(archive_past_runs=False)
+        self.__clear_out_old_logs(archive_past_runs=False)
 
-    def clear_out_old_logs(self, archive_past_runs=True, get_log_folder=False):
+    def __clear_out_old_logs(
+            self, archive_past_runs=True, get_log_folder=False):
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % LATEST_REPORT_DIR
         if not os.path.exists(file_path):
@@ -58,7 +96,7 @@ class __MasterQATestCase__(BaseCase):
             for f in filelist:
                 os.remove("%s/%s" % (file_path, f))
 
-    def jq_confirm_dialog(self, question):
+    def __jq_confirm_dialog(self, question):
         count = self.manual_check_count + 1
         title_content = ('<center><font color="#7700bb">Manual Check #%s:'
                          '</font></center><hr><font color="#0066ff">%s</font>'
@@ -97,7 +135,7 @@ class __MasterQATestCase__(BaseCase):
                 });""" % title_content)
         self.execute_script(jqcd)
 
-    def manual_page_check(self, *args):
+    def __manual_page_check(self, *args):
         if not args:
             instructions = DEFAULT_VALIDATION_MESSAGE  # self.verify()
         else:
@@ -133,7 +171,7 @@ class __MasterQATestCase__(BaseCase):
 
         if use_jqc:
             # Use the jquery_confirm library for manual page checks
-            self.jq_confirm_dialog(question)
+            self.__jq_confirm_dialog(question)
             time.sleep(0.02)
             waiting_for_response = True
             while waiting_for_response:
@@ -163,7 +201,7 @@ class __MasterQATestCase__(BaseCase):
                     {window.master_qa_result="Success!"}
                     else{window.master_qa_result="Failure!"}''' % question)
                 time.sleep(0.05)
-                self.wait_for_special_alert_absent()
+                self.__wait_for_special_alert_absent()
                 text = self.execute_script('return window.master_qa_result')
             else:
                 try:
@@ -175,7 +213,7 @@ class __MasterQATestCase__(BaseCase):
                     # Fix for https://github.com/mozilla/geckodriver/issues/431
                     pass
                 time.sleep(0.05)
-                self.wait_for_special_alert_absent()
+                self.__wait_for_special_alert_absent()
                 text = self.execute_script('return window.master_qa_result')
             status = text
 
@@ -193,7 +231,7 @@ class __MasterQATestCase__(BaseCase):
                     "-",
                     current_url,
                     self.browser,
-                    self.get_timestamp()[:-3],
+                    self.__get_timestamp()[:-3],
                     instructions,
                     "*"))
             return 1
@@ -207,12 +245,13 @@ class __MasterQATestCase__(BaseCase):
                     bad_page_name,
                     current_url,
                     self.browser,
-                    self.get_timestamp()[:-3],
+                    self.__get_timestamp()[:-3],
                     instructions,
                     "*"))
             return 0
 
-    def wait_for_special_alert_absent(self, timeout=MAX_IDLE_TIME_BEFORE_QUIT):
+    def __wait_for_special_alert_absent(
+            self, timeout=MAX_IDLE_TIME_BEFORE_QUIT):
         for x in range(int(timeout * 20)):
             try:
                 alert = self.driver.switch_to.alert
@@ -226,7 +265,7 @@ class __MasterQATestCase__(BaseCase):
         raise Exception(
             "%s seconds passed without human action! Stopping..." % timeout)
 
-    def add_failure(self, exception=None):
+    def __add_failure(self, exception=None):
         exc_info = None
         if exception:
             if hasattr(exception, 'msg'):
@@ -246,7 +285,7 @@ class __MasterQATestCase__(BaseCase):
                 error_page,
                 self.driver.current_url,
                 self.browser,
-                self.get_timestamp()[:-3],
+                self.__get_timestamp()[:-3],
                 "-",
                 exc_info))
         try:
@@ -257,7 +296,7 @@ class __MasterQATestCase__(BaseCase):
         except Exception:
             pass
 
-    def add_bad_page_log_file(self):
+    def __add_bad_page_log_file(self):
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % LATEST_REPORT_DIR
         log_file = "%s/%s" % (file_path, BAD_PAGE_LOG)
@@ -270,7 +309,7 @@ class __MasterQATestCase__(BaseCase):
             f.write("%s\n" % line)
         f.close()
 
-    def add_results_page(self, html):
+    def __add_results_page(self, html):
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % LATEST_REPORT_DIR
         results_file_name = RESULTS_PAGE
@@ -280,7 +319,7 @@ class __MasterQATestCase__(BaseCase):
         f.close()
         return results_file
 
-    def process_manual_check_results(self, auto_close_results_page=False):
+    def __process_manual_check_results(self, auto_close_results_page=False):
         perfection = True
         failures_count = self.manual_check_count - self.manual_check_successes
         print("\n\n*** Test Result: ***")
@@ -301,9 +340,9 @@ class __MasterQATestCase__(BaseCase):
                 print("WARNING: No manual checks were performed!")
         else:
             pass
-        self.add_bad_page_log_file()  # Includes successful results
+        self.__add_bad_page_log_file()  # Includes successful results
 
-        log_string = self.clear_out_old_logs(get_log_folder=True)
+        log_string = self.__clear_out_old_logs(get_log_folder=True)
         log_folder = log_string.split('/')[-1]
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % ARCHIVE_DIR
@@ -371,7 +410,7 @@ class __MasterQATestCase__(BaseCase):
             summary_table, log_table, failure_table)
         report_html = '<html><head>%s</head><body>%s</body></html>' % (
             style, table_view)
-        results_file = self.add_results_page(report_html)
+        results_file = self.__add_results_page(report_html)
         archived_results_file = log_path + '/' + RESULTS_PAGE
         shutil.copyfile(results_file, archived_results_file)
         print(
@@ -385,41 +424,3 @@ class __MasterQATestCase__(BaseCase):
             print("\n*** Close the html report window to continue ***")
             while len(self.driver.window_handles):
                 time.sleep(0.1)
-
-
-class MasterQA(__MasterQATestCase__):
-
-    def setUp(self):
-        self.check_count = 0
-        self.auto_close_results_page = False
-        super(__MasterQATestCase__, self).setUp(masterqa_mode=True)
-        self.manual_check_setup()
-        if self.headless:
-            self.auto_close_results_page = True
-        if START_IN_FULL_SCREEN_MODE:
-            self.maximize_window()
-
-    def verify(self, *args):
-        warn_msg = "\nWARNING: MasterQA skips manual checks in headless mode!"
-        self.check_count += 1
-        if self.headless:
-            if self.check_count == 1:
-                print(warn_msg)
-            return
-        # This is where the magic happens
-        self.manual_page_check(*args)
-
-    def auto_close_results(self):
-        ''' If this method is called, the results page will automatically close
-        at the end of the test run, rather than waiting on the user to close
-        the results page manually.
-        '''
-        self.auto_close_results_page = True
-
-    def tearDown(self):
-        if self.headless and self.check_count > 0:
-            print("WARNING: %s manual checks were skipped!" % self.check_count)
-        if sys.exc_info()[1]:
-            self.add_failure(sys.exc_info()[1])
-        self.process_manual_check_results(self.auto_close_results_page)
-        super(__MasterQATestCase__, self).tearDown()
