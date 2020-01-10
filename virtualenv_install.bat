@@ -3,7 +3,6 @@
 :: virtualenv commands such as "mkvirtualenv [ENV_NAME]"
 :: for creating and using Python virtual environments.
 
-python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper-win
 echo:
 echo:
