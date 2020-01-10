@@ -141,7 +141,7 @@ def _set_chrome_options(
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_experimental_option("w3c", True)
     chrome_options.add_experimental_option(
-        "excludeSwitches", ["enable-automation"])
+        "excludeSwitches", ["enable-automation", "enable-logging"])
     if servername == "localhost" or servername == "127.0.0.1":
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if mobile_emulator:

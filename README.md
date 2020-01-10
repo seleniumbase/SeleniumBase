@@ -657,7 +657,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 <i>**Questions?**</i> [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
 
-If you see something, say something! We're very active in resolving issues. [<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed)
+**If you see something, say something!**<br />[<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99">](https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed)
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
