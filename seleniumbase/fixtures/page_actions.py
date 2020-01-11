@@ -24,6 +24,8 @@ import os
 import sys
 import time
 import traceback
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common import exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
@@ -34,6 +36,7 @@ from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import page_utils
+ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
 def is_element_present(driver, selector, by=By.CSS_SELECTOR):
@@ -459,7 +462,17 @@ def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     """
     elements = driver.find_elements(by=by, value=selector)
-    return [element for element in elements if element.is_displayed()]
+    try:
+        v_elems = [element for element in elements if element.is_displayed()]
+        return v_elems
+    except (StaleElementReferenceException, ENI_Exception):
+        time.sleep(0.1)
+        elements = driver.find_elements(by=by, value=selector)
+        v_elems = []
+        for element in elements:
+            if element.is_displayed():
+                v_elems.append(element)
+        return v_elems
 
 
 def save_screenshot(driver, name, folder=None):
