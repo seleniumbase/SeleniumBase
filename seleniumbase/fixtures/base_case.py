@@ -60,6 +60,7 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+ECI_Exception = selenium_exceptions.ElementClickInterceptedException
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
@@ -951,10 +952,11 @@ class BaseCase(unittest.TestCase):
 
     def find_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
         """ Returns a list of matching WebElements.
+            Elements could be either hidden or visible on the page.
             If "limit" is set and > 0, will only return that many elements. """
-        self.wait_for_ready_state_complete()
-        time.sleep(0.05)
         selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        time.sleep(0.07)
         elements = self.driver.find_elements(by=by, value=selector)
         if limit and limit > 0 and len(elements) > limit:
             elements = elements[:limit]
@@ -963,9 +965,9 @@ class BaseCase(unittest.TestCase):
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
         """ Returns a list of matching WebElements that are visible.
             If "limit" is set and > 0, will only return that many elements. """
-        self.wait_for_ready_state_complete()
-        time.sleep(0.05)
         selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        time.sleep(0.07)
         v_elems = page_actions.find_visible_elements(self.driver, selector, by)
         if limit and limit > 0 and len(v_elems) > limit:
             v_elems = v_elems[:limit]
@@ -977,35 +979,34 @@ class BaseCase(unittest.TestCase):
             Works best for actions such as clicking all checkboxes on a page.
             Example:  self.click_visible_elements('input[type="checkbox"]')
             If "limit" is set and > 0, will only click that many elements. """
-        elements = self.find_elements(selector, by=by)
-        count = 0
+        elements = []
+        try:
+            elements = self.find_visible_elements(selector, by=by)
+        except Exception:
+            elements = self.find_elements(selector, by=by)
         click_count = 0
         for element in elements:
             if limit and limit > 0 and click_count >= limit:
                 return
-            count += 1
-            if count == 1:
-                self.wait_for_ready_state_complete()
-                if self.is_element_visible(selector, by=by):
-                    self.click(selector, by=by)
+            try:
+                if element.is_displayed():
+                    self.__scroll_to_element(element)
+                    element.click()
                     click_count += 1
-            else:
+                    self.wait_for_ready_state_complete()
+            except ECI_Exception:
+                continue  # ElementClickInterceptedException (Overlay likely)
+            except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
+                time.sleep(0.03)
                 try:
                     if element.is_displayed():
                         self.__scroll_to_element(element)
                         element.click()
                         click_count += 1
+                        self.wait_for_ready_state_complete()
                 except (StaleElementReferenceException, ENI_Exception):
-                    self.wait_for_ready_state_complete()
-                    time.sleep(0.05)
-                    try:
-                        if element.is_displayed():
-                            self.__scroll_to_element(element)
-                            element.click()
-                            click_count += 1
-                    except (StaleElementReferenceException, ENI_Exception):
-                        return  # Probably on new page / Elements are all stale
+                    return  # Probably on new page / Elements are all stale
 
     def click_nth_visible_element(self, selector, number, by=By.CSS_SELECTOR):
         """ Finds all matching page elements and clicks the nth visible one.
@@ -1051,6 +1052,9 @@ class BaseCase(unittest.TestCase):
                 iframe_identifier = iframe['name']
             elif iframe.has_attr('id') and len(iframe['id']) > 0:
                 iframe_identifier = iframe['id']
+            elif iframe.has_attr('class') and len(iframe['class']) > 0:
+                iframe_class = " ".join(iframe["class"])
+                iframe_identifier = '[class="%s"]' % iframe_class
             else:
                 continue
             self.switch_to_frame(iframe_identifier)
