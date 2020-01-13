@@ -1,5 +1,6 @@
-Last_Page: https://xkcd.com/731/
-Browser: firefox 
+Last Page: https://xkcd.com/731/
+  Browser: firefox
+Timestamp: 1540898481
 Traceback: File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/unittest/case.py", line 615, in run
     testMethod()
   File "/Users/michael/github/SeleniumBase/examples/test_fail.py", line 12, in test_find_army_of_robots_on_xkcd_desert_island
