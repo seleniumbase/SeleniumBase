@@ -1,5 +1,6 @@
 pip>=19.3.1
-setuptools>=45.0.0
+setuptools>=44.0.0;python_version<"3"
+setuptools>=45.0.0;python_version>="3"
 setuptools-scm>=3.3.3
 wheel>=0.33.6
 six==1.13.0
