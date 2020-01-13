@@ -29,7 +29,6 @@ def pytest_addoption(parser):
     --headless  (The option to run tests headlessly. The default on Linux OS.)
     --headed  (The option to run tests with a GUI on Linux OS.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
-    --log-path=LOG_PATH  (The directory where log files get saved to.)
     --archive-logs  (Archive old log files instead of deleting them.)
     --slow  (The option to slow down the automation.)
     --demo  (The option to visually see test actions as they occur.)
@@ -113,7 +112,7 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', '--log-path',
                      dest='log_path',
                      default='latest_logs/',
-                     help='Where the log files are saved.')
+                     help='Where log files are saved. (No longer editable!)')
     parser.addoption('--archive_logs', '--archive-logs',
                      action="store_true",
                      dest='archive_logs',
@@ -380,7 +379,7 @@ def pytest_configure(config):
     sb_config.settings_file = config.getoption('settings_file')
     sb_config.user_data_dir = config.getoption('user_data_dir')
     sb_config.database_env = config.getoption('database_env')
-    sb_config.log_path = config.getoption('log_path')
+    sb_config.log_path = 'latest_logs/'  # (No longer editable!)
     sb_config.archive_logs = config.getoption('archive_logs')
     sb_config.slow_mode = config.getoption('slow_mode')
     sb_config.demo_mode = config.getoption('demo_mode')
@@ -402,7 +401,8 @@ def pytest_configure(config):
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
 
     if sb_config.reuse_session:
-        if "".join(sys.argv) == "-c":  # Can't "reuse_session" if multithreaded
+        if "-n" in sys.argv or "".join(sys.argv) == "-c":
+            # Can't "reuse_session" if multithreaded
             sb_config.reuse_session = False
 
     if "linux" in sys.platform and (
@@ -432,6 +432,7 @@ def pytest_unconfigure():
             except Exception:
                 pass
         sb_config.shared_driver = None
+    log_helper.archive_logs_if_set(sb_config.log_path, sb_config.archive_logs)
 
 
 def pytest_runtest_setup():

@@ -31,8 +31,9 @@ def log_test_failure_data(test, test_logpath, driver, browser):
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
     last_page = get_last_page(driver)
     data_to_save = []
-    data_to_save.append("Last_Page: %s" % last_page)
-    data_to_save.append("Browser: %s " % browser)
+    data_to_save.append("Last Page: %s" % last_page)
+    data_to_save.append("  Browser: %s" % browser)
+    data_to_save.append("Timestamp: %s" % int(time.time()))
     if sys.version_info[0] >= 3 and hasattr(test, '_outcome'):
         if test._outcome.errors:
             try:
@@ -104,6 +105,47 @@ def get_html_source_with_base_href(driver, page_source):
     return ''
 
 
+def copytree(src, dst, symlinks=False, ignore=None):
+    if not os.path.exists(dst):
+        os.makedirs(dst)
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            copytree(s, d, symlinks, ignore)
+        else:
+            if not os.path.exists(d) or (
+                    os.stat(s).st_mtime - os.stat(d).st_mtime > 1):
+                shutil.copy2(s, d)
+
+
+def archive_logs_if_set(log_path, archive_logs=False):
+    """ Handle Logging """
+    if "-n" in sys.argv or "".join(sys.argv) == "-c":
+        return  # Skip if multithreaded
+    if log_path.endswith("/"):
+        log_path = log_path[:-1]
+    if not os.path.exists(log_path):
+        try:
+            os.makedirs(log_path)
+        except Exception:
+            pass  # Only reachable during multi-threaded runs
+    else:
+        if settings.ARCHIVE_EXISTING_LOGS or archive_logs:
+            if len(os.listdir(log_path)) > 0:
+                archived_folder = "%s/../archived_logs/" % log_path
+                archived_folder = os.path.realpath(archived_folder) + '/'
+                log_path = os.path.realpath(log_path) + '/'
+                if not os.path.exists(archived_folder):
+                    try:
+                        os.makedirs(archived_folder)
+                    except Exception:
+                        pass  # Only reachable during multi-threaded runs
+                time_id = str(int(time.time()))
+                archived_logs = "%slogs_%s" % (archived_folder, time_id)
+                copytree(log_path, archived_logs)
+
+
 def log_folder_setup(log_path, archive_logs=False):
     """ Handle Logging """
     if log_path.endswith("/"):
@@ -115,30 +157,23 @@ def log_folder_setup(log_path, archive_logs=False):
             pass  # Should only be reachable during multi-threaded runs
     else:
         archived_folder = "%s/../archived_logs/" % log_path
+        archived_folder = os.path.realpath(archived_folder) + '/'
         if not os.path.exists(archived_folder):
             try:
                 os.makedirs(archived_folder)
             except Exception:
                 pass  # Should only be reachable during multi-threaded runs
-        if not "".join(sys.argv) == "-c":
-            # Only move log files if the test run is not multi-threaded.
-            # (Running tests with "-n NUM" will create threads that only
-            # have "-c" in the sys.argv list. Easy to catch.)
-            archived_logs = "%slogs_%s" % (
-                archived_folder, int(time.time()))
-            if "_logs" not in log_path:
-                # Don't move files in a custom-named log folder (in case
-                # the user specifed a folder with important files in it)
-                # unless the folder name contains "_logs".
-                # The default name for the log folder is "latest_logs".
-                return
+        archived_logs = "%slogs_%s" % (
+            archived_folder, int(time.time()))
+
+        if len(os.listdir(log_path)) > 0:
             shutil.move(log_path, archived_logs)
             os.makedirs(log_path)
             if not settings.ARCHIVE_EXISTING_LOGS and not archive_logs:
                 shutil.rmtree(archived_logs)
-            elif len(os.listdir(archived_logs)) == 0:
-                # Don't archive an empty directory
-                shutil.rmtree(archived_logs)
             else:
-                # Logs are saved/archived
-                pass
+                if ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                    # Logs are saved/archived now if tests are multithreaded
+                    pass
+                else:
+                    shutil.rmtree(archived_logs)  # (Archive test run later)

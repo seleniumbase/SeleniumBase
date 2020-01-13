@@ -95,7 +95,7 @@ def _add_chrome_proxy_extension(
     """ Implementation of https://stackoverflow.com/a/35293284 for
         https://stackoverflow.com/questions/12848327/
         (Run Selenium on a proxy server that requires authentication.) """
-    if not "".join(sys.argv) == "-c":
+    if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
         # Single-threaded
         proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
     else:
@@ -529,7 +529,8 @@ def get_local_driver(
                         logging.debug("\nWarning: Could not make geckodriver"
                                       " executable: %s" % e)
                 elif not is_geckodriver_on_path():
-                    if not "".join(sys.argv) == "-c":  # Skip if multithreaded
+                    if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                        # (Not multithreaded)
                         from seleniumbase.console_scripts import sb_install
                         sys_args = sys.argv  # Save a copy of current sys args
                         print("\nWarning: geckodriver not found!"
@@ -600,7 +601,8 @@ def get_local_driver(
         else:
             return webdriver.Edge()
     elif browser_name == constants.Browser.SAFARI:
-        if "".join(sys.argv) == "-c":  # Skip if multithreaded
+        if ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+            # Skip if multithreaded
             raise Exception("Can't run Safari tests in multi-threaded mode!")
         return webdriver.Safari()
     elif browser_name == constants.Browser.OPERA:
@@ -631,7 +633,8 @@ def get_local_driver(
                     logging.debug("\nWarning: Could not make chromedriver"
                                   " executable: %s" % e)
             elif not is_chromedriver_on_path():
-                if not "".join(sys.argv) == "-c":  # Skip if multithreaded
+                if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                    # (Not multithreaded)
                     from seleniumbase.console_scripts import sb_install
                     sys_args = sys.argv  # Save a copy of current sys args
                     print("\nWarning: chromedriver not found. Installing now:")

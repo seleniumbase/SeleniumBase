@@ -1,5 +1,6 @@
 pip>=19.3.1
-setuptools>=44.0.0
+setuptools>=44.0.0;python_version<"3"
+setuptools>=45.0.0;python_version>="3"
 setuptools-scm>=3.3.3
 wheel>=0.33.6
 six==1.13.0
@@ -34,7 +35,7 @@ pyopenssl==19.1.0
 packaging>=20.0
 pygments==2.5.2
 colorama==0.4.3
-coverage>=5.0.2
+coverage>=5.0.3
 pymysql==0.9.3
 pyotp==2.3.0
 boto==2.49.0

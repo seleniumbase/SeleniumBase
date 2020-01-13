@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """ This is the Nose plugin for setting a test environment and saving logs. """
 
-import os
 import sys
 import time
 from nose.plugins import Plugin
@@ -17,7 +16,6 @@ class Base(Plugin):
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
     --settings-file=FILE  (Overrides SeleniumBase settings.py values.)
-    --log-path=LOG_PATH  (The directory where log files get saved to.)
     --archive-logs  (Archive old log files instead of deleting them.)
     --report  (The option to create a fancy report after tests complete.)
     --show-report   If self.report is turned on, then the report will
@@ -59,7 +57,7 @@ class Base(Plugin):
             '--log_path', '--log-path',
             dest='log_path',
             default='latest_logs/',
-            help='Where the log files are saved.')
+            help='Where the log files are saved. (No longer editable!)')
         parser.add_option(
             '--archive_logs', '--archive-logs',
             action="store_true",
@@ -102,16 +100,13 @@ class Base(Plugin):
         self.page_results_list = []
         self.test_count = 0
         self.import_error = False
-        log_path = options.log_path
+        log_path = 'latest_logs/'
         archive_logs = options.archive_logs
         log_helper.log_folder_setup(log_path, archive_logs)
         if self.report_on:
             report_helper.clear_out_old_report_logs(archive_past_runs=False)
 
     def beforeTest(self, test):
-        test_logpath = self.options.log_path + "/" + test.id()
-        if not os.path.exists(test_logpath):
-            os.makedirs(test_logpath)
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
@@ -123,6 +118,8 @@ class Base(Plugin):
         self.start_time = float(time.time())
 
     def finalize(self, result):
+        log_helper.archive_logs_if_set(
+            self.options.log_path, self.options.archive_logs)
         if self.report_on:
             if not self.import_error:
                 report_helper.add_bad_page_log_file(self.page_results_list)
