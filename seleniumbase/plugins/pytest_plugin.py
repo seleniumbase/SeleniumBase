@@ -402,7 +402,8 @@ def pytest_configure(config):
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
 
     if sb_config.reuse_session:
-        if "".join(sys.argv) == "-c":  # Can't "reuse_session" if multithreaded
+        if "-n" in sys.argv or "".join(sys.argv) == "-c":
+            # Can't "reuse_session" if multithreaded
             sb_config.reuse_session = False
 
     if "linux" in sys.platform and (
