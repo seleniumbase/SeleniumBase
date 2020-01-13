@@ -117,7 +117,7 @@ setup(
         'packaging>=20.0',
         'pygments>=2.5.2',
         'colorama==0.4.3',
-        'coverage>=5.0.2',
+        'coverage>=5.0.3',
         'pymysql==0.9.3',
         'pyotp==2.3.0',
         'boto==2.49.0',
