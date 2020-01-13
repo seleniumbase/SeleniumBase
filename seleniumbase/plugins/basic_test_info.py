@@ -11,6 +11,7 @@ Data to be saved includes:
 
 import os
 import codecs
+import time
 import traceback
 from nose.plugins import Plugin
 from seleniumbase.config import settings
@@ -55,8 +56,9 @@ class BasicTestInfo(Plugin):
 
     def __log_test_error_data(self, log_file, test, err, type):
         data_to_save = []
-        data_to_save.append("Last_Page: %s" % test.driver.current_url)
-        data_to_save.append("Browser: %s " % self.options.browser)
+        data_to_save.append("Last Page: %s" % test.driver.current_url)
+        data_to_save.append("  Browser: %s" % self.options.browser)
+        data_to_save.append("Timestamp: %s" % int(time.time()))
         data_to_save.append("Server: %s " % self.options.servername)
         data_to_save.append("%s: %s" % (type, err[0]))
         data_to_save.append("Traceback: " + ''.join(

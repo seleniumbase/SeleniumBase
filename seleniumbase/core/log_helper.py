@@ -31,8 +31,9 @@ def log_test_failure_data(test, test_logpath, driver, browser):
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
     last_page = get_last_page(driver)
     data_to_save = []
-    data_to_save.append("Last_Page: %s" % last_page)
-    data_to_save.append("Browser: %s " % browser)
+    data_to_save.append("Last Page: %s" % last_page)
+    data_to_save.append("  Browser: %s" % browser)
+    data_to_save.append("Timestamp: %s" % int(time.time()))
     if sys.version_info[0] >= 3 and hasattr(test, '_outcome'):
         if test._outcome.errors:
             try:
