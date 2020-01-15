@@ -121,7 +121,8 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 def archive_logs_if_set(log_path, archive_logs=False):
     """ Handle Logging """
-    if "-n" in sys.argv or "".join(sys.argv) == "-c":
+    arg_join = " ".join(sys.argv)
+    if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
         return  # Skip if multithreaded
     if log_path.endswith("/"):
         log_path = log_path[:-1]
@@ -172,7 +173,8 @@ def log_folder_setup(log_path, archive_logs=False):
             if not settings.ARCHIVE_EXISTING_LOGS and not archive_logs:
                 shutil.rmtree(archived_logs)
             else:
-                if ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                a_join = " ".join(sys.argv)
+                if ("-n" in sys.argv) or ("-n=" in a_join) or (a_join == "-c"):
                     # Logs are saved/archived now if tests are multithreaded
                     pass
                 else:
