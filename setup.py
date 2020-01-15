@@ -104,7 +104,6 @@ setup(
         'pytest-metadata>=1.8.0',
         'pytest-ordering>=0.6',
         'pytest-rerunfailures>=8.0',
-        'pytest-timeout>=1.3.4',
         'pytest-xdist>=1.31.0',
         'parameterized>=0.7.1',
         'soupsieve==1.9.5',

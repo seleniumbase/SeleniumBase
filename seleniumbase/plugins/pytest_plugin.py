@@ -349,6 +349,12 @@ def pytest_addoption(parser):
                      help="""Setting this overrides the default timeout
                           by the multiplier when waiting for page elements.
                           Unused when tests overide the default value.""")
+    for arg in sys.argv:
+        if "--timeout=" in arg:
+            raise Exception(
+                "\n\n  Don't use --timeout=s from pytest-timeout! "
+                "\n  It's not thread-safe for WebDriver processes! "
+                "\n  Use --time-limit=s from SeleniumBase instead!\n")
 
 
 def pytest_configure(config):
