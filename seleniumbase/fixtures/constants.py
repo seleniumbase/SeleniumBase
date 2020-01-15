@@ -23,6 +23,10 @@ class SavedCookies:
     STORAGE_FOLDER = "saved_cookies"
 
 
+class Tours:
+    EXPORTED_TOURS_FOLDER = "tours_exported"
+
+
 class VisualBaseline:
     STORAGE_FOLDER = "visual_baseline"
 
