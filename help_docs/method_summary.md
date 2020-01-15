@@ -262,6 +262,8 @@ self.js_update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None)
 
 self.jquery_update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None)
 
+self.set_time_limit(time_limit)
+
 ########
 
 self.add_css_link(css_link)
