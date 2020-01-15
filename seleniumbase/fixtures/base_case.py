@@ -976,14 +976,15 @@ class BaseCase(unittest.TestCase):
     def click_visible_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
         """ Finds all matching page elements and clicks visible ones in order.
             If a click reloads or opens a new page, the clicking will stop.
+            If no matching elements appear, an Exception will be raised.
+            If "limit" is set and > 0, will only click that many elements.
+            Also clicks elements that become visible from previous clicks.
             Works best for actions such as clicking all checkboxes on a page.
-            Example:  self.click_visible_elements('input[type="checkbox"]')
-            If "limit" is set and > 0, will only click that many elements. """
-        elements = []
-        try:
-            elements = self.find_visible_elements(selector, by=by)
-        except Exception:
-            elements = self.find_elements(selector, by=by)
+            Example:  self.click_visible_elements('input[type="checkbox"]') """
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        elements = self.find_elements(selector, by=by)
         click_count = 0
         for element in elements:
             if limit and limit > 0 and click_count >= limit:
