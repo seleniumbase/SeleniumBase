@@ -30,6 +30,7 @@ def pytest_addoption(parser):
     --headed  (The option to run tests with a GUI on Linux OS.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --archive-logs  (Archive old log files instead of deleting them.)
+    --time-limit  (The option to set a time limit per test before failing it.)
     --slow  (The option to slow down the automation.)
     --demo  (The option to visually see test actions as they occur.)
     --demo-sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
@@ -247,6 +248,12 @@ def pytest_addoption(parser):
                      default=True,
                      help="""This is used by the BaseCase class to tell apart
                           pytest runs from nosetest runs. (Automatic)""")
+    parser.addoption('--time_limit', '--time-limit', '--timelimit',
+                     action='store',
+                     dest='time_limit',
+                     default=None,
+                     help="""Use this to set a time limit per test, in seconds.
+                          If a test runs beyond the limit, it fails.""")
     parser.addoption('--slow_mode', '--slow-mode', '--slow',
                      action="store_true",
                      dest='slow_mode',
@@ -349,6 +356,12 @@ def pytest_addoption(parser):
                      help="""Setting this overrides the default timeout
                           by the multiplier when waiting for page elements.
                           Unused when tests overide the default value.""")
+    for arg in sys.argv:
+        if "--timeout=" in arg:
+            raise Exception(
+                "\n\n  Don't use --timeout=s from pytest-timeout! "
+                "\n  It's not thread-safe for WebDriver processes! "
+                "\n  Use --time-limit=s from SeleniumBase instead!\n")
 
 
 def pytest_configure(config):
@@ -381,6 +394,7 @@ def pytest_configure(config):
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = 'latest_logs/'  # (No longer editable!)
     sb_config.archive_logs = config.getoption('archive_logs')
+    sb_config.time_limit = config.getoption('time_limit')
     sb_config.slow_mode = config.getoption('slow_mode')
     sb_config.demo_mode = config.getoption('demo_mode')
     sb_config.demo_sleep = config.getoption('demo_sleep')
@@ -401,7 +415,8 @@ def pytest_configure(config):
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
 
     if sb_config.reuse_session:
-        if "-n" in sys.argv or "".join(sys.argv) == "-c":
+        arg_join = " ".join(sys.argv)
+        if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
             # Can't "reuse_session" if multithreaded
             sb_config.reuse_session = False
 

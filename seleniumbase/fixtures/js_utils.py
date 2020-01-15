@@ -10,6 +10,7 @@ from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import shared_utils
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
@@ -19,10 +20,10 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     fully loaded (although AJAX and other loads might still be happening).
     This method will wait until document.readyState == "complete".
     """
-
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
+        shared_utils.check_if_time_limit_exceeded()
         try:
             ready_state = driver.execute_script("return document.readyState")
         except WebDriverException:

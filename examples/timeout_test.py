@@ -1,15 +1,15 @@
-""" This test fails on purpose to demonstrate the timeout feature
-    for tests that run longer than the time limit specified. """
+""" This test fails on purpose to demonstrate the time-limit feature
+    for tests that run longer than the time limit specified in seconds.
+    Usage: (inside tests) -> self.set_time_limit(SECONDS) """
 
 import pytest
-import time
 from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
 
     @pytest.mark.expected_failure
-    @pytest.mark.timeout(6)  # The test will fail if it runs longer than this
-    def test_timeout_failure(self):
+    def test_time_limit_feature(self):
+        self.set_time_limit(6)  # Test fails if run-time exceeds limit
         self.open("https://xkcd.com/1658/")
-        time.sleep(7)
+        self.sleep(7)

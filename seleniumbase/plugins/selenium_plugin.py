@@ -24,6 +24,7 @@ class SeleniumBrowser(Plugin):
     --headless  (The option to run tests headlessly. The default on Linux OS.)
     --headed  (The option to run tests with a GUI on Linux OS.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
+    --time-limit  (The option to set a time limit per test before failing it.)
     --slow  (The option to slow down the automation.)
     --demo  (The option to visually see test actions as they occur.)
     --demo-sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
@@ -168,6 +169,13 @@ class SeleniumBrowser(Plugin):
                     when each test begins.
                     Default: None.""")
         parser.add_option(
+            '--time_limit', '--time-limit', '--timelimit',
+            action='store',
+            dest='time_limit',
+            default=None,
+            help="""Use this to set a time limit per test, in seconds.
+                    If a test runs beyond the limit, it fails.""")
+        parser.add_option(
             '--slow_mode', '--slow-mode', '--slow',
             action="store_true",
             dest='slow_mode',
@@ -300,6 +308,7 @@ class SeleniumBrowser(Plugin):
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics
+        test.test.time_limit = self.options.time_limit
         test.test.slow_mode = self.options.slow_mode
         test.test.demo_mode = self.options.demo_mode
         test.test.demo_sleep = self.options.demo_sleep

@@ -77,15 +77,28 @@ class Base(Plugin):
             default=False,
             help="If true when using report, will display it after tests run.")
         found_processes_arg = False
+        found_timeout_arg = False
         for arg in sys.argv:
             if "--processes=" in arg:
                 found_processes_arg = True
+            if "--timeout=" in arg:
+                found_timeout_arg = True
         if found_processes_arg:
             print("* WARNING: Don't use multi-threading with nosetests! *")
             parser.add_option(
-                '--processes', dest='processes',
+                '--processes',
+                dest='processes',
                 default=0,
                 help="WARNING: Don't use multi-threading with nosetests!")
+        if found_timeout_arg:
+            print("\n  WARNING: Don't use --timeout=s from pytest-timeout!")
+            print("  It's not thread-safe for WebDriver processes!")
+            print("  Use --time-limit=s from SeleniumBase instead!\n")
+            parser.add_option(
+                '--timeout',
+                dest='timeout',
+                default=0,
+                help="Don't use --timeout=s! Use --time-limit=s instead!")
 
     def configure(self, options, conf):
         super(Base, self).configure(options, conf)

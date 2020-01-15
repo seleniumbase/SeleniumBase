@@ -11,8 +11,7 @@ from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
-
-EXPORTED_TOURS_FOLDER = "tours_exported"
+EXPORTED_TOURS_FOLDER = constants.Tours.EXPORTED_TOURS_FOLDER
 
 
 def activate_bootstrap(driver):

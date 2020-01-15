@@ -55,6 +55,7 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
+from seleniumbase.fixtures import shared_utils
 from seleniumbase.fixtures import xpath_to_css
 logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
@@ -976,14 +977,15 @@ class BaseCase(unittest.TestCase):
     def click_visible_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
         """ Finds all matching page elements and clicks visible ones in order.
             If a click reloads or opens a new page, the clicking will stop.
+            If no matching elements appear, an Exception will be raised.
+            If "limit" is set and > 0, will only click that many elements.
+            Also clicks elements that become visible from previous clicks.
             Works best for actions such as clicking all checkboxes on a page.
-            Example:  self.click_visible_elements('input[type="checkbox"]')
-            If "limit" is set and > 0, will only click that many elements. """
-        elements = []
-        try:
-            elements = self.find_visible_elements(selector, by=by)
-        except Exception:
-            elements = self.find_elements(selector, by=by)
+            Example:  self.click_visible_elements('input[type="checkbox"]') """
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        elements = self.find_elements(selector, by=by)
         click_count = 0
         for element in elements:
             if limit and limit > 0 and click_count >= limit:
@@ -1661,7 +1663,17 @@ class BaseCase(unittest.TestCase):
         js_utils.wait_for_angularjs(self.driver, timeout, **kwargs)
 
     def sleep(self, seconds):
-        time.sleep(seconds)
+        if not sb_config.time_limit:
+            time.sleep(seconds)
+        else:
+            start_ms = time.time() * 1000.0
+            stop_ms = start_ms + (seconds * 1000.0)
+            for x in range(int(seconds * 5)):
+                shared_utils.check_if_time_limit_exceeded()
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.2)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
@@ -2455,6 +2467,22 @@ class BaseCase(unittest.TestCase):
             element.send_keys('\n')
         self.__demo_mode_pause_if_active()
 
+    def set_time_limit(self, time_limit):
+        if time_limit:
+            try:
+                sb_config.time_limit = float(time_limit)
+            except Exception:
+                sb_config.time_limit = None
+        else:
+            sb_config.time_limit = None
+        if sb_config.time_limit and sb_config.time_limit > 0:
+            sb_config.time_limit_ms = int(sb_config.time_limit * 1000.0)
+            self.time_limit = sb_config.time_limit
+        else:
+            self.time_limit = None
+            sb_config.time_limit = None
+            sb_config.time_limit_ms = None
+
     ############
 
     def add_css_link(self, css_link):
@@ -3237,6 +3265,7 @@ class BaseCase(unittest.TestCase):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         for x in range(int(timeout * 5)):
+            shared_utils.check_if_time_limit_exceeded()
             try:
                 if not self.is_link_text_present(link_text):
                     raise Exception(
@@ -3257,6 +3286,7 @@ class BaseCase(unittest.TestCase):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         for x in range(int(timeout * 5)):
+            shared_utils.check_if_time_limit_exceeded()
             try:
                 if not self.is_partial_link_text_present(link_text):
                     raise Exception(
@@ -4145,6 +4175,7 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
             self.highlights = sb_config.highlights
+            self.time_limit = sb_config.time_limit
             self.environment = sb_config.environment
             self.env = self.environment  # Add a shortened version
             self.with_selenium = sb_config.with_selenium  # Should be True
@@ -4242,6 +4273,9 @@ class BaseCase(unittest.TestCase):
                     # pyvirtualdisplay might not be necessary anymore because
                     # Chrome and Firefox now have built-in headless displays
                     pass
+        else:
+            # (Nosetests / Not Pytest)
+            pass  # Setup performed in plugins
 
         # Verify that SeleniumBase is installed successfully
         if not hasattr(self, "browser"):
@@ -4249,8 +4283,17 @@ class BaseCase(unittest.TestCase):
                             """*** Please REINSTALL SeleniumBase using: >\n"""
                             """    >>> "pip install -r requirements.txt"\n"""
                             """    >>> "python setup.py install" """)
+
+        # Configure the test time limit (if used)
+        self.set_time_limit(self.time_limit)
+
+        # Set the start time for the test (in ms)
+        sb_config.start_time_ms = int(time.time() * 1000.0)
+
+        # Parse the settings file
         if self.settings_file:
             settings_parser.set_settings(self.settings_file)
+
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
         if self.device_metrics:
             metrics_string = self.device_metrics
