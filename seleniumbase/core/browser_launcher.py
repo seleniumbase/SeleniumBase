@@ -229,7 +229,7 @@ def _create_firefox_profile(
     profile.set_preference("app.update.enabled", False)
     profile.set_preference("app.update.silent", True)
     profile.set_preference("browser.privatebrowsing.autostart", True)
-    profile.set_preference("devtools.errorconsole.enabled", True)
+    profile.set_preference("devtools.errorconsole.enabled", False)
     profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
     profile.set_preference("extensions.PrivateBrowsing.notification", False)
     profile.set_preference("extensions.systemAddon.update.enabled", False)
