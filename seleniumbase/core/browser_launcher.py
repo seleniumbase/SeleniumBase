@@ -82,6 +82,14 @@ def is_chromedriver_on_path():
     return False
 
 
+def is_edgedriver_on_path():
+    paths = os.environ["PATH"].split(os.pathsep)
+    for path in paths:
+        if os.path.exists(path + '/' + "msedgedriver"):
+            return True
+    return False
+
+
 def is_geckodriver_on_path():
     paths = os.environ["PATH"].split(os.pathsep)
     for path in paths:
@@ -583,23 +591,39 @@ def get_local_driver(
                               " executable: %s" % e)
         return webdriver.Ie(capabilities=ie_capabilities)
     elif browser_name == constants.Browser.EDGE:
-        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
-            try:
-                make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-            except Exception as e:
-                logging.debug("\nWarning: Could not make edgedriver"
-                              " executable: %s" % e)
-            # The new Microsoft Edge browser is based on Chromium
+        try:
             chrome_options = _set_chrome_options(
                 downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, incognito, user_data_dir,
                 extension_zip, extension_dir, servername, mobile_emulator,
                 device_width, device_height, device_pixel_ratio)
+            if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+                try:
+                    make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+                except Exception as e:
+                    logging.debug("\nWarning: Could not make edgedriver"
+                                  " executable: %s" % e)
+            elif not is_edgedriver_on_path():
+                if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                    # (Not multithreaded)
+                    from seleniumbase.console_scripts import sb_install
+                    sys_args = sys.argv  # Save a copy of current sys args
+                    print("\nWarning: chromedriver not found. Installing now:")
+                    sb_install.main(override="edgedriver")
+                    sys.argv = sys_args  # Put back the original sys args
             return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
                                     options=chrome_options)
-        else:
-            return webdriver.Edge()
+        except Exception as e:
+            if headless:
+                raise Exception(e)
+            if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+                try:
+                    make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+                except Exception as e:
+                    logging.debug("\nWarning: Could not make edgedriver"
+                                  " executable: %s" % e)
+            return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER)
     elif browser_name == constants.Browser.SAFARI:
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):

@@ -82,7 +82,9 @@ def make_executable(file_path):
 def main(override=None):
     if override == "chromedriver":
         sys.argv = ["seleniumbase", "install", "chromedriver"]
-    if override == "geckodriver":
+    elif override == "edgedriver":
+        sys.argv = ["seleniumbase", "install", "edgedriver"]
+    elif override == "geckodriver":
         sys.argv = ["seleniumbase", "install", "geckodriver"]
 
     num_args = len(sys.argv)
