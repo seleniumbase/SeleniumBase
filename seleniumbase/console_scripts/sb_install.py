@@ -39,7 +39,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
 DEFAULT_GECKODRIVER_VERSION = "v0.26.0"
-DEFAULT_EDGEDRIVER_VERSION = "77.0.235.20"
+DEFAULT_EDGEDRIVER_VERSION = "79.0.309.65"
 DEFAULT_OPERADRIVER_VERSION = "v.75.0.3770.100"
 
 
@@ -82,7 +82,9 @@ def make_executable(file_path):
 def main(override=None):
     if override == "chromedriver":
         sys.argv = ["seleniumbase", "install", "chromedriver"]
-    if override == "geckodriver":
+    elif override == "edgedriver":
+        sys.argv = ["seleniumbase", "install", "edgedriver"]
+    elif override == "geckodriver":
         sys.argv = ["seleniumbase", "install", "geckodriver"]
 
     num_args = len(sys.argv)

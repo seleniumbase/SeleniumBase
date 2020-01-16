@@ -109,4 +109,4 @@ python gui_test_runner.py
 
 --------
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb30.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
