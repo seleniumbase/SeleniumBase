@@ -410,7 +410,7 @@ def get_remote_driver(
             for key in desired_caps.keys():
                 firefox_capabilities[key] = desired_caps[key]
             capabilities = firefox_capabilities
-            address = "http://%s:%s/wd/hub" % (servername, port)
+            warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
