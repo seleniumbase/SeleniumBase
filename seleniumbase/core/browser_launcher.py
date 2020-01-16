@@ -103,7 +103,8 @@ def _add_chrome_proxy_extension(
     """ Implementation of https://stackoverflow.com/a/35293284 for
         https://stackoverflow.com/questions/12848327/
         (Run Selenium on a proxy server that requires authentication.) """
-    if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+    arg_join = " ".join(sys.argv)
+    if not ("-n" in sys.argv or "-n=" in arg_join or arg_join == "-c"):
         # Single-threaded
         proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
     else:
@@ -537,7 +538,8 @@ def get_local_driver(
                         logging.debug("\nWarning: Could not make geckodriver"
                                       " executable: %s" % e)
                 elif not is_geckodriver_on_path():
-                    if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                    args = " ".join(sys.argv)
+                    if not ("-n" in sys.argv or "-n=" in args or args == "-c"):
                         # (Not multithreaded)
                         from seleniumbase.console_scripts import sb_install
                         sys_args = sys.argv  # Save a copy of current sys args
@@ -605,7 +607,8 @@ def get_local_driver(
                     logging.debug("\nWarning: Could not make edgedriver"
                                   " executable: %s" % e)
             elif not is_edgedriver_on_path():
-                if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                args = " ".join(sys.argv)
+                if not ("-n" in sys.argv or "-n=" in args or args == "-c"):
                     # (Not multithreaded)
                     from seleniumbase.console_scripts import sb_install
                     sys_args = sys.argv  # Save a copy of current sys args
@@ -658,7 +661,8 @@ def get_local_driver(
                     logging.debug("\nWarning: Could not make chromedriver"
                                   " executable: %s" % e)
             elif not is_chromedriver_on_path():
-                if not ("-n" in sys.argv or "".join(sys.argv) == "-c"):
+                args = " ".join(sys.argv)
+                if not ("-n" in sys.argv or "-n=" in args or args == "-c"):
                     # (Not multithreaded)
                     from seleniumbase.console_scripts import sb_install
                     sys_args = sys.argv  # Save a copy of current sys args
