@@ -440,14 +440,13 @@ class BaseCase(unittest.TestCase):
 
     def get_page_title(self):
         self.wait_for_ready_state_complete()
-        self.wait_for_element_present("title", timeout=settings.MINI_TIMEOUT)
+        self.wait_for_element_present("title", timeout=settings.SMALL_TIMEOUT)
+        time.sleep(0.03)
         return self.driver.title
 
     def get_title(self):
         """ The shorter version of self.get_page_title() """
-        self.wait_for_ready_state_complete()
-        self.wait_for_element_present("title", timeout=settings.MINI_TIMEOUT)
-        return self.driver.title
+        return self.get_page_title()
 
     def go_back(self):
         self.__last_page_load_url = None
@@ -2264,7 +2263,7 @@ class BaseCase(unittest.TestCase):
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
         expected = title
-        actual = self.get_title()
+        actual = self.get_page_title()
         self.assertEqual(expected, actual, "Expected page title [%s] "
                          "does not match the actual page title [%s]!"
                          "" % (expected, actual))
