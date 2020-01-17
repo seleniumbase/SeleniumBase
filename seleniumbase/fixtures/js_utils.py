@@ -385,11 +385,11 @@ def activate_jquery_confirm(driver):
 
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
-        wait_for_jquery_active(driver, timeout=0.6)
+        wait_for_jquery_active(driver, timeout=0.9)
     add_css_link(driver, jq_confirm_css)
     add_js_link(driver, jq_confirm_js)
 
-    for x in range(7):
+    for x in range(15):
         # jQuery-Confirm needs a small amount of time to load & activate.
         try:
             driver.execute_script("jconfirm")
@@ -408,10 +408,10 @@ def activate_html_inspector(driver):
         return
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
-        wait_for_jquery_active(driver, timeout=0.6)
+        wait_for_jquery_active(driver, timeout=0.9)
     add_js_link(driver, html_inspector_js)
 
-    for x in range(7):
+    for x in range(15):
         # HTML-Inspector needs a small amount of time to load & activate.
         try:
             driver.execute_script("HTMLInspector")

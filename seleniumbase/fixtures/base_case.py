@@ -2301,6 +2301,8 @@ class BaseCase(unittest.TestCase):
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def __activate_html_inspector(self):
+        self.wait_for_ready_state_complete()
+        time.sleep(0.05)
         js_utils.activate_html_inspector(self.driver)
 
     def inspect_html(self):
