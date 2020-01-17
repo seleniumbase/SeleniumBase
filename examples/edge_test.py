@@ -10,7 +10,7 @@ class EdgeTestClass(BaseCase):
         if self.browser != "edge":
             print("\n  This test is only for Microsoft Edge (Chromium)!")
             print("  (Run with: '--browser=edge')")
-            self.skipTest("This test is only for Microsoft Edge (Chromium)! ")
+            self.skip_test("This test is only for Microsoft Edge (Chromium)!")
         self.open("edge://settings/help")
         self.assert_element('img[alt="Edge logo"] + span')
         self.highlight('div[role="main"] div div div + div')

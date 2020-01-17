@@ -12,10 +12,12 @@ Options:
 Example:
         seleniumbase install chromedriver
         seleniumbase install geckodriver
+        seleniumbase install edgedriver
         seleniumbase install chromedriver 76.0.3809.126
         seleniumbase install chromedriver latest
         seleniumbase install chromedriver -p
         seleniumbase install chromedriver latest -p
+        seleniumbase install edgedriver 79.0.309.65
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
