@@ -107,7 +107,7 @@ def _get_raw_css_from_xpath(xpath):
                                     match['mvalue'])
         elif match['contained']:
             if match['cattr'].startswith("@"):
-                attr = "[%s*=%s]" % (match['cattr'].replace("@", ""),
+                attr = '[%s*="%s"]' % (match['cattr'].replace("@", ""),
                                      match['cvalue'])
             elif match['cattr'] == "text()":
                 attr = ":contains(%s)" % match['cvalue']
