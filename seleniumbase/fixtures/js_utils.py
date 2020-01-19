@@ -6,6 +6,7 @@ import re
 import requests
 import time
 from selenium.common.exceptions import WebDriverException
+from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import style_sheet
@@ -542,7 +543,12 @@ def post_messenger_success_message(driver, message, msg_dur):
         msg_dur = settings.DEFAULT_MESSAGE_DURATION
     msg_dur = float(msg_dur)
     try:
-        set_messenger_theme(driver, theme="future", location="bottom_right")
+        theme = "future"
+        location = "bottom_right"
+        if sb_config.mobile_emulator:
+            theme = "block"
+            location = "top_center"
+        set_messenger_theme(driver, theme=theme, location=location)
         post_message(
             driver, message, msg_dur, style="success")
         time.sleep(msg_dur + 0.07)
