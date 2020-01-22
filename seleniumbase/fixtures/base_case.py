@@ -1502,7 +1502,7 @@ class BaseCase(unittest.TestCase):
                     # WebDrivers can get closed during tearDown().
                     pass
             else:
-                if self.browser == 'chrome':
+                if self.browser == 'chrome' or self.browser == 'edge':
                     width = settings.CHROME_START_WIDTH
                     height = settings.CHROME_START_HEIGHT
                     try:
@@ -1522,12 +1522,6 @@ class BaseCase(unittest.TestCase):
                             self.wait_for_ready_state_complete()
                         except Exception:
                             pass  # Keep existing browser resolution
-                elif self.browser == 'edge':
-                    try:
-                        self.driver.maximize_window()
-                        self.wait_for_ready_state_complete()
-                    except Exception:
-                        pass  # Keep existing browser resolution
             if self.start_page and len(self.start_page) >= 4:
                 if page_utils.is_valid_url(self.start_page):
                     self.open(self.start_page)
@@ -2299,9 +2293,10 @@ class BaseCase(unittest.TestCase):
             current_url = self.get_current_url()
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, errors))
-        if self.demo_mode and self.browser == 'chrome':
-            messenger_post = ("ASSERT NO JS ERRORS")
-            self.__highlight_with_assert_success(messenger_post, "html")
+        if self.demo_mode:
+            if (self.browser == 'chrome' or self.browser == 'edge'):
+                messenger_post = ("ASSERT NO JS ERRORS")
+                self.__highlight_with_assert_success(messenger_post, "html")
 
     def __activate_html_inspector(self):
         self.wait_for_ready_state_complete()
