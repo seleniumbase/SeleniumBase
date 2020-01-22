@@ -355,11 +355,12 @@ def get_driver(browser_name, headless=False, use_grid=False,
                     'The format for using a proxy server with authentication '
                     'is: "username:password@hostname:port". If using a proxy '
                     'server without auth, the format is: "hostname:port".')
-            if browser_name != constants.Browser.GOOGLE_CHROME:
+            if browser_name != constants.Browser.GOOGLE_CHROME and (
+                    browser_name != constants.Browser.EDGE):
                 raise Exception(
-                    "Chrome is required when using a proxy server that has "
-                    "authentication! (If using a proxy server without auth, "
-                    "either Chrome or Firefox may be used.)")
+                    "Chrome or Edge is required when using a proxy server "
+                    "that has authentication! (If using a proxy server "
+                    "without auth, Chrome, Edge, or Firefox may be used.)")
         proxy_string = validate_proxy_string(proxy_string)
         if proxy_string and proxy_user and proxy_pass:
             proxy_auth = True
