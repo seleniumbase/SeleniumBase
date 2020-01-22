@@ -81,7 +81,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
-        'pip>=19.3.1',  # >= 19.3.1 required for Python 3.8+
+        'pip>=20.0.1',
         'setuptools',
         'setuptools-scm',
         'wheel',
@@ -90,7 +90,7 @@ setup(
         'ipdb',
         'idna==2.8',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.25.7',  # Must stay in sync with "requests"
+        'urllib3==1.25.8',  # Must stay in sync with "requests"
         'requests==2.22.0',
         'selenium==3.141.0',
         'pluggy>=0.13.1',
@@ -125,7 +125,7 @@ setup(
         'flake8==3.7.9',
         'certifi>=2019.11.28',
         'pdfminer.six==20191110;python_version<"3.5"',
-        'pdfminer.six==20200104;python_version>="3.5"',
+        'pdfminer.six==20200121;python_version>="3.5"',
     ],
     packages=[
         'seleniumbase',
