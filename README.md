@@ -1,32 +1,33 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb10.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_j.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg?logo=travis" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt=" " />](https://dev.azure.com/seleniumbase/seleniumbase/_build) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
-Python Framework for End-to-End UI Testing with [Selenium WebDriver](https://selenium.dev) and [pytest](https://pytest.org).
+Python Framework for End-to-End Testing with [Selenium WebDriver](https://selenium.dev) and [pytest](https://pytest.org).
 
-#### Features include:
-* [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) to enhance WebDriver.
-* Can run tests on web & mobile browsers.
-* [Command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for test flexibility.
-* Can do parallel testing on [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md).
-* Includes tools for debugging tests easily.
-* Supports [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md), [TravisCI](https://github.com/seleniumbase/SeleniumBase/blob/master/.travis.yml), & [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
-* A logging system that takes screenshots.
-* Includes a tool for [building website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
-* Lots of [examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md) to help you get started.
-* [Click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md) to see a longer list of features.
-
-(<i>Watch [examples/my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) run in Demo Mode:</i>)
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
+(<i>[examples/my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Demo Mode</i>)
 ```bash
 cd examples/
 pytest my_first_test.py --demo
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started:
+### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase
+
+> **Table of Contents / Navigation:**
+> - [**Getting Started**](#get_started)
+> - [**Detailed Instructions**](#detailed_instructions)
+> - [**Complete Feature List**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)
+> - [**Customizing Test Runs**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
+> - [**Examples for You to Run**](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md)
+> - [**Generating Test Reports**](#creating_visual_reports)
+> - [**Production Environments**](#utilizing_advanced_features)
+> - [**Complete Method Summary**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)
+
+<a id="get_started"></a>
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Getting Started:
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-You'll need **[Python](https://www.python.org/downloads/)** on your System PATH. [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?logo=python&logoColor=gold" alt="Python versions" alt="Python versions" />](https://www.python.org/downloads/)
+You'll need **[Python](https://www.python.org/downloads/)** on your System PATH. [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?logo=python&logoColor=lightblue" alt="Python versions" alt="Python versions" />](https://www.python.org/downloads/)
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
 ```bash
@@ -141,7 +142,7 @@ SeleniumBase includes a solution called **[MasterQA](https://github.com/selenium
 For a full list of SeleniumBase features, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
 
 
-<a id="seleniumbase_installation"></a>
+<a id="detailed_instructions"></a>
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Detailed Instructions:
@@ -663,4 +664,4 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb28.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
