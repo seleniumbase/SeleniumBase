@@ -81,7 +81,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
-        'pip>=20.0.1',
+        'pip>=20.0.2',
         'setuptools',
         'setuptools-scm',
         'wheel',
@@ -113,7 +113,7 @@ setup(
         'cryptography==2.8',
         'asn1crypto==1.3.0',
         'pyopenssl==19.1.0',
-        'packaging>=20.0',
+        'packaging>=20.1',
         'pygments>=2.5.2',
         'colorama==0.4.3',
         'coverage>=5.0.3',
@@ -125,7 +125,7 @@ setup(
         'flake8==3.7.9',
         'certifi>=2019.11.28',
         'pdfminer.six==20191110;python_version<"3.5"',
-        'pdfminer.six==20200121;python_version>="3.5"',
+        'pdfminer.six==20200124;python_version>="3.5"',
     ],
     packages=[
         'seleniumbase',
