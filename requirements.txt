@@ -1,7 +1,7 @@
-pip>=20.0.1
+pip>=20.0.2
 setuptools>=44.0.0;python_version<"3"
 setuptools>=45.1.0;python_version>="3"
-setuptools-scm>=3.4.2
+setuptools-scm>=3.4.3
 wheel>=0.33.6
 six==1.14.0
 nose==1.3.7
@@ -31,7 +31,7 @@ portalocker==1.5.2
 cryptography==2.8
 asn1crypto==1.3.0
 pyopenssl==19.1.0
-packaging>=20.0
+packaging>=20.1
 pygments==2.5.2
 colorama==0.4.3
 coverage>=5.0.3
@@ -43,4 +43,4 @@ tqdm>=4.41.1
 flake8==3.7.9
 certifi>=2019.11.28
 pdfminer.six==20191110;python_version<"3.5"
-pdfminer.six==20200121;python_version>="3.5"
+pdfminer.six==20200124;python_version>="3.5"
