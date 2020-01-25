@@ -62,22 +62,22 @@ jobs:
   - script: python -m pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/test-results.xml'
-      testRunTitle: 'Python $(python.version)'
-    condition: succeededOrFailed()
+  #- task: PublishTestResults@2
+  #  inputs:
+  #    testResultsFiles: '**/test-results.xml'
+  #    testRunTitle: 'Python $(python.version)'
+  #  condition: succeededOrFailed()
 
-- job: 'Publish'
-  dependsOn: 'Test'
-  pool:
-    vmImage: 'Ubuntu-16.04'
+#- job: 'Publish'
+#  dependsOn: 'Test'
+#  pool:
+#    vmImage: 'Ubuntu-16.04'
 
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      architecture: 'x64'
+#  steps:
+#  - task: UsePythonVersion@0
+#    inputs:
+#      versionSpec: '3.x'
+#      architecture: 'x64'
 
-  - script: python setup.py sdist
-    displayName: 'Build sdist'
+#  - script: python setup.py sdist
+#    displayName: 'Build sdist'
