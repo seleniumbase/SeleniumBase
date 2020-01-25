@@ -1,8 +1,8 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_4.png" title="SeleniumBase" height="129">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg?logo=travis" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases)<br />
+[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=3DAC7B" alt="Python versions" />](https://www.python.org/downloads/)<br />
 
-Fast, easy, and reliable test automation.
+A complete framework for web/mobile automation, end-to-end testing, and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). SeleniumBase uses [pytest](https://docs.pytest.org/en/latest/index.html) for running Python scripts, while using [Selenium WebDriver](https://selenium.dev/) for controlling web browsers.
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode, which adds JavaScript for highlighting page actions.</i>)<br />
@@ -10,37 +10,28 @@ Fast, easy, and reliable test automation.
 pytest my_first_test.py --demo
 ```
 
-SeleniumBase is an all-in-one test automation framework that uses WebDriver APIs for spinning up web browsers while using pytest for running tests.
-
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started with SeleniumBase
-
-> **Table of Contents / Navigation:**
-> - [**Python Installation**](#python_installation)
-> - [**Install SeleniumBase**](#install_seleniumbase)
-> - [**Detailed Instructions**](#detailed_instructions)
-> - [**Creating Test Reports**](#creating_visual_reports)
-> - [**Running Example Tests**](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md)
-> - [**Complete Feature List**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)
-> - [**Customizing Test Runs**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
-> - [**Link to All Help Docs**](https://github.com/seleniumbase/SeleniumBase/tree/master/help_docs)
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Features:
+* Simplifies the process of creating of web & mobile tests.
+* Includes [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for making [reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md), etc.
+* Uses reliable, smart-waiting code to prevent flakiness.
+* Multiplies the abilities of [pytest](https://pytest.org) and enhances [Selenium](https://www.seleniumhq.org/).
+* Includes tools for [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), & [web tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
+* Integrates with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), & [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py).
+* To see all features [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md). To see all methods, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* To see examples [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md). To see all help docs, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/help_docs).
 
 <a id="python_installation"></a>
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Python Installation:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start
 
-**[python.org/downloads/](https://www.python.org/downloads/)**
-[<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?logo=python&logoColor=lightblue" alt="Python versions" />](https://www.python.org/downloads/)
+(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install/upgrade ``pip``:
-With Python installed and on your System PATH, you can get the latest ``pip`` with:
+#### Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/):
 ```bash
-python -m easy_install -U pip
+python -m pip install -U pip setuptools
 ```
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Python Virtual Env:
-It is **recommended** to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the **[official site](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
-
 <a id="install_seleniumbase"></a>
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase)
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``:
 ```bash
 pip install seleniumbase
 ```
