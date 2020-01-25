@@ -4,7 +4,7 @@
 
 All-in-one Python framework for automated E2E tests, [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_demo_gif.gif" title="SeleniumBase" height="225"><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode, which adds JavaScript for highlighting page actions.</i>)<br />
 ```bash
 pytest my_first_test.py --demo
@@ -12,17 +12,17 @@ pytest my_first_test.py --demo
 
 SeleniumBase uses [pytest](https://github.com/pytest-dev/pytest) for running Python scripts, while using [Selenium WebDriver](https://www.seleniumhq.org/) for controlling web browsers.
 
-### ![http://seleniumbase.com](https://cdn2.hubspot.net/hubfs/100006/images/super_logo_tiny.png "SeleniumBase") Get Started with SeleniumBase
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started with SeleniumBase
 
 > **Table of Contents / Navigation:**
 > - [**Python Installation**](#python_installation)
+> - [**Install SeleniumBase**](#install_seleniumbase)
 > - [**Detailed Instructions**](#detailed_instructions)
+> - [**Creating Test Reports**](#creating_visual_reports)
+> - [**Running Example Tests**](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md)
 > - [**Complete Feature List**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md)
 > - [**Customizing Test Runs**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
-> - [**Examples for You to Run**](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md)
-> - [**Generating Test Reports**](#creating_visual_reports)
-> - [**Production Environments**](#utilizing_advanced_features)
-> - [**Complete Method Summary**](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)
+> - [**Link to All Help Docs**](https://github.com/seleniumbase/SeleniumBase/tree/master/help_docs)
 
 <a id="python_installation"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Python Installation:
@@ -39,6 +39,7 @@ python -m easy_install -U pip
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Setup a Python Virtual Env:
 It is **recommended** to use a **Python Virtual Environment** to isolate Python dependencies between projects. Instructions on creating one can be found **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md)**. (<i>Learn more about virtual environments on the **[official site](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)**.</i>)
 
+<a id="install_seleniumbase"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``: [<img src="https://img.shields.io/badge/pypi-seleniumbase-22AAEE.svg" alt=" " />](https://pypi.python.org/pypi/seleniumbase)
 ```bash
 pip install seleniumbase
@@ -666,4 +667,4 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE)
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

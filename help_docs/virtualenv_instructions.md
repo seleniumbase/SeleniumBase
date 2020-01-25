@@ -20,7 +20,6 @@ If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~
 (*Shortcut*: Run "``virtualenv_install.bat``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
-python -m pip install --upgrade virtualenv
 python -m pip install --upgrade virtualenvwrapper-win
 ```
 
