@@ -1,8 +1,8 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_2h2.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers) [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=DDBB24" alt="Python versions" />](https://www.python.org/downloads/)<br />
+[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=777CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
-A complete framework for web & mobile automation, end-to-end testing, and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md). SeleniumBase uses [pytest](https://docs.pytest.org/en/latest/index.html) for running Python scripts, while using [Selenium WebDriver](https://selenium.dev/) for controlling web browsers.
+A Python toolkit for easy end-to-end web testing and [site tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [pytest](https://docs.pytest.org/en/latest/index.html) and [Selenium WebDriver](https://selenium.dev/).
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
 (<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode, which adds JavaScript for highlighting page actions.</i>)<br />
@@ -23,22 +23,16 @@ pytest my_first_test.py --demo
 <a id="python_installation"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start
 
-(<i>Requires [Git](https://git-scm.com/) and [Python](https://www.python.org/downloads/). Optionally, you may want to use a [Python virtual environment](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md) to isolate Python dependencies between projects.</i>)
-
-#### Upgrade [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/):
+* Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
+* [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python versions" />](https://www.python.org/downloads/)
+* A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i>[See shortcut](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).</i>
+* Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
 ```bash
-python -m pip install -U pip setuptools
+python -m pip install -U pip
 ```
 
 <a id="install_seleniumbase"></a>
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``:
-```bash
-pip install seleniumbase
-```
-* Add ``--upgrade`` OR ``-U`` to upgrade an installation.
-* Add ``--force-reinstall`` for a clean install.
-
-You can also install seleniumbase from a ``git clone``:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
@@ -46,6 +40,13 @@ pip install -r requirements.txt
 python setup.py install
 ```
 If multiple versions of Python are installed, be specific (E.g. use ``python3`` instead of ``python``).
+
+* You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
+```bash
+pip install seleniumbase
+```
+* Add ``--upgrade`` OR ``-U`` to upgrade an installation.
+* Add ``--force-reinstall`` for a clean install.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a webdriver:
 
@@ -67,9 +68,11 @@ pytest my_first_test.py
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
-**Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a simple test looks like:**
-* <i>By default, [CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp) are used for finding page elements.</i>
-* Here are some common SeleniumBase methods you might find in tests:
+**Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a script looks like:**
+<img src="https://cdn2.hubspot.net/hubfs/100006/my_first_test_py_4.png" title="My First SeleniumBase Test"><br />
+* By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
+* If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
+* Here are some common ``SeleniumBase`` methods you might find in tests:
 ```python
 self.open(URL)  # Navigate to the web page
 self.click(SELECTOR)  # Click a page element
@@ -654,8 +657,8 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 **If you see something, say something!**<br />[<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99">](https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed)
 
+**If you like us, give us a star!**<br />[<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=777CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
+
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases)
-
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
