@@ -68,7 +68,7 @@ pytest my_first_test.py
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
-**Check out [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) to see what a script looks like:**
+**Here's an example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):**
 <img src="https://cdn2.hubspot.net/hubfs/100006/my_first_test_py_4.png" title="My First SeleniumBase Test"><br />
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.

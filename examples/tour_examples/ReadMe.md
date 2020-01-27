@@ -1,15 +1,14 @@
 ## SeleniumBase Website Tours
 
-SeleniumBase Tours utilize your choice of 4 different JavaScript libraries for prototyping walkthroughs, onboarding experiences, and digital adoption solutions on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.<br>Choose your favorite one to use!
+SeleniumBase Tours utilize your choice of 4 JavaScript libraries for prototyping walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
-Example tour:
+**Example tour:**
 
+<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br>
 ```
 cd examples/tour_examples
 pytest google_tour.py
 ```
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br>
 
 
 ### Creating a new tour:
