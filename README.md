@@ -1,6 +1,6 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_2h2.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=777CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
+[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions) [<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)<br />
 
 A Python toolkit for easy end-to-end web testing and [site tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [pytest](https://docs.pytest.org/en/latest/index.html) and [Selenium WebDriver](https://selenium.dev/).
 
@@ -657,7 +657,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 **If you see something, say something!**<br />[<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99">](https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed)
 
-**If you like us, give us a star!**<br />[<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=777CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
+**If you like us, give us a star!**<br />[<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
