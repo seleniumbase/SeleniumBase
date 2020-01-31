@@ -1,13 +1,11 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/laptop_logo.png" title="SeleniumBase" height="160">
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/new_logo_pre6c.png" title="SeleniumBase" height="47.8"><br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions)<br />
 
-Python framework for easy end-to-end testing and [website tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [Selenium](https://selenium.dev/) and [pytest](https://docs.pytest.org/en/latest/index.html).
+Python framework for end-to-end Web-UI testing and [site tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [Selenium](https://selenium.dev/) and [pytest](https://docs.pytest.org/en/latest/index.html).
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
-(<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode, which adds JavaScript for highlighting page actions.</i>)<br />
+(<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode.</i>)<br />
 ```bash
 pytest my_first_test.py --demo
 ```
@@ -70,7 +68,7 @@ pytest my_first_test.py
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
-**Here's an example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):**
+**Here's an example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):**<br />
 <img src="https://cdn2.hubspot.net/hubfs/100006/my_first_test_py_4.png" title="My First SeleniumBase Test"><br />
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
@@ -240,6 +238,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --disable-csp  # (This disables the Content Security Policy of websites.)
 --enable-sync  # (The option to enable "Chrome Sync".)
+--incognito  #  (The option to enable Chrome's Incognito mode.)
 --reuse-session  # (The option to reuse the browser session between tests.)
 --maximize-window  # (The option to start with the web browser maximized.)
 --save-screenshot  # (The option to save a screenshot after each test.)
