@@ -5,14 +5,14 @@ class VisualLayoutTest(BaseCase):
 
     def test_applitools_layout_change(self):
         self.open('https://applitools.com/helloworld?diff1')
-        print('\nCreating baseline in "visual_baseline" folder...')
+        print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="helloworld", baseline=True)
         self.click('a[href="?diff1"]')
-        # Verify html tags match previous version
+        # Verify html tags match the baseline
         self.check_window(name="helloworld", level=1)
-        # Verify html tags and attribute names match previous version
+        # Verify html tags and attribute names match the baseline
         self.check_window(name="helloworld", level=2)
-        # Verify html tags and attribute values match previous version
+        # Verify html tags and attribute values match the baseline
         self.check_window(name="helloworld", level=3)
         # Change the page enough for a Level-3 comparison to fail
         self.click("button")
@@ -21,6 +21,6 @@ class VisualLayoutTest(BaseCase):
         with self.assertRaises(Exception):
             self.check_window(name="helloworld", level=3)
         # Now that we know the Exception was raised as expected,
-        # let's print out the comparison results by running in Level-0.
+        # let's print out the comparison results by running a Level-0 check.
         # (NOTE: Running with level-0 will print but NOT raise an Exception.)
         self.check_window(name="helloworld", level=0)
