@@ -133,7 +133,7 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         if delay and delay > 0:
             time.sleep(delay)
@@ -208,7 +208,7 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
             actions = ActionChains(self.driver)
@@ -297,7 +297,7 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         try:
             element.clear()
         except (StaleElementReferenceException, ENI_Exception):
@@ -368,7 +368,7 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
             if not text.endswith('\n'):
@@ -1797,13 +1797,13 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         try:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
 
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
         ''' Slow motion scroll to destination '''
@@ -1846,7 +1846,7 @@ class BaseCase(unittest.TestCase):
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
             if not self.demo_mode:
-                self.__scroll_to_element(element)
+                self.__scroll_to_element(element, selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)
         css_selector = self.__escape_quotes_if_needed(css_selector)
@@ -4047,8 +4047,12 @@ class BaseCase(unittest.TestCase):
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
 
-    def __scroll_to_element(self, element):
-        js_utils.scroll_to_element(self.driver, element)
+    def __scroll_to_element(self, element, selector=None, by=By.CSS_SELECTOR):
+        success = js_utils.scroll_to_element(self.driver, element)
+        if not success and selector:
+            self.wait_for_ready_state_complete()
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=settings.SMALL_TIMEOUT)
         self.__demo_mode_pause_if_active(tiny=True)
 
     def __slow_scroll_to_element(self, element):

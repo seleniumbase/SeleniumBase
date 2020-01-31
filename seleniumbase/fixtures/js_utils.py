@@ -640,8 +640,8 @@ def scroll_to_element(driver, element):
     try:
         element_location = element.location['y']
     except Exception:
-        element.location_once_scrolled_into_view
-        return
+        # element.location_once_scrolled_into_view  # Old hack
+        return False
     element_location = element_location - 130
     if element_location < 0:
         element_location = 0
@@ -650,8 +650,9 @@ def scroll_to_element(driver, element):
     # scroll_script = "jQuery('%s')[0].scrollIntoView()" % selector
     try:
         driver.execute_script(scroll_script)
-    except WebDriverException:
-        pass  # Older versions of Firefox experienced issues here
+        return True
+    except Exception:
+        return False
 
 
 def slow_scroll_to_element(driver, element, browser):
