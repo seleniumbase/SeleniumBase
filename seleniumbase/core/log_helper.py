@@ -168,8 +168,11 @@ def log_folder_setup(log_path, archive_logs=False):
             archived_folder, int(time.time()))
 
         if len(os.listdir(log_path)) > 0:
-            shutil.move(log_path, archived_logs)
-            os.makedirs(log_path)
+            try:
+                shutil.move(log_path, archived_logs)
+                os.makedirs(log_path)
+            except Exception:
+                pass  # A file was probably open at the time
             if not settings.ARCHIVE_EXISTING_LOGS and not archive_logs:
                 shutil.rmtree(archived_logs)
             else:
