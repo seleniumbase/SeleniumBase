@@ -133,7 +133,7 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         if delay and delay > 0:
             time.sleep(delay)
@@ -208,7 +208,7 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
             actions = ActionChains(self.driver)
@@ -297,7 +297,7 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         try:
             element.clear()
         except (StaleElementReferenceException, ENI_Exception):
@@ -368,7 +368,7 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
             if not text.endswith('\n'):
@@ -1797,13 +1797,13 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         try:
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
-            self.__scroll_to_element(element)
+            self.__scroll_to_element(element, selector, by)
 
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
         ''' Slow motion scroll to destination '''
@@ -1846,7 +1846,7 @@ class BaseCase(unittest.TestCase):
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
             if not self.demo_mode:
-                self.__scroll_to_element(element)
+                self.__scroll_to_element(element, selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)
         css_selector = self.__escape_quotes_if_needed(css_selector)
@@ -3482,6 +3482,36 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def __assert_eq(self, *args, **kwargs):
+        """ Minified assert_equal() using only the list diff. """
+        minified_exception = None
+        try:
+            self.assertEqual(*args, **kwargs)
+        except Exception as e:
+            str_e = str(e)
+            minified_exception = "\nAssertionError:\n"
+            lines = str_e.split('\n')
+            countdown = 3
+            countdown_on = False
+            for line in lines:
+                if countdown_on:
+                    minified_exception += line + '\n'
+                    countdown = countdown - 1
+                    if countdown == 0:
+                        countdown_on = False
+                elif line.startswith('F'):
+                    countdown_on = True
+                    countdown = 3
+                    minified_exception += line + '\n'
+                elif line.startswith('+') or line.startswith('-'):
+                    minified_exception += line + '\n'
+                elif line.startswith('?'):
+                    minified_exception += line + '\n'
+                elif line.strip().startswith('*'):
+                    minified_exception += line + '\n'
+        if minified_exception:
+            raise Exception(minified_exception)
+
     def check_window(self, name="default", level=0, baseline=False):
         """ ***  Automated Visual Testing with SeleniumBase  ***
 
@@ -3644,40 +3674,41 @@ class BaseCase(unittest.TestCase):
             f.close()
 
             domain_fail = (
-                "Page Domain Mismatch Failure: "
+                "\nPage Domain Mismatch Failure: "
                 "Current Page Domain doesn't match the Page Domain of the "
                 "Baseline! Can't compare two completely different sites! "
                 "Run with --visual_baseline to reset the baseline!")
             level_1_failure = (
-                "\n\n*** Exception: <Level 1> Visual Diff Failure:\n"
+                "\n*\n*** Exception: <Level 1> Visual Diff Failure:\n"
                 "* HTML tags don't match the baseline!")
             level_2_failure = (
-                "\n\n*** Exception: <Level 2> Visual Diff Failure:\n"
-                "* HTML tag attributes don't match the baseline!")
+                "\n*\n*** Exception: <Level 2> Visual Diff Failure:\n"
+                "* HTML tag attribute names don't match the baseline!")
             level_3_failure = (
-                "\n\n*** Exception: <Level 3> Visual Diff Failure:\n"
+                "\n*\n*** Exception: <Level 3> Visual Diff Failure:\n"
                 "* HTML tag attribute values don't match the baseline!")
 
             page_domain = self.get_domain_url(page_url)
             page_data_domain = self.get_domain_url(page_url_data)
             unittest.TestCase.maxDiff = 1000
-            if level == 1 or level == 2 or level == 3:
-                self.assertEqual(page_domain, page_data_domain, domain_fail)
-                self.assertEqual(level_1, level_1_data, level_1_failure)
+            if level != 0:
+                self.assertEqual(page_data_domain, page_domain, domain_fail)
             unittest.TestCase.maxDiff = None
-            if level == 2 or level == 3:
-                self.assertEqual(level_2, level_2_data, level_2_failure)
             if level == 3:
-                self.assertEqual(level_3, level_3_data, level_3_failure)
+                self.__assert_eq(level_3_data, level_3, level_3_failure)
+            if level == 2:
+                self.__assert_eq(level_2_data, level_2, level_2_failure)
+            unittest.TestCase.maxDiff = 1000
+            if level == 1:
+                self.__assert_eq(level_1_data, level_1, level_1_failure)
+            unittest.TestCase.maxDiff = None
             if level == 0:
                 try:
                     unittest.TestCase.maxDiff = 1000
                     self.assertEqual(
                         page_domain, page_data_domain, domain_fail)
-                    self.assertEqual(level_1, level_1_data, level_1_failure)
                     unittest.TestCase.maxDiff = None
-                    self.assertEqual(level_2, level_2_data, level_2_failure)
-                    self.assertEqual(level_3, level_3_data, level_3_failure)
+                    self.__assert_eq(level_3_data, level_3, level_3_failure)
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
 
@@ -4047,8 +4078,12 @@ class BaseCase(unittest.TestCase):
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
 
-    def __scroll_to_element(self, element):
-        js_utils.scroll_to_element(self.driver, element)
+    def __scroll_to_element(self, element, selector=None, by=By.CSS_SELECTOR):
+        success = js_utils.scroll_to_element(self.driver, element)
+        if not success and selector:
+            self.wait_for_ready_state_complete()
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=settings.SMALL_TIMEOUT)
         self.__demo_mode_pause_if_active(tiny=True)
 
     def __slow_scroll_to_element(self, element):
