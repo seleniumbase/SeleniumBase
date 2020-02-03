@@ -95,6 +95,9 @@ class BaseCase(unittest.TestCase):
     def open(self, url):
         """ Navigates the current browser window to the specified page. """
         self.__last_page_load_url = None
+        if url.startswith("://"):
+            # Convert URLs such as "://google.com" into "https://google.com"
+            url = "https" + url
         self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
