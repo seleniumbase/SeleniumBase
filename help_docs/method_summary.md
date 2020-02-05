@@ -172,6 +172,10 @@ self.scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
 
+self.scroll_to_top()
+
+self.scroll_to_bottom()
+
 self.click_xpath(xpath)
 
 self.js_click(selector, by=By.CSS_SELECTOR, all_matches=False)
