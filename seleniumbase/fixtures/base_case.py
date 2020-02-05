@@ -1826,6 +1826,24 @@ class BaseCase(unittest.TestCase):
                 selector, by=by, timeout=timeout)
             self.__slow_scroll_to_element(element)
 
+    def scroll_to_top(self):
+        scroll_script = "window.scrollTo(0, 0);"
+        try:
+            self.execute_script(scroll_script)
+            time.sleep(0.012)
+            return True
+        except Exception:
+            return False
+
+    def scroll_to_bottom(self):
+        scroll_script = "window.scrollTo(0, 10000);"
+        try:
+            self.execute_script(scroll_script)
+            time.sleep(0.012)
+            return True
+        except Exception:
+            return False
+
     def click_xpath(self, xpath):
         # Technically self.click() will automatically detect an xpath selector,
         # so self.click_xpath() is just a longer name for the same action.
