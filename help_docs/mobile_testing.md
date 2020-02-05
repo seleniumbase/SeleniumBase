@@ -19,7 +19,7 @@ pytest test_skype_site.py --mobile --browser=edge
 
 --------
 
-Here's another example of running a mobile test (https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py), which demonstrates using ``--metrics`` and ``--agent`` with ``--mobile``.:
+Here's another example of running a mobile test (https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py), which demonstrates using ``--metrics`` and ``--agent`` with ``--mobile``:
 
 ```bash
 # Run tests using Chrome's mobile device emulator (default settings)
@@ -31,7 +31,6 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif)
 
 --------
 
