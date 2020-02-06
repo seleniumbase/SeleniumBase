@@ -15,9 +15,7 @@ class SwagLabsTests(BaseCase):
         self.assert_text("Products", "div.product_label")
 
     def test_swag_labs_basic_flow(self):
-        """ This test checks for basic functional flow in the Swag Labs store.
-            The test is parameterized, and receives the user to use for login.
-        """
+        """ This test checks basic functional flow in the Swag Labs store. """
         self.login()
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
