@@ -16,7 +16,6 @@ pytest test_skype_site.py --mobile --browser=edge
 ```
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif)
 
-
 --------
 
 Here's another example of running a mobile test (https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py), which demonstrates using ``--metrics`` and ``--agent`` with ``--mobile``:
@@ -31,6 +30,7 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif)
 
 --------
 
