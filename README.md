@@ -1,13 +1,13 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/fancy_logo_9.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/fancy_logo_12.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
 
 [<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions)<br />
 
-Unleash the power of your QA automation team with SeleniumBase: A Python framework for end-to-end Web-UI testing and [site tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [Selenium](https://selenium.dev/) and [pytest](https://docs.pytest.org/en/latest/index.html).
+A Python framework for end-to-end web testing and [site tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [Selenium](https://selenium.dev/) and [pytest](https://docs.pytest.org/en/latest/index.html).
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
-(<i>Above: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode.</i>)<br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" title="SeleniumBase"><br />
+(<i>Above: [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode.</i>)<br />
 ```bash
-pytest my_first_test.py --demo
+pytest test_swag_labs.py --demo
 ```
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Features:
