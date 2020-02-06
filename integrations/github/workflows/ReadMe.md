@@ -18,11 +18,11 @@
 
 ### Step 2. Add your workflow ``.yml`` script.
 
-* **(If using a SeleniumBase fork, the script from https://github.com/seleniumbase/SeleniumBase/blob/master/.github/workflows/python-package.yml should already exist to guide you.)**
+* **(If using a SeleniumBase fork, the script from https://github.com/seleniumbase/SeleniumBase/blob/master/.github/workflows/python-package.yml already exists to help guide you.)**
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/github_workflows_3.png "GitHub Actions/Workflows")
+![](https://cdn2.hubspot.net/hubfs/100006/images/github_workflows_9.png "GitHub Actions/Workflows")
 
-### Step 3. Commit your file if it doesn't already exist.
+### Step 3. Commit your changes to GitHub.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_workflows_4.png "GitHub Actions/Workflows")
 
@@ -34,13 +34,15 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_workflows_5.png "GitHub Actions/Workflows")
 
-* **(You can click inside each run for more details.)**
+* **(You can click inside each build for more details.)**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_workflows_6.png "GitHub Actions/Workflows")
 
 * **(You can also see the specific steps being performed by each command.)**
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/github_workflows_7.png "GitHub Actions/Workflows")
+
+* **(You'll notice that web browsers such as Chrome and Firefox get installed for tests to use. SeleniumBase uses pytest for running tests while using Selenium to interact with web browsers.)**
 
 ----------
 
