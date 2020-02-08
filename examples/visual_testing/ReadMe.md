@@ -43,7 +43,7 @@ If you want to use ``self.check_window()`` to compare a web page to a later vers
 
 Automated Visual Testing with ``self.check_window()`` is not very effective for websites that have dynamic content because that changes the layout and structure of web pages. For those pages, you're much better off using regular SeleniumBase functional testing, unless you can remove the dynamic content before performing the comparison, (such as by using ``self.ad_block()`` to remove dynamic ad content on a web page).
 
-Example usage of ``self.check_window()``:
+Example usage of ``self.check_window()`` with different levels:
 ```python
     self.check_window(name="testing", level=0)
     self.check_window(name="xkcd_home", level=1)
@@ -55,37 +55,23 @@ Example usage of ``self.check_window()``:
     self.check_window(name="helloworld", level=3)
 ```
 
-Full example test:
+Here's an example where clicking a button makes a hidden element visible:
 ```python
 from seleniumbase import BaseCase
 
-
 class VisualLayoutTest(BaseCase):
 
-    def test_applitools_layout_change(self):
+    def test_applitools_layout_change_failure(self):
         self.open('https://applitools.com/helloworld?diff1')
-        print('\nCreating baseline in "visual_baseline" folder...')
+        print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="helloworld", baseline=True)
+        # Click a button that changes the text of an element
         self.click('a[href="?diff1"]')
-        # Verify html tags match previous version
-        self.check_window(name="helloworld", level=1)
-        # Verify html tags and attribute names match previous version
-        self.check_window(name="helloworld", level=2)
-        # Verify html tags and attribute values match previous version
-        self.check_window(name="helloworld", level=3)
-        # Change the page enough for a Level-3 comparison to fail
+        # Click a button that makes a hidden element visible
         self.click("button")
-        self.check_window(name="helloworld", level=1)
-        self.check_window(name="helloworld", level=2)
-        with self.assertRaises(Exception):
-            self.check_window(name="helloworld", level=3)
-        # Now that we know the Exception was raised as expected,
-        # let's print out the comparison results by running in Level-0.
-        # (NOTE: Running with level-0 will print but NOT raise an Exception.)
-        self.check_window(name="helloworld", level=0)
+        self.check_window(name="helloworld", level=3)
 ```
-
-Here's the output of that:
+Here's the output of that: (<i>Text changes do not impact visual comparisons</i>)
 ```
 AssertionError:
 First differing element 39:
@@ -100,23 +86,52 @@ First differing element 39:
 * HTML tag attribute values don't match the baseline!
 ```
 
-Here's another example:
+Here's an example where a button is removed from a web page:
 ```python
 from seleniumbase import BaseCase
 
+class VisualLayoutTest(BaseCase):
+
+    def test_python_home_layout_change_failure(self):
+        self.open('https://python.org/')
+        print('\nCreating baseline in "visual_baseline" folder.')
+        self.check_window(name="github_home", baseline=True)
+        # Remove the "Donate" button
+        self.remove_element('a.donate-button')
+        self.check_window(name="github_home", level=3)
+```
+Here's the output of that:
+```
+AssertionError:
+First differing element 33:
+['a', [['class', ['donate-button']], ['href', '/psf/donations/']]]
+['div', [['class', ['options-bar']]]]
+
+-  ['a', [['class', ['donate-button']], ['href', '/psf/donations/']]],
+-     'display: list-item; opacity: 0.995722;']]],
+?                         -------------------
++     'display: list-item;']]],
+*
+*** Exception: <Level 3> Visual Diff Failure:
+* HTML tag attribute values don't match the baseline!
+
+```
+
+Here's an example where a web site logo is resized:
+```python
+from seleniumbase import BaseCase
 
 class VisualLayoutTest(BaseCase):
 
-    def test_xkcd_layout_change(self):
+    def test_xkcd_layout_change_failure(self):
         self.open('https://xkcd.com/554/')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="xkcd_554", baseline=True)
         # Change height: (83 -> 130) , Change width: (185 -> 120)
         self.set_attribute('[alt="xkcd.com logo"]', "height", "130")
         self.set_attribute('[alt="xkcd.com logo"]', "width", "120")
-        self.check_window(name="xkcd_554", level=0)
+        self.check_window(name="xkcd_554", level=3)
 ```
-
 Here's the output of that:
 ```
 AssertionError:

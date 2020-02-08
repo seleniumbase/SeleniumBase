@@ -7,6 +7,8 @@ class VisualLayoutTest(BaseCase):
         self.open('https://applitools.com/helloworld?diff1')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="helloworld", baseline=True)
+        # Click a button that changes the text of an element
+        # (Text changes do not impact visual comparisons)
         self.click('a[href="?diff1"]')
         # Verify html tags match the baseline
         self.check_window(name="helloworld", level=1)
@@ -14,7 +16,7 @@ class VisualLayoutTest(BaseCase):
         self.check_window(name="helloworld", level=2)
         # Verify html tags and attribute values match the baseline
         self.check_window(name="helloworld", level=3)
-        # Change the page enough for a Level-3 comparison to fail
+        # Click a button that makes a hidden element visible
         self.click("button")
         self.check_window(name="helloworld", level=1)
         self.check_window(name="helloworld", level=2)
