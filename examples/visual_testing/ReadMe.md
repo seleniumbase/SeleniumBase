@@ -1,7 +1,7 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 ### Automated Visual Testing (Layout Change Detection)
 
-Automated visual testing helps you detect when the layout of a web page has changed. Rather than comparing screenshots, layout differences are detected by comparing HTML tags and properties with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
+Automated visual testing helps you detect when the layout of a web page has changed. Rather than comparing screenshots, layout differences are detected by comparing HTML tags and attributes with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
 
 To handle automated visual testing, SeleniumBase uses the ``self.check_window()`` method, which can set visual baselines for comparison and then compare the latest versions of web pages to the existing baseline.
 
@@ -9,10 +9,10 @@ The first time a test calls ``self.check_window()`` with a unique "name" paramet
 * page_url.txt  ->  The URL of the current window
 * screenshot.png  -> A screenshot of the current window
 * tags_level1.txt  ->  HTML tags from the window
-* tags_level2.txt  ->  HTML tags + attributes from the window
-* tags_level3.txt  ->  HTML tags + attributes/values from the window
+* tags_level2.txt  ->  HTML tags + attribute names
+* tags_level3.txt  ->  HTML tags + attribute names+values
 
-After the first time ``self.check_window()`` is called, later calls will compare the HTML tags and properties of the latest window to the ones from the first call (<i>or to the ones from the call when the baseline was last reset</i>).
+After the first time ``self.check_window()`` is called, later calls will compare the HTML tags and attributes of the latest window to the ones from the first call (<i>or to the ones from the call when the baseline was last reset</i>).
 
 Here's an example call:
 ```
@@ -28,9 +28,9 @@ Here's how the level system works:
 * level=2 ->
     HTML tags and attribute names are compared to tags_level2.txt
 * level=3 ->
-    HTML tags and attribute values are compared to tags_level3.txt
+    HTML tags and attribute names+values are compared to tags_level3.txt
 
-As shown, Level-3 is the most strict, Level-1 is the least strict. If the comparisons from the latest window to the existing baseline don't match, the current test will fail, except for Level-0 tests.
+As shown, Level-3 is the most strict, Level-1 is the least strict. If the comparisons from the latest window to the existing baseline don't match, the current test will fail, except for Level-0 checks, which print Level-3 results without failing the test.
 
 You can reset the visual baseline on the command line by adding the following parameter at runtime:
 ``--visual_baseline``
@@ -39,7 +39,7 @@ As long as ``--visual_baseline`` is used on the command line while running tests
 
 ``self.check_window()`` will fail with "Page Domain Mismatch Failure" if the domain of the current URL doesn't match the domain of the baseline URL.
 
-If you want to use ``self.check_window()`` to compare a web page to a later version of itself from within the same test run, you can add the parameter ``baseline=True`` to the first time you call ``self.check_window()`` in a test to use that as the baseline. This only makes sense if you're calling ``self.check_window()`` more than once with the same "name" parameter in the same test.
+If you want to use ``self.check_window()`` to compare a web page to a later version of itself in the same test, add the ``baseline=True`` parameter to your first ``self.check_window()`` call to use that as the baseline. (<i>This only makes sense if you're calling ``self.check_window()`` more than once with the same "name" parameter in the same test.</i>)
 
 Automated Visual Testing with ``self.check_window()`` is not very effective for websites that have dynamic content because that changes the layout and structure of web pages. For those pages, you're much better off using regular SeleniumBase functional testing, unless you can remove the dynamic content before performing the comparison, (such as by using ``self.ad_block()`` to remove dynamic ad content on a web page).
 
