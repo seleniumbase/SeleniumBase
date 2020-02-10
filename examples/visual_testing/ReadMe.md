@@ -1,7 +1,11 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
-### Automated Visual Testing (Layout Change Detection)
+### Automated Visual Regression Testing
 
-Automated visual testing helps you detect when the layout of a web page has changed. Rather than comparing screenshots, layout differences are detected by comparing HTML tags and attributes with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
+[![TensorPy Tutorial](http://img.youtube.com/vi/erwkoiDeNzA/3.jpg)](https://www.youtube.com/watch?v=erwkoiDeNzA "Automated Visual Regression Testing")
+
+(**[Watch the tutorial on YouTube](https://www.youtube.com/watch?v=erwkoiDeNzA)**)
+
+Automated Visual Regression Testing helps you detect when the layout of a web page has changed. Rather than comparing screenshots, layout differences are detected by comparing HTML tags and attributes with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
 
 To handle automated visual testing, SeleniumBase uses the ``self.check_window()`` method, which can set visual baselines for comparison and then compare the latest versions of web pages to the existing baseline.
 
@@ -151,3 +155,10 @@ First differing element 22:
 *** Exception: <Level 3> Visual Diff Failure:
 * HTML tag attribute values don't match the baseline!
 ```
+
+To run the example (from [examples/visual_testing/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/)) with a pytest HTML Report, use:
+```
+pytest test_layout_fail.py --html=report.html
+```
+Here's what the pytest HTML Report looks like:<br />
+[<img src="https://cdn2.hubspot.net/hubfs/100006/visual_testing_report_2.png" title="Test Report">](https://cdn2.hubspot.net/hubfs/100006/visual_testing_report_2.png)
