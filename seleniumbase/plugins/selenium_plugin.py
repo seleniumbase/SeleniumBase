@@ -82,7 +82,9 @@ class SeleniumBrowser(Plugin):
             dest='servername',
             default='localhost',
             help="""Designates the Selenium Grid server to use.
-                    Default: localhost.""")
+                    Use "127.0.0.1" to connect to a localhost Grid.
+                    If unset or set to "localhost", Grid isn't used.
+                    Default: "localhost".""")
         parser.add_option(
             '--port',
             action='store',
@@ -327,7 +329,7 @@ class SeleniumBrowser(Plugin):
         test.test.use_grid = False
         test.test._reuse_session = False
         if test.test.servername != "localhost":
-            # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+            # Use Selenium Grid (Use --server="127.0.0.1" for localhost Grid)
             test.test.use_grid = True
         if "linux" in sys.platform and (
                 not self.options.headed and not self.options.headless):

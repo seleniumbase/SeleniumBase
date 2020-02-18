@@ -4279,7 +4279,7 @@ class BaseCase(unittest.TestCase):
                 self.report_on = True
             self.use_grid = False
             if self.servername != "localhost":
-                # Use Selenium Grid (Use --server=127.0.0.1 for localhost Grid)
+                # Use Selenium Grid (Use --server="127.0.0.1" for a local Grid)
                 self.use_grid = True
             if self.with_db_reporting:
                 from seleniumbase.core.application_manager import (

@@ -1,7 +1,7 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 ### Automated Visual Regression Testing
 
-[![TensorPy Tutorial](http://img.youtube.com/vi/erwkoiDeNzA/3.jpg)](https://www.youtube.com/watch?v=erwkoiDeNzA "Automated Visual Regression Testing")
+[![Automated Visual Regression Testing](http://img.youtube.com/vi/erwkoiDeNzA/3.jpg)](https://www.youtube.com/watch?v=erwkoiDeNzA "Automated Visual Regression Testing")
 
 (**[Watch the tutorial on YouTube](https://www.youtube.com/watch?v=erwkoiDeNzA)**)
 

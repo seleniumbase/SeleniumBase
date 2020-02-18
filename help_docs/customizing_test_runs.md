@@ -35,7 +35,7 @@ pytest test_suite.py --reruns=1
 pytest my_first_test.py --data="ABC,DEF"
 
 # Run tests on a local Selenium Grid
-pytest test_suite.py --server=127.0.0.1
+pytest test_suite.py --server="127.0.0.1"
 
 # Run tests on a remote Selenium Grid
 pytest test_suite.py --server=IP_ADDRESS --port=4444

@@ -166,7 +166,9 @@ def pytest_addoption(parser):
                      dest='servername',
                      default='localhost',
                      help="""Designates the Selenium Grid server to use.
-                          Default: localhost.""")
+                          Use "127.0.0.1" to connect to a localhost Grid.
+                          If unset or set to "localhost", Grid isn't used.
+                          Default: "localhost".""")
     parser.addoption('--port',
                      action='store',
                      dest='port',
