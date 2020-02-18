@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Converts a Selenium IDE recording that was exported as a Python WebDriver
 unittest file into SeleniumBase Python file.
@@ -50,7 +51,7 @@ def main():
     uses_keys = False
     uses_select = False
 
-    f = open(webdriver_python_file, 'r')
+    f = open(webdriver_python_file, 'r', encoding='utf-8')
     all_code = f.read()
     f.close()
     if "def test_" not in all_code:
@@ -722,7 +723,7 @@ def main():
     # Create SeleniumBase test file
     base_file_name = webdriver_python_file.split('.py')[0]
     converted_file_name = base_file_name + "_SB.py"
-    out_file = codecs.open(converted_file_name, "w+")
+    out_file = codecs.open(converted_file_name, "w+", encoding='utf-8')
     out_file.writelines(seleniumbase_code)
     out_file.close()
     print('\n>>> [%s] was created from [%s]\n' % (
