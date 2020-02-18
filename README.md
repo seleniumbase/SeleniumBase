@@ -24,7 +24,7 @@ pytest test_swag_labs.py --demo
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start
 
 * Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
-* [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python versions" />](https://www.python.org/downloads/)
+* [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
 * A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i>[See shortcut](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).</i>
 * Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
 ```bash

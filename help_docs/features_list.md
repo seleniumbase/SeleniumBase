@@ -1,5 +1,9 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
+[<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase" height="150">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
+
+(**[Watch an overview on YouTube](https://www.youtube.com/watch?v=Sjzq9kU5kOw)**)
+
 <a id="feature_list"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Features:**
 * A complete test automation framework for building & running reliable testing scripts.

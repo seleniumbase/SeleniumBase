@@ -45,7 +45,7 @@ If you want a visual tool to help make your MySQL life easier, [try MySQL Workbe
 
 #### Prepare your MySQL DB
 
-You can use the [testcaserepository.sql](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcaserepository.sql) file to create the necessary tables for storing test data.
+You can use the [create_db_tables.sql](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/create_db_tables.sql) file to create the necessary tables for storing test data.
 
 #### Configure your MySQL DB for SeleniumBase
 
