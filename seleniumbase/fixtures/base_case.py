@@ -2503,7 +2503,7 @@ class BaseCase(unittest.TestCase):
             sb_config.time_limit = None
             sb_config.time_limit_ms = None
 
-    def skip_test(self, reason=""):
+    def skip(self, reason=""):
         """ Mark the test as Skipped. """
         self.skipTest(reason)
 
