@@ -1718,7 +1718,7 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, new_value, by=by)
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
-                  loops=settings.HIGHLIGHTS, scroll=True):
+                  loops=None, scroll=True):
         """ This method uses fancy JavaScript to highlight an element.
             Used during demo_mode.
             @Params
@@ -1731,6 +1731,8 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        if not loops:
+            loops = settings.HIGHLIGHTS
         if scroll:
             try:
                 self.__slow_scroll_to_element(element)
