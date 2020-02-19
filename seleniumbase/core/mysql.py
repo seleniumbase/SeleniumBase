@@ -3,7 +3,9 @@ Wrapper for MySQL DB functions to make life easier.
 """
 
 import time
-from seleniumbase.core import mysql_conf as conf
+from seleniumbase import config as sb_config
+from seleniumbase.config import settings
+from seleniumbase.core import settings_parser
 
 
 class DatabaseManager():
@@ -13,17 +15,33 @@ class DatabaseManager():
 
     def __init__(self, database_env='test', conf_creds=None):
         """
-        Gets database information from mysql_conf.py and creates a connection.
+        Create a connection to the MySQL DB.
         """
         import pymysql
-        db_server, db_user, db_pass, db_schema = \
-            conf.APP_CREDS[conf.Apps.TESTCASE_REPOSITORY][database_env]
+        db_server = settings.DB_HOST
+        db_port = settings.DB_PORT
+        db_user = settings.DB_USERNAME
+        db_pass = settings.DB_PASSWORD
+        db_schema = settings.DB_SCHEMA
+        if sb_config.settings_file:
+            override = settings_parser.set_settings(sb_config.settings_file)
+            if "DB_HOST" in override.keys():
+                db_server = override['DB_HOST']
+            if "DB_PORT" in override.keys():
+                db_port = override['DB_PORT']
+            if "DB_USERNAME" in override.keys():
+                db_user = override['DB_USERNAME']
+            if "DB_PASSWORD" in override.keys():
+                db_pass = override['DB_PASSWORD']
+            if "DB_SCHEMA" in override.keys():
+                db_schema = override['DB_SCHEMA']
         retry_count = 3
         backoff = 1.2  # Time to wait (in seconds) between retries.
         count = 0
         while count < retry_count:
             try:
                 self.conn = pymysql.connect(host=db_server,
+                                            port=db_port,
                                             user=db_user,
                                             passwd=db_pass,
                                             db=db_schema)

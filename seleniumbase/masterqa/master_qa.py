@@ -9,15 +9,6 @@ from seleniumbase.core.style_sheet import style
 from seleniumbase.config import settings
 from seleniumbase.fixtures import js_utils
 
-LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
-ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
-RESULTS_PAGE = settings.HTML_REPORT
-BAD_PAGE_LOG = settings.RESULTS_TABLE
-DEFAULT_VALIDATION_MESSAGE = settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE
-WAIT_TIME_BEFORE_VERIFY = settings.MASTERQA_WAIT_TIME_BEFORE_VERIFY
-START_IN_FULL_SCREEN_MODE = settings.MASTERQA_START_IN_FULL_SCREEN_MODE
-MAX_IDLE_TIME_BEFORE_QUIT = settings.MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT
-
 # This tool allows testers to quickly verify pages while assisted by automation
 
 
@@ -27,10 +18,22 @@ class MasterQA(BaseCase):
         self.check_count = 0
         self.auto_close_results_page = False
         super(MasterQA, self).setUp(masterqa_mode=True)
+        self.LATEST_REPORT_DIR = settings.LATEST_REPORT_DIR
+        self.ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
+        self.RESULTS_PAGE = settings.HTML_REPORT
+        self.BAD_PAGE_LOG = settings.RESULTS_TABLE
+        self.DEFAULT_VALIDATION_MESSAGE = (
+            settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE)
+        self.WAIT_TIME_BEFORE_VERIFY = (
+            settings.MASTERQA_WAIT_TIME_BEFORE_VERIFY)
+        self.START_IN_FULL_SCREEN_MODE = (
+            settings.MASTERQA_START_IN_FULL_SCREEN_MODE)
+        self.MAX_IDLE_TIME_BEFORE_QUIT = (
+            settings.MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT)
         self.__manual_check_setup()
         if self.headless:
             self.auto_close_results_page = True
-        if START_IN_FULL_SCREEN_MODE:
+        if self.START_IN_FULL_SCREEN_MODE:
             self.maximize_window()
 
     def verify(self, *args):
@@ -73,16 +76,16 @@ class MasterQA(BaseCase):
     def __clear_out_old_logs(
             self, archive_past_runs=True, get_log_folder=False):
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % LATEST_REPORT_DIR
+        file_path = abs_path + "/%s" % self.LATEST_REPORT_DIR
         if not os.path.exists(file_path):
             os.makedirs(file_path)
 
         if archive_past_runs:
             archive_timestamp = int(time.time())
-            if not os.path.exists("%s/../%s/" % (file_path, ARCHIVE_DIR)):
-                os.makedirs("%s/../%s/" % (file_path, ARCHIVE_DIR))
+            if not os.path.exists("%s/../%s/" % (file_path, self.ARCHIVE_DIR)):
+                os.makedirs("%s/../%s/" % (file_path, self.ARCHIVE_DIR))
             archive_dir = "%s/../%s/log_%s" % (
-                file_path, ARCHIVE_DIR, archive_timestamp)
+                file_path, self.ARCHIVE_DIR, archive_timestamp)
             shutil.move(file_path, archive_dir)
             os.makedirs(file_path)
             if get_log_folder:
@@ -90,9 +93,11 @@ class MasterQA(BaseCase):
         else:
             # Just delete bad pages to make room for the latest run.
             filelist = [f for f in os.listdir(
-                "./%s" % LATEST_REPORT_DIR) if f.startswith("failed_") or (
-                f == RESULTS_PAGE) or (f.startswith("automation_failure")) or (
-                f == BAD_PAGE_LOG)]
+                "./%s" % self.LATEST_REPORT_DIR) if (
+                f.startswith("failed_")) or (
+                f == self.RESULTS_PAGE) or (
+                f.startswith("automation_failure")) or (
+                f == self.BAD_PAGE_LOG)]
             for f in filelist:
                 os.remove("%s/%s" % (file_path, f))
 
@@ -137,7 +142,7 @@ class MasterQA(BaseCase):
 
     def __manual_page_check(self, *args):
         if not args:
-            instructions = DEFAULT_VALIDATION_MESSAGE  # self.verify()
+            instructions = self.DEFAULT_VALIDATION_MESSAGE  # self.verify()
         else:
             instructions = str(args[0])
             if len(args) > 1:
@@ -149,7 +154,7 @@ class MasterQA(BaseCase):
         elif instructions and "?" in instructions:
             question = instructions
 
-        wait_time_before_verify = WAIT_TIME_BEFORE_VERIFY
+        wait_time_before_verify = self.WAIT_TIME_BEFORE_VERIFY
         if self.verify_delay:
             wait_time_before_verify = float(self.verify_delay)
         # Allow a moment to see the full page before the dialog box pops up
@@ -237,7 +242,7 @@ class MasterQA(BaseCase):
             return 1
         else:
             bad_page_name = "failed_check_%s.png" % self.manual_check_count
-            self.save_screenshot(bad_page_name, folder=LATEST_REPORT_DIR)
+            self.save_screenshot(bad_page_name, folder=self.LATEST_REPORT_DIR)
             self.page_results_list.append(
                 '"%s","%s","%s","%s","%s","%s","%s","%s"' % (
                     self.manual_check_count,
@@ -250,8 +255,8 @@ class MasterQA(BaseCase):
                     "*"))
             return 0
 
-    def __wait_for_special_alert_absent(
-            self, timeout=MAX_IDLE_TIME_BEFORE_QUIT):
+    def __wait_for_special_alert_absent(self):
+        timeout = self.MAX_IDLE_TIME_BEFORE_QUIT
         for x in range(int(timeout * 20)):
             try:
                 alert = self.driver.switch_to.alert
@@ -277,7 +282,7 @@ class MasterQA(BaseCase):
 
         self.incomplete_runs += 1
         error_page = "automation_failure_%s.png" % self.incomplete_runs
-        self.save_screenshot(error_page, folder=LATEST_REPORT_DIR)
+        self.save_screenshot(error_page, folder=self.LATEST_REPORT_DIR)
         self.page_results_list.append(
             '"%s","%s","%s","%s","%s","%s","%s","%s"' % (
                 "ERR",
@@ -298,8 +303,8 @@ class MasterQA(BaseCase):
 
     def __add_bad_page_log_file(self):
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % LATEST_REPORT_DIR
-        log_file = "%s/%s" % (file_path, BAD_PAGE_LOG)
+        file_path = abs_path + "/%s" % self.LATEST_REPORT_DIR
+        log_file = "%s/%s" % (file_path, self.BAD_PAGE_LOG)
         f = open(log_file, 'w')
         h_p1 = '''"Num","Result","Screenshot","URL","Browser","Epoch Time",'''
         h_p2 = '''"Verification Instructions","Additional Info"\n'''
@@ -311,8 +316,8 @@ class MasterQA(BaseCase):
 
     def __add_results_page(self, html):
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % LATEST_REPORT_DIR
-        results_file_name = RESULTS_PAGE
+        file_path = abs_path + "/%s" % self.LATEST_REPORT_DIR
+        results_file_name = self.RESULTS_PAGE
         results_file = "%s/%s" % (file_path, results_file_name)
         f = open(results_file, 'w')
         f.write(html)
@@ -345,7 +350,7 @@ class MasterQA(BaseCase):
         log_string = self.__clear_out_old_logs(get_log_folder=True)
         log_folder = log_string.split('/')[-1]
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % ARCHIVE_DIR
+        file_path = abs_path + "/%s" % self.ARCHIVE_DIR
         log_path = "%s/%s" % (file_path, log_folder)
         web_log_path = "file://%s" % log_path
 
@@ -376,9 +381,9 @@ class MasterQA(BaseCase):
                      %s</h1>''' % summary_table
 
         log_link_shown = '../%s%s/' % (
-            ARCHIVE_DIR, web_log_path.split(ARCHIVE_DIR)[1])
-        csv_link = '%s/%s' % (web_log_path, BAD_PAGE_LOG)
-        csv_link_shown = '%s' % BAD_PAGE_LOG
+            self.ARCHIVE_DIR, web_log_path.split(self.ARCHIVE_DIR)[1])
+        csv_link = '%s/%s' % (web_log_path, self.BAD_PAGE_LOG)
+        csv_link_shown = '%s' % self.BAD_PAGE_LOG
         log_table = '''<p><p><p><p><h2><table><tbody>
             <tr><td>LOG FILES LINK:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>
             <tr><td>RESULTS TABLE:&nbsp;&nbsp;<td><a href="%s">%s</a></tr>
@@ -411,7 +416,7 @@ class MasterQA(BaseCase):
         report_html = '<html><head>%s</head><body>%s</body></html>' % (
             style, table_view)
         results_file = self.__add_results_page(report_html)
-        archived_results_file = log_path + '/' + RESULTS_PAGE
+        archived_results_file = log_path + '/' + self.RESULTS_PAGE
         shutil.copyfile(results_file, archived_results_file)
         print(
             "\n*** The results html page is located at: ***\n" + results_file)
