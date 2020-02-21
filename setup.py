@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.35.6',
+    version='1.35.7',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -88,10 +88,10 @@ setup(
         'six',
         'nose',
         'ipdb',
-        'idna==2.8',  # Must stay in sync with "requests"
+        'idna==2.9',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
         'urllib3==1.25.8',  # Must stay in sync with "requests"
-        'requests==2.22.0',
+        'requests==2.23.0',
         'selenium==3.141.0',
         'pluggy>=0.13.1',
         'attrs>=19.3.0',
@@ -121,7 +121,7 @@ setup(
         'pyotp==2.3.0',
         'boto==2.49.0',
         'cffi>=1.14.0',
-        'tqdm>=4.42.1',
+        'tqdm>=4.43.0',
         'flake8==3.7.9',
         'certifi>=2019.11.28',
         'pdfminer.six==20191110;python_version<"3.5"',
