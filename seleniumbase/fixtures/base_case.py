@@ -2038,6 +2038,10 @@ class BaseCase(unittest.TestCase):
 
     def __fix_unicode_conversion(self, text):
         """ Fixing Chinese characters when converting from PDF to HTML. """
+        if sys.version_info[0] < 3:
+            # Update encoding for Python 2 users
+            reload(sys)  # noqa
+            sys.setdefaultencoding('utf8')
         text = text.replace(u'\u2f8f', u'\u884c')
         text = text.replace(u'\u2f45', u'\u65b9')
         text = text.replace(u'\u2f08', u'\u4eba')
@@ -2068,7 +2072,10 @@ class BaseCase(unittest.TestCase):
             override - If the PDF file to be downloaded already exists in the
                        downloaded_files/ folder, that PDF will be used
                        instead of downloading it again. """
-        from pdfminer.high_level import extract_text
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=UserWarning)
+            from pdfminer.high_level import extract_text
         if not password:
             password = ''
         if not maxpages:
