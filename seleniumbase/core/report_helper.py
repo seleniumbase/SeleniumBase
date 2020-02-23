@@ -19,9 +19,11 @@ LOCAL_GECKODRIVER = None
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver'
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/msedgedriver'
 elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + '/chromedriver.exe'
     LOCAL_GECKODRIVER = DRIVER_DIR + '/geckodriver.exe'
+    LOCAL_EDGEDRIVER = DRIVER_DIR + '/msedgedriver.exe'
 
 
 def get_timestamp():
@@ -245,8 +247,22 @@ def build_report(report_log_path, page_results_list,
                     firefox_profile=profile, executable_path=LOCAL_GECKODRIVER)
             else:
                 browser = webdriver.Firefox(firefox_profile=profile)
+        elif browser_type == 'edge':
+            edge_options = webdriver.ChromeOptions()
+            edge_options.add_experimental_option(
+                "excludeSwitches", ["enable-automation", "enable-logging"])
+            edge_options.add_argument("--test-type")
+            edge_options.add_argument("--disable-infobars")
+            if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+                browser = webdriver.Chrome(
+                    executable_path=LOCAL_EDGEDRIVER, options=edge_options)
+            else:
+                browser = webdriver.Chrome(options=edge_options)
         else:
             chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_experimental_option(
+                "excludeSwitches", ["enable-automation", "enable-logging"])
+            chrome_options.add_argument("--test-type")
             chrome_options.add_argument("--disable-infobars")
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 browser = webdriver.Chrome(
