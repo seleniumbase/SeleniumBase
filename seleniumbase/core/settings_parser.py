@@ -124,6 +124,8 @@ def set_settings(settings_file):
             settings.TOTP_KEY = override_settings[key]
         elif key == "DB_HOST":
             settings.DB_HOST = override_settings[key]
+        elif key == "DB_PORT":
+            settings.DB_PORT = override_settings[key]
         elif key == "DB_USERNAME":
             settings.DB_USERNAME = override_settings[key]
         elif key == "DB_PASSWORD":
