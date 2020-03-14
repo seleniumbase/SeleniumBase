@@ -95,12 +95,12 @@ setup(
         'selenium==3.141.0',
         'pluggy>=0.13.1',
         'attrs>=19.3.0',
-        'pytest>=4.6.9;python_version<"3"',  # For Python 2 compatibility
-        'pytest>=5.4.1;python_version>="3"',
+        'pytest==4.6.9;python_version<"3"',  # For Python 2 compatibility
+        'pytest==5.3.5;python_version>="3"',
         'pytest-cov==2.8.1',
         'pytest-forked==1.1.3',
         'pytest-html==1.22.1;python_version<"3.6"',
-        'pytest-html==2.1.0;python_version>="3.6"',
+        'pytest-html==2.0.1;python_version>="3.6"',
         'pytest-metadata==1.8.0',
         'pytest-ordering==0.6',
         'pytest-rerunfailures==8.0',
