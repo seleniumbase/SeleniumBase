@@ -1,7 +1,8 @@
+# Chinese Language Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 
-class 硒测试用例(BaseCase):
+class 硒测试用例(BaseCase):  # noqa
 
     def 开启网址(self, *args, **kwargs):
         # open(url)

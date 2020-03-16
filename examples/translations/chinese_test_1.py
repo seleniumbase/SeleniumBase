@@ -1,7 +1,8 @@
-from seleniumbase.translate.chinese import 硒测试用例
+# Chinese Language Test - Python 3 Only!
+from seleniumbase.translate.chinese import 硒测试用例  # noqa
 
 
-class 测试类(硒测试用例):
+class 测试类(硒测试用例):  # noqa
 
     def test_例子1(self):
         self.开启网址("https://xkcd.in/comic?lg=cn&id=353")
