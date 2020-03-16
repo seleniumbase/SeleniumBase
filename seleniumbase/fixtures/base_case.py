@@ -1374,8 +1374,9 @@ class BaseCase(unittest.TestCase):
     def get_new_driver(self, browser=None, headless=None,
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, disable_csp=None,
-                       enable_sync=None, incognito=None, user_data_dir=None,
-                       extension_zip=None, extension_dir=None, is_mobile=False,
+                       enable_sync=None, no_sandbox=None, disable_gpu=None,
+                       incognito=None, user_data_dir=None, extension_zip=None,
+                       extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
         """ This method spins up an extra browser for tests that require
             more than one. The first browser is already provided by tests
@@ -1391,6 +1392,8 @@ class BaseCase(unittest.TestCase):
             cap_file - the file containing desired capabilities for the browser
             disable_csp - an option to disable Chrome's Content Security Policy
             enable_sync - the option to enable the Chrome Sync feature (Chrome)
+            no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
+            disable_gpu - the option to enable Chrome's "Disable GPU" feature
             incognito - the option to enable Chrome's Incognito mode (Chrome)
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
@@ -1444,6 +1447,10 @@ class BaseCase(unittest.TestCase):
             disable_csp = self.disable_csp
         if enable_sync is None:
             enable_sync = self.enable_sync
+        if no_sandbox is None:
+            no_sandbox = self.no_sandbox
+        if disable_gpu is None:
+            disable_gpu = self.disable_gpu
         if incognito is None:
             incognito = self.incognito
         if user_data_dir is None:
@@ -1481,6 +1488,8 @@ class BaseCase(unittest.TestCase):
                                                  cap_file=cap_file,
                                                  disable_csp=disable_csp,
                                                  enable_sync=enable_sync,
+                                                 no_sandbox=no_sandbox,
+                                                 disable_gpu=disable_gpu,
                                                  incognito=incognito,
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
@@ -4273,6 +4282,8 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
             self.enable_sync = sb_config.enable_sync
+            self.no_sandbox = sb_config.no_sandbox
+            self.disable_gpu = sb_config.disable_gpu
             self.incognito = sb_config.incognito
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
@@ -4426,6 +4437,8 @@ class BaseCase(unittest.TestCase):
                                               cap_file=self.cap_file,
                                               disable_csp=self.disable_csp,
                                               enable_sync=self.enable_sync,
+                                              no_sandbox=self.no_sandbox,
+                                              disable_gpu=self.disable_gpu,
                                               incognito=self.incognito,
                                               user_data_dir=self.user_data_dir,
                                               extension_zip=self.extension_zip,
