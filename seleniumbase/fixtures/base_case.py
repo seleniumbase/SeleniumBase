@@ -1130,6 +1130,7 @@ class BaseCase(unittest.TestCase):
             hover_selector, hover_by)
         hover_selector = self.convert_to_css_selector(
             hover_selector, hover_by)
+        hover_by = By.CSS_SELECTOR
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by)
         dropdown_element = self.wait_for_element_visible(
