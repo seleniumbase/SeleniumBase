@@ -32,7 +32,7 @@ jobs:
       run: |
         pip install flake8
         # Stop the build if there are flake8 issues
-        flake8 . --count --show-source --statistics --exclude=temp
+        flake8 . --count --show-source --statistics --exclude=temp,translations
     - name: Install Chrome and Firefox
       run: |
         sudo apt install google-chrome-stable
