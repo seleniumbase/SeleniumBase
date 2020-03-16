@@ -140,6 +140,7 @@ setup(
         'seleniumbase.fixtures',
         'seleniumbase.masterqa',
         'seleniumbase.plugins',
+        'seleniumbase.translate',
         'seleniumbase.utilities',
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',
