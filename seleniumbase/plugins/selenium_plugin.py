@@ -35,6 +35,8 @@ class SeleniumBrowser(Plugin):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
+    --no-sandbox  (The option to enable Chrome's "No-Sandbox" feature.)
+    --disable_gpu  (The option to enable Chrome's "Disable GPU" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
     --maximize-window  (The option to start with the web browser maximized.)
     --save-screenshot  (The option to save a screenshot after each test.)
@@ -251,6 +253,18 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables the "Chrome Sync" feature.""")
         parser.add_option(
+            '--no_sandbox', '--no-sandbox',
+            action="store_true",
+            dest='no_sandbox',
+            default=False,
+            help="""Using this enables the "No Sandbox" feature.""")
+        parser.add_option(
+            '--disable_gpu', '--disable-gpu',
+            action="store_true",
+            dest='disable_gpu',
+            default=False,
+            help="""Using this enables the "Disable GPU" feature.""")
+        parser.add_option(
             '--incognito',
             action="store_true",
             dest='incognito',
@@ -321,6 +335,8 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.enable_sync = self.options.enable_sync
+        test.test.no_sandbox = self.options.no_sandbox
+        test.test.disable_gpu = self.options.disable_gpu
         test.test.incognito = self.options.incognito
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot

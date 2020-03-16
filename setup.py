@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.35.10',
+    version='1.36.0',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -140,6 +140,7 @@ setup(
         'seleniumbase.fixtures',
         'seleniumbase.masterqa',
         'seleniumbase.plugins',
+        'seleniumbase.translate',
         'seleniumbase.utilities',
         'seleniumbase.utilities.selenium_grid',
         'seleniumbase.utilities.selenium_ide',

@@ -19,6 +19,8 @@ lib64
 __pycache__
 
 # Python3 pyvenv
+venv
+sbase
 pyvenv.cfg
 .Python
 include
