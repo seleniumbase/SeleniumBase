@@ -166,6 +166,10 @@ self.activate_jquery()
 
 self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
+self.highlight_click(selector, by=By.CSS_SELECTOR, loops=3, scroll=True)
+
+self.highlight_update_text(selector, new_value, by=By.CSS_SELECTOR, loops=3, scroll=True)
+
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
 
 self.scroll_to(selector, by=By.CSS_SELECTOR)
