@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from seleniumbase.translate.chinese import 硒测试用例  # noqa
 
 
