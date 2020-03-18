@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.36.1',
+    version='1.36.2',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -93,10 +93,10 @@ setup(
         'urllib3==1.25.8',  # Must stay in sync with "requests"
         'requests==2.23.0',
         'selenium==3.141.0',
-        'pluggy>=0.13.1',
+        'pluggy==0.13.1',
         'attrs>=19.3.0',
-        'pytest==4.6.9;python_version<"3"',  # For Python 2 compatibility
-        'pytest==5.3.5;python_version>="3"',
+        'pytest==4.6.9;python_version<"3.5"',  # For Python 2 compatibility
+        'pytest==5.3.5;python_version>="3.5"',
         'pytest-cov==2.8.1',
         'pytest-forked==1.1.3',
         'pytest-html==1.22.1;python_version<"3.6"',
@@ -118,7 +118,7 @@ setup(
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.6.1;python_version>="3.5"',
         'colorama==0.4.3',
-        'coverage==5.0.3',
+        'coverage==5.0.4',
         'pymysql==0.9.3',
         'pyotp==2.3.0',
         'boto==2.49.0',
