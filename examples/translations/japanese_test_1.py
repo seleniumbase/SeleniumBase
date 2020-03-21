@@ -1,8 +1,8 @@
 # Japanese Language Test - Python 3 Only!
-from seleniumbase.translate.japanese import セレンテストケース  # noqa
+from seleniumbase.translate.japanese import セレニウムテストケース  # noqa
 
 
-class テストクラス(セレンテストケース):  # noqa
+class テストクラス(セレニウムテストケース):  # noqa
 
     def test_例1(self):
         self.URLを開く("https://ja.wikipedia.org/wiki/")
