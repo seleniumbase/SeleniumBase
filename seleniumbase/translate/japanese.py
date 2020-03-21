@@ -2,7 +2,7 @@
 from seleniumbase import BaseCase
 
 
-class セレンテストケース(BaseCase):  # noqa
+class セレニウムテストケース(BaseCase):  # noqa
 
     def URLを開く(self, *args, **kwargs):
         # open(url)
