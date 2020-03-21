@@ -95,7 +95,7 @@ setup(
         'selenium==3.141.0',
         'pluggy==0.13.1',
         'attrs>=19.3.0',
-        'pytest==4.6.9;python_version<"3.5"',  # For Python 2 compatibility
+        'pytest==4.6.9;python_version<"3.5"',
         'pytest==5.3.5;python_version>="3.5"',
         'pytest-cov==2.8.1',
         'pytest-forked==1.1.3',
