@@ -435,7 +435,14 @@ class BaseCase(unittest.TestCase):
         self.refresh_page()
 
     def get_current_url(self):
-        return self.driver.current_url
+        current_url = self.driver.current_url
+        if "%" in current_url and sys.version_info[0] >= 3:
+            try:
+                from urllib.parse import unquote
+                current_url = unquote(current_url, errors='strict')
+            except Exception:
+                pass
+        return current_url
 
     def get_page_source(self):
         self.wait_for_ready_state_complete()
