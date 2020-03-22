@@ -2,7 +2,7 @@
 from seleniumbase import BaseCase
 
 
-class CasDeBase(BaseCase):  # noqa
+class CasDeBase(BaseCase):
 
     def ouvrir_url(self, *args, **kwargs):
         # open(url)
@@ -36,7 +36,7 @@ class CasDeBase(BaseCase):  # noqa
         # get_text(selector, new_value)
         return self.get_text(*args, **kwargs)
 
-    def vérifier_le_texte(self, *args, **kwargs):
+    def vérifier_le_texte(self, *args, **kwargs):  # noqa
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
