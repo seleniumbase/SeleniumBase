@@ -435,7 +435,14 @@ class BaseCase(unittest.TestCase):
         self.refresh_page()
 
     def get_current_url(self):
-        return self.driver.current_url
+        current_url = self.driver.current_url
+        if "%" in current_url and sys.version_info[0] >= 3:
+            try:
+                from urllib.parse import unquote
+                current_url = unquote(current_url, errors='strict')
+            except Exception:
+                pass
+        return current_url
 
     def get_page_source(self):
         self.wait_for_ready_state_complete()
@@ -2271,31 +2278,31 @@ class BaseCase(unittest.TestCase):
 
     def assert_true(self, expr, msg=None):
         self.assertTrue(expr, msg=msg)
-        if self.demo_mode:
-            messenger_post = ("ASSERT TRUE: {%s}" % expr)
+        '''if self.demo_mode:
+            messenger_post = ("ASSERT TRUE (See code)")
             js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+                self.driver, messenger_post, self.message_duration)'''
 
     def assert_false(self, expr, msg=None):
         self.assertFalse(expr, msg=msg)
-        if self.demo_mode:
-            messenger_post = ("ASSERT FALSE: {%s}" % expr)
+        '''if self.demo_mode:
+            messenger_post = ("ASSERT FALSE (See code)")
             js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+                self.driver, messenger_post, self.message_duration)'''
 
     def assert_equal(self, first, second, msg=None):
         self.assertEqual(first, second, msg=msg)
-        if self.demo_mode:
+        '''if self.demo_mode:
             messenger_post = ("ASSERT EQUAL: {%s == %s}" % (first, second))
             js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+                self.driver, messenger_post, self.message_duration)'''
 
     def assert_not_equal(self, first, second, msg=None):
         self.assertNotEqual(first, second, msg=msg)
-        if self.demo_mode:
+        '''if self.demo_mode:
             messenger_post = ("ASSERT NOT EQUAL: {%s != %s}" % (first, second))
             js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+                self.driver, messenger_post, self.message_duration)'''
 
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
