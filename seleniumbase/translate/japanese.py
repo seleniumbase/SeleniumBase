@@ -120,7 +120,7 @@ class セレニウムテストケース(BaseCase):  # noqa
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
-    def htmlをチェック(self, *args, **kwargs):
+    def HTMLをチェック(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)
 
