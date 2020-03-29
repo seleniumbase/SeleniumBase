@@ -195,3 +195,7 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 위로_마우스를_이동하고_클릭(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def 선택되어_있는지(self, *args, **kwargs):
+        # is_selected(selector)
+        return self.is_selected(*args, **kwargs)

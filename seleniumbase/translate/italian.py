@@ -1,4 +1,4 @@
-# Italian / italiano - Translations
+# Italian / italiano - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 
@@ -88,15 +88,15 @@ class CasoDiProva(BaseCase):
         # go_forward()
         return self.go_forward(*args, **kwargs)
 
-    def il_testo_viene_visualizzato(self, *args, **kwargs):
+    def è_testo_visto(self, *args, **kwargs):  # noqa
         # is_text_visible(text, selector="html")
         return self.is_text_visible(*args, **kwargs)
 
-    def elemento_viene_visualizzato(self, *args, **kwargs):
+    def è_elemento_visto(self, *args, **kwargs):
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
-    def elemento_presente(self, *args, **kwargs):
+    def è_elemento_presente(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
 
@@ -195,3 +195,7 @@ class CasoDiProva(BaseCase):
     def passa_il_mouse_sopra_e_fai_clic(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def è_selezionato(self, *args, **kwargs):
+        # is_selected(selector)
+        return self.is_selected(*args, **kwargs)
