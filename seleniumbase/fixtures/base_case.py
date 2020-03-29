@@ -1971,6 +1971,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(remove_script)
 
     def ad_block(self):
+        """ Block ads that appear on the current web page. """
         self.wait_for_ready_state_complete()
         from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
@@ -1985,6 +1986,10 @@ class BaseCase(unittest.TestCase):
                 self.execute_script(script)
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
+
+    def block_ads(self):
+        """ Same as ad_block() """
+        self.ad_block()
 
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)

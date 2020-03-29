@@ -1,4 +1,4 @@
-# Japanese Language Translations - Python 3 Only!
+# Japanese / 日本語 - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 
@@ -136,11 +136,11 @@ class セレニウムテストケース(BaseCase):  # noqa
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
-    def 広告ブロック(self, *args, **kwargs):
+    def ブロック広告(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
-    def スキップする(self, *args, **kwargs):
+    def スキップ(self, *args, **kwargs):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
@@ -191,3 +191,7 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 一番下までスクロール(self, *args, **kwargs):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
+
+    def 上にマウスを移動しクリック(self, *args, **kwargs):
+        # hover_and_click(hover_selector, click_selector)
+        return self.hover_and_click(*args, **kwargs)

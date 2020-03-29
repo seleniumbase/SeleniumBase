@@ -2,7 +2,7 @@
 from seleniumbase.translate.japanese import セレニウムテストケース  # noqa
 
 
-class テストクラス(セレニウムテストケース):  # noqa
+class 私のテストクラス(セレニウムテストケース):  # noqa
 
     def test_例1(self):
         self.URLを開く("https://ja.wikipedia.org/wiki/")

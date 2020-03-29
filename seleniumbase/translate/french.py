@@ -1,4 +1,4 @@
-# French Language Translations - Python 3 Only!
+# French / français - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 
@@ -128,7 +128,7 @@ class CasDeBase(BaseCase):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
-    def sélectionnez_un_fichier(self, *args, **kwargs):
+    def sélectionnez_fichier(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
@@ -136,11 +136,11 @@ class CasDeBase(BaseCase):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
-    def bloc_d_annonces(self, *args, **kwargs):
+    def annonces_de_bloc(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
-    def sauter(self, *args, **kwargs):
+    def passer(self, *args, **kwargs):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
@@ -191,3 +191,7 @@ class CasDeBase(BaseCase):
     def faites_défiler_vers_le_bas(self, *args, **kwargs):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
+
+    def planer_au_dessus_et_cliquez(self, *args, **kwargs):
+        # hover_and_click(hover_selector, click_selector)
+        return self.hover_and_click(*args, **kwargs)

@@ -2,7 +2,7 @@
 from seleniumbase.translate.chinese import 硒测试用例  # noqa
 
 
-class 测试类(硒测试用例):  # noqa
+class 我的测试类(硒测试用例):  # noqa
 
     def test_例子1(self):
         self.开启网址("https://xkcd.in/comic?lg=cn&id=353")

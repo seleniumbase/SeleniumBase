@@ -2,7 +2,7 @@
 from seleniumbase.translate.italian import CasoDiProva
 
 
-class ClasseDiTest(CasoDiProva):
+class MiaClasseDiTest(CasoDiProva):
 
     def test_esempio_1(self):
         self.apri_url("https://it.wikipedia.org/wiki/")

@@ -1,4 +1,4 @@
-# Italian Language Translations
+# Italian / italiano - Translations
 from seleniumbase import BaseCase
 
 
@@ -128,15 +128,15 @@ class CasoDiProva(BaseCase):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
-    def seleziona_il_file(self, *args, **kwargs):
+    def seleziona_file(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def esegui_lo_script(self, *args, **kwargs):
+    def esegui_script(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
-    def blocco_annunci(self, *args, **kwargs):
+    def bloccare_gli_annunci(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
@@ -191,3 +191,7 @@ class CasoDiProva(BaseCase):
     def scorri_verso_il_basso(self, *args, **kwargs):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
+
+    def passa_il_mouse_sopra_e_fai_clic(self, *args, **kwargs):
+        # hover_and_click(hover_selector, click_selector)
+        return self.hover_and_click(*args, **kwargs)

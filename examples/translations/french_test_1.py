@@ -2,7 +2,7 @@
 from seleniumbase.translate.french import CasDeBase
 
 
-class ClasseDeTest(CasDeBase):
+class MaClasseDeTest(CasDeBase):
 
     def test_exemple_1(self):
         self.ouvrir_url("https://fr.wikipedia.org/wiki/")

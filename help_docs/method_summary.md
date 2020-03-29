@@ -203,6 +203,7 @@ self.remove_element(selector, by=By.CSS_SELECTOR)
 self.remove_elements(selector, by=By.CSS_SELECTOR)
 
 self.ad_block()
+# Duplicates: self.block_ads()
 
 self.get_domain_url(url)
 
