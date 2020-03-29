@@ -794,7 +794,7 @@ class BaseCase(unittest.TestCase):
         return element_text
 
     def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
-                      timeout=None):
+                      timeout=None, hard_fail=True):
         """ This method uses JavaScript to get the value of an attribute. """
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -816,8 +816,11 @@ class BaseCase(unittest.TestCase):
         if attribute_value is not None:
             return attribute_value
         else:
-            raise Exception("Element {%s} has no attribute {%s}!" % (
-                selector, attribute))
+            if hard_fail:
+                raise Exception("Element {%s} has no attribute {%s}!" % (
+                    selector, attribute))
+            else:
+                return None
 
     def set_attribute(self, selector, attribute, value, by=By.CSS_SELECTOR,
                       timeout=None):
@@ -1048,6 +1051,59 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
             self.click(selector, by=by)
+
+    def is_checked(self, selector, by=By.CSS_SELECTOR, timeout=None):
+        """ Determines if a checkbox or a radio button element is checked.
+            Returns True if the element is checked.
+            Returns False if the element is not checked.
+            If the element is not present on the page, raises an exception.
+            If the element is not a checkbox or radio, raises an exception. """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        kind = self.get_attribute(selector, "type", by=by, timeout=timeout)
+        if kind != "checkbox" and kind != "radio":
+            raise Exception("Expecting a checkbox or a radio button element!")
+        is_checked = self.get_attribute(
+            selector, "checked", by=by, timeout=timeout, hard_fail=False)
+        if is_checked:
+            return True
+        else:  # (NoneType)
+            return False
+
+    def is_selected(self, selector, by=By.CSS_SELECTOR, timeout=None):
+        """ Same as is_checked() """
+        return self.is_checked(selector, by=by, timeout=timeout)
+
+    def check_if_unchecked(self, selector, by=By.CSS_SELECTOR):
+        """ If a checkbox or radio button is not checked, will check it. """
+        selector, by = self.__recalculate_selector(selector, by)
+        if not self.is_checked(selector, by=by):
+            if self.is_element_visible(selector, by=by):
+                self.click(selector, by=by)
+            else:
+                selector = self.convert_to_css_selector(selector, by=by)
+                self.js_click(selector, by=By.CSS_SELECTOR)
+
+    def select_if_unselected(self, selector, by=By.CSS_SELECTOR):
+        """ Same as check_if_unchecked() """
+        self.check_if_unchecked(selector, by=by)
+
+    def uncheck_if_checked(self, selector, by=By.CSS_SELECTOR):
+        """ If a checkbox is checked, will uncheck it. """
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.is_checked(selector, by=by):
+            if self.is_element_visible(selector, by=by):
+                self.click(selector, by=by)
+            else:
+                selector = self.convert_to_css_selector(selector, by=by)
+                self.js_click(selector, by=By.CSS_SELECTOR)
+
+    def unselect_if_selected(self, selector, by=By.CSS_SELECTOR):
+        """ Same as uncheck_if_checked() """
+        self.uncheck_if_checked(selector, by=by)
 
     def is_element_in_an_iframe(self, selector, by=By.CSS_SELECTOR):
         """ Returns True if the selector's element is located in an iframe.

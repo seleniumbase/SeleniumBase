@@ -195,3 +195,7 @@ class 硒测试用例(BaseCase):  # noqa
     def 悬停并单击(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def 是否被选中(self, *args, **kwargs):
+        # is_selected(selector)
+        return self.is_selected(*args, **kwargs)

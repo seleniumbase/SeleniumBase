@@ -195,3 +195,7 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 上にマウスを移動しクリック(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def 選択されていることを(self, *args, **kwargs):
+        # is_selected(selector)
+        return self.is_selected(*args, **kwargs)

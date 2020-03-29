@@ -195,3 +195,7 @@ class CasDeBase(BaseCase):
     def planer_au_dessus_et_cliquez(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
+
+    def est_il_sélectionné(self, *args, **kwargs):
+        # is_selected(selector)
+        return self.is_selected(*args, **kwargs)
