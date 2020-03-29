@@ -1,4 +1,4 @@
-# Italian Language Test
+# Italian Language Test - Python 3 Only!
 from seleniumbase.translate.italian import CasoDiProva
 
 
