@@ -794,7 +794,7 @@ class BaseCase(unittest.TestCase):
         return element_text
 
     def get_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
-                      timeout=None):
+                      timeout=None, hard_fail=True):
         """ This method uses JavaScript to get the value of an attribute. """
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -816,8 +816,11 @@ class BaseCase(unittest.TestCase):
         if attribute_value is not None:
             return attribute_value
         else:
-            raise Exception("Element {%s} has no attribute {%s}!" % (
-                selector, attribute))
+            if hard_fail:
+                raise Exception("Element {%s} has no attribute {%s}!" % (
+                    selector, attribute))
+            else:
+                return None
 
     def set_attribute(self, selector, attribute, value, by=By.CSS_SELECTOR,
                       timeout=None):
