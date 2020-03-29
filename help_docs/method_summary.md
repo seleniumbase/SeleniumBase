@@ -54,10 +54,10 @@ self.is_link_text_present(link_text)
 
 self.is_partial_link_text_present(link_text)
 
-self.get_link_attribute(link_text, attribute, hard_fail)
-# Duplicates: self.get_link_text_attribute(link_text, attribute, hard_fail)
+self.get_link_attribute(link_text, attribute, hard_fail=True)
+# Duplicates: self.get_link_text_attribute(link_text, attribute, hard_fail=True)
 
-self.get_partial_link_text_attribute(link_text, attribute, hard_fail)
+self.get_partial_link_text_attribute(link_text, attribute, hard_fail=True)
 
 self.click_link(link_text, timeout=None)
 # Duplicates: self.click_link_text(link_text, timeout=None)
@@ -66,7 +66,7 @@ self.click_partial_link_text(partial_link_text, timeout=None)
 
 self.get_text(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.get_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None)
+self.get_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None, hard_fail=True)
 
 self.set_attribute(selector, attribute, value, by=By.CSS_SELECTOR, timeout=None)
 
@@ -90,6 +90,15 @@ self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
 self.click_nth_visible_element(selector, number, by=By.CSS_SELECTOR)
 
 self.click_if_visible(selector, by=By.CSS_SELECTOR)
+
+self.is_selected(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.is_checked(selector, by=By.CSS_SELECTOR, timeout=None)
+
+self.select_if_unselected(selector, by=By.CSS_SELECTOR)
+# Duplicates: self.check_if_unchecked(selector, by=By.CSS_SELECTOR)
+
+self.unselect_if_selected(selector, by=By.CSS_SELECTOR)
+# Duplicates: self.uncheck_if_checked(selector, by=By.CSS_SELECTOR)
 
 self.is_element_in_an_iframe(selector, by=By.CSS_SELECTOR)
 
