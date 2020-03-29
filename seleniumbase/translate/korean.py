@@ -1,4 +1,4 @@
-# Korean Language Translations - Python 3 Only!
+# Korean / 한국어 - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 
@@ -140,7 +140,7 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
-    def 건너_뛰기(self, *args, **kwargs):
+    def 건너뛸(self, *args, **kwargs):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
@@ -191,3 +191,7 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 하단으로_스크롤(self, *args, **kwargs):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
+
+    def 위로_마우스를_이동하고_클릭(self, *args, **kwargs):
+        # hover_and_click(hover_selector, click_selector)
+        return self.hover_and_click(*args, **kwargs)

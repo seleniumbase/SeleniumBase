@@ -1,4 +1,4 @@
-# Chinese Language Translations - Python 3 Only!
+# Chinese / 中文 - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 
@@ -136,7 +136,7 @@ class 硒测试用例(BaseCase):  # noqa
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
-    def 广告区块(self, *args, **kwargs):
+    def 阻止广告(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
@@ -191,3 +191,7 @@ class 硒测试用例(BaseCase):  # noqa
     def 滚动到底部(self, *args, **kwargs):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
+
+    def 悬停并单击(self, *args, **kwargs):
+        # hover_and_click(hover_selector, click_selector)
+        return self.hover_and_click(*args, **kwargs)
