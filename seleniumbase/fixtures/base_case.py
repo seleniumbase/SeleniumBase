@@ -1987,6 +1987,10 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
 
+    def block_ads(self):
+        """ Same as ad_block() """
+        self.ad_block()
+
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
 
