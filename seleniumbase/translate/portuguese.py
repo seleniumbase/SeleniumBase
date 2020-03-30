@@ -2,7 +2,7 @@
 from seleniumbase import BaseCase
 
 
-class CasoDeTeste(BaseCase):  # noqa
+class CasoDeTeste(BaseCase):
 
     def abrir_url(self, *args, **kwargs):
         # open(url)
