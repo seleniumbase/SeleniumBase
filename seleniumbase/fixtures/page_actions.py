@@ -142,9 +142,12 @@ def hover_and_click(driver, hover_selector, click_selector,
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     raise NoSuchElementException(
-        "Element {%s} was not present after %s seconds!" %
-        (click_selector, timeout))
+        "Element {%s} was not present after %s second%s!" % (
+            click_selector, timeout, plural))
 
 
 def hover_element_and_click(driver, element, click_selector,
@@ -167,9 +170,12 @@ def hover_element_and_click(driver, element, click_selector,
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     raise NoSuchElementException(
-        "Element {%s} was not present after %s seconds!" %
-        (click_selector, timeout))
+        "Element {%s} was not present after %s second%s!" % (
+            click_selector, timeout, plural))
 
 
 def hover_element_and_double_click(driver, element, click_selector,
@@ -192,9 +198,12 @@ def hover_element_and_double_click(driver, element, click_selector,
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     raise NoSuchElementException(
-        "Element {%s} was not present after %s seconds!" %
-        (click_selector, timeout))
+        "Element {%s} was not present after %s second%s!" % (
+            click_selector, timeout, plural))
 
 
 def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
@@ -225,10 +234,13 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
     if not element:
         raise NoSuchElementException(
-            "Element {%s} was not present after %s seconds!" % (
-                selector, timeout))
+            "Element {%s} was not present after %s second%s!" % (
+                selector, timeout, plural))
 
 
 def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
