@@ -25,11 +25,14 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
             print("WARNING: Unable to get screenshot for failure logs!")
 
 
-def log_test_failure_data(test, test_logpath, driver, browser):
+def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
-    last_page = get_last_page(driver)
+    if url:
+        last_page = url
+    else:
+        last_page = get_last_page(driver)
     data_to_save = []
     data_to_save.append("Last Page: %s" % last_page)
     data_to_save.append("  Browser: %s" % browser)
@@ -56,13 +59,16 @@ def log_test_failure_data(test, test_logpath, driver, browser):
     log_file.close()
 
 
-def log_page_source(test_logpath, driver):
+def log_page_source(test_logpath, driver, source=None):
     html_file_name = settings.PAGE_SOURCE_NAME
-    try:
-        page_source = driver.page_source
-    except Exception:
-        # Since we can't get the page source from here, skip saving it
-        return
+    if source:
+        page_source = source
+    else:
+        try:
+            page_source = driver.page_source
+        except Exception:
+            # Since we can't get the page source from here, skip saving it
+            return
     html_file_path = "%s/%s" % (test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
     rendered_source = get_html_source_with_base_href(driver, page_source)

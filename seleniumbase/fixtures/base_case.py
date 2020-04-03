@@ -80,6 +80,8 @@ class BaseCase(unittest.TestCase):
         self.__last_page_load_url = "data:,"
         self.__last_page_screenshot = None
         self.__last_page_screenshot_png = None
+        self.__last_page_url = None
+        self.__last_page_source = None
         self.__added_pytest_html_extra = None
         self.__delayed_assert_count = 0
         self.__delayed_assert_failures = []
@@ -4548,6 +4550,22 @@ class BaseCase(unittest.TestCase):
                     except Exception:
                         pass
 
+    def __set_last_page_url(self):
+        if not self.__last_page_url:
+            try:
+                self.__last_page_url = log_helper.get_last_page(self.driver)
+            except Exception:
+                self.__last_page_url = None
+
+    def __set_last_page_source(self):
+        if not self.__last_page_source:
+            try:
+                self.__last_page_source = (
+                    log_helper.get_html_source_with_base_href(
+                        self.driver, self.driver.page_source))
+            except Exception:
+                self.__last_page_source = None
+
     def __insert_test_result(self, state, err):
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
@@ -4574,6 +4592,8 @@ class BaseCase(unittest.TestCase):
                 if self.with_selenium:
                     if not self.__last_page_screenshot:
                         self.__set_last_page_screenshot()
+                        self.__set_last_page_url()
+                        self.__set_last_page_source()
                     if self.report_on:
                         extra_url = {}
                         extra_url['name'] = 'URL'
@@ -4655,6 +4675,8 @@ class BaseCase(unittest.TestCase):
             test_logpath = self.log_path + "/" + test_id
             self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
+            self.__set_last_page_url()
+            self.__set_last_page_source()
             if self.is_pytest:
                 self.__add_pytest_html_extra()
 
@@ -4715,6 +4737,8 @@ class BaseCase(unittest.TestCase):
                     self.__create_log_path_as_needed(test_logpath)
                     if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
+                        self.__set_last_page_url()
+                        self.__set_last_page_source()
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
@@ -4729,27 +4753,35 @@ class BaseCase(unittest.TestCase):
                         # Log everything if nothing specified (if testing_base)
                         if not self.__last_page_screenshot_png:
                             self.__set_last_page_screenshot()
+                            self.__set_last_page_url()
+                            self.__set_last_page_source()
                         log_helper.log_screenshot(
                             test_logpath,
                             self.driver,
                             self.__last_page_screenshot_png)
                         log_helper.log_test_failure_data(
-                            self, test_logpath, self.driver, self.browser)
-                        log_helper.log_page_source(test_logpath, self.driver)
+                            self, test_logpath, self.driver, self.browser,
+                            self.__last_page_url)
+                        log_helper.log_page_source(
+                            test_logpath, self.driver, self.__last_page_source)
                     else:
                         if self.with_screen_shots:
                             if not self.__last_page_screenshot_png:
                                 self.__set_last_page_screenshot()
+                                self.__set_last_page_url()
+                                self.__set_last_page_source()
                             log_helper.log_screenshot(
                                 test_logpath,
                                 self.driver,
                                 self.__last_page_screenshot_png)
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
-                                self, test_logpath, self.driver, self.browser)
+                                self, test_logpath, self.driver, self.browser,
+                                self.__last_page_url)
                         if self.with_page_source:
                             log_helper.log_page_source(
-                                test_logpath, self.driver)
+                                test_logpath, self.driver,
+                                self.__last_page_source)
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
             if self.headless:
@@ -4801,21 +4833,27 @@ class BaseCase(unittest.TestCase):
                 test_logpath = self.log_path + "/" + test_id
                 self.__create_log_path_as_needed(test_logpath)
                 log_helper.log_test_failure_data(
-                    self, test_logpath, self.driver, self.browser)
+                    self, test_logpath, self.driver, self.browser,
+                    self.__last_page_url)
                 if len(self._drivers_list) > 0:
                     if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
+                        self.__set_last_page_url()
+                        self.__set_last_page_source()
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
                         self.__last_page_screenshot_png)
-                    log_helper.log_page_source(test_logpath, self.driver)
+                    log_helper.log_page_source(
+                        test_logpath, self.driver, self.__last_page_source)
             elif self.save_screenshot_after_test:
                 test_id = self.__get_test_id()
                 test_logpath = self.log_path + "/" + test_id
                 self.__create_log_path_as_needed(test_logpath)
                 if not self.__last_page_screenshot_png:
                     self.__set_last_page_screenshot()
+                    self.__set_last_page_url()
+                    self.__set_last_page_source()
                 log_helper.log_screenshot(
                     test_logpath,
                     self.driver,
