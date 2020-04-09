@@ -349,7 +349,20 @@ def add_js_code_from_link(driver, js_link):
         '''script.onload = function() { null };'''
         '''script.appendChild(document.createTextNode("%s"));'''
         '''body.appendChild(script);''')
-    js_code = js_code.replace('\n', '')
+    js_code = js_code.replace('\n', ' ')
+    js_code = escape_quotes_if_needed(js_code)
+    driver.execute_script(add_js_code_script % js_code)
+
+
+def add_js_code(driver, js_code):
+    add_js_code_script = (
+        '''var body = document.getElementsByTagName('body').item(0);'''
+        '''var script = document.createElement("script");'''
+        '''script.type = "text/javascript";'''
+        '''script.onload = function() { null };'''
+        '''script.appendChild(document.createTextNode("%s"));'''
+        '''body.appendChild(script);''')
+    js_code = js_code.replace('\n', ' ')
     js_code = escape_quotes_if_needed(js_code)
     driver.execute_script(add_js_code_script % js_code)
 

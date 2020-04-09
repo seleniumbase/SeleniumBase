@@ -126,6 +126,12 @@ self.select_option_by_value(dropdown_selector, option,
                             dropdown_by=By.CSS_SELECTOR,
                             timeout=None)
 
+self.load_html_string(html_string, new_page=True)
+
+self.load_html_file(html_file, new_page=True)
+
+self.open_html_file(html_file)
+
 self.execute_script(script)
 
 self.execute_async_script(script, timeout=None)
@@ -293,6 +299,8 @@ self.add_js_link(js_link)
 self.add_css_style(css_style)
 
 self.add_js_code_from_link(js_link)
+
+self.add_js_code(js_code)
 
 self.add_meta_tag(http_equiv=None, content=None)
 
