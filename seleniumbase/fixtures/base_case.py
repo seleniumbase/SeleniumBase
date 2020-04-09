@@ -1835,6 +1835,7 @@ class BaseCase(unittest.TestCase):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
         js_utils.activate_jquery(self.driver)
+        self.wait_for_ready_state_complete()
 
     def __are_quotes_escaped(self, string):
         return js_utils.are_quotes_escaped(string)
