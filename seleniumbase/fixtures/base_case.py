@@ -1859,7 +1859,7 @@ class BaseCase(unittest.TestCase):
             return
         selector = re.escape(selector)
         selector = self.__escape_quotes_if_needed(selector)
-        script = ("""document.querySelector('%s').style.zIndex = '9999';"""
+        script = ("""document.querySelector('%s').style.zIndex = '999999';"""
                   % selector)
         self.execute_script(script)
 
