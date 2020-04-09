@@ -2422,32 +2422,34 @@ class BaseCase(unittest.TestCase):
                 self.driver, messenger_post, self.message_duration)
 
     def assert_true(self, expr, msg=None):
+        """ Asserts that the expression is True.
+            Will raise an exception if the statement if False. """
         self.assertTrue(expr, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT TRUE (See code)")
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
 
     def assert_false(self, expr, msg=None):
+        """ Asserts that the expression is False.
+            Will raise an exception if the statement if True. """
         self.assertFalse(expr, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT FALSE (See code)")
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
 
     def assert_equal(self, first, second, msg=None):
+        """ Asserts that the two values are equal.
+            Will raise an exception if the values are not equal. """
         self.assertEqual(first, second, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT EQUAL: {%s == %s}" % (first, second))
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
 
     def assert_not_equal(self, first, second, msg=None):
+        """ Asserts that the two values are not equal.
+            Will raise an exception if the values are equal. """
         self.assertNotEqual(first, second, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT NOT EQUAL: {%s != %s}" % (first, second))
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
+
+    def assert_raises(self, *args, **kwargs):
+        """ Asserts that the following block of code raises an exception.
+            Will raise an exception if the block of code has no exception.
+            Usage Example =>
+                    # Verify that the expected exception is raised.
+                    with self.assert_raises(Exception):
+                        raise Exception("Expected Exception!")
+        """
+        self.assertRaises(*args, **kwargs)
 
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """

@@ -268,6 +268,8 @@ self.assert_equal(first, second, msg=None)
 
 self.assert_not_equal(first, second, msg=None)
 
+self.assert_raises(*args, **kwargs)
+
 self.assert_title(title)
 
 self.assert_no_js_errors()
