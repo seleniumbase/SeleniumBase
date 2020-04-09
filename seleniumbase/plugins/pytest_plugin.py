@@ -495,6 +495,9 @@ def pytest_runtest_teardown(item):
 
 @pytest.fixture()
 def sb(request):
+    """ SeleniumBase as a pytest fixture.
+        Usage example: "def test_one(sb):"
+        You'll need to use this for tests that use other pytest fixtures. """
     from seleniumbase import BaseCase
 
     class BaseClass(BaseCase):

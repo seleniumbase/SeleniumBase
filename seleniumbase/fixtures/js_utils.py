@@ -216,43 +216,43 @@ def wait_for_css_query_selector(
 
 
 def highlight_with_js(driver, selector, loops, o_bs):
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
     driver.execute_script(script)
     for n in range(loops):
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
+        script = ("""document.querySelector('%s').style.boxShadow =
+                  '0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
                   % selector)
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+        script = ("""document.querySelector('%s').style.boxShadow =
+                  '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
                   % selector)
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
+        script = ("""document.querySelector('%s').style.boxShadow =
+                  '0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
                   % selector)
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
+        script = ("""document.querySelector('%s').style.boxShadow =
+                  '0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
                   % selector)
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
+        script = ("""document.querySelector('%s').style.boxShadow =
+                  '0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
                   % selector)
         driver.execute_script(script)
         time.sleep(0.0181)
-        script = ("""document.querySelector('%s').style =
-                  'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+        script = ("""document.querySelector('%s').style.boxShadow =
+                  '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
                   % selector)
         driver.execute_script(script)
         time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: %s';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '%s';"""
               % (selector, o_bs))
     driver.execute_script(script)
 
@@ -349,7 +349,20 @@ def add_js_code_from_link(driver, js_link):
         '''script.onload = function() { null };'''
         '''script.appendChild(document.createTextNode("%s"));'''
         '''body.appendChild(script);''')
-    js_code = js_code.replace('\n', '')
+    js_code = js_code.replace('\n', ' ')
+    js_code = escape_quotes_if_needed(js_code)
+    driver.execute_script(add_js_code_script % js_code)
+
+
+def add_js_code(driver, js_code):
+    add_js_code_script = (
+        '''var body = document.getElementsByTagName('body').item(0);'''
+        '''var script = document.createElement("script");'''
+        '''script.type = "text/javascript";'''
+        '''script.onload = function() { null };'''
+        '''script.appendChild(document.createTextNode("%s"));'''
+        '''body.appendChild(script);''')
+    js_code = js_code.replace('\n', ' ')
     js_code = escape_quotes_if_needed(js_code)
     driver.execute_script(add_js_code_script % js_code)
 
@@ -572,36 +585,36 @@ def post_messenger_error_message(driver, message, msg_dur):
 def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     if selector == "html":
         selector = "body"
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: 0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: 0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
               % selector)
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: 0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
               % selector)
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: 0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
               % selector)
     driver.execute_script(script)
     time.sleep(0.0181)
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: 0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
               % selector)
     driver.execute_script(script)
     time.sleep(0.0181)
 
     post_messenger_success_message(driver, message, msg_dur)
 
-    script = ("""document.querySelector('%s').style =
-              'box-shadow: %s';""" % (selector, o_bs))
+    script = ("""document.querySelector('%s').style.boxShadow =
+              '%s';""" % (selector, o_bs))
     driver.execute_script(script)
 
 

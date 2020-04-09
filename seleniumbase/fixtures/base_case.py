@@ -1372,6 +1372,88 @@ class BaseCase(unittest.TestCase):
                              dropdown_by=dropdown_by, option_by="value",
                              timeout=timeout)
 
+    def load_html_string(self, html_string, new_page=True):
+        """ Loads an HTML string into the web browser.
+            If new_page==True, the page will switch to: "data:text/html,"
+            If new_page==False, will load HTML into the current page. """
+
+        soup = self.get_beautiful_soup(html_string)
+        scripts = soup.findAll("script")
+        for script in scripts:
+            html_string = html_string.replace(str(script), "")
+        soup = self.get_beautiful_soup(html_string)
+
+        found_head = False
+        found_body = False
+        html_head = None
+        html_body = None
+        if soup.head and len(str(soup.head)) > 12:
+            found_head = True
+            html_head = str(soup.head)
+            html_head = re.escape(html_head)
+            html_head = self.__escape_quotes_if_needed(html_head)
+            html_head = html_head.replace('\\ ', ' ')
+        if soup.body and len(str(soup.body)) > 12:
+            found_body = True
+            html_body = str(soup.body)
+            html_body = re.escape(html_body)
+            html_body = self.__escape_quotes_if_needed(html_body)
+            html_body = html_body.replace('\\ ', ' ')
+        html_string = re.escape(html_string)
+        html_string = self.__escape_quotes_if_needed(html_string)
+        html_string = html_string.replace('\\ ', ' ')
+
+        if new_page:
+            self.open("data:text/html,")
+        inner_head = '''document.getElementsByTagName("head")[0].innerHTML'''
+        inner_body = '''document.getElementsByTagName("body")[0].innerHTML'''
+        if not found_body:
+            self.execute_script(
+                '''%s = \"%s\"''' % (inner_body, html_string))
+        elif found_body and not found_head:
+            self.execute_script(
+                '''%s = \"%s\"''' % (inner_body, html_body))
+        elif found_body and found_head:
+            self.execute_script(
+                '''%s = \"%s\"''' % (inner_head, html_head))
+            self.execute_script(
+                '''%s = \"%s\"''' % (inner_body, html_body))
+        else:
+            raise Exception("Logic Error!")
+
+        for script in scripts:
+            js_code = script.string
+            js_code_lines = js_code.split('\n')
+            new_lines = []
+            for line in js_code_lines:
+                line = line.strip()
+                new_lines.append(line)
+            js_code = '\n'.join(new_lines)
+            js_utils.add_js_code(self.driver, js_code)
+
+    def load_html_file(self, html_file, new_page=True):
+        """ Loads a local html file into the browser from a relative file path.
+            If new_page==True, the page will switch to: "data:text/html,"
+            If new_page==False, will load HTML into the current page.
+            Local images and other local src content WILL BE IGNORED. """
+        if len(html_file) < 6 or not html_file.endswith(".html"):
+            raise Exception('Expecting a ".html" file!')
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % html_file
+        f = open(file_path, 'r')
+        html_string = f.read().strip()
+        f.close()
+        self.load_html_string(html_string, new_page)
+
+    def open_html_file(self, html_file):
+        """ Opens a local html file into the browser from a relative file path.
+            The URL displayed in the web browser will start with "file://". """
+        if len(html_file) < 6 or not html_file.endswith(".html"):
+            raise Exception('Expecting a ".html" file!')
+        abs_path = os.path.abspath('.')
+        file_path = abs_path + "/%s" % html_file
+        self.open("file://" + file_path)
+
     def execute_script(self, script):
         return self.driver.execute_script(script)
 
@@ -1753,6 +1835,7 @@ class BaseCase(unittest.TestCase):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
         js_utils.activate_jquery(self.driver)
+        self.wait_for_ready_state_complete()
 
     def __are_quotes_escaped(self, string):
         return js_utils.are_quotes_escaped(string)
@@ -1776,7 +1859,7 @@ class BaseCase(unittest.TestCase):
             return
         selector = re.escape(selector)
         selector = self.__escape_quotes_if_needed(selector)
-        script = ("""document.querySelector('%s').style.zIndex = '9999';"""
+        script = ("""document.querySelector('%s').style.zIndex = '999999';"""
                   % selector)
         self.execute_script(script)
 
@@ -2340,32 +2423,34 @@ class BaseCase(unittest.TestCase):
                 self.driver, messenger_post, self.message_duration)
 
     def assert_true(self, expr, msg=None):
+        """ Asserts that the expression is True.
+            Will raise an exception if the statement if False. """
         self.assertTrue(expr, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT TRUE (See code)")
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
 
     def assert_false(self, expr, msg=None):
+        """ Asserts that the expression is False.
+            Will raise an exception if the statement if True. """
         self.assertFalse(expr, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT FALSE (See code)")
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
 
     def assert_equal(self, first, second, msg=None):
+        """ Asserts that the two values are equal.
+            Will raise an exception if the values are not equal. """
         self.assertEqual(first, second, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT EQUAL: {%s == %s}" % (first, second))
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
 
     def assert_not_equal(self, first, second, msg=None):
+        """ Asserts that the two values are not equal.
+            Will raise an exception if the values are equal. """
         self.assertNotEqual(first, second, msg=msg)
-        '''if self.demo_mode:
-            messenger_post = ("ASSERT NOT EQUAL: {%s != %s}" % (first, second))
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)'''
+
+    def assert_raises(self, *args, **kwargs):
+        """ Asserts that the following block of code raises an exception.
+            Will raise an exception if the block of code has no exception.
+            Usage Example =>
+                    # Verify that the expected exception is raised.
+                    with self.assert_raises(Exception):
+                        raise Exception("Expected Exception!")
+        """
+        self.assertRaises(*args, **kwargs)
 
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
@@ -2609,6 +2694,9 @@ class BaseCase(unittest.TestCase):
 
     def add_js_code_from_link(self, js_link):
         js_utils.add_js_code_from_link(self.driver, js_link)
+
+    def add_js_code(self, js_code):
+        js_utils.add_js_code(self.driver, js_code)
 
     def add_meta_tag(self, http_equiv=None, content=None):
         js_utils.add_meta_tag(

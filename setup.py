@@ -45,7 +45,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.36.10',
+    version='1.37.0',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -109,7 +109,7 @@ setup(
         'parameterized==0.7.1',
         'soupsieve==1.9.5;python_version<"3.5"',
         'soupsieve==2.0;python_version>="3.5"',
-        'beautifulsoup4==4.8.2',
+        'beautifulsoup4==4.9.0',
         'atomicwrites==1.3.0',
         'portalocker==1.6.0',
         'cryptography==2.8',
@@ -126,7 +126,7 @@ setup(
         'cffi==1.14.0',
         'tqdm==4.45.0',
         'flake8==3.7.9',
-        'certifi>=2019.11.28',
+        'certifi>=2020.4.5.1',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20200402;python_version>="3.5"',
     ],
