@@ -204,6 +204,36 @@
                 background-color: #fefefe;
                 border: 2px solid #c1c1c1;
             }
+            .slidecontainer {
+                width: 100%;
+            }
+            .slider {
+                -webkit-appearance: none;
+                width: 100%;
+                height: 20px;
+                background: #d3d3d3;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+            .slider:hover {
+                opacity: 1;
+            }
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 16px;
+                height: 28px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
+            .slider::-moz-range-thumb {
+                width: 16px;
+                height: 28px;
+                background: #4CAF50;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -259,8 +289,13 @@
                         <td>Placeholder Text Field:</td>
                         <td><input id="placeholderText" type="text"
                                    placeholder="Placeholder Text Field" /></td>
-                        <td><p>Paragraph with Text:</p></td>
-                        <td><p id="pText" style="color: green; font-size: 20px;">This Text is Green</p></td>
+                        <td>Read-Only Text Field:</td>
+                        <td>
+                            <input type="text" id="readOnlyText"
+                                   value="The Color is Green"
+                                   style="font-size: 19px; color: green; width: 94%;"
+                                   readonly />
+                        </td>
                     </tr>
                     <tr>
                         <td>HTML SVG with rect:</td>
@@ -277,32 +312,27 @@
                                 </rect>
                             </svg>
                         </td>
-                        <td><label id="progressLabel" for="progressBar">Progress Bar: (50%)</label></td>
-                        <td><progress id="progressBar" value="50" style="width: 94%;" max="100" /></td>
+                        <td><p>Paragraph with Text:</p></td>
+                        <td><p id="pText" style="color: green; font-size: 20px;">This Text is Green</p></td>
                     </tr>
                     <tr>
-                        <td><div style="color: gray;">Disabled Text Field:</div></td>
+                        <td>Input Slider Control:</td>
                         <td>
-                            <input type="text"
-                                   style="color: gray;"
-                                   value="NOT Editable!" disabled
-                                   id="disabledTextFieldId"
-                                   name="disabledTextFieldName"
-                                   class="disabledTextFieldClass"/>
+                            <input type="range" min="0" max="4" step="1"
+                                   id="mySlider" name="sliderName" value="2"
+                                   style="width: 88%;" class="slider"
+                                   onclick="sliderFunction1()"
+                                   onchange="sliderFunction1()"
+                                   onmousemove="sliderFunction1()"/>
                         </td>
-                        <td>Read-Only Text Field:</td>
-                        <td>
-                            <input type="text" id="readOnlyText"
-                                   value="The Color is Green"
-                                   style="font-size: 18px; color: green; width: 94%;"
-                                   readonly />
-                        </td>
+                        <td><label id="progressLabel" for="progressBar">Progress Bar: (50%)</label></td>
+                        <td><progress id="progressBar" value="50" style="width: 94%;" max="100" /></td>
                     </tr>
                     <tr>
                         <td>Select Dropdown:</td>
                         <td>
                             <select id="mySelect" name="selectName"
-                                    class="selectClass" onChange="selectFunction1()"
+                                    class="selectClass" onchange="selectFunction1()"
                                     style="width: 95%; font-size: 14px;">
                                 <option value="25%">Set to 25%</option>
                                 <option value="50%">Set to 50%</option>
@@ -386,8 +416,6 @@
               var x = document.getElementById("myButton");
               var y = document.getElementById("pText");
               var z = document.getElementById("readOnlyText");
-              var p = document.getElementById("progressBar");
-              var pl = document.getElementById("progressLabel");
               if (x.style.color != "purple") {
                 x.style.color = "purple";
                 x.textContent = "Click Me (Purple)";
@@ -395,8 +423,6 @@
                 y.style.color = "purple";
                 z.value = "The Color is Purple";
                 z.style.color = "purple";
-                p.value = "100";
-                pl.textContent = "Progress Bar: (100%)";
               }
               else {
                 x.style.color = "green";
@@ -405,8 +431,33 @@
                 y.style.color = "green";
                 z.value = "The Color is Green";
                 z.style.color = "green";
+              }
+            }
+        </script>
+        <script>
+            function sliderFunction1() {
+              var s = document.getElementById("mySlider");
+              var p = document.getElementById("progressBar");
+              var pl = document.getElementById("progressLabel");
+              if (s.value == "0") {
+                p.value = "0";
+                pl.textContent = "Progress Bar: (0%)";
+              }
+              if (s.value == "1") {
+                p.value = "25";
+                pl.textContent = "Progress Bar: (25%)";
+              }
+              if (s.value == "2") {
                 p.value = "50";
                 pl.textContent = "Progress Bar: (50%)";
+              }
+              if (s.value == "3") {
+                p.value = "75";
+                pl.textContent = "Progress Bar: (75%)";
+              }
+              if (s.value == "4") {
+                p.value = "100";
+                pl.textContent = "Progress Bar: (100%)";
               }
             }
         </script>
