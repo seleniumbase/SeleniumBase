@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 from seleniumbase import BaseCase
 
 
@@ -27,6 +28,11 @@ class MyTestClass(BaseCase):
         self.assert_text("Automation Practice", "h3")
         self.hover_and_click("#myDropdown", "#dropOption2")
         self.assert_text("Link Two Selected", "h3")
+
+        # Verify that moving a "slider" updates a progrss bar
+        self.assert_element('progress[value="50"]')
+        self.send_keys("#myslider", Keys.RIGHT + Keys.RIGHT)
+        self.assert_element('progress[value="100"]')
 
         # Verify that the "select" option updates a meter bar
         self.assert_element('meter[value="0.25"]')
