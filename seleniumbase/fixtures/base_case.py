@@ -1948,6 +1948,90 @@ class BaseCase(unittest.TestCase):
     def __highlight_with_jquery(self, selector, loops, o_bs):
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
+    def press_up_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+        """ Simulates pressing the UP Arrow on the keyboard.
+            By default, "html" will be used as the CSS Selector target.
+            You can specify how many times in-a-row the action happens. """
+        if times < 1:
+            return
+        element = self.wait_for_element_present(selector)
+        self.__demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self.__scroll_to_element(element, selector, by)
+        for i in range(int(times)):
+            try:
+                element.send_keys(Keys.ARROW_UP)
+            except Exception:
+                self.wait_for_ready_state_complete()
+                element = self.wait_for_element_visible(selector)
+                element.send_keys(Keys.ARROW_UP)
+            time.sleep(0.01)
+            if self.slow_mode:
+                time.sleep(0.1)
+
+    def press_down_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+        """ Simulates pressing the DOWN Arrow on the keyboard.
+            By default, "html" will be used as the CSS Selector target.
+            You can specify how many times in-a-row the action happens. """
+        if times < 1:
+            return
+        element = self.wait_for_element_present(selector)
+        self.__demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self.__scroll_to_element(element, selector, by)
+        for i in range(int(times)):
+            try:
+                element.send_keys(Keys.ARROW_DOWN)
+            except Exception:
+                self.wait_for_ready_state_complete()
+                element = self.wait_for_element_visible(selector)
+                element.send_keys(Keys.ARROW_DOWN)
+            time.sleep(0.01)
+            if self.slow_mode:
+                time.sleep(0.1)
+
+    def press_left_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+        """ Simulates pressing the LEFT Arrow on the keyboard.
+            By default, "html" will be used as the CSS Selector target.
+            You can specify how many times in-a-row the action happens. """
+        if times < 1:
+            return
+        element = self.wait_for_element_present(selector)
+        self.__demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self.__scroll_to_element(element, selector, by)
+        for i in range(int(times)):
+            try:
+                element.send_keys(Keys.ARROW_LEFT)
+            except Exception:
+                self.wait_for_ready_state_complete()
+                element = self.wait_for_element_visible(selector)
+                element.send_keys(Keys.ARROW_LEFT)
+            time.sleep(0.01)
+            if self.slow_mode:
+                time.sleep(0.1)
+
+    def press_right_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+        """ Simulates pressing the RIGHT Arrow on the keyboard.
+            By default, "html" will be used as the CSS Selector target.
+            You can specify how many times in-a-row the action happens. """
+        if times < 1:
+            return
+        element = self.wait_for_element_present(selector)
+        self.__demo_mode_highlight_if_active(selector, by)
+        if not self.demo_mode:
+            self.__scroll_to_element(element, selector, by)
+        for i in range(int(times)):
+            try:
+                element.send_keys(Keys.ARROW_RIGHT)
+            except Exception:
+                self.wait_for_ready_state_complete()
+                element = self.wait_for_element_visible(selector)
+                element.send_keys(Keys.ARROW_RIGHT)
+            time.sleep(0.01)
+            if self.slow_mode:
+                time.sleep(0.1)
+
     def scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
         ''' Fast scroll to destination '''
         if not timeout:
@@ -1987,6 +2071,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_scroll_to_element(element)
 
     def scroll_to_top(self):
+        """ Scroll to the top of the page. """
         scroll_script = "window.scrollTo(0, 0);"
         try:
             self.execute_script(scroll_script)
@@ -1996,6 +2081,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     def scroll_to_bottom(self):
+        """ Scroll to the bottom of the page. """
         scroll_script = "window.scrollTo(0, 10000);"
         try:
             self.execute_script(scroll_script)
@@ -3130,9 +3216,11 @@ class BaseCase(unittest.TestCase):
     def activate_jquery_confirm(self):
         """ See https://craftpip.github.io/jquery-confirm/ for usage. """
         js_utils.activate_jquery_confirm(self.driver)
+        self.wait_for_ready_state_complete()
 
     def activate_messenger(self):
         js_utils.activate_messenger(self.driver)
+        self.wait_for_ready_state_complete()
 
     def set_messenger_theme(self, theme="default", location="default",
                             max_messages="default"):

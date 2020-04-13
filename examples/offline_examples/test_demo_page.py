@@ -1,4 +1,3 @@
-from selenium.webdriver.common.keys import Keys
 from seleniumbase import BaseCase
 
 
@@ -19,22 +18,25 @@ class MyTestClass(BaseCase):
         self.update_text("textarea.area1", "Testing Time!\n")
         self.update_text('[name="preText2"]', "Typing Text!")
 
+        # Verify that a hover dropdown link changes page text
+        self.assert_text("Automation Practice", "h3")
+        self.hover_and_click("#myDropdown", "#dropOption2")
+        self.assert_text("Link Two Selected", "h3")
+
         # Verify that a button click changes text on the page
         self.assert_text("This Text is Green", "#pText")
         self.click("#myButton")
         self.assert_text("This Text is Purple", "#pText")
 
-        # Verify that the hover dropdown option changes text
-        self.assert_text("Automation Practice", "h3")
-        self.hover_and_click("#myDropdown", "#dropOption2")
-        self.assert_text("Link Two Selected", "h3")
+        # Assert that the given SVG is visible on the page
+        self.assert_element('svg[name="svgName"]')
 
-        # Verify that moving a "slider" updates a progrss bar
+        # Verify that a slider control updates a progrss bar
         self.assert_element('progress[value="50"]')
-        self.send_keys("#myslider", Keys.RIGHT + Keys.RIGHT)
+        self.press_right_arrow("#myslider", times=5)
         self.assert_element('progress[value="100"]')
 
-        # Verify that the "select" option updates a meter bar
+        # Verify that a "select" option updates a meter bar
         self.assert_element('meter[value="0.25"]')
         self.select_option_by_text("#mySelect", "Set to 75%")
         self.assert_element('meter[value="0.75"]')
@@ -60,9 +62,6 @@ class MyTestClass(BaseCase):
         self.assert_false(self.is_selected("#radioButton2"))
         self.click("#radioButton2")
         self.assert_true(self.is_selected("#radioButton2"))
-
-        # Assert that the SVG is visible on the page
-        self.assert_element('svg[name="svgName"]')
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")

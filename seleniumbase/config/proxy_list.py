@@ -16,10 +16,14 @@ Example proxies in PROXY_LIST below are not guaranteed to be active or secure.
 If you don't already have a proxy server to connect to,
 you can try finding one from one of following sites:
 * https://www.us-proxy.org/
+* https://hidemy.name/en/proxy-list/
 """
 
 PROXY_LIST = {
-    "example1": "72.35.40.34:8080",  # (Example) - set your own proxy here
+    "example1": "142.93.130.169:8118",  # (Example) - set your own proxy here
+    "example2": "51.91.212.159:3128",  # (Example) - set your own proxy here
+    "example3": "109.74.142.138:53281",  # (Example) - set your own proxy here
+    "example4": "91.207.60.241:1282",  # (Example) - set your own proxy here
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,

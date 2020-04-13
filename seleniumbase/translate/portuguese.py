@@ -199,3 +199,19 @@ class CasoDeTeste(BaseCase):
     def é_selecionado(self, *args, **kwargs):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
+
+    def pressione_a_seta_para_cima(self, *args, **kwargs):
+        # press_up_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def pressione_a_seta_para_baixo(self, *args, **kwargs):
+        # press_down_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def pressione_a_seta_esquerda(self, *args, **kwargs):
+        # press_left_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def pressione_a_seta_direita(self, *args, **kwargs):
+        # press_right_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)

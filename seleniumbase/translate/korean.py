@@ -199,3 +199,19 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 선택되어_있는지(self, *args, **kwargs):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
+
+    def 위쪽_화살표를_누릅니다(self, *args, **kwargs):
+        # press_up_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def 아래쪽_화살표를_누르십시오(self, *args, **kwargs):
+        # press_down_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def 왼쪽_화살표를_누르십시오(self, *args, **kwargs):
+        # press_left_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def 오른쪽_화살표를_누르십시오(self, *args, **kwargs):
+        # press_right_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)

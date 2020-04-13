@@ -187,6 +187,14 @@ self.highlight_update_text(selector, new_value, by=By.CSS_SELECTOR, loops=3, scr
 
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
 
+self.press_up_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+
+self.press_down_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+
+self.press_left_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+
+self.press_right_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+
 self.scroll_to(selector, by=By.CSS_SELECTOR)
 
 self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
