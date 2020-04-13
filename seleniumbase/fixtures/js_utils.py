@@ -457,6 +457,7 @@ def activate_messenger(driver):
                  "theme: 'future'}")
 
     add_js_link(driver, jquery_js)
+    wait_for_jquery_active(driver, timeout=0.2)
     add_css_link(driver, messenger_css)
     add_css_link(driver, msgr_theme_flat_css)
     add_css_link(driver, msgr_theme_future_css)

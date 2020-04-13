@@ -3130,9 +3130,11 @@ class BaseCase(unittest.TestCase):
     def activate_jquery_confirm(self):
         """ See https://craftpip.github.io/jquery-confirm/ for usage. """
         js_utils.activate_jquery_confirm(self.driver)
+        self.wait_for_ready_state_complete()
 
     def activate_messenger(self):
         js_utils.activate_messenger(self.driver)
+        self.wait_for_ready_state_complete()
 
     def set_messenger_theme(self, theme="default", location="default",
                             max_messages="default"):
