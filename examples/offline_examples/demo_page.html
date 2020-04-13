@@ -318,8 +318,8 @@
                     <tr>
                         <td>Input Slider Control:</td>
                         <td>
-                            <input type="range" min="0" max="4" step="1"
-                                   id="mySlider" name="sliderName" value="2"
+                            <input type="range" min="0" max="100" step="10"
+                                   id="mySlider" name="sliderName" value="50"
                                    style="width: 88%;" class="slider"
                                    onclick="sliderFunction1()"
                                    onchange="sliderFunction1()"
@@ -439,26 +439,8 @@
               var s = document.getElementById("mySlider");
               var p = document.getElementById("progressBar");
               var pl = document.getElementById("progressLabel");
-              if (s.value == "0") {
-                p.value = "0";
-                pl.textContent = "Progress Bar: (0%)";
-              }
-              if (s.value == "1") {
-                p.value = "25";
-                pl.textContent = "Progress Bar: (25%)";
-              }
-              if (s.value == "2") {
-                p.value = "50";
-                pl.textContent = "Progress Bar: (50%)";
-              }
-              if (s.value == "3") {
-                p.value = "75";
-                pl.textContent = "Progress Bar: (75%)";
-              }
-              if (s.value == "4") {
-                p.value = "100";
-                pl.textContent = "Progress Bar: (100%)";
-              }
+              p.value = s.value;
+              pl.textContent = "Progress Bar: (" + p.value + "%)";
             }
         </script>
         <script>
