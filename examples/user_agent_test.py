@@ -1,4 +1,3 @@
-import time
 from seleniumbase import BaseCase
 
 
@@ -11,4 +10,4 @@ class MyTestClass(BaseCase):
         print("Displaying User-Agent Info:")
         print(self.get_text("#useragent"))
         print("\nThe browser will close automatically in 7 seconds...")
-        time.sleep(7)
+        self.sleep(7)
