@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><meta charset="iso-8859-1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css" />
+<style>
+    body,td,th,h1{
+        font-family:sans-serif;
+    }
+    td,h1 {
+        border-style:solid;
+        border-width: 6px 6px 6px 6px;
+        border-color: #FFF;
+        padding: 8px;
+    }
+    th {
+        border-style: none;
+        border-width: 6px;
+        border-color: #FFF;
+        background-color: #91E7B4;
+        padding: 8px;
+    }
+</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.8.8/brython.js"></script>
+</head>
+<body onload="brython()">
+<table>
+    <tbody>
+        <h1 id="topHeader"></h1>
+        <td>
+            <th>
+                <h2>
+                    <a href="library.html">Library / Indexed DB Example</a>
+                </h2>
+            </th>
+        </td>
+    </tbody>
+</table>
+<script type="text/python">
+      import index
+      index.setup_page()
+</script>
+</body>
+</html>
