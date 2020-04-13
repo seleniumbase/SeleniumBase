@@ -199,3 +199,19 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 選択されていることを(self, *args, **kwargs):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
+
+    def 上矢印を押します(self, *args, **kwargs):
+        # press_up_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def 下矢印を押します(self, *args, **kwargs):
+        # press_down_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def 左矢印を押します(self, *args, **kwargs):
+        # press_left_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def 右矢印を押します(self, *args, **kwargs):
+        # press_right_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)

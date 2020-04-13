@@ -199,3 +199,19 @@ class CasoDiProva(BaseCase):
     def è_selezionato(self, *args, **kwargs):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
+
+    def premere_la_freccia_su(self, *args, **kwargs):
+        # press_up_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def premere_la_freccia_giù(self, *args, **kwargs):
+        # press_down_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def premere_la_freccia_sinistra(self, *args, **kwargs):
+        # press_left_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def premere_la_freccia_destra(self, *args, **kwargs):
+        # press_right_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)

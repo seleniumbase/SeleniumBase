@@ -199,3 +199,19 @@ class CasDeBase(BaseCase):
     def est_il_sélectionné(self, *args, **kwargs):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
+
+    def appuyez_sur_la_flèche_vers_le_haut(self, *args, **kwargs):
+        # press_up_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def appuyez_sur_la_flèche_vers_le_bas(self, *args, **kwargs):
+        # press_down_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def appuyez_sur_la_flèche_gauche(self, *args, **kwargs):
+        # press_left_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
+
+    def appuyez_sur_la_flèche_droite(self, *args, **kwargs):
+        # press_right_arrow(selector="html", times=1)
+        return self.is_selected(*args, **kwargs)
