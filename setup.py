@@ -106,7 +106,7 @@ setup(
         'pytest-rerunfailures==8.0;python_version<"3.6"',
         'pytest-rerunfailures==9.0;python_version>="3.6"',
         'pytest-xdist==1.31.0',
-        'parameterized==0.7.3',
+        'parameterized==0.7.4',
         'soupsieve==1.9.5;python_version<"3.5"',
         'soupsieve==2.0;python_version>="3.5"',
         'beautifulsoup4==4.9.0',
