@@ -83,11 +83,7 @@ def is_chromedriver_on_path():
 
 
 def is_edgedriver_on_path():
-    paths = os.environ["PATH"].split(os.pathsep)
-    for path in paths:
-        if os.path.exists(path + '/' + "msedgedriver"):
-            return True
-    return False
+    return os.path.exists(LOCAL_EDGEDRIVER)
 
 
 def is_geckodriver_on_path():
