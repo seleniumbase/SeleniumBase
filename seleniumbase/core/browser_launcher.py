@@ -83,11 +83,7 @@ def is_chromedriver_on_path():
 
 
 def is_edgedriver_on_path():
-    paths = os.environ["PATH"].split(os.pathsep)
-    for path in paths:
-        if os.path.exists(path + '/' + "msedgedriver"):
-            return True
-    return False
+    return os.path.exists(LOCAL_EDGEDRIVER)
 
 
 def is_geckodriver_on_path():
@@ -617,7 +613,7 @@ def get_local_driver(
                     # (Not multithreaded)
                     from seleniumbase.console_scripts import sb_install
                     sys_args = sys.argv  # Save a copy of current sys args
-                    print("\nWarning: chromedriver not found. Installing now:")
+                    print("\nWarning: msedgedriver not found. Installing now:")
                     sb_install.main(override="edgedriver")
                     sys.argv = sys_args  # Put back the original sys args
             return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
