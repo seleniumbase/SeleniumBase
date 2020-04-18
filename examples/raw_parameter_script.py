@@ -36,6 +36,8 @@ except (ImportError, ValueError):
     sb.environment = "test"
     sb.user_agent = None
     sb.incognito = False
+    sb.guest_mode = False
+    sb.devtools = False
     sb.mobile_emulator = False
     sb.device_metrics = None
     sb.extension_zip = None

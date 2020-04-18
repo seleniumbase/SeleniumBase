@@ -1523,7 +1523,8 @@ class BaseCase(unittest.TestCase):
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, disable_csp=None,
                        enable_sync=None, no_sandbox=None, disable_gpu=None,
-                       incognito=None, user_data_dir=None, extension_zip=None,
+                       incognito=None, guest_mode=None, devtools=None,
+                       user_data_dir=None, extension_zip=None,
                        extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
         """ This method spins up an extra browser for tests that require
@@ -1543,6 +1544,8 @@ class BaseCase(unittest.TestCase):
             no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
             disable_gpu - the option to enable Chrome's "Disable GPU" feature
             incognito - the option to enable Chrome's Incognito mode (Chrome)
+            guest - the option to enable Chrome's Guest mode (Chrome)
+            devtools - the option to open Chrome's DevTools on start (Chrome)
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
             extension_dir - A Chrome Extension folder to use (Chrome-only)
@@ -1601,6 +1604,10 @@ class BaseCase(unittest.TestCase):
             disable_gpu = self.disable_gpu
         if incognito is None:
             incognito = self.incognito
+        if guest_mode is None:
+            guest_mode = self.guest_mode
+        if devtools is None:
+            devtools = self.devtools
         if user_data_dir is None:
             user_data_dir = self.user_data_dir
         if extension_zip is None:
@@ -1639,6 +1646,8 @@ class BaseCase(unittest.TestCase):
                                                  no_sandbox=no_sandbox,
                                                  disable_gpu=disable_gpu,
                                                  incognito=incognito,
+                                                 guest_mode=guest_mode,
+                                                 devtools=devtools,
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
                                                  extension_dir=extension_dir,
@@ -4532,6 +4541,8 @@ class BaseCase(unittest.TestCase):
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
             self.incognito = sb_config.incognito
+            self.guest_mode = sb_config.guest_mode
+            self.devtools = sb_config.devtools
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
@@ -4687,6 +4698,8 @@ class BaseCase(unittest.TestCase):
                                               no_sandbox=self.no_sandbox,
                                               disable_gpu=self.disable_gpu,
                                               incognito=self.incognito,
+                                              guest_mode=self.guest_mode,
+                                              devtools=self.devtools,
                                               user_data_dir=self.user_data_dir,
                                               extension_zip=self.extension_zip,
                                               extension_dir=self.extension_dir,

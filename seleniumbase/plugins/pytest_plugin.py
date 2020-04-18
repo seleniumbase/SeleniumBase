@@ -42,10 +42,12 @@ def pytest_addoption(parser):
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
     --no-sandbox  (The option to enable Chrome's "No-Sandbox" feature.)
-    --disable_gpu  (The option to enable Chrome's "Disable GPU" feature.)
+    --disable-gpu  (The option to enable Chrome's "Disable GPU" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
+    --guest  (The option to enable Chrome's Guest mode.)
+    --devtools  (The option to open Chrome's DevTools when the browser opens.)
     --reuse-session  (The option to reuse the browser session between tests.)
-    --maximize-window  (The option to start with the web browser maximized.)
+    --maximize  (The option to start with the web browser maximized.)
     --save-screenshot  (The option to save a screenshot after each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
@@ -331,11 +333,21 @@ def pytest_addoption(parser):
                      dest='disable_gpu',
                      default=False,
                      help="""Using this enables the "Disable GPU" feature.""")
-    parser.addoption('--incognito',
+    parser.addoption('--incognito', '--incognito_mode', '--incognito-mode',
                      action="store_true",
                      dest='incognito',
                      default=False,
                      help="""Using this enables Chrome's Incognito mode.""")
+    parser.addoption('--guest', '--guest_mode', '--guest-mode',
+                     action="store_true",
+                     dest='guest_mode',
+                     default=False,
+                     help="""Using this enables Chrome's Guest mode.""")
+    parser.addoption('--devtools', 'open_devtools', 'open-devtools',
+                     action="store_true",
+                     dest='devtools',
+                     default=False,
+                     help="""Using this opens Chrome's DevTools.""")
     parser.addoption('--reuse_session', '--reuse-session',
                      action="store_true",
                      dest='reuse_session',
@@ -422,6 +434,8 @@ def pytest_configure(config):
     sb_config.no_sandbox = config.getoption('no_sandbox')
     sb_config.disable_gpu = config.getoption('disable_gpu')
     sb_config.incognito = config.getoption('incognito')
+    sb_config.guest_mode = config.getoption('guest_mode')
+    sb_config.devtools = config.getoption('devtools')
     sb_config.reuse_session = config.getoption('reuse_session')
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.maximize_option = config.getoption('maximize_option')
