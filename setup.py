@@ -90,7 +90,7 @@ setup(
         'ipdb',
         'idna==2.9',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.25.8',  # Must stay in sync with "requests"
+        'urllib3==1.25.9',  # Must stay in sync with "requests"
         'requests==2.23.0',
         'selenium==3.141.0',
         'pluggy==0.13.1',
