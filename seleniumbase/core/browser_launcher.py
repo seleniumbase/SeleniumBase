@@ -132,7 +132,8 @@ def _set_chrome_options(
         downloads_path, headless,
         proxy_string, proxy_auth, proxy_user, proxy_pass,
         user_agent, disable_csp, enable_sync, no_sandbox, disable_gpu,
-        incognito, user_data_dir, extension_zip, extension_dir, servername,
+        incognito, guest_mode, devtools,
+        user_data_dir, extension_zip, extension_dir, servername,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
@@ -145,10 +146,15 @@ def _set_chrome_options(
     }
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_experimental_option("w3c", True)
-    chrome_options.add_experimental_option(
-        "excludeSwitches", ["enable-automation", "enable-logging"])
-    if servername == "localhost" or servername == "127.0.0.1":
-        chrome_options.add_experimental_option("useAutomationExtension", False)
+    if enable_sync:
+        chrome_options.add_experimental_option(
+            "excludeSwitches",
+            ["enable-automation", "enable-logging", "disable-sync"])
+        chrome_options.add_argument("--enable-sync")
+    else:
+        chrome_options.add_experimental_option(
+            "excludeSwitches",
+            ["enable-automation", "enable-logging"])
     if mobile_emulator:
         emulator_settings = {}
         device_metrics = {}
@@ -166,12 +172,13 @@ def _set_chrome_options(
             emulator_settings["userAgent"] = user_agent
         chrome_options.add_experimental_option(
             "mobileEmulation", emulator_settings)
-    if enable_sync:
-        chrome_options.add_experimental_option(
-            "excludeSwitches", ["disable-sync"])
         chrome_options.add_argument("--enable-sync")
     if incognito:
         chrome_options.add_argument("--incognito")
+    elif guest_mode:
+        chrome_options.add_argument("--guest")
+    else:
+        pass
     if user_data_dir:
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
@@ -189,6 +196,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--ignore-certificate-errors")
+    if devtools and not headless:
+        chrome_options.add_argument("--auto-open-devtools-for-tabs")
     chrome_options.add_argument("--allow-file-access-from-files")
     chrome_options.add_argument("--allow-insecure-localhost")
     chrome_options.add_argument("--allow-running-insecure-content")
@@ -199,10 +208,15 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
+    if servername == "localhost" or servername == "127.0.0.1":
+        chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome doesn't support extensions, which are required
         # for disabling the Content Security Policy on Chrome
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
+    elif not extension_zip and not extension_dir:
+        if servername == "localhost" or servername == "127.0.0.1":
+            chrome_options.add_argument("--disable-extensions")
     if proxy_string:
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
@@ -333,8 +347,9 @@ def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None,
                user_agent=None, cap_file=None, disable_csp=None,
                enable_sync=None, no_sandbox=None, disable_gpu=None,
-               incognito=None, user_data_dir=None, extension_zip=None,
-               extension_dir=None, mobile_emulator=False, device_width=None,
+               incognito=None, guest_mode=None, devtools=None,
+               user_data_dir=None, extension_zip=None, extension_dir=None,
+               mobile_emulator=False, device_width=None,
                device_height=None, device_pixel_ratio=None):
     proxy_auth = False
     proxy_user = None
@@ -370,22 +385,25 @@ def get_driver(browser_name, headless=False, use_grid=False,
             browser_name, headless, servername, port,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             cap_file, disable_csp, enable_sync, no_sandbox, disable_gpu,
-            incognito, user_data_dir, extension_zip, extension_dir,
+            incognito, guest_mode, devtools,
+            user_data_dir, extension_zip, extension_dir,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
         return get_local_driver(
             browser_name, headless, servername,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            disable_csp, enable_sync, no_sandbox, disable_gpu, incognito,
-            user_data_dir, extension_zip, extension_dir, mobile_emulator,
-            device_width, device_height, device_pixel_ratio)
+            disable_csp, enable_sync, no_sandbox, disable_gpu,
+            incognito, guest_mode, devtools,
+            user_data_dir, extension_zip, extension_dir,
+            mobile_emulator, device_width, device_height, device_pixel_ratio)
 
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
         proxy_user, proxy_pass, user_agent, cap_file, disable_csp,
-        enable_sync, no_sandbox, disable_gpu, incognito, user_data_dir,
-        extension_zip, extension_dir,
+        enable_sync, no_sandbox, disable_gpu,
+        incognito, guest_mode, devtools,
+        user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
     download_helper.reset_downloads_folder()
@@ -397,7 +415,8 @@ def get_remote_driver(
         chrome_options = _set_chrome_options(
             downloads_path, headless,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            disable_csp, enable_sync, no_sandbox, disable_gpu, incognito,
+            disable_csp, enable_sync, no_sandbox, disable_gpu,
+            incognito, guest_mode, devtools,
             user_data_dir, extension_zip, extension_dir, servername,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
         capabilities = chrome_options.to_capabilities()
@@ -508,7 +527,8 @@ def get_remote_driver(
 def get_local_driver(
         browser_name, headless, servername,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-        disable_csp, enable_sync, no_sandbox, disable_gpu, incognito,
+        disable_csp, enable_sync, no_sandbox, disable_gpu,
+        incognito, guest_mode, devtools,
         user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     '''
@@ -597,7 +617,8 @@ def get_local_driver(
             chrome_options = _set_chrome_options(
                 downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-                disable_csp, enable_sync, no_sandbox, disable_gpu, incognito,
+                disable_csp, enable_sync, no_sandbox, disable_gpu,
+                incognito, guest_mode, devtools,
                 user_data_dir, extension_zip, extension_dir, servername,
                 mobile_emulator, device_width, device_height,
                 device_pixel_ratio)
@@ -652,7 +673,8 @@ def get_local_driver(
             chrome_options = _set_chrome_options(
                 downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-                disable_csp, enable_sync, no_sandbox, disable_gpu, incognito,
+                disable_csp, enable_sync, no_sandbox, disable_gpu,
+                incognito, guest_mode, devtools,
                 user_data_dir, extension_zip, extension_dir, servername,
                 mobile_emulator, device_width, device_height,
                 device_pixel_ratio)

@@ -38,6 +38,8 @@ class SeleniumBrowser(Plugin):
     --no-sandbox  (The option to enable Chrome's "No-Sandbox" feature.)
     --disable_gpu  (The option to enable Chrome's "Disable GPU" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
+    --guest  (The option to enable Chrome's Guest mode.)
+    --devtools  (The option to open Chrome's DevTools when the browser opens.)
     --maximize-window  (The option to start with the web browser maximized.)
     --save-screenshot  (The option to save a screenshot after each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
@@ -265,11 +267,23 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables the "Disable GPU" feature.""")
         parser.add_option(
-            '--incognito',
+            '--incognito', '--incognito_mode', '--incognito-mode',
             action="store_true",
             dest='incognito',
             default=False,
             help="""Using this enables Chrome's Incognito mode.""")
+        parser.add_option(
+            '--guest', '--guest_mode', '--guest-mode',
+            action="store_true",
+            dest='guest_mode',
+            default=False,
+            help="""Using this enables Chrome's Guest mode.""")
+        parser.add_option(
+            '--devtools', '--open_devtools', '--open-devtools',
+            action="store_true",
+            dest='devtools',
+            default=False,
+            help="""Using this opens Chrome's DevTools.""")
         parser.add_option(
             '--maximize_window', '--maximize-window', '--maximize',
             '--fullscreen',
@@ -338,6 +352,8 @@ class SeleniumBrowser(Plugin):
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.incognito = self.options.incognito
+        test.test.guest_mode = self.options.guest_mode
+        test.test.devtools = self.options.devtools
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline

@@ -46,7 +46,7 @@ If multiple versions of Python are installed, be specific (E.g. use ``python3`` 
 pip install seleniumbase
 ```
 * Add ``--upgrade`` OR ``-U`` to upgrade an installation.
-* Add ``--force-reinstall`` for a clean install.
+* Add ``--force-reinstall`` to also upgrade dependencies.
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a webdriver:
 
