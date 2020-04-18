@@ -71,6 +71,7 @@ latest_logs
 log_archives
 archived_logs
 geckodriver.log
+pytestdebug.log
 
 # Reports
 latest_report
