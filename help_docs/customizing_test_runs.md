@@ -7,17 +7,17 @@ In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/m
 The following tests can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
 ```bash
-# Run my_first_test.py in Chrome (default browser)
-pytest my_first_test.py
+# Run a test in Chrome (default browser)
+pytest test_swag_labs.py
 
-# Run my_first_test.py in Firefox
-pytest my_first_test.py --browser=firefox
+# Run a test in Firefox
+pytest test_swag_labs.py --browser=firefox
 
 # Run a test in Demo Mode (highlight assertions)
-pytest my_first_test.py --demo
+pytest test_swag_labs.py --demo
 
 # Run a test in Headless Mode (invisible browser)
-pytest my_first_test.py --headless
+pytest test_swag_labs.py --headless
 
 # Run tests multi-threaded using [n] threads
 pytest test_suite.py -n=4
@@ -68,6 +68,63 @@ pytest my_first_test.py --settings-file=custom_settings.py
 You can interchange **pytest** with **nosetests** for most things, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
 
 (NOTE: If you're using **pytest** for running tests outside of the SeleniumBase repo, **you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**. If using **nosetests**, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).)
+
+Here are some useful command-line options that come with Pytest:
+```bash
+-v  # Prints the full test name for each test.
+-q  # Prints fewer details in the console output when running tests.
+-x  # Stop running the tests after the first failure is reached.
+--html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--collect-only  # Show what tests would get run without actually running them.
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+-n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
+```
+
+SeleniumBase provides additional Pytest command-line options for tests:
+```bash
+--browser=BROWSER  # (The web browser to use.)
+--cap-file=FILE  # (The web browser's desired capabilities to use.)
+--settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
+--env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
+--data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
+--user-data-dir=DIR  # (Set the Chrome user data directory to use.)
+--server=SERVER  # (The server / IP address used by the tests.)
+--port=PORT  # (The port that's used by the test server.)
+--proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
+--agent=STRING  # (This designates the web browser's User Agent to use.)
+--mobile  # (The option to use the mobile emulator while running tests.)
+--metrics=STRING  # ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
+--extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
+--headless  # (The option to run tests headlessly. The default on Linux OS.)
+--headed  # (The option to run tests with a GUI on Linux OS.)
+--start-page=URL  # (The starting URL for the web browser when tests begin.)
+--archive-logs  # (Archive old log files instead of deleting them.)
+--time-limit  # (The option to set a time limit per test before failing it.)
+--slow  # (The option to slow down the automation.)
+--demo  # (The option to visually see test actions as they occur.)
+--demo-sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
+--message-duration=SECONDS  # (The time length for Messenger alerts.)
+--check-js  # (The option to check for JavaScript errors after page loads.)
+--ad-block  # (The option to block some display ads after page loads.)
+--verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--disable-csp  # (This disables the Content Security Policy of websites.)
+--enable-sync  # (The option to enable "Chrome Sync".)
+--no-sandbox  # (The option to enable Chrome's "No-Sandbox" feature.)
+--disable-gpu  # (The option to enable Chrome's "Disable GPU" feature.)
+--incognito  #  (The option to enable Chrome's Incognito mode.)
+--guest  # (The option to enable Chrome's Guest mode.)
+--devtools  # (The option to open Chrome's DevTools when the browser opens.)
+--reuse-session  # (The option to reuse the browser session between tests.)
+--maximize-window  # (The option to start with the web browser maximized.)
+--save-screenshot  # (The option to save a screenshot after each test.)
+--visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
+--timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
+```
+(For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
+
+#### **Customizing default settings:**
 
 An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
@@ -177,59 +234,6 @@ nosetests test_suite.py --report
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="420">
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
-
-Here are some other useful command-line options that come with Pytest:
-```bash
--v  # Prints the full test name for each test.
--q  # Prints fewer details in the console output when running tests.
--x  # Stop running the tests after the first failure is reached.
---html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
---collect-only  # Show what tests would get run without actually running them.
--s  # See print statements. (Should be on by default with pytest.ini present.)
--n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
-```
-
-SeleniumBase provides additional Pytest command-line options for tests:
-```bash
---browser=BROWSER  # (The web browser to use.)
---cap-file=FILE  # (The web browser's desired capabilities to use.)
---settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
---env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
---data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
---user-data-dir=DIR  # (Set the Chrome user data directory to use.)
---server=SERVER  # (The server / IP address used by the tests.)
---port=PORT  # (The port that's used by the test server.)
---proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
---agent=STRING  # (This designates the web browser's User Agent to use.)
---mobile  # (The option to use the mobile emulator while running tests.)
---metrics=STRING  # ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
---extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
---extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
---headless  # (The option to run tests headlessly. The default on Linux OS.)
---headed  # (The option to run tests with a GUI on Linux OS.)
---start-page=URL  # (The starting URL for the web browser when tests begin.)
---archive-logs  # (Archive old log files instead of deleting them.)
---time-limit  # (The option to set a time limit per test before failing it.)
---slow  # (The option to slow down the automation.)
---demo  # (The option to visually see test actions as they occur.)
---demo-sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
---highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
---message-duration=SECONDS  # (The time length for Messenger alerts.)
---check-js  # (The option to check for JavaScript errors after page loads.)
---ad-block  # (The option to block some display ads after page loads.)
---verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
---disable-csp  # (This disables the Content Security Policy of websites.)
---enable-sync  # (The option to enable "Chrome Sync".)
---no-sandbox  # (The option to enable Chrome's "No-Sandbox" feature.)
---disable-gpu  # (The option to enable Chrome's "Disable GPU" feature.)
---incognito  #  (The option to enable Chrome's Incognito mode.)
---reuse-session  # (The option to reuse the browser session between tests.)
---maximize-window  # (The option to start with the web browser maximized.)
---save-screenshot  # (The option to save a screenshot after each test.)
---visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
---timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
-```
-(For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
 #### **Using a Proxy Server:**
 

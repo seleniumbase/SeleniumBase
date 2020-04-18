@@ -241,6 +241,8 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --no-sandbox  # (The option to enable Chrome's "No-Sandbox" feature.)
 --disable-gpu  # (The option to enable Chrome's "Disable GPU" feature.)
 --incognito  #  (The option to enable Chrome's Incognito mode.)
+--guest  # (The option to enable Chrome's Guest mode.)
+--devtools  # (The option to open Chrome's DevTools when the browser opens.)
 --reuse-session  # (The option to reuse the browser session between tests.)
 --maximize-window  # (The option to start with the web browser maximized.)
 --save-screenshot  # (The option to save a screenshot after each test.)
