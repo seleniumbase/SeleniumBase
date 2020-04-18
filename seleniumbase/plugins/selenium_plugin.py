@@ -279,7 +279,7 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables Chrome's Guest mode.""")
         parser.add_option(
-            '--devtools', 'open_devtools', 'open-devtools',
+            '--devtools', '--open_devtools', '--open-devtools',
             action="store_true",
             dest='devtools',
             default=False,

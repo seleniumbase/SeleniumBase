@@ -343,7 +343,7 @@ def pytest_addoption(parser):
                      dest='guest_mode',
                      default=False,
                      help="""Using this enables Chrome's Guest mode.""")
-    parser.addoption('--devtools', 'open_devtools', 'open-devtools',
+    parser.addoption('--devtools', '--open_devtools', '--open-devtools',
                      action="store_true",
                      dest='devtools',
                      default=False,
