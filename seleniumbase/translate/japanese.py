@@ -202,16 +202,28 @@ class セレニウムテストケース(BaseCase):  # noqa
 
     def 上矢印を押します(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_up_arrow(*args, **kwargs)
 
     def 下矢印を押します(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_down_arrow(*args, **kwargs)
 
     def 左矢印を押します(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_left_arrow(*args, **kwargs)
 
     def 右矢印を押します(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_right_arrow(*args, **kwargs)
+
+    def テキストでオプションを選択(self, *args, **kwargs):
+        # select_option_by_text(dropdown_selector, option)
+        return self.select_option_by_text(*args, **kwargs)
+
+    def インデックスでオプションを選択(self, *args, **kwargs):
+        # select_option_by_index(dropdown_selector, option)
+        return self.select_option_by_index(*args, **kwargs)
+
+    def 値でオプションを選択(self, *args, **kwargs):
+        # select_option_by_value(dropdown_selector, option)
+        return self.select_option_by_value(*args, **kwargs)

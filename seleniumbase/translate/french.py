@@ -172,11 +172,11 @@ class CasDeBase(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
-    def mettez_en_surbrillance(self, *args, **kwargs):
+    def illuminez(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)
 
-    def mettez_en_surbrillance_et_cliquez(self, *args, **kwargs):
+    def illuminez_cliquez(self, *args, **kwargs):
         # highlight_click(selector)
         return self.highlight_click(*args, **kwargs)
 
@@ -202,16 +202,28 @@ class CasDeBase(BaseCase):
 
     def appuyez_sur_la_flèche_vers_le_haut(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_up_arrow(*args, **kwargs)
 
     def appuyez_sur_la_flèche_vers_le_bas(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_down_arrow(*args, **kwargs)
 
     def appuyez_sur_la_flèche_gauche(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_left_arrow(*args, **kwargs)
 
     def appuyez_sur_la_flèche_droite(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_right_arrow(*args, **kwargs)
+
+    def sélectionner_option_par_texte(self, *args, **kwargs):
+        # select_option_by_text(dropdown_selector, option)
+        return self.select_option_by_text(*args, **kwargs)
+
+    def sélectionner_option_par_index(self, *args, **kwargs):
+        # select_option_by_index(dropdown_selector, option)
+        return self.select_option_by_index(*args, **kwargs)
+
+    def sélectionner_option_par_valeur(self, *args, **kwargs):
+        # select_option_by_value(dropdown_selector, option)
+        return self.select_option_by_value(*args, **kwargs)

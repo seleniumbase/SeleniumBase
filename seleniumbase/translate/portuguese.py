@@ -176,7 +176,7 @@ class CasoDeTeste(BaseCase):
         # highlight(selector)
         return self.highlight(*args, **kwargs)
 
-    def destaque_e_clique(self, *args, **kwargs):
+    def destaque_clique(self, *args, **kwargs):
         # highlight_click(selector)
         return self.highlight_click(*args, **kwargs)
 
@@ -202,16 +202,28 @@ class CasoDeTeste(BaseCase):
 
     def pressione_a_seta_para_cima(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_up_arrow(*args, **kwargs)
 
     def pressione_a_seta_para_baixo(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_down_arrow(*args, **kwargs)
 
     def pressione_a_seta_esquerda(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_left_arrow(*args, **kwargs)
 
     def pressione_a_seta_direita(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_right_arrow(*args, **kwargs)
+
+    def selecionar_opção_por_texto(self, *args, **kwargs):
+        # select_option_by_text(dropdown_selector, option)
+        return self.select_option_by_text(*args, **kwargs)
+
+    def selecionar_opção_por_índice(self, *args, **kwargs):
+        # select_option_by_index(dropdown_selector, option)
+        return self.select_option_by_index(*args, **kwargs)
+
+    def selecionar_opção_por_valor(self, *args, **kwargs):
+        # select_option_by_value(dropdown_selector, option)
+        return self.select_option_by_value(*args, **kwargs)
