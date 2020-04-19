@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import random
@@ -345,8 +346,9 @@ def validate_proxy_string(proxy_string):
 
 def get_driver(browser_name, headless=False, use_grid=False,
                servername='localhost', port=4444, proxy_string=None,
-               user_agent=None, cap_file=None, disable_csp=None,
-               enable_sync=None, no_sandbox=None, disable_gpu=None,
+               user_agent=None, cap_file=None, cap_string=None,
+               disable_csp=None, enable_sync=None,
+               no_sandbox=None, disable_gpu=None,
                incognito=None, guest_mode=None, devtools=None,
                user_data_dir=None, extension_zip=None, extension_dir=None,
                mobile_emulator=False, device_width=None,
@@ -384,8 +386,8 @@ def get_driver(browser_name, headless=False, use_grid=False,
         return get_remote_driver(
             browser_name, headless, servername, port,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            cap_file, disable_csp, enable_sync, no_sandbox, disable_gpu,
-            incognito, guest_mode, devtools,
+            cap_file, cap_string, disable_csp, enable_sync,
+            no_sandbox, disable_gpu, incognito, guest_mode, devtools,
             user_data_dir, extension_zip, extension_dir,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
@@ -400,8 +402,8 @@ def get_driver(browser_name, headless=False, use_grid=False,
 
 def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, cap_file, disable_csp,
-        enable_sync, no_sandbox, disable_gpu,
+        proxy_user, proxy_pass, user_agent, cap_file, cap_string,
+        disable_csp, enable_sync, no_sandbox, disable_gpu,
         incognito, guest_mode, devtools,
         user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
@@ -409,8 +411,21 @@ def get_remote_driver(
     download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
     desired_caps = {}
+    extra_caps = {}
     if cap_file:
         desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
+    if cap_string:
+        try:
+            extra_caps = json.loads(cap_string)
+        except Exception as e:
+            p1 = "Invalid input format for --cap-string:\n  %s" % e
+            p2 = "The --cap-string input was: %s" % cap_string
+            p3 = "Enclose cap-string in single quotes; keys in double quotes."
+            p4 = ("""Here's an example of correct cap-string usage:\n  """
+                  """--cap-string='{"browserName":"chrome","name":"test1"}'""")
+            raise Exception("%s\n%s\n%s\n%s" % (p1, p2, p3, p4))
+        for cap_key in extra_caps.keys():
+            desired_caps[cap_key] = extra_caps[cap_key]
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
             downloads_path, headless,

@@ -84,6 +84,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 ```bash
 --browser=BROWSER  # (The web browser to use.)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
+--cap-string=STRING  # (The web browser's desired capabilities to use.)
 --settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
 --env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
 --data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
