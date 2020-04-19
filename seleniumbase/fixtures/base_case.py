@@ -1521,8 +1521,9 @@ class BaseCase(unittest.TestCase):
 
     def get_new_driver(self, browser=None, headless=None,
                        servername=None, port=None, proxy=None, agent=None,
-                       switch_to=True, cap_file=None, disable_csp=None,
-                       enable_sync=None, no_sandbox=None, disable_gpu=None,
+                       switch_to=True, cap_file=None, cap_string=None,
+                       disable_csp=None, enable_sync=None,
+                       no_sandbox=None, disable_gpu=None,
                        incognito=None, guest_mode=None, devtools=None,
                        user_data_dir=None, extension_zip=None,
                        extension_dir=None, is_mobile=False,
@@ -1539,6 +1540,7 @@ class BaseCase(unittest.TestCase):
             proxy - if using a proxy server, specify the "host:port" combo here
             switch_to - the option to switch to the new driver (default = True)
             cap_file - the file containing desired capabilities for the browser
+            cap_string - the string with desired capabilities for the browser
             disable_csp - an option to disable Chrome's Content Security Policy
             enable_sync - the option to enable the Chrome Sync feature (Chrome)
             no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
@@ -1566,7 +1568,7 @@ class BaseCase(unittest.TestCase):
             'https://browserstack.com/automate/capabilities')
         sauce_labs_ref = (
             'https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/')
-        if self.browser == "remote" and not self.cap_file:
+        if self.browser == "remote" and not (self.cap_file or self.cap_string):
             raise Exception('Need to specify a desired capabilities file when '
                             'using "--browser=remote". Add "--cap_file=FILE". '
                             'File should be in the Python format used by: '
@@ -1619,6 +1621,8 @@ class BaseCase(unittest.TestCase):
         #    disable_csp = True
         if cap_file is None:
             cap_file = self.cap_file
+        if cap_string is None:
+            cap_string = self.cap_string
         if is_mobile is None:
             is_mobile = False
         if d_width is None:
@@ -1641,6 +1645,7 @@ class BaseCase(unittest.TestCase):
                                                  proxy_string=proxy_string,
                                                  user_agent=user_agent,
                                                  cap_file=cap_file,
+                                                 cap_string=cap_string,
                                                  disable_csp=disable_csp,
                                                  enable_sync=enable_sync,
                                                  no_sandbox=no_sandbox,
@@ -4530,6 +4535,7 @@ class BaseCase(unittest.TestCase):
             self.mobile_emulator = sb_config.mobile_emulator
             self.device_metrics = sb_config.device_metrics
             self.cap_file = sb_config.cap_file
+            self.cap_string = sb_config.cap_string
             self.settings_file = sb_config.settings_file
             self.database_env = sb_config.database_env
             self.message_duration = sb_config.message_duration
@@ -4693,6 +4699,7 @@ class BaseCase(unittest.TestCase):
                                               agent=self.user_agent,
                                               switch_to=True,
                                               cap_file=self.cap_file,
+                                              cap_string=self.cap_string,
                                               disable_csp=self.disable_csp,
                                               enable_sync=self.enable_sync,
                                               no_sandbox=self.no_sandbox,

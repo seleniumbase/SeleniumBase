@@ -14,6 +14,7 @@ def pytest_addoption(parser):
     This parser plugin includes the following command-line options for pytest:
     --browser=BROWSER  (The web browser to use.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
+    --cap-string=STRING  (The web browser's desired capabilities to use.)
     --settings-file=FILE  (Overrides SeleniumBase settings.py values.)
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
@@ -91,13 +92,24 @@ def pytest_addoption(parser):
                      dest='cap_file',
                      default=None,
                      help="""The file that stores browser desired capabilities
-                          for BrowserStack or Sauce Labs web drivers.""")
+                          for BrowserStack, Sauce Labs, and other
+                          remote web drivers to use.""")
+    parser.addoption('--cap_string', '--cap-string',
+                     dest='cap_string',
+                     default=None,
+                     help="""The string that stores browser desired
+                          capabilities for BrowserStack, Sauce Labs,
+                          and other remote web drivers to use.
+                          Enclose cap-string in single quotes.
+                          Enclose parameter keys in double quotes.
+                          Example: --cap-string='{"name":"test1","v":"42"}'""")
     parser.addoption('--settings_file', '--settings-file', '--settings',
                      action='store',
                      dest='settings_file',
                      default=None,
-                     help="""The file that stores key/value pairs for overriding
-                          values in the SeleniumBase settings.py file.""")
+                     help="""The file that stores key/value pairs for
+                          overriding values in the
+                          seleniumbase/config/settings.py file.""")
     parser.addoption('--user_data_dir', '--user-data-dir',
                      dest='user_data_dir',
                      default=None,
@@ -415,6 +427,7 @@ def pytest_configure(config):
     sb_config.port = config.getoption('port')
     sb_config.proxy_string = config.getoption('proxy_string')
     sb_config.cap_file = config.getoption('cap_file')
+    sb_config.cap_string = config.getoption('cap_string')
     sb_config.settings_file = config.getoption('settings_file')
     sb_config.user_data_dir = config.getoption('user_data_dir')
     sb_config.database_env = config.getoption('database_env')

@@ -72,6 +72,7 @@ except (ImportError, ValueError):
     sb.highlights = None
     sb.check_js = False
     sb.cap_file = None
+    sb.cap_string = None
 
     sb.setUp()
     try:

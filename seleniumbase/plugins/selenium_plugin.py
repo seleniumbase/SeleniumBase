@@ -12,6 +12,7 @@ class SeleniumBrowser(Plugin):
     This parser plugin includes the following command-line options for Nose:
     --browser=BROWSER  (The web browser to use.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
+    --cap-string=STRING  (The web browser's desired capabilities to use.)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --server=SERVER  (The server / IP address used by the tests.)
     --port=PORT  (The port that's used by the test server.)
@@ -73,6 +74,16 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""The file that stores browser desired capabilities
                     for BrowserStack or Sauce Labs web drivers.""")
+        parser.add_option(
+            '--cap_string', '--cap-string',
+            dest='cap_string',
+            default=None,
+            help="""The string that stores browser desired
+                    capabilities for BrowserStack, Sauce Labs,
+                    and other remote web drivers to use.
+                    Enclose cap-string in single quotes.
+                    Enclose parameter keys in double quotes.
+                    Example: --cap-string='{"name":"test1","v":"42"}'""")
         parser.add_option(
             '--user_data_dir', '--user-data-dir',
             action='store',
@@ -326,6 +337,7 @@ class SeleniumBrowser(Plugin):
     def beforeTest(self, test):
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
+        test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
         test.test.start_page = self.options.start_page
