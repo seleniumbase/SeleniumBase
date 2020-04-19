@@ -51,3 +51,16 @@ A regex parser was built into SeleniumBase to capture all lines from the specifi
 (Each pair must be on a separate line. You can interchange single and double quotes.)
 
 You can also swap ``--browser=remote`` with an actual browser, eg ``--browser=chrome``, which will combine the default SeleniumBase desired capabilities with those that were specified in the capabilities file when using ``--cap_file=FILE.py``. Capabilities will override other parameters, so if you set the browser to one thing and the capabilities browser to another, SeleniumBase will use the capabilities browser as the browser. You'll need default SeleniumBase desired capabilities when using a proxy server (not the same as a Selenium Grid server), when downloading files to a desired folder, for disabling some warnings on Chrome, for overriding a website's Content Security Policy on Firefox, and for other reasons.
+
+You can also set browser desired capabilities from a command line string:
+Example:
+```bash
+pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"test1"}' --server="127.0.0.1" --browser=remote
+```
+(Enclose cap-string in single quotes. Enclose parameter keys in double quotes.)
+
+If using a local Selenium Grid with SeleniumBase, make sure to start up the Grid Hub and nodes first:
+```bash
+seleniumbase grid-hub start
+seleniumbase grid-node start
+```
