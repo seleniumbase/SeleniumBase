@@ -202,16 +202,28 @@ class 硒测试用例(BaseCase):  # noqa
 
     def 按向上箭头(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_up_arrow(*args, **kwargs)
 
     def 按向下箭头(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_down_arrow(*args, **kwargs)
 
     def 按向左箭头(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_left_arrow(*args, **kwargs)
 
     def 按向右箭头(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_right_arrow(*args, **kwargs)
+
+    def 按文本选择选项(self, *args, **kwargs):
+        # select_option_by_text(dropdown_selector, option)
+        return self.select_option_by_text(*args, **kwargs)
+
+    def 按索引选择选项(self, *args, **kwargs):
+        # select_option_by_index(dropdown_selector, option)
+        return self.select_option_by_index(*args, **kwargs)
+
+    def 按值选择选项(self, *args, **kwargs):
+        # select_option_by_value(dropdown_selector, option)
+        return self.select_option_by_value(*args, **kwargs)

@@ -1,8 +1,8 @@
-# Korean Language Test - Python 3 Only!
+# Korean Language Test
 from seleniumbase.translate.korean import 셀레늄_테스트_케이스  # noqa
 
 
-class 테스트_클래스(셀레늄_테스트_케이스):  # noqa
+class 테스트_클래스(셀레늄_테스트_케이스):
 
     def test_실시예_1(self):
         self.URL_열기("https://ko.wikipedia.org/wiki/")

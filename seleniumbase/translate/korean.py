@@ -202,16 +202,28 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
     def 위쪽_화살표를_누릅니다(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_up_arrow(*args, **kwargs)
 
     def 아래쪽_화살표를_누르십시오(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_down_arrow(*args, **kwargs)
 
     def 왼쪽_화살표를_누르십시오(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_left_arrow(*args, **kwargs)
 
     def 오른쪽_화살표를_누르십시오(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_right_arrow(*args, **kwargs)
+
+    def 텍스트로_옵션_선택(self, *args, **kwargs):
+        # select_option_by_text(dropdown_selector, option)
+        return self.select_option_by_text(*args, **kwargs)
+
+    def 인덱스별로_옵션_선택(self, *args, **kwargs):
+        # select_option_by_index(dropdown_selector, option)
+        return self.select_option_by_index(*args, **kwargs)
+
+    def 값별로_옵션_선택(self, *args, **kwargs):
+        # select_option_by_value(dropdown_selector, option)
+        return self.select_option_by_value(*args, **kwargs)

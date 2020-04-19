@@ -1,4 +1,4 @@
-# Portuguese Language Test - Python 3 Only!
+# Portuguese Language Test
 from seleniumbase.translate.portuguese import CasoDeTeste
 
 

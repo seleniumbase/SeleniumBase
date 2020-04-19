@@ -1,4 +1,4 @@
-# Spanish Language Test - Python 3 Only!
+# Spanish Language Test
 from seleniumbase.translate.spanish import CasoDePrueba
 
 

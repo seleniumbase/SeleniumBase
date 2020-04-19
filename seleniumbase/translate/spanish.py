@@ -172,11 +172,11 @@ class CasoDePrueba(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
-    def resaltar(self, *args, **kwargs):
+    def resalte(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)
 
-    def resalte_y_haga_clic(self, *args, **kwargs):
+    def resalte_clic(self, *args, **kwargs):
         # highlight_click(selector)
         return self.highlight_click(*args, **kwargs)
 
@@ -202,16 +202,28 @@ class CasoDePrueba(BaseCase):
 
     def presione_la_flecha_hacia_arriba(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_up_arrow(*args, **kwargs)
 
     def presione_la_flecha_hacia_abajo(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_down_arrow(*args, **kwargs)
 
     def presione_la_flecha_izquierda(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_left_arrow(*args, **kwargs)
 
     def presione_la_flecha_derecha(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
-        return self.is_selected(*args, **kwargs)
+        return self.press_right_arrow(*args, **kwargs)
+
+    def seleccionar_opción_por_texto(self, *args, **kwargs):
+        # select_option_by_text(dropdown_selector, option)
+        return self.select_option_by_text(*args, **kwargs)
+
+    def seleccionar_opción_por_índice(self, *args, **kwargs):
+        # select_option_by_index(dropdown_selector, option)
+        return self.select_option_by_index(*args, **kwargs)
+
+    def seleccionar_opción_por_valor(self, *args, **kwargs):
+        # select_option_by_value(dropdown_selector, option)
+        return self.select_option_by_value(*args, **kwargs)

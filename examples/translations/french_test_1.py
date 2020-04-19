@@ -1,4 +1,4 @@
-# French Language Test - Python 3 Only!
+# French Language Test
 from seleniumbase.translate.french import CasDeBase
 
 
