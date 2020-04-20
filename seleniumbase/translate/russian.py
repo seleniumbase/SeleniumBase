@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 
 class ТестНаСелен(BaseCase):  # noqa
 
-    def открытый(self, *args, **kwargs):
+    def открыть(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
 
@@ -36,35 +36,35 @@ class ТестНаСелен(BaseCase):  # noqa
         # get_text(selector, new_value)
         return self.get_text(*args, **kwargs)
 
-    def проверить_текст(self, *args, **kwargs):
+    def подтвердить_текст(self, *args, **kwargs):
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
-    def проверить_текст_точно(self, *args, **kwargs):
+    def подтвердить_текст_точно(self, *args, **kwargs):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
-    def проверить_элемент(self, *args, **kwargs):
+    def подтвердить_элемент(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
-    def проверить_название(self, *args, **kwargs):
+    def подтвердить_название(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
 
-    def проверить_правду(self, *args, **kwargs):
+    def подтвердить_правду(self, *args, **kwargs):
         # assert_true(expr)
         return self.assert_true(*args, **kwargs)
 
-    def проверить_ложные(self, *args, **kwargs):
+    def подтвердить_ложные(self, *args, **kwargs):
         # assert_false(expr)
         return self.assert_false(*args, **kwargs)
 
-    def проверить_одинаковый(self, *args, **kwargs):
+    def подтвердить_одинаковый(self, *args, **kwargs):
         # assert_equal(first, second)
         return self.assert_equal(*args, **kwargs)
 
-    def проверить_не_одинаковый(self, *args, **kwargs):
+    def подтвердить_не_одинаковый(self, *args, **kwargs):
         # assert_not_equal(first, second)
         return self.assert_not_equal(*args, **kwargs)
 
@@ -112,7 +112,7 @@ class ТестНаСелен(BaseCase):  # noqa
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
 
-    def представить(self, *args, **kwargs):
+    def отправить(self, *args, **kwargs):
         # submit(selector)
         return self.submit(*args, **kwargs)
 
@@ -120,7 +120,7 @@ class ТестНаСелен(BaseCase):  # noqa
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
-    def проверять_HTML(self, *args, **kwargs):
+    def проверить_HTML(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)
 
