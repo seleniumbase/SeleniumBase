@@ -53,9 +53,9 @@ def show_basic_usage():
     print("       inject-objects [SELENIUMBASE_PYTHON_FILE] [OPTIONS]")
     print("       objectify [SELENIUMBASE_PYTHON_FILE] [OPTIONS]")
     print("       revert-objects [SELENIUMBASE_PYTHON_FILE]")
-    print("       encrypt OR obfuscate")
-    print("       decrypt OR unobfuscate")
-    print("       download server")
+    print("       encrypt   (OR: obfuscate)")
+    print("       decrypt   (OR: unobfuscate)")
+    print("       download server   (The Selenium Server JAR file)")
     print("       grid-hub [start|stop|restart] [OPTIONS]")
     print("       grid-node [start|stop|restart] --hub=[HUB_IP] [OPTIONS]")
     print('  * (EXAMPLE: "seleniumbase install chromedriver") *')
@@ -259,7 +259,12 @@ def show_grid_node_usage():
 
 def get_version():
     import pkg_resources
-    return pkg_resources.require("seleniumbase")[0:1]
+    version_info = None
+    try:
+        version_info = pkg_resources.require("seleniumbase")[0:1]
+    except Exception:
+        version_info = ["ERROR: Cannot detect version! Please reinstall!"]
+    return version_info
 
 
 def show_version_info():
