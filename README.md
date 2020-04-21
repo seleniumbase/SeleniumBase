@@ -242,6 +242,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --disable-csp  # (This disables the Content Security Policy of websites.)
 --enable-sync  # (The option to enable "Chrome Sync".)
+--use-auto-ext  # (The option to use Chrome's automation extension.)
 --no-sandbox  # (The option to enable Chrome's "No-Sandbox" feature.)
 --disable-gpu  # (The option to enable Chrome's "Disable GPU" feature.)
 --incognito  #  (The option to enable Chrome's Incognito mode.)
