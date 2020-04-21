@@ -45,6 +45,7 @@ def pytest_addoption(parser):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
+    --use-auto-ext  (The option to use Chrome's automation extension.)
     --no-sandbox  (The option to enable Chrome's "No-Sandbox" feature.)
     --disable-gpu  (The option to enable Chrome's "Disable GPU" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
@@ -350,6 +351,13 @@ def pytest_addoption(parser):
                      dest='enable_sync',
                      default=False,
                      help="""Using this enables the "Chrome Sync" feature.""")
+    parser.addoption('--use_auto_ext', '--use-auto-ext', '--auto-ext',
+                     action="store_true",
+                     dest='use_auto_ext',
+                     default=False,
+                     help="""Using this enables Chrome's Automation Extension.
+                          It's not required, but some commands & advanced
+                          features may need it.""")
     parser.addoption('--no_sandbox', '--no-sandbox',
                      action="store_true",
                      dest='no_sandbox',
@@ -462,6 +470,7 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.enable_sync = config.getoption('enable_sync')
+    sb_config.use_auto_ext = config.getoption('use_auto_ext')
     sb_config.no_sandbox = config.getoption('no_sandbox')
     sb_config.disable_gpu = config.getoption('disable_gpu')
     sb_config.incognito = config.getoption('incognito')

@@ -36,8 +36,9 @@ class SeleniumBrowser(Plugin):
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
+    --use-auto-ext  (The option to use Chrome's automation extension.)
     --no-sandbox  (The option to enable Chrome's "No-Sandbox" feature.)
-    --disable_gpu  (The option to enable Chrome's "Disable GPU" feature.)
+    --disable-gpu  (The option to enable Chrome's "Disable GPU" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
     --guest  (The option to enable Chrome's Guest mode.)
     --devtools  (The option to open Chrome's DevTools when the browser opens.)
@@ -266,6 +267,14 @@ class SeleniumBrowser(Plugin):
             default=False,
             help="""Using this enables the "Chrome Sync" feature.""")
         parser.add_option(
+            '--use_auto_ext', '--use-auto-ext', '--auto-ext',
+            action="store_true",
+            dest='use_auto_ext',
+            default=False,
+            help="""Using this enables Chrome's Automation Extension.
+                    It's not required, but some commands & advanced
+                    features may need it.""")
+        parser.add_option(
             '--no_sandbox', '--no-sandbox',
             action="store_true",
             dest='no_sandbox',
@@ -361,6 +370,7 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.enable_sync = self.options.enable_sync
+        test.test.use_auto_ext = self.options.use_auto_ext
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.incognito = self.options.incognito
