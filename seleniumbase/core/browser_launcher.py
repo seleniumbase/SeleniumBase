@@ -209,6 +209,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
+    chrome_options.add_argument("--homepage=about:blank")
+    chrome_options.add_argument("--dom-automation")
     if servername == "localhost" or servername == "127.0.0.1":
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
@@ -223,6 +225,8 @@ def _set_chrome_options(
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
+    else:
+        chrome_options.add_argument("--no-proxy-server")
     if headless:
         if not proxy_auth:
             # Headless Chrome doesn't support extensions, which are
@@ -231,10 +235,10 @@ def _set_chrome_options(
             # using Chrome's built-in headless mode. See link for details:
             # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
             chrome_options.add_argument("--headless")
-    if headless or disable_gpu:
-        chrome_options.add_argument("--disable-gpu")
-    if (headless and "linux" in PLATFORM) or no_sandbox:
-        chrome_options.add_argument("--no-sandbox")
+    # if headless or disable_gpu:
+    chrome_options.add_argument("--disable-gpu")  # (Now always on)
+    # if (headless and "linux" in PLATFORM) or no_sandbox:
+    chrome_options.add_argument("--no-sandbox")  # (Now always on)
     if "linux" in PLATFORM:
         chrome_options.add_argument("--disable-dev-shm-usage")
     return chrome_options
