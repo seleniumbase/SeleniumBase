@@ -217,9 +217,6 @@ def _set_chrome_options(
         # Headless Chrome doesn't support extensions, which are required
         # for disabling the Content Security Policy on Chrome
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
-    elif not extension_zip and not extension_dir:
-        if servername == "localhost" or servername == "127.0.0.1":
-            chrome_options.add_argument("--disable-extensions")
     if proxy_string:
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
