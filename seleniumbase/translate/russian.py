@@ -216,6 +216,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
+    def нажмите_видимые_элементы(self, *args, **kwargs):
+        # click_visible_elements(selector)
+        return self.click_visible_elements(*args, **kwargs)
+
     def выбрать_опцию_по_тексту(self, *args, **kwargs):
         # select_option_by_text(dropdown_selector, option)
         return self.select_option_by_text(*args, **kwargs)

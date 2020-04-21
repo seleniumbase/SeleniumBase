@@ -971,7 +971,7 @@ class BaseCase(unittest.TestCase):
             If "limit" is set and > 0, will only return that many elements. """
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
-        time.sleep(0.07)
+        time.sleep(0.05)
         elements = self.driver.find_elements(by=by, value=selector)
         if limit and limit > 0 and len(elements) > limit:
             elements = elements[:limit]
@@ -982,7 +982,7 @@ class BaseCase(unittest.TestCase):
             If "limit" is set and > 0, will only return that many elements. """
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
-        time.sleep(0.07)
+        time.sleep(0.05)
         v_elems = page_actions.find_visible_elements(self.driver, selector, by)
         if limit and limit > 0 and len(v_elems) > limit:
             v_elems = v_elems[:limit]
@@ -4509,6 +4509,9 @@ class BaseCase(unittest.TestCase):
             test_id = self.__get_test_id()
             self.browser = sb_config.browser
             self.data = sb_config.data
+            self.var1 = sb_config.var1
+            self.var2 = sb_config.var2
+            self.var3 = sb_config.var3
             self.slow_mode = sb_config.slow_mode
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep

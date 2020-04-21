@@ -216,6 +216,10 @@ class CasoDePrueba(BaseCase):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
+    def haga_clic_en_elementos_visibles(self, *args, **kwargs):
+        # click_visible_elements(selector)
+        return self.click_visible_elements(*args, **kwargs)
+
     def seleccionar_opción_por_texto(self, *args, **kwargs):
         # select_option_by_text(dropdown_selector, option)
         return self.select_option_by_text(*args, **kwargs)

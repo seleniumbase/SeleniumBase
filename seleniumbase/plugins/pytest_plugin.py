@@ -18,6 +18,9 @@ def pytest_addoption(parser):
     --settings-file=FILE  (Overrides SeleniumBase settings.py values.)
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
+    --var1=DATA  (Extra data to pass to tests. Use "self.var1" in tests.)
+    --var2=DATA  (Extra data to pass to tests. Use "self.var2" in tests.)
+    --var3=DATA  (Extra data to pass to tests. Use "self.var3" in tests.)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --server=SERVER  (The server / IP address used by the tests.)
     --port=PORT  (The port that's used by the test server.)
@@ -87,7 +90,19 @@ def pytest_addoption(parser):
     parser.addoption('--data',
                      dest='data',
                      default=None,
-                     help='Extra data to pass from the command line.')
+                     help='Extra data to pass to tests from the command line.')
+    parser.addoption('--var1',
+                     dest='var1',
+                     default=None,
+                     help='Extra data to pass to tests from the command line.')
+    parser.addoption('--var2',
+                     dest='var2',
+                     default=None,
+                     help='Extra data to pass to tests from the command line.')
+    parser.addoption('--var3',
+                     dest='var3',
+                     default=None,
+                     help='Extra data to pass to tests from the command line.')
     parser.addoption('--cap_file', '--cap-file',
                      dest='cap_file',
                      default=None,
@@ -407,6 +422,9 @@ def pytest_configure(config):
     sb_config.is_pytest = True
     sb_config.browser = config.getoption('browser')
     sb_config.data = config.getoption('data')
+    sb_config.var1 = config.getoption('var1')
+    sb_config.var2 = config.getoption('var2')
+    sb_config.var3 = config.getoption('var3')
     sb_config.environment = config.getoption('environment')
     sb_config.with_selenium = config.getoption('with_selenium')
     sb_config.user_agent = config.getoption('user_agent')

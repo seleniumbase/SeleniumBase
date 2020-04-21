@@ -1,13 +1,10 @@
-import pytest
 from seleniumbase import BaseCase
 
 
-@pytest.mark.offline  # Can be run with: "pytest -m offline"
-class OfflineTestClass(BaseCase):
+class MyTestClass(BaseCase):
 
-    def test_demo_page(self):
-        # Load a local html file into the browser
-        self.load_html_file("demo_page.html")
+    def test_demo_site(self):
+        self.open("://seleniumbase.github.io/demo_page.html")
 
         # Assert that the element is visible on the page
         self.assert_element("tbody#tbodyId")

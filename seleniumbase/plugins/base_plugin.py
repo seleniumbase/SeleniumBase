@@ -15,6 +15,9 @@ class Base(Plugin):
     This parser plugin includes the following command-line options for Nose:
     --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
     --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
+    --var1=DATA  (Extra data to pass to tests. Use "self.var1" in tests.)
+    --var2=DATA  (Extra data to pass to tests. Use "self.var2" in tests.)
+    --var3=DATA  (Extra data to pass to tests. Use "self.var3" in tests.)
     --settings-file=FILE  (Overrides SeleniumBase settings.py values.)
     --archive-logs  (Archive old log files instead of deleting them.)
     --report  (The option to create a fancy report after tests complete.)
@@ -45,7 +48,22 @@ class Base(Plugin):
             '--data',
             dest='data',
             default=None,
-            help='Extra data to pass from the command line.')
+            help='Extra data to pass to tests from the command line.')
+        parser.add_option(
+            '--var1',
+            dest='var1',
+            default=None,
+            help='Extra data to pass to tests from the command line.')
+        parser.add_option(
+            '--var2',
+            dest='var2',
+            default=None,
+            help='Extra data to pass to tests from the command line.')
+        parser.add_option(
+            '--var3',
+            dest='var3',
+            default=None,
+            help='Extra data to pass to tests from the command line.')
         parser.add_option(
             '--settings_file', '--settings-file', '--settings',
             action='store',
@@ -123,6 +141,9 @@ class Base(Plugin):
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.data = self.options.data
+        test.test.var1 = self.options.var1
+        test.test.var2 = self.options.var2
+        test.test.var3 = self.options.var3
         test.test.settings_file = self.options.settings_file
         test.test.log_path = self.options.log_path
         test.test.args = self.options

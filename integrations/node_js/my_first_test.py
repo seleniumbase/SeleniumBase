@@ -12,6 +12,6 @@ class MyTestClass(BaseCase):
         self.go_back()
         self.click("link=About")
         self.assert_text("xkcd.com", "h2")
-        self.open("https://store.xkcd.com/collections/everything")
+        self.open("://store.xkcd.com/collections/everything")
         self.update_text("input.search-input", "xkcd book\n")
         self.assert_exact_text("xkcd: volume 0", "h3")
