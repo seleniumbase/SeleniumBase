@@ -1,7 +1,9 @@
+import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+@pytest.mark.offline  # Can be run with: "pytest -m offline"
+class OfflineTestClass(BaseCase):
 
     def test_demo_page(self):
         # Load a local html file into the browser
@@ -53,15 +55,24 @@ class MyTestClass(BaseCase):
         self.assert_true(self.is_text_visible("Frame Text"))
         self.switch_to_default_content()
 
+        # Verify that clicking a radio button selects it
+        self.assert_false(self.is_selected("#radioButton2"))
+        self.click("#radioButton2")
+        self.assert_true(self.is_selected("#radioButton2"))
+
         # Verify that clicking a checkbox makes it selected
         self.assert_false(self.is_selected("#checkBox1"))
         self.click("#checkBox1")
         self.assert_true(self.is_selected("#checkBox1"))
 
-        # Verify that clicking a radio button selects it
-        self.assert_false(self.is_selected("#radioButton2"))
-        self.click("#radioButton2")
-        self.assert_true(self.is_selected("#radioButton2"))
+        # Verify clicking on multiple elements with one call
+        self.assert_false(self.is_selected("#checkBox2"))
+        self.assert_false(self.is_selected("#checkBox3"))
+        self.assert_false(self.is_selected("#checkBox4"))
+        self.click_visible_elements("input.checkBoxClassB")
+        self.assert_true(self.is_selected("#checkBox2"))
+        self.assert_true(self.is_selected("#checkBox3"))
+        self.assert_true(self.is_selected("#checkBox4"))
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")
