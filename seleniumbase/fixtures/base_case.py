@@ -1522,7 +1522,7 @@ class BaseCase(unittest.TestCase):
     def get_new_driver(self, browser=None, headless=None,
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, cap_string=None,
-                       disable_csp=None, enable_sync=None,
+                       disable_csp=None, enable_sync=None, use_auto_ext=None,
                        no_sandbox=None, disable_gpu=None,
                        incognito=None, guest_mode=None, devtools=None,
                        user_data_dir=None, extension_zip=None,
@@ -1543,6 +1543,7 @@ class BaseCase(unittest.TestCase):
             cap_string - the string with desired capabilities for the browser
             disable_csp - an option to disable Chrome's Content Security Policy
             enable_sync - the option to enable the Chrome Sync feature (Chrome)
+            use_auto_ext - the option to enable Chrome's Automation Extension
             no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
             disable_gpu - the option to enable Chrome's "Disable GPU" feature
             incognito - the option to enable Chrome's Incognito mode (Chrome)
@@ -1600,6 +1601,8 @@ class BaseCase(unittest.TestCase):
             disable_csp = self.disable_csp
         if enable_sync is None:
             enable_sync = self.enable_sync
+        if use_auto_ext is None:
+            use_auto_ext = self.use_auto_ext
         if no_sandbox is None:
             no_sandbox = self.no_sandbox
         if disable_gpu is None:
@@ -1648,6 +1651,7 @@ class BaseCase(unittest.TestCase):
                                                  cap_string=cap_string,
                                                  disable_csp=disable_csp,
                                                  enable_sync=enable_sync,
+                                                 use_auto_ext=use_auto_ext,
                                                  no_sandbox=no_sandbox,
                                                  disable_gpu=disable_gpu,
                                                  incognito=incognito,
@@ -4547,6 +4551,7 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
             self.enable_sync = sb_config.enable_sync
+            self.use_auto_ext = sb_config.use_auto_ext
             self.no_sandbox = sb_config.no_sandbox
             self.disable_gpu = sb_config.disable_gpu
             self.incognito = sb_config.incognito
@@ -4705,6 +4710,7 @@ class BaseCase(unittest.TestCase):
                                               cap_string=self.cap_string,
                                               disable_csp=self.disable_csp,
                                               enable_sync=self.enable_sync,
+                                              use_auto_ext=self.use_auto_ext,
                                               no_sandbox=self.no_sandbox,
                                               disable_gpu=self.disable_gpu,
                                               incognito=self.incognito,

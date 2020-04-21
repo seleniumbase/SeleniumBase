@@ -47,6 +47,7 @@ except (ImportError, ValueError):
     sb.archive_logs = False
     sb.disable_csp = False
     sb.enable_sync = False
+    sb.use_auto_ext = False
     sb.no_sandbox = False
     sb.disable_gpu = False
     sb._reuse_session = False
