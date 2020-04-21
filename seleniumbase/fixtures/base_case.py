@@ -1622,6 +1622,7 @@ class BaseCase(unittest.TestCase):
         # Due to https://stackoverflow.com/questions/23055651/ , skip extension
         # if self.demo_mode or self.masterqa_mode:
         #    disable_csp = True
+        test_id = self.__get_test_id()
         if cap_file is None:
             cap_file = self.cap_file
         if cap_string is None:
@@ -1660,6 +1661,7 @@ class BaseCase(unittest.TestCase):
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
                                                  extension_dir=extension_dir,
+                                                 test_id=test_id,
                                                  mobile_emulator=is_mobile,
                                                  device_width=d_width,
                                                  device_height=d_height,

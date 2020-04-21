@@ -59,8 +59,17 @@ pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"test1"}' 
 ```
 (Enclose cap-string in single quotes. Enclose parameter keys in double quotes.)
 
-If using a local Selenium Grid with SeleniumBase, make sure to start up the Grid Hub and nodes first:
+If you pass ``"*"`` into the ``"name"`` field of ``--cap-string``, the name will become the test identifier. Example:
+```bash
+pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"*"}' --server="127.0.0.1" --browser=chrome
+```
+Example name: ``"my_first_test.MyTestClass.test_basic"``
+
+### Using a local Selenium Grid
+
+If using a local Selenium Grid with SeleniumBase, start up the Grid Hub and nodes first:
 ```bash
 seleniumbase grid-hub start
 seleniumbase grid-node start
 ```
+(The Selenium Server JAR file will be automatically downloaded for first-time Grid users. You'll also need Java installed to start up the Grid.)
