@@ -216,6 +216,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
+    def 페이지_요소를_클릭_합니다(self, *args, **kwargs):
+        # click_visible_elements(selector)
+        return self.click_visible_elements(*args, **kwargs)
+
     def 텍스트로_옵션_선택(self, *args, **kwargs):
         # select_option_by_text(dropdown_selector, option)
         return self.select_option_by_text(*args, **kwargs)

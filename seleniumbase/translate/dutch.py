@@ -216,6 +216,10 @@ class Testgeval(BaseCase):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
+    def klik_zichtbare_elementen(self, *args, **kwargs):
+        # click_visible_elements(selector)
+        return self.click_visible_elements(*args, **kwargs)
+
     def optie_selecteren_per_tekst(self, *args, **kwargs):
         # select_option_by_text(dropdown_selector, option)
         return self.select_option_by_text(*args, **kwargs)

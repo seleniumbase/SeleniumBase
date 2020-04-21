@@ -216,6 +216,10 @@ class CasDeBase(BaseCase):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
+    def cliquez_éléments_visibles(self, *args, **kwargs):
+        # click_visible_elements(selector)
+        return self.click_visible_elements(*args, **kwargs)
+
     def sélectionner_option_par_texte(self, *args, **kwargs):
         # select_option_by_text(dropdown_selector, option)
         return self.select_option_by_text(*args, **kwargs)
