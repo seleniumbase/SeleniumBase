@@ -4509,6 +4509,9 @@ class BaseCase(unittest.TestCase):
             test_id = self.__get_test_id()
             self.browser = sb_config.browser
             self.data = sb_config.data
+            self.var1 = sb_config.var1
+            self.var2 = sb_config.var2
+            self.var3 = sb_config.var3
             self.slow_mode = sb_config.slow_mode
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
