@@ -1,4 +1,4 @@
-### Running browser tests on [GitHub Workflows](https://github.com/seleniumbase/SeleniumBase/actions) with [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
+### Running browser tests from [GitHub Workflows](https://github.com/seleniumbase/SeleniumBase/actions) with [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
 ----------
 
