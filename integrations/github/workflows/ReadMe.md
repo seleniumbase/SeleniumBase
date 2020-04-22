@@ -1,4 +1,4 @@
-### Running browser-based test automation with [GitHub Workflows](https://github.com/seleniumbase/SeleniumBase/actions) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
+### Running browser tests on [GitHub Workflows](https://github.com/seleniumbase/SeleniumBase/actions) with [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
 ----------
 
