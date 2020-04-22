@@ -42,7 +42,7 @@ LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
 DEFAULT_GECKODRIVER_VERSION = "v0.26.0"
 DEFAULT_EDGEDRIVER_VERSION = "79.0.309.65"
-DEFAULT_OPERADRIVER_VERSION = "v.75.0.3770.100"
+DEFAULT_OPERADRIVER_VERSION = "v.81.0.4044.113"
 
 
 def invalid_run_command():
@@ -336,13 +336,18 @@ def main(override=None):
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
             if "darwin" in sys_plat or "linux" in sys_plat:
+                # Was expecting to be on a Windows OS at this point
                 raise Exception("Unexpected file format for msedgedriver!")
             expected_contents = (['Driver_Notes/',
                                   'Driver_Notes/credits.html',
                                   'Driver_Notes/LICENSE',
                                   'msedgedriver.exe'])
-            if len(contents) != 4:
+            if len(contents) > 4:
                 raise Exception("Unexpected content in EdgeDriver Zip file!")
+            for content in contents:
+                if content not in expected_contents:
+                    raise Exception("Expected file [%s] missing from [%s]" % (
+                        content, expected_contents))
             # Zip file is valid. Proceed.
             driver_path = None
             driver_file = None
@@ -376,12 +381,9 @@ def main(override=None):
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
             print("[%s] is now ready for use!" % driver_file)
-            print("Add folder path of Edge to System Environmental Variables!")
             print("")
         elif name == "operadriver":
-            if len(contents) != 3:
-                raise Exception("Unexpected content in OperaDriver Zip file!")
-            elif sorted(contents) != sorted(expected_contents):
+            if len(contents) > 3:
                 raise Exception("Unexpected content in OperaDriver Zip file!")
             # Zip file is valid. Proceed.
             driver_path = None
