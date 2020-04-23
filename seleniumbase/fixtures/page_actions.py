@@ -512,7 +512,7 @@ def save_screenshot(driver, name, folder=None):
     else:
         screenshot_path = name
     try:
-        element = driver.find_element_by_tag_name('body')
+        element = driver.find_element(by=By.TAG_NAME, value="body")
         element_png = element.screenshot_as_png
         with open(screenshot_path, "wb") as file:
             file.write(element_png)

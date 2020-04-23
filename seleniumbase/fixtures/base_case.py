@@ -4735,7 +4735,8 @@ class BaseCase(unittest.TestCase):
         if not self.__last_page_screenshot and (
                 not self.__last_page_screenshot_png):
             try:
-                element = self.driver.find_element_by_tag_name('body')
+                element = self.driver.find_element(
+                    by=By.TAG_NAME, value="body")
                 if self.is_pytest and self.report_on:
                     self.__last_page_screenshot_png = (
                         self.driver.get_screenshot_as_png())
