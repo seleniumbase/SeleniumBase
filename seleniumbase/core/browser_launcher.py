@@ -241,6 +241,13 @@ def _set_chrome_options(
     return chrome_options
 
 
+def _set_safari_capabilities():
+    from selenium.webdriver.safari.webdriver import DesiredCapabilities as SDC
+    safari_capabilities = SDC.SAFARI.copy()
+    safari_capabilities["cleanSession"] = True
+    return safari_capabilities
+
+
 def _create_firefox_profile(
         downloads_path, proxy_string, user_agent, disable_csp):
     profile = webdriver.FirefoxProfile()
@@ -674,7 +681,8 @@ def get_local_driver(
         if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multi-threaded mode!")
-        return webdriver.Safari()
+        safari_capabilities = _set_safari_capabilities()
+        return webdriver.Safari(desired_capabilities=safari_capabilities)
     elif browser_name == constants.Browser.OPERA:
         if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
             try:

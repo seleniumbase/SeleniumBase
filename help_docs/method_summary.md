@@ -138,6 +138,8 @@ self.execute_async_script(script, timeout=None)
 
 self.safe_execute_script(script)
 
+self.set_window_rect(x, y, width, height)
+
 self.set_window_size(width, height)
 
 self.maximize_window()

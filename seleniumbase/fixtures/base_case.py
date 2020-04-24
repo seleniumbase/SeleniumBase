@@ -1473,6 +1473,10 @@ class BaseCase(unittest.TestCase):
             self.activate_jquery()  # It's a good thing we can define it here
             self.execute_script(script)
 
+    def set_window_rect(self, x, y, width, height):
+        self.driver.set_window_rect(x, y, width, height)
+        self.__demo_mode_pause_if_active()
+
     def set_window_size(self, width, height):
         self.driver.set_window_size(width, height)
         self.__demo_mode_pause_if_active()
@@ -1674,7 +1678,7 @@ class BaseCase(unittest.TestCase):
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
                 try:
-                    self.set_window_size(width, height)
+                    self.driver.set_window_size(width, height)
                     self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
@@ -1702,6 +1706,11 @@ class BaseCase(unittest.TestCase):
                             self.wait_for_ready_state_complete()
                         except Exception:
                             pass  # Keep existing browser resolution
+                    else:
+                        try:
+                            self.driver.set_window_rect(10, 30, 945, 630)
+                        except Exception:
+                            pass
             if self.start_page and len(self.start_page) >= 4:
                 if page_utils.is_valid_url(self.start_page):
                     self.open(self.start_page)
