@@ -1,0 +1,23 @@
+from seleniumbase import BaseCase
+
+
+class AppleTestClass(BaseCase):
+
+    def test_apple_developer_site_webdriver_instructions(self):
+        self.demo_mode = True
+        self.demo_sleep = 0.5
+        self.message_duration = 2.0
+        self.open("https://developer.apple.com/search/")
+        page = "Testing with WebDriver in Safari"
+        self.update_text('[placeholder*="developer.apple.com"]', page + "\n")
+        self.click("link=Testing with WebDriver in Safari")
+        self.assert_element('[href="/documentation"]')
+        self.assert_text("Testing with WebDriver in Safari", "h1")
+        self.highlight("div.topic-description p")
+        self.highlight("h2")
+        h3 = "h3:nth-of-type(%s)"
+        self.assert_text("Make Sure You Have Safari’s WebDriver", h3 % "1")
+        self.assert_text("Get the Correct Selenium Library", h3 % "2")
+        self.assert_text("Configure Safari to Enable WebDriver", h3 % "3")
+        self.assert_text("Write a WebDriver Testing Suite", h3 % "4")
+        self.assert_text("Run Your Test", h3 % "5")
