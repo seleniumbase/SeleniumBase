@@ -1674,7 +1674,7 @@ class BaseCase(unittest.TestCase):
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
                 try:
-                    self.set_window_size(width, height)
+                    self.driver.set_window_size(width, height)
                     self.wait_for_ready_state_complete()
                 except Exception:
                     # This shouldn't fail, but in case it does,
