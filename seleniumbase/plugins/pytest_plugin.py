@@ -216,7 +216,8 @@ def pytest_addoption(parser):
                                   username:password@servername:port  OR
                                   A dict key from proxy_list.PROXY_LIST
                           Default: None.""")
-    parser.addoption('--agent', action='store',
+    parser.addoption('--agent', '--user-agent', '--user_agent',
+                     action='store',
                      dest='user_agent',
                      default=None,
                      help="""Designates the User-Agent for the browser to use.

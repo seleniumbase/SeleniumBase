@@ -119,7 +119,7 @@ class SeleniumBrowser(Plugin):
                             A dict key from proxy_list.PROXY_LIST
                     Default: None.""")
         parser.add_option(
-            '--agent',
+            '--agent', '--user-agent', '--user_agent',
             action='store',
             dest='user_agent',
             default=None,
