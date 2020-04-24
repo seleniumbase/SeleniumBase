@@ -1473,6 +1473,10 @@ class BaseCase(unittest.TestCase):
             self.activate_jquery()  # It's a good thing we can define it here
             self.execute_script(script)
 
+    def set_window_rect(self, x, y, width, height):
+        self.driver.set_window_rect(x, y, width, height)
+        self.__demo_mode_pause_if_active()
+
     def set_window_size(self, width, height):
         self.driver.set_window_size(width, height)
         self.__demo_mode_pause_if_active()
