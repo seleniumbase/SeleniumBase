@@ -8,11 +8,11 @@ class AppleTestClass(BaseCase):
         self.demo_sleep = 0.5
         self.message_duration = 2.0
         self.open("https://developer.apple.com/search/")
-        page = "Testing with WebDriver in Safari"
-        self.update_text('[placeholder*="developer.apple.com"]', page + "\n")
-        self.click("link=Testing with WebDriver in Safari")
+        title = "Testing with WebDriver in Safari"
+        self.update_text('[placeholder*="developer.apple.com"]', title + "\n")
+        self.click("link=%s" % title)
         self.assert_element('[href="/documentation"]')
-        self.assert_text("Testing with WebDriver in Safari", "h1")
+        self.assert_text(title, "h1")
         self.highlight("div.topic-description p")
         self.highlight("h2")
         h3 = "h3:nth-of-type(%s)"
