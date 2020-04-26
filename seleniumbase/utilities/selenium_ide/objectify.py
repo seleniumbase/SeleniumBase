@@ -146,9 +146,8 @@ def scan_objects_file():
         create_objects_file()
 
     page_selectors = {}
-    f = open(PAGE_OBJECTS_FILE, 'r')
-    all_code = f.read()
-    f.close()
+    with open(PAGE_OBJECTS_FILE, 'r', encoding='utf-8') as f:
+        all_code = f.read()
 
     var_names = []
     selectors = []

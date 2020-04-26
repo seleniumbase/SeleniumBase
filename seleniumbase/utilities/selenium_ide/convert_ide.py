@@ -51,9 +51,8 @@ def main():
     uses_keys = False
     uses_select = False
 
-    f = open(webdriver_python_file, 'r', encoding='utf-8')
-    all_code = f.read()
-    f.close()
+    with open(webdriver_python_file, 'r', encoding='utf-8') as f:
+        all_code = f.read()
     if "def test_" not in all_code:
         raise Exception("\n\n`%s` is not a valid Python unittest.TestCase "
                         "file!\n\nExpecting: %s\n\n"
