@@ -1274,9 +1274,8 @@ def main(shell_command):
                         "Expecting: %s\n"
                         % (seleniumbase_file, expected_arg))
 
-    f = open(seleniumbase_file, 'r')
-    all_code = f.read()
-    f.close()
+    with open(seleniumbase_file, 'r', encoding='utf-8') as f:
+        all_code = f.read()
     if "def test_" not in all_code:
         raise Exception("\n\n`%s` is not a valid SeleniumBase unittest file!\n"
                         "\nExpecting: %s\n"
