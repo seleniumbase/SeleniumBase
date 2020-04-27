@@ -44,6 +44,10 @@ class CasoDiProva(BaseCase):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
+    def verificare_testo_del_collegamento(self, *args, **kwargs):
+        # assert_link_text(link_text)
+        return self.assert_link_text(*args, **kwargs)
+
     def verificare_elemento(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)

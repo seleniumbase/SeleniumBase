@@ -44,6 +44,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
+    def 링크_텍스트_확인(self, *args, **kwargs):
+        # assert_link_text(link_text)
+        return self.assert_link_text(*args, **kwargs)
+
     def 요소_확인(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
