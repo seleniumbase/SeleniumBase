@@ -44,6 +44,10 @@ class Testgeval(BaseCase):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
+    def controleren_linktekst(self, *args, **kwargs):
+        # assert_link_text(link_text)
+        return self.assert_link_text(*args, **kwargs)
+
     def controleren_element(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)

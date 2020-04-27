@@ -40,9 +40,13 @@ class CasoDeTeste(BaseCase):
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
-    def verifique_texto_exato(self, *args, **kwargs):
+    def verificar_texto_exato(self, *args, **kwargs):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
+
+    def verificar_texto_do_link(self, *args, **kwargs):
+        # assert_link_text(link_text)
+        return self.assert_link_text(*args, **kwargs)
 
     def verificar_elemento(self, *args, **kwargs):
         # assert_element(selector)
@@ -144,11 +148,11 @@ class CasoDeTeste(BaseCase):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
-    def verifique_se_há_links_quebrados(self, *args, **kwargs):
+    def verificar_se_há_links_quebrados(self, *args, **kwargs):
         # assert_no_404_errors()
         return self.assert_no_404_errors(*args, **kwargs)
 
-    def verifique_se_há_erros_de_js(self, *args, **kwargs):
+    def verificar_se_há_erros_js(self, *args, **kwargs):
         # assert_no_js_errors()
         return self.assert_no_js_errors(*args, **kwargs)
 

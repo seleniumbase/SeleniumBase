@@ -44,6 +44,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
+    def リンクテキストを確認する(self, *args, **kwargs):
+        # assert_link_text(link_text)
+        return self.assert_link_text(*args, **kwargs)
+
     def 要素を確認する(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)

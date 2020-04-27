@@ -71,5 +71,9 @@ class MyTestClass(BaseCase):
         self.assert_true(self.is_selected("#checkBox3"))
         self.assert_true(self.is_selected("#checkBox4"))
 
+        # Assert link text - Use click_link_text() to click
+        self.assert_link_text("seleniumbase.com")
+        self.assert_link_text("SeleniumBase on GitHub")
+
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")

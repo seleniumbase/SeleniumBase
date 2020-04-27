@@ -44,6 +44,10 @@ class CasDeBase(BaseCase):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
+    def vérifier_le_texte_du_lien(self, *args, **kwargs):
+        # assert_link_text(link_text)
+        return self.assert_link_text(*args, **kwargs)
+
     def vérifier_un_élément(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
