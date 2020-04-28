@@ -2527,11 +2527,36 @@ class BaseCase(unittest.TestCase):
         """ Checks if the file exists in the Downloads Folder. """
         return os.path.exists(self.get_path_of_downloaded_file(file))
 
-    def assert_downloaded_file(self, file):
+    def assert_downloaded_file(self, file, timeout=None):
         """ Asserts that the file exists in the Downloads Folder. """
-        self.assertTrue(os.path.exists(self.get_path_of_downloaded_file(file)),
-                        "File [%s] was not found in the downloads folder [%s]!"
-                        "" % (file, self.get_downloads_folder()))
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (timeout * 1000.0)
+        for x in range(int(timeout)):
+            shared_utils.check_if_time_limit_exceeded()
+            try:
+                self.assertTrue(
+                    os.path.exists(self.get_path_of_downloaded_file(file)),
+                    "File [%s] was not found in the downloads folder [%s]!"
+                    "" % (file, self.get_downloads_folder()))
+                if self.demo_mode:
+                    messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
+                    js_utils.post_messenger_success_message(
+                        self.driver, messenger_post, self.message_duration)
+                return
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(1)
+        self.assertTrue(
+            os.path.exists(self.get_path_of_downloaded_file(file)),
+            "File [%s] was not found in the downloads folder [%s] "
+            "after %s seconds! (Or the download didn't complete!)"
+            "" % (file, self.get_downloads_folder(), timeout))
         if self.demo_mode:
             messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
             js_utils.post_messenger_success_message(
