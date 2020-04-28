@@ -268,7 +268,7 @@ self.get_path_of_downloaded_file(file)
 
 self.is_downloaded_file_present(file)
 
-self.assert_downloaded_file(file)
+self.assert_downloaded_file(file, timeout=None)
 
 self.assert_true(expr, msg=None)
 
