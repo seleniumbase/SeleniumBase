@@ -184,18 +184,30 @@
                 border-width: 1px;
             }
             iframe.frameClass1 {
-                height: 25px;
+                height: 26px;
                 width: 32px;
-                padding: 3px 3px 3px 3px;
+                padding: 2px 2px 2px 2px;
                 color: #0C8CDF;
                 overflow:hidden;
                 background-color: #fefefe;
                 border: 2px solid #c1c1c1;
             }
             iframe.frameClass2 {
-                height: 25px;
+                height: 26px;
                 width: 103px;
-                padding: 3px 3px 3px 3px;
+                padding: 2px 2px 2px 2px;
+                border: none;
+                margin: none;
+                color: #0C8CDF;
+                overflow: hidden;
+                position: absolute;
+                background-color: #fefefe;
+                border: 2px solid #c1c1c1;
+            }
+            iframe.frameClass3 {
+                height: 28px;
+                width: 34px;
+                padding: 1px 1px 1px 1px;
                 border: none;
                 margin: none;
                 color: #0C8CDF;
@@ -344,13 +356,14 @@
                         <td><meter id="meterBar" value="0.25" style="width: 94%;"></meter></td>
                     </tr>
                     <tr>
-                        <td><div style="color: #866042;">Image in iFrame:</div></td>
+                        <td><div style="color: #845342;">Image in iFrame:</div></td>
                         <td style="padding: 4px 4px 3px 4px;">
                             <iframe id="myFrame1" name="frameName1" class="frameClass1" scrolling="no"
                             src='data:image/gif;base64,R0lGODlhEAAOALMAAOazToeHh0tLS/7LZv/0jvb29t/f3//Ub//ge8WSLf/rhf/3kdbW1mxsbP//mf///yH5BAAAAAAALAAAAAAQAA4AAARe8L1Ekyky67QZ1hLnjM5UUde0ECwLJoExKcppV0aCcGCmTIHEIUEqjgaORCMxIC6e0CcguWw6aFjsVMkkIr7g77ZKPJjPZqIyd7sJAgVGoEGv2xsBxqNgYPj/gAwXEQA7'></iframe>
                             &nbsp;&nbsp;
                             <iframe id="myFrame2" name="frameName2" class="frameClass2" scrolling="no"
-                            src="data:text/html,<h4>Frame%20Text<%2Fh4>"></iframe>
+                            src="data:text/html,<body%20style=%22background-color:%23F2F6F8;%22>
+                            <h4>iFrame%20Text<%2Fh4></body>"></iframe>
                         </td>
                         <td>RadioButton 1:<input type="radio" checked id="radioButton1" 
                                                  name="radioGroup1" class="radioClass1"
@@ -381,12 +394,17 @@
                             <input type="checkbox" id="checkBox5"
                                    name="checkBoxName5" class="checkBoxClassC" checked />
                         </td>
-                        <td>
-                            <div style="color: gray;">
-                                Disabled CheckBox:
-                                <input type="checkbox" id="checkBox6"
-                                       name="checkBoxName6" class="checkBoxClassD" disabled />
-                            </div>
+                        <td style="color: #845342; padding: 3px 3px 7px 9px; height: 38px;">
+                            CheckBox in iFrame:&nbsp;&nbsp;
+                            <iframe style="padding: 0px 0px 0px 0px;"
+                            id="myFrame3" name="frameName3" class="frameClass3" scrolling="no"
+                            src="data:text/html,
+                                <body%20style=%22background-color:%23F2F6F8;%22>
+                                <input%20type=%22checkbox%22%20id=%22checkBox6%22
+                                %20style=%22padding:%201px%201px%201px%201px;%22
+                                %20name=%22checkBoxName6%22
+                                %20class=%22checkBoxClassD%20fBox%22%20/>
+                                </body>"></iframe>
                         </td>
                     </tr>
                     <tr>
