@@ -47,9 +47,9 @@ class MyTestClass(BaseCase):
         self.switch_to_default_content()
 
         # Assert text located inside an iFrame
-        self.assert_false(self.is_text_visible("Frame Text"))
+        self.assert_false(self.is_text_visible("iFrame Text"))
         self.switch_to_frame("#myFrame2")
-        self.assert_true(self.is_text_visible("Frame Text"))
+        self.assert_true(self.is_text_visible("iFrame Text"))
         self.switch_to_default_content()
 
         # Verify that clicking a radio button selects it
@@ -70,6 +70,15 @@ class MyTestClass(BaseCase):
         self.assert_true(self.is_selected("#checkBox2"))
         self.assert_true(self.is_selected("#checkBox3"))
         self.assert_true(self.is_selected("#checkBox4"))
+
+        # Verify that clicking an iFrame checkbox selects it
+        self.assert_false(self.is_element_visible(".fBox"))
+        self.switch_to_frame("#myFrame3")
+        self.assert_true(self.is_element_visible(".fBox"))
+        self.assert_false(self.is_selected(".fBox"))
+        self.click(".fBox")
+        self.assert_true(self.is_selected(".fBox"))
+        self.switch_to_default_content()
 
         # Assert link text - Use click_link_text() to click
         self.assert_link_text("seleniumbase.com")
