@@ -81,7 +81,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
-        'pip>=20.0.2',
+        'pip>=20.1',
         'setuptools',
         'setuptools-scm',
         'wheel',
