@@ -131,9 +131,9 @@ def hover_and_click(driver, hover_selector, click_selector,
     stop_ms = start_ms + (timeout * 1000.0)
     element = driver.find_element(by=hover_by, value=hover_selector)
     hover = ActionChains(driver).move_to_element(element)
-    hover.perform()
     for x in range(int(timeout * 10)):
         try:
+            hover.perform()
             element = driver.find_element(by=click_by, value=click_selector)
             element.click()
             return element
@@ -159,9 +159,9 @@ def hover_element_and_click(driver, element, click_selector,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     hover = ActionChains(driver).move_to_element(element)
-    hover.perform()
     for x in range(int(timeout * 10)):
         try:
+            hover.perform()
             element = driver.find_element(by=click_by, value=click_selector)
             element.click()
             return element
@@ -184,9 +184,9 @@ def hover_element_and_double_click(driver, element, click_selector,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     hover = ActionChains(driver).move_to_element(element)
-    hover.perform()
     for x in range(int(timeout * 10)):
         try:
+            hover.perform()
             element_2 = driver.find_element(by=click_by, value=click_selector)
             actions = ActionChains(driver)
             actions.move_to_element(element_2)
