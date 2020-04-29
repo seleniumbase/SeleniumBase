@@ -146,6 +146,11 @@ class BaseCase(unittest.TestCase):
             if self.browser == 'ie' and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
                 self.__jquery_click(selector, by=by)
+            elif self.browser == "safari":
+                if by == By.LINK_TEXT:
+                    self.__jquery_click(selector, by=by)
+                else:
+                    self.__js_click(selector, by=by)
             else:
                 # Normal click
                 element.click()
@@ -594,6 +599,9 @@ class BaseCase(unittest.TestCase):
                 return
             self.open(self.__get_href_from_link_text(link_text))
             return
+        if self.browser == "safari":
+            self.__jquery_click(link_text, by=By.LINK_TEXT)
+            return
         if not self.is_link_text_present(link_text):
             self.wait_for_link_text_present(link_text, timeout=timeout)
         pre_action_url = self.get_current_url()
@@ -1000,6 +1008,29 @@ class BaseCase(unittest.TestCase):
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         elements = self.find_elements(selector, by=by)
+        if self.browser == "safari":
+            if not limit:
+                limit = 0
+            num_elements = len(elements)
+            if num_elements == 0:
+                raise Exception(
+                    "No matching elements found for selector {%s}!" % selector)
+            elif num_elements < limit or limit == 0:
+                limit = num_elements
+            selector, by = self.__recalculate_selector(selector, by)
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            last_css_chunk = css_selector.split(' ')[-1]
+            if ":" in last_css_chunk:
+                self.__js_click_all(css_selector)
+                self.wait_for_ready_state_complete()
+                return
+            else:
+                for i in range(1, limit+1):
+                    new_selector = css_selector + ":nth-of-type(%s)" % str(i)
+                    if self.is_element_visible(new_selector):
+                        self.__js_click(new_selector)
+                        self.wait_for_ready_state_complete()
+                return
         click_count = 0
         for element in elements:
             if limit and limit > 0 and click_count >= limit:
@@ -1206,6 +1237,9 @@ class BaseCase(unittest.TestCase):
         outdated_driver = False
         element = None
         try:
+            if self.browser == "safari":
+                # Use the workaround for hover-clicking on Safari
+                raise Exception("This Exception will be caught.")
             page_actions.hover_element(self.driver, dropdown_element)
         except Exception:
             outdated_driver = True
@@ -2150,6 +2184,7 @@ class BaseCase(unittest.TestCase):
             self.__js_click(selector, by=by)  # The real "magic" happens
         else:
             self.__js_click_all(selector, by=by)  # The real "magic" happens
+        self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
     def js_click_all(self, selector, by=By.CSS_SELECTOR):
@@ -4233,8 +4268,6 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
-        if self.is_element_visible(selector, by=by):
-            self.__demo_mode_highlight_if_active(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click()""" % selector
@@ -4365,12 +4398,6 @@ class BaseCase(unittest.TestCase):
             name = page_utils.get_name_from_selector(selector)
             selector = '[name="%s"]' % name
             by = By.CSS_SELECTOR
-        if by == By.LINK_TEXT or by == By.PARTIAL_LINK_TEXT:
-            if self.browser == "safari" and selector.lower() != selector:
-                selector = ("""//a[contains(translate(.,"ABCDEFGHIJKLMNOPQR"""
-                            """STUVWXYZ","abcdefghijklmnopqrstuvw"""
-                            """xyz"),"%s")]""" % selector.lower())
-                by = By.XPATH
         return (selector, by)
 
     def __make_css_match_first_element_only(self, selector):
