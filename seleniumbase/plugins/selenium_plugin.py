@@ -25,7 +25,7 @@ class SeleniumBrowser(Plugin):
     --headless  (The option to run tests headlessly. The default on Linux OS.)
     --headed  (The option to run tests with a GUI on Linux OS.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
-    --time-limit  (The option to set a time limit per test before failing it.)
+    --time-limit=SECONDS  (Safely fail any test that exceeds the limit limit.)
     --slow  (The option to slow down the automation.)
     --demo  (The option to visually see test actions as they occur.)
     --demo-sleep=SECONDS  (The option to wait longer after Demo Mode actions.)
