@@ -235,3 +235,36 @@ class CasDeBase(BaseCase):
     def sélectionner_option_par_valeur(self, *args, **kwargs):
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
+
+    def créer_une_visite(self, *args, **kwargs):
+        # create_tour(name=None, theme=None)
+        return self.create_tour(*args, **kwargs)
+
+    def créer_une_visite_shepherd(self, *args, **kwargs):
+        # create_shepherd_tour(name=None, theme=None)
+        return self.create_shepherd_tour(*args, **kwargs)
+
+    def créer_une_visite_bootstrap(self, *args, **kwargs):
+        # create_bootstrap_tour(name=None, theme=None)
+        return self.create_bootstrap_tour(*args, **kwargs)
+
+    def créer_une_visite_hopscotch(self, *args, **kwargs):
+        # create_hopscotch_tour(name=None, theme=None)
+        return self.create_hopscotch_tour(*args, **kwargs)
+
+    def créer_une_visite_introjs(self, *args, **kwargs):
+        # create_introjs_tour(name=None, theme=None)
+        return self.create_introjs_tour(*args, **kwargs)
+
+    def ajouter_une_étape_à_la_visite(self, *args, **kwargs):
+        # add_tour_step(message, selector=None, name=None,
+        #               title=None, theme=None, alignment=None)
+        return self.add_tour_step(*args, **kwargs)
+
+    def jouer_la_visite(self, *args, **kwargs):
+        # play_tour(name=None)
+        return self.play_tour(*args, **kwargs)
+
+    def exporter_la_visite(self, *args, **kwargs):
+        # export_tour(name=None, filename="my_tour.js", url=None)
+        return self.export_tour(*args, **kwargs)
