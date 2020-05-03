@@ -23,13 +23,13 @@ import sys
 from seleniumbase.common import obfuscate
 from seleniumbase.common import unobfuscate
 from seleniumbase.console_scripts import logo_helper
+from seleniumbase.console_scripts import objectify
 from seleniumbase.console_scripts import sb_mkdir
 from seleniumbase.console_scripts import sb_install
 from seleniumbase.utilities.selenium_grid import download_selenium_server
 from seleniumbase.utilities.selenium_grid import grid_hub
 from seleniumbase.utilities.selenium_grid import grid_node
 from seleniumbase.utilities.selenium_ide import convert_ide
-from seleniumbase.utilities.selenium_ide import objectify
 
 
 def show_usage():
