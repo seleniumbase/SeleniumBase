@@ -249,6 +249,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --guest  # (The option to enable Chrome's Guest mode.)
 --devtools  # (The option to open Chrome's DevTools when the browser opens.)
 --reuse-session  # (The option to reuse the browser session between tests.)
+--crumbs  # (Option to delete all cookies between tests reusing a session.)
 --maximize-window  # (The option to start with the web browser maximized.)
 --save-screenshot  # (The option to save a screenshot after each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
