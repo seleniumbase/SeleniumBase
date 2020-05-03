@@ -4651,6 +4651,7 @@ class BaseCase(unittest.TestCase):
             self.extension_dir = sb_config.extension_dir
             self.maximize_option = sb_config.maximize_option
             self._reuse_session = sb_config.reuse_session
+            self._crumbs = sb_config.crumbs
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
@@ -4773,6 +4774,8 @@ class BaseCase(unittest.TestCase):
                     url = self.get_current_url()
                     if len(url) > 3:
                         has_url = True
+                    if self._crumbs:
+                        self.driver.delete_all_cookies()
                 except Exception:
                     pass
         if self._reuse_session and sb_config.shared_driver and has_url:

@@ -51,6 +51,7 @@ except (ImportError, ValueError):
     sb.no_sandbox = False
     sb.disable_gpu = False
     sb._reuse_session = False
+    sb._crumbs = False
     sb.visual_baseline = False
     sb.maximize_option = False
     sb.save_screenshot_after_test = False

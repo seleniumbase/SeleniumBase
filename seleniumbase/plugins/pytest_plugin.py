@@ -52,6 +52,7 @@ def pytest_addoption(parser):
     --guest  (The option to enable Chrome's Guest mode.)
     --devtools  (The option to open Chrome's DevTools when the browser opens.)
     --reuse-session  (The option to reuse the browser session between tests.)
+    --crumbs  (Option to delete all cookies between tests reusing a session.)
     --maximize  (The option to start with the web browser maximized.)
     --save-screenshot  (The option to save a screenshot after each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
@@ -390,6 +391,13 @@ def pytest_addoption(parser):
                      default=False,
                      help="""The option to reuse the selenium browser window
                           session between tests.""")
+    parser.addoption('--crumbs',
+                     action="store_true",
+                     dest='crumbs',
+                     default=False,
+                     help="""The option to delete all cookies between tests
+                          that reuse the same browser session. This option
+                          is only needed when using "--reuse-session".""")
     parser.addoption('--maximize_window', '--maximize-window', '--maximize',
                      '--fullscreen',
                      action="store_true",
@@ -478,6 +486,7 @@ def pytest_configure(config):
     sb_config.guest_mode = config.getoption('guest_mode')
     sb_config.devtools = config.getoption('devtools')
     sb_config.reuse_session = config.getoption('reuse_session')
+    sb_config.crumbs = config.getoption('crumbs')
     sb_config.shared_driver = None  # The default driver for session reuse
     sb_config.maximize_option = config.getoption('maximize_option')
     sb_config.save_screenshot = config.getoption('save_screenshot')
