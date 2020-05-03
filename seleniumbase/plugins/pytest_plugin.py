@@ -46,8 +46,6 @@ def pytest_addoption(parser):
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
     --use-auto-ext  (The option to use Chrome's automation extension.)
-    --no-sandbox  (The option to enable Chrome's "No-Sandbox" feature.)
-    --disable-gpu  (The option to enable Chrome's "Disable GPU" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
     --guest  (The option to enable Chrome's Guest mode.)
     --devtools  (The option to open Chrome's DevTools when the browser opens.)
@@ -364,12 +362,14 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='no_sandbox',
                      default=False,
-                     help="""Using this enables the "No Sandbox" feature.""")
+                     help="""Using this enables the "No Sandbox" feature.
+                          (This setting is now always enabled by default.)""")
     parser.addoption('--disable_gpu', '--disable-gpu',
                      action="store_true",
                      dest='disable_gpu',
                      default=False,
-                     help="""Using this enables the "Disable GPU" feature.""")
+                     help="""Using this enables the "Disable GPU" feature.
+                          (This setting is now always enabled by default.)""")
     parser.addoption('--incognito', '--incognito_mode', '--incognito-mode',
                      action="store_true",
                      dest='incognito',
