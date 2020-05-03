@@ -36,6 +36,8 @@ if sys.argv[-1] == 'publish':
         os.system('python setup.py sdist bdist_wheel')  # Create new tar/wheel
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install 'twine>=1.15.0'")
+        print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install 'tqdm>=4.46.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
