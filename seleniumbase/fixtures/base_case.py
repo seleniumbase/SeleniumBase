@@ -105,18 +105,6 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
-    def open_url(self, url):
-        """ Same as open() - Original saved for backwards compatibility. """
-        self.open(url)
-
-    def get(self, url):
-        """ Same as open() - WebDriver uses this method name. """
-        self.open(url)
-
-    def visit(self, url):
-        """ Same as open() - Some JS frameworks use this method name. """
-        self.open(url)
-
     def click(self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -257,30 +245,6 @@ class BaseCase(unittest.TestCase):
             if spacing > 0:
                 time.sleep(spacing)
 
-    def type(self, selector, text, by=By.CSS_SELECTOR,
-             timeout=None, retry=False):
-        """ The short version of update_text(), which clears existing text
-            and adds new text into the text field.
-            We want to keep the other version for backward compatibility. """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
-
-    def input(self, selector, text, by=By.CSS_SELECTOR,
-              timeout=None, retry=False):
-        """ Same as update_text(). """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
-
     def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
                     timeout=None, retry=False):
         """ This method updates an element's text field with new text.
@@ -412,16 +376,6 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
-
-    def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
-        """ Same as add_text() """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        self.add_text(selector, text, by=by, timeout=timeout)
 
     def submit(self, selector, by=By.CSS_SELECTOR):
         """ Alternative to self.driver.find_element_by_*(SELECTOR).submit() """
@@ -2858,6 +2812,76 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    # Duplicates (Avoids name confusion when migrating from other frameworks.)
+
+    def open_url(self, url):
+        """ Same as open() - Original saved for backwards compatibility. """
+        self.open(url)
+
+    def get(self, url):
+        """ Same as open() - WebDriver uses this method name. """
+        self.open(url)
+
+    def visit(self, url):
+        """ Same as open() - Some JS frameworks use this method name. """
+        self.open(url)
+
+    def goto(self, url):
+        """ Same as open() - Some JS frameworks use this method name. """
+        self.open(url)
+
+    def go_to(self, url):
+        """ Same as open() - Some test frameworks use this method name. """
+        self.open(url)
+
+    def type(self, selector, text, by=By.CSS_SELECTOR,
+             timeout=None, retry=False):
+        """ Same as update_text(). """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
+    def input(self, selector, text, by=By.CSS_SELECTOR,
+              timeout=None, retry=False):
+        """ Same as update_text(). """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
+    def write(self, selector, text, by=By.CSS_SELECTOR,
+              timeout=None, retry=False):
+        """ Same as update_text(). """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
+    def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+        """ Same as add_text() """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        if page_utils.is_xpath_selector(selector):
+            by = By.XPATH
+        self.add_text(selector, text, by=by, timeout=timeout)
+
+    def start_tour(self, name=None, interval=0):
+        self.play_tour(name=name, interval=interval)
+
+    ############
+
     def add_css_link(self, css_link):
         js_utils.add_css_link(self.driver, css_link)
 
@@ -3288,7 +3312,7 @@ class BaseCase(unittest.TestCase):
     def export_tour(self, name=None, filename="my_tour.js", url=None):
         """ Exports a tour as a JS file.
             You can call self.export_tour() anywhere where you would
-            normally use self.play_tour() to play a tour.
+            normally use self.play_tour() to play a website tour.
             It will include necessary resources as well, such as jQuery.
             You'll be able to copy the tour directly into the Console of
             any web browser to play the tour outside of SeleniumBase runs.
@@ -3296,7 +3320,9 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
             filename - The name of the JavaScript file that you wish to
-                   save the tour to. """
+                       save the tour to.
+            url - The URL where the tour starts. If not specified, the URL
+                  of the current page will be used. """
         if not url:
             url = self.get_current_url()
         tour_helper.export_tour(

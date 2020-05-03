@@ -235,3 +235,36 @@ class Testgeval(BaseCase):
     def optie_selecteren_per_waarde(self, *args, **kwargs):
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
+
+    def maak_een_tour(self, *args, **kwargs):
+        # create_tour(name=None, theme=None)
+        return self.create_tour(*args, **kwargs)
+
+    def maak_een_shepherd_tour(self, *args, **kwargs):
+        # create_shepherd_tour(name=None, theme=None)
+        return self.create_shepherd_tour(*args, **kwargs)
+
+    def maak_een_bootstrap_tour(self, *args, **kwargs):
+        # create_bootstrap_tour(name=None, theme=None)
+        return self.create_bootstrap_tour(*args, **kwargs)
+
+    def maak_een_hopscotch_tour(self, *args, **kwargs):
+        # create_hopscotch_tour(name=None, theme=None)
+        return self.create_hopscotch_tour(*args, **kwargs)
+
+    def maak_een_introjs_tour(self, *args, **kwargs):
+        # create_introjs_tour(name=None, theme=None)
+        return self.create_introjs_tour(*args, **kwargs)
+
+    def toevoegen_tour_stap(self, *args, **kwargs):
+        # add_tour_step(message, selector=None, name=None,
+        #               title=None, theme=None, alignment=None)
+        return self.add_tour_step(*args, **kwargs)
+
+    def speel_de_tour(self, *args, **kwargs):
+        # play_tour(name=None)
+        return self.play_tour(*args, **kwargs)
+
+    def de_tour_exporteren(self, *args, **kwargs):
+        # export_tour(name=None, filename="my_tour.js", url=None)
+        return self.export_tour(*args, **kwargs)

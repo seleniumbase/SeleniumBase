@@ -7,7 +7,8 @@ For backwards compatibility, older versions of method names have remained to kee
 
 ```python
 self.open(url)
-# Duplicates: self.open_url(url), self.get(url), self.visit(url)
+# Duplicates: self.open_url(url), self.get(url)
+#             self.visit(url), self.goto(url), self.go_to(url)
 
 self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0)
 
@@ -20,6 +21,7 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
 self.update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None, retry=False)
 # Duplicates: self.type(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 #             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
+#             self.write(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 
 self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.send_keys(selector, text, by=By.CSS_SELECTOR, timeout=None)

@@ -670,6 +670,129 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.input(SELECTOR, TEXT)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.input'''
+                r'''\((r?['"][\S\s]+['"]),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.input'''
+                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            text = data.group(3)
+            comments = data.group(4)
+            command = '''%sself.input(%s, %s)%s''' % (
+                whitespace, selector, text, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.input(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.input(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.write(SELECTOR, TEXT)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.write'''
+                r'''\((r?['"][\S\s]+['"]),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.write'''
+                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            text = data.group(3)
+            comments = data.group(4)
+            command = '''%sself.write(%s, %s)%s''' % (
+                whitespace, selector, text, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.write(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.write(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.add_text(SELECTOR, TEXT)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.add_text'''
+                r'''\((r?['"][\S\s]+['"]),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.add_text'''
+                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            text = data.group(3)
+            comments = data.group(4)
+            command = '''%sself.add_text(%s, %s)%s''' % (
+                whitespace, selector, text, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.add_text(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.add_text(%s, %s)%s''' % (
+                        whitespace, selector_object, text, comments)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.send_keys(SELECTOR, TEXT)
         if not object_dict:
             data = re.match(

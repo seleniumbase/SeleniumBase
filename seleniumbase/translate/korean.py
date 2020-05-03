@@ -235,3 +235,36 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 값별로_옵션_선택(self, *args, **kwargs):
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
+
+    def 가이드_투어_만들기(self, *args, **kwargs):
+        # create_tour(name=None, theme=None)
+        return self.create_tour(*args, **kwargs)
+
+    def 가이드_SHEPHERD_투어_만들기(self, *args, **kwargs):
+        # create_shepherd_tour(name=None, theme=None)
+        return self.create_shepherd_tour(*args, **kwargs)
+
+    def 가이드_BOOTSTRAP_투어_만들기(self, *args, **kwargs):
+        # create_bootstrap_tour(name=None, theme=None)
+        return self.create_bootstrap_tour(*args, **kwargs)
+
+    def 가이드_HOPSCOTCH_투어_만들기(self, *args, **kwargs):
+        # create_hopscotch_tour(name=None, theme=None)
+        return self.create_hopscotch_tour(*args, **kwargs)
+
+    def 가이드_INTROJS_투어_만들기(self, *args, **kwargs):
+        # create_introjs_tour(name=None, theme=None)
+        return self.create_introjs_tour(*args, **kwargs)
+
+    def 둘러보기_단계_추가(self, *args, **kwargs):
+        # add_tour_step(message, selector=None, name=None,
+        #               title=None, theme=None, alignment=None)
+        return self.add_tour_step(*args, **kwargs)
+
+    def 가이드_투어를하다(self, *args, **kwargs):
+        # play_tour(name=None)
+        return self.play_tour(*args, **kwargs)
+
+    def 가이드_투어_내보내기(self, *args, **kwargs):
+        # export_tour(name=None, filename="my_tour.js", url=None)
+        return self.export_tour(*args, **kwargs)
