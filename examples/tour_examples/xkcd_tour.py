@@ -6,7 +6,7 @@ class MyTestClass(BaseCase):
     def test_basic(self):
         self.open('https://xkcd.com/1117/')
         self.assert_element('img[alt="My Sky"]')
-        self.create_shepherd_tour()
+        self.create_tour(theme="dark")
         self.add_tour_step("Welcome to XKCD!")
         self.add_tour_step("This is the XKCD logo.", "#masthead img")
         self.add_tour_step("Here's the daily webcomic.", "#comic img")
