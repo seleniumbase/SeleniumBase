@@ -112,6 +112,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def 요소가_존재할_때까지_기다립니다(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def 잠을(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)

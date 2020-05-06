@@ -112,6 +112,10 @@ class CasoDiProva(BaseCase):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def attendere_un_elemento_presente(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def dormire(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)

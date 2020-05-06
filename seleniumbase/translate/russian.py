@@ -112,6 +112,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def ждать_элемента_присутствует(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def спать(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)

@@ -112,6 +112,10 @@ class Testgeval(BaseCase):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def wacht_op_element_aanwezig(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def slapen(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)

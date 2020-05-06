@@ -112,6 +112,10 @@ class CasoDeTeste(BaseCase):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def aguardar_o_elemento_presente(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)

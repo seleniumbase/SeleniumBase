@@ -112,6 +112,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def 要素が存在するのを待つ(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def 眠る(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)

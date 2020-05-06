@@ -112,6 +112,10 @@ class 硒测试用例(BaseCase):  # noqa
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def 等待元素存在(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
+
     def 睡(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
