@@ -1,9 +1,9 @@
 
 <h2 align="center">✅ <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="36" /> 🚀</h2>
 
-<h3 align="center"> Create web & mobile tests, fast!</h3>
+<h3 align="center">Create web & mobile tests, fast!</h3>
 
-<p align="center">SeleniumBase uses <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://selenium.dev/">WebDriver</a> to make Web UI automation much easier.</p>
+<p align="center">SeleniumBase uses <a href="https://selenium.dev/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to make Web UI testing much easier.</p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
