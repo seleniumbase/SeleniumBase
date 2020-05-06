@@ -1,4 +1,4 @@
-<h2 align="center">✅ <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="36" /> 🚀</h2>
+<h2 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb20.png" alt="SeleniumBase" height="48" /></h2>
 
 <h3 align="center">Create web & mobile tests 8x faster.</h3>
 
@@ -26,8 +26,8 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">👩‍💻 MasterQA</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🛩️ GitHub CI</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">✅ MasterQA</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
 </p>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
