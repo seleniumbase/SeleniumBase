@@ -422,8 +422,12 @@ def activate_html_inspector(driver):
         return
     if not is_jquery_activated(driver):
         add_js_link(driver, jquery_js)
-        wait_for_jquery_active(driver, timeout=0.9)
+        wait_for_ready_state_complete(driver)
+        wait_for_angularjs(driver)
+        wait_for_jquery_active(driver, timeout=1.5)
     add_js_link(driver, html_inspector_js)
+    wait_for_ready_state_complete(driver)
+    wait_for_angularjs(driver)
 
     for x in range(15):
         # HTML-Inspector needs a small amount of time to load & activate.
@@ -434,6 +438,8 @@ def activate_html_inspector(driver):
             return
         except Exception:
             time.sleep(0.1)
+    wait_for_ready_state_complete(driver)
+    wait_for_angularjs(driver)
 
 
 def activate_messenger(driver):
