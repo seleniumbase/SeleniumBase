@@ -2383,6 +2383,7 @@ class BaseCase(unittest.TestCase):
         pdf_text = self.__fix_unicode_conversion(pdf_text)
         if wrap:
             pdf_text = pdf_text.replace(' \n', ' ')
+        pdf_text = pdf_text.strip()  # Remove leading and trailing whitespace
         return pdf_text
 
     def assert_pdf_text(self, pdf, text, page=None, maxpages=None,
