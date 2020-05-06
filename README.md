@@ -1,6 +1,7 @@
-<h2 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="46" /></h2>
 
-<h3 align="center"> Create tests for web and mobile. ✅</h3>
+<h2 align="center">✅ <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="36" /> 🚀</h2>
+
+<h3 align="center"> Create web & mobile UI tests!</h3>
 
 <p align="center">SeleniumBase uses <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://selenium.dev/">WebDriver</a> to make UI automation much easier.</p>
 
@@ -26,7 +27,6 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid-Use</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">👩‍💻 MasterQA Tool</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🛩️ GitHub CI</a>
 </p>
