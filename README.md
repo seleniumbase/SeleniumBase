@@ -1,24 +1,53 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/fancy_logo_14.png" title="SeleniumBase" align="center" height="38">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)<br />
+<h2 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="46" /></h2>
 
-[<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="SeleniumBase" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt=" " />](https://pypi.python.org/pypi/seleniumbase) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt=" " />](https://gitter.im/seleniumbase/SeleniumBase) [<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt=" " />](https://travis-ci.org/seleniumbase/SeleniumBase) [<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg">](https://github.com/seleniumbase/SeleniumBase/actions)<br />
+<h3 align="center"> Create automated tests for web and mobile. ✅</h3>
 
-A Python framework for Web UI testing and [site tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) with [Selenium](https://selenium.dev/) and [pytest](https://docs.pytest.org/en/latest/index.html).
+<p align="center">SeleniumBase: A Python framework that uses <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://selenium.dev/">WebDriver</a> to make UI testing fast, easy, and reliable.</p>
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" title="SeleniumBase"><br />
-(<i>Above: [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode.</i>)<br />
+<p align="center">
+<a href="https://github.com/seleniumbase/SeleniumBase/releases">
+<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers">
+<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" alt="SeleniumBase" /></a>
+</p>
+
+<p align="center">
+<a href="#python_installation">🚀 Get Started</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🦚 Features</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples">👩‍🏫 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Sample Reports</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Testing</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚞 Site Tours</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid-Use</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">👩‍💻 MasterQA Tool</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🛩️ GitHub CI</a> |
+<a href="https://gitter.im/seleniumbase/SeleniumBase">👋 Chat</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/releases">🗺️ Releases</a>
+</p>
+
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a><br />
+
+(<i>Above: [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Mobile Mode.</i>)<br />
+```bash
+pytest test_swag_labs.py --mobile
+```
+------
+<div>SeleniumBase's command-line options allow you to run the same test using different browsers and environments.</div>
+
+(<i>Below: [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode.</i>)
 ```bash
 pytest test_swag_labs.py --demo
 ```
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a><br />
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Features:
-* Simplifies the process of creating of web & mobile tests.
-* Includes [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for making [reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md), etc.
-* Uses reliable, smart-waiting code to prevent flakiness.
-* Multiplies the abilities of [pytest](https://pytest.org) and enhances [Selenium](https://www.seleniumhq.org/).
-* Includes tools for [assisted-QA](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md), [visual testing](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md), & [web tours](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md).
-* Integrates with [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), [Katalon Recorder](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md), & [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py).
-* To see all features [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md). To see all methods, [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
-* To see examples [click here](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md). To see all help docs, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/help_docs).
 
 <a id="python_installation"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start
@@ -69,7 +98,29 @@ pytest my_first_test.py
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
 **Here's an example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):**<br />
-<img src="https://cdn2.hubspot.net/hubfs/100006/my_first_test_py_4.png" title="My First SeleniumBase Test"><br />
+```python
+from seleniumbase import BaseCase
+
+class MyTestClass(BaseCase):
+
+    def test_basic(self):
+        self.open("https://xkcd.com/353/")
+        self.assert_title("xkcd: Python")
+        self.assert_element('img[alt="Python"]')
+        self.click('a[rel="license"]')
+        self.assert_text("free to copy and reuse")
+        self.go_back()
+        self.click_link_text("About")
+        self.assert_text("xkcd.com", "h2")
+        self.open("://store.xkcd.com/collections/everything")
+        self.update_text("input.search-input", "xkcd book\n")
+        self.assert_exact_text("xkcd: volume 0", "h3")
+```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
+```bash
+pytest my_first_test.py --demo
+```
+
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
 * Here are some common ``SeleniumBase`` methods you might find in tests:
@@ -110,10 +161,14 @@ self.update_text("input", "dogs\n")
 The same command with regular WebDriver is very messy:
 (<i>And it doesn't include SeleniumBase smart-waiting.</i>)
 ```python
-self.driver.find_element_by_css_selector("input").clear()  # Not always needed
-self.driver.find_element_by_css_selector("input").send_keys("dogs")
-self.driver.find_element_by_css_selector("input").submit()
+from selenium.webdriver.common.by import By
+element = self.driver.find_element(by=By.CSS_SELECTOR, value="input")
+element.clear()  # Not always needed
+element.send_keys("dogs")
+element.submit()
 ```
+As you can see, the old WebDriver way is very bad!
+Use SeleniumBase to make testing much easier!
 (<i>You can still use ``self.driver`` in your code.</i>)
 
 #### **Run tests with ``pytest`` or ``nosetests`` in any browser:**<br />
