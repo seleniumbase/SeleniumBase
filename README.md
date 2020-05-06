@@ -1,8 +1,8 @@
 <h2 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="46" /></h2>
 
-<h3 align="center"> Create automated tests for web and mobile. ✅</h3>
+<h3 align="center"> Create tests for web and mobile. ✅</h3>
 
-<p align="center">SeleniumBase: A Python framework that uses <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://selenium.dev/">WebDriver</a> to make UI testing fast, easy, and reliable.</p>
+<p align="center">SeleniumBase uses <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://selenium.dev/">WebDriver</a> to make UI automation much easier.</p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -22,31 +22,30 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Sample Reports</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Testing</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🚞 Site Tours</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Site Tours</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid-Use</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">👩‍💻 MasterQA Tool</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🛩️ GitHub CI</a> |
-<a href="https://gitter.im/seleniumbase/SeleniumBase">👋 Chat</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/releases">🗺️ Releases</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🛩️ GitHub CI</a>
 </p>
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a><br />
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
+<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">examples/</a> running in Mobile Mode.</i>)</p>
 
-(<i>Above: [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Mobile Mode.</i>)<br />
 ```bash
 pytest test_swag_labs.py --mobile
 ```
 ------
 <div>SeleniumBase's command-line options allow you to run the same test using different browsers and environments.</div>
 
-(<i>Below: [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) from [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) running in Demo Mode.</i>)
+<p align="center">(<i>Below: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">examples/</a> running in Demo Mode.</i>)</p>
+
 ```bash
 pytest test_swag_labs.py --demo
 ```
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a><br />
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
 
 
 <a id="python_installation"></a>
