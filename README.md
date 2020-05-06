@@ -2,7 +2,7 @@
 
 <h3 align="center">Create web & mobile tests 8x faster.</h3>
 
-<p align="center">Easy, reliable Web UI testing with <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
+<p align="center">Extends <a href="https://selenium.dev/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
