@@ -622,14 +622,6 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def click_link(self, link_text, timeout=None):
-        """ Same as self.click_link_text() """
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.click_link_text(link_text, timeout=timeout)
-
     def click_partial_link_text(self, partial_link_text, timeout=None):
         """ This method clicks the partial link text on a page. """
         # If using phantomjs, might need to extract and open the link directly
@@ -2877,6 +2869,14 @@ class BaseCase(unittest.TestCase):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         self.add_text(selector, text, by=by, timeout=timeout)
+
+    def click_link(self, link_text, timeout=None):
+        """ Same as self.click_link_text() """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.click_link_text(link_text, timeout=timeout)
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
