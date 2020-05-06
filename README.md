@@ -40,11 +40,10 @@ pytest test_swag_labs.py --mobile
 ------
 <div>SeleniumBase's command-line options allow you to run the same test using different browsers and environments.</div>
 
-<p align="center">(<i>Below: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">examples/</a> running in Demo Mode.</i>)</p>
-
 ```bash
 pytest test_swag_labs.py --demo
 ```
+<p align="center">(<i>Below: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> from <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples">examples/</a> running in Demo Mode.</i>)</p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
 
 
