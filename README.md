@@ -1,4 +1,3 @@
-
 <h2 align="center">✅ <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i4.png" alt="SeleniumBase" height="36" /> 🚀</h2>
 
 <h3 align="center">Create web & mobile tests, fast!</h3>
@@ -38,7 +37,7 @@
 pytest test_swag_labs.py --mobile
 ```
 ------
-<div>SeleniumBase's command-line options allow you to run the same test using different browsers and environments.</div>
+<div>SeleniumBase's command-line options allow you to run tests with different settings without changing test code. Learn more <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">here</a>.</div><br />
 
 ```bash
 pytest test_swag_labs.py --demo
@@ -48,7 +47,7 @@ pytest test_swag_labs.py --demo
 
 
 <a id="python_installation"></a>
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Quick Start
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started
 
 * Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
