@@ -1,4 +1,4 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_m.png" title="SeleniumBase" height="48" /></a></h3>
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_m.png" title="SeleniumBase" height="48" /></a></h3>
 
 ### Multi-Language Tests (Python 3 Only!)
 
@@ -14,7 +14,8 @@
 * Russian / Русский
 * Spanish / español
 
-(Run tests with **pytest** as normal.)
+Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language. Example:
+ ``self.open(URL)`` = ``self.开启网址(URL)``
 
 --------
 
