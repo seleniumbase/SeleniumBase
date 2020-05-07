@@ -1,6 +1,8 @@
-## SeleniumBase Website Tours
+<h3 align="left"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" height="48" /></h3>
 
-SeleniumBase Tours utilize your choice of 4 JavaScript libraries for prototyping walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
+## Website Tours
+
+SeleniumBase Tours utilize 4 JavaScript libraries for creating interactive walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
 **Example tour:**
 
