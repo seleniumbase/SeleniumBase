@@ -25,7 +25,7 @@ MD_L_Codes = master_dict.MD_L_Codes
 MD = master_dict.MD
 
 
-def invalid_run_command():
+def invalid_run_command(msg=None):
     exp = ("  ** translate **\n\n")
     exp += "  Usage:\n"
     exp += "         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]\n"
@@ -48,7 +48,10 @@ def invalid_run_command():
     exp += "         plus the 2-letter language code of the new language.\n"
     exp += '         (Example: Translating "test_1.py" into Japanese with\n'
     exp += '          "-c" will create a new file called "test_1_ja.py").\n'
-    raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    if not msg:
+        raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    else:
+        raise Exception('INVALID RUN COMMAND!\n%s\n\n%s' % (msg, exp))
 
 
 def process_test_file(code_lines, new_lang):
@@ -56,8 +59,8 @@ def process_test_file(code_lines, new_lang):
     changed = False
     seleniumbase_lines = []
     lang_codes = MD_L_Codes.lang
-    nl_code = lang_codes[new_lang]
-    dl_code = None
+    nl_code = lang_codes[new_lang]  # new_lang language code
+    dl_code = None  # detected_lang language code
     md = MD.md  # Master Dictionary
 
     for line in code_lines:
@@ -118,15 +121,25 @@ def process_test_file(code_lines, new_lang):
                 seleniumbase_lines.append(line)
             continue
 
-        if "self." in line and "(" in line and detected_lang != new_lang:
+        if "self." in line and "(" in line and detected_lang and (
+                detected_lang != new_lang):
             found_swap = False
+            replace_count = line.count("self.")  # Total possible replacements
             for key in md.keys():
                 original = "self." + md[key][dl_code] + "("
                 if original in line:
                     replacement = "self." + md[key][nl_code] + "("
                     new_line = line.replace(original, replacement)
                     found_swap = True
-                    break
+                    replace_count -= 1
+                    if replace_count == 0:
+                        break  # Done making replacements
+                    else:
+                        # There might be another method to replace in the line.
+                        # Example: self.assert_true("Name" in self.get_title())
+                        line = new_line
+                        continue
+
             if found_swap:
                 seleniumbase_lines.append(new_line)
                 continue
@@ -143,6 +156,8 @@ def main():
     c3 = colorama.Fore.RED + colorama.Back.LIGHTGREEN_EX
     c4 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+    c6 = colorama.Fore.RED + colorama.Back.LIGHTCYAN_EX
+    c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
     cr = colorama.Style.RESET_ALL
     expected_arg = ("[A SeleniumBase Python file]")
     # num_args = len(sys.argv)
@@ -158,11 +173,14 @@ def main():
     overwrite = False
     copy = False
     print_only = False
+    help_me = False
     if len(command_args) >= 2:
         options = command_args[1:]
         for option in options:
             option = option.lower()
-            if option == "-o" or option == "--overwrite":
+            if option == "help" or option == "--help":
+                help_me = True
+            elif option == "-o" or option == "--overwrite":
                 overwrite = True
             elif option == "-c" or option == "--copy":
                 copy = True
@@ -189,14 +207,19 @@ def main():
             elif option == "--es" or option == "--spanish":
                 new_lang = "Spanish"
             else:
-                invalid_run_command()
+                invalid_cmd = "\n===> INVALID OPTION: >> %s <<" % option
+                invalid_cmd = invalid_cmd.replace('>> ', ">>" + c5 + " ")
+                invalid_cmd = invalid_cmd.replace(' <<', " " + cr + "<<")
+                invalid_cmd = invalid_cmd.replace('>>', c7 + ">>" + cr)
+                invalid_cmd = invalid_cmd.replace('<<', c7 + "<<" + cr)
+                invalid_run_command(invalid_cmd)
     else:
-        invalid_run_command()
+        help_me = True
 
     specify_lang = (
         "\n>* You must specify a language to translate to! *<\n"
         "\n"
-        "   > ********  Language Options:  ******** <\n"
+        ">    ********  Language Options:  ********    <\n"
         "   --en / --English    |    --zh / --Chinese\n"
         "   --nl / --Dutch      |    --fr / --French\n"
         "   --it / --Italian    |    --ja / --Japanese\n"
@@ -205,10 +228,10 @@ def main():
     specify_action = (
         "\n>* You must specify an action type! *<\n"
         "\n"
-        ">  ***  Action Options:  ***  <\n"
-        "   -p / --print\n"
-        "   -o / --overwrite\n"
-        "   -c / --copy\n")
+        "> *** Action Options: *** <\n"
+        "      -p / --print\n"
+        "      -o / --overwrite\n"
+        "      -c / --copy\n")
     example_run = (
         "\n> *** Examples: *** <\n"
         "Translate test_1.py into Chinese and only print the output:\n"
@@ -217,35 +240,46 @@ def main():
         " >$ seleniumbase translate test_2.py --pt -o\n"
         "Translate test_3.py into Dutch and make a copy of the file:\n"
         " >$ seleniumbase translate test_3.py --nl -c\n")
+    usage = (
+        "\n> *** Usage: *** <\n"
+        " >$ seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]\n")
     specify_lang = specify_lang.replace('>*', c5 + ">*")
     specify_lang = specify_lang.replace('*<', "*<" + cr)
     specify_lang = specify_lang.replace(
         "Language Options:", c3 + "Language Options:" + cr)
     specify_lang = specify_lang.replace(
-        "> ********  ", c4 + "> ********  " + cr)
+        ">    ********  ", c4 + ">    ********  " + cr)
     specify_lang = specify_lang.replace(
-        "  ******** <", c4 + "  ******** <" + cr)
-    specify_lang = specify_lang.replace("  --", "  " + c2 + "--")
-    specify_lang = specify_lang.replace(" /", cr + " /")
-    specify_lang = specify_lang.replace("--english", c2 + "--english" + cr)
-    specify_lang = specify_lang.replace("--chinese", c2 + "--chinese" + cr)
-    specify_lang = specify_lang.replace("--dutch", c2 + "--dutch" + cr)
-    specify_lang = specify_lang.replace("--french", c2 + "--french" + cr)
-    specify_lang = specify_lang.replace("--italian", c2 + "--italian" + cr)
-    specify_lang = specify_lang.replace("--japanese", c2 + "--japanese" + cr)
-    specify_lang = specify_lang.replace("--korean", c2 + "--korean" + cr)
+        "  ********    <", c4 + "  ********    <" + cr)
+    specify_lang = specify_lang.replace("--en", c2 + "--en" + cr)
+    specify_lang = specify_lang.replace("--zh", c2 + "--zh" + cr)
+    specify_lang = specify_lang.replace("--nl", c2 + "--nl" + cr)
+    specify_lang = specify_lang.replace("--fr", c2 + "--fr" + cr)
+    specify_lang = specify_lang.replace("--it", c2 + "--it" + cr)
+    specify_lang = specify_lang.replace("--ja", c2 + "--ja" + cr)
+    specify_lang = specify_lang.replace("--ko", c2 + "--ko" + cr)
+    specify_lang = specify_lang.replace("--pt", c2 + "--pt" + cr)
+    specify_lang = specify_lang.replace("--ru", c2 + "--ru" + cr)
+    specify_lang = specify_lang.replace("--es", c2 + "--es" + cr)
+    specify_lang = specify_lang.replace("--English", c2 + "--English" + cr)
+    specify_lang = specify_lang.replace("--Chinese", c2 + "--Chinese" + cr)
+    specify_lang = specify_lang.replace("--Dutch", c2 + "--Dutch" + cr)
+    specify_lang = specify_lang.replace("--French", c2 + "--French" + cr)
+    specify_lang = specify_lang.replace("--Italian", c2 + "--Italian" + cr)
+    specify_lang = specify_lang.replace("--Japanese", c2 + "--Japanese" + cr)
+    specify_lang = specify_lang.replace("--Korean", c2 + "--Korean" + cr)
     specify_lang = specify_lang.replace(
-        "--portuguese", c2 + "--portuguese" + cr)
-    specify_lang = specify_lang.replace("--russian", c2 + "--russian" + cr)
-    specify_lang = specify_lang.replace("--spanish", c2 + "--spanish" + cr)
-    specify_action = specify_action.replace(">*", c5 + ">*")
+        "--Portuguese", c2 + "--Portuguese" + cr)
+    specify_lang = specify_lang.replace("--Russian", c2 + "--Russian" + cr)
+    specify_lang = specify_lang.replace("--Spanish", c2 + "--Spanish" + cr)
+    specify_action = specify_action.replace(">*", c6 + ">*")
     specify_action = specify_action.replace("*<", "*<" + cr)
     specify_action = specify_action.replace(
         "Action Options:", c3 + "Action Options:" + cr)
     specify_action = specify_action.replace(
-        ">  ***  ", c4 + ">  ***  " + cr)
+        "> *** ", c4 + "> *** " + cr)
     specify_action = specify_action.replace(
-        "  ***  <", c4 + "  ***  <" + cr)
+        " *** <", c4 + " *** <" + cr)
     specify_action = specify_action.replace(" -p", " " + c1 + "-p" + cr)
     specify_action = specify_action.replace(" -o", " " + c1 + "-o" + cr)
     specify_action = specify_action.replace(" -c", " " + c1 + "-c" + cr)
@@ -267,14 +301,23 @@ def main():
     example_run = example_run.replace(" --zh", " " + c2 + "--zh" + cr)
     example_run = example_run.replace(" --pt", " " + c2 + "--pt" + cr)
     example_run = example_run.replace(" --nl", " " + c2 + "--nl" + cr)
+    usage = usage.replace("Usage:", c3 + "Usage:" + cr)
+    usage = usage.replace("> *** ", c4 + "> *** " + cr)
+    usage = usage.replace(" *** <", c4 + " *** <" + cr)
+    usage = usage.replace("SB_FILE.py", c4 + "SB_FILE.py" + cr)
+    usage = usage.replace("LANGUAGE", c2 + "LANGUAGE" + cr)
+    usage = usage.replace("ACTION", c1 + "ACTION" + cr)
 
+    if help_me:
+        message = specify_lang + specify_action + example_run + usage
+        raise Exception(message)
     if not overwrite and not copy and not print_only:
-        message = specify_action + example_run
+        message = specify_action + example_run + usage
         if not new_lang:
-            message = specify_lang + specify_action + example_run
+            message = specify_lang + specify_action + example_run + usage
         raise Exception(message)
     if not new_lang:
-        raise Exception(specify_lang + example_run)
+        raise Exception(specify_lang + example_run + usage)
     if overwrite and copy:
         part_1 = (
             '\n* You can choose either {-o / --overwrite} '
@@ -283,7 +326,7 @@ def main():
         part_1 = part_1.replace("--overwrite", c1 + "--overwrite" + cr)
         part_1 = part_1.replace("-c ", c1 + "-c" + cr + " ")
         part_1 = part_1.replace("--copy", c1 + "--copy" + cr)
-        message = part_1 + example_run
+        message = part_1 + example_run + usage
         raise Exception(message)
 
     with open(seleniumbase_file, 'r', encoding='utf-8') as f:
