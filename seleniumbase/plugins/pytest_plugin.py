@@ -497,8 +497,8 @@ def pytest_configure(config):
     if sb_config.reuse_session:
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
-            # Can't "reuse_session" if multithreaded
-            sb_config.reuse_session = False
+            # sb_config.reuse_session = False
+            pass  # Allow multithreaded browser sessions to be reused now
 
     if "linux" in sys.platform and (
             not sb_config.headed and not sb_config.headless):
