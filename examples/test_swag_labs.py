@@ -46,7 +46,6 @@ class SwagLabsTests(BaseCase):
             continue_shopping_button = "link=Continue Shopping"
         self.assert_element(continue_shopping_button)
 
-
         # Checkout - Add info
         self.click("link=CHECKOUT")
         self.assert_exact_text("Checkout: Your Information", "div.subheader")
