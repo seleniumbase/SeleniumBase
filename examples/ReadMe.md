@@ -1,12 +1,10 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="45"></a></h3>
 
-## Running Example Tests
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Running Example Tests:**
 
-SeleniumBase tests can be run with either **``pytest``** or **``nosetests``**, but using pytest is strongly recommended. Chrome is the default browser if not specified.
+SeleniumBase tests can be run with either **``pytest``** or **``nosetests``**, but using pytest is strongly recommended. ``Chrome`` is the default browser if not specified. During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is set, test logs will get archived to the ``archived_logs/`` folder.
 
-During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)
-
-(NOTE: Many tests in this folder fail on purpose to demonstrate the built-in logging, screenshots, and reporting features.)
+(NOTE: Many tests in this folder fail on purpose to demonstrate logging, screenshots, and test reports.)
 
 **Here are some example run commands to help get you started:**
 
@@ -109,4 +107,4 @@ python gui_test_runner.py
 
 --------
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" alt="SeleniumBase" height="48" />
