@@ -1,8 +1,8 @@
-<h1 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r3.png" alt="SeleniumBase" /></h1>
+<h1 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r5.png" alt="SeleniumBase" height="172" /></h1>
 
 <h3 align="center">Create web/mobile tests 8x faster.</h3>
 
-<p align="center">Extends <a href="https://selenium.dev/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
+<p align="center">Level up the power of <a href="https://selenium.dev/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>!</p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -718,4 +718,4 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" />](https://gitter.im/seleniumbase/SeleniumBase)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" title="SeleniumBase" height="46.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" />](https://gitter.im/seleniumbase/SeleniumBase)
