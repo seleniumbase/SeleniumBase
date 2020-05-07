@@ -1,4 +1,4 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="45"></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" alt="SeleniumBase" height="48" /></a></h3>
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Running Example Tests:**
 
@@ -22,7 +22,7 @@ Run an example test in Demo Mode: (highlight assertions)
 ```bash
 pytest my_first_test.py --demo
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 ```bash
@@ -103,8 +103,8 @@ To make things easier, here's a simple GUI program that allows you to run a few 
 ```bash
 python gui_test_runner.py
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260" />
 
 --------
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" alt="SeleniumBase" height="48" />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="45" />
