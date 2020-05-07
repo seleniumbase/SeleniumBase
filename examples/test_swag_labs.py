@@ -4,10 +4,10 @@ from seleniumbase import BaseCase
 class SwagLabsTests(BaseCase):
 
     def login(self, user="standard_user"):
-        """ Login to Swag Labs and assert that the login was successful. """
-        if user not in (["standard_user", "problem_user"]):
-            raise Exception("Invalid user!")
+        """ Login to Swag Labs and verify that login was successful. """
         self.open("https://www.saucedemo.com/")
+        if user not in self.get_text("#login_credentials"):
+            self.fail("Invalid user for login: %s" % user)
         self.update_text("#user-name", user)
         self.update_text("#password", "secret_sauce")
         self.click('input[type="submit"]')
@@ -15,8 +15,8 @@ class SwagLabsTests(BaseCase):
         self.assert_text("Products", "div.product_label")
 
     def test_swag_labs_basic_flow(self):
-        """ This test checks basic functional flow in the Swag Labs store. """
-        self.login()
+        """ This test checks functional flow of the Swag Labs store. """
+        self.login(user="standard_user")
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -25,7 +25,7 @@ class SwagLabsTests(BaseCase):
         # Verify that a reverse-alphabetical sort works as expected
         self.select_option_by_value("select.product_sort_container", "za")
         if item_name not in self.get_text("div.inventory_item"):
-            raise Exception('Sort Failed! Expecting "%s" on top!' % item_name)
+            self.fail('Sort Failed! Expecting "%s" on top!' % item_name)
 
         # Add the "Test.allTheThings() T-Shirt" to the cart
         self.assert_exact_text("ADD TO CART", "button.btn_inventory")
