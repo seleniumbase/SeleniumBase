@@ -1,6 +1,6 @@
-<h2 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" height="48" /></h2>
+<h1 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_f6.png" alt="SeleniumBase" /></h1>
 
-<h3 align="center">Create web & mobile tests 8x faster.</h3>
+<h3 align="center">Create web/mobile tests 8x faster.</h3>
 
 <p align="center">Extends <a href="https://selenium.dev/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 
@@ -190,7 +190,7 @@ For a full list of SeleniumBase features, [Click Here](https://github.com/seleni
 
 
 <a id="detailed_instructions"></a>
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Detailed Instructions:
 
@@ -712,12 +712,10 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 #### Congratulations on getting started with SeleniumBase!
 
-<i>**Questions?**</i> [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
-
 **If you see something, say something!**<br />[<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99">](https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed)
 
 **If you like us, give us a star!**<br />[<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" />](https://gitter.im/seleniumbase/SeleniumBase)
