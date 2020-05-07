@@ -3,12 +3,12 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
 
-    def login(self, user="standard_user"):
+    def login(self, username="standard_user"):
         """ Login to Swag Labs and verify that login was successful. """
         self.open("https://www.saucedemo.com/")
-        if user not in self.get_text("#login_credentials"):
-            self.fail("Invalid user for login: %s" % user)
-        self.update_text("#user-name", user)
+        if username not in self.get_text("#login_credentials"):
+            self.fail("Invalid user for login: %s" % username)
+        self.update_text("#user-name", username)
         self.update_text("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
@@ -16,7 +16,7 @@ class SwagLabsTests(BaseCase):
 
     def test_swag_labs_basic_flow(self):
         """ This test checks functional flow of the Swag Labs store. """
-        self.login(user="standard_user")
+        self.login(username="standard_user")
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -40,7 +40,12 @@ class SwagLabsTests(BaseCase):
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_exact_text("1", "div.cart_quantity")
         self.assert_exact_text("REMOVE", "button.cart_button")
-        self.assert_element("link=CONTINUE SHOPPING")
+        continue_shopping_button = "link=CONTINUE SHOPPING"
+        if self.browser == "safari":
+            # Safari sees this element differently
+            continue_shopping_button = "link=Continue Shopping"
+        self.assert_element(continue_shopping_button)
+
 
         # Checkout - Add info
         self.click("link=CHECKOUT")
@@ -64,5 +69,5 @@ class SwagLabsTests(BaseCase):
         self.assert_element("div.pony_express")
         self.click("#shopping_cart_container path")
         self.assert_element_absent("div.inventory_item_name")
-        self.click("link=CONTINUE SHOPPING")
+        self.click(continue_shopping_button)
         self.assert_element_absent("span.shopping_cart_badge")
