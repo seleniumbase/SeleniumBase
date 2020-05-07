@@ -4,7 +4,7 @@
 
 SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
 
-Type ``seleniumbase`` on the command line to get started.
+Type ``seleniumbase`` on the command line to use console scripts.
 
 (<i>For running tests, [use **pytest** with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 

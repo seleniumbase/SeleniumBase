@@ -2,9 +2,9 @@
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Running Example Tests:**
 
-SeleniumBase tests can be run with either **``pytest``** or **``nosetests``**, but using pytest is strongly recommended. ``Chrome`` is the default browser if not specified. During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is set, test logs will get archived to the ``archived_logs/`` folder.
+SeleniumBase tests are run with **``pytest``** or **``nosetests``**. (<i>Using pytest is recommended.</i>) ``Chrome`` is the default browser if not specified. During test failures, logs and screenshots from the most recent test run are saved to the ``latest_logs/`` folder.
 
-(NOTE: Many tests in this folder fail on purpose to demonstrate logging, screenshots, and test reports.)
+(NOTE: Some example tests in this folder fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
 **Here are some example run commands to help get you started:**
 
