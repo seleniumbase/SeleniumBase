@@ -1,22 +1,32 @@
 """
-Translates a SeleniumBase Python file into a different language.
+Translates a SeleniumBase Python file into a different language
 
 Usage:
-        seleniumbase translate [SELENIUMBASE_FILE].py [LANGUAGE]
+        seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]
+Languages:
+        --en / --English    |    --zh / --Chinese
+        --nl / --Dutch      |    --fr / --French
+        --it / --Italian    |    --ja / --Japanese
+        --ko / --Korean     |    --pt / --Portuguese
+        --ru / --Russian    |    --es / --Spanish
+Actions:
+        -p / --print  (Print translation output to the screen)
+        -o / --overwrite  (Overwrite the file being translated)
+        -c / --copy  (Copy the translation to a new .py file)
 Output:
         Translates a SeleniumBase Python file into the language
         specified. Method calls and "import" lines get swapped.
         Both a language and an action must be specified.
-        When running with "-c" (or "--copy") the new file name
+        The "-p" action can be paired with one other action.
+        When running with "-c" (or "--copy"), the new file name
         will be the orginal name appended with an underscore
         plus the 2-letter language code of the new language.
         (Example: Translating "test_1.py" into Japanese with
-        "-c" will create a new file called "test_1_ja.py").
+        "-c" will create a new file called "test_1_ja.py".)
 """
 
-# import codecs
+import codecs
 import colorama
-# import os
 import re
 import sys
 from seleniumbase.translate import master_dict
@@ -36,18 +46,19 @@ def invalid_run_command(msg=None):
     exp += "         --ko / --Korean     |    --pt / --Portuguese\n"
     exp += "         --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Actions:\n"
-    exp += "         -p / --print  (Only print output. No changes to files.)\n"
+    exp += "         -p / --print  (Print translation output to the screen)\n"
     exp += "         -o / --overwrite  (Overwrite the file being translated)\n"
     exp += "         -c / --copy  (Copy the translation to a new .py file)\n"
     exp += "  Output:\n"
     exp += "         Translates a SeleniumBase Python file into the language\n"
     exp += '         specified. Method calls and "import" lines get swapped.\n'
     exp += "         Both a language and an action must be specified.\n"
-    exp += '         When running with "-c" (or "--copy") the new file name\n'
+    exp += '         The "-p" action can be paired with one other action.\n'
+    exp += '         When running with "-c" (or "--copy"), the new file name\n'
     exp += '         will be the orginal name appended with an underscore\n'
     exp += "         plus the 2-letter language code of the new language.\n"
     exp += '         (Example: Translating "test_1.py" into Japanese with\n'
-    exp += '          "-c" will create a new file called "test_1_ja.py").\n'
+    exp += '          "-c" will create a new file called "test_1_ja.py".)\n'
     if not msg:
         raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
     else:
