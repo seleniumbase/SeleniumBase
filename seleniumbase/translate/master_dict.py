@@ -108,6 +108,37 @@ class MD_F:
                             "" % (language, import_line.keys()))
         return import_line[language]
 
+    def get_locale_code(language):
+        locale_codes = {}
+        locale_codes["English"] = "en"
+        locale_codes["Chinese"] = "zh"
+        locale_codes["Dutch"] = "nl"
+        locale_codes["French"] = "fr"
+        locale_codes["Italian"] = "it"
+        locale_codes["Japanese"] = "ja"
+        locale_codes["Korean"] = "ko"
+        locale_codes["Portuguese"] = "pt"
+        locale_codes["Russian"] = "ru"
+        locale_codes["Spanish"] = "es"
+        if language not in locale_codes.keys():
+            raise Exception("Invalid language {%s} not in {%s}!"
+                            "" % (language, locale_codes.keys()))
+        return locale_codes[language]
+
+    def get_locale_list():
+        locale_list = []
+        locale_list.append("en")
+        locale_list.append("zh")
+        locale_list.append("nl")
+        locale_list.append("fr")
+        locale_list.append("it")
+        locale_list.append("ja")
+        locale_list.append("ko")
+        locale_list.append("pt")
+        locale_list.append("ru")
+        locale_list.append("es")
+        return locale_list
+
 
 class MD_L_Codes:
     # Master Dictionary Language Codes

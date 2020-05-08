@@ -119,7 +119,7 @@ def process_test_file(code_lines, new_lang):
                         changed = True
                         new_parent = MD_F.get_lang_parent_class(new_lang)
                         new_line = (
-                            '%sclass %s(%s)%s'
+                            '%sclass %s(%s):%s'
                             '' % (whitespace, name, new_parent, comments))
                     else:
                         new_line = line
@@ -157,7 +157,7 @@ def process_test_file(code_lines, new_lang):
 
         seleniumbase_lines.append(line)
 
-    return seleniumbase_lines, changed
+    return seleniumbase_lines, changed, detected_lang
 
 
 def main():
@@ -171,7 +171,6 @@ def main():
     c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
     cr = colorama.Style.RESET_ALL
     expected_arg = ("[A SeleniumBase Python file]")
-    # num_args = len(sys.argv)
     command_args = sys.argv[2:]
 
     seleniumbase_file = command_args[0]
@@ -257,11 +256,11 @@ def main():
     specify_lang = specify_lang.replace('>*', c5 + ">*")
     specify_lang = specify_lang.replace('*<', "*<" + cr)
     specify_lang = specify_lang.replace(
-        "Language Options:", c3 + "Language Options:" + cr)
+        "Language Options:", c4 + "Language Options:" + cr)
     specify_lang = specify_lang.replace(
-        ">    ********  ", c4 + ">    ********  " + cr)
+        ">    ********  ", c3 + ">    ********  " + cr)
     specify_lang = specify_lang.replace(
-        "  ********    <", c4 + "  ********    <" + cr)
+        "  ********    <", c3 + "  ********    <" + cr)
     specify_lang = specify_lang.replace("--en", c2 + "--en" + cr)
     specify_lang = specify_lang.replace("--zh", c2 + "--zh" + cr)
     specify_lang = specify_lang.replace("--nl", c2 + "--nl" + cr)
@@ -286,11 +285,11 @@ def main():
     specify_action = specify_action.replace(">*", c6 + ">*")
     specify_action = specify_action.replace("*<", "*<" + cr)
     specify_action = specify_action.replace(
-        "Action Options:", c3 + "Action Options:" + cr)
+        "Action Options:", c4 + "Action Options:" + cr)
     specify_action = specify_action.replace(
-        "> *** ", c4 + "> *** " + cr)
+        "> *** ", c3 + "> *** " + cr)
     specify_action = specify_action.replace(
-        " *** <", c4 + " *** <" + cr)
+        " *** <", c3 + " *** <" + cr)
     specify_action = specify_action.replace(" -p", " " + c1 + "-p" + cr)
     specify_action = specify_action.replace(" -o", " " + c1 + "-o" + cr)
     specify_action = specify_action.replace(" -c", " " + c1 + "-c" + cr)
@@ -300,9 +299,9 @@ def main():
         " --overwrite", " " + c1 + "--overwrite" + cr)
     specify_action = specify_action.replace(
         " --copy", " " + c1 + "--copy" + cr)
-    example_run = example_run.replace("Examples:", c3 + "Examples:" + cr)
-    example_run = example_run.replace("> *** ", c4 + "> *** " + cr)
-    example_run = example_run.replace(" *** <", c4 + " *** <" + cr)
+    example_run = example_run.replace("Examples:", c4 + "Examples:" + cr)
+    example_run = example_run.replace("> *** ", c3 + "> *** " + cr)
+    example_run = example_run.replace(" *** <", c3 + " *** <" + cr)
     example_run = example_run.replace(" -p", " " + c1 + "-p" + cr)
     example_run = example_run.replace(" -o", " " + c1 + "-o" + cr)
     example_run = example_run.replace(" -c", " " + c1 + "-c" + cr)
@@ -312,9 +311,9 @@ def main():
     example_run = example_run.replace(" --zh", " " + c2 + "--zh" + cr)
     example_run = example_run.replace(" --pt", " " + c2 + "--pt" + cr)
     example_run = example_run.replace(" --nl", " " + c2 + "--nl" + cr)
-    usage = usage.replace("Usage:", c3 + "Usage:" + cr)
-    usage = usage.replace("> *** ", c4 + "> *** " + cr)
-    usage = usage.replace(" *** <", c4 + " *** <" + cr)
+    usage = usage.replace("Usage:", c4 + "Usage:" + cr)
+    usage = usage.replace("> *** ", c3 + "> *** " + cr)
+    usage = usage.replace(" *** <", c3 + " *** <" + cr)
     usage = usage.replace("SB_FILE.py", c4 + "SB_FILE.py" + cr)
     usage = usage.replace("LANGUAGE", c2 + "LANGUAGE" + cr)
     usage = usage.replace("ACTION", c1 + "ACTION" + cr)
@@ -342,13 +341,14 @@ def main():
 
     with open(seleniumbase_file, 'r', encoding='utf-8') as f:
         all_code = f.read()
-    if "def test_" not in all_code:
-        raise Exception("\n\n`%s` is not a valid SeleniumBase unittest file!\n"
+    if "def test_" not in all_code and "from seleniumbase" not in all_code:
+        raise Exception("\n\n`%s` is not a valid SeleniumBase test file!\n"
                         "\nExpecting: %s\n"
                         % (seleniumbase_file, expected_arg))
     code_lines = all_code.split('\n')
 
-    seleniumbase_lines, changed = process_test_file(code_lines, new_lang)
+    seleniumbase_lines, changed, d_l = process_test_file(code_lines, new_lang)
+    detected_lang = d_l
 
     if not changed:
         msg = ('\n*> [%s] was already in %s! * No changes were made! <*\n'
@@ -357,13 +357,54 @@ def main():
         print(msg)
         return
 
+    save_line = ("[[[[%s]]]] was translated to [[[%s]]]! "
+                 "(Previous: %s)\n"
+                 "" % (seleniumbase_file, new_lang, detected_lang))
+    save_line = save_line.replace("[[[[", "" + c4)
+    save_line = save_line.replace("]]]]", cr + "")
+    save_line = save_line.replace("[[[", "" + c2)
+    save_line = save_line.replace("]]]", cr + "")
+
     if print_only:
+        print("")
+        print(save_line)
+        print(c1 + "* Here are the results: >>>" + cr)
+        print("--------------------------------------------------------------")
         for line in seleniumbase_lines:
             print(line)
+        print("--------------------------------------------------------------")
 
-    return
+    new_file_name = None
+    if copy:
+        base_file_name = seleniumbase_file.split('.py')[0]
+        new_locale = MD_F.get_locale_code(new_lang)
+        new_ext = "_" + new_locale + ".py"
+        for locale in MD_F.get_locale_list():
+            ext = "_" + locale + ".py"
+            if seleniumbase_file.endswith(ext):
+                base_file_name = seleniumbase_file.split(ext)[0]
+                break
+        new_file_name = base_file_name + new_ext
+    elif overwrite:
+        new_file_name = seleniumbase_file
+    else:
+        pass  # Print-only run already done
 
-    # TODO: Finish writing this for -o and -c options (File Writing)
+    if not print_only:
+        print("")
+        print(save_line)
+    else:
+        pass  # Print-only run already done
+
+    if new_file_name:
+        out_file = codecs.open(new_file_name, "w+", encoding='utf-8')
+        out_file.writelines("\r\n".join(seleniumbase_lines))
+        out_file.close()
+        results_saved = ("The translation was saved to: [[[%s]]]\n"
+                         "" % new_file_name)
+        results_saved = results_saved.replace("[[[", "" + c1)
+        results_saved = results_saved.replace("]]]", cr + "")
+        print(results_saved)
 
 
 if __name__ == "__main__":
