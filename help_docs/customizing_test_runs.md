@@ -2,9 +2,9 @@
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Customizing test runs
 
-In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for customizing global properties, you can customize test runs [from the command-line](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py).
+You can customize test runs from the command-line thanks to [SeleniumBase's pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py), which adds command-line options for setting/enabling the browser type, headless mode, mobile mode, multithreading mode, demo mode, proxy config, user agent config, browser extensions, and more.
 
-The following tests can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
+Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
 ```bash
 # Run a test in Chrome (default browser)
@@ -45,6 +45,9 @@ pytest test_suite.py --server=USERNAME:KEY@IP_ADDRESS --port=80
 
 # Reuse the same browser session for all tests being run
 pytest test_suite.py --reuse-session
+
+# Reuse the same browser session, but empty cookies between tests
+pytest test_suite.py --reuse-session --crumbs
 
 # Run tests through a proxy server
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
