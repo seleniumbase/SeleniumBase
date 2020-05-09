@@ -37,7 +37,7 @@ seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]
 ``--ru`` / ``--Russian``  |  ``--es`` / ``--Spanish``
 
 * Actions:
-``-p`` / ``--print``  (Only print output. No changes to files.)
+``-p`` / ``--print``  (Print translation output to the screen)
 ``-o`` / ``--overwrite``  (Overwrite the file being translated)
 ``-c`` / ``--copy``  (Copy the translation to a new ``.py`` file)
 
@@ -51,11 +51,12 @@ Translate test_3.py into Dutch and make a copy of the file:
 
 * Output:
 Translates a SeleniumBase Python file into the language
-specified. Method calls and "import" lines get swapped.
+specified. Method calls and ``import`` lines get swapped.
 Both a language and an action must be specified.
+The ``-p`` action can be paired with one other action.
 When running with ``-c`` (or ``--copy``) the new file name
 will be the orginal name appended with an underscore
 plus the 2-letter language code of the new language.
 (Example: Translating ``test_1.py`` into Japanese with
-``-c`` will create a new file called ``test_1_ja.py``).
+``-c`` will create a new file called ``test_1_ja.py``.)
 ```
