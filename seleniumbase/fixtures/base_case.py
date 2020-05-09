@@ -2806,6 +2806,70 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    # Application "Local Storage" controls
+
+    def set_local_storage_item(self, key, value):
+        self.execute_script(
+            "window.localStorage.setItem('{}', '{}');".format(key, value))
+
+    def get_local_storage_item(self, key):
+        return self.execute_script(
+            "return window.localStorage.getItem('{}');".format(key))
+
+    def remove_local_storage_item(self, key):
+        self.execute_script(
+            "window.localStorage.removeItem('{}');".format(key))
+
+    def clear_local_storage(self):
+        self.execute_script("window.localStorage.clear();")
+
+    def get_local_storage_keys(self):
+        return self.execute_script(
+            "var ls = window.localStorage, keys = []; "
+            "for (var i = 0; i < ls.length; ++i) "
+            "  keys[i] = ls.key(i); "
+            "return keys;")
+
+    def get_local_storage_items(self):
+        return self.execute_script(
+            r"var ls = window.localStorage, items = {}; "
+            "for (var i = 0, k; i < ls.length; ++i) "
+            "  items[k = ls.key(i)] = ls.getItem(k); "
+            "return items;")
+
+    # Application "Session Storage" controls
+
+    def set_session_storage_item(self, key, value):
+        self.execute_script(
+            "window.sessionStorage.setItem('{}', '{}');".format(key, value))
+
+    def get_session_storage_item(self, key):
+        return self.execute_script(
+            "return window.sessionStorage.getItem('{}');".format(key))
+
+    def remove_session_storage_item(self, key):
+        self.execute_script(
+            "window.sessionStorage.removeItem('{}');".format(key))
+
+    def clear_session_storage(self):
+        self.execute_script("window.sessionStorage.clear();")
+
+    def get_session_storage_keys(self):
+        return self.execute_script(
+            "var ls = window.sessionStorage, keys = []; "
+            "for (var i = 0; i < ls.length; ++i) "
+            "  keys[i] = ls.key(i); "
+            "return keys;")
+
+    def get_session_storage_items(self):
+        return self.execute_script(
+            r"var ls = window.sessionStorage, items = {}; "
+            "for (var i = 0, k; i < ls.length; ++i) "
+            "  items[k = ls.key(i)] = ls.getItem(k); "
+            "return items;")
+
+    ############
+
     # Duplicates (Avoids name confusion when migrating from other frameworks.)
 
     def open_url(self, url):

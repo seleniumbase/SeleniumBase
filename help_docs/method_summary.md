@@ -304,7 +304,33 @@ self.set_time_limit(time_limit)
 
 self.skip(reason="")
 
-########
+############
+
+self.set_local_storage_item(key, value)
+
+self.get_local_storage_item(key)
+
+self.remove_local_storage_item(key)
+
+self.clear_local_storage()
+
+self.get_local_storage_keys()
+
+self.get_local_storage_items()
+
+self.set_session_storage_item(key, value)
+
+self.get_session_storage_item(key)
+
+self.remove_session_storage_item(key)
+
+self.clear_session_storage()
+
+self.get_session_storage_keys()
+
+self.get_session_storage_items()
+
+############
 
 self.add_css_link(css_link)
 
@@ -318,7 +344,7 @@ self.add_js_code(js_code)
 
 self.add_meta_tag(http_equiv=None, content=None)
 
-########
+############
 
 self.create_tour(name=None, theme=None)
 
@@ -350,7 +376,7 @@ self.post_error_message(message, duration=None, pause=True)
 self.set_messenger_theme(theme="default", location="default",
                          max_messages="default")
 
-########
+############
 
 self.generate_referral(start_page, destination_page)
 
@@ -360,7 +386,7 @@ self.generate_referral_chain(pages)
 
 self.generate_traffic_chain(pages, loops=1)
 
-########
+############
 
 self.get_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
@@ -374,7 +400,7 @@ self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
 self.assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
-########
+############
 
 self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
@@ -387,7 +413,7 @@ self.assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_exact_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
-########
+############
 
 self.wait_for_link_text_present(link_text, timeout=None)
 
@@ -399,32 +425,32 @@ self.find_link_text(link_text, timeout=None)
 
 self.assert_link_text(link_text, timeout=None)
 
-########
+############
 
 self.find_partial_link_text(partial_link_text, timeout=None)
 # Duplicates: self.wait_for_partial_link_text(partial_link_text, timeout=None)
 
 self.assert_partial_link_text(partial_link_text, timeout=None)
 
-########
+############
 
 self.wait_for_element_absent(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_element_absent(selector, by=By.CSS_SELECTOR, timeout=None)
 
-########
+############
 
 self.wait_for_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
-########
+############
 
 self.wait_for_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
-########
+############
 
 self.wait_for_and_accept_alert(timeout=None)
 
@@ -432,11 +458,11 @@ self.wait_for_and_dismiss_alert(timeout=None)
 
 self.wait_for_and_switch_to_alert(timeout=None)
 
-########
+############
 
 self.check_window(name="default", level=0, baseline=False)
 
-########
+############
 
 self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 
