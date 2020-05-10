@@ -272,3 +272,47 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 가이드_투어_내보내기(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def 실패(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def URL_받기(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def 방문_URL(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def 요소_검색(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def 요소를_찾을_수(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def 특성_검색(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def 특성을_설정_하려면(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def 모든_특성_설정(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def 입력(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def 쓰다(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def 인쇄(self, *args, **kwargs):
+        # print(TEXT)  # Same as Python print()
+        return self.print(*args, **kwargs)

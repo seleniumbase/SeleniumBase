@@ -272,3 +272,47 @@ class CasoDePrueba(BaseCase):
     def exportar_la_gira(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def fallar(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def obtener_url(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def visita_url(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def obtener_elemento(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def encontrar_elemento(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def obtener_atributo(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def establecer_atributo(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def establecer_atributos(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def entrada(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def escribir(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def imprimir(self, *args, **kwargs):
+        # print(TEXT)  # Same as Python print()
+        return self.print(*args, **kwargs)
