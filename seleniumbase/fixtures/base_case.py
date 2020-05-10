@@ -2943,6 +2943,20 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.click_link_text(link_text, timeout=timeout)
 
+    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
+                                 timeout=None):
+        """ Same as self.wait_for_element() """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout)
+
+    def print(self, *args, **kwargs):
+        print(*args, **kwargs)
+
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
 
@@ -3559,8 +3573,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
-    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
-                                 timeout=None):
+    def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """ Waits for an element to appear in the HTML of a page.
             The element must be visible (it cannot be hidden). """
         if not timeout:
@@ -3570,14 +3583,6 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
-
-    def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        """ The shorter version of wait_for_element_visible() """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
     def get_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """ Same as wait_for_element_present() - returns the element.
