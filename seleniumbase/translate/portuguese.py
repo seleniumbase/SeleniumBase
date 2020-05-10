@@ -314,5 +314,5 @@ class CasoDeTeste(BaseCase):
         return self.write(*args, **kwargs)
 
     def imprimir(self, *args, **kwargs):
-        # print(TEXT)  # Same as Python print()
-        return self.print(*args, **kwargs)
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)

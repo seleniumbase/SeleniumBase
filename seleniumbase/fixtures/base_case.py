@@ -2954,8 +2954,8 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
-    def print(self, *args, **kwargs):
-        print(*args, **kwargs)
+    def _print(self, msg):
+        print(msg)
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)

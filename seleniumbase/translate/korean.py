@@ -314,5 +314,5 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         return self.write(*args, **kwargs)
 
     def 인쇄(self, *args, **kwargs):
-        # print(TEXT)  # Same as Python print()
-        return self.print(*args, **kwargs)
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)

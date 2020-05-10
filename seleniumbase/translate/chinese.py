@@ -314,5 +314,5 @@ class 硒测试用例(BaseCase):  # noqa
         return self.write(*args, **kwargs)
 
     def 打印(self, *args, **kwargs):
-        # print(TEXT)  # Same as Python print()
-        return self.print(*args, **kwargs)
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
