@@ -93,6 +93,8 @@ def process_test_file(code_lines, new_lang):
                         new_line = MD_F.get_import_line(new_lang) + comments
                     else:
                         new_line = line
+                    if new_line.endswith("  # noqa"):  # Remove flake8 skip
+                        new_line = new_line[0:-len("  # noqa")]
                     seleniumbase_lines.append(new_line)
                     added_line = True
                     break
@@ -123,6 +125,8 @@ def process_test_file(code_lines, new_lang):
                             '' % (whitespace, name, new_parent, comments))
                     else:
                         new_line = line
+                    if new_line.endswith("  # noqa"):  # Remove flake8 skip
+                        new_line = new_line[0:-len("  # noqa")]
                     seleniumbase_lines.append(new_line)
                     added_line = True
                     continue
@@ -152,6 +156,8 @@ def process_test_file(code_lines, new_lang):
                         continue
 
             if found_swap:
+                if new_line.endswith("  # noqa"):  # Remove flake8 skip
+                    new_line = new_line[0:-len("  # noqa")]
                 seleniumbase_lines.append(new_line)
                 continue
 
