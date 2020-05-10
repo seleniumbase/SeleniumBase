@@ -6,13 +6,13 @@
 * English
 * Chinese / 中文
 * Dutch / Nederlands
-* French / français
-* Italian / italiano
+* French / Français
+* Italian / Italiano
 * Japanese / 日本語
 * Korean / 한국어
 * Portuguese / Português
 * Russian / Русский
-* Spanish / español
+* Spanish / Español
 
 Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language. Example:
  ``self.open(URL)`` = ``self.开启网址(URL)``

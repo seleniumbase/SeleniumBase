@@ -30,7 +30,7 @@
 </p>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
-<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation.</i>)</p>
+<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation enabled.</i>)</p>
 
 ```bash
 pytest test_swag_labs.py --mobile
@@ -246,15 +246,18 @@ pytest my_first_test.py --pdb -s
 ```
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
 
-Here are some other useful command-line options that come with Pytest:
+Here are some useful command-line options that come with Pytest:
 ```bash
 -v  # Prints the full test name for each test.
 -q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
--s  # See print statements. (Should be on by default with pytest.ini present.)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+--junit-xml=report.xml  # Creates a junit-xml report after tests finish.
+--pdb  # If a test fails, pause run and enter debug mode. (Don't use with CI!)
+-m=MARKER  # Only run tests that are marked with the specified pytest marker.
 ```
 
 SeleniumBase provides additional Pytest command-line options for tests:

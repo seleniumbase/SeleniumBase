@@ -1,4 +1,4 @@
-# French / français - Translations - Python 3 Only!
+# French / Français - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 
 

@@ -77,10 +77,13 @@ Here are some useful command-line options that come with Pytest:
 -v  # Prints the full test name for each test.
 -q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
---html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
--s  # See print statements. (Should be on by default with pytest.ini present.)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+--junit-xml=report.xml  # Creates a junit-xml report after tests finish.
+--pdb  # If a test fails, pause run and enter debug mode. (Don't use with CI!)
+-m=MARKER  # Only run tests that are marked with the specified pytest marker.
 ```
 
 SeleniumBase provides additional Pytest command-line options for tests:
