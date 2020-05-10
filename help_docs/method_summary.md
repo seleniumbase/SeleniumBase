@@ -469,6 +469,12 @@ self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.process_delayed_asserts()
+
+############
+
+self.fail(msg=None)  # Inherited from "unittest"
+
+self.print(TEXT)  # Calls Python's print() / Allows for translations
 ```
 
 ---
