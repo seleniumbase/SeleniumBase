@@ -98,7 +98,7 @@ setup(
         'pluggy==0.13.1',
         'attrs>=19.3.0',
         'pytest==4.6.9;python_version<"3.5"',
-        'pytest==5.3.5;python_version>="3.5"',
+        'pytest==5.4.2;python_version>="3.5"',
         'pytest-cov==2.8.1',
         'pytest-forked==1.1.3',
         'pytest-html==1.22.1;python_version<"3.6"',
