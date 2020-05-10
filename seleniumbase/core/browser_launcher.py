@@ -721,7 +721,18 @@ def get_local_driver(
                     print("\nWarning: chromedriver not found. Installing now:")
                     sb_install.main(override="chromedriver")
                     sys.argv = sys_args  # Put back the original sys args
-            return webdriver.Chrome(options=chrome_options)
+            if not headless or "linux" not in PLATFORM:
+                return webdriver.Chrome(options=chrome_options)
+            else:  # Running headless on Linux
+                try:
+                    return webdriver.Chrome(options=chrome_options)
+                except Exception:
+                    # Use the virtual display on Linux during headless errors
+                    logging.debug("\nWarning: Chrome failed to launch in"
+                                  " headless mode. Attempting to use the"
+                                  " SeleniumBase virtual display on Linux...")
+                    chrome_options.headless = False
+                    return webdriver.Chrome(options=chrome_options)
         except Exception as e:
             if headless:
                 raise Exception(e)
