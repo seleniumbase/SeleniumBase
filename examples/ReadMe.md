@@ -25,12 +25,18 @@ Run an example test in Demo Mode: (highlight assertions)
 ```bash
 pytest my_first_test.py --demo
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" /><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase Demo Mode" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 ```bash
 pytest my_first_test.py --headless
 ```
+
+Run an example test using Chrome's mobile device emulator: (default settings)
+```bash
+pytest test_swag_labs.py --mobile
+```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" title="SeleniumBase Mobile Mode" /><br />
 
 Run tests with verbose output: (includes more details)
 ```bash
@@ -55,11 +61,6 @@ pytest test_suite.py -v --html=report.html
 Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
 ```bash
 pytest test_fail.py
-```
-
-Run an example test using Chrome's mobile device emulator: (default settings)
-```bash
-pytest test_swag_labs.py --mobile
 ```
 
 Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
