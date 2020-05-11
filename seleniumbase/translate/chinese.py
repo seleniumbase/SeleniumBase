@@ -1,5 +1,6 @@
 # Chinese / 中文 - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class 硒测试用例(BaseCase):  # noqa
@@ -316,3 +317,14 @@ class 硒测试用例(BaseCase):  # noqa
     def 打印(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+
+class MasterQA_中文(MasterQA, 硒测试用例):
+
+    def 校验(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "手动检查"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "页面是否看起来不错？"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

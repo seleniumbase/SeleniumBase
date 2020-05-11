@@ -1,5 +1,6 @@
 # Korean / 한국어 - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class 셀레늄_테스트_케이스(BaseCase):  # noqa
@@ -316,3 +317,14 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 인쇄(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+
+class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):
+
+    def 확인(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "수동 검사"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "페이지가 잘 보이나요?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

@@ -1,5 +1,6 @@
 # Dutch / Nederlands - Translations
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class Testgeval(BaseCase):
@@ -316,3 +317,14 @@ class Testgeval(BaseCase):
     def afdrukken(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+
+class MasterQA_Nederlands(MasterQA, Testgeval):
+
+    def controleren(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Handmatige controle"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "Ziet de pagina er goed uit?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

@@ -1,5 +1,6 @@
 # Italian / Italiano - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class CasoDiProva(BaseCase):
@@ -316,3 +317,14 @@ class CasoDiProva(BaseCase):
     def stampare(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+
+class MasterQA_Italiano(MasterQA, CasoDiProva):
+
+    def verificare(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Controllo manuale"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "La pagina ha un bell'aspetto?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

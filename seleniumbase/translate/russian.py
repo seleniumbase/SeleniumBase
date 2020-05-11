@@ -1,5 +1,6 @@
 # Russian / Русский - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class ТестНаСелен(BaseCase):  # noqa
@@ -316,3 +317,14 @@ class ТестНаСелен(BaseCase):  # noqa
     def печатать(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+
+class MasterQA_Русский(MasterQA, ТестНаСелен):
+
+    def подтвердить(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Ручная проверка"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "Страница хорошо выглядит?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)
