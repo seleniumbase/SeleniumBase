@@ -1,10 +1,8 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" alt="SeleniumBase" height="48" /></a></h3>
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Running Example Tests:
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Running Example Tests:**
+SeleniumBase tests are run with **``pytest``** or **``nosetests``**. (<i>pytest is recommended.</i>) ``Chrome`` is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
-SeleniumBase tests are run with **``pytest``** or **``nosetests``**. (<i>Using pytest is recommended.</i>) ``Chrome`` is the default browser if not specified. During test failures, logs and screenshots from the most recent test run are saved to the ``latest_logs/`` folder.
-
-(NOTE: Some example tests in this folder fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
+(NOTE: Some example tests [in this folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
