@@ -2,7 +2,7 @@
 
 <h3 align="center"><span align="center">Create web/mobile tests 8x faster.</span></h3>
 
-<p align="center">Bring <a href="https://selenium.dev/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</p>
+<p align="center">Bring <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</p>
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
