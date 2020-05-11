@@ -1,0 +1,32 @@
+site_name: SeleniumBase
+repo_url: https://github.com/seleniumbase/SeleniumBase/
+edit_uri: ""
+site_dir: "site"
+docs_dir: "docs"
+markdown_extensions:
+  - codehilite
+  - toc:
+      permalink: true
+theme:
+  name: material
+  logo: https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png
+  favicon: img/favicon.ico
+plugins:
+  - search
+  - mkdocs-simple-hooks:
+      hooks:
+        on_pre_build: docs.prepare:main
+nav:
+  - Introduction: README.md
+  - Features: help_docs/features_list.md
+  - Options: help_docs/customizing_test_runs.md
+  - Mobile Testing: help_docs/mobile_testing.md
+  - Examples: https://github.com/seleniumbase/SeleniumBase/tree/master/examples
+  - Reports: examples/example_logs/ReadMe.md
+  - API: help_docs/method_summary.md
+  - Site Tours: examples/tour_examples/ReadMe.md
+  - Translations: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations
+  - Recorder: seleniumbase/utilities/selenium_ide/ReadMe.md
+  - MasterQA: examples/master_qa/ReadMe.md
+  - Visual Testing: examples/visual_testing/ReadMe.md
+  - GitHub CI: integrations/github/workflows/ReadMe.md
