@@ -1,4 +1,4 @@
-<h1 align="center"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r6.png" alt="SeleniumBase" height="150" /></h1>
+<h1 align="center"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r7.png" alt="SeleniumBase" height="150" /></h1>
 
 <h3 align="center"><span align="center">Create web/mobile tests 8x faster.</span></h3>
 
