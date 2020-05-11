@@ -1,12 +1,13 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_dh.png" title="SeleniumBase" align="center" height="155">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" alt="SeleniumBase" height="48" /></a></h3>
 
-## Running Example Tests
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Running Example Tests:**
 
-SeleniumBase tests can be run with either **``pytest``** or **``nosetests``**, but using pytest is strongly recommended. Chrome is the default browser if not specified.
+SeleniumBase tests are run with **``pytest``** or **``nosetests``**. (<i>Using pytest is recommended.</i>) ``Chrome`` is the default browser if not specified. During test failures, logs and screenshots from the most recent test run are saved to the ``latest_logs/`` folder.
 
-During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)
+(NOTE: Some example tests in this folder fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
-(NOTE: Many tests in this folder fail on purpose to demonstrate the built-in logging, screenshots, and reporting features.)
+<a href="https://github.com/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
 
 **Here are some example run commands to help get you started:**
 
@@ -24,12 +25,18 @@ Run an example test in Demo Mode: (highlight assertions)
 ```bash
 pytest my_first_test.py --demo
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase Demo Mode" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 ```bash
 pytest my_first_test.py --headless
 ```
+
+Run an example test using Chrome's mobile device emulator: (default settings)
+```bash
+pytest test_swag_labs.py --mobile
+```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" title="SeleniumBase Mobile Mode" /><br />
 
 Run tests with verbose output: (includes more details)
 ```bash
@@ -54,11 +61,6 @@ pytest test_suite.py -v --html=report.html
 Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
 ```bash
 pytest test_fail.py
-```
-
-Run an example test using Chrome's mobile device emulator: (default settings)
-```bash
-pytest test_swag_labs.py --mobile
 ```
 
 Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
@@ -105,8 +107,8 @@ To make things easier, here's a simple GUI program that allows you to run a few 
 ```bash
 python gui_test_runner.py
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260" />
 
 --------
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_e.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="45" />

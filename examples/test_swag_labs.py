@@ -3,20 +3,20 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
 
-    def login(self, user="standard_user"):
-        """ Login to Swag Labs and assert that the login was successful. """
-        if user not in (["standard_user", "problem_user"]):
-            raise Exception("Invalid user!")
+    def login(self, username="standard_user"):
+        """ Login to Swag Labs and verify that login was successful. """
         self.open("https://www.saucedemo.com/")
-        self.update_text("#user-name", user)
+        if username not in self.get_text("#login_credentials"):
+            self.fail("Invalid user for login: %s" % username)
+        self.update_text("#user-name", username)
         self.update_text("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
         self.assert_text("Products", "div.product_label")
 
     def test_swag_labs_basic_flow(self):
-        """ This test checks basic functional flow in the Swag Labs store. """
-        self.login()
+        """ This test checks functional flow of the Swag Labs store. """
+        self.login(username="standard_user")
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -25,7 +25,7 @@ class SwagLabsTests(BaseCase):
         # Verify that a reverse-alphabetical sort works as expected
         self.select_option_by_value("select.product_sort_container", "za")
         if item_name not in self.get_text("div.inventory_item"):
-            raise Exception('Sort Failed! Expecting "%s" on top!' % item_name)
+            self.fail('Sort Failed! Expecting "%s" on top!' % item_name)
 
         # Add the "Test.allTheThings() T-Shirt" to the cart
         self.assert_exact_text("ADD TO CART", "button.btn_inventory")
@@ -40,7 +40,11 @@ class SwagLabsTests(BaseCase):
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_exact_text("1", "div.cart_quantity")
         self.assert_exact_text("REMOVE", "button.cart_button")
-        self.assert_element("link=CONTINUE SHOPPING")
+        continue_shopping_button = "link=CONTINUE SHOPPING"
+        if self.browser == "safari":
+            # Safari sees this element differently
+            continue_shopping_button = "link=Continue Shopping"
+        self.assert_element(continue_shopping_button)
 
         # Checkout - Add info
         self.click("link=CHECKOUT")
@@ -64,5 +68,5 @@ class SwagLabsTests(BaseCase):
         self.assert_element("div.pony_express")
         self.click("#shopping_cart_container path")
         self.assert_element_absent("div.inventory_item_name")
-        self.click("link=CONTINUE SHOPPING")
+        self.click(continue_shopping_button)
         self.assert_element_absent("span.shopping_cart_badge")

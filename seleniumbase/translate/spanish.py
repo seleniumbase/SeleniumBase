@@ -1,5 +1,6 @@
-# Spanish / español - Translations - Python 3 Only!
+# Spanish / Español - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class CasoDePrueba(BaseCase):
@@ -111,6 +112,10 @@ class CasoDePrueba(BaseCase):
     def espere_el_elemento(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
+
+    def espere_presente_el_elemento(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
@@ -268,3 +273,58 @@ class CasoDePrueba(BaseCase):
     def exportar_la_gira(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def fallar(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def obtener_url(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def visita_url(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def obtener_elemento(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def encontrar_elemento(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def obtener_atributo(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def establecer_atributo(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def establecer_atributos(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def entrada(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def escribir(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def imprimir(self, *args, **kwargs):
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
+
+
+class MasterQA_Español(MasterQA, CasoDePrueba):
+
+    def verificar(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Comprobación manual"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "¿Se ve bien la página?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

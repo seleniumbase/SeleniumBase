@@ -1,26 +1,30 @@
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" height="48">
+
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Console Scripts
 
-SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old Webdriver unittest scripts into SeleniumBase code, and using the Selenium Grid.
+SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
 
-For running tests from the command line, [use **pytest** with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+Type ``seleniumbase`` on the command line to use console scripts.
+
+(<i>For running tests, [use **pytest** with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
 ### install
 
 * Usage:
 ``seleniumbase install [DRIVER_NAME]``
-        (Drivers: chromedriver, geckodriver, edgedriver,
-                  iedriver, operadriver)
+        (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
+                  ``iedriver``, ``operadriver``)
 
 * Example:
 ``seleniumbase install chromedriver``
 
 * Output:
 Installs the specified webdriver.
-(chromedriver is required for Google Chrome automation)
-(geckodriver is required for Mozilla Firefox automation)
-(edgedriver is required for Microsoft Edge automation)
-(iedriver is required for Internet Explorer automation)
-(operadriver is required for Opera Browser automation)
+(``chromedriver`` is required for Google Chrome automation)
+(``geckodriver`` is required for Mozilla Firefox automation)
+(``edgedriver`` is required for Microsoft Edge automation)
+(``iedriver`` is required for Internet Explorer automation)
+(``operadriver`` is required for Opera Browser automation)
 
 ### mkdir
 
@@ -49,10 +53,39 @@ file name while keeping the original file intact.
 Works with Katalon Recorder scripts.
 See: http://www.katalon.com/automation-recorder
 
+### translate
+
+* Usage:
+``seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]``
+
+* Languages:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+
+* Actions:
+``-p`` / ``--print``  (Print translation output to the screen)
+``-o`` / ``--overwrite``  (Overwrite the file being translated)
+``-c`` / ``--copy``  (Copy the translation to a new ``.py`` file)
+
+* Output:
+Translates a SeleniumBase Python file into the language
+specified. Method calls and "import" lines get swapped.
+Both a language and an action must be specified.
+The ``-p`` action can be paired with one other action.
+When running with ``-c`` (or ``--copy``), the new file name
+will be the orginal name appended with an underscore
+plus the 2-letter language code of the new language.
+(Example: Translating "test_1.py" into Japanese with
+``-c`` will create a new file called "test_1_ja.py".)
+
+
 ### extract-objects
 
 * Usage:
-``seleniumbase extract-objects [SELENIUMBASE_PYTHON_FILE]``
+``seleniumbase extract-objects [SB_PYTHON_FILE]``
 
 * Output:
 Creates page objects based on selectors found in a
@@ -62,7 +95,7 @@ seleniumbase Python file and saves those objects to the
 ### inject-objects
 
 * Usage:
-``seleniumbase inject-objects [SELENIUMBASE_PYTHON_FILE] [OPTIONS]``
+``seleniumbase inject-objects [SB_PYTHON_FILE] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Add object selectors to the comments.)
@@ -75,7 +108,7 @@ the selected seleniumbase Python file.
 ### objectify
 
 * Usage:
-``seleniumbase objectify [SELENIUMBASE_PYTHON_FILE] [OPTIONS]``
+``seleniumbase objectify [SB_PYTHON_FILE] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Add object selectors to the comments.)
@@ -90,7 +123,7 @@ have been replaced with variable names defined in
 ### revert-objects
 
 * Usage:
-``seleniumbase revert-objects [SELENIUMBASE_PYTHON_FILE] [OPTIONS]``
+``seleniumbase revert-objects [SB_PYTHON_FILE] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Keep existing comments for the lines.)
@@ -117,7 +150,7 @@ Downloads the specified item.
 ### grid-hub
 
 * Usage:
-``seleniumbase grid-hub {start|stop|restart}``
+``seleniumbase grid-hub {start|stop}``
 
 * Options:
 ``-v``, ``--verbose``  (Increases verbosity of logging output.)
@@ -132,7 +165,7 @@ You can start, restart, or stop the Grid Hub server.
 ### grid-node
 
 * Usage:
-``seleniumbase grid-node {start|stop|restart} [OPTIONS]``
+``seleniumbase grid-node {start|stop} [OPTIONS]``
 
 * Options:
 ``--hub=HUB_IP`` (The Grid Hub IP Address to connect to.) (Default: ``127.0.0.1``)

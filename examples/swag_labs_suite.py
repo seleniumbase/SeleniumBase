@@ -5,12 +5,12 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
 
-    def login(self, user="standard_user"):
-        """ Login to Swag Labs and assert that the login was successful. """
-        if user not in (["standard_user", "problem_user"]):
-            raise Exception("Invalid user!")
+    def login(self, username="standard_user"):
+        """ Login to Swag Labs and verify that login was successful. """
         self.open("https://www.saucedemo.com/")
-        self.update_text("#user-name", user)
+        if username not in self.get_text("#login_credentials"):
+            self.fail("Invalid user for login: %s" % username)
+        self.update_text("#user-name", username)
         self.update_text("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
@@ -21,11 +21,10 @@ class SwagLabsTests(BaseCase):
         ["problem_user"],
     ])
     @pytest.mark.run(order=1)
-    def test_swag_labs_basic_functional_flow(self, user):
-        """ This test checks for basic functional flow in the Swag Labs store.
-            The test is parameterized, and receives the user to use for login.
-        """
-        self.login(user)
+    def test_swag_labs_basic_functional_flow(self, username):
+        """ This test checks functional flow of the Swag Labs store.
+            This test is parameterized, and receives the user for login. """
+        self.login(username=username)
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -34,7 +33,7 @@ class SwagLabsTests(BaseCase):
         # Verify that a reverse-alphabetical sort works as expected
         self.select_option_by_value("select.product_sort_container", "za")
         if item_name not in self.get_text("div.inventory_item"):
-            raise Exception('Sort Failed! Expecting "%s" on top!' % item_name)
+            self.fail('Sort Failed! Expecting "%s" on top!' % item_name)
 
         # Add the "Test.allTheThings() T-Shirt" to the cart
         self.assert_exact_text("ADD TO CART", "button.btn_inventory")
@@ -49,7 +48,11 @@ class SwagLabsTests(BaseCase):
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_exact_text("1", "div.cart_quantity")
         self.assert_exact_text("REMOVE", "button.cart_button")
-        self.assert_element("link=CONTINUE SHOPPING")
+        continue_shopping_button = "link=CONTINUE SHOPPING"
+        if self.browser == "safari":
+            # Safari sees this element differently
+            continue_shopping_button = "link=Continue Shopping"
+        self.assert_element(continue_shopping_button)
 
         # Checkout - Add info
         self.click("link=CHECKOUT")
@@ -67,13 +70,13 @@ class SwagLabsTests(BaseCase):
         self.assert_text(item_price, "div.inventory_item_price")
         self.assert_exact_text("1", "div.summary_quantity")
 
-        # Finish Checkout and verify item is no longer in cart
+        # Finish Checkout and verify the item was removed from the cart
         self.click("link=FINISH")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
         self.assert_element("div.pony_express")
         self.click("#shopping_cart_container path")
         self.assert_element_absent("div.inventory_item_name")
-        self.click("link=CONTINUE SHOPPING")
+        self.click(continue_shopping_button)
         self.assert_element_absent("span.shopping_cart_badge")
 
     @parameterized.expand([
@@ -81,9 +84,8 @@ class SwagLabsTests(BaseCase):
         ["problem_user"],
     ])
     @pytest.mark.run(order=2)
-    def test_swag_labs_products_page_resource_verification(self, user):
+    def test_swag_labs_products_page_resource_verification(self, username):
         """ This test checks for 404 errors on the Swag Labs products page.
-            The test is parameterized, and receives the user to use for login.
-        """
-        self.login(user)
+            This test is parameterized, and receives the user for login. """
+        self.login(username=username)
         self.assert_no_404_errors()

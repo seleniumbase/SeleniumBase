@@ -622,14 +622,6 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def click_link(self, link_text, timeout=None):
-        """ Same as self.click_link_text() """
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.click_link_text(link_text, timeout=timeout)
-
     def click_partial_link_text(self, partial_link_text, timeout=None):
         """ This method clicks the partial link text on a page. """
         # If using phantomjs, might need to extract and open the link directly
@@ -2383,6 +2375,7 @@ class BaseCase(unittest.TestCase):
         pdf_text = self.__fix_unicode_conversion(pdf_text)
         if wrap:
             pdf_text = pdf_text.replace(' \n', ' ')
+        pdf_text = pdf_text.strip()  # Remove leading and trailing whitespace
         return pdf_text
 
     def assert_pdf_text(self, pdf, text, page=None, maxpages=None,
@@ -2599,6 +2592,7 @@ class BaseCase(unittest.TestCase):
                 * See https://github.com/SeleniumHQ/selenium/issues/1161
             Based on the following Stack Overflow solution:
                 * https://stackoverflow.com/a/41150512/7058266 """
+        self.wait_for_ready_state_complete()
         time.sleep(0.1)  # May take a moment for errors to appear after loads.
         try:
             browser_logs = self.driver.get_log('browser')
@@ -2812,6 +2806,70 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    # Application "Local Storage" controls
+
+    def set_local_storage_item(self, key, value):
+        self.execute_script(
+            "window.localStorage.setItem('{}', '{}');".format(key, value))
+
+    def get_local_storage_item(self, key):
+        return self.execute_script(
+            "return window.localStorage.getItem('{}');".format(key))
+
+    def remove_local_storage_item(self, key):
+        self.execute_script(
+            "window.localStorage.removeItem('{}');".format(key))
+
+    def clear_local_storage(self):
+        self.execute_script("window.localStorage.clear();")
+
+    def get_local_storage_keys(self):
+        return self.execute_script(
+            "var ls = window.localStorage, keys = []; "
+            "for (var i = 0; i < ls.length; ++i) "
+            "  keys[i] = ls.key(i); "
+            "return keys;")
+
+    def get_local_storage_items(self):
+        return self.execute_script(
+            r"var ls = window.localStorage, items = {}; "
+            "for (var i = 0, k; i < ls.length; ++i) "
+            "  items[k = ls.key(i)] = ls.getItem(k); "
+            "return items;")
+
+    # Application "Session Storage" controls
+
+    def set_session_storage_item(self, key, value):
+        self.execute_script(
+            "window.sessionStorage.setItem('{}', '{}');".format(key, value))
+
+    def get_session_storage_item(self, key):
+        return self.execute_script(
+            "return window.sessionStorage.getItem('{}');".format(key))
+
+    def remove_session_storage_item(self, key):
+        self.execute_script(
+            "window.sessionStorage.removeItem('{}');".format(key))
+
+    def clear_session_storage(self):
+        self.execute_script("window.sessionStorage.clear();")
+
+    def get_session_storage_keys(self):
+        return self.execute_script(
+            "var ls = window.sessionStorage, keys = []; "
+            "for (var i = 0; i < ls.length; ++i) "
+            "  keys[i] = ls.key(i); "
+            "return keys;")
+
+    def get_session_storage_items(self):
+        return self.execute_script(
+            r"var ls = window.sessionStorage, items = {}; "
+            "for (var i = 0, k; i < ls.length; ++i) "
+            "  items[k = ls.key(i)] = ls.getItem(k); "
+            "return items;")
+
+    ############
+
     # Duplicates (Avoids name confusion when migrating from other frameworks.)
 
     def open_url(self, url):
@@ -2876,6 +2934,28 @@ class BaseCase(unittest.TestCase):
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         self.add_text(selector, text, by=by, timeout=timeout)
+
+    def click_link(self, link_text, timeout=None):
+        """ Same as self.click_link_text() """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.click_link_text(link_text, timeout=timeout)
+
+    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
+                                 timeout=None):
+        """ Same as self.wait_for_element() """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout)
+
+    def _print(self, msg):
+        print(msg)
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
@@ -3493,8 +3573,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
-    def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
-                                 timeout=None):
+    def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """ Waits for an element to appear in the HTML of a page.
             The element must be visible (it cannot be hidden). """
         if not timeout:
@@ -3504,14 +3583,6 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
-
-    def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        """ The shorter version of wait_for_element_visible() """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
     def get_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """ Same as wait_for_element_present() - returns the element.

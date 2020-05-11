@@ -1,6 +1,6 @@
 ![](http://cdn2.hubspot.net/hubfs/100006/images/masterqa_logo-11.png "MasterQA")
 
-### MasterQA combines SeleniumBase automation with manual verification steps to bridge the gap between manual QA and automated QA.
+### MasterQA combines automation with manual verification steps.
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif "MasterQA")
 
@@ -15,9 +15,9 @@ self.highlight_update_text("input#s", "Dragons\n")
 self.verify('Do you see "dragons" in the search results?')
 ```
 
-After the web browser performs various automated actions, a pop-up window will ask the user questions for each verification command.
+After each automation checkpoint, a pop-up window will ask the user questions for each verification command.
 
-At the end of a full test run, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test.py), you'll see a results page that appears after responding to all the verification questions. (Failed verifications generate links to screenshots and log files.)
+When the test run completes, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test.py), you'll reach the results page that appears after answering all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
 ![](http://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
@@ -38,9 +38,9 @@ At the end of your test run, you'll receive a report with results, screenshots, 
 
 ### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test.py) to learn how to write your own MasterQA tests:
 
-You'll notice that tests are written based on [SeleniumBase](http://seleniumbase.com), with the key difference of using a different import: ``from seleniumbase import MasterQA`` rather than ``from seleniumbase import BaseCase``. Now the test class will import ``MasterQA`` instead of ``BaseCase``.
+You'll notice that tests are written the same way as regular [SeleniumBase](http://seleniumbase.com) tests, with the key difference being a different import: ``from seleniumbase import MasterQA`` rather than ``from seleniumbase import BaseCase``. Now your Python test class will import ``MasterQA`` instead of ``BaseCase``.
 
-To add a manual verification step, use ``self.verify()`` in the code after each part of the script that needs manual verification. If you want to include a custom question, add text inside that call (in quotes). Example:
+To add a manual verification step, use ``self.verify()`` in the code after each part of your test that needs a manual verification step. If you want to include a custom question, add text inside that call (in quotes). Example:
 
 ```python
 self.verify()

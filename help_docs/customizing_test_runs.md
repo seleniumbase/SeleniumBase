@@ -1,10 +1,10 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_i.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Customizing test runs
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Customizing test runs
 
-In addition to [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for customizing global properties, you can customize test runs [from the command-line](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py).
+You can customize test runs from the command-line thanks to [SeleniumBase's pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py), which adds command-line options for setting/enabling the browser type, headless mode, mobile mode, multithreading mode, demo mode, proxy config, user agent config, browser extensions, and more.
 
-The following tests can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
+Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
 ```bash
 # Run a test in Chrome (default browser)
@@ -46,6 +46,9 @@ pytest test_suite.py --server=USERNAME:KEY@IP_ADDRESS --port=80
 # Reuse the same browser session for all tests being run
 pytest test_suite.py --reuse-session
 
+# Reuse the same browser session, but empty cookies between tests
+pytest test_suite.py --reuse-session --crumbs
+
 # Run tests through a proxy server
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 
@@ -74,10 +77,13 @@ Here are some useful command-line options that come with Pytest:
 -v  # Prints the full test name for each test.
 -q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
---html=report.html  # Creates a detailed test report after tests complete. (Using the pytest-html plugin)
+--html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
--s  # See print statements. (Should be on by default with pytest.ini present.)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+--junit-xml=report.xml  # Creates a junit-xml report after tests finish.
+--pdb  # If a test fails, pause run and enter debug mode. (Don't use with CI!)
+-m=MARKER  # Only run tests that are marked with the specified pytest marker.
 ```
 
 SeleniumBase provides additional Pytest command-line options for tests:
@@ -281,3 +287,4 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/fancy_logo_14.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

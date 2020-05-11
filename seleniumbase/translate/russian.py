@@ -1,5 +1,6 @@
 # Russian / Русский - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class ТестНаСелен(BaseCase):  # noqa
@@ -111,6 +112,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def ждать_элемента(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
+
+    def ждать_элемента_присутствует(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
 
     def спать(self, *args, **kwargs):
         # sleep(seconds)
@@ -268,3 +273,58 @@ class ТестНаСелен(BaseCase):  # noqa
     def экспортировать_тур(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def провалить(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def получить(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def посетить(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def получить_элемент(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def найти_элемент(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def получить_атрибут(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def набор_атрибута(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def набор_атрибутов(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def введите(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def написать(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def печатать(self, *args, **kwargs):
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
+
+
+class MasterQA_Русский(MasterQA, ТестНаСелен):
+
+    def подтвердить(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Ручная проверка"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "Страница хорошо выглядит?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

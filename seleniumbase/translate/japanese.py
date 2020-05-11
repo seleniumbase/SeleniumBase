@@ -1,5 +1,6 @@
 # Japanese / 日本語 - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class セレニウムテストケース(BaseCase):  # noqa
@@ -111,6 +112,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 要素を待つ(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
+
+    def 要素が存在するのを待つ(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
 
     def 眠る(self, *args, **kwargs):
         # sleep(seconds)
@@ -268,3 +273,58 @@ class セレニウムテストケース(BaseCase):  # noqa
     def ツアーをエクスポートする(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def 失敗(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def URLを取得する(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def URLを訪問(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def 要素を取得する(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def 要素を見つける(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def 属性を取得する(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def 属性を設定する(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def すべての属性を設定(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def 入力(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def 書く(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def 印刷(self, *args, **kwargs):
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
+
+
+class MasterQA_日本語(MasterQA, セレニウムテストケース):
+
+    def を確認する(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "手動チェック"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "ページは見栄えが良いですか?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

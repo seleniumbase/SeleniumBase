@@ -1,5 +1,6 @@
 # Dutch / Nederlands - Translations
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class Testgeval(BaseCase):
@@ -111,6 +112,10 @@ class Testgeval(BaseCase):
     def wacht_op_element(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
+
+    def wacht_op_element_aanwezig(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
 
     def slapen(self, *args, **kwargs):
         # sleep(seconds)
@@ -268,3 +273,58 @@ class Testgeval(BaseCase):
     def de_tour_exporteren(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def mislukken(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def url_ophalen(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def bezoek_url(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def element_ophalen(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def vind_element(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def kenmerk_ophalen(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def kenmerk_instellen(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def kenmerken_instellen(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def voer(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def schrijven(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def afdrukken(self, *args, **kwargs):
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
+
+
+class MasterQA_Nederlands(MasterQA, Testgeval):
+
+    def controleren(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Handmatige controle"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "Ziet de pagina er goed uit?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

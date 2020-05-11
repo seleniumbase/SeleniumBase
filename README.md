@@ -1,8 +1,8 @@
-<h2 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" height="48" /></h2>
+<h1 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r5.png" alt="SeleniumBase" height="172" /></h1>
 
-<h3 align="center">Create web & mobile tests 8x faster.</h3>
+<h3 align="center">Create web/mobile tests 8x faster.</h3>
 
-<p align="center">Extends <a href="https://selenium.dev/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
+<p align="center">Level up the power of <a href="https://selenium.dev/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>!</p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -15,22 +15,22 @@
 
 <p align="center">
 <a href="#python_installation">🚀 Get Started</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🦚 Features</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ Options</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Testing</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples">👨‍🏫 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |<br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Site Tours</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a> |<br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
 </p>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
-<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation.</i>)</p>
+<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation enabled.</i>)</p>
 
 ```bash
 pytest test_swag_labs.py --mobile
@@ -45,7 +45,7 @@ pytest test_swag_labs.py --demo
 ```
 
 <a id="python_installation"></a>
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Get Started
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32" /> Get Started
 
 * Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
@@ -56,7 +56,7 @@ python -m pip install -U pip
 ```
 
 <a id="install_seleniumbase"></a>
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Install ``seleniumbase``:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Install ``seleniumbase``:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
@@ -72,7 +72,7 @@ pip install seleniumbase
 * Add ``--upgrade`` OR ``-U`` to upgrade an installation.
 * Add ``--force-reinstall`` to also upgrade dependencies.
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Download a webdriver:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32" /> Download a webdriver:
 
 SeleniumBase can download a webdriver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
 ```bash
@@ -84,7 +84,7 @@ seleniumbase install chromedriver
 seleniumbase install chromedriver latest
 ```
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Run a test on Chrome:
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Run a test on Chrome:
 ```bash
 cd examples/
 pytest my_first_test.py
@@ -105,13 +105,13 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
-        self.click_link_text("About")
+        self.click("link=About")
         self.assert_text("xkcd.com", "h2")
         self.open("://store.xkcd.com/collections/everything")
         self.update_text("input.search-input", "xkcd book\n")
         self.assert_exact_text("xkcd: volume 0", "h3")
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase"><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" /><br />
 ```bash
 pytest my_first_test.py --demo
 ```
@@ -143,7 +143,7 @@ self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
 For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Learn More:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Learn More:
 
 #### **Automatic WebDriver abilities:**<br />
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i>[Read more about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
@@ -190,9 +190,9 @@ For a full list of SeleniumBase features, [Click Here](https://github.com/seleni
 
 
 <a id="detailed_instructions"></a>
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="48">
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Detailed Instructions:
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32" /> Detailed Instructions:
 
 **Here's how to run the example script on various web browsers:**
 
@@ -246,15 +246,18 @@ pytest my_first_test.py --pdb -s
 ```
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
 
-Here are some other useful command-line options that come with Pytest:
+Here are some useful command-line options that come with Pytest:
 ```bash
 -v  # Prints the full test name for each test.
 -q  # Prints fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
--s  # See print statements. (Should be on by default with pytest.ini present.)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
+-s  # See print statements. (Should be on by default with pytest.ini present.)
+--junit-xml=report.xml  # Creates a junit-xml report after tests finish.
+--pdb  # If a test fails, pause run and enter debug mode. (Don't use with CI!)
+-m=MARKER  # Only run tests that are marked with the specified pytest marker.
 ```
 
 SeleniumBase provides additional Pytest command-line options for tests:
@@ -323,7 +326,7 @@ To pass additional data from the command-line to tests, add ``--data="ANY STRING
 Now inside your tests, you can use ``self.data`` to access that.
 
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Test Directory Customization:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Test Directory Customization:**
 
 For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST].py --config=[MY_CONFIG].cfg``)
 
@@ -335,7 +338,7 @@ pytest my_first_test.py
 ```
 
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Logging / Results from Failing Tests:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Logging / Results from Failing Tests:**
 
 Let's try an example of a test that fails:
 ```python
@@ -358,7 +361,7 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 
 
 <a id="creating_visual_reports"></a>
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Creating Visual Test Suite Reports:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Creating Visual Test Suite Reports:**
 
 (NOTE: Several command-line args are different for Pytest vs Nosetests)
 
@@ -387,7 +390,7 @@ nosetests test_suite.py --report
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Using a Proxy Server:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Using a Proxy Server:**
 
 If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command-line.
 ```bash
@@ -405,7 +408,7 @@ pytest proxy_test.py --proxy=proxy1
 ```
 
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Changing the User-Agent:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Changing the User-Agent:**
 
 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 ```bash
@@ -413,14 +416,14 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 ```
 
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32">  **Building Guided Tours for Websites:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32">  **Building Guided Tours for Websites:**
 
 Learn about [SeleniumBase Interactive Walkthroughs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples/ReadMe.md) (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience.
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google">
+<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" />
 
 <a id="utilizing_advanced_features"></a>
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Production Environments & Integrations:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Production Environments & Integrations:**
 
 Here are some things you can do to setup a production environment for your testing:
 
@@ -439,10 +442,10 @@ Here's an example of running tests with additional features enabled:
 pytest [YOUR_TEST_FILE].py --with-db-reporting --with-s3-logging
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100" />
 
 <a id="detailed_method_specifications"></a>
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Detailed Method Specifications and Examples:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Detailed Method Specifications and Examples:**
 
 #### Navigating to a web page (and related commands)
 
@@ -708,16 +711,14 @@ pytest --reruns 5 --reruns-delay 1
 Additionally, you can use the ``@retry_on_exception()`` decorator to specifically retry failing methods. (First import: ``from seleniumbase import decorators``) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
 
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Wrap-Up
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Wrap-Up
 
 #### Congratulations on getting started with SeleniumBase!
 
-<i>**Questions?**</i> [![Join the chat at https://gitter.im/seleniumbase/SeleniumBase](https://badges.gitter.im/seleniumbase/SeleniumBase.svg)](https://gitter.im/seleniumbase/SeleniumBase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)<br />
-
-**If you see something, say something!**<br />[<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99">](https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed)
+**If you see something, say something!**<br />[<img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " />](https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed) [<img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99" />](https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed)
 
 **If you like us, give us a star!**<br />[<img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" alt=" " />](https://github.com/seleniumbase/SeleniumBase/stargazers)
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="46.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" />](https://gitter.im/seleniumbase/SeleniumBase)

@@ -1,4 +1,4 @@
-### Running browser tests from [GitHub Workflows](https://github.com/seleniumbase/SeleniumBase/actions) with [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Running browser tests from [GitHub Actions/Workflows](https://github.com/seleniumbase/SeleniumBase/actions) with [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
 ----------
 
@@ -46,6 +46,6 @@
 
 ----------
 
-### Step 5. Congratulations! You now know how to create and run browser tests with GitHub Workflows!
+### Step 5. Congratulations! You now know how to create and run browser tests with GitHub Actions/Workflows!
 
 ### **Study [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) to learn more!**

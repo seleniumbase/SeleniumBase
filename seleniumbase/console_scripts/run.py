@@ -8,6 +8,7 @@ Examples:
 seleniumbase install chromedriver
 seleniumbase mkdir browser_tests
 seleniumbase convert my_old_webdriver_unittest.py
+seleniumbase translate my_first_test.py --zh -p
 seleniumbase extract-objects my_first_test.py
 seleniumbase inject-objects my_first_test.py
 seleniumbase objectify my_first_test.py
@@ -19,6 +20,7 @@ seleniumbase grid-hub start
 seleniumbase grid-node start --hub=127.0.0.1
 """
 
+import colorama
 import sys
 from seleniumbase.common import obfuscate
 from seleniumbase.common import unobfuscate
@@ -34,9 +36,20 @@ from seleniumbase.utilities.selenium_ide import convert_ide
 
 def show_usage():
     show_basic_usage()
-    print('Type "seleniumbase --help" for details on all commands.')
-    print('Type "seleniumbase help [COMMAND]" for specific command info.')
-    print('* (Use "pytest" for running tests) *\n')
+    sc = ("")
+    sc += ('Type "seleniumbase --help" for details on all commands.\n')
+    sc += ('Type "seleniumbase help [COMMAND]" for specific command info.\n')
+    sc += ('* (Use "pytest" for running tests) *\n')
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+    sc = sc.replace("pytest", c3 + "pytest" + cr)
+    sc = sc.replace("--help", c4 + "--help" + cr)
+    sc = sc.replace("help", c4 + "help" + cr)
+    print(sc)
 
 
 def show_basic_usage():
@@ -44,22 +57,29 @@ def show_basic_usage():
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
-    print('Usage: "seleniumbase [COMMAND] [PARAMETERS]"')
-    print("Commands:")
-    print("       install [DRIVER_NAME] [OPTIONS]")
-    print("       mkdir [NEW_TEST_DIRECTORY_NAME]")
-    print("       convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
-    print("       extract-objects [SELENIUMBASE_PYTHON_FILE]")
-    print("       inject-objects [SELENIUMBASE_PYTHON_FILE] [OPTIONS]")
-    print("       objectify [SELENIUMBASE_PYTHON_FILE] [OPTIONS]")
-    print("       revert-objects [SELENIUMBASE_PYTHON_FILE]")
-    print("       encrypt   (OR: obfuscate)")
-    print("       decrypt   (OR: unobfuscate)")
-    print("       download server   (The Selenium Server JAR file)")
-    print("       grid-hub [start|stop|restart] [OPTIONS]")
-    print("       grid-node [start|stop|restart] --hub=[HUB_IP] [OPTIONS]")
-    print('  * (EXAMPLE: "seleniumbase install chromedriver") *')
-    print("")
+    sc = ("\n")
+    sc += ('Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
+    sc += ("Commands:\n")
+    sc += ("       install [DRIVER_NAME] [OPTIONS]\n")
+    sc += ("       mkdir [NEW_TEST_DIRECTORY_NAME]\n")
+    sc += ("       convert [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
+    sc += ("       translate [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
+    sc += ("       extract-objects [SB_PYTHON_FILE]\n")
+    sc += ("       inject-objects [SB_PYTHON_FILE] [OPTIONS]\n")
+    sc += ("       objectify [SB_PYTHON_FILE] [OPTIONS]\n")
+    sc += ("       revert-objects [SB_PYTHON_FILE]\n")
+    sc += ("       encrypt  (OR: obfuscate)\n")
+    sc += ("       decrypt  (OR: unobfuscate)\n")
+    sc += ("       download server  (The Selenium Server JAR file)\n")
+    sc += ("       grid-hub [start|stop] [OPTIONS]\n")
+    sc += ("       grid-node [start|stop] --hub=[HUB_IP] [OPTIONS]\n")
+    sc += ('  * (EXAMPLE: "seleniumbase install chromedriver latest") *\n')
+    sc += ("")
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    cr = colorama.Style.RESET_ALL
+    sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+    print(sc)
 
 
 def show_install_usage():
@@ -118,6 +138,33 @@ def show_convert_usage():
     print("           file name while keeping the original file intact.")
     print("           Works with Katalon Recorder scripts.")
     print("           See: http://www.katalon.com/automation-recorder")
+    print("")
+
+
+def show_translate_usage():
+    print("  ** translate **")
+    print("  Usage:")
+    print("         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]")
+    print("  Languages:")
+    print("         --en / --English    |    --zh / --Chinese")
+    print("         --nl / --Dutch      |    --fr / --French")
+    print("         --it / --Italian    |    --ja / --Japanese")
+    print("         --ko / --Korean     |    --pt / --Portuguese")
+    print("         --ru / --Russian    |    --es / --Spanish")
+    print("  Actions:")
+    print("         -p / --print  (Print translation output to the screen)")
+    print("         -o / --overwrite  (Overwrite the file being translated)")
+    print("         -c / --copy  (Copy the translation to a new .py file)")
+    print("  Output:")
+    print("         Translates a SeleniumBase Python file into the language")
+    print('         specified. Method calls and "import" lines get swapped.')
+    print("         Both a language and an action must be specified.")
+    print('         The "-p" action can be paired with one other action.')
+    print('         When running with "-c" (or "--copy"), the new file name')
+    print('         will be the orginal name appended with an underscore')
+    print("         plus the 2-letter language code of the new language.")
+    print('         (Example: Translating "test_1.py" into Japanese with')
+    print('          "-c" will create a new file called "test_1_ja.py".)')
     print("")
 
 
@@ -223,7 +270,7 @@ def show_grid_hub_usage():
     print("  ** grid-hub **")
     print("")
     print("  Usage:")
-    print("           seleniumbase grid-hub {start|stop|restart}")
+    print("           seleniumbase grid-hub {start|stop}")
     print("  Options:")
     print("           -v, --verbose  (Increase verbosity of logging output.)")
     print("                          (Default: Quiet logging / not verbose.)")
@@ -234,7 +281,7 @@ def show_grid_hub_usage():
     print("           for running tests on multiple machines in parallel")
     print("           to speed up test runs and reduce the total time")
     print("           of test suite execution.")
-    print("           You can start, restart, or stop the Grid Hub server.")
+    print('           You can "start" or "stop" the Grid Hub server.')
     print("")
 
 
@@ -242,7 +289,7 @@ def show_grid_node_usage():
     print("  ** grid-node **")
     print("")
     print("  Usage:")
-    print("           seleniumbase grid-node {start|stop|restart} [OPTIONS]")
+    print("           seleniumbase grid-node {start|stop} [OPTIONS]")
     print("  Options:")
     print("           --hub=[HUB_IP] (The Grid Hub IP Address to connect to.)")
     print("                          (Default: 127.0.0.1 if not set)")
@@ -253,7 +300,7 @@ def show_grid_node_usage():
     print("  Output:")
     print("           Controls the Selenium Grid node, which serves as a")
     print("           worker machine for your Selenium Grid Hub server.")
-    print("           You can start, restart, or stop the Grid node.")
+    print('           You can "start" or "stop" the Grid node.')
     print("")
 
 
@@ -279,13 +326,19 @@ def show_detailed_help():
     show_install_usage()
     show_mkdir_usage()
     show_convert_usage()
+    show_translate_usage()
     show_extract_objects_usage()
     show_inject_objects_usage()
     show_objectify_usage()
     show_revert_objects_usage()
+    show_encrypt_usage()
+    show_decrypt_usage()
     show_download_usage()
     show_grid_hub_usage()
     show_grid_node_usage()
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    print('* (Use "' + c3 + 'pytest' + cr + '" for running tests) *\n')
 
 
 def main():
@@ -321,6 +374,13 @@ def main():
         else:
             show_basic_usage()
             show_convert_usage()
+    elif command == "translate":
+        if len(command_args) >= 1:
+            from seleniumbase.translate import translator
+            translator.main()
+        else:
+            show_basic_usage()
+            show_translate_usage()
     elif command == "extract-objects" or command == "extract_objects":
         if len(command_args) >= 1:
             objectify.extract_objects()
@@ -393,6 +453,10 @@ def main():
             elif command_args[0] == "convert":
                 print("")
                 show_convert_usage()
+                return
+            elif command_args[0] == "translate":
+                print("")
+                show_translate_usage()
                 return
             elif command_args[0] == "extract-objects":
                 print("")

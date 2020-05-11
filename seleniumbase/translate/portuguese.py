@@ -1,5 +1,6 @@
 # Portuguese / Português - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class CasoDeTeste(BaseCase):
@@ -111,6 +112,10 @@ class CasoDeTeste(BaseCase):
     def aguardar_o_elemento(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
+
+    def aguardar_o_elemento_presente(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
@@ -268,3 +273,58 @@ class CasoDeTeste(BaseCase):
     def exportar_o_tour(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def falhar(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def obter_url(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def visitar_url(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def obter_elemento(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def encontrar_elemento(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def obter_atributo(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def definir_atributo(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def definir_atributos(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def entrada(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def escreva(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def imprimir(self, *args, **kwargs):
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
+
+
+class MasterQA_Português(MasterQA, CasoDeTeste):
+
+    def verificar(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Verificação manual"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "A página parece boa?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)

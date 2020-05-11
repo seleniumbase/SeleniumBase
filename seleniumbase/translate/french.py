@@ -1,5 +1,6 @@
-# French / français - Translations - Python 3 Only!
+# French / Français - Translations - Python 3 Only!
 from seleniumbase import BaseCase
+from seleniumbase import MasterQA
 
 
 class CasDeBase(BaseCase):
@@ -111,6 +112,10 @@ class CasDeBase(BaseCase):
     def attendre_un_élément(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
+
+    def attendre_un_élément_présent(self, *args, **kwargs):
+        # wait_for_element_present(selector)
+        return self.wait_for_element_present(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
@@ -268,3 +273,58 @@ class CasDeBase(BaseCase):
     def exporter_la_visite(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def échouer(self, *args, **kwargs):
+        # fail(msg=None)  # Inherited from "unittest"
+        return self.fail(*args, **kwargs)
+
+    def obtenir_url(self, *args, **kwargs):
+        # get(url)  # Same as open(url)
+        return self.get(*args, **kwargs)
+
+    def visitez_url(self, *args, **kwargs):
+        # visit(url)  # Same as open(url)
+        return self.visit(*args, **kwargs)
+
+    def obtenir_élément(self, *args, **kwargs):
+        # get_element(selector)  # Element can be hidden
+        return self.get_element(*args, **kwargs)
+
+    def trouver_élément(self, *args, **kwargs):
+        # find_element(selector)  # Element must be visible
+        return self.find_element(*args, **kwargs)
+
+    def obtenir_attribut(self, *args, **kwargs):
+        # get_attribute(selector, attribute)
+        return self.get_attribute(*args, **kwargs)
+
+    def définir_attribut(self, *args, **kwargs):
+        # set_attribute(selector, attribute, value)
+        return self.set_attribute(*args, **kwargs)
+
+    def définir_les_attributs(self, *args, **kwargs):
+        # set_attributes(selector, attribute, value)
+        return self.set_attributes(*args, **kwargs)
+
+    def tapez(self, *args, **kwargs):
+        # input(selector, new_value)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
+    def écrivez(self, *args, **kwargs):
+        # write(selector, new_value)  # Same as update_text()
+        return self.write(*args, **kwargs)
+
+    def imprimez(self, *args, **kwargs):
+        # _print(msg)  # Same as Python print()
+        return self._print(*args, **kwargs)
+
+
+class MasterQA_Français(MasterQA, CasDeBase):
+
+    def vérifier(self, *args, **kwargs):
+        # "Manual Check"
+        self.DEFAULT_VALIDATION_TITLE = "Vérification manuelle"
+        # "Does the page look good?"
+        self.DEFAULT_VALIDATION_MESSAGE = "La page est-elle bonne?"
+        # verify(QUESTION)
+        return self.verify(*args, **kwargs)
