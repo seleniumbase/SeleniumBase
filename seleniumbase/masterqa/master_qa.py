@@ -22,6 +22,7 @@ class MasterQA(BaseCase):
         self.ARCHIVE_DIR = settings.REPORT_ARCHIVE_DIR
         self.RESULTS_PAGE = settings.HTML_REPORT
         self.BAD_PAGE_LOG = settings.RESULTS_TABLE
+        self.DEFAULT_VALIDATION_TITLE = "Manual Check"
         self.DEFAULT_VALIDATION_MESSAGE = (
             settings.MASTERQA_DEFAULT_VALIDATION_MESSAGE)
         self.WAIT_TIME_BEFORE_VERIFY = (
@@ -103,9 +104,10 @@ class MasterQA(BaseCase):
 
     def __jq_confirm_dialog(self, question):
         count = self.manual_check_count + 1
-        title_content = ('<center><font color="#7700bb">Manual Check #%s:'
+        title = self.DEFAULT_VALIDATION_TITLE
+        title_content = ('<center><font color="#7700bb">%s #%s:'
                          '</font></center><hr><font color="#0066ff">%s</font>'
-                         '' % (count, question))
+                         '' % (title, count, question))
         title_content = js_utils.escape_quotes_if_needed(title_content)
         jqcd = ("""jconfirm({
                     boxWidth: '32.5%%',
