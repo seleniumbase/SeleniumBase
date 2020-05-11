@@ -73,5 +73,10 @@ def main(*args, **kwargs):
     for dir_ in os.listdir(ROOT_DIR / "help_docs"):
         files_to_process.append(os.path.join("help_docs", dir_))
 
+    updated_files_to_process = []
     for file_ in files_to_process:
+        if file_.endswith(".md"):
+            updated_files_to_process.append(file_)
+
+    for file_ in updated_files_to_process:
         process_file(file_)
