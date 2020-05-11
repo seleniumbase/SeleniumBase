@@ -14,8 +14,11 @@
 * Russian / Русский
 * Spanish / Español
 
-Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language. Example:
- ``self.open(URL)`` = ``self.开启网址(URL)``
+Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language.<br /><i>Examples:</i>
+```
+self.开启网址(URL) <=> self.open(URL)
+self.нажмите(SELECTOR) <=> self.click(SELECTOR)
+```
 
 --------
 
