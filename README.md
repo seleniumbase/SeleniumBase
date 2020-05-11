@@ -1,9 +1,8 @@
-<h1 align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r5.png" alt="SeleniumBase" height="172" /></h1>
+<h1 align="center"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_r5.png" alt="SeleniumBase" height="150" /></h1>
 
-<h3 align="center">Create web/mobile tests 8x faster.</h3>
+<h3 align="center"><span align="center">Create web/mobile tests 8x faster.</span></h3>
 
-<p align="center">Take <a href="https://selenium.dev/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</p>
-
+<p align="center">Bring <a href="https://selenium.dev/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</p>
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
@@ -12,7 +11,6 @@
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
-
 <p align="center">
 <a href="#python_installation">🚀 Get Started</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
@@ -28,7 +26,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
 </p>
-
+<p align="center"><b>Take control of your test automation.</b></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
 <p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation enabled.</i>)</p>
 
