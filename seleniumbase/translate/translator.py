@@ -98,6 +98,23 @@ def process_test_file(code_lines, new_lang):
                     seleniumbase_lines.append(new_line)
                     added_line = True
                     break
+                data = re.match(
+                    r'^\s*' + MD_F.get_mqa_im_line(lang) + r'([\S\s]*)$', line)
+                if data:
+                    comments = '%s' % data.group(1)
+                    new_line = None
+                    detected_lang = lang
+                    dl_code = lang_codes[detected_lang]
+                    if detected_lang != new_lang:
+                        changed = True
+                        new_line = MD_F.get_mqa_im_line(new_lang) + comments
+                    else:
+                        new_line = line
+                    if new_line.endswith("  # noqa"):  # Remove flake8 skip
+                        new_line = new_line[0:-len("  # noqa")]
+                    seleniumbase_lines.append(new_line)
+                    added_line = True
+                    break
             if not added_line:
                 # Probably a language missing from the translator.
                 # Add the import line as it is and move on.
@@ -120,6 +137,22 @@ def process_test_file(code_lines, new_lang):
                     if detected_lang != new_lang:
                         changed = True
                         new_parent = MD_F.get_lang_parent_class(new_lang)
+                        new_line = (
+                            '%sclass %s(%s):%s'
+                            '' % (whitespace, name, new_parent, comments))
+                    else:
+                        new_line = line
+                    if new_line.endswith("  # noqa"):  # Remove flake8 skip
+                        new_line = new_line[0:-len("  # noqa")]
+                    seleniumbase_lines.append(new_line)
+                    added_line = True
+                    continue
+                elif parent_class in MD_F.get_masterqa_parent_classes_list():
+                    detected_lang = MD_F.get_mqa_par_class_lang(parent_class)
+                    dl_code = lang_codes[detected_lang]
+                    if detected_lang != new_lang:
+                        changed = True
+                        new_parent = MD_F.get_mqa_lang_par_class(new_lang)
                         new_line = (
                             '%sclass %s(%s):%s'
                             '' % (whitespace, name, new_parent, comments))
