@@ -1,8 +1,8 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb4.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Installing webdrivers
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Installing webdrivers
 
-To run web automation, you'll need to download webdrivers for each browser you plan on using, and then place those on your System **[PATH](http://java.com/en/download/help/path.xml)**. Additionaly, you can place drivers in the [SeleniumBase `drivers` folder](https://github.com/seleniumbase/SeleniumBase/blob/master/drivers). If you plan on taking the latter option, here are some commands that'll automatically download the driver you need into the ``drivers`` folder once you've installed SeleniumBase:
+To run web automation, you'll need webdrivers for each browser you plan on using. Here are some commands that'll automatically download the driver you need into the SeleniumBase ``drivers`` folder once you've installed SeleniumBase:
 
 ```bash
 seleniumbase install chromedriver
@@ -32,7 +32,7 @@ Here's where you can go to manually install web drivers from the source:
 
 * For PhantomJS headless browser automation, get [PhantomJS](http://phantomjs.org/download.html) on your System PATH. (NOTE: <i>PhantomJS is no longer officially supported by SeleniumHQ</i>)
 
-**macOS**:
+**macOS shortcuts**:
 
 * You can also install drivers by using ``brew`` (aka ``homebrew``), but you'll need to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md).
 
@@ -42,7 +42,7 @@ brew cask install chromedriver
 brew install geckodriver
 ```
 
-(NOTE: If your existing version of chromedriver is less than 2.44, **upgrading is required** in order to keep up with the latest version of Chrome!)
+You can also upgrade existing webdrivers:
 
 ```bash
 brew cask upgrade chromedriver
@@ -50,7 +50,7 @@ brew cask upgrade chromedriver
 brew upgrade geckodriver
 ```
 
-**Linux**:
+**Linux shortcuts**:
 
 If you still need the web drivers, here are some scripts to help you install chromedriver and geckodriver on a Linux machine:
 
