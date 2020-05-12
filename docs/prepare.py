@@ -32,7 +32,7 @@ def read_file(file_name):
 def process_file(file_name):
     content = read_file(file_name)
     urls = URL_PATTERN.findall(content)
-    content = content.replace("<br />", "  \n")
+    # content = content.replace("<br />", "  \n")
     content = re.sub(HEADER_PATTERN, r"\g<level> \g<header>", content)
     directory = "/".join(normalize_path(file_name).split("/")[:-1])
 
