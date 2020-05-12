@@ -1,0 +1,1787 @@
+<!doctype html>
+<base href="https://seleniumbase.github.io">
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.0.2">
+    
+    
+      
+        <title>SeleniumBase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.07c9fbf5.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#get-started" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="." title="SeleniumBase" class="md-header-nav__button md-logo" aria-label="SeleniumBase">
+      
+  <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            SeleniumBase
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Introduction
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/seleniumbase/SeleniumBase/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="SeleniumBase" class="md-nav__button md-logo" aria-label="SeleniumBase">
+      
+  <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" alt="logo">
+
+    </a>
+    SeleniumBase
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/seleniumbase/SeleniumBase/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Introduction
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z" /></svg>
+        </span>
+      </label>
+    
+    <a href="." title="Introduction" class="md-nav__link md-nav__link--active">
+      Introduction
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-started" class="md-nav__link">
+    Get Started
+  </a>
+  
+    <nav class="md-nav" aria-label="Get Started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-seleniumbase" class="md-nav__link">
+    Install seleniumbase
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-a-webdriver" class="md-nav__link">
+    Download a webdriver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-test-on-chrome" class="md-nav__link">
+    Run a test on Chrome
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learn-more" class="md-nav__link">
+    Learn More
+  </a>
+  
+    <nav class="md-nav" aria-label="Learn More">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-webdriver-abilities" class="md-nav__link">
+    Automatic WebDriver abilities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplified-code" class="md-nav__link">
+    Simplified code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-tests-with-pytest-or-nosetests-in-any-browser" class="md-nav__link">
+    Run tests with pytest or nosetests in any browser
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-more-flaky-tests" class="md-nav__link">
+    No more flaky tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatedmanual-hybrid-mode" class="md-nav__link">
+    Automated/manual hybrid mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-rich" class="md-nav__link">
+    Feature-Rich
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-instructions" class="md-nav__link">
+    Detailed Instructions
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-directory-customization" class="md-nav__link">
+    Test Directory Customization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-results-from-failing-tests" class="md-nav__link">
+    Logging / Results from Failing Tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-visual-test-suite-reports" class="md-nav__link">
+    Creating Visual Test Suite Reports
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating Visual Test Suite Reports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytest-reports" class="md-nav__link">
+    Pytest Reports
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nosetest-reports" class="md-nav__link">
+    Nosetest Reports
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-proxy-server" class="md-nav__link">
+    Using a Proxy Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-user-agent" class="md-nav__link">
+    Changing the User-Agent
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-guided-tours-for-websites" class="md-nav__link">
+    Building Guided Tours for Websites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-environments-integrations" class="md-nav__link">
+    Production Environments &amp; Integrations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detailed-method-specifications-and-examples" class="md-nav__link">
+    Detailed Method Specifications and Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Method Specifications and Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#navigating-to-a-web-page-and-related-commands" class="md-nav__link">
+    Navigating to a web page (and related commands)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clicking" class="md-nav__link">
+    Clicking
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typing-text" class="md-nav__link">
+    Typing Text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-text-from-an-element-on-a-page" class="md-nav__link">
+    Getting the text from an element on a page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-attribute-value-from-an-element-on-a-page" class="md-nav__link">
+    Getting the attribute value from an element on a page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-existance-of-an-element-on-a-page-within-some-number-of-seconds" class="md-nav__link">
+    Asserting existance of an element on a page within some number of seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-visibility-of-an-element-on-a-page-within-some-number-of-seconds" class="md-nav__link">
+    Asserting visibility of an element on a page within some number of seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-visibility-of-text-inside-an-element-on-a-page-within-some-number-of-seconds" class="md-nav__link">
+    Asserting visibility of text inside an element on a page within some number of seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-anything" class="md-nav__link">
+    Asserting Anything
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-conditional-statements-with-creative-examples-in-action" class="md-nav__link">
+    Useful Conditional Statements (with creative examples in action)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switching-tabs" class="md-nav__link">
+    Switching Tabs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle-pop-up-alerts" class="md-nav__link">
+    Handle Pop-Up Alerts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-custom-jquery-scripts" class="md-nav__link">
+    Executing Custom jQuery Scripts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-delayed-asserts" class="md-nav__link">
+    Using delayed asserts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-raw-webdriver" class="md-nav__link">
+    Accessing raw WebDriver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrying-failing-tests-automatically" class="md-nav__link">
+    Retrying failing tests automatically
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrap-up" class="md-nav__link">
+    Wrap-Up
+  </a>
+  
+    <nav class="md-nav" aria-label="Wrap-Up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#congratulations-on-getting-started-with-seleniumbase" class="md-nav__link">
+    Congratulations on getting started with SeleniumBase!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="help_docs/features_list/" title="Features" class="md-nav__link">
+      Features
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="help_docs/customizing_test_runs/" title="Options" class="md-nav__link">
+      Options
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="help_docs/mobile_testing/" title="Mobile Testing" class="md-nav__link">
+      Mobile Testing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples" title="Examples" class="md-nav__link">
+      Examples
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="examples/example_logs/ReadMe/" title="Reports" class="md-nav__link">
+      Reports
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="help_docs/method_summary/" title="API" class="md-nav__link">
+      API
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="examples/tour_examples/ReadMe/" title="Site Tours" class="md-nav__link">
+      Site Tours
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations" title="Translations" class="md-nav__link">
+      Translations
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="seleniumbase/utilities/selenium_ide/ReadMe/" title="Recorder" class="md-nav__link">
+      Recorder
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="examples/master_qa/ReadMe/" title="MasterQA" class="md-nav__link">
+      MasterQA
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="examples/visual_testing/ReadMe/" title="Visual Testing" class="md-nav__link">
+      Visual Testing
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="integrations/github/workflows/ReadMe/" title="GitHub CI" class="md-nav__link">
+      GitHub CI
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-started" class="md-nav__link">
+    Get Started
+  </a>
+  
+    <nav class="md-nav" aria-label="Get Started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-seleniumbase" class="md-nav__link">
+    Install seleniumbase
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#download-a-webdriver" class="md-nav__link">
+    Download a webdriver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-test-on-chrome" class="md-nav__link">
+    Run a test on Chrome
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learn-more" class="md-nav__link">
+    Learn More
+  </a>
+  
+    <nav class="md-nav" aria-label="Learn More">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-webdriver-abilities" class="md-nav__link">
+    Automatic WebDriver abilities
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simplified-code" class="md-nav__link">
+    Simplified code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-tests-with-pytest-or-nosetests-in-any-browser" class="md-nav__link">
+    Run tests with pytest or nosetests in any browser
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-more-flaky-tests" class="md-nav__link">
+    No more flaky tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatedmanual-hybrid-mode" class="md-nav__link">
+    Automated/manual hybrid mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-rich" class="md-nav__link">
+    Feature-Rich
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-instructions" class="md-nav__link">
+    Detailed Instructions
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-directory-customization" class="md-nav__link">
+    Test Directory Customization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-results-from-failing-tests" class="md-nav__link">
+    Logging / Results from Failing Tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-visual-test-suite-reports" class="md-nav__link">
+    Creating Visual Test Suite Reports
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating Visual Test Suite Reports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytest-reports" class="md-nav__link">
+    Pytest Reports
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nosetest-reports" class="md-nav__link">
+    Nosetest Reports
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-proxy-server" class="md-nav__link">
+    Using a Proxy Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-user-agent" class="md-nav__link">
+    Changing the User-Agent
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-guided-tours-for-websites" class="md-nav__link">
+    Building Guided Tours for Websites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-environments-integrations" class="md-nav__link">
+    Production Environments &amp; Integrations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detailed-method-specifications-and-examples" class="md-nav__link">
+    Detailed Method Specifications and Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Detailed Method Specifications and Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#navigating-to-a-web-page-and-related-commands" class="md-nav__link">
+    Navigating to a web page (and related commands)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clicking" class="md-nav__link">
+    Clicking
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typing-text" class="md-nav__link">
+    Typing Text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-text-from-an-element-on-a-page" class="md-nav__link">
+    Getting the text from an element on a page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-attribute-value-from-an-element-on-a-page" class="md-nav__link">
+    Getting the attribute value from an element on a page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-existance-of-an-element-on-a-page-within-some-number-of-seconds" class="md-nav__link">
+    Asserting existance of an element on a page within some number of seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-visibility-of-an-element-on-a-page-within-some-number-of-seconds" class="md-nav__link">
+    Asserting visibility of an element on a page within some number of seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-visibility-of-text-inside-an-element-on-a-page-within-some-number-of-seconds" class="md-nav__link">
+    Asserting visibility of text inside an element on a page within some number of seconds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserting-anything" class="md-nav__link">
+    Asserting Anything
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-conditional-statements-with-creative-examples-in-action" class="md-nav__link">
+    Useful Conditional Statements (with creative examples in action)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switching-tabs" class="md-nav__link">
+    Switching Tabs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle-pop-up-alerts" class="md-nav__link">
+    Handle Pop-Up Alerts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-custom-jquery-scripts" class="md-nav__link">
+    Executing Custom jQuery Scripts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-delayed-asserts" class="md-nav__link">
+    Using delayed asserts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-raw-webdriver" class="md-nav__link">
+    Accessing raw WebDriver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrying-failing-tests-automatically" class="md-nav__link">
+    Retrying failing tests automatically
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrap-up" class="md-nav__link">
+    Wrap-Up
+  </a>
+  
+    <nav class="md-nav" aria-label="Wrap-Up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#congratulations-on-getting-started-with-seleniumbase" class="md-nav__link">
+    Congratulations on getting started with SeleniumBase!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 align="center"><a align="center" href="README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo.png" alt="SeleniumBase" height="170" /></a></h1>
+
+<h3 align="center"><span align="center">Create web/mobile tests 8x faster.</span></h3>
+
+<p align="center">Bring <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</p>
+
+<p align="center">
+<a href="https://github.com/seleniumbase/SeleniumBase/releases">
+<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
+</p>
+
+<p align="center">
+<a href="#python_installation">🚀 Get Started</a> |
+<a href="help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
+<a href="help_docs/features_list.md">🏰 Features</a> |
+<a href="examples/ReadMe.md">👨‍🏫 Examples</a> |
+<a href="help_docs/mobile_testing.md">📱 Mobile Testing</a> |
+<a href="examples/example_logs/ReadMe.md">📊 Reports</a>
+
+<a href="help_docs/method_summary.md">📖 API</a> |
+<a href="examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
+<a href="examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
+<a href="seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
+<a href="examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
+<a href="integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
+</p>
+
+<p align="center"><b>Take control of your test automation.</b></p>
+
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
+
+<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation enabled.</i>)</p>
+
+<div class="codehilite"><pre><span></span><code>pytest test_swag_labs.py --mobile
+</code></pre></div>
+
+
+<hr />
+<p><div><p align="center">(<i>Below: Same test as above, but running in Demo Mode now.</i>)</p></div></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
+
+<div class="codehilite"><pre><span></span><code>pytest test_swag_labs.py --demo
+</code></pre></div>
+
+
+<p><a id="python_installation"></a></p>
+<h2 id="get-started">Get Started<a class="headerlink" href="#get-started" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Requires <strong><a href="https://www.python.org/downloads/">Python</a></strong> and <strong><a href="https://git-scm.com/">Git</a></strong></li>
+<li><a href="https://www.python.org/downloads/"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" /></a></li>
+<li>A <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">Python virtual env</a> is recommended. <i><a href="help_docs/virtualenv_instructions/">See shortcut</a>.</i></li>
+<li>Upgrade <strong><a href="https://pypi.org/project/pip/">pip</a></strong> to prevent warnings:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>python -m pip install -U pip
+</code></pre></div>
+
+
+<p><a id="install_seleniumbase"></a></p>
+<h3 id="install-seleniumbase">Install <code>seleniumbase</code><a class="headerlink" href="#install-seleniumbase" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>git clone https://github.com/seleniumbase/SeleniumBase.git
+<span class="nb">cd</span> SeleniumBase/
+pip install -r requirements.txt
+python setup.py install
+</code></pre></div>
+
+
+<p>If multiple versions of Python are installed, be specific (E.g. use <code>python3</code> instead of <code>python</code>).</p>
+<ul>
+<li>You can also install <code>seleniumbase</code> from <a href="https://pypi.python.org/pypi/seleniumbase">pypi</a>:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>pip install seleniumbase
+</code></pre></div>
+
+
+<ul>
+<li>Add <code>--upgrade</code> OR <code>-U</code> to upgrade an installation.</li>
+<li>Add <code>--force-reinstall</code> to also upgrade dependencies.</li>
+</ul>
+<h3 id="download-a-webdriver">Download a webdriver<a class="headerlink" href="#download-a-webdriver" title="Permanent link">&para;</a></h3>
+<p>SeleniumBase can download a webdriver to the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers">seleniumbase/drivers</a> folder with the <code>install</code> command:</p>
+<div class="codehilite"><pre><span></span><code>seleniumbase install chromedriver
+</code></pre></div>
+
+
+<ul>
+<li>You need a different webdriver for each web browser you want to run automation on: <code>chromedriver</code> for Chrome, <code>edgedriver</code> for Edge, <code>geckodriver</code> for Firefox, <code>operadriver</code> for Opera, and <code>iedriver</code> for Internet Explorer.</li>
+<li>If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>seleniumbase install chromedriver latest
+</code></pre></div>
+
+
+<h3 id="run-a-test-on-chrome">Run a test on Chrome<a class="headerlink" href="#run-a-test-on-chrome" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> examples/
+pytest my_first_test.py
+</code></pre></div>
+
+
+<ul>
+<li>Chrome is the default browser if not specified with <code>--browser=BROWSER</code>.</li>
+<li>On Linux <code>--headless</code> is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add <code>--headed</code> or <code>--gui</code>.</li>
+</ul>
+<p><strong>Here's an example test, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</strong>  </p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">seleniumbase</span> <span class="kn">import</span> <span class="n">BaseCase</span>
+
+<span class="k">class</span> <span class="nc">MyTestClass</span><span class="p">(</span><span class="n">BaseCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_basic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;https://xkcd.com/353/&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_title</span><span class="p">(</span><span class="s2">&quot;xkcd: Python&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_element</span><span class="p">(</span><span class="s1">&#39;img[alt=&quot;Python&quot;]&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s1">&#39;a[rel=&quot;license&quot;]&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_text</span><span class="p">(</span><span class="s2">&quot;free to copy and reuse&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">go_back</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">&quot;link=About&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_text</span><span class="p">(</span><span class="s2">&quot;xkcd.com&quot;</span><span class="p">,</span> <span class="s2">&quot;h2&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;://store.xkcd.com/collections/everything&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_text</span><span class="p">(</span><span class="s2">&quot;input.search-input&quot;</span><span class="p">,</span> <span class="s2">&quot;xkcd book</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_exact_text</span><span class="p">(</span><span class="s2">&quot;xkcd: volume 0&quot;</span><span class="p">,</span> <span class="s2">&quot;h3&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p><img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" />  </p>
+<div class="codehilite"><pre><span></span><code>pytest my_first_test.py --demo
+</code></pre></div>
+
+
+<ul>
+<li>By default, <strong><a href="https://www.w3schools.com/cssref/css_selectors.asp">CSS Selectors</a></strong> are used for finding page elements.</li>
+<li>If you're new to CSS Selectors, games like <a href="http://flukeout.github.io/">Flukeout</a> can help you learn.</li>
+<li>Here are some common <code>SeleniumBase</code> methods you might find in tests:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span>  <span class="c1"># Navigate to the web page</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">SELECTOR</span><span class="p">)</span>  <span class="c1"># Click a page element</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">update_text</span><span class="p">(</span><span class="n">SELECTOR</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">)</span>  <span class="c1"># Type text (Add &quot;\n&quot; to text for pressing enter/return.)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_element</span><span class="p">(</span><span class="n">SELECTOR</span><span class="p">)</span>  <span class="c1"># Assert element is visible</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_text</span><span class="p">(</span><span class="n">TEXT</span><span class="p">)</span>  <span class="c1"># Assert text is visible (has optional SELECTOR arg)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_title</span><span class="p">(</span><span class="n">PAGE_TITLE</span><span class="p">)</span>  <span class="c1"># Assert page title</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_no_404_errors</span><span class="p">()</span>  <span class="c1"># Assert no 404 errors from files on the page</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_no_js_errors</span><span class="p">()</span>  <span class="c1"># Assert no JavaScript errors on the page (Chrome-ONLY)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">JAVASCRIPT</span><span class="p">)</span>  <span class="c1"># Execute javascript code</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">go_back</span><span class="p">()</span>  <span class="c1"># Navigate to the previous URL</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">SELECTOR</span><span class="p">)</span>  <span class="c1"># Get text from a selector</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="n">SELECTOR</span><span class="p">,</span> <span class="n">ATTRIBUTE</span><span class="p">)</span>  <span class="c1"># Get a specific attribute from a selector</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">is_element_visible</span><span class="p">(</span><span class="n">SELECTOR</span><span class="p">)</span>  <span class="c1"># Determine if an element is visible on the page</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="n">TEXT</span><span class="p">)</span>  <span class="c1"># Determine if text is visible on the page (optional SELECTOR)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">hover_and_click</span><span class="p">(</span><span class="n">HOVER_SELECTOR</span><span class="p">,</span> <span class="n">CLICK_SELECTOR</span><span class="p">)</span>  <span class="c1"># Mouseover element &amp; click another</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">select_option_by_text</span><span class="p">(</span><span class="n">DROPDOWN_SELECTOR</span><span class="p">,</span> <span class="n">OPTION_TEXT</span><span class="p">)</span>  <span class="c1"># Select a dropdown option</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="n">FRAME_NAME</span><span class="p">)</span>  <span class="c1"># Switch webdriver control to an iframe on the page</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">switch_to_default_content</span><span class="p">()</span>  <span class="c1"># Switch webdriver control out of the current iframe</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">WINDOW_NUMBER</span><span class="p">)</span>  <span class="c1"># Switch to a different window/tab</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">(</span><span class="n">FILE_NAME</span><span class="p">)</span>  <span class="c1"># Save a screenshot of the current page</span>
+</code></pre></div>
+
+
+<p>For the complete list of SeleniumBase methods, see: <strong><a href="help_docs/method_summary/">help_docs/method_summary.md</a></strong></p>
+<h2 id="learn-more">Learn More<a class="headerlink" href="#learn-more" title="Permanent link">&para;</a></h2>
+<h4 id="automatic-webdriver-abilities">Automatic WebDriver abilities<a class="headerlink" href="#automatic-webdriver-abilities" title="Permanent link">&para;</a></h4>
+<p>SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="help_docs/customizing_test_runs/">Read more about customizing test runs</a>.</i>)</p>
+<h4 id="simplified-code">Simplified code<a class="headerlink" href="#simplified-code" title="Permanent link">&para;</a></h4>
+<p>SeleniumBase uses simple syntax for commands, such as:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">update_text</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;dogs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>The same command with regular WebDriver is very messy:
+(<i>And it doesn't include SeleniumBase smart-waiting.</i>)</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+<span class="n">element</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># Not always needed</span>
+<span class="n">element</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s2">&quot;dogs&quot;</span><span class="p">)</span>
+<span class="n">element</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p>As you can see, the old WebDriver way is very bad!
+Use SeleniumBase to make testing much easier!
+(<i>You can still use <code>self.driver</code> in your code.</i>)</p>
+<h4 id="run-tests-with-pytest-or-nosetests-in-any-browser">Run tests with <code>pytest</code> or <code>nosetests</code> in any browser<a class="headerlink" href="#run-tests-with-pytest-or-nosetests-in-any-browser" title="Permanent link">&para;</a></h4>
+<p>(<i>Using <strong>pytest</strong> is recommended. <strong>Chrome</strong> is the default browser.</i>)</p>
+<div class="codehilite"><pre><span></span><code>pytest my_first_test.py --browser<span class="o">=</span>chrome
+
+nosetests test_suite.py --browser<span class="o">=</span>firefox
+</code></pre></div>
+
+
+<p>All Python methods that start with <code>test_</code> will automatically be run when using <code>pytest</code> or <code>nosetests</code> on a Python file, (<i>or on folders containing Python files</i>). You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)</p>
+<div class="codehilite"><pre><span></span><code>pytest <span class="o">[</span>FILE_NAME<span class="o">]</span>.py::<span class="o">[</span>CLASS_NAME<span class="o">]</span>::<span class="o">[</span>METHOD_NAME<span class="o">]</span>
+nosetests <span class="o">[</span>FILE_NAME<span class="o">]</span>.py:<span class="o">[</span>CLASS_NAME<span class="o">]</span>.<span class="o">[</span>METHOD_NAME<span class="o">]</span>
+</code></pre></div>
+
+
+<h4 id="no-more-flaky-tests">No more flaky tests<a class="headerlink" href="#no-more-flaky-tests" title="Permanent link">&para;</a></h4>
+<p>SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<em>up to a timeout limit</em>). This means you no longer need random <code>time.sleep()</code> statements in your scripts.</p>
+<h4 id="automatedmanual-hybrid-mode">Automated/manual hybrid mode<a class="headerlink" href="#automatedmanual-hybrid-mode" title="Permanent link">&para;</a></h4>
+<p>SeleniumBase includes a solution called <strong><a href="seleniumbase/masterqa/ReadMe/">MasterQA</a></strong>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validatation.</p>
+<h4 id="feature-rich">Feature-Rich<a class="headerlink" href="#feature-rich" title="Permanent link">&para;</a></h4>
+<p>For a full list of SeleniumBase features, <a href="help_docs/features_list/">Click Here</a>.</p>
+<p><a id="detailed_instructions"></a>
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="48"></p>
+<h2 id="detailed-instructions">Detailed Instructions<a class="headerlink" href="#detailed-instructions" title="Permanent link">&para;</a></h2>
+<p><strong>Here's how to run the example script on various web browsers:</strong></p>
+<p>First install a webdriver for each browser you intend to use:</p>
+<div class="codehilite"><pre><span></span><code>seleniumbase install chromedriver
+seleniumbase install geckodriver
+seleniumbase install edgedriver
+seleniumbase install iedriver
+seleniumbase install operadriver
+</code></pre></div>
+
+
+<p>Next, choose between <strong>pytest</strong> and <strong>nosetests</strong> test runners. (<i>Mostly interchangeable.</i>)</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> examples/
+
+pytest my_first_test.py --browser<span class="o">=</span>chrome
+
+nosetests my_first_test.py --browser<span class="o">=</span>firefox
+</code></pre></div>
+
+
+<p>(<i>If no browser is specified, Chrome is used by default.</i>)
+With Pytest, a green dot means a test passed. An "F" means a test failed.</p>
+<p><a id="seleniumbase_demo_mode"></a> <strong>Use Demo Mode to help you see what tests are asserting.</strong></p>
+<p>If the example test is moving too fast for your eyes, you can run it in <strong>Demo Mode</strong> by adding <code>--demo</code> on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:</p>
+<div class="codehilite"><pre><span></span><code>pytest my_first_test.py --demo
+</code></pre></div>
+
+
+<p><strong>Pytest</strong> includes test discovery. If you don't specify a specific file or folder to run from, <code>pytest</code> will search all subdirectories automatically for tests to run based on the following matching criteria:
+Python filenames that start with <code>test_</code> or end with <code>_test.py</code>.
+Python methods that start with <code>test_</code>.
+The Python class name can be anything since SeleniumBase's <code>BaseCase</code> class inherits from the <code>unittest.TestCase</code> class.
+You can see which tests are getting discovered by <code>pytest</code> by using:</p>
+<div class="codehilite"><pre><span></span><code>pytest --collect-only -q
+</code></pre></div>
+
+
+<p>You can use the following in your scripts to help you debug issues:
+(<i>If using ipdb, make sure you add "-s" to command-line options unless already in pytest.ini</i>)</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span><span class="p">;</span> <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># Makes the test wait and do nothing for 5 seconds.</span>
+<span class="kn">import</span> <span class="nn">ipdb</span><span class="p">;</span> <span class="n">ipdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>  <span class="c1"># Enter debugging mode. n = next, c = continue, s = step.</span>
+<span class="kn">import</span> <span class="nn">pytest</span><span class="p">;</span> <span class="n">pytest</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>  <span class="c1"># Enter debugging mode. n = next, c = continue, s = step.</span>
+</code></pre></div>
+
+
+<p><strong>To pause an active test that throws an exception or error, add <code>--pdb -s</code>:</strong></p>
+<div class="codehilite"><pre><span></span><code>pytest my_first_test.py --pdb -s
+</code></pre></div>
+
+
+<p>The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' =&gt; next, continue, step).</p>
+<p>Here are some useful command-line options that come with Pytest:</p>
+<div class="codehilite"><pre><span></span><code>-v  <span class="c1"># Prints the full test name for each test.</span>
+-q  <span class="c1"># Prints fewer details in the console output when running tests.</span>
+-x  <span class="c1"># Stop running the tests after the first failure is reached.</span>
+--html<span class="o">=</span>report.html  <span class="c1"># Creates a detailed pytest-html report after tests finish.</span>
+--collect-only  <span class="c1"># Show what tests would get run without actually running them.</span>
+-n<span class="o">=</span>NUM  <span class="c1"># Multithread the tests using that many threads. (Speed up test runs!)</span>
+-s  <span class="c1"># See print statements. (Should be on by default with pytest.ini present.)</span>
+--junit-xml<span class="o">=</span>report.xml  <span class="c1"># Creates a junit-xml report after tests finish.</span>
+--pdb  <span class="c1"># If a test fails, pause run and enter debug mode. (Don&#39;t use with CI!)</span>
+-m<span class="o">=</span>MARKER  <span class="c1"># Only run tests that are marked with the specified pytest marker.</span>
+</code></pre></div>
+
+
+<p>SeleniumBase provides additional Pytest command-line options for tests:</p>
+<div class="codehilite"><pre><span></span><code>--browser<span class="o">=</span>BROWSER  <span class="c1"># (The web browser to use.)</span>
+--cap-file<span class="o">=</span>FILE  <span class="c1"># (The web browser&#39;s desired capabilities to use.)</span>
+--cap-string<span class="o">=</span>STRING  <span class="c1"># (The web browser&#39;s desired capabilities to use.)</span>
+--settings-file<span class="o">=</span>FILE  <span class="c1"># (Overrides SeleniumBase settings.py values.)</span>
+--env<span class="o">=</span>ENV  <span class="c1"># (Set a test environment. Use &quot;self.env&quot; to use this in tests.)</span>
+--data<span class="o">=</span>DATA  <span class="c1"># (Extra data to pass to tests. Use &quot;self.data&quot; in tests.)</span>
+--var1<span class="o">=</span>DATA  <span class="c1"># (Extra data to pass to tests. Use &quot;self.var1&quot; in tests.)</span>
+--var2<span class="o">=</span>DATA  <span class="c1"># (Extra data to pass to tests. Use &quot;self.var2&quot; in tests.)</span>
+--var3<span class="o">=</span>DATA  <span class="c1"># (Extra data to pass to tests. Use &quot;self.var3&quot; in tests.)</span>
+--user-data-dir<span class="o">=</span>DIR  <span class="c1"># (Set the Chrome user data directory to use.)</span>
+--server<span class="o">=</span>SERVER  <span class="c1"># (The server / IP address used by the tests.)</span>
+--port<span class="o">=</span>PORT  <span class="c1"># (The port that&#39;s used by the test server.)</span>
+--proxy<span class="o">=</span>SERVER:PORT  <span class="c1"># (This is the proxy server:port combo used by tests.)</span>
+--agent<span class="o">=</span>STRING  <span class="c1"># (This designates the web browser&#39;s User Agent to use.)</span>
+--mobile  <span class="c1"># (The option to use the mobile emulator while running tests.)</span>
+--metrics<span class="o">=</span>STRING  <span class="c1"># (&quot;CSSWidth,Height,PixelRatio&quot; for mobile emulator tests.)</span>
+--extension-zip<span class="o">=</span>ZIP  <span class="c1"># (Load a Chrome Extension .zip file, comma-separated.)</span>
+--extension-dir<span class="o">=</span>DIR  <span class="c1"># (Load a Chrome Extension directory, comma-separated.)</span>
+--headless  <span class="c1"># (The option to run tests headlessly. The default on Linux OS.)</span>
+--headed  <span class="c1"># (The option to run tests with a GUI on Linux OS.)</span>
+--start-page<span class="o">=</span>URL  <span class="c1"># (The starting URL for the web browser when tests begin.)</span>
+--archive-logs  <span class="c1"># (Archive old log files instead of deleting them.)</span>
+--time-limit<span class="o">=</span>SECONDS  <span class="c1"># (Safely fail any test that exceeds the limit limit.)</span>
+--slow  <span class="c1"># (The option to slow down the automation.)</span>
+--demo  <span class="c1"># (The option to visually see test actions as they occur.)</span>
+--demo-sleep<span class="o">=</span>SECONDS  <span class="c1"># (The option to wait longer after Demo Mode actions.)</span>
+--highlights<span class="o">=</span>NUM  <span class="c1"># (Number of highlight animations for Demo Mode actions.)</span>
+--message-duration<span class="o">=</span>SECONDS  <span class="c1"># (The time length for Messenger alerts.)</span>
+--check-js  <span class="c1"># (The option to check for JavaScript errors after page loads.)</span>
+--ad-block  <span class="c1"># (The option to block some display ads after page loads.)</span>
+--verify-delay<span class="o">=</span>SECONDS  <span class="c1"># (The delay before MasterQA verification checks.)</span>
+--disable-csp  <span class="c1"># (This disables the Content Security Policy of websites.)</span>
+--enable-sync  <span class="c1"># (The option to enable &quot;Chrome Sync&quot;.)</span>
+--use-auto-ext  <span class="c1"># (The option to use Chrome&#39;s automation extension.)</span>
+--incognito  <span class="c1">#  (The option to enable Chrome&#39;s Incognito mode.)</span>
+--guest  <span class="c1"># (The option to enable Chrome&#39;s Guest mode.)</span>
+--devtools  <span class="c1"># (The option to open Chrome&#39;s DevTools when the browser opens.)</span>
+--reuse-session  <span class="c1"># (The option to reuse the browser session between tests.)</span>
+--crumbs  <span class="c1"># (Option to delete all cookies between tests reusing a session.)</span>
+--maximize-window  <span class="c1"># (The option to start with the web browser maximized.)</span>
+--save-screenshot  <span class="c1"># (The option to save a screenshot after each test.)</span>
+--visual-baseline  <span class="c1"># (Set the visual baseline for Visual/Layout tests.)</span>
+--timeout-multiplier<span class="o">=</span>MULTIPLIER  <span class="c1"># (Multiplies the default timeout values.)</span>
+</code></pre></div>
+
+
+<p>(For more details, see the full list of command-line options <strong><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py">here</a></strong>.)</p>
+<p>During test failures, logs and screenshots from the most recent test run will get saved to the <code>latest_logs/</code> folder. Those logs will get moved to <code>archived_logs/</code> if you add --archive_logs to command-line options, or have ARCHIVE_EXISTING_LOGS set to True in <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a>, otherwise log files with be cleaned up at the start of the next test run. The <code>test_suite.py</code> collection contains tests that fail on purpose so that you can see how logging works.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> examples/
+
+pytest test_suite.py --browser<span class="o">=</span>chrome
+
+pytest test_suite.py --browser<span class="o">=</span>firefox
+</code></pre></div>
+
+
+<p>An easy way to override seleniumbase/config/settings.py is by using a custom settings file.
+Here's the command-line option to add to tests: (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py">examples/custom_settings.py</a>)
+<code>--settings_file=custom_settings.py</code>
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)</p>
+<p>To pass additional data from the command-line to tests, add <code>--data="ANY STRING"</code>.
+Now inside your tests, you can use <code>self.data</code> to access that.</p>
+<h3 id="test-directory-customization">Test Directory Customization<a class="headerlink" href="#test-directory-customization" title="Permanent link">&para;</a></h3>
+<p>For running tests outside of the SeleniumBase repo with <strong>Pytest</strong>, you'll want a copy of <strong><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini">pytest.ini</a></strong> on the root folder. For running tests outside of the SeleniumBase repo with <strong>Nosetests</strong>, you'll want a copy of <strong><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg">setup.cfg</a></strong> on the root folder. (Subfolders should include a blank <code>__init__.py</code> file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using <code>--config</code>. Example <code>nosetests [MY_TEST].py --config=[MY_CONFIG].cfg</code>)</p>
+<p>As a shortcut, you'll be able to run <code>seleniumbase mkdir [DIRECTORY_NAME]</code> to create a new folder that already contains necessary files and some example tests that you can run. Example:</p>
+<div class="codehilite"><pre><span></span><code>seleniumbase mkdir ui_tests
+<span class="nb">cd</span> ui_tests/
+pytest my_first_test.py
+</code></pre></div>
+
+
+<h3 id="logging-results-from-failing-tests">Logging / Results from Failing Tests<a class="headerlink" href="#logging-results-from-failing-tests" title="Permanent link">&para;</a></h3>
+<p>Let's try an example of a test that fails:</p>
+<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot; test_fail.py &quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">seleniumbase</span> <span class="kn">import</span> <span class="n">BaseCase</span>
+
+<span class="k">class</span> <span class="nc">MyTestClass</span><span class="p">(</span><span class="n">BaseCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_find_army_of_robots_on_xkcd_desert_island</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;https://xkcd.com/731/&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assert_element</span><span class="p">(</span><span class="s2">&quot;div#ARMY_OF_ROBOTS&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># This should fail</span>
+</code></pre></div>
+
+
+<p>You can run it from the <code>examples</code> folder like this:</p>
+<div class="codehilite"><pre><span></span><code>pytest test_fail.py
+</code></pre></div>
+
+
+<p>You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. During test runs, past results get moved to the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a>, or if your run tests with <code>--archive-logs</code>. If you choose not to archive existing logs, they will be deleted and replaced by the logs of the latest test run.</p>
+<p><a id="creating_visual_reports"></a></p>
+<h3 id="creating-visual-test-suite-reports">Creating Visual Test Suite Reports<a class="headerlink" href="#creating-visual-test-suite-reports" title="Permanent link">&para;</a></h3>
+<p>(NOTE: Several command-line args are different for Pytest vs Nosetests)</p>
+<h4 id="pytest-reports">Pytest Reports<a class="headerlink" href="#pytest-reports" title="Permanent link">&para;</a></h4>
+<p>Using <code>--html=report.html</code> gives you a fancy report of the name specified after your test suite completes.</p>
+<div class="codehilite"><pre><span></span><code>pytest test_suite.py --html<span class="o">=</span>report.html
+</code></pre></div>
+
+
+<p><img alt="" src="https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png" title="Example Pytest Report" /></p>
+<p>You can also use <code>--junit-xml=report.xml</code> to get an xml report instead. Jenkins can use this file to display better reporting for your tests.</p>
+<div class="codehilite"><pre><span></span><code>pytest test_suite.py --junit-xml<span class="o">=</span>report.xml
+</code></pre></div>
+
+
+<h4 id="nosetest-reports">Nosetest Reports<a class="headerlink" href="#nosetest-reports" title="Permanent link">&para;</a></h4>
+<p>The <code>--report</code> option gives you a fancy report after your test suite completes.</p>
+<div class="codehilite"><pre><span></span><code>nosetests test_suite.py --report
+</code></pre></div>
+
+
+<p><img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" height="420"></p>
+<p>(NOTE: You can add <code>--show-report</code> to immediately display Nosetest reports after the test suite completes. Only use <code>--show-report</code> when running tests locally because it pauses the test run.)</p>
+<h3 id="using-a-proxy-server">Using a Proxy Server<a class="headerlink" href="#using-a-proxy-server" title="Permanent link">&para;</a></h3>
+<p>If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add <code>--proxy=IP_ADDRESS:PORT</code> as an argument on the command-line.</p>
+<div class="codehilite"><pre><span></span><code>pytest proxy_test.py --proxy<span class="o">=</span>IP_ADDRESS:PORT
+</code></pre></div>
+
+
+<p>If the proxy server that you wish to use requires authentication, you can do the following (Chrome only):</p>
+<div class="codehilite"><pre><span></span><code>pytest proxy_test.py --proxy<span class="o">=</span>USERNAME:PASSWORD@IP_ADDRESS:PORT
+</code></pre></div>
+
+
+<p>To make things easier, you can add your frequently-used proxies to PROXY_LIST in <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py">proxy_list.py</a>, and then use <code>--proxy=KEY_FROM_PROXY_LIST</code> to use the IP_ADDRESS:PORT of that key.</p>
+<div class="codehilite"><pre><span></span><code>pytest proxy_test.py --proxy<span class="o">=</span>proxy1
+</code></pre></div>
+
+
+<h3 id="changing-the-user-agent">Changing the User-Agent<a class="headerlink" href="#changing-the-user-agent" title="Permanent link">&para;</a></h3>
+<p>If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add <code>--agent="USER AGENT STRING"</code> as an argument on the command-line.</p>
+<div class="codehilite"><pre><span></span><code>pytest user_agent_test.py --agent<span class="o">=</span><span class="s2">&quot;Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU&quot;</span>
+</code></pre></div>
+
+
+<h3 id="building-guided-tours-for-websites">Building Guided Tours for Websites<a class="headerlink" href="#building-guided-tours-for-websites" title="Permanent link">&para;</a></h3>
+<p>Learn about <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the <code>examples/tour_examples</code> folder). It's great for prototyping a website onboarding experience.</p>
+<p><img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" /></p>
+<p><a id="utilizing_advanced_features"></a></p>
+<h3 id="production-environments-integrations">Production Environments &amp; Integrations<a class="headerlink" href="#production-environments-integrations" title="Permanent link">&para;</a></h3>
+<p>Here are some things you can do to setup a production environment for your testing:</p>
+<ul>
+<li>
+<p>You can setup a <a href="https://jenkins.io/">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="integrations/azure/jenkins/ReadMe/">SeleniumBase Jenkins example on Azure</a> or the <a href="integrations/google_cloud/ReadMe/">SeleniumBase Jenkins example on Google Cloud</a>.</p>
+</li>
+<li>
+<p>You can use <a href="https://selenium.dev/documentation/en/grid/">the Selenium Grid</a> to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid">SeleniumBase selenium_grid folder</a>, which should have everything you need, including the <a href="seleniumbase/utilities/selenium_grid/ReadMe/">Selenium Grid ReadMe</a>, which will help you get started.</p>
+</li>
+<li>
+<p>If you're using the <a href="help_docs/mysql_installation/">SeleniumBase MySQL feature</a> to save results from tests running on a server machine, you can install <a href="https://dev.mysql.com/downloads/tools/workbench/">MySQL Workbench</a> to help you read &amp; write from your DB more easily.</p>
+</li>
+<li>
+<p>If you use <a href="https://slack.com">Slack</a>, you can easily have your Jenkins jobs display results there by using the <a href="https://github.com/jenkinsci/slack-plugin">Jenkins Slack Plugin</a>. Another way to send messages from your tests to Slack is by using <a href="https://api.slack.com/incoming-webhooks">Slack's Incoming Webhooks API</a>.</p>
+</li>
+<li>
+<p>If you're using AWS, you can setup an <a href="https://aws.amazon.com/s3/">Amazon S3</a> account for saving log files and screenshots from your tests. To activate this feature, modify <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a> with connection details in the S3 section, and add "<code>--with-s3-logging</code>" on the command-line when running your tests.</p>
+</li>
+</ul>
+<p>Here's an example of running tests with additional features enabled:</p>
+<div class="codehilite"><pre><span></span><code>pytest <span class="o">[</span>YOUR_TEST_FILE<span class="o">]</span>.py --with-db-reporting --with-s3-logging
+</code></pre></div>
+
+
+<p><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo_c.png" title="SeleniumBase" height="100" /></p>
+<p><a id="detailed_method_specifications"></a></p>
+<h3 id="detailed-method-specifications-and-examples">Detailed Method Specifications and Examples<a class="headerlink" href="#detailed-method-specifications-and-examples" title="Permanent link">&para;</a></h3>
+<h4 id="navigating-to-a-web-page-and-related-commands">Navigating to a web page (and related commands)<a class="headerlink" href="#navigating-to-a-web-page-and-related-commands" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;https://xkcd.com/378/&quot;</span><span class="p">)</span>  <span class="c1"># This method opens the specified page.</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">go_back</span><span class="p">()</span>  <span class="c1"># This method navigates the browser to the previous page.</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">go_forward</span><span class="p">()</span>  <span class="c1"># This method navigates the browser forward in history.</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">refresh_page</span><span class="p">()</span>  <span class="c1"># This method reloads the current page.</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">get_current_url</span><span class="p">()</span>  <span class="c1"># This method returns the current page URL.</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">get_page_source</span><span class="p">()</span>  <span class="c1"># This method returns the current page source.</span>
+</code></pre></div>
+
+
+<p><strong>ProTip™:</strong> You may need to use the get_page_source() method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills for that.)</p>
+<div class="codehilite"><pre><span></span><code><span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_page_source</span><span class="p">()</span>
+<span class="n">head_open_tag</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&lt;head&gt;&#39;</span><span class="p">)</span>
+<span class="n">head_close_tag</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&lt;/head&gt;&#39;</span><span class="p">,</span> <span class="n">head_open_tag</span><span class="p">)</span>
+<span class="n">everything_inside_head</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="n">head_open_tag</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;&lt;head&gt;&#39;</span><span class="p">):</span><span class="n">head_close_tag</span><span class="p">]</span>
+</code></pre></div>
+
+
+<h4 id="clicking">Clicking<a class="headerlink" href="#clicking" title="Permanent link">&para;</a></h4>
+<p>To click an element on the page:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">&quot;div#my_id&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p><strong>ProTip™:</strong> In most web browsers, you can right-click on a page and select <code>Inspect Element</code> to see the CSS selector details that you'll need to create your own scripts.</p>
+<h4 id="typing-text">Typing Text<a class="headerlink" href="#typing-text" title="Permanent link">&para;</a></h4>
+<p>self.update_text(selector, text)  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">update_text</span><span class="p">(</span><span class="s2">&quot;input#id_value&quot;</span><span class="p">,</span> <span class="s2">&quot;2012&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>You can also use self.add_text() or the WebDriver .send_keys() command, but those won't clear the text box first if there's already text inside.
+If you want to type in special keys, that's easy too. Here's an example:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="kn">import</span> <span class="n">Keys</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="s2">&quot;textarea&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">Keys</span><span class="o">.</span><span class="n">SPACE</span> <span class="o">+</span> <span class="n">Keys</span><span class="o">.</span><span class="n">BACK_SPACE</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># The backspace should cancel out the space, leaving you with the newline</span>
+</code></pre></div>
+
+
+<h4 id="getting-the-text-from-an-element-on-a-page">Getting the text from an element on a page<a class="headerlink" href="#getting-the-text-from-an-element-on-a-page" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="s2">&quot;header h2&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h4 id="getting-the-attribute-value-from-an-element-on-a-page">Getting the attribute value from an element on a page<a class="headerlink" href="#getting-the-attribute-value-from-an-element-on-a-page" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="n">attribute</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;#comic img&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h4 id="asserting-existance-of-an-element-on-a-page-within-some-number-of-seconds">Asserting existance of an element on a page within some number of seconds<a class="headerlink" href="#asserting-existance-of-an-element-on-a-page-within-some-number-of-seconds" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">wait_for_element_present</span><span class="p">(</span><span class="s2">&quot;div.my_class&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>(NOTE: You can also use: <code>self.assert_element_present(ELEMENT)</code>)</p>
+<h4 id="asserting-visibility-of-an-element-on-a-page-within-some-number-of-seconds">Asserting visibility of an element on a page within some number of seconds<a class="headerlink" href="#asserting-visibility-of-an-element-on-a-page-within-some-number-of-seconds" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">wait_for_element_visible</span><span class="p">(</span><span class="s2">&quot;a.my_class&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>(NOTE: The short versions of this are <code>self.find_element(ELEMENT)</code> and <code>self.assert_element(ELEMENT)</code>. The find_element() version returns the element)</p>
+<p>Since the line above returns the element, you can combine that with .click() as shown below:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="s2">&quot;a.my_class&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+<span class="c1"># But you&#39;re better off using the following statement, which does the same thing</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">&quot;a.my_class&quot;</span><span class="p">)</span>  <span class="c1"># DO IT THIS WAY!</span>
+</code></pre></div>
+
+
+<p><strong>ProTip™:</strong> You can use dots to signify class names (Ex: <code>div.class_name</code>) as a simplified version of <code>div[class="class_name"]</code> within a CSS selector. </p>
+<p>You can also use <code>*=</code> to search for any partial value in a CSS selector as shown below:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s1">&#39;a[name*=&quot;partial_name&quot;]&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h4 id="asserting-visibility-of-text-inside-an-element-on-a-page-within-some-number-of-seconds">Asserting visibility of text inside an element on a page within some number of seconds<a class="headerlink" href="#asserting-visibility-of-text-inside-an-element-on-a-page-within-some-number-of-seconds" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">assert_text</span><span class="p">(</span><span class="s2">&quot;Make it so!&quot;</span><span class="p">,</span> <span class="s2">&quot;div#trek div.picard div.quotes&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_text</span><span class="p">(</span><span class="s2">&quot;Tea. Earl Grey. Hot.&quot;</span><span class="p">,</span> <span class="s2">&quot;div#trek div.picard div.quotes&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>(NOTE: <code>self.find_text(TEXT, ELEMENT)</code> and <code>self.wait_for_text(TEXT, ELEMENT)</code> also do this. For backwords compatibility, older method names were kept, but the default timeout may be different.)</p>
+<h4 id="asserting-anything">Asserting Anything<a class="headerlink" href="#asserting-anything" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">assert_true</span><span class="p">(</span><span class="n">myvar1</span> <span class="o">==</span> <span class="n">something</span><span class="p">)</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span> <span class="n">var2</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h4 id="useful-conditional-statements-with-creative-examples-in-action">Useful Conditional Statements (with creative examples in action)<a class="headerlink" href="#useful-conditional-statements-with-creative-examples-in-action" title="Permanent link">&para;</a></h4>
+<p>is_element_visible(selector)  # is an element visible on a page</p>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_element_visible</span><span class="p">(</span><span class="s1">&#39;div#warning&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Red Alert: Something bad might be happening!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>is_element_present(selector)  # is an element present on a page</p>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_element_present</span><span class="p">(</span><span class="s1">&#39;div#top_secret img.tracking_cookie&#39;</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">contact_cookie_monster</span><span class="p">()</span>  <span class="c1"># Not a real SeleniumBase method</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">current_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_url</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">contact_the_nsa</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">current_url</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Dark Zone Found&quot;</span><span class="p">)</span>  <span class="c1"># Not a real SeleniumBase method</span>
+</code></pre></div>
+
+
+<p>Another example:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">is_there_a_cloaked_klingon_ship_on_this_page</span><span class="p">():</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_element_present</span><span class="p">(</span><span class="s2">&quot;div.ships div.klingon&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_element_visible</span><span class="p">(</span><span class="s2">&quot;div.ships div.klingon&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+
+
+<p>is_text_visible(text, selector)  # is text visible on a page</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_mirror_universe_captain_picard_superbowl_ad</span><span class="p">(</span><span class="n">superbowl_year</span><span class="p">):</span>
+    <span class="n">selector</span> <span class="o">=</span> <span class="s2">&quot;div.superbowl_</span><span class="si">%s</span><span class="s2"> div.commercials div.transcript div.picard&quot;</span> <span class="o">%</span> <span class="n">superbowl_year</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;For the Love of Marketing and Earl Grey Tea!&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard HubSpot Superbowl Ad 2015&quot;</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;Delivery Drones... Engage&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard Amazon Superbowl Ad 2015&quot;</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;Bing it on Screen!&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard Microsoft Superbowl Ad 2015&quot;</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;OK Glass, Make it So!&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard Google Superbowl Ad 2015&quot;</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;Number One, I&#39;ve Never Seen Anything Like It.&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard Tesla Superbowl Ad 2015&quot;</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;With the first link, the chain is forged.</span>
+<span class="s2">                              The first speech censored, the first thought forbidden,</span>
+<span class="s2">                              the first freedom denied, chains us all irrevocably.&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard Wikimedia Superbowl Ad 2015&quot;</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_text_visible</span><span class="p">(</span><span class="s2">&quot;Let us make sure history never forgets the name ... Facebook&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Picard Facebook Superbowl Ad 2015&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Reports of my assimilation are greatly exaggerated.&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h4 id="switching-tabs">Switching Tabs<a class="headerlink" href="#switching-tabs" title="Permanent link">&para;</a></h4>
+<p>What if your test opens up a new tab/window and now you have more than one page? No problem. You need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># This switches to the new tab (0 is the first one)</span>
+</code></pre></div>
+
+
+<p><strong>ProTip™:</strong> iFrames follow the same principle as new windows - you need to specify the iFrame if you want to take action on something in there</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s1">&#39;ContentManagerTextBody_ifr&#39;</span><span class="p">)</span>
+<span class="c1"># Now you can act inside the iFrame</span>
+<span class="c1"># .... Do something cool (here)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">switch_to_default_content</span><span class="p">()</span>  <span class="c1"># Exit the iFrame when you&#39;re done</span>
+</code></pre></div>
+
+
+<h4 id="handle-pop-up-alerts">Handle Pop-Up Alerts<a class="headerlink" href="#handle-pop-up-alerts" title="Permanent link">&para;</a></h4>
+<p>What if your test makes an alert pop up in your browser? No problem. You need to switch to it and either accept it or dismiss it:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">wait_for_and_accept_alert</span><span class="p">()</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_and_dismiss_alert</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p>If you're not sure whether there's an alert before trying to accept or dismiss it, one way to handle that is to wrap your alert-handling code in a try/except block. Other methods such as .text and .send_keys() will also work with alerts.</p>
+<h4 id="executing-custom-jquery-scripts">Executing Custom jQuery Scripts<a class="headerlink" href="#executing-custom-jquery-scripts" title="Permanent link">&para;</a></h4>
+<p>jQuery is a powerful JavaScript library that allows you to perform advanced actions in a web browser.
+If the web page you're on already has jQuery loaded, you can start executing jQuery scripts immediately.
+You'd know this because the web page would contain something like the following in the HTML:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+
+
+<p>It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">activate_jquery</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p>Some websites have a restrictive <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content Security Policy</a> to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add <code>--disable_csp</code> on the command-line.</p>
+<p>Here are some examples of using jQuery in your scripts:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;jQuery, window.scrollTo(0, 600)&#39;</span><span class="p">)</span>  <span class="c1"># Scrolling the page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;jQuery(&#39;#annoying-widget&#39;).hide()&quot;</span><span class="p">)</span>  <span class="c1"># Hiding elements on a page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;jQuery(&#39;#hidden-widget&#39;).show(0)&quot;</span><span class="p">)</span>  <span class="c1"># Showing hidden elements on a page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;jQuery(&#39;#annoying-button a&#39;).remove()&quot;</span><span class="p">)</span>  <span class="c1"># Removing elements on a page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;jQuery(&#39;</span><span class="si">%s</span><span class="s2">&#39;).mouseover()&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mouse_over_item</span><span class="p">))</span>  <span class="c1"># Mouse-over elements on a page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;jQuery(&#39;input#the_id&#39;).val(&#39;my_text&#39;)&quot;</span><span class="p">)</span>  <span class="c1"># Fast text input on a page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;jQuery(&#39;div#dropdown a.link&#39;).click()&quot;</span><span class="p">)</span>  <span class="c1"># Click elements on a page</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;return jQuery(&#39;div#amazing&#39;)[0].text&quot;</span><span class="p">)</span>  <span class="c1"># Returns the css &quot;text&quot; of the element given</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;return jQuery(&#39;textarea&#39;)[2].value&quot;</span><span class="p">)</span>  <span class="c1"># Returns the css &quot;value&quot; of the 3rd textarea element on the page</span>
+</code></pre></div>
+
+
+<p>In the following example, JavaScript is used to plant code on a page that Selenium can then touch after that:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">start_page</span> <span class="o">=</span> <span class="s2">&quot;https://xkcd.com/465/&quot;</span>
+<span class="n">destination_page</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/seleniumbase/SeleniumBase&quot;</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">start_page</span><span class="p">)</span>
+<span class="n">referral_link</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;&lt;a class=&#39;analytics test&#39; href=&#39;</span><span class="si">%s</span><span class="s1">&#39;&gt;Free-Referral Button!&lt;/a&gt;&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">destination_page</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;document.body.innerHTML = </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s1">&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">referral_link</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="s2">&quot;a.analytics&quot;</span><span class="p">)</span>  <span class="c1"># Clicks the generated button</span>
+</code></pre></div>
+
+
+<p>(Due to popular demand, this traffic generation example has been baked into SeleniumBase with the <code>self.generate_referral(start_page, end_page)</code> and the <code>self.generate_traffic(start_page, end_page, loops)</code> methods.)</p>
+<h4 id="using-delayed-asserts">Using delayed asserts<a class="headerlink" href="#using-delayed-asserts" title="Permanent link">&para;</a></h4>
+<p>Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where delayed asserts come in. Here's the example:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">seleniumbase</span> <span class="kn">import</span> <span class="n">BaseCase</span>
+
+<span class="k">class</span> <span class="nc">MyTestClass</span><span class="p">(</span><span class="n">BaseCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_delayed_asserts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;https://xkcd.com/993/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_element</span><span class="p">(</span><span class="s1">&#39;#comic&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_assert_element</span><span class="p">(</span><span class="s1">&#39;img[alt=&quot;Brand Identity&quot;]&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_assert_element</span><span class="p">(</span><span class="s1">&#39;img[alt=&quot;Rocket Ship&quot;]&#39;</span><span class="p">)</span>  <span class="c1"># Will Fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_assert_element</span><span class="p">(</span><span class="s1">&#39;#comicmap&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_assert_text</span><span class="p">(</span><span class="s1">&#39;Fake Item&#39;</span><span class="p">,</span> <span class="s1">&#39;#middleContainer&#39;</span><span class="p">)</span>  <span class="c1"># Will Fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_assert_text</span><span class="p">(</span><span class="s1">&#39;Random&#39;</span><span class="p">,</span> <span class="s1">&#39;#middleContainer&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_assert_element</span><span class="p">(</span><span class="s1">&#39;a[name=&quot;Super Fake !!!&quot;]&#39;</span><span class="p">)</span>  <span class="c1"># Will Fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_delayed_asserts</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p><code>delayed_assert_element()</code> and <code>delayed_assert_text()</code> will save any exceptions that would be raised.
+To flush out all the failed delayed asserts into a single exception, make sure to call <code>self.process_delayed_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_delayed_asserts()</code> at the end of all your delayed asserts for a single page. This way, the screenshot from your log file will have the location where the delayed asserts were made.</p>
+<h4 id="accessing-raw-webdriver">Accessing raw WebDriver<a class="headerlink" href="#accessing-raw-webdriver" title="Permanent link">&para;</a></h4>
+<p>If you need access to any commands that come with standard WebDriver, you can call them directly like this:</p>
+<div class="codehilite"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">delete_all_cookies</span><span class="p">()</span>
+<span class="n">capabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">capabilities</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_partial_link_text</span><span class="p">(</span><span class="s2">&quot;GitHub&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>(In general, you'll want to use the SeleniumBase versions of methods when available.)</p>
+<h4 id="retrying-failing-tests-automatically">Retrying failing tests automatically<a class="headerlink" href="#retrying-failing-tests-automatically" title="Permanent link">&para;</a></h4>
+<p>You can use <code>--reruns NUM</code> to retry failing tests that many times. Use <code>--reruns-delay SECONDS</code> to wait that many seconds between retries. Example:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">pytest --reruns 5 --reruns-delay 1</span>
+</code></pre></div>
+
+
+<p>Additionally, you can use the <code>@retry_on_exception()</code> decorator to specifically retry failing methods. (First import: <code>from seleniumbase import decorators</code>) To learn more about SeleniumBase decorators, <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common">click here</a>.</p>
+<h3 id="wrap-up">Wrap-Up<a class="headerlink" href="#wrap-up" title="Permanent link">&para;</a></h3>
+<h4 id="congratulations-on-getting-started-with-seleniumbase">Congratulations on getting started with SeleniumBase!<a class="headerlink" href="#congratulations-on-getting-started-with-seleniumbase" title="Permanent link">&para;</a></h4>
+<p><strong>If you see something, say something!</strong><br />
+<a href="https://github.com/seleniumbase/SeleniumBase/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed-raw/seleniumbase/SeleniumBase.svg?color=22BB88" alt=" " /></a> <a href="https://github.com/seleniumbase/SeleniumBase/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-pr-closed/seleniumbase/SeleniumBase.svg?logo=github&logoColor=white&color=22BB99" /></a></p>
+<p><strong>If you like us, give us a star!</strong><br />
+<a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" alt=" " /></a></p>
+<p><a href="https://github.com/mdmintz">https://github.com/mdmintz</a>  </p>
+<p><a href="."><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="46.2"></a> <br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" /></a></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+        
+          <a href="help_docs/features_list/" title="Features" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Features
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/vendor.36cbf620.min.js"></script>
+      <script src="assets/javascripts/bundle.00c583dd.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.7f7c8775.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
