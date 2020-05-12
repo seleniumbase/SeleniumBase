@@ -1,6 +1,8 @@
+<a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo.png" alt="SeleniumBase" height="130" /></a>
+
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Running Example Tests:
 
-SeleniumBase tests are run with **``pytest``** or **``nosetests``**. (<i>pytest is recommended.</i>) ``Chrome`` is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
+SeleniumBase tests are run with **``pytest``**. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
 (NOTE: Some example tests [in this folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
@@ -84,6 +86,15 @@ pytest rate_limiting_test.py
 Run an example test that demonstrates how to upload a file to a website:
 ```bash
 pytest upload_file_test.py
+```
+
+--------
+
+#### SeleniumBase tests can also be run with ``nosetests``:
+
+Run an example test with nosetests:
+```bash
+nosetests my_first_test.py
 ```
 
 Run an example test suite and generate a nosetest report: (nosetests-only)
