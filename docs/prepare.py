@@ -92,7 +92,7 @@ def main(*args, **kwargs):
     for line in code_lines:
         if ' href="' in line and '.md"' in line:
             changed = True
-            line = line.replace('.md"', '.html"')
+            line = line.replace('.md"', '/"')
         seleniumbase_lines.append(line)
     if changed:
         out_file = codecs.open(readme_file, "w+", encoding='utf-8')
