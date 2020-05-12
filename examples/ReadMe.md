@@ -4,10 +4,9 @@
 
 SeleniumBase tests are run with **``pytest``**. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
-(NOTE: Some example tests [in this folder](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
+Example tests are located in <b>[SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
 
-<a href="https://github.com/seleniumbase/SeleniumBase">
-<img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
+(NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
 **Here are some example run commands to help get you started:**
 
@@ -119,5 +118,8 @@ python gui_test_runner.py
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260" />
 
 --------
+
+<a href="https://github.com/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="45" />
