@@ -21,6 +21,7 @@ __pycache__
 # Python3 pyvenv
 venv
 sbase
+sbase*
 pyvenv.cfg
 .Python
 include
