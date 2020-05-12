@@ -93,6 +93,13 @@ saved_cookies
 # Automated Visual Testing
 visual_baseline
 
+# MkDocs
+site/*
+docs/*.md
+docs/*/*.md
+docs/*/*/*.md
+docs/*/*/*/*.md
+
 # Other
 selenium-server-standalone.jar
 proxy.zip
@@ -101,10 +108,6 @@ verbose_node_server.dat
 ip_of_grid_hub.dat
 downloaded_files
 archived_files
-docs/*.md
-docs/*/*.md
-docs/*/*/*.md
-docs/*/*/*/*.md
 assets
 temp
 temp*
