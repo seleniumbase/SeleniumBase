@@ -13,18 +13,18 @@
 </p>
 <p align="center">
 <a href="#python_installation">🚀 Get Started</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Testing</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a><br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">🌎 Translations</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
+<a href="help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
+<a href="help_docs/features_list.md">🏰 Features</a> |
+<a href="examples/ReadMe.md">👨‍🏫 Examples</a> |
+<a href="help_docs/mobile_testing.md">📱 Mobile Testing</a> |
+<a href="examples/example_logs/ReadMe.md">📊 Reports</a><br />
+<a href="help_docs/method_summary.md">📖 API</a> |
+<a href="examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
+<a href="examples/translations">🌎 Translations</a> |
+<a href="examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
+<a href="seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
+<a href="examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
+<a href="integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
 </p>
 <p align="center"><b>Take control of your test automation.</b></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
@@ -47,7 +47,7 @@ pytest test_swag_labs.py --demo
 
 * Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
-* A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i>[See shortcut](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md).</i>
+* A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i>[See shortcut](help_docs/virtualenv_instructions.md).</i>
 * Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
 ```bash
 python -m pip install -U pip
@@ -139,12 +139,12 @@ self.switch_to_default_content()  # Switch webdriver control out of the current 
 self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
 self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
-For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md)**
+For the complete list of SeleniumBase methods, see: **[help_docs/method_summary.md](help_docs/method_summary.md)**
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Learn More:
 
 #### **Automatic WebDriver abilities:**<br />
-SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i>[Read more about customizing test runs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
+SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i>[Read more about customizing test runs](help_docs/customizing_test_runs.md).</i>)
 
 #### **Simplified code:**<br />
 SeleniumBase uses simple syntax for commands, such as:
@@ -181,10 +181,10 @@ nosetests [FILE_NAME].py:[CLASS_NAME].[METHOD_NAME]
 SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your scripts.
 
 #### **Automated/manual hybrid mode:**<br />
-SeleniumBase includes a solution called **[MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validatation.
+SeleniumBase includes a solution called **[MasterQA](seleniumbase/masterqa/ReadMe.md)**, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validatation.
 
 #### **Feature-Rich:**<br />
-For a full list of SeleniumBase features, [Click Here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md).
+For a full list of SeleniumBase features, [Click Here](help_docs/features_list.md).
 
 
 <a id="detailed_instructions"></a>
