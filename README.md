@@ -1,4 +1,4 @@
-<h1 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo.png" alt="SeleniumBase" height="170" /></a></h1>
+<h1 align="center"><a align="center" href="README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo.png" alt="SeleniumBase" height="170" /></a></h1>
 
 <h3 align="center"><span align="center">Create web/mobile tests 8x faster.</span></h3>
 
@@ -429,11 +429,11 @@ Learn about [SeleniumBase Interactive Walkthroughs](https://github.com/seleniumb
 
 Here are some things you can do to setup a production environment for your testing:
 
-* You can setup a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the [SeleniumBase Jenkins example on Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md) or the [SeleniumBase Jenkins example on Google Cloud](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md).
+* You can setup a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the [SeleniumBase Jenkins example on Azure](integrations/azure/jenkins/ReadMe.md) or the [SeleniumBase Jenkins example on Google Cloud](integrations/google_cloud/ReadMe.md).
 
-* You can use [the Selenium Grid](https://selenium.dev/documentation/en/grid/) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the [SeleniumBase selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), which should have everything you need, including the [Selenium Grid ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md), which will help you get started.
+* You can use [the Selenium Grid](https://selenium.dev/documentation/en/grid/) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the [SeleniumBase selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), which should have everything you need, including the [Selenium Grid ReadMe](seleniumbase/utilities/selenium_grid/ReadMe.md), which will help you get started.
 
-* If you're using the [SeleniumBase MySQL feature](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
+* If you're using the [SeleniumBase MySQL feature](help_docs/mysql_installation.md) to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
@@ -723,4 +723,4 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 [https://github.com/mdmintz](https://github.com/mdmintz)<br />
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="46.2">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" />](https://gitter.im/seleniumbase/SeleniumBase)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="46.2">](README.md) <br /> [<img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" alt=" " />](https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE) [<img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" alt="Size" />](https://github.com/seleniumbase/SeleniumBase/releases) [<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="Join the chat!" />](https://gitter.im/seleniumbase/SeleniumBase)
