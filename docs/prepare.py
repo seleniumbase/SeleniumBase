@@ -1,3 +1,4 @@
+import codecs
 import os
 import re
 from pathlib import Path
@@ -80,3 +81,20 @@ def main(*args, **kwargs):
 
     for file_ in updated_files_to_process:
         process_file(file_)
+
+    readme_file = "./docs/README.md"
+    with open(readme_file, 'r', encoding='utf-8') as f:
+        all_code = f.read()
+    code_lines = all_code.split('\n')
+
+    changed = False
+    seleniumbase_lines = []
+    for line in code_lines:
+        if ' href="' in line and '.md"' in line:
+            changed = True
+            line = line.replace('.md"', '.html"')
+        seleniumbase_lines.append(line)
+    if changed:
+        out_file = codecs.open(readme_file, "w+", encoding='utf-8')
+        out_file.writelines("\r\n".join(seleniumbase_lines))
+        out_file.close()
