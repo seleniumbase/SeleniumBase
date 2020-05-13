@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-<div align="center"><span align="center"><b>Create web and mobile tests, fast!</b></span></div>
+<div align="center"><span align="center"><b>Create web and mobile UI tests, fast!</b></span></div>
 <div align="center"><span align="center">Take <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</span></div>
 </p>
 
@@ -29,11 +29,10 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
-
 </p>
+
 <p align="center">
-<div align="center"><b>Feel good about your test automation.</b></div>
-<div align="center">Control builds from the command line.</div>
+<div align="center"><b>Everything you need for E2E testing.</b></div>
 </p>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
