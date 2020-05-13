@@ -6,6 +6,6 @@ defaults write com.apple.finder AppleShowAllFiles -bool true
 ```
 
 More info on that can be found here:
-* https://www.defaults-write.com/show-hidden-files-in-os-x-finder/
-* https://www.macworld.co.uk/how-to/mac-software/hidden-files-mac-3520878/
-* https://setapp.com/how-to/show-hidden-files-on-mac
+<a href="https://www.defaults-write.com/show-hidden-files-in-os-x-finder/">https://www.defaults-write.com/show-hidden-files-in-os-x-finder/</a>
+<a href="https://www.macworld.co.uk/how-to/mac-software/hidden-files-mac-3520878/">https://www.macworld.co.uk/how-to/mac-software/hidden-files-mac-3520878/</a>
+<a href="https://setapp.com/how-to/show-hidden-files-on-mac">https://setapp.com/how-to/show-hidden-files-on-mac</a>

@@ -17,13 +17,13 @@ plugins:
       hooks:
         on_pre_build: docs.prepare:main
 nav:
-  - Home: README.md
+  - SeleniumBase Home: README.md
   - Features: help_docs/features_list.md
   - CMD Options: help_docs/customizing_test_runs.md
   - Mobile Testing: help_docs/mobile_testing.md
   - Examples: examples/ReadMe.md
   - Reports: examples/example_logs/ReadMe.md
-  - API: help_docs/method_summary.md
+  - API Reference: help_docs/method_summary.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - Site Tours: examples/tour_examples/ReadMe.md
   - Translations: help_docs/translations.md
@@ -33,7 +33,7 @@ nav:
   - GitHub CI: integrations/github/workflows/ReadMe.md
   - Help Docs: help_docs/ReadMe.md
   - Happy Customers: help_docs/happy_customers.md
-  - Hidden Files: help_docs/hidden_files_info.md
+  - Hidden Files on macOS: help_docs/hidden_files_info.md
   - How it Works: help_docs/how_it_works.md
   - Install SeleniumBase: help_docs/install.md
   - Install Python, pip, and git: help_docs/install_python_pip_git.md
