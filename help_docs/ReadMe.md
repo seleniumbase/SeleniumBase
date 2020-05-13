@@ -1,16 +1,19 @@
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> SeleniumBase Help Documents
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" alt="SeleniumBase" height="114" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/SB_Logo4d4.png" alt="SeleniumBase" height="50" /></a></div>
 
-> **Table of Contents / Navigation:**
-> - [**SeleniumBase Features List**](features_list.md)
-> - [**How SeleniumBase Works**](how_it_works.md)
-> - [**Webdriver Installation**](webdriver_installation.md)
-> - [**Installing Python, Pip, & Git**](install_python_pip_git.md)
-> - [**Python Virtual Env Tutorial**](virtualenv_instructions.md)
-> - [**Verify Webdriver Installation**](verify_webdriver.md)
-> - [**The Command Line Tutorial**](customizing_test_runs.md)
-> - [**The Console Scripts Tutorial**](/seleniumbase/console_scripts/ReadMe.md)
-> - [**SeleniumBase Method Summary**](method_summary.md)
-> - [**MySQL Installation Overview**](mysql_installation.md)
-> - [**Safari Driver Detailed Info**](using_safari_driver.md)
-> - [**Seeing Hidden Files on macOS**](hidden_files_info.md)
-> - [**SeleniumBase Case Studies**](happy_customers.md)
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Help Documents
+
+<div><b>Table of Contents / Navigation:</b></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md"><b>SeleniumBase Features List</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/how_it_works.md"><b>How SeleniumBase Works</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/webdriver_installation.md"><b>Webdriver Installation</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md"><b>Installing Python, Pip, & Git</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md"><b>Python Virtual Env Tutorial</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md"><b>Verify Webdriver Installation</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md"><b>The Command Line Tutorial</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md"><b>The Console Scripts Tutorial</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md"><b>SeleniumBase Method Summary</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md"><b>MySQL Installation Overview</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/using_safari_driver.md"><b>Safari Driver Detailed Info</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/hidden_files_info.md"><b>Seeing Hidden Files on macOS</b></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/happy_customers.md"><b>SeleniumBase Case Studies</b></a></div>
