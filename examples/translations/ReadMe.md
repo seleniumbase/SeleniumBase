@@ -18,8 +18,9 @@ Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/
 
 Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language.<br /><i>Examples:</i>
 ```
-self.开启网址(URL) <=> self.open(URL)
-self.нажмите(SELECTOR) <=> self.click(SELECTOR)
+self.开启网址(URL) = self.open(URL)
+self.нажмите(CSS) = self.click(CSS)
+self.뒤로() = self.go_back()
 ```
 
 --------
