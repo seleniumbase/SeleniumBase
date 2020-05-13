@@ -1,7 +1,5 @@
 <h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" alt="SeleniumBase" height="170" /></a></h1>
 
-<div align="center"><span align="center"><b>Create web and mobile tests, fast!</b></span></div>
-<p align="center"><div align="center">Take <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</div></p>
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
@@ -9,6 +7,10 @@
 <img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
+</p>
+<p align="center">
+<div align="center"><span align="center"><b>Create web and mobile tests, fast!</b></span></div>
+<div align="center"><span align="center">Take <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</span></div>
 </p>
 <p align="center">
 <a href="#python_installation">🚀 Get Started</a> |
@@ -26,8 +28,10 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
 </p>
+<p align="center">
 <div align="center"><b>Feel good about your test automation.</b></div>
 <div align="center">Control builds from the command line.</div>
+</p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
 <p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation enabled.</i>)</p>
 
