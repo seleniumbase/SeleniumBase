@@ -17,35 +17,35 @@ plugins:
       hooks:
         on_pre_build: docs.prepare:main
 nav:
-  - SeleniumBase Home: README.md
+  - Home Page: README.md
   - Features: help_docs/features_list.md
   - CMD Options: help_docs/customizing_test_runs.md
-  - Mobile Testing: help_docs/mobile_testing.md
   - Examples: examples/ReadMe.md
+  - Translations: help_docs/translations.md
   - Reports: examples/example_logs/ReadMe.md
   - API Reference: help_docs/method_summary.md
+  - Mobile Testing: help_docs/mobile_testing.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - Site Tours: examples/tour_examples/ReadMe.md
-  - Translations: help_docs/translations.md
-  - Recorder: seleniumbase/utilities/selenium_ide/ReadMe.md
+  - How it Works: help_docs/how_it_works.md
+  - Install Python, pip, git: help_docs/install_python_pip_git.md
+  - Virtualenv Instructions: help_docs/virtualenv_instructions.md
+  - Install SeleniumBase: help_docs/install.md
+  - WebDriver Installation: help_docs/webdriver_installation.md
+  - Verifying WebDriver: help_docs/verify_webdriver.md
+  - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
   - MasterQA: examples/master_qa/ReadMe.md
   - Visual Testing: examples/visual_testing/ReadMe.md
   - GitHub CI: integrations/github/workflows/ReadMe.md
-  - Help Docs: help_docs/ReadMe.md
   - Happy Customers: help_docs/happy_customers.md
-  - Hidden Files on macOS: help_docs/hidden_files_info.md
-  - How it Works: help_docs/how_it_works.md
-  - Install SeleniumBase: help_docs/install.md
-  - Install Python, pip, and git: help_docs/install_python_pip_git.md
   - MySQL installation: help_docs/mysql_installation.md
   - Safari Driver Tips: help_docs/using_safari_driver.md
-  - Verifying WebDriver: help_docs/verify_webdriver.md
-  - Virtualenv Instructions: help_docs/virtualenv_instructions.md
-  - WebDriver Installation: help_docs/webdriver_installation.md
-  - Azure Jenkins: integrations/azure/jenkins/ReadMe.md
-  - Docker Help: integrations/docker/ReadMe.md
-  - Google Cloud: integrations/google_cloud/ReadMe.md
+  - Hidden Files on macOS: help_docs/hidden_files_info.md
+  - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
+  - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
   - Katalon Integration: integrations/katalon/ReadMe.md
   - Common Decorators: seleniumbase/common/ReadMe.md
+  - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
+  - Docker Help: integrations/docker/ReadMe.md
   - Master QA: seleniumbase/masterqa/ReadMe.md
-  - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md 
+  - Help Docs: help_docs/ReadMe.md
