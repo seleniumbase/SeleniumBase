@@ -1,3 +1,6 @@
+<meta property="og:title" content="SeleniumBase" />
+<meta property="og:description" content="Create Web UI tests, fast!" />
+<meta property="og:image" content="https://cdn2.hubspot.net/hubfs/100006/images/big_blue_logo_7.png" />
 <h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" alt="SeleniumBase" height="170"></a></h2>
 
 <p align="center">
