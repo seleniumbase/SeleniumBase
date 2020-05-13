@@ -11,7 +11,7 @@
 
 <p align="center">
 <div align="center"><span align="center"><b>Create web and mobile UI tests, fast!</b></span></div>
-<div align="center"><span align="center">Take <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</span></div>
+<div align="center"><span align="center"><b>Take <a href="https://selenium.dev/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</b></span></div>
 </p>
 
 <p align="center">
