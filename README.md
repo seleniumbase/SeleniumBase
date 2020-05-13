@@ -1,4 +1,4 @@
-<h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" alt="SeleniumBase" height="170" /></a></h1>
+<h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" alt="SeleniumBase" height="170"></a></h2>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -55,10 +55,13 @@ pytest test_swag_labs.py --demo
 <a id="python_installation"></a>
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32" /> Get Started
 
-* Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
-* [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
-* A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
-* Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
+<ul>
+<li>Requires <b><a href="https://www.python.org/downloads/">Python</a></b> and <b><a href="https://git-scm.com/">Git</a>.</b></li>
+<li><a href="https://www.python.org/downloads/"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />]</a></li>
+<li>A <a href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">Python virtual env</a> is recommended.<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md"> See shortcut</a>.</i></li>
+<li>Upgrade <b><a href="https://pypi.org/project/pip/">pip</a></b> to prevent warnings:</li>
+</ul>
+
 ```bash
 python -m pip install -U pip
 ```
