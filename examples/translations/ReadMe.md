@@ -2,17 +2,19 @@
 
 ### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Multi-Language Tests (Python 3 Only!)
 
-**SeleniumBase** supports the following 10 languages:
-* English
-* Chinese / 中文
-* Dutch / Nederlands
-* French / Français
-* Italian / Italiano
-* Japanese / 日本語
-* Korean / 한국어
-* Portuguese / Português
-* Russian / Русский
-* Spanish / Español
+<b>SeleniumBase</b> supports the following 10 languages:
+<ul>
+<li>English</li>
+<li>Chinese / 中文</li>
+<li>Dutch / Nederlands</li>
+<li>French / Français</li>
+<li>Italian / Italiano</li>
+<li>Japanese / 日本語</li>
+<li>Korean / 한국어</li>
+<li>Portuguese / Português</li>
+<li>Russian / Русский</li>
+<li>Spanish / Español</li>
+</ul>
 
 Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>].
 
