@@ -45,7 +45,7 @@
 pytest test_swag_labs.py --mobile
 ```
 
-------
+----------
 <div><p align="center">(<i>Below: Same test as above, but running in Demo Mode now.</i>)</p></div>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
