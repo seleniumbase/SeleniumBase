@@ -22,7 +22,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Testing</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Tests</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
@@ -30,8 +30,8 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations">🌎 Translations</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Testing</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub CI</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Tests</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub-CI</a>
 </p>
 
 <p align="center">
