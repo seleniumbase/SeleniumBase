@@ -1,6 +1,6 @@
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **Logging, Screenshots, and Reports:**
+### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Logging, Screenshots, and Reports:
 
-Log files in [example_logs/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed. During test failures, logs and screenshots get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is set, test logs will get archived to the ``archived_logs/`` folder.
+Log files in [SeleniumBase/examples/example_logs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed. During test failures, logs and screenshots get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is set, test logs will get archived to the ``archived_logs/`` folder.
 
 ```bash
 pytest test_fail.py --browser=chrome
@@ -8,17 +8,18 @@ pytest test_fail.py --browser=chrome
 nosetests test_fail.py --browser=firefox
 ```
 
-**Expected log files generated during failures:**
+<b>Examples of expected log files generated during failures:</b>
 * [basic_test_info.txt](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/basic_test_info.txt)
 * [page_source.html](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/page_source.html)
 * [screenshot.png](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/screenshot.png)
 
----
-**In addition to logging, you can also generate test reports:**
+--------
+
+<b>In addition to logging, you can also generate test reports:</b>
 
 Reports are most useful when running large test suites. Pytest and Nosetest reports are handled differently.
 
-#### **Pytest Reports:**
+### Pytest Reports:
 
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
@@ -27,7 +28,7 @@ pytest test_suite.py --html=report.html
 ```
 ![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
 
-#### **Nosetest Reports:**
+### Nosetest Reports:
 
 The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
 
