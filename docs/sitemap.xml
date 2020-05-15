@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://seleniumbase.io/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/.</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/features_list/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/customizing_test_runs/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/examples/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/translations/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/examples/example_logs/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/method_summary/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/mobile_testing/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/examples/tour_examples/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/how_it_works/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/install_python_pip_git/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/virtualenv_instructions/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/install/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/webdriver_installation/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/verify_webdriver/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/examples/master_qa/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/examples/visual_testing/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/integrations/github/workflows/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/happy_customers/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/mysql_installation/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/using_safari_driver/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/hidden_files_info/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/integrations/azure/jenkins/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/integrations/google_cloud/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/integrations/katalon/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/seleniumbase/common/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/integrations/docker/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/seleniumbase/masterqa/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://seleniumbase.io/help_docs/ReadMe/</loc>
+  <lastmod>2020-05-15T07:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>

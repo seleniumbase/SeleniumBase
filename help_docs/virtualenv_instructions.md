@@ -1,6 +1,6 @@
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Virtual Environment Tutorial
+## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Virtual Environment Tutorial
 
-### **Step 1**: Install VirtualEnv and VirtualEnvWrapper:
+### Step 1: Install VirtualEnv and VirtualEnvWrapper:
 
 ### macOS / Linux:
 
@@ -23,7 +23,7 @@ If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~
 python -m pip install --upgrade virtualenvwrapper-win
 ```
 
-### **Step 2**: Create a virtual environment:
+### Step 2: Create a virtual environment:
 
 ### macOS / Linux / Windows:
 

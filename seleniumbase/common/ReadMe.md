@@ -1,4 +1,4 @@
-## Using methods from the "common" folder.
+## Using [seleniumbase/common](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common) methods.
 
 ### Part 1: Decorators - (from [decorators.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/decorators.py))
 

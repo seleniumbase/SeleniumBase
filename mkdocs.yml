@@ -1,51 +1,95 @@
+# Project information
 site_name: SeleniumBase
+site_url: https://seleniumbase.io/
+site_author: Michael Mintz
+site_description: >-
+  Create browser tests for web and mobile user interfaces.
+  Fully customizable automation that builds on top of Selenium.
+  Uses Python and pytest to run tests and execute commands.
+# Repository information
+repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase/
 edit_uri: ""
 site_dir: "site"
 docs_dir: "docs"
+# Copyright
+copyright: Copyright &copy; 2016 - 2020 Michael Mintz / SeleniumBase
+# Extensions
 markdown_extensions:
-  - codehilite
-  - toc:
+  - fontawesome_markdown
+  - markdown.extensions.admonition
+  - markdown.extensions.attr_list
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
       permalink: true
+# Configuration
 theme:
   name: material
   logo: https://seleniumbase.io/img/logo3a.png
   favicon: img/favicon.ico
+  language: en
+  features:
+    - tabs
+# Plugins
 plugins:
   - search
+  - minify:
+      minify_html: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/seleniumbase/SeleniumBase
+    - icon: fontawesome/brands/gitter
+      link: https://gitter.im/seleniumbase/SeleniumBase
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/seleniumbase
+    - icon: fontawesome/brands/facebook
+      link: https://www.facebook.com/SeleniumBase
+    - icon: fontawesome/brands/instagram
+      link: https://instagram.com/seleniumbase
+# Page tree
 nav:
   - Home Page: README.md
   - Features: help_docs/features_list.md
   - CMD Options: help_docs/customizing_test_runs.md
+  - Python Setup:
+    - Install Python, pip, git: help_docs/install_python_pip_git.md
+    - Virtualenv Instructions: help_docs/virtualenv_instructions.md
+  - Installation:
+    - Install SeleniumBase: help_docs/install.md
+    - WebDriver Installation: help_docs/webdriver_installation.md
+    - Verifying WebDriver: help_docs/verify_webdriver.md
+  - How it Works: help_docs/how_it_works.md
   - Examples: examples/ReadMe.md
   - Translations: help_docs/translations.md
-  - Reports: examples/example_logs/ReadMe.md
   - API Reference: help_docs/method_summary.md
   - Mobile Testing: help_docs/mobile_testing.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - Site Tours: examples/tour_examples/ReadMe.md
-  - How it Works: help_docs/how_it_works.md
-  - Install Python, pip, git: help_docs/install_python_pip_git.md
-  - Virtualenv Instructions: help_docs/virtualenv_instructions.md
-  - Install SeleniumBase: help_docs/install.md
-  - WebDriver Installation: help_docs/webdriver_installation.md
-  - Verifying WebDriver: help_docs/verify_webdriver.md
-  - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
   - MasterQA: examples/master_qa/ReadMe.md
   - Visual Testing: examples/visual_testing/ReadMe.md
-  - GitHub CI: integrations/github/workflows/ReadMe.md
-  - Happy Customers: help_docs/happy_customers.md
-  - MySQL installation: help_docs/mysql_installation.md
-  - Safari Driver Tips: help_docs/using_safari_driver.md
-  - Hidden Files on macOS: help_docs/hidden_files_info.md
-  - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
-  - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
-  - Katalon Integration: integrations/katalon/ReadMe.md
-  - Common Decorators: seleniumbase/common/ReadMe.md
-  - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
-  - Docker Help: integrations/docker/ReadMe.md
-  - Master QA: seleniumbase/masterqa/ReadMe.md
-  - Help Docs: help_docs/ReadMe.md
+  - Integrations:
+    - Logging and Reports: examples/example_logs/ReadMe.md
+    - GitHub CI: integrations/github/workflows/ReadMe.md
+    - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
+    - Katalon Integration: integrations/katalon/ReadMe.md
+    - MySQL Help: help_docs/mysql_installation.md
+    - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
+    - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
+    - Docker Help: integrations/docker/ReadMe.md
+    - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
+    - Master QA: seleniumbase/masterqa/ReadMe.md
+  - Extra Help:
+    - Table of Contents: help_docs/ReadMe.md
+    - Decorators & Security: seleniumbase/common/ReadMe.md
+    - Using Safari Driver: help_docs/using_safari_driver.md
+    - macOS Hidden Files: help_docs/hidden_files_info.md
+    - Happy Customers: help_docs/happy_customers.md
