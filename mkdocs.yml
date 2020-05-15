@@ -9,7 +9,7 @@ markdown_extensions:
       permalink: true
 theme:
   name: material
-  logo: https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png
+  logo: https://seleniumbase.io/img/logo3a.png
   favicon: img/favicon.ico
 plugins:
   - search
