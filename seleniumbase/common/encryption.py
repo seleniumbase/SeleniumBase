@@ -71,8 +71,8 @@ def blend_strings(string1, string2):
     return new_string
 
 
-def rotate(l, n):
-    return l[n:] + l[:n]
+def rotate(string, n):
+    return string[n:] + string[:n]
 
 
 def ord_string_sum(string):
