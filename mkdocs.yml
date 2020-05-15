@@ -1,6 +1,6 @@
 # Project information
 site_name: SeleniumBase
-site_url: https://seleniumbase.io/
+site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: >-
   Create browser tests for web and mobile user interfaces.
@@ -8,7 +8,7 @@ site_description: >-
   Uses Python and pytest to run tests and execute commands.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
-repo_url: https://github.com/seleniumbase/SeleniumBase/
+repo_url: https://github.com/seleniumbase/SeleniumBase
 edit_uri: ""
 site_dir: "site"
 docs_dir: "docs"

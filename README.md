@@ -1,3 +1,7 @@
+<meta property="og:title" content="SeleniumBase Automation Framework" />
+<meta property="og:description" content="Create browser tests for web and mobile user interfaces.
+  Fully customizable automation that builds on top of Selenium.
+  Uses Python and pytest to run tests and execute commands." />
 <meta property="og:image" content="https://cdn2.hubspot.net/hubfs/100006/images/big_blue_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo4.png">
 <h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" alt="SeleniumBase" height="170"></a></h2>
