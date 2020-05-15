@@ -53,6 +53,22 @@ class 硒测试用例(BaseCase):  # noqa
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
+    def 断言元素可见(self, *args, **kwargs):
+        # assert_element_visible(selector)  # Same as self.assert_element()
+        return self.assert_element_visible(*args, **kwargs)
+
+    def 断言元素不可见(self, *args, **kwargs):
+        # assert_element_not_visible(selector)
+        return self.assert_element_not_visible(*args, **kwargs)
+
+    def 断言元素存在(self, *args, **kwargs):
+        # assert_element_present(selector)
+        return self.assert_element_present(*args, **kwargs)
+
+    def 断言元素不存在(self, *args, **kwargs):
+        # assert_element_absent(selector)
+        return self.assert_element_absent(*args, **kwargs)
+
     def 断言标题(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -113,13 +129,29 @@ class 硒测试用例(BaseCase):  # noqa
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def 等待元素可见(self, *args, **kwargs):
+        # wait_for_element_visible(selector)  # Same as wait_for_element()
+        return self.wait_for_element_visible(*args, **kwargs)
+
+    def 等待元素不可见(self, *args, **kwargs):
+        # wait_for_element_not_visible(selector)
+        return self.wait_for_element_not_visible(*args, **kwargs)
+
     def 等待元素存在(self, *args, **kwargs):
         # wait_for_element_present(selector)
         return self.wait_for_element_present(*args, **kwargs)
 
+    def 等待元素不存在(self, *args, **kwargs):
+        # wait_for_element_absent(selector)
+        return self.wait_for_element_absent(*args, **kwargs)
+
     def 睡(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
+
+    def 等待(self, *args, **kwargs):
+        # wait(seconds)  # Same as sleep(seconds)
+        return self.wait(*args, **kwargs)
 
     def 提交(self, *args, **kwargs):
         # submit(selector)

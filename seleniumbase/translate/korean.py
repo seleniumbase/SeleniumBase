@@ -53,6 +53,22 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
+    def 요소가_보이는지_확인(self, *args, **kwargs):
+        # assert_element_visible(selector)  # Same as self.assert_element()
+        return self.assert_element_visible(*args, **kwargs)
+
+    def 요소가_보이지_않는지_확인(self, *args, **kwargs):
+        # assert_element_not_visible(selector)
+        return self.assert_element_not_visible(*args, **kwargs)
+
+    def 요소가_존재하는지_확인(self, *args, **kwargs):
+        # assert_element_present(selector)
+        return self.assert_element_present(*args, **kwargs)
+
+    def 요소가_존재하지_않는지_확인(self, *args, **kwargs):
+        # assert_element_absent(selector)
+        return self.assert_element_absent(*args, **kwargs)
+
     def 제목_확인(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -113,13 +129,29 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def 요소가_표시_될_때까지_기다립니다(self, *args, **kwargs):
+        # wait_for_element_visible(selector)  # Same as wait_for_element()
+        return self.wait_for_element_visible(*args, **kwargs)
+
+    def 요소가_사라질_때까지_기다리십시오(self, *args, **kwargs):
+        # wait_for_element_not_visible(selector)
+        return self.wait_for_element_not_visible(*args, **kwargs)
+
     def 요소가_존재할_때까지_기다립니다(self, *args, **kwargs):
         # wait_for_element_present(selector)
         return self.wait_for_element_present(*args, **kwargs)
 
+    def 요소가_나타날_때까지_기다리십시오(self, *args, **kwargs):
+        # wait_for_element_absent(selector)
+        return self.wait_for_element_absent(*args, **kwargs)
+
     def 잠을(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
+
+    def 기다림(self, *args, **kwargs):
+        # wait(seconds)  # Same as sleep(seconds)
+        return self.wait(*args, **kwargs)
 
     def 제출(self, *args, **kwargs):
         # submit(selector)
