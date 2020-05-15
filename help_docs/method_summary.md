@@ -180,6 +180,7 @@ self.wait_for_ready_state_complete(timeout=None)
 self.wait_for_angularjs(timeout=None)
 
 self.sleep(seconds)
+# Duplicates: self.wait(seconds)
 
 self.activate_jquery()
 
@@ -435,8 +436,10 @@ self.assert_partial_link_text(partial_link_text, timeout=None)
 ############
 
 self.wait_for_element_absent(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.wait_for_element_not_present(selector, by=By.CSS_SELECTOR)
 
 self.assert_element_absent(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.assert_element_not_present(selector, by=By.CSS_SELECTOR)
 
 ############
 

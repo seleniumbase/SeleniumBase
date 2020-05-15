@@ -2941,6 +2941,37 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
+    def wait_for_element_not_present(self, selector, by=By.CSS_SELECTOR,
+                                     timeout=None):
+        """ Same as self.wait_for_element_absent()
+            Waits for an element to no longer appear in the HTML of a page.
+            A hidden element still counts as appearing in the page HTML.
+            If an element with "hidden" status is acceptable,
+            use wait_for_element_not_visible() instead. """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_element_absent(
+            self.driver, selector, by, timeout)
+
+    def assert_element_not_present(self, selector, by=By.CSS_SELECTOR,
+                                   timeout=None):
+        """ Same as self.assert_element_absent()
+            Will raise an exception if the element stays present.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_element_absent(selector, by=by, timeout=timeout)
+        return True
+
+    def wait(self, seconds):
+        """ Same as sleep() - Some JS frameworks use this method name. """
+        self.sleep(seconds)
+
     def _print(self, msg):
         print(msg)
 
