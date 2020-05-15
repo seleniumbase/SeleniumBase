@@ -19,8 +19,7 @@ markdown_extensions:
   - fontawesome_markdown
   - markdown.extensions.admonition
   - markdown.extensions.attr_list
-  - markdown.extensions.codehilite:
-      guess_lang: false
+  - markdown.extensions.codehilite
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.meta
@@ -29,8 +28,8 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: https://seleniumbase.io/img/logo3a.png
-  favicon: img/favicon.ico
+  logo: img/logo3a.png
+  favicon: img/logo4.png
   language: en
   features:
     - tabs
@@ -38,7 +37,7 @@ theme:
 plugins:
   - search
   - minify:
-      minify_html: true
+      minify_html: false
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
