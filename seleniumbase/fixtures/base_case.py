@@ -200,8 +200,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -265,8 +264,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -336,8 +334,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -379,8 +376,7 @@ class BaseCase(unittest.TestCase):
 
     def submit(self, selector, by=By.CSS_SELECTOR):
         """ Alternative to self.driver.find_element_by_*(SELECTOR).submit() """
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         element.submit()
@@ -733,8 +729,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_visible(
@@ -1857,8 +1852,7 @@ class BaseCase(unittest.TestCase):
             Useful when getting a WebDriverException, such as the one below:
                 { Element is not clickable at point (#, #).
                   Other element would receive the click: ... } """
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         try:
@@ -2444,8 +2438,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         abs_path = os.path.abspath(file_path)
         self.add_text(selector, abs_path, by=by, timeout=timeout)
 
@@ -2724,8 +2717,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         orginal_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         self.__demo_mode_highlight_if_active(orginal_selector, by)
@@ -2766,8 +2758,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -2899,8 +2890,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def input(self, selector, text, by=By.CSS_SELECTOR,
@@ -2910,8 +2900,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def write(self, selector, text, by=By.CSS_SELECTOR,
@@ -2921,8 +2910,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
@@ -2931,8 +2919,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         self.add_text(selector, text, by=by, timeout=timeout)
 
     def click_link(self, link_text, timeout=None):
@@ -2953,6 +2940,37 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
+
+    def wait_for_element_not_present(self, selector, by=By.CSS_SELECTOR,
+                                     timeout=None):
+        """ Same as self.wait_for_element_absent()
+            Waits for an element to no longer appear in the HTML of a page.
+            A hidden element still counts as appearing in the page HTML.
+            If an element with "hidden" status is acceptable,
+            use wait_for_element_not_visible() instead. """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_element_absent(
+            self.driver, selector, by, timeout)
+
+    def assert_element_not_present(self, selector, by=By.CSS_SELECTOR,
+                                   timeout=None):
+        """ Same as self.assert_element_absent()
+            Will raise an exception if the element stays present.
+            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.wait_for_element_absent(selector, by=by, timeout=timeout)
+        return True
+
+    def wait(self, seconds):
+        """ Same as sleep() - Some JS frameworks use this method name. """
+        self.sleep(seconds)
 
     def _print(self, msg):
         print(msg)
@@ -3161,6 +3179,9 @@ class BaseCase(unittest.TestCase):
         """
         if not selector:
             selector = "html"
+        if page_utils.is_name_selector(selector):
+            name = page_utils.get_name_from_selector(selector)
+            selector = '[name="%s"]' % name
         if page_utils.is_xpath_selector(selector):
             selector = self.convert_to_css_selector(selector, By.XPATH)
         selector = self.__escape_quotes_if_needed(selector)
@@ -3860,8 +3881,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
+        selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_absent(
             self.driver, selector, by, timeout)
 

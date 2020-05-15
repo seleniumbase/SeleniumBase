@@ -53,6 +53,22 @@ class CasoDePrueba(BaseCase):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
+    def verificar_elemento_se_muestre(self, *args, **kwargs):
+        # assert_element_visible(selector)  # Same as self.assert_element()
+        return self.assert_element_visible(*args, **kwargs)
+
+    def verificar_elemento_no_se_muestre(self, *args, **kwargs):
+        # assert_element_not_visible(selector)
+        return self.assert_element_not_visible(*args, **kwargs)
+
+    def verificar_elemento_presente(self, *args, **kwargs):
+        # assert_element_present(selector)
+        return self.assert_element_present(*args, **kwargs)
+
+    def verificar_elemento_ausente(self, *args, **kwargs):
+        # assert_element_absent(selector)
+        return self.assert_element_absent(*args, **kwargs)
+
     def verificar_título(self, *args, **kwargs):  # noqa
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -105,21 +121,37 @@ class CasoDePrueba(BaseCase):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
 
-    def espere_el_texto(self, *args, **kwargs):
+    def espera_el_texto(self, *args, **kwargs):
         # wait_for_text(text, selector)
         return self.wait_for_text(*args, **kwargs)
 
-    def espere_el_elemento(self, *args, **kwargs):
+    def espera_el_elemento(self, *args, **kwargs):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
-    def espere_presente_el_elemento(self, *args, **kwargs):
+    def espera_el_elemento_se_muestre(self, *args, **kwargs):
+        # wait_for_element_visible(selector)  # Same as wait_for_element()
+        return self.wait_for_element_visible(*args, **kwargs)
+
+    def espera_el_elemento_no_se_muestre(self, *args, **kwargs):
+        # wait_for_element_not_visible(selector)
+        return self.wait_for_element_not_visible(*args, **kwargs)
+
+    def espera_el_elemento_presente(self, *args, **kwargs):
         # wait_for_element_present(selector)
         return self.wait_for_element_present(*args, **kwargs)
+
+    def espera_el_elemento_ausente(self, *args, **kwargs):
+        # wait_for_element_absent(selector)
+        return self.wait_for_element_absent(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
+
+    def espera(self, *args, **kwargs):
+        # wait(seconds)  # Same as sleep(seconds)
+        return self.wait(*args, **kwargs)
 
     def enviar(self, *args, **kwargs):
         # submit(selector)

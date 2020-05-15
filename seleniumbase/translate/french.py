@@ -13,7 +13,7 @@ class CasDeBase(BaseCase):
         # click(selector)
         return self.click(*args, **kwargs)
 
-    def double_clic(self, *args, **kwargs):
+    def double_cliquez(self, *args, **kwargs):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
@@ -52,6 +52,22 @@ class CasDeBase(BaseCase):
     def vérifier_un_élément(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
+
+    def vérifier_un_élément_affiché(self, *args, **kwargs):
+        # assert_element_visible(selector)  # Same as self.assert_element()
+        return self.assert_element_visible(*args, **kwargs)
+
+    def vérifier_un_élément_pas_affiché(self, *args, **kwargs):
+        # assert_element_not_visible(selector)
+        return self.assert_element_not_visible(*args, **kwargs)
+
+    def vérifier_un_élément_présent(self, *args, **kwargs):
+        # assert_element_present(selector)
+        return self.assert_element_present(*args, **kwargs)
+
+    def vérifier_un_élément_pas_présent(self, *args, **kwargs):
+        # assert_element_absent(selector)
+        return self.assert_element_absent(*args, **kwargs)
 
     def vérifier_le_titre(self, *args, **kwargs):
         # assert_title(title)
@@ -105,7 +121,7 @@ class CasDeBase(BaseCase):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
 
-    def attendez_le_texte(self, *args, **kwargs):
+    def attendre_le_texte(self, *args, **kwargs):
         # wait_for_text(text, selector)
         return self.wait_for_text(*args, **kwargs)
 
@@ -113,13 +129,29 @@ class CasDeBase(BaseCase):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
+    def attendre_un_élément_affiché(self, *args, **kwargs):
+        # wait_for_element_visible(selector)  # Same as wait_for_element()
+        return self.wait_for_element_visible(*args, **kwargs)
+
+    def attendre_un_élément_pas_affiché(self, *args, **kwargs):
+        # wait_for_element_not_visible(selector)
+        return self.wait_for_element_not_visible(*args, **kwargs)
+
     def attendre_un_élément_présent(self, *args, **kwargs):
         # wait_for_element_present(selector)
         return self.wait_for_element_present(*args, **kwargs)
 
+    def attendre_un_élément_pas_présent(self, *args, **kwargs):
+        # wait_for_element_absent(selector)
+        return self.wait_for_element_absent(*args, **kwargs)
+
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
+
+    def attendre(self, *args, **kwargs):
+        # wait(seconds)  # Same as sleep(seconds)
+        return self.wait(*args, **kwargs)
 
     def soumettre(self, *args, **kwargs):
         # submit(selector)
