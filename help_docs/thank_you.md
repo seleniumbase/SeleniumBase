@@ -1,10 +1,10 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Thank You!
-
-<p><div><b>Thank you for choosing SeleniumBase!</b></div></p>
+### Thank you for choosing SeleniumBase!
 
 <p><div><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" height="156"></a></div></p>
+
+<p><div><b>Follow us somewhere:</b></div></p>
 
 <p><div><span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" height="60" /></a></span>
 <span><a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" height="60" /></a></span>
