@@ -2,6 +2,8 @@
 
 ### Thank you for choosing SeleniumBase!
 
+--------
+
 <p><div><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" height="156"></a></div></p>
 
 <p><div><b>Follow us somewhere:</b></div></p>
