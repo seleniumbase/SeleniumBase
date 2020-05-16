@@ -16,7 +16,6 @@ docs_dir: "docs"
 copyright: Copyright &copy; 2016 - 2020 Michael Mintz / SeleniumBase
 # Extensions
 markdown_extensions:
-  - fontawesome_markdown
   - markdown.extensions.admonition
   - markdown.extensions.attr_list
   - markdown.extensions.codehilite
@@ -29,7 +28,7 @@ markdown_extensions:
 theme:
   name: material
   logo: img/logo3a.png
-  favicon: img/logo4.png
+  favicon: img/logo3a.png
   language: en
   include_homepage_in_sidebar: true
   sticky_navigation: true
@@ -43,19 +42,6 @@ plugins:
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
-# Customization
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/seleniumbase/SeleniumBase
-    - icon: fontawesome/brands/gitter
-      link: https://gitter.im/seleniumbase/SeleniumBase
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/seleniumbase
-    - icon: fontawesome/brands/facebook
-      link: https://www.facebook.com/SeleniumBase
-    - icon: fontawesome/brands/instagram
-      link: https://instagram.com/seleniumbase
 # Page tree
 nav:
   - Home Page: README.md

@@ -1,8 +1,8 @@
 <meta property="og:title" content="SeleniumBase - Test Automation Framework" />
 <meta property="og:description" content="Create browser tests for web and mobile user interfaces." />
-<meta property="og:image" content="https://cdn2.hubspot.net/hubfs/100006/images/big_blue_logo_7.png" />
-<link rel="icon" href="https://seleniumbase.io/img/logo4.png">
-<h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" alt="SeleniumBase" height="170"></a></h2>
+<meta property="og:image" content="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7.png" />
+<link rel="icon" href="https://seleniumbase.io/img/logo3a.png">
+<h2 align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/blue_logo_7_btn.png" alt="SeleniumBase" height="170"></a></h2>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -741,4 +741,10 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" title="SeleniumBase" alt="Repo Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div>
 
-<a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div>
+
+<p><div><span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" height="60" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" height="60" /></a></span>
+<span><a href="https://twitter.com/seleniumbase"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" height="60" /></a></span>
+<span><a href="https://instagram.com/seleniumbase"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" height="60" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" height="60" /></a></span></div></p>
