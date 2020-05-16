@@ -29,7 +29,6 @@ theme:
   name: material
   logo: img/logo3a.png
   favicon: img/logo3a.png
-  language: en
   include_homepage_in_sidebar: true
   sticky_navigation: true
   features:
@@ -44,7 +43,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - Home Page: README.md
+  - SeleniumBase Docs: README.md
   - Features: help_docs/features_list.md
   - CMD Options: help_docs/customizing_test_runs.md
   - Python Setup:
@@ -73,10 +72,12 @@ nav:
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
     - Docker Help: integrations/docker/ReadMe.md
     - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
-    - Master QA: seleniumbase/masterqa/ReadMe.md
   - Help Docs ToC:
     - Table of Contents: help_docs/ReadMe.md
+    - API Reference: help_docs/method_summary.md
+    - Master QA: seleniumbase/masterqa/ReadMe.md
     - Decorators & Security: seleniumbase/common/ReadMe.md
     - Using Safari Driver: help_docs/using_safari_driver.md
     - macOS Hidden Files: help_docs/hidden_files_info.md
     - Happy Customers: help_docs/happy_customers.md
+  - Thank You: help_docs/thank_you.md

@@ -2,7 +2,7 @@
 
 ## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Automated Visual Regression Testing
 
-[<img src="http://img.youtube.com/vi/erwkoiDeNzA/0.jpg" title="Automated Visual Regression Testing" height="180">](https://www.youtube.com/watch?v=erwkoiDeNzA)
+[<img src="https://img.youtube.com/vi/erwkoiDeNzA/0.jpg" title="Automated Visual Regression Testing" height="180">](https://www.youtube.com/watch?v=erwkoiDeNzA)
 (**[Watch the tutorial on YouTube](https://www.youtube.com/watch?v=erwkoiDeNzA)**)
 
 Automated Visual Regression Testing helps you detect when the layout of a web page has changed. Rather than comparing screenshots, layout differences are detected by comparing HTML tags and attributes with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
