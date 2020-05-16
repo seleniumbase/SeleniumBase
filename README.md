@@ -1,4 +1,4 @@
-<meta property="og:title" content="SeleniumBase Framework" />
+<meta property="og:title" content="SeleniumBase - Test Automation Framework" />
 <meta property="og:description" content="Create browser tests for web and mobile user interfaces." />
 <meta property="og:image" content="https://cdn2.hubspot.net/hubfs/100006/images/big_blue_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo4.png">

@@ -1,11 +1,11 @@
 # Project information
-site_name: SeleniumBase
+site_name: SeleniumBase - Test Automation Framework
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: >-
   Create browser tests for web and mobile user interfaces.
   Fully customizable automation that builds on top of Selenium.
-  Uses Python and pytest to run tests and execute commands.
+  Uses Python and pytest to execute commands and run tests.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -31,13 +31,15 @@ theme:
   logo: img/logo3a.png
   favicon: img/logo4.png
   language: en
+  include_homepage_in_sidebar: true
+  sticky_navigation: true
   features:
     - tabs
 # Plugins
 plugins:
   - search
   - minify:
-      minify_html: false
+      minify_html: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
