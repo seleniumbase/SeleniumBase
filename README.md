@@ -15,7 +15,7 @@
 
 <p align="center">
 <div align="center"><span align="center"><b>Create web/mobile tests with Python.</b></span></div>
-<div align="center"><span align="center"><b>Do much more with Selenium/pytest.</b></span></div>
+<div align="center"><span align="center"><b>Automate faster with Selenium/pytest.</b></span></div>
 </p>
 
 <p align="center">
