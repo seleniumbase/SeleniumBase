@@ -88,7 +88,7 @@ nav:
     - Docker Help: integrations/docker/ReadMe.md
     - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
     - Master QA: seleniumbase/masterqa/ReadMe.md
-  - Extra Help:
+  - Help Docs ToC:
     - Table of Contents: help_docs/ReadMe.md
     - Decorators & Security: seleniumbase/common/ReadMe.md
     - Using Safari Driver: help_docs/using_safari_driver.md
