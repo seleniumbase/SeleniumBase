@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-<div align="center"><b>Everything you need for web testing.</b></div>
+<b>Everything you need for web testing.</b>
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@
 </p>
 
 <p align="center">
-<div align="center"><span align="center"><b>Extends pytest. Simplifies Selenium.</b></span></div>
+<b>Extends pytest. Simplifies Selenium.</b>
 </p>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
