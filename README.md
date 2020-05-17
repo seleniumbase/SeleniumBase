@@ -14,8 +14,7 @@
 </p>
 
 <p align="center">
-<div align="center"><span align="center"><b>Create web/mobile tests with Python.</b></span></div>
-<div align="center"><span align="center"><b>Expand Selenium and pytest abilities.</b></span></div>
+<div align="center"><b>Everything you need for web testing.</b></div>
 </p>
 
 <p align="center">
@@ -36,7 +35,7 @@
 </p>
 
 <p align="center">
-<div align="center"><b>Everything you need for E2E testing.</b></div>
+<div align="center"><span align="center"><b>Extends pytest. Simplifies Selenium.</b></span></div>
 </p>
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
