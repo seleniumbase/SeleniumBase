@@ -4,7 +4,6 @@ site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: >-
   Create browser tests for web and mobile user interfaces.
-  Fully customizable automation that builds on top of Selenium.
   Uses Python and pytest to execute commands and run tests.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
