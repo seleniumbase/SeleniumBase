@@ -1,4 +1,4 @@
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> SeleniumBase webdriver storage
+### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> SeleniumBase webdriver storage
 
 * You need a different webdriver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.
 

@@ -1,27 +1,27 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> **The Selenium Grid Hub:**
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> The Selenium Grid Hub:
 
 The Selenium Grid Hub lets you distribute tests to run in parallel across multiple node machines. Each node machine can then run its own allocation of tests. This allows you to run a large suite of tests very quickly.
 
-### Running the Selenium Grid Hub:
+### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Running the Selenium Grid Hub:
 
 The following commands will work once you've installed seleniumbase.
 
-#### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Downloading the Selenium Server JAR file:
+#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Downloading the Selenium Server JAR file:
 ```
 seleniumbase download server
 ```
 * (Required for using your own Selenium Grid)
 
-#### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Grid Hub server controls:
+#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Grid Hub server controls:
 ```
 seleniumbase grid-hub {start|stop} [OPTIONS]
 ```
 Options:
 * ``-v``, ``--verbose``  (Increases verbosity of logging output.)
 
-#### <img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_box2.png" title="SeleniumBase" height="32"> Grid node server controls:
+#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Grid node server controls:
 ```
 seleniumbase grid-node {start|stop} --hub=[HUB_IP] [OPTIONS]
 ```

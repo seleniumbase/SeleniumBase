@@ -1,6 +1,6 @@
 <h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_m.png" title="SeleniumBase" height="48" /></a></h3>
 
-### <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> Multi-Language Tests (Python 3 Only!)
+### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Multi-Language Tests (Python 3 Only!)
 
 <b>SeleniumBase</b> supports the following 10 languages:
 <ul>

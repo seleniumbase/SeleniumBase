@@ -1,5 +1,6 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" height="46">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
-## Method Summary Overview
+
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Method Summary (API Reference)
 
 Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
 

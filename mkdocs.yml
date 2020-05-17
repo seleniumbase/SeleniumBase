@@ -2,9 +2,7 @@
 site_name: SeleniumBase
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: >-
-  Create browser tests for web and mobile user interfaces.
-  Uses Python and pytest to execute commands and run tests.
+site_description: Test Automation Framework
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -20,7 +18,6 @@ markdown_extensions:
   - markdown.extensions.codehilite
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
-  - markdown.extensions.meta
   - markdown.extensions.toc:
       permalink: true
 # Configuration
@@ -32,11 +29,14 @@ theme:
   sticky_navigation: true
   features:
     - tabs
+  palette:
+    primary: indigo
+    accent: indigo
 # Plugins
 plugins:
   - search
   - minify:
-      minify_html: true
+      minify_html: false
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
@@ -73,10 +73,9 @@ nav:
     - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
   - Help Docs ToC:
     - Table of Contents: help_docs/ReadMe.md
-    - API Reference: help_docs/method_summary.md
     - Master QA: seleniumbase/masterqa/ReadMe.md
     - Decorators & Security: seleniumbase/common/ReadMe.md
     - Using Safari Driver: help_docs/using_safari_driver.md
     - macOS Hidden Files: help_docs/hidden_files_info.md
-    - Happy Customers: help_docs/happy_customers.md
+    - Case Studies: help_docs/happy_customers.md
   - Thank You: help_docs/thank_you.md
