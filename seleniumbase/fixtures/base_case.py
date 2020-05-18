@@ -209,18 +209,14 @@ class BaseCase(unittest.TestCase):
         pre_action_url = self.driver.current_url
         try:
             actions = ActionChains(self.driver)
-            actions.move_to_element(element)
-            actions.double_click(element)
-            actions.perform()
+            actions.double_click(element).perform()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.05)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
             actions = ActionChains(self.driver)
-            actions.move_to_element(element)
-            actions.double_click(element)
-            actions.perform()
+            actions.double_click(element).perform()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
