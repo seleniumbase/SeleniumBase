@@ -30,7 +30,7 @@ theme:
   features:
     - tabs
   palette:
-    primary: indigo
+    primary: blue
     accent: indigo
 # Plugins
 plugins:
