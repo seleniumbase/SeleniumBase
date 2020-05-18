@@ -234,7 +234,7 @@ class SeleniumBrowser(Plugin):
             help="""The option to check for JavaScript errors after
                     every page load.""")
         parser.add_option(
-            '--ad_block', '--ad-block',
+            '--ad_block', '--ad-block', '--block_ads', '--block-ads',
             action="store_true",
             dest='ad_block_on',
             default=False,
