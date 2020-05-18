@@ -75,6 +75,7 @@ nav:
     - Table of Contents: help_docs/ReadMe.md
     - Master QA: seleniumbase/masterqa/ReadMe.md
     - Decorators & Security: seleniumbase/common/ReadMe.md
+    - Desired Capabilities: help_docs/desired_capabilities.md
     - Using Safari Driver: help_docs/using_safari_driver.md
     - macOS Hidden Files: help_docs/hidden_files_info.md
     - Case Studies: help_docs/happy_customers.md
