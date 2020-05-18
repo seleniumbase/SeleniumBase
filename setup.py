@@ -10,9 +10,16 @@ import sys
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 long_description = None
+total_description = None
 try:
     with open(os.path.join(this_directory, 'README.md'), 'rb') as f:
-        long_description = f.read().decode('utf-8')
+        total_description = f.read().decode('utf-8')
+    description_lines = total_description.split('\n')
+    long_description_lines = []
+    for line in description_lines:
+        if not line.startswith("<meta ") and not line.startswith("<link "):
+            long_description_lines.append(line)
+    long_description = "\n".join(long_description_lines)
 except IOError:
     long_description = 'Reliable Browser Automation & Testing Framework'
 
