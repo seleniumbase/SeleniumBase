@@ -181,7 +181,7 @@ class CasDeBase(BaseCase):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
-    def passer(self, *args, **kwargs):
+    def sauter(self, *args, **kwargs):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
