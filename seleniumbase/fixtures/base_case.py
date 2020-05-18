@@ -2214,10 +2214,6 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
 
-    def block_ads(self):
-        """ Same as ad_block() """
-        self.ad_block()
-
     def get_domain_url(self, url):
         return page_utils.get_domain_url(url)
 
@@ -2965,10 +2961,15 @@ class BaseCase(unittest.TestCase):
         return True
 
     def wait(self, seconds):
-        """ Same as sleep() - Some JS frameworks use this method name. """
+        """ Same as self.sleep() - Some JS frameworks use this method name. """
         self.sleep(seconds)
 
+    def block_ads(self):
+        """ Same as self.ad_block() """
+        self.ad_block()
+
     def _print(self, msg):
+        """ Same as Python's print() """
         print(msg)
 
     def start_tour(self, name=None, interval=0):
