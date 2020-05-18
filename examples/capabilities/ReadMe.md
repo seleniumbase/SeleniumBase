@@ -39,9 +39,15 @@ capabilities = {
 
 (You'll notice that the browser is now being specified in the capabilities file, rather than with ``--browser=BROWSER``)
 
-You can generate desired capabilities for [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), and [TestingBot](https://testingbot.com/support/other/test-options) by following those links to their respective websites.
+<b>You can generate specific desired capabilities using:</b>
+<ul>
+    <li><a href="https://www.browserstack.com/automate/capabilities">BrowserStack desired capabilities</a></li>
+    <li><a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/">Sauce Labs desired capabilities</a></li>
+    <li><a href="https://testingbot.com/support/other/test-options">TestingBot desired capabilities</a></li>
+</ul>
 
-A regex parser was built into SeleniumBase to capture all lines from the specified desired capabilities file in the following formats:
+<b>Parsing desired capabilities:</b>
+SeleniumBase has a desired capabilities parser that can capture all lines from the specified file in the following formats:
 ``'KEY': 'VALUE'``
 ``'KEY': True``
 ``'KEY': False``
