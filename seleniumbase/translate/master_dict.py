@@ -465,6 +465,66 @@ class MD:
     md["assert_false"][8] = "подтвердить_ложные"
     md["assert_false"][9] = "verificar_falso"
 
+    md["assert_equal"] = ["*"] * num_langs
+    md["assert_equal"][0] = "assert_equal"
+    md["assert_equal"][1] = "断言等于"
+    md["assert_equal"][2] = "controleren_gelijk"
+    md["assert_equal"][3] = "vérifier_la_véracité"
+    md["assert_equal"][4] = "verificare_uguale"
+    md["assert_equal"][5] = "検証が等しい"
+    md["assert_equal"][6] = "동일한지_확인"
+    md["assert_equal"][7] = "verificar_igual"
+    md["assert_equal"][8] = "подтвердить_одинаковый"
+    md["assert_equal"][9] = "verificar_igual"
+
+    md["assert_not_equal"] = ["*"] * num_langs
+    md["assert_not_equal"][0] = "assert_not_equal"
+    md["assert_not_equal"][1] = "断言不等于"
+    md["assert_not_equal"][2] = "controleren_niet_gelijk"
+    md["assert_not_equal"][3] = "vérifier_la_fausseté"
+    md["assert_not_equal"][4] = "verificare_non_uguale"
+    md["assert_not_equal"][5] = "検証が等しくない"
+    md["assert_not_equal"][6] = "동일하지_않다고_어설션"
+    md["assert_not_equal"][7] = "verificar_não_é_igual"
+    md["assert_not_equal"][8] = "подтвердить_не_одинаковый"
+    md["assert_not_equal"][9] = "verificar_diferente"
+
+    md["refresh_page"] = ["*"] * num_langs
+    md["refresh_page"][0] = "refresh_page"
+    md["refresh_page"][1] = "刷新页面"
+    md["refresh_page"][2] = "ververs_pagina"
+    md["refresh_page"][3] = "rafraîchir_la_page"
+    md["refresh_page"][4] = "aggiorna_la_pagina"
+    md["refresh_page"][5] = "ページを更新する"
+    md["refresh_page"][6] = "페이지_새로_고침"
+    md["refresh_page"][7] = "atualizar_a_página"
+    md["refresh_page"][8] = "обновить_страницу"
+    md["refresh_page"][9] = "actualizar_la_página"
+
+    md["get_current_url"] = ["*"] * num_langs
+    md["get_current_url"][0] = "get_current_url"
+    md["get_current_url"][1] = "获取当前网址"
+    md["get_current_url"][2] = "huidige_url_ophalen"
+    md["get_current_url"][3] = "obtenir_url_actuelle"
+    md["get_current_url"][4] = "ottenere_url_corrente"
+    md["get_current_url"][5] = "現在のURLを取得"
+    md["get_current_url"][6] = "현재의_URL을_가져"
+    md["get_current_url"][7] = "obter_url_atual"
+    md["get_current_url"][8] = "получить_текущий_URL"
+    md["get_current_url"][9] = "obtener_url_actual"
+
+    md["get_page_source"] = ["*"] * num_langs
+    md["get_page_source"][0] = "get_page_source"
+    md["get_page_source"][1] = "获取页面源代码"
+    md["get_page_source"][2] = "broncode_ophalen"
+    md["get_page_source"][3] = "obtenir_le_html_de_la_page"
+    md["get_page_source"][4] = "ottenere_la_pagina_html"
+    md["get_page_source"][5] = "ページのソースコードを取得する"
+    md["get_page_source"][6] = "페이지의_소스_코드를_얻을"
+    md["get_page_source"][7] = "obter_a_página_html"
+    md["get_page_source"][8] = "получить_источник_страницы"
+    md["get_page_source"][9] = "obtener_html_de_la_página"
+
     md["go_back"] = ["*"] * num_langs
     md["go_back"][0] = "go_back"
     md["go_back"][1] = "回去"
@@ -488,6 +548,42 @@ class MD:
     md["go_forward"][7] = "avançar"
     md["go_forward"][8] = "вперед"
     md["go_forward"][9] = "adelante"
+
+    md["is_text_visible"] = ["*"] * num_langs
+    md["is_text_visible"][0] = "is_text_visible"
+    md["is_text_visible"][1] = "文本是否显示"
+    md["is_text_visible"][2] = "tekst_zichtbaar"
+    md["is_text_visible"][3] = "est_le_texte_affiché"
+    md["is_text_visible"][4] = "è_testo_visto"
+    md["is_text_visible"][5] = "テキストが表示されています"
+    md["is_text_visible"][6] = "텍스트가_표시됩니다"
+    md["is_text_visible"][7] = "o_texto_está_visível"
+    md["is_text_visible"][8] = "текст_виден"
+    md["is_text_visible"][9] = "se_muestra_el_texto"
+
+    md["is_element_visible"] = ["*"] * num_langs
+    md["is_element_visible"][0] = "is_element_visible"
+    md["is_element_visible"][1] = "元素是否可见"
+    md["is_element_visible"][2] = "element_zichtbaar"
+    md["is_element_visible"][3] = "est_un_élément_affiché"
+    md["is_element_visible"][4] = "è_elemento_visto"
+    md["is_element_visible"][5] = "要素は表示されますか"
+    md["is_element_visible"][6] = "요소가_표시됩니다"
+    md["is_element_visible"][7] = "o_elemento_está_visível"
+    md["is_element_visible"][8] = "элемент_виден"
+    md["is_element_visible"][9] = "se_muestra_el_elemento"
+
+    md["is_element_present"] = ["*"] * num_langs
+    md["is_element_present"][0] = "is_element_present"
+    md["is_element_present"][1] = "元素是否存在"
+    md["is_element_present"][2] = "element_aanwezig"
+    md["is_element_present"][3] = "est_un_élément_présent"
+    md["is_element_present"][4] = "è_elemento_presente"
+    md["is_element_present"][5] = "要素が存在するかどうか"
+    md["is_element_present"][6] = "요소가_있습니다"
+    md["is_element_present"][7] = "o_elemento_está_presente"
+    md["is_element_present"][8] = "элемент_присутствует"
+    md["is_element_present"][9] = "está_presente_el_elemento"
 
     md["press_right_arrow"] = ["*"] * num_langs
     md["press_right_arrow"][0] = "press_right_arrow"
