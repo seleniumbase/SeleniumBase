@@ -181,7 +181,7 @@ class CasoDePrueba(BaseCase):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
-    def omitir(self, *args, **kwargs):
+    def saltar(self, *args, **kwargs):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 

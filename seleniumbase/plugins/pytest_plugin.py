@@ -324,7 +324,7 @@ def pytest_addoption(parser):
                      default=False,
                      help="""The option to check for JavaScript errors after
                           every page load.""")
-    parser.addoption('--ad_block', '--ad-block',
+    parser.addoption('--ad_block', '--ad-block', '--block_ads', '--block-ads',
                      action="store_true",
                      dest='ad_block_on',
                      default=False,

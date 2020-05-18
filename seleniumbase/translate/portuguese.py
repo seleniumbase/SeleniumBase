@@ -181,7 +181,7 @@ class CasoDeTeste(BaseCase):
         # ad_block()
         return self.ad_block(*args, **kwargs)
 
-    def omitir(self, *args, **kwargs):
+    def saltar(self, *args, **kwargs):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
@@ -197,7 +197,7 @@ class CasoDeTeste(BaseCase):
         # switch_to_frame(frame)
         return self.switch_to_frame(*args, **kwargs)
 
-    def volte_para_o_conteúdo_padrão(self, *args, **kwargs):
+    def mudar_para_o_conteúdo_padrão(self, *args, **kwargs):
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
 
@@ -209,7 +209,7 @@ class CasoDeTeste(BaseCase):
         # switch_to_window(window)
         return self.switch_to_window(*args, **kwargs)
 
-    def volte_para_a_janela_padrão(self, *args, **kwargs):
+    def mudar_para_a_janela_padrão(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
