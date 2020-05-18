@@ -2,7 +2,8 @@
 
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Help Documents
 
-<div><b>Table of Contents / Navigation:</b></div>
+<h3>Table of Contents (<a href="https://seleniumbase.io">seleniumbase.io</a>)</h3>
+
 <div><a href="https://seleniumbase.io/help_docs/features_list/"><b>SeleniumBase Features List</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/how_it_works/"><b>How SeleniumBase Works</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/install_python_pip_git/"><b>Installing Python, Pip, & Git</b></a></div>
@@ -20,3 +21,25 @@
 <div><a href="https://seleniumbase.io/help_docs/using_safari_driver/"><b>Safari Driver Detailed Info</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/hidden_files_info/"><b>Seeing Hidden Files on macOS</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/happy_customers/"><b>SeleniumBase Case Studies</b></a></div>
+
+--------
+
+<h3>GitHub Pages ToC (<a href="https://seleniumbase.com">seleniumbase.com</a>)</h3>
+
+<div><a href="https://seleniumbase.com/help_docs/features_list.html"><b>SeleniumBase Features List</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/how_it_works.html"><b>How SeleniumBase Works</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/install_python_pip_git.html"><b>Installing Python, Pip, & Git</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/virtualenv_instructions.html"><b>Python Virtual Env Tutorial</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/install.html"><b>SeleniumBase Installation</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/webdriver_installation.html"><b>Webdriver Installation</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/verify_webdriver.html"><b>Verify Webdriver Works</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/customizing_test_runs.html"><b>The Command Line Tutorial</b></a></div>
+<div><a href="https://seleniumbase.com/seleniumbase/console_scripts/"><b>The Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/mobile_testing.html"><b>Mobile Device Testing</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/method_summary.html"><b>Method Summary (API Ref)</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/translations.html"><b>Language Translations</b></a></div>
+<div><a href="https://seleniumbase.com/examples/tour_examples/"><b>Tour Examples</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/mysql_installation.html"><b>MySQL Installation Overview</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/using_safari_driver.html"><b>Safari Driver Detailed Info</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/hidden_files_info.html"><b>Seeing Hidden Files on macOS</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/happy_customers.html"><b>SeleniumBase Case Studies</b></a></div>
