@@ -2,7 +2,7 @@
 <meta property="og:description" content="Create browser tests for web and mobile user interfaces." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
-<h2><div align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" height="156" /></a></div></h2>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" height="156" /></a></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">

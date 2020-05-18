@@ -42,7 +42,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase Docs: README.md
+  - SeleniumBase: README.md
   - Features: help_docs/features_list.md
   - CMD Options: help_docs/customizing_test_runs.md
   - Python Setup:
