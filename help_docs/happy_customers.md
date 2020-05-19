@@ -1,4 +1,4 @@
-#### Some organizations that've grown their automation with SeleniumBase include:
+#### Here are some organizations that have used SeleniumBase:
 * [HubSpot](https://www.hubspot.com/)
 * [Veracode](https://www.veracode.com/)
 * [Autodesk](https://www.autodesk.com/)
@@ -6,11 +6,16 @@
 * [Broadcom](https://www.broadcom.com/)
 * [iboss](https://www.iboss.com/)
 * [MIT](https://web.mit.edu/)
+* [Harvard Medical School](https://hms.harvard.edu/)
+* [Mississippi State University](https://www.msstate.edu/)
 * [Akamai](https://www.akamai.com/)
 * [VMware](https://www.vmware.com/)
-* [Jana](https://www.linkedin.com/company/jana)
+* [Baidu](https://www.baidu.com/)
+* [Yandex](https://yandex.ru/)
+* [Jana](https://www.crunchbase.com/organization/jana)
 * [Raid The Room](http://raidtheroom.com/)
-* [Harvard Medical School](https://hms.harvard.edu/)
+* [Thoma Bravo](https://www.thomabravo.com/)
+* [GeoNode](http://geonode.org/)
 * And more...
 
 **Case Study** (*HubSpot*):
