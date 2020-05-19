@@ -1,7 +1,7 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase" width="275">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
-(**[Watch an overview on YouTube](https://www.youtube.com/watch?v=Sjzq9kU5kOw)**)
+[<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase Features" width="276">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
+<p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> **Features:**
