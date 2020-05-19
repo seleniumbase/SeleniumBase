@@ -1,4 +1,4 @@
-### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Using Desired Capabilities
+### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using Desired Capabilities
 
 You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote SeleniumGrid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), or [TestingBot](https://testingbot.com/support/other/test-options).
 

@@ -1,5 +1,5 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" height="40">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Mobile Testing
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Mobile Testing
 
 Use ``--mobile`` to run your SeleniumBase tests using Chrome's (or Edge's) mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and user agent.
 

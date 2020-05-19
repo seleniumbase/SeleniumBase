@@ -1,4 +1,4 @@
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3a.png" title="SeleniumBase" height="32"> Resources Help
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Resources Help
 
 SeleniumBase uses some Javascript libraries for optional advanced features such as website tours, messenger, highlighting elements on a page, and other jQuery actions. In some cases, you may want to host these Javascript and CSS files from your own websites. For simplicity and convenience, these resources have been downloaded into the "resources" folder. If you decide to use your local versions, you may need to update the corresponding URLs in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py).
 

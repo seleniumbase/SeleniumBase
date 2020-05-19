@@ -1,4 +1,4 @@
-<h3 align="left"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" height="48" /></h3>
+<h3 align="left"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" width="290" /></h3>
 
 ## Website Tours
 

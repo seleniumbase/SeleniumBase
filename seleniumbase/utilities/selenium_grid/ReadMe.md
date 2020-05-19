@@ -1,20 +1,20 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> The Selenium Grid Hub:
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> The Selenium Grid Hub:
 
 The Selenium Grid Hub lets you distribute tests to run in parallel across multiple node machines. Each node machine can then run its own allocation of tests. This allows you to run a large suite of tests very quickly.
 
-### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Running the Selenium Grid Hub:
+### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Running the Selenium Grid Hub:
 
 The following commands will work once you've installed seleniumbase.
 
-#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Downloading the Selenium Server JAR file:
+#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Downloading the Selenium Server JAR file:
 ```bash
 seleniumbase download server
 ```
 * (Required for using your own Selenium Grid)
 
-#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Grid Hub server controls:
+#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid Hub server controls:
 ```bash
 seleniumbase grid-hub {start|stop} [OPTIONS]
 ```
@@ -23,7 +23,7 @@ seleniumbase grid-hub {start|stop} [OPTIONS]
 <li> -v / --verbose  (Increases verbosity of logging output.)</li>
 </ul>
 
-#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Grid node server controls:
+#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid node server controls:
 ```bash
 seleniumbase grid-node {start|stop} --hub=[HUB_IP] [OPTIONS]
 ```

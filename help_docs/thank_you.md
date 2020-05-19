@@ -1,10 +1,10 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 ### Thank you for choosing SeleniumBase!
 
 --------
 
-<p><div><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" height="156"></a></div></p>
+<p><div><a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260"></a></div></p>
 
 <p><div><b>Follow us somewhere:</b></div></p>
 

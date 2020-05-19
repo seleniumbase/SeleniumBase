@@ -1,11 +1,10 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase" height="200">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
-
+[<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase" width="275">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
 (**[Watch an overview on YouTube](https://www.youtube.com/watch?v=Sjzq9kU5kOw)**)
 
 <a id="feature_list"></a>
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> **Features:**
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> **Features:**
 * A complete test automation framework for web/mobile UI testing.
 * Uses [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), and [nose](http://nose.readthedocs.io/en/latest/) for test discovery and execution.
 * No more flaky tests! (Smart-waiting code keeps tests reliable.)
@@ -36,4 +35,4 @@
 * Written in Python, but can also make JavaScript calls. (Use: ``self.execute_script()``)
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3.png" title="SeleniumBase" height="48">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

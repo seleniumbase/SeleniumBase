@@ -1,6 +1,6 @@
-<a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb8.png" alt="SeleniumBase" height="48" /></a>
+<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb8.png" alt="SeleniumBase" width="290" /></a></p>
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" height="30" /> Running Example Tests:
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Running Example Tests:
 
 SeleniumBase tests are run with **``pytest``**. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
@@ -115,11 +115,11 @@ To make things easier, here's a simple GUI program that allows you to run a few 
 ```bash
 python gui_test_runner.py
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" height="260" />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" width="320" />
 
 --------
 
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" width="290" />
+
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
-
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" height="45" />
