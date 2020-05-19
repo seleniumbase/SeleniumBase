@@ -382,7 +382,7 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 pytest test_suite.py --html=report.html
 ```
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/PytestReport.png "Example Pytest Report")
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_3c.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 ```bash
@@ -395,7 +395,7 @@ The ``--report`` option gives you a fancy report after your test suite completes
 ```bash
 nosetests test_suite.py --report
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" title="Example Nosetest Report" width="320" />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 

@@ -30,7 +30,7 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 ```bash
 pytest test_suite.py --html=report.html
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_2.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_3c.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 ### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Nosetest Reports:
 
