@@ -26,6 +26,12 @@ pytest my_first_test.py --demo
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase Demo Mode" /><br />
 
+Run a different example in Demo Mode:
+```bash
+pytest test_swag_labs.py --demo
+```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /><br />
+
 Run an example test in Headless Mode: (invisible browser)
 ```bash
 pytest my_first_test.py --headless

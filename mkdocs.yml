@@ -32,6 +32,7 @@ theme:
   search_index_only: true
   features:
     - tabs
+    - instant
   palette:
     scheme: default
     primary: blue

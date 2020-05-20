@@ -12,7 +12,7 @@ To find real values for device metrics, [see this GitHub Gist](https://gist.gith
 Here's an example of running a mobile test (See https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py):
 
 ```bash
-pytest test_skype_site.py --mobile --browser=edge
+pytest test_skype_site.py --mobile
 ```
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif)
 

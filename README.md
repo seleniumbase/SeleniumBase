@@ -37,22 +37,9 @@
 </p>
 
 <p align="center">
-<b>Extends pytest. Simplifies Selenium.</b>
+<div align="center"><b>Selenium and pytest in one combined.</b></div>
 </p>
-
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
-
-```bash
-pytest test_swag_labs.py --demo
-```
-
-----------
-
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" /></a></p>
-
-```bash
-pytest test_swag_labs.py --mobile
-```
+<p align="center"><div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif" alt="SeleniumBase Mobile Testing" title="SeleniumBase Mobile Testing" /></div></p>
 
 <a id="python_installation"></a>
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Get Started
@@ -102,7 +89,16 @@ pytest my_first_test.py
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
-<b>Here's an example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
+<b>Run [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Demo Mode:</b>
+
+```bash
+pytest my_first_test.py --demo
+```
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" />
+
+<b>Here's the code for [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
+
 ```python
 from seleniumbase import BaseCase
 
@@ -120,10 +116,6 @@ class MyTestClass(BaseCase):
         self.open("://store.xkcd.com/collections/everything")
         self.update_text("input.search-input", "xkcd book\n")
         self.assert_exact_text("xkcd: volume 0", "h3")
-```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" />
-```bash
-pytest my_first_test.py --demo
 ```
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
@@ -168,7 +160,7 @@ The same command with regular WebDriver is very messy:
 ```python
 from selenium.webdriver.common.by import By
 element = self.driver.find_element(by=By.CSS_SELECTOR, value="input")
-element.clear()  # Not always needed
+element.clear()
 element.send_keys("dogs")
 element.submit()
 ```
