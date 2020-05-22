@@ -113,6 +113,34 @@ def hover_element(driver, element):
     hover.perform()
 
 
+def format_message(exception, message):
+    """
+    Formats an exception message to make the output cleaner.
+    """
+    if exception == Exception:
+        pass
+    elif exception == ElementNotVisibleException:
+        message = "ElementNotVisibleException: %s" % message
+    elif exception == NoSuchElementException:
+        message = "NoSuchElementException: %s" % message
+    elif exception == NoAlertPresentException:
+        message = "NoAlertPresentException: %s" % message
+    elif exception == NoSuchFrameException:
+        message = "NoSuchFrameException: %s" % message
+    elif exception == NoSuchWindowException:
+        message = "NoSuchWindowException: %s" % message
+    elif type(exception) is str:
+        message = "%s: %s" % (exception, message)
+    else:
+        pass
+    return message
+
+
+def timeout_exception(exception, message):
+    message = format_message(exception, message)
+    raise Exception(message)
+
+
 def hover_and_click(driver, hover_selector, click_selector,
                     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                     timeout=settings.SMALL_TIMEOUT):
@@ -145,9 +173,10 @@ def hover_and_click(driver, hover_selector, click_selector,
     plural = "s"
     if timeout == 1:
         plural = ""
-    raise NoSuchElementException(
-        "Element {%s} was not present after %s second%s!" % (
-            click_selector, timeout, plural))
+    message = (
+        "Element {%s} was not present after %s second%s!"
+        "" % (click_selector, timeout, plural))
+    timeout_exception(NoSuchElementException, message)
 
 
 def hover_element_and_click(driver, element, click_selector,
@@ -173,9 +202,10 @@ def hover_element_and_click(driver, element, click_selector,
     plural = "s"
     if timeout == 1:
         plural = ""
-    raise NoSuchElementException(
-        "Element {%s} was not present after %s second%s!" % (
-            click_selector, timeout, plural))
+    message = (
+        "Element {%s} was not present after %s second%s!"
+        "" % (click_selector, timeout, plural))
+    timeout_exception(NoSuchElementException, message)
 
 
 def hover_element_and_double_click(driver, element, click_selector,
@@ -201,9 +231,10 @@ def hover_element_and_double_click(driver, element, click_selector,
     plural = "s"
     if timeout == 1:
         plural = ""
-    raise NoSuchElementException(
-        "Element {%s} was not present after %s second%s!" % (
-            click_selector, timeout, plural))
+    message = (
+        "Element {%s} was not present after %s second%s!"
+        "" % (click_selector, timeout, plural))
+    timeout_exception(NoSuchElementException, message)
 
 
 def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
@@ -238,9 +269,10 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
-        raise NoSuchElementException(
-            "Element {%s} was not present after %s second%s!" % (
-                selector, timeout, plural))
+        message = (
+            "Element {%s} was not present after %s second%s!"
+            "" % (selector, timeout, plural))
+        timeout_exception(NoSuchElementException, message)
 
 
 def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
@@ -280,13 +312,15 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element and by != By.LINK_TEXT:
-        raise ElementNotVisibleException(
-            "Element {%s} was not visible after %s second%s!" % (
-                selector, timeout, plural))
+        message = (
+            "Element {%s} was not visible after %s second%s!"
+            "" % (selector, timeout, plural))
+        timeout_exception(ElementNotVisibleException, message)
     if not element and by == By.LINK_TEXT:
-        raise ElementNotVisibleException(
-            "Link text {%s} was not visible after %s second%s!" % (
-                selector, timeout, plural))
+        message = (
+            "Link text {%s} was not visible after %s second%s!"
+            "" % (selector, timeout, plural))
+        timeout_exception(ElementNotVisibleException, message)
 
 
 def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
@@ -326,9 +360,10 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
-        raise ElementNotVisibleException(
-            "Expected text {%s} for {%s} was not visible after %s second%s!" %
-            (text, selector, timeout, plural))
+        message = (
+            "Expected text {%s} for {%s} was not visible after %s second%s!"
+            "" % (text, selector, timeout, plural))
+        timeout_exception(ElementNotVisibleException, message)
 
 
 def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
@@ -369,9 +404,10 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
-        raise ElementNotVisibleException(
+        message = (
             "Expected exact text {%s} for {%s} was not visible "
             "after %s second%s!" % (text, selector, timeout, plural))
+        timeout_exception(ElementNotVisibleException, message)
 
 
 def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
@@ -401,8 +437,10 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
     plural = "s"
     if timeout == 1:
         plural = ""
-    raise Exception("Element {%s} was still present after %s second%s!" %
-                    (selector, timeout, plural))
+    message = (
+        "Element {%s} was still present after %s second%s!"
+        "" % (selector, timeout, plural))
+    timeout_exception(Exception, message)
 
 
 def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
@@ -435,9 +473,10 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
     plural = "s"
     if timeout == 1:
         plural = ""
-    raise Exception(
-        "Element {%s} was still visible after %s second%s!" % (
-            selector, timeout, plural))
+    message = (
+        "Element {%s} was still visible after %s second%s!"
+        "" % (selector, timeout, plural))
+    timeout_exception(Exception, message)
 
 
 def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR,
@@ -468,8 +507,10 @@ def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR,
     plural = "s"
     if timeout == 1:
         plural = ""
-    raise Exception("Text {%s} in {%s} was still visible after %s "
-                    "second%s!" % (text, selector, timeout, plural))
+    message = (
+        "Text {%s} in {%s} was still visible after %s "
+        "second%s!" % (text, selector, timeout, plural))
+    timeout_exception(Exception, message)
 
 
 def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
@@ -634,7 +675,9 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-    raise Exception("Alert was not present after %s seconds!" % timeout)
+    message = (
+        "Alert was not present after %s seconds!" % timeout)
+    timeout_exception(Exception, message)
 
 
 def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
@@ -671,7 +714,13 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-    raise Exception("Frame was not present after %s seconds!" % timeout)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    message = (
+        "Frame {%s} was not visible after %s second%s!"
+        "" % (frame, timeout, plural))
+    timeout_exception(Exception, message)
 
 
 def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
@@ -697,7 +746,13 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.1)
-        raise Exception("Window was not present after %s seconds!" % timeout)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        message = (
+            "Window {%s} was not present after %s second%s!"
+            "" % (window, timeout, plural))
+        timeout_exception(Exception, message)
     else:
         window_handle = window
         for x in range(int(timeout * 10)):
@@ -710,4 +765,10 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.1)
-        raise Exception("Window was not present after %s seconds!" % timeout)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        message = (
+            "Window {%s} was not present after %s second%s!"
+            "" % (window, timeout, plural))
+        timeout_exception(Exception, message)
