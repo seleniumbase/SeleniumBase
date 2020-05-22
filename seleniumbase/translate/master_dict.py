@@ -934,6 +934,18 @@ class MD:
     md["hover_and_click"][8] = "наведите_и_нажмите"
     md["hover_and_click"][9] = "pasar_el_ratón_y_hacer_clic"
 
+    md["is_selected"] = ["*"] * num_langs
+    md["is_selected"][0] = "is_selected"
+    md["is_selected"][1] = "是否被选中"
+    md["is_selected"][2] = "is_het_geselecteerd"
+    md["is_selected"][3] = "est_il_sélectionné"
+    md["is_selected"][4] = "è_selezionato"
+    md["is_selected"][5] = "選択されていることを"
+    md["is_selected"][6] = "선택되어_있는지"
+    md["is_selected"][7] = "é_selecionado"
+    md["is_selected"][8] = "выбран"
+    md["is_selected"][9] = "está_seleccionado"
+
     md["press_right_arrow"] = ["*"] * num_langs
     md["press_right_arrow"][0] = "press_right_arrow"
     md["press_right_arrow"][1] = "按向右箭头"
