@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_demo_site(self):
-        self.open("://seleniumbase.github.io/demo_page.html")
+        self.open("https://seleniumbase.io/demo_page.html")
 
         # Assert that the element is visible on the page
         self.assert_element("tbody#tbodyId")
