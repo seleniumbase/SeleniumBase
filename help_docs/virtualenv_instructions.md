@@ -1,4 +1,4 @@
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Virtual Environment Tutorial
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Virtual Environment Tutorial</h2>
 
 ### Step 1: Install VirtualEnv and VirtualEnvWrapper:
 

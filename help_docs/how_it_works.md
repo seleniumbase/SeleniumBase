@@ -1,7 +1,7 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb4.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 <a id="how_seleniumbase_works"></a>
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> **How it works:**
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> How it works:</h2>
 
 At the core, SeleniumBase works by extending [pytest](https://docs.pytest.org/en/latest/) as a direct plugin. SeleniumBase automatically spins up web browsers for tests, and then gives those tests access to the SeleniumBase libraries through the [BaseCase class](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py). Tests are also given access to [SeleniumBase command-line arguments](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) and [SeleniumBase methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md), which provide additional functionality.
 

@@ -1,6 +1,6 @@
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" alt="SeleniumBase" width="240" /></a></div>
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Documents
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Documents</h2>
 
 <h3>Table of Contents (<a href="https://seleniumbase.io">seleniumbase.io</a>)</h3>
 

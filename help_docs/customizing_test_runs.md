@@ -1,6 +1,6 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Customizing test runs
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Customizing test runs</h2>
 
 You can customize test runs from the command-line thanks to [SeleniumBase's pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py), which adds command-line options for setting/enabling the browser type, headless mode, mobile mode, multithreading mode, demo mode, proxy config, user agent config, browser extensions, and more.
 
