@@ -1,3 +1,5 @@
+Preparing the SeleniumBase Docs website with "mkdocs"
+
 Usage: (from top-level SeleniumBase)
 pip install -r docs/requirements.txt
 mkdocs build --strict
