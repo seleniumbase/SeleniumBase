@@ -2519,11 +2519,12 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(1)
-        self.assertTrue(
-            os.path.exists(self.get_path_of_downloaded_file(file)),
-            "File [%s] was not found in the downloads folder [%s] "
-            "after %s seconds! (Or the download didn't complete!)"
-            "" % (file, self.get_downloads_folder(), timeout))
+        if not os.path.exists(self.get_path_of_downloaded_file(file)):
+            message = (
+                "File {%s} was not found in the downloads folder {%s} "
+                "after %s seconds! (Or the download didn't complete!)"
+                "" % (file, self.get_downloads_folder(), timeout))
+            page_actions.timeout_exception("NoSuchFileException", message)
         if self.demo_mode:
             messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
             js_utils.post_messenger_success_message(
@@ -3769,9 +3770,10 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
-        raise Exception(
-            "Link text {%s} was not present after %s seconds!" % (
-                link_text, timeout))
+        message = (
+            "Link text {%s} was not present after %s seconds!"
+            "" % (link_text, timeout))
+        page_actions.timeout_exception("NoSuchElementException", message)
 
     def wait_for_partial_link_text_present(self, link_text, timeout=None):
         if not timeout:
@@ -3790,9 +3792,10 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
-        raise Exception(
-            "Partial Link text {%s} was not present after %s seconds!" % (
-                link_text, timeout))
+        message = (
+            "Partial Link text {%s} was not present after %s seconds!"
+            "" % (link_text, timeout))
+        page_actions.timeout_exception("NoSuchElementException", message)
 
     def wait_for_link_text_visible(self, link_text, timeout=None):
         if not timeout:

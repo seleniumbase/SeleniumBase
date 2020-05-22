@@ -451,7 +451,8 @@ def get_remote_driver(
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.FIREFOX:
         try:
             # Use Geckodriver for Firefox if it's on the PATH
@@ -469,7 +470,8 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                browser_profile=profile)
+                browser_profile=profile,
+                keep_alive=True)
         except WebDriverException:
             # Don't use Geckodriver: Only works for old versions of Firefox
             profile = _create_firefox_profile(
@@ -485,35 +487,40 @@ def get_remote_driver(
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
-                browser_profile=profile)
+                browser_profile=profile,
+                keep_alive=True)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.EDGE:
         capabilities = webdriver.DesiredCapabilities.EDGE
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.SAFARI:
         capabilities = webdriver.DesiredCapabilities.SAFARI
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.OPERA:
         capabilities = webdriver.DesiredCapabilities.OPERA
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.PHANTOM_JS:
         capabilities = webdriver.DesiredCapabilities.PHANTOMJS
         for key in desired_caps.keys():
@@ -523,32 +530,37 @@ def get_remote_driver(
             warnings.simplefilter("ignore", category=UserWarning)
             return webdriver.Remote(
                 command_executor=address,
-                desired_capabilities=capabilities)
+                desired_capabilities=capabilities,
+                keep_alive=True)
     elif browser_name == constants.Browser.ANDROID:
         capabilities = webdriver.DesiredCapabilities.ANDROID
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.IPHONE:
         capabilities = webdriver.DesiredCapabilities.IPHONE
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.IPAD:
         capabilities = webdriver.DesiredCapabilities.IPAD
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=capabilities)
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.REMOTE:
         return webdriver.Remote(
             command_executor=address,
-            desired_capabilities=desired_caps)
+            desired_capabilities=desired_caps,
+            keep_alive=True)
 
 
 def get_local_driver(

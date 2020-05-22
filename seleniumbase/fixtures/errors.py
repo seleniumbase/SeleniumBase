@@ -1,7 +1,8 @@
 """
 This module contains test-state related exceptions.
 Raising one of these in a test will cause the
-test-state to be logged appropriately.
+test-state to be logged appropriately in the database
+for tests that use the SeleniumBase MySQL plugin.
 """
 
 
