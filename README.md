@@ -7,7 +7,7 @@
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
+<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20📓📖📚-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
@@ -39,7 +39,7 @@
 <p align="center">
 <div align="center"><b>Selenium and pytest in one combined.</b></div>
 </p>
-<p align="center"><div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif" alt="SeleniumBase Mobile Testing" title="SeleniumBase Mobile Testing" /></div></p>
+<p align="center"><div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
 
 <a id="python_installation"></a>
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Get Started
