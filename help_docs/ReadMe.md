@@ -5,13 +5,13 @@
 <h3>Table of Contents (<a href="https://seleniumbase.io">seleniumbase.io</a>)</h3>
 
 <div><a href="https://seleniumbase.io/help_docs/features_list/"><b>SeleniumBase Features List</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/customizing_test_runs/"><b>The Command Line Tutorial</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/how_it_works/"><b>How SeleniumBase Works</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/install_python_pip_git/"><b>Installing Python, Pip, & Git</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/virtualenv_instructions/"><b>Python Virtual Env Tutorial</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/install/"><b>SeleniumBase Installation</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/webdriver_installation/"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/verify_webdriver/"><b>Verify Webdriver Works</b></a></div>
-<div><a href="https://seleniumbase.io/help_docs/customizing_test_runs/"><b>The Command Line Tutorial</b></a></div>
 <div><a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/"><b>The Console Scripts Tutorial</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mobile_testing/"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/method_summary/"><b>Method Summary (API Ref)</b></a></div>
@@ -29,13 +29,13 @@
 <h3>GitHub Pages ToC (<a href="https://seleniumbase.com">seleniumbase.com</a>)</h3>
 
 <div><a href="https://seleniumbase.com/help_docs/features_list.html"><b>SeleniumBase Features List</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/customizing_test_runs.html"><b>The Command Line Tutorial</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/how_it_works.html"><b>How SeleniumBase Works</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/install_python_pip_git.html"><b>Installing Python, Pip, & Git</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/virtualenv_instructions.html"><b>Python Virtual Env Tutorial</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/install.html"><b>SeleniumBase Installation</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/webdriver_installation.html"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/verify_webdriver.html"><b>Verify Webdriver Works</b></a></div>
-<div><a href="https://seleniumbase.com/help_docs/customizing_test_runs.html"><b>The Command Line Tutorial</b></a></div>
 <div><a href="https://seleniumbase.com/seleniumbase/console_scripts/"><b>The Console Scripts Tutorial</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/mobile_testing.html"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/method_summary.html"><b>Method Summary (API Ref)</b></a></div>
