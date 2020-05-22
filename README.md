@@ -145,12 +145,12 @@ self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
 For the complete list of SeleniumBase methods, see: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Learn More:
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Learn More:</h2>
 
-#### Automatic WebDriver abilities:
+<h4>Automatic WebDriver abilities:</h4>
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">Read more about customizing test runs</a>.</i>)
 
-#### Simplified code:
+<h4>Simplified code:</h4>
 SeleniumBase uses simple syntax for commands, such as:
 ```python
 self.update_text("input", "dogs\n")
@@ -168,7 +168,7 @@ As you can see, the old WebDriver way is very bad!
 Use SeleniumBase to make testing much easier!
 (<i>You can still use ``self.driver`` in your code.</i>)
 
-#### Run tests with ``pytest`` or ``nosetests`` in any browser:
+<h4>Run tests with ``pytest`` or ``nosetests`` in any browser:</h4>
 (<i>Using **pytest** is recommended. **Chrome** is the default browser.</i>)
 ```bash
 pytest my_first_test.py --browser=chrome
@@ -181,22 +181,22 @@ pytest [FILE_NAME].py::[CLASS_NAME]::[METHOD_NAME]
 nosetests [FILE_NAME].py:[CLASS_NAME].[METHOD_NAME]
 ```
 
-#### No more flaky tests:
+<h4>No more flaky tests:</h4>
 SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (*up to a timeout limit*). This means you no longer need random ``time.sleep()`` statements in your scripts.
 
-#### Automated/manual hybrid mode:
+<h4>Automated/manual hybrid mode:</h4>
 SeleniumBase includes a solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md">MasterQA</a></b>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validatation.
 
-#### Feature-Rich:
+<h4>Feature-Rich:</h4>
 For a full list of SeleniumBase features, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">Click Here</a>.
 
 
 <a id="detailed_instructions"></a>
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290">
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Detailed Instructions:
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Detailed Instructions:</h2>
 
-**Here's how to run the example script on various web browsers:**
+<h4><b>Here's how to run the example script on various web browsers:</b></h4>
 
 First install a webdriver for each browser you intend to use:
 ```bash
