@@ -1,20 +1,22 @@
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> The Selenium Grid Hub:
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> The Selenium Grid Hub:</h2>
 
 The Selenium Grid Hub lets you distribute tests to run in parallel across multiple node machines. Each node machine can then run its own allocation of tests. This allows you to run a large suite of tests very quickly.
 
-### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Running the Selenium Grid Hub:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Running the Selenium Grid Hub:</h3>
 
 The following commands will work once you've installed seleniumbase.
 
-#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Downloading the Selenium Server JAR file:
+<h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Downloading the Selenium Server JAR file:</h4>
+
 ```bash
 seleniumbase download server
 ```
 * (Required for using your own Selenium Grid)
 
-#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid Hub server controls:
+<h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid Hub server controls:</h4>
+
 ```bash
 seleniumbase grid-hub {start|stop} [OPTIONS]
 ```
@@ -23,7 +25,8 @@ seleniumbase grid-hub {start|stop} [OPTIONS]
 <li> -v / --verbose  (Increases verbosity of logging output.)</li>
 </ul>
 
-#### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid node server controls:
+<h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid node server controls:</h4>
+
 ```bash
 seleniumbase grid-node {start|stop} --hub=[HUB_IP] [OPTIONS]
 ```
@@ -70,5 +73,5 @@ pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 
 (For setting browser desired capabilities while running Selenium remotely, see the <a href="https://seleniumbase.io/help_docs/desired_capabilities/">desired capabilities documentation</a> and the sample files located in <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities">SeleniumBase/examples/capabilities</a>)
 
-#### More info about the Selenium Grid Hub can be found here:
+<h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> More info about the Selenium Grid Hub can be found here:</h4>
 * [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)

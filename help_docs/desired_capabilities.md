@@ -1,4 +1,4 @@
-### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using Desired Capabilities
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using Desired Capabilities</h3>
 
 You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote SeleniumGrid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), or [TestingBot](https://testingbot.com/support/other/test-options).
 
@@ -78,7 +78,7 @@ pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"*"}' --se
 ```
 Example name: ``"my_first_test.MyTestClass.test_basic"``
 
-### Using a local Selenium Grid
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using a local Selenium Grid</h3>
 
 If using a local Selenium Grid with SeleniumBase, start up the Grid Hub and nodes first:
 ```bash
