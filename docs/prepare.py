@@ -93,6 +93,15 @@ def main(*args, **kwargs):
         if ' href="' in line and '.md"' in line:
             changed = True
             line = line.replace('.md"', '/"')
+        if "<!-- View on GitHub -->" in line:
+            changed = True
+            line = (
+                r'<p align="center"><div align="center">'
+                r'<a href="https://github.com/seleniumbase/SeleniumBase">'
+                r'<img src="https://img.shields.io/badge/'
+                r'✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀'
+                r'-02A79E.svg" alt="SeleniumBase.io Docs" />'
+                r'</a></div></p>')
         seleniumbase_lines.append(line)
     if changed:
         out_file = codecs.open(readme_file, "w+", encoding='utf-8')
