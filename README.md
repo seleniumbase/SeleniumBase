@@ -59,6 +59,7 @@ python -m pip install -U pip
 
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Install SeleniumBase:</h2>
+
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
@@ -87,6 +88,7 @@ seleniumbase install chromedriver latest
 ```
 
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Run a test on Chrome:</h3>
+
 ```bash
 cd examples/
 pytest my_first_test.py
