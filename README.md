@@ -53,6 +53,7 @@
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
 * A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
 * Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
+
 ```bash
 python -m pip install -U pip
 ```
@@ -128,6 +129,7 @@ class MyTestClass(BaseCase):
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
 * Here are some common ``SeleniumBase`` methods you might find in tests:
+
 ```python
 self.open(URL)  # Navigate to the web page
 self.click(SELECTOR)  # Click a page element
@@ -150,6 +152,7 @@ self.switch_to_default_content()  # Switch webdriver control out of the current 
 self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
 self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 ```
+
 For the complete list of SeleniumBase methods, see: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Learn More:</h2>
@@ -159,11 +162,14 @@ SeleniumBase automatically handles common WebDriver actions such as spinning up 
 
 <h4>Simplified code:</h4>
 SeleniumBase uses simple syntax for commands, such as:
+
 ```python
 self.update_text("input", "dogs\n")
 ```
+
 The same command with regular WebDriver is very messy:
 (<i>And it doesn't include SeleniumBase smart-waiting.</i>)
+
 ```python
 from selenium.webdriver.common.by import By
 element = self.driver.find_element(by=By.CSS_SELECTOR, value="input")
@@ -171,18 +177,22 @@ element.clear()
 element.send_keys("dogs")
 element.submit()
 ```
+
 As you can see, the old WebDriver way is very bad!
 Use SeleniumBase to make testing much easier!
 (<i>You can still use ``self.driver`` in your code.</i>)
 
 <h4>Run tests with ``pytest`` or ``nosetests`` in any browser:</h4>
 (<i>Using **pytest** is recommended. **Chrome** is the default browser.</i>)
+
 ```bash
 pytest my_first_test.py --browser=chrome
 
 nosetests test_suite.py --browser=firefox
 ```
+
 All Python methods that start with ``test_`` will automatically be run when using ``pytest`` or ``nosetests`` on a Python file, (<i>or on folders containing Python files</i>). You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)
+
 ```bash
 pytest [FILE_NAME].py::[CLASS_NAME]::[METHOD_NAME]
 nosetests [FILE_NAME].py:[CLASS_NAME].[METHOD_NAME]
@@ -206,6 +216,7 @@ For a full list of SeleniumBase features, <a href="https://github.com/seleniumba
 <h4><b>Here's how to run the example script on various web browsers:</b></h4>
 
 First install a webdriver for each browser you intend to use:
+
 ```bash
 seleniumbase install chromedriver
 seleniumbase install geckodriver
@@ -215,6 +226,7 @@ seleniumbase install operadriver
 ```
 
 Next, choose between **pytest** and **nosetests** test runners. (<i>Mostly interchangeable.</i>)
+
 ```bash
 cd examples/
 
@@ -222,12 +234,14 @@ pytest my_first_test.py --browser=chrome
 
 nosetests my_first_test.py --browser=firefox
 ```
+
 (<i>If no browser is specified, Chrome is used by default.</i>)
 With Pytest, a green dot means a test passed. An "F" means a test failed.
 
 <a id="seleniumbase_demo_mode"></a> **Use Demo Mode to help you see what tests are asserting.**
 
 If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+
 ```bash
 pytest my_first_test.py --demo
 ```
@@ -237,6 +251,7 @@ Python filenames that start with ``test_`` or end with ``_test.py``.
 Python methods that start with ``test_``.
 The Python class name can be anything since SeleniumBase's ``BaseCase`` class inherits from the ``unittest.TestCase`` class.
 You can see which tests are getting discovered by ``pytest`` by using:
+
 ```bash
 pytest --collect-only -q
 ```
@@ -249,13 +264,16 @@ import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
-**To pause an active test that throws an exception or error, add ``--pdb -s``:**
+<b>To pause an active test that throws an exception or error, add ``--pdb -s``:</b>
+
 ```bash
 pytest my_first_test.py --pdb -s
 ```
+
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
 
 Here are some useful command-line options that come with Pytest:
+
 ```bash
 -v  # Prints the full test name for each test.
 -q  # Prints fewer details in the console output when running tests.
@@ -270,6 +288,7 @@ Here are some useful command-line options that come with Pytest:
 ```
 
 SeleniumBase provides additional Pytest command-line options for tests:
+
 ```bash
 --browser=BROWSER  # (The web browser to use.)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
@@ -315,9 +334,11 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
+
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you add --archive_logs to command-line options, or have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
+
 ```bash
 cd examples/
 
@@ -340,6 +361,7 @@ Now inside your tests, you can use ``self.data`` to access that.
 For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST].py --config=[MY_CONFIG].cfg``)
 
 As a shortcut, you'll be able to run ``seleniumbase mkdir [DIRECTORY_NAME]`` to create a new folder that already contains necessary files and some example tests that you can run. Example:
+
 ```bash
 seleniumbase mkdir ui_tests
 cd ui_tests/
@@ -350,6 +372,7 @@ pytest my_first_test.py
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Logging / Results from Failing Tests:</h3>
 
 Let's try an example of a test that fails:
+
 ```python
 """ test_fail.py """
 from seleniumbase import BaseCase
@@ -362,6 +385,7 @@ class MyTestClass(BaseCase):
 ```
 
 You can run it from the ``examples`` folder like this:
+
 ```bash
 pytest test_fail.py
 ```
@@ -377,6 +401,7 @@ You'll notice that a logs folder, "latest_logs", was created to hold information
 <h4><b>Pytest Reports:</b></h4>
 
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
+
 ```bash
 pytest test_suite.py --html=report.html
 ```
@@ -384,6 +409,7 @@ pytest test_suite.py --html=report.html
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_3c.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+
 ```bash
 pytest test_suite.py --junit-xml=report.xml
 ```
@@ -391,9 +417,11 @@ pytest test_suite.py --junit-xml=report.xml
 <h4><b>Nosetest Reports:</b></h4>
 
 The ``--report`` option gives you a fancy report after your test suite completes.
+
 ```bash
 nosetests test_suite.py --report
 ```
+
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
@@ -402,16 +430,19 @@ nosetests test_suite.py --report
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using a Proxy Server:</h3>
 
 If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command-line.
+
 ```bash
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
 If the proxy server that you wish to use requires authentication, you can do the following (Chrome only):
+
 ```bash
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 ```
 
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
+
 ```bash
 pytest proxy_test.py --proxy=proxy1
 ```
@@ -420,6 +451,7 @@ pytest proxy_test.py --proxy=proxy1
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Changing the User-Agent:</h3>
 
 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
+
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
@@ -446,6 +478,7 @@ Here are some things you can do to setup a production environment for your testi
 * If you're using AWS, you can setup an [Amazon S3](https://aws.amazon.com/s3/) account for saving log files and screenshots from your tests. To activate this feature, modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details in the S3 section, and add "``--with-s3-logging``" on the command-line when running your tests.
 
 Here's an example of running tests with additional features enabled:
+
 ```bash
 pytest [YOUR_TEST_FILE].py --with-db-reporting --with-s3-logging
 ```
@@ -470,6 +503,7 @@ self.get_page_source()  # This method returns the current page source.
 ```
 
 <b>ProTip™:</b> You may need to use the get_page_source() method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills for that.)
+
 ```python
 source = self.get_page_source()
 head_open_tag = source.find('<head>')
@@ -480,6 +514,7 @@ everything_inside_head = source[head_open_tag+len('<head>'):head_close_tag]
 <h4>Clicking</h4>
 
 To click an element on the page:
+
 ```python
 self.click("div#my_id")
 ```
@@ -489,12 +524,13 @@ self.click("div#my_id")
 <h4>Typing Text</h4>
 
 self.update_text(selector, text)  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
+
 ```python
 self.update_text("input#id_value", "2012")
 ```
-
 You can also use self.add_text() or the WebDriver .send_keys() command, but those won't clear the text box first if there's already text inside.
 If you want to type in special keys, that's easy too. Here's an example:
+
 ```python
 from selenium.webdriver.common.keys import Keys
 self.find_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # The backspace should cancel out the space, leaving you with the newline
@@ -527,6 +563,7 @@ self.wait_for_element_visible("a.my_class", timeout=5)
 (NOTE: The short versions of this are ``self.find_element(ELEMENT)`` and ``self.assert_element(ELEMENT)``. The find_element() version returns the element)
 
 Since the line above returns the element, you can combine that with .click() as shown below:
+
 ```python
 self.find_element("a.my_class", timeout=5).click()
 
@@ -538,6 +575,7 @@ self.click("a.my_class")  # DO IT THIS WAY!
 **ProTip™:** You can use dots to signify class names (Ex: ``div.class_name``) as a simplified version of ``div[class="class_name"]`` within a CSS selector. 
 
 You can also use ``*=`` to search for any partial value in a CSS selector as shown below:
+
 ```python
 self.click('a[name*="partial_name"]')
 ```
@@ -574,6 +612,7 @@ else:
     current_url = self.get_current_url()
     self.contact_the_nsa(url=current_url, message="Dark Zone Found")  # Not a real SeleniumBase method
 ```
+
 Another example:
 ```python
 def is_there_a_cloaked_klingon_ship_on_this_page():
@@ -609,11 +648,13 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
 <h4>Switching Tabs</h4>
 
 What if your test opens up a new tab/window and now you have more than one page? No problem. You need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:
+
 ```python
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
 ```
 
 **ProTip™:** iFrames follow the same principle as new windows - you need to specify the iFrame if you want to take action on something in there
+
 ```python
 self.switch_to_frame('ContentManagerTextBody_ifr')
 # Now you can act inside the iFrame
@@ -624,6 +665,7 @@ self.switch_to_default_content()  # Exit the iFrame when you're done
 <h4>Handling Pop-Up Alerts</h4>
 
 What if your test makes an alert pop up in your browser? No problem. You need to switch to it and either accept it or dismiss it:
+
 ```python
 self.wait_for_and_accept_alert()
 
@@ -637,11 +679,13 @@ If you're not sure whether there's an alert before trying to accept or dismiss i
 jQuery is a powerful JavaScript library that allows you to perform advanced actions in a web browser.
 If the web page you're on already has jQuery loaded, you can start executing jQuery scripts immediately.
 You'd know this because the web page would contain something like the following in the HTML:
+
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 ```
 
 It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To do so, run the following command first:
+
 ```python
 self.activate_jquery()
 ```
@@ -649,6 +693,7 @@ self.activate_jquery()
 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable_csp`` on the command-line.
 
 Here are some examples of using jQuery in your scripts:
+
 ```python
 self.execute_script('jQuery, window.scrollTo(0, 600)')  # Scrolling the page
 
@@ -670,6 +715,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 ```
 
 In the following example, JavaScript is used to plant code on a page that Selenium can then touch after that:
+
 ```python
 start_page = "https://xkcd.com/465/"
 destination_page = "https://github.com/seleniumbase/SeleniumBase"
@@ -683,6 +729,7 @@ self.click("a.analytics")  # Clicks the generated button
 <h4>Using delayed asserts:</h4>
 
 Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where delayed asserts come in. Here's the example:
+
 ```python
 from seleniumbase import BaseCase
 
@@ -706,6 +753,7 @@ To flush out all the failed delayed asserts into a single exception, make sure t
 <h4>Accessing raw WebDriver</h4>
 
 If you need access to any commands that come with standard WebDriver, you can call them directly like this:
+
 ```python
 self.driver.delete_all_cookies()
 capabilities = self.driver.capabilities
@@ -716,6 +764,7 @@ self.driver.find_elements_by_partial_link_text("GitHub")
 <h4>Retrying failing tests automatically</h4>
 
 You can use ``--reruns NUM`` to retry failing tests that many times. Use ``--reruns-delay SECONDS`` to wait that many seconds between retries. Example:
+
 ```
 pytest --reruns 5 --reruns-delay 1
 ```
