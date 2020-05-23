@@ -1,8 +1,9 @@
-<meta property="og:site_name" content="SeleniumBase">
-<meta property="og:title" content="SeleniumBase - Test Automation Framework" />
+<meta property="og:site_name" content="SeleniumBase | Docs">
+<meta property="og:title" content="SeleniumBase | Reliable Test Automation" />
 <meta property="og:description" content="Simple browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
+<!-- SeleniumBase Header -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
 </a></p>
@@ -44,6 +45,7 @@
 </p>
 <p align="center"><div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
 
+<!-- SeleniumBase Docs -->
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Get Started:</h2>
 

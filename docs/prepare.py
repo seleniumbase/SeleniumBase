@@ -102,6 +102,19 @@ def main(*args, **kwargs):
                 r'✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀'
                 r'-02A79E.svg" alt="SeleniumBase.io Docs" />'
                 r'</a></div></p>')
+        if "<!-- SeleniumBase Header -->" in line:
+            changed = True
+            line = (
+                '<section align="center"><div align="center">'
+                '<h2>Reliable Test Automation</h2>'
+                '</div></section>')
+        if "<!-- SeleniumBase Docs -->" in line:
+            changed = True
+            line = (
+                '<h2><img src="https://seleniumbase.io/img/sb_icon.png" '
+                'title="SeleniumBase" width="20" /> SeleniumBase Docs '
+                '<img src="https://seleniumbase.io/img/sb_icon.png" '
+                'title="SeleniumBase" width="20" /></h2>')
         seleniumbase_lines.append(line)
     if changed:
         out_file = codecs.open(readme_file, "w+", encoding='utf-8')
