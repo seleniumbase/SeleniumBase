@@ -9,7 +9,7 @@ For backwards compatibility, older versions of method names have remained to kee
 ```python
 self.open(url)
 # Duplicates: self.open_url(url), self.get(url)
-#             self.visit(url), self.goto(url), self.go_to(url)
+#             self.visit(url), visit_url(url), self.goto(url), self.go_to(url)
 
 self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0)
 
@@ -29,8 +29,8 @@ self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.submit(selector, by=By.CSS_SELECTOR)
 
-self.refresh()
-# Duplicates: self.refresh_page()
+self.refresh_page()
+# Duplicates: self.refresh(), self.reload(), self.reload_page()
 
 self.get_current_url()
 
@@ -62,8 +62,8 @@ self.get_link_attribute(link_text, attribute, hard_fail=True)
 
 self.get_partial_link_text_attribute(link_text, attribute, hard_fail=True)
 
-self.click_link(link_text, timeout=None)
-# Duplicates: self.click_link_text(link_text, timeout=None)
+self.click_link_text(link_text, timeout=None)
+# Duplicates: self.click_link(link_text, timeout=None)
 
 self.click_partial_link_text(partial_link_text, timeout=None)
 
