@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class セレニウムテストケース(BaseCase):  # noqa
 
-    def URLを開く(self, *args, **kwargs):
+    def を開く(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def URLを開く(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def クリックして(self, *args, **kwargs):
         # click(selector)
@@ -72,6 +76,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def タイトルを確認(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def タイトルを取得する(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
 
     def 検証が正しい(self, *args, **kwargs):
         # assert_true(expr)
@@ -310,13 +318,17 @@ class セレニウムテストケース(BaseCase):  # noqa
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def URLを取得する(self, *args, **kwargs):
+    def を取得する(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def URLを訪問(self, *args, **kwargs):
+    def を訪問(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def URLを訪問(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def 要素を取得する(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 要素を見つける(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def テキストを見つける(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def 属性を取得する(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class セレニウムテストケース(BaseCase):  # noqa
 
     def 入力(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def 書く(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def メッセージを表示する(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def 印刷(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

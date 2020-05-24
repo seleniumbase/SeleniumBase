@@ -9,6 +9,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # open(url)
         return self.open(*args, **kwargs)
 
+    def открыть_URL(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
+
     def нажмите(self, *args, **kwargs):
         # click(selector)
         return self.click(*args, **kwargs)
@@ -72,6 +76,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def подтвердить_название(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def получить_название(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
 
     def подтвердить_правду(self, *args, **kwargs):
         # assert_true(expr)
@@ -318,6 +326,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
 
+    def посетить_URL(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
+
     def получить_элемент(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
         return self.get_element(*args, **kwargs)
@@ -325,6 +337,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def найти_элемент(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def найти_текст(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def получить_атрибут(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class ТестНаСелен(BaseCase):  # noqa
 
     def введите(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def написать(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def показать_сообщение(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def печатать(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

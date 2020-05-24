@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class CasoDeTeste(BaseCase):
 
-    def abrir_url(self, *args, **kwargs):
+    def abrir(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def abrir_url(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def clique(self, *args, **kwargs):
         # click(selector)
@@ -73,6 +77,10 @@ class CasoDeTeste(BaseCase):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
 
+    def obter_título(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
+
     def verificar_verdade(self, *args, **kwargs):
         # assert_true(expr)
         return self.assert_true(*args, **kwargs)
@@ -85,7 +93,7 @@ class CasoDeTeste(BaseCase):
         # assert_equal(first, second)
         return self.assert_equal(*args, **kwargs)
 
-    def verificar_não_é_igual(self, *args, **kwargs):
+    def verificar_não_igual(self, *args, **kwargs):
         # assert_not_equal(first, second)
         return self.assert_not_equal(*args, **kwargs)
 
@@ -310,13 +318,17 @@ class CasoDeTeste(BaseCase):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def obter_url(self, *args, **kwargs):
+    def obter(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def visitar_url(self, *args, **kwargs):
+    def visitar(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def visitar_url(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def obter_elemento(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class CasoDeTeste(BaseCase):
     def encontrar_elemento(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def encontrar_texto(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def obter_atributo(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class CasoDeTeste(BaseCase):
 
     def entrada(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def escreva(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def exibir_mensagem(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def imprimir(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

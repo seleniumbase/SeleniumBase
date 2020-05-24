@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class CasoDiProva(BaseCase):
 
-    def apri_url(self, *args, **kwargs):
+    def apri(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def apri_url(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def fare_clic(self, *args, **kwargs):
         # click(selector)
@@ -25,7 +29,7 @@ class CasoDiProva(BaseCase):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
-    def aggiornare_il_testo(self, *args, **kwargs):
+    def aggiornare_testo(self, *args, **kwargs):
         # update_text(selector, new_value)
         return self.update_text(*args, **kwargs)
 
@@ -33,15 +37,15 @@ class CasoDiProva(BaseCase):
         # add_text(selector, new_value)
         return self.add_text(*args, **kwargs)
 
-    def ottenere_il_testo(self, *args, **kwargs):
+    def ottenere_testo(self, *args, **kwargs):
         # get_text(selector, new_value)
         return self.get_text(*args, **kwargs)
 
-    def verificare_il_testo(self, *args, **kwargs):
+    def verificare_testo(self, *args, **kwargs):
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
-    def verificare_il_testo_esatto(self, *args, **kwargs):
+    def verificare_testo_esatto(self, *args, **kwargs):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
@@ -69,11 +73,15 @@ class CasoDiProva(BaseCase):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
-    def verificare_il_titolo(self, *args, **kwargs):
+    def verificare_titolo(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
 
-    def verificare_correttezza(self, *args, **kwargs):
+    def ottenere_titolo(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
+
+    def verificare_vero(self, *args, **kwargs):
         # assert_true(expr)
         return self.assert_true(*args, **kwargs)
 
@@ -293,7 +301,7 @@ class CasoDiProva(BaseCase):
         # create_introjs_tour(name=None, theme=None)
         return self.create_introjs_tour(*args, **kwargs)
 
-    def aggiungere_un_passo_al_tour(self, *args, **kwargs):
+    def aggiungere_passo_al_tour(self, *args, **kwargs):
         # add_tour_step(message, selector=None, name=None,
         #               title=None, theme=None, alignment=None)
         return self.add_tour_step(*args, **kwargs)
@@ -310,13 +318,17 @@ class CasoDiProva(BaseCase):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def ottenere_url(self, *args, **kwargs):
+    def ottenere(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def visita_url(self, *args, **kwargs):
+    def visita(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def visita_url(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def ottenere_elemento(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class CasoDiProva(BaseCase):
     def trovare_elemento(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def trovare_testo(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def ottenere_attributo(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class CasoDiProva(BaseCase):
 
     def digitare(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def scrivere(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def visualizza_messaggio(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def stampare(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

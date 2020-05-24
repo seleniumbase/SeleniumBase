@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class CasoDePrueba(BaseCase):
 
-    def abrir_url(self, *args, **kwargs):
+    def abrir(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def abrir_url(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def haga_clic(self, *args, **kwargs):
         # click(selector)
@@ -72,6 +76,10 @@ class CasoDePrueba(BaseCase):
     def verificar_título(self, *args, **kwargs):  # noqa
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def obtener_título(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
 
     def verificar_verdad(self, *args, **kwargs):
         # assert_true(expr)
@@ -310,13 +318,17 @@ class CasoDePrueba(BaseCase):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def obtener_url(self, *args, **kwargs):
+    def obtener(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def visita_url(self, *args, **kwargs):
+    def visita(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def visita_url(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def obtener_elemento(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class CasoDePrueba(BaseCase):
     def encontrar_elemento(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def encontrar_texto(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def obtener_atributo(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class CasoDePrueba(BaseCase):
 
     def entrada(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def escribir(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def mostrar_mensaje(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def imprimir(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
