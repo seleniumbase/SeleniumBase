@@ -5,7 +5,7 @@ from seleniumbase.translate.portuguese import CasoDeTeste
 class MinhaClasseDeTeste(CasoDeTeste):
 
     def test_exemplo_1(self):
-        self.abrir_url("https://pt.wikipedia.org/wiki/")
+        self.abrir("https://pt.wikipedia.org/wiki/")
         self.verificar_texto("Wikipédia")
         self.verificar_elemento('[title="Língua portuguesa"]')
         self.atualizar_texto("#searchInput", "João Pessoa")
