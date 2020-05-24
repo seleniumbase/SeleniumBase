@@ -133,7 +133,7 @@ setup(
         'boto==2.49.0',
         'cffi==1.14.0',
         'flake8==3.7.9;python_version<"3.5"',
-        'flake8==3.8.1;python_version>="3.5"',
+        'flake8==3.8.2;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
         'pyflakes==2.2.0;python_version>="3.5"',
         'certifi>=2020.4.5.1',
