@@ -8,8 +8,12 @@ For backwards compatibility, older versions of method names have remained to kee
 
 ```python
 self.open(url)
-# Duplicates: self.open_url(url), self.get(url)
-#             self.visit(url), visit_url(url), self.goto(url), self.go_to(url)
+# Duplicates: self.open_url(url), self.visit(url), visit_url(url),
+#             self.goto(url), self.go_to(url)
+
+self.get(url)
+# If the url parameter is a URL: Perform self.open(url)
+# Otherwise: return self.get_element(URL_AS_A_SELECTOR)
 
 self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0)
 

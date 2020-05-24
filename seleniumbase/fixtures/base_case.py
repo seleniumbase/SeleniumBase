@@ -105,6 +105,18 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
+    def get(self, url):
+        """ If url looks like a page URL, opens the URL in the web browser.
+            Otherwise, returns self.get_element(URL_AS_A_SELECTOR)
+            Examples:
+                self.get("https://seleniumbase.io")  # Navigates to the URL
+                self.get("input.class")  # Finds and returns the WebElement
+        """
+        if self.__looks_like_a_page_url(url):
+            self.open(url)
+        else:
+            return self.get_element(url)  # url is treated like a selector
+
     def click(self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
