@@ -5,7 +5,7 @@ from seleniumbase.translate.japanese import セレニウムテストケース  #
 class 私のテストクラス(セレニウムテストケース):
 
     def test_例1(self):
-        self.URLを開く("https://ja.wikipedia.org/wiki/")
+        self.を開く("https://ja.wikipedia.org/wiki/")
         self.テキストを確認する("ウィキペディア")
         self.要素を確認する('[title="メインページに移動する"]')
         self.テキストを更新("#searchInput", "アニメ")

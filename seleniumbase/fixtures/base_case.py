@@ -105,6 +105,18 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
+    def get(self, url):
+        """ If url looks like a page URL, opens the URL in the web browser.
+            Otherwise, returns self.get_element(URL_AS_A_SELECTOR)
+            Examples:
+                self.get("https://seleniumbase.io")  # Navigates to the URL
+                self.get("input.class")  # Finds and returns the WebElement
+        """
+        if self.__looks_like_a_page_url(url):
+            self.open(url)
+        else:
+            return self.get_element(url)  # url is treated like a selector
+
     def click(self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0):
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2860,21 +2872,29 @@ class BaseCase(unittest.TestCase):
         """ Same as open() - Original saved for backwards compatibility. """
         self.open(url)
 
-    def get(self, url):
-        """ Same as open() - WebDriver uses this method name. """
+    def visit(self, url):
+        """ Same as open() - Some test frameworks use this method name. """
         self.open(url)
 
-    def visit(self, url):
-        """ Same as open() - Some JS frameworks use this method name. """
+    def visit_url(self, url):
+        """ Same as open() - Some test frameworks use this method name. """
         self.open(url)
 
     def goto(self, url):
-        """ Same as open() - Some JS frameworks use this method name. """
+        """ Same as open() - Some test frameworks use this method name. """
         self.open(url)
 
     def go_to(self, url):
         """ Same as open() - Some test frameworks use this method name. """
         self.open(url)
+
+    def reload(self):
+        """ Same as refresh_page() """
+        self.refresh_page()
+
+    def reload_page(self):
+        """ Same as refresh_page() """
+        self.refresh_page()
 
     def type(self, selector, text, by=By.CSS_SELECTOR,
              timeout=None, retry=False):
@@ -3607,9 +3627,10 @@ class BaseCase(unittest.TestCase):
         """ Same as wait_for_element_present() - returns the element.
             The element does not need be visible (it may be hidden). """
         if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
         return self.wait_for_element_present(selector, by=by, timeout=timeout)
 
     def assert_element_present(self, selector, by=By.CSS_SELECTOR,
@@ -4516,6 +4537,13 @@ class BaseCase(unittest.TestCase):
             selector = '[name="%s"]' % name
             by = By.CSS_SELECTOR
         return (selector, by)
+
+    def __looks_like_a_page_url(self, url):
+        if (url.startswith("http://") or url.startswith("https://") or (
+                url.startswith("://") or page_utils.is_valid_url(url))):
+            return True
+        else:
+            return False
 
     def __make_css_match_first_element_only(self, selector):
         # Only get the first match

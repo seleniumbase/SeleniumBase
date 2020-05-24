@@ -5,7 +5,7 @@ from seleniumbase.translate.dutch import Testgeval
 class MijnTestklasse(Testgeval):
 
     def test_voorbeeld_1(self):
-        self.url_openen("https://nl.wikipedia.org/wiki/Hoofdpagina")
+        self.openen("https://nl.wikipedia.org/wiki/Hoofdpagina")
         self.controleren_element('a[title*="hoofdpagina gaan"]')
         self.controleren_tekst("Welkom op Wikipedia", "td.hp-welkom")
         self.tekst_bijwerken("#searchInput", "Stroopwafel")

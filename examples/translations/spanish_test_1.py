@@ -5,7 +5,7 @@ from seleniumbase.translate.spanish import CasoDePrueba
 class MiClaseDePrueba(CasoDePrueba):
 
     def test_ejemplo_1(self):
-        self.abrir_url("https://es.wikipedia.org/wiki/")
+        self.abrir("https://es.wikipedia.org/wiki/")
         self.verificar_texto("Wikipedia")
         self.verificar_elemento('[title="Visitar la página principal"]')
         self.actualizar_texto("#searchInput", "Parc d'Atraccions Tibidabo")

@@ -1,15 +1,30 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" align="center" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" alt="SeleniumBase" title="SeleniumBase" width="290" /></a></p>
+
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Mobile Testing</h2>
 
-Use ``--mobile`` to run your SeleniumBase tests using Chrome's (or Edge's) mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and user agent.
+Use ``--mobile`` to run your SeleniumBase tests using Chromium's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and user agent.
 
-To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"``. To configure the user agent, use ``--agent="USER-AGENT-STRING"``.
+To configure the mobile device metrics, use:
+```bash
+--metrics="CSS_Width,CSS_Height,Pixel_Ratio"
+```
 
-To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
+To configure the user agent, use:
+```bash
+--agent="USER-AGENT-STRING"
+```
+
+To find real values for device metrics, see:
+* [Device Metrics List](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00)
+
+For a list of available user agent strings, see:
+* [User Agent Strings List](https://developers.whatismybrowser.com/useragents/explore/)
 
 --------
 
-Here's an example of running a mobile test (See https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py):
+Here's an example of running a mobile test:
+
+* [SeleniumBase/examples/test_skype_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py)
 
 ```bash
 pytest test_skype_site.py --mobile
@@ -18,7 +33,7 @@ pytest test_skype_site.py --mobile
 
 --------
 
-Here's another example of running a mobile test (https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py), which demonstrates using ``--metrics`` and ``--agent`` with ``--mobile``:
+Here's another example of running a mobile test ([SeleniumBase/examples/test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py)), which demonstrates using ``--metrics`` and ``--agent`` with ``--mobile``:
 
 ```bash
 # Run tests using Chrome's mobile device emulator (default settings)
@@ -34,4 +49,6 @@ pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 
 
 --------
 
-If you're new to SeleniumBase, read https://github.com/seleniumbase/SeleniumBase to help you get started.
+<p align="center"><div align="center"><a href="https://seleniumbase.io">
+<img src="https://img.shields.io/badge/docs-%20📓📖📚-11BBDD.svg" alt="SeleniumBase.io Docs" />
+</a> <a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase.io Docs" /></a></div></p>

@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class 硒测试用例(BaseCase):  # noqa
 
-    def 开启网址(self, *args, **kwargs):
+    def 开启(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def 开启网址(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def 单击(self, *args, **kwargs):
         # click(selector)
@@ -72,6 +76,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 断言标题(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def 获取标题(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
 
     def 断言为真(self, *args, **kwargs):
         # assert_true(expr)
@@ -310,13 +318,17 @@ class 硒测试用例(BaseCase):  # noqa
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def 获取网址(self, *args, **kwargs):
+    def 获取(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def 访问网址(self, *args, **kwargs):
+    def 访问(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def 访问网址(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def 获取元素(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 查找元素(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def 查找文本(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def 获取属性(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class 硒测试用例(BaseCase):  # noqa
 
     def 输入文字(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def 写文字(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def 显示讯息(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def 打印(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

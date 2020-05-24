@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class Testgeval(BaseCase):
 
-    def url_openen(self, *args, **kwargs):
+    def openen(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def url_openen(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def klik(self, *args, **kwargs):
         # click(selector)
@@ -33,7 +37,7 @@ class Testgeval(BaseCase):
         # add_text(selector, new_value)
         return self.add_text(*args, **kwargs)
 
-    def ontvang_tekst(self, *args, **kwargs):
+    def tekst_ophalen(self, *args, **kwargs):
         # get_text(selector, new_value)
         return self.get_text(*args, **kwargs)
 
@@ -72,6 +76,10 @@ class Testgeval(BaseCase):
     def controleren_titel(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def titel_ophalen(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
 
     def controleren_ware(self, *args, **kwargs):
         # assert_true(expr)
@@ -310,13 +318,17 @@ class Testgeval(BaseCase):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def url_ophalen(self, *args, **kwargs):
+    def ophalen(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def bezoek_url(self, *args, **kwargs):
+    def bezoek(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def bezoek_url(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def element_ophalen(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class Testgeval(BaseCase):
     def vind_element(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def vind_tekst(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def kenmerk_ophalen(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class Testgeval(BaseCase):
 
     def voer(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def schrijven(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def bericht_weergeven(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def afdrukken(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

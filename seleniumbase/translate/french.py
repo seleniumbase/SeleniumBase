@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class CasDeBase(BaseCase):
 
-    def ouvrir_url(self, *args, **kwargs):
+    def ouvrir(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def ouvrir_url(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def cliquez_sur(self, *args, **kwargs):
         # click(selector)
@@ -21,71 +25,75 @@ class CasDeBase(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def cliquez_sur_le_texte_du_lien(self, *args, **kwargs):
+    def cliquez_texte_du_lien(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
-    def modifier_le_texte(self, *args, **kwargs):
+    def modifier_texte(self, *args, **kwargs):
         # update_text(selector, new_value)
         return self.update_text(*args, **kwargs)
 
-    def ajouter_du_texte(self, *args, **kwargs):
+    def ajouter_texte(self, *args, **kwargs):
         # add_text(selector, new_value)
         return self.add_text(*args, **kwargs)
 
-    def obtenir_du_texte(self, *args, **kwargs):
+    def obtenir_texte(self, *args, **kwargs):
         # get_text(selector, new_value)
         return self.get_text(*args, **kwargs)
 
-    def vérifier_le_texte(self, *args, **kwargs):  # noqa
+    def vérifier_texte(self, *args, **kwargs):  # noqa
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
-    def vérifier_exactement_le_texte(self, *args, **kwargs):
+    def vérifier_exactement_texte(self, *args, **kwargs):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
-    def vérifier_le_texte_du_lien(self, *args, **kwargs):
+    def vérifier_texte_du_lien(self, *args, **kwargs):
         # assert_link_text(link_text)
         return self.assert_link_text(*args, **kwargs)
 
-    def vérifier_un_élément(self, *args, **kwargs):
+    def vérifier_élément(self, *args, **kwargs):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
-    def vérifier_un_élément_affiché(self, *args, **kwargs):
+    def vérifier_élément_affiché(self, *args, **kwargs):
         # assert_element_visible(selector)  # Same as self.assert_element()
         return self.assert_element_visible(*args, **kwargs)
 
-    def vérifier_un_élément_pas_affiché(self, *args, **kwargs):
+    def vérifier_élément_pas_affiché(self, *args, **kwargs):
         # assert_element_not_visible(selector)
         return self.assert_element_not_visible(*args, **kwargs)
 
-    def vérifier_un_élément_présent(self, *args, **kwargs):
+    def vérifier_élément_présent(self, *args, **kwargs):
         # assert_element_present(selector)
         return self.assert_element_present(*args, **kwargs)
 
-    def vérifier_un_élément_pas_présent(self, *args, **kwargs):
+    def vérifier_élément_pas_présent(self, *args, **kwargs):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
-    def vérifier_le_titre(self, *args, **kwargs):
+    def vérifier_titre(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
 
-    def vérifier_la_vérité(self, *args, **kwargs):
+    def obtenir_titre(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
+
+    def vérifier_vrai(self, *args, **kwargs):
         # assert_true(expr)
         return self.assert_true(*args, **kwargs)
 
-    def vérifier_le_mensonge(self, *args, **kwargs):
+    def vérifier_faux(self, *args, **kwargs):
         # assert_false(expr)
         return self.assert_false(*args, **kwargs)
 
-    def vérifier_la_véracité(self, *args, **kwargs):
+    def vérifier_égal(self, *args, **kwargs):
         # assert_equal(first, second)
         return self.assert_equal(*args, **kwargs)
 
-    def vérifier_la_fausseté(self, *args, **kwargs):
+    def vérifier_non_égal(self, *args, **kwargs):
         # assert_not_equal(first, second)
         return self.assert_not_equal(*args, **kwargs)
 
@@ -97,7 +105,7 @@ class CasDeBase(BaseCase):
         # get_current_url()
         return self.get_current_url(*args, **kwargs)
 
-    def obtenir_le_html_de_la_page(self, *args, **kwargs):
+    def obtenir_html_de_la_page(self, *args, **kwargs):
         # get_page_source()
         return self.get_page_source(*args, **kwargs)
 
@@ -109,7 +117,7 @@ class CasDeBase(BaseCase):
         # go_forward()
         return self.go_forward(*args, **kwargs)
 
-    def est_le_texte_affiché(self, *args, **kwargs):
+    def est_texte_affiché(self, *args, **kwargs):
         # is_text_visible(text, selector="html")
         return self.is_text_visible(*args, **kwargs)
 
@@ -241,19 +249,19 @@ class CasDeBase(BaseCase):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
 
-    def appuyez_sur_la_flèche_vers_le_haut(self, *args, **kwargs):
+    def appuyez_sur_flèche_haut(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
         return self.press_up_arrow(*args, **kwargs)
 
-    def appuyez_sur_la_flèche_vers_le_bas(self, *args, **kwargs):
+    def appuyez_sur_flèche_bas(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
         return self.press_down_arrow(*args, **kwargs)
 
-    def appuyez_sur_la_flèche_gauche(self, *args, **kwargs):
+    def appuyez_sur_flèche_gauche(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
         return self.press_left_arrow(*args, **kwargs)
 
-    def appuyez_sur_la_flèche_droite(self, *args, **kwargs):
+    def appuyez_sur_flèche_droite(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
@@ -293,7 +301,7 @@ class CasDeBase(BaseCase):
         # create_introjs_tour(name=None, theme=None)
         return self.create_introjs_tour(*args, **kwargs)
 
-    def ajouter_une_étape_à_la_visite(self, *args, **kwargs):
+    def ajouter_étape_à_la_visite(self, *args, **kwargs):
         # add_tour_step(message, selector=None, name=None,
         #               title=None, theme=None, alignment=None)
         return self.add_tour_step(*args, **kwargs)
@@ -310,13 +318,17 @@ class CasDeBase(BaseCase):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def obtenir_url(self, *args, **kwargs):
+    def obtenir(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def visitez_url(self, *args, **kwargs):
+    def visitez(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def visitez_url(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def obtenir_élément(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
@@ -325,6 +337,10 @@ class CasDeBase(BaseCase):
     def trouver_élément(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def trouver_texte(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def obtenir_attribut(self, *args, **kwargs):
         # get_attribute(selector, attribute)
@@ -340,11 +356,15 @@ class CasDeBase(BaseCase):
 
     def tapez(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def écrivez(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def afficher_message(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def imprimez(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()

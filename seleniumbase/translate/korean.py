@@ -5,9 +5,13 @@ from seleniumbase import MasterQA
 
 class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
-    def URL_열기(self, *args, **kwargs):
+    def 열기(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
+
+    def URL_열기(self, *args, **kwargs):
+        # open_url(url)
+        return self.open_url(*args, **kwargs)
 
     def 클릭(self, *args, **kwargs):
         # click(selector)
@@ -72,6 +76,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 제목_확인(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
+
+    def 제목_검색(self, *args, **kwargs):
+        # get_title()
+        return self.get_title(*args, **kwargs)
 
     def 올바른지_확인(self, *args, **kwargs):
         # assert_true(expr)
@@ -310,27 +318,35 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
 
-    def URL_받기(self, *args, **kwargs):
+    def 받기(self, *args, **kwargs):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def 방문_URL(self, *args, **kwargs):
+    def 방문(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
+
+    def 방문_URL(self, *args, **kwargs):
+        # visit_url(url)  # Same as open(url)
+        return self.visit_url(*args, **kwargs)
 
     def 요소_검색(self, *args, **kwargs):
         # get_element(selector)  # Element can be hidden
         return self.get_element(*args, **kwargs)
 
-    def 요소를_찾을_수(self, *args, **kwargs):
+    def 요소를_찾을(self, *args, **kwargs):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
+
+    def 텍스트_찾기(self, *args, **kwargs):
+        # find_text(text, selector="html")  # Same as wait_for_text
+        return self.find_text(*args, **kwargs)
 
     def 특성_검색(self, *args, **kwargs):
         # get_attribute(selector, attribute)
         return self.get_attribute(*args, **kwargs)
 
-    def 특성을_설정_하려면(self, *args, **kwargs):
+    def 특성_설정(self, *args, **kwargs):
         # set_attribute(selector, attribute, value)
         return self.set_attribute(*args, **kwargs)
 
@@ -340,11 +356,15 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
     def 입력(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
-        return self.type(*args, **kwargs)
+        return self.input(*args, **kwargs)
 
     def 쓰다(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
+
+    def 메시지를_표시(self, *args, **kwargs):
+        # post_message(message, duration=None, pause=True, style="info")
+        return self.post_message(*args, **kwargs)
 
     def 인쇄(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
