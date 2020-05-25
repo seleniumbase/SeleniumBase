@@ -2913,7 +2913,7 @@ class BaseCase(unittest.TestCase):
 
     def type(self, selector, text, by=By.CSS_SELECTOR,
              timeout=None, retry=False):
-        """ Same as update_text(). """
+        """ Same as update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -2923,7 +2923,7 @@ class BaseCase(unittest.TestCase):
 
     def input(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
-        """ Same as update_text(). """
+        """ Same as update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -2933,7 +2933,7 @@ class BaseCase(unittest.TestCase):
 
     def write(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
-        """ Same as update_text(). """
+        """ Same as update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
