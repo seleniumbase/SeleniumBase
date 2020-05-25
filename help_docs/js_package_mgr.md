@@ -3,7 +3,7 @@
 ## JS Package Manager
 
 <div>The SeleniumBase JS Package Manager lets you load any JavaScript library into any website from automation scripts.</div>
-<p><div>Here's an example of website-tour libraries loaded into a browser session while visiting Google:<div></div>
+<p><div>Here's an example of website-tour libraries loaded into a browser session while visiting Google:</div></p>
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br />
 
