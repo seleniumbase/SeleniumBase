@@ -1,7 +1,8 @@
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> JS Package Manager
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> JS Package Manager</h2>
 
-<div>SeleniumBase's JS Package Manager lets you load JavaScript libraries into any website from a CDN link.</div>
-<p><div>Here's an example of loading a website-tour library into a web browser while visiting Google:</div></p>
+<!-- Title: A package manager for loading JS libraries into websites via CDN -->
+<div>SeleniumBase's Package Manager lets you load JS into websites via CDN.</div>
+<p><div>Here's an example of loading a website-tour library into the browser while visiting Google:</div></p>
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" /><br />
 
@@ -82,7 +83,9 @@ def add_css_link(driver, css_link):
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif" alt="MasterQA by SeleniumBase" title="MasterQA by SeleniumBase" /><br />
 
-Since the libraries are loaded directly from a CDN, such as [CloudFlare's cdnjs](https://cdnjs.com/), there's no need to use NPM, Bower, Yarn, or other package managers to get the packages that you need into the websites that you want.
+<p><div>(Example from <a href="https://seleniumbase.io/examples/master_qa/ReadMe/">SeleniumBase's MasterQA ReadMe</a>)</div></p>
+
+<div>Since packages are loaded directly from a CDN, such as <a href="https://cdnjs.com/">CloudFlare's cdnjs</a>, there's no need to use NPM, Bower, Yarn, or other package managers to get the packages that you need into the websites that you want.</div>
 
 --------
 
