@@ -4543,8 +4543,14 @@ class BaseCase(unittest.TestCase):
         return (selector, by)
 
     def __looks_like_a_page_url(self, url):
-        if (url.startswith("http://") or url.startswith("https://") or (
-                url.startswith("://") or page_utils.is_valid_url(url))):
+        """ Returns True if the url parameter looks like a URL. This method
+            is slightly more lenient than page_utils.is_valid_url(url) due to
+            possible typos when calling self.get(url), which will try to
+            navigate to the page if a URL is detected, but will instead call
+            self.get_element(URL_AS_A_SELECTOR) if the input in not a URL. """
+        if (url.startswith("http:") or url.startswith("https:") or (
+                url.startswith("://") or url.startswith("data:") or (
+                url.startswith("about:") or url.startswith("chrome:")))):
             return True
         else:
             return False
