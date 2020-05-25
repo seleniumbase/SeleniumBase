@@ -6,6 +6,9 @@ class MyTestClass(BaseCase):
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page.html")
 
+        # Assert the title of the current web page
+        self.assert_title("Web Testing Page")
+
         # Assert that the element is visible on the page
         self.assert_element("tbody#tbodyId")
 
@@ -80,9 +83,13 @@ class MyTestClass(BaseCase):
         self.assert_true(self.is_selected(".fBox"))
         self.switch_to_default_content()
 
-        # Assert link text - Use click_link_text() to click
+        # Assert link text
         self.assert_link_text("seleniumbase.com")
         self.assert_link_text("SeleniumBase on GitHub")
+        self.assert_link_text("seleniumbase.io")
 
-        # Assert the title of the current web page
-        self.assert_title("Web Testing Page")
+        # Click link text
+        self.click_link_text("SeleniumBase Demo Page")
+
+        # Assert exact text
+        self.assert_exact_text("Demo Page", "h1")

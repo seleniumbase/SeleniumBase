@@ -90,10 +90,10 @@ class MyTestClass(BaseCase):
         #
         # 6. For backwards-compatibilty, some SeleniumBase methods that do the
         #    same thing have multiple names, kept on from previous versions.
-        #    Ex: wait_for_element_visible() is the same as find_element().
+        #    Ex: self.wait_for_element() is the same as self.find_element().
         #    Both search for and return the element, and raise an exception if
         #    the element does not appear on the page within the timeout limit.
-        #    And assert_element() also does this (minus returning the element).
+        #    And self.assert_element() does this too (without returning it).
         #
         # 7. For the full method list, see one of the following:
         #    * SeleniumBase/seleniumbase/fixtures/base_case.py

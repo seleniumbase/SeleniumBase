@@ -4,7 +4,7 @@
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif "MasterQA")
 
-Here's example code from [basic_masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/basic_masterqa_test.py):
+Here's example code from [basic_masterqa_test_0.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/basic_masterqa_test_0.py):
 
 ```python
 self.open("https://xkcd.com/1700/")
@@ -17,7 +17,7 @@ self.verify('Do you see "dragons" in the search results?')
 
 After each automation checkpoint, a pop-up window will ask the user questions for each verification command.
 
-When the test run completes, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test.py), you'll reach the results page that appears after answering all the verification questions. (Failed verifications generate links to screenshots and log files.)
+When the test run completes, as seen from [this longer example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test_1.py), you'll reach the results page that appears after answering all the verification questions. (Failed verifications generate links to screenshots and log files.)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/hybrid_screen.png "MasterQA")
 
@@ -30,13 +30,13 @@ cd SeleniumBase
 pip install -r requirements.txt --upgrade
 python setup.py develop
 cd examples/master_qa
-pytest basic_masterqa_test.py
-pytest masterqa_test.py
+pytest basic_masterqa_test_0.py
+pytest masterqa_test_1.py
 ```
 
 At the end of your test run, you'll receive a report with results, screenshots, and log files. Close the Results Page window when you're done.
 
-### Check out [masterqa_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test.py) to learn how to write your own MasterQA tests:
+### Check out [masterqa_test_1.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/masterqa_test_1.py) to learn how to write your own MasterQA tests:
 
 You'll notice that tests are written the same way as regular [SeleniumBase](https://seleniumbase.com) tests, with the key difference being a different import: ``from seleniumbase import MasterQA`` rather than ``from seleniumbase import BaseCase``. Now your Python test class will import ``MasterQA`` instead of ``BaseCase``.
 

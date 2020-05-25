@@ -1,3 +1,4 @@
+import os
 import pytest
 from seleniumbase import BaseCase
 
@@ -7,7 +8,11 @@ class OfflineTestClass(BaseCase):
 
     def test_demo_page(self):
         # Load a local html file into the browser
-        self.load_html_file("demo_page.html")
+        dir_name = os.path.dirname(os.path.abspath(__file__))
+        self.load_html_file(dir_name + "/demo_page.html")
+
+        # Assert the title of the current web page
+        self.assert_title("Web Testing Page")
 
         # Assert that the element is visible on the page
         self.assert_element("tbody#tbodyId")
@@ -88,4 +93,7 @@ class OfflineTestClass(BaseCase):
         self.assert_link_text("SeleniumBase on GitHub")
 
         # Assert the title of the current web page
-        self.assert_title("Web Testing Page")
+        self.assert_link_text("seleniumbase.com")
+        self.assert_link_text("SeleniumBase on GitHub")
+        self.assert_link_text("seleniumbase.io")
+        self.assert_link_text("SeleniumBase Demo Page")

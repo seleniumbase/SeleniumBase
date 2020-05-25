@@ -15,7 +15,7 @@ class SkypeWebsiteTestClass(BaseCase):
         if not self.mobile_emulator:
             print("\n  This test is only for mobile devices / emulators!")
             print("  (Usage: '--mobile' with a Chromium-based browser.)")
-            self.skip("Please rerun this test using '--mobile!'!")
+            self.skip("Please rerun this test using '--mobile' !!!")
         self.open("https://www.skype.com/en/")
         self.assert_text("Install Skype", "div.appInfo")
         self.highlight("div.appBannerContent")
