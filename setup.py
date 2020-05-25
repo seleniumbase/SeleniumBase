@@ -161,6 +161,7 @@ setup(
     entry_points={
         'console_scripts': [
             'seleniumbase = seleniumbase.console_scripts.run:main',
+            'sbase = seleniumbase.console_scripts.run:main',  # Simplified name
         ],
         'nose.plugins': [
             'base_plugin = seleniumbase.plugins.base_plugin:Base',
