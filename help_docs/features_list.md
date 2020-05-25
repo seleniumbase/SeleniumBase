@@ -9,7 +9,7 @@
 * A complete test automation framework for web/mobile UI testing.
 * Uses [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), and [nose](http://nose.readthedocs.io/en/latest/) for test discovery and execution.
 * No more flaky tests! (Smart-waiting code keeps tests reliable.)
-* Includes powerful [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md). Type **``seleniumbase``** to activate.
+* Powerful [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md). (Type **``seleniumbase``** or **``sbase``** to use.)
 * Has the ability to translate tests into [multiple spoken languages](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations).
 * Has a flexible [command-line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for customizing test runs.
 * Can run tests multithreaded in parallel. (Use ``-n NUM_THREADS``)

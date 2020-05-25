@@ -17,6 +17,7 @@
 <div><a href="https://seleniumbase.io/help_docs/mobile_testing/"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/method_summary/"><b>Method Summary (API Ref)</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/translations/"><b>Language Translations</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/js_package_mgr/"><b>JS Package Manager</b></a></div>
 <div><a href="https://seleniumbase.io/examples/tour_examples/ReadMe/"><b>Tour Examples</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mysql_installation/"><b>MySQL Installation Overview</b></a></div>
 <div><a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/"><b>Using the Selenium Grid</b></a></div>
@@ -42,6 +43,7 @@
 <div><a href="https://seleniumbase.com/help_docs/mobile_testing.html"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/method_summary.html"><b>Method Summary (API Ref)</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/translations.html"><b>Language Translations</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/js_package_mgr.html"><b>JS Package Manager</b></a></div>
 <div><a href="https://seleniumbase.com/examples/tour_examples/"><b>Tour Examples</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/mysql_installation.html"><b>MySQL Installation Overview</b></a></div>
 <div><a href="https://seleniumbase.com/seleniumbase/utilities/selenium_grid/"><b>Using the Selenium Grid</b></a></div>
