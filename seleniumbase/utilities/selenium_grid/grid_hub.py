@@ -38,7 +38,9 @@ def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     num_args = len(sys.argv)
     if sys.argv[0].split('/')[-1] == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1] == "seleniumbase"):
+            sys.argv[0].split('\\')[-1] == "seleniumbase") or (
+            sys.argv[0].split('/')[-1] == "sbase") or (
+            sys.argv[0].split('\\')[-1] == "sbase"):
         if num_args < 3:
             invalid_run_command()
     else:
