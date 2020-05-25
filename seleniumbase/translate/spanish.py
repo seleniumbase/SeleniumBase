@@ -25,7 +25,7 @@ class CasoDePrueba(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def haga_clic_en_el_texto_del_enlace(self, *args, **kwargs):
+    def haga_clic_texto_del_enlace(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -221,6 +221,10 @@ class CasoDePrueba(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def maximizar_ventana(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
+
     def resalte(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)
@@ -233,7 +237,7 @@ class CasoDePrueba(BaseCase):
         # scroll_to(selector)
         return self.scroll_to(*args, **kwargs)
 
-    def desplazarse_a_la_parte_superior(self, *args, **kwargs):
+    def desplazarse_hasta_la_parte_superior(self, *args, **kwargs):
         # scroll_to_top()
         return self.scroll_to_top(*args, **kwargs)
 

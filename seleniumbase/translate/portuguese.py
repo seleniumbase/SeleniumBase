@@ -25,7 +25,7 @@ class CasoDeTeste(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def clique_no_texto_do_link(self, *args, **kwargs):
+    def clique_texto_do_link(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -220,6 +220,10 @@ class CasoDeTeste(BaseCase):
     def mudar_para_a_janela_padrão(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def maximizar_janela(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
 
     def destaque(self, *args, **kwargs):
         # highlight(selector)

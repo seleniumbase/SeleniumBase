@@ -221,6 +221,10 @@ class 硒测试用例(BaseCase):  # noqa
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def 最大化窗口(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
+
     def 亮点(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)

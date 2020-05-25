@@ -25,7 +25,7 @@ class CasoDiProva(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def fare_clic_sul_testo_del_collegamento(self, *args, **kwargs):
+    def fare_clic_testo_del_collegamento(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -220,6 +220,10 @@ class CasoDiProva(BaseCase):
     def passa_alla_finestra_predefinita(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def ingrandisci_finestra(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
 
     def illuminare(self, *args, **kwargs):
         # highlight(selector)
