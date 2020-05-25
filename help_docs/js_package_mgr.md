@@ -1,9 +1,9 @@
 <p><h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" width="220" /></a></h3></p>
 
-## JS Package Manager
+## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> JS Package Manager
 
-<div>The SeleniumBase JS Package Manager lets you load any JavaScript library into any website from automation scripts.</div>
-<p><div>Here's an example of website-tour libraries loaded into a browser session while visiting Google:</div></p>
+<div>The SeleniumBase JS Package Manager lets you load any JavaScript library into any website.</div>
+<p><div>Here's an example of loading a website-tour library into a browser while visiting Google:</div></p>
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br />
 
@@ -14,21 +14,21 @@ pytest google_tour.py
 ```
 
 <div>Website tours are just one way of demonstrating the abilities of the SeleniumBase JS Package Manager.</div>
-<div>Here's the SeleniumBase code for loading any JS package into any website from your web browser:</div>
+<div>Here's the code used for loading JS packages into the web browser with SeleniumBase:</div>
 
 ```python
 self.add_js_link(js_link)
 ```
 
-Here's code that loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:
+This example loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:
 
 ```python
 self.add_js_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js")
 ```
 
-<div>You can load any JS library into a web browser this way as long as you know the URL to it!</div>
+<div>You can load any JS package this way as long as you know the URL.</div>
 
-If you're wondering how SeleniumBase does this, here's a sneak peak at the code, which uses WebDriver's ``execute_script()`` method to run JavaScript commands:
+If you're wondering how SeleniumBase does this, here's the Python code, which uses WebDriver's ``execute_script()`` method to make JavaScript calls after escaping quotes:
 
 ```python
 def add_js_link(driver, js_link):
