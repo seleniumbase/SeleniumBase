@@ -1379,6 +1379,13 @@ class BaseCase(unittest.TestCase):
         if soup.body and len(str(soup.body)) > 12:
             found_body = True
             html_body = str(soup.body)
+            html_body = html_body.replace("\xc2\xa0", "&#xA0;")
+            html_body = html_body.replace("\xc2\xa1", "&#xA1;")
+            html_body = html_body.replace("\xc2\xa9", "&#xA9;")
+            html_body = html_body.replace("\xc2\xb7", "&#xB7;")
+            html_body = html_body.replace("\xc2\xbf", "&#xBF;")
+            html_body = html_body.replace("\xc3\x97", "&#xD7;")
+            html_body = html_body.replace("\xc3\xb7", "&#xF7;")
             html_body = re.escape(html_body)
             html_body = self.__escape_quotes_if_needed(html_body)
             html_body = html_body.replace('\\ ', ' ')
