@@ -1,6 +1,6 @@
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> JS Package Manager</h2>
 
-<div>SeleniumBase lets you load JavaScript packages into any website via CDN links.</div>
+<div>SeleniumBase lets you load JavaScript packages from any CDN link into any website.</div>
 <p><div>Here's an example of loading a website-tour library into the browser while visiting Google:</div></p>
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" /><br />
