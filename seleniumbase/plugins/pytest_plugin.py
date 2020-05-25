@@ -468,6 +468,7 @@ def pytest_configure(config):
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = 'latest_logs/'  # (No longer editable!)
     sb_config.archive_logs = config.getoption('archive_logs')
+    sb_config._time_limit = config.getoption('time_limit')
     sb_config.time_limit = config.getoption('time_limit')
     sb_config.slow_mode = config.getoption('slow_mode')
     sb_config.demo_mode = config.getoption('demo_mode')

@@ -5,6 +5,11 @@ import time
 from seleniumbase import config as sb_config
 
 
+def __time_limit_exceeded(message):
+    raise Exception(
+        "TimeLimitExceeded: %s" % message)
+
+
 def check_if_time_limit_exceeded():
     if sb_config.time_limit:
         time_limit = sb_config.time_limit
@@ -16,6 +21,7 @@ def check_if_time_limit_exceeded():
                 display_time_limit = int(time_limit)
                 if display_time_limit == 1:
                     plural = ""
-            raise Exception(
+            message = (
                 "This test has exceeded the time limit of %s second%s!"
                 "" % (display_time_limit, plural))
+            __time_limit_exceeded(message)

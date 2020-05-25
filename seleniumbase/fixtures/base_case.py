@@ -1833,6 +1833,10 @@ class BaseCase(unittest.TestCase):
     def sleep(self, seconds):
         if not sb_config.time_limit:
             time.sleep(seconds)
+        elif seconds <= 0.3:
+            shared_utils.check_if_time_limit_exceeded()
+            time.sleep(seconds)
+            shared_utils.check_if_time_limit_exceeded()
         else:
             start_ms = time.time() * 1000.0
             stop_ms = start_ms + (seconds * 1000.0)
@@ -4728,7 +4732,8 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
             self.highlights = sb_config.highlights
-            self.time_limit = sb_config.time_limit
+            self.time_limit = sb_config._time_limit
+            sb_config.time_limit = sb_config._time_limit  # Reset between tests
             self.environment = sb_config.environment
             self.env = self.environment  # Add a shortened version
             self.with_selenium = sb_config.with_selenium  # Should be True
