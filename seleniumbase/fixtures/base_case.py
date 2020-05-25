@@ -1429,10 +1429,14 @@ class BaseCase(unittest.TestCase):
         if len(html_file) < 6 or not html_file.endswith(".html"):
             raise Exception('Expecting a ".html" file!')
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % html_file
-        f = open(file_path, 'r')
-        html_string = f.read().strip()
-        f.close()
+        file_path = None
+        if abs_path in html_file:
+            file_path = html_file
+        else:
+            file_path = abs_path + "/%s" % html_file
+        html_string = None
+        with open(file_path, 'r') as f:
+            html_string = f.read().strip()
         self.load_html_string(html_string, new_page)
 
     def open_html_file(self, html_file):
@@ -1768,9 +1772,9 @@ class BaseCase(unittest.TestCase):
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % folder
         cookies_file_path = "%s/%s" % (file_path, name)
-        f = open(cookies_file_path, 'r')
-        json_cookies = f.read().strip()
-        f.close()
+        json_cookies = None
+        with open(cookies_file_path, 'r') as f:
+            json_cookies = f.read().strip()
         cookies = json.loads(json_cookies)
         for cookie in cookies:
             if 'expiry' in cookie:
