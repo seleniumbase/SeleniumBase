@@ -1,26 +1,24 @@
-<p><h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" width="220" /></a></h3></p>
-
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> JS Package Manager
 
-<div>The SeleniumBase JS Package Manager lets you load any JavaScript library into any website.</div>
-<p><div>Here's an example of loading a website-tour library into a browser while visiting Google:</div></p>
+<div>SeleniumBase's JS Package Manager lets you load JavaScript libraries into any website from a CDN link.</div>
+<p><div>Here's an example of loading a website-tour library into a web browser while visiting Google:</div></p>
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br />
+<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" /><br />
 
-This example from [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) can be run with <b>pytest</b> from the SeleniumBase ``examples/tour_examples`` folder with the following command after you've cloned and installed [SeleniumBase from GitHub](https://github.com/seleniumbase/SeleniumBase):
+This example, ([google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) from the SeleniumBase ``examples/tour_examples/`` folder), can be run with ``pytest`` after you've cloned and installed [SeleniumBase from GitHub](https://github.com/seleniumbase/SeleniumBase):
 
 ```bash
 pytest google_tour.py
 ```
 
-<div>Website tours are just one way of demonstrating the abilities of the SeleniumBase JS Package Manager.</div>
-<div>Here's the code used for loading JS packages into the web browser with SeleniumBase:</div>
+<div>Since a CDN is used for holding packages, you no longer need to use other package managers such as NPM, Bower, or Yarn.</div>
+<p><div>Here's the Python code for loading JS packages into the web browser with SeleniumBase:</div></p>
 
 ```python
 self.add_js_link(js_link)
 ```
 
-This example loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:
+<div>This example loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:</div>
 
 ```python
 self.add_js_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js")
@@ -28,7 +26,7 @@ self.add_js_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.mi
 
 <div>You can load any JS package this way as long as you know the URL.</div>
 
-If you're wondering how SeleniumBase does this, here's the Python code, which uses WebDriver's ``execute_script()`` method to make JavaScript calls after escaping quotes:
+If you're wondering how SeleniumBase does this, here's the full Python code, which uses WebDriver's ``execute_script()`` method for making JS calls after escaping quotes:
 
 ```python
 def add_js_link(driver, js_link):
@@ -48,7 +46,7 @@ def add_js_link(driver, js_link):
     driver.execute_script(script_to_add_js % js_link)
 ```
 
-<p>Now that you've loaded the JavaScript into the browser, you may also want to load some CSS to go along with it:</p>
+<p>Now that you've loaded JavaScript into the browser, you may also want to load some CSS to go along with it:</p>
 
 ```python
 self.add_css_link(css_link)
@@ -78,6 +76,13 @@ def add_css_link(driver, css_link):
     css_link = escape_quotes_if_needed(css_link)
     driver.execute_script(script_to_add_css % css_link)
 ```
+
+<div>Website tours are just one of the many ways of using the SeleniumBase JS Package Manager.</div>
+<p><div>The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
+
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif" alt="MasterQA by SeleniumBase" title="MasterQA by SeleniumBase" /><br />
+
+Since the libraries are loaded directly from a CDN, such as [CloudFlare's cdnjs](https://cdnjs.com/), there's no need to use NPM, Bower, Yarn, or other package managers to get the packages that you need into the websites that you want.
 
 --------
 

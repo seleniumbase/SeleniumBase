@@ -69,7 +69,7 @@ nav:
   - API Reference: help_docs/method_summary.md
   - Mobile Testing: help_docs/mobile_testing.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
-  - JS Package Manager: help_docs/js_package_mgr.md
+  - JS Package Manager: help_docs/js_package_manager.md
   - Site Tours: examples/tour_examples/ReadMe.md
   - Visual Testing: examples/visual_testing/ReadMe.md
   - Integrations:
