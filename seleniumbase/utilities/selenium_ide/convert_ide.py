@@ -30,6 +30,11 @@ def main():
         if num_args < 3 or num_args > 3:
             raise Exception('\n\n* INVALID RUN COMMAND! *  Usage:\n'
                             '"seleniumbase convert %s"\n' % expected_arg)
+    elif sys.argv[0].split('/')[-1] == "sbase" or (
+            sys.argv[0].split('\\')[-1] == "sbase"):
+        if num_args < 3 or num_args > 3:
+            raise Exception('\n\n* INVALID RUN COMMAND! *  Usage:\n'
+                            '"sbase convert %s"\n' % expected_arg)
     else:
         if num_args < 2 or num_args > 2:
             raise Exception('\n\n* INVALID RUN COMMAND! *  Usage:\n'

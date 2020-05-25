@@ -1,3 +1,4 @@
+import os
 from seleniumbase import BaseCase
 
 
@@ -13,6 +14,8 @@ class FileUploadButtonTests(BaseCase):
         self.add_css_style(
             'input[type="file"]{zoom: 1.5;-moz-transform: scale(1.5);}')
         self.highlight('input[type="file"]')
-        self.choose_file('input[type="file"]', "example_logs/screenshot.png")
+        dir_name = os.path.dirname(os.path.abspath(__file__))
+        self.choose_file(
+            'input[type="file"]', dir_name + "/example_logs/screenshot.png")
         self.demo_mode = True  # Adds highlighting to the assert statement
         self.assert_element('input[type="file"]')

@@ -94,7 +94,7 @@ class MyTourClass(BaseCase):
         self.play_tour()
 ```
 
-#### This example was taken from [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py), which you can run from the ``examples/tour_examples`` folder with the following command:
+#### This example is from [google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py), which you can run from the ``examples/tour_examples`` folder with the following command:
 
 ```bash
 pytest google_tour.py

@@ -25,7 +25,7 @@ class ТестНаСелен(BaseCase):  # noqa
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def нажмите_на_ссылку(self, *args, **kwargs):
+    def нажмите_ссылку(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -220,6 +220,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def переключиться_в_окно_по_умолчанию(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def максимальное_окно(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
 
     def осветить(self, *args, **kwargs):
         # highlight(selector)

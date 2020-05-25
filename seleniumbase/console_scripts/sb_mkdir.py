@@ -34,8 +34,10 @@ def invalid_run_command():
 
 def main():
     num_args = len(sys.argv)
-    if sys.argv[0].split('/')[-1] == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1] == "seleniumbase"):
+    if sys.argv[0].split('/')[-1].lower() == "seleniumbase" or (
+            sys.argv[0].split('\\')[-1].lower() == "seleniumbase") or (
+            sys.argv[0].split('/')[-1].lower() == "sbase") or (
+            sys.argv[0].split('\\')[-1].lower() == "sbase"):
         if num_args < 3 or num_args > 3:
             invalid_run_command()
     else:
@@ -117,6 +119,91 @@ def main():
         data.append('        self.assert_text("xkcd: volume 0", "h3")')
         data.append("")
         file_path = "%s/%s" % (dir_name, "my_first_test.py")
+        file = codecs.open(file_path, "w+", "utf-8")
+        file.writelines("\r\n".join(data))
+        file.close()
+
+        data = []
+        data.append("from seleniumbase import BaseCase")
+        data.append("")
+        data.append("")
+        data.append("class MyTestClass(BaseCase):")
+        data.append("")
+        data.append("    def test_demo_site(self):")
+        data.append('        self.open('
+                    '"https://seleniumbase.io/demo_page.html")')
+        data.append('        self.assert_title("Web Testing Page")')
+        data.append('        self.assert_element("tbody#tbodyId")')
+        data.append('        self.assert_text("Demo Page", "h1")')
+        data.append('        self.update_text("#myTextInput", '
+                    '"This is Automated")')
+        data.append('        self.update_text("textarea.area1", '
+                    '"Testing Time!\\n")')
+        data.append("        self.update_text('[name=\"preText2\"]', "
+                    "\"Typing Text!\")")
+        data.append('        self.assert_text("Automation Practice", "h3")')
+        data.append('        self.hover_and_click("#myDropdown", '
+                    '"#dropOption2")')
+        data.append('        self.assert_text("Link Two Selected", "h3")')
+        data.append('        self.assert_text("This Text is Green", "#pText")')
+        data.append('        self.click("#myButton")')
+        data.append('        self.assert_text("This Text is Purple", '
+                    '"#pText")')
+        data.append("        self.assert_element('svg[name=\"svgName\"]')")
+        data.append("        self.assert_element('progress[value=\"50\"]')")
+        data.append('        self.press_right_arrow("#myslider", times=5)')
+        data.append("        self.assert_element('progress[value=\"100\"]')")
+        data.append("        self.assert_element('meter[value=\"0.25\"]')")
+        data.append('        self.select_option_by_text("#mySelect", '
+                    '"Set to 75%")')
+        data.append("        self.assert_element('meter[value=\"0.75\"]')")
+        data.append('        self.assert_false(self.is_element_visible('
+                    '"img"))')
+        data.append('        self.switch_to_frame("#myFrame1")')
+        data.append('        self.assert_true(self.is_element_visible("img"))')
+        data.append('        self.switch_to_default_content()')
+        data.append('        self.assert_false(self.is_text_visible('
+                    '"iFrame Text"))')
+        data.append('        self.switch_to_frame("#myFrame2")')
+        data.append('        self.assert_true(self.is_text_visible('
+                    '"iFrame Text"))')
+        data.append('        self.switch_to_default_content()')
+        data.append('        self.assert_false(self.is_selected('
+                    '"#radioButton2"))')
+        data.append('        self.click("#radioButton2")')
+        data.append('        self.assert_true(self.is_selected('
+                    '"#radioButton2"))')
+        data.append('        self.assert_false(self.is_selected('
+                    '"#checkBox1"))')
+        data.append('        self.click("#checkBox1")')
+        data.append('        self.assert_true(self.is_selected("#checkBox1"))')
+        data.append('        self.assert_false(self.is_selected('
+                    '"#checkBox2"))')
+        data.append('        self.assert_false(self.is_selected('
+                    '"#checkBox3"))')
+        data.append('        self.assert_false(self.is_selected('
+                    '"#checkBox4"))')
+        data.append('        self.click_visible_elements('
+                    '"input.checkBoxClassB")')
+        data.append('        self.assert_true(self.is_selected("#checkBox2"))')
+        data.append('        self.assert_true(self.is_selected("#checkBox3"))')
+        data.append('        self.assert_true(self.is_selected("#checkBox4"))')
+        data.append('        self.assert_false(self.is_element_visible('
+                    '".fBox"))')
+        data.append('        self.switch_to_frame("#myFrame3")')
+        data.append('        self.assert_true(self.is_element_visible('
+                    '".fBox"))')
+        data.append('        self.assert_false(self.is_selected(".fBox"))')
+        data.append('        self.click(".fBox")')
+        data.append('        self.assert_true(self.is_selected(".fBox"))')
+        data.append('        self.switch_to_default_content()')
+        data.append('        self.assert_link_text("seleniumbase.com")')
+        data.append('        self.assert_link_text("SeleniumBase on GitHub")')
+        data.append('        self.assert_link_text("seleniumbase.io")')
+        data.append('        self.click_link_text("SeleniumBase Demo Page")')
+        data.append('        self.assert_exact_text("Demo Page", "h1")')
+        data.append("")
+        file_path = "%s/%s" % (dir_name, "test_demo_site.py")
         file = codecs.open(file_path, "w+", "utf-8")
         file.writelines("\r\n".join(data))
         file.close()

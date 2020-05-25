@@ -3,6 +3,7 @@ Translates a SeleniumBase Python file into a different language
 
 Usage:
         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]
+        OR:    sbase translate [SB_FILE].py [LANGUAGE] [ACTION]
 Languages:
         --en / --English    |    --zh / --Chinese
         --nl / --Dutch      |    --fr / --French
@@ -39,6 +40,7 @@ def invalid_run_command(msg=None):
     exp = ("  ** translate **\n\n")
     exp += "  Usage:\n"
     exp += "         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]\n"
+    exp += "         OR:    sbase translate [SB_FILE].py [LANGUAGE] [ACTION]\n"
     exp += "  Languages:\n"
     exp += "         --en / --English    |    --zh / --Chinese\n"
     exp += "         --nl / --Dutch      |    --fr / --French\n"

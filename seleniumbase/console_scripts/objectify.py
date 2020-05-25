@@ -1378,7 +1378,9 @@ def main(shell_command):
                     invalid_run_command(shell_command)
 
     if sys.argv[0].split('/')[-1] == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1] == "seleniumbase"):
+            sys.argv[0].split('\\')[-1] == "seleniumbase") or (
+            sys.argv[0].split('/')[-1] == "sbase") or (
+            sys.argv[0].split('\\')[-1] == "sbase"):
         if num_args < 3:
             invalid_run_command(shell_command)
         elif num_args > 3:

@@ -221,6 +221,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def ウィンドウを最大化する(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
+
     def ハイライト(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)

@@ -221,6 +221,10 @@ class Testgeval(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def venster_maximaliseren(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
+
     def markeren(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)

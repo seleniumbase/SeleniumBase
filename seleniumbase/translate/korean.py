@@ -221,6 +221,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def 창_최대화(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
+
     def 강조(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)

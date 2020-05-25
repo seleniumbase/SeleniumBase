@@ -173,7 +173,7 @@ class CasDeBase(BaseCase):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)
 
-    def enregistrer_la_capture_d_écran(self, *args, **kwargs):
+    def enregistrer_capture_d_écran(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
@@ -213,13 +213,17 @@ class CasDeBase(BaseCase):
         # open_new_window()
         return self.open_new_window(*args, **kwargs)
 
-    def passer_à_la_fenêtre(self, *args, **kwargs):
+    def passer_à_fenêtre(self, *args, **kwargs):
         # switch_to_window(window)
         return self.switch_to_window(*args, **kwargs)
 
-    def passer_à_la_fenêtre_par_défaut(self, *args, **kwargs):
+    def passer_à_fenêtre_par_défaut(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def maximiser_fenêtre(self, *args, **kwargs):
+        # maximize_window()
+        return self.maximize_window(*args, **kwargs)
 
     def illuminez(self, *args, **kwargs):
         # highlight(selector)

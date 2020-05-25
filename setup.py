@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.38.6',
+    version='1.39.0',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -161,6 +161,7 @@ setup(
     entry_points={
         'console_scripts': [
             'seleniumbase = seleniumbase.console_scripts.run:main',
+            'sbase = seleniumbase.console_scripts.run:main',  # Simplified name
         ],
         'nose.plugins': [
             'base_plugin = seleniumbase.plugins.base_plugin:Base',

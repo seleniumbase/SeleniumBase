@@ -1379,6 +1379,13 @@ class BaseCase(unittest.TestCase):
         if soup.body and len(str(soup.body)) > 12:
             found_body = True
             html_body = str(soup.body)
+            html_body = html_body.replace("\xc2\xa0", "&#xA0;")
+            html_body = html_body.replace("\xc2\xa1", "&#xA1;")
+            html_body = html_body.replace("\xc2\xa9", "&#xA9;")
+            html_body = html_body.replace("\xc2\xb7", "&#xB7;")
+            html_body = html_body.replace("\xc2\xbf", "&#xBF;")
+            html_body = html_body.replace("\xc3\x97", "&#xD7;")
+            html_body = html_body.replace("\xc3\xb7", "&#xF7;")
             html_body = re.escape(html_body)
             html_body = self.__escape_quotes_if_needed(html_body)
             html_body = html_body.replace('\\ ', ' ')
@@ -1422,10 +1429,14 @@ class BaseCase(unittest.TestCase):
         if len(html_file) < 6 or not html_file.endswith(".html"):
             raise Exception('Expecting a ".html" file!')
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % html_file
-        f = open(file_path, 'r')
-        html_string = f.read().strip()
-        f.close()
+        file_path = None
+        if abs_path in html_file:
+            file_path = html_file
+        else:
+            file_path = abs_path + "/%s" % html_file
+        html_string = None
+        with open(file_path, 'r') as f:
+            html_string = f.read().strip()
         self.load_html_string(html_string, new_page)
 
     def open_html_file(self, html_file):
@@ -1761,9 +1772,9 @@ class BaseCase(unittest.TestCase):
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % folder
         cookies_file_path = "%s/%s" % (file_path, name)
-        f = open(cookies_file_path, 'r')
-        json_cookies = f.read().strip()
-        f.close()
+        json_cookies = None
+        with open(cookies_file_path, 'r') as f:
+            json_cookies = f.read().strip()
         cookies = json.loads(json_cookies)
         for cookie in cookies:
             if 'expiry' in cookie:
@@ -1833,6 +1844,10 @@ class BaseCase(unittest.TestCase):
     def sleep(self, seconds):
         if not sb_config.time_limit:
             time.sleep(seconds)
+        elif seconds <= 0.3:
+            shared_utils.check_if_time_limit_exceeded()
+            time.sleep(seconds)
+            shared_utils.check_if_time_limit_exceeded()
         else:
             start_ms = time.time() * 1000.0
             stop_ms = start_ms + (seconds * 1000.0)
@@ -4539,8 +4554,14 @@ class BaseCase(unittest.TestCase):
         return (selector, by)
 
     def __looks_like_a_page_url(self, url):
-        if (url.startswith("http://") or url.startswith("https://") or (
-                url.startswith("://") or page_utils.is_valid_url(url))):
+        """ Returns True if the url parameter looks like a URL. This method
+            is slightly more lenient than page_utils.is_valid_url(url) due to
+            possible typos when calling self.get(url), which will try to
+            navigate to the page if a URL is detected, but will instead call
+            self.get_element(URL_AS_A_SELECTOR) if the input in not a URL. """
+        if (url.startswith("http:") or url.startswith("https:") or (
+                url.startswith("://") or url.startswith("data:") or (
+                url.startswith("about:") or url.startswith("chrome:")))):
             return True
         else:
             return False
@@ -4728,7 +4749,8 @@ class BaseCase(unittest.TestCase):
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
             self.highlights = sb_config.highlights
-            self.time_limit = sb_config.time_limit
+            self.time_limit = sb_config._time_limit
+            sb_config.time_limit = sb_config._time_limit  # Reset between tests
             self.environment = sb_config.environment
             self.env = self.environment  # Add a shortened version
             self.with_selenium = sb_config.with_selenium  # Should be True

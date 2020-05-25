@@ -3,21 +3,22 @@ SeleniumBase console scripts runner
 
 Usage:
 seleniumbase [COMMAND] [PARAMETERS]
+  OR   sbase [COMMAND] [PARAMETERS]
 
 Examples:
-seleniumbase install chromedriver
-seleniumbase mkdir browser_tests
-seleniumbase convert my_old_webdriver_unittest.py
-seleniumbase translate my_first_test.py --zh -p
-seleniumbase extract-objects my_first_test.py
-seleniumbase inject-objects my_first_test.py
-seleniumbase objectify my_first_test.py
-seleniumbase revert-objects my_first_test.py
-seleniumbase encrypt OR seleniumbase obfuscate
-seleniumbase decrypt OR seleniumbase unobfuscate
-seleniumbase download server
-seleniumbase grid-hub start
-seleniumbase grid-node start --hub=127.0.0.1
+sbase install chromedriver
+sbase mkdir browser_tests
+sbase convert my_old_webdriver_unittest.py
+sbase translate my_first_test.py --zh -p
+sbase extract-objects my_first_test.py
+sbase inject-objects my_first_test.py
+sbase objectify my_first_test.py
+sbase revert-objects my_first_test.py
+sbase encrypt
+sbase decrypt
+sbase download server
+sbase grid-hub start
+sbase grid-node start --hub=127.0.0.1
 """
 
 import colorama
@@ -37,8 +38,8 @@ from seleniumbase.utilities.selenium_ide import convert_ide
 def show_usage():
     show_basic_usage()
     sc = ("")
-    sc += ('Type "seleniumbase --help" for details on all commands.\n')
-    sc += ('Type "seleniumbase help [COMMAND]" for specific command info.\n')
+    sc += ('Type "sbase help [COMMAND]" for specific command info.\n')
+    sc += ('For info on all commands, type: "seleniumbase --help".\n')
     sc += ('* (Use "pytest" for running tests) *\n')
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -46,6 +47,7 @@ def show_usage():
     c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
     sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+    sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
     sc = sc.replace("pytest", c3 + "pytest" + cr)
     sc = sc.replace("--help", c4 + "--help" + cr)
     sc = sc.replace("help", c4 + "help" + cr)
@@ -57,28 +59,31 @@ def show_basic_usage():
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
-    sc = ("\n")
+    sc = ("")
     sc += ('Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
+    sc += ('(short name): "sbase [COMMAND] [PARAMETERS]"\n')
+    sc += ("\n")
     sc += ("Commands:\n")
-    sc += ("       install [DRIVER_NAME] [OPTIONS]\n")
-    sc += ("       mkdir [NEW_TEST_DIRECTORY_NAME]\n")
-    sc += ("       convert [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
-    sc += ("       translate [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
-    sc += ("       extract-objects [SB_PYTHON_FILE]\n")
-    sc += ("       inject-objects [SB_PYTHON_FILE] [OPTIONS]\n")
-    sc += ("       objectify [SB_PYTHON_FILE] [OPTIONS]\n")
-    sc += ("       revert-objects [SB_PYTHON_FILE]\n")
-    sc += ("       encrypt  (OR: obfuscate)\n")
-    sc += ("       decrypt  (OR: unobfuscate)\n")
-    sc += ("       download server  (The Selenium Server JAR file)\n")
-    sc += ("       grid-hub [start|stop] [OPTIONS]\n")
-    sc += ("       grid-node [start|stop] --hub=[HUB_IP] [OPTIONS]\n")
-    sc += ('  * (EXAMPLE: "seleniumbase install chromedriver latest") *\n')
+    sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
+    sc += ("      mkdir           [NEW_TEST_DIRECTORY_NAME]\n")
+    sc += ("      convert         [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
+    sc += ("      translate       [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
+    sc += ("      extract-objects [SB_PYTHON_FILE]\n")
+    sc += ("      inject-objects  [SB_PYTHON_FILE] [OPTIONS]\n")
+    sc += ("      objectify       [SB_PYTHON_FILE] [OPTIONS]\n")
+    sc += ("      revert-objects  [SB_PYTHON_FILE]\n")
+    sc += ("      encrypt         (OR: obfuscate)\n")
+    sc += ("      decrypt         (OR: unobfuscate)\n")
+    sc += ("      download server (Selenium Server JAR file)\n")
+    sc += ("      grid-hub        [start|stop] [OPTIONS]\n")
+    sc += ("      grid-node       [start|stop] --hub=[HUB_IP] [OPTIONS]\n")
+    sc += ('  *  (EXAMPLE: "sbase install chromedriver latest")  *\n')
     sc += ("")
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     cr = colorama.Style.RESET_ALL
     sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+    sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
     print(sc)
 
 
@@ -87,6 +92,7 @@ def show_install_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase install [DRIVER_NAME] [OPTIONS]")
+    print("           OR:    sbase install [DRIVER_NAME] [OPTIONS]")
     print("                 (Drivers: chromedriver, geckodriver, edgedriver")
     print("                           iedriver, operadriver)")
     print("  Options:")
@@ -116,6 +122,7 @@ def show_mkdir_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase mkdir [DIRECTORY_NAME]")
+    print("           OR:    sbase mkdir [DIRECTORY_NAME]")
     print("  Example:")
     print("           seleniumbase mkdir browser_tests")
     print("  Output:")
@@ -132,6 +139,7 @@ def show_convert_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
+    print("           OR:    sbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
     print("  Output:")
     print("           Converts a Selenium IDE exported WebDriver unittest")
     print("           file into a SeleniumBase file. Adds _SB to the new")
@@ -145,6 +153,7 @@ def show_translate_usage():
     print("  ** translate **")
     print("  Usage:")
     print("         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]")
+    print("         OR:    sbase translate [SB_FILE].py [LANGUAGE] [ACTION]")
     print("  Languages:")
     print("         --en / --English    |    --zh / --Chinese")
     print("         --nl / --Dutch      |    --fr / --French")
@@ -173,6 +182,7 @@ def show_extract_objects_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase extract-objects [SELENIUMBASE_PYTHON_FILE]")
+    print("           OR:    sbase extract-objects [SELENIUMBASE_PYTHON_FILE]")
     print("  Output:")
     print("           Creates page objects based on selectors found in a")
     print("           seleniumbase Python file and saves those objects to the")
@@ -185,6 +195,7 @@ def show_inject_objects_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase inject-objects [SELENIUMBASE_PYTHON_FILE]")
+    print("           OR:    sbase inject-objects [SELENIUMBASE_PYTHON_FILE]")
     print("  Options:")
     print("           -c, --comments  (Add object selectors to the comments.)")
     print("                           (Default: No added comments.)")
@@ -200,6 +211,7 @@ def show_objectify_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase objectify [SELENIUMBASE_PYTHON_FILE]")
+    print("           OR:    sbase objectify [SELENIUMBASE_PYTHON_FILE]")
     print("  Options:")
     print("           -c, --comments  (Add object selectors to the comments.)")
     print("                           (Default: No added comments.)")
@@ -218,6 +230,7 @@ def show_revert_objects_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase revert-objects [SELENIUMBASE_PYTHON_FILE]")
+    print("           OR:    sbase revert-objects [SELENIUMBASE_PYTHON_FILE]")
     print("  Options:")
     print("           -c, --comments  (Keep existing comments for the lines.)")
     print("                           (Default: No comments are kept.)")
@@ -233,11 +246,11 @@ def show_encrypt_usage():
     print("  ** encrypt OR obfuscate **")
     print("")
     print("  Usage:")
-    print("           seleniumbase encrypt")
-    print("                        OR")
-    print("           seleniumbase obfuscate")
+    print("           seleniumbase encrypt   ||   seleniumbase obfuscate")
+    print("                                --OR--")
+    print("                  sbase encrypt   ||          sbase obfuscate")
     print("  Output:")
-    print("           Runs the password obfuscation tool.")
+    print("           Runs the password encryption/obfuscation tool.")
     print("           (Where you can enter a password to encrypt/obfuscate.)")
     print("")
 
@@ -246,9 +259,9 @@ def show_decrypt_usage():
     print("  ** decrypt OR unobfuscate **")
     print("")
     print("  Usage:")
-    print("           seleniumbase decrypt")
-    print("                        OR")
-    print("           seleniumbase unobfuscate")
+    print("           seleniumbase decrypt   ||   seleniumbase unobfuscate")
+    print("                                --OR--")
+    print("                  sbase decrypt   ||          sbase unobfuscate")
     print("  Output:")
     print("           Runs the password decryption/unobfuscation tool.")
     print("           (Where you can enter an encrypted password to decrypt.)")
@@ -260,6 +273,7 @@ def show_download_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase download server")
+    print("           OR:    sbase download server")
     print("  Output:")
     print("           Downloads the Selenium Standalone Server.")
     print("           (Server is required for using your own Selenium Grid.)")
@@ -271,6 +285,7 @@ def show_grid_hub_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase grid-hub {start|stop}")
+    print("           OR:    sbase grid-hub {start|stop}")
     print("  Options:")
     print("           -v, --verbose  (Increase verbosity of logging output.)")
     print("                          (Default: Quiet logging / not verbose.)")
@@ -290,6 +305,7 @@ def show_grid_node_usage():
     print("")
     print("  Usage:")
     print("           seleniumbase grid-node {start|stop} [OPTIONS]")
+    print("           OR:    sbase grid-node {start|stop} [OPTIONS]")
     print("  Options:")
     print("           --hub=[HUB_IP] (The Grid Hub IP Address to connect to.)")
     print("                          (Default: 127.0.0.1 if not set)")
