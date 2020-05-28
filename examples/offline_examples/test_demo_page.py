@@ -7,9 +7,10 @@ from seleniumbase import BaseCase
 class OfflineTestClass(BaseCase):
 
     def test_demo_page(self):
-        # Load a local html file into the browser
-        dir_name = os.path.dirname(os.path.abspath(__file__))
-        self.load_html_file(dir_name + "/demo_page.html")
+        # Load a local html file into the web browser
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        file_path = dir_path + "/demo_page.html"
+        self.load_html_file(file_path)
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")

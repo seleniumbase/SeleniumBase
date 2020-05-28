@@ -2,8 +2,8 @@
 Translates a SeleniumBase Python file into a different language
 
 Usage:
-        seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]
-        OR:    sbase translate [SB_FILE].py [LANGUAGE] [ACTION]
+        seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
+        OR:    sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 Languages:
         --en / --English    |    --zh / --Chinese
         --nl / --Dutch      |    --fr / --French
@@ -28,6 +28,7 @@ Output:
 
 import codecs
 import colorama
+import os
 import re
 import sys
 from seleniumbase.translate import master_dict
@@ -39,8 +40,8 @@ MD = master_dict.MD
 def invalid_run_command(msg=None):
     exp = ("  ** translate **\n\n")
     exp += "  Usage:\n"
-    exp += "         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]\n"
-    exp += "         OR:    sbase translate [SB_FILE].py [LANGUAGE] [ACTION]\n"
+    exp += "         seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]\n"
+    exp += "         OR:    sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]\n"
     exp += "  Languages:\n"
     exp += "         --en / --English    |    --zh / --Chinese\n"
     exp += "         --nl / --Dutch      |    --fr / --French\n"
@@ -65,6 +66,41 @@ def invalid_run_command(msg=None):
         raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
     else:
         raise Exception('INVALID RUN COMMAND!\n%s\n\n%s' % (msg, exp))
+
+
+def ranges():
+    # Get the ranges of special characters of Chinese, Japanese, and Korean
+    special_char_ranges = ([
+        {"from": ord(u"\u3300"), "to": ord(u"\u33ff")},
+        {"from": ord(u"\ufe30"), "to": ord(u"\ufe4f")},
+        {"from": ord(u"\uf900"), "to": ord(u"\ufaff")},
+        {"from": ord(u"\U0002F800"), "to": ord(u"\U0002fa1f")},
+        {'from': ord(u'\u3040'), 'to': ord(u'\u309f')},
+        {"from": ord(u"\u30a0"), "to": ord(u"\u30ff")},
+        {"from": ord(u"\u2e80"), "to": ord(u"\u2eff")},
+        {"from": ord(u"\u4e00"), "to": ord(u"\u9fff")},
+        {"from": ord(u"\u3400"), "to": ord(u"\u4dbf")},
+        {"from": ord(u"\U00020000"), "to": ord(u"\U0002a6df")},
+        {"from": ord(u"\U0002a700"), "to": ord(u"\U0002b73f")},
+        {"from": ord(u"\U0002b740"), "to": ord(u"\U0002b81f")},
+        {"from": ord(u"\U0002b820"), "to": ord(u"\U0002ceaf")}
+    ])
+    return special_char_ranges
+
+
+def is_cjk(char):
+    # Returns True if the special character is Chinese, Japanese, or Korean
+    sc = any([range["from"] <= ord(char) <= range["to"] for range in ranges()])
+    return sc
+
+
+def get_width(line):
+    # Chinese/Japanese/Korean characters take up double width visually
+    line_length = len(line)
+    for char in line:
+        if is_cjk(char):
+            line_length += 1
+    return line_length
 
 
 def process_test_file(code_lines, new_lang):
@@ -211,21 +247,32 @@ def main():
     c6 = colorama.Fore.RED + colorama.Back.LIGHTCYAN_EX
     c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
     cr = colorama.Style.RESET_ALL
-    expected_arg = ("[A SeleniumBase Python file]")
-    command_args = sys.argv[2:]
-
-    seleniumbase_file = command_args[0]
-    if not seleniumbase_file.endswith('.py'):
-        raise Exception("\n\n`%s` is not a Python file!\n\n"
-                        "Expecting: %s\n"
-                        % (seleniumbase_file, expected_arg))
-
     new_lang = None
     overwrite = False
     copy = False
     print_only = False
     help_me = False
-    if len(command_args) >= 2:
+    invalid_cmd = None
+
+    expected_arg = ("A SeleniumBase Python file")
+    command_args = sys.argv[2:]
+    seleniumbase_file = command_args[0]
+    if not seleniumbase_file.endswith('.py'):
+        seleniumbase_file = (
+            c7 + ">>" + c5 + " " + seleniumbase_file + " " + c7 + "<<" + cr)
+        bad_file_error = ("\n`%s` is not a Python file!\n\n"
+                          "Expecting: [%s]"
+                          % (seleniumbase_file, expected_arg))
+        bad_file_error = bad_file_error.replace(
+            "is not a Python file!", c3 + "is not a Python file!" + cr)
+        bad_file_error = bad_file_error.replace(
+            expected_arg, c4 + expected_arg + cr)
+        bad_file_error = bad_file_error.replace(
+            "Expecting:", c3 + "Expecting:" + cr)
+        print(bad_file_error)
+        help_me = True
+
+    if len(command_args) >= 2 and not help_me:
         options = command_args[1:]
         for option in options:
             option = option.lower()
@@ -258,12 +305,13 @@ def main():
             elif option == "--es" or option == "--spanish":
                 new_lang = "Spanish"
             else:
-                invalid_cmd = "\n===> INVALID OPTION: >> %s <<" % option
+                invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace('>> ', ">>" + c5 + " ")
                 invalid_cmd = invalid_cmd.replace(' <<', " " + cr + "<<")
                 invalid_cmd = invalid_cmd.replace('>>', c7 + ">>" + cr)
                 invalid_cmd = invalid_cmd.replace('<<', c7 + "<<" + cr)
-                invalid_run_command(invalid_cmd)
+                help_me = True
+                break
     else:
         help_me = True
 
@@ -286,14 +334,14 @@ def main():
     example_run = (
         "\n> *** Examples: *** <\n"
         "Translate test_1.py into Chinese and only print the output:\n"
-        " >$ seleniumbase translate test_1.py --zh -p\n"
+        " >$ sbase translate test_1.py --zh -p\n"
         "Translate test_2.py into Portuguese and overwrite the file:\n"
-        " >$ seleniumbase translate test_2.py --pt -o\n"
+        " >$ sbase translate test_2.py --pt -o\n"
         "Translate test_3.py into Dutch and make a copy of the file:\n"
-        " >$ seleniumbase translate test_3.py --nl -c\n")
+        " >$ sbase translate test_3.py --nl -c\n")
     usage = (
         "\n> *** Usage: *** <\n"
-        " >$ seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]\n")
+        " >$ sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]\n")
     specify_lang = specify_lang.replace('>*', c5 + ">*")
     specify_lang = specify_lang.replace('*<', "*<" + cr)
     specify_lang = specify_lang.replace(
@@ -352,6 +400,7 @@ def main():
     example_run = example_run.replace(" --zh", " " + c2 + "--zh" + cr)
     example_run = example_run.replace(" --pt", " " + c2 + "--pt" + cr)
     example_run = example_run.replace(" --nl", " " + c2 + "--nl" + cr)
+    example_run = example_run.replace("sbase", c4 + "sbase" + cr)
     usage = usage.replace("Usage:", c4 + "Usage:" + cr)
     usage = usage.replace("> *** ", c3 + "> *** " + cr)
     usage = usage.replace(" *** <", c3 + " *** <" + cr)
@@ -360,31 +409,40 @@ def main():
     usage = usage.replace("ACTION", c1 + "ACTION" + cr)
 
     if help_me:
-        message = specify_lang + specify_action + example_run + usage
+        message = ""
+        if invalid_cmd:
+            message += invalid_cmd
+        message += (specify_lang + specify_action + example_run + usage)
+        print("")
         raise Exception(message)
     if not overwrite and not copy and not print_only:
         message = specify_action + example_run + usage
         if not new_lang:
             message = specify_lang + specify_action + example_run + usage
+        print("")
         raise Exception(message)
     if not new_lang:
+        print("")
         raise Exception(specify_lang + example_run + usage)
     if overwrite and copy:
         part_1 = (
             '\n* You can choose either {-o / --overwrite} '
-            'OR {-c / --copy}, but NOT BOTH!\n')
+            'OR {-c / --copy}, BUT * NOT BOTH *!\n')
         part_1 = part_1.replace("-o ", c1 + "-o" + cr + " ")
         part_1 = part_1.replace("--overwrite", c1 + "--overwrite" + cr)
         part_1 = part_1.replace("-c ", c1 + "-c" + cr + " ")
         part_1 = part_1.replace("--copy", c1 + "--copy" + cr)
+        part_1 = part_1.replace("* NOT BOTH *", c6 + "* NOT BOTH *" + cr)
         message = part_1 + example_run + usage
+        print("")
         raise Exception(message)
 
     with open(seleniumbase_file, 'r', encoding='utf-8') as f:
         all_code = f.read()
     if "def test_" not in all_code and "from seleniumbase" not in all_code:
+        print("")
         raise Exception("\n\n`%s` is not a valid SeleniumBase test file!\n"
-                        "\nExpecting: %s\n"
+                        "\nExpecting: [%s]\n"
                         % (seleniumbase_file, expected_arg))
     code_lines = all_code.split('\n')
 
@@ -407,13 +465,160 @@ def main():
     save_line = save_line.replace("]]]", cr + "")
 
     if print_only:
+        console_width = None  # width of console output when running script
+        used_width = None  # code_width and few spaces on right for padding
+        magic_console = None
+        magic_syntax = None
+        try:
+            console_width = os.popen('stty size', 'r').read().split()[1]
+            if console_width:
+                console_width = int(console_width)
+        except Exception:
+            console_width = None
+
+        if sys.version_info[0] == 3 and sys.version_info[1] >= 6:
+            from rich.console import Console
+            from rich.syntax import Syntax
+            python_code = "\n".join(seleniumbase_lines)
+            code_width = 1
+
+            w = 4  # line number whitespace
+            num_lines = len(seleniumbase_lines)
+            if num_lines >= 10:
+                w = 5
+            if num_lines >= 100:
+                w = 6
+            if num_lines >= 1000:
+                w = 7
+
+            new_sb_lines = []
+            for line in seleniumbase_lines:
+                line_length = len(line)
+                line_length2 = len(line)
+                line_length = get_width(line)
+                if line_length > code_width:
+                    code_width = line_length
+
+                if console_width:
+                    # If line is larger than console_width, try to optimize it
+                    if line_length + w > console_width:  # 5 is line number ws
+                        if line.count('  # ') == 1:  # Has comments like this
+                            if get_width(
+                                    line.split(
+                                        '  # ')[0]) + w <= console_width:
+                                new_sb_lines.append(line)
+                                continue
+                        elif line.count(' # ') == 1:  # Has bad flake8 comment
+                            if get_width(
+                                    line.split(
+                                        ' # ')[0]) + w <= console_width:
+                                new_sb_lines.append(line)
+                                continue
+                        if line.startswith("from") and " import " in line:
+                            line1 = line.split(" import ")[0] + " \\"
+                            line2 = "    import " + line.split(" import ")[1]
+                            new_sb_lines.append(line1)
+                            new_sb_lines.append(line2)
+                            continue
+                        elif line.count('(') == 1 and line.count(')') == 1:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split('(')[0] + '('
+                            line2 = new_ws + line.split('(')[1]
+                            if not ('):') in line2:
+                                new_sb_lines.append(line1)
+                                if get_width(line2) + w > console_width:
+                                    if line2.count('", "') == 1:
+                                        line2a = line2.split('", "')[0] + '",'
+                                        line2b = new_ws + '"' + (
+                                            line2.split('", "')[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                    elif line2.count("', '") == 1:
+                                        line2a = line2.split("', '")[0] + "',"
+                                        line2b = new_ws + "'" + (
+                                            line2.split("', '")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                    elif line2.count("://") == 1 and (
+                                            line2.count('")') == 1):
+                                        line2a = line2.split("://")[0] + '://"'
+                                        line2b = new_ws + '"' + (
+                                            line2.split("://")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                    elif line2.count("://") == 1 and (
+                                            line2.count("')") == 1):
+                                        line2a = line2.split("://")[0] + "://'"
+                                        line2b = new_ws + "'" + (
+                                            line2.split("://")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                    elif line2.count('="') == 1 and (
+                                            line2.lstrip().startswith("'")):
+                                        line2a = line2.split('="')[0] + "='"
+                                        line2b = new_ws + "'\"" + (
+                                            line2.split('="')[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                    elif line2.count("='") == 1 and (
+                                            line2.lstrip().startswith('"')):
+                                        line2a = line2.split("='")[0] + '="'
+                                        line2b = new_ws + '"\'' + (
+                                            line2.split("='")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                new_sb_lines.append(line2)
+                            elif get_width(line2) + 4 + w <= console_width:
+                                line2 = "    " + line2
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                            else:
+                                new_sb_lines.append(line)
+                            continue
+                    new_sb_lines.append(line)
+
+            if new_sb_lines:
+                seleniumbase_lines = new_sb_lines
+                python_code = "\n".join(seleniumbase_lines)
+
+            extra_r_spaces = 2
+            if console_width and (code_width + extra_r_spaces < console_width):
+                used_width = code_width + extra_r_spaces
+
+            magic_syntax = Syntax(
+                python_code, "python", theme="monokai",
+                line_numbers=True, code_width=used_width, word_wrap=False)
+            magic_console = Console()
         print("")
         print(save_line)
         print(c1 + "* Here are the results: >>>" + cr)
-        print("--------------------------------------------------------------")
-        for line in seleniumbase_lines:
-            print(line)
-        print("--------------------------------------------------------------")
+        # ----------------------------------------
+        dash_length = 62  # May change
+        if used_width and used_width + w < console_width:
+            dash_length = used_width + w
+        elif console_width:
+            dash_length = console_width
+        dashes = "-" * dash_length
+        print(dashes)
+        print_success = False
+        if magic_syntax:
+            try:
+                magic_console.print(magic_syntax)  # noqa
+                print_success = True
+            except Exception:
+                pass
+        if not magic_syntax or not print_success:
+            for line in seleniumbase_lines:
+                print(line)
+        print(dashes)
+        # ----------------------------------------
 
     new_file_name = None
     if copy:

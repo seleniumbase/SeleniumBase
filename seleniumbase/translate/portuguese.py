@@ -374,6 +374,38 @@ class CasoDeTeste(BaseCase):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
 
+    def adiada_verificar_elemento(self, *args, **kwargs):
+        # deferred_assert_element(selector)
+        return self.deferred_assert_element(*args, **kwargs)
+
+    def adiada_verificar_texto(self, *args, **kwargs):
+        # deferred_assert_text(text, selector="html")
+        return self.deferred_assert_text(*args, **kwargs)
+
+    def processar_verificações_adiada(self, *args, **kwargs):
+        # process_deferred_asserts(print_only=False)
+        return self.process_deferred_asserts(*args, **kwargs)
+
+    def aceitar_alerta(self, *args, **kwargs):
+        # accept_alert(timeout=None)
+        return self.accept_alert(*args, **kwargs)
+
+    def demitir_alerta(self, *args, **kwargs):
+        # dismiss_alert(timeout=None)
+        return self.dismiss_alert(*args, **kwargs)
+
+    def mudar_para_alerta(self, *args, **kwargs):
+        # switch_to_alert(timeout=None)
+        return self.switch_to_alert(*args, **kwargs)
+
+    def carregar_arquivo_html(self, *args, **kwargs):
+        # load_html_file(html_file, new_page=True)
+        return self.load_html_file(*args, **kwargs)
+
+    def abrir_arquivo_html(self, *args, **kwargs):
+        # open_html_file(html_file)
+        return self.open_html_file(*args, **kwargs)
+
 
 class MasterQA_Português(MasterQA, CasoDeTeste):
 

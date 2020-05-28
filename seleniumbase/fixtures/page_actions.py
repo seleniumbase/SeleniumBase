@@ -36,7 +36,7 @@ from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import page_utils
-from seleniumbase.fixtures import shared_utils
+from seleniumbase.fixtures import shared_utils as s_utils
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
@@ -113,31 +113,8 @@ def hover_element(driver, element):
     hover.perform()
 
 
-def format_message(exception, message):
-    """
-    Formats an exception message to make the output cleaner.
-    """
-    if exception == Exception:
-        pass
-    elif exception == ElementNotVisibleException:
-        message = "ElementNotVisibleException: %s" % message
-    elif exception == NoSuchElementException:
-        message = "NoSuchElementException: %s" % message
-    elif exception == NoAlertPresentException:
-        message = "NoAlertPresentException: %s" % message
-    elif exception == NoSuchFrameException:
-        message = "NoSuchFrameException: %s" % message
-    elif exception == NoSuchWindowException:
-        message = "NoSuchWindowException: %s" % message
-    elif type(exception) is str:
-        message = "%s: %s" % (exception, message)
-    else:
-        pass
-    return message
-
-
 def timeout_exception(exception, message):
-    message = format_message(exception, message)
+    message = s_utils.format_exc(exception, message)
     raise Exception(message)
 
 
@@ -256,7 +233,7 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             return element
@@ -295,7 +272,7 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -343,7 +320,7 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed() and text in element.text:
@@ -387,7 +364,7 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed() and text.strip() == element.text.strip():
@@ -425,7 +402,7 @@ def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             driver.find_element(by=by, value=selector)
             now_ms = time.time() * 1000.0
@@ -458,7 +435,7 @@ def wait_for_element_not_visible(driver, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -497,7 +474,7 @@ def wait_for_text_not_visible(driver, text, selector, by=By.CSS_SELECTOR,
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         if not is_text_visible(driver, text, selector, by=by):
             return True
         now_ms = time.time() * 1000.0
@@ -664,7 +641,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             alert = driver.switch_to.alert
             # Raises exception if no alert present
@@ -692,7 +669,7 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        s_utils.check_if_time_limit_exceeded()
         try:
             driver.switch_to.frame(frame)
             return True
@@ -736,7 +713,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     stop_ms = start_ms + (timeout * 1000.0)
     if isinstance(window, int):
         for x in range(int(timeout * 10)):
-            shared_utils.check_if_time_limit_exceeded()
+            s_utils.check_if_time_limit_exceeded()
             try:
                 window_handle = driver.window_handles[window]
                 driver.switch_to.window(window_handle)
@@ -756,7 +733,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     else:
         window_handle = window
         for x in range(int(timeout * 10)):
-            shared_utils.check_if_time_limit_exceeded()
+            s_utils.check_if_time_limit_exceeded()
             try:
                 driver.switch_to.window(window_handle)
                 return True

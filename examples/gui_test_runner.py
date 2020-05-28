@@ -63,11 +63,11 @@ class App:
             fg="red").pack()
         self.title7 = Label(
             frame,
-            text="Run a Failing Test with Delayed Asserts:",
+            text="Run a Failing Test with Deferred Asserts:",
             fg="blue").pack()
         self.run7 = Button(
             frame, command=self.run_7,
-            text=("pytest test_delayed_asserts.py --browser=chrome"),
+            text=("pytest test_deferred_asserts.py --browser=chrome"),
             fg="red").pack()
         self.end_title = Label(frame, text="", fg="black").pack()
         self.quit = Button(frame, text="QUIT", command=frame.quit).pack()
@@ -98,7 +98,7 @@ class App:
 
     def run_7(self):
         os.system(
-            'pytest test_delayed_asserts.py --browser=chrome')
+            'pytest test_deferred_asserts.py --browser=chrome')
 
 
 if __name__ == "__main__":

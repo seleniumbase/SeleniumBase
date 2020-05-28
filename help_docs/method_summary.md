@@ -460,11 +460,14 @@ self.assert_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=
 
 ############
 
-self.wait_for_and_accept_alert(timeout=None)
+self.accept_alert(timeout=None)
+# Duplicates: self.wait_for_and_accept_alert(timeout=None)
 
-self.wait_for_and_dismiss_alert(timeout=None)
+self.dismiss_alert(timeout=None)
+# Duplicates: self.wait_for_and_dismiss_alert(timeout=None)
 
-self.wait_for_and_switch_to_alert(timeout=None)
+self.switch_to_alert(timeout=None)
+# Duplicates: self.wait_for_and_switch_to_alert(timeout=None)
 
 ############
 
@@ -472,11 +475,14 @@ self.check_window(name="default", level=0, baseline=False)
 
 ############
 
-self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
+self.deferred_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.deferred_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
-self.process_delayed_asserts()
+self.process_deferred_asserts(print_only=False)
+# Duplicates: self.process_delayed_asserts(print_only=False)
 
 ############
 

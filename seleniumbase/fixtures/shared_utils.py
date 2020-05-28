@@ -2,7 +2,35 @@
 This module contains shared utility methods.
 """
 import time
+from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
+from selenium.webdriver.remote.errorhandler import NoSuchElementException
+from selenium.webdriver.remote.errorhandler import NoAlertPresentException
+from selenium.webdriver.remote.errorhandler import NoSuchFrameException
+from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase import config as sb_config
+
+
+def format_exc(exception, message):
+    """
+    Formats an exception message to make the output cleaner.
+    """
+    if exception == Exception:
+        pass
+    elif exception == ElementNotVisibleException:
+        message = "ElementNotVisibleException: %s" % message
+    elif exception == NoSuchElementException:
+        message = "NoSuchElementException: %s" % message
+    elif exception == NoAlertPresentException:
+        message = "NoAlertPresentException: %s" % message
+    elif exception == NoSuchFrameException:
+        message = "NoSuchFrameException: %s" % message
+    elif exception == NoSuchWindowException:
+        message = "NoSuchWindowException: %s" % message
+    elif type(exception) is str:
+        message = "%s: %s" % (exception, message)
+    else:
+        pass
+    return message
 
 
 def __time_limit_exceeded(message):

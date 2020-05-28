@@ -152,8 +152,8 @@ def show_convert_usage():
 def show_translate_usage():
     print("  ** translate **")
     print("  Usage:")
-    print("         seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]")
-    print("         OR:    sbase translate [SB_FILE].py [LANGUAGE] [ACTION]")
+    print("         seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]")
+    print("         OR:    sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]")
     print("  Languages:")
     print("         --en / --English    |    --zh / --Chinese")
     print("         --nl / --Dutch      |    --fr / --French")
@@ -392,6 +392,14 @@ def main():
             show_convert_usage()
     elif command == "translate":
         if len(command_args) >= 1:
+            if sys.version_info[0] == 2:
+                colorama.init(autoreset=True)
+                c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+                cr = colorama.Style.RESET_ALL
+                msg = "The SeleniumBase Translator does NOT support Python 2!"
+                message = "\n" + c5 + msg + cr + "\n"
+                print("")
+                raise Exception(message)
             from seleniumbase.translate import translator
             translator.main()
         else:

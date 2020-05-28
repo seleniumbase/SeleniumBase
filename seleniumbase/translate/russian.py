@@ -374,6 +374,38 @@ class ТестНаСелен(BaseCase):  # noqa
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
 
+    def отложенный_подтвердить_элемент(self, *args, **kwargs):
+        # deferred_assert_element(selector)
+        return self.deferred_assert_element(*args, **kwargs)
+
+    def отложенный_подтвердить_текст(self, *args, **kwargs):
+        # deferred_assert_text(text, selector="html")
+        return self.deferred_assert_text(*args, **kwargs)
+
+    def обработки_отложенных_подтверждений(self, *args, **kwargs):
+        # process_deferred_asserts(print_only=False)
+        return self.process_deferred_asserts(*args, **kwargs)
+
+    def принять_оповещение(self, *args, **kwargs):
+        # accept_alert(timeout=None)
+        return self.accept_alert(*args, **kwargs)
+
+    def увольнять_оповещение(self, *args, **kwargs):
+        # dismiss_alert(timeout=None)
+        return self.dismiss_alert(*args, **kwargs)
+
+    def переключиться_на_оповещение(self, *args, **kwargs):
+        # switch_to_alert(timeout=None)
+        return self.switch_to_alert(*args, **kwargs)
+
+    def загрузить_HTML_файл(self, *args, **kwargs):
+        # load_html_file(html_file, new_page=True)
+        return self.load_html_file(*args, **kwargs)
+
+    def открыть_HTML_файл(self, *args, **kwargs):
+        # open_html_file(html_file)
+        return self.open_html_file(*args, **kwargs)
+
 
 class MasterQA_Русский(MasterQA, ТестНаСелен):
 

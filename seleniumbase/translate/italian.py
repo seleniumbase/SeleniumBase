@@ -374,6 +374,38 @@ class CasoDiProva(BaseCase):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
 
+    def differita_verificare_elemento(self, *args, **kwargs):
+        # deferred_assert_element(selector)
+        return self.deferred_assert_element(*args, **kwargs)
+
+    def differita_verificare_testo(self, *args, **kwargs):
+        # deferred_assert_text(text, selector="html")
+        return self.deferred_assert_text(*args, **kwargs)
+
+    def elaborare_differita_verificari(self, *args, **kwargs):
+        # process_deferred_asserts(print_only=False)
+        return self.process_deferred_asserts(*args, **kwargs)
+
+    def accetta_avviso(self, *args, **kwargs):
+        # accept_alert(timeout=None)
+        return self.accept_alert(*args, **kwargs)
+
+    def elimina_avviso(self, *args, **kwargs):
+        # dismiss_alert(timeout=None)
+        return self.dismiss_alert(*args, **kwargs)
+
+    def passa_al_avviso(self, *args, **kwargs):
+        # switch_to_alert(timeout=None)
+        return self.switch_to_alert(*args, **kwargs)
+
+    def caricare_html_file(self, *args, **kwargs):
+        # load_html_file(html_file, new_page=True)
+        return self.load_html_file(*args, **kwargs)
+
+    def apri_html_file(self, *args, **kwargs):
+        # open_html_file(html_file)
+        return self.open_html_file(*args, **kwargs)
+
 
 class MasterQA_Italiano(MasterQA, CasoDiProva):
 

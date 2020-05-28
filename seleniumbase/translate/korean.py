@@ -374,6 +374,38 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
 
+    def 연기된_요소_확인(self, *args, **kwargs):
+        # deferred_assert_element(selector)
+        return self.deferred_assert_element(*args, **kwargs)
+
+    def 연기된_텍스트_확인(self, *args, **kwargs):
+        # deferred_assert_text(text, selector="html")
+        return self.deferred_assert_text(*args, **kwargs)
+
+    def 연기된_검증_처리(self, *args, **kwargs):
+        # process_deferred_asserts(print_only=False)
+        return self.process_deferred_asserts(*args, **kwargs)
+
+    def 경고를_수락(self, *args, **kwargs):
+        # accept_alert(timeout=None)
+        return self.accept_alert(*args, **kwargs)
+
+    def 경고를_거부(self, *args, **kwargs):
+        # dismiss_alert(timeout=None)
+        return self.dismiss_alert(*args, **kwargs)
+
+    def 경고로_전환(self, *args, **kwargs):
+        # switch_to_alert(timeout=None)
+        return self.switch_to_alert(*args, **kwargs)
+
+    def HTML_파일_로드(self, *args, **kwargs):
+        # load_html_file(html_file, new_page=True)
+        return self.load_html_file(*args, **kwargs)
+
+    def HTML_파일_열기(self, *args, **kwargs):
+        # open_html_file(html_file)
+        return self.open_html_file(*args, **kwargs)
+
 
 class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):
 

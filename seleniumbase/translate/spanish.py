@@ -213,11 +213,11 @@ class CasoDePrueba(BaseCase):
         # open_new_window()
         return self.open_new_window(*args, **kwargs)
 
-    def cambiar_a_la_ventana(self, *args, **kwargs):
+    def cambiar_a_ventana(self, *args, **kwargs):
         # switch_to_window(window)
         return self.switch_to_window(*args, **kwargs)
 
-    def cambiar_a_la_ventana_predeterminada(self, *args, **kwargs):
+    def cambiar_a_ventana_predeterminada(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
@@ -373,6 +373,38 @@ class CasoDePrueba(BaseCase):
     def imprimir(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+    def diferido_verificar_elemento(self, *args, **kwargs):
+        # deferred_assert_element(selector)
+        return self.deferred_assert_element(*args, **kwargs)
+
+    def diferido_verificar_texto(self, *args, **kwargs):
+        # deferred_assert_text(text, selector="html")
+        return self.deferred_assert_text(*args, **kwargs)
+
+    def procesar_verificaciones_diferidas(self, *args, **kwargs):
+        # process_deferred_asserts(print_only=False)
+        return self.process_deferred_asserts(*args, **kwargs)
+
+    def aceptar_alerta(self, *args, **kwargs):
+        # accept_alert(timeout=None)
+        return self.accept_alert(*args, **kwargs)
+
+    def descartar_alerta(self, *args, **kwargs):
+        # dismiss_alert(timeout=None)
+        return self.dismiss_alert(*args, **kwargs)
+
+    def cambiar_a_alerta(self, *args, **kwargs):
+        # switch_to_alert(timeout=None)
+        return self.switch_to_alert(*args, **kwargs)
+
+    def cargar_archivo_html(self, *args, **kwargs):
+        # load_html_file(html_file, new_page=True)
+        return self.load_html_file(*args, **kwargs)
+
+    def abrir_archivo_html(self, *args, **kwargs):
+        # open_html_file(html_file)
+        return self.open_html_file(*args, **kwargs)
 
 
 class MasterQA_Español(MasterQA, CasoDePrueba):
