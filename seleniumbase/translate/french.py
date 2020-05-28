@@ -13,19 +13,19 @@ class CasDeBase(BaseCase):
         # open_url(url)
         return self.open_url(*args, **kwargs)
 
-    def cliquez_sur(self, *args, **kwargs):
+    def cliquer(self, *args, **kwargs):
         # click(selector)
         return self.click(*args, **kwargs)
 
-    def double_cliquez(self, *args, **kwargs):
+    def double_cliquer(self, *args, **kwargs):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
-    def cliquez_lentement(self, *args, **kwargs):
+    def cliquer_lentement(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def cliquez_texte_du_lien(self, *args, **kwargs):
+    def cliquer_texte_du_lien(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -177,11 +177,11 @@ class CasDeBase(BaseCase):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
-    def sélectionnez_fichier(self, *args, **kwargs):
+    def sélectionner_fichier(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def exécutez_le_script(self, *args, **kwargs):
+    def exécuter_le_script(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
@@ -193,7 +193,7 @@ class CasDeBase(BaseCase):
         # skip(reason="")
         return self.skip(*args, **kwargs)
 
-    def vérifiez_les_liens_rompus(self, *args, **kwargs):
+    def vérifier_les_liens_rompus(self, *args, **kwargs):
         # assert_no_404_errors()
         return self.assert_no_404_errors(*args, **kwargs)
 
@@ -225,11 +225,11 @@ class CasDeBase(BaseCase):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)
 
-    def illuminez(self, *args, **kwargs):
+    def illuminer(self, *args, **kwargs):
         # highlight(selector)
         return self.highlight(*args, **kwargs)
 
-    def illuminez_cliquez(self, *args, **kwargs):
+    def illuminer_cliquer(self, *args, **kwargs):
         # highlight_click(selector)
         return self.highlight_click(*args, **kwargs)
 
@@ -245,7 +245,7 @@ class CasDeBase(BaseCase):
         # scroll_to_bottom()
         return self.scroll_to_bottom(*args, **kwargs)
 
-    def planer_au_dessus_et_cliquez(self, *args, **kwargs):
+    def planer_au_dessus_et_cliquer(self, *args, **kwargs):
         # hover_and_click(hover_selector, click_selector)
         return self.hover_and_click(*args, **kwargs)
 
@@ -253,23 +253,23 @@ class CasDeBase(BaseCase):
         # is_selected(selector)
         return self.is_selected(*args, **kwargs)
 
-    def appuyez_sur_flèche_haut(self, *args, **kwargs):
+    def appuyer_sur_flèche_haut(self, *args, **kwargs):
         # press_up_arrow(selector="html", times=1)
         return self.press_up_arrow(*args, **kwargs)
 
-    def appuyez_sur_flèche_bas(self, *args, **kwargs):
+    def appuyer_sur_flèche_bas(self, *args, **kwargs):
         # press_down_arrow(selector="html", times=1)
         return self.press_down_arrow(*args, **kwargs)
 
-    def appuyez_sur_flèche_gauche(self, *args, **kwargs):
+    def appuyer_sur_flèche_gauche(self, *args, **kwargs):
         # press_left_arrow(selector="html", times=1)
         return self.press_left_arrow(*args, **kwargs)
 
-    def appuyez_sur_flèche_droite(self, *args, **kwargs):
+    def appuyer_sur_flèche_droite(self, *args, **kwargs):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
-    def cliquez_éléments_visibles(self, *args, **kwargs):
+    def cliquer_éléments_visibles(self, *args, **kwargs):
         # click_visible_elements(selector)
         return self.click_visible_elements(*args, **kwargs)
 
@@ -326,11 +326,11 @@ class CasDeBase(BaseCase):
         # get(url)  # Same as open(url)
         return self.get(*args, **kwargs)
 
-    def visitez(self, *args, **kwargs):
+    def visiter(self, *args, **kwargs):
         # visit(url)  # Same as open(url)
         return self.visit(*args, **kwargs)
 
-    def visitez_url(self, *args, **kwargs):
+    def visiter_url(self, *args, **kwargs):
         # visit_url(url)  # Same as open(url)
         return self.visit_url(*args, **kwargs)
 
@@ -354,15 +354,15 @@ class CasDeBase(BaseCase):
         # set_attribute(selector, attribute, value)
         return self.set_attribute(*args, **kwargs)
 
-    def définir_les_attributs(self, *args, **kwargs):
+    def définir_attributs(self, *args, **kwargs):
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def tapez(self, *args, **kwargs):
+    def taper(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
         return self.input(*args, **kwargs)
 
-    def écrivez(self, *args, **kwargs):
+    def écriver(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
@@ -370,9 +370,41 @@ class CasDeBase(BaseCase):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
 
-    def imprimez(self, *args, **kwargs):
+    def imprimer(self, *args, **kwargs):
         # _print(msg)  # Same as Python print()
         return self._print(*args, **kwargs)
+
+    def reporté_vérifier_élément(self, *args, **kwargs):
+        # deferred_assert_element(selector)
+        return self.deferred_assert_element(*args, **kwargs)
+
+    def reporté_vérifier_texte(self, *args, **kwargs):
+        # deferred_assert_text(text, selector="html")
+        return self.deferred_assert_text(*args, **kwargs)
+
+    def effectuer_vérifications_reportées(self, *args, **kwargs):
+        # process_deferred_asserts(print_only=False)
+        return self.process_deferred_asserts(*args, **kwargs)
+
+    def accepter_alerte(self, *args, **kwargs):
+        # accept_alert(timeout=None)
+        return self.accept_alert(*args, **kwargs)
+
+    def rejeter_alerte(self, *args, **kwargs):
+        # dismiss_alert(timeout=None)
+        return self.dismiss_alert(*args, **kwargs)
+
+    def passer_à_alerte(self, *args, **kwargs):
+        # switch_to_alert(timeout=None)
+        return self.switch_to_alert(*args, **kwargs)
+
+    def charger_html_fichier(self, *args, **kwargs):
+        # load_html_file(html_file, new_page=True)
+        return self.load_html_file(*args, **kwargs)
+
+    def ouvrir_html_fichier(self, *args, **kwargs):
+        # open_html_file(html_file)
+        return self.open_html_file(*args, **kwargs)
 
 
 class MasterQA_Français(MasterQA, CasDeBase):
