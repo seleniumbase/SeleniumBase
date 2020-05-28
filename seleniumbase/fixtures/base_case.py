@@ -4010,6 +4010,32 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def accept_alert(self, timeout=None):
+        """ Same as wait_for_and_accept_alert(), but smaller default T_O """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_accept_alert(self.driver, timeout)
+
+    def dismiss_alert(self, timeout=None):
+        """ Same as wait_for_and_dismiss_alert(), but smaller default T_O """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_dismiss_alert(self.driver, timeout)
+
+    def switch_to_alert(self, timeout=None):
+        """ Same as wait_for_and_switch_to_alert(), but smaller default T_O """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return page_actions.wait_for_and_switch_to_alert(self.driver, timeout)
+
+    ############
+
     def __assert_eq(self, *args, **kwargs):
         """ Minified assert_equal() using only the list diff. """
         minified_exception = None

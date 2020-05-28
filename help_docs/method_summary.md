@@ -460,11 +460,14 @@ self.assert_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=
 
 ############
 
-self.wait_for_and_accept_alert(timeout=None)
+self.accept_alert(timeout=None)
+# Duplicates: self.wait_for_and_accept_alert(timeout=None)
 
-self.wait_for_and_dismiss_alert(timeout=None)
+self.dismiss_alert(timeout=None)
+# Duplicates: self.wait_for_and_dismiss_alert(timeout=None)
 
-self.wait_for_and_switch_to_alert(timeout=None)
+self.switch_to_alert(timeout=None)
+# Duplicates: self.wait_for_and_switch_to_alert(timeout=None)
 
 ############
 
