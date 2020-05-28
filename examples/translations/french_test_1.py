@@ -9,11 +9,11 @@ class MaClasseDeTest(CasDeBase):
         self.vérifier_texte("Wikipédia")  # noqa
         self.vérifier_élément('[title="Visiter la page d’accueil"]')
         self.modifier_texte("#searchInput", "Crème brûlée")
-        self.cliquez_sur("#searchButton")
+        self.cliquer("#searchButton")
         self.vérifier_texte("Crème brûlée", "#firstHeading")
         self.vérifier_élément('img[alt*="Crème brûlée"]')
         self.modifier_texte("#searchInput", "Jardin des Tuileries")
-        self.cliquez_sur("#searchButton")
+        self.cliquer("#searchButton")
         self.vérifier_texte("Jardin des Tuileries", "#firstHeading")
         self.vérifier_élément('img[alt*="Jardin des Tuileries"]')
         self.retour()

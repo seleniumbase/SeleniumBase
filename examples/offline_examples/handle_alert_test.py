@@ -1,10 +1,12 @@
+import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+@pytest.mark.offline  # Can be run with: "pytest -m offline"
+class OfflineTestClass(BaseCase):
 
     def test_alerts(self):
-        self.open("about:blank")
+        self.open("data:,")
         self.execute_script('window.alert("ALERT!!!")')
         self.sleep(1)  # Not needed (Lets you see the alert pop up)
         self.accept_alert()
