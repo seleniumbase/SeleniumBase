@@ -472,11 +472,14 @@ self.check_window(name="default", level=0, baseline=False)
 
 ############
 
-self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
+self.deferred_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.deferred_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
-self.process_delayed_asserts()
+self.process_deferred_asserts(print_only=False)
+# Duplicates: self.process_delayed_asserts(print_only=False)
 
 ############
 

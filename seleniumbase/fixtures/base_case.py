@@ -76,15 +76,15 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
-        self.__last_url_of_delayed_assert = "data:,"
+        self.__last_url_of_deferred_assert = "data:,"
         self.__last_page_load_url = "data:,"
         self.__last_page_screenshot = None
         self.__last_page_screenshot_png = None
         self.__last_page_url = None
         self.__last_page_source = None
         self.__added_pytest_html_extra = None
-        self.__delayed_assert_count = 0
-        self.__delayed_assert_failures = []
+        self.__deferred_assert_count = 0
+        self.__deferred_assert_failures = []
         self.__device_width = None
         self.__device_height = None
         self.__device_pixel_ratio = None
@@ -4292,87 +4292,109 @@ class BaseCase(unittest.TestCase):
             exc_message = update
         return exc_message
 
-    def __add_delayed_assert_failure(self):
-        """ Add a delayed_assert failure into a list for future processing. """
+    def __add_deferred_assert_failure(self):
+        """ Add a deferred_assert failure to a list for future processing. """
         current_url = self.driver.current_url
         message = self.__get_exception_message()
-        self.__delayed_assert_failures.append(
+        self.__deferred_assert_failures.append(
             "CHECK #%s: (%s)\n %s" % (
-                self.__delayed_assert_count, current_url, message))
+                self.__deferred_assert_count, current_url, message))
 
-    def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
-                               timeout=None):
+    ############
+
+    def deferred_assert_element(self, selector, by=By.CSS_SELECTOR,
+                                timeout=None):
         """ A non-terminating assertion for an element on a page.
-            Failures will be saved until the process_delayed_asserts()
+            Failures will be saved until the process_deferred_asserts()
             method is called from inside a test, likely at the end of it. """
         if not timeout:
             timeout = settings.MINI_TIMEOUT
         if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.__delayed_assert_count += 1
+        self.__deferred_assert_count += 1
         try:
             url = self.get_current_url()
-            if url == self.__last_url_of_delayed_assert:
+            if url == self.__last_url_of_deferred_assert:
                 timeout = 1
             else:
-                self.__last_url_of_delayed_assert = url
+                self.__last_url_of_deferred_assert = url
         except Exception:
             pass
         try:
             self.wait_for_element_visible(selector, by=by, timeout=timeout)
             return True
         except Exception:
-            self.__add_delayed_assert_failure()
+            self.__add_deferred_assert_failure()
             return False
 
-    def delayed_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
-                            timeout=None):
+    def deferred_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
+                             timeout=None):
         """ A non-terminating assertion for text from an element on a page.
-            Failures will be saved until the process_delayed_asserts()
+            Failures will be saved until the process_deferred_asserts()
             method is called from inside a test, likely at the end of it. """
         if not timeout:
             timeout = settings.MINI_TIMEOUT
         if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.__delayed_assert_count += 1
+        self.__deferred_assert_count += 1
         try:
             url = self.get_current_url()
-            if url == self.__last_url_of_delayed_assert:
+            if url == self.__last_url_of_deferred_assert:
                 timeout = 1
             else:
-                self.__last_url_of_delayed_assert = url
+                self.__last_url_of_deferred_assert = url
         except Exception:
             pass
         try:
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             return True
         except Exception:
-            self.__add_delayed_assert_failure()
+            self.__add_deferred_assert_failure()
             return False
 
-    def process_delayed_asserts(self, print_only=False):
-        """ To be used with any test that uses delayed_asserts, which are
+    def process_deferred_asserts(self, print_only=False):
+        """ To be used with any test that uses deferred_asserts, which are
             non-terminating verifications that only raise exceptions
             after this method is called.
             This is useful for pages with multiple elements to be checked when
             you want to find as many bugs as possible in a single test run
             before having all the exceptions get raised simultaneously.
             Might be more useful if this method is called after processing all
-            the delayed asserts on a single html page so that the failure
-            screenshot matches the location of the delayed asserts.
+            the deferred asserts on a single html page so that the failure
+            screenshot matches the location of the deferred asserts.
             If "print_only" is set to True, the exception won't get raised. """
-        if self.__delayed_assert_failures:
+        if self.__deferred_assert_failures:
             exception_output = ''
-            exception_output += "\n*** DELAYED ASSERTION FAILURES FOR: "
+            exception_output += "\n*** DEFERRED ASSERTION FAILURES FROM: "
             exception_output += "%s\n" % self.id()
-            all_failing_checks = self.__delayed_assert_failures
-            self.__delayed_assert_failures = []
+            all_failing_checks = self.__deferred_assert_failures
+            self.__deferred_assert_failures = []
             for tb in all_failing_checks:
                 exception_output += "%s\n" % tb
             if print_only:
                 print(exception_output)
             else:
                 raise Exception(exception_output)
+
+    ############
+
+    # Alternate naming scheme for the "deferred_assert" methods.
+
+    def delayed_assert_element(self, selector, by=By.CSS_SELECTOR,
+                               timeout=None):
+        """ Same as self.deferred_assert_element() """
+        return self.deferred_assert_element(
+            selector=selector, by=by, timeout=timeout)
+
+    def delayed_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
+                            timeout=None):
+        """ Same as self.deferred_assert_text() """
+        return self.deferred_assert_text(
+            text=text, selector=selector, by=by, timeout=timeout)
+
+    def process_delayed_asserts(self, print_only=False):
+        """ Same as self.process_deferred_asserts() """
+        self.process_deferred_asserts(print_only=print_only)
 
     ############
 
@@ -5127,15 +5149,15 @@ class BaseCase(unittest.TestCase):
         """
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
-        if self.__delayed_assert_failures:
+        if self.__deferred_assert_failures:
             print(
-                "\nWhen using self.delayed_assert_*() methods in your tests, "
-                "remember to call self.process_delayed_asserts() afterwards. "
+                "\nWhen using self.deferred_assert_*() methods in your tests, "
+                "remember to call self.process_deferred_asserts() afterwards. "
                 "Now calling in tearDown()...\nFailures Detected:")
             if not has_exception:
-                self.process_delayed_asserts()
+                self.process_deferred_asserts()
             else:
-                self.process_delayed_asserts(print_only=True)
+                self.process_deferred_asserts(print_only=True)
         if self.is_pytest:
             # pytest-specific code
             test_id = self.__get_test_id()
