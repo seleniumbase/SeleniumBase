@@ -1361,9 +1361,33 @@ class BaseCase(unittest.TestCase):
             If new_page==False, will load HTML into the current page. """
 
         soup = self.get_beautiful_soup(html_string)
+        found_base = False
+        links = soup.findAll("link")
+        href = None
+
+        for link in links:
+            if link.get("rel") == ["canonical"] and link.get("href"):
+                found_base = True
+                href = link.get("href")
+                href = self.get_domain_url(href)
+        if found_base and html_string.count("<head>") == 1 and (
+                html_string.count("<base") == 0):
+            html_string = html_string.replace(
+                "<head>", '<head><base href="%s">' % href)
+        elif not found_base:
+            bases = soup.findAll("base")
+            for base in bases:
+                if base.get("href"):
+                    href = base.get("href")
+        if href:
+            html_string = html_string.replace(
+                'base: "."', 'base: "%s"' % href)
+
+        soup = self.get_beautiful_soup(html_string)
         scripts = soup.findAll("script")
         for script in scripts:
-            html_string = html_string.replace(str(script), "")
+            if script.get("type") != "application/json":
+                html_string = html_string.replace(str(script), "")
         soup = self.get_beautiful_soup(html_string)
 
         found_head = False
@@ -1413,19 +1437,28 @@ class BaseCase(unittest.TestCase):
 
         for script in scripts:
             js_code = script.string
-            js_code_lines = js_code.split('\n')
-            new_lines = []
-            for line in js_code_lines:
-                line = line.strip()
-                new_lines.append(line)
-            js_code = '\n'.join(new_lines)
-            js_utils.add_js_code(self.driver, js_code)
+            js_src = script.get("src")
+            if js_code and script.get("type") != "application/json":
+                js_code_lines = js_code.split('\n')
+                new_lines = []
+                for line in js_code_lines:
+                    line = line.strip()
+                    new_lines.append(line)
+                js_code = '\n'.join(new_lines)
+                js_utils.add_js_code(self.driver, js_code)
+            elif js_src:
+                js_utils.add_js_link(self.driver, js_src)
+            else:
+                pass
 
     def load_html_file(self, html_file, new_page=True):
         """ Loads a local html file into the browser from a relative file path.
             If new_page==True, the page will switch to: "data:text/html,"
             If new_page==False, will load HTML into the current page.
             Local images and other local src content WILL BE IGNORED. """
+        if self.__looks_like_a_page_url(html_file):
+            self.open(html_file)
+            return
         if len(html_file) < 6 or not html_file.endswith(".html"):
             raise Exception('Expecting a ".html" file!')
         abs_path = os.path.abspath('.')
