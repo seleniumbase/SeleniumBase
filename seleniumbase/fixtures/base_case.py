@@ -1475,10 +1475,17 @@ class BaseCase(unittest.TestCase):
     def open_html_file(self, html_file):
         """ Opens a local html file into the browser from a relative file path.
             The URL displayed in the web browser will start with "file://". """
+        if self.__looks_like_a_page_url(html_file):
+            self.open(html_file)
+            return
         if len(html_file) < 6 or not html_file.endswith(".html"):
             raise Exception('Expecting a ".html" file!')
         abs_path = os.path.abspath('.')
-        file_path = abs_path + "/%s" % html_file
+        file_path = None
+        if abs_path in html_file:
+            file_path = html_file
+        else:
+            file_path = abs_path + "/%s" % html_file
         self.open("file://" + file_path)
 
     def execute_script(self, script):
@@ -4642,7 +4649,8 @@ class BaseCase(unittest.TestCase):
             self.get_element(URL_AS_A_SELECTOR) if the input in not a URL. """
         if (url.startswith("http:") or url.startswith("https:") or (
                 url.startswith("://") or url.startswith("data:") or (
-                url.startswith("about:") or url.startswith("chrome:")))):
+                url.startswith("about:") or url.startswith("chrome:") or (
+                url.startswith("file:"))))):
             return True
         else:
             return False
