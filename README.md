@@ -726,29 +726,29 @@ self.click("a.analytics")  # Clicks the generated button
 ```
 (Due to popular demand, this traffic generation example has been baked into SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
 
-<h4>Using delayed asserts:</h4>
+<h4>Using deferred asserts:</h4>
 
-Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where delayed asserts come in. Here's the example:
+Let's say you want to verify multiple different elements on a web page in a single test, but you don't want the test to fail until you verified several elements at once so that you don't have to rerun the test to find more missing elements on the same page. That's where deferred asserts come in. Here's the example:
 
 ```python
 from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_delayed_asserts(self):
+    def test_deferred_asserts(self):
         self.open('https://xkcd.com/993/')
         self.wait_for_element('#comic')
-        self.delayed_assert_element('img[alt="Brand Identity"]')
-        self.delayed_assert_element('img[alt="Rocket Ship"]')  # Will Fail
-        self.delayed_assert_element('#comicmap')
-        self.delayed_assert_text('Fake Item', '#middleContainer')  # Will Fail
-        self.delayed_assert_text('Random', '#middleContainer')
-        self.delayed_assert_element('a[name="Super Fake !!!"]')  # Will Fail
-        self.process_delayed_asserts()
+        self.deferred_assert_element('img[alt="Brand Identity"]')
+        self.deferred_assert_element('img[alt="Rocket Ship"]')  # Will Fail
+        self.deferred_assert_element('#comicmap')
+        self.deferred_assert_text('Fake Item', '#middleContainer')  # Will Fail
+        self.deferred_assert_text('Random', '#middleContainer')
+        self.deferred_assert_element('a[name="Super Fake !!!"]')  # Will Fail
+        self.process_deferred_asserts()
 ```
 
-``delayed_assert_element()`` and ``delayed_assert_text()`` will save any exceptions that would be raised.
-To flush out all the failed delayed asserts into a single exception, make sure to call ``self.process_delayed_asserts()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_delayed_asserts()`` at the end of all your delayed asserts for a single page. This way, the screenshot from your log file will have the location where the delayed asserts were made.
+``deferred_assert_element()`` and ``deferred_assert_text()`` will save any exceptions that would be raised.
+To flush out all the failed deferred asserts into a single exception, make sure to call ``self.process_deferred_asserts()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_deferred_asserts()`` before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
 <h4>Accessing raw WebDriver</h4>
 
