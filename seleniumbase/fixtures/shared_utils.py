@@ -7,6 +7,8 @@ from selenium.webdriver.remote.errorhandler import NoSuchElementException
 from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 from selenium.webdriver.remote.errorhandler import NoSuchFrameException
 from selenium.webdriver.remote.errorhandler import NoSuchWindowException
+from seleniumbase.common.exceptions import NoSuchFileException
+from seleniumbase.common.exceptions import TimeLimitExceededException
 from seleniumbase import config as sb_config
 
 
@@ -15,27 +17,48 @@ def format_exc(exception, message):
     Formats an exception message to make the output cleaner.
     """
     if exception == Exception:
-        pass
+        exc = Exception
+        return exc, message
     elif exception == ElementNotVisibleException:
-        message = "ElementNotVisibleException: %s" % message
+        exc = ElementNotVisibleException
+    elif exception == "ElementNotVisibleException":
+        exc = ElementNotVisibleException
     elif exception == NoSuchElementException:
-        message = "NoSuchElementException: %s" % message
+        exc = NoSuchElementException
+    elif exception == "NoSuchElementException":
+        exc = NoSuchElementException
     elif exception == NoAlertPresentException:
-        message = "NoAlertPresentException: %s" % message
+        exc = NoAlertPresentException
+    elif exception == "NoAlertPresentException":
+        exc = NoAlertPresentException
     elif exception == NoSuchFrameException:
-        message = "NoSuchFrameException: %s" % message
+        exc = NoSuchFrameException
+    elif exception == "NoSuchFrameException":
+        exc = NoSuchFrameException
     elif exception == NoSuchWindowException:
-        message = "NoSuchWindowException: %s" % message
+        exc = NoSuchWindowException
+    elif exception == "NoSuchWindowException":
+        exc = NoSuchWindowException
+    elif exception == "NoSuchFileException":
+        exc = NoSuchFileException
     elif type(exception) is str:
+        exc = Exception
         message = "%s: %s" % (exception, message)
+        return exc, message
     else:
-        pass
+        exc = Exception
+        return exc, message
+    message = _format_message(message)
+    return exc, message
+
+
+def _format_message(message):
+    message = "\n " + message
     return message
 
 
 def __time_limit_exceeded(message):
-    raise Exception(
-        "TimeLimitExceeded: %s" % message)
+    raise TimeLimitExceededException(message)
 
 
 def check_if_time_limit_exceeded():
@@ -52,4 +75,5 @@ def check_if_time_limit_exceeded():
             message = (
                 "This test has exceeded the time limit of %s second%s!"
                 "" % (display_time_limit, plural))
+            message = _format_message(message)
             __time_limit_exceeded(message)
