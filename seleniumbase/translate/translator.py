@@ -493,14 +493,14 @@ def main():
 
             new_sb_lines = []
             for line in seleniumbase_lines:
-                line_length = len(line)
-                line_length2 = len(line)
-                line_length = get_width(line)
+                line_length2 = len(line)  # Normal Python string length used
+                line_length = get_width(line)  # Special characters count 2X
                 if line_length > code_width:
                     code_width = line_length
 
                 if console_width:
-                    # If line is larger than console_width, try to optimize it
+                    # If line is larger than console_width, try to optimize it.
+                    # Smart Python word wrap to be used with valid indentation.
                     if line_length + w > console_width:  # 5 is line number ws
                         if line.count('  # ') == 1:  # Has comments like this
                             if get_width(
@@ -581,6 +581,38 @@ def main():
                                 new_sb_lines.append(line2)
                             else:
                                 new_sb_lines.append(line)
+                            continue
+                        elif line.count('= "') == 1 and line.count('://') == 1:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split('://')[0] + '://" \\'
+                            line2 = new_ws + '"' + line.split('://')[1]
+                            new_sb_lines.append(line1)
+                            if get_width(line2) + w > console_width:
+                                if line2.count('/') > 0:
+                                    slash_one = line2.find('/')
+                                    line2a = line2[:slash_one+1] + '" \\'
+                                    line2b = new_ws + '"' + line2[slash_one+1:]
+                                    new_sb_lines.append(line2a)
+                                    new_sb_lines.append(line2b)
+                                    continue
+                            new_sb_lines.append(line2)
+                            continue
+                        elif line.count("= '") == 1 and line.count('://') == 1:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split('://')[0] + '://" \\'
+                            line2 = new_ws + "'" + line.split('://')[1]
+                            new_sb_lines.append(line1)
+                            if get_width(line2) + w > console_width:
+                                if line2.count('/') > 0:
+                                    slash_one = line2.find('/')
+                                    line2a = line2[:slash_one+1] + "' \\"
+                                    line2b = new_ws + "'" + line2[slash_one+1:]
+                                    new_sb_lines.append(line2a)
+                                    new_sb_lines.append(line2b)
+                                    continue
+                            new_sb_lines.append(line2)
                             continue
                     new_sb_lines.append(line)
 
