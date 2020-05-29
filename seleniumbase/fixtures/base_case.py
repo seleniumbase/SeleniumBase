@@ -4955,12 +4955,6 @@ class BaseCase(unittest.TestCase):
                             """    >>> "pip install -r requirements.txt"\n"""
                             """    >>> "python setup.py install" """)
 
-        # Configure the test time limit (if used)
-        self.set_time_limit(self.time_limit)
-
-        # Set the start time for the test (in ms)
-        sb_config.start_time_ms = int(time.time() * 1000.0)
-
         # Parse the settings file
         if self.settings_file:
             settings_parser.set_settings(self.settings_file)
@@ -5048,6 +5042,14 @@ class BaseCase(unittest.TestCase):
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
+
+        # Configure the test time limit (if used).
+        self.set_time_limit(self.time_limit)
+
+        # Set the start time for the test (in ms).
+        # Although the pytest clock starts before setUp() begins,
+        # the time-limit clock starts at the end of the setUp() method.
+        sb_config.start_time_ms = int(time.time() * 1000.0)
 
     def __set_last_page_screenshot(self):
         """ self.__last_page_screenshot is only for pytest html report logs
