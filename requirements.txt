@@ -1,7 +1,7 @@
 pip>=20.1.1
 packaging>=20.4
 setuptools>=44.1.0;python_version<"3.5"
-setuptools>=46.4.0;python_version>="3.5"
+setuptools>=47.1.1;python_version>="3.5"
 setuptools-scm>=4.1.1
 wheel>=0.34.2
 six==1.15.0
