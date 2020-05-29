@@ -26,6 +26,13 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
     for x in range(int(timeout * 10)):
         shared_utils.check_if_time_limit_exceeded()
         try:
+            # If there's an alert, skip
+            driver.switch_to.alert
+            return
+        except Exception:
+            # If there's no alert, continue
+            pass
+        try:
             ready_state = driver.execute_script("return document.readyState")
         except WebDriverException:
             # Bug fix for: [Permission denied to access property "document"]
@@ -49,6 +56,13 @@ def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
 
 
 def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
+    try:
+        # If there's an alert, skip
+        driver.switch_to.alert
+        return
+    except Exception:
+        # If there's no alert, continue
+        pass
     if not settings.WAIT_FOR_ANGULARJS:
         return
 
