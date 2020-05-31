@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_demo_site(self):
-        self.open("https://seleniumbase.io/demo_page.html")
+        self.open("https://seleniumbase.io/demo_page/")
 
         # Assert the title of the current web page
         self.assert_title("Web Testing Page")
