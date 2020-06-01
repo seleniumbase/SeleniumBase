@@ -8,7 +8,7 @@
 <img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
 </a></p>
 <p align="center"><div align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/✅%20💛%20查看代码-在GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a></div></p>
-<section align="center"><div align="center"><h3>中文文件 <=> <a href="https://seleniumbase.io/">(英语) English Docs</h3></div></section>
+<section align="center"><div align="center"><h3>中文文件 <=> <a href="https://seleniumbase.io/">English Docs</h3></div></section>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
