@@ -106,7 +106,7 @@ def main(*args, **kwargs):
             changed = True
             line = (
                 '<section align="center"><div align="center">'
-                '<h2>Reliable Test Automation</h2>'
+                '<h2>English / <a href="https://seleniumbase.io/help_docs/chinese/">中文文件</h2>'
                 '</div></section>')
         if "<!-- SeleniumBase Docs -->" in line:
             changed = True

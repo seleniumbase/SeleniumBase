@@ -65,8 +65,9 @@ nav:
     - Verifying WebDriver: help_docs/verify_webdriver.md
     - How it Works: help_docs/how_it_works.md
   - Examples: examples/ReadMe.md
-  - Translations: help_docs/translations.md
   - API Reference: help_docs/method_summary.md
+  - Translations: help_docs/translations.md
+  - Chinese / 中文文件: help_docs/chinese.md
   - Mobile Testing: help_docs/mobile_testing.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - JS Package Manager: help_docs/js_package_manager.md

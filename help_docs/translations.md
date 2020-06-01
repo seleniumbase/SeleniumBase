@@ -6,7 +6,7 @@
 <b>SeleniumBase</b> supports the following 10 languages:
 <ul>
 <li>English</li>
-<li>Chinese / 中文</li>
+<li><a href="https://seleniumbase.io/help_docs/chinese/">Chinese / 中文</a></li>
 <li>Dutch / Nederlands</li>
 <li>French / Français</li>
 <li>Italian / Italiano</li>
