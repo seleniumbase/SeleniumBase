@@ -3,11 +3,12 @@
 <meta property="og:description" content="Simple browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
-<!-- SeleniumBase Header -->
+<!-- SeleniumBase Header1 -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
 </a></p>
 <!-- View on GitHub -->
+<!-- SeleniumBase Header2 -->
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">

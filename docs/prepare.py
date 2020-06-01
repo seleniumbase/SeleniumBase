@@ -102,13 +102,19 @@ def main(*args, **kwargs):
                 r'✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀'
                 r'-02A79E.svg" alt="SeleniumBase on GitHub" />'
                 r'</a></div></p>')
-        if "<!-- SeleniumBase Header -->" in line:
+        if "<!-- SeleniumBase Header1 -->" in line:
             changed = True
             line = (
                 '<section align="center"><div align="center">'
-                '<h2>English / '
+                '<h2>Reliable Browser Testing</h2>'
+                '</div></section>')
+        if "<!-- SeleniumBase Header2 -->" in line:
+            changed = True
+            line = (
+                '<section align="center"><div align="center">'
+                '<h3>English Docs <=> '
                 '<a href="https://seleniumbase.io/help_docs/chinese/">'
-                '中文文件</h2>'
+                '中文文件</h3>'
                 '</div></section>')
         if "<!-- SeleniumBase Docs -->" in line:
             changed = True
