@@ -3,7 +3,7 @@
 <meta property="og:description" content="Simple browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
-<section align="center"><div align="center">'
+<section align="center"><div align="center">
 <h2>✅ 可靠的测试自动化</h2>
 </div></section>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
