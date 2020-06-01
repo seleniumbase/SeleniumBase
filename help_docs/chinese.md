@@ -3,11 +3,13 @@
 <meta property="og:description" content="Simple browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
-<!-- SeleniumBase Header -->
+<section align="center"><div align="center">'
+<h2>✅ 可靠的测试自动化</h2>
+</div></section>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
 </a></p>
-<p align="center"><div align="center"><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/✅%20💛%20查看代码-在GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a></div></p>
+<p align="center"><div align="center"><b>测试框架 </b><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/✅%20💛%20查看代码-在GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a></div></p>
 <section align="center"><div align="center"><h3>中文文件 <=> <a href="https://seleniumbase.io/">English Docs</h3></div></section>
 
 <p align="center">
