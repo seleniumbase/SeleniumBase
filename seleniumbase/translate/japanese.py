@@ -297,6 +297,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # create_bootstrap_tour(name=None, theme=None)
         return self.create_bootstrap_tour(*args, **kwargs)
 
+    def DRIVERJSツアーを作成する(self, *args, **kwargs):
+        # create_driverjs_tour(name=None, theme=None)
+        return self.create_driverjs_tour(*args, **kwargs)
+
     def HOPSCOTCHツアーを作成する(self, *args, **kwargs):
         # create_hopscotch_tour(name=None, theme=None)
         return self.create_hopscotch_tour(*args, **kwargs)

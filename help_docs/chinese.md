@@ -3,17 +3,21 @@
 <meta property="og:description" content="Simple browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
-<!-- SeleniumBase Header -->
+<section align="center"><div align="center">
+<h2>✅ 可靠的测试自动化</h2>
+</div></section>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
 </a></p>
-<!-- View on GitHub -->
+<p align="center"><div align="center"><b>测试框架 </b><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/✅%20💛%20查看代码-在GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a></div></p>
+<section align="center"><div align="center"><h3>中文文件 <=> <a href="https://seleniumbase.io/">English Docs</h3></div></section>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20📓📖📚-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/badge/docs-%20📖-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://seleniumbase.io/help_docs/chinese/">
+<img src="https://img.shields.io/badge/文件-%20中文-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
@@ -24,20 +28,19 @@
 </p>
 
 <p align="center">
-<a href="#python_installation">🚀 Get Started</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ CMD Options</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile Testing</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a>
+<a href="#python_installation">🚀 立即开始</a> |
+<a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🧙‍♂️ 命令行选项</a> |
+<a href="https://seleniumbase.io/help_docs/features_list/">🏰 功能列表</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 学习示例</a> |
+<a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 移动测试</a> |
+<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 测试报告</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌎 Languages</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">👩‍🎨 Visual Tests</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub-CI</a>
+<a href="https://seleniumbase.io/help_docs/method_summary/">📖 API语法</a> |
+<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ 创建旅游</a> |
+<a href="https://seleniumbase.io/help_docs/translations/">🌎 语言翻译</a> |
+<a href="https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/">⏺️ 录音机工具</a> |
+<a href="https://seleniumbase.io/examples/master_qa/ReadMe/">🛂 MasterQA</a> |
+<a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 持续集成</a>
 </p>
 
 <p align="center">
@@ -51,7 +54,7 @@
 
 * 需要 **[Python](https://www.python.org/downloads/)** 和 **[Git](https://git-scm.com/)**
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
-* 建议配合 [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) . <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
+* 建议配合 [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) . <i><a href="https://seleniumbase.io/help_docs/virtualenv_instructions/">See shortcut</a>.</i>
 * 更新 **[pip](https://pypi.org/project/pip/)** 以防出现警告:
 
 ```bash
@@ -153,12 +156,12 @@ self.switch_to_window(WINDOW_NUMBER)  # 切换不同的 window/tab
 self.save_screenshot(FILE_NAME)  # 保存当前页面的截图
 ```
 
-完整的 SeleniumBase methods, 可见: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
+完整的 SeleniumBase methods, 可见: <b><a href="https://seleniumbase.io/help_docs/method_summary/">Method Summary</a></b>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Learn More:</h2>
 
 <h4>自动化 WebDriver 技能:</h4>
-SeleniumBase 自动化控制 WebDriver 操作 web browsers(浏览器),在运行失败后进行截图保存. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">了解更多关于定制的启动测试用例</a>.</i>)
+SeleniumBase 自动化控制 WebDriver 操作 web browsers(浏览器),在运行失败后进行截图保存. (<i><a href="https://seleniumbase.io/help_docs/customizing_test_runs/">了解更多关于定制的启动测试用例</a>.</i>)
 
 <h4>简易的代码:</h4>
 SeleniumBase 使用简单简约的语法, 例如:
@@ -202,10 +205,10 @@ nosetests [FILE_NAME].py:[CLASS_NAME].[METHOD_NAME]
 在与页面元素进行交互之前，SeleniumBase方法会自动等待页面元素完成加载(*直到超时限制*)。这意味着您不再需要脚本中随机的' time.sleep() '语句.
 
 <h4>自动/手动混合模式:</h4>
-SeleniumBase包括一个名为 <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md">MasterQA</a></b>的解决方案, 通过让自动化执行所有浏览器操作，同时由手动测试人员处理验证，从而加快了手动测试的速度。.
+SeleniumBase包括一个名为 <b><a href="https://seleniumbase.io/examples/master_qa/ReadMe/">MasterQA</a></b>的解决方案, 通过让自动化执行所有浏览器操作，同时由手动测试人员处理验证，从而加快了手动测试的速度。.
 
 <h4>丰富的特性:</h4>
-获取SeleniumBase特性的完整列表, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">点击这里</a>.
+获取SeleniumBase特性的完整列表, <a href="https://seleniumbase.io/help_docs/features_list/">点击这里</a>.
 
 
 <a id="detailed_instructions"></a>
@@ -357,7 +360,7 @@ pytest test_suite.py --browser=firefox
 
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 测试目录定制:</h3>
 
-用于在SeleniumBase repo之外运行测试 **Pytest**, 你需要一份 **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** 在根目录上。用于在SeleniumBase repo之外运行测试 **Nosetests**, 你需要拷贝 **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** 在根目录上. (子文件夹应该包括一个空白的“_”。py“文件。)这些文件指定测试的默认配置细节。(对于运行nosetest，还可以使用``--config ``指定.cfg文件。示例`` nosetests [MY_TEST].py--config=[MY_CONFIG].cfg `` ')
+用于在SeleniumBase repo之外运行测试 <b>Pytest</b>, 你需要一份 <b>[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)</b> 在根目录上。用于在SeleniumBase repo之外运行测试 <b>Nosetests</b>, 你需要拷贝 <b>[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)</b> 在根目录上. (子文件夹应该包括一个空白的 "__init__.py" 文件。)这些文件指定测试的默认配置细节。(对于运行nosetest，还可以使用``--config ``指定.cfg文件。示例`` nosetests [MY_TEST].py--config=[MY_CONFIG].cfg `` ')
 
 作为一个快捷方式，您可以运行`` seleniumbase mkdir [DIRECTORY_NAME] ``来创建一个新的文件夹，其中已经包含了必要的文件和一些可以运行的示例测试。例子:
 
@@ -458,7 +461,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 为网站建设导游服务:</h3>
 
-学习更多内容 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (在 ``examples/tour_examples`` 文件). 这对于构建一个在线体验网站的原型非常有用。
+学习更多内容 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">SeleniumBase Interactive Walkthroughs</a> (在 ``examples/tour_examples`` 文件). 这对于构建一个在线体验网站的原型非常有用。
 
 
 <a id="utilizing_advanced_features"></a>
@@ -466,11 +469,11 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 下面是为测试设置生产环境时可以做的一些事情:
 
-* 您可以启动 [Jenkins](https://jenkins.io/) 为定期运行测试构建服务器. 这是一个真实的Jenkins的headless浏览器自动化的例子, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins在Azure上的例子</a> 或者 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">在谷歌云上的SeleniumBase Jenkins例子</a>.
+* 您可以启动 [Jenkins](https://jenkins.io/) 为定期运行测试构建服务器. 这是一个真实的Jenkins的headless浏览器自动化的例子, check out the <a href="https://seleniumbase.io/integrations/azure/jenkins/ReadMe/">SeleniumBase Jenkins在Azure上的例子</a> 或者 <a href="https://seleniumbase.io/integrations/google_cloud/ReadMe/">在谷歌云上的SeleniumBase Jenkins例子</a>.
 
-* 您可以使用 [the Selenium Grid](https://selenium.dev/documentation/en/grid/) 通过在多台机器上并行执行测试来扩展测试. 要做到这一点，请查看 [SeleniumBase selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), 这应该有你需要的一切，包括 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">Selenium Grid ReadMe</a>, 这会帮助你开始.
+* 您可以使用 [the Selenium Grid](https://selenium.dev/documentation/en/grid/) 通过在多台机器上并行执行测试来扩展测试. 要做到这一点，请查看 [SeleniumBase selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), 这应该有你需要的一切，包括 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">Selenium Grid ReadMe</a>, 这会帮助你开始.
 
-* 如果你用 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md">SeleniumBase MySQL 特性</a> 保存在服务器机器上运行的测试结果,你需要安装 [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) 帮助你从你的数据库更容易地读和写.
+* 如果你用 <a href="https://seleniumbase.io/help_docs/mysql_installation/">SeleniumBase MySQL 特性</a> 保存在服务器机器上运行的测试结果,你需要安装 [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) 帮助你从你的数据库更容易地读和写.
 
 * 如果你用 [Slack](https://slack.com), 您可以使用 [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin)很容易地让Jenkins jobs在那里显示结果. 另一种将消息从测试发送到Slack的方法是通过 [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 

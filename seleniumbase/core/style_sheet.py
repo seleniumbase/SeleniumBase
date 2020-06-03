@@ -116,6 +116,17 @@ bt_backdrop_style = (
     }
     ''')
 
+# DriverJS Tour Backdrop Style
+dt_backdrop_style = (
+    '''
+    .driver-fix-stacking {
+        pointer-events: none !important;
+    }
+    #driver-popover-item, .popover-class {
+        pointer-events: auto !important;
+    }
+    ''')
+
 messenger_style = (
     '''
     .messenger-message-inner {
