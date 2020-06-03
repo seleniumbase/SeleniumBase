@@ -3211,16 +3211,17 @@ class BaseCase(unittest.TestCase):
             """
             // DriverJS Tour
             var tour = new Driver({
-                animate: false,  // Animate while changing highlighted element
-                opacity: 0.15,  // Background opacity (0: no popover / overlay)
+                opacity: 0.24,  // Background opacity (0: no popover / overlay)
+                padding: 6,    // Distance of element from around the edges
                 allowClose: false, // Whether clicking on overlay should close
                 overlayClickNext: false, // Move to next step on overlay click
-                doneBtnText: 'Done', // Text on the final button
-                closeBtnText: 'Close', // Text on the close button
-                nextBtnText: 'Next', // Next button text for this step
-                prevBtnText: 'Previous', // Previous button text for this step
-                showButtons: true, // Do not show control buttons in footer
+                doneBtnText: 'Done', // Text that appears on the Done button
+                closeBtnText: 'Close', // Text appearing on the Close button
+                nextBtnText: 'Next', // Text that appears on the Next button
+                prevBtnText: 'Previous', // Text appearing on Previous button
+                showButtons: true, // This shows control buttons in the footer
                 keyboardControl: true, // (escape to close, arrow keys to move)
+                animate: true,   // Animate while changing highlighted element
             });
             tour.defineSteps([
             """)
@@ -3441,8 +3442,6 @@ class BaseCase(unittest.TestCase):
             alignment - Choose from "top", "bottom", "left", and "right".
                         ("top" is the default alignment).
         """
-        if not selector:
-            selector = "html"
         message = (
             '<font size=\"3\" color=\"#33477B\"><b>' + message + '</b></font>')
         title_row = ""
@@ -3452,13 +3451,16 @@ class BaseCase(unittest.TestCase):
         else:
             title_row = "title: '%s'," % title
         align_row = "position: '%s'," % alignment
-        if selector == "html":
+        ani_row = "animate: true,"
+        if not selector or selector == "html" or selector == "body":
             selector = "body"
-            align_row = "position: '%s'," % "bottom"
+            ani_row = "animate: false,"
+            align_row = "position: '%s'," % "mid-center"
         element_row = "element: '%s'," % selector
-        description_row = "description: '%s'," % message
+        desc_row = "description: '%s'," % message
 
         step = ("""{
+                %s
                 %s
                 popover: {
                   className: 'popover-class',
@@ -3466,7 +3468,7 @@ class BaseCase(unittest.TestCase):
                   %s
                   %s
                 }
-                },""" % (element_row, title_row, description_row, align_row))
+                },""" % (element_row, ani_row, title_row, desc_row, align_row))
 
         self._tour_steps[name].append(step)
 
