@@ -2,7 +2,7 @@
 
 ## Website Tours
 
-SeleniumBase Tours utilize 4 JavaScript libraries for creating interactive walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
+SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
 **Example tour:**
 
@@ -15,7 +15,7 @@ pytest google_tour.py
 
 ### Creating a new tour:
 
-#### To create a tour utilizing the Shepherd JS Library, use one of the following:
+#### To create a tour utilizing the Shepherd Library, use one of the following:
 
 ``self.create_shepherd_tour()``
 
@@ -33,7 +33,7 @@ OR
 
 ``self.create_tour(theme="bootstrap")``
 
-#### To create a tour utilizing the Intro JS Library, use one of the following:
+#### To create a tour utilizing the IntroJS Library, use one of the following:
 
 ``self.create_introjs_tour()``
 
@@ -41,7 +41,15 @@ OR
 
 ``self.create_tour(theme="introjs")``
 
-#### To create a tour utilizing the Hopscotch JS Library, use one of the following:
+#### To create a tour utilizing the DriverJS Library, use one of the following:
+
+``self.create_driverjs_tour()``
+
+OR
+
+``self.create_tour(theme="driverjs")``
+
+#### To create a tour utilizing the Hopscotch Library, use one of the following:
 
 ``self.create_hopscotch_tour()``
 

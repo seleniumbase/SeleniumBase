@@ -297,6 +297,10 @@ class 硒测试用例(BaseCase):  # noqa
         # create_bootstrap_tour(name=None, theme=None)
         return self.create_bootstrap_tour(*args, **kwargs)
 
+    def 创建DRIVERJS游览(self, *args, **kwargs):
+        # create_driverjs_tour(name=None, theme=None)
+        return self.create_driverjs_tour(*args, **kwargs)
+
     def 创建HOPSCOTCH游览(self, *args, **kwargs):
         # create_hopscotch_tour(name=None, theme=None)
         return self.create_hopscotch_tour(*args, **kwargs)

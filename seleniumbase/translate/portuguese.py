@@ -297,6 +297,10 @@ class CasoDeTeste(BaseCase):
         # create_bootstrap_tour(name=None, theme=None)
         return self.create_bootstrap_tour(*args, **kwargs)
 
+    def criar_um_tour_driverjs(self, *args, **kwargs):
+        # create_driverjs_tour(name=None, theme=None)
+        return self.create_driverjs_tour(*args, **kwargs)
+
     def criar_um_tour_hopscotch(self, *args, **kwargs):
         # create_hopscotch_tour(name=None, theme=None)
         return self.create_hopscotch_tour(*args, **kwargs)
