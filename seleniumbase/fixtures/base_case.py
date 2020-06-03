@@ -3084,8 +3084,8 @@ class BaseCase(unittest.TestCase):
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
                     Alternatively, you may use a different JavaScript Library
-                    as the theme. Those include "IntroJS", "Bootstrap", and
-                    "Hopscotch".
+                    as the theme. Those include "IntroJS", "DriverJS",
+                    "Hopscotch", and "Bootstrap".
         """
         if not name:
             name = "default"
@@ -3102,6 +3102,12 @@ class BaseCase(unittest.TestCase):
                 return
             elif theme.lower() == "introjs":
                 self.create_introjs_tour(name)
+                return
+            elif theme.lower() == "driver":
+                self.create_driverjs_tour(name)
+                return
+            elif theme.lower() == "driverjs":
+                self.create_driverjs_tour(name)
                 return
             elif theme.lower() == "shepherd":
                 self.create_shepherd_tour(name, theme="light")
@@ -3192,8 +3198,38 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
 
+    def create_driverjs_tour(self, name=None):
+        """ Creates a DriverJS tour for a website.
+            @Params
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
+        """
+        if not name:
+            name = "default"
+
+        new_tour = (
+            """
+            // DriverJS Tour
+            var tour = new Driver({
+                animate: false,  // Animate while changing highlighted element
+                opacity: 0.15,  // Background opacity (0: no popover / overlay)
+                allowClose: false, // Whether clicking on overlay should close
+                overlayClickNext: false, // Move to next step on overlay click
+                doneBtnText: 'Done', // Text on the final button
+                closeBtnText: 'Close', // Text on the close button
+                nextBtnText: 'Next', // Next button text for this step
+                prevBtnText: 'Previous', // Previous button text for this step
+                showButtons: true, // Do not show control buttons in footer
+                keyboardControl: true, // (escape to close, arrow keys to move)
+            });
+            tour.defineSteps([
+            """)
+
+        self._tour_steps[name] = []
+        self._tour_steps[name].append(new_tour)
+
     def create_hopscotch_tour(self, name=None):
-        """ Creates an Hopscotch tour for a website.
+        """ Creates a Hopscotch tour for a website.
             @Params
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
@@ -3246,7 +3282,7 @@ class BaseCase(unittest.TestCase):
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+                        ("top" is default, except for Hopscotch and DriverJS).
             duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
                        before automatically advancing to the next tour step.
         """
@@ -3276,7 +3312,8 @@ class BaseCase(unittest.TestCase):
 
         if not alignment or (
                 alignment not in ["top", "bottom", "left", "right"]):
-            if "Hopscotch" not in self._tour_steps[name][0]:
+            t_name = self._tour_steps[name][0]
+            if "Hopscotch" not in t_name and "DriverJS" not in t_name:
                 alignment = "top"
             else:
                 alignment = "bottom"
@@ -3285,6 +3322,10 @@ class BaseCase(unittest.TestCase):
             self.__add_bootstrap_tour_step(
                 message, selector=selector, name=name, title=title,
                 alignment=alignment, duration=duration)
+        elif "DriverJS" in self._tour_steps[name][0]:
+            self.__add_driverjs_tour_step(
+                message, selector=selector, name=name, title=title,
+                alignment=alignment)
         elif "Hopscotch" in self._tour_steps[name][0]:
             self.__add_hopscotch_tour_step(
                 message, selector=selector, name=name, title=title,
@@ -3388,6 +3429,47 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name].append(step)
 
+    def __add_driverjs_tour_step(self, message, selector=None, name=None,
+                                 title=None, alignment=None):
+        """ Allows the user to add tour steps for a website.
+            @Params
+            message - The message to display.
+            selector - The CSS Selector of the Element to attach to.
+            name - If creating multiple tours at the same time,
+                   use this to select the tour you wish to add steps to.
+            title - Additional header text that appears above the message.
+            alignment - Choose from "top", "bottom", "left", and "right".
+                        ("top" is the default alignment).
+        """
+        if not selector:
+            selector = "html"
+        message = (
+            '<font size=\"3\" color=\"#33477B\"><b>' + message + '</b></font>')
+        title_row = ""
+        if not title:
+            title_row = "title: '%s'," % message
+            message = ""
+        else:
+            title_row = "title: '%s'," % title
+        align_row = "position: '%s'," % alignment
+        if selector == "html":
+            selector = "body"
+            align_row = "position: '%s'," % "bottom"
+        element_row = "element: '%s'," % selector
+        description_row = "description: '%s'," % message
+
+        step = ("""{
+                %s
+                popover: {
+                  className: 'popover-class',
+                  %s
+                  %s
+                  %s
+                }
+                },""" % (element_row, title_row, description_row, align_row))
+
+        self._tour_steps[name].append(step)
+
     def __add_hopscotch_tour_step(self, message, selector=None, name=None,
                                   title=None, alignment=None):
         """ Allows the user to add tour steps for a website.
@@ -3440,7 +3522,7 @@ class BaseCase(unittest.TestCase):
         if title:
             message = "<center><b>" + title + "</b></center><hr>" + message
 
-        message = '<font size=\"3\" color=\"#33475B\">' + message + '</font>'
+        message = '<font size=\"3\" color=\"#33477B\">' + message + '</font>'
 
         step = ("""{%s
                 intro: '%s',
@@ -3467,6 +3549,10 @@ class BaseCase(unittest.TestCase):
 
         if "Bootstrap" in self._tour_steps[name][0]:
             tour_helper.play_bootstrap_tour(
+                self.driver, self._tour_steps, self.browser,
+                self.message_duration, name=name, interval=interval)
+        elif "DriverJS" in self._tour_steps[name][0]:
+            tour_helper.play_driverjs_tour(
                 self.driver, self._tour_steps, self.browser,
                 self.message_duration, name=name, interval=interval)
         elif "Hopscotch" in self._tour_steps[name][0]:

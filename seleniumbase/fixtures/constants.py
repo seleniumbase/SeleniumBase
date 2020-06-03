@@ -92,6 +92,14 @@ class BootstrapTour:
               "bootstrap-tour/%s/js/bootstrap-tour-standalone.min.js" % VER)
 
 
+class DriverJS:
+    VER = "0.9.8"
+    MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+               "driver.js/%s/driver.min.css" % VER)
+    MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+              "driver.js/%s/driver.min.js" % VER)
+
+
 class Hopscotch:
     VER = "0.3.1"
     MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
