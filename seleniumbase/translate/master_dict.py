@@ -1114,6 +1114,18 @@ class MD:
     md["create_bootstrap_tour"][8] = "сделать_BOOTSTRAP_тур"
     md["create_bootstrap_tour"][9] = "crear_una_gira_bootstrap"
 
+    md["create_driverjs_tour"] = ["*"] * num_langs
+    md["create_driverjs_tour"][0] = "create_driverjs_tour"
+    md["create_driverjs_tour"][1] = "创建DRIVERJS游览"
+    md["create_driverjs_tour"][2] = "maak_een_driverjs_tour"
+    md["create_driverjs_tour"][3] = "créer_une_visite_driverjs"
+    md["create_driverjs_tour"][4] = "creare_un_tour_driverjs"
+    md["create_driverjs_tour"][5] = "DRIVERJSツアーを作成する"
+    md["create_driverjs_tour"][6] = "가이드_DRIVERJS_투어_만들기"
+    md["create_driverjs_tour"][7] = "criar_um_tour_driverjs"
+    md["create_driverjs_tour"][8] = "сделать_DRIVERJS_тур"
+    md["create_driverjs_tour"][9] = "crear_una_gira_driverjs"
+
     md["create_hopscotch_tour"] = ["*"] * num_langs
     md["create_hopscotch_tour"][0] = "create_hopscotch_tour"
     md["create_hopscotch_tour"][1] = "创建HOPSCOTCH游览"

@@ -297,6 +297,10 @@ class CasoDiProva(BaseCase):
         # create_bootstrap_tour(name=None, theme=None)
         return self.create_bootstrap_tour(*args, **kwargs)
 
+    def creare_un_tour_driverjs(self, *args, **kwargs):
+        # create_driverjs_tour(name=None, theme=None)
+        return self.create_driverjs_tour(*args, **kwargs)
+
     def creare_un_tour_hopscotch(self, *args, **kwargs):
         # create_hopscotch_tour(name=None, theme=None)
         return self.create_hopscotch_tour(*args, **kwargs)
