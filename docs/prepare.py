@@ -106,7 +106,7 @@ def main(*args, **kwargs):
             changed = True
             line = (
                 '<section align="center"><div align="center">'
-                '<h2>Reliable Browser Testing</h2>'
+                '<h2>✅ Reliable Browser Testing</h2>'
                 '</div></section>')
         if "<!-- SeleniumBase Header2 -->" in line:
             changed = True
