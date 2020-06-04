@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_basic(self):
+    def test_create_tour(self):
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
         self.wait_for_element("#searchboxinput")
         self.wait_for_element("#minimap")

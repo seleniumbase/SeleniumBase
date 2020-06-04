@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_basic(self):
+    def test_create_tour(self):
         self.open('https://xkcd.com/1117/')
         self.assert_element('img[alt="My Sky"]')
         self.create_tour(theme="dark")
