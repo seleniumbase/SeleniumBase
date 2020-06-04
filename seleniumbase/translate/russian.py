@@ -370,6 +370,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def набор_тему_сообщения(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def показать_сообщение(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def открыть_HTML_файл(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def получить_агента_пользователя(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_Русский(MasterQA, ТестНаСелен):

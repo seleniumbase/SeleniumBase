@@ -370,6 +370,10 @@ class CasoDiProva(BaseCase):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def impostare_tema_del_messaggio(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def visualizza_messaggio(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class CasoDiProva(BaseCase):
     def apri_html_file(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def ottenere_agente_utente(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_Italiano(MasterQA, CasoDiProva):

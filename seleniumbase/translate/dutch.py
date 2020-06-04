@@ -370,6 +370,10 @@ class Testgeval(BaseCase):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def kenmerk_thema_van_bericht(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def bericht_weergeven(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class Testgeval(BaseCase):
     def html_bestand_openen(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def gebruikersagent_ophalen(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_Nederlands(MasterQA, Testgeval):

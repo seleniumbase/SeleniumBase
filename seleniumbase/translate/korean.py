@@ -370,6 +370,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def 메시지_테마_설정(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def 메시지를_표시(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def HTML_파일_열기(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def 사용자_에이전트_가져_오기(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):

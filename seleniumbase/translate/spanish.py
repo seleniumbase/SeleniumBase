@@ -370,6 +370,10 @@ class CasoDePrueba(BaseCase):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def establecer_tema_del_mensaje(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def mostrar_mensaje(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class CasoDePrueba(BaseCase):
     def abrir_archivo_html(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def obtener_agente_de_usuario(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_Español(MasterQA, CasoDePrueba):

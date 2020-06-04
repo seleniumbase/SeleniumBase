@@ -370,6 +370,10 @@ class CasDeBase(BaseCase):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def définir_thème_du_message(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def afficher_message(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class CasDeBase(BaseCase):
     def ouvrir_html_fichier(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def obtenir_agent_utilisateur(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_Français(MasterQA, CasDeBase):

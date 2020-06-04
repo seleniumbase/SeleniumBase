@@ -1330,6 +1330,18 @@ class MD:
     md["write"][8] = "написать"
     md["write"][9] = "escribir"
 
+    md["set_messenger_theme"] = ["*"] * num_langs
+    md["set_messenger_theme"][0] = "set_messenger_theme"
+    md["set_messenger_theme"][1] = "设置消息主题"
+    md["set_messenger_theme"][2] = "kenmerk_thema_van_bericht"
+    md["set_messenger_theme"][3] = "définir_thème_du_message"
+    md["set_messenger_theme"][4] = "impostare_tema_del_messaggio"
+    md["set_messenger_theme"][5] = "メッセージのスタイルを設定する"
+    md["set_messenger_theme"][6] = "메시지_테마_설정"
+    md["set_messenger_theme"][7] = "definir_tema_da_mensagem"
+    md["set_messenger_theme"][8] = "набор_тему_сообщения"
+    md["set_messenger_theme"][9] = "establecer_tema_del_mensaje"
+
     md["post_message"] = ["*"] * num_langs
     md["post_message"][0] = "post_message"
     md["post_message"][1] = "显示讯息"
@@ -1449,6 +1461,18 @@ class MD:
     md["open_html_file"][7] = "abrir_arquivo_html"
     md["open_html_file"][8] = "открыть_HTML_файл"
     md["open_html_file"][9] = "abrir_archivo_html"
+
+    md["get_user_agent"] = ["*"] * num_langs
+    md["get_user_agent"][0] = "get_user_agent"
+    md["get_user_agent"][1] = "获取用户代理"
+    md["get_user_agent"][2] = "gebruikersagent_ophalen"
+    md["get_user_agent"][3] = "obtenir_agent_utilisateur"
+    md["get_user_agent"][4] = "ottenere_agente_utente"
+    md["get_user_agent"][5] = "ユーザーエージェントの取得"
+    md["get_user_agent"][6] = "사용자_에이전트_가져_오기"
+    md["get_user_agent"][7] = "obter_agente_do_usuário"
+    md["get_user_agent"][8] = "получить_агента_пользователя"
+    md["get_user_agent"][9] = "obtener_agente_de_usuario"
 
     ################
     # Duplicates
