@@ -43,6 +43,8 @@ self.get_page_source()
 self.get_title()
 # Duplicates: self.get_page_title()
 
+self.get_user_agent()
+
 self.go_back()
 
 self.go_forward()

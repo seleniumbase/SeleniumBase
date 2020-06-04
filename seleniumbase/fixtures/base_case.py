@@ -423,6 +423,10 @@ class BaseCase(unittest.TestCase):
         """ The shorter version of self.get_page_title() """
         return self.get_page_title()
 
+    def get_user_agent(self):
+        user_agent = self.driver.execute_script("return navigator.userAgent;")
+        return user_agent
+
     def go_back(self):
         self.__last_page_load_url = None
         self.driver.back()
@@ -1186,10 +1190,14 @@ class BaseCase(unittest.TestCase):
         outdated_driver = False
         element = None
         try:
-            if self.browser == "safari":
+            if self.mobile_emulator:
+                # On mobile, click to hover the element
+                dropdown_element.click()
+            elif self.browser == "safari":
                 # Use the workaround for hover-clicking on Safari
                 raise Exception("This Exception will be caught.")
-            page_actions.hover_element(self.driver, dropdown_element)
+            else:
+                page_actions.hover_element(self.driver, dropdown_element)
         except Exception:
             outdated_driver = True
             element = self.wait_for_element_present(
@@ -1200,8 +1208,12 @@ class BaseCase(unittest.TestCase):
                 self.open(self.__get_href_from_partial_link_text(
                     click_selector))
             else:
-                self.js_click(click_selector, click_by)
-        if not outdated_driver:
+                self.js_click(click_selector, by=click_by)
+        if outdated_driver:
+            pass  # Already did the click workaround
+        elif self.mobile_emulator:
+            self.click(click_selector, by=click_by)
+        elif not outdated_driver:
             element = page_actions.hover_and_click(
                 self.driver, hover_selector, click_selector,
                 hover_by, click_by, timeout)
@@ -3612,6 +3624,8 @@ class BaseCase(unittest.TestCase):
             location = "default"  # "bottom_right"
         if not max_messages:
             max_messages = "default"  # "8"
+        else:
+            max_messages = str(max_messages)  # Value must be in string format
         js_utils.set_messenger_theme(
             self.driver, theme=theme,
             location=location, max_messages=max_messages)
@@ -5130,6 +5144,11 @@ class BaseCase(unittest.TestCase):
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
+
+        if self.browser in ["firefox", "ie", "safari"]:
+            # Only Chromium-based browsers have the mobile emulator.
+            # Some actions such as hover-clicking are different on mobile.
+            self.mobile_emulator = False
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)

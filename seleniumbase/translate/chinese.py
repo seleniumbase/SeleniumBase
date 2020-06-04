@@ -370,6 +370,10 @@ class 硒测试用例(BaseCase):  # noqa
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 
+    def 设置消息主题(self, *args, **kwargs):
+        # set_messenger_theme(theme="default", location="default")
+        return self.set_messenger_theme(*args, **kwargs)
+
     def 显示讯息(self, *args, **kwargs):
         # post_message(message, duration=None, pause=True, style="info")
         return self.post_message(*args, **kwargs)
@@ -409,6 +413,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 打开HTML文件(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def 获取用户代理(self, *args, **kwargs):
+        # get_user_agent()
+        return self.get_user_agent(*args, **kwargs)
 
 
 class MasterQA_中文(MasterQA, 硒测试用例):
