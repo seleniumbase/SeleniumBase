@@ -3616,6 +3616,8 @@ class BaseCase(unittest.TestCase):
             location = "default"  # "bottom_right"
         if not max_messages:
             max_messages = "default"  # "8"
+        else:
+            max_messages = str(max_messages)  # Value must be in string format
         js_utils.set_messenger_theme(
             self.driver, theme=theme,
             location=location, max_messages=max_messages)
