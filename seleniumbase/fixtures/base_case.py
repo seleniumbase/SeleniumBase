@@ -423,6 +423,10 @@ class BaseCase(unittest.TestCase):
         """ The shorter version of self.get_page_title() """
         return self.get_page_title()
 
+    def get_user_agent(self):
+        user_agent = self.driver.execute_script("return navigator.userAgent;")
+        return user_agent
+
     def go_back(self):
         self.__last_page_load_url = None
         self.driver.back()
