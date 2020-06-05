@@ -158,7 +158,7 @@ self.save_screenshot(FILE_NAME)  # 保存当前页面的截图
 
 完整的 SeleniumBase methods, 可见: <b><a href="https://seleniumbase.io/help_docs/method_summary/">Method Summary</a></b>
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Learn More:</h2>
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 了解更多信息:</h2>
 
 <h4>自动化 WebDriver 技能:</h4>
 SeleniumBase 自动化控制 WebDriver 操作 web browsers(浏览器),在运行失败后进行截图保存. (<i><a href="https://seleniumbase.io/help_docs/customizing_test_runs/">了解更多关于定制的启动测试用例</a>.</i>)
