@@ -48,6 +48,12 @@ Run tests with verbose output: (includes more details)
 pytest test_suite.py -v
 ```
 
+Run a test on the Demo Site to try many SeleniumBase methods:
+```bash
+pytest test_demo_site.py
+```
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/demo_page.gif" title="SeleniumBase Mobile Mode" /><br />
+
 Run tests multi-threaded using [n] threads:
 ```bash
 pytest test_suite.py -v -n=4
