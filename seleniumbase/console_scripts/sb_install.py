@@ -13,7 +13,7 @@ Example:
         seleniumbase install chromedriver
         seleniumbase install geckodriver
         seleniumbase install edgedriver
-        seleniumbase install chromedriver 81.0.4044.69
+        seleniumbase install chromedriver 83.0.4103.39
         seleniumbase install chromedriver latest
         seleniumbase install chromedriver -p
         seleniumbase install chromedriver latest -p

@@ -15,6 +15,10 @@ seleniumbase install operadriver
 ```bash
 seleniumbase install chromedriver latest
 ```
+* You can also install a specific version of chromedriver for a specific version of Chrome:
+```bash
+seleniumbase install chromedriver 83.0.4103.39
+```
 
 If you plan on using the [Selenium Grid integration](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md) (which allows for remote webdriver), you'll need to put the drivers on your System PATH. On macOS and Linux, ``/usr/local/bin`` is a good PATH spot. On Windows, you may need to set the System PATH under Environment Variables to include the location where you placed the driver files. As a shortcut, you could place the driver files into your Python ``Scripts/`` folder in the location where you have Python installed, which should already be on your System PATH.
 

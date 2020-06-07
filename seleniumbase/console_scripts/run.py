@@ -27,8 +27,9 @@ from seleniumbase.common import obfuscate
 from seleniumbase.common import unobfuscate
 from seleniumbase.console_scripts import logo_helper
 from seleniumbase.console_scripts import objectify
-from seleniumbase.console_scripts import sb_mkdir
 from seleniumbase.console_scripts import sb_install
+from seleniumbase.console_scripts import sb_mkdir
+from seleniumbase.console_scripts import sb_print
 from seleniumbase.utilities.selenium_grid import download_selenium_server
 from seleniumbase.utilities.selenium_grid import grid_hub
 from seleniumbase.utilities.selenium_grid import grid_node
@@ -103,7 +104,7 @@ def show_install_usage():
     print("  Example:")
     print("           seleniumbase install chromedriver")
     print("           seleniumbase install geckodriver")
-    print("           seleniumbase install chromedriver 76.0.3809.126")
+    print("           seleniumbase install chromedriver 83.0.4103.39")
     print("           seleniumbase install chromedriver latest")
     print("           seleniumbase install chromedriver -p")
     print("           seleniumbase install chromedriver latest -p")

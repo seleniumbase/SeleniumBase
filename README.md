@@ -3,13 +3,14 @@
 <meta property="og:description" content="Simple browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
-<!-- SeleniumBase Header1 -->
+
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
 </a></p>
+<p align="center">
+<b>Everything you need to test websites.</b>
+</p>
 <!-- View on GitHub -->
-<!-- SeleniumBase Header2 -->
-
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
@@ -20,8 +21,9 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">
-<b>Everything you need for web testing.</b>
+<p>
+SeleniumBase is an all-in-one framework for web automation, end-to-end testing, and website tours.
+Tests are run with "pytest". Browsers are controlled by WebDriver.
 </p>
 
 <p align="center">
@@ -41,12 +43,8 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 GitHub-CI</a>
 </p>
 
-<p align="center">
-<b>Selenium and pytest in one combined.</b>
-</p>
 <p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></p>
 
-<!-- SeleniumBase Docs -->
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Get Started:</h2>
 
