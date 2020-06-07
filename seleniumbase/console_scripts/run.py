@@ -29,7 +29,6 @@ from seleniumbase.console_scripts import logo_helper
 from seleniumbase.console_scripts import objectify
 from seleniumbase.console_scripts import sb_install
 from seleniumbase.console_scripts import sb_mkdir
-from seleniumbase.console_scripts import sb_print
 from seleniumbase.utilities.selenium_grid import download_selenium_server
 from seleniumbase.utilities.selenium_grid import grid_hub
 from seleniumbase.utilities.selenium_grid import grid_node
