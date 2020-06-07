@@ -108,14 +108,6 @@ def main(*args, **kwargs):
                 '<section align="center"><div align="center">'
                 '<h2>✅ Reliable Browser Testing</h2>'
                 '</div></section>')
-        if "<!-- SeleniumBase Header2 -->" in line:
-            changed = True
-            line = (
-                '<section align="center"><div align="center">'
-                '<h3>English Docs <=> '
-                '<a href="https://seleniumbase.io/help_docs/chinese/">'
-                '中文文件</h3>'
-                '</div></section>')
         if "<!-- SeleniumBase Docs -->" in line:
             changed = True
             line = (

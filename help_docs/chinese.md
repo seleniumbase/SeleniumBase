@@ -48,7 +48,6 @@
 </p>
 <p align="center"><div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
 
-<!-- SeleniumBase Docs -->
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 立即开始:</h2>
 
