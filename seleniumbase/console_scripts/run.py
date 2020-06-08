@@ -180,6 +180,8 @@ def show_translate_usage():
     print("         -p / --print  (Print translation output to the screen)")
     print("         -o / --overwrite  (Overwrite the file being translated)")
     print("         -c / --copy  (Copy the translation to a new .py file)")
+    print("  Options:")
+    print("         -n  (include line Numbers when using the Print action)")
     print("  Output:")
     print("         Translates a SeleniumBase Python file into the language")
     print('         specified. Method calls and "import" lines get swapped.')

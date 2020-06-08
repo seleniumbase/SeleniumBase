@@ -14,6 +14,8 @@ Actions:
         -p / --print  (Print translation output to the screen)
         -o / --overwrite  (Overwrite the file being translated)
         -c / --copy  (Copy the translation to a new .py file)
+Options:
+        -n  (include line Numbers when using the Print action)
 Output:
         Translates a SeleniumBase Python file into the language
         specified. Method calls and "import" lines get swapped.
@@ -52,6 +54,8 @@ def invalid_run_command(msg=None):
     exp += "         -p / --print  (Print translation output to the screen)\n"
     exp += "         -o / --overwrite  (Overwrite the file being translated)\n"
     exp += "         -c / --copy  (Copy the translation to a new .py file)\n"
+    exp += "  Options:\n"
+    exp += "         -n  (include line Numbers when using the Print action)\n"
     exp += "  Output:\n"
     exp += "         Translates a SeleniumBase Python file into the language\n"
     exp += '         specified. Method calls and "import" lines get swapped.\n'
@@ -68,8 +72,8 @@ def invalid_run_command(msg=None):
         raise Exception('INVALID RUN COMMAND!\n%s\n\n%s' % (msg, exp))
 
 
-def ranges():
-    # Get the ranges of special characters of Chinese, Japanese, and Korean
+def sc_ranges():
+    # Get the ranges of special characters of Chinese, Japanese, and Korean.
     special_char_ranges = ([
         {"from": ord(u"\u3300"), "to": ord(u"\u33ff")},
         {"from": ord(u"\ufe30"), "to": ord(u"\ufe4f")},
@@ -89,13 +93,15 @@ def ranges():
 
 
 def is_cjk(char):
-    # Returns True if the special character is Chinese, Japanese, or Korean
-    sc = any([range["from"] <= ord(char) <= range["to"] for range in ranges()])
+    # Returns True if the special character is Chinese, Japanese, or Korean.
+    sc = any(
+        [range["from"] <= ord(char) <= range["to"] for range in sc_ranges()])
     return sc
 
 
 def get_width(line):
-    # Chinese/Japanese/Korean characters take up double width visually
+    # Return the true width of the line. Not the same as line length.
+    # Chinese/Japanese/Korean characters take up double width visually.
     line_length = len(line)
     for char in line:
         if is_cjk(char):
@@ -253,6 +259,7 @@ def main():
     print_only = False
     help_me = False
     invalid_cmd = None
+    line_numbers = False
 
     expected_arg = ("A SeleniumBase Python file")
     command_args = sys.argv[2:]
@@ -284,6 +291,8 @@ def main():
                 copy = True
             elif option == "-p" or option == "--print":
                 print_only = True
+            elif option == "-n":
+                line_numbers = True
             elif option == "--en" or option == "--english":
                 new_lang = "English"
             elif option == "--zh" or option == "--chinese":
@@ -444,6 +453,7 @@ def main():
         raise Exception("\n\n`%s` is not a valid SeleniumBase test file!\n"
                         "\nExpecting: [%s]\n"
                         % (seleniumbase_file, expected_arg))
+    all_code = all_code.replace("\t", "    ")
     code_lines = all_code.split('\n')
 
     seleniumbase_lines, changed, d_l = process_test_file(code_lines, new_lang)
@@ -482,14 +492,16 @@ def main():
             python_code = "\n".join(seleniumbase_lines)
             code_width = 1
 
-            w = 4  # line number whitespace
-            num_lines = len(seleniumbase_lines)
-            if num_lines >= 10:
-                w = 5
-            if num_lines >= 100:
-                w = 6
-            if num_lines >= 1000:
-                w = 7
+            w = 0  # line number whitespace
+            if line_numbers:
+                w = 4
+                num_lines = len(code_lines)
+                if num_lines >= 10:
+                    w = 5
+                if num_lines >= 100:
+                    w = 6
+                if num_lines >= 1000:
+                    w = 7
 
             new_sb_lines = []
             for line in seleniumbase_lines:
@@ -626,7 +638,8 @@ def main():
 
             magic_syntax = Syntax(
                 python_code, "python", theme="monokai",
-                line_numbers=True, code_width=used_width, word_wrap=False)
+                line_numbers=line_numbers, code_width=used_width,
+                word_wrap=False)
             magic_console = Console()
         print("")
         print(save_line)

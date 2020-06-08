@@ -51,6 +51,9 @@ seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]
 ``-o`` / ``--overwrite``  (Overwrite the file being translated)
 ``-c`` / ``--copy``  (Copy the translation to a new ``.py`` file)
 
+* Options:
+``-n``  (include line Numbers when using the Print action)
+
 * Examples:
 Translate test_1.py into Chinese and only print the output:
 >>> seleniumbase translate test_1.py --zh  -p

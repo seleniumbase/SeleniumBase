@@ -71,6 +71,9 @@ See: http://www.katalon.com/automation-recorder
 ``-o`` / ``--overwrite``  (Overwrite the file being translated)
 ``-c`` / ``--copy``  (Copy the translation to a new ``.py`` file)
 
+* Options:
+``-n``  (include line Numbers when using the Print action)
+
 * Output:
 Translates a SeleniumBase Python file into the language
 specified. Method calls and "import" lines get swapped.
