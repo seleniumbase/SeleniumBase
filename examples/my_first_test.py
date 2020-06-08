@@ -57,7 +57,7 @@ class MyTestClass(BaseCase):
         #    * Types in the new text
         #    * Hits Enter/Submit (if the text ends in "\n")
         #
-        #    self.update_text(S, T) can also be written as self.type(S, T)
+        #    self.update_text(S, T) can also be written as self.input(S, T)
         #
         # 4. There's usually more than one way to do the same thing. Ex:
         #    [
@@ -95,6 +95,10 @@ class MyTestClass(BaseCase):
         #    the element does not appear on the page within the timeout limit.
         #    And self.assert_element() does this too (without returning it).
         #
-        # 7. For the full method list, see one of the following:
+        # 7. If a URL starts with "://", then "https://" is automatically used.
+        #    Example: [self.open("://URL")] becomes [self.open("https://URL")]
+        #    This helps by reducing the line length by 5 characters.
+        #
+        # 8. For the full method list, see one of the following:
         #    * SeleniumBase/seleniumbase/fixtures/base_case.py
         #    * SeleniumBase/help_docs/method_summary.md
