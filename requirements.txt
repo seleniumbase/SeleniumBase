@@ -41,7 +41,6 @@ coverage==5.1
 pyotp==2.3.0
 boto==2.49.0
 cffi==1.14.0
-livereload==2.6.2;python_version>="3.6"
 rich==2.0.0;python_version>="3.6" and python_version<"4.0"
 flake8==3.7.9;python_version<"3.5"
 flake8==3.8.2;python_version>="3.5"
