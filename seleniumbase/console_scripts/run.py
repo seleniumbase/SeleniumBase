@@ -9,6 +9,7 @@ Examples:
 sbase install chromedriver
 sbase mkdir browser_tests
 sbase convert my_old_webdriver_unittest.py
+sbase print my_first_test.py -n
 sbase translate my_first_test.py --zh -p
 sbase extract-objects my_first_test.py
 sbase inject-objects my_first_test.py
@@ -67,6 +68,7 @@ def show_basic_usage():
     sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
     sc += ("      mkdir           [NEW_TEST_DIRECTORY_NAME]\n")
     sc += ("      convert         [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
+    sc += ("      print           [FILE] [OPTIONS]\n")
     sc += ("      translate       [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
     sc += ("      extract-objects [SB_PYTHON_FILE]\n")
     sc += ("      inject-objects  [SB_PYTHON_FILE] [OPTIONS]\n")
@@ -146,6 +148,20 @@ def show_convert_usage():
     print("           file name while keeping the original file intact.")
     print("           Works with Katalon Recorder scripts.")
     print("           See: http://www.katalon.com/automation-recorder")
+    print("")
+
+
+def show_print_usage():
+    print("  ** print **")
+    print("  Usage:")
+    print("         seleniumbase print [FILE] [OPTIONS]")
+    print("         OR:    sbase print [FILE] [OPTIONS]")
+    print("  Options:")
+    print("         -n   (Add line Numbers to the rows)")
+    print("         -w   (Use word-Wrap for long lines)")
+    print("  Output:")
+    print("         Prints the code/text of any file")
+    print("         with syntax-highlighting.")
     print("")
 
 
@@ -342,6 +358,7 @@ def show_detailed_help():
     show_install_usage()
     show_mkdir_usage()
     show_convert_usage()
+    show_print_usage()
     show_translate_usage()
     show_extract_objects_usage()
     show_inject_objects_usage()
@@ -390,6 +407,22 @@ def main():
         else:
             show_basic_usage()
             show_convert_usage()
+    elif command == "print":
+        if len(command_args) >= 1:
+            if sys.version_info[0] == 2:
+                colorama.init(autoreset=True)
+                c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+                cr = colorama.Style.RESET_ALL
+                msg = '"sbase print" does NOT support Python 2! '
+                msg += 'Try using the Unix "cat" command instead!'
+                message = "\n" + c5 + msg + cr + "\n"
+                print("")
+                raise Exception(message)
+            from seleniumbase.console_scripts import sb_print
+            sb_print.main()
+        else:
+            show_basic_usage()
+            show_print_usage()
     elif command == "translate":
         if len(command_args) >= 1:
             if sys.version_info[0] == 2:
@@ -477,6 +510,10 @@ def main():
             elif command_args[0] == "convert":
                 print("")
                 show_convert_usage()
+                return
+            elif command_args[0] == "print":
+                print("")
+                show_print_usage()
                 return
             elif command_args[0] == "translate":
                 print("")
