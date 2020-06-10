@@ -385,7 +385,7 @@ def pytest_addoption(parser):
                      dest='devtools',
                      default=False,
                      help="""Using this opens Chrome's DevTools.""")
-    parser.addoption('--reuse_session', '--reuse-session',
+    parser.addoption('--rs', '--reuse_session', '--reuse-session',
                      action="store_true",
                      dest='reuse_session',
                      default=False,
