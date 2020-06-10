@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Translates a SeleniumBase Python file into a different language
 

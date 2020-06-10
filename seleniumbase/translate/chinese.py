@@ -362,11 +362,11 @@ class 硒测试用例(BaseCase):  # noqa
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def 输入文字(self, *args, **kwargs):
+    def 输入文本(self, *args, **kwargs):
         # input(selector, new_value)  # Same as update_text()
         return self.input(*args, **kwargs)
 
-    def 写文字(self, *args, **kwargs):
+    def 写文本(self, *args, **kwargs):
         # write(selector, new_value)  # Same as update_text()
         return self.write(*args, **kwargs)
 

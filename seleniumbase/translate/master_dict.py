@@ -1,17 +1,19 @@
+# -*- coding: utf-8 -*-
+"""
+Master Dictionary
 
-# Master Dictionary
-
-# Translations
-# 0: English
-# 1: Chinese
-# 2: Dutch
-# 3: French
-# 4: Italian
-# 5: Japanese
-# 6: Korean
-# 7: Portuguese
-# 8: Russian
-# 9: Spanish
+Translations
+0: English
+1: Chinese
+2: Dutch
+3: French
+4: Italian
+5: Japanese
+6: Korean
+7: Portuguese
+8: Russian
+9: Spanish
+"""
 
 
 class MD_F:
@@ -1308,7 +1310,7 @@ class MD:
 
     md["input"] = ["*"] * num_langs
     md["input"][0] = "input"
-    md["input"][1] = "输入文字"
+    md["input"][1] = "输入文本"
     md["input"][2] = "voer"
     md["input"][3] = "taper"
     md["input"][4] = "digitare"
@@ -1320,7 +1322,7 @@ class MD:
 
     md["write"] = ["*"] * num_langs
     md["write"][0] = "write"
-    md["write"][1] = "写文字"
+    md["write"][1] = "写文本"
     md["write"][2] = "schrijven"
     md["write"][3] = "écriver"
     md["write"][4] = "scrivere"
@@ -1480,7 +1482,7 @@ class MD:
     # "type" -> duplicate of "input"
     md["type"] = ["*"] * num_langs
     md["type"][0] = "type"
-    md["type"][1] = "输入文字"
+    md["type"][1] = "输入文本"
     md["type"][2] = "voer"
     md["type"][3] = "taper"
     md["type"][4] = "digitare"
