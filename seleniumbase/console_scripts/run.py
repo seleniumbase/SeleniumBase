@@ -8,6 +8,7 @@ seleniumbase [COMMAND] [PARAMETERS]
 Examples:
 sbase install chromedriver
 sbase mkdir browser_tests
+sbase mkfile new_test.py
 sbase convert my_old_webdriver_unittest.py
 sbase print my_first_test.py -n
 sbase translate my_first_test.py --zh -p
@@ -24,16 +25,6 @@ sbase grid-node start --hub=127.0.0.1
 
 import colorama
 import sys
-from seleniumbase.common import obfuscate
-from seleniumbase.common import unobfuscate
-from seleniumbase.console_scripts import logo_helper
-from seleniumbase.console_scripts import objectify
-from seleniumbase.console_scripts import sb_install
-from seleniumbase.console_scripts import sb_mkdir
-from seleniumbase.utilities.selenium_grid import download_selenium_server
-from seleniumbase.utilities.selenium_grid import grid_hub
-from seleniumbase.utilities.selenium_grid import grid_node
-from seleniumbase.utilities.selenium_ide import convert_ide
 
 
 def show_usage():
@@ -56,6 +47,7 @@ def show_usage():
 
 
 def show_basic_usage():
+    from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
@@ -133,6 +125,34 @@ def show_mkdir_usage():
     print("           sample tests for helping new users get started, and")
     print("           Python boilerplates for setting up customized")
     print("           test frameworks.")
+    print("")
+
+
+def show_mkfile_usage():
+    print("  ** mkfile **")
+    print("")
+    print("  Usage:")
+    print("           seleniumbase mkfile [FILE_NAME.py]")
+    print("           OR:    sbase mkfile [FILE_NAME.py]")
+    print("  Example:")
+    print("           seleniumbase mkfile new_test.py")
+    print("  Options:")
+    print("         -b / --basic  (Basic boilerplate / single-line test)")
+    print("  Language Options:")
+    print("         --en / --English    |    --zh / --Chinese")
+    print("         --nl / --Dutch      |    --fr / --French")
+    print("         --it / --Italian    |    --ja / --Japanese")
+    print("         --ko / --Korean     |    --pt / --Portuguese")
+    print("         --ru / --Russian    |    --es / --Spanish")
+    print("  Output:")
+    print("          Creates a new SB test file with boilerplate code.")
+    print("          If the file already exists, an error is raised.")
+    print("          By default, uses English mode and creates a")
+    print("          boilerplate with the 5 most common SeleniumBase")
+    print('          methods, which are "open", "click", "update_text",')
+    print('          "assert_element", and "assert_text". If using the')
+    print('          basic boilerplate option, only the "open" method')
+    print('          is included.')
     print("")
 
 
@@ -359,6 +379,7 @@ def show_detailed_help():
     print("")
     show_install_usage()
     show_mkdir_usage()
+    show_mkfile_usage()
     show_convert_usage()
     show_print_usage()
     show_translate_usage()
@@ -393,18 +414,28 @@ def main():
 
     if command == "install":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_install
             sb_install.main()
         else:
             show_basic_usage()
             show_install_usage()
     elif command == "mkdir":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkdir
             sb_mkdir.main()
         else:
             show_basic_usage()
             show_mkdir_usage()
+    elif command == "mkfile":
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkfile
+            sb_mkfile.main()
+        else:
+            show_basic_usage()
+            show_mkfile_usage()
     elif command == "convert":
         if len(command_args) == 1:
+            from seleniumbase.utilities.selenium_ide import convert_ide
             convert_ide.main()
         else:
             show_basic_usage()
@@ -442,54 +473,64 @@ def main():
             show_translate_usage()
     elif command == "extract-objects" or command == "extract_objects":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.extract_objects()
         else:
             show_basic_usage()
             show_extract_objects_usage()
     elif command == "inject-objects" or command == "inject_objects":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.inject_objects()
         else:
             show_basic_usage()
             show_inject_objects_usage()
     elif command == "objectify":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.objectify()
         else:
             show_basic_usage()
             show_objectify_usage()
     elif command == "revert-objects" or command == "revert_objects":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.revert_objects()
         else:
             show_basic_usage()
             show_revert_objects_usage()
     elif command == "encrypt" or command == "obfuscate":
         if len(command_args) >= 0:
+            from seleniumbase.common import obfuscate
             obfuscate.main()
         else:
             show_basic_usage()
             show_encrypt_usage()
     elif command == "decrypt" or command == "unobfuscate":
         if len(command_args) >= 0:
+            from seleniumbase.common import unobfuscate
             unobfuscate.main()
         else:
             show_basic_usage()
             show_decrypt_usage()
     elif command == "download":
         if len(command_args) >= 1 and command_args[0].lower() == "server":
+            from seleniumbase.utilities.selenium_grid import (
+                download_selenium_server)
             download_selenium_server.main(force_download=True)
         else:
             show_basic_usage()
             show_download_usage()
     elif command == "grid-hub" or command == "grid_hub":
         if len(command_args) >= 1:
+            from seleniumbase.utilities.selenium_grid import grid_hub
             grid_hub.main()
         else:
             show_basic_usage()
             show_grid_hub_usage()
     elif command == "grid-node" or command == "grid_node":
         if len(command_args) >= 1:
+            from seleniumbase.utilities.selenium_grid import grid_node
             grid_node.main()
         else:
             show_basic_usage()
@@ -508,6 +549,10 @@ def main():
             elif command_args[0] == "mkdir":
                 print("")
                 show_mkdir_usage()
+                return
+            elif command_args[0] == "mkfile":
+                print("")
+                show_mkfile_usage()
                 return
             elif command_args[0] == "convert":
                 print("")
