@@ -1,11 +1,11 @@
 <meta property="og:site_name" content="SeleniumBase | Docs">
-<meta property="og:title" content="SeleniumBase | Reliable Test Automation" />
-<meta property="og:description" content="Simple browser automation and testing with Python." />
-<meta property="og:image" content="https://seleniumbase.io/img/sb_logo_7.png" />
+<meta property="og:title" content="SeleniumBase | Easy Test Automation" />
+<meta property="og:description" content="Browser automation and testing with Python." />
+<meta property="og:image" content="https://seleniumbase.io/img/sb_logo_10.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
+<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
 </a></p>
 <p align="center">
 <b>Everything you need to test websites.</b>
@@ -68,7 +68,7 @@ python setup.py install
 ```
 If multiple versions of Python are installed, be specific (E.g. use ``python3`` instead of ``python``).
 
-* You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
+* You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase).
 ```bash
 pip install seleniumbase
 ```
