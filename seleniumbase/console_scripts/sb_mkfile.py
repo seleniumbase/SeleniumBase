@@ -123,9 +123,6 @@ def main():
     dir_name = os.getcwd()
     file_path = "%s/%s" % (dir_name, file_name)
 
-    meta = ""
-    if language != "English":
-        meta = "<meta charset='utf-8'>"
     body = "html > body"
     para = "body p"
     hello = "Hello"
@@ -170,8 +167,10 @@ def main():
     url = ""
     if basic:
         url = "about:blank"
+    elif language not in ["English", "Dutch", "French", "Italian"]:
+        url = "data:text/html,<meta charset='utf-8'><p>%s <input>" % hello
     else:
-        url = "data:text/html,%s<p>%s<br><input>" % (meta, hello)
+        url = "data:text/html,<p>%s<br><input></p>" % hello
 
     import_line = "from seleniumbase import BaseCase"
     parent_class = "BaseCase"
