@@ -89,6 +89,7 @@ class BaseCase(unittest.TestCase):
         self.__device_height = None
         self.__device_pixel_ratio = None
         # Requires self._* instead of self.__* for external class use
+        self._language = "English"
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
