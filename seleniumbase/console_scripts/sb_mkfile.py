@@ -235,7 +235,9 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    success = '\n' + c1 + '* File "%s" was created! *' % file_name + cr + '\n'
+    success = (
+        '\n' + c1 + '* Test file: "' + file_name + '" was created! *'
+        '' + cr + '\n')
     print(success)
 
 
