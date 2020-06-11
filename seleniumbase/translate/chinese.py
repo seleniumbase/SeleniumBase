@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class 硒测试用例(BaseCase):  # noqa
 
+    def __init__(self, *args, **kwargs):
+        super(硒测试用例, self).__init__(*args, **kwargs)
+        self._language = "Chinese"
+
     def 开启(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)

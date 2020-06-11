@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class CasDeBase(BaseCase):
 
+    def __init__(self, *args, **kwargs):
+        super(CasDeBase, self).__init__(*args, **kwargs)
+        self._language = "French"
+
     def ouvrir(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)

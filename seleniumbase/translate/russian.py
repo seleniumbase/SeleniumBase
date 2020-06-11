@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class ТестНаСелен(BaseCase):  # noqa
 
+    def __init__(self, *args, **kwargs):
+        super(ТестНаСелен, self).__init__(*args, **kwargs)
+        self._language = "Russian"
+
     def открыть(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)

@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class セレニウムテストケース(BaseCase):  # noqa
 
+    def __init__(self, *args, **kwargs):
+        super(セレニウムテストケース, self).__init__(*args, **kwargs)
+        self._language = "Japanese"
+
     def を開く(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)

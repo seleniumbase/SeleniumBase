@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class Testgeval(BaseCase):
 
+    def __init__(self, *args, **kwargs):
+        super(Testgeval, self).__init__(*args, **kwargs)
+        self._language = "Dutch"
+
     def openen(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)

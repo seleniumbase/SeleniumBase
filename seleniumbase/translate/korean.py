@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
+    def __init__(self, *args, **kwargs):
+        super(셀레늄_테스트_케이스, self).__init__(*args, **kwargs)
+        self._language = "Korean"
+
     def 열기(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)

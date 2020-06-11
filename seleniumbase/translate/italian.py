@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class CasoDiProva(BaseCase):
 
+    def __init__(self, *args, **kwargs):
+        super(CasoDiProva, self).__init__(*args, **kwargs)
+        self._language = "Italian"
+
     def apri(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
