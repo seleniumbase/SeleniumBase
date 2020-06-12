@@ -246,6 +246,54 @@ def main():
                             else:
                                 new_sb_lines.append(line)
                             continue
+                        elif line.count('("') == 1:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split('("')[0] + '('
+                            line2 = new_ws + '"' + line.split('("')[1]
+                            if not ('):') in line2:
+                                new_sb_lines.append(line1)
+                                if get_width(line2) + w > console_width:
+                                    if line2.count('" in self.') == 1:
+                                        line2a = line2.split(
+                                            '" in self.')[0] + '" in'
+                                        line2b = new_ws + "self." + (
+                                            line2.split('" in self.')[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                new_sb_lines.append(line2)
+                            elif get_width(line2) + 4 + w <= console_width:
+                                line2 = "    " + line2
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                            else:
+                                new_sb_lines.append(line)
+                            continue
+                        elif line.count("('") == 1:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split("('")[0] + '('
+                            line2 = new_ws + "'" + line.split("('")[1]
+                            if not ('):') in line2:
+                                new_sb_lines.append(line1)
+                                if get_width(line2) + w > console_width:
+                                    if line2.count("' in self.") == 1:
+                                        line2a = line2.split(
+                                            "' in self.")[0] + "' in"
+                                        line2b = new_ws + "self." + (
+                                            line2.split("' in self.")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                new_sb_lines.append(line2)
+                            elif get_width(line2) + 4 + w <= console_width:
+                                line2 = "    " + line2
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                            else:
+                                new_sb_lines.append(line)
+                            continue
                         elif line.count('= "') == 1 and line.count('://') == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
