@@ -2373,7 +2373,11 @@ class BaseCase(unittest.TestCase):
             for link in links:
                 self.assert_link_status_code_is_not_404(link)
         if self.demo_mode:
-            messenger_post = ("ASSERT NO 404 ERRORS")
+            a_t = "ASSERT NO 404 ERRORS"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_no_404_errors(self._language)
+            messenger_post = ("%s" % a_t)
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def print_unique_links_with_status_codes(self):
@@ -2673,7 +2677,11 @@ class BaseCase(unittest.TestCase):
                          "does not match the actual page title [%s]!"
                          "" % (expected, actual))
         if self.demo_mode:
-            messenger_post = ("ASSERT TITLE = {%s}" % title)
+            a_t = "ASSERT TITLE"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_title(self._language)
+            messenger_post = ("%s: {%s}" % (a_t, title))
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def assert_no_js_errors(self):
@@ -2704,7 +2712,11 @@ class BaseCase(unittest.TestCase):
                 "JavaScript errors found on %s => %s" % (current_url, errors))
         if self.demo_mode:
             if (self.browser == 'chrome' or self.browser == 'edge'):
-                messenger_post = ("ASSERT NO JS ERRORS")
+                a_t = "ASSERT NO JS ERRORS"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+                    a_t = SD.translate_assert_no_js_errors(self._language)
+                messenger_post = ("%s" % a_t)
                 self.__highlight_with_assert_success(messenger_post, "html")
 
     def __activate_html_inspector(self):
@@ -3839,7 +3851,11 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = "ASSERT %s: {%s}" % (by, selector)
+            a_t = "ASSERT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: {%s}" % (a_t, by.upper(), selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -3919,8 +3935,14 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = ("ASSERT TEXT {%s} in %s: {%s}"
-                              % (text, by, selector))
+            a_t = "ASSERT TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = ("%s {%s} %s %s: {%s}"
+                              % (a_t, text, i_n, by.upper(), selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -3940,8 +3962,14 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = ("ASSERT EXACT TEXT {%s} in %s: {%s}"
-                              % (text, by, selector))
+            a_t = "ASSERT EXACT TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_exact_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = ("%s {%s} %s %s: {%s}"
+                              % (a_t, text, i_n, by.upper(), selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -4025,7 +4053,11 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_link_text_visible(link_text, timeout=timeout)
         if self.demo_mode:
-            messenger_post = ("ASSERT LINK TEXT {%s}." % link_text)
+            a_t = "ASSERT LINK TEXT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_link_text(self._language)
+            messenger_post = ("%s: {%s}" % (a_t, link_text))
             self.__highlight_with_assert_success(
                 messenger_post, link_text, by=By.LINK_TEXT)
         return True
@@ -4057,8 +4089,11 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
         if self.demo_mode:
-            messenger_post = (
-                "ASSERT PARTIAL LINK TEXT {%s}." % partial_link_text)
+            a_t = "ASSERT PARTIAL LINK TEXT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_link_text(self._language)
+            messenger_post = ("%s: {%s}" % (a_t, partial_link_text))
             self.__highlight_with_assert_success(
                 messenger_post, partial_link_text, by=By.PARTIAL_LINK_TEXT)
         return True
