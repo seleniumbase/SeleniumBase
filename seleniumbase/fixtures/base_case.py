@@ -383,6 +383,31 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
+    def type(self, selector, text, by=By.CSS_SELECTOR,
+             timeout=None, retry=False):
+        """ Same as update_text()
+            This method updates an element's text field with new text.
+            Has multiple parts:
+            * Waits for the element to be visible.
+            * Waits for the element to be interactive.
+            * Clears the text field.
+            * Types in the new text.
+            * Hits Enter/Submit (if the text ends in "\n").
+            @Params
+            selector - the selector of the text field
+            new_value - the new value to type into the text field
+            by - the type of selector to search by (Default: CSS Selector)
+            timeout - how long to wait for the selector to be visible
+            retry - if True, use JS if the Selenium text update fails
+            DO NOT confuse self.type() with Python type()! They are different!
+        """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
     def submit(self, selector, by=By.CSS_SELECTOR):
         """ Alternative to self.driver.find_element_by_*(SELECTOR).submit() """
         selector, by = self.__recalculate_selector(selector, by)
@@ -2963,16 +2988,6 @@ class BaseCase(unittest.TestCase):
     def reload_page(self):
         """ Same as refresh_page() """
         self.refresh_page()
-
-    def type(self, selector, text, by=By.CSS_SELECTOR,
-             timeout=None, retry=False):
-        """ Same as update_text() """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def input(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
