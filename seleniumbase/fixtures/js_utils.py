@@ -233,7 +233,10 @@ def highlight_with_js(driver, selector, loops, o_bs):
     script = ("""document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     for n in range(loops):
         script = ("""document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
@@ -609,7 +612,10 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     script = ("""document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = ("""document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
@@ -644,7 +650,10 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
         selector = "body"
     script = """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
-    safe_execute_script(driver, script)
+    try:
+        safe_execute_script(driver, script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(205, 30, 0, 1)');""" % selector
