@@ -253,7 +253,7 @@ class BaseCase(unittest.TestCase):
             if spacing > 0:
                 time.sleep(spacing)
 
-    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def update_text(self, selector, text, by=By.CSS_SELECTOR,
                     timeout=None, retry=False):
         """ This method updates an element's text field with new text.
             Has multiple parts:
@@ -264,7 +264,7 @@ class BaseCase(unittest.TestCase):
             * Hits Enter/Submit (if the text ends in "\n").
             @Params
             selector - the selector of the text field
-            new_value - the new value to type into the text field
+            text - the new text to type into the text field
             by - the type of selector to search by (Default: CSS Selector)
             timeout - how long to wait for the selector to be visible
             retry - if True, use JS if the Selenium text update fails
@@ -294,16 +294,16 @@ class BaseCase(unittest.TestCase):
             pass  # Clearing the text field first isn't critical
         self.__demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
-        if type(new_value) is int or type(new_value) is float:
-            new_value = str(new_value)
+        if type(text) is int or type(text) is float:
+            text = str(text)
         try:
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                text = text[:-1]
+                element.send_keys(text)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -313,21 +313,21 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             element.clear()
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                text = text[:-1]
+                element.send_keys(text)
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         except Exception:
             exc_message = self.__get_improved_exception_message()
             raise Exception(exc_message)
-        if (retry and element.get_attribute('value') != new_value and (
-                not new_value.endswith('\n'))):
+        if (retry and element.get_attribute('value') != text and (
+                not text.endswith('\n'))):
             logging.debug('update_text() is falling back to JavaScript!')
-            self.set_value(selector, new_value, by=by)
+            self.set_value(selector, text, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -385,7 +385,7 @@ class BaseCase(unittest.TestCase):
 
     def type(self, selector, text, by=By.CSS_SELECTOR,
              timeout=None, retry=False):
-        """ Same as update_text()
+        """ Same as self.update_text()
             This method updates an element's text field with new text.
             Has multiple parts:
             * Waits for the element to be visible.
@@ -395,7 +395,7 @@ class BaseCase(unittest.TestCase):
             * Hits Enter/Submit (if the text ends in "\n").
             @Params
             selector - the selector of the text field
-            new_value - the new value to type into the text field
+            text - the new text to type into the text field
             by - the type of selector to search by (Default: CSS Selector)
             timeout - how long to wait for the selector to be visible
             retry - if True, use JS if the Selenium text update fails
@@ -1973,11 +1973,11 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
-    def highlight_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def highlight_update_text(self, selector, text, by=By.CSS_SELECTOR,
                               loops=3, scroll=True):
         if not self.demo_mode:
             self.highlight(selector, by=by, loops=loops, scroll=scroll)
-        self.update_text(selector, new_value, by=by)
+        self.update_text(selector, text, by=by)
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=None, scroll=True):
@@ -2821,7 +2821,7 @@ class BaseCase(unittest.TestCase):
                 "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
                     selector, by))
 
-    def set_value(self, selector, new_value, by=By.CSS_SELECTOR, timeout=None):
+    def set_value(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
         """ This method uses JavaScript to update a text field. """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -2833,14 +2833,16 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(orginal_selector, by)
         if not self.demo_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
-        value = re.escape(new_value)
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
         css_selector = re.escape(css_selector)
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""document.querySelector('%s').value='%s';"""
                   % (css_selector, value))
         self.execute_script(script)
-        if new_value.endswith('\n'):
+        if text.endswith('\n'):
             element = self.wait_for_element_present(
                 orginal_selector, by=by, timeout=timeout)
             element.send_keys(Keys.RETURN)
@@ -2876,12 +2878,12 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
         selector = self.__escape_quotes_if_needed(selector)
-        new_value = re.escape(new_value)
-        new_value = self.__escape_quotes_if_needed(new_value)
+        text = re.escape(text)
+        text = self.__escape_quotes_if_needed(text)
         update_text_script = """jQuery('%s').val('%s')""" % (
-            selector, new_value)
+            selector, text)
         self.safe_execute_script(update_text_script)
-        if new_value.endswith('\n'):
+        if text.endswith('\n'):
             element.send_keys('\n')
         self.__demo_mode_pause_if_active()
 
@@ -2974,36 +2976,36 @@ class BaseCase(unittest.TestCase):
     # Duplicates (Avoids name confusion when migrating from other frameworks.)
 
     def open_url(self, url):
-        """ Same as open() - Original saved for backwards compatibility. """
+        """ Same as self.open() """
         self.open(url)
 
     def visit(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def visit_url(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def goto(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def go_to(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def reload(self):
-        """ Same as refresh_page() """
+        """ Same as self.refresh_page() """
         self.refresh_page()
 
     def reload_page(self):
-        """ Same as refresh_page() """
+        """ Same as self.refresh_page() """
         self.refresh_page()
 
     def input(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
-        """ Same as update_text() """
+        """ Same as self.update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -3013,7 +3015,7 @@ class BaseCase(unittest.TestCase):
 
     def write(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
-        """ Same as update_text() """
+        """ Same as self.update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -3022,7 +3024,7 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
-        """ Same as add_text() """
+        """ Same as self.add_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
