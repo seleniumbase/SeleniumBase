@@ -2850,21 +2850,60 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
-    def js_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def js_update_text(self, selector, text, by=By.CSS_SELECTOR,
                        timeout=None):
-        """ Same as self.set_value() """
+        """ JavaScript + send_keys are used to update a text field.
+            Performs self.set_value() and triggers event listeners.
+            If text ends in "\n", set_value() presses RETURN after.
+            Works faster than send_keys() alone due to the JS call.
+        """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if type(text) is int or type(text) is float:
+            text = str(text)
         self.set_value(
-            selector, new_value, by=by, timeout=timeout)
+            selector, text, by=by, timeout=timeout)
+        if not text.endswith('\n'):
+            try:
+                element = page_actions.wait_for_element_present(
+                    self.driver, selector, by, timeout=0.2)
+                element.send_keys(" \b")
+            except Exception:
+                pass
 
-    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def js_type(self, selector, text, by=By.CSS_SELECTOR,
+                timeout=None):
+        """ Same as self.js_update_text()
+            JavaScript + send_keys are used to update a text field.
+            Performs self.set_value() and triggers event listeners.
+            If text ends in "\n", set_value() presses RETURN after.
+            Works faster than send_keys() alone due to the JS call.
+        """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        self.set_value(
+            selector, text, by=by, timeout=timeout)
+        if not text.endswith('\n'):
+            try:
+                element = page_actions.wait_for_element_present(
+                    self.driver, selector, by, timeout=0.2)
+                element.send_keys(" \b")
+            except Exception:
+                pass
+
+    def jquery_update_text(self, selector, text, by=By.CSS_SELECTOR,
                            timeout=None):
         """ This method uses jQuery to update a text field.
-            If the new_value string ends with the newline character,
-            WebDriver will finish the call, which simulates pressing
+            If the text string ends with the newline character,
+            Selenium finishes the call, which simulates pressing
             {Enter/Return} after the text is entered. """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
