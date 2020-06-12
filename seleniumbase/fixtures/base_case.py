@@ -4926,38 +4926,6 @@ class BaseCase(unittest.TestCase):
     # Deprecated Methods (Replace these if they're still in your code!)
 
     @decorators.deprecated(
-        "scroll_click() is deprecated. Use self.click() - It scrolls for you!")
-    def scroll_click(self, selector, by=By.CSS_SELECTOR):
-        # DEPRECATED - self.click() now scrolls to the element before clicking.
-        # self.scroll_to(selector, by=by)  # Redundant
-        self.click(selector, by=by)
-
-    @decorators.deprecated(
-        "update_text_value() is deprecated. Use self.update_text() instead!")
-    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                          timeout=None, retry=False):
-        # DEPRECATED - self.update_text() should be used instead.
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        self.update_text(
-            selector, new_value, by=by, timeout=timeout, retry=retry)
-
-    @decorators.deprecated(
-        "jquery_update_text_value() is deprecated. Use jquery_update_text()")
-    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                                 timeout=None):
-        # DEPRECATED - self.jquery_update_text() should be used instead.
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.jquery_update_text(selector, new_value, by=by, timeout=timeout)
-
-    @decorators.deprecated(
         "jq_format() is deprecated. Use re.escape() instead!")
     def jq_format(self, code):
         # DEPRECATED - re.escape() already performs the intended action!
