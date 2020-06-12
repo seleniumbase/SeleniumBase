@@ -3,18 +3,31 @@
 Creates a new SeleniumBase test file with boilerplate code.
 
 Usage:
-seleniumbase mkfile [FILE_NAME.py] [OPTIONS]
-or     sbase mkfile [FILE_NAME.py] [OPTIONS]
+    seleniumbase mkfile [FILE_NAME.py] [OPTIONS]
+    or     sbase mkfile [FILE_NAME.py] [OPTIONS]
+
+Example:
+    sbase mkfile new_test.py
+
+Options:
+    -b / --basic  (Basic boilerplate / single-line test)
+
+Language Options:
+    --en / --English    |    --zh / --Chinese
+    --nl / --Dutch      |    --fr / --French
+    --it / --Italian    |    --ja / --Japanese
+    --ko / --Korean     |    --pt / --Portuguese
+    --ru / --Russian    |    --es / --Spanish
 
 Output:
-Creates a new SB test file with boilerplate code.
-If the file already exists, an error is raised.
-By default, uses English mode and creates a
-boilerplate with the 5 most common SeleniumBase
-methods, which are "open", "click", "update_text",
-"assert_element", and "assert_text". If using the
-basic boilerplate option, only the "open" method
-is included.
+    Creates a new SBase test file with boilerplate code.
+    If the file already exists, an error is raised.
+    By default, uses English mode and creates a
+    boilerplate with the 5 most common SeleniumBase
+    methods, which are "open", "click", "update_text",
+    "assert_element", and "assert_text". If using the
+    basic boilerplate option, only the "open" method
+    is included.
 """
 
 import codecs
@@ -39,7 +52,7 @@ def invalid_run_command(msg=None):
     exp += "         --ko / --Korean     |    --pt / --Portuguese\n"
     exp += "         --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Output:\n"
-    exp += "          Creates a new SB test file with boilerplate code.\n"
+    exp += "          Creates a new SBase test file with boilerplate code.\n"
     exp += "          If the file already exists, an error is raised.\n"
     exp += "          By default, uses English mode and creates a\n"
     exp += "          boilerplate with the 5 most common SeleniumBase\n"

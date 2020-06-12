@@ -2,15 +2,18 @@
 Creates a new folder for running SeleniumBase scripts.
 
 Usage:
-seleniumbase mkdir [DIRECTORY_NAME]
-OR     sbase mkdir [DIRECTORY_NAME]
+    seleniumbase mkdir [DIRECTORY_NAME]
+    OR     sbase mkdir [DIRECTORY_NAME]
+
+Example:
+    sbase mkdir browser_tests
 
 Output:
-Creates a new folder for running SeleniumBase scripts.
-The new folder contains default config files,
-sample tests for helping new users get started, and
-Python boilerplates for setting up customized
-test frameworks.
+    Creates a new folder for running SBase scripts.
+    The new folder contains default config files,
+    sample tests for helping new users get started,
+    and Python boilerplates for setting up customized
+    test frameworks.
 """
 
 import codecs
@@ -27,10 +30,10 @@ def invalid_run_command(msg=None):
     exp += "  Example:\n"
     exp += "          sbase mkdir browser_tests\n"
     exp += "  Output:\n"
-    exp += "          Creates a new folder for running SeleniumBase scripts.\n"
+    exp += "          Creates a new folder for running SBase scripts.\n"
     exp += "          The new folder contains default config files,\n"
-    exp += "          sample tests for helping new users get started, and\n"
-    exp += "          Python boilerplates for setting up customized\n"
+    exp += "          sample tests for helping new users get started,\n"
+    exp += "          and Python boilerplates for setting up customized\n"
     exp += "          test frameworks.\n"
     if not msg:
         raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
