@@ -1308,17 +1308,17 @@ class MD:
     md["set_attributes"][8] = "набор_атрибутов"
     md["set_attributes"][9] = "establecer_atributos"
 
-    md["input"] = ["*"] * num_langs
-    md["input"][0] = "input"
-    md["input"][1] = "输入文本"
-    md["input"][2] = "voer"
-    md["input"][3] = "taper"
-    md["input"][4] = "digitare"
-    md["input"][5] = "入力"
-    md["input"][6] = "입력"
-    md["input"][7] = "entrada"
-    md["input"][8] = "введите"
-    md["input"][9] = "entrada"
+    md["type"] = ["*"] * num_langs
+    md["type"][0] = "type"
+    md["type"][1] = "输入文本"
+    md["type"][2] = "voer"
+    md["type"][3] = "taper"
+    md["type"][4] = "digitare"
+    md["type"][5] = "入力"
+    md["type"][6] = "입력"
+    md["type"][7] = "entrada"
+    md["type"][8] = "введите"
+    md["type"][9] = "entrada"
 
     md["write"] = ["*"] * num_langs
     md["write"][0] = "write"
@@ -1479,18 +1479,18 @@ class MD:
     ################
     # Duplicates
 
-    # "type" -> duplicate of "input"
-    md["type"] = ["*"] * num_langs
-    md["type"][0] = "type"
-    md["type"][1] = "输入文本"
-    md["type"][2] = "voer"
-    md["type"][3] = "taper"
-    md["type"][4] = "digitare"
-    md["type"][5] = "入力"
-    md["type"][6] = "입력"
-    md["type"][7] = "entrada"
-    md["type"][8] = "введите"
-    md["type"][9] = "entrada"
+    # "input" -> duplicate of "type"
+    md["input"] = ["*"] * num_langs
+    md["input"][0] = "input"
+    md["input"][1] = "输入文本"
+    md["input"][2] = "voer"
+    md["input"][3] = "taper"
+    md["input"][4] = "digitare"
+    md["input"][5] = "入力"
+    md["input"][6] = "입력"
+    md["input"][7] = "entrada"
+    md["input"][8] = "введите"
+    md["input"][9] = "entrada"
 
     # "goto" -> duplicate of "visit"
     md["goto"] = ["*"] * num_langs
