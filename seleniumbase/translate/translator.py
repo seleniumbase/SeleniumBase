@@ -496,6 +496,8 @@ def main():
 
             new_sb_lines = []
             for line in seleniumbase_lines:
+                if line.endswith("  # noqa") and line.count("  # noqa") == 1:
+                    line = line.replace("  # noqa", "")
                 line_length2 = len(line)  # Normal Python string length used
                 line_length = get_width(line)  # Special characters count 2X
                 if line_length > code_width:
