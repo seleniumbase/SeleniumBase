@@ -23,7 +23,7 @@ self.double_click(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
 
-self.update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None, retry=False)
+self.update_text(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 # Duplicates: self.type(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 #             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
 #             self.write(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
@@ -195,7 +195,7 @@ self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
 self.highlight_click(selector, by=By.CSS_SELECTOR, loops=3, scroll=True)
 
-self.highlight_update_text(selector, new_value, by=By.CSS_SELECTOR, loops=3, scroll=True)
+self.highlight_update_text(selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
 
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
 
@@ -302,11 +302,12 @@ self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
 
-self.set_value(selector, new_value, by=By.CSS_SELECTOR, timeout=None)
+self.set_value(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
-self.js_update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None)
+self.js_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.js_type()
 
-self.jquery_update_text(selector, new_value, by=By.CSS_SELECTOR, timeout=None)
+self.jquery_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.set_time_limit(time_limit)
 
