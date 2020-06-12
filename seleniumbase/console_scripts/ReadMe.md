@@ -42,6 +42,34 @@ sample tests for helping new users get started, and
 Python boilerplates for setting up customized
 test frameworks.
 
+### mkfile
+
+* Usage:
+``seleniumbase mkfile [FILE_NAME.py] [OPTIONS]``
+
+* Example:
+``seleniumbase mkfile new_test.py``
+
+* Options:
+``-b`` / ``--basic``  (Basic boilerplate / single-line test)
+
+* Language Options:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+
+* Output:
+Creates a new SB test file with boilerplate code.
+If the file already exists, an error is raised.
+By default, uses English mode and creates a
+boilerplate with the 5 most common SeleniumBase
+methods, which are "open", "click", "update_text",
+"assert_element", and "assert_text". If using the
+basic boilerplate option, only the "open" method
+is included.
+
 ### convert
 
 * Usage:

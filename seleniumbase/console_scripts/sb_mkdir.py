@@ -4,6 +4,7 @@ Creates a new folder for running SeleniumBase scripts.
 Usage:
 seleniumbase mkdir [DIRECTORY_NAME]
 OR     sbase mkdir [DIRECTORY_NAME]
+
 Output:
 Creates a new folder for running SeleniumBase scripts.
 The new folder contains default config files,

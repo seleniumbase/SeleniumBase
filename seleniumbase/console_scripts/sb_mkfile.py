@@ -5,9 +5,16 @@ Creates a new SeleniumBase test file with boilerplate code.
 Usage:
 seleniumbase mkfile [FILE_NAME.py] [OPTIONS]
 or     sbase mkfile [FILE_NAME.py] [OPTIONS]
+
 Output:
-Creates a new SeleniumBase test file with boilerplate code.
-If the file name already exists, an error will be raised.
+Creates a new SB test file with boilerplate code.
+If the file already exists, an error is raised.
+By default, uses English mode and creates a
+boilerplate with the 5 most common SeleniumBase
+methods, which are "open", "click", "update_text",
+"assert_element", and "assert_text". If using the
+basic boilerplate option, only the "open" method
+is included.
 """
 
 import codecs
