@@ -305,7 +305,7 @@ self.convert_to_css_selector(selector, by)
 self.set_value(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.js_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.js_type()
+# Duplicates: self.js_type(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.jquery_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
