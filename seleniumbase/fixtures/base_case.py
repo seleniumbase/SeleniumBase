@@ -32,7 +32,6 @@ import sys
 import time
 import urllib3
 import unittest
-import uuid
 from selenium.common.exceptions import (StaleElementReferenceException,
                                         MoveTargetOutOfBoundsException,
                                         WebDriverException)
@@ -40,17 +39,11 @@ from selenium.common import exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
-from selenium.webdriver.support.ui import Select
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
-from seleniumbase.core.testcase_manager import TestcaseDataPayload
-from seleniumbase.core.testcase_manager import TestcaseManager
-from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
-from seleniumbase.core import settings_parser
 from seleniumbase.core import tour_helper
-from seleniumbase.core import visual_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
@@ -1307,6 +1300,7 @@ class BaseCase(unittest.TestCase):
         """ Selects an HTML <select> option by specification.
             Option specifications are by "text", "index", or "value".
             Defaults to "text" if option_by is unspecified or unknown. """
+        from selenium.webdriver.support.ui import Select
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -2593,6 +2587,7 @@ class BaseCase(unittest.TestCase):
     def get_downloads_folder(self):
         """ Returns the OS path of the Downloads Folder.
             (Works with Chrome and Firefox only, for now.) """
+        from seleniumbase.core import download_helper
         return download_helper.get_downloads_folder()
 
     def get_path_of_downloaded_file(self, file):
@@ -4393,6 +4388,7 @@ class BaseCase(unittest.TestCase):
         if not name or len(name) < 1:
             name = "default"
         name = str(name)
+        from seleniumbase.core import visual_helper
         visual_helper.visual_baseline_folder_setup()
         baseline_dir = constants.VisualBaseline.STORAGE_FOLDER
         visual_baseline_path = baseline_dir + "/" + test_id + "/" + name
@@ -5056,11 +5052,16 @@ class BaseCase(unittest.TestCase):
                 # Use Selenium Grid (Use --server="127.0.0.1" for a local Grid)
                 self.use_grid = True
             if self.with_db_reporting:
+                import getpass
+                import uuid
                 from seleniumbase.core.application_manager import (
                     ApplicationManager)
                 from seleniumbase.core.testcase_manager import (
                     ExecutionQueryPayload)
-                import getpass
+                from seleniumbase.core.testcase_manager import (
+                    TestcaseDataPayload)
+                from seleniumbase.core.testcase_manager import (
+                    TestcaseManager)
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
                 self.execution_start_time = 0
@@ -5119,6 +5120,7 @@ class BaseCase(unittest.TestCase):
 
         # Parse the settings file
         if self.settings_file:
+            from seleniumbase.core import settings_parser
             settings_parser.set_settings(self.settings_file)
 
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
@@ -5264,6 +5266,7 @@ class BaseCase(unittest.TestCase):
                 self.__last_page_source = None
 
     def __insert_test_result(self, state, err):
+        from seleniumbase.core.testcase_manager import TestcaseDataPayload
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
         data_payload.guid = self.testcase_guid
@@ -5500,6 +5503,7 @@ class BaseCase(unittest.TestCase):
                     self.execution_guid, runtime)
             if self.with_s3_logging and has_exception:
                 """ If enabled, upload logs to S3 during test exceptions. """
+                import uuid
                 from seleniumbase.core.s3_manager import S3LoggingBucket
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
@@ -5518,6 +5522,10 @@ class BaseCase(unittest.TestCase):
                 logging.info(
                     "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 if self.with_db_reporting:
+                    from seleniumbase.core.testcase_manager import (
+                        TestcaseDataPayload)
+                    from seleniumbase.core.testcase_manager import (
+                        TestcaseManager)
                     self.testcase_manager = TestcaseManager(self.database_env)
                     data_payload = TestcaseDataPayload()
                     data_payload.guid = self.testcase_guid

@@ -9,7 +9,6 @@ from selenium.common.exceptions import WebDriverException
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
-from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 
@@ -493,6 +492,7 @@ def activate_messenger(driver):
     add_js_link(driver, messenger_js)
     add_js_link(driver, msgr_theme_flat_js)
     add_js_link(driver, msgr_theme_future_js)
+    from seleniumbase.core import style_sheet
     add_css_style(driver, style_sheet.messenger_style)
 
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):

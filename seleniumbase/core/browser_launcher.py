@@ -4,7 +4,6 @@ import os
 import random
 import re
 import sys
-import threading
 import time
 import urllib3
 import warnings
@@ -15,7 +14,6 @@ from seleniumbase.config import proxy_list
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
-from seleniumbase.core import capabilities_parser
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
@@ -106,6 +104,7 @@ def _add_chrome_proxy_extension(
         proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
     else:
         # Pytest multi-threaded test
+        import threading
         lock = threading.Lock()
         with lock:
             time.sleep(random.uniform(0.02, 0.15))
@@ -421,6 +420,7 @@ def get_remote_driver(
     desired_caps = {}
     extra_caps = {}
     if cap_file:
+        from seleniumbase.core import capabilities_parser
         desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
     if cap_string:
         try:

@@ -23,7 +23,6 @@ import codecs
 import os
 import sys
 import time
-import traceback
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common import exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
@@ -582,6 +581,7 @@ def save_test_failure_data(driver, name, browser_type, folder=None):
     Saves failure data to the current directory (or to a subfolder if provided)
     If the folder provided doesn't exist, it will get created.
     """
+    import traceback
     if folder:
         abs_path = os.path.abspath('.')
         file_path = abs_path + "/%s" % folder
