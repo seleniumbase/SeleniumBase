@@ -295,8 +295,7 @@ class BaseCase(unittest.TestCase):
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
             else:
-                text = text[:-1]
-                element.send_keys(text)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -309,8 +308,7 @@ class BaseCase(unittest.TestCase):
             if not text.endswith('\n'):
                 element.send_keys(text)
             else:
-                text = text[:-1]
-                element.send_keys(text)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -347,8 +345,7 @@ class BaseCase(unittest.TestCase):
             if not text.endswith('\n'):
                 element.send_keys(text)
             else:
-                text = text[:-1]
-                element.send_keys(text)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -360,8 +357,7 @@ class BaseCase(unittest.TestCase):
             if not text.endswith('\n'):
                 element.send_keys(text)
             else:
-                text = text[:-1]
-                element.send_keys(text)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
