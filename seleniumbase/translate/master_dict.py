@@ -1316,9 +1316,9 @@ class MD:
     md["type"][4] = "digitare"
     md["type"][5] = "入力"
     md["type"][6] = "입력"
-    md["type"][7] = "entrada"
+    md["type"][7] = "tipo"
     md["type"][8] = "введите"
-    md["type"][9] = "entrada"
+    md["type"][9] = "escriba"
 
     md["write"] = ["*"] * num_langs
     md["write"][0] = "write"
@@ -1488,9 +1488,9 @@ class MD:
     md["input"][4] = "digitare"
     md["input"][5] = "入力"
     md["input"][6] = "입력"
-    md["input"][7] = "entrada"
+    md["input"][7] = "tipo"
     md["input"][8] = "введите"
-    md["input"][9] = "entrada"
+    md["input"][9] = "escriba"
 
     # "goto" -> duplicate of "visit"
     md["goto"] = ["*"] * num_langs

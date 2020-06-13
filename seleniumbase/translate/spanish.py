@@ -37,7 +37,7 @@ class CasoDePrueba(BaseCase):
         # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
-    def entrada(self, *args, **kwargs):
+    def escriba(self, *args, **kwargs):
         # type(selector, text)  # Same as update_text()
         return self.type(*args, **kwargs)
 
