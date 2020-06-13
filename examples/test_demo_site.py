@@ -15,10 +15,10 @@ class MyTestClass(BaseCase):
         # Assert that the text appears within a given element
         self.assert_text("Demo Page", "h1")
 
-        # Update the text of various text fields on the page
-        self.update_text("#myTextInput", "This is Automated")
-        self.update_text("textarea.area1", "Testing Time!\n")
-        self.update_text('[name="preText2"]', "Typing Text!")
+        # Type/update text in text fields on the page
+        self.type("#myTextInput", "This is Automated")
+        self.type("textarea.area1", "Testing Time!\n")
+        self.type('[name="preText2"]', "Typing Text!")
 
         # Verify that a hover dropdown link changes page text
         self.assert_text("Automation Practice", "h3")

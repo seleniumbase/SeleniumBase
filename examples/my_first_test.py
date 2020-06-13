@@ -57,7 +57,7 @@ class MyTestClass(BaseCase):
         #    * Types in the new text
         #    * Hits Enter/Submit (if the text ends in "\n")
         #
-        #    self.update_text(S, T) can also be written as self.input(S, T)
+        #    self.update_text(S, T) can also be written as self.type(S, T)
         #
         # 4. There's usually more than one way to do the same thing. Ex:
         #    [
