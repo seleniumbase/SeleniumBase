@@ -731,6 +731,30 @@ class MD:
     md["js_click"][8] = "JS_нажмите"
     md["js_click"][9] = "js_haga_clic"
 
+    md["js_update_text"] = ["*"] * num_langs
+    md["js_update_text"][0] = "js_update_text"
+    md["js_update_text"][1] = "JS更新文本"
+    md["js_update_text"][2] = "js_tekst_bijwerken"
+    md["js_update_text"][3] = "js_modifier_texte"
+    md["js_update_text"][4] = "js_aggiornare_testo"
+    md["js_update_text"][5] = "JSテキストを更新"
+    md["js_update_text"][6] = "JS_텍스트를_업데이트"
+    md["js_update_text"][7] = "js_atualizar_texto"
+    md["js_update_text"][8] = "JS_обновить_текст"
+    md["js_update_text"][9] = "js_actualizar_texto"
+
+    md["js_type"] = ["*"] * num_langs
+    md["js_type"][0] = "js_type"
+    md["js_type"][1] = "JS输入文本"
+    md["js_type"][2] = "js_typ"
+    md["js_type"][3] = "js_taper"
+    md["js_type"][4] = "js_digitare"
+    md["js_type"][5] = "JS入力"
+    md["js_type"][6] = "JS_입력"
+    md["js_type"][7] = "js_tipo"
+    md["js_type"][8] = "JS_введите"
+    md["js_type"][9] = "js_escriba"
+
     md["inspect_html"] = ["*"] * num_langs
     md["inspect_html"][0] = "inspect_html"
     md["inspect_html"][1] = "检查HTML"

@@ -177,6 +177,14 @@ class 硒测试用例(BaseCase):  # noqa
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def JS更新文本(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def JS输入文本(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def 检查HTML(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

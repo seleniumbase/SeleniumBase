@@ -177,6 +177,14 @@ class CasoDeTeste(BaseCase):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def js_atualizar_texto(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def js_tipo(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def verificar_html(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

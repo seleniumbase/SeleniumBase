@@ -177,6 +177,14 @@ class CasoDiProva(BaseCase):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def js_aggiornare_testo(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def js_digitare(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def controlla_html(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

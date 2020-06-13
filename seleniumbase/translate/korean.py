@@ -177,6 +177,14 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def JS_텍스트를_업데이트(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def JS_입력(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def HTML_확인(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

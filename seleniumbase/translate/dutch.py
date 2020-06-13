@@ -177,6 +177,14 @@ class Testgeval(BaseCase):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def js_tekst_bijwerken(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def js_typ(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def html_inspecteren(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

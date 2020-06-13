@@ -177,6 +177,14 @@ class セレニウムテストケース(BaseCase):  # noqa
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def JSテキストを更新(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def JS入力(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def HTMLをチェック(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)

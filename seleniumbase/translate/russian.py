@@ -177,6 +177,14 @@ class ТестНаСелен(BaseCase):  # noqa
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 
+    def JS_обновить_текст(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def JS_введите(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
+
     def проверить_HTML(self, *args, **kwargs):
         # inspect_html()
         return self.inspect_html(*args, **kwargs)
