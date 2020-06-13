@@ -107,7 +107,7 @@ setup(
         'attrs>=19.3.0',
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==5.4.3;python_version>="3.5"',
-        'pytest-cov==2.9.0',
+        'pytest-cov==2.10.0',
         'pytest-forked==1.1.3',
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',
