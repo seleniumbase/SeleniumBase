@@ -128,8 +128,7 @@ def main():
     data.append('        self.assert_text("xkcd.com", "h2")')
     data.append('        self.open('
                 '"://store.xkcd.com/collections/everything")')
-    data.append(
-        '        self.update_text("input.search-input", "xkcd book\\n")')
+    data.append('        self.type("input.search-input", "xkcd book\\n")')
     data.append('        self.assert_text("xkcd: volume 0", "h3")')
     data.append("")
     file_path = "%s/%s" % (dir_name, "my_first_test.py")
@@ -148,12 +147,9 @@ def main():
     data.append('        self.assert_title("Web Testing Page")')
     data.append('        self.assert_element("tbody#tbodyId")')
     data.append('        self.assert_text("Demo Page", "h1")')
-    data.append('        self.update_text("#myTextInput", '
-                '"This is Automated")')
-    data.append('        self.update_text("textarea.area1", '
-                '"Testing Time!\\n")')
-    data.append("        self.update_text('[name=\"preText2\"]', "
-                "\"Typing Text!\")")
+    data.append('        self.type("#myTextInput", "This is Automated")')
+    data.append('        self.type("textarea.area1", "Testing Time!\\n")')
+    data.append("        self.type('[name=\"preText2\"]', \"Typing Text!\")")
     data.append('        self.assert_text("Automation Practice", "h3")')
     data.append('        self.hover_and_click("#myDropdown", "#dropOption2")')
     data.append('        self.assert_text("Link Two Selected", "h3")')
@@ -224,7 +220,7 @@ def main():
     data.append("    def test_parameterized_google_search("
                 "self, search_term, expected_text):")
     data.append("        self.open('https://google.com/ncr')")
-    data.append("        self.update_text('input[title=\"Search\"]', "
+    data.append("        self.type('input[title=\"Search\"]', "
                 "search_term + '\\n')")
     data.append("        self.assert_element('#result-stats')")
     data.append("        self.assert_text(expected_text, '#search')")
@@ -317,8 +313,7 @@ def main():
     data.append("")
     data.append("    def test_google_dot_com(self):")
     data.append("        self.open('https://google.com/ncr')")
-    data.append(
-        "        self.update_text(HomePage.search_box, 'github')")
+    data.append("        self.type(HomePage.search_box, 'github')")
     data.append("        self.assert_element(HomePage.list_box)")
     data.append("        self.assert_element(HomePage.search_button)")
     data.append(
