@@ -34,15 +34,19 @@ class CasoDeTeste(BaseCase):
         return self.click_link_text(*args, **kwargs)
 
     def atualizar_texto(self, *args, **kwargs):
-        # update_text(selector, new_value)
+        # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
+    def entrada(self, *args, **kwargs):
+        # type(selector, text)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
     def adicionar_texto(self, *args, **kwargs):
-        # add_text(selector, new_value)
+        # add_text(selector, text)
         return self.add_text(*args, **kwargs)
 
     def obter_texto(self, *args, **kwargs):
-        # get_text(selector, new_value)
+        # get_text(selector, text)
         return self.get_text(*args, **kwargs)
 
     def verificar_texto(self, *args, **kwargs):
@@ -366,12 +370,8 @@ class CasoDeTeste(BaseCase):
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def entrada(self, *args, **kwargs):
-        # input(selector, new_value)  # Same as update_text()
-        return self.input(*args, **kwargs)
-
     def escreva(self, *args, **kwargs):
-        # write(selector, new_value)  # Same as update_text()
+        # write(selector, text)  # Same as update_text()
         return self.write(*args, **kwargs)
 
     def definir_tema_da_mensagem(self, *args, **kwargs):

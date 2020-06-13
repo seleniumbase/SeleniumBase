@@ -34,15 +34,19 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         return self.click_link_text(*args, **kwargs)
 
     def 텍스트를_업데이트(self, *args, **kwargs):
-        # update_text(selector, new_value)
+        # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
+    def 입력(self, *args, **kwargs):
+        # type(selector, text)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
     def 텍스트를_추가(self, *args, **kwargs):
-        # add_text(selector, new_value)
+        # add_text(selector, text)
         return self.add_text(*args, **kwargs)
 
     def 텍스트를_검색(self, *args, **kwargs):
-        # get_text(selector, new_value)
+        # get_text(selector, text)
         return self.get_text(*args, **kwargs)
 
     def 텍스트_확인(self, *args, **kwargs):
@@ -366,12 +370,8 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def 입력(self, *args, **kwargs):
-        # input(selector, new_value)  # Same as update_text()
-        return self.input(*args, **kwargs)
-
     def 쓰다(self, *args, **kwargs):
-        # write(selector, new_value)  # Same as update_text()
+        # write(selector, text)  # Same as update_text()
         return self.write(*args, **kwargs)
 
     def 메시지_테마_설정(self, *args, **kwargs):

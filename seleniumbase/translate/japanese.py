@@ -34,15 +34,19 @@ class セレニウムテストケース(BaseCase):  # noqa
         return self.click_link_text(*args, **kwargs)
 
     def テキストを更新(self, *args, **kwargs):
-        # update_text(selector, new_value)
+        # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
+    def 入力(self, *args, **kwargs):
+        # type(selector, text)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
     def テキストを追加(self, *args, **kwargs):
-        # add_text(selector, new_value)
+        # add_text(selector, text)
         return self.add_text(*args, **kwargs)
 
     def テキストを取得(self, *args, **kwargs):
-        # get_text(selector, new_value)
+        # get_text(selector, text)
         return self.get_text(*args, **kwargs)
 
     def テキストを確認する(self, *args, **kwargs):
@@ -366,12 +370,8 @@ class セレニウムテストケース(BaseCase):  # noqa
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def 入力(self, *args, **kwargs):
-        # input(selector, new_value)  # Same as update_text()
-        return self.input(*args, **kwargs)
-
     def 書く(self, *args, **kwargs):
-        # write(selector, new_value)  # Same as update_text()
+        # write(selector, text)  # Same as update_text()
         return self.write(*args, **kwargs)
 
     def メッセージのスタイルを設定する(self, *args, **kwargs):

@@ -1311,7 +1311,7 @@ class MD:
     md["type"] = ["*"] * num_langs
     md["type"][0] = "type"
     md["type"][1] = "输入文本"
-    md["type"][2] = "voer"
+    md["type"][2] = "typ"
     md["type"][3] = "taper"
     md["type"][4] = "digitare"
     md["type"][5] = "入力"
@@ -1483,7 +1483,7 @@ class MD:
     md["input"] = ["*"] * num_langs
     md["input"][0] = "input"
     md["input"][1] = "输入文本"
-    md["input"][2] = "voer"
+    md["input"][2] = "typ"
     md["input"][3] = "taper"
     md["input"][4] = "digitare"
     md["input"][5] = "入力"
