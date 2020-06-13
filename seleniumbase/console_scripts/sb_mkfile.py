@@ -213,7 +213,7 @@ def main():
         data.append('        self.assert_element("%s")  # selector' % body)
         data.append('        self.assert_text("%s", "%s")'
                     '  # text, selector' % (hello, para))
-        data.append('        self.update_text("input", "%s")'
+        data.append('        self.type("input", "%s")'
                     '  # selector, text' % goodbye)
         data.append('        self.click("%s")  # selector' % para)
     data.append("")
