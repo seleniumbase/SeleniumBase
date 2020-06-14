@@ -13,7 +13,7 @@ class HackingTest(BaseCase):
         self.assert_element('input[title="Search"]')
         self.set_attribute('[action="/search"]', "action", "//bing.com/search")
         self.set_attributes('[value="Google Search"]', "value", "Bing Search")
-        self.update_text('input[title="Search"]', "SeleniumBase GitHub")
+        self.type('input[title="Search"]', "SeleniumBase GitHub")
         self.click('[value="Bing Search"]')
         self.assert_element("h1.b_logo")
         self.click('[href*="github.com/seleniumbase/SeleniumBase"]')

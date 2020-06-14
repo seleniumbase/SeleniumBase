@@ -93,3 +93,9 @@ class MyTestClass(BaseCase):
 
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")
+
+        # Assert no broken links
+        self.assert_no_404_errors()
+
+        # Assert no JavaScript errors
+        self.assert_no_js_errors()

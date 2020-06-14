@@ -10,7 +10,7 @@ class AppleTestClass(BaseCase):
         self.message_duration = 2.0
         self.open("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"
-        self.update_text('[placeholder*="developer.apple.com"]', title + "\n")
+        self.type('[placeholder*="developer.apple.com"]', title + "\n")
         self.click("link=%s" % title)
         self.assert_element('[href="/documentation"]')
         self.assert_text(title, "h1")

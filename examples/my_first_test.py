@@ -4,17 +4,17 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
+        self.open("https://store.xkcd.com/search")
+        self.type('input[name="q"]', "xkcd book\n")
+        self.assert_text("xkcd: volume 0", "h3")
         self.open("https://xkcd.com/353/")
         self.assert_title("xkcd: Python")
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
-        self.click("link=About")
-        self.assert_text("xkcd.com", "h2")
-        self.open("://store.xkcd.com/collections/everything")
-        self.update_text("input.search-input", "xkcd book\n")
-        self.assert_exact_text("xkcd: volume 0", "h3")
+        self.click_link_text("About")
+        self.assert_exact_text("xkcd.com", "h2")
 
         ####
 
@@ -23,14 +23,17 @@ class MyTestClass(BaseCase):
         #    ****  NOTES / USEFUL INFO  ****
         #
         # 1. By default, CSS Selectors are used to identify elements.
-        #    Other options include: "LINK_TEXT", "PARTIAL_LINK_TEXT", "NAME",
+        #    CSS Guide: "https://www.w3schools.com/cssref/css_selectors.asp".
+        #    Other selectors include: "LINK_TEXT", "PARTIAL_LINK_TEXT", "NAME",
         #    "CLASS_NAME", and "ID", but most of those can be expressed as CSS.
+        #
         #    Here's an example of changing the "by":
         #    [
         #        from selenium.webdriver.common.by import By
         #        ...
         #        self.click('Next', by=By.PARTIAL_LINK_TEXT)
         #    ]
+        #
         #    XPath is used by default if the arg starts with "/", "./", or "(":
         #    [
         #        self.click('/html/body/div[3]/div[4]/p[2]/a')
@@ -39,27 +42,46 @@ class MyTestClass(BaseCase):
         #    If you're completely new to CSS selectors, right-click on a
         #    web page and select "Inspect" to see the CSS in the html.
         #
-        # 2. Most methods have the optional `timeout` argument. Ex:
+        # 2. Most methods have the optional "timeout" argument.
+        #    Here's an example of changing the "timeout":
         #    [
         #        self.assert_element('img[alt="Python"]', timeout=15)
         #    ]
-        #    The `timeout` argument tells the method how many seconds to wait
-        #    for an element to appear before raising an exception. This is
+        #    The "timeout" argument tells the method how many seconds to wait
+        #    for an element to appear before failing the test. This is
         #    useful if a web page needs additional time to load an element.
-        #    If you don't specify a `timeout`, a default timeout is used.
+        #    If you don't specify a "timeout", a default timeout is used.
         #    Default timeouts are configured in seleniumbase/config/settings.py
         #
-        # 3. SeleniumBase methods are very versatile. For example,
-        #    self.update_text(SELECTOR, TEXT) does the following:
-        #    * Waits for the element to be visible
-        #    * Waits for the element to be interactive
-        #    * Clears the text field
-        #    * Types in the new text
-        #    * Hits Enter/Submit (if the text ends in "\n")
+        # 3. SeleniumBase methods often perform multiple actions. For example,
+        #    self.type(SELECTOR, TEXT) will do the following:
+        #    * Wait for the element to be visible
+        #    * Wait for the element to be interactive
+        #    * Clear the text field
+        #    * Type in the new text
+        #    * Press Enter/Submit if the text ends in "\n"
         #
-        #    self.update_text(S, T) can also be written as self.type(S, T)
+        # 4. Duplicate method names may exist for the same method:
+        #    (This makes it easier to switch over from other test frameworks.)
+        #    Example:
+        #    self.open() = self.visit() = self.open_url() = self.goto()
+        #    self.type() = self.update_text() = self.input()
+        #    self.send_keys() = self.add_text()
+        #    self.get_element() = self.wait_for_element_present()
+        #    self.find_element() = self.wait_for_element_visible()
+        #                        = self.wait_for_element()
+        #    self.assert_element() = self.assert_element_visible()
+        #    self.assert_text() = self.assert_text_visible()
+        #    self.find_text() = self.wait_for_text_visible()
+        #                     = self.wait_for_text()
+        #    self.click_link_text(text) = self.click(link=text)
+        #                               = self.click_link(text)
+        #    * self.get(url) is SPECIAL: *
+        #    If {url} is a valid URL, self.get() works just like self.open()
+        #    Otherwise {url} becomes a selector for calling self.get_element()
         #
-        # 4. There's usually more than one way to do the same thing. Ex:
+        # 5. There's usually more than one way to do the same thing.
+        #    Example 1:
         #    [
         #        self.assert_text("xkcd: volume 0", "h3")
         #    ]
@@ -68,32 +90,36 @@ class MyTestClass(BaseCase):
         #        text = self.get_text("h3")
         #        self.assert_true("xkcd: volume 0" in text)
         #    ]
-        #    Or:
+        #    Is also the same as:
         #    [
-        #        text = self.find_element("h3").text
+        #        element = self.find_element("h3")
+        #        text = element.text
         #        self.assert_true("xkcd: volume 0" in text)
         #    ]
         #
-        #    And the following line:
+        #    Example 2:
+        #    [
+        #        self.assert_exact_text("xkcd.com", "h2")
+        #    ]
+        #    Is the same as:
+        #    [
+        #        text = self.get_text("h2").strip()
+        #        self.assert_true("xkcd.com".strip() == text)
+        #    ]
+        #
+        #    Example 3:
         #    [
         #        title = self.get_attribute("#comic img", "title")
         #    ]
-        #    Can also be written as:
+        #    Is the same as:
         #    [
         #        element = self.find_element("#comic img")
         #        title = element.get_attribute("title")
         #    ]
         #
-        # 5. self.assert_exact_text(TEXT) ignores leading and trailing
+        # 6. self.assert_exact_text(TEXT) ignores leading and trailing
         #    whitespace in the TEXT assertion.
         #    So, self.assert_exact_text("Some Text") will find [" Some Text "].
-        #
-        # 6. For backwards-compatibilty, some SeleniumBase methods that do the
-        #    same thing have multiple names, kept on from previous versions.
-        #    Ex: self.wait_for_element() is the same as self.find_element().
-        #    Both search for and return the element, and raise an exception if
-        #    the element does not appear on the page within the timeout limit.
-        #    And self.assert_element() does this too (without returning it).
         #
         # 7. If a URL starts with "://", then "https://" is automatically used.
         #    Example: [self.open("://URL")] becomes [self.open("https://URL")]

@@ -33,6 +33,6 @@ class EventFiringTestClass(BaseCase):
         print("\n* EventFiringWebDriver example *")
         self.open("https://xkcd.com/1862/")
         self.click("link=About")
-        self.open("https://store.xkcd.com/collections/everything")
-        self.update_text("input.search-input", "xkcd book\n")
+        self.open("https://store.xkcd.com/search")
+        self.type('input[name="q"]', "xkcd book\n")
         self.open("https://xkcd.com/1822/")

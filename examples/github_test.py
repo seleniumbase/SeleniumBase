@@ -18,7 +18,7 @@ class GitHubTests(BaseCase):
                       """AppleWebKit/537.36 (KHTML, like Gecko) """
                       """Chrome/75.0.3770.100 Safari/537.36""")
         self.open("https://github.com/")
-        self.update_text("input.header-search-input", "SeleniumBase\n")
+        self.type("input.header-search-input", "SeleniumBase\n")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
         self.assert_element("div.repository-content")
         self.assert_text("SeleniumBase", "h1")
