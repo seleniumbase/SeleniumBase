@@ -3887,7 +3887,7 @@ class BaseCase(unittest.TestCase):
             if self._language != "English":
                 from seleniumbase.fixtures.words import SD
                 a_t = SD.translate_assert(self._language)
-            messenger_post = "%s %s: {%s}" % (a_t, by.upper(), selector)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -3973,7 +3973,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
                 a_t = SD.translate_assert_text(self._language)
                 i_n = SD.translate_in(self._language)
-            messenger_post = ("%s {%s} %s %s: {%s}"
+            messenger_post = ("%s: {%s} %s %s: %s"
                               % (a_t, text, i_n, by.upper(), selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
@@ -4000,7 +4000,7 @@ class BaseCase(unittest.TestCase):
                 from seleniumbase.fixtures.words import SD
                 a_t = SD.translate_assert_exact_text(self._language)
                 i_n = SD.translate_in(self._language)
-            messenger_post = ("%s {%s} %s %s: {%s}"
+            messenger_post = ("%s: {%s} %s %s: %s"
                               % (a_t, text, i_n, by.upper(), selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
