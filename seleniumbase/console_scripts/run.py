@@ -8,6 +8,7 @@ seleniumbase [COMMAND] [PARAMETERS]
 Examples:
 sbase install chromedriver
 sbase mkdir browser_tests
+sbase mkfile new_test.py
 sbase convert my_old_webdriver_unittest.py
 sbase print my_first_test.py -n
 sbase translate my_first_test.py --zh -p
@@ -24,16 +25,6 @@ sbase grid-node start --hub=127.0.0.1
 
 import colorama
 import sys
-from seleniumbase.common import obfuscate
-from seleniumbase.common import unobfuscate
-from seleniumbase.console_scripts import logo_helper
-from seleniumbase.console_scripts import objectify
-from seleniumbase.console_scripts import sb_install
-from seleniumbase.console_scripts import sb_mkdir
-from seleniumbase.utilities.selenium_grid import download_selenium_server
-from seleniumbase.utilities.selenium_grid import grid_hub
-from seleniumbase.utilities.selenium_grid import grid_node
-from seleniumbase.utilities.selenium_ide import convert_ide
 
 
 def show_usage():
@@ -56,17 +47,19 @@ def show_usage():
 
 
 def show_basic_usage():
+    from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
     sc = ("")
     sc += ('Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
-    sc += ('(short name): "sbase [COMMAND] [PARAMETERS]"\n')
+    sc += ('(simplified): "sbase [COMMAND] [PARAMETERS]"\n')
     sc += ("\n")
     sc += ("Commands:\n")
     sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
-    sc += ("      mkdir           [NEW_TEST_DIRECTORY_NAME]\n")
+    sc += ("      mkdir           [DIRECTORY_NAME]\n")
+    sc += ("      mkfile          [FILE_NAME.py]\n")
     sc += ("      convert         [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
     sc += ("      print           [FILE] [OPTIONS]\n")
     sc += ("      translate       [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
@@ -90,7 +83,11 @@ def show_basic_usage():
 
 
 def show_install_usage():
-    print("  ** install **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "install" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase install [DRIVER_NAME] [OPTIONS]")
@@ -103,12 +100,12 @@ def show_install_usage():
     print('                           Use "latest" for the latest version.')
     print("           -p OR --path    Also copy the driver to /usr/local/bin")
     print("  Example:")
-    print("           seleniumbase install chromedriver")
-    print("           seleniumbase install geckodriver")
-    print("           seleniumbase install chromedriver 83.0.4103.39")
-    print("           seleniumbase install chromedriver latest")
-    print("           seleniumbase install chromedriver -p")
-    print("           seleniumbase install chromedriver latest -p")
+    print("           sbase install chromedriver")
+    print("           sbase install geckodriver")
+    print("           sbase install chromedriver 83.0.4103.39")
+    print("           sbase install chromedriver latest")
+    print("           sbase install chromedriver -p")
+    print("           sbase install chromedriver latest -p")
     print("  Output:")
     print("           Installs the chosen webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")
@@ -120,24 +117,64 @@ def show_install_usage():
 
 
 def show_mkdir_usage():
-    print("  ** mkdir **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "mkdir" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase mkdir [DIRECTORY_NAME]")
     print("           OR:    sbase mkdir [DIRECTORY_NAME]")
     print("  Example:")
-    print("           seleniumbase mkdir browser_tests")
+    print("           sbase mkdir browser_tests")
     print("  Output:")
-    print("           Creates a new folder for running SeleniumBase scripts.")
+    print("           Creates a new folder for running SBase scripts.")
     print("           The new folder contains default config files,")
-    print("           sample tests for helping new users get started, and")
-    print("           Python boilerplates for setting up customized")
+    print("           sample tests for helping new users get started,")
+    print("           and Python boilerplates for setting up customized")
     print("           test frameworks.")
     print("")
 
 
+def show_mkfile_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "mkfile" + c2 + " **" + cr)
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase mkfile [FILE_NAME.py]")
+    print("           OR:    sbase mkfile [FILE_NAME.py]")
+    print("  Example:")
+    print("           sbase mkfile new_test.py")
+    print("  Options:")
+    print("         -b / --basic  (Basic boilerplate / single-line test)")
+    print("  Language Options:")
+    print("         --en / --English    |    --zh / --Chinese")
+    print("         --nl / --Dutch      |    --fr / --French")
+    print("         --it / --Italian    |    --ja / --Japanese")
+    print("         --ko / --Korean     |    --pt / --Portuguese")
+    print("         --ru / --Russian    |    --es / --Spanish")
+    print("  Output:")
+    print("          Creates a new SBase test file with boilerplate code.")
+    print("          If the file already exists, an error is raised.")
+    print("          By default, uses English mode and creates a")
+    print("          boilerplate with the 5 most common SeleniumBase")
+    print('          methods, which are "open", "click", "update_text",')
+    print('          "assert_element", and "assert_text". If using the')
+    print('          basic boilerplate option, only the "open" method')
+    print('          is included.')
+    print("")
+
+
 def show_convert_usage():
-    print("  ** convert **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "convert" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]")
@@ -152,7 +189,12 @@ def show_convert_usage():
 
 
 def show_print_usage():
-    print("  ** print **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "print" + c2 + " **" + cr)
+    print(sc)
+    print("")
     print("  Usage:")
     print("         seleniumbase print [FILE] [OPTIONS]")
     print("         OR:    sbase print [FILE] [OPTIONS]")
@@ -166,7 +208,12 @@ def show_print_usage():
 
 
 def show_translate_usage():
-    print("  ** translate **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "translate" + c2 + " **" + cr)
+    print(sc)
+    print("")
     print("  Usage:")
     print("         seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]")
     print("         OR:    sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]")
@@ -196,7 +243,11 @@ def show_translate_usage():
 
 
 def show_extract_objects_usage():
-    print("  ** extract-objects **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "extract-objects" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase extract-objects [SELENIUMBASE_PYTHON_FILE]")
@@ -209,7 +260,11 @@ def show_extract_objects_usage():
 
 
 def show_inject_objects_usage():
-    print("  ** inject-objects **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "inject-objects" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase inject-objects [SELENIUMBASE_PYTHON_FILE]")
@@ -225,7 +280,11 @@ def show_inject_objects_usage():
 
 
 def show_objectify_usage():
-    print("  ** objectify **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "objectify" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase objectify [SELENIUMBASE_PYTHON_FILE]")
@@ -244,7 +303,11 @@ def show_objectify_usage():
 
 
 def show_revert_objects_usage():
-    print("  ** revert-objects **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "revert-objects" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase revert-objects [SELENIUMBASE_PYTHON_FILE]")
@@ -261,7 +324,11 @@ def show_revert_objects_usage():
 
 
 def show_encrypt_usage():
-    print("  ** encrypt OR obfuscate **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "encrypt OR obfuscate" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase encrypt   ||   seleniumbase obfuscate")
@@ -274,7 +341,11 @@ def show_encrypt_usage():
 
 
 def show_decrypt_usage():
-    print("  ** decrypt OR unobfuscate **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "decrypt OR unobfuscate" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase decrypt   ||   seleniumbase unobfuscate")
@@ -287,7 +358,11 @@ def show_decrypt_usage():
 
 
 def show_download_usage():
-    print("  ** download **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "download" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase download server")
@@ -299,7 +374,11 @@ def show_download_usage():
 
 
 def show_grid_hub_usage():
-    print("  ** grid-hub **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "grid-hub" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase grid-hub {start|stop}")
@@ -319,7 +398,11 @@ def show_grid_hub_usage():
 
 
 def show_grid_node_usage():
-    print("  ** grid-node **")
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "grid-node" + c2 + " **" + cr)
+    print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase grid-node {start|stop} [OPTIONS]")
@@ -354,11 +437,16 @@ def show_version_info():
 
 
 def show_detailed_help():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c6 = colorama.Back.CYAN
+    cr = colorama.Style.RESET_ALL
     show_basic_usage()
-    print("More Info:")
-    print("")
+    print(c6 + "            " + c2 + "  Commands:  " + c6 + "            ")
+    print(cr)
     show_install_usage()
     show_mkdir_usage()
+    show_mkfile_usage()
     show_convert_usage()
     show_print_usage()
     show_translate_usage()
@@ -371,8 +459,6 @@ def show_detailed_help():
     show_download_usage()
     show_grid_hub_usage()
     show_grid_node_usage()
-    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
-    cr = colorama.Style.RESET_ALL
     print('* (Use "' + c3 + 'pytest' + cr + '" for running tests) *\n')
 
 
@@ -393,18 +479,28 @@ def main():
 
     if command == "install":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_install
             sb_install.main()
         else:
             show_basic_usage()
             show_install_usage()
     elif command == "mkdir":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkdir
             sb_mkdir.main()
         else:
             show_basic_usage()
             show_mkdir_usage()
+    elif command == "mkfile":
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkfile
+            sb_mkfile.main()
+        else:
+            show_basic_usage()
+            show_mkfile_usage()
     elif command == "convert":
         if len(command_args) == 1:
+            from seleniumbase.utilities.selenium_ide import convert_ide
             convert_ide.main()
         else:
             show_basic_usage()
@@ -442,54 +538,64 @@ def main():
             show_translate_usage()
     elif command == "extract-objects" or command == "extract_objects":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.extract_objects()
         else:
             show_basic_usage()
             show_extract_objects_usage()
     elif command == "inject-objects" or command == "inject_objects":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.inject_objects()
         else:
             show_basic_usage()
             show_inject_objects_usage()
     elif command == "objectify":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.objectify()
         else:
             show_basic_usage()
             show_objectify_usage()
     elif command == "revert-objects" or command == "revert_objects":
         if len(command_args) >= 1:
+            from seleniumbase.console_scripts import objectify
             objectify.revert_objects()
         else:
             show_basic_usage()
             show_revert_objects_usage()
     elif command == "encrypt" or command == "obfuscate":
         if len(command_args) >= 0:
+            from seleniumbase.common import obfuscate
             obfuscate.main()
         else:
             show_basic_usage()
             show_encrypt_usage()
     elif command == "decrypt" or command == "unobfuscate":
         if len(command_args) >= 0:
+            from seleniumbase.common import unobfuscate
             unobfuscate.main()
         else:
             show_basic_usage()
             show_decrypt_usage()
     elif command == "download":
         if len(command_args) >= 1 and command_args[0].lower() == "server":
+            from seleniumbase.utilities.selenium_grid import (
+                download_selenium_server)
             download_selenium_server.main(force_download=True)
         else:
             show_basic_usage()
             show_download_usage()
     elif command == "grid-hub" or command == "grid_hub":
         if len(command_args) >= 1:
+            from seleniumbase.utilities.selenium_grid import grid_hub
             grid_hub.main()
         else:
             show_basic_usage()
             show_grid_hub_usage()
     elif command == "grid-node" or command == "grid_node":
         if len(command_args) >= 1:
+            from seleniumbase.utilities.selenium_grid import grid_node
             grid_node.main()
         else:
             show_basic_usage()
@@ -508,6 +614,10 @@ def main():
             elif command_args[0] == "mkdir":
                 print("")
                 show_mkdir_usage()
+                return
+            elif command_args[0] == "mkfile":
+                print("")
+                show_mkfile_usage()
                 return
             elif command_args[0] == "convert":
                 print("")

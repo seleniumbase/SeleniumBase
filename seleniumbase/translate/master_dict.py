@@ -1,17 +1,19 @@
+# -*- coding: utf-8 -*-
+"""
+Master Dictionary
 
-# Master Dictionary
-
-# Translations
-# 0: English
-# 1: Chinese
-# 2: Dutch
-# 3: French
-# 4: Italian
-# 5: Japanese
-# 6: Korean
-# 7: Portuguese
-# 8: Russian
-# 9: Spanish
+Translations
+0: English
+1: Chinese
+2: Dutch
+3: French
+4: Italian
+5: Japanese
+6: Korean
+7: Portuguese
+8: Russian
+9: Spanish
+"""
 
 
 class MD_F:
@@ -729,6 +731,30 @@ class MD:
     md["js_click"][8] = "JS_нажмите"
     md["js_click"][9] = "js_haga_clic"
 
+    md["js_update_text"] = ["*"] * num_langs
+    md["js_update_text"][0] = "js_update_text"
+    md["js_update_text"][1] = "JS更新文本"
+    md["js_update_text"][2] = "js_tekst_bijwerken"
+    md["js_update_text"][3] = "js_modifier_texte"
+    md["js_update_text"][4] = "js_aggiornare_testo"
+    md["js_update_text"][5] = "JSテキストを更新"
+    md["js_update_text"][6] = "JS_텍스트를_업데이트"
+    md["js_update_text"][7] = "js_atualizar_texto"
+    md["js_update_text"][8] = "JS_обновить_текст"
+    md["js_update_text"][9] = "js_actualizar_texto"
+
+    md["js_type"] = ["*"] * num_langs
+    md["js_type"][0] = "js_type"
+    md["js_type"][1] = "JS输入文本"
+    md["js_type"][2] = "js_typ"
+    md["js_type"][3] = "js_taper"
+    md["js_type"][4] = "js_digitare"
+    md["js_type"][5] = "JS入力"
+    md["js_type"][6] = "JS_입력"
+    md["js_type"][7] = "js_tipo"
+    md["js_type"][8] = "JS_введите"
+    md["js_type"][9] = "js_escriba"
+
     md["inspect_html"] = ["*"] * num_langs
     md["inspect_html"][0] = "inspect_html"
     md["inspect_html"][1] = "检查HTML"
@@ -1306,21 +1332,21 @@ class MD:
     md["set_attributes"][8] = "набор_атрибутов"
     md["set_attributes"][9] = "establecer_atributos"
 
-    md["input"] = ["*"] * num_langs
-    md["input"][0] = "input"
-    md["input"][1] = "输入文字"
-    md["input"][2] = "voer"
-    md["input"][3] = "taper"
-    md["input"][4] = "digitare"
-    md["input"][5] = "入力"
-    md["input"][6] = "입력"
-    md["input"][7] = "entrada"
-    md["input"][8] = "введите"
-    md["input"][9] = "entrada"
+    md["type"] = ["*"] * num_langs
+    md["type"][0] = "type"
+    md["type"][1] = "输入文本"
+    md["type"][2] = "typ"
+    md["type"][3] = "taper"
+    md["type"][4] = "digitare"
+    md["type"][5] = "入力"
+    md["type"][6] = "입력"
+    md["type"][7] = "tipo"
+    md["type"][8] = "введите"
+    md["type"][9] = "escriba"
 
     md["write"] = ["*"] * num_langs
     md["write"][0] = "write"
-    md["write"][1] = "写文字"
+    md["write"][1] = "写文本"
     md["write"][2] = "schrijven"
     md["write"][3] = "écriver"
     md["write"][4] = "scrivere"
@@ -1477,18 +1503,18 @@ class MD:
     ################
     # Duplicates
 
-    # "type" -> duplicate of "input"
-    md["type"] = ["*"] * num_langs
-    md["type"][0] = "type"
-    md["type"][1] = "输入文字"
-    md["type"][2] = "voer"
-    md["type"][3] = "taper"
-    md["type"][4] = "digitare"
-    md["type"][5] = "入力"
-    md["type"][6] = "입력"
-    md["type"][7] = "entrada"
-    md["type"][8] = "введите"
-    md["type"][9] = "entrada"
+    # "input" -> duplicate of "type"
+    md["input"] = ["*"] * num_langs
+    md["input"][0] = "input"
+    md["input"][1] = "输入文本"
+    md["input"][2] = "typ"
+    md["input"][3] = "taper"
+    md["input"][4] = "digitare"
+    md["input"][5] = "入力"
+    md["input"][6] = "입력"
+    md["input"][7] = "tipo"
+    md["input"][8] = "введите"
+    md["input"][9] = "escriba"
 
     # "goto" -> duplicate of "visit"
     md["goto"] = ["*"] * num_langs
@@ -1619,6 +1645,45 @@ class MD:
     md["is_checked"][7] = "é_selecionado"
     md["is_checked"][8] = "выбран"
     md["is_checked"][9] = "está_seleccionado"
+
+    # "wait_for_text_visible" -> duplicate of "wait_for_text"
+    md["wait_for_text_visible"] = ["*"] * num_langs
+    md["wait_for_text_visible"][0] = "wait_for_text_visible"
+    md["wait_for_text_visible"][1] = "等待文本"
+    md["wait_for_text_visible"][2] = "wachten_op_tekst"
+    md["wait_for_text_visible"][3] = "attendre_le_texte"
+    md["wait_for_text_visible"][4] = "attendere_il_testo"
+    md["wait_for_text_visible"][5] = "テキストを待つ"
+    md["wait_for_text_visible"][6] = "텍스트가_나타날_때까지_기다립니다"
+    md["wait_for_text_visible"][7] = "aguardar_o_texto"
+    md["wait_for_text_visible"][8] = "ждать_текста"
+    md["wait_for_text_visible"][9] = "espera_el_texto"
+
+    # "assert_text_visible" -> duplicate of "assert_text"
+    md["assert_text_visible"] = ["*"] * num_langs
+    md["assert_text_visible"][0] = "assert_text_visible"
+    md["assert_text_visible"][1] = "断言文本"
+    md["assert_text_visible"][2] = "controleren_tekst"
+    md["assert_text_visible"][3] = "vérifier_texte"
+    md["assert_text_visible"][4] = "verificare_testo"
+    md["assert_text_visible"][5] = "テキストを確認する"
+    md["assert_text_visible"][6] = "텍스트_확인"
+    md["assert_text_visible"][7] = "verificar_texto"
+    md["assert_text_visible"][8] = "подтвердить_текст"
+    md["assert_text_visible"][9] = "verificar_texto"
+
+    # "assert_no_broken_links" -> duplicate of "assert_no_404_errors"
+    md["assert_no_broken_links"] = ["*"] * num_langs
+    md["assert_no_broken_links"][0] = "assert_no_broken_links"
+    md["assert_no_broken_links"][1] = "检查断开的链接"
+    md["assert_no_broken_links"][2] = "controleren_op_gebroken_links"
+    md["assert_no_broken_links"][3] = "vérifier_les_liens_rompus"
+    md["assert_no_broken_links"][4] = "verificare_i_collegamenti"
+    md["assert_no_broken_links"][5] = "リンク切れを確認する"
+    md["assert_no_broken_links"][6] = "끊어진_링크_확인"
+    md["assert_no_broken_links"][7] = "verificar_se_há_links_quebrados"
+    md["assert_no_broken_links"][8] = "проверить_ошибки_404"
+    md["assert_no_broken_links"][9] = "verificar_si_hay_enlaces_rotos"
 
     # "block_ads" -> duplicate of "ad_block"
     md["block_ads"] = ["*"] * num_langs

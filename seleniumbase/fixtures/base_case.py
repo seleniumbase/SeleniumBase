@@ -11,7 +11,7 @@ Usage:
         def test_anything(self):
             # Write your code here. Example:
             self.open("https://github.com/")
-            self.update_text("input.header-search-input", "SeleniumBase\n")
+            self.type("input.header-search-input", "SeleniumBase\n")
             self.click('a[href="/seleniumbase/SeleniumBase"]')
             self.assert_element("div.repository-content")
             ....
@@ -32,7 +32,6 @@ import sys
 import time
 import urllib3
 import unittest
-import uuid
 from selenium.common.exceptions import (StaleElementReferenceException,
                                         MoveTargetOutOfBoundsException,
                                         WebDriverException)
@@ -40,17 +39,11 @@ from selenium.common import exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
-from selenium.webdriver.support.ui import Select
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
-from seleniumbase.core.testcase_manager import TestcaseDataPayload
-from seleniumbase.core.testcase_manager import TestcaseManager
-from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
-from seleniumbase.core import settings_parser
 from seleniumbase.core import tour_helper
-from seleniumbase.core import visual_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
@@ -89,6 +82,7 @@ class BaseCase(unittest.TestCase):
         self.__device_height = None
         self.__device_pixel_ratio = None
         # Requires self._* instead of self.__* for external class use
+        self._language = "English"
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
@@ -252,7 +246,7 @@ class BaseCase(unittest.TestCase):
             if spacing > 0:
                 time.sleep(spacing)
 
-    def update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def update_text(self, selector, text, by=By.CSS_SELECTOR,
                     timeout=None, retry=False):
         """ This method updates an element's text field with new text.
             Has multiple parts:
@@ -263,7 +257,7 @@ class BaseCase(unittest.TestCase):
             * Hits Enter/Submit (if the text ends in "\n").
             @Params
             selector - the selector of the text field
-            new_value - the new value to type into the text field
+            text - the new text to type into the text field
             by - the type of selector to search by (Default: CSS Selector)
             timeout - how long to wait for the selector to be visible
             retry - if True, use JS if the Selenium text update fails
@@ -293,16 +287,15 @@ class BaseCase(unittest.TestCase):
             pass  # Clearing the text field first isn't critical
         self.__demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
-        if type(new_value) is int or type(new_value) is float:
-            new_value = str(new_value)
+        if type(text) is int or type(text) is float:
+            text = str(text)
         try:
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -312,21 +305,20 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             element.clear()
-            if not new_value.endswith('\n'):
-                element.send_keys(new_value)
+            if not text.endswith('\n'):
+                element.send_keys(text)
             else:
-                new_value = new_value[:-1]
-                element.send_keys(new_value)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         except Exception:
             exc_message = self.__get_improved_exception_message()
             raise Exception(exc_message)
-        if (retry and element.get_attribute('value') != new_value and (
-                not new_value.endswith('\n'))):
+        if (retry and element.get_attribute('value') != text and (
+                not text.endswith('\n'))):
             logging.debug('update_text() is falling back to JavaScript!')
-            self.set_value(selector, new_value, by=by)
+            self.set_value(selector, text, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -353,8 +345,7 @@ class BaseCase(unittest.TestCase):
             if not text.endswith('\n'):
                 element.send_keys(text)
             else:
-                text = text[:-1]
-                element.send_keys(text)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -366,8 +357,7 @@ class BaseCase(unittest.TestCase):
             if not text.endswith('\n'):
                 element.send_keys(text)
             else:
-                text = text[:-1]
-                element.send_keys(text)
+                element.send_keys(text[:-1])
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
@@ -381,6 +371,31 @@ class BaseCase(unittest.TestCase):
                 self.__demo_mode_pause_if_active(tiny=True)
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
+
+    def type(self, selector, text, by=By.CSS_SELECTOR,
+             timeout=None, retry=False):
+        """ Same as self.update_text()
+            This method updates an element's text field with new text.
+            Has multiple parts:
+            * Waits for the element to be visible.
+            * Waits for the element to be interactive.
+            * Clears the text field.
+            * Types in the new text.
+            * Hits Enter/Submit (if the text ends in "\n").
+            @Params
+            selector - the selector of the text field
+            text - the new text to type into the text field
+            by - the type of selector to search by (Default: CSS Selector)
+            timeout - how long to wait for the selector to be visible
+            retry - if True, use JS if the Selenium text update fails
+            DO NOT confuse self.type() with Python type()! They are different!
+        """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def submit(self, selector, by=By.CSS_SELECTOR):
         """ Alternative to self.driver.find_element_by_*(SELECTOR).submit() """
@@ -1281,6 +1296,7 @@ class BaseCase(unittest.TestCase):
         """ Selects an HTML <select> option by specification.
             Option specifications are by "text", "index", or "value".
             Defaults to "text" if option_by is unspecified or unknown. """
+        from selenium.webdriver.support.ui import Select
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
@@ -1947,11 +1963,11 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.click(selector, by=by)
 
-    def highlight_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def highlight_update_text(self, selector, text, by=By.CSS_SELECTOR,
                               loops=3, scroll=True):
         if not self.demo_mode:
             self.highlight(selector, by=by, loops=loops, scroll=scroll)
-        self.update_text(selector, new_value, by=by)
+        self.update_text(selector, text, by=by)
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=None, scroll=True):
@@ -2347,7 +2363,11 @@ class BaseCase(unittest.TestCase):
             for link in links:
                 self.assert_link_status_code_is_not_404(link)
         if self.demo_mode:
-            messenger_post = ("ASSERT NO 404 ERRORS")
+            a_t = "ASSERT NO 404 ERRORS"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_no_404_errors(self._language)
+            messenger_post = ("%s" % a_t)
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def print_unique_links_with_status_codes(self):
@@ -2563,6 +2583,7 @@ class BaseCase(unittest.TestCase):
     def get_downloads_folder(self):
         """ Returns the OS path of the Downloads Folder.
             (Works with Chrome and Firefox only, for now.) """
+        from seleniumbase.core import download_helper
         return download_helper.get_downloads_folder()
 
     def get_path_of_downloaded_file(self, file):
@@ -2647,7 +2668,11 @@ class BaseCase(unittest.TestCase):
                          "does not match the actual page title [%s]!"
                          "" % (expected, actual))
         if self.demo_mode:
-            messenger_post = ("ASSERT TITLE = {%s}" % title)
+            a_t = "ASSERT TITLE"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_title(self._language)
+            messenger_post = ("%s: {%s}" % (a_t, title))
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def assert_no_js_errors(self):
@@ -2678,7 +2703,11 @@ class BaseCase(unittest.TestCase):
                 "JavaScript errors found on %s => %s" % (current_url, errors))
         if self.demo_mode:
             if (self.browser == 'chrome' or self.browser == 'edge'):
-                messenger_post = ("ASSERT NO JS ERRORS")
+                a_t = "ASSERT NO JS ERRORS"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+                    a_t = SD.translate_assert_no_js_errors(self._language)
+                messenger_post = ("%s" % a_t)
                 self.__highlight_with_assert_success(messenger_post, "html")
 
     def __activate_html_inspector(self):
@@ -2783,7 +2812,7 @@ class BaseCase(unittest.TestCase):
                 "Exception: Could not convert {%s}(by=%s) to CSS_SELECTOR!" % (
                     selector, by))
 
-    def set_value(self, selector, new_value, by=By.CSS_SELECTOR, timeout=None):
+    def set_value(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
         """ This method uses JavaScript to update a text field. """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -2795,14 +2824,16 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(orginal_selector, by)
         if not self.demo_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
-        value = re.escape(new_value)
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
         css_selector = re.escape(css_selector)
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""document.querySelector('%s').value='%s';"""
                   % (css_selector, value))
         self.execute_script(script)
-        if new_value.endswith('\n'):
+        if text.endswith('\n'):
             element = self.wait_for_element_present(
                 orginal_selector, by=by, timeout=timeout)
             element.send_keys(Keys.RETURN)
@@ -2810,21 +2841,60 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
-    def js_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def js_update_text(self, selector, text, by=By.CSS_SELECTOR,
                        timeout=None):
-        """ Same as self.set_value() """
+        """ JavaScript + send_keys are used to update a text field.
+            Performs self.set_value() and triggers event listeners.
+            If text ends in "\n", set_value() presses RETURN after.
+            Works faster than send_keys() alone due to the JS call.
+        """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if type(text) is int or type(text) is float:
+            text = str(text)
         self.set_value(
-            selector, new_value, by=by, timeout=timeout)
+            selector, text, by=by, timeout=timeout)
+        if not text.endswith('\n'):
+            try:
+                element = page_actions.wait_for_element_present(
+                    self.driver, selector, by, timeout=0.2)
+                element.send_keys(" \b")
+            except Exception:
+                pass
 
-    def jquery_update_text(self, selector, new_value, by=By.CSS_SELECTOR,
+    def js_type(self, selector, text, by=By.CSS_SELECTOR,
+                timeout=None):
+        """ Same as self.js_update_text()
+            JavaScript + send_keys are used to update a text field.
+            Performs self.set_value() and triggers event listeners.
+            If text ends in "\n", set_value() presses RETURN after.
+            Works faster than send_keys() alone due to the JS call.
+        """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        self.set_value(
+            selector, text, by=by, timeout=timeout)
+        if not text.endswith('\n'):
+            try:
+                element = page_actions.wait_for_element_present(
+                    self.driver, selector, by, timeout=0.2)
+                element.send_keys(" \b")
+            except Exception:
+                pass
+
+    def jquery_update_text(self, selector, text, by=By.CSS_SELECTOR,
                            timeout=None):
         """ This method uses jQuery to update a text field.
-            If the new_value string ends with the newline character,
-            WebDriver will finish the call, which simulates pressing
+            If the text string ends with the newline character,
+            Selenium finishes the call, which simulates pressing
             {Enter/Return} after the text is entered. """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -2838,12 +2908,12 @@ class BaseCase(unittest.TestCase):
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
         selector = self.__escape_quotes_if_needed(selector)
-        new_value = re.escape(new_value)
-        new_value = self.__escape_quotes_if_needed(new_value)
+        text = re.escape(text)
+        text = self.__escape_quotes_if_needed(text)
         update_text_script = """jQuery('%s').val('%s')""" % (
-            selector, new_value)
+            selector, text)
         self.safe_execute_script(update_text_script)
-        if new_value.endswith('\n'):
+        if text.endswith('\n'):
             element.send_keys('\n')
         self.__demo_mode_pause_if_active()
 
@@ -2936,46 +3006,36 @@ class BaseCase(unittest.TestCase):
     # Duplicates (Avoids name confusion when migrating from other frameworks.)
 
     def open_url(self, url):
-        """ Same as open() - Original saved for backwards compatibility. """
+        """ Same as self.open() """
         self.open(url)
 
     def visit(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def visit_url(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def goto(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def go_to(self, url):
-        """ Same as open() - Some test frameworks use this method name. """
+        """ Same as self.open() """
         self.open(url)
 
     def reload(self):
-        """ Same as refresh_page() """
+        """ Same as self.refresh_page() """
         self.refresh_page()
 
     def reload_page(self):
-        """ Same as refresh_page() """
+        """ Same as self.refresh_page() """
         self.refresh_page()
-
-    def type(self, selector, text, by=By.CSS_SELECTOR,
-             timeout=None, retry=False):
-        """ Same as update_text() """
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def input(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
-        """ Same as update_text() """
+        """ Same as self.update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -2985,7 +3045,7 @@ class BaseCase(unittest.TestCase):
 
     def write(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
-        """ Same as update_text() """
+        """ Same as self.update_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -2994,7 +3054,7 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
-        """ Same as add_text() """
+        """ Same as self.add_text() """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
@@ -3047,6 +3107,10 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
+
+    def assert_no_broken_links(self, multithreaded=True):
+        """ Same as self.assert_no_404_errors() """
+        self.assert_no_404_errors(multithreaded=multithreaded)
 
     def wait(self, seconds):
         """ Same as self.sleep() - Some JS frameworks use this method name. """
@@ -3823,7 +3887,11 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = "ASSERT %s: %s" % (by, selector)
+            a_t = "ASSERT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -3903,8 +3971,14 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = ("ASSERT TEXT {%s} in %s: %s"
-                              % (text, by, selector))
+            a_t = "ASSERT TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = ("%s: {%s} %s %s: %s"
+                              % (a_t, text, i_n, by.upper(), selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -3924,8 +3998,14 @@ class BaseCase(unittest.TestCase):
 
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
-            messenger_post = ("ASSERT EXACT TEXT {%s} in %s: %s"
-                              % (text, by, selector))
+            a_t = "ASSERT EXACT TEXT"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_exact_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = ("%s: {%s} %s %s: %s"
+                              % (a_t, text, i_n, by.upper(), selector))
             self.__highlight_with_assert_success(messenger_post, selector, by)
         return True
 
@@ -4009,7 +4089,11 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_link_text_visible(link_text, timeout=timeout)
         if self.demo_mode:
-            messenger_post = ("ASSERT LINK TEXT {%s}." % link_text)
+            a_t = "ASSERT LINK TEXT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_link_text(self._language)
+            messenger_post = ("%s: {%s}" % (a_t, link_text))
             self.__highlight_with_assert_success(
                 messenger_post, link_text, by=By.LINK_TEXT)
         return True
@@ -4041,8 +4125,11 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_partial_link_text(partial_link_text, timeout=timeout)
         if self.demo_mode:
-            messenger_post = (
-                "ASSERT PARTIAL LINK TEXT {%s}." % partial_link_text)
+            a_t = "ASSERT PARTIAL LINK TEXT"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_link_text(self._language)
+            messenger_post = ("%s: {%s}" % (a_t, partial_link_text))
             self.__highlight_with_assert_success(
                 messenger_post, partial_link_text, by=By.PARTIAL_LINK_TEXT)
         return True
@@ -4301,6 +4388,7 @@ class BaseCase(unittest.TestCase):
         if not name or len(name) < 1:
             name = "default"
         name = str(name)
+        from seleniumbase.core import visual_helper
         visual_helper.visual_baseline_folder_setup()
         baseline_dir = constants.VisualBaseline.STORAGE_FOLDER
         visual_baseline_path = baseline_dir + "/" + test_id + "/" + name
@@ -4875,38 +4963,6 @@ class BaseCase(unittest.TestCase):
     # Deprecated Methods (Replace these if they're still in your code!)
 
     @decorators.deprecated(
-        "scroll_click() is deprecated. Use self.click() - It scrolls for you!")
-    def scroll_click(self, selector, by=By.CSS_SELECTOR):
-        # DEPRECATED - self.click() now scrolls to the element before clicking.
-        # self.scroll_to(selector, by=by)  # Redundant
-        self.click(selector, by=by)
-
-    @decorators.deprecated(
-        "update_text_value() is deprecated. Use self.update_text() instead!")
-    def update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                          timeout=None, retry=False):
-        # DEPRECATED - self.update_text() should be used instead.
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(selector):
-            by = By.XPATH
-        self.update_text(
-            selector, new_value, by=by, timeout=timeout, retry=retry)
-
-    @decorators.deprecated(
-        "jquery_update_text_value() is deprecated. Use jquery_update_text()")
-    def jquery_update_text_value(self, selector, new_value, by=By.CSS_SELECTOR,
-                                 timeout=None):
-        # DEPRECATED - self.jquery_update_text() should be used instead.
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        self.jquery_update_text(selector, new_value, by=by, timeout=timeout)
-
-    @decorators.deprecated(
         "jq_format() is deprecated. Use re.escape() instead!")
     def jq_format(self, code):
         # DEPRECATED - re.escape() already performs the intended action!
@@ -4996,11 +5052,16 @@ class BaseCase(unittest.TestCase):
                 # Use Selenium Grid (Use --server="127.0.0.1" for a local Grid)
                 self.use_grid = True
             if self.with_db_reporting:
+                import getpass
+                import uuid
                 from seleniumbase.core.application_manager import (
                     ApplicationManager)
                 from seleniumbase.core.testcase_manager import (
                     ExecutionQueryPayload)
-                import getpass
+                from seleniumbase.core.testcase_manager import (
+                    TestcaseDataPayload)
+                from seleniumbase.core.testcase_manager import (
+                    TestcaseManager)
                 self.execution_guid = str(uuid.uuid4())
                 self.testcase_guid = None
                 self.execution_start_time = 0
@@ -5059,6 +5120,7 @@ class BaseCase(unittest.TestCase):
 
         # Parse the settings file
         if self.settings_file:
+            from seleniumbase.core import settings_parser
             settings_parser.set_settings(self.settings_file)
 
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
@@ -5204,6 +5266,7 @@ class BaseCase(unittest.TestCase):
                 self.__last_page_source = None
 
     def __insert_test_result(self, state, err):
+        from seleniumbase.core.testcase_manager import TestcaseDataPayload
         data_payload = TestcaseDataPayload()
         data_payload.runtime = int(time.time() * 1000) - self.case_start_time
         data_payload.guid = self.testcase_guid
@@ -5440,6 +5503,7 @@ class BaseCase(unittest.TestCase):
                     self.execution_guid, runtime)
             if self.with_s3_logging and has_exception:
                 """ If enabled, upload logs to S3 during test exceptions. """
+                import uuid
                 from seleniumbase.core.s3_manager import S3LoggingBucket
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
@@ -5458,6 +5522,10 @@ class BaseCase(unittest.TestCase):
                 logging.info(
                     "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 if self.with_db_reporting:
+                    from seleniumbase.core.testcase_manager import (
+                        TestcaseDataPayload)
+                    from seleniumbase.core.testcase_manager import (
+                        TestcaseManager)
                     self.testcase_manager = TestcaseManager(self.database_env)
                     data_payload = TestcaseDataPayload()
                     data_payload.guid = self.testcase_guid

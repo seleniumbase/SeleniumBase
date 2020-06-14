@@ -10,7 +10,7 @@ class GoogleTests(BaseCase):
 
     def test_google_dot_com(self):
         self.open('https://google.com/ncr')
-        self.update_text(HomePage.search_box, 'github')
+        self.type(HomePage.search_box, 'github')
         self.assert_element(HomePage.list_box)
         self.assert_element(HomePage.search_button)
         self.assert_element(HomePage.feeling_lucky_button)

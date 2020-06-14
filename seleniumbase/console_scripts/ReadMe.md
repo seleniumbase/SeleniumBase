@@ -4,20 +4,28 @@
 
 SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
 
-Type ``seleniumbase`` on the command line to use console scripts.
-You can also use the simplified name: ``sbase`` instead.
+* Usage: ``seleniumbase [COMMAND] [PARAMETERS]``
+
+* (simplified): ``sbase [COMMAND] [PARAMETERS]``
+
+* To list all commands: ``seleniumbase --help``
 
 (<i>For running tests, [use <b>pytest</b> with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
 ### install
 
 * Usage:
-``seleniumbase install [DRIVER_NAME]``
-        (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
-                  ``iedriver``, ``operadriver``)
+``sbase install [DRIVER_NAME] [VERSION]``
+    (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
+              ``iedriver``, ``operadriver``)
+    (Versions: ``latest`` or a specific driver version.
+               If none specified, installs the default version.)
 
-* Example:
-``seleniumbase install chromedriver``
+* Examples:
+``sbase install chromedriver``
+
+* Options:
+    ``latest``:
 
 * Output:
 Installs the specified webdriver.
@@ -30,22 +38,50 @@ Installs the specified webdriver.
 ### mkdir
 
 * Usage:
-``seleniumbase mkdir [DIRECTORY_NAME]``
+``sbase mkdir [DIRECTORY_NAME]``
 
 * Example:
-``seleniumbase mkdir browser_tests``
+``sbase mkdir browser_tests``
 
 * Output:
 Creates a new folder for running SeleniumBase scripts.
 The new folder contains default config files,
-sample tests for helping new users get started, and
-Python boilerplates for setting up customized
+sample tests for helping new users get started,
+and Python boilerplates for setting up customized
 test frameworks.
+
+### mkfile
+
+* Usage:
+``sbase mkfile [FILE_NAME.py] [OPTIONS]``
+
+* Example:
+``sbase mkfile new_test.py``
+
+* Options:
+``-b`` / ``--basic``  (Basic boilerplate / single-line test)
+
+* Language Options:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+
+* Output:
+Creates a new SeleniumBase test file with boilerplate code.
+If the file already exists, an error is raised.
+By default, uses English mode and creates a
+boilerplate with the 5 most common SeleniumBase
+methods, which are "open", "click", "update_text",
+"assert_element", and "assert_text". If using the
+basic boilerplate option, only the "open" method
+is included.
 
 ### convert
 
 * Usage:
-``seleniumbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]``
+``sbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]``
 
 * Output:
 Converts a Selenium IDE exported WebDriver unittest file
@@ -57,7 +93,7 @@ See: http://www.katalon.com/automation-recorder
 ### translate
 
 * Usage:
-``seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]``
+``sbase translate [SB_FILE].py [LANGUAGE] [ACTION]``
 
 * Languages:
 ``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
@@ -89,7 +125,7 @@ plus the 2-letter language code of the new language.
 ### extract-objects
 
 * Usage:
-``seleniumbase extract-objects [SB_PYTHON_FILE]``
+``sbase extract-objects [SB_PYTHON_FILE]``
 
 * Output:
 Creates page objects based on selectors found in a
@@ -99,7 +135,7 @@ seleniumbase Python file and saves those objects to the
 ### inject-objects
 
 * Usage:
-``seleniumbase inject-objects [SB_PYTHON_FILE] [OPTIONS]``
+``sbase inject-objects [SB_PYTHON_FILE] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Add object selectors to the comments.)
@@ -112,7 +148,7 @@ the selected seleniumbase Python file.
 ### objectify
 
 * Usage:
-``seleniumbase objectify [SB_PYTHON_FILE] [OPTIONS]``
+``sbase objectify [SB_PYTHON_FILE] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Add object selectors to the comments.)
@@ -127,7 +163,7 @@ have been replaced with variable names defined in
 ### revert-objects
 
 * Usage:
-``seleniumbase revert-objects [SB_PYTHON_FILE] [OPTIONS]``
+``sbase revert-objects [SB_PYTHON_FILE] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Keep existing comments for the lines.)
@@ -141,11 +177,11 @@ selectors stored in the "page_objects.py" file.
 ### download
 
 * Usage:
-``seleniumbase download [ITEM]``
+``sbase download [ITEM]``
         (Options: server)
 
 * Example:
-``seleniumbase download server``
+``sbase download server``
 
 * Output:
 Downloads the specified item.
@@ -154,7 +190,7 @@ Downloads the specified item.
 ### grid-hub
 
 * Usage:
-``seleniumbase grid-hub {start|stop}``
+``sbase grid-hub {start|stop}``
 
 * Options:
 ``-v``, ``--verbose``  (Increases verbosity of logging output.)
@@ -169,7 +205,7 @@ You can start, restart, or stop the Grid Hub server.
 ### grid-node
 
 * Usage:
-``seleniumbase grid-node {start|stop} [OPTIONS]``
+``sbase grid-node {start|stop} [OPTIONS]``
 
 * Options:
 ``--hub=HUB_IP`` (The Grid Hub IP Address to connect to.) (Default: ``127.0.0.1``)

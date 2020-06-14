@@ -9,7 +9,6 @@ from selenium.common.exceptions import WebDriverException
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
-from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 
@@ -233,7 +232,10 @@ def highlight_with_js(driver, selector, loops, o_bs):
     script = ("""document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     for n in range(loops):
         script = ("""document.querySelector('%s').style.boxShadow =
                   '0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
@@ -490,6 +492,7 @@ def activate_messenger(driver):
     add_js_link(driver, messenger_js)
     add_js_link(driver, msgr_theme_flat_js)
     add_js_link(driver, msgr_theme_future_js)
+    from seleniumbase.core import style_sheet
     add_css_style(driver, style_sheet.messenger_style)
 
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):
@@ -609,7 +612,10 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     script = ("""document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
               % selector)
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = ("""document.querySelector('%s').style.boxShadow =
               '0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
@@ -644,7 +650,10 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
         selector = "body"
     script = """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');""" % selector
-    safe_execute_script(driver, script)
+    try:
+        safe_execute_script(driver, script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(205, 30, 0, 1)');""" % selector

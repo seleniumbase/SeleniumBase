@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class Testgeval(BaseCase):
 
+    def __init__(self, *args, **kwargs):
+        super(Testgeval, self).__init__(*args, **kwargs)
+        self._language = "Dutch"
+
     def openen(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -30,15 +34,19 @@ class Testgeval(BaseCase):
         return self.click_link_text(*args, **kwargs)
 
     def tekst_bijwerken(self, *args, **kwargs):
-        # update_text(selector, new_value)
+        # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
+    def typ(self, *args, **kwargs):
+        # type(selector, text)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
     def tekst_toevoegen(self, *args, **kwargs):
-        # add_text(selector, new_value)
+        # add_text(selector, text)
         return self.add_text(*args, **kwargs)
 
     def tekst_ophalen(self, *args, **kwargs):
-        # get_text(selector, new_value)
+        # get_text(selector, text)
         return self.get_text(*args, **kwargs)
 
     def controleren_tekst(self, *args, **kwargs):
@@ -168,6 +176,14 @@ class Testgeval(BaseCase):
     def js_klik(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
+
+    def js_tekst_bijwerken(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def js_typ(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
 
     def html_inspecteren(self, *args, **kwargs):
         # inspect_html()
@@ -362,12 +378,8 @@ class Testgeval(BaseCase):
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def voer(self, *args, **kwargs):
-        # input(selector, new_value)  # Same as update_text()
-        return self.input(*args, **kwargs)
-
     def schrijven(self, *args, **kwargs):
-        # write(selector, new_value)  # Same as update_text()
+        # write(selector, text)  # Same as update_text()
         return self.write(*args, **kwargs)
 
     def kenmerk_thema_van_bericht(self, *args, **kwargs):

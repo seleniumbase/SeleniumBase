@@ -116,7 +116,7 @@ def main():
         if len(line.strip()) == 0:
             continue
 
-        # If .clear(), skip because .update_text() already does this
+        # If .clear(), skip because self.type() already does this
         if line.strip().endswith(".clear()"):
             continue
 
@@ -195,7 +195,7 @@ def main():
             if "\\[" in selector or "\\]" in selector or "\\." in selector:
                 raw = "r"
             text = data.group(3)
-            command = '''%sself.update_text(%s'%s', '%s')''' % (
+            command = '''%sself.type(%s'%s', '%s')''' % (
                 whitespace, raw, selector, text)
             seleniumbase_lines.append(command)
             continue
@@ -249,7 +249,7 @@ def main():
             whitespace = data.group(1)
             selector = '[name="%s"]' % data.group(2)
             text = data.group(3)
-            command = '''%sself.update_text('%s', '%s')''' % (
+            command = '''%sself.type('%s', '%s')''' % (
                 whitespace, selector, text)
             seleniumbase_lines.append(command)
             continue
@@ -302,7 +302,7 @@ def main():
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
             text = data.group(3)
-            command = '''%sself.update_text('%s', '%s')''' % (
+            command = '''%sself.type('%s', '%s')''' % (
                 whitespace, selector, text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
@@ -333,7 +333,7 @@ def main():
             whitespace = data.group(1)
             selector = '%s' % data.group(2)
             text = data.group(3)
-            command = '''%sself.update_text("%s", '%s')''' % (
+            command = '''%sself.type("%s", '%s')''' % (
                 whitespace, selector, text)
             if command.count('\\"') == command.count('"'):
                 command = command.replace('\\"', '"')
@@ -680,7 +680,7 @@ def main():
                 data2 = re.match(regex_string, lines[line_num + 1])
                 if data2:
                     continue
-                regex_string = (r'''^\s*self.update_text\(["|']'''
+                regex_string = (r'''^\s*self.type\(["|']'''
                                 '' + selector + ''
                                 '' + r'''["|'], [\S\s]+\)\s*$''')
                 data2 = re.match(regex_string, lines[line_num + 1])

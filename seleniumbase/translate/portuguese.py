@@ -5,6 +5,10 @@ from seleniumbase import MasterQA
 
 class CasoDeTeste(BaseCase):
 
+    def __init__(self, *args, **kwargs):
+        super(CasoDeTeste, self).__init__(*args, **kwargs)
+        self._language = "Portuguese"
+
     def abrir(self, *args, **kwargs):
         # open(url)
         return self.open(*args, **kwargs)
@@ -30,15 +34,19 @@ class CasoDeTeste(BaseCase):
         return self.click_link_text(*args, **kwargs)
 
     def atualizar_texto(self, *args, **kwargs):
-        # update_text(selector, new_value)
+        # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
+    def tipo(self, *args, **kwargs):
+        # type(selector, text)  # Same as update_text()
+        return self.type(*args, **kwargs)
+
     def adicionar_texto(self, *args, **kwargs):
-        # add_text(selector, new_value)
+        # add_text(selector, text)
         return self.add_text(*args, **kwargs)
 
     def obter_texto(self, *args, **kwargs):
-        # get_text(selector, new_value)
+        # get_text(selector, text)
         return self.get_text(*args, **kwargs)
 
     def verificar_texto(self, *args, **kwargs):
@@ -168,6 +176,14 @@ class CasoDeTeste(BaseCase):
     def js_clique(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
+
+    def js_atualizar_texto(self, *args, **kwargs):
+        # js_update_text(selector, text)
+        return self.js_update_text(*args, **kwargs)
+
+    def js_tipo(self, *args, **kwargs):
+        # js_type(selector, text)
+        return self.js_type(*args, **kwargs)
 
     def verificar_html(self, *args, **kwargs):
         # inspect_html()
@@ -362,12 +378,8 @@ class CasoDeTeste(BaseCase):
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
-    def entrada(self, *args, **kwargs):
-        # input(selector, new_value)  # Same as update_text()
-        return self.input(*args, **kwargs)
-
     def escreva(self, *args, **kwargs):
-        # write(selector, new_value)  # Same as update_text()
+        # write(selector, text)  # Same as update_text()
         return self.write(*args, **kwargs)
 
     def definir_tema_da_mensagem(self, *args, **kwargs):

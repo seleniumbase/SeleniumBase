@@ -17,6 +17,6 @@ class 我的测试类(硒测试用例):
         self.回去()
         self.单击链接文本("兰德尔·门罗")
         self.断言文本("兰德尔·门罗", "#firstHeading")
-        self.更新文本("#searchInput", "程式设计")
+        self.输入文本("#searchInput", "程式设计")
         self.单击("#searchButton")
         self.断言文本("程序设计", "#firstHeading")
