@@ -1646,6 +1646,45 @@ class MD:
     md["is_checked"][8] = "выбран"
     md["is_checked"][9] = "está_seleccionado"
 
+    # "wait_for_text_visible" -> duplicate of "wait_for_text"
+    md["wait_for_text_visible"] = ["*"] * num_langs
+    md["wait_for_text_visible"][0] = "wait_for_text_visible"
+    md["wait_for_text_visible"][1] = "等待文本"
+    md["wait_for_text_visible"][2] = "wachten_op_tekst"
+    md["wait_for_text_visible"][3] = "attendre_le_texte"
+    md["wait_for_text_visible"][4] = "attendere_il_testo"
+    md["wait_for_text_visible"][5] = "テキストを待つ"
+    md["wait_for_text_visible"][6] = "텍스트가_나타날_때까지_기다립니다"
+    md["wait_for_text_visible"][7] = "aguardar_o_texto"
+    md["wait_for_text_visible"][8] = "ждать_текста"
+    md["wait_for_text_visible"][9] = "espera_el_texto"
+
+    # "assert_text_visible" -> duplicate of "assert_text"
+    md["assert_text_visible"] = ["*"] * num_langs
+    md["assert_text_visible"][0] = "assert_text_visible"
+    md["assert_text_visible"][1] = "断言文本"
+    md["assert_text_visible"][2] = "controleren_tekst"
+    md["assert_text_visible"][3] = "vérifier_texte"
+    md["assert_text_visible"][4] = "verificare_testo"
+    md["assert_text_visible"][5] = "テキストを確認する"
+    md["assert_text_visible"][6] = "텍스트_확인"
+    md["assert_text_visible"][7] = "verificar_texto"
+    md["assert_text_visible"][8] = "подтвердить_текст"
+    md["assert_text_visible"][9] = "verificar_texto"
+
+    # "assert_no_broken_links" -> duplicate of "assert_no_404_errors"
+    md["assert_no_broken_links"] = ["*"] * num_langs
+    md["assert_no_broken_links"][0] = "assert_no_broken_links"
+    md["assert_no_broken_links"][1] = "检查断开的链接"
+    md["assert_no_broken_links"][2] = "controleren_op_gebroken_links"
+    md["assert_no_broken_links"][3] = "vérifier_les_liens_rompus"
+    md["assert_no_broken_links"][4] = "verificare_i_collegamenti"
+    md["assert_no_broken_links"][5] = "リンク切れを確認する"
+    md["assert_no_broken_links"][6] = "끊어진_링크_확인"
+    md["assert_no_broken_links"][7] = "verificar_se_há_links_quebrados"
+    md["assert_no_broken_links"][8] = "проверить_ошибки_404"
+    md["assert_no_broken_links"][9] = "verificar_si_hay_enlaces_rotos"
+
     # "block_ads" -> duplicate of "ad_block"
     md["block_ads"] = ["*"] * num_langs
     md["block_ads"][0] = "block_ads"
