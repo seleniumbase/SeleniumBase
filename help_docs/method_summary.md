@@ -251,6 +251,7 @@ self.get_link_status_code(link, allow_redirects=False, timeout=5)
 self.assert_link_status_code_is_not_404(link)
 
 self.assert_no_404_errors(multithreaded=True)
+# Duplicates: self.assert_no_broken_links(multithreaded=True)
 
 self.print_unique_links_with_status_codes()
 

@@ -112,17 +112,17 @@ from seleniumbase import BaseCase
 class MyTestClass(BaseCase):
 
     def test_basic(self):
+        self.open("https://store.xkcd.com/search")
+        self.type('input[name="q"]', "xkcd book\n")
+        self.assert_text("xkcd: volume 0", "h3")
         self.open("https://xkcd.com/353/")
         self.assert_title("xkcd: Python")
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
-        self.click("link=About")
-        self.assert_text("xkcd.com", "h2")
-        self.open("://store.xkcd.com/collections/everything")
-        self.update_text("input.search-input", "xkcd book\n")
-        self.assert_exact_text("xkcd: volume 0", "h3")
+        self.click_link_text("About")
+        self.assert_exact_text("xkcd.com", "h2")
 ```
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
@@ -132,7 +132,7 @@ class MyTestClass(BaseCase):
 ```python
 self.open(URL)  # Navigate to the web page
 self.click(SELECTOR)  # Click a page element
-self.update_text(SELECTOR, TEXT)  # Type text (Add "\n" to text for pressing enter/return.)
+self.type(SELECTOR, TEXT)  # Type text (Add "\n" to text for pressing enter/return.)
 self.assert_element(SELECTOR)  # Assert element is visible
 self.assert_text(TEXT)  # Assert text is visible (has optional SELECTOR arg)
 self.assert_title(PAGE_TITLE)  # Assert page title
@@ -163,7 +163,7 @@ SeleniumBase automatically handles common WebDriver actions such as spinning up 
 SeleniumBase uses simple syntax for commands, such as:
 
 ```python
-self.update_text("input", "dogs\n")
+self.type("input", "dogs\n")
 ```
 
 The same command with regular WebDriver is very messy:
@@ -523,10 +523,10 @@ self.click("div#my_id")
 
 <h4>Typing Text</h4>
 
-self.update_text(selector, text)  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
+self.type(selector, text)  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
 
 ```python
-self.update_text("input#id_value", "2012")
+self.type("input#id_value", "2012")
 ```
 You can also use self.add_text() or the WebDriver .send_keys() command, but those won't clear the text box first if there's already text inside.
 If you want to type in special keys, that's easy too. Here's an example:

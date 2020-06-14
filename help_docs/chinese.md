@@ -124,7 +124,7 @@ class MyTestClass(BaseCase):
         self.click("link=About")
         self.assert_text("xkcd.com", "h2")
         self.open("://store.xkcd.com/collections/everything")
-        self.update_text("input.search-input", "xkcd book\n")
+        self.type("input.search-input", "xkcd book\n")
         self.assert_exact_text("xkcd: volume 0", "h3")
 ```
 
@@ -132,10 +132,12 @@ class MyTestClass(BaseCase):
 * 如果你是CSS Selectors新手, 可以通过 [Flukeout](http://flukeout.github.io/) 游戏来帮助学习掌握.
 * 在上述代码中可以看到以下相关的 ``SeleniumBase`` 方法:
 
+``from seleniumbase import BaseCase``:
+
 ```python
 self.open(URL)  # 打开页面
 self.click(SELECTOR)  # 点击页面元素
-self.update_text(SELECTOR, TEXT)  # 输入文字 (添加 "\n" 在"TEXT"的末尾来进行换行.)
+self.type(SELECTOR, TEXT)  # 输入文字 (添加 "\n" 在"TEXT"的末尾来进行换行.)
 self.assert_element(SELECTOR)  # 断言元素是否存在并可见
 self.assert_text(TEXT)  # 断言文本是否存在并可见 (可以选择某个元素选择器)
 self.assert_title(PAGE_TITLE)  # 断言标题是否存在并可见
@@ -155,6 +157,55 @@ self.switch_to_window(WINDOW_NUMBER)  # 切换不同的 window/tab
 self.save_screenshot(FILE_NAME)  # 保存当前页面的截图
 ```
 
+[chinese_test_1.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/chinese_test_1.py):
+```python
+from seleniumbase.translate.chinese import 硒测试用例
+
+class 我的测试类(硒测试用例):
+
+    def test_例子1(self):
+        self.开启网址("https://xkcd.in/comic?lg=cn&id=353")
+        self.断言标题("Python - XKCD中文站")
+        self.断言元素("#content div.comic-body")
+        self.断言文本("上漫画")
+        self.单击("div.nextLink")
+        self.断言文本("老妈的逆袭", "#content h1")
+        self.单击链接文本("下一篇")
+        self.断言文本("敲桌子", "#content h1")
+        self.断言文本("有时候无聊就是最棒的乐趣")
+        self.回去()
+        self.单击链接文本("兰德尔·门罗")
+        self.断言文本("兰德尔·门罗", "#firstHeading")
+        self.更新文本("#searchInput", "程式设计")
+        self.单击("#searchButton")
+        self.断言文本("程序设计", "#firstHeading")
+```
+
+``from seleniumbase.translate.chinese import 硒测试用例``:
+
+```python
+self.开启(URL)  # 打开页面
+self.单击(SELECTOR)  # 点击页面元素
+self.输入文本(SELECTOR, TEXT)  # 输入文字 (添加 "\n" 在"TEXT"的末尾来进行换行.)
+self.断言元素(SELECTOR)  # 断言元素是否存在并可见
+self.断言文本(TEXT)  # 断言文本是否存在并可见 (可以选择某个元素选择器)
+self.断言标题(PAGE_TITLE)  # 断言标题是否存在并可见
+self.检查断开的链接()  # 断言不存在404错误,若存在则断言失败
+self.检查JS错误()  # 断言不存在js错误 (Chrome-ONLY)
+self.执行脚本(JAVASCRIPT)  # 在页面中执行js脚本
+self.回去()  # 返回到上一个url链接页面
+self.获取文本(SELECTOR)  # 获取元素的文本
+self.获取属性(SELECTOR, ATTRIBUTE)  # 获取某个定位元素的指定元素属性的属性值
+self.元素是否可见(SELECTOR)  # 判断元素是否在页面上可见
+self.文本是否显示(TEXT)  # 判断文本是否在页面上可见(可提供 SELECTOR)
+self.悬停并单击(HOVER_SELECTOR, CLICK_SELECTOR)  # 鼠标移动在指定元素上后点击另一个元素
+self.按文本选择选项(DROPDOWN_SELECTOR, OPTION_TEXT)  # 选择下拉框中内容
+self.切换到帧(FRAME_NAME)  # 切换 webdriver control 到页面上指定 iframe
+self.切换到默认内容()  # 切换 webdriver control out 到当前的 iframe
+self.切换到窗口(WINDOW_NUMBER)  # 切换不同的 window/tab
+self.保存截图(FILE_NAME)  # 保存当前页面的截图
+```
+
 完整的 SeleniumBase methods, 可见: <b><a href="https://seleniumbase.io/help_docs/method_summary/">Method Summary</a></b>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 了解更多信息:</h2>
@@ -166,7 +217,7 @@ SeleniumBase 自动化控制 WebDriver 操作 web browsers(浏览器),在运行�
 SeleniumBase 使用简单简约的语法, 例如:
 
 ```python
-self.update_text("input", "dogs\n")
+self.type("input", "dogs\n")
 ```
 
 上述相似的代码在 Webdriver中变现的不是特别好:
@@ -524,10 +575,10 @@ self.click("div#my_id")
 
 <h4>输入文本</h4>
 
-self.update_text(selector, text)  # 用指定的值更新来自指定元素的文本。如果元素丢失或文本字段不可编辑，则引发异常。例如:
+self.type(selector, text)  # 用指定的值更新来自指定元素的文本。如果元素丢失或文本字段不可编辑，则引发异常。例如:
 
 ```python
-self.update_text("input#id_value", "2012")
+self.type("input#id_value", "2012")
 ```
 您也可以使用self.add_text()或WebDriver .send_keys()命令，但是如果文本框中已经有文本，这些命令不会首先清除文本框
 如果您想键入特殊的键，这也很容易。这里有一个例子:
