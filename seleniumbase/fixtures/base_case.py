@@ -11,7 +11,7 @@ Usage:
         def test_anything(self):
             # Write your code here. Example:
             self.open("https://github.com/")
-            self.update_text("input.header-search-input", "SeleniumBase\n")
+            self.type("input.header-search-input", "SeleniumBase\n")
             self.click('a[href="/seleniumbase/SeleniumBase"]')
             self.assert_element("div.repository-content")
             ....
