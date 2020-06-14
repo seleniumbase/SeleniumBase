@@ -3108,6 +3108,10 @@ class BaseCase(unittest.TestCase):
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
 
+    def assert_no_broken_links(self, multithreaded=True):
+        """ Same as self.assert_no_404_errors() """
+        self.assert_no_404_errors(multithreaded=multithreaded)
+
     def wait(self, seconds):
         """ Same as self.sleep() - Some JS frameworks use this method name. """
         self.sleep(seconds)
