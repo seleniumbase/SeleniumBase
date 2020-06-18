@@ -93,7 +93,7 @@ setup(
         'pip>=20.1.1',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=47.3.0;python_version>="3.5"',
+        'setuptools>=47.3.1;python_version>="3.5"',
         'setuptools-scm',
         'wheel',
         'six',
@@ -102,11 +102,12 @@ setup(
         'idna==2.9',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
         'urllib3==1.25.9',  # Must stay in sync with "requests"
-        'requests==2.23.0',
+        'requests==2.24.0',
         'selenium==3.141.0',
         'pluggy==0.13.1',
         'attrs>=19.3.0',
-        'py==1.8.2',
+        'py==1.8.1;sys_platform=="win32"',
+        'py==1.8.2;sys_platform!="win32"',
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==5.4.3;python_version>="3.5"',
         'pytest-cov==2.10.0',
