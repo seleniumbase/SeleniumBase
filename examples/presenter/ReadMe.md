@@ -7,7 +7,7 @@ The Reveal-JS library is used for running the presentations.
 
 **Here's a sample slide:**
 
-<img src="https://seleniumbase.io/other/presenter_screen.png" title="Screenshot"><br>
+<img width="90%" src="https://seleniumbase.io/other/presenter_screen.png" title="Screenshot"><br>
 
 Slides can include HTML, code, images, and iframes.
 
@@ -22,13 +22,13 @@ pytest my_presentation.py
 
 ```python
 self.create_presentation(name=None, show_notes=True)
-        """ Creates a Reveal-JS presentation that you can add slides to.
-            @Params
-            name - If creating multiple presentations at the same time,
-                   use this to specify the name of the current presentation.
-            show_notes - When set to True, the Notes feature becomes enabled,
-                         which allows presenters to see notes next to slides.
-        """
+""" Creates a Reveal-JS presentation that you can add slides to.
+    @Params
+    name - If creating multiple presentations at the same time,
+           use this to specify the name of the current presentation.
+    show_notes - When set to True, the Notes feature becomes enabled,
+                 which allows presenters to see notes next to slides.
+"""
 ```
 
 If creating multiple presentations at the same time, you can pass the ``name`` parameter to distinguish between different presentations.
@@ -41,18 +41,18 @@ Notes are enabled by default unless you specify:
 ```python
 self.add_slide(content=None, image=None, code=None, iframe=None,
                notes=None, name=None)
-        """ Allows the user to add slides to a presentation.
-            @Params
-            content - The HTML content to display on the presentation slide.
-            image - Attach an image (from a URL link) to the slide.
-            code - Attach code of any programming language to the slide.
-                   Language-detection will be used to add syntax formatting.
-            iframe - Attach an iFrame (from a URL link) to the slide.
-            notes - Additional notes to include with the slide.
-                    ONLY SEEN if show_notes is set for the presentation.
-            name - If creating multiple presentations at the same time,
-                   use this to select the presentation to add slides to.
-        """
+""" Allows the user to add slides to a presentation.
+    @Params
+    content - The HTML content to display on the presentation slide.
+    image - Attach an image (from a URL link) to the slide.
+    code - Attach code of any programming language to the slide.
+           Language-detection will be used to add syntax formatting.
+    iframe - Attach an iFrame (from a URL link) to the slide.
+    notes - Additional notes to include with the slide.
+            ONLY SEEN if show_notes is set for the presentation.
+    name - If creating multiple presentations at the same time,
+           use this to select the presentation to add slides to.
+"""
 ```
 
 
@@ -60,7 +60,7 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
 
 ```python
 self.begin_presentation(filename="my_presentation.html", name=None)
-        """ Begin a Reveal-JS Presentation in the web browser. """
+""" Begin a Reveal-JS Presentation in the web browser. """
 ```
 
 Before the presentation is run, the full HTML is saved to the ``presentations_saved/`` folder.
