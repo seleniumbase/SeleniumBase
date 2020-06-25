@@ -83,6 +83,7 @@ class BaseCase(unittest.TestCase):
         self.__device_pixel_ratio = None
         # Requires self._* instead of self.__* for external class use
         self._language = "English"
+        self._presentation_slides = {}
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
@@ -3147,6 +3148,152 @@ class BaseCase(unittest.TestCase):
     def add_meta_tag(self, http_equiv=None, content=None):
         js_utils.add_meta_tag(
             self.driver, http_equiv=http_equiv, content=content)
+
+    ############
+
+    def create_presentation(self, name=None, show_notes=True):
+        """ Creates a Reveal-JS presentation that you can add slides to.
+            @Params
+            name - If creating multiple presentations at the same time,
+                   use this to specify the name of the current presentation.
+            show_notes - When set to True, the Notes feature becomes enabled,
+                         which allows presenters to see notes next to slides.
+        """
+        if not name:
+            name = "default"
+
+        new_presentation = (
+            """
+            <html>
+              <head>
+                <link rel="stylesheet" href="%s">
+                <link rel="stylesheet" href="%s">
+                <style>
+                pre{background-color:#fbe8d4;border-radius:8px;}
+                div[flex_div],{height:100vh;margin:0;align-items:center;
+                justify-content:center;display:flex;background:#fafafa;}
+                img[rounded]{border-radius:16px;max-width:90%%;}
+                </style>
+              </head>
+              <body>
+                <div class="reveal">
+                  <div class="slides">
+            """ % (constants.Reveal.MIN_CSS, constants.Reveal.WHITE_MIN_CSS))
+
+        self._presentation_slides[name] = []
+        self._presentation_slides[name].append(new_presentation)
+
+    def add_slide(self, content=None, image=None, code=None, iframe=None,
+                  notes=None, name=None):
+        """ Allows the user to add slides to a presentation.
+            @Params
+            content - The HTML content to display on the presentation slide.
+            image - Attach an image (from a URL link) to the slide.
+            code - Attach code of any programming language to the slide.
+                   Language-detection will be used to add syntax formatting.
+            iframe - Attach an iFrame (from a URL link) to the slide.
+            notes - Additional notes to include with the slide.
+                    ONLY SEEN if show_notes is set for the presentation.
+            name - If creating multiple presentations at the same time,
+                   use this to select the presentation to add slides to.
+        """
+
+        if not name:
+            name = "default"
+        if name not in self._presentation_slides:
+            # Create a presentation if it doesn't already exist
+            self.create_presentation(name=name, show_notes=True)
+        if not content:
+            content = ""
+        if not notes:
+            notes = ""
+
+        html = ('<section data-transition="none">%s' % content)
+        if image:
+            html += '<div flex_div><img rounded src="%s"></div>' % image
+        if code:
+            html += '<div></div>'
+            html += '<pre class="prettyprint">%s</pre>' % code
+        if iframe:
+            html += ('<div></div>'
+                     '<iframe src="%s" style="width:92%%;height:550;'
+                     'title="iframe content"></iframe>' % iframe)
+        html += '<aside class="notes">%s</aside>' % notes
+        html += '</section>'
+
+        self._presentation_slides[name].append(html)
+
+    def save_presentation(self, filename="my_presentation.html", name=None):
+        """ Saves a Reveal-JS Presentation to a folder for later use. """
+
+        if not name:
+            name = "default"
+        if name not in self._presentation_slides:
+            raise Exception("Presentation {%s} does not exist!" % name)
+        if not filename.endswith('.html'):
+            raise Exception('Presentation file must end in ".html"!')
+
+        the_html = ""
+        for slide in self._presentation_slides[name]:
+            the_html += slide
+
+        the_html += (
+            """
+                  </div>
+                </div>
+                <script src="%s"></script>
+                <script src="%s"></script>
+                <script src="%s"></script>
+                <script>Reveal.initialize(
+                    {showNotes: true, slideNumber: true,});
+                </script>
+              </body>
+            </html>
+            """ % (constants.Reveal.MIN_JS,
+                   constants.Reveal.MARKED_JS,
+                   constants.PrettifyJS.RUN_PRETTIFY_JS))
+
+        saved_presentations_folder = constants.Presentations.SAVED_FOLDER
+        if saved_presentations_folder.endswith("/"):
+            saved_presentations_folder = saved_presentations_folder[:-1]
+        if not os.path.exists(saved_presentations_folder):
+            try:
+                os.makedirs(saved_presentations_folder)
+            except Exception:
+                pass
+        file_path = saved_presentations_folder + "/" + filename
+        out_file = codecs.open(file_path, "w+")
+        out_file.writelines(the_html)
+        out_file.close()
+        print('\n>>> [%s] was saved!\n' % file_path)
+        return file_path
+
+    def begin_presentation(self, filename="my_presentation.html", name=None):
+        """ Begin a Reveal-JS Presentation in the web browser. """
+
+        if self.headless:
+            return  # Presentations should not run in headless mode.
+        if not name:
+            name = "default"
+        if name not in self._presentation_slides:
+            raise Exception("Presentation {%s} does not exist!" % name)
+        if not filename.endswith('.html'):
+            raise Exception('Presentation file must end in ".html"!')
+
+        end_slide = (
+            '<section data-transition="none">'
+            '<p class="End_Presentation_Now"> </p></section>')
+        self._presentation_slides[name].append(end_slide)
+        file_path = self.save_presentation(name=name, filename=filename)
+        self._presentation_slides[name].pop()
+
+        self.open_html_file(file_path)
+        presentation_folder = constants.Presentations.SAVED_FOLDER
+        while (len(self.driver.window_handles) > 0 and (
+                presentation_folder in self.get_current_url())):
+            time.sleep(0.1)
+            if self.is_element_visible("p.End_Presentation_Now"):
+                break
 
     ############
 

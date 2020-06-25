@@ -342,6 +342,13 @@ def main():
         if console_width and (code_width + extra_r_spaces < console_width):
             used_width = code_width + extra_r_spaces
 
+        try:
+            if "🗺️" in the_code:
+                # Fix width of an emoji
+                the_code = the_code.replace("🗺️", "🗺️ ")
+        except Exception:
+            pass
+
         magic_syntax = Syntax(
             the_code, code_lang, theme="monokai",
             line_numbers=line_numbers, code_width=used_width,

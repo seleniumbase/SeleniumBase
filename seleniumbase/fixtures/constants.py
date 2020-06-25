@@ -19,6 +19,10 @@ class Files:
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
 
 
+class Presentations:
+    SAVED_FOLDER = "presentations_saved"
+
+
 class SavedCookies:
     STORAGE_FOLDER = "saved_cookies"
 
@@ -82,6 +86,25 @@ class HtmlInspector:
     VER = "0.8.2"
     MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
               "html-inspector/%s/html-inspector.min.js" % VER)
+
+
+class PrettifyJS:
+    RUN_PRETTIFY_JS = ("https://cdn.jsdelivr.net/gh/google/"
+                       "code-prettify@master/loader/run_prettify.js")
+
+
+class Reveal:
+    VER = "3.8.0"
+    MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+               "reveal.js/%s/css/reveal.min.css" % VER)
+    WHITE_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                     "reveal.js/%s/css/theme/white.min.css" % VER)
+    MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+              "reveal.js/%s/js/reveal.min.js" % VER)
+    MARKED_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                 "reveal.js/%s/plugin/markdown/marked.js" % VER)
+    MARKDOWN_MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                       "reveal.js/%s/plugin/markdown/markdown.min.js" % VER)
 
 
 class BootstrapTour:

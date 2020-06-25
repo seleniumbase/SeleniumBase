@@ -74,6 +74,9 @@ archived_logs
 geckodriver.log
 pytestdebug.log
 
+# Presentations
+presentations_saved
+
 # Reports
 latest_report
 report_archives
