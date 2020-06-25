@@ -356,6 +356,16 @@ self.add_meta_tag(http_equiv=None, content=None)
 
 ############
 
+self.create_presentation(name=None, show_notes=True)
+
+self.add_slide(content=None, image=None, code=None, iframe=None, notes=None, name=None)
+
+self.save_presentation(filename="my_presentation.html", name=None)
+
+self.begin_presentation(filename="my_presentation.html", name=None)
+
+############
+
 self.create_tour(name=None, theme=None)
 
 self.create_shepherd_tour(name=None, theme=None)
