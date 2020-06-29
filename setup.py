@@ -44,7 +44,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install 'tqdm>=4.46.1'")
+        os.system("python -m pip install 'tqdm>=4.47.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -99,7 +99,7 @@ setup(
         'six',
         'nose',
         'ipdb',
-        'idna==2.9',  # Must stay in sync with "requests"
+        'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
         'urllib3==1.25.9',  # Must stay in sync with "requests"
         'requests==2.24.0',
@@ -134,7 +134,7 @@ setup(
         'pyotp==2.3.0',
         'boto==2.49.0',
         'cffi==1.14.0',
-        'rich==2.2.6;python_version>="3.6" and python_version<"4.0"',
+        'rich==3.0.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
