@@ -3151,40 +3151,79 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def create_presentation(self, name=None, show_notes=True):
+    def create_presentation(self, name=None, theme="default", show_notes=True):
         """ Creates a Reveal-JS presentation that you can add slides to.
             @Params
             name - If creating multiple presentations at the same time,
                    use this to specify the name of the current presentation.
+            theme - Set a theme with a unique style for the presentation.
+                    Valid themes: "serif" (default), "sky", "white", "black",
+                                  "simple", "league", "moon", "night",
+                                  "beige", "blood", and "solarized".
             show_notes - When set to True, the Notes feature becomes enabled,
                          which allows presenters to see notes next to slides.
         """
         if not name:
             name = "default"
+        if not theme or theme == "default":
+            theme = "serif"
+        valid_themes = (["serif", "white", "black", "beige", "simple", "sky",
+                         "league", "moon", "night", "blood", "solarized"])
+        theme = theme.lower()
+        if theme not in valid_themes:
+            raise Exception(
+                "Theme {%s} not found! Valid themes: %s"
+                "" % (theme, valid_themes))
+
+        reveal_theme_css = None
+        if theme == "serif":
+            reveal_theme_css = constants.Reveal.SERIF_MIN_CSS
+        elif theme == "sky":
+            reveal_theme_css = constants.Reveal.SKY_MIN_CSS
+        elif theme == "white":
+            reveal_theme_css = constants.Reveal.WHITE_MIN_CSS
+        elif theme == "black":
+            reveal_theme_css = constants.Reveal.BLACK_MIN_CSS
+        elif theme == "simple":
+            reveal_theme_css = constants.Reveal.SIMPLE_MIN_CSS
+        elif theme == "league":
+            reveal_theme_css = constants.Reveal.LEAGUE_MIN_CSS
+        elif theme == "moon":
+            reveal_theme_css = constants.Reveal.MOON_MIN_CSS
+        elif theme == "night":
+            reveal_theme_css = constants.Reveal.NIGHT_MIN_CSS
+        elif theme == "beige":
+            reveal_theme_css = constants.Reveal.BEIGE_MIN_CSS
+        elif theme == "blood":
+            reveal_theme_css = constants.Reveal.BLOOD_MIN_CSS
+        elif theme == "solarized":
+            reveal_theme_css = constants.Reveal.SOLARIZED_MIN_CSS
+        else:
+            # Use the default if unable to determine the theme
+            reveal_theme_css = constants.Reveal.SERIF_MIN_CSS
 
         new_presentation = (
-            """
-            <html>
-              <head>
-                <link rel="stylesheet" href="%s">
-                <link rel="stylesheet" href="%s">
-                <style>
-                pre{background-color:#fbe8d4;border-radius:8px;}
-                div[flex_div],{height:100vh;margin:0;align-items:center;
-                justify-content:center;display:flex;background:#fafafa;}
-                img[rounded]{border-radius:16px;max-width:90%%;}
-                </style>
-              </head>
-              <body>
-                <div class="reveal">
-                  <div class="slides">
-            """ % (constants.Reveal.MIN_CSS, constants.Reveal.WHITE_MIN_CSS))
+            '<html>\n'
+            '<head>\n'
+            '<link rel="stylesheet" href="%s">\n'
+            '<link rel="stylesheet" href="%s">\n'
+            '<style>\n'
+            'pre{background-color:#fbe8d4;border-radius:8px;}\n'
+            'div[flex_div]{height:75vh;margin:0;align-items:center;'
+            'justify-content:center;display:flex;}\n'
+            'img[rounded]{border-radius:16px;max-width:82%%;}\n'
+            '</style>\n'
+            '</head>\n\n'
+            '<body>\n'
+            '<div class="reveal">\n'
+            '<div class="slides">\n'
+            '' % (constants.Reveal.MIN_CSS, reveal_theme_css))
 
         self._presentation_slides[name] = []
         self._presentation_slides[name].append(new_presentation)
 
     def add_slide(self, content=None, image=None, code=None, iframe=None,
-                  notes=None, name=None):
+                  content2=None, notes=None, name=None):
         """ Allows the user to add slides to a presentation.
             @Params
             content - The HTML content to display on the presentation slide.
@@ -3192,6 +3231,7 @@ class BaseCase(unittest.TestCase):
             code - Attach code of any programming language to the slide.
                    Language-detection will be used to add syntax formatting.
             iframe - Attach an iFrame (from a URL link) to the slide.
+            content2 - HTML content to display after adding an image or code.
             notes - Additional notes to include with the slide.
                     ONLY SEEN if show_notes is set for the presentation.
             name - If creating multiple presentations at the same time,
@@ -3205,53 +3245,79 @@ class BaseCase(unittest.TestCase):
             self.create_presentation(name=name, show_notes=True)
         if not content:
             content = ""
+        if not content2:
+            content2 = ""
         if not notes:
             notes = ""
 
-        html = ('<section data-transition="none">%s' % content)
+        add_line = ""
+        if content.startswith("<"):
+            add_line = "\n"
+        html = ('\n<section data-transition="none">%s%s' % (add_line, content))
         if image:
-            html += '<div flex_div><img rounded src="%s"></div>' % image
+            html += '\n<div flex_div><img rounded src="%s"></div>' % image
         if code:
-            html += '<div></div>'
-            html += '<pre class="prettyprint">%s</pre>' % code
+            html += '\n<div></div>'
+            html += '\n<pre class="prettyprint">\n%s</pre>' % code
         if iframe:
-            html += ('<div></div>'
-                     '<iframe src="%s" style="width:92%%;height:550;'
+            html += ('\n<div></div>'
+                     '\n<iframe src="%s" style="width:92%%;height:550;'
                      'title="iframe content"></iframe>' % iframe)
-        html += '<aside class="notes">%s</aside>' % notes
-        html += '</section>'
+        add_line = ""
+        if content2.startswith("<"):
+            add_line = "\n"
+        if content2:
+            html += '%s%s' % (add_line, content2)
+        html += '\n<aside class="notes">%s</aside>' % notes
+        html += '\n</section>\n'
 
         self._presentation_slides[name].append(html)
 
-    def save_presentation(self, filename="my_presentation.html", name=None):
-        """ Saves a Reveal-JS Presentation to a folder for later use. """
+    def save_presentation(self, name=None, filename=None, interval=0):
+        """ Saves a Reveal-JS Presentation to a file for later use.
+            @Params
+            name - If creating multiple presentations at the same time,
+                   use this to select the one you wish to add slides to.
+            filename - The name of the HTML file that you wish to
+                       save the presentation to. (filename must end in ".html")
+            interval - The delay time between autoplaying slides. (in seconds)
+                       If set to 0 (default), autoplay is disabled.
+        """
 
         if not name:
             name = "default"
+        if not filename:
+            filename = "my_presentation.html"
         if name not in self._presentation_slides:
             raise Exception("Presentation {%s} does not exist!" % name)
         if not filename.endswith('.html'):
             raise Exception('Presentation file must end in ".html"!')
+        if not interval:
+            interval = 0
+        if not type(interval) is int and not type(interval) is float:
+            raise Exception('Expecting a numeric value for "interval"!')
+        if interval < 0:
+            raise Exception('The "interval" cannot be a negative number!')
+        interval_ms = float(interval) * 1000.0
 
         the_html = ""
         for slide in self._presentation_slides[name]:
             the_html += slide
 
         the_html += (
-            """
-                  </div>
-                </div>
-                <script src="%s"></script>
-                <script src="%s"></script>
-                <script src="%s"></script>
-                <script>Reveal.initialize(
-                    {showNotes: true, slideNumber: true,});
-                </script>
-              </body>
-            </html>
-            """ % (constants.Reveal.MIN_JS,
-                   constants.Reveal.MARKED_JS,
-                   constants.PrettifyJS.RUN_PRETTIFY_JS))
+            '\n</div>\n'
+            '</div>\n'
+            '<script src="%s"></script>\n'
+            '<script src="%s"></script>\n'
+            '<script>Reveal.initialize('
+            '{showNotes: true, slideNumber: true, '
+            'autoSlide: %s,});'
+            '</script>\n'
+            '</body>\n'
+            '</html>\n'
+            '' % (constants.Reveal.MIN_JS,
+                  constants.PrettifyJS.RUN_PRETTIFY_JS,
+                  interval_ms))
 
         saved_presentations_folder = constants.Presentations.SAVED_FOLDER
         if saved_presentations_folder.endswith("/"):
@@ -3268,32 +3334,53 @@ class BaseCase(unittest.TestCase):
         print('\n>>> [%s] was saved!\n' % file_path)
         return file_path
 
-    def begin_presentation(self, filename="my_presentation.html", name=None):
-        """ Begin a Reveal-JS Presentation in the web browser. """
-
+    def begin_presentation(self, name=None, filename=None, interval=0):
+        """ Begin a Reveal-JS Presentation in the web browser.
+            @Params
+            name - If creating multiple presentations at the same time,
+                   use this to select the one you wish to add slides to.
+            filename - The name of the HTML file that you wish to
+                       save the presentation to. (filename must end in ".html")
+            interval - The delay time between autoplaying slides. (in seconds)
+                       If set to 0 (default), autoplay is disabled.
+        """
         if self.headless:
             return  # Presentations should not run in headless mode.
         if not name:
             name = "default"
+        if not filename:
+            filename = "my_presentation.html"
         if name not in self._presentation_slides:
             raise Exception("Presentation {%s} does not exist!" % name)
         if not filename.endswith('.html'):
             raise Exception('Presentation file must end in ".html"!')
+        if not interval:
+            interval = 0
+        if not type(interval) is int and not type(interval) is float:
+            raise Exception('Expecting a numeric value for "interval"!')
+        if interval < 0:
+            raise Exception('The "interval" cannot be a negative number!')
 
         end_slide = (
-            '<section data-transition="none">'
-            '<p class="End_Presentation_Now"> </p></section>')
+            '\n<section data-transition="none">\n'
+            '<p class="End_Presentation_Now"> </p>\n</section>\n')
         self._presentation_slides[name].append(end_slide)
-        file_path = self.save_presentation(name=name, filename=filename)
+        file_path = self.save_presentation(
+            name=name, filename=filename, interval=interval)
         self._presentation_slides[name].pop()
 
         self.open_html_file(file_path)
         presentation_folder = constants.Presentations.SAVED_FOLDER
-        while (len(self.driver.window_handles) > 0 and (
-                presentation_folder in self.get_current_url())):
-            time.sleep(0.1)
-            if self.is_element_visible("p.End_Presentation_Now"):
-                break
+        try:
+            while (len(self.driver.window_handles) > 0 and (
+                    presentation_folder in self.get_current_url())):
+                time.sleep(0.05)
+                if self.is_element_visible(
+                        "section.present p.End_Presentation_Now"):
+                    break
+                time.sleep(0.05)
+        except Exception:
+            pass
 
     ############
 
@@ -3761,7 +3848,7 @@ class BaseCase(unittest.TestCase):
             @Params
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
-            interval - The delay time between autoplaying tour steps.
+            interval - The delay time between autoplaying tour steps. (Seconds)
                        If set to 0 (default), the tour is fully manual control.
         """
         if self.headless:

@@ -19,6 +19,7 @@ lib64
 __pycache__
 
 # Python3 pyvenv
+env
 venv
 sbase
 sbase*
@@ -74,9 +75,6 @@ archived_logs
 geckodriver.log
 pytestdebug.log
 
-# Presentations
-presentations_saved
-
 # Reports
 latest_report
 report_archives
@@ -84,6 +82,10 @@ archived_reports
 html_report.html
 report.html
 report.xml
+
+# Presentations
+presentations_saved
+saved_presentations
 
 # Tours
 tours_exported

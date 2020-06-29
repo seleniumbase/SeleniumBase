@@ -356,13 +356,14 @@ self.add_meta_tag(http_equiv=None, content=None)
 
 ############
 
-self.create_presentation(name=None, show_notes=True)
+self.create_presentation(name=None, theme="default", show_notes=True)
 
-self.add_slide(content=None, image=None, code=None, iframe=None, notes=None, name=None)
+self.add_slide(content=None, image=None, code=None, iframe=None,
+               content2=None, notes=None, name=None)
 
-self.save_presentation(filename="my_presentation.html", name=None)
+self.save_presentation(name=None, filename=None, interval=0)
 
-self.begin_presentation(filename="my_presentation.html", name=None)
+self.begin_presentation(name=None, filename=None, interval=0)
 
 ############
 
