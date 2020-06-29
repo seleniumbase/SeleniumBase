@@ -2,7 +2,7 @@
 
 # 📰 Presenter 📰
 
-SeleniumBase Presenter allows you to create HTML presentations with Python.
+SeleniumBase Presenter allows you to create HTML presentations with Python.<br />
 The Reveal-JS library is used for running the presentations.
 
 **Here's a sample presentation:**
