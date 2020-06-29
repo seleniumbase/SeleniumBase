@@ -3210,7 +3210,7 @@ class BaseCase(unittest.TestCase):
             '<style>\n'
             'pre{background-color:#fbe8d4;border-radius:8px;}\n'
             'div[flex_div]{height:75vh;margin:0;align-items:center;'
-            'justify-content:center;display:flex;}\n'
+            'justify-content:center;}\n'
             'img[rounded]{border-radius:16px;max-width:82%%;}\n'
             '</style>\n'
             '</head>\n\n'

@@ -8,7 +8,7 @@ jobs:
 
 - job: 'Test'
   pool:
-    vmImage: 'Ubuntu-16.04'
+    vmImage: 'Ubuntu-18.04'
   strategy:
     matrix:
       Python27:
@@ -19,7 +19,9 @@ jobs:
         python.version: '3.6'
       Python37:
         python.version: '3.7'
-    maxParallel: 4
+      Python38:
+        python.version: '3.8'
+    maxParallel: 5
 
   steps:
   - task: UsePythonVersion@0
@@ -58,6 +60,9 @@ jobs:
 
   - script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
+
+  - script: python -m pytest examples/test_demo_site.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+    displayName: 'Run pytest test_demo_site.py --browser=chrome --headless'
 
   #- script: python -m pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
   #  displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
