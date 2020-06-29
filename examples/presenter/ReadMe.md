@@ -2,12 +2,12 @@
 
 # 📰 Presenter 📰
 
-SeleniumBase Presenter allows you to create an HTML presentation with only a few lines of Python.
+SeleniumBase Presenter allows you to create HTML presentations with Python.
 The Reveal-JS library is used for running the presentations.
 
 **Here's a sample presentation:**
 
-<img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"><br>
+<a href="https://seleniumbase.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
 
 Slides can include HTML, code, images, and iframes.
 
@@ -142,7 +142,7 @@ class MyPresenterClass(BaseCase):
                 '        self.assert_text("free to copy and reuse")\n'
                 '        self.go_back()\n'
                 '        self.click_link_text("About")\n'
-                '        self.assert_exact_text("xkcd.com", "h2")\n'))
+                '        self.assert_exact_text("xkcd.com", "h2")'))
         self.add_slide(
             "<h3>Highlight <b>code</b> in slides:</h3>",
             code=(
@@ -151,22 +151,51 @@ class MyPresenterClass(BaseCase):
                 '    def test_basic(self):\n'
                 '        self.open("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
-                '        self.assert_text("xkcd: volume 0", "h3")\n'))
+                '        self.assert_text("xkcd: volume 0", "h3")'))
         self.add_slide(
             '<h3>Add <b>iFrames</b> to slides:</h3>',
             iframe="https://seleniumbase.io/demo_page")
+        self.add_slide(
+            '<h3>Getting started is <b>easy</b>:</h3>',
+            code=(
+                'from seleniumbase import BaseCase\n\n'
+                'class MyPresenterClass(BaseCase):\n\n'
+                '    def test_presenter(self):\n'
+                '        self.create_presentation()\n'
+                '        self.add_slide("Welcome to Presenter!")\n'
+                '        self.add_slide(\n'
+                '            "Add code to slides:",\n'
+                '            code=(\n'
+                '                "from seleniumbase import BaseCase\\n\\n"\n'
+                '                "class MyPresenterClass(BaseCase):\\n\\n"\n'
+                '                "    def test_presenter(self):\\n"\n'
+                '                "        self.create_presentation()\\n"))\n'
+                '        self.begin_presentation(filename="demo.html")'))
         self.add_slide(
             '<h3>Include <b>notes</b> with slides:</h3><br />',
             code=('self.add_slide("[Your HTML goes here]",\n'
                   '               code="[Your software code goes here]",\n'
                   '               content2="[Additional HTML goes here]",\n'
-                  '               notes="[Attached speaker notes go here]")'),
-            content2='<h4>(Example Presenter Usage)</h4>',
-            notes='<h2><ul><li>Note A!<li>Note B!<li>Note C!<li>Note D!</h2>')
+                  '               notes="[Attached speaker notes go here]"\n'
+                  '                     "[Note A! -- Note B! -- Note C! ]")'),
+            notes='<h2><ul><li>Note A!<li>Note B!<li>Note C!<li>Note D!</h2>',
+            content2="<h4>(Notes can include HTML tags)</h4>")
+        self.add_slide(
+            '<h3>Multiple <b>themes</b> available:</h3>',
+            code=(
+                'self.create_presentation(theme="serif")\n\n'
+                'self.create_presentation(theme="sky")\n\n'
+                'self.create_presentation(theme="simple")\n\n'
+                'self.create_presentation(theme="white")\n\n'
+                'self.create_presentation(theme="moon")\n\n'
+                'self.create_presentation(theme="black")\n\n'
+                'self.create_presentation(theme="night")\n\n'
+                'self.create_presentation(theme="beige")\n\n'
+                'self.create_presentation(theme="league")'))
         self.add_slide(
             '<h2><b>The End</b></h2>',
             image="https://seleniumbase.io/img/sb_logo_10.png")
-        self.begin_presentation(filename="my_presentation.html", interval=0)
+        self.begin_presentation(filename="presenter.html", interval=0)
 ```
 
 #### This example is from [my_presentation.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/my_presentation.py), which you can run from the ``examples/presenter`` folder with the following command:
