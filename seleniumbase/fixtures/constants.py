@@ -20,7 +20,7 @@ class Files:
 
 
 class Presentations:
-    SAVED_FOLDER = "presentations_saved"
+    SAVED_FOLDER = "saved_presentations"
 
 
 class SavedCookies:
@@ -97,14 +97,30 @@ class Reveal:
     VER = "3.8.0"
     MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
                "reveal.js/%s/css/reveal.min.css" % VER)
+    SERIF_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                     "reveal.js/%s/css/theme/serif.min.css" % VER)
     WHITE_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
                      "reveal.js/%s/css/theme/white.min.css" % VER)
+    BLACK_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                     "reveal.js/%s/css/theme/black.min.css" % VER)
+    SKY_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                   "reveal.js/%s/css/theme/sky.min.css" % VER)
+    MOON_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                    "reveal.js/%s/css/theme/moon.min.css" % VER)
+    NIGHT_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                     "reveal.js/%s/css/theme/night.min.css" % VER)
+    LEAGUE_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                      "reveal.js/%s/css/theme/league.min.css" % VER)
+    BEIGE_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                     "reveal.js/%s/css/theme/beige.min.css" % VER)
+    BLOOD_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                     "reveal.js/%s/css/theme/blood.min.css" % VER)
+    SIMPLE_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                      "reveal.js/%s/css/theme/simple.min.css" % VER)
+    SOLARIZED_MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
+                         "reveal.js/%s/css/theme/solarized.min.css" % VER)
     MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
               "reveal.js/%s/js/reveal.min.js" % VER)
-    MARKED_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
-                 "reveal.js/%s/plugin/markdown/marked.js" % VER)
-    MARKDOWN_MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
-                       "reveal.js/%s/plugin/markdown/markdown.min.js" % VER)
 
 
 class BootstrapTour:
