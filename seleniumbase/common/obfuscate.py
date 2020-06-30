@@ -30,7 +30,7 @@ def main():
             print("\nInside a test, use the following to decrypt it:\n")
             time.sleep(0.2)
             print("    from seleniumbase import encryption")
-            print("    encryption.decrypt(%s)" % encrypted_password)
+            print("    encryption.decrypt('%s')" % encrypted_password)
             time.sleep(0.2)
     except KeyboardInterrupt:
         print("\nExiting...\n")
