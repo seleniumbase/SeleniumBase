@@ -30,8 +30,6 @@ self.create_presentation(name=None, theme="serif", show_notes=True)
             Valid themes: "serif" (default), "sky", "white", "black",
                           "simple", "league", "moon", "night",
                           "beige", "blood", and "solarized".
-    show_notes - When set to True, the Notes feature becomes enabled,
-                 which allows presenters to see notes next to slides.
 """
 ```
 
@@ -47,16 +45,14 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
                content2=None, notes=None, name=None)
 """ Allows the user to add slides to a presentation.
     @Params
-    content - The HTML content to display on the presentation slide.
-    image - Attach an image (from a URL link) to the slide.
-    code - Attach code of any programming language to the slide.
-           Language-detection will be used to add syntax formatting.
-    iframe - Attach an iFrame (from a URL link) to the slide.
-    content2 - HTML content to display after adding an image or code.
-    notes - Additional notes to include with the slide.
-            ONLY SEEN if show_notes is set for the presentation.
     name - If creating multiple presentations at the same time,
-           use this to select the presentation to add slides to.
+           use this to select the one you wish to add slides to.
+    filename - The name of the HTML file that you wish to
+               save the presentation to. (filename must end in ".html")
+    show_notes - When set to True, the Notes feature becomes enabled,
+                 which allows presenters to see notes next to slides.
+    interval - The delay time between autoplaying slides. (in seconds)
+               If set to 0 (default), autoplay is disabled.
 """
 ```
 
@@ -71,6 +67,8 @@ self.begin_presentation(filename="my_presentation.html", interval=0)
            use this to select the one you wish to add slides to.
     filename - The name of the HTML file that you wish to
                save the presentation to. (filename must end in ".html")
+    show_notes - When set to True, the Notes feature becomes enabled,
+                 which allows presenters to see notes next to slides.
     interval - The delay time between autoplaying slides. (in seconds)
                If set to 0 (default), autoplay is disabled.
 """
