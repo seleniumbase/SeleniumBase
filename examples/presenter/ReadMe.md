@@ -21,7 +21,7 @@ pytest my_presentation.py
 ### Creating a new presentation:
 
 ```python
-self.create_presentation(name=None, theme="serif", show_notes=True)
+self.create_presentation(name=None, theme="serif")
 """ Creates a Reveal-JS presentation that you can add slides to.
     @Params
     name - If creating multiple presentations at the same time,
@@ -45,14 +45,16 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
                content2=None, notes=None, name=None)
 """ Allows the user to add slides to a presentation.
     @Params
+    content - The HTML content to display on the presentation slide.
+    image - Attach an image (from a URL link) to the slide.
+    code - Attach code of any programming language to the slide.
+           Language-detection will be used to add syntax formatting.
+    iframe - Attach an iFrame (from a URL link) to the slide.
+    content2 - HTML content to display after adding an image or code.
+    notes - Additional notes to include with the slide.
+            ONLY SEEN if show_notes is set for the presentation.
     name - If creating multiple presentations at the same time,
-           use this to select the one you wish to add slides to.
-    filename - The name of the HTML file that you wish to
-               save the presentation to. (filename must end in ".html")
-    show_notes - When set to True, the Notes feature becomes enabled,
-                 which allows presenters to see notes next to slides.
-    interval - The delay time between autoplaying slides. (in seconds)
-               If set to 0 (default), autoplay is disabled.
+           use this to select the presentation to add slides to.
 """
 ```
 
@@ -60,7 +62,8 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
 ### Running a presentation:
 
 ```python
-self.begin_presentation(filename="my_presentation.html", interval=0)
+self.begin_presentation(
+    filename="my_presentation.html", show_notes=True, interval=0)
 """ Begin a Reveal-JS Presentation in the web browser.
     @Params
     name - If creating multiple presentations at the same time,
@@ -159,7 +162,7 @@ class MyPresenterClass(BaseCase):
                 'from seleniumbase import BaseCase\n\n'
                 'class MyPresenterClass(BaseCase):\n\n'
                 '    def test_presenter(self):\n'
-                '        self.create_presentation()\n'
+                '        self.create_presentation(theme="serif")\n'
                 '        self.add_slide("Welcome to Presenter!")\n'
                 '        self.add_slide(\n'
                 '            "Add code to slides:",\n'
@@ -168,7 +171,8 @@ class MyPresenterClass(BaseCase):
                 '                "class MyPresenterClass(BaseCase):\\n\\n"\n'
                 '                "    def test_presenter(self):\\n"\n'
                 '                "        self.create_presentation()\\n"))\n'
-                '        self.begin_presentation(filename="demo.html")'))
+                '        self.begin_presentation(\n'
+                '            filename="demo.html", show_notes=True)'))
         self.add_slide(
             '<h3>Include <b>notes</b> with slides:</h3><br />',
             code=('self.add_slide("[Your HTML goes here]",\n'
@@ -193,7 +197,8 @@ class MyPresenterClass(BaseCase):
         self.add_slide(
             '<h2><b>The End</b></h2>',
             image="https://seleniumbase.io/img/sb_logo_10.png")
-        self.begin_presentation(filename="presenter.html", interval=0)
+        self.begin_presentation(
+            filename="presenter.html", show_notes=True, interval=0)
 ```
 
 #### This example is from [my_presentation.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/my_presentation.py), which you can run from the ``examples/presenter`` folder with the following command:
@@ -207,10 +212,10 @@ pytest my_presentation.py
 If you want to save the presentation you created as an HTML file, use:
 
 ```python
-self.save_presentation(filename="my_presentation.html")
+self.save_presentation(filename="my_presentation.html", show_notes=True)
 ```
 
 Presentations automatically get saved when calling:
 ```python
-self.begin_presentation()
+self.begin_presentation(show_notes=True)
 ```
