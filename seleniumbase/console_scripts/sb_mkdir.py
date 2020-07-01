@@ -66,6 +66,14 @@ def main():
     os.mkdir(dir_name)
 
     data = []
+    data.append("seleniumbase")
+    data.append("")
+    file_path = "%s/%s" % (dir_name, "requirements.txt")
+    file = codecs.open(file_path, "w+", "utf-8")
+    file.writelines("\r\n".join(data))
+    file.close()
+
+    data = []
     data.append("[pytest]")
     data.append("addopts = --capture=no --ignore conftest.py "
                 "-p no:cacheprovider")
