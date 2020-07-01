@@ -58,8 +58,7 @@ def main():
             'Directory name must not include slashes ("/", "\\")!')
     elif os.path.exists(os.getcwd() + '/' + dir_name):
         error_msg = (
-            'Directory "%s" already exists in the current path!\n'
-            '' % dir_name)
+            'Directory "%s" already exists in the current path!' % dir_name)
     if error_msg:
         error_msg = c5 + error_msg + cr
         invalid_run_command(error_msg)
