@@ -301,6 +301,25 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
 
+    def 프레젠테이션_만들기(self, *args, **kwargs):
+        # create_presentation(name=None, theme="default")
+        return self.create_presentation(*args, **kwargs)
+
+    def 슬라이드_추가(self, *args, **kwargs):
+        # add_slide(content=None, image=None, code=None, iframe=None,
+        #           content2=None, notes=None, name=None)
+        return self.add_slide(*args, **kwargs)
+
+    def 프레젠테이션_저장(self, *args, **kwargs):
+        # save_presentation(name=None, filename=None,
+        #                   show_notes=True, interval=0)
+        return self.save_presentation(*args, **kwargs)
+
+    def 프레젠테이션_시작(self, *args, **kwargs):
+        # begin_presentation(name=None, filename=None,
+        #                    show_notes=True, interval=0)
+        return self.begin_presentation(*args, **kwargs)
+
     def 가이드_투어_만들기(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
         return self.create_tour(*args, **kwargs)

@@ -301,6 +301,25 @@ class CasoDeTeste(BaseCase):
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
 
+    def criar_uma_apresentação(self, *args, **kwargs):
+        # create_presentation(name=None, theme="default")
+        return self.create_presentation(*args, **kwargs)
+
+    def adicionar_um_slide(self, *args, **kwargs):
+        # add_slide(content=None, image=None, code=None, iframe=None,
+        #           content2=None, notes=None, name=None)
+        return self.add_slide(*args, **kwargs)
+
+    def salvar_a_apresentação(self, *args, **kwargs):
+        # save_presentation(name=None, filename=None,
+        #                   show_notes=True, interval=0)
+        return self.save_presentation(*args, **kwargs)
+
+    def iniciar_a_apresentação(self, *args, **kwargs):
+        # begin_presentation(name=None, filename=None,
+        #                    show_notes=True, interval=0)
+        return self.begin_presentation(*args, **kwargs)
+
     def criar_um_tour(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
         return self.create_tour(*args, **kwargs)
