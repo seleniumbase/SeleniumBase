@@ -301,27 +301,46 @@ class ТестНаСелен(BaseCase):  # noqa
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
 
-    def сделать_тур(self, *args, **kwargs):
+    def создать_презентацию(self, *args, **kwargs):
+        # create_presentation(name=None, theme="default")
+        return self.create_presentation(*args, **kwargs)
+
+    def добавить_слайд(self, *args, **kwargs):
+        # add_slide(content=None, image=None, code=None, iframe=None,
+        #           content2=None, notes=None, name=None)
+        return self.add_slide(*args, **kwargs)
+
+    def сохранить_презентацию(self, *args, **kwargs):
+        # save_presentation(name=None, filename=None,
+        #                   show_notes=True, interval=0)
+        return self.save_presentation(*args, **kwargs)
+
+    def начать_презентацию(self, *args, **kwargs):
+        # begin_presentation(name=None, filename=None,
+        #                    show_notes=True, interval=0)
+        return self.begin_presentation(*args, **kwargs)
+
+    def создать_тур(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
         return self.create_tour(*args, **kwargs)
 
-    def сделать_SHEPHERD_тур(self, *args, **kwargs):
+    def создать_SHEPHERD_тур(self, *args, **kwargs):
         # create_shepherd_tour(name=None, theme=None)
         return self.create_shepherd_tour(*args, **kwargs)
 
-    def сделать_BOOTSTRAP_тур(self, *args, **kwargs):
+    def создать_BOOTSTRAP_тур(self, *args, **kwargs):
         # create_bootstrap_tour(name=None, theme=None)
         return self.create_bootstrap_tour(*args, **kwargs)
 
-    def сделать_DRIVERJS_тур(self, *args, **kwargs):
+    def создать_DRIVERJS_тур(self, *args, **kwargs):
         # create_driverjs_tour(name=None, theme=None)
         return self.create_driverjs_tour(*args, **kwargs)
 
-    def сделать_HOPSCOTCH_тур(self, *args, **kwargs):
+    def создать_HOPSCOTCH_тур(self, *args, **kwargs):
         # create_hopscotch_tour(name=None, theme=None)
         return self.create_hopscotch_tour(*args, **kwargs)
 
-    def сделать_INTROJS_тур(self, *args, **kwargs):
+    def создать_INTROJS_тур(self, *args, **kwargs):
         # create_introjs_tour(name=None, theme=None)
         return self.create_introjs_tour(*args, **kwargs)
 

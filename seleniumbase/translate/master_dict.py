@@ -1104,6 +1104,54 @@ class MD:
     md["select_option_by_value"][8] = "выбрать_опцию_по_значению"
     md["select_option_by_value"][9] = "seleccionar_opción_por_valor"
 
+    md["create_presentation"] = ["*"] * num_langs
+    md["create_presentation"][0] = "create_presentation"
+    md["create_presentation"][1] = "创建演示文稿"
+    md["create_presentation"][2] = "een_presentatie_maken"
+    md["create_presentation"][3] = "créer_une_présentation"
+    md["create_presentation"][4] = "creare_una_presentazione"
+    md["create_presentation"][5] = "プレゼンテーションを作成する"
+    md["create_presentation"][6] = "프레젠테이션_만들기"
+    md["create_presentation"][7] = "criar_uma_apresentação"
+    md["create_presentation"][8] = "создать_презентацию"
+    md["create_presentation"][9] = "crear_una_presentación"
+
+    md["add_slide"] = ["*"] * num_langs
+    md["add_slide"][0] = "add_slide"
+    md["add_slide"][1] = "添加幻灯片"
+    md["add_slide"][2] = "een_dia_toevoegen"
+    md["add_slide"][3] = "ajouter_une_diapositive"
+    md["add_slide"][4] = "aggiungere_una_diapositiva"
+    md["add_slide"][5] = "スライドを追加する"
+    md["add_slide"][6] = "슬라이드_추가"
+    md["add_slide"][7] = "adicionar_um_slide"
+    md["add_slide"][8] = "добавить_слайд"
+    md["add_slide"][9] = "añadir_una_diapositiva"
+
+    md["save_presentation"] = ["*"] * num_langs
+    md["save_presentation"][0] = "save_presentation"
+    md["save_presentation"][1] = "保存演示文稿"
+    md["save_presentation"][2] = "de_presentatie_opslaan"
+    md["save_presentation"][3] = "enregistrer_la_présentation"
+    md["save_presentation"][4] = "salvare_la_presentazione"
+    md["save_presentation"][5] = "プレゼンテーションを保存する"
+    md["save_presentation"][6] = "프레젠테이션_저장"
+    md["save_presentation"][7] = "salvar_a_apresentação"
+    md["save_presentation"][8] = "сохранить_презентацию"
+    md["save_presentation"][9] = "guardar_la_presentación"
+
+    md["begin_presentation"] = ["*"] * num_langs
+    md["begin_presentation"][0] = "begin_presentation"
+    md["begin_presentation"][1] = "开始演示文稿"
+    md["begin_presentation"][2] = "de_presentatie_starten"
+    md["begin_presentation"][3] = "démarrer_la_présentation"
+    md["begin_presentation"][4] = "avviare_la_presentazione"
+    md["begin_presentation"][5] = "プレゼンテーションを開始する"
+    md["begin_presentation"][6] = "프레젠테이션_시작"
+    md["begin_presentation"][7] = "iniciar_a_apresentação"
+    md["begin_presentation"][8] = "начать_презентацию"
+    md["begin_presentation"][9] = "iniciar_la_presentación"
+
     md["create_tour"] = ["*"] * num_langs
     md["create_tour"][0] = "create_tour"
     md["create_tour"][1] = "创建游览"
@@ -1113,7 +1161,7 @@ class MD:
     md["create_tour"][5] = "ツアーを作成する"
     md["create_tour"][6] = "가이드_투어_만들기"
     md["create_tour"][7] = "criar_um_tour"
-    md["create_tour"][8] = "сделать_тур"
+    md["create_tour"][8] = "создать_тур"
     md["create_tour"][9] = "crear_una_gira"
 
     md["create_shepherd_tour"] = ["*"] * num_langs
@@ -1125,7 +1173,7 @@ class MD:
     md["create_shepherd_tour"][5] = "SHEPHERDツアーを作成する"
     md["create_shepherd_tour"][6] = "가이드_SHEPHERD_투어_만들기"
     md["create_shepherd_tour"][7] = "criar_um_tour_shepherd"
-    md["create_shepherd_tour"][8] = "сделать_SHEPHERD_тур"
+    md["create_shepherd_tour"][8] = "создать_SHEPHERD_тур"
     md["create_shepherd_tour"][9] = "crear_una_gira_shepherd"
 
     md["create_bootstrap_tour"] = ["*"] * num_langs
@@ -1137,7 +1185,7 @@ class MD:
     md["create_bootstrap_tour"][5] = "BOOTSTRAPツアーを作成する"
     md["create_bootstrap_tour"][6] = "가이드_BOOTSTRAP_투어_만들기"
     md["create_bootstrap_tour"][7] = "criar_um_tour_bootstrap"
-    md["create_bootstrap_tour"][8] = "сделать_BOOTSTRAP_тур"
+    md["create_bootstrap_tour"][8] = "создать_BOOTSTRAP_тур"
     md["create_bootstrap_tour"][9] = "crear_una_gira_bootstrap"
 
     md["create_driverjs_tour"] = ["*"] * num_langs
@@ -1149,7 +1197,7 @@ class MD:
     md["create_driverjs_tour"][5] = "DRIVERJSツアーを作成する"
     md["create_driverjs_tour"][6] = "가이드_DRIVERJS_투어_만들기"
     md["create_driverjs_tour"][7] = "criar_um_tour_driverjs"
-    md["create_driverjs_tour"][8] = "сделать_DRIVERJS_тур"
+    md["create_driverjs_tour"][8] = "создать_DRIVERJS_тур"
     md["create_driverjs_tour"][9] = "crear_una_gira_driverjs"
 
     md["create_hopscotch_tour"] = ["*"] * num_langs
@@ -1161,7 +1209,7 @@ class MD:
     md["create_hopscotch_tour"][5] = "HOPSCOTCHツアーを作成する"
     md["create_hopscotch_tour"][6] = "가이드_HOPSCOTCH_투어_만들기"
     md["create_hopscotch_tour"][7] = "criar_um_tour_hopscotch"
-    md["create_hopscotch_tour"][8] = "сделать_HOPSCOTCH_тур"
+    md["create_hopscotch_tour"][8] = "создать_HOPSCOTCH_тур"
     md["create_hopscotch_tour"][9] = "crear_una_gira_hopscotch"
 
     md["create_introjs_tour"] = ["*"] * num_langs
@@ -1173,7 +1221,7 @@ class MD:
     md["create_introjs_tour"][5] = "INTROJSツアーを作成する"
     md["create_introjs_tour"][6] = "가이드_INTROJS_투어_만들기"
     md["create_introjs_tour"][7] = "criar_um_tour_introjs"
-    md["create_introjs_tour"][8] = "сделать_INTROJS_тур"
+    md["create_introjs_tour"][8] = "создать_INTROJS_тур"
     md["create_introjs_tour"][9] = "crear_una_gira_introjs"
 
     md["add_tour_step"] = ["*"] * num_langs

@@ -301,6 +301,25 @@ class 硒测试用例(BaseCase):  # noqa
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
 
+    def 创建演示文稿(self, *args, **kwargs):
+        # create_presentation(name=None, theme="default")
+        return self.create_presentation(*args, **kwargs)
+
+    def 添加幻灯片(self, *args, **kwargs):
+        # add_slide(content=None, image=None, code=None, iframe=None,
+        #           content2=None, notes=None, name=None)
+        return self.add_slide(*args, **kwargs)
+
+    def 保存演示文稿(self, *args, **kwargs):
+        # save_presentation(name=None, filename=None,
+        #                   show_notes=True, interval=0)
+        return self.save_presentation(*args, **kwargs)
+
+    def 开始演示文稿(self, *args, **kwargs):
+        # begin_presentation(name=None, filename=None,
+        #                    show_notes=True, interval=0)
+        return self.begin_presentation(*args, **kwargs)
+
     def 创建游览(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
         return self.create_tour(*args, **kwargs)
