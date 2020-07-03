@@ -58,7 +58,7 @@
 * create a slack integration webhook if you don't have one already
 * create a `SLACK_WEBHOOK` secret on your repository with the webhook token value
 * for this particular action, `SLACK_CHANNEL` is optional environment variable and will default to the webhook token channel if not specified
-* this example shows how you can put a link to your github action workflow as the `SLACK_MESSAGE` (good for people to see artifacts you can push up such as the SeleniumBase Presenter)
+* this example shows how you can put a link to your workflow as the `SLACK_MESSAGE` (good to see artifacts pushed up such as from the SeleniumBase presenter feature!)
 ```
     - name: Slack notification
       uses: rtCamp/action-slack-notify@master
