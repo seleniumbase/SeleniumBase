@@ -35,7 +35,7 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌎 Languages</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📰 Presenter</a> |
