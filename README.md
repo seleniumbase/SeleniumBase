@@ -22,7 +22,7 @@
 </p>
 
 <p>
-SeleniumBase is an all-in-one framework for web automation, end-to-end testing, and website tours.
+SeleniumBase is an all-in-one framework for web automation, end-to-end testing, web presentations, and website tours.
 Tests are run with "pytest". Browsers are controlled by WebDriver.
 </p>
 

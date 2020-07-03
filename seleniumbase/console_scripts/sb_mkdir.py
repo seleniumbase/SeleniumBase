@@ -43,6 +43,7 @@ def invalid_run_command(msg=None):
 
 def main():
     colorama.init(autoreset=True)
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
     error_msg = None
@@ -355,8 +356,10 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    print('''\n* Directory "%s" was created with config files '''
-          '''and sample tests! *\n''' % dir_name)
+    success = (
+        '\n' + c1 + '* Directory "' + dir_name + '" was created '
+        'with config files and sample tests! *' + cr + '\n')
+    print(success)
 
 
 if __name__ == "__main__":
