@@ -51,3 +51,30 @@
 ### Step 5. Congratulations! You now know how to create and run browser tests with GitHub Actions/Workflows!
 
 ### **Study [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) to learn more!**
+
+
+### Slack notifications:
+* the action [rtCamp/action-slack-notify](https://github.com/rtCamp/action-slack-notify) is just one of the many slack notification actions available
+* create a slack integration webhook if you don't have one already
+* create a `SLACK_WEBHOOK` secret on your repository with the webhook token value
+* for this particular action, `SLACK_CHANNEL` is optional environment variable and will default to the webhook token channel if not specified
+* this example shows how you can put a link to your workflow as the `SLACK_MESSAGE` (good to see artifacts pushed up such as from the SeleniumBase presenter feature!)
+```
+    - name: Slack notification
+      uses: rtCamp/action-slack-notify@master
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: general
+        SLACK_ICON_EMOJI: rocket
+        SLACK_USERNAME: SeleniumBase
+        SLACK_MESSAGE: 'Actions workflow completed successful! :tada:  https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+```
+
+### Upload a SeleniumBase presentation as an artifact
+* Here is an example how to use [upload-artifact@v2](https://github.com/actions/upload-artifact) to push up a SeleniumBase generated presentation as an artifact. (You can use this in conjunction with the Slack notification to grab and or view the presentation directly from github)
+```
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Click here to download SeleniumBase presentation!
+        path: saved_presentations/my_presentation.html
+```
