@@ -75,7 +75,7 @@ class MyPresenterClass(BaseCase):
                 'from seleniumbase import BaseCase\n\n'
                 'class MyPresenterClass(BaseCase):\n\n'
                 '    def test_presenter(self):\n'
-                '        self.create_presentation()\n'
+                '        self.create_presentation(theme="serif")\n'
                 '        self.add_slide("Welcome to Presenter!")\n'
                 '        self.add_slide(\n'
                 '            "Add code to slides:",\n'
@@ -84,7 +84,8 @@ class MyPresenterClass(BaseCase):
                 '                "class MyPresenterClass(BaseCase):\\n\\n"\n'
                 '                "    def test_presenter(self):\\n"\n'
                 '                "        self.create_presentation()\\n"))\n'
-                '        self.begin_presentation(filename="demo.html")'))
+                '        self.begin_presentation(\n'
+                '            filename="demo.html", show_notes=True)'))
         self.add_slide(
             '<h3>Include <b>notes</b> with slides:</h3><br />',
             code=('self.add_slide("[Your HTML goes here]",\n'
@@ -109,4 +110,5 @@ class MyPresenterClass(BaseCase):
         self.add_slide(
             '<h2><b>The End</b></h2>',
             image="https://seleniumbase.io/img/sb_logo_10.png")
-        self.begin_presentation(filename="presenter.html", interval=0)
+        self.begin_presentation(
+            filename="presenter.html", show_notes=True, interval=0)

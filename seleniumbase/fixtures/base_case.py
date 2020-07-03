@@ -3151,7 +3151,7 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def create_presentation(self, name=None, theme="default", show_notes=True):
+    def create_presentation(self, name=None, theme="default"):
         """ Creates a Reveal-JS presentation that you can add slides to.
             @Params
             name - If creating multiple presentations at the same time,
@@ -3160,8 +3160,6 @@ class BaseCase(unittest.TestCase):
                     Valid themes: "serif" (default), "sky", "white", "black",
                                   "simple", "league", "moon", "night",
                                   "beige", "blood", and "solarized".
-            show_notes - When set to True, the Notes feature becomes enabled,
-                         which allows presenters to see notes next to slides.
         """
         if not name:
             name = "default"
@@ -3242,7 +3240,7 @@ class BaseCase(unittest.TestCase):
             name = "default"
         if name not in self._presentation_slides:
             # Create a presentation if it doesn't already exist
-            self.create_presentation(name=name, show_notes=True)
+            self.create_presentation(name=name)
         if not content:
             content = ""
         if not content2:
@@ -3273,13 +3271,16 @@ class BaseCase(unittest.TestCase):
 
         self._presentation_slides[name].append(html)
 
-    def save_presentation(self, name=None, filename=None, interval=0):
+    def save_presentation(
+            self, name=None, filename=None, show_notes=True, interval=0):
         """ Saves a Reveal-JS Presentation to a file for later use.
             @Params
             name - If creating multiple presentations at the same time,
                    use this to select the one you wish to add slides to.
             filename - The name of the HTML file that you wish to
                        save the presentation to. (filename must end in ".html")
+            show_notes - When set to True, the Notes feature becomes enabled,
+                         which allows presenters to see notes next to slides.
             interval - The delay time between autoplaying slides. (in seconds)
                        If set to 0 (default), autoplay is disabled.
         """
@@ -3300,6 +3301,10 @@ class BaseCase(unittest.TestCase):
             raise Exception('The "interval" cannot be a negative number!')
         interval_ms = float(interval) * 1000.0
 
+        show_notes_str = "false"
+        if show_notes:
+            show_notes_str = "true"
+
         the_html = ""
         for slide in self._presentation_slides[name]:
             the_html += slide
@@ -3310,13 +3315,14 @@ class BaseCase(unittest.TestCase):
             '<script src="%s"></script>\n'
             '<script src="%s"></script>\n'
             '<script>Reveal.initialize('
-            '{showNotes: true, slideNumber: true, '
+            '{showNotes: %s, slideNumber: true, '
             'autoSlide: %s,});'
             '</script>\n'
             '</body>\n'
             '</html>\n'
             '' % (constants.Reveal.MIN_JS,
                   constants.PrettifyJS.RUN_PRETTIFY_JS,
+                  show_notes_str,
                   interval_ms))
 
         saved_presentations_folder = constants.Presentations.SAVED_FOLDER
@@ -3334,13 +3340,16 @@ class BaseCase(unittest.TestCase):
         print('\n>>> [%s] was saved!\n' % file_path)
         return file_path
 
-    def begin_presentation(self, name=None, filename=None, interval=0):
+    def begin_presentation(
+            self, name=None, filename=None, show_notes=True, interval=0):
         """ Begin a Reveal-JS Presentation in the web browser.
             @Params
             name - If creating multiple presentations at the same time,
                    use this to select the one you wish to add slides to.
             filename - The name of the HTML file that you wish to
                        save the presentation to. (filename must end in ".html")
+            show_notes - When set to True, the Notes feature becomes enabled,
+                         which allows presenters to see notes next to slides.
             interval - The delay time between autoplaying slides. (in seconds)
                        If set to 0 (default), autoplay is disabled.
         """
@@ -3366,7 +3375,8 @@ class BaseCase(unittest.TestCase):
             '<p class="End_Presentation_Now"> </p>\n</section>\n')
         self._presentation_slides[name].append(end_slide)
         file_path = self.save_presentation(
-            name=name, filename=filename, interval=interval)
+            name=name, filename=filename,
+            show_notes=show_notes, interval=interval)
         self._presentation_slides[name].pop()
 
         self.open_html_file(file_path)

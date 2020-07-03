@@ -301,6 +301,25 @@ class CasDeBase(BaseCase):
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
 
+    def créer_une_présentation(self, *args, **kwargs):
+        # create_presentation(name=None, theme="default")
+        return self.create_presentation(*args, **kwargs)
+
+    def ajouter_une_diapositive(self, *args, **kwargs):
+        # add_slide(content=None, image=None, code=None, iframe=None,
+        #           content2=None, notes=None, name=None)
+        return self.add_slide(*args, **kwargs)
+
+    def enregistrer_la_présentation(self, *args, **kwargs):
+        # save_presentation(name=None, filename=None,
+        #                   show_notes=True, interval=0)
+        return self.save_presentation(*args, **kwargs)
+
+    def démarrer_la_présentation(self, *args, **kwargs):
+        # begin_presentation(name=None, filename=None,
+        #                    show_notes=True, interval=0)
+        return self.begin_presentation(*args, **kwargs)
+
     def créer_une_visite(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
         return self.create_tour(*args, **kwargs)
