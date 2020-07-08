@@ -81,7 +81,7 @@ def main():
         if grid_hub_command == "start" or grid_hub_command == "restart":
             shell_command = (
                 """java -jar %s/selenium-server-standalone.jar -role hub """
-                """-timeout 180 -browserTimeout 75 -port 4444""" % dir_path)
+                """-timeout 230 -browserTimeout 170 -port 4444""" % dir_path)
             print("\nStarting Selenium-WebDriver Grid Hub...\n")
             print(shell_command)
             print("")
