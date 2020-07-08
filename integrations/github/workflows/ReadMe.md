@@ -80,6 +80,6 @@
 ```
     - uses: actions/upload-artifact@v2
       with:
-        name: Click here to download SeleniumBase presentation!
+        name: Click to download the presentation
         path: saved_presentations/my_presentation.html
 ```

@@ -180,10 +180,10 @@ element.submit()
 
 As you can see, the old WebDriver way is very bad!
 Use SeleniumBase to make testing much easier!
-(<i>You can still use ``self.driver`` in your code.</i>)
+(You can still use ``self.driver`` in your code.)
 
-<h4>Run tests with ``pytest`` or ``nosetests`` in any browser:</h4>
-(<i>Using **pytest** is recommended. **Chrome** is the default browser.</i>)
+* Run tests with ``pytest`` or ``nosetests`` in any browser:
+(**pytest** is recommended. **Chrome** is the default browser.)
 
 ```bash
 pytest my_first_test.py --browser=chrome
