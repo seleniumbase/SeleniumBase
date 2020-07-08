@@ -217,9 +217,9 @@ def wait_for_element_present(driver, selector, by=By.CSS_SELECTOR,
                              timeout=settings.LARGE_TIMEOUT):
     """
     Searches for the specified element by the given selector. Returns the
-    element object if the element is present on the page. The element can be
-    invisible. Raises an exception if the element does not appear in the
-    specified timeout.
+    element object if it exists in the HTML. (The element can be invisible.)
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
     @Params
     driver - the webdriver object
     selector - the locator for identifying the page element (required)
@@ -256,24 +256,27 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
     """
     Searches for the specified element by the given selector. Returns the
     element object if the element is present and visible on the page.
-    Raises an exception if the element does not appear in the
-    specified timeout.
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
+    Raises ElementNotVisibleException if the element exists in the HTML,
+    but is not visible (eg. opacity is "0") within the specified timeout.
     @Params
     driver - the webdriver object (required)
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
-
     @Returns
     A web element object
     """
     element = None
+    is_present = False
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
+            is_present = True
             if element.is_displayed():
                 return element
             else:
@@ -288,6 +291,13 @@ def wait_for_element_visible(driver, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element and by != By.LINK_TEXT:
+        if not is_present:
+            # The element does not exist in the HTML
+            message = (
+                "Element {%s} was not present after %s second%s!"
+                "" % (selector, timeout, plural))
+            timeout_exception(NoSuchElementException, message)
+        # The element exists in the HTML, but is not visible
         message = (
             "Element {%s} was not visible after %s second%s!"
             "" % (selector, timeout, plural))
@@ -304,8 +314,11 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     """
     Searches for the specified element by the given selector. Returns the
     element object if the text is present in the element and visible
-    on the page. Raises an exception if the text or element do not appear
-    in the specified timeout.
+    on the page.
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
+    Raises ElementNotVisibleException if the element exists in the HTML,
+    but the text is not visible within the specified timeout.
     @Params
     driver - the webdriver object (required)
     text - the text that is being searched for in the element (required)
@@ -316,12 +329,14 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     A web element object that contains the text searched for
     """
     element = None
+    is_present = False
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
+            is_present = True
             if element.is_displayed() and text in element.text:
                 return element
             else:
@@ -336,6 +351,13 @@ def wait_for_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
+        if not is_present:
+            # The element does not exist in the HTML
+            message = (
+                "Element {%s} was not present after %s second%s!"
+                "" % (selector, timeout, plural))
+            timeout_exception(NoSuchElementException, message)
+        # The element exists in the HTML, but the text is not visible
         message = (
             "Expected text {%s} for {%s} was not visible after %s second%s!"
             "" % (text, selector, timeout, plural))
@@ -348,8 +370,10 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     Searches for the specified element by the given selector. Returns the
     element object if the text matches exactly with the text in the element,
     and the text is visible.
-    Raises an exception if the text or element do not appear
-    in the specified timeout.
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
+    Raises ElementNotVisibleException if the element exists in the HTML,
+    but the exact text is not visible within the specified timeout.
     @Params
     driver - the webdriver object (required)
     text - the exact text that is expected for the element (required)
@@ -360,12 +384,14 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     A web element object that contains the text searched for
     """
     element = None
+    is_present = False
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
         s_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
+            is_present = True
             if element.is_displayed() and text.strip() == element.text.strip():
                 return element
             else:
@@ -380,6 +406,13 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
     if timeout == 1:
         plural = ""
     if not element:
+        if not is_present:
+            # The element does not exist in the HTML
+            message = (
+                "Element {%s} was not present after %s second%s!"
+                "" % (selector, timeout, plural))
+            timeout_exception(NoSuchElementException, message)
+        # The element exists in the HTML, but the exact text is not visible
         message = (
             "Expected exact text {%s} for {%s} was not visible "
             "after %s second%s!" % (text, selector, timeout, plural))
