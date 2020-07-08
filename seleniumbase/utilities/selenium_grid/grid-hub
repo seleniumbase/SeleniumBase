@@ -34,7 +34,7 @@ if [ "$GRID_HUB_VERBOSE_LOGS" == "True" ]; then
 fi
 
 WEBDRIVER_SERVER_JAR=${DIR}/selenium-server-standalone.jar
-WEBDRIVER_HUB_PARAMS="-role hub -timeout 180 -browserTimeout 75 -port 4444"
+WEBDRIVER_HUB_PARAMS="-role hub -timeout 230 -browserTimeout 170 -port 4444"
 WEBDRIVER_HUB_PIDFILE="/tmp/webdriver_hub.pid"
 
 if [ ! -f $WEBDRIVER_SERVER_JAR ]; then
