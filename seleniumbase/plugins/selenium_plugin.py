@@ -33,6 +33,7 @@ class SeleniumBrowser(Plugin):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (The option to check for JavaScript errors after page loads.)
     --ad-block  (The option to block some display ads after page loads.)
+    --block-images (The option to block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
@@ -241,6 +242,13 @@ class SeleniumBrowser(Plugin):
             help="""Using this makes WebDriver block display ads
                     that are defined in ad_block_list.AD_BLOCK_LIST.""")
         parser.add_option(
+            '--block_images', '--block-images',
+            action="store_true",
+            dest='block_images',
+            default=False,
+            help="""Using this makes WebDriver block images from
+                    loading on web pages during tests.""")
+        parser.add_option(
             '--verify_delay', '--verify-delay',
             action='store',
             dest='verify_delay',
@@ -367,6 +375,7 @@ class SeleniumBrowser(Plugin):
         test.test.message_duration = self.options.message_duration
         test.test.js_checking_on = self.options.js_checking_on
         test.test.ad_block_on = self.options.ad_block_on
+        test.test.block_images = self.options.block_images
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
         test.test.enable_sync = self.options.enable_sync

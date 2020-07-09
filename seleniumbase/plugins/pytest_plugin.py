@@ -42,6 +42,7 @@ def pytest_addoption(parser):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (The option to check for JavaScript errors after page loads.)
     --ad-block  (The option to block some display ads after page loads.)
+    --block-images (The option to block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
@@ -330,6 +331,12 @@ def pytest_addoption(parser):
                      default=False,
                      help="""Using this makes WebDriver block display ads
                           that are defined in ad_block_list.AD_BLOCK_LIST.""")
+    parser.addoption('--block_images', '--block-images',
+                     action="store_true",
+                     dest='block_images',
+                     default=False,
+                     help="""Using this makes WebDriver block images from
+                          loading on web pages during tests.""")
     parser.addoption('--verify_delay', '--verify-delay',
                      action='store',
                      dest='verify_delay',
@@ -477,6 +484,7 @@ def pytest_configure(config):
     sb_config.message_duration = config.getoption('message_duration')
     sb_config.js_checking_on = config.getoption('js_checking_on')
     sb_config.ad_block_on = config.getoption('ad_block_on')
+    sb_config.block_images = config.getoption('block_images')
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
     sb_config.enable_sync = config.getoption('enable_sync')
