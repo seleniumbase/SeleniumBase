@@ -132,7 +132,7 @@ def _set_chrome_options(
         downloads_path, headless,
         proxy_string, proxy_auth, proxy_user, proxy_pass,
         user_agent, disable_csp, enable_sync, use_auto_ext,
-        no_sandbox, disable_gpu, incognito, guest_mode, devtools,
+        no_sandbox, disable_gpu, incognito, guest_mode, devtools, block_images,
         user_data_dir, extension_zip, extension_dir, servername,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     chrome_options = webdriver.ChromeOptions()
@@ -144,6 +144,8 @@ def _set_chrome_options(
             "password_manager_enabled": False
         }
     }
+    if block_images:
+        prefs["profile.managed_default_content_settings.images"] = 2
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_experimental_option("w3c", True)
     if enable_sync:
@@ -209,6 +211,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--homepage=about:blank")
+    chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--dom-automation")
     if not use_auto_ext:  # (It's ON by default. Disable it when not wanted.)
         chrome_options.add_experimental_option("useAutomationExtension", False)
@@ -357,7 +360,8 @@ def get_driver(browser_name, headless=False, use_grid=False,
                disable_csp=None, enable_sync=None, use_auto_ext=None,
                no_sandbox=None, disable_gpu=None,
                incognito=None, guest_mode=None, devtools=None,
-               user_data_dir=None, extension_zip=None, extension_dir=None,
+               block_images=None, user_data_dir=None,
+               extension_zip=None, extension_dir=None,
                test_id=None, mobile_emulator=False, device_width=None,
                device_height=None, device_pixel_ratio=None):
     proxy_auth = False
@@ -395,14 +399,14 @@ def get_driver(browser_name, headless=False, use_grid=False,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             cap_file, cap_string, disable_csp, enable_sync, use_auto_ext,
             no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-            user_data_dir, extension_zip, extension_dir, test_id,
+            block_images, user_data_dir, extension_zip, extension_dir, test_id,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
         return get_local_driver(
             browser_name, headless, servername,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-            incognito, guest_mode, devtools,
+            incognito, guest_mode, devtools, block_images,
             user_data_dir, extension_zip, extension_dir,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
 
@@ -411,7 +415,7 @@ def get_remote_driver(
         browser_name, headless, servername, port, proxy_string, proxy_auth,
         proxy_user, proxy_pass, user_agent, cap_file, cap_string,
         disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-        incognito, guest_mode, devtools,
+        incognito, guest_mode, devtools, block_images,
         user_data_dir, extension_zip, extension_dir, test_id,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
@@ -443,7 +447,7 @@ def get_remote_driver(
             downloads_path, headless,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-            incognito, guest_mode, devtools,
+            incognito, guest_mode, devtools, block_images,
             user_data_dir, extension_zip, extension_dir, servername,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
         capabilities = chrome_options.to_capabilities()
@@ -567,7 +571,7 @@ def get_local_driver(
         browser_name, headless, servername,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-        incognito, guest_mode, devtools,
+        incognito, guest_mode, devtools, block_images,
         user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     '''
@@ -658,7 +662,8 @@ def get_local_driver(
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-                user_data_dir, extension_zip, extension_dir, servername,
+                block_images, user_data_dir,
+                extension_zip, extension_dir, servername,
                 mobile_emulator, device_width, device_height,
                 device_pixel_ratio)
             if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
@@ -715,8 +720,8 @@ def get_local_driver(
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-                user_data_dir, extension_zip, extension_dir, servername,
-                mobile_emulator, device_width, device_height,
+                block_images, user_data_dir, extension_zip, extension_dir,
+                servername, mobile_emulator, device_width, device_height,
                 device_pixel_ratio)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:

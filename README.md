@@ -321,6 +321,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --message-duration=SECONDS  # (The time length for Messenger alerts.)
 --check-js  # (The option to check for JavaScript errors after page loads.)
 --ad-block  # (The option to block some display ads after page loads.)
+--block-images  # (The option to block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --disable-csp  # (This disables the Content Security Policy of websites.)
 --enable-sync  # (The option to enable "Chrome Sync".)
