@@ -83,6 +83,10 @@ html_report.html
 report.html
 report.xml
 
+# Allure Reports / Results
+allure-report
+allure-results
+
 # Presentations
 presentations_saved
 saved_presentations
