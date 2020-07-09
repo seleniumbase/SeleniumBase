@@ -211,6 +211,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--homepage=about:blank")
+    chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--dom-automation")
     if not use_auto_ext:  # (It's ON by default. Disable it when not wanted.)
         chrome_options.add_experimental_option("useAutomationExtension", False)
