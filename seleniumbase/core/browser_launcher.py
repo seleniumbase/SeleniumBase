@@ -236,6 +236,7 @@ def _set_chrome_options(
             chrome_options.add_argument("--headless")
     # if headless or disable_gpu:
     chrome_options.add_argument("--disable-gpu")  # (Now always on)
+    chrome_options.add_argument("--use-gl=swiftshader")
     # if (headless and "linux" in PLATFORM) or no_sandbox:
     chrome_options.add_argument("--no-sandbox")  # (Now always on)
     if "linux" in PLATFORM:
