@@ -71,6 +71,7 @@ except (ImportError, ValueError):
     sb.settings_file = None
     sb.user_data_dir = None
     sb.proxy_string = None
+    sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None
     sb.check_js = False
