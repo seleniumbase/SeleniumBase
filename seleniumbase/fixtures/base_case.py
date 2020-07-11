@@ -1592,7 +1592,7 @@ class BaseCase(unittest.TestCase):
                        disable_csp=None, enable_sync=None, use_auto_ext=None,
                        no_sandbox=None, disable_gpu=None,
                        incognito=None, guest_mode=None, devtools=None,
-                       block_images=None, user_data_dir=None,
+                       swiftshader=None, block_images=None, user_data_dir=None,
                        extension_zip=None, extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
         """ This method spins up an extra browser for tests that require
@@ -1616,6 +1616,7 @@ class BaseCase(unittest.TestCase):
             incognito - the option to enable Chrome's Incognito mode (Chrome)
             guest - the option to enable Chrome's Guest mode (Chrome)
             devtools - the option to open Chrome's DevTools on start (Chrome)
+            swiftshader  the option to use "--use-gl=swiftshader" (Chrome-only)
             block_images - the option to block images from loading (Chrome)
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
@@ -1681,6 +1682,8 @@ class BaseCase(unittest.TestCase):
             guest_mode = self.guest_mode
         if devtools is None:
             devtools = self.devtools
+        if swiftshader is None:
+            swiftshader = self.swiftshader
         if block_images is None:
             block_images = self.block_images
         if user_data_dir is None:
@@ -1728,6 +1731,7 @@ class BaseCase(unittest.TestCase):
                                                  incognito=incognito,
                                                  guest_mode=guest_mode,
                                                  devtools=devtools,
+                                                 swiftshader=swiftshader,
                                                  block_images=block_images,
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
@@ -5283,6 +5287,7 @@ class BaseCase(unittest.TestCase):
             self.incognito = sb_config.incognito
             self.guest_mode = sb_config.guest_mode
             self.devtools = sb_config.devtools
+            self.swiftshader = sb_config.swiftshader
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
@@ -5445,6 +5450,7 @@ class BaseCase(unittest.TestCase):
                                               incognito=self.incognito,
                                               guest_mode=self.guest_mode,
                                               devtools=self.devtools,
+                                              swiftshader=self.swiftshader,
                                               block_images=self.block_images,
                                               user_data_dir=self.user_data_dir,
                                               extension_zip=self.extension_zip,

@@ -38,6 +38,7 @@ class SeleniumBrowser(Plugin):
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
     --use-auto-ext  (The option to use Chrome's automation extension.)
+    --swiftshader  (The option to use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
     --guest  (The option to enable Chrome's Guest mode.)
     --devtools  (The option to open Chrome's DevTools when the browser opens.)
@@ -295,6 +296,13 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the "Disable GPU" feature.
                     (This setting is now always enabled by default.)""")
         parser.add_option(
+            '--swiftshader',
+            action="store_true",
+            dest='swiftshader',
+            default=False,
+            help="""Using this enables the "--use-gl=swiftshader"
+                    feature when running tests on Chrome.""")
+        parser.add_option(
             '--incognito', '--incognito_mode', '--incognito-mode',
             action="store_true",
             dest='incognito',
@@ -382,6 +390,7 @@ class SeleniumBrowser(Plugin):
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
+        test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
         test.test.devtools = self.options.devtools

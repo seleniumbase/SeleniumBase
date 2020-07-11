@@ -47,6 +47,7 @@ def pytest_addoption(parser):
     --disable-csp  (This disables the Content Security Policy of websites.)
     --enable-sync  (The option to enable "Chrome Sync".)
     --use-auto-ext  (The option to use Chrome's automation extension.)
+    --swiftshader  (The option to use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (The option to enable Chrome's Incognito mode.)
     --guest  (The option to enable Chrome's Guest mode.)
     --devtools  (The option to open Chrome's DevTools when the browser opens.)
@@ -377,6 +378,12 @@ def pytest_addoption(parser):
                      default=False,
                      help="""Using this enables the "Disable GPU" feature.
                           (This setting is now always enabled by default.)""")
+    parser.addoption('--swiftshader',
+                     action="store_true",
+                     dest='swiftshader',
+                     default=False,
+                     help="""Using this enables the "--use-gl=swiftshader"
+                          feature when running tests on Chrome.""")
     parser.addoption('--incognito', '--incognito_mode', '--incognito-mode',
                      action="store_true",
                      dest='incognito',
@@ -491,6 +498,7 @@ def pytest_configure(config):
     sb_config.use_auto_ext = config.getoption('use_auto_ext')
     sb_config.no_sandbox = config.getoption('no_sandbox')
     sb_config.disable_gpu = config.getoption('disable_gpu')
+    sb_config.swiftshader = config.getoption('swiftshader')
     sb_config.incognito = config.getoption('incognito')
     sb_config.guest_mode = config.getoption('guest_mode')
     sb_config.devtools = config.getoption('devtools')
