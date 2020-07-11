@@ -123,6 +123,7 @@ SeleniumBase provides additional Pytest command-line options for tests:
 --disable-csp  # (This disables the Content Security Policy of websites.)
 --enable-sync  # (The option to enable "Chrome Sync".)
 --use-auto-ext  # (The option to use Chrome's automation extension.)
+--swiftshader  # (The option to use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  #  (The option to enable Chrome's Incognito mode.)
 --guest  # (The option to enable Chrome's Guest mode.)
 --devtools  # (The option to open Chrome's DevTools when the browser opens.)
