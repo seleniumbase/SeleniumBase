@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.42.10',
+    version='1.42.11',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -93,7 +93,7 @@ setup(
         'pip>=20.1.1',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=49.1.1;python_version>="3.5"',
+        'setuptools>=49.2.0;python_version>="3.5"',
         'setuptools-scm',
         'wheel',
         'six',
@@ -134,7 +134,7 @@ setup(
         'pyotp==2.3.0',
         'boto==2.49.0',
         'cffi==1.14.0',
-        'rich==3.2.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==3.3.1;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
