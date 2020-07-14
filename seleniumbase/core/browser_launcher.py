@@ -234,12 +234,12 @@ def _set_chrome_options(
             # using Chrome's built-in headless mode. See link for details:
             # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
             chrome_options.add_argument("--headless")
-    # if headless or disable_gpu:
-    chrome_options.add_argument("--disable-gpu")  # (Now always on)
     # if (headless and "linux" in PLATFORM) or no_sandbox:
     chrome_options.add_argument("--no-sandbox")  # (Now always on)
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
+    else:
+        chrome_options.add_argument("--disable-gpu")
     if "linux" in PLATFORM:
         chrome_options.add_argument("--disable-dev-shm-usage")
     return chrome_options
