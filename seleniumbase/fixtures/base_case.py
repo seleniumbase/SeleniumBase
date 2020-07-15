@@ -5428,9 +5428,11 @@ class BaseCase(unittest.TestCase):
                     new_start_page = "http://" + self.start_page
                     if page_utils.is_valid_url(new_start_page):
                         self.open(new_start_page)
-            else:
+            elif self._crumbs:
                 if self.get_current_url() != "data:,":
                     self.open("data:,")
+            else:
+                pass
         else:
             # Launch WebDriver for both Pytest and Nosetests
             self.driver = self.get_new_driver(browser=self.browser,
