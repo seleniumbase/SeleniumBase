@@ -42,9 +42,9 @@ if sys.argv[-1] == 'publish':
         os.system('rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl')
         os.system('python setup.py sdist bdist_wheel')  # Create new tar/wheel
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install 'twine>=1.15.0'")
+        os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install 'tqdm>=4.47.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.48.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.42.13',
+    version='1.42.14',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -99,6 +99,7 @@ setup(
         'six',
         'nose',
         'ipdb',
+        'jedi==0.17.2',  # The last version for Python 2 and 3.5
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
         'urllib3==1.25.9',  # Must stay in sync with "requests"
@@ -128,8 +129,8 @@ setup(
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.6.1;python_version>="3.5"',
         'colorama==0.4.3',
+        'pymysql==0.10.0',
         'brython>=3.8.9',
-        'pymysql==0.9.3',
         'coverage==5.2',
         'pyotp==2.3.0',
         'boto==2.49.0',

@@ -1495,7 +1495,7 @@ def main(shell_command):
     # Create SeleniumBase test file
     base_file_name = seleniumbase_file.split('.py')[0]
     converted_file_name = base_file_name + ".py"  # Change end to make a copy
-    out_file = codecs.open(converted_file_name, "w+")
+    out_file = codecs.open(converted_file_name, "w+", encoding="utf-8")
     out_file.writelines(seleniumbase_code)
     out_file.close()
     print('\n>>> ["%s"] was updated!\n' % converted_file_name)

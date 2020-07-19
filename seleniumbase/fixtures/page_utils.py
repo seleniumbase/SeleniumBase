@@ -217,7 +217,8 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
 
 
 def _save_data_as(data, destination_folder, file_name):
-    out_file = codecs.open(destination_folder + '/' + file_name, "w+")
+    out_file = codecs.open(
+        destination_folder + '/' + file_name, "w+", encoding="utf-8")
     out_file.writelines(data)
     out_file.close()
 

@@ -1002,7 +1002,7 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
             pass
     import codecs
     file_path = exported_tours_folder + "/" + filename
-    out_file = codecs.open(file_path, "w+")
+    out_file = codecs.open(file_path, "w+", encoding="utf-8")
     out_file.writelines(instructions)
     out_file.close()
     print('\n>>> [%s] was saved!\n' % file_path)

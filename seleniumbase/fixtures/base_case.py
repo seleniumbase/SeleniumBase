@@ -1831,7 +1831,7 @@ class BaseCase(unittest.TestCase):
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         cookies_file_path = "%s/%s" % (file_path, name)
-        cookies_file = codecs.open(cookies_file_path, "w+")
+        cookies_file = codecs.open(cookies_file_path, "w+", encoding="utf-8")
         cookies_file.writelines(json_cookies)
         cookies_file.close()
 
@@ -3342,7 +3342,7 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
         file_path = saved_presentations_folder + "/" + filename
-        out_file = codecs.open(file_path, "w+")
+        out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
         print('\n>>> [%s] was saved!\n' % file_path)
@@ -4682,16 +4682,16 @@ class BaseCase(unittest.TestCase):
 
         if set_baseline:
             self.save_screenshot("screenshot.png", visual_baseline_path)
-            out_file = codecs.open(page_url_file, "w+")
+            out_file = codecs.open(page_url_file, "w+", encoding="utf-8")
             out_file.writelines(page_url)
             out_file.close()
-            out_file = codecs.open(level_1_file, "w+")
+            out_file = codecs.open(level_1_file, "w+", encoding="utf-8")
             out_file.writelines(json.dumps(level_1))
             out_file.close()
-            out_file = codecs.open(level_2_file, "w+")
+            out_file = codecs.open(level_2_file, "w+", encoding="utf-8")
             out_file.writelines(json.dumps(level_2))
             out_file.close()
-            out_file = codecs.open(level_3_file, "w+")
+            out_file = codecs.open(level_3_file, "w+", encoding="utf-8")
             out_file.writelines(json.dumps(level_3))
             out_file.close()
 
