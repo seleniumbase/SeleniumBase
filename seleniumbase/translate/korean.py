@@ -312,12 +312,12 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
     def 프레젠테이션_저장(self, *args, **kwargs):
         # save_presentation(name=None, filename=None,
-        #                   show_notes=True, interval=0)
+        #                   show_notes=False, interval=0)
         return self.save_presentation(*args, **kwargs)
 
     def 프레젠테이션_시작(self, *args, **kwargs):
         # begin_presentation(name=None, filename=None,
-        #                    show_notes=True, interval=0)
+        #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
 
     def 가이드_투어_만들기(self, *args, **kwargs):

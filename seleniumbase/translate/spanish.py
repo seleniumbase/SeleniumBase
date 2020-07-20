@@ -312,12 +312,12 @@ class CasoDePrueba(BaseCase):
 
     def guardar_la_presentación(self, *args, **kwargs):
         # save_presentation(name=None, filename=None,
-        #                   show_notes=True, interval=0)
+        #                   show_notes=False, interval=0)
         return self.save_presentation(*args, **kwargs)
 
     def iniciar_la_presentación(self, *args, **kwargs):
         # begin_presentation(name=None, filename=None,
-        #                    show_notes=True, interval=0)
+        #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
 
     def crear_una_gira(self, *args, **kwargs):

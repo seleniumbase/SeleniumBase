@@ -312,12 +312,12 @@ class CasDeBase(BaseCase):
 
     def enregistrer_la_présentation(self, *args, **kwargs):
         # save_presentation(name=None, filename=None,
-        #                   show_notes=True, interval=0)
+        #                   show_notes=False, interval=0)
         return self.save_presentation(*args, **kwargs)
 
     def démarrer_la_présentation(self, *args, **kwargs):
         # begin_presentation(name=None, filename=None,
-        #                    show_notes=True, interval=0)
+        #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
 
     def créer_une_visite(self, *args, **kwargs):
