@@ -312,12 +312,12 @@ class セレニウムテストケース(BaseCase):  # noqa
 
     def プレゼンテーションを保存する(self, *args, **kwargs):
         # save_presentation(name=None, filename=None,
-        #                   show_notes=True, interval=0)
+        #                   show_notes=False, interval=0)
         return self.save_presentation(*args, **kwargs)
 
     def プレゼンテーションを開始する(self, *args, **kwargs):
         # begin_presentation(name=None, filename=None,
-        #                    show_notes=True, interval=0)
+        #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
 
     def ツアーを作成する(self, *args, **kwargs):

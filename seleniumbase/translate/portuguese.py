@@ -312,12 +312,12 @@ class CasoDeTeste(BaseCase):
 
     def salvar_a_apresentação(self, *args, **kwargs):
         # save_presentation(name=None, filename=None,
-        #                   show_notes=True, interval=0)
+        #                   show_notes=False, interval=0)
         return self.save_presentation(*args, **kwargs)
 
     def iniciar_a_apresentação(self, *args, **kwargs):
         # begin_presentation(name=None, filename=None,
-        #                    show_notes=True, interval=0)
+        #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
 
     def criar_um_tour(self, *args, **kwargs):
