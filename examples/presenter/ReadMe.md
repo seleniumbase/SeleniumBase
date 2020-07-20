@@ -35,7 +35,7 @@ self.create_presentation(name=None, theme="serif")
 
 If creating multiple presentations at the same time, you can pass the ``name`` parameter to distinguish between different presentations.
 Notes are disabled by default. You can enable notes by specifying:
-``show_notes=True`` when calling.
+``show_notes=True``
 
 
 ### Adding a slide to a presentation:
