@@ -3280,7 +3280,7 @@ class BaseCase(unittest.TestCase):
         self._presentation_slides[name].append(html)
 
     def save_presentation(
-            self, name=None, filename=None, show_notes=True, interval=0):
+            self, name=None, filename=None, show_notes=False, interval=0):
         """ Saves a Reveal-JS Presentation to a file for later use.
             @Params
             name - If creating multiple presentations at the same time,
@@ -3349,7 +3349,7 @@ class BaseCase(unittest.TestCase):
         return file_path
 
     def begin_presentation(
-            self, name=None, filename=None, show_notes=True, interval=0):
+            self, name=None, filename=None, show_notes=False, interval=0):
         """ Begin a Reveal-JS Presentation in the web browser.
             @Params
             name - If creating multiple presentations at the same time,

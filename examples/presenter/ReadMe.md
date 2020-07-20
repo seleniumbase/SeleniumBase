@@ -34,8 +34,8 @@ self.create_presentation(name=None, theme="serif")
 ```
 
 If creating multiple presentations at the same time, you can pass the ``name`` parameter to distinguish between different presentations.
-Notes are enabled by default unless you specify:
-``show_notes=False`` when calling.
+Notes are disabled by default. You can enable notes by specifying:
+``show_notes=True``
 
 
 ### Adding a slide to a presentation:
@@ -63,7 +63,7 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
 
 ```python
 self.begin_presentation(
-    filename="my_presentation.html", show_notes=True, interval=0)
+    filename="my_presentation.html", show_notes=False, interval=0)
 """ Begin a Reveal-JS Presentation in the web browser.
     @Params
     name - If creating multiple presentations at the same time,
