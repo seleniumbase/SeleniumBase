@@ -175,12 +175,22 @@ def _set_chrome_options(
         chrome_options.add_experimental_option(
             "mobileEmulation", emulator_settings)
         chrome_options.add_argument("--enable-sync")
-    if incognito:
-        chrome_options.add_argument("--incognito")
-    elif guest_mode:
-        chrome_options.add_argument("--guest")
-    else:
-        pass
+    if not proxy_auth and not disable_csp and (
+            not extension_zip and not extension_dir):
+        if incognito:
+            # Use Chrome's Incognito Mode
+            # Incognito Mode prevents Chrome extensions from loading,
+            # so if using extensions or a feature that uses extensions,
+            # then Chrome's Incognito mode will be disabled instead.
+            chrome_options.add_argument("--incognito")
+        elif guest_mode:
+            # Use Chrome's Guest Mode
+            # Guest mode prevents Chrome extensions from loading,
+            # so if using extensions or a feature that uses extensions,
+            # then Chrome's Guest Mode will be disabled instead.
+            chrome_options.add_argument("--guest")
+        else:
+            pass
     if user_data_dir:
         abs_path = os.path.abspath(user_data_dir)
         chrome_options.add_argument("user-data-dir=%s" % abs_path)
