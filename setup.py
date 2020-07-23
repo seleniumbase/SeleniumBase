@@ -102,7 +102,7 @@ setup(
         'jedi==0.17.2',  # The last version for Python 2 and 3.5
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.25.9',  # Must stay in sync with "requests"
+        'urllib3==1.25.10',  # Must stay in sync with "requests"
         'requests==2.24.0',
         'selenium==3.141.0',
         'pluggy==0.13.1',
@@ -135,7 +135,7 @@ setup(
         'pyotp==2.3.0',
         'boto==2.49.0',
         'cffi==1.14.0',
-        'rich==3.3.2;python_version>="3.6" and python_version<"4.0"',
+        'rich==3.4.1;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
