@@ -88,6 +88,8 @@ seleniumbase install chromedriver
 seleniumbase install chromedriver latest
 ```
 
+(See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts, such as ``seleniumbase install`` and ``seleniumbase mkdir``.)
+
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Run a test on Chrome:</h3>
 
 ```bash
@@ -428,6 +430,14 @@ nosetests test_suite.py --report
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
+
+<h4><b>Allure Reports:</b></h4>
+
+See: [https://docs.qameta.io/allure/](https://docs.qameta.io/allure/#_pytest)
+
+```bash
+pytest test_suite.py --alluredir=allure_results
+```
 
 
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using a Proxy Server:</h3>
