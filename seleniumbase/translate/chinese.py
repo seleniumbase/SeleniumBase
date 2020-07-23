@@ -437,6 +437,10 @@ class 硒测试用例(BaseCase):  # noqa
         # switch_to_alert(timeout=None)
         return self.switch_to_alert(*args, **kwargs)
 
+    def 拖放(self, *args, **kwargs):
+        # drag_and_drop(drag_selector, drop_selector)
+        return self.drag_and_drop(*args, **kwargs)
+
     def 加载HTML文件(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)

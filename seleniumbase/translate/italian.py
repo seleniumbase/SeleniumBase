@@ -437,6 +437,10 @@ class CasoDiProva(BaseCase):
         # switch_to_alert(timeout=None)
         return self.switch_to_alert(*args, **kwargs)
 
+    def trascinare_e_rilasciare(self, *args, **kwargs):
+        # drag_and_drop(drag_selector, drop_selector)
+        return self.drag_and_drop(*args, **kwargs)
+
     def caricare_html_file(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
