@@ -90,6 +90,19 @@ file name while keeping the original file intact.
 Works with Katalon Recorder scripts.
 See: http://www.katalon.com/automation-recorder
 
+### print
+
+* Usage:
+``sbase print [FILE] [OPTIONS]``
+
+* Options:
+``-n`` (Add line Numbers to the rows)
+``-w`` (Use word-Wrap for long lines)
+
+* Output:
+Prints the code/text of any file
+with syntax-highlighting.
+
 ### translate
 
 * Usage:
@@ -173,6 +186,24 @@ Reverts the changes made by ``seleniumbase objectify ...`` or
 ``seleniumbase inject-objects ...`` when run against a
 seleniumbase Python file. Objects will get replaced by
 selectors stored in the "page_objects.py" file.
+
+### encrypt / obfuscate
+
+* Usage:
+``sbase encrypt``  OR  ``sbase obfuscate``
+
+* Output:
+Runs the password encryption/obfuscation tool.
+(Where you can enter a password to encrypt/obfuscate.)
+
+### decrypt / unobfuscate
+
+* Usage:
+``sbase decrypt``  OR  ``sbase unobfuscate``
+
+* Output:
+Runs the password decryption/unobfuscation tool.
+(Where you can enter an encrypted password to decrypt.)
 
 ### download
 
