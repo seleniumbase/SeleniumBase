@@ -144,7 +144,7 @@ class SeleniumBrowser(Plugin):
                     Example: "375,734,3"
                     Default: None. (Will use default values if None)""")
         parser.add_option(
-            '--extension_zip', '--extension-zip',
+            '--extension_zip', '--extension-zip', '--crx',
             action='store',
             dest='extension_zip',
             default=None,

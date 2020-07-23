@@ -239,7 +239,7 @@ def pytest_addoption(parser):
                           Format: A comma-separated string with the 3 values.
                           Example: "375,734,3"
                           Default: None. (Will use default values if None)""")
-    parser.addoption('--extension_zip', '--extension-zip',
+    parser.addoption('--extension_zip', '--extension-zip', '--crx',
                      action='store',
                      dest='extension_zip',
                      default=None,
