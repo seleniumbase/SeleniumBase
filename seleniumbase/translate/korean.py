@@ -437,6 +437,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # switch_to_alert(timeout=None)
         return self.switch_to_alert(*args, **kwargs)
 
+    def 드래그_앤_드롭(self, *args, **kwargs):
+        # drag_and_drop(drag_selector, drop_selector)
+        return self.drag_and_drop(*args, **kwargs)
+
     def HTML_파일_로드(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)

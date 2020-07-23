@@ -437,6 +437,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # switch_to_alert(timeout=None)
         return self.switch_to_alert(*args, **kwargs)
 
+    def ドラッグアンドドロップ(self, *args, **kwargs):
+        # drag_and_drop(drag_selector, drop_selector)
+        return self.drag_and_drop(*args, **kwargs)
+
     def HTMLファイルを読み込む(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)

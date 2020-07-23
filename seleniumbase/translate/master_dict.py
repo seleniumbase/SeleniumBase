@@ -1512,6 +1512,18 @@ class MD:
     md["switch_to_alert"][8] = "переключиться_на_оповещение"
     md["switch_to_alert"][9] = "cambiar_a_alerta"
 
+    md["drag_and_drop"] = ["*"] * num_langs
+    md["drag_and_drop"][0] = "drag_and_drop"
+    md["drag_and_drop"][1] = "拖放"
+    md["drag_and_drop"][2] = "slepen_en_neerzetten"
+    md["drag_and_drop"][3] = "glisser_et_déposer"
+    md["drag_and_drop"][4] = "trascinare_e_rilasciare"
+    md["drag_and_drop"][5] = "ドラッグアンドドロップ"
+    md["drag_and_drop"][6] = "드래그_앤_드롭"
+    md["drag_and_drop"][7] = "arrastar_e_soltar"
+    md["drag_and_drop"][8] = "перетащить_и_падение"
+    md["drag_and_drop"][9] = "arrastrar_y_soltar"
+
     md["load_html_file"] = ["*"] * num_langs
     md["load_html_file"][0] = "load_html_file"
     md["load_html_file"][1] = "加载HTML文件"
