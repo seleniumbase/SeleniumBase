@@ -3716,25 +3716,30 @@ class BaseCase(unittest.TestCase):
         if theme:
             if theme.lower() == "bootstrap":
                 self.create_bootstrap_tour(name)
-                return
             elif theme.lower() == "hopscotch":
                 self.create_hopscotch_tour(name)
-                return
             elif theme.lower() == "intro":
                 self.create_introjs_tour(name)
-                return
             elif theme.lower() == "introjs":
                 self.create_introjs_tour(name)
-                return
             elif theme.lower() == "driver":
                 self.create_driverjs_tour(name)
-                return
             elif theme.lower() == "driverjs":
                 self.create_driverjs_tour(name)
-                return
             elif theme.lower() == "shepherd":
                 self.create_shepherd_tour(name, theme="light")
-                return
+            elif theme.lower() == "light":
+                self.create_shepherd_tour(name, theme="light")
+            elif theme.lower() == "dark":
+                self.create_shepherd_tour(name, theme="dark")
+            elif theme.lower() == "arrows":
+                self.create_shepherd_tour(name, theme="light")
+            elif theme.lower() == "square":
+                self.create_shepherd_tour(name, theme="square")
+            elif theme.lower() == "square-dark":
+                self.create_shepherd_tour(name, theme="square-dark")
+            elif theme.lower() == "default":
+                self.create_shepherd_tour(name, theme="default")
             else:
                 self.create_shepherd_tour(name, theme)
         else:
