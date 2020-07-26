@@ -99,6 +99,7 @@ setup(
         'six',
         'nose',
         'ipdb',
+        'parso==0.7.1',  # The last version for Python 2 and 3.5
         'jedi==0.17.2',  # The last version for Python 2 and 3.5
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
@@ -130,20 +131,20 @@ setup(
         'pygments==2.6.1;python_version>="3.5"',
         'colorama==0.4.3',
         'pymysql==0.10.0',
+        'coverage==5.2.1',
         'brython>=3.8.9',
-        'coverage==5.2',
         'pyotp==2.3.0',
         'boto==2.49.0',
         'cffi==1.14.0',
-        'rich==3.4.1;python_version>="3.6" and python_version<"4.0"',
+        'rich==4.1.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
         'pyflakes==2.2.0;python_version>="3.5"',
         'certifi>=2020.6.20',
-        'allure-pytest==2.8.16',
+        'allure-pytest==2.8.17',
         'pdfminer.six==20191110;python_version<"3.5"',
-        'pdfminer.six==20200720;python_version>="3.5"',
+        'pdfminer.six==20200726;python_version>="3.5"',
     ],
     packages=[
         'seleniumbase',
