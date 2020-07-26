@@ -90,8 +90,10 @@ allure-report
 allure_results
 allure-results
 
+# Charts
+saved_charts
+
 # Presentations
-presentations_saved
 saved_presentations
 
 # Tours

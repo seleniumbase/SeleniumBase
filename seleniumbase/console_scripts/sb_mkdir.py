@@ -195,7 +195,7 @@ def main():
     data.append("allure-report")
     data.append("allure_results")
     data.append("allure-results")
-    data.append("presentations_saved")
+    data.append("saved_charts")
     data.append("saved_presentations")
     data.append("tours_exported")
     data.append("images_exported")

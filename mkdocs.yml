@@ -74,6 +74,7 @@ nav:
   - JS Package Manager: help_docs/js_package_manager.md
   - Site Tours: examples/tour_examples/ReadMe.md
   - Presenter: examples/presenter/ReadMe.md
+  - Chart Maker: help_docs/chart_maker.md
   - Visual Testing: examples/visual_testing/ReadMe.md
   - Integrations:
     - Logging and Reports: examples/example_logs/ReadMe.md
