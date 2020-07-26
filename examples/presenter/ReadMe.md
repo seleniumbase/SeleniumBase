@@ -9,6 +9,8 @@ The Reveal-JS library is used for running the presentations.
 
 <a href="https://seleniumbase.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
 
+([Click on the image/GIF for the actual presentation](https://seleniumbase.io/other/presenter.html))
+
 Slides can include HTML, code, images, and iframes.
 
 Here's how to run the example presentation:

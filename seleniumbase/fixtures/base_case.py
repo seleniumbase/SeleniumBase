@@ -3320,7 +3320,7 @@ class BaseCase(unittest.TestCase):
         """ Saves a Reveal-JS Presentation to a file for later use.
             @Params
             name - If creating multiple presentations at the same time,
-                   use this to select the one you wish to add slides to.
+                   use this to select the one you wish to use.
             filename - The name of the HTML file that you wish to
                        save the presentation to. (filename must end in ".html")
             show_notes - When set to True, the Notes feature becomes enabled,
@@ -3389,7 +3389,7 @@ class BaseCase(unittest.TestCase):
         """ Begin a Reveal-JS Presentation in the web browser.
             @Params
             name - If creating multiple presentations at the same time,
-                   use this to select the one you wish to add slides to.
+                   use this to select the one you wish to use.
             filename - The name of the HTML file that you wish to
                        save the presentation to. (filename must end in ".html")
             show_notes - When set to True, the Notes feature becomes enabled,
