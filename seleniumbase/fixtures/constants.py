@@ -23,6 +23,10 @@ class Presentations:
     SAVED_FOLDER = "saved_presentations"
 
 
+class Charts:
+    SAVED_FOLDER = "saved_charts"
+
+
 class SavedCookies:
     STORAGE_FOLDER = "saved_cookies"
 
@@ -121,6 +125,18 @@ class Reveal:
                          "reveal.js/%s/css/theme/solarized.min.css" % VER)
     MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
               "reveal.js/%s/js/reveal.min.js" % VER)
+
+
+class HighCharts:
+    VER = "8.1.2"
+    HC_CSS = ("https://code.highcharts.com/%s/css/highcharts.css" % VER)
+    HC_JS = ("https://code.highcharts.com/%s/highcharts.js" % VER)
+    EXPORTING_JS = ("https://code.highcharts.com/"
+                    "%s/modules/exporting.js" % VER)
+    EXPORT_DATA_JS = ("https://code.highcharts.com/"
+                      "%s/modules/export-data.js" % VER)
+    ACCESSIBILITY_JS = ("https://code.highcharts.com/"
+                        "%s/modules/accessibility.js" % VER)
 
 
 class BootstrapTour:

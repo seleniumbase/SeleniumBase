@@ -371,6 +371,18 @@ self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 
 ############
 
+self.create_pie_chart(chart_name=None, title=None)
+
+self.add_data_point(label, value, color=None, chart_name=None)
+
+self.save_chart(chart_name=None, filename=None)
+
+self.display_chart(chart_name=None, filename=None)
+
+self.extract_chart(chart_name=None)
+
+############
+
 self.create_tour(name=None, theme=None)
 
 self.create_shepherd_tour(name=None, theme=None)

@@ -87,6 +87,7 @@ class BaseCase(unittest.TestCase):
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
+        self._chart_data = {}
         self._tour_steps = {}
 
     def open(self, url):
@@ -3434,6 +3435,265 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.05)
         except Exception:
             pass
+
+    ############
+
+    def create_pie_chart(self, chart_name=None, title=None):
+        """ Creates a JavaScript pie chart using "HighCharts". """
+        if not chart_name:
+            chart_name = "default"
+        style = "pie"
+        unit = "Count"
+        self.__create_highchart(
+            chart_name=chart_name, title=title, style=style, unit=unit)
+
+    def __create_highchart(
+            self, chart_name=None, title=None, style=None, unit=None):
+        """ Creates a JavaScript chart using the "HighCharts" library. """
+        if not chart_name:
+            chart_name = "default"
+        if not title:
+            title = ""
+        if not style:
+            style = "pie"
+        if not unit:
+            unit = "Count"
+        chart_libs = (
+            """
+            <script src="%s"></script>
+            <script src="%s"></script>
+            <script src="%s"></script>
+            <script src="%s"></script>
+            <script src="%s"></script>
+            """ % (
+                constants.JQuery.MIN_JS,
+                constants.HighCharts.HC_JS,
+                constants.HighCharts.EXPORTING_JS,
+                constants.HighCharts.EXPORT_DATA_JS,
+                constants.HighCharts.ACCESSIBILITY_JS))
+        chart_css = (
+            """
+            <style>
+            .highcharts-figure, .highcharts-data-table table {
+                min-width: 320px;
+                max-width: 660px;
+                margin: 1em auto;
+            }
+            .highcharts-data-table table {
+                font-family: Verdana, sans-serif;
+                border-collapse: collapse;
+                border: 1px solid #EBEBEB;
+                margin: 10px auto;
+                text-align: center;
+                width: 100%;
+                max-width: 500px;
+            }
+            .highcharts-data-table caption {
+                padding: 1em 0;
+                font-size: 1.2em;
+                color: #555;
+            }
+            .highcharts-data-table th {
+                font-weight: 600;
+                padding: 0.5em;
+            }
+            .highcharts-data-table td, .highcharts-data-table th,
+            .highcharts-data-table caption {
+                padding: 0.5em;
+            }
+            .highcharts-data-table thead tr,
+            .highcharts-data-table tr:nth-child(even) {
+                background: #f8f8f8;
+            }
+            .highcharts-data-table tr:hover {
+                background: #f1f7ff;
+            }
+            </style>
+            """)
+        chart_description = ""
+        chart_figure = (
+            """
+            <figure class="highcharts-figure">
+                <div id="container"></div>
+                <p class="highcharts-description">%s</p>
+            </figure>
+            """ % chart_description)
+        chart_init_1 = (
+            """
+            <script>
+            // Build the chart
+            Highcharts.chart('container', {
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: '%s'
+            },
+            chart: {
+                renderTo: 'statusChart',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: '%s'
+            },
+            """ % (title, style))
+        #  "{series.name}:"  =>  "Count:"  (based on unit)
+        point_format = (r'<b>{point.y}</b><br />'
+                        r'<b>{point.percentage:.1f}%</b>')
+        chart_init_2 = (
+            """
+            tooltip: {
+                pointFormat: '%s'
+            },
+            """ % point_format)
+        chart_init_3 = (
+            r"""
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false,
+                        format: '{point.name}: {point.y:.1f}%'
+                    },
+                    showInLegend: true
+                }
+            },
+            """)
+        chart_init = chart_init_1 + chart_init_2 + chart_init_3
+        series = (
+            """
+            series: [{
+            name: '%s',
+            colorByPoint: true,
+            data: [
+            """ % unit)
+        new_chart = chart_libs + chart_css + chart_figure + chart_init + series
+        self._chart_data[chart_name] = []
+        self._chart_data[chart_name].append(new_chart)
+
+    def add_data_point(self, label, value, color=None, chart_name=None):
+        """ Add a data point to a SeleniumBase-generated chart.
+            @Params
+            label - The label name for the data point.
+            value - The numeric value of the data point.
+            color - The HTML color of the data point.
+                    Can be an RGB color. Eg: "#55ACDC".
+                    Can also be a named color. Eg: "Teal".
+            chart_name - If creating multiple charts,
+                         use this to select which one.
+        """
+        if not chart_name:
+            chart_name = "default"
+        if chart_name not in self._chart_data:
+            # Create a chart if it doesn't already exist
+            self.create_pie_chart(chart_name=chart_name)
+        if not color:
+            color = ""
+        data_point = (
+            """
+            {
+            name: '%s',
+            y: %s,
+            color: '%s'
+            },
+            """ % (label, value, color))
+        self._chart_data[chart_name].append(data_point)
+
+    def save_chart(self, chart_name=None, filename=None):
+        """ Saves a SeleniumBase-generated chart to a file for later use.
+            @Params
+            chart_name - If creating multiple charts at the same time,
+                         use this to select the one you wish to use.
+            filename - The name of the HTML file that you wish to
+                       save the chart to. (filename must end in ".html")
+        """
+        if not chart_name:
+            chart_name = "default"
+        if not filename:
+            filename = "my_chart.html"
+        if chart_name not in self._chart_data:
+            raise Exception("Chart {%s} does not exist!" % chart_name)
+        if not filename.endswith('.html'):
+            raise Exception('Chart file must end in ".html"!')
+        the_html = ""
+        for chart_data_point in self._chart_data[chart_name]:
+            the_html += chart_data_point
+        the_html += (
+            """
+            ]
+                }]
+            });
+            </script>
+            """)
+        saved_charts_folder = constants.Charts.SAVED_FOLDER
+        if saved_charts_folder.endswith("/"):
+            saved_charts_folder = saved_charts_folder[:-1]
+        if not os.path.exists(saved_charts_folder):
+            try:
+                os.makedirs(saved_charts_folder)
+            except Exception:
+                pass
+        file_path = saved_charts_folder + "/" + filename
+        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file.writelines(the_html)
+        out_file.close()
+        print('\n>>> [%s] was saved!' % file_path)
+        return file_path
+
+    def display_chart(self, chart_name=None, filename=None):
+        """ Displays a SeleniumBase-generated chart in the browser window.
+            @Params
+            chart_name - If creating multiple charts at the same time,
+                         use this to select the one you wish to use.
+            filename - The name of the HTML file that you wish to
+                       save the chart to. (filename must end in ".html")
+        """
+        if not chart_name:
+            chart_name = "default"
+        if not filename:
+            filename = "my_chart.html"
+        if chart_name not in self._chart_data:
+            raise Exception("Chart {%s} does not exist!" % chart_name)
+        if not filename.endswith('.html'):
+            raise Exception('Chart file must end in ".html"!')
+        file_path = self.save_chart(chart_name=chart_name, filename=filename)
+        self.open_html_file(file_path)
+        chart_folder = constants.Charts.SAVED_FOLDER
+        try:
+            print("\n*** Close the browser window to continue ***")
+            while (len(self.driver.window_handles) > 0 and (
+                    chart_folder in self.get_current_url())):
+                time.sleep(0.05)
+        except Exception:
+            pass
+
+    def extract_chart(self, chart_name=None):
+        """ Extracts the HTML from a SeleniumBase-generated chart.
+            @Params
+            chart_name - If creating multiple charts at the same time,
+                         use this to select the one you wish to use.
+        """
+        if not chart_name:
+            chart_name = "default"
+        if chart_name not in self._chart_data:
+            raise Exception("Chart {%s} does not exist!" % chart_name)
+        the_html = ""
+        for chart_data_point in self._chart_data[chart_name]:
+            the_html += chart_data_point
+        the_html += (
+            """
+            ]
+                }]
+            });
+            </script>
+            """)
+        return the_html
 
     ############
 
