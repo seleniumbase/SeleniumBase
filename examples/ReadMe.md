@@ -1,4 +1,4 @@
-<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb8.png" alt="SeleniumBase" width="290" /></a></p>
+<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" alt="SeleniumBase" width="290" /></a></p>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Running Example Tests:</h2>
 
@@ -131,7 +131,7 @@ python gui_test_runner.py
 
 --------
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" title="SeleniumBase" width="290" />
+<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb8.png" title="SeleniumBase" width="290" />
 
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>
