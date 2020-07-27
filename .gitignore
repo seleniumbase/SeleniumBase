@@ -23,6 +23,10 @@ env
 venv
 sbase
 sbase*
+seleniumbase_env
+seleniumbase_venv
+sbase_env
+sbase_venv
 pyvenv.cfg
 .Python
 include
