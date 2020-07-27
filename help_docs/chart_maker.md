@@ -4,7 +4,6 @@
 
 SeleniumBase Chart Maker allows you to create HTML charts with Python.<br />
 The HighCharts library is used for creating charts.
-(Currently only <b>pie charts</b> are supported.)
 
 **Here's a sample chart:**
 
@@ -12,18 +11,61 @@ The HighCharts library is used for creating charts.
 
 ([Click on the image for the actual chart](https://seleniumbase.io/other/chart_presentation.html))
 
-Here's how to run the example (a chart in a presentation):
-```
+Here's how to run the example (multiple charts in a presentation):
+
+```bash
 cd examples/chart_maker
 pytest my_chart.py
 ```
+
+(Press the Right Arrow to advance to the next slide in the chart presentation)
 
 
 ### Creating a new chart:
 
 ```python
-self.create_pie_chart(chart_name=None, title="My Chart")
-""" Creates a JavaScript pie chart using "HighCharts". """
+self.create_pie_chart(chart_name=None, title="My Chart", libs=True)
+""" Creates a JavaScript pie chart using "HighCharts".
+    @Params
+    chart_name - If creating multiple charts,
+                 use this to select which one.
+    title - The title displayed for the chart.
+    libs - The option to include Chart libraries (JS and CSS files).
+           Should be set to True (default) for the first time creating
+           a chart on a web page. If creating multiple charts on
+           a web page, you no longer need to re-import the libraries
+           when creating additional charts.
+"""
+```
+
+```python
+self.create_bar_chart(chart_name=None, title="My Chart", libs=True)
+""" Creates a JavaScript bar chart using "HighCharts".
+    @Params
+    chart_name - If creating multiple charts,
+                 use this to select which one.
+    title - The title displayed for the chart.
+    libs - The option to include Chart libraries (JS and CSS files).
+           Should be set to True (default) for the first time creating
+           a chart on a web page. If creating multiple charts on
+           a web page, you no longer need to re-import the libraries
+           when creating additional charts.
+"""
+```
+
+```python
+self.create_column_chart(chart_name=None, title="My Chart", libs=True)
+""" Creates a JavaScript column chart using "HighCharts".
+    @Params
+    chart_name - If creating multiple charts,
+                 use this to select which one.
+    title - The title displayed for the chart.
+    libs - The option to include Chart libraries (JS and CSS files).
+           Should be set to True (default) for the first time creating
+           a chart on a web page. If creating multiple charts on
+           a web page, you no longer need to re-import the libraries
+           when creating additional charts.
+"""
 ```
 
 If creating multiple charts at the same time, you can pass the ``chart_name`` parameter to distinguish between different charts.
@@ -87,7 +129,7 @@ self.display_chart(chart_name=None, filename=None):
 """
 ```
 
-All methods have the optional ``chart_name`` argument, which is only needed if you're creating multiple charts at once.
+All methods have the optional ``chart_name`` argument, which is only needed if you're creating multiple charts at the same time.
 
 
 ### Here's an example of using SeleniumBase Chart Maker:
@@ -95,18 +137,30 @@ All methods have the optional ``chart_name`` argument, which is only needed if y
 ```python
 from seleniumbase import BaseCase
 
-
 class MyChartMakerClass(BaseCase):
 
     def test_chart_maker(self):
+        self.create_presentation()
+
         self.create_pie_chart(title="Automated Tests")
         self.add_data_point("Passed", 7, color="#95d96f")
         self.add_data_point("Untested", 2, color="#eaeaea")
         self.add_data_point("Failed", 1, color="#f1888f")
-        self.create_presentation()
         self.add_slide(self.extract_chart())
-        self.begin_presentation()
 
+        self.create_bar_chart(title="Code", libs=False)
+        self.add_data_point("Python", 33, color="Orange")
+        self.add_data_point("JavaScript", 27, color="Teal")
+        self.add_data_point("HTML + CSS", 21, color="Purple")
+        self.add_slide(self.extract_chart())
+
+        self.create_column_chart(title="Colors", libs=False)
+        self.add_data_point("Red", 10, color="Red")
+        self.add_data_point("Green", 25, color="Green")
+        self.add_data_point("Blue", 15, color="Blue")
+        self.add_slide(self.extract_chart())
+
+        self.begin_presentation()
 ```
 
 #### This example is from [my_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/my_chart.py), which you can run from the ``examples/chart_maker`` folder with the following command:
