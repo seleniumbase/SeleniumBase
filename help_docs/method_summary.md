@@ -371,7 +371,11 @@ self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 
 ############
 
-self.create_pie_chart(chart_name=None, title=None)
+self.create_pie_chart(chart_name=None, title=None, libs=True)
+
+self.create_bar_chart(chart_name=None, title=None, libs=True)
+
+self.create_column_chart(chart_name=None, title=None, libs=True)
 
 self.add_data_point(label, value, color=None, chart_name=None)
 
