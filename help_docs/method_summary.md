@@ -371,17 +371,25 @@ self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 
 ############
 
-self.create_pie_chart(chart_name=None, title=None, libs=True)
+self.create_pie_chart(chart_name=None, title=None, subtitle=None,
+                      data_name=None, unit=None, libs=True)
 
-self.create_bar_chart(chart_name=None, title=None, libs=True)
+self.create_bar_chart(chart_name=None, title=None, subtitle=None,
+                      data_name=None, unit=None, libs=True)
 
-self.create_column_chart(chart_name=None, title=None, libs=True)
+self.create_column_chart(chart_name=None, title=None, subtitle=None,
+                         data_name=None, unit=None, libs=True)
+
+self.create_line_chart(chart_name=None, title=None, subtitle=None,
+                       data_name=None, unit=None, zero=False, libs=True)
+
+self.add_series_to_chart(data_name=None, chart_name=None)
 
 self.add_data_point(label, value, color=None, chart_name=None)
 
 self.save_chart(chart_name=None, filename=None)
 
-self.display_chart(chart_name=None, filename=None)
+self.display_chart(chart_name=None, filename=None, interval=0)
 
 self.extract_chart(chart_name=None)
 

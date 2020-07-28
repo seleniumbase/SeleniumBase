@@ -9,27 +9,30 @@ The HighCharts library is used for creating charts.
 
 <a href="https://seleniumbase.io/other/chart_presentation.html"><img width="500" src="https://seleniumbase.io/other/sample_pie_chart.png" title="Screenshot"></a><br>
 
-([Click on the image for the actual chart](https://seleniumbase.io/other/chart_presentation.html))
+([Click on the image for an actual chart demo](https://seleniumbase.io/other/chart_presentation.html))
 
-Here's how to run the example (multiple charts in a presentation):
+Here's how to run the example:
 
 ```bash
 cd examples/chart_maker
 pytest my_chart.py
 ```
 
-(Press the Right Arrow to advance to the next slide in the chart presentation)
-
 
 ### Creating a new chart:
 
 ```python
-self.create_pie_chart(chart_name=None, title="My Chart", libs=True)
+self.create_pie_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, libs=True):
 """ Creates a JavaScript pie chart using "HighCharts".
     @Params
     chart_name - If creating multiple charts,
                  use this to select which one.
     title - The title displayed for the chart.
+    subtitle - The subtitle displayed for the chart.
+    data_name - Set the series name. Useful for multi-series charts.
+    unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
            a chart on a web page. If creating multiple charts on
@@ -39,12 +42,17 @@ self.create_pie_chart(chart_name=None, title="My Chart", libs=True)
 ```
 
 ```python
-self.create_bar_chart(chart_name=None, title="My Chart", libs=True)
+self.create_bar_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, libs=True):
 """ Creates a JavaScript bar chart using "HighCharts".
     @Params
     chart_name - If creating multiple charts,
                  use this to select which one.
     title - The title displayed for the chart.
+    subtitle - The subtitle displayed for the chart.
+    data_name - Set the series name. Useful for multi-series charts.
+    unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
            a chart on a web page. If creating multiple charts on
@@ -54,12 +62,38 @@ self.create_bar_chart(chart_name=None, title="My Chart", libs=True)
 ```
 
 ```python
-self.create_column_chart(chart_name=None, title="My Chart", libs=True)
+self.create_column_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, libs=True):
 """ Creates a JavaScript column chart using "HighCharts".
     @Params
     chart_name - If creating multiple charts,
                  use this to select which one.
     title - The title displayed for the chart.
+    subtitle - The subtitle displayed for the chart.
+    data_name - Set the series name. Useful for multi-series charts.
+    unit - The description label given to the chart's y-axis values.
+    libs - The option to include Chart libraries (JS and CSS files).
+           Should be set to True (default) for the first time creating
+           a chart on a web page. If creating multiple charts on
+           a web page, you no longer need to re-import the libraries
+           when creating additional charts.
+"""
+```
+
+```python
+self.create_line_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, zero=False, libs=True):
+""" Creates a JavaScript column chart using "HighCharts".
+    @Params
+    chart_name - If creating multiple charts,
+                 use this to select which one.
+    title - The title displayed for the chart.
+    subtitle - The subtitle displayed for the chart.
+    data_name - Set the series name. Useful for multi-series charts.
+    unit - The description label given to the chart's y-axis values.
+    zero - If True, the y-axis always starts at 0. (Default: False).
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
            a chart on a web page. If creating multiple charts on
@@ -82,6 +116,19 @@ self.add_data_point(label, value, color=None, chart_name=None):
     color - The HTML color of the data point.
             Can be an RGB color. Eg: "#55ACDC".
             Can also be a named color. Eg: "Teal".
+    chart_name - If creating multiple charts,
+                 use this to select which one.
+"""
+```
+
+### Adding a new data series to an existing chart:
+
+```python
+self.add_series_to_chart(self, data_name=None, chart_name=None):
+""" Add a new data series to an existing chart.
+    This allows charts to have multiple data sets.
+    @Params
+    data_name - Set the series name. Useful for multi-series charts.
     chart_name - If creating multiple charts,
                  use this to select which one.
 """
@@ -126,6 +173,8 @@ self.display_chart(chart_name=None, filename=None):
                  use this to select the one you wish to use.
     filename - The name of the HTML file that you wish to
                save the chart to. (filename must end in ".html")
+    interval - The delay time for auto-advancing charts. (in seconds)
+               If set to 0 (default), auto-advancing is disabled.
 """
 ```
 
@@ -141,26 +190,12 @@ class MyChartMakerClass(BaseCase):
 
     def test_chart_maker(self):
         self.create_presentation()
-
         self.create_pie_chart(title="Automated Tests")
         self.add_data_point("Passed", 7, color="#95d96f")
         self.add_data_point("Untested", 2, color="#eaeaea")
         self.add_data_point("Failed", 1, color="#f1888f")
-        self.add_slide(self.extract_chart())
-
-        self.create_bar_chart(title="Code", libs=False)
-        self.add_data_point("Python", 33, color="Orange")
-        self.add_data_point("JavaScript", 27, color="Teal")
-        self.add_data_point("HTML + CSS", 21, color="Purple")
-        self.add_slide(self.extract_chart())
-
-        self.create_column_chart(title="Colors", libs=False)
-        self.add_data_point("Red", 10, color="Red")
-        self.add_data_point("Green", 25, color="Green")
-        self.add_data_point("Blue", 15, color="Blue")
-        self.add_slide(self.extract_chart())
-
-        self.begin_presentation()
+        self.add_slide("<p>Pie Chart</p>" + self.extract_chart())
+        self.begin_presentation(filename="my_chart.html")
 ```
 
 #### This example is from [my_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/my_chart.py), which you can run from the ``examples/chart_maker`` folder with the following command:
@@ -168,3 +203,57 @@ class MyChartMakerClass(BaseCase):
 ```bash
 pytest my_chart.py
 ```
+
+### For a more advanced example (multiple charts in a presentation):
+
+```python
+from seleniumbase import BaseCase
+
+class MyChartMakerClass(BaseCase):
+
+    def test_chart_maker_presentation(self):
+        self.create_presentation(theme="sky")
+
+        self.create_pie_chart(title="Automated Tests")
+        self.add_data_point("Passed", 7, color="#95d96f")
+        self.add_data_point("Untested", 2, color="#eaeaea")
+        self.add_data_point("Failed", 1, color="#f1888f")
+        self.add_slide("<p>Pie Chart</p>" + self.extract_chart())
+
+        self.create_bar_chart(title="Language", libs=False)
+        self.add_data_point("Python", 33, color="Orange")
+        self.add_data_point("JavaScript", 27, color="Teal")
+        self.add_data_point("HTML + CSS", 21, color="Purple")
+        self.add_slide("<p>Bar Chart</p>" + self.extract_chart())
+
+        self.create_column_chart(title="Colors", libs=False)
+        self.add_data_point("Red", 10, color="Red")
+        self.add_data_point("Green", 25, color="Green")
+        self.add_data_point("Blue", 15, color="Blue")
+        self.add_slide("<p>Column Chart</p>" + self.extract_chart())
+
+        self.create_line_chart(title="Last Week's Data", libs=False)
+        self.add_data_point("Sun", 5)
+        self.add_data_point("Mon", 10)
+        self.add_data_point("Tue", 20)
+        self.add_data_point("Wed", 40)
+        self.add_data_point("Thu", 80)
+        self.add_data_point("Fri", 65)
+        self.add_data_point("Sat", 50)
+        self.add_slide("<p>Line Chart</p>" + self.extract_chart())
+
+        self.begin_presentation(filename="chart_presentation.html")
+```
+
+Here's how to run that example:
+
+```bash
+cd examples/chart_maker
+pytest chart_presentation.py
+```
+
+(Press the Right Arrow to advance to the next slide in that chart presentation)
+
+([Click to see a live example of that presentation](https://seleniumbase.io/other/chart_presentation.html))
+
+Multi-Series charts can also be created. Try the available examples to learn more.
