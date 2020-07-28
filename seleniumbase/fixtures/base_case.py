@@ -90,6 +90,8 @@ class BaseCase(unittest.TestCase):
         self._chart_data = {}
         self._chart_count = 0
         self._chart_label = {}
+        self._chart_first_series = {}
+        self._chart_series_count = {}
         self._tour_steps = {}
 
     def open(self, url):
@@ -3440,12 +3442,17 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def create_pie_chart(self, chart_name=None, title=None, libs=True):
+    def create_pie_chart(
+            self, chart_name=None, title=None, subtitle=None,
+            data_name=None, unit=None, libs=True):
         """ Creates a JavaScript pie chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
+            subtitle - The subtitle displayed for the chart.
+            data_name - Set the series name. Useful for multi-series charts.
+            unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
                    a chart on a web page. If creating multiple charts on
@@ -3454,17 +3461,24 @@ class BaseCase(unittest.TestCase):
         """
         if not chart_name:
             chart_name = "default"
+        if not data_name:
+            data_name = ""
         style = "pie"
-        unit = "Count"
         self.__create_highchart(
-            chart_name=chart_name, title=title, style=style, unit=unit)
+            chart_name=chart_name, title=title, subtitle=subtitle,
+            style=style, data_name=data_name, unit=unit, libs=libs)
 
-    def create_bar_chart(self, chart_name=None, title=None, libs=True):
+    def create_bar_chart(
+            self, chart_name=None, title=None, subtitle=None,
+            data_name=None, unit=None, libs=True):
         """ Creates a JavaScript bar chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
+            subtitle - The subtitle displayed for the chart.
+            data_name - Set the series name. Useful for multi-series charts.
+            unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
                    a chart on a web page. If creating multiple charts on
@@ -3473,18 +3487,24 @@ class BaseCase(unittest.TestCase):
         """
         if not chart_name:
             chart_name = "default"
+        if not data_name:
+            data_name = ""
         style = "bar"
-        unit = "Count"
         self.__create_highchart(
-            chart_name=chart_name, title=title,
-            style=style, unit=unit, libs=libs)
+            chart_name=chart_name, title=title, subtitle=subtitle,
+            style=style, data_name=data_name, unit=unit, libs=libs)
 
-    def create_column_chart(self, chart_name=None, title=None, libs=True):
+    def create_column_chart(
+            self, chart_name=None, title=None, subtitle=None,
+            data_name=None, unit=None, libs=True):
         """ Creates a JavaScript column chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
+            subtitle - The subtitle displayed for the chart.
+            data_name - Set the series name. Useful for multi-series charts.
+            unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
                    a chart on a web page. If creating multiple charts on
@@ -3493,24 +3513,59 @@ class BaseCase(unittest.TestCase):
         """
         if not chart_name:
             chart_name = "default"
+        if not data_name:
+            data_name = ""
         style = "column"
-        unit = "Count"
         self.__create_highchart(
-            chart_name=chart_name, title=title,
-            style=style, unit=unit, libs=libs)
+            chart_name=chart_name, title=title, subtitle=subtitle,
+            style=style, data_name=data_name, unit=unit, libs=libs)
+
+    def create_line_chart(
+            self, chart_name=None, title=None, subtitle=None,
+            data_name=None, unit=None, zero=False, libs=True):
+        """ Creates a JavaScript line chart using "HighCharts".
+            @Params
+            chart_name - If creating multiple charts,
+                         use this to select which one.
+            title - The title displayed for the chart.
+            subtitle - The subtitle displayed for the chart.
+            data_name - Set the series name. Useful for multi-series charts.
+            unit - The description label given to the chart's y-axis values.
+            zero - If True, the y-axis always starts at 0. (Default: False).
+            libs - The option to include Chart libraries (JS and CSS files).
+                   Should be set to True (default) for the first time creating
+                   a chart on a web page. If creating multiple charts on
+                   a web page, you no longer need to re-import the libraries
+                   when creating additional charts.
+        """
+        if not chart_name:
+            chart_name = "default"
+        if not data_name:
+            data_name = ""
+        style = "line"
+        self.__create_highchart(
+            chart_name=chart_name, title=title, subtitle=subtitle,
+            style=style, data_name=data_name, unit=unit, zero=zero, libs=libs)
 
     def __create_highchart(
-            self, chart_name=None, title=None,
-            style=None, unit=None, libs=True):
+            self, chart_name=None, title=None, subtitle=None,
+            style=None, data_name=None, unit=None, zero=False, libs=True):
         """ Creates a JavaScript chart using the "HighCharts" library. """
         if not chart_name:
             chart_name = "default"
         if not title:
             title = ""
+        if not subtitle:
+            subtitle = ""
         if not style:
             style = "pie"
+        if not data_name:
+            data_name = "Series 1"
         if not unit:
-            unit = "Count"
+            unit = "Values"
+        title = title.replace("'", "\\'")
+        subtitle = subtitle.replace("'", "\\'")
+        unit = unit.replace("'", "\\'")
         self._chart_count += 1
         chart_libs = (
             """
@@ -3576,6 +3631,9 @@ class BaseCase(unittest.TestCase):
                 <p class="highcharts-description">%s</p>
             </figure>
             """ % (self._chart_count, chart_description))
+        min_zero = ""
+        if zero:
+            min_zero = "min: 0,"
         chart_init_1 = (
             """
             <script>
@@ -3587,7 +3645,25 @@ class BaseCase(unittest.TestCase):
             title: {
                 text: '%s'
             },
+            subtitle: {
+                text: '%s'
+            },
             xAxis: { },
+            yAxis: {
+                %s
+                title: {
+                    text: '%s',
+                    style: {
+                        fontSize: '14px'
+                    }
+                },
+                labels: {
+                    useHTML: true,
+                    style: {
+                        fontSize: '14px'
+                    }
+                }
+            },
             chart: {
                 renderTo: 'statusChart',
                 plotBackgroundColor: null,
@@ -3595,8 +3671,8 @@ class BaseCase(unittest.TestCase):
                 plotShadow: false,
                 type: '%s'
             },
-            """ % (self._chart_count, title, style))
-        #  "{series.name}:"  =>  "Count:"  (based on unit)
+            """ % (self._chart_count, title, subtitle, min_zero, unit, style))
+        #  "{series.name}:"
         point_format = (r'<b>{point.y}</b><br />'
                         r'<b>{point.percentage:.1f}%</b>')
         if style != "pie":
@@ -3604,6 +3680,12 @@ class BaseCase(unittest.TestCase):
         chart_init_2 = (
             """
             tooltip: {
+                enabled: true,
+                useHTML: true,
+                style: {
+                    padding: '6px',
+                    fontSize: '14px'
+                },
                 pointFormat: '%s'
             },
             """ % point_format)
@@ -3622,24 +3704,77 @@ class BaseCase(unittest.TestCase):
                         enabled: false,
                         format: '{point.name}: {point.y:.1f}%'
                     },
+                    states: {
+                        hover: {
+                            enabled: true
+                        }
+                    },
                     showInLegend: true
                 }
             },
             """)
         if style != "pie":
-            chart_init_3 = ""
+            chart_init_3 = (
+                """
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                plotOptions: {
+                    series: {
+                        showInLegend: true,
+                        animation: true,
+                        shadow: false,
+                        lineWidth: 3,
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                },
+                """)
         chart_init = chart_init_1 + chart_init_2 + chart_init_3
+        color_by_point = "true"
+        if style != "pie":
+            color_by_point = "false"
         series = (
             """
             series: [{
             name: '%s',
-            colorByPoint: true,
+            colorByPoint: %s,
             data: [
-            """ % unit)
+            """ % (data_name, color_by_point))
         new_chart = chart_libs + chart_css + chart_figure + chart_init + series
         self._chart_data[chart_name] = []
         self._chart_label[chart_name] = []
         self._chart_data[chart_name].append(new_chart)
+        self._chart_first_series[chart_name] = True
+        self._chart_series_count[chart_name] = 1
+
+    def add_series_to_chart(self, data_name=None, chart_name=None):
+        """ Add a new data series to an existing chart.
+            This allows charts to have multiple data sets.
+            @Params
+            data_name - Set the series name. Useful for multi-series charts.
+            chart_name - If creating multiple charts,
+                         use this to select which one.
+        """
+        if not chart_name:
+            chart_name = "default"
+        self._chart_series_count[chart_name] += 1
+        if not data_name:
+            data_name = "Series %s" % self._chart_series_count[chart_name]
+        series = (
+            """
+            ]
+            },
+            {
+            name: '%s',
+            colorByPoint: false,
+            data: [
+            """ % data_name)
+        self._chart_data[chart_name].append(series)
+        self._chart_first_series[chart_name] = False
 
     def add_data_point(self, label, value, color=None, chart_name=None):
         """ Add a data point to a SeleniumBase-generated chart.
@@ -3657,8 +3792,14 @@ class BaseCase(unittest.TestCase):
         if chart_name not in self._chart_data:
             # Create a chart if it doesn't already exist
             self.create_pie_chart(chart_name=chart_name)
+        if not value:
+            value = 0
+        if not type(value) is int and not type(value) is float:
+            raise Exception('Expecting a numeric value for "value"!')
         if not color:
             color = ""
+        label = label.replace("'", "\\'")
+        color = color.replace("'", "\\'")
         data_point = (
             """
             {
@@ -3668,7 +3809,8 @@ class BaseCase(unittest.TestCase):
             },
             """ % (label, value, color))
         self._chart_data[chart_name].append(data_point)
-        self._chart_label[chart_name].append(label)
+        if self._chart_first_series[chart_name]:
+            self._chart_label[chart_name].append(label)
 
     def save_chart(self, chart_name=None, filename=None):
         """ Saves a SeleniumBase-generated chart to a file for later use.
@@ -3696,7 +3838,14 @@ class BaseCase(unittest.TestCase):
             });
             </script>
             """)
-        axis = "xAxis: {categories: ["
+        axis = "xAxis: {\n"
+        axis += "                labels: {\n"
+        axis += "                    useHTML: true,\n"
+        axis += "                    style: {\n"
+        axis += "                        fontSize: '14px',\n"
+        axis += "                    },\n"
+        axis += "                },\n"
+        axis += "            categories: ["
         for label in self._chart_label[chart_name]:
             axis += "'%s'," % label
         axis += "], crosshair: false},"
@@ -3716,18 +3865,26 @@ class BaseCase(unittest.TestCase):
         print('\n>>> [%s] was saved!' % file_path)
         return file_path
 
-    def display_chart(self, chart_name=None, filename=None):
+    def display_chart(self, chart_name=None, filename=None, interval=0):
         """ Displays a SeleniumBase-generated chart in the browser window.
             @Params
             chart_name - If creating multiple charts at the same time,
                          use this to select the one you wish to use.
             filename - The name of the HTML file that you wish to
                        save the chart to. (filename must end in ".html")
+            interval - The delay time for auto-advancing charts. (in seconds)
+                       If set to 0 (default), auto-advancing is disabled.
         """
         if not chart_name:
             chart_name = "default"
         if not filename:
             filename = "my_chart.html"
+        if not interval:
+            interval = 0
+        if not type(interval) is int and not type(interval) is float:
+            raise Exception('Expecting a numeric value for "interval"!')
+        if interval < 0:
+            raise Exception('The "interval" cannot be a negative number!')
         if chart_name not in self._chart_data:
             raise Exception("Chart {%s} does not exist!" % chart_name)
         if not filename.endswith('.html'):
@@ -3735,13 +3892,30 @@ class BaseCase(unittest.TestCase):
         file_path = self.save_chart(chart_name=chart_name, filename=filename)
         self.open_html_file(file_path)
         chart_folder = constants.Charts.SAVED_FOLDER
-        try:
-            print("\n*** Close the browser window to continue ***")
-            while (len(self.driver.window_handles) > 0 and (
-                    chart_folder in self.get_current_url())):
-                time.sleep(0.05)
-        except Exception:
-            pass
+        if interval == 0:
+            try:
+                print("\n*** Close the browser window to continue ***")
+                # Will also continue if manually navigating to a new page
+                while (len(self.driver.window_handles) > 0 and (
+                        chart_folder in self.get_current_url())):
+                    time.sleep(0.05)
+            except Exception:
+                pass
+        else:
+            try:
+                start_ms = time.time() * 1000.0
+                stop_ms = start_ms + (interval * 1000.0)
+                for x in range(int(interval * 10)):
+                    now_ms = time.time() * 1000.0
+                    if now_ms >= stop_ms:
+                        break
+                    if len(self.driver.window_handles) == 0:
+                        break
+                    if chart_folder not in self.get_current_url():
+                        break
+                    time.sleep(0.1)
+            except Exception:
+                pass
 
     def extract_chart(self, chart_name=None):
         """ Extracts the HTML from a SeleniumBase-generated chart.
@@ -3763,7 +3937,14 @@ class BaseCase(unittest.TestCase):
             });
             </script>
             """)
-        axis = "xAxis: {categories: ["
+        axis = "xAxis: {\n"
+        axis += "                labels: {\n"
+        axis += "                    useHTML: true,\n"
+        axis += "                    style: {\n"
+        axis += "                        fontSize: '14px',\n"
+        axis += "                    },\n"
+        axis += "                },\n"
+        axis += "            categories: ["
         for label in self._chart_label[chart_name]:
             axis += "'%s'," % label
         axis += "], crosshair: false},"
