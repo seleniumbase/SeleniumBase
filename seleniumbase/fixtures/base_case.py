@@ -3885,6 +3885,8 @@ class BaseCase(unittest.TestCase):
             interval - The delay time for auto-advancing charts. (in seconds)
                        If set to 0 (default), auto-advancing is disabled.
         """
+        if self.headless:
+            interval = 1  # Race through chart if running in headless mode
         if not chart_name:
             chart_name = "default"
         if not filename:
