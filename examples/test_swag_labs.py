@@ -65,7 +65,7 @@ class SwagLabsTests(BaseCase):
         # Finish Checkout and verify item is no longer in cart
         self.click("link=FINISH")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
-        self.assert_element("div.pony_express")
+        self.assert_element("img.pony_express")
         self.click("#shopping_cart_container path")
         self.assert_element_absent("div.inventory_item_name")
         self.click(continue_shopping_button)

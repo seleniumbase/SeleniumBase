@@ -12,9 +12,9 @@ class AppleTestClass(BaseCase):
         title = "Testing with WebDriver in Safari"
         self.type('[placeholder*="developer.apple.com"]', title + "\n")
         self.click("link=%s" % title)
-        self.assert_element('[href="/documentation"]')
+        self.assert_element('div.localnav-content [href*="/documentation/"]')
         self.assert_text(title, "h1")
-        self.highlight("div.topic-description p")
+        self.highlight("div.description div.abstract")
         self.highlight("h2")
         h3 = "h3:nth-of-type(%s)"
         self.assert_text("Make Sure You Have Safari’s WebDriver", h3 % "1")
