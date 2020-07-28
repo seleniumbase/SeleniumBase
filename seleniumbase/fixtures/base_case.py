@@ -229,6 +229,16 @@ class BaseCase(unittest.TestCase):
                 self.driver, selector, by, timeout=timeout)
             actions = ActionChains(self.driver)
             actions.double_click(element).perform()
+        except Exception:
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            css_selector = re.escape(css_selector)
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            double_click_script = (
+                """var targetElement1 = document.querySelector('%s');
+                var clickEvent1 = document.createEvent('MouseEvents');
+                clickEvent1.initEvent('dblclick', true, true);
+                targetElement1.dispatchEvent(clickEvent1);""" % css_selector)
+            self.execute_script(double_click_script)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
