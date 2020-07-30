@@ -383,6 +383,9 @@ self.create_column_chart(chart_name=None, title=None, subtitle=None,
 self.create_line_chart(chart_name=None, title=None, subtitle=None,
                        data_name=None, unit=None, zero=False, libs=True)
 
+self.create_area_chart(chart_name=None, title=None, subtitle=None,
+                       data_name=None, unit=None, zero=False, libs=True)
+
 self.add_series_to_chart(data_name=None, chart_name=None)
 
 self.add_data_point(label, value, color=None, chart_name=None)

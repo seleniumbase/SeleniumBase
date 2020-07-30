@@ -1,4 +1,4 @@
-pip>=20.1.1
+pip>=20.2
 packaging>=20.4
 setuptools>=44.1.1;python_version<"3.5"
 setuptools>=49.2.0;python_version>="3.5"
@@ -16,9 +16,10 @@ requests==2.24.0
 selenium==3.141.0
 pluggy==0.13.1
 attrs>=19.3.0
-py==1.8.1
+py==1.8.1;python_version<"3.5"
+py==1.9.0;python_version>="3.5"
 pytest==4.6.11;python_version<"3.5"
-pytest==5.4.3;python_version>="3.5"
+pytest==6.0.1;python_version>="3.5"
 pytest-cov==2.10.0
 pytest-forked==1.3.0
 pytest-html==1.22.1;python_version<"3.6"
@@ -41,10 +42,10 @@ colorama==0.4.3
 pymysql==0.10.0
 coverage==5.2.1
 brython>=3.8.9
-pyotp==2.3.0
+pyotp==2.4.0
 boto==2.49.0
 cffi==1.14.1
-rich==4.2.0;python_version>="3.6" and python_version<"4.0"
+rich==4.2.1;python_version>="3.6" and python_version<"4.0"
 flake8==3.7.9;python_version<"3.5"
 flake8==3.8.3;python_version>="3.5"
 pyflakes==2.1.1;python_version<"3.5"
