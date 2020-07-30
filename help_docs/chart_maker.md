@@ -2,7 +2,7 @@
 
 # 📊 Chart Maker 📊
 
-SeleniumBase Chart Maker allows you to create HTML charts with Python. (The HighCharts library is used for creating charts.)
+SeleniumBase Chart Maker allows you to create HTML charts with Python. (HighCharts JS is used for drawing the charts.)
 
 **Here's a sample pie chart:**
 
