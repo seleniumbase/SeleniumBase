@@ -3557,6 +3557,33 @@ class BaseCase(unittest.TestCase):
             chart_name=chart_name, title=title, subtitle=subtitle,
             style=style, data_name=data_name, unit=unit, zero=zero, libs=libs)
 
+    def create_area_chart(
+            self, chart_name=None, title=None, subtitle=None,
+            data_name=None, unit=None, zero=False, libs=True):
+        """ Creates a JavaScript area chart using "HighCharts".
+            @Params
+            chart_name - If creating multiple charts,
+                         use this to select which one.
+            title - The title displayed for the chart.
+            subtitle - The subtitle displayed for the chart.
+            data_name - Set the series name. Useful for multi-series charts.
+            unit - The description label given to the chart's y-axis values.
+            zero - If True, the y-axis always starts at 0. (Default: False).
+            libs - The option to include Chart libraries (JS and CSS files).
+                   Should be set to True (default) for the first time creating
+                   a chart on a web page. If creating multiple charts on
+                   a web page, you no longer need to re-import the libraries
+                   when creating additional charts.
+        """
+        if not chart_name:
+            chart_name = "default"
+        if not data_name:
+            data_name = ""
+        style = "area"
+        self.__create_highchart(
+            chart_name=chart_name, title=title, subtitle=subtitle,
+            style=style, data_name=data_name, unit=unit, zero=zero, libs=libs)
+
     def __create_highchart(
             self, chart_name=None, title=None, subtitle=None,
             style=None, data_name=None, unit=None, zero=False, libs=True):
@@ -3726,10 +3753,17 @@ class BaseCase(unittest.TestCase):
         if style != "pie":
             chart_init_3 = (
                 """
+                allowPointSelect: true,
+                cursor: 'pointer',
                 legend: {
                     layout: 'vertical',
                     align: 'right',
                     verticalAlign: 'middle'
+                },
+                states: {
+                    hover: {
+                        enabled: true
+                    }
                 },
                 plotOptions: {
                     series: {
@@ -3737,6 +3771,7 @@ class BaseCase(unittest.TestCase):
                         animation: true,
                         shadow: false,
                         lineWidth: 3,
+                        fillOpacity: 0.5,
                         marker: {
                             enabled: true
                         }
