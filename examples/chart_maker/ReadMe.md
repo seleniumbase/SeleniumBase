@@ -10,14 +10,14 @@ SeleniumBase Chart Maker allows you to create HTML charts with Python. (HighChar
 
 ([Click to see a presentation with multiple charts](https://seleniumbase.io/other/chart_presentation.html))
 
-Here's how to run an example presentation with a pie chart:
+Here's how to run the example presentation with a pie chart from [github.com/seleniumbase/SeleniumBase/tree/master/examples/chart_maker](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/chart_maker):
 
 ```bash
 cd examples/chart_maker
 pytest my_chart.py
 ```
 
-Here's the code for that pie chart presentation:
+Here's the code for that pie chart presentation ([github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/my_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/my_chart.py)):
 
 ```python
 from seleniumbase import BaseCase
