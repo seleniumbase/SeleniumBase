@@ -5,9 +5,9 @@ class MyTestClass(BaseCase):
 
     def test_create_tour(self):
         self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
-        self.wait_for_element("#searchboxinput")
-        self.wait_for_element("#minimap")
-        self.wait_for_element("#zoom")
+        self.wait_for_element("#searchboxinput", timeout=20)
+        self.wait_for_element("#minimap", timeout=20)
+        self.wait_for_element("#zoom", timeout=20)
 
         # Create a website tour using the DriverJS library
         # Same as:  self.create_driverjs_tour()

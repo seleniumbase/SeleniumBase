@@ -23,7 +23,7 @@ pytest my_presentation.py
 ### Creating a new presentation:
 
 ```python
-self.create_presentation(name=None, theme="serif")
+self.create_presentation(name=None, theme="serif", transition="default")
 """ Creates a Reveal-JS presentation that you can add slides to.
     @Params
     name - If creating multiple presentations at the same time,
@@ -32,6 +32,9 @@ self.create_presentation(name=None, theme="serif")
             Valid themes: "serif" (default), "sky", "white", "black",
                           "simple", "league", "moon", "night",
                           "beige", "blood", and "solarized".
+    transition - Set a transition between slides.
+                 Valid transitions: "none" (default), "slide", "fade",
+                                    "zoom", "convex", and "concave".
 """
 ```
 
@@ -44,7 +47,7 @@ Notes are disabled by default. You can enable notes by specifying:
 
 ```python
 self.add_slide(content=None, image=None, code=None, iframe=None,
-               content2=None, notes=None, name=None)
+               content2=None, notes=None, transition=None, name=None)
 """ Allows the user to add slides to a presentation.
     @Params
     content - The HTML content to display on the presentation slide.
@@ -55,6 +58,9 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
     content2 - HTML content to display after adding an image or code.
     notes - Additional notes to include with the slide.
             ONLY SEEN if show_notes is set for the presentation.
+    transition - Set a transition between slides. (overrides previous)
+                 Valid transitions: "none" (default), "slide", "fade",
+                                    "zoom", "convex", and "concave".
     name - If creating multiple presentations at the same time,
            use this to select the presentation to add slides to.
 """
