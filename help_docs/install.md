@@ -2,17 +2,23 @@
 
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Installation
 
+If installing SeleniumBase directly [from PyPI (the Python Package Index)](https://pypi.python.org/pypi/seleniumbase), use:
+```bash
+pip install seleniumbase
+```
+
 If installing SeleniumBase from a Git clone, use:
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
-pip install -r requirements.txt
-python setup.py install
+pip install .
 ```
 
-If installing SeleniumBase directly [from PyPI (the Python Package Index)](https://pypi.python.org/pypi/seleniumbase), use:
+For a development mode install in editable mode, use:
 ```bash
-pip install seleniumbase
+git clone https://github.com/seleniumbase/SeleniumBase.git
+cd SeleniumBase/
+pip install -e .
 ```
 
 If installing SeleniumBase [from a GitHub branch](https://github.com/seleniumbase/SeleniumBase), use:

@@ -64,10 +64,8 @@ python -m pip install -U pip
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
-pip install -r requirements.txt
-python setup.py install
+pip install .
 ```
-If multiple versions of Python are installed, be specific (E.g. use ``python3`` instead of ``python``).
 
 * You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase).
 ```bash
