@@ -301,13 +301,13 @@ class Testgeval(BaseCase):
         # select_option_by_value(dropdown_selector, option)
         return self.select_option_by_value(*args, **kwargs)
 
-    def een_presentatie_maken(self, *args, **kwargs):
-        # create_presentation(name=None, theme="default")
+    def maak_een_presentatie(self, *args, **kwargs):
+        # create_presentation(name=None, theme="default", transition="default")
         return self.create_presentation(*args, **kwargs)
 
     def een_dia_toevoegen(self, *args, **kwargs):
         # add_slide(content=None, image=None, code=None, iframe=None,
-        #           content2=None, notes=None, name=None)
+        #           content2=None, notes=None, transition=None, name=None)
         return self.add_slide(*args, **kwargs)
 
     def de_presentatie_opslaan(self, *args, **kwargs):
@@ -319,6 +319,51 @@ class Testgeval(BaseCase):
         # begin_presentation(name=None, filename=None,
         #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
+
+    def maak_een_cirkeldiagram(self, *args, **kwargs):
+        # create_pie_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_pie_chart(*args, **kwargs)
+
+    def maak_een_staafdiagram(self, *args, **kwargs):
+        # create_bar_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_bar_chart(*args, **kwargs)
+
+    def maak_een_kolomdiagram(self, *args, **kwargs):
+        # create_column_chart(chart_name=None, title=None, subtitle=None,
+        #                     data_name=None, unit=None, libs=True)
+        return self.create_column_chart(*args, **kwargs)
+
+    def maak_een_lijndiagram(self, *args, **kwargs):
+        # create_line_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_line_chart(*args, **kwargs)
+
+    def maak_een_vlakdiagram(self, *args, **kwargs):
+        # create_area_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_area_chart(*args, **kwargs)
+
+    def reeksen_toevoegen_aan_grafiek(self, *args, **kwargs):
+        # add_series_to_chart(data_name=None, chart_name=None)
+        return self.add_series_to_chart(*args, **kwargs)
+
+    def gegevenspunt_toevoegen(self, *args, **kwargs):
+        # add_data_point(label, value, color=None, chart_name=None)
+        return self.add_data_point(*args, **kwargs)
+
+    def grafiek_opslaan(self, *args, **kwargs):
+        # save_chart(chart_name=None, filename=None)
+        return self.save_chart(*args, **kwargs)
+
+    def grafiek_weergeven(self, *args, **kwargs):
+        # display_chart(chart_name=None, filename=None, interval=0)
+        return self.display_chart(*args, **kwargs)
+
+    def grafiek_uitpakken(self, *args, **kwargs):
+        # extract_chart(chart_name=None)
+        return self.extract_chart(*args, **kwargs)
 
     def maak_een_tour(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
@@ -448,6 +493,10 @@ class Testgeval(BaseCase):
     def html_bestand_openen(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def alle_cookies_verwijderen(self, *args, **kwargs):
+        # delete_all_cookies()
+        return self.delete_all_cookies(*args, **kwargs)
 
     def gebruikersagent_ophalen(self, *args, **kwargs):
         # get_user_agent()

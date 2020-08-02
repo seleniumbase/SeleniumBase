@@ -302,15 +302,15 @@ class CasoDiProva(BaseCase):
         return self.select_option_by_value(*args, **kwargs)
 
     def creare_una_presentazione(self, *args, **kwargs):
-        # create_presentation(name=None, theme="default")
+        # create_presentation(name=None, theme="default", transition="default")
         return self.create_presentation(*args, **kwargs)
 
     def aggiungere_una_diapositiva(self, *args, **kwargs):
         # add_slide(content=None, image=None, code=None, iframe=None,
-        #           content2=None, notes=None, name=None)
+        #           content2=None, notes=None, transition=None, name=None)
         return self.add_slide(*args, **kwargs)
 
-    def salvare_la_presentazione(self, *args, **kwargs):
+    def salva_la_presentazione(self, *args, **kwargs):
         # save_presentation(name=None, filename=None,
         #                   show_notes=False, interval=0)
         return self.save_presentation(*args, **kwargs)
@@ -319,6 +319,51 @@ class CasoDiProva(BaseCase):
         # begin_presentation(name=None, filename=None,
         #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
+
+    def creare_un_grafico_a_torta(self, *args, **kwargs):
+        # create_pie_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_pie_chart(*args, **kwargs)
+
+    def creare_un_grafico_a_barre(self, *args, **kwargs):
+        # create_bar_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_bar_chart(*args, **kwargs)
+
+    def creare_un_grafico_a_colonne(self, *args, **kwargs):
+        # create_column_chart(chart_name=None, title=None, subtitle=None,
+        #                     data_name=None, unit=None, libs=True)
+        return self.create_column_chart(*args, **kwargs)
+
+    def creare_un_grafico_a_linee(self, *args, **kwargs):
+        # create_line_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_line_chart(*args, **kwargs)
+
+    def creare_un_grafico_ad_area(self, *args, **kwargs):
+        # create_area_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_area_chart(*args, **kwargs)
+
+    def aggiungere_serie_al_grafico(self, *args, **kwargs):
+        # add_series_to_chart(data_name=None, chart_name=None)
+        return self.add_series_to_chart(*args, **kwargs)
+
+    def aggiungi_punto_dati(self, *args, **kwargs):
+        # add_data_point(label, value, color=None, chart_name=None)
+        return self.add_data_point(*args, **kwargs)
+
+    def salva_il_grafico(self, *args, **kwargs):
+        # save_chart(chart_name=None, filename=None)
+        return self.save_chart(*args, **kwargs)
+
+    def mostra_il_grafico(self, *args, **kwargs):
+        # display_chart(chart_name=None, filename=None, interval=0)
+        return self.display_chart(*args, **kwargs)
+
+    def estrarre_il_grafico(self, *args, **kwargs):
+        # extract_chart(chart_name=None)
+        return self.extract_chart(*args, **kwargs)
 
     def creare_un_tour(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
@@ -448,6 +493,10 @@ class CasoDiProva(BaseCase):
     def apri_html_file(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def elimina_tutti_i_cookie(self, *args, **kwargs):
+        # delete_all_cookies()
+        return self.delete_all_cookies(*args, **kwargs)
 
     def ottenere_agente_utente(self, *args, **kwargs):
         # get_user_agent()

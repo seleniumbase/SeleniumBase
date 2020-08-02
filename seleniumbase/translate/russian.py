@@ -302,12 +302,12 @@ class ТестНаСелен(BaseCase):  # noqa
         return self.select_option_by_value(*args, **kwargs)
 
     def создать_презентацию(self, *args, **kwargs):
-        # create_presentation(name=None, theme="default")
+        # create_presentation(name=None, theme="default", transition="default")
         return self.create_presentation(*args, **kwargs)
 
     def добавить_слайд(self, *args, **kwargs):
         # add_slide(content=None, image=None, code=None, iframe=None,
-        #           content2=None, notes=None, name=None)
+        #           content2=None, notes=None, transition=None, name=None)
         return self.add_slide(*args, **kwargs)
 
     def сохранить_презентацию(self, *args, **kwargs):
@@ -319,6 +319,51 @@ class ТестНаСелен(BaseCase):  # noqa
         # begin_presentation(name=None, filename=None,
         #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
+
+    def создать_круговую_диаграмму(self, *args, **kwargs):
+        # create_pie_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_pie_chart(*args, **kwargs)
+
+    def создать_бар_диаграмму(self, *args, **kwargs):
+        # create_bar_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_bar_chart(*args, **kwargs)
+
+    def создать_столбчатую_диаграмму(self, *args, **kwargs):
+        # create_column_chart(chart_name=None, title=None, subtitle=None,
+        #                     data_name=None, unit=None, libs=True)
+        return self.create_column_chart(*args, **kwargs)
+
+    def создать_линейную_диаграмму(self, *args, **kwargs):
+        # create_line_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_line_chart(*args, **kwargs)
+
+    def создать_диаграмму_области(self, *args, **kwargs):
+        # create_area_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_area_chart(*args, **kwargs)
+
+    def добавить_серии_в_диаграмму(self, *args, **kwargs):
+        # add_series_to_chart(data_name=None, chart_name=None)
+        return self.add_series_to_chart(*args, **kwargs)
+
+    def добавить_точку_данных(self, *args, **kwargs):
+        # add_data_point(label, value, color=None, chart_name=None)
+        return self.add_data_point(*args, **kwargs)
+
+    def сохранить_диаграмму(self, *args, **kwargs):
+        # save_chart(chart_name=None, filename=None)
+        return self.save_chart(*args, **kwargs)
+
+    def отображать_диаграмму(self, *args, **kwargs):
+        # display_chart(chart_name=None, filename=None, interval=0)
+        return self.display_chart(*args, **kwargs)
+
+    def извлекать_диаграмму(self, *args, **kwargs):
+        # extract_chart(chart_name=None)
+        return self.extract_chart(*args, **kwargs)
 
     def создать_тур(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
@@ -448,6 +493,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def открыть_HTML_файл(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def удалить_все_куки(self, *args, **kwargs):
+        # delete_all_cookies()
+        return self.delete_all_cookies(*args, **kwargs)
 
     def получить_агента_пользователя(self, *args, **kwargs):
         # get_user_agent()
