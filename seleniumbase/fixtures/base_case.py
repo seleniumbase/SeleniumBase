@@ -84,6 +84,7 @@ class BaseCase(unittest.TestCase):
         # Requires self._* instead of self.__* for external class use
         self._language = "English"
         self._presentation_slides = {}
+        self._presentation_transition = {}
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
@@ -3209,7 +3210,8 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def create_presentation(self, name=None, theme="default"):
+    def create_presentation(
+            self, name=None, theme="default", transition="default"):
         """ Creates a Reveal-JS presentation that you can add slides to.
             @Params
             name - If creating multiple presentations at the same time,
@@ -3218,6 +3220,9 @@ class BaseCase(unittest.TestCase):
                     Valid themes: "serif" (default), "sky", "white", "black",
                                   "simple", "league", "moon", "night",
                                   "beige", "blood", and "solarized".
+            transition - Set a transition between slides.
+                         Valid transitions: "none" (default), "slide", "fade",
+                                            "zoom", "convex", and "concave".
         """
         if not name:
             name = "default"
@@ -3230,6 +3235,15 @@ class BaseCase(unittest.TestCase):
             raise Exception(
                 "Theme {%s} not found! Valid themes: %s"
                 "" % (theme, valid_themes))
+        if not transition or transition == "default":
+            transition = "none"
+        valid_transitions = (
+            ["none", "slide", "fade", "zoom", "convex", "concave"])
+        transition = transition.lower()
+        if transition not in valid_transitions:
+            raise Exception(
+                "Transition {%s} not found! Valid transitions: %s"
+                "" % (transition, valid_transitions))
 
         reveal_theme_css = None
         if theme == "serif":
@@ -3277,9 +3291,10 @@ class BaseCase(unittest.TestCase):
 
         self._presentation_slides[name] = []
         self._presentation_slides[name].append(new_presentation)
+        self._presentation_transition[name] = transition
 
     def add_slide(self, content=None, image=None, code=None, iframe=None,
-                  content2=None, notes=None, name=None):
+                  content2=None, notes=None, transition=None, name=None):
         """ Allows the user to add slides to a presentation.
             @Params
             content - The HTML content to display on the presentation slide.
@@ -3290,6 +3305,9 @@ class BaseCase(unittest.TestCase):
             content2 - HTML content to display after adding an image or code.
             notes - Additional notes to include with the slide.
                     ONLY SEEN if show_notes is set for the presentation.
+            transition - Set a transition between slides. (overrides previous)
+                         Valid transitions: "none" (default), "slide", "fade",
+                                            "zoom", "convex", and "concave".
             name - If creating multiple presentations at the same time,
                    use this to select the presentation to add slides to.
         """
@@ -3305,11 +3323,23 @@ class BaseCase(unittest.TestCase):
             content2 = ""
         if not notes:
             notes = ""
-
+        if not transition:
+            transition = self._presentation_transition[name]
+        elif transition == "default":
+            transition = "none"
+        valid_transitions = (
+            ["none", "slide", "fade", "zoom", "convex", "concave"])
+        transition = transition.lower()
+        if transition not in valid_transitions:
+            raise Exception(
+                "Transition {%s} not found! Valid transitions: %s"
+                "" % (transition, valid_transitions))
         add_line = ""
         if content.startswith("<"):
             add_line = "\n"
-        html = ('\n<section data-transition="none">%s%s' % (add_line, content))
+        html = (
+            '\n<section data-transition="%s">%s%s' % (
+                transition, add_line, content))
         if image:
             html += '\n<div flex_div><img rounded src="%s"></div>' % image
         if code:
