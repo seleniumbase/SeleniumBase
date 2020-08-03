@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyPresenterClass(BaseCase):
 
     def test_presenter(self):
-        self.create_presentation(theme="serif")
+        self.create_presentation(theme="serif", transition="none")
         self.add_slide(
             '<h1>Welcome</h1><br />\n'
             '<h3>Press the <b>Right Arrow</b></h3>')

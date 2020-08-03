@@ -302,12 +302,12 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         return self.select_option_by_value(*args, **kwargs)
 
     def 프레젠테이션_만들기(self, *args, **kwargs):
-        # create_presentation(name=None, theme="default")
+        # create_presentation(name=None, theme="default", transition="default")
         return self.create_presentation(*args, **kwargs)
 
     def 슬라이드_추가(self, *args, **kwargs):
         # add_slide(content=None, image=None, code=None, iframe=None,
-        #           content2=None, notes=None, name=None)
+        #           content2=None, notes=None, transition=None, name=None)
         return self.add_slide(*args, **kwargs)
 
     def 프레젠테이션_저장(self, *args, **kwargs):
@@ -319,6 +319,51 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # begin_presentation(name=None, filename=None,
         #                    show_notes=False, interval=0)
         return self.begin_presentation(*args, **kwargs)
+
+    def 원형_차트_만들기(self, *args, **kwargs):
+        # create_pie_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_pie_chart(*args, **kwargs)
+
+    def 막대_차트_만들기(self, *args, **kwargs):
+        # create_bar_chart(chart_name=None, title=None, subtitle=None,
+        #                  data_name=None, unit=None, libs=True)
+        return self.create_bar_chart(*args, **kwargs)
+
+    def 열_차트_만들기(self, *args, **kwargs):
+        # create_column_chart(chart_name=None, title=None, subtitle=None,
+        #                     data_name=None, unit=None, libs=True)
+        return self.create_column_chart(*args, **kwargs)
+
+    def 선_차트_만들기(self, *args, **kwargs):
+        # create_line_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_line_chart(*args, **kwargs)
+
+    def 영역_차트_만들기(self, *args, **kwargs):
+        # create_area_chart(chart_name=None, title=None, subtitle=None,
+        #                   data_name=None, unit=None, zero=False, libs=True)
+        return self.create_area_chart(*args, **kwargs)
+
+    def 차트에_시리즈_추가(self, *args, **kwargs):
+        # add_series_to_chart(data_name=None, chart_name=None)
+        return self.add_series_to_chart(*args, **kwargs)
+
+    def 데이터_포인트_추가(self, *args, **kwargs):
+        # add_data_point(label, value, color=None, chart_name=None)
+        return self.add_data_point(*args, **kwargs)
+
+    def 차트_저장(self, *args, **kwargs):
+        # save_chart(chart_name=None, filename=None)
+        return self.save_chart(*args, **kwargs)
+
+    def 차트_표시(self, *args, **kwargs):
+        # display_chart(chart_name=None, filename=None, interval=0)
+        return self.display_chart(*args, **kwargs)
+
+    def 차트_추출(self, *args, **kwargs):
+        # extract_chart(chart_name=None)
+        return self.extract_chart(*args, **kwargs)
 
     def 가이드_투어_만들기(self, *args, **kwargs):
         # create_tour(name=None, theme=None)
@@ -448,6 +493,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def HTML_파일_열기(self, *args, **kwargs):
         # open_html_file(html_file)
         return self.open_html_file(*args, **kwargs)
+
+    def 모든_쿠키_삭제(self, *args, **kwargs):
+        # delete_all_cookies()
+        return self.delete_all_cookies(*args, **kwargs)
 
     def 사용자_에이전트_가져_오기(self, *args, **kwargs):
         # get_user_agent()

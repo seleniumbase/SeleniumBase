@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyChartMakerClass(BaseCase):
 
     def test_chart_maker_presentation(self):
-        self.create_presentation(theme="sky")
+        self.create_presentation(theme="sky", transition="zoom")
 
         self.create_pie_chart(title="Automated Tests")
         self.add_data_point("Passed", 7, color="#95d96f")

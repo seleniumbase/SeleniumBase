@@ -1,7 +1,7 @@
 pip>=20.2
 packaging>=20.4
 setuptools>=44.1.1;python_version<"3.5"
-setuptools>=49.2.0;python_version>="3.5"
+setuptools>=49.2.1;python_version>="3.5"
 setuptools-scm>=4.1.2
 wheel>=0.34.2
 six==1.15.0
@@ -45,7 +45,7 @@ brython>=3.8.9
 pyotp==2.4.0
 boto==2.49.0
 cffi==1.14.1
-rich==4.2.1;python_version>="3.6" and python_version<"4.0"
+rich==5.0.0;python_version>="3.6" and python_version<"4.0"
 flake8==3.7.9;python_version<"3.5"
 flake8==3.8.3;python_version>="3.5"
 pyflakes==2.1.1;python_version<"3.5"

@@ -7,10 +7,13 @@ SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkt
 **Example tour:**
 
 <img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br>
-```
+
+```bash
 cd examples/tour_examples
 pytest google_tour.py
 ```
+
+(From [GitHub => SeleniumBase/examples/tour_examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples))
 
 
 ### Creating a new tour:
