@@ -16,6 +16,8 @@
 * Has [Plugins](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/plugins) for logging data and screenshots. ([Click to learn more](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md))
 * Has a [global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for configuring SeleniumBase as needed.
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for creating interactive walkthroughs.
+* Includes a tool for [creating interactive web presentations](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md).
+* Includes [Chart Maker](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md), a tool for creating interactive charts.
 * Backwards-compatible with [WebDriver](https://www.selenium.dev/projects/). (Use ``self.driver`` anywhere.)
 * Includes code to [export Katalon Recorder scripts into SeleniumBase format](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/katalon/ReadMe.md).
 * Can run tests in Headless Mode to hide the web browser. (Use ``--headless``)
@@ -30,7 +32,7 @@
 * Includes a hybrid-automation solution called [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md) to speed up manual testing.
 * Integrates with [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [AWS](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * Can connect to [BrowserStack](https://www.browserstack.com/automate#), [Sauce Labs](https://saucelabs.com/products/web-testing/cross-browser-testing), or [TestingBot](https://testingbot.com/features) Selenium Grids.
-* Includes a [tool to convert Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_ide) into simple SeleniumBase scripts.
+* Includes a tool for [converting Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_ide) into SeleniumBase scripts.
 * Can load and make assertions on PDF files from websites or the local file system.
 * Can reuse the same Selenium browser session between tests. (Use: ``--reuse-session``)
 * Written in Python, but can also make JavaScript calls. (Use: ``self.execute_script()``)
