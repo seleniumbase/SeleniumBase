@@ -85,8 +85,9 @@ nav:
     - MySQL Help: help_docs/mysql_installation.md
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
-    - Docker Help: integrations/docker/ReadMe.md
     - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
+    - HighCharts: examples/chart_maker/ReadMe.md 
+    - Docker Help: integrations/docker/ReadMe.md
   - Help Docs ToC:
     - Table of Contents: help_docs/ReadMe.md
     - Master QA: seleniumbase/masterqa/ReadMe.md
