@@ -4568,7 +4568,7 @@ class BaseCase(unittest.TestCase):
                         "bottom_left", "bottom_center", "bottom_right"]
             max_messages is the limit of concurrent messages to display. """
         if not theme:
-            theme = "default"  # "future"
+            theme = "default"  # "flat"
         if not location:
             location = "default"  # "bottom_right"
         if not max_messages:
