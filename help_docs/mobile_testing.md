@@ -6,7 +6,7 @@ Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator
 
 <b>Here's an example mobile test:</b>
 
-* [SeleniumBase/examples/test_skype_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py)
+[SeleniumBase/examples/test_skype_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py)
 
 ```bash
 pytest test_skype_site.py --mobile
