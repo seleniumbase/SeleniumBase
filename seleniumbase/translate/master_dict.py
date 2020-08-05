@@ -363,7 +363,7 @@ class MD:
     md["assert_exact_text"][0] = "assert_exact_text"
     md["assert_exact_text"][1] = "确切断言文本"
     md["assert_exact_text"][2] = "controleren_exacte_tekst"
-    md["assert_exact_text"][3] = "vérifier_exactement_texte"
+    md["assert_exact_text"][3] = "vérifier_texte_exactement"
     md["assert_exact_text"][4] = "verificare_testo_esatto"
     md["assert_exact_text"][5] = "正確なテキストを確認する"
     md["assert_exact_text"][6] = "정확한_텍스트를_확인하는"
@@ -1379,6 +1379,30 @@ class MD:
     md["export_tour"][7] = "exportar_o_tour"
     md["export_tour"][8] = "экспортировать_тур"
     md["export_tour"][9] = "exportar_la_gira"
+
+    md["get_pdf_text"] = ["*"] * num_langs
+    md["get_pdf_text"][0] = "get_pdf_text"
+    md["get_pdf_text"][1] = "获取PDF文本"
+    md["get_pdf_text"][2] = "pdf_tekst_ophalen"
+    md["get_pdf_text"][3] = "obtenir_texte_pdf"
+    md["get_pdf_text"][4] = "ottenere_testo_pdf"
+    md["get_pdf_text"][5] = "PDFテキストを取得"
+    md["get_pdf_text"][6] = "PDF_텍스트를_검색"
+    md["get_pdf_text"][7] = "obter_texto_pdf"
+    md["get_pdf_text"][8] = "получить_текст_PDF"
+    md["get_pdf_text"][9] = "obtener_texto_pdf"
+
+    md["assert_pdf_text"] = ["*"] * num_langs
+    md["assert_pdf_text"][0] = "assert_pdf_text"
+    md["assert_pdf_text"][1] = "断言PDF文本"
+    md["assert_pdf_text"][2] = "controleren_pdf_tekst"
+    md["assert_pdf_text"][3] = "vérifier_texte_pdf"
+    md["assert_pdf_text"][4] = "verificare_testo_pdf"
+    md["assert_pdf_text"][5] = "PDFテキストを確認する"
+    md["assert_pdf_text"][6] = "PDF_텍스트_확인"
+    md["assert_pdf_text"][7] = "verificar_texto_pdf"
+    md["assert_pdf_text"][8] = "подтвердить_текст_PDF"
+    md["assert_pdf_text"][9] = "verificar_texto_pdf"
 
     md["fail"] = ["*"] * num_langs
     md["fail"][0] = "fail"
