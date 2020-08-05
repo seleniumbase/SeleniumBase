@@ -26,7 +26,7 @@ To configure the User-Agent, use:
 To find real values for Device Metrics, see:
 * [Device Metrics List](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00)
 
-For a list of available User-Agent strings, see:
+To find real User-Agent strings, see:
 * [User Agent Strings List](https://developers.whatismybrowser.com/useragents/explore/)
 
 --------
