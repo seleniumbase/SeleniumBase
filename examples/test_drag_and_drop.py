@@ -11,6 +11,9 @@ class DragAndDropTests(BaseCase):
         self.open('https://www.w3schools.com/html/html5_draganddrop.asp')
         self.remove_elements("script")  # Ad content slows down the page
         self.remove_elements("iframe")  # Ad content slows down the page
+        self.remove_elements("#mainLeaderboard")  # Remove ad content
+        self.remove_elements("#right")  # Ad content slows down the page
+        self.remove_elements("#footer")  # Ad content slows down the page
         self.scroll_to("#div1")
         self.sleep(0.5)
         self.assert_false(self.is_element_visible("#div2 img#drag1"))
