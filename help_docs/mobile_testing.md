@@ -2,27 +2,9 @@
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Mobile Testing</h2>
 
-Use ``--mobile`` to run your SeleniumBase tests using Chromium's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and user agent.
+Use ``--mobile`` to run your SeleniumBase tests using Chrome's mobile device emulator with default values for Device Metrics and User-Agent.
 
-To configure the mobile device metrics, use:
-```bash
---metrics="CSS_Width,CSS_Height,Pixel_Ratio"
-```
-
-To configure the user agent, use:
-```bash
---agent="USER-AGENT-STRING"
-```
-
-To find real values for device metrics, see:
-* [Device Metrics List](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00)
-
-For a list of available user agent strings, see:
-* [User Agent Strings List](https://developers.whatismybrowser.com/useragents/explore/)
-
---------
-
-Here's an example of running a mobile test:
+<b>Here's an example mobile test:</b>
 
 * [SeleniumBase/examples/test_skype_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_skype_site.py)
 
@@ -30,6 +12,22 @@ Here's an example of running a mobile test:
 pytest test_skype_site.py --mobile
 ```
 [<img src="https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif)
+
+To configure Device Metrics, use:
+```bash
+--metrics="CSS_Width,CSS_Height,Pixel_Ratio"
+```
+
+To configure the User-Agent, use:
+```bash
+--agent="USER-AGENT-STRING"
+```
+
+To find real values for Device Metrics, see:
+* [Device Metrics List](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00)
+
+For a list of available User-Agent strings, see:
+* [User Agent Strings List](https://developers.whatismybrowser.com/useragents/explore/)
 
 --------
 
