@@ -3,19 +3,7 @@
 <a id="language_tests"></a>
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Language Tests (Python 3+)</h3>
 
-<b>SeleniumBase</b> supports the following 10 languages:
-<ul>
-<li>English</li>
-<li><a href="https://seleniumbase.io/help_docs/chinese/">Chinese / 中文</a></li>
-<li>Dutch / Nederlands</li>
-<li>French / Français</li>
-<li>Italian / Italiano</li>
-<li>Japanese / 日本語</li>
-<li>Korean / 한국어</li>
-<li>Portuguese / Português</li>
-<li>Russian / Русский</li>
-<li>Spanish / Español</li>
-</ul>
+<b>SeleniumBase</b> supports the following 10 languages: <i>English</i>, <i>Chinese</i>, <i>Dutch</i>, <i>French</i>, <i>Italian</i>, <i>Japanese</i>, <i>Korean</i>, <i>Portuguese</i>, <i>Russian</i>, and <i>Spanish</i>.
 
 Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>].
 
