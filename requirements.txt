@@ -39,7 +39,8 @@ pyopenssl==19.1.0
 pygments==2.5.2;python_version<"3.5"
 pygments==2.6.1;python_version>="3.5"
 ipython==5.10.0;python_version<"3.5"
-ipython==7.17.0;python_version>="3.5"
+ipython==6.5.0;python_version>="3.5" and python_version<"3.7"
+ipython==7.17.0;python_version>="3.7"
 colorama==0.4.3
 pymysql==0.10.0
 coverage==5.2.1
