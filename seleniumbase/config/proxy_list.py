@@ -21,7 +21,6 @@ you can try finding one from one of following sites:
 
 PROXY_LIST = {
     "example1": "82.200.233.4:3128",  # (Example) - set your own proxy here
-    "example2": "105.112.8.53:3128",  # (Example) - set your own proxy here
     "proxy1": None,
     "proxy2": None,
     "proxy3": None,

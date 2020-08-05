@@ -8,7 +8,7 @@ SeleniumBase Chart Maker allows you to create HTML charts with Python. (Using Hi
 
 ([Click to see a presentation with multiple charts](https://seleniumbase.io/other/chart_presentation.html))
 
-Here's how to run the example presentation with a pie chart from [GitHub => seleniumbase/SeleniumBase/examples/chart_maker](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/chart_maker):
+Here's how to run a simple pie chart presentation from [GitHub => seleniumbase/SeleniumBase/examples/chart_maker](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/chart_maker):
 
 ```bash
 cd examples/chart_maker
@@ -31,7 +31,7 @@ class MyChartMakerClass(BaseCase):
         self.begin_presentation(filename="my_chart.html")
 ```
 
-Here's how to run an example presentation with multiple charts: (Press the right arrow to advance to the next slide)
+Here's how to run an example presentation with multiple charts:
 
 ```bash
 cd examples/chart_maker
@@ -53,7 +53,92 @@ Here are screenshots from the examples:
 <a href="https://seleniumbase.io/other/multi_series_chart.png"><img width="500" src="https://seleniumbase.io/other/multi_series_chart.png" title="Screenshot"></a><br>
 
 
-### Creating new charts:
+### Here's a line chart example:
+
+```python
+from seleniumbase import BaseCase
+
+class MyChartMakerClass(BaseCase):
+    def test_chart_maker(self):
+        self.create_presentation()
+        self.create_line_chart(
+            title="Time Outside", subtitle="Last Week", unit="Minutes")
+        self.add_data_point("Sun", 5)
+        self.add_data_point("Mon", 10)
+        self.add_data_point("Tue", 20)
+        self.add_data_point("Wed", 40)
+        self.add_data_point("Thu", 80)
+        self.add_data_point("Fri", 65)
+        self.add_data_point("Sat", 50)
+        self.add_slide("<p>Line Chart</p>" + self.extract_chart())
+        self.begin_presentation(filename="line_chart.html", interval=8)
+```
+
+#### This example is from [test_line_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/test_line_chart.py), which you can run from the ``examples/chart_maker`` folder with the following command:
+
+```bash
+pytest test_line_chart.py
+```
+
+Because that presentation above has an ``interval`` set to ``8``, it will automatically advance to the next slide after 8 seconds. (Or exit if there are no more slides.)
+
+
+### For a more advanced example (multiple charts in a presentation):
+
+```python
+from seleniumbase import BaseCase
+
+class MyChartMakerClass(BaseCase):
+
+    def test_chart_maker_presentation(self):
+        self.create_presentation(theme="sky")
+
+        self.create_pie_chart(title="Automated Tests")
+        self.add_data_point("Passed", 7, color="#95d96f")
+        self.add_data_point("Untested", 2, color="#eaeaea")
+        self.add_data_point("Failed", 1, color="#f1888f")
+        self.add_slide("<p>Pie Chart</p>" + self.extract_chart())
+
+        self.create_bar_chart(title="Language", libs=False)
+        self.add_data_point("Python", 33, color="Orange")
+        self.add_data_point("JavaScript", 27, color="Teal")
+        self.add_data_point("HTML + CSS", 21, color="Purple")
+        self.add_slide("<p>Bar Chart</p>" + self.extract_chart())
+
+        self.create_column_chart(title="Colors", libs=False)
+        self.add_data_point("Red", 10, color="Red")
+        self.add_data_point("Green", 25, color="Green")
+        self.add_data_point("Blue", 15, color="Blue")
+        self.add_slide("<p>Column Chart</p>" + self.extract_chart())
+
+        self.create_line_chart(title="Last Week's Data", libs=False)
+        self.add_data_point("Sun", 5)
+        self.add_data_point("Mon", 10)
+        self.add_data_point("Tue", 20)
+        self.add_data_point("Wed", 40)
+        self.add_data_point("Thu", 80)
+        self.add_data_point("Fri", 65)
+        self.add_data_point("Sat", 50)
+        self.add_slide("<p>Line Chart</p>" + self.extract_chart())
+
+        self.begin_presentation(filename="chart_presentation.html")
+```
+
+Here's how to run that example:
+
+```bash
+cd examples/chart_maker
+pytest chart_presentation.py
+```
+
+(Press the Right Arrow to advance to the next slide in that chart presentation)
+
+([Click to see a live example of that presentation](https://seleniumbase.io/other/chart_presentation.html))
+
+Multi-Series charts can also be created. Try the available examples to learn more.
+
+
+## Chart Maker API
 
 ```python
 self.create_pie_chart(
@@ -151,8 +236,8 @@ self.create_area_chart(
     zero - If True, the y-axis always starts at 0. (Default: False).
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
 """
 ```
@@ -175,6 +260,7 @@ self.add_data_point(label, value, color=None, chart_name=None):
                  use this to select which one.
 """
 ```
+
 
 ### Adding a new data series to an existing chart:
 
@@ -233,88 +319,4 @@ self.display_chart(chart_name=None, filename=None):
 """
 ```
 
-All methods have the optional ``chart_name`` argument, which is only needed if you're creating multiple charts at the same time.
-
-
-### Here's an example of using SeleniumBase Chart Maker:
-
-```python
-from seleniumbase import BaseCase
-
-class MyChartMakerClass(BaseCase):
-    def test_chart_maker(self):
-        self.create_presentation()
-        self.create_line_chart(
-            title="Time Outside", subtitle="Last Week", unit="Minutes")
-        self.add_data_point("Sun", 5)
-        self.add_data_point("Mon", 10)
-        self.add_data_point("Tue", 20)
-        self.add_data_point("Wed", 40)
-        self.add_data_point("Thu", 80)
-        self.add_data_point("Fri", 65)
-        self.add_data_point("Sat", 50)
-        self.add_slide("<p>Line Chart</p>" + self.extract_chart())
-        self.begin_presentation(filename="line_chart.html", interval=8)
-```
-
-#### This example is from [test_line_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/test_line_chart.py), which you can run from the ``examples/chart_maker`` folder with the following command:
-
-```bash
-pytest test_line_chart.py
-```
-
-Because that presentation above has an ``interval`` set to ``8``, it will automatically advance to the next slide after 8 seconds. (Or exit if there are no more slides.)
-
-### For a more advanced example (multiple charts in a presentation):
-
-```python
-from seleniumbase import BaseCase
-
-class MyChartMakerClass(BaseCase):
-
-    def test_chart_maker_presentation(self):
-        self.create_presentation(theme="sky")
-
-        self.create_pie_chart(title="Automated Tests")
-        self.add_data_point("Passed", 7, color="#95d96f")
-        self.add_data_point("Untested", 2, color="#eaeaea")
-        self.add_data_point("Failed", 1, color="#f1888f")
-        self.add_slide("<p>Pie Chart</p>" + self.extract_chart())
-
-        self.create_bar_chart(title="Language", libs=False)
-        self.add_data_point("Python", 33, color="Orange")
-        self.add_data_point("JavaScript", 27, color="Teal")
-        self.add_data_point("HTML + CSS", 21, color="Purple")
-        self.add_slide("<p>Bar Chart</p>" + self.extract_chart())
-
-        self.create_column_chart(title="Colors", libs=False)
-        self.add_data_point("Red", 10, color="Red")
-        self.add_data_point("Green", 25, color="Green")
-        self.add_data_point("Blue", 15, color="Blue")
-        self.add_slide("<p>Column Chart</p>" + self.extract_chart())
-
-        self.create_line_chart(title="Last Week's Data", libs=False)
-        self.add_data_point("Sun", 5)
-        self.add_data_point("Mon", 10)
-        self.add_data_point("Tue", 20)
-        self.add_data_point("Wed", 40)
-        self.add_data_point("Thu", 80)
-        self.add_data_point("Fri", 65)
-        self.add_data_point("Sat", 50)
-        self.add_slide("<p>Line Chart</p>" + self.extract_chart())
-
-        self.begin_presentation(filename="chart_presentation.html")
-```
-
-Here's how to run that example:
-
-```bash
-cd examples/chart_maker
-pytest chart_presentation.py
-```
-
-(Press the Right Arrow to advance to the next slide in that chart presentation)
-
-([Click to see a live example of that presentation](https://seleniumbase.io/other/chart_presentation.html))
-
-Multi-Series charts can also be created. Try the available examples to learn more.
+All methods have the optional ``chart_name`` argument, which is only needed when storing multiple charts at the same time.

@@ -3498,8 +3498,8 @@ class BaseCase(unittest.TestCase):
             unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on
-                   a web page, you no longer need to re-import the libraries
+                   a chart on a web page. If creating multiple charts on the
+                   same web page, you won't need to re-import the libraries
                    when creating additional charts.
         """
         if not chart_name:
@@ -3524,8 +3524,8 @@ class BaseCase(unittest.TestCase):
             unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on
-                   a web page, you no longer need to re-import the libraries
+                   a chart on a web page. If creating multiple charts on the
+                   same web page, you won't need to re-import the libraries
                    when creating additional charts.
         """
         if not chart_name:
@@ -3550,8 +3550,8 @@ class BaseCase(unittest.TestCase):
             unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on
-                   a web page, you no longer need to re-import the libraries
+                   a chart on a web page. If creating multiple charts on the
+                   same web page, you won't need to re-import the libraries
                    when creating additional charts.
         """
         if not chart_name:
@@ -3577,8 +3577,8 @@ class BaseCase(unittest.TestCase):
             zero - If True, the y-axis always starts at 0. (Default: False).
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on
-                   a web page, you no longer need to re-import the libraries
+                   a chart on a web page. If creating multiple charts on the
+                   same web page, you won't need to re-import the libraries
                    when creating additional charts.
         """
         if not chart_name:
@@ -3604,8 +3604,8 @@ class BaseCase(unittest.TestCase):
             zero - If True, the y-axis always starts at 0. (Default: False).
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on
-                   a web page, you no longer need to re-import the libraries
+                   a chart on a web page. If creating multiple charts on the
+                   same web page, you won't need to re-import the libraries
                    when creating additional charts.
         """
         if not chart_name:
