@@ -98,6 +98,7 @@ class BaseCase(unittest.TestCase):
     def open(self, url):
         """ Navigates the current browser window to the specified page. """
         self.__last_page_load_url = None
+        js_utils.clear_out_console_logs(self.driver)
         if url.startswith("://"):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
@@ -424,6 +425,7 @@ class BaseCase(unittest.TestCase):
 
     def refresh_page(self):
         self.__last_page_load_url = None
+        js_utils.clear_out_console_logs(self.driver)
         self.driver.refresh()
         self.wait_for_ready_state_complete()
 
@@ -3275,6 +3277,7 @@ class BaseCase(unittest.TestCase):
         new_presentation = (
             '<html>\n'
             '<head>\n'
+            '<meta charset="utf-8">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<style>\n'
@@ -3903,7 +3906,7 @@ class BaseCase(unittest.TestCase):
             raise Exception("Chart {%s} does not exist!" % chart_name)
         if not filename.endswith('.html'):
             raise Exception('Chart file must end in ".html"!')
-        the_html = ""
+        the_html = '<meta charset="utf-8">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
         the_html += (
@@ -4568,7 +4571,7 @@ class BaseCase(unittest.TestCase):
                         "bottom_left", "bottom_center", "bottom_right"]
             max_messages is the limit of concurrent messages to display. """
         if not theme:
-            theme = "default"  # "future"
+            theme = "default"  # "flat"
         if not location:
             location = "default"  # "bottom_right"
         if not max_messages:

@@ -53,7 +53,7 @@ class CasDeBase(BaseCase):
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
-    def vérifier_exactement_texte(self, *args, **kwargs):
+    def vérifier_texte_exactement(self, *args, **kwargs):
         # assert_exact_text(text, selector)
         return self.assert_exact_text(*args, **kwargs)
 
@@ -401,6 +401,16 @@ class CasDeBase(BaseCase):
     def exporter_la_visite(self, *args, **kwargs):
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
+
+    def obtenir_texte_pdf(self, *args, **kwargs):
+        # get_pdf_text(pdf, page=None, maxpages=None, password=None,
+        #              codec='utf-8', wrap=False, nav=False, override=False)
+        return self.get_pdf_text(*args, **kwargs)
+
+    def vérifier_texte_pdf(self, *args, **kwargs):
+        # assert_pdf_text(pdf, text, page=None, maxpages=None, password=None,
+        #                 codec='utf-8', wrap=True, nav=False, override=False)
+        return self.assert_pdf_text(*args, **kwargs)
 
     def échouer(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"

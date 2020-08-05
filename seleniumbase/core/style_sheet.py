@@ -133,6 +133,10 @@ messenger_style = (
         font-family: "Proxima Nova","proxima-nova",Arial,sans-serif !important;
         font-size: 17px;
     }
+    ul.messenger-theme-flat {
+        box-shadow: 1px 2px 5px 2px rgba(0, 120, 120, 0.34),
+        2px 2px 12px 1px rgba(0, 120, 120, 0.28) !important;
+    }
     ''')
 
 sh_style_test = (

@@ -402,6 +402,16 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # export_tour(name=None, filename="my_tour.js", url=None)
         return self.export_tour(*args, **kwargs)
 
+    def PDF_텍스트를_검색(self, *args, **kwargs):
+        # get_pdf_text(pdf, page=None, maxpages=None, password=None,
+        #              codec='utf-8', wrap=False, nav=False, override=False)
+        return self.get_pdf_text(*args, **kwargs)
+
+    def PDF_텍스트_확인(self, *args, **kwargs):
+        # assert_pdf_text(pdf, text, page=None, maxpages=None, password=None,
+        #                 codec='utf-8', wrap=True, nav=False, override=False)
+        return self.assert_pdf_text(*args, **kwargs)
+
     def 실패(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)

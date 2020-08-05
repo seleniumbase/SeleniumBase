@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.45.1',
+    version='1.45.2',
     description='Fast, Easy, and Reliable Browser Automation & Testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -90,7 +90,7 @@ setup(
         "Topic :: Utilities",
     ],
     install_requires=[
-        'pip>=20.2',
+        'pip>=20.2.1',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=49.2.1;python_version>="3.5"',
@@ -130,6 +130,9 @@ setup(
         'pyopenssl==19.1.0',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.6.1;python_version>="3.5"',
+        'ipython==5.10.0;python_version<"3.5"',
+        'ipython==6.5.0;python_version>="3.5" and python_version<"3.7"',
+        'ipython==7.17.0;python_version>="3.7"',
         'colorama==0.4.3',
         'pymysql==0.10.0',
         'coverage==5.2.1',

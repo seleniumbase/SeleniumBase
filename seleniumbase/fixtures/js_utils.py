@@ -476,7 +476,7 @@ def activate_messenger(driver):
     msg_style = ("Messenger.options = {'maxMessages': 8, "
                  "extraClasses: 'messenger-fixed "
                  "messenger-on-bottom messenger-on-right', "
-                 "theme: 'future'}")
+                 "theme: 'flat'}")
 
     add_js_link(driver, jquery_js)
     wait_for_jquery_active(driver, timeout=0.2)
@@ -509,7 +509,7 @@ def activate_messenger(driver):
 def set_messenger_theme(driver, theme="default", location="default",
                         max_messages="default"):
     if theme == "default":
-        theme = "future"
+        theme = "flat"
     if location == "default":
         location = "bottom_right"
     if max_messages == "default":
@@ -580,7 +580,7 @@ def post_messenger_success_message(driver, message, msg_dur):
         msg_dur = settings.DEFAULT_MESSAGE_DURATION
     msg_dur = float(msg_dur)
     try:
-        theme = "future"
+        theme = "flat"
         location = "bottom_right"
         if sb_config.mobile_emulator:
             theme = "block"
@@ -788,6 +788,15 @@ def get_drag_and_drop_script():
         });
         })(jQuery);""")
     return script
+
+
+def clear_out_console_logs(driver):
+    try:
+        # Clear out the current page log before navigating to a new page
+        # (To make sure that assert_no_js_errors() uses current results)
+        driver.get_log('browser')
+    except Exception:
+        pass
 
 
 @decorators.deprecated("Use re.escape() instead, which does what you want!")
