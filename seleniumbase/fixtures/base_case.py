@@ -98,6 +98,7 @@ class BaseCase(unittest.TestCase):
     def open(self, url):
         """ Navigates the current browser window to the specified page. """
         self.__last_page_load_url = None
+        js_utils.clear_out_console_logs(self.driver)
         if url.startswith("://"):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
@@ -424,6 +425,7 @@ class BaseCase(unittest.TestCase):
 
     def refresh_page(self):
         self.__last_page_load_url = None
+        js_utils.clear_out_console_logs(self.driver)
         self.driver.refresh()
         self.wait_for_ready_state_complete()
 

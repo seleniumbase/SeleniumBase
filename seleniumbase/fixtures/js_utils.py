@@ -790,6 +790,15 @@ def get_drag_and_drop_script():
     return script
 
 
+def clear_out_console_logs(driver):
+    try:
+        # Clear out the current page log before navigating to a new page
+        # (To make sure that assert_no_js_errors() uses current results)
+        driver.get_log('browser')
+    except Exception:
+        pass
+
+
 @decorators.deprecated("Use re.escape() instead, which does what you want!")
 def _jq_format(code):
     """
