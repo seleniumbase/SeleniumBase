@@ -3277,6 +3277,7 @@ class BaseCase(unittest.TestCase):
         new_presentation = (
             '<html>\n'
             '<head>\n'
+            '<meta charset="utf-8">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<style>\n'
@@ -3905,7 +3906,7 @@ class BaseCase(unittest.TestCase):
             raise Exception("Chart {%s} does not exist!" % chart_name)
         if not filename.endswith('.html'):
             raise Exception('Chart file must end in ".html"!')
-        the_html = ""
+        the_html = '<meta charset="utf-8">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
         the_html += (
