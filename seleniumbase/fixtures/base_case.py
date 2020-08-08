@@ -2744,7 +2744,6 @@ class BaseCase(unittest.TestCase):
                 * See https://github.com/SeleniumHQ/selenium/issues/1161
             Based on the following Stack Overflow solution:
                 * https://stackoverflow.com/a/41150512/7058266 """
-        self.wait_for_ready_state_complete()
         time.sleep(0.1)  # May take a moment for errors to appear after loads.
         try:
             browser_logs = self.driver.get_log('browser')
