@@ -13,14 +13,14 @@ from seleniumbase.fixtures import constants, errors
 class Base(Plugin):
     """
     This parser plugin includes the following command-line options for Nose:
-    --env=ENV  (Set a test environment. Use "self.env" to use this in tests.)
-    --data=DATA  (Extra data to pass to tests. Use "self.data" in tests.)
-    --var1=DATA  (Extra data to pass to tests. Use "self.var1" in tests.)
-    --var2=DATA  (Extra data to pass to tests. Use "self.var2" in tests.)
-    --var3=DATA  (Extra data to pass to tests. Use "self.var3" in tests.)
-    --settings-file=FILE  (Overrides SeleniumBase settings.py values.)
+    --env=ENV  (Set the test env. Access with "self.env" in tests.)
+    --data=DATA  (Extra test data. Access with "self.data" in tests.)
+    --var1=DATA  (Extra test data. Access with "self.var1" in tests.)
+    --var2=DATA  (Extra test data. Access with "self.var2" in tests.)
+    --var3=DATA  (Extra test data. Access with "self.var3" in tests.)
+    --settings-file=FILE  (Override default SeleniumBase settings.)
     --archive-logs  (Archive old log files instead of deleting them.)
-    --report  (The option to create a fancy report after tests complete.)
+    --report  (Create a fancy nosetests report after tests complete.)
     --show-report   If self.report is turned on, then the report will
                     display immediately after tests complete their run.
                     Only use this when running tests locally, as this will
