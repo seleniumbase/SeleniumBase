@@ -86,6 +86,7 @@ nav:
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
     - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
+    - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
     - HighCharts: examples/chart_maker/ReadMe.md 
     - Docker Help: integrations/docker/ReadMe.md
   - Help Docs ToC:
