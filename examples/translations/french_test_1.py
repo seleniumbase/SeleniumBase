@@ -7,7 +7,7 @@ class MaClasseDeTest(CasDeBase):
     def test_exemple_1(self):
         self.ouvrir("https://fr.wikipedia.org/wiki/")
         self.vérifier_texte("Wikipédia")  # noqa
-        self.vérifier_élément('[title="Visiter la page d’accueil"]')
+        self.vérifier_élément('[alt="Wikipédia"]')
         self.taper("#searchInput", "Crème brûlée")
         self.cliquer("#searchButton")
         self.vérifier_texte("Crème brûlée", "#firstHeading")

@@ -42,6 +42,7 @@ AD_BLOCK_LIST = [
     '[data-ad-feedback-beacon*="AD_"]',
     '[data-ad-feedback-beacon]',
     '[data-dcm-click-tracker*="/adclick."]',
+    '[data-google-av-adk]',
     '[data-google-query-id]',
     '[data-ylk*="pkgt:sponsored_cluster"]',
     '[data-google-av-cxn*="pagead2"]',
@@ -84,5 +85,5 @@ AD_BLOCK_LIST = [
     'img[src*="HomepageAd-"]',
     'img.img_ad',
     'link[href*="/adservice."]',
-    'section.dianomi-ad',
+    'section.dianomi-ad'
 ]

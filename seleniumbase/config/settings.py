@@ -1,9 +1,8 @@
 """
 You'll probably want to customize this to your own environment and needs.
 
-If you used ``python setup.py install`` instead of ``python setup.py develop``,
-you may need to rerun ``python setup.py install`` in order for your changes
-to take effect (unless you switch to using ``develop``).
+For changes to take effect immediately, use Python's Develop Mode.
+Develop Mode Install: "pip install -e ."  (from the top-level directory)
 """
 
 
@@ -117,6 +116,8 @@ MASTERQA_MAX_IDLE_TIME_BEFORE_QUIT = 600
 # (For 2-factor authentication using a time-based one-time password algorithm)
 # (See https://github.com/pyotp/pyotp and https://pypi.org/project/pyotp/ )
 # (Also works with Authy and other compatible apps.)
+# Usage: "self.get_google_auth_password()"  (output based on timestamp)
+# Usage with override: "self.get_google_auth_password(totp_key=TOTP_KEY)"
 TOTP_KEY = "base32secretABCD"
 
 

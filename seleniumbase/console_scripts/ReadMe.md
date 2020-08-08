@@ -1,4 +1,4 @@
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" width="290">
+[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_q.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Console Scripts</h2>
 
@@ -77,6 +77,15 @@ methods, which are "open", "click", "update_text",
 "assert_element", and "assert_text". If using the
 basic boilerplate option, only the "open" method
 is included.
+
+### options
+
+* Usage:
+``sbase options``
+
+* Output:
+Displays common pytest command-line options
+that are available when using SeleniumBase.
 
 ### convert
 

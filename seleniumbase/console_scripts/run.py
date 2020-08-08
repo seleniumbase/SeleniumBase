@@ -9,7 +9,8 @@ Examples:
 sbase install chromedriver
 sbase mkdir browser_tests
 sbase mkfile new_test.py
-sbase convert my_old_webdriver_unittest.py
+sbase options
+sbase convert old_webdriver_unittest.py
 sbase print my_first_test.py -n
 sbase translate my_first_test.py --zh -p
 sbase extract-objects my_first_test.py
@@ -60,6 +61,7 @@ def show_basic_usage():
     sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
     sc += ("      mkdir           [DIRECTORY_NAME]\n")
     sc += ("      mkfile          [FILE_NAME.py]\n")
+    sc += ("      options         (display common pytest options)\n")
     sc += ("      convert         [PYTHON_WEBDRIVER_UNITTEST_FILE]\n")
     sc += ("      print           [FILE] [OPTIONS]\n")
     sc += ("      translate       [SB_PYTHON_FILE] [LANGUAGE] [ACTION]\n")
@@ -436,6 +438,54 @@ def show_version_info():
     print('\n%s\n' % version)
 
 
+def show_options():
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("\n  " + c2 + "** " + c3 + "pytest cmd options" + c2 + " **" + cr)
+    print(sc)
+    print("")
+    line = "Here are some common pytest options to use with SeleniumBase:"
+    line = c1 + line + cr
+    print(line)
+    print("")
+    print('--browser=BROWSER  (The web browser to use. Default: "chrome")')
+    print('--headless  (Run tests headlessly. Default mode on Linux OS.)')
+    print('--demo  (Slow down and visually see test actions as they occur.)')
+    print('--slow  (Slow down the automation. Faster than using Demo Mode.)')
+    print('--reuse-session / --rs  (Reuse the browser session between tests.)')
+    print('--crumbs  (Delete all cookies between tests reusing a session.)')
+    print("--guest  (Enable Chrome's Guest mode.)")
+    print("--incognito  (Enable Chrome's Incognito mode.)")
+    print('-m MARKER  (Only run tests with the specified pytest marker.)')
+    print('-n NUM  (Multithread the tests using that many threads.)')
+    print('-v  (Verbose mode. Print the full name of each test run.)')
+    print("--agent=STRING  (Modify the web browser's User-Agent string.)")
+    print('--mobile  (Use the mobile device emulator while running tests.)')
+    print('--metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)')
+    print('--maximize  (Start tests with the web browser window maximized.)')
+    print('--ad-block  (Block some types of display ads after page loads.)')
+    print('--check-js  (Check for JavaScript errors after page loads.)')
+    print('--pdb  (Enter Debug Mode if a test fails. h: Help. c: Continue.')
+    print('       interact: Interactive Mode. CTRL-D: Exit Interactive Mode.)')
+    print('--html=report.html  (Create a detailed pytest-html report.)')
+    print('--archive-logs  (Archive old log files instead of deleting them.)')
+    print('--disable-csp  (Disable the Content Security Policy of websites.)')
+    print('--proxy=SERVER:PORT  (Set a proxy server:port combo for tests.)')
+    print("--settings-file=FILE  (Override default SeleniumBase settings.)")
+    print('--env=ENV  (Set the test env. Access with "self.env" in tests.)')
+    print('--data=DATA  (Extra test data. Access with "self.data" in tests.)')
+    print('--collect-only -q  (Show discovered tests without running them.)')
+    print('--save-screenshot  (Save a screenshot at the end of each test.)')
+    print('-x  (Stop running tests after the first failure is reached.)')
+    print("")
+    line = 'For the full list of ' + c1 + 'command-line options' + cr
+    line += ', type: "' + c2 + 'pytest' + cr + ' ' + c3 + '--help' + cr + '".'
+    print(line)
+    print("")
+
+
 def show_detailed_help():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -605,6 +655,8 @@ def main():
             show_version_info()
         else:
             show_basic_usage()
+    elif command == "options" or command == "--options":
+        show_options()
     elif command == "help" or command == "--help":
         if len(command_args) >= 1:
             if command_args[0] == "install":

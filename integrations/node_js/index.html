@@ -1,6 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
     <style>
       body {font-family: Arial, Helvetica, sans-serif;}
       h1 {color:#3366CC; font-size: 32px;}
@@ -9,19 +9,20 @@
     </style>
   </head>
   <body>
+    <script>0</script>
     <div class="container">
-    <h1>Select an option:</h1>
-    <form method="put" action="/run_my_first_test_in_chrome">
-      <input type="submit" value="Run Test in Chrome">
+    <h1>Select a script to run:</h1>
+    <form method="put" action="/run_my_first_test">
+      <input type="submit" value="pytest my_first_test.py">
     </form>
-    <form method="put" action="/run_my_first_test_in_firefox">
-      <input type="submit" value="Run Test in Firefox">
+    <form method="put" action="/run_test_demo_site">
+      <input type="submit" value="pytest test_demo_site.py">
     </form>
-    <form method="put" action="/run_my_first_test_in_chrome_with_demo_mode">
-      <input type="submit" value="Run Test in Chrome (Demo Mode)">
+    <form method="put" action="/run_my_first_test_with_demo_mode">
+      <input type="submit" value="pytest my_first_test.py --demo">
     </form>
-    <form method="put" action="/run_my_first_test_in_firefox_with_demo_mode">
-      <input type="submit" value="Run Test in Firefox (Demo Mode)">
+    <form method="put" action="/run_test_demo_site_with_demo_mode">
+      <input type="submit" value="pytest test_demo_site.py --demo">
     </form>
     </div>
   </body>

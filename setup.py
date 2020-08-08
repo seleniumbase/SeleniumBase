@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.45.2',
+    version='1.46.0',
     description='Web Automation and Testing Framework - seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',

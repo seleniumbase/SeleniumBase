@@ -1476,6 +1476,30 @@ class MD:
     md["find_element"][8] = "найти_элемент"
     md["find_element"][9] = "encontrar_elemento"
 
+    md["remove_element"] = ["*"] * num_langs
+    md["remove_element"][0] = "remove_element"
+    md["remove_element"][1] = "删除第一个元素"
+    md["remove_element"][2] = "verwijder_element"
+    md["remove_element"][3] = "supprimer_élément"
+    md["remove_element"][4] = "rimuovere_elemento"
+    md["remove_element"][5] = "最初の要素を削除"
+    md["remove_element"][6] = "첫_번째_요소_제거"
+    md["remove_element"][7] = "remover_elemento"
+    md["remove_element"][8] = "удалить_элемент"
+    md["remove_element"][9] = "eliminar_elemento"
+
+    md["remove_elements"] = ["*"] * num_langs
+    md["remove_elements"][0] = "remove_elements"
+    md["remove_elements"][1] = "删除所有元素"
+    md["remove_elements"][2] = "verwijder_elementen"
+    md["remove_elements"][3] = "supprimer_éléments"
+    md["remove_elements"][4] = "rimuovere_elementi"
+    md["remove_elements"][5] = "すべての要素を削除"
+    md["remove_elements"][6] = "모든_요소_제거"
+    md["remove_elements"][7] = "remover_elementos"
+    md["remove_elements"][8] = "удалить_элементы"
+    md["remove_elements"][9] = "eliminar_elementos"
+
     md["find_text"] = ["*"] * num_langs
     md["find_text"][0] = "find_text"
     md["find_text"][1] = "查找文本"

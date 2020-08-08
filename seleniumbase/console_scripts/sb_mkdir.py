@@ -97,6 +97,7 @@ def main():
     data.append("    develop: custom marker")
     data.append("    qa: custom marker")
     data.append("    ready: custom marker")
+    data.append("    active: custom marker")
     data.append("    master: custom marker")
     data.append("    release: custom marker")
     data.append("    staging: custom marker")

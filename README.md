@@ -34,17 +34,21 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📖 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📋 Reports</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a>
 <br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌎 Translate</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTests</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📰 Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Chart Maker</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
+<br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Console Scripts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 </p>
 
 <p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></p>
@@ -97,6 +101,7 @@ seleniumbase install chromedriver latest
 cd examples/
 pytest my_first_test.py
 ```
+
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
 
@@ -185,8 +190,7 @@ As you can see, the old WebDriver way is very bad!
 Use SeleniumBase to make testing much easier!
 (You can still use ``self.driver`` in your code.)
 
-* Run tests with ``pytest`` or ``nosetests`` in any browser:
-(**pytest** is recommended. **Chrome** is the default browser.)
+You can interchange ``pytest`` with ``nosetests`` for most tests, but using ``pytest`` is recommended. (``chrome`` is the default browser if not specified.)
 
 ```bash
 pytest my_first_test.py --browser=chrome
@@ -229,7 +233,7 @@ seleniumbase install iedriver
 seleniumbase install operadriver
 ```
 
-Next, choose between **pytest** and **nosetests** test runners. (<i>Mostly interchangeable.</i>)
+Next, choose between ``pytest`` and ``nosetests`` test runners. (<i>Mostly interchangeable.</i>)
 
 ```bash
 cd examples/
@@ -242,7 +246,7 @@ nosetests my_first_test.py --browser=firefox
 (<i>If no browser is specified, Chrome is used by default.</i>)
 With Pytest, a green dot means a test passed. An "F" means a test failed.
 
-<a id="seleniumbase_demo_mode"></a> **Use Demo Mode to help you see what tests are asserting.**
+<a id="seleniumbase_demo_mode"></a> <b>Use Demo Mode to help you see what tests are asserting.</b>
 
 If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
@@ -250,7 +254,7 @@ If the example test is moving too fast for your eyes, you can run it in **Demo M
 pytest my_first_test.py --demo
 ```
 
-**Pytest** includes test discovery. If you don't specify a specific file or folder to run from, ``pytest`` will search all subdirectories automatically for tests to run based on the following matching criteria:
+``Pytest`` includes test discovery. If you don't specify a specific file or folder to run from, ``pytest`` will search all subdirectories automatically for tests to run based on the following matching criteria:
 Python filenames that start with ``test_`` or end with ``_test.py``.
 Python methods that start with ``test_``.
 The Python class name can be anything since SeleniumBase's ``BaseCase`` class inherits from the ``unittest.TestCase`` class.
@@ -260,27 +264,27 @@ You can see which tests are getting discovered by ``pytest`` by using:
 pytest --collect-only -q
 ```
 
-You can use the following in your scripts to help you debug issues:
-(<i>If using ipdb, make sure you add "-s" to command-line options unless already in pytest.ini</i>)
+You can use the following calls in your scripts to help you debug issues:
+
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
 import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
-<b>To pause an active test that throws an exception or error, add ``--pdb -s``:</b>
+To pause an active test that throws an exception or error, add ``--pdb``:
 
 ```bash
-pytest my_first_test.py --pdb -s
+pytest my_first_test.py --pdb
 ```
 
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'n', 'c', 's' => next, continue, step).
 
-Here are some useful command-line options that come with Pytest:
+Here are some useful command-line options that come with ``pytest``:
 
 ```bash
--v  # Prints the full test name for each test.
--q  # Prints fewer details in the console output when running tests.
+-v  # Verbose mode. Print the full name of each test run.
+-q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
@@ -291,52 +295,52 @@ Here are some useful command-line options that come with Pytest:
 -m=MARKER  # Only run tests that are marked with the specified pytest marker.
 ```
 
-SeleniumBase provides additional Pytest command-line options for tests:
+SeleniumBase provides additional ``pytest`` command-line options for tests:
 
 ```bash
---browser=BROWSER  # (The web browser to use.)
+--browser=BROWSER  # (The web browser to use. Default: "chrome")
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
---settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
+--settings-file=FILE  # (Override default SeleniumBase settings.)
 --env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
---data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
---var1=DATA  # (Extra data to pass to tests. Use "self.var1" in tests.)
---var2=DATA  # (Extra data to pass to tests. Use "self.var2" in tests.)
---var3=DATA  # (Extra data to pass to tests. Use "self.var3" in tests.)
+--data=DATA  # (Extra test data. Access with "self.data" in tests.)
+--var1=DATA  # (Extra test data. Access with "self.var1" in tests.)
+--var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
+--var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --server=SERVER  # (The server / IP address used by the tests.)
 --port=PORT  # (The port that's used by the test server.)
 --proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
---agent=STRING  # (This designates the web browser's User Agent to use.)
---mobile  # (The option to use the mobile emulator while running tests.)
---metrics=STRING  # ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
+--agent=STRING  # (Modify the web browser's User-Agent string.)
+--mobile  # (Use the mobile device emulator while running tests.)
+--metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
---headless  # (The option to run tests headlessly. The default on Linux OS.)
---headed  # (The option to run tests with a GUI on Linux OS.)
+--headless  # (Run tests headlessly. Default mode on Linux OS.)
+--headed  # (Run tests with a GUI on Linux OS.)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
 --archive-logs  # (Archive old log files instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the limit limit.)
---slow  # (The option to slow down the automation.)
---demo  # (The option to visually see test actions as they occur.)
---demo-sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--slow  # (Slow down the automation. Faster than using Demo Mode.)
+--demo  # (Slow down and visually see test actions as they occur.)
+--demo-sleep=SECONDS  # (Set the wait time after Demo Mode actions.)
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
 --message-duration=SECONDS  # (The time length for Messenger alerts.)
---check-js  # (The option to check for JavaScript errors after page loads.)
---ad-block  # (The option to block some display ads after page loads.)
---block-images  # (The option to block images from loading during tests.)
+--check-js  # (Check for JavaScript errors after page loads.)
+--ad-block  # (Block some types of display ads after page loads.)
+--block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --disable-csp  # (This disables the Content Security Policy of websites.)
---enable-sync  # (The option to enable "Chrome Sync".)
---use-auto-ext  # (The option to use Chrome's automation extension.)
---swiftshader  # (The option to use Chrome's "--use-gl=swiftshader" feature.)
---incognito  #  (The option to enable Chrome's Incognito mode.)
---guest  # (The option to enable Chrome's Guest mode.)
---devtools  # (The option to open Chrome's DevTools when the browser opens.)
---reuse-session  # (The option to reuse the browser session between tests.)
---crumbs  # (Option to delete all cookies between tests reusing a session.)
---maximize-window  # (The option to start with the web browser maximized.)
---save-screenshot  # (The option to save a screenshot after each test.)
+--enable-sync  # (Enable "Chrome Sync".)
+--use-auto-ext  # (Use Chrome's automation extension.)
+--swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
+--incognito  #  (Enable Chrome's Incognito mode.)
+--guest  # (Enable Chrome's Guest mode.)
+--devtools  # (Open Chrome's DevTools when the browser opens.)
+--reuse-session  # (Reuse the browser session between tests.)
+--crumbs  # (Delete all cookies between tests reusing a session.)
+--maximize-window  # (Start tests with the web browser window maximized.)
+--save-screenshot  # (Save a screenshot at the end of each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```

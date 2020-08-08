@@ -14,10 +14,13 @@ pytest test_swag_labs.py
 pytest test_swag_labs.py --browser=firefox
 
 # Run a test in Demo Mode (highlight assertions)
-pytest test_swag_labs.py --demo
+pytest my_first_test.py --demo
+
+# Run another test in Demo Mode
+pytest test_demo_site.py --demo
 
 # Run a test in Headless Mode (invisible browser)
-pytest test_swag_labs.py --headless
+pytest my_first_test.py --headless
 
 # Run tests multi-threaded using [n] threads
 pytest test_suite.py -n=4
@@ -26,12 +29,12 @@ pytest test_suite.py -n=4
 pytest test_suite.py --html=report.html
 
 # Enter Debug Mode on failures
-pytest test_fail.py --pdb -s
+pytest test_fail.py --pdb
 
 # Rerun failing tests more times
 pytest test_suite.py --reruns=1
 
-# Pass extra data into tests (retrieve: self.data)
+# Pass extra data into tests (retrieve by calling self.data)
 pytest my_first_test.py --data="ABC,DEF"
 
 # Run tests on a local Selenium Grid
@@ -68,14 +71,15 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 pytest my_first_test.py --settings-file=custom_settings.py
 ```
 
-You can interchange **pytest** with **nosetests** for most things, but using pytest is strongly recommended because developers stopped supporting nosetests. Chrome is the default browser if not specified.
+You can interchange ``pytest`` with ``nosetests`` for most tests, but using ``pytest`` is recommended. (``chrome`` is the default browser if not specified.)
 
-(NOTE: If you're using **pytest** for running tests outside of the SeleniumBase repo, **you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure**. If using **nosetests**, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).)
+If you're using ``pytest`` for running tests outside of the SeleniumBase repo, you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure. If using ``nosetests``, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).
 
-Here are some useful command-line options that come with Pytest:
+Here are some useful command-line options that come with ``pytest``:
+
 ```bash
--v  # Prints the full test name for each test.
--q  # Prints fewer details in the console output when running tests.
+-v  # Verbose mode. Print the full name of each test run.
+-q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
 --collect-only  # Show what tests would get run without actually running them.
@@ -86,55 +90,69 @@ Here are some useful command-line options that come with Pytest:
 -m=MARKER  # Only run tests that are marked with the specified pytest marker.
 ```
 
-SeleniumBase provides additional Pytest command-line options for tests:
+SeleniumBase provides additional ``pytest`` command-line options for tests:
+
 ```bash
---browser=BROWSER  # (The web browser to use.)
+--browser=BROWSER  # (The web browser to use. Default: "chrome")
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
---settings-file=FILE  # (Overrides SeleniumBase settings.py values.)
+--settings-file=FILE  # (Override default SeleniumBase settings.)
 --env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
---data=DATA  # (Extra data to pass to tests. Use "self.data" in tests.)
---var1=DATA  # (Extra data to pass to tests. Use "self.var1" in tests.)
---var2=DATA  # (Extra data to pass to tests. Use "self.var2" in tests.)
---var3=DATA  # (Extra data to pass to tests. Use "self.var3" in tests.)
+--data=DATA  # (Extra test data. Access with "self.data" in tests.)
+--var1=DATA  # (Extra test data. Access with "self.var1" in tests.)
+--var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
+--var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --server=SERVER  # (The server / IP address used by the tests.)
 --port=PORT  # (The port that's used by the test server.)
 --proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
---agent=STRING  # (This designates the web browser's User Agent to use.)
---mobile  # (The option to use the mobile emulator while running tests.)
---metrics=STRING  # ("CSSWidth,Height,PixelRatio" for mobile emulator tests.)
+--agent=STRING  # (Modify the web browser's User-Agent string.)
+--mobile  # (Use the mobile device emulator while running tests.)
+--metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
---headless  # (The option to run tests headlessly. The default on Linux OS.)
---headed  # (The option to run tests with a GUI on Linux OS.)
+--headless  # (Run tests headlessly. Default mode on Linux OS.)
+--headed  # (Run tests with a GUI on Linux OS.)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
 --archive-logs  # (Archive old log files instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the limit limit.)
---slow  # (The option to slow down the automation.)
---demo  # (The option to visually see test actions as they occur.)
---demo-sleep=SECONDS  # (The option to wait longer after Demo Mode actions.)
+--slow  # (Slow down the automation. Faster than using Demo Mode.)
+--demo  # (Slow down and visually see test actions as they occur.)
+--demo-sleep=SECONDS  # (Set the wait time after Demo Mode actions.)
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
 --message-duration=SECONDS  # (The time length for Messenger alerts.)
---check-js  # (The option to check for JavaScript errors after page loads.)
---ad-block  # (The option to block some display ads after page loads.)
---block-images  # (The option to block images from loading during tests.)
+--check-js  # (Check for JavaScript errors after page loads.)
+--ad-block  # (Block some types of display ads after page loads.)
+--block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --disable-csp  # (This disables the Content Security Policy of websites.)
---enable-sync  # (The option to enable "Chrome Sync".)
---use-auto-ext  # (The option to use Chrome's automation extension.)
---swiftshader  # (The option to use Chrome's "--use-gl=swiftshader" feature.)
---incognito  #  (The option to enable Chrome's Incognito mode.)
---guest  # (The option to enable Chrome's Guest mode.)
---devtools  # (The option to open Chrome's DevTools when the browser opens.)
---reuse-session  # (The option to reuse the browser session between tests.)
---crumbs  # (Option to delete all cookies between tests reusing a session.)
---maximize-window  # (The option to start with the web browser maximized.)
---save-screenshot  # (The option to save a screenshot after each test.)
+--enable-sync  # (Enable "Chrome Sync".)
+--use-auto-ext  # (Use Chrome's automation extension.)
+--swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
+--incognito  #  (Enable Chrome's Incognito mode.)
+--guest  # (Enable Chrome's Guest mode.)
+--devtools  # (Open Chrome's DevTools when the browser opens.)
+--reuse-session  # (Reuse the browser session between tests.)
+--crumbs  # (Delete all cookies between tests reusing a session.)
+--maximize-window  # (Start tests with the web browser window maximized.)
+--save-screenshot  # (Save a screenshot at the end of each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
+
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
+
+You can also view a list of popular ``pytest`` options for SeleniumBase by typing:
+
+```bash
+seleniumbase options
+```
+
+Or the short form:
+
+```bash
+sbase options
+```
 
 ### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Customizing default settings:
 
@@ -181,6 +199,7 @@ Or you can create your own Selenium Grid for test distribution. ([See this ReadM
 ```bash
 pytest test_suite.py --browser=chrome
 ```
+
 (During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run.)
 
 ### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Demo Mode:
@@ -214,14 +233,15 @@ pytest --reruns=2 --reruns-delay=1
 
 ### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Debugging tests:
 
-**You can use the following code snippets in your scripts to help you debug issues:**
+You can use the following calls in your scripts to help you debug issues:
+
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
 import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 import pytest; pytest.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
 ```
 
-**To pause an active test that throws an exception or error, add ``--pdb -s``:**
+To pause an active test that throws an exception or error, add ``--pdb -s``:
 
 ```bash
 pytest my_first_test.py --pdb -s

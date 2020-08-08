@@ -436,6 +436,14 @@ class セレニウムテストケース(BaseCase):  # noqa
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
 
+    def 最初の要素を削除(self, *args, **kwargs):
+        # remove_element(selector)
+        return self.remove_element(*args, **kwargs)
+
+    def すべての要素を削除(self, *args, **kwargs):
+        # remove_elements(selector)
+        return self.remove_elements(*args, **kwargs)
+
     def テキストを見つける(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)
