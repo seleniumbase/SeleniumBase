@@ -1,6 +1,3 @@
-""" NOTE: Using CSS Selectors is better than using XPath!
-    XPath Selectors break very easily with website changes. """
-
 from seleniumbase import BaseCase
 
 

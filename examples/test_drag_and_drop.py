@@ -8,15 +8,11 @@ from seleniumbase import BaseCase
 class DragAndDropTests(BaseCase):
 
     def test_drag_and_drop(self):
-        self.open('https://www.w3schools.com/html/html5_draganddrop.asp')
-        self.remove_elements("script")  # Ad content slows down the page
-        self.remove_elements("iframe")  # Ad content slows down the page
-        self.remove_elements("#mainLeaderboard")  # Remove ad content
-        self.remove_elements("#right")  # Ad content slows down the page
-        self.remove_elements("#footer")  # Ad content slows down the page
-        self.scroll_to("#div1")
-        self.sleep(0.5)
-        self.assert_false(self.is_element_visible("#div2 img#drag1"))
-        self.drag_and_drop("#div1 img#drag1", '#div2')
-        self.assert_true(self.is_element_visible("#div2 img#drag1"))
+        url = '://w3schools.com/html/tryit.asp?filename=tryhtml5_draganddrop'
+        self.open(url)
+        self.remove_elements("#tryitLeaderboard")
+        self.switch_to_frame("iframeResult")
+        self.assert_element_not_visible("#div1 img#drag1")
+        self.drag_and_drop("#drag1", "#div1")
+        self.assert_element("#div1 img#drag1")
         self.sleep(1)
