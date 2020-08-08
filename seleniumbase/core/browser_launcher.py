@@ -234,8 +234,6 @@ def _set_chrome_options(
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
-    else:
-        chrome_options.add_argument("--no-proxy-server")
     if headless:
         if not proxy_auth:
             # Headless Chrome doesn't support extensions, which are
@@ -736,6 +734,13 @@ def get_local_driver(
                 edge_options.add_experimental_option(
                     "mobileEmulation", emulator_settings)
                 edge_options.add_argument("--enable-sync")
+            if proxy_string:
+                if proxy_auth:
+                    edge_options = _add_chrome_proxy_extension(
+                        edge_options, proxy_string, proxy_user, proxy_pass)
+                edge_options.add_argument('--proxy-server=%s' % proxy_string)
+            if user_agent:
+                edge_options.add_argument("--user-agent=%s" % user_agent)
             capabilities = edge_options.to_capabilities()
             capabilities["platform"] = ''
             return Edge(
