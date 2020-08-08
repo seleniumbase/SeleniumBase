@@ -59,10 +59,7 @@ ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
 class BaseCase(unittest.TestCase):
-    '''
-    A base test case that wraps methods for enhanced usage.
-    You can also add your own methods here.
-    '''
+    """ <Class seleniumbase.BaseCase> """
 
     def __init__(self, *args, **kwargs):
         super(BaseCase, self).__init__(*args, **kwargs)
