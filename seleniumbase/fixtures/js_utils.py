@@ -471,7 +471,6 @@ def activate_messenger(driver):
     msgr_theme_ice_css = constants.Messenger.THEME_ICE_CSS
     spinner_css = constants.Messenger.SPINNER_CSS
     underscore_js = constants.Underscore.MIN_JS
-    backbone_js = constants.Backbone.MIN_JS
 
     msg_style = ("Messenger.options = {'maxMessages': 8, "
                  "extraClasses: 'messenger-fixed "
@@ -487,7 +486,6 @@ def activate_messenger(driver):
     add_css_link(driver, msgr_theme_air_css)
     add_css_link(driver, msgr_theme_ice_css)
     add_js_link(driver, underscore_js)
-    add_js_link(driver, backbone_js)
     add_css_link(driver, spinner_css)
     add_js_link(driver, messenger_js)
     add_js_link(driver, msgr_theme_flat_js)
@@ -583,7 +581,6 @@ def post_messenger_success_message(driver, message, msg_dur):
         theme = "flat"
         location = "bottom_right"
         if sb_config.mobile_emulator:
-            theme = "block"
             location = "top_center"
         set_messenger_theme(driver, theme=theme, location=location)
         post_message(

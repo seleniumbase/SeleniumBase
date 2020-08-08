@@ -134,8 +134,8 @@ messenger_style = (
         font-size: 17px;
     }
     ul.messenger-theme-flat {
-        box-shadow: 1px 2px 5px 2px rgba(0, 120, 120, 0.34),
-        2px 2px 12px 1px rgba(0, 120, 120, 0.28) !important;
+        box-shadow: 2px 2px 5px 2px rgba(16, 128, 120, 0.34),
+        2px 2px 10px 2px rgba(16, 128, 120, 0.28) !important;
     }
     ''')
 
