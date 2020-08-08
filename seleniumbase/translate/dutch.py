@@ -436,6 +436,14 @@ class Testgeval(BaseCase):
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
 
+    def verwijder_element(self, *args, **kwargs):
+        # remove_element(selector)
+        return self.remove_element(*args, **kwargs)
+
+    def verwijder_elementen(self, *args, **kwargs):
+        # remove_elements(selector)
+        return self.remove_elements(*args, **kwargs)
+
     def vind_tekst(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)

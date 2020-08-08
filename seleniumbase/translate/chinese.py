@@ -436,6 +436,14 @@ class 硒测试用例(BaseCase):  # noqa
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
 
+    def 删除第一个元素(self, *args, **kwargs):
+        # remove_element(selector)
+        return self.remove_element(*args, **kwargs)
+
+    def 删除所有元素(self, *args, **kwargs):
+        # remove_elements(selector)
+        return self.remove_elements(*args, **kwargs)
+
     def 查找文本(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)

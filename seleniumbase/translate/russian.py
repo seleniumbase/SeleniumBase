@@ -436,6 +436,14 @@ class ТестНаСелен(BaseCase):  # noqa
         # find_element(selector)  # Element must be visible
         return self.find_element(*args, **kwargs)
 
+    def удалить_элемент(self, *args, **kwargs):
+        # remove_element(selector)
+        return self.remove_element(*args, **kwargs)
+
+    def удалить_элементы(self, *args, **kwargs):
+        # remove_elements(selector)
+        return self.remove_elements(*args, **kwargs)
+
     def найти_текст(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)
