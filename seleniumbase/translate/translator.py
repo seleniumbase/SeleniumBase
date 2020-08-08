@@ -654,7 +654,7 @@ def main():
                         elif line.count("= '") == 1 and line.count('://') == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
-                            line1 = line.split('://')[0] + '://" \\'
+                            line1 = line.split('://')[0] + "://' \\"
                             line2 = new_ws + "'" + line.split('://')[1]
                             new_sb_lines.append(line1)
                             if get_width(line2) + w > console_width:
