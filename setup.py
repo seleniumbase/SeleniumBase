@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.46.0',
+    version='1.46.1',
     description='Web Automation and Testing Framework - seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -106,6 +106,7 @@ setup(
         'urllib3==1.25.10',  # Must stay in sync with "requests"
         'requests==2.24.0',
         'selenium==3.141.0',
+        'msedge-selenium-tools==3.141.2',
         'pluggy==0.13.1',
         'attrs>=19.3.0',
         'py==1.8.1;python_version<"3.5"',

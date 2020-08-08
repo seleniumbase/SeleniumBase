@@ -292,7 +292,7 @@ Here are some useful command-line options that come with ``pytest``:
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
 --pdb  # If a test fails, pause run and enter debug mode. (Don't use with CI!)
--m=MARKER  # Only run tests that are marked with the specified pytest marker.
+-m=MARKER  # Run tests with the specified pytest marker.
 ```
 
 SeleniumBase provides additional ``pytest`` command-line options for tests:
