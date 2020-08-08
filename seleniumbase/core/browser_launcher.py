@@ -699,16 +699,47 @@ def get_local_driver(
                     sys.argv = sys_args  # Put back the original sys args
             return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
                                     options=chrome_options)
-        except Exception as e:
-            if headless:
-                raise Exception(e)
+        except Exception:
+            from msedge.selenium_tools import Edge, EdgeOptions
             if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_EDGEDRIVER)
                 except Exception as e:
                     logging.debug("\nWarning: Could not make edgedriver"
                                   " executable: %s" % e)
-            return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER)
+            edge_options = EdgeOptions()
+            edge_options.use_chromium = True
+            edge_options.add_experimental_option(
+                "useAutomationExtension", False)
+            edge_options.add_experimental_option(
+                "excludeSwitches", ["enable-automation", "enable-logging"])
+            if guest_mode:
+                edge_options.add_argument("--guest")
+            if headless:
+                edge_options.add_argument("--headless")
+            if mobile_emulator:
+                emulator_settings = {}
+                device_metrics = {}
+                if type(device_width) is int and (
+                        type(device_height) is int and (
+                        type(device_pixel_ratio) is int)):
+                    device_metrics["width"] = device_width
+                    device_metrics["height"] = device_height
+                    device_metrics["pixelRatio"] = device_pixel_ratio
+                else:
+                    device_metrics["width"] = 411
+                    device_metrics["height"] = 731
+                    device_metrics["pixelRatio"] = 3
+                emulator_settings["deviceMetrics"] = device_metrics
+                if user_agent:
+                    emulator_settings["userAgent"] = user_agent
+                edge_options.add_experimental_option(
+                    "mobileEmulation", emulator_settings)
+                edge_options.add_argument("--enable-sync")
+            capabilities = edge_options.to_capabilities()
+            capabilities["platform"] = ''
+            return Edge(
+                executable_path=LOCAL_EDGEDRIVER, capabilities=capabilities)
     elif browser_name == constants.Browser.SAFARI:
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
