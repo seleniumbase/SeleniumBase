@@ -223,6 +223,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--dom-automation")
+    chrome_options.add_argument("--disable-hang-monitor")
+    chrome_options.add_argument("--disable-prompt-on-repost")
     if not use_auto_ext:  # (It's ON by default. Disable it when not wanted.)
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
@@ -695,9 +697,11 @@ def get_local_driver(
                     print("\nWarning: msedgedriver not found. Installing now:")
                     sb_install.main(override="edgedriver")
                     sys.argv = sys_args  # Put back the original sys args
+            # For Microsoft Edge (Chromium) version 79 or lower
             return webdriver.Chrome(executable_path=LOCAL_EDGEDRIVER,
                                     options=chrome_options)
         except Exception:
+            # For Microsoft Edge (Chromium) version 80 or higher
             from msedge.selenium_tools import Edge, EdgeOptions
             if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
                 try:
@@ -707,6 +711,18 @@ def get_local_driver(
                                   " executable: %s" % e)
             edge_options = EdgeOptions()
             edge_options.use_chromium = True
+            prefs = {
+                "download.default_directory": downloads_path,
+                "local_discovery.notifications_enabled": False,
+                "credentials_enable_service": False,
+                "profile": {
+                    "password_manager_enabled": False
+                }
+            }
+            if block_images:
+                prefs["profile.managed_default_content_settings.images"] = 2
+            edge_options.add_experimental_option("prefs", prefs)
+            edge_options.add_experimental_option("w3c", True)
             edge_options.add_experimental_option(
                 "useAutomationExtension", False)
             edge_options.add_experimental_option(
@@ -734,13 +750,36 @@ def get_local_driver(
                 edge_options.add_experimental_option(
                     "mobileEmulation", emulator_settings)
                 edge_options.add_argument("--enable-sync")
+            edge_options.add_argument("--disable-infobars")
+            edge_options.add_argument("--disable-save-password-bubble")
+            edge_options.add_argument("--disable-single-click-autofill")
+            edge_options.add_argument("--disable-translate")
+            edge_options.add_argument("--disable-web-security")
+            edge_options.add_argument("--homepage=about:blank")
+            edge_options.add_argument("--dns-prefetch-disable")
+            edge_options.add_argument("--dom-automation")
+            edge_options.add_argument("--disable-hang-monitor")
+            edge_options.add_argument("--disable-prompt-on-repost")
             if proxy_string:
-                if proxy_auth:
-                    edge_options = _add_chrome_proxy_extension(
-                        edge_options, proxy_string, proxy_user, proxy_pass)
                 edge_options.add_argument('--proxy-server=%s' % proxy_string)
+            edge_options.add_argument("--test-type")
+            edge_options.add_argument("--log-level=3")
+            edge_options.add_argument("--no-first-run")
+            edge_options.add_argument("--ignore-certificate-errors")
+            if devtools and not headless:
+                edge_options.add_argument("--auto-open-devtools-for-tabs")
+            edge_options.add_argument("--allow-file-access-from-files")
+            edge_options.add_argument("--allow-insecure-localhost")
+            edge_options.add_argument("--allow-running-insecure-content")
             if user_agent:
                 edge_options.add_argument("--user-agent=%s" % user_agent)
+            edge_options.add_argument("--no-sandbox")
+            if swiftshader:
+                edge_options.add_argument("--use-gl=swiftshader")
+            else:
+                edge_options.add_argument("--disable-gpu")
+            if "linux" in PLATFORM:
+                edge_options.add_argument("--disable-dev-shm-usage")
             capabilities = edge_options.to_capabilities()
             capabilities["platform"] = ''
             return Edge(

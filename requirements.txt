@@ -1,7 +1,7 @@
 pip>=20.2.1
 packaging>=20.4
 setuptools>=44.1.1;python_version<"3.5"
-setuptools>=49.2.1;python_version>="3.5"
+setuptools>=49.3.1;python_version>="3.5"
 setuptools-scm>=4.1.2
 wheel>=0.34.2
 six==1.15.0
@@ -37,6 +37,8 @@ soupsieve==2.0.1;python_version>="3.5"
 beautifulsoup4==4.9.1
 cryptography==3.0
 pyopenssl==19.1.0
+prompt-toolkit==1.0.18;python_version<"3.6.1"
+prompt-toolkit==3.0.6;python_version>="3.6.1"
 pygments==2.5.2;python_version<"3.5"
 pygments==2.6.1;python_version>="3.5"
 ipython==5.10.0;python_version<"3.5"
@@ -49,7 +51,7 @@ brython>=3.8.9
 pyotp==2.4.0
 boto==2.49.0
 cffi==1.14.1
-rich==5.0.0;python_version>="3.6" and python_version<"4.0"
+rich==5.1.2;python_version>="3.6" and python_version<"4.0"
 flake8==3.7.9;python_version<"3.5"
 flake8==3.8.3;python_version>="3.5"
 pyflakes==2.1.1;python_version<"3.5"

@@ -1,53 +1,43 @@
-var http = require('http');
-var express = require('express');
-var path = require('path');
-var app = express();
-var exec = require('child_process').exec;
+const http = require('http');
+const express = require('express');
+const path = require('path');
+const app = express();
+const exec = require('child_process').exec;
+var server_info = '\nServer running at http://127.0.0.1:3000/  (CTRL-C to stop)';
 
-function run_my_first_test() {
-    exec("pytest my_first_test.py");
-}
-
-function run_test_demo_site() {
-    exec("pytest test_demo_site.py");
-}
-
-function run_my_first_test_with_demo_mode() {
-    exec("pytest my_first_test.py --demo_mode");
-}
-
-function run_test_demo_site_with_demo_mode() {
-    exec("pytest test_demo_site.py --demo_mode");
+function run_command(command) {
+    console.log("\n" + command);
+    exec(command, (err, stdout, stderr) => console.log(stdout, server_info));
 }
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
-})
+});
 
 app.get('/run_my_first_test', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     res.redirect('/');
-    run_my_first_test()
-})
+    run_command("pytest my_first_test.py");
+});
 
 app.get('/run_test_demo_site', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     res.redirect('/');
-    run_test_demo_site()
-})
+    run_command("pytest test_demo_site.py");
+});
 
 app.get('/run_my_first_test_with_demo_mode', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     res.redirect('/');
-    run_my_first_test_with_demo_mode()
-})
+    run_command("pytest my_first_test.py --demo_mode");
+});
 
 app.get('/run_test_demo_site_with_demo_mode', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     res.redirect('/');
-    run_test_demo_site_with_demo_mode()
-})
+    run_command("pytest test_demo_site.py --demo_mode");
+});
 
 app.listen(3000, "127.0.0.1", function() {
-    console.log('Server running at http://127.0.0.1:3000/  (CTRL-C to stop)');
+    console.log(server_info);
 });

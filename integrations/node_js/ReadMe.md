@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Creating a SeleniumBase Test Launcher by using NodeJS</h2>
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Creating a SeleniumBase Test Runner with NodeJS</h2>
 
 You can create a customized web app for running SeleniumBase tests by using NodeJS. (This tutorial assumes that you've already installed SeleniumBase by following the instructions from the [top-level ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) file.)
 
@@ -15,7 +15,7 @@ You can create a customized web app for running SeleniumBase tests by using Node
 npm install -g express
 ```
 
-#### 3. Install the Example Test Launcher for SeleniumBase from the ``integrations/node_js`` folder
+#### 3. Install the Example Test Runner for SeleniumBase from the ``integrations/node_js`` folder
 
 ```bash
 npm install
@@ -23,7 +23,7 @@ npm install
 
 (You should see a ``node_modules`` folder appear in your ``node_js`` folder.)
 
-#### 4. Run the NodeJS server for your SeleniumBase Test Launcher web app
+#### 4. Run the NodeJS server for your SeleniumBase Test Runner web app
 
 ```bash
 node server.js
@@ -31,7 +31,7 @@ node server.js
 
 (You can always stop the server by using ``CTRL-C``.)
 
-#### 5. Open the SeleniumBase Test Launcher web app
+#### 5. Open the SeleniumBase Test Runner web app
 
 * Navigate to [http://127.0.0.1:3000/](http://127.0.0.1:3000/)
 
@@ -41,4 +41,4 @@ Click on a button to run a SeleniumBase example test.
 
 #### 7. Expand your web app
 
-Now that you have a web app for launching SeleniumBase tests, you can expand it to run any script that you want after pressing a button.
+Now that you have a web app for running SeleniumBase tests, you can expand it to run any script that you want after pressing a button.

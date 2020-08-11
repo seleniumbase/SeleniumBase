@@ -78,7 +78,7 @@ If you're using ``pytest`` for running tests outside of the SeleniumBase repo, y
 Here are some useful command-line options that come with ``pytest``:
 
 ```bash
--v  # Verbose mode. Print the full name of each test run.
+-v  # Verbose mode. Prints the full name of each test run.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
@@ -93,7 +93,7 @@ Here are some useful command-line options that come with ``pytest``:
 SeleniumBase provides additional ``pytest`` command-line options for tests:
 
 ```bash
---browser=BROWSER  # (The web browser to use. Default: "chrome")
+--browser=BROWSER  # (The web browser to use. Default: "chrome".)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
@@ -103,10 +103,10 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
 --var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
---server=SERVER  # (The server / IP address used by the tests.)
---port=PORT  # (The port that's used by the test server.)
---proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
---agent=STRING  # (Modify the web browser's User-Agent string.)
+--server=SERVER  # (The Selenium Grid server/IP used for tests.)
+--port=PORT  # (The Selenium Grid port used by the test server.)
+--proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
+--proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
