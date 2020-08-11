@@ -10,13 +10,14 @@ from seleniumbase.fixtures import constants
 class SeleniumBrowser(Plugin):
     """
     This plugin adds the following command-line options to nosetests:
-    --browser=BROWSER  (The web browser to use.)
+    --browser=BROWSER  (The web browser to use. Default: "chrome".)
+    --user-data-dir=DIR  (Set the Chrome user data directory to use.)
+    --server=SERVER  (The Selenium Grid server/IP used for tests.)
+    --port=PORT  (The Selenium Grid port used by the test server.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
     --cap-string=STRING  (The web browser's desired capabilities to use.)
-    --user-data-dir=DIR  (Set the Chrome user data directory to use.)
-    --server=SERVER  (The server / IP address used by the tests.)
-    --port=PORT  (The port that's used by the test server.)
-    --proxy=SERVER:PORT  (This is the proxy server:port combo used by tests.)
+    --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
+    --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)

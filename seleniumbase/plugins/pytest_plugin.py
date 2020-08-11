@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ This is the pytest configuration file """
 
+import colorama
 import pytest
 import sys
 from seleniumbase import config as sb_config
@@ -12,9 +13,7 @@ from seleniumbase.fixtures import constants
 def pytest_addoption(parser):
     """
     This plugin adds the following command-line options to pytest:
-    --browser=BROWSER  (The web browser to use. Default: "chrome")
-    --cap-file=FILE  (The web browser's desired capabilities to use.)
-    --cap-string=STRING  (The web browser's desired capabilities to use.)
+    --browser=BROWSER  (The web browser to use. Default: "chrome".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
     --data=DATA  (Extra test data. Access with "self.data" in tests.)
@@ -22,9 +21,12 @@ def pytest_addoption(parser):
     --var2=DATA  (Extra test data. Access with "self.var2" in tests.)
     --var3=DATA  (Extra test data. Access with "self.var3" in tests.)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
-    --server=SERVER  (The server / IP address used by the tests.)
-    --port=PORT  (The port that's used by the test server.)
-    --proxy=SERVER:PORT  (This is the proxy server:port combo used by tests.)
+    --server=SERVER  (The Selenium Grid server/IP used for tests.)
+    --port=PORT  (The Selenium Grid port used by the test server.)
+    --cap-file=FILE  (The web browser's desired capabilities to use.)
+    --cap-string=STRING  (The web browser's desired capabilities to use.)
+    --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
+    --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
@@ -58,8 +60,14 @@ def pytest_addoption(parser):
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
-    parser = parser.getgroup('SeleniumBase',
-                             'SeleniumBase specific configuration options')
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    s_str = "SeleniumBase"
+    s_str = s_str.replace("SeleniumBase", c1 + "Selenium" + c2 + "Base" + cr)
+    s_str = s_str + cr + " " + c3 + "command-line options for pytest" + cr
+    parser = parser.getgroup('SeleniumBase', s_str)
     parser.addoption('--browser',
                      action="store",
                      dest='browser',
@@ -73,7 +81,8 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='with_selenium',
                      default=True,
-                     help="Use if tests need to be run with a web browser.")
+                     help="""(DEPRECATED) Start tests with an open web browser.
+                          (This is ALWAYS True now when importing BaseCase)""")
     parser.addoption('--env',
                      action='store',
                      dest='environment',
@@ -146,7 +155,8 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', '--log-path',
                      dest='log_path',
                      default='latest_logs/',
-                     help='Where log files are saved. (No longer editable!)')
+                     help="""Log files are saved to the "latest_logs/" folder.
+                          (This field is NOT EDITABLE anymore!)""")
     parser.addoption('--archive_logs', '--archive-logs',
                      action="store_true",
                      dest='archive_logs',
