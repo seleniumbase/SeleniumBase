@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 class VisualLayoutFailureTest(BaseCase):
 
-    def test_applitools_layout_change_failure(self):
+    def test_applitools_change(self):
         self.open('https://applitools.com/helloworld?diff1')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="helloworld", baseline=True)
@@ -13,7 +13,7 @@ class VisualLayoutFailureTest(BaseCase):
         self.click("button")
         self.check_window(name="helloworld", level=3)
 
-    def test_python_home_layout_change_failure(self):
+    def test_python_home_change(self):
         self.open('https://python.org/')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="python_home", baseline=True)
@@ -21,7 +21,7 @@ class VisualLayoutFailureTest(BaseCase):
         self.remove_element('a.donate-button')
         self.check_window(name="python_home", level=3)
 
-    def test_xkcd_layout_change_failure(self):
+    def test_xkcd_logo_change(self):
         self.open('https://xkcd.com/554/')
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="xkcd_554", baseline=True)
