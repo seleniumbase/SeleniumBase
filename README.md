@@ -15,7 +15,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20here-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/badge/docs-%20seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
@@ -283,7 +283,7 @@ The code above will leave your browser window open in case there's a failure. (i
 Here are some useful command-line options that come with ``pytest``:
 
 ```bash
--v  # Verbose mode. Print the full name of each test run.
+-v  # Verbose mode. Prints the full name of each test run.
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
@@ -298,7 +298,7 @@ Here are some useful command-line options that come with ``pytest``:
 SeleniumBase provides additional ``pytest`` command-line options for tests:
 
 ```bash
---browser=BROWSER  # (The web browser to use. Default: "chrome")
+--browser=BROWSER  # (The web browser to use. Default: "chrome".)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
@@ -308,9 +308,10 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
 --var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
---server=SERVER  # (The server / IP address used by the tests.)
---port=PORT  # (The port that's used by the test server.)
---proxy=SERVER:PORT  # (This is the proxy server:port combo used by tests.)
+--server=SERVER  # (The Selenium Grid server/IP used for tests.)
+--port=PORT  # (The Selenium Grid port used by the test server.)
+--proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
+--proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
