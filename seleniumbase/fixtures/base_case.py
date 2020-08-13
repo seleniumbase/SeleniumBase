@@ -4640,6 +4640,16 @@ class BaseCase(unittest.TestCase):
             duration = float(duration) + 0.15
             time.sleep(float(duration))
 
+    def post_message_and_highlight(
+            self, message, selector, by=By.CSS_SELECTOR):
+        """ Post a message on the screen and highlight an element.
+            Arguments:
+                message: The message to display.
+                selector: The selector of the Element to highlight.
+                by: The type of selector to search by. (Default: CSS Selector)
+        """
+        self.__highlight_with_assert_success(message, selector, by=by)
+
     def post_success_message(self, message, duration=None, pause=True):
         """ Post a success message on the screen with Messenger.
             Arguments:
