@@ -197,9 +197,17 @@ class Testgeval(BaseCase):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def voer_het_script_uit(self, *args, **kwargs):
+    def script_uitvoeren(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
+
+    def script_veilig_uitvoeren(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def activeer_jquery(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
 
     def blokkeer_advertenties(self, *args, **kwargs):
         # ad_block()

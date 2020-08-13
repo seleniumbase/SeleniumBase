@@ -197,9 +197,17 @@ class ТестНаСелен(BaseCase):  # noqa
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def выполнить_скрипт(self, *args, **kwargs):
+    def выполнение_скрипта(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
+
+    def безопасное_выполнение_скрипта(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def активировать_JQUERY(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
 
     def блокировать_рекламу(self, *args, **kwargs):
         # ad_block()

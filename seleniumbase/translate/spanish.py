@@ -201,6 +201,14 @@ class CasoDePrueba(BaseCase):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
+    def ejecutar_script_de_forma_segura(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def activar_jquery(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
+
     def bloquear_anuncios(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)

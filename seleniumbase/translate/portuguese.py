@@ -197,9 +197,17 @@ class CasoDeTeste(BaseCase):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def executar_o_script(self, *args, **kwargs):
+    def executar_script(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
+
+    def executar_script_com_segurança(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def ativar_jquery(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
 
     def bloquear_anúncios(self, *args, **kwargs):
         # ad_block()
