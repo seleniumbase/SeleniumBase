@@ -675,6 +675,20 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
     driver.execute_script(script)
 
 
+def get_scroll_distance_to_element(driver, element):
+    try:
+        scroll_position = driver.execute_script("return window.scrollY;")
+        element_location = None
+        element_location = element.location['y']
+        element_location = element_location - 130
+        if element_location < 0:
+            element_location = 0
+        distance = element_location - scroll_position
+        return distance
+    except Exception:
+        return 0
+
+
 def scroll_to_element(driver, element):
     element_location = None
     try:
@@ -716,7 +730,7 @@ def slow_scroll_to_element(driver, element, browser):
         step_value = float(distance) / total_steps
         new_position = scroll_position
         for y in range(int(total_steps)):
-            time.sleep(0.0114)
+            time.sleep(0.011)
             new_position += step_value
             scroll_script = "window.scrollTo(0, %s);" % new_position
             driver.execute_script(scroll_script)
@@ -727,6 +741,8 @@ def slow_scroll_to_element(driver, element, browser):
     if distance > 430 or distance < -300:
         # Add small recovery time for long-distance slow-scrolling
         time.sleep(0.162)
+    else:
+        time.sleep(0.045)
 
 
 def get_drag_and_drop_script():
