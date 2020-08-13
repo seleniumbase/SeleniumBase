@@ -39,6 +39,13 @@ class VisualBaseline:
     STORAGE_FOLDER = "visual_baseline"
 
 
+class Values:
+    # Demo Mode has slow scrolling to see where you are on the page better.
+    # However, a regular slow scroll takes too long to cover big distances.
+    # If the scroll distance is greater than SSMD, a slow scroll speeds up.
+    SSMD = 900  # Smooth Scroll Minimum Distance (for advanced slow scroll)
+
+
 class JQuery:
     VER = "3.4.1"
     MIN_JS = (
