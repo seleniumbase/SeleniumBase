@@ -201,6 +201,14 @@ class セレニウムテストケース(BaseCase):  # noqa
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
+    def スクリプトを安全に実行する(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def JQUERYを読み込む(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
+
     def ブロック広告(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)

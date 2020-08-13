@@ -794,14 +794,38 @@ class MD:
     md["execute_script"] = ["*"] * num_langs
     md["execute_script"][0] = "execute_script"
     md["execute_script"][1] = "执行脚本"
-    md["execute_script"][2] = "voer_het_script_uit"
-    md["execute_script"][3] = "exécuter_le_script"
-    md["execute_script"][4] = "esegui_script"
+    md["execute_script"][2] = "script_uitvoeren"
+    md["execute_script"][3] = "exécuter_script"
+    md["execute_script"][4] = "eseguire_script"
     md["execute_script"][5] = "スクリプトを実行する"
     md["execute_script"][6] = "스크립트를_실행하려면"
-    md["execute_script"][7] = "executar_o_script"
-    md["execute_script"][8] = "выполнить_скрипт"
+    md["execute_script"][7] = "executar_script"
+    md["execute_script"][8] = "выполнение_скрипта"
     md["execute_script"][9] = "ejecutar_script"
+
+    md["safe_execute_script"] = ["*"] * num_langs
+    md["safe_execute_script"][0] = "safe_execute_script"
+    md["safe_execute_script"][1] = "安全执行脚本"
+    md["safe_execute_script"][2] = "script_veilig_uitvoeren"
+    md["safe_execute_script"][3] = "exécuter_script_sans_risque"
+    md["safe_execute_script"][4] = "eseguire_script_sicuro"
+    md["safe_execute_script"][5] = "スクリプトを安全に実行する"
+    md["safe_execute_script"][6] = "스크립트를_안전하게_실행"
+    md["safe_execute_script"][7] = "executar_script_com_segurança"
+    md["safe_execute_script"][8] = "безопасное_выполнение_скрипта"
+    md["safe_execute_script"][9] = "ejecutar_script_de_forma_segura"
+
+    md["activate_jquery"] = ["*"] * num_langs
+    md["activate_jquery"][0] = "activate_jquery"
+    md["activate_jquery"][1] = "加载JQUERY"
+    md["activate_jquery"][2] = "activeer_jquery"
+    md["activate_jquery"][3] = "activer_jquery"
+    md["activate_jquery"][4] = "attiva_jquery"
+    md["activate_jquery"][5] = "JQUERYを読み込む"
+    md["activate_jquery"][6] = "JQUERY_로드"
+    md["activate_jquery"][7] = "ativar_jquery"
+    md["activate_jquery"][8] = "активировать_JQUERY"
+    md["activate_jquery"][9] = "activar_jquery"
 
     md["ad_block"] = ["*"] * num_langs
     md["ad_block"][0] = "ad_block"

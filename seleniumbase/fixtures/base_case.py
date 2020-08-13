@@ -54,6 +54,8 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+SSMD = constants.Values.SSMD  # Smooth Scrolling
+JS_Exc = selenium_exceptions.JavascriptException
 ECI_Exception = selenium_exceptions.ElementClickInterceptedException
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
@@ -136,7 +138,7 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         if delay and delay > 0:
@@ -199,8 +201,10 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.click(selector, by=by, timeout=timeout, delay=1.05)
+        elif self.slow_mode:
+            self.click(selector, by=by, timeout=timeout, delay=0.65)
         else:
             # Demo Mode already includes a small delay
             self.click(selector, by=by, timeout=timeout, delay=0.25)
@@ -215,7 +219,7 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
@@ -285,7 +289,7 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         try:
             element.clear()
@@ -353,7 +357,7 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
@@ -460,17 +464,23 @@ class BaseCase(unittest.TestCase):
 
     def go_back(self):
         self.__last_page_load_url = None
-        self.driver.back()
-        if self.browser == "safari":
-            self.driver.refresh()
+        if self.browser != "safari":
+            self.driver.back()
+        else:
+            self.sleep(0.05)
+            self.execute_script("window.location=document.referrer;")
+            self.sleep(0.05)
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
     def go_forward(self):
         self.__last_page_load_url = None
-        self.driver.forward()
-        if self.browser == "safari":
-            self.driver.refresh()
+        if self.browser != "safari":
+            self.driver.forward()
+        else:
+            self.sleep(0.05)
+            self.execute_script("window.history.forward();")
+            self.sleep(0.05)
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -593,6 +603,23 @@ class BaseCase(unittest.TestCase):
             self.open(self.__get_href_from_link_text(link_text))
             return
         if self.browser == "safari":
+            if self.demo_mode:
+                self.wait_for_link_text_present(link_text, timeout=timeout)
+                try:
+                    self.__jquery_slow_scroll_to(link_text, by=By.LINK_TEXT)
+                except Exception:
+                    pass
+                o_bs = ''  # original_box_shadow
+                loops = settings.HIGHLIGHTS
+                selector = self.convert_to_css_selector(
+                    link_text, by=By.LINK_TEXT)
+                selector = self.__make_css_match_first_element_only(selector)
+                try:
+                    selector = re.escape(selector)
+                    selector = self.__escape_quotes_if_needed(selector)
+                    self.__highlight_with_jquery(selector, loops, o_bs)
+                except Exception:
+                    pass  # JQuery probably couldn't load. Skip highlighting.
             self.__jquery_click(link_text, by=By.LINK_TEXT)
             return
         if not self.is_link_text_present(link_text):
@@ -1029,7 +1056,7 @@ class BaseCase(unittest.TestCase):
                 continue  # ElementClickInterceptedException (Overlay likely)
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.03)
+                time.sleep(0.04)
                 try:
                     if element.is_displayed():
                         self.__scroll_to_element(element)
@@ -1057,7 +1084,7 @@ class BaseCase(unittest.TestCase):
             element.click()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.03)
             self.__scroll_to_element(element)
             element.click()
 
@@ -1371,7 +1398,7 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_visible_text(option)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.03)
             element = self.wait_for_element_present(
                 dropdown_selector, by=dropdown_by, timeout=timeout)
             if option_by == "index":
@@ -1581,11 +1608,11 @@ class BaseCase(unittest.TestCase):
             it's important that the jQuery library has been loaded first.
             This method will load jQuery if it wasn't already loaded. """
         try:
-            self.execute_script(script)
+            return self.execute_script(script)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            self.execute_script(script)
+            return self.execute_script(script)
 
     def set_window_rect(self, x, y, width, height):
         self.driver.set_window_rect(x, y, width, height)
@@ -2047,10 +2074,18 @@ class BaseCase(unittest.TestCase):
             loops = settings.HIGHLIGHTS
         if scroll:
             try:
-                self.__slow_scroll_to_element(element)
-            except (StaleElementReferenceException, ENI_Exception):
+                if self.browser != "safari":
+                    scroll_distance = js_utils.get_scroll_distance_to_element(
+                        self.driver, element)
+                    if abs(scroll_distance) > SSMD:
+                        self.__jquery_slow_scroll_to(selector, by)
+                    else:
+                        self.__slow_scroll_to_element(element)
+                else:
+                    self.__jquery_slow_scroll_to(selector, by)
+            except (StaleElementReferenceException, ENI_Exception, JS_Exc):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.05)
+                time.sleep(0.03)
                 element = self.wait_for_element_visible(
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
@@ -2071,7 +2106,7 @@ class BaseCase(unittest.TestCase):
             style = element.get_attribute('style')
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.03)
             element = self.wait_for_element_visible(
                 selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
             style = element.get_attribute('style')
@@ -2110,7 +2145,7 @@ class BaseCase(unittest.TestCase):
             return
         element = self.wait_for_element_present(selector)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         for i in range(int(times)):
             try:
@@ -2131,7 +2166,7 @@ class BaseCase(unittest.TestCase):
             return
         element = self.wait_for_element_present(selector)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         for i in range(int(times)):
             try:
@@ -2152,7 +2187,7 @@ class BaseCase(unittest.TestCase):
             return
         element = self.wait_for_element_present(selector)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         for i in range(int(times)):
             try:
@@ -2173,7 +2208,7 @@ class BaseCase(unittest.TestCase):
             return
         element = self.wait_for_element_present(selector)
         self.__demo_mode_highlight_if_active(selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         for i in range(int(times)):
             try:
@@ -2201,7 +2236,7 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element, selector, by)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.03)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             self.__scroll_to_element(element, selector, by)
@@ -2216,10 +2251,15 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         try:
-            self.__slow_scroll_to_element(element)
-        except (StaleElementReferenceException, ENI_Exception):
+            scroll_distance = js_utils.get_scroll_distance_to_element(
+                self.driver, element)
+            if abs(scroll_distance) > SSMD:
+                self.__jquery_slow_scroll_to(selector, by)
+            else:
+                self.__slow_scroll_to_element(element)
+        except (StaleElementReferenceException, ENI_Exception, JS_Exc):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.03)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             self.__slow_scroll_to_element(element)
@@ -2266,7 +2306,7 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
-            if not self.demo_mode:
+            if not self.demo_mode and not self.slow_mode:
                 self.__scroll_to_element(element, selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)
@@ -2880,7 +2920,7 @@ class BaseCase(unittest.TestCase):
         orginal_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         self.__demo_mode_highlight_if_active(orginal_selector, by)
-        if not self.demo_mode:
+        if not self.demo_mode and not self.slow_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
         if type(text) is int or type(text) is float:
             text = str(text)
@@ -4600,6 +4640,16 @@ class BaseCase(unittest.TestCase):
             duration = float(duration) + 0.15
             time.sleep(float(duration))
 
+    def post_message_and_highlight(
+            self, message, selector, by=By.CSS_SELECTOR):
+        """ Post a message on the screen and highlight an element.
+            Arguments:
+                message: The message to display.
+                selector: The selector of the Element to highlight.
+                by: The type of selector to search by. (Default: CSS Selector)
+        """
+        self.__highlight_with_assert_success(message, selector, by=by)
+
     def post_success_message(self, message, duration=None, pause=True):
         """ Post a success message on the screen with Messenger.
             Arguments:
@@ -5578,6 +5628,30 @@ class BaseCase(unittest.TestCase):
                   % css_selector)
         self.execute_script(script)
 
+    def __jquery_slow_scroll_to(self, selector, by=By.CSS_SELECTOR):
+        selector, by = self.__recalculate_selector(selector, by)
+        element = self.wait_for_element_present(
+            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        dist = js_utils.get_scroll_distance_to_element(self.driver, element)
+        time_offset = 0
+        try:
+            if dist and abs(dist) > SSMD:
+                time_offset = int(float(abs(dist) - SSMD) / 12.5)
+                if time_offset > 950:
+                    time_offset = 950
+        except Exception:
+            time_offset = 0
+        scroll_time_ms = 550 + time_offset
+        sleep_time = 0.625 + (float(time_offset) / 1000.0)
+        selector = self.convert_to_css_selector(selector, by=by)
+        selector = self.__make_css_match_first_element_only(selector)
+        scroll_script = (
+            """jQuery([document.documentElement, document.body]).animate({
+            scrollTop: jQuery('%s').offset().top - 130}, %s);
+            """ % (selector, scroll_time_ms))
+        self.safe_execute_script(scroll_script)
+        self.sleep(sleep_time)
+
     def __jquery_click(self, selector, by=By.CSS_SELECTOR):
         """ Clicks an element using jQuery. Different from using pure JS. """
         selector, by = self.__recalculate_selector(selector, by)
@@ -5762,17 +5836,24 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by)
         elif self.slow_mode:
             # Just do the slow scroll part of the highlight() method
+            self.sleep(0.08)
             selector, by = self.__recalculate_selector(selector, by)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=settings.SMALL_TIMEOUT)
             try:
-                self.__slow_scroll_to_element(element)
+                scroll_distance = js_utils.get_scroll_distance_to_element(
+                    self.driver, element)
+                if abs(scroll_distance) > SSMD:
+                    self.__jquery_slow_scroll_to(selector, by)
+                else:
+                    self.__slow_scroll_to_element(element)
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.05)
+                time.sleep(0.03)
                 element = self.wait_for_element_visible(
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
+            self.sleep(0.12)
 
     def __scroll_to_element(self, element, selector=None, by=By.CSS_SELECTOR):
         success = js_utils.scroll_to_element(self.driver, element)
@@ -5796,10 +5877,15 @@ class BaseCase(unittest.TestCase):
             # Don't highlight if can't convert to CSS_SELECTOR
             return
         try:
-            self.__slow_scroll_to_element(element)
+            scroll_distance = js_utils.get_scroll_distance_to_element(
+                self.driver, element)
+            if abs(scroll_distance) > SSMD:
+                self.__jquery_slow_scroll_to(selector, by)
+            else:
+                self.__slow_scroll_to_element(element)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.03)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=settings.SMALL_TIMEOUT)
             self.__slow_scroll_to_element(element)

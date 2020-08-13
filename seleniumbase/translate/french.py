@@ -197,9 +197,17 @@ class CasDeBase(BaseCase):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def exécuter_le_script(self, *args, **kwargs):
+    def exécuter_script(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
+
+    def exécuter_script_sans_risque(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def activer_jquery(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
 
     def annonces_de_bloc(self, *args, **kwargs):
         # ad_block()

@@ -197,9 +197,17 @@ class CasoDiProva(BaseCase):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)
 
-    def esegui_script(self, *args, **kwargs):
+    def eseguire_script(self, *args, **kwargs):
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
+
+    def eseguire_script_sicuro(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def attiva_jquery(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
 
     def bloccare_gli_annunci(self, *args, **kwargs):
         # ad_block()

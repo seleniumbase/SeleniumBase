@@ -421,6 +421,8 @@ self.activate_messenger()
 
 self.post_message(message, duration=None, pause=True, style="info")
 
+self.post_message_and_highlight(message, selector, by=By.CSS_SELECTOR)
+
 self.post_success_message(message, duration=None, pause=True)
 
 self.post_error_message(message, duration=None, pause=True)

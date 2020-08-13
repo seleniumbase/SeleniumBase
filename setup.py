@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.46.2',
+    version='1.46.3',
     description='Web Automation and Test Framework - https://seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -90,10 +90,10 @@ setup(
         "Topic :: Utilities",
     ],
     install_requires=[
-        'pip>=20.2.1',
+        'pip>=20.2.2',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=49.3.1;python_version>="3.5"',
+        'setuptools>=49.3.2;python_version>="3.5"',
         'setuptools-scm',
         'wheel',
         'six',

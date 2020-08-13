@@ -201,6 +201,14 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
+    def 스크립트를_안전하게_실행(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def JQUERY_로드(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
+
     def 광고_차단(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)

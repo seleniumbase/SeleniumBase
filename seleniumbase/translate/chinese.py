@@ -201,6 +201,14 @@ class 硒测试用例(BaseCase):  # noqa
         # execute_script(script)
         return self.execute_script(*args, **kwargs)
 
+    def 安全执行脚本(self, *args, **kwargs):
+        # safe_execute_script(script)
+        return self.safe_execute_script(*args, **kwargs)
+
+    def 加载JQUERY(self, *args, **kwargs):
+        # activate_jquery()
+        return self.activate_jquery(*args, **kwargs)
+
     def 阻止广告(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
