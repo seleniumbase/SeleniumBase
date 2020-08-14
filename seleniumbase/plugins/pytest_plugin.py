@@ -520,6 +520,7 @@ def pytest_configure(config):
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
+    sb_config._sb_node = {}  # sb node dictionary (Used with the sb fixture)
 
     if sb_config.reuse_session:
         arg_join = " ".join(sys.argv)
@@ -592,19 +593,35 @@ def sb(request):
     from seleniumbase import BaseCase
 
     class BaseClass(BaseCase):
-        def base_method():
+
+        def setUp(self):
+            super(BaseClass, self).setUp()
+
+        def tearDown(self):
+            self.save_teardown_screenshot()
+            super(BaseClass, self).tearDown()
+
+        def base_method(self):
             pass
 
     if request.cls:
         request.cls.sb = BaseClass("base_method")
         request.cls.sb.setUp()
+        request.cls.sb._needs_tearDown = True
+        sb_config._sb_node[request.node.nodeid] = request.cls.sb
         yield request.cls.sb
-        request.cls.sb.tearDown()
+        if request.cls.sb._needs_tearDown:
+            request.cls.sb.tearDown()
+            request.cls.sb._needs_tearDown = False
     else:
         sb = BaseClass("base_method")
         sb.setUp()
+        sb._needs_tearDown = True
+        sb_config._sb_node[request.node.nodeid] = sb
         yield sb
-        sb.tearDown()
+        if sb._needs_tearDown:
+            sb.tearDown()
+            sb._needs_tearDown = False
 
 
 @pytest.mark.hookwrapper
@@ -614,9 +631,36 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()
     if pytest_html and report.when == 'call':
         try:
-            extra_report = item._testcase._html_report_extra
+            extra_report = None
+            if hasattr(item, "_testcase"):
+                extra_report = item._testcase._html_report_extra
+            elif hasattr(item.instance, "sb") or (
+                    item.nodeid in sb_config._sb_node):
+                if not hasattr(item.instance, "sb"):
+                    sb_node = sb_config._sb_node[item.nodeid]
+                else:
+                    sb_node = item.instance.sb
+                test_id = item.nodeid
+                if not test_id:
+                    test_id = "unidentified_TestCase"
+                test_id = test_id.replace(' ', '_')
+                if '[' in test_id:
+                    import re
+                    test_id_intro = test_id.split('[')[0]
+                    parameter = test_id.split('[')[1]
+                    parameter = re.sub(re.compile(r'\W'), '', parameter)
+                    test_id = test_id_intro + "__" + parameter
+                test_id = test_id.replace('/', '.').replace('\\', '.')
+                test_id = test_id.replace('::', '.').replace('.py', '')
+                sb_node._sb_test_identifier = test_id
+                if sb_node._needs_tearDown:
+                    sb_node.tearDown()
+                    sb_node._needs_tearDown = False
+                extra_report = sb_node._html_report_extra
+            else:
+                return
             extra = getattr(report, 'extra', [])
-            if extra_report[1]["content"]:
+            if len(extra_report) > 1 and extra_report[1]["content"]:
                 report.extra = extra + extra_report
         except Exception:
             pass
