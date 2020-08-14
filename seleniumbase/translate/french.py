@@ -29,6 +29,10 @@ class CasDeBase(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
+    def cliquer_si_affiché(self, *args, **kwargs):  # noqa
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
     def cliquer_texte_du_lien(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
@@ -49,7 +53,7 @@ class CasDeBase(BaseCase):
         # get_text(selector, text)
         return self.get_text(*args, **kwargs)
 
-    def vérifier_texte(self, *args, **kwargs):  # noqa
+    def vérifier_texte(self, *args, **kwargs):
         # assert_text(text, selector)
         return self.assert_text(*args, **kwargs)
 
@@ -173,7 +177,7 @@ class CasDeBase(BaseCase):
         # submit(selector)
         return self.submit(*args, **kwargs)
 
-    def js_clic(self, *args, **kwargs):
+    def js_cliquer(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
 

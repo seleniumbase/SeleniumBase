@@ -292,24 +292,36 @@ class MD:
     md["slow_click"][1] = "慢单击"
     md["slow_click"][2] = "klik_langzaam"
     md["slow_click"][3] = "cliquer_lentement"
-    md["slow_click"][4] = "clicca_lentamente"
+    md["slow_click"][4] = "clic_lentamente"
     md["slow_click"][5] = "ゆっくりクリックして"
     md["slow_click"][6] = "천천히_클릭"
     md["slow_click"][7] = "clique_devagar"
     md["slow_click"][8] = "нажмите_медленно"
-    md["slow_click"][9] = "haga_clic_lentamente"
+    md["slow_click"][9] = "clic_lentamente"
+
+    md["click_if_visible"] = ["*"] * num_langs
+    md["click_if_visible"][0] = "click_if_visible"
+    md["click_if_visible"][1] = "如果可见请单击"
+    md["click_if_visible"][2] = "klik_indien_zichtbaar"
+    md["click_if_visible"][3] = "cliquer_si_affiché"
+    md["click_if_visible"][4] = "clic_se_visto"
+    md["click_if_visible"][5] = "表示されている場合はクリック"
+    md["click_if_visible"][6] = "보이는_경우_클릭"
+    md["click_if_visible"][7] = "clique_se_está_visível"
+    md["click_if_visible"][8] = "нажмите_если_виден"
+    md["click_if_visible"][9] = "clic_si_está_muestra"
 
     md["click_link_text"] = ["*"] * num_langs
     md["click_link_text"][0] = "click_link_text"
     md["click_link_text"][1] = "单击链接文本"
     md["click_link_text"][2] = "klik_linktekst"
     md["click_link_text"][3] = "cliquer_texte_du_lien"
-    md["click_link_text"][4] = "fare_clic_testo_del_collegamento"
+    md["click_link_text"][4] = "clic_testo_del_collegamento"
     md["click_link_text"][5] = "リンクテキストをクリックします"
     md["click_link_text"][6] = "링크_텍스트를_클릭합니다"
     md["click_link_text"][7] = "clique_texto_do_link"
     md["click_link_text"][8] = "нажмите_ссылку"
-    md["click_link_text"][9] = "haga_clic_texto_del_enlace"
+    md["click_link_text"][9] = "clic_texto_del_enlace"
 
     md["update_text"] = ["*"] * num_langs
     md["update_text"][0] = "update_text"
@@ -405,7 +417,7 @@ class MD:
     md["assert_element_visible"][6] = "요소가_보이는지_확인"
     md["assert_element_visible"][7] = "verificar_elemento_visível"
     md["assert_element_visible"][8] = "подтвердить_элемент_виден"
-    md["assert_element_visible"][9] = "verificar_elemento_se_muestre"
+    md["assert_element_visible"][9] = "verificar_elemento_se_muestra"
 
     md["assert_element_not_visible"] = ["*"] * num_langs
     md["assert_element_not_visible"][0] = "assert_element_not_visible"
@@ -417,7 +429,7 @@ class MD:
     md["assert_element_not_visible"][6] = "요소가_보이지_않는지_확인"
     md["assert_element_not_visible"][7] = "verificar_elemento_não_visível"
     md["assert_element_not_visible"][8] = "подтвердить_элемент_не_виден"
-    md["assert_element_not_visible"][9] = "verificar_elemento_no_se_muestre"
+    md["assert_element_not_visible"][9] = "verificar_elemento_no_se_muestra"
 
     md["assert_element_present"] = ["*"] * num_langs
     md["assert_element_present"][0] = "assert_element_present"
@@ -645,7 +657,7 @@ class MD:
     md["wait_for_element_visible"][6] = "요소가_표시_될_때까지_기다립니다"
     md["wait_for_element_visible"][7] = "aguardar_o_elemento_visível"
     md["wait_for_element_visible"][8] = "ждать_элемента_виден"
-    md["wait_for_element_visible"][9] = "espera_el_elemento_se_muestre"
+    md["wait_for_element_visible"][9] = "espera_el_elemento_se_muestra"
 
     md["wait_for_element_not_visible"] = ["*"] * num_langs
     md["wait_for_element_not_visible"][0] = "wait_for_element_not_visible"
@@ -657,7 +669,7 @@ class MD:
     md["wait_for_element_not_visible"][6] = "요소가_사라질_때까지_기다리십시오"
     md["wait_for_element_not_visible"][7] = "aguardar_o_elemento_não_visível"
     md["wait_for_element_not_visible"][8] = "ждать_элемента_не_виден"
-    md["wait_for_element_not_visible"][9] = "espera_el_elemento_no_se_muestre"
+    md["wait_for_element_not_visible"][9] = "espera_el_elemento_no_se_muestra"
 
     md["wait_for_element_present"] = ["*"] * num_langs
     md["wait_for_element_present"][0] = "wait_for_element_present"
@@ -723,7 +735,7 @@ class MD:
     md["js_click"][0] = "js_click"
     md["js_click"][1] = "JS单击"
     md["js_click"][2] = "js_klik"
-    md["js_click"][3] = "js_clic"
+    md["js_click"][3] = "js_cliquer"
     md["js_click"][4] = "js_fare_clic"
     md["js_click"][5] = "JSクリックして"
     md["js_click"][6] = "JS_클릭"
@@ -1085,12 +1097,12 @@ class MD:
     md["click_visible_elements"][1] = "单击可见元素"
     md["click_visible_elements"][2] = "klik_zichtbare_elementen"
     md["click_visible_elements"][3] = "cliquer_éléments_visibles"
-    md["click_visible_elements"][4] = "fare_clic_sugli_elementi_visibili"
+    md["click_visible_elements"][4] = "clic_sugli_elementi_visibili"
     md["click_visible_elements"][5] = "表示要素をクリックします"
     md["click_visible_elements"][6] = "페이지_요소를_클릭_합니다"
     md["click_visible_elements"][7] = "clique_nos_elementos_visíveis"
     md["click_visible_elements"][8] = "нажмите_видимые_элементы"
-    md["click_visible_elements"][9] = "haga_clic_en_elementos_visibles"
+    md["click_visible_elements"][9] = "clic_en_elementos_visibles"
 
     md["select_option_by_text"] = ["*"] * num_langs
     md["select_option_by_text"][0] = "select_option_by_text"
@@ -1864,12 +1876,12 @@ class MD:
     md["click_link"][1] = "单击链接文本"
     md["click_link"][2] = "klik_linktekst"
     md["click_link"][3] = "cliquer_texte_du_lien"
-    md["click_link"][4] = "fare_clic_testo_del_collegamento"
+    md["click_link"][4] = "clic_testo_del_collegamento"
     md["click_link"][5] = "リンクテキストをクリックします"
     md["click_link"][6] = "링크_텍스트를_클릭합니다"
     md["click_link"][7] = "clique_texto_do_link"
     md["click_link"][8] = "нажмите_ссылку"
-    md["click_link"][9] = "haga_clic_texto_del_enlace"
+    md["click_link"][9] = "clic_texto_del_enlace"
 
     # "send_keys" -> duplicate of "add_text"
     md["send_keys"] = ["*"] * num_langs

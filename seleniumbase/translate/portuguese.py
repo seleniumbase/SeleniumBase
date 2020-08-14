@@ -29,6 +29,10 @@ class CasoDeTeste(BaseCase):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
+    def clique_se_está_visível(self, *args, **kwargs):  # noqa
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
     def clique_texto_do_link(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
@@ -65,7 +69,7 @@ class CasoDeTeste(BaseCase):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
-    def verificar_elemento_visível(self, *args, **kwargs):  # noqa
+    def verificar_elemento_visível(self, *args, **kwargs):
         # assert_element_visible(selector)  # Same as self.assert_element()
         return self.assert_element_visible(*args, **kwargs)
 

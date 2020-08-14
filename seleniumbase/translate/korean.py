@@ -29,6 +29,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
+    def 보이는_경우_클릭(self, *args, **kwargs):
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
     def 링크_텍스트를_클릭합니다(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)

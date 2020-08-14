@@ -29,6 +29,10 @@ class 硒测试用例(BaseCase):  # noqa
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
+    def 如果可见请单击(self, *args, **kwargs):
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
     def 单击链接文本(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
