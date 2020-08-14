@@ -20,6 +20,7 @@ class GitHubTests(BaseCase):
         self.open("https://github.com/")
         self.type("input.header-search-input", "SeleniumBase\n")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
+        self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
         self.assert_element("div.repository-content")
         self.assert_text("SeleniumBase", "h1")
         self.slow_click('a[title="seleniumbase"]')
