@@ -84,6 +84,7 @@ class BaseCase(unittest.TestCase):
         self._language = "English"
         self._presentation_slides = {}
         self._presentation_transition = {}
+        self._sb_test_identifier = None
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
@@ -6315,7 +6316,9 @@ class BaseCase(unittest.TestCase):
 
     def __has_exception(self):
         has_exception = False
-        if sys.version_info[0] >= 3 and hasattr(self, '_outcome'):
+        if hasattr(sys, 'last_traceback') and sys.last_traceback is not None:
+            has_exception = True
+        elif sys.version_info[0] >= 3 and hasattr(self, '_outcome'):
             if hasattr(self._outcome, 'errors') and self._outcome.errors:
                 has_exception = True
         else:
@@ -6326,6 +6329,8 @@ class BaseCase(unittest.TestCase):
         test_id = "%s.%s.%s" % (self.__class__.__module__,
                                 self.__class__.__name__,
                                 self._testMethodName)
+        if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
+            test_id = self._sb_test_identifier
         return test_id
 
     def __create_log_path_as_needed(self, test_logpath):

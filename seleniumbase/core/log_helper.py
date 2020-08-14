@@ -37,24 +37,41 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     data_to_save.append("Last Page: %s" % last_page)
     data_to_save.append("  Browser: %s" % browser)
     data_to_save.append("Timestamp: %s" % int(time.time()))
-    if sys.version_info[0] >= 3 and hasattr(test, '_outcome'):
-        if test._outcome.errors:
-            try:
-                exc_message = test._outcome.errors[0][1][1]
-                traceback_address = test._outcome.errors[0][1][2]
-                traceback_list = traceback.format_list(
-                    traceback.extract_tb(traceback_address)[1:])
-                traceback_message = ''.join(traceback_list).strip()
-            except Exception:
-                exc_message = "(Unknown Exception)"
-                traceback_message = "(Unknown Traceback)"
-            data_to_save.append("Traceback: " + traceback_message)
-            data_to_save.append("Exception: " + str(exc_message))
+    if sys.version_info[0] >= 3 and hasattr(test, '_outcome') and (
+            hasattr(test._outcome, 'errors') and test._outcome.errors):
+        try:
+            exc_message = test._outcome.errors[0][1][1]
+            traceback_address = test._outcome.errors[0][1][2]
+            traceback_list = traceback.format_list(
+                traceback.extract_tb(traceback_address)[1:])
+            traceback_message = ''.join(traceback_list).strip()
+        except Exception:
+            exc_message = "(Unknown Exception)"
+            traceback_message = "(Unknown Traceback)"
+        data_to_save.append("Traceback: " + traceback_message)
+        data_to_save.append("Exception: " + str(exc_message))
     else:
-        data_to_save.append("Traceback: " + ''.join(
+        the_traceback = None
+        the_traceback = ''.join(
             traceback.format_exception(sys.exc_info()[0],
                                        sys.exc_info()[1],
-                                       sys.exc_info()[2])))
+                                       sys.exc_info()[2]))
+        if not the_traceback or len(str(the_traceback)) < 30 or (
+                the_traceback.endswith("StopIteration\n")):
+            good_stack = []
+            the_stacks = traceback.format_list(
+                traceback.extract_tb(sys.last_traceback))
+            for stack in the_stacks:
+                if "/site-packages/pluggy/" not in stack:
+                    if "/site-packages/_pytest/" not in stack:
+                        good_stack.append(stack)
+            the_traceback = ''.join(good_stack)
+            data_to_save.append("Traceback: " + the_traceback)
+            last_value = sys.last_value
+            if last_value:
+                data_to_save.append("Exception: " + str(last_value))
+        else:
+            data_to_save.append("Traceback: " + the_traceback)
     log_file.writelines("\r\n".join(data_to_save))
     log_file.close()
 

@@ -25,11 +25,15 @@ class CasoDePrueba(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
-    def haga_clic_lentamente(self, *args, **kwargs):
+    def clic_lentamente(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def haga_clic_texto_del_enlace(self, *args, **kwargs):
+    def clic_si_está_muestra(self, *args, **kwargs):  # noqa
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
+    def clic_texto_del_enlace(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -65,11 +69,11 @@ class CasoDePrueba(BaseCase):
         # assert_element(selector)
         return self.assert_element(*args, **kwargs)
 
-    def verificar_elemento_se_muestre(self, *args, **kwargs):
+    def verificar_elemento_se_muestra(self, *args, **kwargs):
         # assert_element_visible(selector)  # Same as self.assert_element()
         return self.assert_element_visible(*args, **kwargs)
 
-    def verificar_elemento_no_se_muestre(self, *args, **kwargs):
+    def verificar_elemento_no_se_muestra(self, *args, **kwargs):
         # assert_element_not_visible(selector)
         return self.assert_element_not_visible(*args, **kwargs)
 
@@ -81,7 +85,7 @@ class CasoDePrueba(BaseCase):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
-    def verificar_título(self, *args, **kwargs):  # noqa
+    def verificar_título(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
 
@@ -145,11 +149,11 @@ class CasoDePrueba(BaseCase):
         # wait_for_element(selector)
         return self.wait_for_element(*args, **kwargs)
 
-    def espera_el_elemento_se_muestre(self, *args, **kwargs):
+    def espera_el_elemento_se_muestra(self, *args, **kwargs):
         # wait_for_element_visible(selector)  # Same as wait_for_element()
         return self.wait_for_element_visible(*args, **kwargs)
 
-    def espera_el_elemento_no_se_muestre(self, *args, **kwargs):
+    def espera_el_elemento_no_se_muestra(self, *args, **kwargs):
         # wait_for_element_not_visible(selector)
         return self.wait_for_element_not_visible(*args, **kwargs)
 
@@ -293,7 +297,7 @@ class CasoDePrueba(BaseCase):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
-    def haga_clic_en_elementos_visibles(self, *args, **kwargs):
+    def clic_en_elementos_visibles(self, *args, **kwargs):
         # click_visible_elements(selector)
         return self.click_visible_elements(*args, **kwargs)
 

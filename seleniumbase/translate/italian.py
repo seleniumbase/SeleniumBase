@@ -25,11 +25,15 @@ class CasoDiProva(BaseCase):
         # double_click(selector)
         return self.double_click(*args, **kwargs)
 
-    def clicca_lentamente(self, *args, **kwargs):
+    def clic_lentamente(self, *args, **kwargs):
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
-    def fare_clic_testo_del_collegamento(self, *args, **kwargs):
+    def clic_se_visto(self, *args, **kwargs):
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
+    def clic_testo_del_collegamento(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
 
@@ -293,7 +297,7 @@ class CasoDiProva(BaseCase):
         # press_right_arrow(selector="html", times=1)
         return self.press_right_arrow(*args, **kwargs)
 
-    def fare_clic_sugli_elementi_visibili(self, *args, **kwargs):
+    def clic_sugli_elementi_visibili(self, *args, **kwargs):
         # click_visible_elements(selector)
         return self.click_visible_elements(*args, **kwargs)
 

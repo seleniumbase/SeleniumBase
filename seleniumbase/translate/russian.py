@@ -29,6 +29,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # slow_click(selector)
         return self.slow_click(*args, **kwargs)
 
+    def нажмите_если_виден(self, *args, **kwargs):
+        # click_if_visible(selector, by=By.CSS_SELECTOR)
+        return self.click_if_visible(*args, **kwargs)
+
     def нажмите_ссылку(self, *args, **kwargs):
         # click_link_text(link_text)
         return self.click_link_text(*args, **kwargs)
