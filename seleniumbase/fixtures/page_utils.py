@@ -106,9 +106,10 @@ def is_valid_url(url):
         r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
         r'(?::\d+)?'  # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-    if regex.match(url) or ((url.startswith('about:') or (
-            url.startswith('data:') or url.startswith('chrome:')))
-            and " " not in url):
+    if regex.match(url) or ((url.startswith("about:") or (
+            url.startswith("data:") or url.startswith("chrome:") or (
+            url.startswith("edge:") or url.startswith("opera:") or (
+            url.startswith("file:")))))):
         return True
     else:
         return False

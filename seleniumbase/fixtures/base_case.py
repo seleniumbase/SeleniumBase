@@ -97,6 +97,14 @@ class BaseCase(unittest.TestCase):
 
     def open(self, url):
         """ Navigates the current browser window to the specified page. """
+        if type(url) is str:
+            url = url.strip()  # Remove leading and trailing whitespace
+        if (type(url) is not str) or not self.__looks_like_a_page_url(url):
+            # url should start with one of the following:
+            # "http:", "https:", "://", "data:", "file:",
+            # "about:", "chrome:", "opera:", or "edge:".
+            msg = 'Did you forget to prefix your URL with "http:" or "https:"?'
+            raise Exception('Invalid URL: "%s"\n%s' % (url, msg))
         self.__last_page_load_url = None
         js_utils.clear_out_console_logs(self.driver)
         if url.startswith("://"):
@@ -5797,9 +5805,10 @@ class BaseCase(unittest.TestCase):
             navigate to the page if a URL is detected, but will instead call
             self.get_element(URL_AS_A_SELECTOR) if the input in not a URL. """
         if (url.startswith("http:") or url.startswith("https:") or (
-                url.startswith("://") or url.startswith("data:") or (
-                url.startswith("about:") or url.startswith("chrome:") or (
-                url.startswith("file:"))))):
+                url.startswith("://") or url.startswith("chrome:") or (
+                url.startswith("about:") or url.startswith("data:") or (
+                url.startswith("file:") or url.startswith("edge:") or (
+                url.startswith("opera:")))))):
             return True
         else:
             return False
@@ -6367,6 +6376,34 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        try:
+            with_selenium = self.with_selenium
+        except Exception:
+            sub_class_name = str(
+                self.__class__.__bases__[0]).split('.')[-1].split("'")[0]
+            sub_file_name = str(self.__class__.__bases__[0]).split('.')[-2]
+            sub_file_name = sub_file_name + ".py"
+            class_name = str(self.__class__).split('.')[-1].split("'")[0]
+            file_name = str(self.__class__).split('.')[-2] + ".py"
+            class_name_used = sub_class_name
+            file_name_used = sub_file_name
+            if sub_class_name == "BaseCase":
+                class_name_used = class_name
+                file_name_used = file_name
+            fix_setup = "super(%s, self).setUp()" % class_name_used
+            fix_teardown = "super(%s, self).tearDown()" % class_name_used
+            message = ("You're overriding SeleniumBase's BaseCase setUp() "
+                       "method with your own setUp() method, which breaks "
+                       "SeleniumBase. You can fix this by going to your "
+                       "%s class located in your %s file and adding the "
+                       "following line of code AT THE BEGINNING of your "
+                       "setUp() method:\n%s\n\nAlso make sure "
+                       "you have added the following line of code AT THE "
+                       "END of your tearDown() method:\n%s\n"
+                       % (class_name_used, file_name_used,
+                          fix_setup, fix_teardown))
+            raise Exception(message)
+        # *** Start tearDown() officially ***
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
         if self.__deferred_assert_failures:
@@ -6381,33 +6418,6 @@ class BaseCase(unittest.TestCase):
         if self.is_pytest:
             # pytest-specific code
             test_id = self.__get_test_id()
-            try:
-                with_selenium = self.with_selenium
-            except Exception:
-                sub_class_name = str(
-                    self.__class__.__bases__[0]).split('.')[-1].split("'")[0]
-                sub_file_name = str(self.__class__.__bases__[0]).split('.')[-2]
-                sub_file_name = sub_file_name + ".py"
-                class_name = str(self.__class__).split('.')[-1].split("'")[0]
-                file_name = str(self.__class__).split('.')[-2] + ".py"
-                class_name_used = sub_class_name
-                file_name_used = sub_file_name
-                if sub_class_name == "BaseCase":
-                    class_name_used = class_name
-                    file_name_used = file_name
-                fix_setup = "super(%s, self).setUp()" % class_name_used
-                fix_teardown = "super(%s, self).tearDown()" % class_name_used
-                message = ("You're overriding SeleniumBase's BaseCase setUp() "
-                           "method with your own setUp() method, which breaks "
-                           "SeleniumBase. You can fix this by going to your "
-                           "%s class located in your %s file and adding the "
-                           "following line of code AT THE BEGINNING of your "
-                           "setUp() method:\n%s\n\nAlso make sure "
-                           "you have added the following line of code AT THE "
-                           "END of your tearDown() method:\n%s\n"
-                           % (class_name_used, file_name_used,
-                              fix_setup, fix_teardown))
-                raise Exception(message)
             if with_selenium:
                 # Save a screenshot if logging is on when an exception occurs
                 if has_exception:
