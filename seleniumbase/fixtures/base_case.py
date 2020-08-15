@@ -6377,7 +6377,9 @@ class BaseCase(unittest.TestCase):
         super(SubClassOfBaseCase, self).tearDown()
         """
         try:
-            with_selenium = self.with_selenium
+            is_pytest = self.is_pytest  # This fails if overriding setUp()
+            if is_pytest:
+                with_selenium = self.with_selenium
         except Exception:
             sub_class_name = str(
                 self.__class__.__bases__[0]).split('.')[-1].split("'")[0]
