@@ -1,7 +1,7 @@
 <meta property="og:site_name" content="SeleniumBase | Docs">
 <meta property="og:title" content="SeleniumBase | Easy Test Automation" />
 <meta property="og:description" content="Browser automation and testing with Python." />
-<meta property="og:image" content="https://seleniumbase.io/img/sb_logo_10.png" />
+<meta property="og:image" content="https://seleniumbase.io/cdn/img/sb_logo_dh.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
