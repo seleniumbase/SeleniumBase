@@ -24,7 +24,7 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: img/logo3a.png
+  logo: https://seleniumbase.io/cdn/img/sb_logo_dh.png
   favicon: img/logo3a.png
   include_homepage_in_sidebar: true
   sticky_navigation: true
