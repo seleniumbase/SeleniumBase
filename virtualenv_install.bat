@@ -3,8 +3,8 @@
 :: virtualenv commands such as "mkvirtualenv [ENV_NAME]"
 :: for creating and using Python virtual environments.
 
-python -m pip install --upgrade pip
-python -m pip install virtualenvwrapper-win --force-reinstall
+py -m pip install pip wheel --force-reinstall --user
+py -m pip install virtualenvwrapper-win --force-reinstall --user
 echo:
 echo:
 echo: *** You may now use virtualenv commands in your command shell. ***
