@@ -1869,6 +1869,18 @@ class BaseCase(unittest.TestCase):
                             self.driver.set_window_rect(10, 30, 945, 630)
                         except Exception:
                             pass
+                elif self.browser == 'opera':
+                    if self.maximize_option:
+                        try:
+                            self.driver.maximize_window()
+                            self.wait_for_ready_state_complete()
+                        except Exception:
+                            pass  # Keep existing browser resolution
+                    else:
+                        try:
+                            self.driver.set_window_rect(10, 30, 1150, 700)
+                        except Exception:
+                            pass
             if self.start_page and len(self.start_page) >= 4:
                 if page_utils.is_valid_url(self.start_page):
                     self.open(self.start_page)

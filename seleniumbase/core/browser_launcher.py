@@ -129,7 +129,7 @@ def _add_chrome_disable_csp_extension(chrome_options):
 
 
 def _set_chrome_options(
-        downloads_path, headless,
+        browser_name, downloads_path, headless,
         proxy_string, proxy_auth, proxy_user, proxy_pass,
         user_agent, disable_csp, enable_sync, use_auto_ext,
         no_sandbox, disable_gpu, incognito, guest_mode, devtools, swiftshader,
@@ -156,7 +156,20 @@ def _set_chrome_options(
     else:
         chrome_options.add_experimental_option(
             "excludeSwitches",
-            ["enable-automation", "enable-logging"])
+            ["enable-automation", "enable-logging", "enable-blink-features"])
+    if browser_name == constants.Browser.OPERA:
+        # Disable the Blink features
+        if enable_sync:
+            chrome_options.add_experimental_option(
+                "excludeSwitches",
+                (["enable-automation", "enable-logging", "disable-sync",
+                    "enable-blink-features"]))
+            chrome_options.add_argument("--enable-sync")
+        else:
+            chrome_options.add_experimental_option(
+                "excludeSwitches",
+                (["enable-automation", "enable-logging",
+                    "enable-blink-features"]))
     if mobile_emulator:
         emulator_settings = {}
         device_metrics = {}
@@ -207,7 +220,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--test-type")
     chrome_options.add_argument("--log-level=3")
     chrome_options.add_argument("--no-first-run")
-    chrome_options.add_argument("--ignore-certificate-errors")
     if devtools and not headless:
         chrome_options.add_argument("--auto-open-devtools-for-tabs")
     chrome_options.add_argument("--allow-file-access-from-files")
@@ -219,7 +231,6 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument("--disable-translate")
-    chrome_options.add_argument("--disable-web-security")
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--dom-automation")
@@ -231,21 +242,30 @@ def _set_chrome_options(
         # Headless Chrome doesn't support extensions, which are required
         # for disabling the Content Security Policy on Chrome
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
+        chrome_options.add_argument("--enable-sync")
     if proxy_string:
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
         chrome_options.add_argument('--proxy-server=%s' % proxy_string)
     if headless:
-        if not proxy_auth:
+        if not proxy_auth and not browser_name == constants.Browser.OPERA:
             # Headless Chrome doesn't support extensions, which are
             # required when using a proxy server that has authentication.
             # Instead, base_case.py will use PyVirtualDisplay when not
             # using Chrome's built-in headless mode. See link for details:
             # https://bugs.chromium.org/p/chromium/issues/detail?id=706008
+            # Also, Opera Chromium doesn't support headless mode:
+            # https://github.com/operasoftware/operachromiumdriver/issues/62
             chrome_options.add_argument("--headless")
-    # if (headless and "linux" in PLATFORM) or no_sandbox:
-    chrome_options.add_argument("--no-sandbox")  # (Now always on)
+    if browser_name != constants.Browser.OPERA:
+        # Opera Chromium doesn't support these switches
+        chrome_options.add_argument("--ignore-certificate-errors")
+        chrome_options.add_argument("--disable-web-security")
+        chrome_options.add_argument("--no-sandbox")
+    else:
+        # Opera Chromium only!
+        chrome_options.add_argument("--allow-elevated-browser")
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
     else:
@@ -460,7 +480,7 @@ def get_remote_driver(
                 desired_caps["name"] = test_id
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
-            downloads_path, headless,
+            browser_name, downloads_path, headless,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
             incognito, guest_mode, devtools, swiftshader, block_images,
@@ -674,7 +694,7 @@ def get_local_driver(
     elif browser_name == constants.Browser.EDGE:
         try:
             chrome_options = _set_chrome_options(
-                downloads_path, headless,
+                browser_name, downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
@@ -792,13 +812,25 @@ def get_local_driver(
         safari_capabilities = _set_safari_capabilities()
         return webdriver.Safari(desired_capabilities=safari_capabilities)
     elif browser_name == constants.Browser.OPERA:
-        if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
-            try:
-                make_driver_executable_if_not(LOCAL_OPERADRIVER)
-            except Exception as e:
-                logging.debug("\nWarning: Could not make operadriver"
-                              " executable: %s" % e)
-        return webdriver.Opera()
+        try:
+            if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
+                try:
+                    make_driver_executable_if_not(LOCAL_OPERADRIVER)
+                except Exception as e:
+                    logging.debug("\nWarning: Could not make operadriver"
+                                  " executable: %s" % e)
+            opera_options = _set_chrome_options(
+                browser_name, downloads_path, headless,
+                proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+                disable_csp, enable_sync, use_auto_ext,
+                no_sandbox, disable_gpu, incognito, guest_mode, devtools,
+                swiftshader, block_images, user_data_dir, extension_zip,
+                extension_dir, servername, mobile_emulator,
+                device_width, device_height, device_pixel_ratio)
+            opera_options.headless = False  # No support for headless Opera
+            return webdriver.Opera(options=opera_options)
+        except Exception:
+            return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
@@ -807,7 +839,7 @@ def get_local_driver(
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(
-                downloads_path, headless,
+                browser_name, downloads_path, headless,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
