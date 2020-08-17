@@ -6,7 +6,6 @@ Usage:
         OR:    sbase print [FILE] [OPTIONS]
 Options:
         -n   (Add line Numbers to the rows)
-        -w   (Use word-Wrap for long lines)
 Output:
         Prints the code/text of any file
         with syntax-highlighting.
@@ -24,7 +23,6 @@ def invalid_run_command(msg=None):
     exp += "         OR:    sbase print [FILE] [OPTIONS]\n"
     exp += "  Options:\n"
     exp += "         -n   (Add line Numbers to the rows)\n"
-    exp += "         -w   (Use word-Wrap for long lines)\n"
     exp += "  Output:\n"
     exp += "         Prints the code/text of any file\n"
     exp += '         with syntax-highlighting.\n'
@@ -67,7 +65,7 @@ def main():
     c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
     cr = colorama.Style.RESET_ALL
     line_numbers = False
-    word_wrap = False
+    word_wrap = True  # Always use word wrap now
     help_me = False
     invalid_cmd = None
     is_python_file = False

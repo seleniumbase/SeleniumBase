@@ -202,7 +202,6 @@ def show_print_usage():
     print("         OR:    sbase print [FILE] [OPTIONS]")
     print("  Options:")
     print("         -n   (Add line Numbers to the rows)")
-    print("         -w   (Use word-Wrap for long lines)")
     print("  Output:")
     print("         Prints the code/text of any file")
     print("         with syntax-highlighting.")

@@ -106,7 +106,6 @@ See: http://www.katalon.com/automation-recorder
 
 * Options:
 ``-n`` (Add line Numbers to the rows)
-``-w`` (Use word-Wrap for long lines)
 
 * Output:
 Prints the code/text of any file

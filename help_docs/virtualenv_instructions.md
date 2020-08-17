@@ -7,8 +7,8 @@
 (*Shortcut*: Run "``source virtualenv_install.sh``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
-python -m pip install --upgrade virtualenv
-python -m pip install --upgrade virtualenvwrapper
+python3 -m pip install pip wheel --force-reinstall
+python3 -m pip install virtualenvwrapper --force-reinstall
 export WORKON_HOME=$HOME/.virtualenvs
 source `which virtualenvwrapper.sh`
 ```
@@ -20,52 +20,81 @@ If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~
 (*Shortcut*: Run "``virtualenv_install.bat``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
-python -m pip install --upgrade virtualenvwrapper-win
+py -m pip install pip wheel --force-reinstall --user
+py -m pip install virtualenvwrapper-win --force-reinstall --user
 ```
 
 ### Step 2: Create a virtual environment:
 
-### macOS / Linux / Windows:
+### macOS / Linux:
 
-* Using ``mkvirtualenv``:
+* Using ``mkvirtualenv`` (any version of Python):
 ```bash
-mkvirtualenv seleniumbase_venv
+mkvirtualenv sbase_env
 ```
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
 
-* Using ``virtualenv``:
+* (Python 2) Using ``virtualenv``:
 ```bash
-virtualenv seleniumbase_venv
-source seleniumbase_venv/bin/activate
+virtualenv sbase_env
+source sbase_env/bin/activate
 ```
 
-* (Python 3) Using ``mvenv``:
+* (Python 3) Using ``python3 -m venv``:
 ```bash
-python3 -mvenv seleniumbase_venv
-source seleniumbase_venv/bin/activate
+python3 -m venv sbase_env
+source sbase_env/bin/activate
+```
+
+### Windows:
+
+* Using ``mkvirtualenv`` (any version of Python):
+```bash
+mkvirtualenv sbase_env
+```
+(If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
+
+* (Python 2) Using ``virtualenv``:
+```bash
+virtualenv sbase_env
+call sbase_env\\Scripts\\activate
+```
+
+* (Python 3) Using ``py -m venv``:
+```bash
+py -m venv sbase_env
+call sbase_env\\Scripts\\activate
 ```
 
 ---
 
-If you ever need to leave your virtual environment, use the following command:
+### mkvirtualenv Commands
+
+Creating a virtual environment:
+
+```bash
+mkvirtualenv sbase_env
+```
+
+Leaving your virtual environment:
 
 ```bash
 deactivate
 ```
 
-You can always jump back into your virtual environment later:
+Returning to a virtual environment:
 
 ```bash
-workon seleniumbase_venv
+workon sbase_env
 ```
 
-To list all existing virtual environments:
+Listing all virtual environments:
 
 ```bash
 lsvirtualenv
 ```
 
-To delete a virtual environment:
+Deleting a virtual environment:
 
 ```bash
 rmvirtualenv VIRTUAL_ENV_NAME

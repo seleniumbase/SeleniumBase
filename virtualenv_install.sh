@@ -7,8 +7,8 @@
 [[ $0 != "$BASH_SOURCE" ]] && sourced=1 || sourced=0
 if [ $sourced = 1 ]
 then
-  python -m pip install --upgrade pip
-  python -m pip install virtualenvwrapper --force-reinstall
+  python3 -m pip install pip wheel --force-reinstall
+  python3 -m pip install virtualenvwrapper --force-reinstall
   export WORKON_HOME=$HOME/.virtualenvs
   source `which virtualenvwrapper.sh`
   echo ""
