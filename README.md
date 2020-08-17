@@ -60,10 +60,8 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
 * A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
 * Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
-
-```bash
-python -m pip install -U pip
-```
+-- macOS/Linux: ``python3 -m pip install -U pip``
+-- Windows(Cmd): ``py -m pip install -U pip``
 
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Install SeleniumBase:</h2>
@@ -315,7 +313,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
---extension-zip=ZIP  # (Load a Chrome Extension .zip file, comma-separated.)
+--extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
 --headed  # (Run tests with a GUI on Linux OS.)

@@ -21,7 +21,7 @@ class SeleniumBrowser(Plugin):
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
-    --extension-zip=ZIP  (Load a Chrome Extension .zip file, comma-separated.)
+    --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (Run tests headlessly. Default mode on Linux OS.)
     --headed  (Run tests with a GUI on Linux OS.)
