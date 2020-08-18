@@ -17,7 +17,7 @@ Example:
         seleniumbase install chromedriver latest
         seleniumbase install chromedriver -p
         seleniumbase install chromedriver latest -p
-        seleniumbase install edgedriver 84.0.522.59
+        seleniumbase install edgedriver 84.0.522.61
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -41,7 +41,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"
 DEFAULT_GECKODRIVER_VERSION = "v0.27.0"
-DEFAULT_EDGEDRIVER_VERSION = "84.0.522.59"
+DEFAULT_EDGEDRIVER_VERSION = "84.0.522.61"
 DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
 
 
