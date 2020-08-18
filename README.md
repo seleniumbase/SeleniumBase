@@ -59,9 +59,10 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 * Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
 * [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8" />](https://www.python.org/downloads/)
 * A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
-* Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
--- macOS/Linux: ``python3 -m pip install -U pip``
--- Windows(Cmd): ``py -m pip install -U pip``
+
+Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
+* macOS/Linux: ``python3 -m pip install -U pip``
+* Windows(Cmd): ``py -m pip install -U pip``
 
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Install SeleniumBase:</h2>
