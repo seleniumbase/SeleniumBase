@@ -1856,8 +1856,17 @@ class BaseCase(unittest.TestCase):
                     except Exception:
                         pass  # Keep existing browser resolution
                 elif self.browser == 'firefox':
-                    pass  # No changes
+                    width = settings.CHROME_START_WIDTH
+                    try:
+                        if self.maximize_option:
+                            self.driver.maximize_window()
+                        else:
+                            self.driver.set_window_size(width, 720)
+                        self.wait_for_ready_state_complete()
+                    except Exception:
+                        pass  # Keep existing browser resolution
                 elif self.browser == 'safari':
+                    width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -1866,10 +1875,11 @@ class BaseCase(unittest.TestCase):
                             pass  # Keep existing browser resolution
                     else:
                         try:
-                            self.driver.set_window_rect(10, 30, 945, 630)
+                            self.driver.set_window_rect(10, 30, width, 630)
                         except Exception:
                             pass
                 elif self.browser == 'opera':
+                    width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
                             self.driver.maximize_window()
@@ -1878,7 +1888,7 @@ class BaseCase(unittest.TestCase):
                             pass  # Keep existing browser resolution
                     else:
                         try:
-                            self.driver.set_window_rect(10, 30, 1150, 700)
+                            self.driver.set_window_rect(10, 30, width, 700)
                         except Exception:
                             pass
             if self.start_page and len(self.start_page) >= 4:
