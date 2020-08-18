@@ -5,7 +5,7 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
 
-    def login(self, username="standard_user"):
+    def login_to_swag_labs(self, username="standard_user"):
         """ Login to Swag Labs and verify that login was successful. """
         self.open("https://www.saucedemo.com/")
         if username not in self.get_text("#login_credentials"):
@@ -24,7 +24,7 @@ class SwagLabsTests(BaseCase):
     def test_swag_labs_basic_functional_flow(self, username):
         """ This test checks functional flow of the Swag Labs store.
             This test is parameterized, and receives the user for login. """
-        self.login(username=username)
+        self.login_to_swag_labs(username=username)
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -87,5 +87,5 @@ class SwagLabsTests(BaseCase):
     def test_swag_labs_products_page_resource_verification(self, username):
         """ This test checks for 404 errors on the Swag Labs products page.
             This test is parameterized, and receives the user for login. """
-        self.login(username=username)
+        self.login_to_swag_labs(username=username)
         self.assert_no_404_errors()
