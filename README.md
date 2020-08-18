@@ -61,6 +61,7 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 * A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
 
 Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
+
 * macOS/Linux: ``python3 -m pip install -U pip``
 * Windows(Cmd): ``py -m pip install -U pip``
 
