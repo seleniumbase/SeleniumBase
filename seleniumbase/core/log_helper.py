@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import codecs
 import datetime
 import os
@@ -39,11 +40,21 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     utc_offset = -time.timezone / 3600.0
     utc_str = "UTC+0"
     if utc_offset > 0:
-        utc_str = "UTC+%s" % utc_offset
+        if utc_offset < 10:
+            utc_str = "UTC+0%s" % utc_offset
+        else:
+            utc_str = "UTC+%s" % utc_offset
     elif utc_offset < 0:
-        utc_str = "UTC%s" % utc_offset
+        if utc_offset > -10:
+            utc_str = "UTC-0%s" % abs(utc_offset)
+        else:
+            utc_str = "UTC-%s" % abs(utc_offset)
     utc_str = utc_str.replace('.5', '.3').replace('.', ':') + "0"
-    time_zone = '(' + '/'.join(time.tzname) + ', ' + utc_str + ')'
+    time_zone = ""
+    try:
+        time_zone = '(' + time.tzname[time.daylight] + ', ' + utc_str + ')'
+    except Exception:
+        time_zone = '(' + utc_str + ')'
     # Use [Day-of-Week, Month Day, Year] format when time zone < GMT/UTC-3
     the_date = now.strftime("%A, %B %d, %Y").replace(' 0', ' ')
     if utc_offset >= -3:
