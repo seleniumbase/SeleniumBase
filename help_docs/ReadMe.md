@@ -17,6 +17,7 @@
 <div><a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/"><b>Console Scripts Tutorial</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mobile_testing/"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/method_summary/"><b>Method Summary (API Ref)</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/locale_codes/"><b>Language Locale Codes</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/translations/"><b>Language Translations</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/js_package_manager/"><b>JS Package Manager</b></a></div>
 <div><a href="https://seleniumbase.io/examples/tour_examples/ReadMe/"><b>Tour Examples</b></a></div>
@@ -45,6 +46,7 @@
 <div><a href="https://seleniumbase.com/seleniumbase/console_scripts/"><b>Console Scripts Tutorial</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/mobile_testing"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/method_summary"><b>Method Summary (API Ref)</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/locale_codes"><b>Language Locale Codes</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/translations"><b>Language Translations</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/js_package_manager"><b>JS Package Manager</b></a></div>
 <div><a href="https://seleniumbase.com/examples/tour_examples/"><b>Tour Examples</b></a></div>

@@ -67,6 +67,7 @@ nav:
   - Examples: examples/ReadMe.md
   - API Reference: help_docs/method_summary.md
   - Languages / 语言:
+    - Locale Codes: help_docs/locale_codes.md 
     - Translations: help_docs/translations.md
     - Chinese / 中文文件: help_docs/chinese.md
   - Mobile Testing: help_docs/mobile_testing.md
