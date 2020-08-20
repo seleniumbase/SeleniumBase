@@ -2050,6 +2050,17 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(0.2)
 
+    def activate_design_mode(self):
+        # Activate Chrome's Design Mode, which lets you edit a site directly.
+        # See: https://twitter.com/sulco/status/1177559150563344384
+        script = ("""document.designMode = 'on';""")
+        self.execute_script(script)
+
+    def deactivate_design_mode(self):
+        # Deactivate Chrome's Design Mode.
+        script = ("""document.designMode = 'off';""")
+        self.execute_script(script)
+
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
