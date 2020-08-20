@@ -30,6 +30,7 @@ except (ImportError, ValueError):
     sb.headless = False
     sb.headed = False
     sb.start_page = None
+    sb.locale_code = None
     sb.servername = "localhost"
     sb.port = 4444
     sb.data = None

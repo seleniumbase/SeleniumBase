@@ -113,6 +113,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
 --headed  # (Run tests with a GUI on Linux OS.)
+--locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
 --archive-logs  # (Archive old log files instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the limit limit.)

@@ -25,6 +25,7 @@ class SeleniumBrowser(Plugin):
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (Run tests headlessly. Default mode on Linux OS.)
     --headed  (Run tests with a GUI on Linux OS.)
+    --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the limit limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
@@ -179,6 +180,16 @@ class SeleniumBrowser(Plugin):
                     a GUI when running tests on Linux machines.
                     (The default setting on Linux is headless.)
                     (The default setting on Mac or Windows is headed.)""")
+        parser.add_option(
+            '--locale_code', '--locale-code', '--locale',
+            action='store',
+            dest='locale_code',
+            default=None,
+            help="""Designates the Locale Code for the web browser.
+                    A Locale is a specific version of a spoken Language.
+                    The Locale alters visible text on supported websites.
+                    See: https://seleniumbase.io/help_docs/locale_codes/
+                    Default: None. (The web browser's default mode.)""")
         parser.add_option(
             '--start_page', '--start-page', '--url',
             action='store',
@@ -366,6 +377,7 @@ class SeleniumBrowser(Plugin):
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
+        test.test.locale_code = self.options.locale_code
         test.test.start_page = self.options.start_page
         test.test.servername = self.options.servername
         test.test.port = self.options.port

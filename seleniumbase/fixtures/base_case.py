@@ -1673,7 +1673,7 @@ class BaseCase(unittest.TestCase):
     def switch_to_default_window(self):
         self.switch_to_window(0)
 
-    def get_new_driver(self, browser=None, headless=None,
+    def get_new_driver(self, browser=None, headless=None, locale_code=None,
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, cap_string=None,
                        disable_csp=None, enable_sync=None, use_auto_ext=None,
@@ -1689,6 +1689,7 @@ class BaseCase(unittest.TestCase):
             @Params
             browser - the browser to use. (Ex: "chrome", "firefox")
             headless - the option to run webdriver in headless mode
+            locale_code - the Language Locale Code for the web browser
             servername - if using a Selenium Grid, set the host address here
             port - if using a Selenium Grid, set the host port here
             proxy - if using a proxy server, specify the "host:port" combo here
@@ -1739,6 +1740,8 @@ class BaseCase(unittest.TestCase):
         browser_name = browser
         if headless is None:
             headless = self.headless
+        if locale_code is None:
+            locale_code = self.locale_code
         if servername is None:
             servername = self.servername
         if port is None:
@@ -1779,9 +1782,6 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
-        # Due to https://stackoverflow.com/questions/23055651/ , skip extension
-        # if self.demo_mode or self.masterqa_mode:
-        #    disable_csp = True
         test_id = self.__get_test_id()
         if cap_file is None:
             cap_file = self.cap_file
@@ -1803,6 +1803,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.core import browser_launcher
         new_driver = browser_launcher.get_driver(browser_name=browser_name,
                                                  headless=headless,
+                                                 locale_code=locale_code,
                                                  use_grid=use_grid,
                                                  servername=servername,
                                                  port=port,
@@ -6007,6 +6008,7 @@ class BaseCase(unittest.TestCase):
             self.headless = sb_config.headless
             self.headless_active = False
             self.headed = sb_config.headed
+            self.locale_code = sb_config.locale_code
             self.start_page = sb_config.start_page
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base
@@ -6188,6 +6190,7 @@ class BaseCase(unittest.TestCase):
             # Launch WebDriver for both Pytest and Nosetests
             self.driver = self.get_new_driver(browser=self.browser,
                                               headless=self.headless,
+                                              locale_code=self.locale_code,
                                               servername=self.servername,
                                               port=self.port,
                                               proxy=self.proxy_string,
