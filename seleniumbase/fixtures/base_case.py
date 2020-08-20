@@ -243,14 +243,19 @@ class BaseCase(unittest.TestCase):
             actions.double_click(element).perform()
         except Exception:
             css_selector = self.convert_to_css_selector(selector, by=by)
-            css_selector = re.escape(css_selector)
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
             css_selector = self.__escape_quotes_if_needed(css_selector)
             double_click_script = (
                 """var targetElement1 = document.querySelector('%s');
                 var clickEvent1 = document.createEvent('MouseEvents');
                 clickEvent1.initEvent('dblclick', true, true);
                 targetElement1.dispatchEvent(clickEvent1);""" % css_selector)
-            self.execute_script(double_click_script)
+            if ":contains\\(" not in css_selector:
+                self.execute_script(double_click_script)
+            else:
+                double_click_script = (
+                    """jQuery('%s').dblclick();""" % css_selector)
+                self.safe_execute_script(double_click_script)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -871,7 +876,7 @@ class BaseCase(unittest.TestCase):
         value = re.escape(value)
         value = self.__escape_quotes_if_needed(value)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""document.querySelector('%s').setAttribute('%s','%s');"""
                   % (css_selector, attribute, value))
@@ -888,7 +893,7 @@ class BaseCase(unittest.TestCase):
         value = re.escape(value)
         value = self.__escape_quotes_if_needed(value)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""var $elements = document.querySelectorAll('%s');
                   var index = 0, length = $elements.length;
@@ -926,7 +931,7 @@ class BaseCase(unittest.TestCase):
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""document.querySelector('%s').removeAttribute('%s');"""
                   % (css_selector, attribute))
@@ -939,7 +944,7 @@ class BaseCase(unittest.TestCase):
         attribute = re.escape(attribute)
         attribute = self.__escape_quotes_if_needed(attribute)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""var $elements = document.querySelectorAll('%s');
                   var index = 0, length = $elements.length;
@@ -1673,7 +1678,7 @@ class BaseCase(unittest.TestCase):
     def switch_to_default_window(self):
         self.switch_to_window(0)
 
-    def get_new_driver(self, browser=None, headless=None,
+    def get_new_driver(self, browser=None, headless=None, locale_code=None,
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, cap_string=None,
                        disable_csp=None, enable_sync=None, use_auto_ext=None,
@@ -1689,6 +1694,7 @@ class BaseCase(unittest.TestCase):
             @Params
             browser - the browser to use. (Ex: "chrome", "firefox")
             headless - the option to run webdriver in headless mode
+            locale_code - the Language Locale Code for the web browser
             servername - if using a Selenium Grid, set the host address here
             port - if using a Selenium Grid, set the host port here
             proxy - if using a proxy server, specify the "host:port" combo here
@@ -1739,6 +1745,8 @@ class BaseCase(unittest.TestCase):
         browser_name = browser
         if headless is None:
             headless = self.headless
+        if locale_code is None:
+            locale_code = self.locale_code
         if servername is None:
             servername = self.servername
         if port is None:
@@ -1779,9 +1787,6 @@ class BaseCase(unittest.TestCase):
             extension_zip = self.extension_zip
         if extension_dir is None:
             extension_dir = self.extension_dir
-        # Due to https://stackoverflow.com/questions/23055651/ , skip extension
-        # if self.demo_mode or self.masterqa_mode:
-        #    disable_csp = True
         test_id = self.__get_test_id()
         if cap_file is None:
             cap_file = self.cap_file
@@ -1803,6 +1808,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.core import browser_launcher
         new_driver = browser_launcher.get_driver(browser_name=browser_name,
                                                  headless=headless,
+                                                 locale_code=locale_code,
                                                  use_grid=use_grid,
                                                  servername=servername,
                                                  port=port,
@@ -2043,6 +2049,17 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
+
+    def activate_design_mode(self):
+        # Activate Chrome's Design Mode, which lets you edit a site directly.
+        # See: https://twitter.com/sulco/status/1177559150563344384
+        script = ("""document.designMode = 'on';""")
+        self.execute_script(script)
+
+    def deactivate_design_mode(self):
+        # Deactivate Chrome's Design Mode.
+        script = ("""document.designMode = 'off';""")
+        self.execute_script(script)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
@@ -2321,7 +2338,7 @@ class BaseCase(unittest.TestCase):
         self.click(xpath, by=By.XPATH)
 
     def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
-        """ Clicks an element using pure JS. Does not use jQuery.
+        """ Clicks an element using JavaScript.
             If "all_matches" is False, only the first match is clicked. """
         selector, by = self.__recalculate_selector(selector, by)
         if by == By.LINK_TEXT:
@@ -2340,12 +2357,20 @@ class BaseCase(unittest.TestCase):
             if not self.demo_mode and not self.slow_mode:
                 self.__scroll_to_element(element, selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         if not all_matches:
-            self.__js_click(selector, by=by)  # The real "magic" happens
+            if ":contains\\(" not in css_selector:
+                self.__js_click(selector, by=by)
+            else:
+                click_script = """jQuery('%s')[0].click();""" % css_selector
+                self.safe_execute_script(click_script)
         else:
-            self.__js_click_all(selector, by=by)  # The real "magic" happens
+            if ":contains\\(" not in css_selector:
+                self.__js_click_all(selector, by=by)
+            else:
+                click_script = """jQuery('%s').click();""" % css_selector
+                self.safe_execute_script(click_script)
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -2362,7 +2387,7 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
-        click_script = """jQuery('%s')[0].click()""" % selector
+        click_script = """jQuery('%s')[0].click();""" % selector
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
@@ -2373,8 +2398,8 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        click_script = """jQuery('%s').click()""" % selector
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        click_script = """jQuery('%s').click();""" % css_selector
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
@@ -2383,14 +2408,14 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
-        hide_script = """jQuery('%s').hide()""" % selector
+        hide_script = """jQuery('%s').hide();""" % selector
         self.safe_execute_script(hide_script)
 
     def hide_elements(self, selector, by=By.CSS_SELECTOR):
         """ Hide all elements on the page that match the selector. """
         selector, by = self.__recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
-        hide_script = """jQuery('%s').hide()""" % selector
+        hide_script = """jQuery('%s').hide();""" % selector
         self.safe_execute_script(hide_script)
 
     def show_element(self, selector, by=By.CSS_SELECTOR):
@@ -2398,14 +2423,14 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
-        show_script = """jQuery('%s').show(0)""" % selector
+        show_script = """jQuery('%s').show(0);""" % selector
         self.safe_execute_script(show_script)
 
     def show_elements(self, selector, by=By.CSS_SELECTOR):
         """ Show all elements on the page that match the selector. """
         selector, by = self.__recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
-        show_script = """jQuery('%s').show(0)""" % selector
+        show_script = """jQuery('%s').show(0);""" % selector
         self.safe_execute_script(show_script)
 
     def remove_element(self, selector, by=By.CSS_SELECTOR):
@@ -2413,21 +2438,21 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
-        remove_script = """jQuery('%s').remove()""" % selector
+        remove_script = """jQuery('%s').remove();""" % selector
         self.safe_execute_script(remove_script)
 
     def remove_elements(self, selector, by=By.CSS_SELECTOR):
         """ Remove all elements on the page that match the selector. """
         selector, by = self.__recalculate_selector(selector, by)
         selector = self.convert_to_css_selector(selector, by=by)
-        remove_script = """jQuery('%s').remove()""" % selector
+        remove_script = """jQuery('%s').remove();""" % selector
         self.safe_execute_script(remove_script)
 
     def ad_block(self):
         """ Block ads that appear on the current web page. """
         from seleniumbase.config import ad_block_list
         for css_selector in ad_block_list.AD_BLOCK_LIST:
-            css_selector = re.escape(css_selector)
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
             css_selector = self.__escape_quotes_if_needed(css_selector)
             script = ("""var $elements = document.querySelectorAll('%s');
                       var index = 0, length = $elements.length;
@@ -2957,11 +2982,18 @@ class BaseCase(unittest.TestCase):
             text = str(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
-        script = ("""document.querySelector('%s').value='%s';"""
-                  % (css_selector, value))
-        self.execute_script(script)
+        if ":contains\\(" not in css_selector:
+            script = (
+                """document.querySelector('%s').value='%s';"""
+                "" % (css_selector, value))
+            self.execute_script(script)
+        else:
+            script = (
+                """jQuery('%s')[0].value='%s';"""
+                "" % (css_selector, value))
+            self.safe_execute_script(script)
         if text.endswith('\n'):
             element = self.wait_for_element_present(
                 orginal_selector, by=by, timeout=timeout)
@@ -3039,7 +3071,7 @@ class BaseCase(unittest.TestCase):
         selector = self.__escape_quotes_if_needed(selector)
         text = re.escape(text)
         text = self.__escape_quotes_if_needed(text)
-        update_text_script = """jQuery('%s').val('%s')""" % (
+        update_text_script = """jQuery('%s').val('%s');""" % (
             selector, text)
         self.safe_execute_script(update_text_script)
         if text.endswith('\n'):
@@ -5624,7 +5656,7 @@ class BaseCase(unittest.TestCase):
         """ Clicks an element using pure JS. Does not use jQuery. """
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""var simulateClick = function (elem) {
                          var evt = new MouseEvent('click', {
@@ -5643,7 +5675,7 @@ class BaseCase(unittest.TestCase):
         """ Clicks all matching elements using pure JS. (No jQuery) """
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
-        css_selector = re.escape(css_selector)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         script = ("""var simulateClick = function (elem) {
                          var evt = new MouseEvent('click', {
@@ -5691,7 +5723,7 @@ class BaseCase(unittest.TestCase):
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         selector = self.convert_to_css_selector(selector, by=by)
         selector = self.__make_css_match_first_element_only(selector)
-        click_script = """jQuery('%s')[0].click()""" % selector
+        click_script = """jQuery('%s')[0].click();""" % selector
         self.safe_execute_script(click_script)
 
     def __get_href_from_link_text(self, link_text, hard_fail=True):
@@ -6007,6 +6039,7 @@ class BaseCase(unittest.TestCase):
             self.headless = sb_config.headless
             self.headless_active = False
             self.headed = sb_config.headed
+            self.locale_code = sb_config.locale_code
             self.start_page = sb_config.start_page
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base
@@ -6188,6 +6221,7 @@ class BaseCase(unittest.TestCase):
             # Launch WebDriver for both Pytest and Nosetests
             self.driver = self.get_new_driver(browser=self.browser,
                                               headless=self.headless,
+                                              locale_code=self.locale_code,
                                               servername=self.servername,
                                               port=self.port,
                                               proxy=self.proxy_string,

@@ -193,6 +193,10 @@ self.wait_for_angularjs(timeout=None)
 self.sleep(seconds)
 # Duplicates: self.wait(seconds)
 
+self.activate_design_mode()
+
+self.deactivate_design_mode()
+
 self.activate_jquery()
 
 self.bring_to_front(selector, by=By.CSS_SELECTOR)

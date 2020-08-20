@@ -129,7 +129,7 @@ def _add_chrome_disable_csp_extension(chrome_options):
 
 
 def _set_chrome_options(
-        browser_name, downloads_path, headless,
+        browser_name, downloads_path, headless, locale_code,
         proxy_string, proxy_auth, proxy_user, proxy_pass,
         user_agent, disable_csp, enable_sync, use_auto_ext,
         no_sandbox, disable_gpu, incognito, guest_mode, devtools, swiftshader,
@@ -140,10 +140,16 @@ def _set_chrome_options(
         "download.default_directory": downloads_path,
         "local_discovery.notifications_enabled": False,
         "credentials_enable_service": False,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": False,
+        "safebrowsing.disable_download_protection": True,
         "profile": {
             "password_manager_enabled": False
         }
     }
+    if locale_code:
+        prefs["intl.accept_languages"] = locale_code
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
     chrome_options.add_experimental_option("prefs", prefs)
@@ -283,7 +289,7 @@ def _set_safari_capabilities():
 
 
 def _create_firefox_profile(
-        downloads_path, proxy_string, user_agent, disable_csp):
+        downloads_path, locale_code, proxy_string, user_agent, disable_csp):
     profile = webdriver.FirefoxProfile()
     profile.accept_untrusted_certs = True
     profile.set_preference("reader.parse-on-load.enabled", False)
@@ -328,6 +334,8 @@ def _create_firefox_profile(
         profile.set_preference("security.csp.enable", False)
     profile.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
+    if locale_code:
+        profile.set_preference("intl.accept_languages", locale_code)
     profile.set_preference("browser.shell.checkDefaultBrowser", False)
     profile.set_preference("browser.startup.page", 0)
     profile.set_preference("browser.download.panel.shown", False)
@@ -389,9 +397,10 @@ def validate_proxy_string(proxy_string):
     return proxy_string
 
 
-def get_driver(browser_name, headless=False, use_grid=False,
-               servername='localhost', port=4444, proxy_string=None,
-               user_agent=None, cap_file=None, cap_string=None,
+def get_driver(browser_name, headless=False, locale_code=None,
+               use_grid=False, servername='localhost', port=4444,
+               proxy_string=None, user_agent=None,
+               cap_file=None, cap_string=None,
                disable_csp=None, enable_sync=None, use_auto_ext=None,
                no_sandbox=None, disable_gpu=None,
                incognito=None, guest_mode=None, devtools=None,
@@ -430,7 +439,7 @@ def get_driver(browser_name, headless=False, use_grid=False,
             "Name length of Chrome's User Data Directory must be >= 3.")
     if use_grid:
         return get_remote_driver(
-            browser_name, headless, servername, port,
+            browser_name, headless, locale_code, servername, port,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             cap_file, cap_string, disable_csp, enable_sync, use_auto_ext,
             no_sandbox, disable_gpu, incognito, guest_mode, devtools,
@@ -439,7 +448,7 @@ def get_driver(browser_name, headless=False, use_grid=False,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
         return get_local_driver(
-            browser_name, headless, servername,
+            browser_name, headless, locale_code, servername,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
             incognito, guest_mode, devtools, swiftshader, block_images,
@@ -448,10 +457,11 @@ def get_driver(browser_name, headless=False, use_grid=False,
 
 
 def get_remote_driver(
-        browser_name, headless, servername, port, proxy_string, proxy_auth,
-        proxy_user, proxy_pass, user_agent, cap_file, cap_string,
-        disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-        incognito, guest_mode, devtools, swiftshader, block_images,
+        browser_name, headless, locale_code, servername, port,
+        proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
+        cap_file, cap_string, disable_csp, enable_sync, use_auto_ext,
+        no_sandbox, disable_gpu, incognito, guest_mode,
+        devtools, swiftshader, block_images,
         user_data_dir, extension_zip, extension_dir, test_id,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
@@ -480,7 +490,7 @@ def get_remote_driver(
                 desired_caps["name"] = test_id
     if browser_name == constants.Browser.GOOGLE_CHROME:
         chrome_options = _set_chrome_options(
-            browser_name, downloads_path, headless,
+            browser_name, downloads_path, headless, locale_code,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
             incognito, guest_mode, devtools, swiftshader, block_images,
@@ -497,7 +507,8 @@ def get_remote_driver(
         try:
             # Use Geckodriver for Firefox if it's on the PATH
             profile = _create_firefox_profile(
-                downloads_path, proxy_string, user_agent, disable_csp)
+                downloads_path, locale_code,
+                proxy_string, user_agent, disable_csp)
             firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
             firefox_capabilities['marionette'] = True
             if headless:
@@ -515,7 +526,8 @@ def get_remote_driver(
         except WebDriverException:
             # Don't use Geckodriver: Only works for old versions of Firefox
             profile = _create_firefox_profile(
-                downloads_path, proxy_string, user_agent, disable_csp)
+                downloads_path, locale_code,
+                proxy_string, user_agent, disable_csp)
             firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
             firefox_capabilities['marionette'] = False
             if headless:
@@ -604,7 +616,7 @@ def get_remote_driver(
 
 
 def get_local_driver(
-        browser_name, headless, servername,
+        browser_name, headless, locale_code, servername,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
         incognito, guest_mode, devtools, swiftshader, block_images,
@@ -622,7 +634,8 @@ def get_local_driver(
             try:
                 # Use Geckodriver for Firefox if it's on the PATH
                 profile = _create_firefox_profile(
-                    downloads_path, proxy_string, user_agent, disable_csp)
+                    downloads_path, locale_code,
+                    proxy_string, user_agent, disable_csp)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_capabilities['marionette'] = True
                 options = webdriver.FirefoxOptions()
@@ -661,7 +674,8 @@ def get_local_driver(
                         options=options)
             except Exception:
                 profile = _create_firefox_profile(
-                    downloads_path, proxy_string, user_agent, disable_csp)
+                    downloads_path, locale_code,
+                    proxy_string, user_agent, disable_csp)
                 firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
                 firefox_driver = webdriver.Firefox(
                     firefox_profile=profile,
@@ -694,7 +708,7 @@ def get_local_driver(
     elif browser_name == constants.Browser.EDGE:
         try:
             chrome_options = _set_chrome_options(
-                browser_name, downloads_path, headless,
+                browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
@@ -735,10 +749,16 @@ def get_local_driver(
                 "download.default_directory": downloads_path,
                 "local_discovery.notifications_enabled": False,
                 "credentials_enable_service": False,
+                "download.prompt_for_download": False,
+                "download.directory_upgrade": True,
+                "safebrowsing.enabled": False,
+                "safebrowsing.disable_download_protection": True,
                 "profile": {
                     "password_manager_enabled": False
                 }
             }
+            if locale_code:
+                prefs["intl.accept_languages"] = locale_code
             if block_images:
                 prefs["profile.managed_default_content_settings.images"] = 2
             edge_options.add_experimental_option("prefs", prefs)
@@ -820,7 +840,7 @@ def get_local_driver(
                     logging.debug("\nWarning: Could not make operadriver"
                                   " executable: %s" % e)
             opera_options = _set_chrome_options(
-                browser_name, downloads_path, headless,
+                browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
@@ -839,7 +859,7 @@ def get_local_driver(
     elif browser_name == constants.Browser.GOOGLE_CHROME:
         try:
             chrome_options = _set_chrome_options(
-                browser_name, downloads_path, headless,
+                browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
