@@ -14,9 +14,9 @@ class MyTestClass(BaseCase):
         self.update_text("#user-name", "standard_user")
 
         encrypted_password = "$^*ENCRYPT=S3BDTAdCWzMmKEY8Gjg=?&#$"
-        print("Encrypted Password = %s" % encrypted_password)
+        print("\nEncrypted Password = %s" % encrypted_password)
         password = encryption.decrypt(encrypted_password)
-        print("Password = %s" % password)
+        print("Decrypted Password = %s" % password)
         self.update_text("#password", password)
 
         self.click('input[type="submit"]')

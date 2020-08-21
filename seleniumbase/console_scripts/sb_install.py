@@ -13,11 +13,12 @@ Example:
         seleniumbase install chromedriver
         seleniumbase install geckodriver
         seleniumbase install edgedriver
+        seleniumbase install edgedriver 84.0.522.61
+        seleniumbase install chromedriver 84
         seleniumbase install chromedriver 84.0.4147.30
         seleniumbase install chromedriver latest
         seleniumbase install chromedriver -p
         seleniumbase install chromedriver latest -p
-        seleniumbase install edgedriver 84.0.522.61
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -27,6 +28,7 @@ Output:
         (operadriver is required for Opera Browser automation)
 """
 
+import colorama
 import os
 import platform
 import requests
@@ -108,18 +110,28 @@ def main(override=None):
     platform_code = None
     inner_folder = None
     copy_to_path = False
+    latest_version = ""
     use_version = ""
     new_file = ""
     f_name = ""
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
 
     if name == "chromedriver":
+        last = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
         use_version = DEFAULT_CHROMEDRIVER_VERSION
         get_latest = False
+        get_v_latest = False
         if num_args == 4 or num_args == 5:
             if "-p" not in sys.argv[3].lower():
                 use_version = sys.argv[3]
-                if use_version.lower() == "latest":
+                uv_low = use_version.lower()
+                if uv_low == "latest":
                     get_latest = True
+                elif len(uv_low) < 4 and uv_low.isdigit() and int(uv_low) > 69:
+                    get_v_latest = True
             else:
                 copy_to_path = True
         if num_args == 5:
@@ -138,20 +150,48 @@ def main(override=None):
                             "to download!")
         found_chromedriver = False
         if get_latest:
-            last = "http://chromedriver.storage.googleapis.com/LATEST_RELEASE"
             url_request = requests.get(last)
             if url_request.ok:
                 found_chromedriver = True
                 use_version = url_request.text
-        download_url = ("http://chromedriver.storage.googleapis.com/"
+        elif get_v_latest:
+            url_req = requests.get(last)
+            if url_req.ok:
+                latest_version = url_req.text
+            last = last + "_" + use_version
+            url_request = requests.get(last)
+            if url_request.ok:
+                found_chromedriver = True
+                use_version = url_request.text
+                if use_version == latest_version:
+                    get_latest = True
+        download_url = ("https://chromedriver.storage.googleapis.com/"
                         "%s/%s" % (use_version, file_name))
         url_request = None
         if not found_chromedriver:
+            url_req = requests.get(last)
+            if url_req.ok:
+                latest_version = url_req.text
+                if use_version == latest_version:
+                    get_latest = True
             url_request = requests.get(download_url)
         if found_chromedriver or url_request.ok:
-            print("\n* chromedriver version for download = %s" % use_version)
+            p_version = use_version
+            p_version = c3 + use_version + cr
+            if get_latest:
+                p_version = p_version + " (Latest)"
+            else:
+                p_version = p_version + " (NOT Latest)"
+            msg = c2 + "chromedriver version for download" + cr
+            print("\n*** %s = %s" % (msg, p_version))
         else:
             raise Exception("Could not find chromedriver to download!\n")
+        if not get_latest:
+            to_upgrade = " " + c3 + "To upgrade" + cr
+            run_this = c3 + "run this" + cr
+            install_sb = c1 + "seleniumbase install chromedriver latest" + cr
+            print("\n#%s to the latest version of chromedriver," % to_upgrade)
+            print('#  %s: >>> %s' % (run_this, install_sb))
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
@@ -196,7 +236,9 @@ def main(override=None):
         if not found_geckodriver:
             url_request = requests.get(download_url)
         if found_geckodriver or url_request.ok:
-            print("\n* geckodriver version for download = %s" % use_version)
+            msg = c2 + "geckodriver version for download" + cr
+            p_version = c3 + use_version + cr
+            print("\n*** %s = %s" % (msg, p_version))
         else:
             raise Exception("\nCould not find the specified geckodriver "
                             "version to download!\n")
@@ -226,6 +268,9 @@ def main(override=None):
                             "only for Windows or Mac operating systems!")
         download_url = ("https://msedgedriver.azureedge.net/"
                         "%s/%s" % (use_version, file_name))
+        msg = c2 + "edgedriver version for download" + cr
+        p_version = c3 + use_version + cr
+        print("\n*** %s = %s" % (msg, p_version))
     elif name == "iedriver":
         major_version = "3.14"
         full_version = "3.14.0"
@@ -237,7 +282,7 @@ def main(override=None):
         else:
             raise Exception("Sorry! IEDriver is only for "
                             "Windows-based operating systems!")
-        download_url = ("http://selenium-release.storage.googleapis.com/"
+        download_url = ("https://selenium-release.storage.googleapis.com/"
                         "%s/%s" % (major_version, file_name))
     elif name == "operadriver" or name == "operachromiumdriver":
         name = "operadriver"
@@ -290,6 +335,9 @@ def main(override=None):
         download_url = ("https://github.com/operasoftware/operachromiumdriver/"
                         "releases/download/"
                         "%s/%s" % (use_version, file_name))
+        msg = c2 + "operadriver version for download" + cr
+        p_version = c3 + use_version + cr
+        print("\n*** %s = %s" % (msg, p_version))
     else:
         invalid_run_command()
 
@@ -326,15 +374,16 @@ def main(override=None):
             print('Unzip Complete!\n')
             for f_name in contents:
                 new_file = downloads_folder + '/' + str(f_name)
-                print("The file [%s] was saved to:\n%s\n" % (f_name, new_file))
+                pr_file = c3 + new_file + cr
+                print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
-                print("[%s] is now ready for use!" % f_name)
+                print("%s[%s] is now ready for use!%s" % (c1, f_name, cr))
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
                     shutil.copyfile(new_file, path_file)
                     make_executable(path_file)
-                    print("Also copied to: %s" % path_file)
+                    print("Also copied to: %s%s%s" % (c3, path_file, cr))
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
             if "darwin" in sys_plat or "linux" in sys_plat:
@@ -364,7 +413,7 @@ def main(override=None):
                     if os.path.exists(new_file):
                         os.remove(new_file)
             if not driver_file or not driver_path:
-                raise Exception("Operadriver missing from Zip file!")
+                raise Exception("msedgedriver missing from Zip file!")
             print('Extracting %s from %s ...' % (contents, file_name))
             zip_ref.extractall(downloads_folder)
             zip_ref.close()
@@ -382,7 +431,7 @@ def main(override=None):
                 driver_file, driver_path))
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
-            print("[%s] is now ready for use!" % driver_file)
+            print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
             print("")
         elif name == "operadriver":
             if len(contents) > 3:
@@ -409,16 +458,17 @@ def main(override=None):
             inner_driver = downloads_folder + '/' + inner_folder + driver_file
             inner_sha = downloads_folder + '/' + inner_folder + "sha512_sum"
             shutil.copyfile(inner_driver, driver_path)
+            pr_driver_path = c3 + driver_path + cr
             print("The file [%s] was saved to:\n%s\n" % (
-                driver_file, driver_path))
+                driver_file, pr_driver_path))
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
-            print("[%s] is now ready for use!" % driver_file)
+            print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
             if copy_to_path and os.path.exists(LOCAL_PATH):
                 path_file = LOCAL_PATH + driver_file
                 shutil.copyfile(driver_path, path_file)
                 make_executable(path_file)
-                print("Also copied to: %s" % path_file)
+                print("Also copied to: %s%s%s" % (c3, path_file, cr))
             # Clean up extra files
             if os.path.exists(inner_driver):
                 os.remove(inner_driver)
@@ -450,15 +500,16 @@ def main(override=None):
             print('Unzip Complete!\n')
             for f_name in contents:
                 new_file = downloads_folder + '/' + str(f_name)
-                print("The file [%s] was saved to:\n%s\n" % (f_name, new_file))
+                pr_file = c3 + new_file + cr
+                print("The file [%s] was saved to:\n%s\n" % (f_name, pr_file))
                 print("Making [%s %s] executable ..." % (f_name, use_version))
                 make_executable(new_file)
-                print("[%s] is now ready for use!" % f_name)
+                print("%s[%s] is now ready for use!%s" % (c1, f_name, cr))
                 if copy_to_path and os.path.exists(LOCAL_PATH):
                     path_file = LOCAL_PATH + f_name
                     shutil.copyfile(new_file, path_file)
                     make_executable(path_file)
-                    print("Also copied to: %s" % path_file)
+                    print("Also copied to: %s%s%s" % (c3, path_file, cr))
             print("")
         elif len(contents) == 0:
             raise Exception("Tar file %s is empty!" % tar_file_path)
@@ -469,7 +520,7 @@ def main(override=None):
         if "Driver" in file_name or "driver" in file_name:
             print("Making [%s] executable ..." % file_name)
             make_executable(file_path)
-            print("[%s] is now ready for use!" % file_name)
+            print("%s[%s] is now ready for use!%s" % (c1, file_name, cr))
             print("Location of [%s]:\n%s\n" % (file_name, file_path))
 
 
