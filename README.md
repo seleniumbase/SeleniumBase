@@ -5,7 +5,7 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
+<img src="https://seleniumbase.io/cdn/img/sb_logo_dh.png" alt="SeleniumBase" width="340" />
 </a></p>
 <p align="center">
 <b>The fastest way to test web apps.</b>
