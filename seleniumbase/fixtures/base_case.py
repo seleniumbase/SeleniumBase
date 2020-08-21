@@ -1236,7 +1236,37 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(selector, by)
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
-        return page_actions.hover_on_element(self.driver, selector)
+        if self.browser != "chrome":
+            return page_actions.hover_on_element(self.driver, selector)
+        # Using Chrome
+        # (Pure hover actions won't work on early chromedriver versions)
+        try:
+            return page_actions.hover_on_element(self.driver, selector)
+        except WebDriverException as e:
+            driver_capabilities = self.driver.__dict__["capabilities"]
+            if "version" in driver_capabilities:
+                chrome_version = driver_capabilities["version"]
+            else:
+                chrome_version = driver_capabilities["browserVersion"]
+            major_chrome_version = chrome_version.split('.')[0]
+            chrome_dict = self.driver.__dict__["capabilities"]["chrome"]
+            chromedriver_version = chrome_dict["chromedriverVersion"]
+            chromedriver_version = chromedriver_version.split(' ')[0]
+            major_chromedriver_version = chromedriver_version.split('.')[0]
+            install_sb = (
+                "seleniumbase install chromedriver %s" % major_chrome_version)
+            if major_chromedriver_version < major_chrome_version:
+                # Upgrading the driver is required for performing hover actions
+                message = (
+                    "\n"
+                    "You need a newer chromedriver to perform hover actions!\n"
+                    "Your version of chromedriver is: %s\n"
+                    "And your version of Chrome is: %s\n"
+                    "You can fix this issue by running:\n>>> %s\n"
+                    "" % (chromedriver_version, chrome_version, install_sb))
+                raise Exception(message)
+            else:
+                raise Exception(e)
 
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
