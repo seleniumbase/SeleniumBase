@@ -476,6 +476,11 @@ class BaseCase(unittest.TestCase):
         user_agent = self.driver.execute_script("return navigator.userAgent;")
         return user_agent
 
+    def get_locale_code(self):
+        locale_code = self.driver.execute_script(
+            "return navigator.language || navigator.languages[0];")
+        return locale_code
+
     def go_back(self):
         self.__last_page_load_url = None
         if self.browser != "safari":
