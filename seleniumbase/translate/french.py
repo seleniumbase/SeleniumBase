@@ -532,6 +532,10 @@ class CasDeBase(BaseCase):
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def obtenir_code_de_langue(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_Français(MasterQA, CasDeBase):
 

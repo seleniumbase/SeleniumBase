@@ -532,6 +532,10 @@ class CasoDePrueba(BaseCase):
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def obtener_código_de_idioma(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_Español(MasterQA, CasoDePrueba):
 

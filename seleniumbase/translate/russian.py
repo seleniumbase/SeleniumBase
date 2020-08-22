@@ -532,6 +532,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def получить_код_языка(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_Русский(MasterQA, ТестНаСелен):
 

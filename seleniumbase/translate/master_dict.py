@@ -1776,6 +1776,18 @@ class MD:
     md["get_user_agent"][8] = "получить_агента_пользователя"
     md["get_user_agent"][9] = "obtener_agente_de_usuario"
 
+    md["get_locale_code"] = ["*"] * num_langs
+    md["get_locale_code"][0] = "get_locale_code"
+    md["get_locale_code"][1] = "获取语言代码"
+    md["get_locale_code"][2] = "taalcode_ophalen"
+    md["get_locale_code"][3] = "obtenir_code_de_langue"
+    md["get_locale_code"][4] = "ottenere_codice_lingua"
+    md["get_locale_code"][5] = "言語コードを取得する"
+    md["get_locale_code"][6] = "언어_코드를_얻을"
+    md["get_locale_code"][7] = "obter_código_de_idioma"
+    md["get_locale_code"][8] = "получить_код_языка"
+    md["get_locale_code"][9] = "obtener_código_de_idioma"
+
     ################
     # Duplicates
 

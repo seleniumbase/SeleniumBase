@@ -532,6 +532,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def 言語コードを取得する(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_日本語(MasterQA, セレニウムテストケース):
 

@@ -532,6 +532,10 @@ class Testgeval(BaseCase):
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def taalcode_ophalen(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_Nederlands(MasterQA, Testgeval):
 
