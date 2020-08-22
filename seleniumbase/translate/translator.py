@@ -103,6 +103,7 @@ def get_width(line):
 def process_test_file(code_lines, new_lang):
     detected_lang = None
     changed = False
+    found_bc = False  # Found BaseCase or a translation
     seleniumbase_lines = []
     lang_codes = MD_L_Codes.lang
     nl_code = lang_codes[new_lang]  # new_lang language code
@@ -127,6 +128,7 @@ def process_test_file(code_lines, new_lang):
                         changed = True
                         new_line = MD_F.get_import_line(new_lang) + comments
                     else:
+                        found_bc = True
                         new_line = line
                     if new_line.endswith("  # noqa"):  # Remove flake8 skip
                         new_line = new_line[0:-len("  # noqa")]
@@ -144,6 +146,7 @@ def process_test_file(code_lines, new_lang):
                         changed = True
                         new_line = MD_F.get_mqa_im_line(new_lang) + comments
                     else:
+                        found_bc = True
                         new_line = line
                     if new_line.endswith("  # noqa"):  # Remove flake8 skip
                         new_line = new_line[0:-len("  # noqa")]
@@ -176,6 +179,7 @@ def process_test_file(code_lines, new_lang):
                             '%sclass %s(%s):%s'
                             '' % (whitespace, name, new_parent, comments))
                     else:
+                        found_bc = True
                         new_line = line
                     if new_line.endswith("  # noqa"):  # Remove flake8 skip
                         new_line = new_line[0:-len("  # noqa")]
@@ -192,6 +196,7 @@ def process_test_file(code_lines, new_lang):
                             '%sclass %s(%s):%s'
                             '' % (whitespace, name, new_parent, comments))
                     else:
+                        found_bc = True
                         new_line = line
                     if new_line.endswith("  # noqa"):  # Remove flake8 skip
                         new_line = new_line[0:-len("  # noqa")]
@@ -231,7 +236,7 @@ def process_test_file(code_lines, new_lang):
 
         seleniumbase_lines.append(line)
 
-    return seleniumbase_lines, changed, detected_lang
+    return seleniumbase_lines, changed, detected_lang, found_bc
 
 
 def main():
@@ -447,17 +452,47 @@ def main():
     all_code = all_code.replace("\t", "    ")
     code_lines = all_code.split('\n')
 
-    seleniumbase_lines, changed, d_l = process_test_file(code_lines, new_lang)
+    sb_lines, changed, d_l, found_bc = process_test_file(code_lines, new_lang)
+    seleniumbase_lines = sb_lines
     detected_lang = d_l
+    found_basecase = found_bc
 
-    if not changed:
-        msg = ('\n*> [%s] was already in %s! * No changes were made! <*\n'
-               '' % (seleniumbase_file, new_lang))
-        msg = msg.replace("*> ", "*> " + c2).replace(" <*", cr + " <*")
-        print(msg)
+    if not changed and found_basecase:
+        print("")
+        msg1 = (" [[[[%s]]]] was already in [[[%s]]]!\n\n"
+                "" % (seleniumbase_file, new_lang))
+        msg1 = msg1.replace("[[[[", "" + c3).replace("]]]]", cr + "")
+        msg1 = msg1.replace("[[[", "" + c5).replace("]]]", cr + "")
+        msg2 = None
+        if print_only:
+            msg2 = '*> ***  No changes to display!  *** <*'
+        elif overwrite:
+            msg2 = '*> ***  No changes were made!  *** <*'
+        else:  # "copy" action
+            msg2 = '*> ***  No action was taken!  *** <*'
+        msg2 = msg2.replace("*>", " " + c6).replace("<*", cr + '\n')
+        print(msg1 + msg2)
         return
 
-    save_line = ("[[[[%s]]]] was translated to [[[%s]]]! "
+    if not changed and not found_basecase:
+        print("")
+        filename = c3 + seleniumbase_file + cr
+        from_sb = c5 + "from seleniumbase" + cr
+        msg0 = (' * In order to translate the script,\n')
+        msg1 = (' %s requires "%s..."\n' % (filename, from_sb))
+        msg2 = (" and a BaseCase import in a supported language!\n\n")
+        msg3 = None
+        if print_only:
+            msg3 = '*> ***  No changes to display!  *** <*'
+        elif overwrite:
+            msg3 = '*> ***  No changes were made!  *** <*'
+        else:  # "copy" action
+            msg3 = '*> ***  No action was taken!  *** <*'
+        msg3 = msg3.replace("*>", " " + c6).replace("<*", cr + '\n')
+        print(msg0 + msg1 + msg2 + msg3)
+        return
+
+    save_line = (" [[[[%s]]]] was translated to [[[%s]]]! "
                  "(Previous: %s)\n"
                  "" % (seleniumbase_file, new_lang, detected_lang))
     save_line = save_line.replace("[[[[", "" + c4)
@@ -684,7 +719,7 @@ def main():
             magic_console = Console()
         print("")
         print(save_line)
-        print(c1 + "* Here are the results: >>>" + cr)
+        print(" " + c1 + " ***  Here are the results:  >>> " + cr)
         # ----------------------------------------
         dash_length = 62  # May change
         if used_width and used_width + w < console_width:
