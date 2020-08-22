@@ -532,6 +532,10 @@ class 硒测试用例(BaseCase):  # noqa
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def 获取语言代码(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_中文(MasterQA, 硒测试用例):
 

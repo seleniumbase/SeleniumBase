@@ -532,6 +532,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # get_user_agent()
         return self.get_user_agent(*args, **kwargs)
 
+    def 언어_코드를_얻을(self, *args, **kwargs):
+        # get_locale_code()
+        return self.get_locale_code(*args, **kwargs)
+
 
 class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):
 

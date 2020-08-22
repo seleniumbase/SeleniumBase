@@ -45,6 +45,8 @@ self.get_title()
 
 self.get_user_agent()
 
+self.get_locale_code()
+
 self.go_back()
 
 self.go_forward()
