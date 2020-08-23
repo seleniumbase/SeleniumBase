@@ -220,6 +220,13 @@ def main():
                                         new_sb_lines.append(line2a)
                                         new_sb_lines.append(line2b)
                                         continue
+                                    elif line2.count(", ") == 1:
+                                        line2a = line2.split(", ")[0] + ","
+                                        line2b = new_ws + (
+                                            line2.split(", ")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
                                     elif line2.count('="') == 1 and (
                                             line2.lstrip().startswith("'")):
                                         line2a = line2.split('="')[0] + "='"
@@ -233,13 +240,6 @@ def main():
                                         line2a = line2.split("='")[0] + '="'
                                         line2b = new_ws + '"\'' + (
                                             line2.split("='")[1])
-                                        new_sb_lines.append(line2a)
-                                        new_sb_lines.append(line2b)
-                                        continue
-                                    elif line2.count(", ") == 1:
-                                        line2a = line2.split(", ")[0] + ","
-                                        line2b = new_ws + (
-                                            line2.split(", ")[1])
                                         new_sb_lines.append(line2a)
                                         new_sb_lines.append(line2b)
                                         continue
