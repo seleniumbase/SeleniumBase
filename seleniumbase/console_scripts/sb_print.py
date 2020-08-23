@@ -176,7 +176,7 @@ def main():
                                         ' # ')[0]) + w <= console_width:
                                 new_sb_lines.append(line)
                                 continue
-                        if line.startswith("from") and " import " in line:
+                        elif line.startswith("from") and " import " in line:
                             line1 = line.split(" import ")[0] + " \\"
                             line2 = "    import " + line.split(" import ")[1]
                             new_sb_lines.append(line1)
@@ -217,6 +217,13 @@ def main():
                                         line2a = line2.split("://")[0] + "://'"
                                         line2b = new_ws + "'" + (
                                             line2.split("://")[1])
+                                        new_sb_lines.append(line2a)
+                                        new_sb_lines.append(line2b)
+                                        continue
+                                    elif line2.count(", ") == 1:
+                                        line2a = line2.split(", ")[0] + ","
+                                        line2b = new_ws + (
+                                            line2.split(", ")[1])
                                         new_sb_lines.append(line2a)
                                         new_sb_lines.append(line2b)
                                         continue
@@ -324,6 +331,24 @@ def main():
                                     continue
                             new_sb_lines.append(line2)
                             continue
+                        elif line.count('(self.') == 1 and not ('):') in line:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split('(self.')[0] + "("
+                            line2 = new_ws + "self." + line.split('(self.')[1]
+                            if get_width(line1) + w <= console_width:
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                                continue
+                        elif line.count(' % ') == 1 and not ('):') in line:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split(' % ')[0] + " \\"
+                            line2 = new_ws + "% " + line.split(' % ')[1]
+                            if get_width(line1) + w <= console_width:
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                                continue
                     new_sb_lines.append(line)
 
             if new_sb_lines:
