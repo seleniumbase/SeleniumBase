@@ -43,7 +43,7 @@
 
 --------
 
-<h3>GitHub Pages ToC (<a href="https://seleniumbase.com">seleniumbase.com</a>)</h3>
+<h3>GitHub Pages (<a href="https://seleniumbase.com">seleniumbase.com</a>)</h3>
 
 <div><a href="https://seleniumbase.com/help_docs/features_list"><b>Features List</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/customizing_test_runs"><b>Command Line Tutorial</b></a></div>
