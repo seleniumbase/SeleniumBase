@@ -8,11 +8,15 @@ At the core, SeleniumBase works by extending [pytest](https://docs.pytest.org/en
 (NOTE: pytest uses a feature called test discovery to automatically find and run Python methods that start with "``test_``" from the file that you specified on the command line.)
 
 To use SeleniumBase calls you need the following:
+
 ```python
 from seleniumbase import BaseCase
 ```
+
 And then have your test classes inherit BaseCase:
+
 ```python
 class MyTestClass(BaseCase):
 ```
-(*See the example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), for reference.*)
+
+(See the example test, [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py), for reference.)

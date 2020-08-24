@@ -1,6 +1,6 @@
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" alt="SeleniumBase" width="240" /></a></div>
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Documents</h2>
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Docs</h2>
 
 <h3>Table of Contents (<a href="https://seleniumbase.io">seleniumbase.io</a>)</h3>
 
@@ -29,6 +29,17 @@
 <div><a href="https://seleniumbase.io/help_docs/using_safari_driver/"><b>Safari Driver Detailed Info</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/hidden_files_info/"><b>Seeing Hidden Files on macOS</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/happy_customers/"><b>Case Studies</b></a></div>
+
+--------
+
+<h3>Demo Pages / Web Examples</h3>
+
+<div><a href="https://seleniumbase.io/demo_page"><b>Demo Page / Demo Site</b></a></div>
+<div><a href="https://seleniumbase.io/other/tinymce"><b>TinyMCE Demo Page</b></a></div>
+<div><a href="https://seleniumbase.io/error_page/"><b>Error Page for Tests</b></a></div>
+<div><a href="https://seleniumbase.io/other/presenter.html"><b>Presenter Demo</b></a></div>
+<div><a href="https://seleniumbase.io/other/core_presentation.html"><b>Core Presentation</b></a></div>
+<div><a href="https://seleniumbase.io/other/chart_presentation.html"><b>Chart Maker Demo</b></a></div>
 
 --------
 
