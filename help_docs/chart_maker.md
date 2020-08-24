@@ -1,6 +1,6 @@
 <h3 align="left"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb23.png" alt="SeleniumBase" width="290" /></h3>
 
-# 📊 Chart Maker 📊
+<h3> 📊 Chart Maker 📊 </h3>
 
 SeleniumBase Chart Maker allows you to create HTML charts with Python. (Using HighCharts JS)
 
@@ -53,7 +53,7 @@ Here are screenshots from the examples:
 <a href="https://seleniumbase.io/other/multi_series_chart.png"><img width="500" src="https://seleniumbase.io/other/multi_series_chart.png" title="Screenshot"></a><br>
 
 
-### Here's a line chart example:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Here's a line chart example:</h3>
 
 ```python
 from seleniumbase import BaseCase
@@ -74,7 +74,7 @@ class MyChartMakerClass(BaseCase):
         self.begin_presentation(filename="line_chart.html", interval=8)
 ```
 
-#### This example is from [test_line_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/test_line_chart.py), which you can run from the ``examples/chart_maker`` folder with the following command:
+This example is from [test_line_chart.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/test_line_chart.py), which you can run from the ``examples/chart_maker`` folder with the following command:
 
 ```bash
 pytest test_line_chart.py
@@ -83,7 +83,7 @@ pytest test_line_chart.py
 Because that presentation above has an ``interval`` set to ``8``, it will automatically advance to the next slide after 8 seconds. (Or exit if there are no more slides.)
 
 
-### For a more advanced example (multiple charts in a presentation):
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> For a more advanced example (multiple charts in a presentation):</h3>
 
 ```python
 from seleniumbase import BaseCase
@@ -138,7 +138,7 @@ pytest chart_presentation.py
 Multi-Series charts can also be created. Try the available examples to learn more.
 
 
-## Chart Maker API
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Chart Maker API</h2>
 
 ```python
 self.create_pie_chart(
@@ -245,7 +245,7 @@ self.create_area_chart(
 If creating multiple charts at the same time, you can pass the ``chart_name`` parameter to distinguish between different charts.
 
 
-### Adding a data point to a chart:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Adding a data point to a chart:</h3>
 
 ```python
 self.add_data_point(label, value, color=None, chart_name=None):
@@ -262,7 +262,7 @@ self.add_data_point(label, value, color=None, chart_name=None):
 ```
 
 
-### Adding a new data series to an existing chart:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Adding a new data series to an existing chart:</h3>
 
 ```python
 self.add_series_to_chart(self, data_name=None, chart_name=None):
@@ -276,7 +276,7 @@ self.add_series_to_chart(self, data_name=None, chart_name=None):
 ```
 
 
-### Saving a chart to a file:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Saving a chart to a file:</h3>
 
 ```python
 self.save_chart(chart_name=None, filename=None):
@@ -292,7 +292,7 @@ self.save_chart(chart_name=None, filename=None):
 The full HTML of the chart is saved to the ``saved_charts/`` folder.
 
 
-### Extracting the HTML of a chart:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Extracting the HTML of a chart:</h3>
 
 ```python
 self.extract_chart(chart_name=None):
@@ -304,7 +304,7 @@ self.extract_chart(chart_name=None):
 ```
 
 
-### Displaying a chart in the browser window:
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Displaying a chart in the browser window:</h3>
 
 ```python
 self.display_chart(chart_name=None, filename=None):

@@ -122,7 +122,8 @@ class MyTestClass(BaseCase):
 
     def test_basic(self):
         self.open("https://store.xkcd.com/search")
-        self.type('input[name="q"]', "xkcd book\n")
+        self.type('input[name="q"]', "xkcd book")
+        self.click('input[value="Search"]')
         self.assert_text("xkcd: volume 0", "h3")
         self.open("https://xkcd.com/353/")
         self.assert_title("xkcd: Python")
@@ -132,6 +133,8 @@ class MyTestClass(BaseCase):
         self.go_back()
         self.click_link_text("About")
         self.assert_exact_text("xkcd.com", "h2")
+        self.click_link_text("geohashing")
+        self.assert_element("#comic img")
 ```
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
@@ -470,7 +473,7 @@ pytest proxy_test.py --proxy=proxy1
 
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Changing the User-Agent:</h3>
 
-If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
+If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
@@ -805,6 +808,8 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 <div><b>If you like us, give us a star!</b></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
 </p>
+<div><!--not_for_site--><iframe src="https://seleniumbase.io/" style="width:92%;height:450px;" title="iframe content"></iframe></div>
+<div><!--not_for_site--><iframe src="https://seleniumbase.io/help_docs/ReadMe/" style="width:92%;height:580px;" title="iframe content"></iframe></div>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
