@@ -164,25 +164,28 @@ def main():
                     # If line is larger than console_width, try to optimize it.
                     # Smart Python word wrap to be used with valid indentation.
                     if line_length + w > console_width:  # 5 is line number ws
-                        if line.count('  # ') == 1:  # Has comments like this
-                            if get_width(
-                                    line.split(
-                                        '  # ')[0]) + w <= console_width:
-                                new_sb_lines.append(line)
-                                continue
-                        elif line.count(' # ') == 1:  # Has bad flake8 comment
-                            if get_width(
-                                    line.split(
-                                        ' # ')[0]) + w <= console_width:
-                                new_sb_lines.append(line)
-                                continue
-                        elif line.startswith("from") and " import " in line:
+                        if line.strip().startswith("#"):
+                            new_sb_lines.append(line)
+                            continue
+                        elif line.count('  # ') == 1 and get_width(line.split(
+                                '  # ')[0]) + w <= console_width:
+                            # Line is short enough once comment is removed
+                            line = line.split('  # ')[0]
+                            new_sb_lines.append(line)
+                            continue
+                        elif line.count(' # ') == 1 and get_width(line.split(
+                                ' # ')[0]) + w <= console_width:
+                            # L-Length good if removing bad flake8 comment
+                            line = line.split('  # ')[0]
+                            new_sb_lines.append(line)
+                            continue
+                        if line.startswith("from") and " import " in line:
                             line1 = line.split(" import ")[0] + " \\"
                             line2 = "    import " + line.split(" import ")[1]
                             new_sb_lines.append(line1)
                             new_sb_lines.append(line2)
                             continue
-                        elif line.count('(') == 1 and line.count(')') == 1:
+                        if line.count('(') == 1 and line.count(')') == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split('(')[0] + '('
@@ -210,6 +213,20 @@ def main():
                                         line2b = new_ws + '"' + (
                                             line2.split("://")[1])
                                         new_sb_lines.append(line2a)
+                                        if get_width(line2b) + w > (
+                                                console_width):
+                                            if line2b.count('/') > 0:
+                                                slash_one = line2b.find('/')
+                                                line2b1 = (
+                                                    line2b[:slash_one+1] + '"')
+                                                line2b2 = new_ws + '"' + (
+                                                    line2b[slash_one+1:])
+                                                new_sb_lines.append(line2b1)
+                                                if line2b2.count(')  # ') == 1:
+                                                    line2b2 = line2b2.split(
+                                                        ')  # ')[0] + ')'
+                                                new_sb_lines.append(line2b2)
+                                                continue
                                         new_sb_lines.append(line2b)
                                         continue
                                     elif line2.count("://") == 1 and (
@@ -218,6 +235,20 @@ def main():
                                         line2b = new_ws + "'" + (
                                             line2.split("://")[1])
                                         new_sb_lines.append(line2a)
+                                        if get_width(line2b) + w > (
+                                                console_width):
+                                            if line2b.count('/') > 0:
+                                                slash_one = line2b.find('/')
+                                                line2b1 = (
+                                                    line2b[:slash_one+1] + "'")
+                                                line2b2 = new_ws + "'" + (
+                                                    line2b[slash_one+1:])
+                                                new_sb_lines.append(line2b1)
+                                                if line2b2.count(')  # ') == 1:
+                                                    line2b2 = line2b2.split(
+                                                        ')  # ')[0] + ')'
+                                                new_sb_lines.append(line2b2)
+                                                continue
                                         new_sb_lines.append(line2b)
                                         continue
                                     elif line2.count(", ") == 1:
@@ -251,7 +282,7 @@ def main():
                             else:
                                 new_sb_lines.append(line)
                             continue
-                        elif line.count('("') == 1:
+                        if line.count('("') == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split('("')[0] + '('
@@ -275,7 +306,7 @@ def main():
                             else:
                                 new_sb_lines.append(line)
                             continue
-                        elif line.count("('") == 1:
+                        if line.count("('") == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split("('")[0] + '('
@@ -299,7 +330,7 @@ def main():
                             else:
                                 new_sb_lines.append(line)
                             continue
-                        elif line.count('= "') == 1 and line.count('://') == 1:
+                        if line.count('= "') == 1 and line.count('://') == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split('://')[0] + '://" \\'
@@ -315,7 +346,7 @@ def main():
                                     continue
                             new_sb_lines.append(line2)
                             continue
-                        elif line.count("= '") == 1 and line.count('://') == 1:
+                        if line.count("= '") == 1 and line.count('://') == 1:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split('://')[0] + "://' \\"
@@ -331,7 +362,7 @@ def main():
                                     continue
                             new_sb_lines.append(line2)
                             continue
-                        elif line.count('(self.') == 1 and not ('):') in line:
+                        if line.count('(self.') == 1 and not ('):') in line:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split('(self.')[0] + "("
@@ -340,7 +371,46 @@ def main():
                                 new_sb_lines.append(line1)
                                 new_sb_lines.append(line2)
                                 continue
-                        elif line.count(' % ') == 1 and not ('):') in line:
+                        if line.count(' == ') == 1 and not (
+                                line.endswith(':') or (':  #') in line):
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split(' == ')[0] + " == ("
+                            line2 = new_ws + line.split(' == ')[1] + ')'
+                            if get_width(line1) + w <= console_width and (
+                                    get_width(line2) + w <= console_width):
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                                continue
+                        if line.count(' == ') == 1 and line.endswith(':'):
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "        "
+                            line1 = line.split(' == ')[0] + " == ("
+                            line2 = new_ws + line.split(' == ')[1][:-1] + '):'
+                            if get_width(line1) + w <= console_width and (
+                                    get_width(line2) + w <= console_width):
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                                continue
+                        if line.count(' == ') == 1 and (
+                                line.count(':  #') == 1) and (
+                                    line.find(' == ') < line.find(':  #')):
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "        "
+                            comments = "  #" + line.split(':  #')[1]
+                            line0 = line.split(':  #')[0] + ':'
+                            line1 = line0.split(' == ')[0] + " == ("
+                            line2 = new_ws + line0.split(' == ')[1][:-1] + '):'
+                            if get_width(line1) + w <= console_width and (
+                                    get_width(line2) + w <= console_width):
+                                new_sb_lines.append(line1)
+                                if get_width(
+                                        line2 + comments) + w <= console_width:
+                                    new_sb_lines.append(line2 + comments)
+                                else:
+                                    new_sb_lines.append(line2)
+                                continue
+                        if line.count(' % ') == 1 and not ('):') in line:
                             whitespace = line_length2 - len(line.lstrip())
                             new_ws = line[0:whitespace] + "    "
                             line1 = line.split(' % ')[0] + " \\"
@@ -348,6 +418,49 @@ def main():
                             if get_width(line1) + w <= console_width:
                                 new_sb_lines.append(line1)
                                 new_sb_lines.append(line2)
+                                continue
+                        if line.count(' = ') == 1 and not ('  # ') in line:
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "    "
+                            line1 = line.split(' = ')[0] + " = ("
+                            line2 = new_ws + line.split(' = ')[1] + ')'
+                            if get_width(line1) + w <= console_width and (
+                                    get_width(line2) + w <= console_width):
+                                new_sb_lines.append(line1)
+                                new_sb_lines.append(line2)
+                                continue
+                            elif get_width(line1) + w <= console_width:
+                                if line2.count(' % ') == 1 and not (
+                                        line2.endswith(':')):
+                                    whitespace = line_length2 - len(
+                                        line2.lstrip())
+                                    line2a = line2.split(' % ')[0] + " \\"
+                                    line2b = new_ws + "% " + line2.split(
+                                        ' % ')[1]
+                                    if get_width(line2a) + w <= console_width:
+                                        if get_width(
+                                                line2b) + w <= console_width:
+                                            new_sb_lines.append(line1)
+                                            new_sb_lines.append(line2a)
+                                            new_sb_lines.append(line2b)
+                                            continue
+                        if line.count(' = ') == 1 and (
+                                line.count('  # ') == 1) and (
+                                    line.find(' = ') < line.find('  # ')):
+                            whitespace = line_length2 - len(line.lstrip())
+                            new_ws = line[0:whitespace] + "        "
+                            comments = "  # " + line.split('  # ')[1]
+                            line0 = line.split('  # ')[0]
+                            line1 = line0.split(' = ')[0] + " = ("
+                            line2 = new_ws + line0.split(' = ')[1] + ')'
+                            if get_width(line1) + w <= console_width and (
+                                    get_width(line2) + w <= console_width):
+                                new_sb_lines.append(line1)
+                                if get_width(
+                                        line2 + comments) + w <= console_width:
+                                    new_sb_lines.append(line2 + comments)
+                                else:
+                                    new_sb_lines.append(line2)
                                 continue
                     new_sb_lines.append(line)
 

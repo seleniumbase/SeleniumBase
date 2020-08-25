@@ -3485,7 +3485,7 @@ class BaseCase(unittest.TestCase):
             html += '\n<pre class="prettyprint">\n%s</pre>' % code
         if iframe:
             html += ('\n<div></div>'
-                     '\n<iframe src="%s" style="width:92%%;height:550;'
+                     '\n<iframe src="%s" style="width:92%%;height:550px;" '
                      'title="iframe content"></iframe>' % iframe)
         add_line = ""
         if content2.startswith("<"):
