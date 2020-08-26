@@ -1,4 +1,5 @@
-#### Here are some organizations that have used SeleniumBase:
+<h4> Here are some organizations that have used SeleniumBase:</h4>
+
 * [HubSpot](https://www.hubspot.com/)
 * [Veracode](https://www.veracode.com/)
 * [Autodesk](https://www.autodesk.com/)
@@ -12,13 +13,14 @@
 * [VMware](https://www.vmware.com/)
 * [Baidu](https://www.baidu.com/)
 * [Yandex](https://yandex.ru/)
+* [HqO](https://www.hqo.co/)
 * [Jana](https://www.crunchbase.com/organization/jana)
 * [Raid The Room](http://raidtheroom.com/)
 * [Thoma Bravo](https://www.thomabravo.com/)
 * [GeoNode](http://geonode.org/)
 * And more...
 
-**Case Study** (*HubSpot*):
+<h3>Case Study: (<i>HubSpot</i>)</h3>
 
 In addition to using SeleniumBase for testing the UI of their content management system, HubSpot used SeleniumBase to automate the migration of website pages from one content management system to another, which saved them over one million US dollars and a significant amount of time.
 

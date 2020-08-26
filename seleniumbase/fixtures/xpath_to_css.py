@@ -7,7 +7,7 @@ import re
 _sub_regexes = {
     "tag": r"([a-zA-Z][a-zA-Z0-9]{0,10}|\*)",
     "attribute": r"[.a-zA-Z_:][-\w:.]*(\(\))?)",
-    "value": r"\s*[\w/:][-/\w\s,:;.]*"
+    "value": r"\s*[\w/:][-/\w\s,:;.\S]*"
 }
 
 _validation_re = (
@@ -23,7 +23,7 @@ _validation_re = (
     r"(?P<contained>contains\((?P<cattr>@?%(attribute)s,\s*[\"\']"
     r"(?P<cvalue>%(value)s)[\"\']\))"
     r")\])?"
-    r"(\[(?P<nth>\d)\])?"
+    r"(\[(?P<nth>\d+)\])?"
     r")"
     r")" % _sub_regexes
 )

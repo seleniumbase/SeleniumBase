@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.47.5',
+    version='1.48.0',
     description='Web Automation and Test Framework - https://seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -123,7 +123,7 @@ setup(
         'pytest-rerunfailures==8.0;python_version<"3.6"',
         'pytest-rerunfailures==9.0;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
-        'pytest-xdist==2.0.0;python_version>="3.5"',
+        'pytest-xdist==2.1.0;python_version>="3.5"',
         'parameterized==0.7.4',
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5"',
@@ -144,7 +144,7 @@ setup(
         'pyotp==2.4.0',
         'boto==2.49.0',
         'cffi==1.14.2',
-        'rich==5.2.1;python_version>="3.6" and python_version<"4.0"',
+        'rich==6.0.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
