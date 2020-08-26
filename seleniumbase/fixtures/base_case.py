@@ -5873,7 +5873,11 @@ class BaseCase(unittest.TestCase):
         return False
 
     def __recalculate_selector(self, selector, by):
-        # Try to determine the type of selector automatically
+        # Use auto-detection to return the correct selector with "by" updated
+        _type = type(selector)  # First make sure the selector is a string
+        if _type is not str:
+            msg = 'Expecting a selector of type: "<class \'str\'>" (string)!'
+            raise Exception('Invalid selector type: "%s"\n%s' % (_type, msg))
         if page_utils.is_xpath_selector(selector):
             by = By.XPATH
         if page_utils.is_link_text_selector(selector):
