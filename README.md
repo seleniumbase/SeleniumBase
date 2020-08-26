@@ -5,10 +5,10 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" width="340" />
+<img src="https://seleniumbase.io/cdn/img/mac_sb_logo.png" alt="SeleniumBase" width="340" />
 </a></p>
 <p align="center">
-<b>The fastest way to automate web testing.</b>
+<b>Automated web/mobile testing, 10x faster.</b>
 </p>
 <!-- View on GitHub -->
 <p align="center">
