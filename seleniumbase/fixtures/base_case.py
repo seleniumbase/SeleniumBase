@@ -6441,6 +6441,17 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Only reachable during multi-threaded runs
 
+    def has_exception(self):
+        """ (This method should ONLY be used in custom tearDown() methods.)
+            This method returns True if the test failed or raised an exception.
+            This is useful for performing additional steps in your tearDown()
+            method (based on whether or not the test passed or failed).
+            Example use cases:
+                * Performing cleanup steps if a test didn't complete.
+                * Sending test data and/or results to a dashboard service.
+        """
+        return self.__has_exception()
+
     def save_teardown_screenshot(self):
         """ (Should ONLY be used at the start of custom tearDown() methods.)
             This method takes a screenshot of the current web page for a
