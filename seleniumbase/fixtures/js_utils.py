@@ -510,6 +510,8 @@ def set_messenger_theme(driver, theme="default", location="default",
         theme = "flat"
     if location == "default":
         location = "bottom_right"
+        if sb_config.mobile_emulator:
+            location = "top_center"
     if max_messages == "default":
         max_messages = "8"
 
