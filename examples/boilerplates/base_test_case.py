@@ -13,11 +13,18 @@ class BaseTestCase(BaseCase):
 
     def setUp(self):
         super(BaseTestCase, self).setUp()
-        # <<< Add custom setUp code for tests AFTER the super().setUp() >>>
+        # <<< Run custom setUp() code for tests AFTER the super().setUp() >>>
 
     def tearDown(self):
         self.save_teardown_screenshot()
-        # <<< Add custom tearDown code BEFORE the super().tearDown() >>>
+        if self.has_exception():
+            # <<< Run custom code if the test failed. >>>
+            pass
+        else:
+            # <<< Run custom code if the test passed. >>>
+            pass
+        # (Wrap unreliable tearDown() code in a try/except block.)
+        # <<< Run custom tearDown() code BEFORE the super().tearDown() >>>
         super(BaseTestCase, self).tearDown()
 
     def login(self):
