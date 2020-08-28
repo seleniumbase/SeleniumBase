@@ -11,11 +11,11 @@ class FileUploadButtonTests(BaseCase):
                   "?filename=tryjsref_fileupload_get")
         self.ad_block()
         self.switch_to_frame('iframeResult')
-        self.add_css_style(
-            'input[type="file"]{zoom: 1.5;-moz-transform: scale(1.5);}')
+        zoom_in = 'input[type="file"]{zoom: 1.5;-moz-transform: scale(1.5);}'
+        self.add_css_style(zoom_in)
         self.highlight('input[type="file"]')
         dir_name = os.path.dirname(os.path.abspath(__file__))
-        self.choose_file(
-            'input[type="file"]', dir_name + "/example_logs/screenshot.png")
+        file_path = dir_name + "/example_logs/screenshot.png"
+        self.choose_file('input[type="file"]', file_path)
         self.demo_mode = True  # Adds highlighting to the assert statement
         self.assert_element('input[type="file"]')
