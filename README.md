@@ -24,8 +24,8 @@
 </p>
 
 <p>
-SeleniumBase is an all-in-one framework for web automation, end-to-end testing, presentations, charts, and website tours.
-Tests are run with "pytest". Browsers are controlled by WebDriver.
+<b>SeleniumBase</b> is an all-in-one framework for web automation, end-to-end testing, presentations, charts, and website tours.
+Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 </p>
 
 <p align="center">
@@ -715,7 +715,7 @@ It's OK if you want to use jQuery on a page that doesn't have it loaded yet. To 
 self.activate_jquery()
 ```
 
-Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable_csp`` on the command-line.
+Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
 
 Here are some examples of using jQuery in your scripts:
 
@@ -739,7 +739,7 @@ self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "
 self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
 
-In the following example, JavaScript is used to plant code on a page that Selenium can then touch after that:
+In the next example, JavaScript creates a referral button on a page, which is then clicked:
 
 ```python
 start_page = "https://xkcd.com/465/"
@@ -810,7 +810,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 <div><b>If you like us, give us a star!</b></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
 </p>
-<div><!--not_for_site--><iframe src="https://seleniumbase.io/help_docs/ReadMe/" style="width:95%;height:580px;" title="iframe content"></iframe></div>
+<div><!--not_for_site--><iframe src="https://seleniumbase.io/help_docs/ReadMe/" title="Docs"></iframe></div>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
