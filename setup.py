@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.48.1',
+    version='1.48.2',
     description='Web Automation and Test Framework - https://seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -128,7 +128,8 @@ setup(
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5"',
         'beautifulsoup4==4.9.1',
-        'cryptography==3.0',
+        'cryptography==3.0;python_version<"3.6"',
+        'cryptography==3.1;python_version>="3.6"',
         'pyopenssl==19.1.0',
         'prompt-toolkit==1.0.18;python_version<"3.6.1"',
         'prompt-toolkit==3.0.6;python_version>="3.6.1"',
