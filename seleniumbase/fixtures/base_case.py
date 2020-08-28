@@ -799,7 +799,7 @@ class BaseCase(unittest.TestCase):
                         partial_link_text, link_css)
 
             if not success:
-                element = self.wait_for_link_text_visible(
+                element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=settings.MINI_TIMEOUT)
                 element.click()
 
