@@ -1716,8 +1716,8 @@ class BaseCase(unittest.TestCase):
     def get_new_driver(self, browser=None, headless=None, locale_code=None,
                        servername=None, port=None, proxy=None, agent=None,
                        switch_to=True, cap_file=None, cap_string=None,
-                       disable_csp=None, enable_sync=None, use_auto_ext=None,
-                       no_sandbox=None, disable_gpu=None,
+                       disable_csp=None, enable_ws=None, enable_sync=None,
+                       use_auto_ext=None, no_sandbox=None, disable_gpu=None,
                        incognito=None, guest_mode=None, devtools=None,
                        swiftshader=None, block_images=None, user_data_dir=None,
                        extension_zip=None, extension_dir=None, is_mobile=False,
@@ -1737,6 +1737,7 @@ class BaseCase(unittest.TestCase):
             cap_file - the file containing desired capabilities for the browser
             cap_string - the string with desired capabilities for the browser
             disable_csp - an option to disable Chrome's Content Security Policy
+            enable_ws - the option to enable the Web Security feature (Chrome)
             enable_sync - the option to enable the Chrome Sync feature (Chrome)
             use_auto_ext - the option to enable Chrome's Automation Extension
             no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
@@ -1798,6 +1799,8 @@ class BaseCase(unittest.TestCase):
             user_agent = self.user_agent
         if disable_csp is None:
             disable_csp = self.disable_csp
+        if enable_ws is None:
+            enable_ws = self.enable_ws
         if enable_sync is None:
             enable_sync = self.enable_sync
         if use_auto_ext is None:
@@ -1852,6 +1855,7 @@ class BaseCase(unittest.TestCase):
                                                  cap_file=cap_file,
                                                  cap_string=cap_string,
                                                  disable_csp=disable_csp,
+                                                 enable_ws=enable_ws,
                                                  enable_sync=enable_sync,
                                                  use_auto_ext=use_auto_ext,
                                                  no_sandbox=no_sandbox,
@@ -6103,6 +6107,7 @@ class BaseCase(unittest.TestCase):
             self.block_images = sb_config.block_images
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
+            self.enable_ws = sb_config.enable_ws
             self.enable_sync = sb_config.enable_sync
             self.use_auto_ext = sb_config.use_auto_ext
             self.no_sandbox = sb_config.no_sandbox
@@ -6269,6 +6274,7 @@ class BaseCase(unittest.TestCase):
                                               cap_file=self.cap_file,
                                               cap_string=self.cap_string,
                                               disable_csp=self.disable_csp,
+                                              enable_ws=self.enable_ws,
                                               enable_sync=self.enable_sync,
                                               use_auto_ext=self.use_auto_ext,
                                               no_sandbox=self.no_sandbox,

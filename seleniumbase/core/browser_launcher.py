@@ -131,7 +131,7 @@ def _add_chrome_disable_csp_extension(chrome_options):
 def _set_chrome_options(
         browser_name, downloads_path, headless, locale_code,
         proxy_string, proxy_auth, proxy_user, proxy_pass,
-        user_agent, disable_csp, enable_sync, use_auto_ext,
+        user_agent, disable_csp, enable_ws, enable_sync, use_auto_ext,
         no_sandbox, disable_gpu, incognito, guest_mode, devtools, swiftshader,
         block_images, user_data_dir, extension_zip, extension_dir, servername,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
@@ -267,7 +267,8 @@ def _set_chrome_options(
     if browser_name != constants.Browser.OPERA:
         # Opera Chromium doesn't support these switches
         chrome_options.add_argument("--ignore-certificate-errors")
-        chrome_options.add_argument("--disable-web-security")
+        if not enable_ws:
+            chrome_options.add_argument("--disable-web-security")
         chrome_options.add_argument("--no-sandbox")
     else:
         # Opera Chromium only!
@@ -401,8 +402,8 @@ def get_driver(browser_name, headless=False, locale_code=None,
                use_grid=False, servername='localhost', port=4444,
                proxy_string=None, user_agent=None,
                cap_file=None, cap_string=None,
-               disable_csp=None, enable_sync=None, use_auto_ext=None,
-               no_sandbox=None, disable_gpu=None,
+               disable_csp=None, enable_ws=None, enable_sync=None,
+               use_auto_ext=None, no_sandbox=None, disable_gpu=None,
                incognito=None, guest_mode=None, devtools=None,
                swiftshader=None, block_images=None, user_data_dir=None,
                extension_zip=None, extension_dir=None,
@@ -441,26 +442,26 @@ def get_driver(browser_name, headless=False, locale_code=None,
         return get_remote_driver(
             browser_name, headless, locale_code, servername, port,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            cap_file, cap_string, disable_csp, enable_sync, use_auto_ext,
-            no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-            swiftshader, block_images, user_data_dir,
+            cap_file, cap_string, disable_csp, enable_ws, enable_sync,
+            use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
+            devtools, swiftshader, block_images, user_data_dir,
             extension_zip, extension_dir, test_id,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
         return get_local_driver(
             browser_name, headless, locale_code, servername,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-            incognito, guest_mode, devtools, swiftshader, block_images,
-            user_data_dir, extension_zip, extension_dir,
+            disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
+            disable_gpu, incognito, guest_mode, devtools, swiftshader,
+            block_images, user_data_dir, extension_zip, extension_dir,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
 
 
 def get_remote_driver(
         browser_name, headless, locale_code, servername, port,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-        cap_file, cap_string, disable_csp, enable_sync, use_auto_ext,
-        no_sandbox, disable_gpu, incognito, guest_mode,
+        cap_file, cap_string, disable_csp, enable_ws, enable_sync,
+        use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
         devtools, swiftshader, block_images,
         user_data_dir, extension_zip, extension_dir, test_id,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
@@ -492,10 +493,11 @@ def get_remote_driver(
         chrome_options = _set_chrome_options(
             browser_name, downloads_path, headless, locale_code,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-            incognito, guest_mode, devtools, swiftshader, block_images,
-            user_data_dir, extension_zip, extension_dir, servername,
-            mobile_emulator, device_width, device_height, device_pixel_ratio)
+            disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
+            disable_gpu, incognito, guest_mode, devtools, swiftshader,
+            block_images, user_data_dir, extension_zip, extension_dir,
+            servername, mobile_emulator,
+            device_width, device_height, device_pixel_ratio)
         capabilities = chrome_options.to_capabilities()
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -618,9 +620,9 @@ def get_remote_driver(
 def get_local_driver(
         browser_name, headless, locale_code, servername,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-        disable_csp, enable_sync, use_auto_ext, no_sandbox, disable_gpu,
-        incognito, guest_mode, devtools, swiftshader, block_images,
-        user_data_dir, extension_zip, extension_dir,
+        disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
+        disable_gpu, incognito, guest_mode, devtools, swiftshader,
+        block_images, user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     '''
     Spins up a new web browser and returns the driver.
@@ -710,7 +712,7 @@ def get_local_driver(
             chrome_options = _set_chrome_options(
                 browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-                disable_csp, enable_sync, use_auto_ext,
+                disable_csp, enable_ws, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
                 swiftshader, block_images, user_data_dir,
                 extension_zip, extension_dir, servername,
@@ -794,7 +796,8 @@ def get_local_driver(
             edge_options.add_argument("--disable-save-password-bubble")
             edge_options.add_argument("--disable-single-click-autofill")
             edge_options.add_argument("--disable-translate")
-            edge_options.add_argument("--disable-web-security")
+            if not enable_ws:
+                edge_options.add_argument("--disable-web-security")
             edge_options.add_argument("--homepage=about:blank")
             edge_options.add_argument("--dns-prefetch-disable")
             edge_options.add_argument("--dom-automation")
@@ -842,7 +845,7 @@ def get_local_driver(
             opera_options = _set_chrome_options(
                 browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-                disable_csp, enable_sync, use_auto_ext,
+                disable_csp, enable_ws, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
                 swiftshader, block_images, user_data_dir, extension_zip,
                 extension_dir, servername, mobile_emulator,
@@ -861,7 +864,7 @@ def get_local_driver(
             chrome_options = _set_chrome_options(
                 browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-                disable_csp, enable_sync, use_auto_ext,
+                disable_csp, enable_ws, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode, devtools,
                 swiftshader, block_images, user_data_dir, extension_zip,
                 extension_dir, servername, mobile_emulator,

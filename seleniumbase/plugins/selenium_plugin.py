@@ -38,6 +38,7 @@ class SeleniumBrowser(Plugin):
     --block-images (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (This disables the Content Security Policy of websites.)
+    --enable-ws  (Enable Web Security on Chrome.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -277,8 +278,15 @@ class SeleniumBrowser(Plugin):
                     websites, which may interfere with some features of
                     SeleniumBase, such as loading custom JavaScript
                     libraries for various testing actions.
-                    Setting this to True (--disable_csp) overrides the
+                    Setting this to True (--disable-csp) overrides the
                     value set in seleniumbase/config/settings.py""")
+        parser.add_option(
+            '--enable_ws', '--enable-ws', '--enable-web-security',
+            action="store_true",
+            dest='enable_ws',
+            default=False,
+            help="""Using this enables the "Web Security" feature of
+                    Chrome and Chromium-based browsers such as Edge.""")
         parser.add_option(
             '--enable_sync', '--enable-sync',
             action="store_true",
@@ -399,6 +407,7 @@ class SeleniumBrowser(Plugin):
         test.test.block_images = self.options.block_images
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
+        test.test.enable_ws = self.options.enable_ws
         test.test.enable_sync = self.options.enable_sync
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.no_sandbox = self.options.no_sandbox
