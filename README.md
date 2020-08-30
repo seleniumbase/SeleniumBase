@@ -338,6 +338,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --disable-csp  # (This disables the Content Security Policy of websites.)
+--enable-ws  # (Enable Web Security on Chrome.)
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
