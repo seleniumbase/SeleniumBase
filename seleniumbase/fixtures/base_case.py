@@ -1687,6 +1687,11 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.is_element_visible(frame):
+            try:
+                self.scroll_to(frame, timeout=1)
+            except Exception:
+                pass
         page_actions.switch_to_frame(self.driver, frame, timeout)
 
     def switch_to_default_content(self):
