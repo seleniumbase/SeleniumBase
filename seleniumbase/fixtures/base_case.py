@@ -1687,7 +1687,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if self.is_element_visible(frame):
+        if type(frame) is str and self.is_element_visible(frame):
             try:
                 self.scroll_to(frame, timeout=1)
             except Exception:
