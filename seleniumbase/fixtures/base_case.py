@@ -1679,6 +1679,9 @@ class BaseCase(unittest.TestCase):
         """
         Wait for an iframe to appear, and switch to it. This should be
         usable as a drop-in replacement for driver.switch_to.frame().
+        The iframe identifier can be a selector, an index, an id, a name,
+        or a web element, but scrolling to the iframe first will only occur
+        for visible iframes with a string selector.
         @Params
         frame - the frame element, name, id, index, or selector
         timeout - the time to wait for the alert in seconds
