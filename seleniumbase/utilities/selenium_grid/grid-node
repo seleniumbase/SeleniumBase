@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# Usage: grid-node {start|stop|restart}
+# Usage: grid-node {start|stop}
 #
 
 source $(dirname $0)/font_color
@@ -10,7 +10,7 @@ EXPECTED_ARGS=1
 E_BADARGS=65
 
 DO_showUsage() {
-    echo "Usage: $(basename $0) {start|stop|restart}"
+    echo "Usage: $(basename $0) {start|stop}"
     exit $E_BADARGS
 }
 

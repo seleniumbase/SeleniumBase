@@ -18,17 +18,18 @@ seleniumbase download server
 <h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid Hub server controls:</h4>
 
 ```bash
-seleniumbase grid-hub {start|stop} [OPTIONS]
+seleniumbase grid-hub {start|stop|restart} [OPTIONS]
 ```
 <b>Options:</b>
 <ul>
 <li> -v / --verbose  (Increases verbosity of logging output.)</li>
+<li> --timeout=TIMEOUT  (Close idle browser after TIMEOUT sec.)</li>
 </ul>
 
 <h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid node server controls:</h4>
 
 ```bash
-seleniumbase grid-node {start|stop} --hub=[HUB_IP] [OPTIONS]
+seleniumbase grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]
 ```
 <b>Options:</b>
 <ul>

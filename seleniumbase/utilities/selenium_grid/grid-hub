@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 #
-# Usage: grid-hub {start|stop|restart}
+# Usage: grid-hub {start|stop} [TIMEOUT]
 #
 
 source $(dirname $0)/font_color
 
-EXPECTED_ARGS=1
+EXPECTED_ARGS=2
 E_BADARGS=65
 
 DO_showUsage() {
-    echo "Usage: $(basename $0) {start|stop|restart}"
+    echo "Usage: $(basename $0) {start|stop} [TIMEOUT]"
     exit $E_BADARGS
 }
 
@@ -34,7 +34,7 @@ if [ "$GRID_HUB_VERBOSE_LOGS" == "True" ]; then
 fi
 
 WEBDRIVER_SERVER_JAR=${DIR}/selenium-server-standalone.jar
-WEBDRIVER_HUB_PARAMS="-role hub -timeout 230 -browserTimeout 170 -port 4444"
+WEBDRIVER_HUB_PARAMS="-role hub -timeout $2 -browserTimeout 170 -port 4444"
 WEBDRIVER_HUB_PIDFILE="/tmp/webdriver_hub.pid"
 
 if [ ! -f $WEBDRIVER_SERVER_JAR ]; then

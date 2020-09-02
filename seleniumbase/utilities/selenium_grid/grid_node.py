@@ -99,7 +99,8 @@ def main():
         if grid_hub_command == "start":
             subprocess.check_call(dir_path + "/grid-node start", shell=True)
         elif grid_hub_command == "restart":
-            subprocess.check_call(dir_path + "/grid-node restart", shell=True)
+            subprocess.check_call(dir_path + "/grid-node stop", shell=True)
+            subprocess.check_call(dir_path + "/grid-node start", shell=True)
         elif grid_hub_command == "stop":
             subprocess.check_call(dir_path + "/grid-node stop", shell=True)
         else:
