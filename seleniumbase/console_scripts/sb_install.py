@@ -194,8 +194,6 @@ def main(override=None):
             print('#  %s: >>> %s' % (run_this, install_sb))
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
-        if "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
-            use_version = "v0.24.0"
         found_geckodriver = False
         if num_args == 4 or num_args == 5:
             if "-p" not in sys.argv[3].lower():
