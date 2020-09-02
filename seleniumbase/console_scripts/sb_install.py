@@ -41,9 +41,9 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
-DEFAULT_CHROMEDRIVER_VERSION = "2.44"
+DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.27.0"
-DEFAULT_EDGEDRIVER_VERSION = "85.0.564.44"
+DEFAULT_EDGEDRIVER_VERSION = "85.0.564.44"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
 
 
@@ -242,12 +242,20 @@ def main(override=None):
                             "version to download!\n")
     elif name == "edgedriver" or name == "msedgedriver":
         name = "edgedriver"
-        use_version = DEFAULT_EDGEDRIVER_VERSION
+        last = (
+            "https://msedgewebdriverstorage.blob.core.windows.net"
+            "/edgewebdriver/LATEST_STABLE")
+        get_latest = False
+        if num_args == 3:
+            get_latest = True
+        if num_args == 4 and "-p" in sys.argv[3].lower():
+            get_latest = True
         if num_args == 4 or num_args == 5:
             if "-p" not in sys.argv[3].lower():
                 use_version = sys.argv[3]
                 if use_version.lower() == "latest":
                     use_version = DEFAULT_EDGEDRIVER_VERSION
+                    get_latest = True
             else:
                 copy_to_path = True
         if num_args == 5:
@@ -255,6 +263,12 @@ def main(override=None):
                 copy_to_path = True
             else:
                 invalid_run_command()
+        if get_latest:
+            url_request = requests.get(last)
+            if url_request.ok:
+                use_version = url_request.text.split('\r')[0].split('\n')[0]
+            else:
+                use_version = DEFAULT_EDGEDRIVER_VERSION
         if "win64" in sys_plat or "x64" in sys_plat:
             file_name = "edgedriver_win64.zip"
         elif "win32" in sys_plat or "x86" in sys_plat:
@@ -266,6 +280,11 @@ def main(override=None):
                             "only for Windows or Mac operating systems!")
         download_url = ("https://msedgedriver.azureedge.net/"
                         "%s/%s" % (use_version, file_name))
+        if not get_latest and not use_version == DEFAULT_EDGEDRIVER_VERSION:
+            url_request = requests.get(download_url)
+            if not url_request.ok:
+                raise Exception(
+                    "Could not find version [%s] of EdgeDriver!" % use_version)
         msg = c2 + "edgedriver version for download" + cr
         p_version = c3 + use_version + cr
         print("\n*** %s = %s" % (msg, p_version))
