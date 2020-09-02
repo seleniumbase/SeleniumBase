@@ -1,7 +1,7 @@
 pip>=20.2.2
 packaging>=20.4
 setuptools>=44.1.1;python_version<"3.5"
-setuptools>=50.0.0;python_version>="3.5"
+setuptools>=50.0.3;python_version>="3.5"
 setuptools-scm>=4.1.2
 wheel>=0.35.1
 six==1.15.0
@@ -44,7 +44,7 @@ pyopenssl==19.1.0
 pygments==2.5.2;python_version<"3.5"
 pygments==2.6.1;python_version>="3.5"
 traitlets==4.3.3;python_version<"3.7"
-traitlets==5.0.0;python_version>="3.7"
+traitlets==5.0.2;python_version>="3.7"
 prompt-toolkit==1.0.18;python_version<"3.6"
 prompt-toolkit==3.0.7;python_version>="3.6"
 ipython==5.10.0;python_version<"3.5"
