@@ -242,6 +242,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--dom-automation")
     chrome_options.add_argument("--disable-hang-monitor")
     chrome_options.add_argument("--disable-prompt-on-repost")
+    if servername != "localhost":
+        use_auto_ext = True  # Use Automation Extension with the Selenium Grid
     if not use_auto_ext:  # (It's ON by default. Disable it when not wanted.)
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
