@@ -93,7 +93,7 @@ setup(
         'pip>=20.2.2',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=50.0.3;python_version>="3.5"',
+        'setuptools>=50.1.0;python_version>="3.5"',
         'setuptools-scm',
         'wheel>=0.35.1',
         'six',
