@@ -229,10 +229,11 @@ Downloads the specified item.
 ### grid-hub
 
 * Usage:
-``sbase grid-hub {start|stop}``
+``sbase grid-hub {start|stop|restart} [OPTIONS]``
 
 * Options:
 ``-v``, ``--verbose``  (Increases verbosity of logging output.)
+``--timeout=TIMEOUT``  (Close idle browser windows after TIMEOUT seconds.)
 
 * Output:
 Controls the Selenium Grid Hub server, which allows
@@ -244,7 +245,7 @@ You can start, restart, or stop the Grid Hub server.
 ### grid-node
 
 * Usage:
-``sbase grid-node {start|stop} [OPTIONS]``
+``sbase grid-node {start|stop|restart} [OPTIONS]``
 
 * Options:
 ``--hub=HUB_IP`` (The Grid Hub IP Address to connect to.) (Default: ``127.0.0.1``)
