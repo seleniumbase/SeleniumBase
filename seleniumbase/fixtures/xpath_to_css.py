@@ -76,6 +76,7 @@ def _filter_xpath_grouping(xpath):
 
 def _get_raw_css_from_xpath(xpath):
     css = ""
+    attr = ""
     position = 0
 
     while position < len(xpath):
@@ -108,7 +109,9 @@ def _get_raw_css_from_xpath(xpath):
                 attr = '[%s*="%s"]' % (match['cattr'].replace("@", ""),
                                        match['cvalue'])
             elif match['cattr'] == "text()":
-                attr = ":contains(%s)" % match['cvalue']
+                attr = ':contains("%s")' % match['cvalue']
+            elif match['cattr'] == ".":
+                attr = ':contains("%s")' % match['cvalue']
         else:
             attr = ""
 
@@ -128,6 +131,20 @@ def _get_raw_css_from_xpath(xpath):
 def convert_xpath_to_css(xpath):
     if xpath[0] != '"' and xpath[-1] != '"' and xpath.count('"') % 2 == 0:
         xpath = _handle_brackets_in_strings(xpath)
+    xpath = xpath.replace("descendant-or-self::*/", "descORself/")
+    xpath = xpath.replace(" = '", "='")
+    if " and contains(@" in xpath and xpath.count(" and contains(@") == 1:
+        spot1 = xpath.find(" and contains(@")
+        spot1 = spot1 + len(" and contains(@")
+        spot2 = xpath.find(",", spot1)
+        attr = xpath[spot1:spot2]
+        swap = " and contains(@%s, " % attr
+        if swap in xpath:
+            swap_spot = xpath.find(swap)
+            close_paren = xpath.find(']', swap_spot) - 1
+            if close_paren > 1:
+                xpath = xpath[:close_paren] + xpath[close_paren+1:]
+                xpath = xpath.replace(swap, "_STAR_=")
 
     if xpath.startswith('('):
         xpath = _filter_xpath_grouping(xpath)
@@ -148,5 +165,17 @@ def convert_xpath_to_css(xpath):
     # Replace the string-brackets with escaped ones
     css = css.replace('_STR_L_bracket_', '\\[')
     css = css.replace('_STR_R_bracket_', '\\]')
+
+    # Handle a lot of edge cases with conversion
+    css = css.replace(" > descORself > ", ' ')
+    css = css.replace(" descORself > ", ' ')
+    css = css.replace("/descORself/*", ' ')
+    css = css.replace("/descORself/", ' ')
+    css = css.replace("descORself/", ' ')
+    css = css.replace("_STAR_=", "*=")
+    css = css.replace("]/", "] ")
+    css = css.replace("] *[", "] > [")
+    css = css.replace("\'", '"')
+    css = css.replace("[@", '[')
 
     return css

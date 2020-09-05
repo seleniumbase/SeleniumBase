@@ -9,6 +9,7 @@
 * [MIT](https://web.mit.edu/)
 * [Harvard Medical School](https://hms.harvard.edu/)
 * [Mississippi State University](https://www.msstate.edu/)
+* [StreamSets](https://streamsets.com/)
 * [Akamai](https://www.akamai.com/)
 * [VMware](https://www.vmware.com/)
 * [Baidu](https://www.baidu.com/)
@@ -22,7 +23,7 @@
 
 <h3>Case Study: (<i>HubSpot</i>)</h3>
 
-In addition to using SeleniumBase for testing the UI of their content management system, HubSpot used SeleniumBase to automate the migration of website pages from one content management system to another, which saved them over one million US dollars and a significant amount of time.
+In addition to using SeleniumBase for testing the UI of their content management system, HubSpot used SeleniumBase to automate the migration of website pages from one content management system to another, which saved them over one million USD and a significant amount of time.
 
 Learn how HubSpot uses SeleniumBase for website testing by reading: [Automated Testing with Selenium](https://dev.hubspot.com/blog/bid/88880/Automated-Integration-Testing-with-Selenium-at-HubSpot#hs_cos_wrapper_name)
 

@@ -309,6 +309,8 @@ self.inspect_html()
 
 self.get_google_auth_password(totp_key=None)
 
+self.convert_css_to_xpath(css)
+
 self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
