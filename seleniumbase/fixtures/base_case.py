@@ -45,6 +45,7 @@ from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.core import tour_helper
 from seleniumbase.fixtures import constants
+from seleniumbase.fixtures import css_to_xpath
 from seleniumbase.fixtures import js_utils
 from seleniumbase.fixtures import page_actions
 from seleniumbase.fixtures import page_utils
@@ -1429,8 +1430,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if page_utils.is_xpath_selector(dropdown_selector):
-            dropdown_by = By.XPATH
+        dropdown_selector, dropdown_by = self.__recalculate_selector(
+            dropdown_selector, dropdown_by)
         self.wait_for_ready_state_complete()
         element = self.wait_for_element_present(
             dropdown_selector, by=dropdown_by, timeout=timeout)
@@ -2983,6 +2984,9 @@ class BaseCase(unittest.TestCase):
 
         totp = pyotp.TOTP(totp_key)
         return str(totp.now())
+
+    def convert_css_to_xpath(self, css):
+        return css_to_xpath.convert_css_to_xpath(css)
 
     def convert_xpath_to_css(self, xpath):
         return xpath_to_css.convert_xpath_to_css(xpath)
