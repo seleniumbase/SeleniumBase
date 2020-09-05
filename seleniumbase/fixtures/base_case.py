@@ -5906,6 +5906,9 @@ class BaseCase(unittest.TestCase):
             name = page_utils.get_name_from_selector(selector)
             selector = '[name="%s"]' % name
             by = By.CSS_SELECTOR
+        if ":contains(" in selector and by == By.CSS_SELECTOR:
+            selector = self.convert_css_to_xpath(selector)
+            by = By.XPATH
         return (selector, by)
 
     def __looks_like_a_page_url(self, url):
