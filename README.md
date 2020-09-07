@@ -10,7 +10,7 @@
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="332" /></a></p>
 <p align="center">
-<b>Automated web+mobile testing, 10x faster.</b>
+<b>Automated web testing, 10x faster.</b>
 </p>
 <!-- View on GitHub -->
 <p align="center">
