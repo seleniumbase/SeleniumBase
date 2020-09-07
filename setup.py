@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.2',
+    version='1.49.3',
     description='Web Automation and Test Framework - https://seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -93,7 +93,7 @@ setup(
         'pip>=20.2.2',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=50.2.0;python_version>="3.5"',
+        'setuptools>=50.3.0;python_version>="3.5"',
         'setuptools-scm',
         'wheel>=0.35.1',
         'six',
@@ -111,7 +111,7 @@ setup(
         'more-itertools==8.5.0;python_version>="3.5"',
         'cssselect==1.1.0',
         'pluggy==0.13.1',
-        'attrs>=20.1.0',
+        'attrs>=20.2.0',
         'py==1.8.1;python_version<"3.5"',
         'py==1.9.0;python_version>="3.5"',
         'pytest==4.6.11;python_version<"3.5"',
