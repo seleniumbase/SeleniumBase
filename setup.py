@@ -90,7 +90,7 @@ setup(
         "Topic :: Utilities",
     ],
     install_requires=[
-        'pip>=20.2.2',
+        'pip>=20.2.3',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.0;python_version>="3.5"',
