@@ -1029,7 +1029,8 @@ class BaseCase(unittest.TestCase):
             v_elems = v_elems[:limit]
         return v_elems
 
-    def click_visible_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
+    def click_visible_elements(
+            self, selector, by=By.CSS_SELECTOR, limit=0, timeout=None):
         """ Finds all matching page elements and clicks visible ones in order.
             If a click reloads or opens a new page, the clicking will stop.
             If no matching elements appear, an Exception will be raised.
@@ -1037,9 +1038,12 @@ class BaseCase(unittest.TestCase):
             Also clicks elements that become visible from previous clicks.
             Works best for actions such as clicking all checkboxes on a page.
             Example:  self.click_visible_elements('input[type="checkbox"]') """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        self.wait_for_element_present(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT)
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
         elements = self.find_elements(selector, by=by)
         if self.browser == "safari":
             if not limit:
@@ -1088,10 +1092,17 @@ class BaseCase(unittest.TestCase):
                 except (StaleElementReferenceException, ENI_Exception):
                     return  # Probably on new page / Elements are all stale
 
-    def click_nth_visible_element(self, selector, number, by=By.CSS_SELECTOR):
+    def click_nth_visible_element(
+            self, selector, number, by=By.CSS_SELECTOR, timeout=None):
         """ Finds all matching page elements and clicks the nth visible one.
             Example:  self.click_nth_visible_element('[type="checkbox"]', 5)
                         (Clicks the 5th visible checkbox on the page.) """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
         elements = self.find_visible_elements(selector, by=by)
         if len(elements) < number:
             raise Exception("Not enough matching {%s} elements of type {%s} to"
