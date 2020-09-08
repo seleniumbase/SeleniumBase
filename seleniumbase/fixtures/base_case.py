@@ -307,7 +307,9 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         try:
-            element.clear()
+            element.clear()  # May need https://stackoverflow.com/a/50691625
+            backspaces = Keys.BACK_SPACE * 42  # Is the answer to everything
+            element.send_keys(backspaces)  # In case autocomplete keeps text
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.06)
@@ -316,9 +318,9 @@ class BaseCase(unittest.TestCase):
             try:
                 element.clear()
             except Exception:
-                pass  # Clearing the text field first isn't critical
+                pass  # Clearing the text field first might not be necessary
         except Exception:
-            pass  # Clearing the text field first isn't critical
+            pass  # Clearing the text field first might not be necessary
         self.__demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
         if type(text) is int or type(text) is float:
@@ -3428,6 +3430,10 @@ class BaseCase(unittest.TestCase):
             '<html>\n'
             '<head>\n'
             '<meta charset="utf-8">\n'
+            '<meta http-equiv="Content-Type" '
+            'content="text/html; charset=utf-8">\n'
+            '<meta name="viewport" '
+            'content="width=device-width, initial-scale=1">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<style>\n'
@@ -4058,6 +4064,10 @@ class BaseCase(unittest.TestCase):
         if not filename.endswith('.html'):
             raise Exception('Chart file must end in ".html"!')
         the_html = '<meta charset="utf-8">\n'
+        the_html += '<meta http-equiv="Content-Type" '
+        the_html += 'content="text/html; charset=utf-8">\n'
+        the_html += '<meta name="viewport" '
+        the_html += 'content="width=device-width, initial-scale=1">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
         the_html += (

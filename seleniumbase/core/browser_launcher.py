@@ -236,6 +236,8 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-infobars")
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
+    chrome_options.add_argument(
+        "--disable-autofill-keyboard-accessory-view[8]")
     chrome_options.add_argument("--disable-translate")
     chrome_options.add_argument("--homepage=about:blank")
     chrome_options.add_argument("--dns-prefetch-disable")
@@ -300,6 +302,7 @@ def _create_firefox_profile(
     profile.set_preference("app.update.auto", False)
     profile.set_preference("app.update.enabled", False)
     profile.set_preference("app.update.silent", True)
+    profile.set_preference("browser.formfill.enable", False)
     profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("devtools.errorconsole.enabled", False)
     profile.set_preference("dom.webnotifications.enabled", False)
@@ -797,6 +800,8 @@ def get_local_driver(
             edge_options.add_argument("--disable-infobars")
             edge_options.add_argument("--disable-save-password-bubble")
             edge_options.add_argument("--disable-single-click-autofill")
+            edge_options.add_argument(
+                "--disable-autofill-keyboard-accessory-view[8]")
             edge_options.add_argument("--disable-translate")
             if not enable_ws:
                 edge_options.add_argument("--disable-web-security")
