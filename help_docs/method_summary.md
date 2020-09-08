@@ -96,9 +96,9 @@ self.find_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
 self.find_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
 
-self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
+self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0, timeout=None)
 
-self.click_nth_visible_element(selector, number, by=By.CSS_SELECTOR)
+self.click_nth_visible_element(selector, number, by=By.CSS_SELECTOR, timeout=None)
 
 self.click_if_visible(selector, by=By.CSS_SELECTOR)
 
