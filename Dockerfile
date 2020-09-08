@@ -5,6 +5,9 @@ FROM ubuntu:18.04
 # Install Python and Basic Python Tools
 #=======================================
 RUN apt-get update && apt-get install -y python python-pip python-setuptools python-dev python-distribute
+# Above command on Windows
+#RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
+#RUN apt-get install -y python python-pip python-setuptools python-dev python-distribute
 
 #=================================
 # Install Bash Command Line Tools
