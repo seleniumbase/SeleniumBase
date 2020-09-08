@@ -1,4 +1,4 @@
-<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="256">
+<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="290">
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Framework Folders</h2>
 

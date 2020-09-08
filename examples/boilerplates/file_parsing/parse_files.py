@@ -12,7 +12,7 @@ class ParseTestCase(BaseCase):
         super(ParseTestCase, self).setUp()
 
     def get_login_credentials(self, user_type):
-        # Example of parsing data from a file
+        # Example of parsing data from a file (Method 1)
         with open('qa_login_example.txt') as f:
             file_lines = [line.rstrip() for line in f]
         for line in file_lines:

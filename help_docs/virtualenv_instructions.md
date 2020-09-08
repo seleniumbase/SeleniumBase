@@ -34,12 +34,6 @@ mkvirtualenv sbase_env
 ```
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
 
-* (Python 2) Using ``virtualenv``:
-```bash
-virtualenv sbase_env
-source sbase_env/bin/activate
-```
-
 * (Python 3) Using ``python3 -m venv``:
 ```bash
 python3 -m venv sbase_env
@@ -53,12 +47,6 @@ source sbase_env/bin/activate
 mkvirtualenv sbase_env
 ```
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
-
-* (Python 2) Using ``virtualenv``:
-```bash
-virtualenv sbase_env
-call sbase_env\\Scripts\\activate
-```
 
 * (Python 3) Using ``py -m venv``:
 ```bash
