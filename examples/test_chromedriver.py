@@ -23,6 +23,7 @@ class ChromeTestClass(BaseCase):
         chromedriver_version = chrome_dict["chromedriverVersion"]
         chromedriver_version = chromedriver_version.split(' ')[0]
         major_chromedriver_version = chromedriver_version.split('.')[0]
+        colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
