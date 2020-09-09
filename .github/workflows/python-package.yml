@@ -33,10 +33,6 @@ jobs:
         pip install flake8
         # Stop the build if there are flake8 issues
         flake8 . --count --show-source --statistics --exclude=temp
-    - name: Print the platform name
-      run: |
-        echo "import sys; print(sys.platform)" > print_platform.py
-        python print_platform.py
     - name: Install Chrome and Firefox
       run: |
         sudo apt install google-chrome-stable
