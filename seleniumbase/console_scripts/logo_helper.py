@@ -3,7 +3,6 @@
     http://www.patorjk.com/software/taag/#p=display&f=Slant&t=SeleniumBase """
 
 import colorama
-import sys
 
 r'''
    ______     __           _                 ____
@@ -21,13 +20,6 @@ def get_seleniumbase_logo():
     c3 = colorama.Back.CYAN
     c4 = colorama.Back.GREEN
     cr = colorama.Style.RESET_ALL
-    if "linux" in sys.platform:
-        # Skip colors on Linux
-        c1 = ''
-        c2 = ''
-        c3 = ''
-        c4 = ''
-        cr = ''
     sb = " "
     sb += cr
     sb += "\n"

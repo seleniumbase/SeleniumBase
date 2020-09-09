@@ -31,9 +31,9 @@ import sys
 def show_usage():
     show_basic_usage()
     sc = ("")
-    sc += ('Type "sbase help [COMMAND]" for specific command info.\n')
-    sc += ('For info on all commands, type: "seleniumbase --help".\n')
-    sc += ('* (Use "pytest" for running tests) *\n')
+    sc += ('      Type "sbase help [COMMAND]" for specific command info.\n')
+    sc += ('      For info on all commands, type: "seleniumbase --help".\n')
+    sc += ('  *  (Use "pytest" for running tests) *\n')
     if "linux" not in sys.platform:
         colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -57,10 +57,10 @@ def show_basic_usage():
     print("%s" % get_version()[0:1])
     print("")
     sc = ("")
-    sc += ('Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
-    sc += ('(simplified): "sbase [COMMAND] [PARAMETERS]"\n')
+    sc += ('  *   Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
+    sc += ('  *   (simplified): "sbase [COMMAND] [PARAMETERS]"\n')
     sc += ("\n")
-    sc += ("Commands:\n")
+    sc += ("COMMANDS:\n")
     sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
     sc += ("      mkdir           [DIRECTORY_NAME]\n")
     sc += ("      mkfile          [FILE_NAME.py]\n")
