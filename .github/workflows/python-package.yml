@@ -21,6 +21,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Print the platform name
+      run: |
+        echo "import sys; print(sys.platform)" > print_platform.py
+        python print_platform.py
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
