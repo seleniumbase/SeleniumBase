@@ -34,17 +34,18 @@ def show_usage():
     sc += ('Type "sbase help [COMMAND]" for specific command info.\n')
     sc += ('For info on all commands, type: "seleniumbase --help".\n')
     sc += ('* (Use "pytest" for running tests) *\n')
-    colorama.init(autoreset=True)
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
-    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
-    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
-    cr = colorama.Style.RESET_ALL
-    sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
-    sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
-    sc = sc.replace("pytest", c3 + "pytest" + cr)
-    sc = sc.replace("--help", c4 + "--help" + cr)
-    sc = sc.replace("help", c4 + "help" + cr)
+    if "linux" not in sys.platform:
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+        c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+        c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+        cr = colorama.Style.RESET_ALL
+        sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+        sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
+        sc = sc.replace("pytest", c3 + "pytest" + cr)
+        sc = sc.replace("--help", c4 + "--help" + cr)
+        sc = sc.replace("help", c4 + "help" + cr)
     print(sc)
 
 
@@ -78,12 +79,13 @@ def show_basic_usage():
     sc += ("      grid-node       [start|stop] --hub=[HUB_IP] [OPTIONS]\n")
     sc += ('  *  (EXAMPLE: "sbase install chromedriver latest")  *\n')
     sc += ("")
-    colorama.init(autoreset=True)
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
-    cr = colorama.Style.RESET_ALL
-    sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
-    sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
+    if "linux" not in sys.platform:
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+        cr = colorama.Style.RESET_ALL
+        sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+        sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
     print(sc)
 
 
