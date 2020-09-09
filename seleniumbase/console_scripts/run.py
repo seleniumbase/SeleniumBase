@@ -51,6 +51,7 @@ def show_usage():
 def show_basic_usage():
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
+    colorama.init(autoreset=True)
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
