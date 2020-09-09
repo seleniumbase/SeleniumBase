@@ -47,6 +47,11 @@ jobs:
     displayName: 'Install Chrome and Firefox'
 
   - script: |
+      seleniumbase
+      sbase
+    displayName: 'Check the console scripts interface'
+
+  - script: |
       seleniumbase install chromedriver
     displayName: 'Install chromedriver'
 
