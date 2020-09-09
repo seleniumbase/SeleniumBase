@@ -3,35 +3,35 @@
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Docs</h2>
 
 <p align="left">
-<a href="https://github.com/seleniumbase/SeleniumBase#python_installation">🚀 Start</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🧙‍♂️ cmd</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a>
+<a href="https://seleniumbase.io/#python_installation">🚀 Start</a> |
+<a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🧙‍♂️ cmd</a> |
+<a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a>
+<a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
+<a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a> |
+<a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📋 Reports</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a>
+<a href="https://seleniumbase.io/help_docs/method_summary/">📚 API</a> |
+<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📋 Reports</a> |
+<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Console Scripts</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
+<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">💻 Console Scripts</a> |
+<a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a>
+<a href="https://seleniumbase.io/help_docs/locale_codes/">🗾 Locales</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a>
+<a href="https://seleniumbase.io/help_docs/js_package_manager/">🗄️ PkgManager</a> |
+<a href="https://seleniumbase.io/examples/visual_testing/ReadMe/">🖼️ VisualTest</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌎 Translate</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
+<a href="https://seleniumbase.io/help_docs/translations/">🌎 Translate</a> |
+<a href="https://seleniumbase.io/examples/master_qa/ReadMe/">🛂 MasterQA</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a> |
+<a href="https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/">⏺️ Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📰 Presenter</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Chart Maker</a>
+<a href="https://seleniumbase.io/examples/presenter/ReadMe/">📰 Presenter</a> |
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 Chart Maker</a>
 </p>
 
 --------
