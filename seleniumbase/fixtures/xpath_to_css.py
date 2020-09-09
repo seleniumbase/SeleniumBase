@@ -129,10 +129,50 @@ def _get_raw_css_from_xpath(xpath):
 
 
 def convert_xpath_to_css(xpath):
+    xpath = xpath.replace(" = '", "='")
+
+    # **** Start of handling special xpath edge cases instantly ****
+
+    # Handle a special edge case that converts to: 'tag.class:contains("TEXT")'
+    c3 = "@class and contains(concat(' ', normalize-space(@class), ' '), ' "
+    if c3 in xpath and xpath.count(c3) == 1 and xpath.count("[@") == 1:
+        p2 = " ') and (contains(., '"
+        if xpath.count(p2) == 1 and xpath.endswith("'))]") and (
+                xpath.count("//") == 1 and (xpath.count(" ') and (") == 1)):
+            s_contains = xpath.split(p2)[1].split("'))]")[0]
+            s_tag = xpath.split("//")[1].split("[@class")[0]
+            s_class = xpath.split(c3)[1].split(" ') and (")[0]
+            return '%s.%s:contains("%s")' % (s_tag, s_class, s_contains)
+
+    # Find instance of: //tag[@attribute='value' and (contains(., 'TEXT'))]
+    data = re.match(
+        r'''^\s*//(\S+)\[@(\S+)='(\S+)'\s+and\s+'''
+        r'''\(contains\(\.,\s'(\S+)'\)\)\]''', xpath)
+    if data:
+        s_tag = data.group(1)
+        s_atr = data.group(2)
+        s_val = data.group(3)
+        s_contains = data.group(4)
+        return '%s[%s="%s"]:contains("%s")' % (s_tag, s_atr, s_val, s_contains)
+
+    # Find instance of: //tag[@attribute1='value1' and (@attribute2='value2')]
+    data = re.match(
+        r'''^\s*//(\S+)\[@(\S+)='(\S+)'\s+and\s+'''
+        r'''\(@(\S+)='(\S+)'\)\]''', xpath)
+    if data:
+        s_tag = data.group(1)
+        s_atr1 = data.group(2)
+        s_val1 = data.group(3)
+        s_atr2 = data.group(4)
+        s_val2 = data.group(5)
+        return '%s[%s="%s"][%s="%s"]' % (s_tag, s_atr1, s_val1, s_atr2, s_val2)
+
+    # **** End of handling special xpath edge cases instantly ****
+
     if xpath[0] != '"' and xpath[-1] != '"' and xpath.count('"') % 2 == 0:
         xpath = _handle_brackets_in_strings(xpath)
     xpath = xpath.replace("descendant-or-self::*/", "descORself/")
-    xpath = xpath.replace(" = '", "='")
+
     if " and contains(@" in xpath and xpath.count(" and contains(@") == 1:
         spot1 = xpath.find(" and contains(@")
         spot1 = spot1 + len(" and contains(@")
