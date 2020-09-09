@@ -172,6 +172,8 @@ def convert_xpath_to_css(xpath):
     if xpath[0] != '"' and xpath[-1] != '"' and xpath.count('"') % 2 == 0:
         xpath = _handle_brackets_in_strings(xpath)
     xpath = xpath.replace("descendant-or-self::*/", "descORself/")
+    if len(xpath) > 3:
+        xpath = xpath[0:3] + xpath[3:].replace('//', '/descORself/')
 
     if " and contains(@" in xpath and xpath.count(" and contains(@") == 1:
         spot1 = xpath.find(" and contains(@")
@@ -211,7 +213,9 @@ def convert_xpath_to_css(xpath):
     css = css.replace(" descORself > ", ' ')
     css = css.replace("/descORself/*", ' ')
     css = css.replace("/descORself/", ' ')
+    css = css.replace("descORself > ", '')
     css = css.replace("descORself/", ' ')
+    css = css.replace("descORself", ' ')
     css = css.replace("_STAR_=", "*=")
     css = css.replace("]/", "] ")
     css = css.replace("] *[", "] > [")
