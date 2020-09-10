@@ -1,5 +1,5 @@
 <meta property="og:site_name" content="SeleniumBase | Docs">
-<meta property="og:title" content="SeleniumBase | Easy Test Automation" />
+<meta property="og:title" content="SeleniumBase | E2E Test Framework" />
 <meta property="og:description" content="Browser automation and testing with Python." />
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/sb_logo_dh.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
@@ -8,10 +8,9 @@
 <img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="340" />
 </a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" width="332" /></a></p>
-<p align="center">
-<b>Automated web testing, 10x faster.</b>
-</p>
+<img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="332" /></a></p>
+<p align="center"><b>Create browser tests, 8x-10x faster.</b></p>
+<p align="center">Uses <a href="https://www.selenium.dev/projects/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 <!-- View on GitHub -->
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -24,8 +23,8 @@
 </p>
 
 <p>
-<b>SeleniumBase</b> is an all-in-one framework for fast & simple browser automation, end-to-end testing, presentations, charts, and website tours.
-Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
+<b>SeleniumBase</b> is an all-in-one framework for fast & simple browser automation, end-to-end testing, reports, presentations, charts, and website tours.
+Tests are run with <code>pytest</code>. Browsers are controlled by WebDriver.
 </p>
 
 <p align="center">
@@ -818,7 +817,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 <div><iframe src="https://seleniumbase.io/help_docs/ReadMe/" title="Docs"></iframe></div>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" title="SeleniumBase" width="290" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" title="SeleniumBase" alt="Repo Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div>
 
