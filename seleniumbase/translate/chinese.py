@@ -177,6 +177,10 @@ class 硒测试用例(BaseCase):  # noqa
         # submit(selector)
         return self.submit(*args, **kwargs)
 
+    def 清除(self, *args, **kwargs):
+        # clear(selector)
+        return self.clear(*args, **kwargs)
+
     def JS单击(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -459,6 +463,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 查找文本(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)
+
+    def 设置文本(self, *args, **kwargs):
+        # set_text(selector, text)
+        return self.set_text(*args, **kwargs)
 
     def 获取属性(self, *args, **kwargs):
         # get_attribute(selector, attribute)
