@@ -441,6 +441,46 @@ class BaseCase(unittest.TestCase):
         element.submit()
         self.__demo_mode_pause_if_active()
 
+    def clear(self, selector, by=By.CSS_SELECTOR, timeout=None):
+        """ This method clears an element's text field.
+            A clear() is already included with most methods that type text,
+            such as self.type(), self.update_text(), etc.
+            Does not use Demo Mode highlights, mainly because we expect
+            that some users will be calling an unnecessary clear() before
+            calling a method that already includes clear() as part of it.
+            In case websites trigger an autofill after clearing a field,
+            add backspaces to make sure autofill doesn't undo the clear.
+            @Params
+            selector - the selector of the text field
+            by - the type of selector to search by (Default: CSS Selector)
+            timeout - how long to wait for the selector to be visible
+        """
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=timeout)
+        self.scroll_to(selector, by=by, timeout=timeout)
+        try:
+            element.clear()
+            backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
+            element.send_keys(backspaces)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.06)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            element.clear()
+            try:
+                backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
+                element.send_keys(backspaces)
+            except Exception:
+                pass
+        except Exception:
+            element.clear()
+
     def refresh_page(self):
         self.__last_page_load_url = None
         js_utils.clear_out_console_logs(self.driver)
