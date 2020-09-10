@@ -31,33 +31,36 @@ import sys
 def show_usage():
     show_basic_usage()
     sc = ("")
-    sc += ('Type "sbase help [COMMAND]" for specific command info.\n')
-    sc += ('For info on all commands, type: "seleniumbase --help".\n')
-    sc += ('* (Use "pytest" for running tests) *\n')
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
-    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
-    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
-    cr = colorama.Style.RESET_ALL
-    sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
-    sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
-    sc = sc.replace("pytest", c3 + "pytest" + cr)
-    sc = sc.replace("--help", c4 + "--help" + cr)
-    sc = sc.replace("help", c4 + "help" + cr)
+    sc += ('    Type "sbase help [COMMAND]" for specific command info.\n')
+    sc += ('    For info on all commands, type: "seleniumbase --help".\n')
+    sc += (' * (Use "pytest" for running tests) *\n')
+    if "linux" not in sys.platform:
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+        c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+        c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+        cr = colorama.Style.RESET_ALL
+        sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+        sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
+        sc = sc.replace("pytest", c3 + "pytest" + cr)
+        sc = sc.replace("--help", c4 + "--help" + cr)
+        sc = sc.replace("help", c4 + "help" + cr)
     print(sc)
 
 
 def show_basic_usage():
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
+    colorama.init(autoreset=True)
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
     sc = ("")
-    sc += ('Usage: "seleniumbase [COMMAND] [PARAMETERS]"\n')
-    sc += ('(simplified): "sbase [COMMAND] [PARAMETERS]"\n')
+    sc += (' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n')
+    sc += (' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n')
     sc += ("\n")
-    sc += ("Commands:\n")
+    sc += ("COMMANDS:\n")
     sc += ("      install         [DRIVER_NAME] [OPTIONS]\n")
     sc += ("      mkdir           [DIRECTORY_NAME]\n")
     sc += ("      mkfile          [FILE_NAME.py]\n")
@@ -74,17 +77,20 @@ def show_basic_usage():
     sc += ("      download server (Selenium Server JAR file)\n")
     sc += ("      grid-hub        [start|stop] [OPTIONS]\n")
     sc += ("      grid-node       [start|stop] --hub=[HUB_IP] [OPTIONS]\n")
-    sc += ('  *  (EXAMPLE: "sbase install chromedriver latest")  *\n')
+    sc += (' * (EXAMPLE: "sbase install chromedriver latest")  *\n')
     sc += ("")
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
-    cr = colorama.Style.RESET_ALL
-    sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
-    sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
+    if "linux" not in sys.platform:
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+        cr = colorama.Style.RESET_ALL
+        sc = sc.replace("seleniumbase", c1 + "selenium" + c2 + "base" + cr)
+        sc = sc.replace("sbase", c1 + "s" + c2 + "base" + cr)
     print(sc)
 
 
 def show_install_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -119,6 +125,7 @@ def show_install_usage():
 
 
 def show_mkdir_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -140,6 +147,7 @@ def show_mkdir_usage():
 
 
 def show_mkfile_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -172,6 +180,7 @@ def show_mkfile_usage():
 
 
 def show_convert_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -191,6 +200,7 @@ def show_convert_usage():
 
 
 def show_print_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -209,6 +219,7 @@ def show_print_usage():
 
 
 def show_translate_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -244,6 +255,7 @@ def show_translate_usage():
 
 
 def show_extract_objects_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -261,6 +273,7 @@ def show_extract_objects_usage():
 
 
 def show_inject_objects_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -281,6 +294,7 @@ def show_inject_objects_usage():
 
 
 def show_objectify_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -304,6 +318,7 @@ def show_objectify_usage():
 
 
 def show_revert_objects_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -325,6 +340,7 @@ def show_revert_objects_usage():
 
 
 def show_encrypt_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -342,6 +358,7 @@ def show_encrypt_usage():
 
 
 def show_decrypt_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -359,6 +376,7 @@ def show_decrypt_usage():
 
 
 def show_download_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -375,6 +393,7 @@ def show_download_usage():
 
 
 def show_grid_hub_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -402,6 +421,7 @@ def show_grid_hub_usage():
 
 
 def show_grid_node_usage():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -441,6 +461,7 @@ def show_version_info():
 
 
 def show_options():
+    colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -497,6 +518,7 @@ def show_options():
 
 
 def show_detailed_help():
+    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     c6 = colorama.Back.CYAN

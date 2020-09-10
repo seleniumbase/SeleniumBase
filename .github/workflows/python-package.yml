@@ -37,6 +37,10 @@ jobs:
       run: |
         sudo apt install google-chrome-stable
         sudo apt-get install firefox
+    - name: Check the console scripts interface
+      run: |
+        seleniumbase
+        sbase
     - name: Install chromedriver and geckodriver (Firefox Webdriver)
       run: |
         seleniumbase install chromedriver

@@ -62,6 +62,7 @@ def pytest_addoption(parser):
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
+    colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
