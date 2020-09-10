@@ -177,6 +177,10 @@ class CasoDiProva(BaseCase):
         # submit(selector)
         return self.submit(*args, **kwargs)
 
+    def cancellare(self, *args, **kwargs):
+        # clear(selector)
+        return self.clear(*args, **kwargs)
+
     def js_fare_clic(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -459,6 +463,10 @@ class CasoDiProva(BaseCase):
     def trovare_testo(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)
+
+    def impostare_testo(self, *args, **kwargs):
+        # set_text(selector, text)
+        return self.set_text(*args, **kwargs)
 
     def ottenere_attributo(self, *args, **kwargs):
         # get_attribute(selector, attribute)

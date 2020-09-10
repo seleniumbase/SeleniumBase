@@ -731,6 +731,18 @@ class MD:
     md["submit"][8] = "отправить"
     md["submit"][9] = "enviar"
 
+    md["clear"] = ["*"] * num_langs
+    md["clear"][0] = "clear"
+    md["clear"][1] = "清除"
+    md["clear"][2] = "wissen"
+    md["clear"][3] = "effacer"
+    md["clear"][4] = "cancellare"
+    md["clear"][5] = "クリアする"
+    md["clear"][6] = "지우려면"
+    md["clear"][7] = "limpar"
+    md["clear"][8] = "очистить"
+    md["clear"][9] = "despejar"
+
     md["js_click"] = ["*"] * num_langs
     md["js_click"][0] = "js_click"
     md["js_click"][1] = "JS单击"
@@ -1548,6 +1560,18 @@ class MD:
     md["find_text"][8] = "найти_текст"
     md["find_text"][9] = "encontrar_texto"
 
+    md["set_text"] = ["*"] * num_langs
+    md["set_text"][0] = "set_text"
+    md["set_text"][1] = "设置文本"
+    md["set_text"][2] = "tekst_instellen"
+    md["set_text"][3] = "définir_texte"
+    md["set_text"][4] = "impostare_testo"
+    md["set_text"][5] = "テキストを設定する"
+    md["set_text"][6] = "텍스트_설정"
+    md["set_text"][7] = "definir_texto"
+    md["set_text"][8] = "набор_текст"
+    md["set_text"][9] = "establecer_texto"
+
     md["get_attribute"] = ["*"] * num_langs
     md["get_attribute"][0] = "get_attribute"
     md["get_attribute"][1] = "获取属性"
@@ -1611,7 +1635,7 @@ class MD:
     md["set_messenger_theme"] = ["*"] * num_langs
     md["set_messenger_theme"][0] = "set_messenger_theme"
     md["set_messenger_theme"][1] = "设置消息主题"
-    md["set_messenger_theme"][2] = "kenmerk_thema_van_bericht"
+    md["set_messenger_theme"][2] = "thema_van_bericht_instellen"
     md["set_messenger_theme"][3] = "définir_thème_du_message"
     md["set_messenger_theme"][4] = "impostare_tema_del_messaggio"
     md["set_messenger_theme"][5] = "メッセージのスタイルを設定する"

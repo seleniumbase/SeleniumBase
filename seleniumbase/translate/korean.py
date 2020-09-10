@@ -177,6 +177,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # submit(selector)
         return self.submit(*args, **kwargs)
 
+    def 지우려면(self, *args, **kwargs):
+        # clear(selector)
+        return self.clear(*args, **kwargs)
+
     def JS_클릭(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -459,6 +463,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 텍스트_찾기(self, *args, **kwargs):
         # find_text(text, selector="html")  # Same as wait_for_text
         return self.find_text(*args, **kwargs)
+
+    def 텍스트_설정(self, *args, **kwargs):
+        # set_text(selector, text)
+        return self.set_text(*args, **kwargs)
 
     def 특성_검색(self, *args, **kwargs):
         # get_attribute(selector, attribute)
