@@ -119,6 +119,11 @@ def main(override=None):
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
+    if "linux" in sys_plat:
+        c1 = ''
+        c2 = ''
+        c3 = ''
+        cr = ''
 
     if name == "chromedriver":
         last = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"
