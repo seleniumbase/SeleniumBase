@@ -8,8 +8,8 @@
 <img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="340" />
 </a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb4.png" alt="SeleniumBase" width="332" /></a></p>
-<h3 align="center"><b>Create web tests 8x-10x faster.</b></h3>
+<img src="https://seleniumbase.io/cdn/img/super_logo_3f.png" alt="SeleniumBase" width="332" /></a></p>
+<p align="center"><b>Create reliable end-to-end tests faster.</b></p>
 <p align="center">Extends <a href="https://www.selenium.dev/projects/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 <!-- View on GitHub -->
 <p align="center">
