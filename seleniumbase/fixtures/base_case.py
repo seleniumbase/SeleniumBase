@@ -3505,9 +3505,8 @@ class BaseCase(unittest.TestCase):
             '<head>\n'
             '<meta charset="utf-8">\n'
             '<meta http-equiv="Content-Type" '
-            'content="text/html; charset=utf-8">\n'
-            '<meta name="viewport" '
-            'content="width=device-width, initial-scale=1">\n'
+            'content="text/html; charset=utf-8;">\n'
+            '<meta name="viewport" content="text/html;">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<style>\n'
@@ -4139,9 +4138,8 @@ class BaseCase(unittest.TestCase):
             raise Exception('Chart file must end in ".html"!')
         the_html = '<meta charset="utf-8">\n'
         the_html += '<meta http-equiv="Content-Type" '
-        the_html += 'content="text/html; charset=utf-8">\n'
-        the_html += '<meta name="viewport" '
-        the_html += 'content="width=device-width, initial-scale=1">\n'
+        the_html += 'content="text/html; charset=utf-8;">\n'
+        the_html += '<meta name="viewport" content="text/html;">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
         the_html += (
