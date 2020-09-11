@@ -2918,11 +2918,20 @@ class BaseCase(unittest.TestCase):
 
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
+        self.wait_for_ready_state_complete()
         expected = title
         actual = self.get_page_title()
-        self.assertEqual(expected, actual, "Expected page title [%s] "
-                         "does not match the actual page title [%s]!"
-                         "" % (expected, actual))
+        try:
+            self.assertEqual(expected, actual, "Expected page title [%s] "
+                             "does not match the actual page title [%s]!"
+                             "" % (expected, actual))
+        except Exception:
+            self.wait_for_ready_state_complete()
+            self.sleep(settings.MINI_TIMEOUT)
+            actual = self.get_page_title()
+            self.assertEqual(expected, actual, "Expected page title [%s] "
+                             "does not match the actual page title [%s]!"
+                             "" % (expected, actual))
         if self.demo_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
