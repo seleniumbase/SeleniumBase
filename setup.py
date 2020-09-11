@@ -151,7 +151,7 @@ setup(
         'pyotp==2.4.0',
         'boto==2.49.0',
         'cffi==1.14.2',
-        'rich==6.1.1;python_version>="3.6" and python_version<"4.0"',
+        'rich==6.1.2;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
