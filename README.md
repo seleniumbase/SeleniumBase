@@ -813,6 +813,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 <div><b>If you like us, give us a star!</b></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
 </p>
+<div><iframe src="https://seleniumbase.io/help_docs/ReadMe/" title="Docs"></iframe></div>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
