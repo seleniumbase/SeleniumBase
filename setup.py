@@ -44,7 +44,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.48.2'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.49.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.11',
+    version='1.49.12',
     description='Web Automation and Test Framework - https://seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -115,7 +115,7 @@ setup(
         'py==1.8.1;python_version<"3.5"',
         'py==1.9.0;python_version>="3.5"',
         'pytest==4.6.11;python_version<"3.5"',
-        'pytest==6.0.1;python_version>="3.5"',
+        'pytest==6.0.2;python_version>="3.5"',
         'pytest-cov==2.10.1',
         'pytest-forked==1.3.0',
         'pytest-html==1.22.1;python_version<"3.6"',
@@ -135,7 +135,7 @@ setup(
         'cryptography==3.1;python_version>="3.6"',
         'pyopenssl==19.1.0',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.6.1;python_version>="3.5"',
+        'pygments==2.7.0;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.4;python_version>="3.7"',
         'ipython==5.10.0;python_version<"3.5"',
