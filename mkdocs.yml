@@ -1,5 +1,5 @@
 # Project information
-site_name: SeleniumBase | Docs
+site_name: SeleniumBase Docs
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: Reliable Browser Automation & Testing
@@ -10,7 +10,7 @@ edit_uri: ""
 site_dir: "site"
 docs_dir: "docs"
 # Copyright
-copyright: Copyright &copy; 2016 - 2020 Michael Mintz / SeleniumBase
+copyright: Copyright &copy; 2015 - 2020 Michael Mintz / SeleniumBase
 # Extensions
 markdown_extensions:
   - markdown.extensions.admonition
@@ -53,7 +53,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase | Docs: README.md
+  - SeleniumBase Home: README.md
   - Features: help_docs/features_list.md
   - CMD Options: help_docs/customizing_test_runs.md
   - Python Setup:
@@ -68,8 +68,8 @@ nav:
   - API Reference: help_docs/method_summary.md
   - Languages / 语言:
     - Translations: help_docs/translations.md
-    - Locale Codes: help_docs/locale_codes.md
     - Chinese / 中文文件: help_docs/chinese.md
+    - Locale Codes: help_docs/locale_codes.md
   - Mobile Testing: help_docs/mobile_testing.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - JS Package Manager: help_docs/js_package_manager.md
@@ -88,7 +88,7 @@ nav:
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
     - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
     - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
-    - HighCharts: examples/chart_maker/ReadMe.md 
+    - HighCharts: examples/chart_maker/ReadMe.md
     - Docker Help: integrations/docker/ReadMe.md
   - Help Docs ToC:
     - Table of Contents: help_docs/ReadMe.md
