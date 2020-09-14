@@ -5,8 +5,8 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="334" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="334" />
+<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="284" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
+<img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="284" />
 </a></p>
 <p align="center"><b>Build fast, reliable, end-to-end tests.</b></p>
 <p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
@@ -813,7 +813,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 <div><b>If you like us, give us a star!</b></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
 </p>
-<div><iframe src="https://seleniumbase.io/help_docs/ReadMe/" title="Docs"></iframe></div>
+<div><!--for_gh_pages--><iframe src="https://seleniumbase.io" title="Docs Site"></iframe></div>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
