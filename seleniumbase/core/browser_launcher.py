@@ -145,7 +145,8 @@ def _set_chrome_options(
         "safebrowsing.enabled": False,
         "safebrowsing.disable_download_protection": True,
         "profile": {
-            "password_manager_enabled": False
+            "password_manager_enabled": False,
+            "default_content_setting_values.automatic_downloads": 1
         }
     }
     if locale_code:
@@ -349,11 +350,14 @@ def _create_firefox_profile(
         "browser.download.animateNotifications", False)
     profile.set_preference("browser.download.dir", downloads_path)
     profile.set_preference("browser.download.folderList", 2)
+    profile.set_preference("browser.helperApps.alwaysAsk.force", False)
+    profile.set_preference(
+        "browser.download.manager.showWhenStarting", False)
     profile.set_preference(
         "browser.helperApps.neverAsk.saveToDisk",
         ("application/pdf, application/zip, application/octet-stream, "
          "text/csv, text/xml, application/xml, text/plain, "
-         "text/octet-stream, "
+         "text/octet-stream, application/x-gzip, application/x-tar "
          "application/"
          "vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
     return profile
@@ -761,7 +765,8 @@ def get_local_driver(
                 "safebrowsing.enabled": False,
                 "safebrowsing.disable_download_protection": True,
                 "profile": {
-                    "password_manager_enabled": False
+                    "password_manager_enabled": False,
+                    "default_content_setting_values.automatic_downloads": 1
                 }
             }
             if locale_code:
