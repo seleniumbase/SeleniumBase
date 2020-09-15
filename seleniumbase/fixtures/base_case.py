@@ -2853,8 +2853,8 @@ class BaseCase(unittest.TestCase):
     def assert_downloaded_file(self, file, timeout=None):
         """ Asserts that the file exists in the Downloads Folder. """
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
