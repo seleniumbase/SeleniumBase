@@ -1452,6 +1452,18 @@ class MD:
     md["assert_pdf_text"][8] = "подтвердить_текст_PDF"
     md["assert_pdf_text"][9] = "verificar_texto_pdf"
 
+    md["assert_downloaded_file"] = ["*"] * num_langs
+    md["assert_downloaded_file"][0] = "assert_downloaded_file"
+    md["assert_downloaded_file"][1] = "检查下载的文件"
+    md["assert_downloaded_file"][2] = "controleren_gedownloade_bestand"
+    md["assert_downloaded_file"][3] = "vérifier_fichier_téléchargé"
+    md["assert_downloaded_file"][4] = "verificare_file_scaricato"
+    md["assert_downloaded_file"][5] = "ダウンロードしたファイルを確認する"
+    md["assert_downloaded_file"][6] = "다운로드한_파일_확인"
+    md["assert_downloaded_file"][7] = "verificar_arquivo_baixado"
+    md["assert_downloaded_file"][8] = "подтвердить_загруженный_файл"
+    md["assert_downloaded_file"][9] = "verificar_archivo_descargado"
+
     md["fail"] = ["*"] * num_langs
     md["fail"][0] = "fail"
     md["fail"][1] = "失败"

@@ -428,6 +428,10 @@ class 硒测试用例(BaseCase):  # noqa
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def 检查下载的文件(self, *args, **kwargs):
+        # assert_downloaded_file(file)
+        return self.assert_downloaded_file(*args, **kwargs)
+
     def 失败(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
