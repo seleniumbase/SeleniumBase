@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 class MyChartMakerClass(BaseCase):
 
     def test_seleniumbase_chart(self):
-        self.create_presentation(theme="league")
+        self.create_presentation(theme="league", transition="slide")
         self.create_pie_chart(title="There are 4 core areas of SeleniumBase:")
         self.add_data_point("Basic API (Test methods/functions)", 1)
         self.add_data_point("Command-line Options (pytest Options)", 1)
