@@ -8,7 +8,7 @@ You can [download Git from here](http://git-scm.com/downloads).
 
 (You can also download SeleniumBase from GitHub without using git-related commands.)
 
-### [Python 2.7 or 3.x](https://www.python.org)
+### [Python](https://www.python.org)
 
 You can download Python from [https://www.python.org/downloads/](https://www.python.org/downloads/) if it's not already preinstalled on your machine.
 
@@ -41,7 +41,7 @@ yum -y install python-pip
 
 If you're having any trouble getting pip, you can [GET PIP HERE](https://pip.pypa.io/en/latest/installing/).
 
-When done, make sure the location of pip is on your path, which is `$PATH` for macOS/Linux. (On Windows, it's the System Variables `Path` within System Environment Variables. Ex: Add "C:/Python27/Scripts/" to the end of the `Path` variable.)
+When done, make sure the location of pip is on your path, which is ``$PATH`` for macOS/Linux. (On Windows, it's the System Variables ``Path`` within System Environment Variables.)
 
 You can also get pip (or fix pip) by using:
 ```bash
