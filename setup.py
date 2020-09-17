@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.13',
+    version='1.49.14',
     description='Web Automation and Test Framework - https://seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -135,7 +135,7 @@ setup(
         'cryptography==3.1;python_version>="3.6"',
         'pyopenssl==19.1.0',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.7.0;python_version>="3.5"',
+        'pygments==2.7.1;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.4;python_version>="3.7"',
         'ipython==5.10.0;python_version<"3.5"',

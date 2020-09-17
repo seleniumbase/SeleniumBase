@@ -428,6 +428,10 @@ class Testgeval(BaseCase):
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def controleren_gedownloade_bestand(self, *args, **kwargs):
+        # assert_downloaded_file(file)
+        return self.assert_downloaded_file(*args, **kwargs)
+
     def mislukken(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
         return self.fail(*args, **kwargs)
