@@ -235,7 +235,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.click'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -275,7 +275,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.js_click'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -315,7 +315,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.slow_click'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -346,6 +346,86 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.click_visible_elements(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.click_visible_elements'''
+                r'''\((r?['"][\S\s]+['"])\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.click_visible_elements'''
+                r'''\(([\S]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = '''%sself.click_visible_elements(%s)%s''' % (
+                whitespace, selector, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.click_visible_elements(%s)%s''' % (
+                        whitespace, selector_object, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.click_visible_elements(%s)%s''' % (
+                        whitespace, selector_object, comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.switch_to_frame(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.switch_to_frame'''
+                r'''\((r?['"][\S\s]+['"])\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.switch_to_frame'''
+                r'''\(([\S]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector = '%s' % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = '''%sself.switch_to_frame(%s)%s''' % (
+                whitespace, selector, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.switch_to_frame(%s)%s''' % (
+                        whitespace, selector_object, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.switch_to_frame(%s)%s''' % (
+                        whitespace, selector_object, comments)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.assert_element(SELECTOR)
         if not object_dict:
             data = re.match(
@@ -355,7 +435,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.assert_element'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -395,7 +475,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.assert_element_(\S*)'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -436,7 +516,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.find_element'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -476,7 +556,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.get_element'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -516,7 +596,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.wait_for_element'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -556,7 +636,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.wait_for_element_(\S*)'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -597,7 +677,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.update_text'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -638,7 +718,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.type'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -679,7 +759,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.input'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -720,7 +800,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.write'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -761,7 +841,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.add_text'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -802,7 +882,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.send_keys'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -843,7 +923,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.set_value'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -875,6 +955,142 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.hover_and_click(SELECTOR, SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.hover_and_click'''
+                r'''\((r?['"][\S\s]+['"]),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.hover_and_click'''
+                r'''\(([\S]+),\s?([\S]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            selector1 = '%s' % data.group(2)
+            selector1 = remove_extra_slashes(selector1)
+            page_selectors.append(selector1)
+            selector2 = '%s' % data.group(3)
+            selector2 = remove_extra_slashes(selector2)
+            page_selectors.append(selector2)
+            comments = data.group(4)
+            command = '''%sself.hover_and_click(%s, %s)%s''' % (
+                whitespace, selector1, selector2, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector1 = optimize_selector(selector1)
+                selector2 = optimize_selector(selector2)
+                if selector1 in selector_dict.keys() and (
+                        selector2 in selector_dict.keys()):
+                    selector_object1 = selector_dict[selector1]
+                    selector_object2 = selector_dict[selector2]
+                    changed.append(selector_object1.split('.')[0])
+                    changed.append(selector_object2.split('.')[0])
+                    command = '''%sself.hover_and_click(%s, %s)%s''' % (
+                        whitespace, selector_object1, selector_object2,
+                        comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name1 = selector1
+                object_name2 = selector2
+                if object_name1 in object_dict.keys() and (
+                        object_name2 in object_dict.keys()):
+                    selector_object1 = object_dict[object_name1]
+                    selector_object2 = object_dict[object_name2]
+                    changed.append(object_name1.split('.')[0])
+                    changed.append(object_name2.split('.')[0])
+                    command = '''%sself.hover_and_click(%s, %s)%s''' % (
+                        whitespace, selector_object1, selector_object2,
+                        comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.press_*_arrow(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.press_(\S*)_arrow'''
+                r'''\((r?['"][\S\s]+['"])\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.press_(\S*)_arrow'''
+                r'''\(([\S]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            arrow = '%s' % data.group(2)
+            selector = '%s' % data.group(3)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(4)
+            command = '''%sself.press_%s_arrow(%s)%s''' % (
+                whitespace, arrow, selector, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.press_%s_arrow(%s)%s''' % (
+                        whitespace, arrow, selector_object, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.press_%s_arrow(%s)%s''' % (
+                        whitespace, arrow, selector_object, comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.press_*_arrow(SELECTOR, TIMES)
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.press_(\S*)_arrow'''
+                r'''\((r?['"][\S\s]+['"]),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.press_(\S*)_arrow'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            arrow = '%s' % data.group(2)
+            selector = '%s' % data.group(3)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            times = data.group(4)
+            comments = data.group(5)
+            command = '''%sself.press_%s_arrow(%s, %s)%s''' % (
+                whitespace, arrow, selector, times, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.press_%s_arrow(%s, %s)%s''' % (
+                        whitespace, arrow, selector_object, times, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.press_%s_arrow(%s, %s)%s''' % (
+                        whitespace, arrow, selector_object, times, comments)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.assert_text(TEXT, SELECTOR)
         if not object_dict:
             data = re.match(
@@ -884,7 +1100,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.assert_text'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S\s]+),\s?([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -925,7 +1141,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.assert_exact_text'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S\s]+),\s?([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -966,7 +1182,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.find_text'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S\s]+),\s?([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1007,7 +1223,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)(\S*)\sself\.is_text_(\S*)'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\):([\S\s]*)'''
+                r'''\(([\S\s]+),\s?([\S]+)\):([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1052,7 +1268,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.wait_for_text'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S\s]+),\s?([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1093,7 +1309,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.wait_for_text_visible'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S\s]+),\s?([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1134,7 +1350,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)(\S*)\sself\.is_element_(\S*)'''
-                r'''\(([\S\s]+)\):([\S\s]*)'''
+                r'''\(([\S]+)\):([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1169,6 +1385,130 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle if/elif self.is_selected(SELECTOR):
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)(\S*)\sself\.is_selected'''
+                r'''\((r?['"][\S\s]+['"])\):([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)(\S*)\sself\.is_selected'''
+                r'''\(([\S]+)\):([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            if_type = data.group(2)
+            selector = '%s' % data.group(3)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(4)
+            command = '''%s%s self.is_selected(%s):%s''' % (
+                whitespace, if_type, selector, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%s%s self.is_selected(%s):%s''' % (
+                        whitespace, if_type, selector_object, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%s%s self.is_selected(%s):%s''' % (
+                        whitespace, if_type, selector_object, comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.assert*(self.is_selected(SELECTOR))
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.assert(\S*)\(self\.is_selected'''
+                r'''\((r?['"][\S\s]+['"])\)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.assert(\S*)\(self\.is_selected'''
+                r'''\(([\S]+)\)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            a_type = data.group(2)
+            selector = '%s' % data.group(3)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(4)
+            command = '''%sself.assert%s(self.is_selected(%s))%s''' % (
+                whitespace, a_type, selector, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '''%sself.assert%s(self.is_selected(%s))%s''' % (
+                        whitespace, a_type, selector_object, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '''%sself.assert%s(self.is_selected(%s))%s''' % (
+                        whitespace, a_type, selector_object, comments)
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.assert*(self.is_element_*(SELECTOR))
+        if not object_dict:
+            data = re.match(
+                r'''^(\s*)self\.assert(\S*)\(self\.is_element_(\S*)'''
+                r'''\((r?['"][\S\s]+['"])\)\)([\S\s]*)'''
+                r'''$''', line)
+        else:
+            data = re.match(
+                r'''^(\s*)self\.assert(\S*)\(self\.is_element_(\S*)'''
+                r'''\(([\S]+)\)\)([\S\s]*)'''
+                r'''$''', line)
+        if data:
+            whitespace = data.group(1)
+            a_type = data.group(2)
+            v_type = data.group(3)
+            selector = '%s' % data.group(4)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(5)
+            command = '''%sself.assert%s(self.is_element_%s(%s))%s''' % (
+                whitespace, a_type, v_type, selector, comments)
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split('.')[0])
+                    command = '%sself.assert%s(self.is_element_%s(%s))%s' % (
+                        whitespace, a_type, v_type, selector_object, comments)
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split('.')[0])
+                    command = '%sself.assert%s(self.is_element_%s(%s))%s' % (
+                        whitespace, a_type, v_type, selector_object, comments)
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle VAR = self.get_attribute(SELECTOR, ATTRIBUTE)
         if not object_dict:
             data = re.match(
@@ -1178,7 +1518,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)(\S*)\s?=\s?self\.get_attribute'''
-                r'''\(([\S\s]+),\s?(['"][\S\s]+['"])\)([\S\s]*)'''
+                r'''\(([\S]+),\s?(['"][\S\s]+['"])\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1222,7 +1562,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)(\S*)\s?=\s?self\.get_text'''
-                r'''\(([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1263,7 +1603,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)if\s(\S*\s?\S*)\sin\s?self\.get_text'''
-                r'''\(([\S\s]+)\):([\S\s]*)'''
+                r'''\(([\S]+)\):([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
@@ -1304,7 +1644,7 @@ def process_test_file(
         else:
             data = re.match(
                 r'''^(\s*)self\.select_option_by_(\S*)'''
-                r'''\(([\S\s]+),\s?([\S\s]+)\)([\S\s]*)'''
+                r'''\(([\S]+),\s?([\S\s]+)\)([\S\s]*)'''
                 r'''$''', line)
         if data:
             whitespace = data.group(1)
