@@ -52,7 +52,7 @@ jobs:
     displayName: 'Check the console scripts interface'
 
   - script: |
-      seleniumbase install chromedriver
+      seleniumbase install chromedriver latest
     displayName: 'Install chromedriver'
 
   - script: |

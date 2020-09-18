@@ -26,6 +26,7 @@ sbase grid-node start --hub=127.0.0.1
 
 import colorama
 import sys
+colorama.init(autoreset=True)
 
 
 def show_usage():
@@ -35,7 +36,6 @@ def show_usage():
     sc += ('    For info on all commands, type: "seleniumbase --help".\n')
     sc += (' * (Use "pytest" for running tests) *\n')
     if "linux" not in sys.platform:
-        colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -52,7 +52,6 @@ def show_usage():
 def show_basic_usage():
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
-    colorama.init(autoreset=True)
     print(seleniumbase_logo)
     print("%s" % get_version()[0:1])
     print("")
@@ -80,7 +79,6 @@ def show_basic_usage():
     sc += (' * (EXAMPLE: "sbase install chromedriver latest")  *\n')
     sc += ("")
     if "linux" not in sys.platform:
-        colorama.init(autoreset=True)
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         cr = colorama.Style.RESET_ALL
@@ -90,7 +88,6 @@ def show_basic_usage():
 
 
 def show_install_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -125,7 +122,6 @@ def show_install_usage():
 
 
 def show_mkdir_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -147,7 +143,6 @@ def show_mkdir_usage():
 
 
 def show_mkfile_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -172,7 +167,7 @@ def show_mkfile_usage():
     print("          If the file already exists, an error is raised.")
     print("          By default, uses English mode and creates a")
     print("          boilerplate with the 5 most common SeleniumBase")
-    print('          methods, which are "open", "click", "update_text",')
+    print('          methods, which are "open", "type", "click",')
     print('          "assert_element", and "assert_text". If using the')
     print('          basic boilerplate option, only the "open" method')
     print('          is included.')
@@ -180,7 +175,6 @@ def show_mkfile_usage():
 
 
 def show_convert_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -200,7 +194,6 @@ def show_convert_usage():
 
 
 def show_print_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -219,7 +212,6 @@ def show_print_usage():
 
 
 def show_translate_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -255,7 +247,6 @@ def show_translate_usage():
 
 
 def show_extract_objects_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -273,7 +264,6 @@ def show_extract_objects_usage():
 
 
 def show_inject_objects_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -294,7 +284,6 @@ def show_inject_objects_usage():
 
 
 def show_objectify_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -318,7 +307,6 @@ def show_objectify_usage():
 
 
 def show_revert_objects_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -340,7 +328,6 @@ def show_revert_objects_usage():
 
 
 def show_encrypt_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -358,7 +345,6 @@ def show_encrypt_usage():
 
 
 def show_decrypt_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -376,7 +362,6 @@ def show_decrypt_usage():
 
 
 def show_download_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -393,7 +378,6 @@ def show_download_usage():
 
 
 def show_grid_hub_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -421,7 +405,6 @@ def show_grid_hub_usage():
 
 
 def show_grid_node_usage():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
@@ -461,7 +444,6 @@ def show_version_info():
 
 
 def show_options():
-    colorama.init(autoreset=True)
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -518,7 +500,6 @@ def show_options():
 
 
 def show_detailed_help():
-    colorama.init(autoreset=True)
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     c6 = colorama.Back.CYAN
@@ -590,7 +571,6 @@ def main():
     elif command == "print":
         if len(command_args) >= 1:
             if sys.version_info[0] == 2:
-                colorama.init(autoreset=True)
                 c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
                 cr = colorama.Style.RESET_ALL
                 msg = '"sbase print" does NOT support Python 2! '
@@ -606,7 +586,6 @@ def main():
     elif command == "translate":
         if len(command_args) >= 1:
             if sys.version_info[0] == 2:
-                colorama.init(autoreset=True)
                 c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
                 cr = colorama.Style.RESET_ALL
                 msg = "The SeleniumBase Translator does NOT support Python 2!"
