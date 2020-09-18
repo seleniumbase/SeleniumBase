@@ -73,7 +73,7 @@ Creates a new SeleniumBase test file with boilerplate code.
 If the file already exists, an error is raised.
 By default, uses English mode and creates a
 boilerplate with the 5 most common SeleniumBase
-methods, which are "open", "click", "update_text",
+methods, which are "open", "type", "click",
 "assert_element", and "assert_text". If using the
 basic boilerplate option, only the "open" method
 is included.

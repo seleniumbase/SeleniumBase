@@ -172,7 +172,7 @@ def show_mkfile_usage():
     print("          If the file already exists, an error is raised.")
     print("          By default, uses English mode and creates a")
     print("          boilerplate with the 5 most common SeleniumBase")
-    print('          methods, which are "open", "click", "update_text",')
+    print('          methods, which are "open", "type", "click",')
     print('          "assert_element", and "assert_text". If using the')
     print('          basic boilerplate option, only the "open" method')
     print('          is included.')

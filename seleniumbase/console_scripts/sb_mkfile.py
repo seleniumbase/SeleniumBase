@@ -24,7 +24,7 @@ Output:
     If the file already exists, an error is raised.
     By default, uses English mode and creates a
     boilerplate with the 5 most common SeleniumBase
-    methods, which are "open", "click", "update_text",
+    methods, which are "open", "type", "click",
     "assert_element", and "assert_text". If using the
     basic boilerplate option, only the "open" method
     is included.
@@ -56,7 +56,7 @@ def invalid_run_command(msg=None):
     exp += "          If the file already exists, an error is raised.\n"
     exp += "          By default, uses English mode and creates a\n"
     exp += "          boilerplate with the 5 most common SeleniumBase\n"
-    exp += '          methods, which are "open", "click", "update_text",\n'
+    exp += '          methods, which are "open", "type", "click",\n'
     exp += '          "assert_element", and "assert_text". If using the\n'
     exp += '          basic boilerplate option, only the "open" method\n'
     exp += '          is included.\n'
