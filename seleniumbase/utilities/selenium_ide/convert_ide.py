@@ -688,6 +688,29 @@ def main():
                     continue
         seleniumbase_lines.append(lines[line_num])
 
+    # Remove duplicate functionality: "click(SEL)" before "type(SEL, TEXT)"
+    lines = seleniumbase_lines
+    seleniumbase_lines = []
+    num_lines = len(lines)
+    for line_num in range(len(lines)):
+        data = re.match(
+            r'''^\s*self.click'''
+            r'''\((["|'])([\S\s]+)(["|'])\)'''
+            r'''\s*$''', lines[line_num])
+        if data:
+            # quote_type = data.group(1)
+            selector = data.group(2)
+            selector = re.escape(selector)
+            selector = js_utils.escape_quotes_if_needed(selector)
+            if int(line_num) < num_lines - 1:
+                regex_string = (r'''^\s*self.type\(["|']'''
+                                '' + selector + ''
+                                '' + r'''["|'], [\S\s]+\)\s*$''')
+                data2 = re.match(regex_string, lines[line_num + 1])
+                if data2:
+                    continue
+        seleniumbase_lines.append(lines[line_num])
+
     # Remove duplicate functionality (wait_for_link_text)
     lines = seleniumbase_lines
     seleniumbase_lines = []
