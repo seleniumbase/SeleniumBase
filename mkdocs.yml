@@ -1,5 +1,5 @@
 # Project information
-site_name: SeleniumBase
+site_name: SeleniumBase | Docs
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: Fast, reliable, end-to-end testing
@@ -54,30 +54,29 @@ plugins:
 # Page tree
 nav:
   - SeleniumBase | Docs: README.md
-  - Features: help_docs/features_list.md
-  - Setup / Installation:
+  - Features List: help_docs/features_list.md
+  - Running Example Tests: examples/ReadMe.md
+  - Command Line Options: help_docs/customizing_test_runs.md
+  - Logging / Reports: examples/example_logs/ReadMe.md
+  - Console Scripts: seleniumbase/console_scripts/ReadMe.md
+  - API Reference: help_docs/method_summary.md
+  - Setup / Install:
     - Install Python, pip, git: help_docs/install_python_pip_git.md
     - Virtualenv Instructions: help_docs/virtualenv_instructions.md
     - Install SeleniumBase: help_docs/install.md
     - WebDriver Installation: help_docs/webdriver_installation.md
     - Verifying WebDriver: help_docs/verify_webdriver.md
     - How it Works: help_docs/how_it_works.md
-  - Options / API:
-    - CMD Options: help_docs/customizing_test_runs.md
-    - API Reference: help_docs/method_summary.md
-    - Mobile Testing: help_docs/mobile_testing.md
-  - Examples: examples/ReadMe.md
-  - Logging & Reports: examples/example_logs/ReadMe.md
-  - Console Scripts: seleniumbase/console_scripts/ReadMe.md
-  - Languages / 语言:
+  - Languages:
     - Translations: help_docs/translations.md
     - Chinese / 中文文件: help_docs/chinese.md
     - Locale Codes: help_docs/locale_codes.md
-  - JavaScript Generators:
+  - JS Generators:
     - Tour Maker: examples/tour_examples/ReadMe.md
     - Presentation Maker: examples/presenter/ReadMe.md
     - Chart Maker: help_docs/chart_maker.md
   - Integrations:
+    - Mobile Testing: help_docs/mobile_testing.md
     - GitHub CI: integrations/github/workflows/ReadMe.md
     - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
     - Katalon Recorder: integrations/katalon/ReadMe.md
@@ -85,10 +84,10 @@ nav:
     - Visual Testing: examples/visual_testing/ReadMe.md
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
-    - Recorder and Exporting: seleniumbase/utilities/selenium_ide/ReadMe.md
+    - Recorder Export/Convert: seleniumbase/utilities/selenium_ide/ReadMe.md
     - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
     - HighCharts: examples/chart_maker/ReadMe.md
-  - Help Docs ToC:
+  - Help Docs:
     - Table of Contents: help_docs/ReadMe.md
     - Master QA: seleniumbase/masterqa/ReadMe.md
     - JS Package Manager: help_docs/js_package_manager.md
@@ -100,7 +99,7 @@ nav:
     - MySQL Help: help_docs/mysql_installation.md
     - Case Studies: help_docs/happy_customers.md
     - Thank You: help_docs/thank_you.md
-  - Demo pages for tests:
+  - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
     - TinyMCE Demo Page: https://seleniumbase.io/other/tinymce
     - Error Demo Page: https://seleniumbase.io/error_page/
