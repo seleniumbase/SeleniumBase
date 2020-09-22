@@ -377,6 +377,8 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
+        if type(text) is int or type(text) is float:
+            text = str(text)
         try:
             if not text.endswith('\n'):
                 element.send_keys(text)
