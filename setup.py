@@ -150,7 +150,7 @@ setup(
         'brython==3.8.10',
         'pyotp==2.4.0',
         'boto==2.49.0',
-        'cffi==1.14.2',
+        'cffi==1.14.3',
         'rich==7.0.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
