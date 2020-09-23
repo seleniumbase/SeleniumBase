@@ -4,7 +4,7 @@
 
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🚀 Start</a> |
-<a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🧙‍♂️ cmd</a> |
+<a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🖥️ CLI</a> |
 <a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a>
 <br />
 <a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
@@ -15,7 +15,7 @@
 <a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📋 Reports</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">💻 Console Scripts</a> |
+<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">📜 Console Scripts</a> |
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
