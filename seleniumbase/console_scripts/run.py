@@ -448,7 +448,7 @@ def show_options():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("\n " + c2 + " ** " + c3 + " pytest CMD Options " + c2 + " ** " + cr)
+    sc = ("\n " + c2 + " ** " + c3 + " pytest CLI Options " + c2 + " ** " + cr)
     print(sc)
     print("")
     line = "Here are some common pytest options to use with SeleniumBase:"
