@@ -547,7 +547,7 @@ self.process_deferred_asserts(print_only=False)
 
 self.fail(msg=None)  # Inherited from "unittest"
 
-self.print(TEXT)  # Calls Python's print() / Allows for translations
+self._print(TEXT)  # Calls Python's print() / Allows for translations
 ```
 
 ---

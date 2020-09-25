@@ -4,7 +4,7 @@
 
 SeleniumBase tests are run with **``pytest``**. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
-Example tests are located in <b>[SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
+* Example tests are located in <b>[SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
