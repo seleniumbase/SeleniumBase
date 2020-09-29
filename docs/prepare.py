@@ -115,9 +115,6 @@ def main(*args, **kwargs):
                 'title="SeleniumBase" width="20" /> SeleniumBase Docs '
                 '<img src="https://seleniumbase.io/img/sb_icon.png" '
                 'title="SeleniumBase" width="20" /></h2>')
-        if "<!--for_gh_pages--><iframe" in line and "</iframe>" in line:
-            changed = True
-            line = ("")
         seleniumbase_lines.append(line)
     if changed:
         out_file = codecs.open(readme_file, "w+", encoding='utf-8')
