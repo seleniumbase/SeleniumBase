@@ -1,7 +1,9 @@
+regex>=2020.9.27
+tqdm>=4.50.0
 livereload==2.6.3;python_version>="3.6"
-pymdown-extensions==8.0
+pymdown-extensions==8.0.1
 mkdocs==1.1.2
-mkdocs-material==5.5.14
+mkdocs-material==6.0.1
 mkdocs-simple-hooks==0.1.1
 mkdocs-material-extensions==1.0.1
 mkdocs-minify-plugin==0.3.0

@@ -294,7 +294,7 @@ Here are some useful command-line options that come with ``pytest``:
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
---collect-only  # Show what tests would get run without actually running them.
+--collect-only | --co  # Show what tests would get run. (Without running them)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
@@ -813,7 +813,6 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 <div><b>If you like us, give us a star!</b></div>
 <div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
 </p>
-<div><!--for_gh_pages--><iframe src="https://seleniumbase.io" width="95%" height="1100px" title="seleniumbase.io Docs Site"></iframe></div>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>

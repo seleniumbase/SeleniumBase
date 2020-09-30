@@ -167,7 +167,7 @@ class BaseCase(unittest.TestCase):
                 element.click()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
             if self.browser == "safari":
@@ -237,7 +237,7 @@ class BaseCase(unittest.TestCase):
             actions.double_click(element).perform()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
             actions = ActionChains(self.driver)
@@ -312,7 +312,7 @@ class BaseCase(unittest.TestCase):
             element.send_keys(backspaces)  # In case autocomplete keeps text
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.06)
+            time.sleep(0.16)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             try:
@@ -337,7 +337,7 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.06)
+            time.sleep(0.16)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             element.clear()
@@ -389,7 +389,7 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.06)
+            time.sleep(0.16)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             if not text.endswith('\n'):
@@ -471,7 +471,7 @@ class BaseCase(unittest.TestCase):
             element.send_keys(backspaces)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.06)
+            time.sleep(0.16)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             element.clear()
@@ -697,7 +697,7 @@ class BaseCase(unittest.TestCase):
                 element.click()
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.05)
+                time.sleep(0.16)
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=timeout)
                 element.click()
@@ -799,7 +799,7 @@ class BaseCase(unittest.TestCase):
                 element.click()
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.05)
+                time.sleep(0.16)
                 element = self.wait_for_partial_link_text(
                     partial_link_text, timeout=timeout)
                 element.click()
@@ -872,7 +872,7 @@ class BaseCase(unittest.TestCase):
             element_text = element.text
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.06)
+            time.sleep(0.14)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout)
             element_text = element.text
@@ -894,7 +894,7 @@ class BaseCase(unittest.TestCase):
             attribute_value = element.get_attribute(attribute)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.06)
+            time.sleep(0.14)
             element = page_actions.wait_for_element_present(
                 self.driver, selector, by, timeout)
             attribute_value = element.get_attribute(attribute)
@@ -1124,7 +1124,7 @@ class BaseCase(unittest.TestCase):
                 continue  # ElementClickInterceptedException (Overlay likely)
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.04)
+                time.sleep(0.12)
                 try:
                     if element.is_displayed():
                         self.__scroll_to_element(element)
@@ -1159,7 +1159,7 @@ class BaseCase(unittest.TestCase):
             element.click()
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.03)
+            time.sleep(0.12)
             self.__scroll_to_element(element)
             element.click()
 
@@ -1503,7 +1503,7 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_visible_text(option)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.03)
+            time.sleep(0.14)
             element = self.wait_for_element_present(
                 dropdown_selector, by=dropdown_by, timeout=timeout)
             if option_by == "index":
@@ -2236,7 +2236,7 @@ class BaseCase(unittest.TestCase):
                     self.__jquery_slow_scroll_to(selector, by)
             except (StaleElementReferenceException, ENI_Exception, JS_Exc):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.03)
+                time.sleep(0.12)
                 element = self.wait_for_element_visible(
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
@@ -2257,7 +2257,7 @@ class BaseCase(unittest.TestCase):
             style = element.get_attribute('style')
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.03)
+            time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
             style = element.get_attribute('style')
@@ -2387,7 +2387,7 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element, selector, by)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.03)
+            time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             self.__scroll_to_element(element, selector, by)
@@ -2410,7 +2410,7 @@ class BaseCase(unittest.TestCase):
                 self.__slow_scroll_to_element(element)
         except (StaleElementReferenceException, ENI_Exception, JS_Exc):
             self.wait_for_ready_state_complete()
-            time.sleep(0.03)
+            time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=timeout)
             self.__slow_scroll_to_element(element)
@@ -6065,7 +6065,7 @@ class BaseCase(unittest.TestCase):
                     self.__slow_scroll_to_element(element)
             except (StaleElementReferenceException, ENI_Exception):
                 self.wait_for_ready_state_complete()
-                time.sleep(0.03)
+                time.sleep(0.12)
                 element = self.wait_for_element_visible(
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
@@ -6101,7 +6101,7 @@ class BaseCase(unittest.TestCase):
                 self.__slow_scroll_to_element(element)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.03)
+            time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=settings.SMALL_TIMEOUT)
             self.__slow_scroll_to_element(element)
@@ -6111,7 +6111,7 @@ class BaseCase(unittest.TestCase):
             style = element.get_attribute('style')
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
-            time.sleep(0.05)
+            time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
             style = element.get_attribute('style')
