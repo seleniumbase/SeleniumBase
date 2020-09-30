@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.19',
+    version='1.49.20',
     description='A complete framework for Web-UI testing | seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -146,6 +146,8 @@ setup(
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.18.1;python_version>="3.7"',
+        'importlib-metadata==1.7.0',  # Must stay in sync with "virtualenv"
+        'virtualenv>=20.0.31',  # Must stay in sync with "importlib-metadata"
         'colorama==0.4.3',
         'pymysql==0.10.1',
         'coverage==5.3',
@@ -155,7 +157,6 @@ setup(
         'cffi==1.14.3',
         'zipp==1.2.0;python_version<"3.6"',
         'zipp==3.2.0;python_version>="3.6"',
-        'importlib-metadata==2.0.0',
         'rich==7.1.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.3;python_version>="3.5"',
