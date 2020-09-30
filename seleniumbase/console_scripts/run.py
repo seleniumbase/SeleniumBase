@@ -474,7 +474,7 @@ def show_options():
     print('          n: Next line of method. s: Step through. c: Continue.)')
     print('--pdb  (Enter Debug Mode if a test fails. h: Help. c: Continue.')
     print('        where: Stacktrace location. u: Up stack. d: Down stack.')
-    print('        longlist: Stack code. dir(): List objects in namespace.)')
+    print('        longlist / ll: See code. dir(): List namespace objects.)')
     print('-x  (Stop running the tests after the first failure is reached.)')
     print('--archive-logs  (Archive old log files instead of deleting them.)')
     print('--save-screenshot  (Save a screenshot at the end of each test.)')
