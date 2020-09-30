@@ -82,7 +82,7 @@ Here are some useful command-line options that come with ``pytest``:
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
---collect-only  # Show what tests would get run without actually running them.
+--collect-only | --co  # Show what tests would get run. (Without running them)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
@@ -313,4 +313,4 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/fancy_logo_14.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

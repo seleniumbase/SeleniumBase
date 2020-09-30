@@ -294,7 +294,7 @@ Here are some useful command-line options that come with ``pytest``:
 -q  # Quiet mode. Print fewer details in the console output when running tests.
 -x  # Stop running the tests after the first failure is reached.
 --html=report.html  # Creates a detailed pytest-html report after tests finish.
---collect-only  # Show what tests would get run without actually running them.
+--collect-only | --co  # Show what tests would get run. (Without running them)
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
