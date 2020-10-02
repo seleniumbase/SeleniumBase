@@ -58,13 +58,13 @@ Tests are run with <code><b>pytest</b></code>. Browsers are controlled by WebDri
 <p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></p>
 
 <a id="python_installation"></a>
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Start 🚀:</h2>
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Start: 🚀</h2>
 
-* Get **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
+* Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
-Upgrade <b>[pip](https://pypi.org/project/pip/)</b> and create a [Python virtual environment](https://seleniumbase.io/help_docs/virtualenv_instructions/):
+* Upgrade <b>[pip](https://pypi.org/project/pip/)</b> and create a [Python virtual env](https://seleniumbase.io/help_docs/virtualenv_instructions/):
 
-* macOS/Linux:
+> macOS/Linux (terminal):
 
 ```bash
 python3 -m pip install -U pip
@@ -72,7 +72,7 @@ python3 -m venv sbase_env
 source sbase_env/bin/activate
 ```
 
-* Windows(Cmd):
+> Windows (CMD prompt):
 
 ```bash
 py -m pip install -U pip
@@ -83,16 +83,16 @@ call sbase_env\\Scripts\\activate
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Install SeleniumBase:</h2>
 
-You can install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
+* You can install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
 
 ```bash
 pip install seleniumbase
 ```
 
-* Add ``--upgrade`` OR ``-U`` to upgrade an installation.
-* Add ``--force-reinstall`` to also upgrade dependencies.
+> (Add ``--upgrade`` OR ``-U`` to upgrade an installation.)
+> (Add ``--force-reinstall`` to upgrade dependencies.)
 
-You can also install SeleniumBase from a [GitHub](https://github.com/seleniumbase/SeleniumBase) clone:
+* You can also install SeleniumBase from a [GitHub](https://github.com/seleniumbase/SeleniumBase) clone:
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -100,17 +100,60 @@ cd SeleniumBase/
 pip install .
 ```
 
+* Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
+
+```bash
+   ______     __           _                 ____                
+  / ____/__  / /__  ____  (_)_  ______ ___  / _  \____  ________ 
+  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
+ ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
+/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/ 
+
+[seleniumbase <VERSION> (<PATH>)]
+
+ * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"
+ *    OR:        "sbase [COMMAND] [PARAMETERS]"
+
+COMMANDS:
+      install         [DRIVER] [OPTIONS]
+      mkdir           [DIRECTORY]
+      mkfile          [FILE.py]
+      options         (List common pytest options)
+      print           [FILE] [OPTIONS]
+      translate       [SB_FILE.py] [LANG] [ACTION]
+      convert         [WEBDRIVER_UNITTEST_FILE.py]
+      extract-objects [SB_FILE.py]
+      inject-objects  [SB_FILE.py] [OPTIONS]
+      objectify       [SB_FILE.py] [OPTIONS]
+      revert-objects  [SB_FILE.py]
+      encrypt         (OR: obfuscate)
+      decrypt         (OR: unobfuscate)
+      download server (Selenium Server JAR file)
+      grid-hub        [start|stop] [OPTIONS]
+      grid-node       [start|stop] --hub=[HOST/IP]
+ * (EXAMPLE: "sbase install chromedriver latest")  *
+
+    Type "sbase help [COMMAND]" for specific command info.
+    For info on all commands, type: "seleniumbase --help".
+ * (Use "pytest" for running tests) *
+```
+
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Download a webdriver:</h3>
 
 SeleniumBase can download webdrivers to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
+
 ```bash
 sbase install chromedriver
 ```
-* You need a different webdriver for each browser: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, and ``operadriver`` for Opera.
+
+* You need a different webdriver for each browser to automate: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, and ``operadriver`` for Opera.
 * If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
+
 ```bash
 sbase install chromedriver latest
 ```
+
+* If you run a test without the correct webdriver installed, the driver will be downloaded automatically.
 
 (See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts.)
 
@@ -123,7 +166,20 @@ sbase mkdir ui_tests
 cd ui_tests/
 ```
 
-* Now run a sample test with ``pytest``:
+> This folder contains the following files:
+
+```
+__init__.py
+boilerplates/
+my_first_test.py
+parameterized_test.py
+pytest.ini
+requirements.txt
+setup.cfg
+test_demo_site.py
+```
+
+* <b>Run a sample test with ``pytest``:</b>
 
 ```bash
 pytest test_demo_site.py
@@ -259,31 +315,6 @@ For a full list of SeleniumBase features, <a href="https://github.com/seleniumba
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Detailed Instructions:</h2>
 
-<h4><b>Here's how to run the example script on various web browsers:</b></h4>
-
-First install a webdriver for each browser you intend to use:
-
-```bash
-seleniumbase install chromedriver
-seleniumbase install geckodriver
-seleniumbase install edgedriver
-seleniumbase install iedriver
-seleniumbase install operadriver
-```
-
-Next, choose between ``pytest`` and ``nosetests`` test runners. (<i>Mostly interchangeable.</i>)
-
-```bash
-cd examples/
-
-pytest my_first_test.py --browser=chrome
-
-nosetests my_first_test.py --browser=firefox
-```
-
-(<i>If no browser is specified, Chrome is used by default.</i>)
-With Pytest, a green dot means a test passed. An "F" means a test failed.
-
 <a id="seleniumbase_demo_mode"></a> <b>Use Demo Mode to help you see what tests are asserting.</b>
 
 If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
@@ -404,7 +435,7 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
 To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
-Now inside your tests, you can use ``self.data`` to access that.
+Inside your tests, you can use ``self.data`` to access that.
 
 
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Test Directory Customization:</h3>
@@ -524,9 +555,9 @@ Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/ex
 <a id="utilizing_advanced_features"></a>
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Production Environments & Integrations:</h3>
 
-Here are some things you can do to setup a production environment for your testing:
+Here are some things you can do to set up a production environment for your testing:
 
-* You can setup a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.
+* You can set up a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.
 
 * You can use [the Selenium Grid](https://selenium.dev/documentation/en/grid/) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the [SeleniumBase selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), which should have everything you need, including the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">Selenium Grid ReadMe</a>, which will help you get started.
 
@@ -534,12 +565,12 @@ Here are some things you can do to setup a production environment for your testi
 
 * If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
 
-* If you're using AWS, you can setup an [Amazon S3](https://aws.amazon.com/s3/) account for saving log files and screenshots from your tests. To activate this feature, modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details in the S3 section, and add "``--with-s3-logging``" on the command-line when running your tests.
+* If you're using AWS, you can set up an [Amazon S3](https://aws.amazon.com/s3/) account for saving log files and screenshots from your tests. To activate this feature, modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details in the S3 section, and add "``--with-s3-logging``" on the command-line when running your tests.
 
 Here's an example of running tests with additional features enabled:
 
 ```bash
-pytest [YOUR_TEST_FILE].py --with-db-reporting --with-s3-logging
+pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 ```
 
 <a id="detailed_method_specifications"></a>

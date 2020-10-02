@@ -2,30 +2,30 @@
 Installs the specified web driver.
 
 Usage:
-        seleniumbase install {chromedriver|geckodriver|edgedriver|
-                              iedriver|operadriver} [OPTIONS]
+        sbase install {chromedriver|geckodriver|edgedriver|
+                       iedriver|operadriver} [OPTIONS]
 Options:
         VERSION         Specify the version.
                         (Default chromedriver version = 2.44)
                         Use "latest" for the latest version.
         -p OR --path    Also copy the driver to /usr/local/bin
 Example:
-        seleniumbase install chromedriver
-        seleniumbase install geckodriver
-        seleniumbase install edgedriver
-        seleniumbase install edgedriver 84.0.522.61
-        seleniumbase install chromedriver 84
-        seleniumbase install chromedriver 84.0.4147.30
-        seleniumbase install chromedriver latest
-        seleniumbase install chromedriver -p
-        seleniumbase install chromedriver latest -p
+        sbase install chromedriver
+        sbase install geckodriver
+        sbase install edgedriver
+        sbase install chromedriver 85.0.4183.87
+        sbase install chromedriver 85
+        sbase install chromedriver latest
+        sbase install chromedriver -p
+        sbase install chromedriver latest -p
+        sbase install edgedriver 85.0.564.68
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
         (geckodriver is required for Firefox automation)
         (edgedriver is required for MS Edge automation)
-        (iedriver is required for Internet Explorer automation)
         (operadriver is required for Opera Browser automation)
+        (iedriver is required for Internet Explorer automation)
 """
 
 import colorama

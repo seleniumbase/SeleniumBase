@@ -146,7 +146,12 @@ def _set_chrome_options(
         "safebrowsing.disable_download_protection": True,
         "profile": {
             "password_manager_enabled": False,
-            "default_content_setting_values.automatic_downloads": 1
+            "default_content_setting_values.automatic_downloads": 1,
+            "managed_default_content_settings.automatic_downloads": 1,
+            "default_content_settings.popups": 0,
+            "managed_default_content_settings.popups": 0,
+            "content_settings.exceptions.automatic_downloads.*.setting": 1,
+            "content_settings.pattern_pairs.*.multiple-automatic-downloads": 1
         }
     }
     if locale_code:
@@ -766,7 +771,10 @@ def get_local_driver(
                 "safebrowsing.disable_download_protection": True,
                 "profile": {
                     "password_manager_enabled": False,
-                    "default_content_setting_values.automatic_downloads": 1
+                    "default_content_setting_values.automatic_downloads": 1,
+                    "managed_default_content_settings.automatic_downloads": 1,
+                    "default_content_settings.popups": 0,
+                    "managed_default_content_settings.popups": 0
                 }
             }
             if locale_code:
