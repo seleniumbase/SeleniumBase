@@ -3,8 +3,8 @@
 Creates a new SeleniumBase test file with boilerplate code.
 
 Usage:
-    seleniumbase mkfile [FILE_NAME.py] [OPTIONS]
-    or     sbase mkfile [FILE_NAME.py] [OPTIONS]
+    seleniumbase mkfile [FILE.py] [OPTIONS]
+    or     sbase mkfile [FILE.py] [OPTIONS]
 
 Example:
     sbase mkfile new_test.py
@@ -39,8 +39,8 @@ import sys
 def invalid_run_command(msg=None):
     exp = ("  ** mkfile **\n\n")
     exp += "  Usage:\n"
-    exp += "          seleniumbase mkfile [FILE_NAME.py] [OPTIONS]\n"
-    exp += "          OR     sbase mkfile [FILE_NAME.py] [OPTIONS]\n"
+    exp += "          seleniumbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "          OR     sbase mkfile [FILE.py] [OPTIONS]\n"
     exp += "  Example:\n"
     exp += "          sbase mkfile new_test.py\n"
     exp += "  Options:\n"
