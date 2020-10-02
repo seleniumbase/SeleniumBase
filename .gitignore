@@ -20,7 +20,9 @@ __pycache__
 
 # Python3 pyvenv
 env
+ENV
 venv
+VENV
 sbase
 sbase*
 seleniumbase_env
