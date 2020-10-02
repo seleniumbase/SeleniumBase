@@ -1,13 +1,14 @@
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Virtual Environment Tutorial</h2>
 
-### Step 1: Install VirtualEnv and VirtualEnvWrapper:
+### Step 0: Install VirtualEnvWrapper (<i>optional</i>):
+
+* ``virtualenvwrapper`` can make it easier to work with [Python virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) by giving you the ``mkvirtualenv`` command.
 
 ### macOS / Linux:
 
 (*Shortcut*: Run "``source virtualenv_install.sh``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
-python3 -m pip install pip wheel --force-reinstall
 python3 -m pip install virtualenvwrapper --force-reinstall
 export WORKON_HOME=$HOME/.virtualenvs
 source `which virtualenvwrapper.sh`
@@ -17,42 +18,44 @@ If you add ``source `which virtualenvwrapper.sh` `` to your local bash file (``~
 
 ### Windows:
 
-(*Shortcut*: Run "``virtualenv_install.bat``" from the top-level SeleniumBase folder to perform the following steps.)
+(*Shortcut*: Run "``win_virtualenv.bat``" from the top-level SeleniumBase folder to perform the following steps.)
 
 ```bash
-py -m pip install pip wheel --force-reinstall --user
 py -m pip install virtualenvwrapper-win --force-reinstall --user
 ```
 
-### Step 2: Create a virtual environment:
+### Step 1: Create a virtual environment:
 
 ### macOS / Linux:
 
-* Using ``mkvirtualenv`` (any version of Python):
-```bash
-mkvirtualenv sbase_env
-```
-(If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
+* (Python 3) ``python3 -m venv ENV``:
 
-* (Python 3) Using ``python3 -m venv``:
 ```bash
 python3 -m venv sbase_env
 source sbase_env/bin/activate
 ```
 
-### Windows:
+* (Python 2, 3) ``mkvirtualenv ENV``:
 
-* Using ``mkvirtualenv`` (any version of Python):
 ```bash
 mkvirtualenv sbase_env
 ```
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
 
-* (Python 3) Using ``py -m venv``:
+### Windows:
+
+* (Python 3) ``py -m venv ENV``:
+
 ```bash
 py -m venv sbase_env
 call sbase_env\\Scripts\\activate
 ```
+
+* (Python 2, 3) ``mkvirtualenv ENV``:
+```bash
+mkvirtualenv sbase_env
+```
+(If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` with the Python executable to use.)
 
 ---
 
