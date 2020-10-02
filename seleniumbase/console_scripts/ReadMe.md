@@ -15,7 +15,7 @@ SeleniumBase console scripts help you get things done more easily, such as insta
 ### install
 
 * Usage:
-``sbase install [DRIVER_NAME] [VERSION]``
+``sbase install [DRIVER] [VERSION]``
     (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
               ``iedriver``, ``operadriver``)
     (Versions: ``latest`` or a specific driver version.
@@ -38,10 +38,10 @@ Installs the specified webdriver.
 ### mkdir
 
 * Usage:
-``sbase mkdir [DIRECTORY_NAME]``
+``sbase mkdir [DIRECTORY]``
 
 * Example:
-``sbase mkdir browser_tests``
+``sbase mkdir ui_tests``
 
 * Output:
 Creates a new folder for running SeleniumBase scripts.
@@ -53,7 +53,7 @@ test frameworks.
 ### mkfile
 
 * Usage:
-``sbase mkfile [FILE_NAME.py] [OPTIONS]``
+``sbase mkfile [FILE.py] [OPTIONS]``
 
 * Example:
 ``sbase mkfile new_test.py``
@@ -90,7 +90,7 @@ that are available when using SeleniumBase.
 ### convert
 
 * Usage:
-``sbase convert [PYTHON_WEBDRIVER_UNITTEST_FILE]``
+``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
 
 * Output:
 Converts a Selenium IDE exported WebDriver unittest file
@@ -114,7 +114,7 @@ with syntax-highlighting.
 ### translate
 
 * Usage:
-``sbase translate [SB_FILE].py [LANGUAGE] [ACTION]``
+``sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]``
 
 * Languages:
 ``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
@@ -146,7 +146,7 @@ plus the 2-letter language code of the new language.
 ### extract-objects
 
 * Usage:
-``sbase extract-objects [SB_PYTHON_FILE]``
+``sbase extract-objects [SB_FILE.py]``
 
 * Output:
 Creates page objects based on selectors found in a
@@ -156,7 +156,7 @@ seleniumbase Python file and saves those objects to the
 ### inject-objects
 
 * Usage:
-``sbase inject-objects [SB_PYTHON_FILE] [OPTIONS]``
+``sbase inject-objects [SB_FILE.py] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Add object selectors to the comments.)
@@ -169,7 +169,7 @@ the selected seleniumbase Python file.
 ### objectify
 
 * Usage:
-``sbase objectify [SB_PYTHON_FILE] [OPTIONS]``
+``sbase objectify [SB_FILE.py] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Add object selectors to the comments.)
@@ -184,7 +184,7 @@ have been replaced with variable names defined in
 ### revert-objects
 
 * Usage:
-``sbase revert-objects [SB_PYTHON_FILE] [OPTIONS]``
+``sbase revert-objects [SB_FILE.py] [OPTIONS]``
 
 * Options:
 ``-c``, ``--comments``  (Keep existing comments for the lines.)

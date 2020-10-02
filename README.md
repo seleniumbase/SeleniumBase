@@ -58,19 +58,41 @@ Tests are run with <code><b>pytest</b></code>. Browsers are controlled by WebDri
 <p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></p>
 
 <a id="python_installation"></a>
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Get Started:</h2>
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Start 🚀:</h2>
 
-* Requires **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
-* [<img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE" alt="Python:2.7|3.5|3.6|3.7|3.8|3.9" />](https://www.python.org/downloads/)
-* A [Python virtual env](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/) is recommended. <i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/virtualenv_instructions.md">See shortcut</a>.</i>
+* Get **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)**
 
-Upgrade **[pip](https://pypi.org/project/pip/)** to prevent warnings:
+Upgrade <b>[pip](https://pypi.org/project/pip/)</b> and create a [Python virtual environment](https://seleniumbase.io/help_docs/virtualenv_instructions/):
 
-* macOS/Linux: ``python3 -m pip install -U pip``
-* Windows(Cmd): ``py -m pip install -U pip``
+* macOS/Linux:
+
+```bash
+python3 -m pip install -U pip
+python3 -m venv sbase_env
+source sbase_env/bin/activate
+```
+
+* Windows(Cmd):
+
+```bash
+py -m pip install -U pip
+py -m venv sbase_env
+call sbase_env\\Scripts\\activate
+```
 
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Install SeleniumBase:</h2>
+
+You can install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
+
+```bash
+pip install seleniumbase
+```
+
+* Add ``--upgrade`` OR ``-U`` to upgrade an installation.
+* Add ``--force-reinstall`` to also upgrade dependencies.
+
+You can also install SeleniumBase from a [GitHub](https://github.com/seleniumbase/SeleniumBase) clone:
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -78,36 +100,45 @@ cd SeleniumBase/
 pip install .
 ```
 
-* You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase).
-```bash
-pip install seleniumbase
-```
-* Add ``--upgrade`` OR ``-U`` to upgrade an installation.
-* Add ``--force-reinstall`` to also upgrade dependencies.
-
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Download a webdriver:</h3>
 
-SeleniumBase can download a webdriver to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
+SeleniumBase can download webdrivers to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
 ```bash
-seleniumbase install chromedriver
+sbase install chromedriver
 ```
-* You need a different webdriver for each web browser you want to run automation on: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, ``operadriver`` for Opera, and ``iedriver`` for Internet Explorer.
+* You need a different webdriver for each browser: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, and ``operadriver`` for Opera.
 * If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
 ```bash
-seleniumbase install chromedriver latest
+sbase install chromedriver latest
 ```
 
-(See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts, such as ``seleniumbase install`` and ``seleniumbase mkdir``.)
+(See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts.)
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Run a test on Chrome:</h3>
+<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Create and run tests:</h3>
+
+* Use ``sbase mkdir DIR`` to create a folder with sample tests:
 
 ```bash
-cd examples/
-pytest my_first_test.py
+sbase mkdir ui_tests
+cd ui_tests/
+```
+
+* Now run a sample test with ``pytest``:
+
+```bash
+pytest test_demo_site.py
 ```
 
 * Chrome is the default browser if not specified with ``--browser=BROWSER``.
 * On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
+
+<b>If you've cloned SeleniumBase from GitHub, you can also run tests from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:</b>
+
+```bash
+cd examples/
+pytest my_first_test.py
+pytest test_swag_labs.py
+```
 
 <b>Run [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Demo Mode:</b>
 
@@ -193,7 +224,7 @@ element.send_keys("dogs")
 element.submit()
 ```
 
-As you can see, the old WebDriver way is very bad!
+As you can see, the old WebDriver way is not efficient!
 Use SeleniumBase to make testing much easier!
 (You can still use ``self.driver`` in your code.)
 
@@ -380,12 +411,12 @@ Now inside your tests, you can use ``self.data`` to access that.
 
 For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST].py --config=[MY_CONFIG].cfg``)
 
-As a shortcut, you'll be able to run ``seleniumbase mkdir [DIRECTORY_NAME]`` to create a new folder that already contains necessary files and some example tests that you can run. Example:
+As a shortcut, you'll be able to run ``sbase mkdir [DIRECTORY]`` to create a new folder that already contains necessary files and some example tests that you can run.
 
 ```bash
-seleniumbase mkdir ui_tests
+sbase mkdir ui_tests
 cd ui_tests/
-pytest my_first_test.py
+pytest test_demo_site.py
 ```
 
 

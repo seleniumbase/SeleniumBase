@@ -7,11 +7,9 @@
 
 Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>].
 
-Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language.<br /><i>Examples:</i>
+Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language. <i>Example:</i>
 ```
-self.开启网址(URL) = self.open(URL)
-self.нажмите(CSS) = self.click(CSS)
-self.뒤로() = self.go_back()
+self.open(URL) <=> self.开启网址(URL)
 ```
 
 <a id="translation_api"></a>
@@ -25,7 +23,7 @@ seleniumbase translate
 
 ```
 * Usage:
-seleniumbase translate [SB_FILE].py [LANGUAGE] [ACTION]
+seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 
 * Languages:
 ``--en`` / ``--English``  |  ``--zh`` / ``--Chinese``

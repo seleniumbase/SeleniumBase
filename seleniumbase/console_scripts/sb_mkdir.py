@@ -2,11 +2,11 @@
 Creates a new folder for running SeleniumBase scripts.
 
 Usage:
-    seleniumbase mkdir [DIRECTORY_NAME]
-    OR     sbase mkdir [DIRECTORY_NAME]
+    seleniumbase mkdir [DIRECTORY]
+    OR     sbase mkdir [DIRECTORY]
 
 Example:
-    sbase mkdir browser_tests
+    sbase mkdir ui_tests
 
 Output:
     Creates a new folder for running SBase scripts.
@@ -145,7 +145,9 @@ def main():
     data.append("lib64")
     data.append("__pycache__")
     data.append("env")
+    data.append("ENV")
     data.append("venv")
+    data.append("VENV")
     data.append("sbase")
     data.append("sbase*")
     data.append("seleniumbase_env")
