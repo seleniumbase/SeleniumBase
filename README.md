@@ -92,12 +92,13 @@ pip install seleniumbase
 > (Add ``--upgrade`` OR ``-U`` to upgrade an installation.)
 > (Add ``--force-reinstall`` to upgrade dependencies.)
 
-* You can also install SeleniumBase from a [GitHub](https://github.com/seleniumbase/SeleniumBase) clone:
+* You can also install ``seleniumbase`` from a [GitHub](https://github.com/seleniumbase/SeleniumBase) clone:
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
-pip install .
+pip install .  # Normal installation
+pip install -e .  # Editable install
 ```
 
 * Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
