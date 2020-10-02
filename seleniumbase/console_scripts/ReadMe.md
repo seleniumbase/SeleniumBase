@@ -87,18 +87,6 @@ is included.
 Displays common pytest command-line options
 that are available when using SeleniumBase.
 
-### convert
-
-* Usage:
-``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
-
-* Output:
-Converts a Selenium IDE exported WebDriver unittest file
-into a SeleniumBase file. Adds ``_SB`` to the new
-file name while keeping the original file intact.
-Works with Katalon Recorder scripts.
-See: http://www.katalon.com/automation-recorder
-
 ### print
 
 * Usage:
@@ -142,6 +130,17 @@ plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
 ``-c`` will create a new file called "test_1_ja.py".)
 
+### convert
+
+* Usage:
+``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
+
+* Output:
+Converts a Selenium IDE exported WebDriver unittest file
+into a SeleniumBase file. Adds ``_SB`` to the new
+file name while keeping the original file intact.
+Works with Katalon Recorder scripts.
+See: http://www.katalon.com/automation-recorder
 
 ### extract-objects
 
