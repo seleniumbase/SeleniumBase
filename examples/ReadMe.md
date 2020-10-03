@@ -101,7 +101,7 @@ pytest upload_file_test.py
 
 --------
 
-#### SeleniumBase tests can also be run with ``nosetests``:
+<b>SeleniumBase tests can also be run with ``nosetests``:</b>
 
 Run an example test with nosetests:
 ```bash
