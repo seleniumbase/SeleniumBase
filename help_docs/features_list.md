@@ -38,4 +38,4 @@
 * Written in Python, but can also make JavaScript calls. (Use: ``self.execute_script()``)
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_3.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/super_logo_3.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
