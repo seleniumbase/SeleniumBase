@@ -23,7 +23,7 @@
 
 <p>
 <b>SeleniumBase</b> is an all-in-one framework for fast & simple browser automation, end-to-end testing, reports, presentations, charts, and website tours.
-Tests are run with <code><b>pytest</b></code>. Browsers are controlled by WebDriver.
+Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 </p>
 
 <p align="center">
