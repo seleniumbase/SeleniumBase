@@ -117,7 +117,7 @@ setup(
         'py==1.8.1;python_version<"3.5"',
         'py==1.9.0;python_version>="3.5"',
         'pytest==4.6.11;python_version<"3.5"',
-        'pytest==6.1.0;python_version>="3.5"',
+        'pytest==6.1.1;python_version>="3.5"',
         'pytest-cov==2.10.1',
         'pytest-forked==1.3.0',
         'pytest-html==1.22.1;python_version<"3.6"',
@@ -132,7 +132,7 @@ setup(
         'parameterized==0.7.4',
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5"',
-        'beautifulsoup4==4.9.2',
+        'beautifulsoup4==4.9.3',
         'cryptography==3.0;python_version<"3.6"',
         'cryptography==3.1.1;python_version>="3.6"',
         'pyopenssl==19.1.0',
@@ -149,7 +149,7 @@ setup(
         'colorama==0.4.3',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0',  # Sync with "virtualenv"
-        'virtualenv>=20.0.32',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.0.33',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
         'brython==3.8.10',
@@ -157,10 +157,10 @@ setup(
         'boto==2.49.0',
         'cffi==1.14.3',
         'zipp==1.2.0;python_version<"3.6"',
-        'zipp==3.2.0;python_version>="3.6"',
-        'rich==7.1.0;python_version>="3.6" and python_version<"4.0"',
+        'zipp==3.3.0;python_version>="3.6"',
+        'rich==8.0.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
-        'flake8==3.8.3;python_version>="3.5"',
+        'flake8==3.8.4;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
         'pyflakes==2.2.0;python_version>="3.5"',
         'certifi>=2020.6.20',
