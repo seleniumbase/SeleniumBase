@@ -8,8 +8,8 @@
 <img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="284" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="284" />
 </a></p>
-<p align="center"><b>Build fast, reliable, end-to-end tests.</b></p>
-<p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
+<p align="center"><b>A complete end-to-end testing experience.</b></p>
+<p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 <!-- View on GitHub -->
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
