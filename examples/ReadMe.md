@@ -1,8 +1,8 @@
-<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/SeleniumBaseText_F.png" alt="SeleniumBase" width="290" /></a></p>
+<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" width="300" /></a></p>
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Running Example Tests:</h2>
+<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Running Example Tests:</h2>
 
-SeleniumBase tests are run with **``pytest``**. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
+SeleniumBase tests are run with <b>pytest</b>. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
 * Example tests are located in <b>[SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
 
