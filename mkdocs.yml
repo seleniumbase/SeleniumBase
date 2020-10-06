@@ -10,7 +10,7 @@ edit_uri: ""
 site_dir: "site"
 docs_dir: "docs"
 # Copyright
-copyright: Copyright &copy; 2014 - 2020 Michael Mintz / SeleniumBase
+copyright: Copyright &copy; 2014 - 2021 Michael Mintz / SeleniumBase
 # Extensions
 markdown_extensions:
   - markdown.extensions.admonition
