@@ -54,7 +54,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.24',
+    version='1.49.25',
     description='A complete framework for Web-UI testing | seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -152,7 +152,7 @@ setup(
         'virtualenv>=20.0.33',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
-        'brython==3.8.10',
+        'brython==3.9.0',
         'pyotp==2.4.0',
         'boto==2.49.0',
         'cffi==1.14.3',

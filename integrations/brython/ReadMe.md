@@ -5,10 +5,12 @@
 
 ### 1. Get a web server up and running:
 
+<i>Run from [SeleniumBase/integrations/brython](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/brython)</i>:
+
 ```bash
 python -m http.server
 ```
-(You can always stop the server by using ``CTRL-C``.)
+You can always stop the server by using ``CTRL-C``.
 
 ### 2. Navigate to [http://localhost:8000/](http://localhost:8000/)
 
