@@ -13,3 +13,4 @@ class MyTestClass(BaseCase):
         self.click_link_text("About")
         self.click_link_text("comic #249")
         self.assert_element('img[alt*="Chess"]')
+        print('Test pass')
