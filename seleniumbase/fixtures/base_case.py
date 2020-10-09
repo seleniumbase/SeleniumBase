@@ -4837,13 +4837,17 @@ class BaseCase(unittest.TestCase):
             You can also post messages by using =>
                 self.execute_script('Messenger().post("My Message")')
         """
+        if style not in ["info", "success", "error"]:
+            style = "info"
         if not duration:
             if not self.message_duration:
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
-        js_utils.post_message(
-            self.driver, message, duration, style=style)
+        try:
+            js_utils.post_message(self.driver, message, duration, style=style)
+        except Exception:
+            print(" * %s message: %s" % (style.upper(), message))
         if pause:
             duration = float(duration) + 0.15
             time.sleep(float(duration))
@@ -4870,8 +4874,11 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
-        js_utils.post_message(
-            self.driver, message, duration, style="success")
+        try:
+            js_utils.post_message(
+                self.driver, message, duration, style="success")
+        except Exception:
+            print(" * SUCCESS message: %s" % message)
         if pause:
             duration = float(duration) + 0.15
             time.sleep(float(duration))
@@ -4888,8 +4895,11 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
-        js_utils.post_message(
-            self.driver, message, duration, style="error")
+        try:
+            js_utils.post_message(
+                self.driver, message, duration, style="error")
+        except Exception:
+            print(" * ERROR message: %s" % message)
         if pause:
             duration = float(duration) + 0.15
             time.sleep(float(duration))
