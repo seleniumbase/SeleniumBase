@@ -6,7 +6,7 @@ matrix:
     - python: 2.7
     - python: 3.6
 addons:
-  firefox: "62.0.3"
+  firefox: latest
   chrome: stable
 before_install:
   - "sudo service mysql start"
