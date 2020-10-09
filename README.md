@@ -57,7 +57,7 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 
 --------
 
-<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" alt="SeleniumBase Testing" title="SeleniumBase Testing" /></p>
+<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></p>
 
 ```bash
 pytest test_swag_labs.py --mobile
@@ -66,7 +66,7 @@ pytest test_swag_labs.py --mobile
 <p align="center">(ABOVE ⬆️: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running in <b>Mobile Mode</b>.)</p>
 
 <div><p align="center">(BELOW ⬇️: Same test running in <b>Demo Mode</b>.)</p></div>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
 
 ```bash
 pytest test_swag_labs.py --demo
