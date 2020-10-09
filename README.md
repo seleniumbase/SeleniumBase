@@ -56,6 +56,18 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 </p>
 
 <p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" alt="SeleniumBase Testing" title="SeleniumBase Testing" /></p>
+<p align="center">(<i>Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running with mobile emulation.</i>)</p>
+
+```bash
+pytest test_swag_labs.py --mobile
+```
+
+<div><p align="center">(<i>Below: Same test, but running with Demo Mode now.</i>)</p></div>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /></a></p>
+
+```bash
+pytest test_swag_labs.py --demo
+```
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Quick Start: 🚀</h2>
