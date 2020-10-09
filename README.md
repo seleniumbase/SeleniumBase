@@ -1,12 +1,13 @@
 <meta property="og:site_name" content="SeleniumBase | Docs">
 <meta property="og:title" content="SeleniumBase | Python Web Testing" />
 <meta property="og:description" content="Build fast, reliable, end-to-end tests." />
+<meta property="og:keywords" content="Python, pytest, selenium, webdriver, test automation, framework">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/sb_logo_dh.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="284" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="284" />
+<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="272" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
+<img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="244" />
 </a></p>
 <p align="center"><b>A complete end-to-end testing experience.</b></p>
 <p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
@@ -14,11 +15,11 @@
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://travis-ci.org/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/travis/seleniumbase/SeleniumBase/master.svg" alt="SeleniumBase on TravisCI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
-<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://seleniumbase.io">
+<img src="https://img.shields.io/badge/docs-%20seleniumbase.io-FACE48.svg" alt="SeleniumBase.io Docs" /></a>
 </p>
 
 <p>
@@ -55,19 +56,18 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></p>
+<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" alt="SeleniumBase Testing" title="SeleniumBase Testing" /></p>
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Start: 🚀</h2>
 
 * Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
-* Upgrade <b>[pip](https://pypi.org/project/pip/)</b> and create a [Python virtual env](https://seleniumbase.io/help_docs/virtualenv_instructions/):
+* Create a [Python virtual environment](https://seleniumbase.io/help_docs/virtualenv_instructions/):
 
 > macOS/Linux (terminal):
 
 ```bash
-python3 -m pip install -U pip
 python3 -m venv sbase_env
 source sbase_env/bin/activate
 ```
@@ -75,7 +75,6 @@ source sbase_env/bin/activate
 > Windows (CMD prompt):
 
 ```bash
-py -m pip install -U pip
 py -m venv sbase_env
 call sbase_env\\Scripts\\activate
 ```
@@ -109,7 +108,7 @@ pip install -e .  # Editable install
   \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
  ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
 /____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/ 
-
+-----------------------------------------------------------------
 [seleniumbase <VERSION> (<PATH>)]
 
  * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"
@@ -160,24 +159,36 @@ sbase install chromedriver latest
 
 <h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Create and run tests:</h3>
 
-* Use ``sbase mkdir DIR`` to create a folder with sample tests:
+* ``sbase mkdir DIR`` creates a folder with sample tests:
 
 ```bash
 sbase mkdir ui_tests
 cd ui_tests/
 ```
 
-> This folder contains the following files:
+> That folder will have the following files:
 
 ```
-__init__.py
-boilerplates/
-my_first_test.py
-parameterized_test.py
-pytest.ini
-requirements.txt
-setup.cfg
-test_demo_site.py
+ui_tests/
+│
+├── __init__.py
+├── my_first_test.py
+├── parameterized_test.py
+├── pytest.ini
+├── requirements.txt
+├── setup.cfg
+├── test_demo_site.py
+└── boilerplates/
+     │
+     ├── __init__.py
+     ├── base_test_case.py
+     ├── boilerplate_test.py
+     ├── page_objects.py
+     └── samples/
+          │
+          ├── __init__.py
+          ├── google_objects.py
+          └── google_test.py
 ```
 
 * <b>Run a sample test with ``pytest``:</b>
@@ -186,8 +197,8 @@ test_demo_site.py
 pytest test_demo_site.py
 ```
 
-* Chrome is the default browser if not specified with ``--browser=BROWSER``.
-* On Linux ``--headless`` is the default behavior (running with no GUI). You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.
+> (Chrome is the default browser if not specified with ``--browser=BROWSER``.)
+> (On Linux, ``--headless`` is the default behavior. You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.)
 
 <b>If you've cloned SeleniumBase from GitHub, you can also run tests from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:</b>
 
@@ -242,7 +253,7 @@ self.assert_text(TEXT)  # Assert text is visible (has optional SELECTOR arg)
 self.assert_title(PAGE_TITLE)  # Assert page title
 self.assert_no_404_errors()  # Assert no 404 errors from files on the page
 self.assert_no_js_errors()  # Assert no JavaScript errors on the page (Chrome-ONLY)
-self.execute_script(JAVASCRIPT)  # Execute javascript code
+self.execute_script(JAVASCRIPT)  # Execute JavaScript code
 self.go_back()  # Navigate to the previous URL
 self.get_text(SELECTOR)  # Get text from a selector
 self.get_attribute(SELECTOR, ATTRIBUTE)  # Get a specific attribute from a selector
@@ -296,8 +307,8 @@ nosetests test_suite.py --browser=firefox
 All Python methods that start with ``test_`` will automatically be run when using ``pytest`` or ``nosetests`` on a Python file, (<i>or on folders containing Python files</i>). You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)
 
 ```bash
-pytest [FILE_NAME].py::[CLASS_NAME]::[METHOD_NAME]
-nosetests [FILE_NAME].py:[CLASS_NAME].[METHOD_NAME]
+pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
+nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 ```
 
 <h4>No more flaky tests:</h4>
@@ -441,7 +452,7 @@ Inside your tests, you can use ``self.data`` to access that.
 
 <h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Test Directory Customization:</h3>
 
-For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST].py --config=[MY_CONFIG].cfg``)
+For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST.py] --config=[MY_CONFIG.cfg]``)
 
 As a shortcut, you'll be able to run ``sbase mkdir [DIRECTORY]`` to create a new folder that already contains necessary files and some example tests that you can run.
 
