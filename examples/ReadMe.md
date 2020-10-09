@@ -1,6 +1,6 @@
-<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" width="300" /></a></p>
+<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="288" /></a></p>
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Running Example Tests:</h2>
+<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 
 SeleniumBase tests are run with <b>pytest</b>. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 

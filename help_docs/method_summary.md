@@ -23,10 +23,10 @@ self.double_click(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
 
-self.update_text(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
-# Duplicates: self.type(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
-#             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
-#             self.write(selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False)
+self.type(selector, text, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
+#             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None)
+#             self.write(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.send_keys(selector, text, by=By.CSS_SELECTOR, timeout=None)
