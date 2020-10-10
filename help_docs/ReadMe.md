@@ -1,21 +1,21 @@
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_media_logo.png" alt="SeleniumBase" width="240" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="240" /></a></div>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Docs</h2>
 
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🚀 Start</a> |
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🖥️ CLI</a> |
-<a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a>
+<a href="https://seleniumbase.io/help_docs/features_list/">🦚 Features</a>
 <br />
 <a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/method_summary/">📚 API</a> |
-<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📋 Reports</a> |
+<a href="https://seleniumbase.io/help_docs/method_summary/">📗 API</a> |
+<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">📜 Console Scripts</a> |
+<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">💻 Console Scripts</a> |
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
@@ -24,14 +24,14 @@
 <a href="https://seleniumbase.io/help_docs/js_package_manager/">🗄️ PkgManager</a> |
 <a href="https://seleniumbase.io/examples/visual_testing/ReadMe/">🖼️ VisualTest</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/translations/">🌎 Translate</a> |
+<a href="https://seleniumbase.io/help_docs/translations/">🌏 Translate</a> |
 <a href="https://seleniumbase.io/examples/master_qa/ReadMe/">🛂 MasterQA</a>
 <br />
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/">⏺️ Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
-<a href="https://seleniumbase.io/examples/presenter/ReadMe/">📰 Presenter</a> |
-<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 Chart Maker</a>
+<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🏰 Presenter</a> |
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📈 ChartMaker</a>
 </p>
 
 --------

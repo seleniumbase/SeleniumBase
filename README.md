@@ -22,7 +22,7 @@
 </p>
 
 <p>
-<b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, presentations, charts, and website tours.
+<b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, charts, presentations, and website tours.
 Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 </p>
 
@@ -51,22 +51,22 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🏰 Presenter</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📈 Chart Maker</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📈 ChartMaker</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
 --------
 
-<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></p>
+<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" width="450" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></p>
 
 ```bash
 pytest test_swag_labs.py --mobile
 ```
 
-<p align="center">(ABOVE ⬆️: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> in <b>Mobile Mode</b>.)</p>
+<p align="center">(Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> in Mobile Mode.)</p>
 
-<div><p align="center">(BELOW ⬇️: Same test running in <b>Demo Mode</b>.)</p></div>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+<div><p align="center">(Below: Same test running in Demo Mode.)</p></div>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" width="450" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
 
 ```bash
 pytest test_swag_labs.py --demo
