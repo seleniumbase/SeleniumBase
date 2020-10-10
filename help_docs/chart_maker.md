@@ -1,6 +1,6 @@
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="290" /></h3>
 
-<h3> 📊 Chart Maker 📊 </h3>
+<h3> 📊 Chart Maker 📈 </h3>
 
 SeleniumBase Chart Maker allows you to create HTML charts with Python. (Using HighCharts JS)
 

@@ -32,17 +32,17 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ CLI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📋 Reports</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📗 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌎 Translate</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translate</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">📜 Console Scripts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Console Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
@@ -50,8 +50,8 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📰 Presenter</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Chart Maker</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🏰 Presenter</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📈 Chart Maker</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
@@ -63,7 +63,7 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 pytest test_swag_labs.py --mobile
 ```
 
-<p align="center">(ABOVE ⬆️: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> running in <b>Mobile Mode</b>.)</p>
+<p align="center">(ABOVE ⬆️: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> in <b>Mobile Mode</b>.)</p>
 
 <div><p align="center">(BELOW ⬇️: Same test running in <b>Demo Mode</b>.)</p></div>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
