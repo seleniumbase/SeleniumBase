@@ -140,7 +140,7 @@ Converts a Selenium IDE exported WebDriver unittest file
 into a SeleniumBase file. Adds ``_SB`` to the new
 file name while keeping the original file intact.
 Works with Katalon Recorder scripts.
-See: http://www.katalon.com/automation-recorder
+See [The Recorder ReadMe](https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/) for details.
 
 ### extract-objects
 
