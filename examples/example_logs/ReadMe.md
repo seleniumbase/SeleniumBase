@@ -1,4 +1,4 @@
-<a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb.png" title="SeleniumBase" width="290" /></a>
+<a align="center" href="https://github.com/seleniumbase/SeleniumBase/"><img align="center" src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a>
 
 ### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Logging, Screenshots, and Reports:
 
@@ -30,15 +30,19 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 ```bash
 pytest test_suite.py --html=report.html
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_3c.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+<img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 ### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Nosetest Reports:
 
-The ``--report`` option gives you a fancy report after your test suite completes. (Requires ``--with-testing_base`` to also be set when ``--report`` is used because it's part of that plugin.)
+The ``--report`` option gives you a fancy report after your test suite completes.
 
 ```bash
 nosetests test_suite.py --report --browser=chrome
 ```
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
-(NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
+(NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
+
+--------
+
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="240" /></a></div>

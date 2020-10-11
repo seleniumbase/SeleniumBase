@@ -1,4 +1,4 @@
-<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="288" /></a></p>
+<p align="center"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_page.png" alt="SeleniumBase" width="288" /></a></p>
 
 <h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 

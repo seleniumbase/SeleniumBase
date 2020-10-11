@@ -1,4 +1,4 @@
-regex>=2020.9.27
+regex>=2020.10.11
 tqdm>=4.50.2
 livereload==2.6.3;python_version>="3.6"
 Markdown==3.3
