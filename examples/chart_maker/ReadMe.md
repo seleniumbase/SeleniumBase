@@ -1,8 +1,8 @@
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="290" /></h3>
 
-<h3> 📊 Chart Maker 📈 </h3>
+<h3> 📊 ChartMaker 📈 </h3>
 
-SeleniumBase Chart Maker allows you to create HTML charts with Python. (Using HighCharts JS)
+SeleniumBase ChartMaker allows you to create HTML charts with Python. (Using HighCharts JS)
 
 <a href="https://seleniumbase.io/other/chart_presentation.html"><img width="500" src="https://seleniumbase.io/other/chart_presentation.gif" title="Screenshot"></a><br>
 
@@ -138,7 +138,7 @@ pytest chart_presentation.py
 Multi-Series charts can also be created. Try the available examples to learn more.
 
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Chart Maker API</h2>
+<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> ChartMaker API</h2>
 
 ```python
 self.create_pie_chart(
