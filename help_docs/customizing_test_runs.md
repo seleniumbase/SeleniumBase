@@ -170,26 +170,31 @@ SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](
 (For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
 
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
 Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
 ```
 
 Here's how to connect to a TestingBot Selenium Grid server for running tests:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
 Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
 ```
 
 Here's how to connect to a LambdaTest Selenium Grid server for running tests:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
@@ -229,6 +234,7 @@ To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or
 ### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Retrying failing tests automatically:
 
 You can use ``--reruns=NUM`` to retry failing tests that many times. Use ``--reruns-delay=SECONDS`` to wait that many seconds between retries. Example:
+
 ```
 pytest --reruns=2 --reruns-delay=1
 ```
@@ -258,7 +264,8 @@ Using ``--html=report.html`` gives you a fancy report of the name specified afte
 ```bash
 pytest test_suite.py --html=report.html
 ```
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_3c.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+
+<img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 ### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Nosetest Reports:
 
@@ -267,6 +274,7 @@ The ``--report`` option gives you a fancy report after your test suite completes
 ```bash
 nosetests test_suite.py --report
 ```
+
 <img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
@@ -313,4 +321,5 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
+
 [<img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
