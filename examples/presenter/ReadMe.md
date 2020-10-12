@@ -1,6 +1,6 @@
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="290" /></h3>
 
-<h1> 📰 Presenter 🏰 </h1>
+<h1> 📰 Presenter 📑 </h1>
 
 <b>SeleniumBase Presenter allows you to create HTML presentations with Python.</b><br />
 (The "Reveal-JS" library is used for running the presentations.)
