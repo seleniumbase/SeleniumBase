@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" This is the nosetests Selenium plugin for test configuration. """
+""" This is the Nosetest plugin for setting Selenium test configuration. """
 
 import sys
 from nose.plugins import Plugin
@@ -27,7 +27,7 @@ class SeleniumBrowser(Plugin):
     --headed  (Run tests with a GUI on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
-    --time-limit=SECONDS  (Safely fail any test that exceeds the limit limit.)
+    --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
     --demo-sleep=SECONDS  (Set the wait time after Demo Mode actions.)

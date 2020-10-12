@@ -405,7 +405,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
 --archive-logs  # (Archive old log files instead of deleting them.)
---time-limit=SECONDS  # (Safely fail any test that exceeds the limit limit.)
+--time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
 --demo-sleep=SECONDS  # (Set the wait time after Demo Mode actions.)

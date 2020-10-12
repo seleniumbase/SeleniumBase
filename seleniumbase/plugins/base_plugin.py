@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" This is the Nose plugin for setting a test environment and saving logs. """
+""" This is the Nosetest plugin for setting base configuration and logging. """
 
 import sys
 import time
@@ -12,7 +12,7 @@ from seleniumbase.fixtures import constants, errors
 
 class Base(Plugin):
     """
-    This parser plugin includes the following command-line options for Nose:
+    This plugin adds the following command-line options to nosetests:
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
     --data=DATA  (Extra test data. Access with "self.data" in tests.)
     --var1=DATA  (Extra test data. Access with "self.var1" in tests.)
