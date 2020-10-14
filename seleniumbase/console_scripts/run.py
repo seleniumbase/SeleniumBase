@@ -50,11 +50,15 @@ def show_usage():
 
 
 def show_basic_usage():
+    import time
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
-    print("%s" % get_version()[0:1])
-    print("")
+    time.sleep(0.25)  # Enough time to see the logo
+    print()
+    show_package_location()
+    show_version_info()
+    print()
     sc = ("")
     sc += (' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n')
     sc += (' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n')
@@ -431,19 +435,39 @@ def show_grid_node_usage():
     print("")
 
 
-def get_version():
-    import pkg_resources
+def get_version_info():
+    # from pkg_resources import get_distribution
+    # version = get_distribution("seleniumbase").version
+    from seleniumbase import __version__
     version_info = None
-    try:
-        version_info = pkg_resources.require("seleniumbase")[0:1]
-    except Exception:
-        version_info = ["ERROR: Cannot detect version! Please reinstall!"]
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sb_text = c1 + "selenium" + c2 + "base" + cr
+    version_info = "%s %s%s%s" % (sb_text, c3, __version__, cr)
     return version_info
 
 
 def show_version_info():
-    version = get_version()
-    print('\n%s\n' % version)
+    version_info = get_version_info()
+    print('%s' % version_info)
+
+
+def get_package_location():
+    # from pkg_resources import get_distribution
+    # location = get_distribution("seleniumbase").location
+    import os
+    import seleniumbase
+    location = os.path.dirname(os.path.realpath(seleniumbase.__file__))
+    if location.endswith("seleniumbase"):
+        location = location[0:-len("seleniumbase")]
+    return location
+
+
+def show_package_location():
+    location = get_package_location()
+    print("%s" % location)
 
 
 def show_options():
@@ -666,7 +690,13 @@ def main():
             show_grid_node_usage()
     elif command == "version" or command == "--version":
         if len(command_args) == 0:
+            from seleniumbase.console_scripts import logo_helper
+            seleniumbase_logo = logo_helper.get_seleniumbase_logo()
+            print(seleniumbase_logo)
+            print()
+            show_package_location()
             show_version_info()
+            print()
         else:
             show_basic_usage()
     elif command == "options" or command == "--options":

@@ -6090,7 +6090,11 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active(tiny=True)
 
     def __slow_scroll_to_element(self, element):
-        js_utils.slow_scroll_to_element(self.driver, element, self.browser)
+        try:
+            js_utils.slow_scroll_to_element(self.driver, element, self.browser)
+        except Exception:
+            # Scroll to the element instantly if the slow scroll fails
+            js_utils.scroll_to_element(self.driver, element)
 
     def __highlight_with_assert_success(
             self, message, selector, by=By.CSS_SELECTOR):

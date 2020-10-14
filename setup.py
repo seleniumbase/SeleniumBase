@@ -8,11 +8,11 @@ import os
 import sys
 
 
-this_directory = os.path.abspath(os.path.dirname(__file__))
+this_dir = os.path.abspath(os.path.dirname(__file__))
 long_description = None
 total_description = None
 try:
-    with open(os.path.join(this_directory, 'README.md'), 'rb') as f:
+    with open(os.path.join(this_dir, 'README.md'), 'rb') as f:
         total_description = f.read().decode('utf-8')
     description_lines = total_description.split('\n')
     long_description_lines = []
@@ -22,6 +22,11 @@ try:
     long_description = "\n".join(long_description_lines)
 except IOError:
     long_description = 'Reliable Browser Automation & Testing Framework'
+about = {}
+# Get the package version from the seleniumbase/__version__.py file
+with open(os.path.join(
+        this_dir, 'seleniumbase', '__version__.py'), 'rb') as f:
+    exec(f.read().decode('utf-8'), about)
 
 if sys.argv[-1] == 'publish':
     reply = None
@@ -54,7 +59,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.26',
+    version=about['__version__'],
     description='A complete framework for Web-UI testing | seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -66,6 +71,10 @@ setup(
     license="MIT",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Environment :: MacOS X",
+        "Environment :: Win32 (MS Windows)",
+        "Environment :: Web Environment",
         "Framework :: Pytest",
         "Intended Audience :: Developers",
         "Intended Audience :: Information Technology",
@@ -91,6 +100,7 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=[
         'pip>=20.2.3',
         'packaging>=20.4',
@@ -142,14 +152,14 @@ setup(
         'traitlets==5.0.4;python_version>="3.7"',
         'ipython==5.10.0;python_version<"3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.7;python_version>="3.6"',
+        'prompt-toolkit==3.0.8;python_version>="3.6"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.18.1;python_version>="3.7"',
-        'colorama==0.4.3',
+        'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0',  # Sync with "virtualenv"
-        'virtualenv>=20.0.33',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.0.34',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
         'brython==3.9.0',
