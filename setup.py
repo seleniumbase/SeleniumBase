@@ -8,11 +8,11 @@ import os
 import sys
 
 
-this_directory = os.path.abspath(os.path.dirname(__file__))
+this_dir = os.path.abspath(os.path.dirname(__file__))
 long_description = None
 total_description = None
 try:
-    with open(os.path.join(this_directory, 'README.md'), 'rb') as f:
+    with open(os.path.join(this_dir, 'README.md'), 'rb') as f:
         total_description = f.read().decode('utf-8')
     description_lines = total_description.split('\n')
     long_description_lines = []
@@ -22,6 +22,11 @@ try:
     long_description = "\n".join(long_description_lines)
 except IOError:
     long_description = 'Reliable Browser Automation & Testing Framework'
+about = {}
+# Get the package version from the seleniumbase/__version__.py file
+with open(os.path.join(
+        this_dir, 'seleniumbase', '__version__.py'), 'rb') as f:
+    exec(f.read().decode('utf-8'), about)
 
 if sys.argv[-1] == 'publish':
     reply = None
@@ -54,7 +59,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name='seleniumbase',
-    version='1.49.26',
+    version=about['__version__'],
     description='A complete framework for Web-UI testing | seleniumbase.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
