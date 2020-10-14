@@ -111,7 +111,6 @@ pip install -e .  # Editable install
  ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
 /____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/ 
 -----------------------------------------------------------------
-[seleniumbase <VERSION> (<PATH>)]
 
  * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"
  *    OR:        "sbase [COMMAND] [PARAMETERS]"
