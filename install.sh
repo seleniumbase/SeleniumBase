@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-python -m easy_install --upgrade pip
+python -m pip --upgrade pip
 pip install -e . --upgrade --no-cache-dir --progress-bar off
 seleniumbase install chromedriver
 seleniumbase install geckodriver
