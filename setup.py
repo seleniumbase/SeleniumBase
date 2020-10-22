@@ -21,7 +21,7 @@ try:
             long_description_lines.append(line)
     long_description = "\n".join(long_description_lines)
 except IOError:
-    long_description = 'Reliable Browser Automation & Testing Framework'
+    long_description = 'The complete web automation library.'
 about = {}
 # Get the package version from the seleniumbase/__version__.py file
 with open(os.path.join(
@@ -60,7 +60,7 @@ if sys.argv[-1] == 'publish':
 setup(
     name='seleniumbase',
     version=about['__version__'],
-    description='A complete framework for Web-UI testing | seleniumbase.io',
+    description='The complete web automation library for end-to-end testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
