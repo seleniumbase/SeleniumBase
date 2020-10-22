@@ -2921,8 +2921,8 @@ class BaseCase(unittest.TestCase):
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
         self.wait_for_ready_state_complete()
-        expected = title
-        actual = self.get_page_title()
+        expected = title.strip()
+        actual = self.get_page_title().strip()
         try:
             self.assertEqual(expected, actual, "Expected page title [%s] "
                              "does not match the actual page title [%s]!"
