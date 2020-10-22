@@ -21,7 +21,7 @@ try:
             long_description_lines.append(line)
     long_description = "\n".join(long_description_lines)
 except IOError:
-    long_description = 'Reliable Browser Automation & Testing Framework'
+    long_description = 'The complete web automation library.'
 about = {}
 # Get the package version from the seleniumbase/__version__.py file
 with open(os.path.join(
@@ -60,7 +60,7 @@ if sys.argv[-1] == 'publish':
 setup(
     name='seleniumbase',
     version=about['__version__'],
-    description='A complete framework for Web-UI testing | seleniumbase.io',
+    description='The complete web automation library for end-to-end testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',
@@ -102,10 +102,10 @@ setup(
     ],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=[
-        'pip>=20.2.3',
+        'pip>=20.2.4',
         'packaging>=20.4',
         'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=50.3.0;python_version>="3.5"',
+        'setuptools>=50.3.2;python_version>="3.5"',
         'setuptools-scm',
         'wheel>=0.35.1',
         'six',
@@ -115,7 +115,7 @@ setup(
         'jedi==0.17.2',  # The last version for Python 2 and 3.5
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.25.10',  # Must stay in sync with "requests"
+        'urllib3==1.25.11',  # Must stay in sync with "requests"
         'requests==2.24.0',
         'selenium==3.141.0',
         'msedge-selenium-tools==3.141.2',
@@ -149,7 +149,7 @@ setup(
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.7.1;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
-        'traitlets==5.0.4;python_version>="3.7"',
+        'traitlets==5.0.5;python_version>="3.7"',
         'ipython==5.10.0;python_version<"3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
         'prompt-toolkit==3.0.8;python_version>="3.6"',
@@ -159,16 +159,16 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0',  # Sync with "virtualenv"
-        'virtualenv>=20.0.34',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.0.35',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
         'brython==3.9.0',
-        'pyotp==2.4.0',
+        'pyotp==2.4.1',
         'boto==2.49.0',
         'cffi==1.14.3',
         'zipp==1.2.0;python_version<"3.6"',
-        'zipp==3.3.0;python_version>="3.6"',
-        'rich==8.0.0;python_version>="3.6" and python_version<"4.0"',
+        'zipp==3.3.1;python_version>="3.6"',
+        'rich==9.0.1;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.4;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
@@ -176,7 +176,7 @@ setup(
         'certifi>=2020.6.20',
         'allure-pytest==2.8.18',
         'pdfminer.six==20191110;python_version<"3.5"',
-        'pdfminer.six==20200726;python_version>="3.5"',
+        'pdfminer.six==20201018;python_version>="3.5"',
     ],
     packages=[
         'seleniumbase',

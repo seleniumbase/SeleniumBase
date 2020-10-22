@@ -2921,8 +2921,8 @@ class BaseCase(unittest.TestCase):
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title. """
         self.wait_for_ready_state_complete()
-        expected = title
-        actual = self.get_page_title()
+        expected = title.strip()
+        actual = self.get_page_title().strip()
         try:
             self.assertEqual(expected, actual, "Expected page title [%s] "
                              "does not match the actual page title [%s]!"
@@ -3516,8 +3516,8 @@ class BaseCase(unittest.TestCase):
             '<head>\n'
             '<meta charset="utf-8">\n'
             '<meta http-equiv="Content-Type" '
-            'content="text/html; charset=utf-8;">\n'
-            '<meta name="viewport" content="text/html;">\n'
+            'content="text/html, charset=utf-8;">\n'
+            '<meta name="viewport" content="shrink-to-fit=no">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<style>\n'
@@ -4149,8 +4149,8 @@ class BaseCase(unittest.TestCase):
             raise Exception('Chart file must end in ".html"!')
         the_html = '<meta charset="utf-8">\n'
         the_html += '<meta http-equiv="Content-Type" '
-        the_html += 'content="text/html; charset=utf-8;">\n'
-        the_html += '<meta name="viewport" content="text/html;">\n'
+        the_html += 'content="text/html, charset=utf-8;">\n'
+        the_html += '<meta name="viewport" content="shrink-to-fit=no">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
         the_html += (
@@ -6229,7 +6229,10 @@ class BaseCase(unittest.TestCase):
             self.block_images = sb_config.block_images
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
+            self.disable_ws = sb_config.disable_ws
             self.enable_ws = sb_config.enable_ws
+            if not self.disable_ws:
+                self.enable_ws = True
             self.enable_sync = sb_config.enable_sync
             self.use_auto_ext = sb_config.use_auto_ext
             self.no_sandbox = sb_config.no_sandbox

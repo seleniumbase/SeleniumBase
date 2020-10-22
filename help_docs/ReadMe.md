@@ -70,6 +70,7 @@
 
 <div><a href="https://seleniumbase.io/demo_page"><b>Demo Page / Demo Site</b></a></div>
 <div><a href="https://seleniumbase.io/other/tinymce"><b>TinyMCE Demo Page</b></a></div>
+<div><a href="https://seleniumbase.io/devices/"><b>Virtual Device Farm</b></a></div>
 <div><a href="https://seleniumbase.io/error_page/"><b>Error Page for Tests</b></a></div>
 <div><a href="https://seleniumbase.io/other/presenter.html"><b>Presenter Demo</b></a></div>
 <div><a href="https://seleniumbase.io/other/core_presentation.html"><b>Core Presentation</b></a></div>

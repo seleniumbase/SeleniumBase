@@ -1,8 +1,8 @@
 # Project information
-site_name: SeleniumBase | Docs
+site_name: Docs - seleniumbase.io
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: Fast, reliable, end-to-end testing
+site_description: The world's most powerful all-in-one web automation platform. Build fast, reliable, end-to-end tests with Python.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -33,7 +33,7 @@ theme:
   search_index_only: true
   features:
     - tabs
-    # - instant
+    - instant
   palette:
     scheme: default
     primary: blue
@@ -47,13 +47,13 @@ theme:
 plugins:
   - search
   - minify:
-      minify_html: false
+      minify_html: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase | Docs: README.md
+  - SeleniumBase Docs: README.md
   - Features List: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
@@ -98,13 +98,14 @@ nav:
     - Docker Help: integrations/docker/ReadMe.md
     - MySQL Help: help_docs/mysql_installation.md
     - Case Studies: help_docs/happy_customers.md
-    - Thank You: help_docs/thank_you.md
   - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
     - TinyMCE Demo Page: https://seleniumbase.io/other/tinymce
+    - Virtual Device Farm: https://seleniumbase.io/devices/
     - Error Demo Page: https://seleniumbase.io/error_page/
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
+  - Thank You: help_docs/thank_you.md
 # Google Analytics
 google_analytics: ['UA-167313767-1', 'seleniumbase.io']

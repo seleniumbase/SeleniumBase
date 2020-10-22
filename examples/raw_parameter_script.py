@@ -47,6 +47,7 @@ except (ImportError, ValueError):
     sb.log_path = "latest_logs/"
     sb.archive_logs = False
     sb.disable_csp = False
+    sb.disable_ws = False
     sb.enable_ws = False
     sb.enable_sync = False
     sb.use_auto_ext = False
