@@ -600,13 +600,14 @@ def pytest_runtest_teardown(item):
     try:
         self = item._testcase
         try:
-            if hasattr(self, 'driver') and self.driver:
+            if hasattr(self, 'driver') and self.driver and (
+                    "--pdb" not in sys.argv):
                 self.driver.quit()
         except Exception:
             pass
         try:
             if hasattr(self, 'headless') and self.headless:
-                if self.headless_active:
+                if self.headless_active and "--pdb" not in sys.argv:
                     if hasattr(self, 'display') and self.display:
                         self.display.stop()
         except Exception:
