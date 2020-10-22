@@ -6229,7 +6229,10 @@ class BaseCase(unittest.TestCase):
             self.block_images = sb_config.block_images
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
+            self.disable_ws = sb_config.disable_ws
             self.enable_ws = sb_config.enable_ws
+            if not self.disable_ws:
+                self.enable_ws = True
             self.enable_sync = sb_config.enable_sync
             self.use_auto_ext = sb_config.use_auto_ext
             self.no_sandbox = sb_config.no_sandbox

@@ -37,8 +37,9 @@ class SeleniumBrowser(Plugin):
     --ad-block  (Block some types of display ads after page loads.)
     --block-images (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
-    --disable-csp  (This disables the Content Security Policy of websites.)
-    --enable-ws  (Enable Web Security on Chrome.)
+    --disable-csp  (Disable the Content Security Policy of websites.)
+    --disable-ws  (Disable Web Security on Chromium-based browsers.)
+    --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -281,6 +282,13 @@ class SeleniumBrowser(Plugin):
                     Setting this to True (--disable-csp) overrides the
                     value set in seleniumbase/config/settings.py""")
         parser.add_option(
+            '--disable_ws', '--disable-ws', '--disable-web-security',
+            action="store_true",
+            dest='disable_ws',
+            default=False,
+            help="""Using this disables the "Web Security" feature of
+                    Chrome and Chromium-based browsers such as Edge.""")
+        parser.add_option(
             '--enable_ws', '--enable-ws', '--enable-web-security',
             action="store_true",
             dest='enable_ws',
@@ -407,7 +415,10 @@ class SeleniumBrowser(Plugin):
         test.test.block_images = self.options.block_images
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.disable_csp = self.options.disable_csp
+        test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws
+        if not self.options.disable_ws:
+            test.test.enable_ws = True
         test.test.enable_sync = self.options.enable_sync
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.no_sandbox = self.options.no_sandbox

@@ -48,7 +48,8 @@ def pytest_addoption(parser):
     --block-images (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --disable-csp  (Disable the Content Security Policy of websites.)
-    --enable-ws  (Enable Web Security on Chrome.)
+    --disable-ws  (Disable Web Security on Chromium-based browsers.)
+    --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -376,6 +377,12 @@ def pytest_addoption(parser):
                           libraries for various testing actions.
                           Setting this to True (--disable-csp) overrides the
                           value set in seleniumbase/config/settings.py""")
+    parser.addoption('--disable_ws', '--disable-ws', '--disable-web-security',
+                     action="store_true",
+                     dest='disable_ws',
+                     default=False,
+                     help="""Using this disables the "Web Security" feature of
+                          Chrome and Chromium-based browsers such as Edge.""")
     parser.addoption('--enable_ws', '--enable-ws', '--enable-web-security',
                      action="store_true",
                      dest='enable_ws',
@@ -523,7 +530,10 @@ def pytest_configure(config):
     sb_config.block_images = config.getoption('block_images')
     sb_config.verify_delay = config.getoption('verify_delay')
     sb_config.disable_csp = config.getoption('disable_csp')
+    sb_config.disable_ws = config.getoption('disable_ws')
     sb_config.enable_ws = config.getoption('enable_ws')
+    if not sb_config.disable_ws:
+        sb_config.enable_ws = True
     sb_config.enable_sync = config.getoption('enable_sync')
     sb_config.use_auto_ext = config.getoption('use_auto_ext')
     sb_config.no_sandbox = config.getoption('no_sandbox')
