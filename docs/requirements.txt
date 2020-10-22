@@ -1,11 +1,11 @@
-regex>=2020.9.27
+regex>=2020.10.15
 tqdm>=4.50.2
 livereload==2.6.3;python_version>="3.6"
-Markdown==3.3.1
-readme-renderer==27.0
+Markdown==3.3.2
+readme-renderer==28.0
 pymdown-extensions==8.0.1
 mkdocs==1.1.2
-mkdocs-material==6.0.2
+mkdocs-material==6.1.0
 mkdocs-simple-hooks==0.1.1
 mkdocs-material-extensions==1.0.1
 mkdocs-minify-plugin==0.3.0
