@@ -11,27 +11,42 @@ Use ``--mobile`` to run SeleniumBase tests using Chrome's mobile device emulator
 ```bash
 pytest test_skype_site.py --mobile
 ```
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/skype_mobile_test_2.gif)
+
+[<img src="https://seleniumbase.io/cdn/gif/skype_mobile_test_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/skype_mobile_test_2.gif)
 
 To configure Device Metrics, use:
+
 ```bash
 --metrics="CSS_Width,CSS_Height,Pixel_Ratio"
 ```
 
 To configure the User-Agent, use:
+
 ```bash
 --agent="USER-AGENT-STRING"
 ```
 
 To find real values for Device Metrics, see:
+
 * [Device Metrics List](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00)
 
 To find real User-Agent strings, see:
+
 * [User Agent Strings List](https://developers.whatismybrowser.com/useragents/explore/)
 
 --------
 
-Here's another example of running a mobile test ([SeleniumBase/examples/test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py)), which demonstrates using ``--metrics`` and ``--agent`` with ``--mobile``:
+<b>Here's another example of a mobile test:</b>
+
+[SeleniumBase/examples/test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py)
+
+```bash
+pytest test_swag_labs.py --mobile
+```
+
+[<img src="https://seleniumbase.io/cdn/gif/swag_mobile.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/swag_mobile.gif)
+
+<b>Here's an example of configuring mobile settings for that test:</b>
 
 ```bash
 # Run tests using Chrome's mobile device emulator (default settings)
@@ -43,7 +58,6 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
 ```
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" title="SeleniumBase Mobile Testing">](https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif)
 
 --------
 

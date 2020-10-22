@@ -1,15 +1,15 @@
-<meta property="og:site_name" content="SeleniumBase | Docs">
-<meta property="og:title" content="SeleniumBase | Python Web Testing" />
+<meta property="og:site_name" content="SeleniumBase">
+<meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
 <meta property="og:description" content="Build fast, reliable, end-to-end tests." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, test automation, testing, seleniumbase, test framework, RPA, reports, website tours, presentations">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/sb_logo_dh.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" width="300" />
+<img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" title="SeleniumBase" width="300" />
 </a></p>
-<p align="center"><b>A complete end-to-end testing experience.</b></p>
-<p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
+<p align="center"><b>The complete web automation library.</b></p>
+<p align="center">Powered by WebDriver APIs and pytest.</p>
 <!-- View on GitHub -->
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -22,8 +22,8 @@
 </p>
 
 <p>
-<b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, charts, presentations, and website tours.
-Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
+<b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, charts, presentations, website tours, and visual testing.
+Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>. Browsers are controlled by <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.
 </p>
 
 <p align="center">
@@ -57,7 +57,7 @@ Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.
 
 --------
 
-<p align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" width="450" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></p>
+<p align="center"><img src="https://seleniumbase.io/cdn/gif/swag_mobile.gif" width="450" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></p>
 
 ```bash
 pytest test_swag_labs.py --mobile
@@ -414,8 +414,9 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --ad-block  # (Block some types of display ads after page loads.)
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
---disable-csp  # (This disables the Content Security Policy of websites.)
---enable-ws  # (Enable Web Security on Chrome.)
+--disable-csp  # (Disable the Content Security Policy of websites.)
+--disable-ws  # (Disable Web Security on Chromium-based browsers.)
+--enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
