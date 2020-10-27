@@ -40,10 +40,10 @@ soupsieve==1.9.6;python_version<"3.5"
 soupsieve==2.0.1;python_version>="3.5"
 beautifulsoup4==4.9.3
 cryptography==3.0;python_version<"3.6"
-cryptography==3.1.1;python_version>="3.6"
+cryptography==3.2;python_version>="3.6"
 pyopenssl==19.1.0
 pygments==2.5.2;python_version<"3.5"
-pygments==2.7.1;python_version>="3.5"
+pygments==2.7.2;python_version>="3.5"
 traitlets==4.3.3;python_version<"3.7"
 traitlets==5.0.5;python_version>="3.7"
 prompt-toolkit==1.0.18;python_version<"3.6"
@@ -55,7 +55,7 @@ ipython==7.18.1;python_version>="3.7"
 colorama==0.4.4
 pathlib2==2.3.5;python_version<"3.5"
 importlib-metadata==2.0.0
-virtualenv>=20.0.35
+virtualenv>=20.1.0
 pymysql==0.10.1
 coverage==5.3
 brython==3.9.0
@@ -63,8 +63,8 @@ pyotp==2.4.1
 boto==2.49.0
 cffi==1.14.3
 zipp==1.2.0;python_version<"3.6"
-zipp==3.3.1;python_version>="3.6"
-rich==9.0.1;python_version>="3.6" and python_version<"4.0"
+zipp==3.4.0;python_version>="3.6"
+rich==9.1.0;python_version>="3.6" and python_version<"4.0"
 flake8==3.7.9;python_version<"3.5"
 flake8==3.8.4;python_version>="3.5"
 pyflakes==2.1.1;python_version<"3.5"

@@ -707,7 +707,7 @@ def get_local_driver(
                 "IE Browser is for Windows-based operating systems only!")
         from selenium.webdriver.ie.options import Options
         ie_options = Options()
-        ie_options.ignore_protected_mode_settings = False
+        ie_options.ignore_protected_mode_settings = True
         ie_options.ignore_zoom_level = True
         ie_options.require_window_focus = False
         ie_options.native_events = True

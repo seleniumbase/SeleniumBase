@@ -49,7 +49,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.50.2'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.51.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -144,10 +144,10 @@ setup(
         'soupsieve==2.0.1;python_version>="3.5"',
         'beautifulsoup4==4.9.3',
         'cryptography==3.0;python_version<"3.6"',
-        'cryptography==3.1.1;python_version>="3.6"',
+        'cryptography==3.2;python_version>="3.6"',
         'pyopenssl==19.1.0',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.7.1;python_version>="3.5"',
+        'pygments==2.7.2;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.5;python_version>="3.7"',
         'ipython==5.10.0;python_version<"3.5"',
@@ -159,7 +159,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0',  # Sync with "virtualenv"
-        'virtualenv>=20.0.35',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.1.0',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
         'brython==3.9.0',
@@ -167,8 +167,8 @@ setup(
         'boto==2.49.0',
         'cffi==1.14.3',
         'zipp==1.2.0;python_version<"3.6"',
-        'zipp==3.3.1;python_version>="3.6"',
-        'rich==9.0.1;python_version>="3.6" and python_version<"4.0"',
+        'zipp==3.4.0;python_version>="3.6"',
+        'rich==9.1.0;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.4;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
