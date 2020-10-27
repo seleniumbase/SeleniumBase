@@ -1,7 +1,7 @@
-regex>=2020.10.15
-tqdm>=4.50.2
+regex>=2020.10.23
+tqdm>=4.51.0
 livereload==2.6.3;python_version>="3.6"
-Markdown==3.3.2
+Markdown==3.3.3
 readme-renderer==28.0
 pymdown-extensions==8.0.1
 mkdocs==1.1.2
