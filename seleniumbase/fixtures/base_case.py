@@ -2101,13 +2101,6 @@ class BaseCase(unittest.TestCase):
                 os.remove(cookies_file_path)
 
     def wait_for_ready_state_complete(self, timeout=None):
-        try:
-            # If there's an alert, skip
-            self.driver.switch_to.alert
-            return
-        except Exception:
-            # If there's no alert, continue
-            pass
         if not timeout:
             timeout = settings.EXTREME_TIMEOUT
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
