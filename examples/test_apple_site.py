@@ -10,7 +10,6 @@ class AppleTestClass(BaseCase):
         self.message_duration = 2.0
         if self.headless and (
                 self.browser == "chrome" or self.browser == "edge"):
-            self.driver.quit()
             self.get_new_driver(
                 agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) """
                       """AppleWebKit/537.36 (KHTML, like Gecko) """
