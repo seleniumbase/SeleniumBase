@@ -2101,13 +2101,6 @@ class BaseCase(unittest.TestCase):
                 os.remove(cookies_file_path)
 
     def wait_for_ready_state_complete(self, timeout=None):
-        try:
-            # If there's an alert, skip
-            self.driver.switch_to.alert
-            return
-        except Exception:
-            # If there's no alert, continue
-            pass
         if not timeout:
             timeout = settings.EXTREME_TIMEOUT
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
@@ -2122,9 +2115,9 @@ class BaseCase(unittest.TestCase):
             if not current_url == self.__last_page_load_url:
                 time.sleep(0.02)
                 self.ad_block()
-                time.sleep(0.01)
+                time.sleep(0.02)
                 if self.is_element_present("iframe"):
-                    time.sleep(0.07)  # iframe ads take slightly longer to load
+                    time.sleep(0.1)  # iframe ads take slightly longer to load
                     self.ad_block()  # Do ad_block on slower-loading iframes
                 self.__last_page_load_url = current_url
         return is_ready
