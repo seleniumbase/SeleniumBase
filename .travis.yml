@@ -3,7 +3,7 @@ sudo: false
 dist: xenial
 matrix:
   include:
-    - python: 3.8
+    - python: 3.6
 addons:
   firefox: latest
   chrome: stable
