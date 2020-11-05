@@ -170,25 +170,22 @@ cd ui_tests/
 
 ```
 ui_tests/
-│
 ├── __init__.py
+├── boilerplates/
+│   ├── __init__.py
+│   ├── base_test_case.py
+│   ├── boilerplate_test.py
+│   ├── page_objects.py
+│   └── samples/
+│       ├── __init__.py
+│       ├── google_objects.py
+│       └── google_test.py
 ├── my_first_test.py
 ├── parameterized_test.py
 ├── pytest.ini
 ├── requirements.txt
 ├── setup.cfg
-├── test_demo_site.py
-└── boilerplates/
-     │
-     ├── __init__.py
-     ├── base_test_case.py
-     ├── boilerplate_test.py
-     ├── page_objects.py
-     └── samples/
-          │
-          ├── __init__.py
-          ├── google_objects.py
-          └── google_test.py
+└── test_demo_site.py
 ```
 
 * <b>Run a sample test with ``pytest``:</b>
