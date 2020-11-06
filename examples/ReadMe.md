@@ -2,15 +2,17 @@
 
 <h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 
-<p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_page.png" alt="SeleniumBase" width="300" /></a></p>
+<p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_page.png" alt="SeleniumBase" width="420" /></a></p>
 
-<b>SeleniumBase</b> tests are run with <b>pytest</b>. Chrome is the default browser if not specifed. During test failures, logs and screenshots from the latest run are saved to the ``latest_logs/`` folder.
 
-* Example tests are located in <b>[SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
+* <b>SeleniumBase</b> tests are run with <b>pytest</b>.
+* Chrome is the default browser if not specifed.
+* During test failures, logs and screenshots from the latest test run are saved to the ``latest_logs/`` folder.
+* Example tests are located in <b>[SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
-**Here are some example run commands to help get you started:**
+<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Example run commands to help you get started:</h3>
 
 Run an example test in Chrome: (Default: ``--browser=chrome``)
 
