@@ -44,7 +44,7 @@ To find real User-Agent strings, see:
 pytest test_swag_labs.py --mobile
 ```
 
-[<img src="https://seleniumbase.io/cdn/gif/swag_mobile.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/swag_mobile.gif)
+[<img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Testing">](https://seleniumbase.io/cdn/gif/swag_mobile.gif)
 
 <b>Here's an example of configuring mobile settings for that test:</b>
 
