@@ -108,6 +108,8 @@ setup(
         'setuptools>=50.3.2;python_version>="3.5"',
         'setuptools-scm',
         'wheel>=0.35.1',
+        'attrs>=20.3.0',
+        'certifi>=2020.11.8',
         'six',
         'nose',
         'ipdb',
@@ -115,15 +117,14 @@ setup(
         'jedi==0.17.2',  # The last version for Python 2 and 3.5
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4',  # Must stay in sync with "requests"
-        'urllib3==1.25.11',  # Must stay in sync with "requests"
-        'requests==2.24.0',
+        'urllib3==1.26.1',  # Must stay in sync with "requests"
+        'requests==2.25.0',
         'selenium==3.141.0',
         'msedge-selenium-tools==3.141.2',
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.6.0;python_version>="3.5"',
         'cssselect==1.1.0',
         'pluggy==0.13.1',
-        'attrs>=20.2.0',
         'py==1.8.1;python_version<"3.5"',
         'py==1.9.0;python_version>="3.5"',
         'pytest==4.6.11;python_version<"3.5"',
@@ -166,7 +167,8 @@ setup(
         'pyotp==2.4.1',
         'boto==2.49.0',
         'cffi==1.14.3',
-        'rich==9.1.0;python_version>="3.6" and python_version<"4.0"',
+        'toml==0.10.2',
+        'rich==9.2.0;python_version>="3.6" and python_version<"4.0"',
         'zipp==1.2.0;python_version<"3.6"',
         'zipp==3.4.0;python_version>="3.6"',
         'flake8==3.7.9;python_version<"3.5"',
@@ -175,7 +177,6 @@ setup(
         'pyflakes==2.2.0;python_version>="3.5"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
-        'certifi>=2020.6.20',
         'allure-pytest==2.8.19',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
