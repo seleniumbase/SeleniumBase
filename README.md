@@ -197,6 +197,8 @@ pytest test_demo_site.py
 > (Chrome is the default browser if not specified with ``--browser=BROWSER``.)
 > (On Linux, ``--headless`` is the default behavior. You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.)
 
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" /></a><br />
+
 <b>If you've cloned SeleniumBase from GitHub, you can also run tests from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:</b>
 
 ```bash
@@ -211,7 +213,7 @@ pytest test_swag_labs.py
 pytest my_first_test.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" /></a>
 
 <b>Here's the code for [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
 
