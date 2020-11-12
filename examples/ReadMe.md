@@ -32,7 +32,7 @@ Run an example test in Demo Mode: (highlight assertions)
 pytest my_first_test.py --demo
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase Demo Mode" /><br />
+<img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase Demo Mode" /><br />
 
 Run a different example in Demo Mode:
 
@@ -40,7 +40,7 @@ Run a different example in Demo Mode:
 pytest test_swag_labs.py --demo
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" /><br />
+<img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 
@@ -54,7 +54,7 @@ Run an example test using Chrome's mobile device emulator: (default settings)
 pytest test_swag_labs.py --mobile
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_mobile.gif" title="SeleniumBase Mobile Mode" /><br />
+<img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Mode" /><br />
 
 Run tests with verbose output: (includes more details)
 
@@ -68,7 +68,7 @@ Run a test on the Demo Site to try many SeleniumBase methods:
 pytest test_demo_site.py
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/demo_page.gif" title="SeleniumBase Mobile Mode" /><br />
+<img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" /><br />
 
 Run tests multi-threaded using [n] threads:
 
@@ -156,7 +156,7 @@ To make things easier, here's a simple GUI program that allows you to run a few 
 python gui_test_runner.py
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/gui_test_runner_py.png" title="GUI Test Runner" width="320" />
+<img src="https://seleniumbase.io/cdn/img/gui_test_runner.png" title="GUI Test Runner" width="320" />
 
 --------
 

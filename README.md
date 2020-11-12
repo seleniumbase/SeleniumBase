@@ -56,7 +56,7 @@ Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest
 
 --------
 
-<p align="center"><img src="https://seleniumbase.io/cdn/gif/swag_mobile.gif" width="450" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></a></p>
 
 ```bash
 pytest test_swag_labs.py --mobile
@@ -65,7 +65,7 @@ pytest test_swag_labs.py --mobile
 <p align="center">(Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> in Mobile Mode.)</p>
 
 <div><p align="center">(Below: Same test running in Demo Mode.)</p></div>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" width="450" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
 
 ```bash
 pytest test_swag_labs.py --demo
@@ -211,7 +211,7 @@ pytest test_swag_labs.py
 pytest my_first_test.py --demo
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" />
+<img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" />
 
 <b>Here's the code for [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
 
@@ -514,7 +514,7 @@ The ``--report`` option gives you a fancy report after your test suite completes
 nosetests test_suite.py --report
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
+<img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
