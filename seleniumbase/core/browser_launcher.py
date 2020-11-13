@@ -312,7 +312,7 @@ def _create_firefox_profile(
     profile.set_preference("browser.privatebrowsing.autostart", True)
     profile.set_preference("devtools.errorconsole.enabled", False)
     profile.set_preference("dom.webnotifications.enabled", False)
-    profile.set_preference("dom.disable_beforeunload", True)
+    profile.set_preference("dom.disable_beforeunload", False)
     profile.set_preference("browser.contentblocking.database.enabled", False)
     profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
     profile.set_preference("extensions.PrivateBrowsing.notification", False)
