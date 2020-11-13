@@ -18,7 +18,7 @@ Example:
         sbase install chromedriver latest
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 85.0.564.68
+        sbase install edgedriver 86.0.622.69
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -42,8 +42,8 @@ urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.27.0"
-DEFAULT_EDGEDRIVER_VERSION = "85.0.564.44"  # (Looks for LATEST_STABLE first)
+DEFAULT_GECKODRIVER_VERSION = "v0.28.0"
+DEFAULT_EDGEDRIVER_VERSION = "86.0.622.69"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
 
 
@@ -410,13 +410,19 @@ def main(override=None):
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
             if "darwin" in sys_plat or "linux" in sys_plat:
-                # Was expecting to be on a Windows OS at this point
-                raise Exception("Unexpected file format for msedgedriver!")
-            expected_contents = (['Driver_Notes/',
-                                  'Driver_Notes/credits.html',
-                                  'Driver_Notes/LICENSE',
-                                  'msedgedriver.exe'])
-            if len(contents) > 4:
+                # Mac / Linux
+                expected_contents = (['Driver_Notes/',
+                                      'Driver_Notes/LICENSE',
+                                      'Driver_Notes/credits.html',
+                                      'msedgedriver',
+                                      'libc++.dylib'])
+            else:
+                # Windows
+                expected_contents = (['Driver_Notes/',
+                                      'Driver_Notes/credits.html',
+                                      'Driver_Notes/LICENSE',
+                                      'msedgedriver.exe'])
+            if len(contents) > 5:
                 raise Exception("Unexpected content in EdgeDriver Zip file!")
             for content in contents:
                 if content not in expected_contents:
@@ -430,11 +436,20 @@ def main(override=None):
                 # Remove existing version if exists
                 str_name = str(f_name)
                 new_file = downloads_folder + '/' + str_name
-                if str_name == "msedgedriver.exe":
-                    driver_file = str_name
-                    driver_path = new_file
-                    if os.path.exists(new_file):
-                        os.remove(new_file)
+                if "darwin" in sys_plat or "linux" in sys_plat:
+                    # Mac / Linux
+                    if str_name == "msedgedriver":
+                        driver_file = str_name
+                        driver_path = new_file
+                        if os.path.exists(new_file):
+                            os.remove(new_file)
+                else:
+                    # Windows
+                    if str_name == "msedgedriver.exe":
+                        driver_file = str_name
+                        driver_path = new_file
+                        if os.path.exists(new_file):
+                            os.remove(new_file)
             if not driver_file or not driver_path:
                 raise Exception("msedgedriver missing from Zip file!")
             print('Extracting %s from %s ...' % (contents, file_name))

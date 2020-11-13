@@ -13,7 +13,7 @@ parso==0.7.1
 jedi==0.17.2
 idna==2.10
 chardet==3.0.4
-urllib3==1.26.1
+urllib3==1.26.2
 requests==2.25.0
 selenium==3.141.0
 msedge-selenium-tools==3.141.2

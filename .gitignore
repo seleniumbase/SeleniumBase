@@ -74,6 +74,9 @@ geckodriver.exe
 msedgedriver.exe
 operadriver.exe
 
+# msedgedriver requirements
+libc++.dylib
+
 # Logs
 logs
 latest_logs
