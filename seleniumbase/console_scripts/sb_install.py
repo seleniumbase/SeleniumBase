@@ -410,13 +410,19 @@ def main(override=None):
             print("")
         elif name == "edgedriver" or name == "msedgedriver":
             if "darwin" in sys_plat or "linux" in sys_plat:
-                # Was expecting to be on a Windows OS at this point
-                raise Exception("Unexpected file format for msedgedriver!")
-            expected_contents = (['Driver_Notes/',
-                                  'Driver_Notes/credits.html',
-                                  'Driver_Notes/LICENSE',
-                                  'msedgedriver.exe'])
-            if len(contents) > 4:
+                # Mac / Linux
+                expected_contents = (['Driver_Notes/',
+                                      'Driver_Notes/LICENSE',
+                                      'Driver_Notes/credits.html',
+                                      'msedgedriver',
+                                      'libc++.dylib'])
+            else:
+                # Windows
+                expected_contents = (['Driver_Notes/',
+                                      'Driver_Notes/credits.html',
+                                      'Driver_Notes/LICENSE',
+                                      'msedgedriver.exe'])
+            if len(contents) > 5:
                 raise Exception("Unexpected content in EdgeDriver Zip file!")
             for content in contents:
                 if content not in expected_contents:
@@ -430,11 +436,20 @@ def main(override=None):
                 # Remove existing version if exists
                 str_name = str(f_name)
                 new_file = downloads_folder + '/' + str_name
-                if str_name == "msedgedriver.exe":
-                    driver_file = str_name
-                    driver_path = new_file
-                    if os.path.exists(new_file):
-                        os.remove(new_file)
+                if "darwin" in sys_plat or "linux" in sys_plat:
+                    # Mac / Linux
+                    if str_name == "msedgedriver":
+                        driver_file = str_name
+                        driver_path = new_file
+                        if os.path.exists(new_file):
+                            os.remove(new_file)
+                else:
+                    # Windows
+                    if str_name == "msedgedriver.exe":
+                        driver_file = str_name
+                        driver_path = new_file
+                        if os.path.exists(new_file):
+                            os.remove(new_file)
             if not driver_file or not driver_path:
                 raise Exception("msedgedriver missing from Zip file!")
             print('Extracting %s from %s ...' % (contents, file_name))
