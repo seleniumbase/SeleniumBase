@@ -9,6 +9,10 @@
 <img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" title="SeleniumBase" width="300" />
 </a></p>
 <p align="center"><b>The complete web automation library.</b></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
+<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="152" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
+<img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="152" />
+</a></p>
 <p align="center">Powered by WebDriver APIs and pytest.</p>
 <!-- View on GitHub -->
 <p align="center">
