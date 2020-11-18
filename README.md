@@ -49,10 +49,11 @@ Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
+* Simplifies the process of creating UI tests for websites.
 * Uses reliable, smart-waiting code to prevent flaky tests.
-* Simplifies the process of creating UI tests for any website.
-* Includes [Plugins](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) for logging [test results and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
-* Has versatile [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) and [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+* Includes tools for [logging, screenshots, and test reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
+* Has plugins that add new [pytest command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+* Enhances Selenium's Python API with [versatile methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 
 --------
 
