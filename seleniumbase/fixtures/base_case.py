@@ -3515,9 +3515,9 @@ class BaseCase(unittest.TestCase):
             '<link rel="stylesheet" href="%s">\n'
             '<style>\n'
             'pre{background-color:#fbe8d4;border-radius:8px;}\n'
-            'div[flex_div]{height:75vh;margin:0;align-items:center;'
+            'div[flex_div]{height:68vh;margin:0;align-items:center;'
             'justify-content:center;}\n'
-            'img[rounded]{border-radius:16px;max-width:82%%;}\n'
+            'img[rounded]{border-radius:16px;max-width:64%%;}\n'
             '</style>\n'
             '</head>\n\n'
             '<body>\n'
@@ -3578,7 +3578,7 @@ class BaseCase(unittest.TestCase):
             '\n<section data-transition="%s">%s%s' % (
                 transition, add_line, content))
         if image:
-            html += '\n<div flex_div><img rounded src="%s"></div>' % image
+            html += '\n<div flex_div><img rounded src="%s" /></div>' % image
         if code:
             html += '\n<div></div>'
             html += '\n<pre class="prettyprint">\n%s</pre>' % code
@@ -3640,7 +3640,7 @@ class BaseCase(unittest.TestCase):
             '<script src="%s"></script>\n'
             '<script src="%s"></script>\n'
             '<script>Reveal.initialize('
-            '{showNotes: %s, slideNumber: true, '
+            '{showNotes: %s, slideNumber: true, hash: false, '
             'autoSlide: %s,});'
             '</script>\n'
             '</body>\n'
