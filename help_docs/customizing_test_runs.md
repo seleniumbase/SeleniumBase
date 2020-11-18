@@ -8,19 +8,16 @@ Here are some examples of configuring tests, which can be run from the [examples
 
 ```bash
 # Run a test in Chrome (default browser)
-pytest test_swag_labs.py
+pytest my_first_test.py
 
 # Run a test in Firefox
 pytest test_swag_labs.py --browser=firefox
 
 # Run a test in Demo Mode (highlight assertions)
-pytest my_first_test.py --demo
-
-# Run another test in Demo Mode
 pytest test_demo_site.py --demo
 
 # Run a test in Headless Mode (invisible browser)
-pytest my_first_test.py --headless
+pytest test_demo_site.py --headless
 
 # Run tests multi-threaded using [n] threads
 pytest test_suite.py -n=4
@@ -108,7 +105,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
 --proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
 --mobile  # (Use the mobile device emulator while running tests.)
---metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
+--metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (Run tests headlessly. Default mode on Linux OS.)

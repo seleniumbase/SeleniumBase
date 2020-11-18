@@ -6,28 +6,19 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" title="SeleniumBase" width="300" />
+<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="300" />
 </a></p>
-<p align="center"><b>The complete web automation library.</b></p>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="152" /></a><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="152" />
-</a></p>
-<p align="center">Powered by WebDriver APIs and pytest.</p>
-<!-- View on GitHub -->
-<p align="center">
-<a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
-<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a>
-</p>
 
-<p>
-<b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, charts, presentations, website tours, and visual testing.
-Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>. Browsers are controlled by <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.
-</p>
+<!-- View on GitHub -->
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
+<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"> <img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=9A77EC" alt="SeleniumBase GitHub Stars" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
+<img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
+
+<p><b>SeleniumBase</b> is a complete framework for browser automation, end-to-end testing, reports, charts, presentations, website tours, and visual testing.
+Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>. Browsers are controlled by <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -58,22 +49,20 @@ Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
+* Uses reliable, smart-waiting code to prevent flaky tests.
+* Simplifies the process of creating UI tests for any website.
+* Includes [Plugins](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) for logging [test results and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
+* Has versatile [Python methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) and [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+
 --------
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" alt="SeleniumBase Mobile Mode" title="SeleniumBase Mobile Mode" /></a></p>
-
-```bash
-pytest test_swag_labs.py --mobile
-```
-
-<p align="center">(Above: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> in Mobile Mode.)</p>
-
-<div><p align="center">(Below: Same test running in Demo Mode.)</p></div>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+<p align="center">(Below: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> using Demo Mode.)</p>
 
 ```bash
 pytest test_swag_labs.py --demo
 ```
+
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
 
 --------
 
@@ -326,7 +315,7 @@ For a full list of SeleniumBase features, <a href="https://github.com/seleniumba
 
 
 <a id="detailed_instructions"></a>
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">
+<img src="https://seleniumbase.io/img/sb_logo_10.png" title="SeleniumBase" width="290">
 
 <h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
@@ -398,7 +387,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
---metrics=STRING  # (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
+--metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
@@ -893,7 +882,7 @@ Additionally, you can use the ``@retry_on_exception()`` decorator to specificall
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290" /></a></div>
 
 <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" title="SeleniumBase" alt="Repo Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div>
 
