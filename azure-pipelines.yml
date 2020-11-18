@@ -11,17 +11,19 @@ jobs:
     vmImage: 'Ubuntu-18.04'
   strategy:
     matrix:
-      Python27:
+      Python2.7:
         python.version: '2.7'
-      Python35:
+      Python3.5:
         python.version: '3.5'
-      Python36:
+      Python3.6:
         python.version: '3.6'
-      Python37:
+      Python3.7:
         python.version: '3.7'
-      Python38:
+      Python3.8:
         python.version: '3.8'
-    maxParallel: 5
+      Python3.9:
+        python.version: '3.9'
+    maxParallel: 6
 
   steps:
   - task: UsePythonVersion@0
@@ -81,7 +83,7 @@ jobs:
 #- job: 'Publish'
 #  dependsOn: 'Test'
 #  pool:
-#    vmImage: 'Ubuntu-16.04'
+#    vmImage: 'Ubuntu-18.04'
 
 #  steps:
 #  - task: UsePythonVersion@0
