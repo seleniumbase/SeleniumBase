@@ -49,7 +49,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.52.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.53.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -159,8 +159,9 @@ setup(
         'ipython==7.19.0;python_version>="3.7"',
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
-        'importlib-metadata==2.0.0',  # Sync with "virtualenv"
-        'virtualenv>=20.1.0',  # Sync with importlib-metadata and pathlib2
+        'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
+        'importlib-metadata==3.0.0;python_version>="3.6"',  # Sync "virtualenv"
+        'virtualenv>=20.2.1',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
         'brython==3.9.0',
@@ -177,7 +178,7 @@ setup(
         'pyflakes==2.2.0;python_version>="3.5"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
-        'allure-pytest==2.8.19',
+        'allure-pytest==2.8.21',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
