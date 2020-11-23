@@ -55,8 +55,9 @@ ipython==7.16.1;python_version>="3.6" and python_version<"3.7"
 ipython==7.19.0;python_version>="3.7"
 colorama==0.4.4
 pathlib2==2.3.5;python_version<"3.5"
-importlib-metadata==2.0.0
-virtualenv>=20.1.0
+importlib-metadata==2.0.0;python_version<"3.6"
+importlib-metadata==3.0.0;python_version>="3.6"
+virtualenv>=20.2.1
 pymysql==0.10.1
 coverage==5.3
 brython==3.9.0
@@ -73,6 +74,6 @@ pyflakes==2.1.1;python_version<"3.5"
 pyflakes==2.2.0;python_version>="3.5"
 tornado==5.1.1;python_version<"3.5"
 tornado==6.1;python_version>="3.5"
-allure-pytest==2.8.19
+allure-pytest==2.8.21
 pdfminer.six==20191110;python_version<"3.5"
 pdfminer.six==20201018;python_version>="3.5"
