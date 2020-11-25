@@ -160,7 +160,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'importlib-metadata==3.1.0;python_version>="3.6"',  # Sync "virtualenv"
+        'importlib-metadata==3.0.0;python_version>="3.6"',  # Sync "virtualenv"
         'virtualenv>=20.2.1',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
