@@ -56,14 +56,14 @@ ipython==7.19.0;python_version>="3.7"
 colorama==0.4.4
 pathlib2==2.3.5;python_version<"3.5"
 importlib-metadata==2.0.0;python_version<"3.6"
-importlib-metadata==3.0.0;python_version>="3.6"
+importlib-metadata==3.1.0;python_version>="3.6"
 virtualenv>=20.2.1
 pymysql==0.10.1
 coverage==5.3
 brython==3.9.0
 pyotp==2.4.1
 boto==2.49.0
-cffi==1.14.3
+cffi==1.14.4
 toml==0.10.2
 rich==9.2.0;python_version>="3.6" and python_version<"4.0"
 zipp==1.2.0;python_version<"3.6"
