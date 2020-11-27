@@ -277,7 +277,7 @@ self.create_folder(folder)
 
 self.choose_file(selector, file_path, by=By.CSS_SELECTOR, timeout=None)
 
-self.save_element_as_image_file(selector, file_name, folder=None)
+self.save_element_as_image_file(selector, file_name, folder=None, overlay_text="")
 
 self.download_file(file_url, destination_folder=None)
 

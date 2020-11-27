@@ -2784,9 +2784,11 @@ class BaseCase(unittest.TestCase):
         abs_path = os.path.abspath(file_path)
         self.add_text(selector, abs_path, by=by, timeout=timeout)
 
-    def save_element_as_image_file(self, selector, file_name, folder=None):
+    def save_element_as_image_file(
+            self, selector, file_name, folder=None, overlay_text=""):
         """ Take a screenshot of an element and save it as an image file.
-            If no folder is specified, will save it to the current folder. """
+            If no folder is specified, will save it to the current folder.
+            If overlay_text is provided, will add that to the saved image. """
         element = self.wait_for_element_visible(selector)
         element_png = element.screenshot_as_png
         if len(file_name.split('.')[0]) < 1:
@@ -2804,6 +2806,26 @@ class BaseCase(unittest.TestCase):
             image_file_path = file_name
         with open(image_file_path, "wb") as file:
             file.write(element_png)
+        # Add a text overlay if given
+        if type(overlay_text) is str and len(overlay_text) > 0:
+            from PIL import Image, ImageDraw
+            text_rows = overlay_text.split("\n")
+            len_text_rows = len(text_rows)
+            max_width = 0
+            for text_row in text_rows:
+                if len(text_row) > max_width:
+                    max_width = len(text_row)
+            image = Image.open(image_file_path)
+            draw = ImageDraw.Draw(image)
+            draw.rectangle(
+                (0, 0, (max_width * 6) + 6, 16 * len_text_rows),
+                fill=(236, 236, 28))
+            draw.text(
+                (4, 2),  # Coordinates
+                overlay_text,  # Text
+                (8, 38, 176)  # Color
+            )
+            image.save(image_file_path, 'PNG', quality=100, optimize=True)
 
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
