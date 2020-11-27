@@ -49,7 +49,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.53.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.54.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -120,7 +120,7 @@ setup(
         'urllib3==1.26.2',  # Must stay in sync with "requests"
         'requests==2.25.0',
         'selenium==3.141.0',
-        'msedge-selenium-tools==3.141.2',
+        'msedge-selenium-tools==3.141.3',
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.6.0;python_version>="3.5"',
         'cssselect==1.1.0',
@@ -168,6 +168,7 @@ setup(
         'boto==2.49.0',
         'cffi==1.14.4',
         'toml==0.10.2',
+        'Pillow==8.0.1',
         'rich==9.2.0;python_version>="3.6" and python_version<"4.0"',
         'zipp==1.2.0;python_version<"3.6"',
         'zipp==3.4.0;python_version>="3.6"',
@@ -177,7 +178,7 @@ setup(
         'pyflakes==2.2.0;python_version>="3.5"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
-        'allure-pytest==2.8.21',
+        'allure-pytest==2.8.22',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
