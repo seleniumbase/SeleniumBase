@@ -75,6 +75,7 @@
 <div><a href="https://seleniumbase.io/other/presenter.html"><b>Presenter Demo</b></a></div>
 <div><a href="https://seleniumbase.io/other/core_presentation.html"><b>Core Presentation</b></a></div>
 <div><a href="https://seleniumbase.io/other/chart_presentation.html"><b>Chart Maker Demo</b></a></div>
+<div><a href="https://seleniumbase.io/other/py_virtual_envs.html"><b>Python Virtual Envs</b></a></div>
 
 --------
 

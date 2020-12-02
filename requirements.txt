@@ -3,7 +3,7 @@ packaging>=20.7
 setuptools>=44.1.1;python_version<"3.5"
 setuptools>=50.3.2;python_version>="3.5"
 setuptools-scm>=4.1.2
-wheel>=0.35.1
+wheel>=0.36.0
 attrs>=20.3.0
 certifi>=2020.11.8
 six==1.15.0
@@ -68,7 +68,7 @@ toml==0.10.2
 Pillow==6.2.2;python_version<"3.5"
 Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"
 Pillow==8.0.1;python_version>="3.6"
-rich==9.2.0;python_version>="3.6" and python_version<"4.0"
+rich==9.3.0;python_version>="3.6" and python_version<"4.0"
 zipp==1.2.0;python_version<"3.6"
 zipp==3.4.0;python_version>="3.6"
 flake8==3.7.9;python_version<"3.5"

@@ -8,8 +8,8 @@ class PythonVirtualEnvPresentation(BaseCase):
         self.add_slide(
             '<h2>Python Virtual Environments:</h2><br />\n'
             '<h2>What, Why, and How</h2><hr /><br />\n'
-            '\n'
-            '<h3>Presented by <b>Michael Mintz</b></h3>')
+            '<h3>Presented by <b>Michael Mintz</b></h3>\n'
+            '<p>Granite State Code Camp - Sat, Nov 14, 2020</p>')
         self.add_slide(
             '<p><b>About me:</b></p>\n'
             '<ul>'
@@ -108,15 +108,15 @@ class PythonVirtualEnvPresentation(BaseCase):
             '<p><b>List of commands from virtualenvwrapper</b></p>'
             '<hr /><br />',
             code=(
-                '# Creating a virtual environment:\n'
+                '# Create a virtual environment:\n'
                 'mkvirtualenv ENV_NAME\n\n'
-                '# Leaving your virtual environment:\n'
+                '# Leave your virtual environment:\n'
                 'deactivate\n\n'
-                '# Returning to a virtual environment:\n'
+                '# Return to a virtual environment:\n'
                 'workon ENV_NAME\n\n'
-                '# Listing all virtual environments:\n'
-                'lsvirtualenv  # OR "workon"\n\n'
-                '# Deleting a virtual environment:\n'
+                '# List all virtual environments:\n'
+                'workon\n\n'
+                '# Delete a virtual environment:\n'
                 'rmvirtualenv ENV_NAME'))
         self.add_slide(
             '<p><b>Determining if you are in a virtual env</b></p>'
