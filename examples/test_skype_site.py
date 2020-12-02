@@ -30,7 +30,7 @@ class SkypeWebsiteTestClass(BaseCase):
         self.assert_text("Skype for Mobile", "h2")
         self.highlight("h2")
         self.highlight("#get-skype-0")
-        self.highlight_click('span[aria-label="Get Skype for Android"]')
+        self.highlight_click('[data-bi-name="arrow-dropdown-mobile"]')
         self.highlight('#get-skype-0_android-download')
         self.highlight('[data-bi-id*="ios"]')
         self.highlight('[data-bi-id*="windows10"]')
