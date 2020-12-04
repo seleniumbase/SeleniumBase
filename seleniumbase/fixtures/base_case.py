@@ -2939,21 +2939,28 @@ class BaseCase(unittest.TestCase):
         self.assertRaises(*args, **kwargs)
 
     def assert_title(self, title):
-        """ Asserts that the web page title matches the expected title. """
+        """ Asserts that the web page title matches the expected title.
+            When a web page initially loads, the title starts as the URL,
+            but then the title switches over to the actual page title.
+            A slow connection could delay the actual title from displaying. """
         self.wait_for_ready_state_complete()
         expected = title.strip()
         actual = self.get_page_title().strip()
+        error = (
+            "Expected page title [%s] does not match the actual title [%s]!")
         try:
-            self.assertEqual(expected, actual, "Expected page title [%s] "
-                             "does not match the actual page title [%s]!"
-                             "" % (expected, actual))
+            self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
             self.sleep(settings.MINI_TIMEOUT)
-            actual = self.get_page_title()
-            self.assertEqual(expected, actual, "Expected page title [%s] "
-                             "does not match the actual page title [%s]!"
-                             "" % (expected, actual))
+            actual = self.get_page_title().strip()
+            try:
+                self.assertEqual(expected, actual, error % (expected, actual))
+            except Exception:
+                self.wait_for_ready_state_complete()
+                self.sleep(settings.MINI_TIMEOUT)
+                actual = self.get_page_title().strip()
+                self.assertEqual(expected, actual, error % (expected, actual))
         if self.demo_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
