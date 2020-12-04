@@ -2570,10 +2570,10 @@ class BaseCase(unittest.TestCase):
 
     def get_beautiful_soup(self, source=None):
         """ BeautifulSoup is a toolkit for dissecting an HTML document
-            and extracting what you need. It's great for screen-scraping! """
+            and extracting what you need. It's great for screen-scraping!
+            See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/ """
         from bs4 import BeautifulSoup
         if not source:
-            self.wait_for_ready_state_complete()
             source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         return soup
