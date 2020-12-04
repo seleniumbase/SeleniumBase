@@ -42,6 +42,7 @@ class SeleniumBrowser(Plugin):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
+    --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -324,6 +325,15 @@ class SeleniumBrowser(Plugin):
             help="""Using this enables the "Disable GPU" feature.
                     (This setting is now always enabled by default.)""")
         parser.add_option(
+            '--remote_debug', '--remote-debug',
+            action="store_true",
+            dest='remote_debug',
+            default=False,
+            help="""This enables Chromium's remote debugger.
+                    To access the remote debugging interface, go to:
+                    http://localhost:9222 while Chromedriver is running.
+                    Info: chromedevtools.github.io/devtools-protocol/""")
+        parser.add_option(
             '--swiftshader',
             action="store_true",
             dest='swiftshader',
@@ -423,6 +433,7 @@ class SeleniumBrowser(Plugin):
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
+        test.text.remote_debug = self.options.remote_debug
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode

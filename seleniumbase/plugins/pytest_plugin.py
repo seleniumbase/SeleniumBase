@@ -52,6 +52,7 @@ def pytest_addoption(parser):
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
+    --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -413,6 +414,14 @@ def pytest_addoption(parser):
                      default=False,
                      help="""Using this enables the "Disable GPU" feature.
                           (This setting is now always enabled by default.)""")
+    parser.addoption('--remote_debug', '--remote-debug',
+                     action="store_true",
+                     dest='remote_debug',
+                     default=False,
+                     help="""This enables Chromium's remote debugger.
+                          To access the remote debugging interface, go to:
+                          http://localhost:9222 while Chromedriver is running.
+                          Info: chromedevtools.github.io/devtools-protocol/""")
     parser.addoption('--swiftshader',
                      action="store_true",
                      dest='swiftshader',
@@ -538,6 +547,7 @@ def pytest_configure(config):
     sb_config.use_auto_ext = config.getoption('use_auto_ext')
     sb_config.no_sandbox = config.getoption('no_sandbox')
     sb_config.disable_gpu = config.getoption('disable_gpu')
+    sb_config.remote_debug = config.getoption('remote_debug')
     sb_config.swiftshader = config.getoption('swiftshader')
     sb_config.incognito = config.getoption('incognito')
     sb_config.guest_mode = config.getoption('guest_mode')

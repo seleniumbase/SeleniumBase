@@ -71,6 +71,7 @@ except (ImportError, ValueError):
     sb.demo_sleep = 1
     sb.message_duration = 2
     sb.block_images = False
+    sb.remote_debug = False
     sb.settings_file = None
     sb.user_data_dir = None
     sb.proxy_string = None
