@@ -1,4 +1,4 @@
-pip>=20.3
+pip>=20.3.1
 packaging>=20.7
 setuptools>=44.1.1;python_version<"3.5"
 setuptools>=50.3.2;python_version>="3.5"
