@@ -1782,7 +1782,8 @@ class BaseCase(unittest.TestCase):
                        switch_to=True, cap_file=None, cap_string=None,
                        disable_csp=None, enable_ws=None, enable_sync=None,
                        use_auto_ext=None, no_sandbox=None, disable_gpu=None,
-                       incognito=None, guest_mode=None, devtools=None,
+                       incognito=None, guest_mode=None,
+                       devtools=None, remote_debug=None,
                        swiftshader=None, block_images=None, user_data_dir=None,
                        extension_zip=None, extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
@@ -1809,7 +1810,8 @@ class BaseCase(unittest.TestCase):
             incognito - the option to enable Chrome's Incognito mode (Chrome)
             guest - the option to enable Chrome's Guest mode (Chrome)
             devtools - the option to open Chrome's DevTools on start (Chrome)
-            swiftshader  the option to use "--use-gl=swiftshader" (Chrome-only)
+            remote_debug - the option to enable Chrome's Remote Debugger
+            swiftshader - the option to use Chrome's swiftshader (Chrome-only)
             block_images - the option to block images from loading (Chrome)
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
@@ -1879,6 +1881,8 @@ class BaseCase(unittest.TestCase):
             guest_mode = self.guest_mode
         if devtools is None:
             devtools = self.devtools
+        if remote_debug is None:
+            remote_debug = self.remote_debug
         if swiftshader is None:
             swiftshader = self.swiftshader
         if block_images is None:
@@ -1927,6 +1931,7 @@ class BaseCase(unittest.TestCase):
                                                  incognito=incognito,
                                                  guest_mode=guest_mode,
                                                  devtools=devtools,
+                                                 remote_debug=remote_debug,
                                                  swiftshader=swiftshader,
                                                  block_images=block_images,
                                                  user_data_dir=user_data_dir,
@@ -2565,10 +2570,10 @@ class BaseCase(unittest.TestCase):
 
     def get_beautiful_soup(self, source=None):
         """ BeautifulSoup is a toolkit for dissecting an HTML document
-            and extracting what you need. It's great for screen-scraping! """
+            and extracting what you need. It's great for screen-scraping!
+            See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/ """
         from bs4 import BeautifulSoup
         if not source:
-            self.wait_for_ready_state_complete()
             source = self.get_page_source()
         soup = BeautifulSoup(source, "html.parser")
         return soup
@@ -2934,21 +2939,28 @@ class BaseCase(unittest.TestCase):
         self.assertRaises(*args, **kwargs)
 
     def assert_title(self, title):
-        """ Asserts that the web page title matches the expected title. """
+        """ Asserts that the web page title matches the expected title.
+            When a web page initially loads, the title starts as the URL,
+            but then the title switches over to the actual page title.
+            A slow connection could delay the actual title from displaying. """
         self.wait_for_ready_state_complete()
         expected = title.strip()
         actual = self.get_page_title().strip()
+        error = (
+            "Expected page title [%s] does not match the actual title [%s]!")
         try:
-            self.assertEqual(expected, actual, "Expected page title [%s] "
-                             "does not match the actual page title [%s]!"
-                             "" % (expected, actual))
+            self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
             self.sleep(settings.MINI_TIMEOUT)
-            actual = self.get_page_title()
-            self.assertEqual(expected, actual, "Expected page title [%s] "
-                             "does not match the actual page title [%s]!"
-                             "" % (expected, actual))
+            actual = self.get_page_title().strip()
+            try:
+                self.assertEqual(expected, actual, error % (expected, actual))
+            except Exception:
+                self.wait_for_ready_state_complete()
+                self.sleep(settings.MINI_TIMEOUT)
+                actual = self.get_page_title().strip()
+                self.assertEqual(expected, actual, error % (expected, actual))
         if self.demo_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
@@ -6255,6 +6267,7 @@ class BaseCase(unittest.TestCase):
             self.incognito = sb_config.incognito
             self.guest_mode = sb_config.guest_mode
             self.devtools = sb_config.devtools
+            self.remote_debug = sb_config.remote_debug
             self.swiftshader = sb_config.swiftshader
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
@@ -6422,6 +6435,7 @@ class BaseCase(unittest.TestCase):
                                               incognito=self.incognito,
                                               guest_mode=self.guest_mode,
                                               devtools=self.devtools,
+                                              remote_debug=self.remote_debug,
                                               swiftshader=self.swiftshader,
                                               block_images=self.block_images,
                                               user_data_dir=self.user_data_dir,

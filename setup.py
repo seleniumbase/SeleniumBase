@@ -102,7 +102,7 @@ setup(
     ],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=[
-        'pip>=20.3',
+        'pip>=20.3.1',
         'packaging>=20.7',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5"',

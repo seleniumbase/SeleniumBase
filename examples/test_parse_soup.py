@@ -1,15 +1,25 @@
+import re
 from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
 
-    def test_tinymce(self):
+    def click_menu_item(self, text):
+        # Use BeautifulSoup to parse the selector ID from element text.
+        # Then click on the element with the ID.
+        # (This is useful when the selector ID is auto-generated.)
+        pattern = re.compile(text)
+        soup = self.get_beautiful_soup()
+        the_id = soup.find(text=pattern).parent.parent.attrs["id"]
+        self.click("#%s" % the_id)
+
+    def test_beautiful_soup_and_tinymce(self):
         self.open("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
-        self.click('span:contains("File")')
-        self.click('span:contains("New document")')
-        self.click('span:contains("Paragraph")')
-        self.click('span:contains("Heading 2")')
+        self.click_menu_item("File")
+        self.click_menu_item("New document")
+        self.click_menu_item("Paragraph")
+        self.click_menu_item("Heading 2")
         self.switch_to_frame("iframe")
         self.add_text("#tinymce", "Automate anything with SeleniumBase!\n")
         self.switch_to_default_content()
@@ -21,7 +31,7 @@ class MyTestClass(BaseCase):
         self.click("h2")
         self.switch_to_default_content()
         self.post_message("Automate anything with SeleniumBase!")
-        self.click('span:contains("File")')
-        self.click('span:contains("Preview")')
+        self.click_menu_item("File")
+        self.click_menu_item("Preview")
         self.switch_to_frame('iframe[sandbox="allow-scripts"]')
         self.post_message("Learn SeleniumBase Today!")

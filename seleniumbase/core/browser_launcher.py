@@ -132,8 +132,9 @@ def _set_chrome_options(
         browser_name, downloads_path, headless, locale_code,
         proxy_string, proxy_auth, proxy_user, proxy_pass,
         user_agent, disable_csp, enable_ws, enable_sync, use_auto_ext,
-        no_sandbox, disable_gpu, incognito, guest_mode, devtools, swiftshader,
-        block_images, user_data_dir, extension_zip, extension_dir, servername,
+        no_sandbox, disable_gpu, incognito, guest_mode,
+        devtools, remote_debug, swiftshader, block_images,
+        user_data_dir, extension_zip, extension_dir, servername,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     chrome_options = webdriver.ChromeOptions()
     prefs = {
@@ -283,6 +284,11 @@ def _set_chrome_options(
     else:
         # Opera Chromium only!
         chrome_options.add_argument("--allow-elevated-browser")
+    if remote_debug:
+        # To access the Remote Debugger, go to: http://localhost:9222
+        # while a Chromium driver is running.
+        # Info: https://chromedevtools.github.io/devtools-protocol/
+        chrome_options.add_argument('--remote-debugging-port=9222')
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
     else:
@@ -418,9 +424,10 @@ def get_driver(browser_name, headless=False, locale_code=None,
                cap_file=None, cap_string=None,
                disable_csp=None, enable_ws=None, enable_sync=None,
                use_auto_ext=None, no_sandbox=None, disable_gpu=None,
-               incognito=None, guest_mode=None, devtools=None,
-               swiftshader=None, block_images=None, user_data_dir=None,
-               extension_zip=None, extension_dir=None,
+               incognito=None, guest_mode=None,
+               devtools=None, remote_debug=None,
+               swiftshader=None, block_images=None,
+               user_data_dir=None, extension_zip=None, extension_dir=None,
                test_id=None, mobile_emulator=False, device_width=None,
                device_height=None, device_pixel_ratio=None):
     proxy_auth = False
@@ -458,16 +465,17 @@ def get_driver(browser_name, headless=False, locale_code=None,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             cap_file, cap_string, disable_csp, enable_ws, enable_sync,
             use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
-            devtools, swiftshader, block_images, user_data_dir,
-            extension_zip, extension_dir, test_id,
+            devtools, remote_debug, swiftshader, block_images,
+            user_data_dir, extension_zip, extension_dir, test_id,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
         return get_local_driver(
             browser_name, headless, locale_code, servername,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
-            disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
-            disable_gpu, incognito, guest_mode, devtools, swiftshader,
-            block_images, user_data_dir, extension_zip, extension_dir,
+            disable_csp, enable_ws, enable_sync,
+            use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
+            devtools, remote_debug, swiftshader, block_images,
+            user_data_dir, extension_zip, extension_dir,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
 
 
@@ -476,7 +484,7 @@ def get_remote_driver(
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         cap_file, cap_string, disable_csp, enable_ws, enable_sync,
         use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
-        devtools, swiftshader, block_images,
+        devtools, remote_debug, swiftshader, block_images,
         user_data_dir, extension_zip, extension_dir, test_id,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
@@ -508,8 +516,9 @@ def get_remote_driver(
             browser_name, downloads_path, headless, locale_code,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
-            disable_gpu, incognito, guest_mode, devtools, swiftshader,
-            block_images, user_data_dir, extension_zip, extension_dir,
+            disable_gpu, incognito, guest_mode,
+            devtools, remote_debug, swiftshader, block_images,
+            user_data_dir, extension_zip, extension_dir,
             servername, mobile_emulator,
             device_width, device_height, device_pixel_ratio)
         capabilities = chrome_options.to_capabilities()
@@ -635,8 +644,9 @@ def get_local_driver(
         browser_name, headless, locale_code, servername,
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
-        disable_gpu, incognito, guest_mode, devtools, swiftshader,
-        block_images, user_data_dir, extension_zip, extension_dir,
+        disable_gpu, incognito, guest_mode,
+        devtools, remote_debug, swiftshader, block_images,
+        user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     '''
     Spins up a new web browser and returns the driver.
@@ -727,9 +737,9 @@ def get_local_driver(
                 browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_ws, enable_sync, use_auto_ext,
-                no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-                swiftshader, block_images, user_data_dir,
-                extension_zip, extension_dir, servername,
+                no_sandbox, disable_gpu, incognito, guest_mode,
+                devtools, remote_debug, swiftshader, block_images,
+                user_data_dir, extension_zip, extension_dir, servername,
                 mobile_emulator, device_width, device_height,
                 device_pixel_ratio)
             if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
@@ -839,6 +849,11 @@ def get_local_driver(
             if user_agent:
                 edge_options.add_argument("--user-agent=%s" % user_agent)
             edge_options.add_argument("--no-sandbox")
+            if remote_debug:
+                # To access the Remote Debugger, go to: http://localhost:9222
+                # while a Chromium driver is running.
+                # Info: https://chromedevtools.github.io/devtools-protocol/
+                edge_options.add_argument('--remote-debugging-port=9222')
             if swiftshader:
                 edge_options.add_argument("--use-gl=swiftshader")
             else:
@@ -868,9 +883,10 @@ def get_local_driver(
                 browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_ws, enable_sync, use_auto_ext,
-                no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-                swiftshader, block_images, user_data_dir, extension_zip,
-                extension_dir, servername, mobile_emulator,
+                no_sandbox, disable_gpu, incognito, guest_mode,
+                devtools, remote_debug, swiftshader, block_images,
+                user_data_dir, extension_zip, extension_dir,
+                servername, mobile_emulator,
                 device_width, device_height, device_pixel_ratio)
             opera_options.headless = False  # No support for headless Opera
             return webdriver.Opera(options=opera_options)
@@ -887,9 +903,10 @@ def get_local_driver(
                 browser_name, downloads_path, headless, locale_code,
                 proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
                 disable_csp, enable_ws, enable_sync, use_auto_ext,
-                no_sandbox, disable_gpu, incognito, guest_mode, devtools,
-                swiftshader, block_images, user_data_dir, extension_zip,
-                extension_dir, servername, mobile_emulator,
+                no_sandbox, disable_gpu, incognito, guest_mode,
+                devtools, remote_debug, swiftshader, block_images,
+                user_data_dir, extension_zip, extension_dir,
+                servername, mobile_emulator,
                 device_width, device_height, device_pixel_ratio)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:

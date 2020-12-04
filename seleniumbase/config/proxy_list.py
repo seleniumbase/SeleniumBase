@@ -15,13 +15,15 @@ Format of PROXY_LIST server entries:
 Example proxies in PROXY_LIST below are not guaranteed to be active or secure.
 If you don't already have a proxy server to connect to,
 you can try finding one from one of following sites:
+* https://bit.ly/36GtZa1
 * https://www.us-proxy.org/
 * https://hidemy.name/en/proxy-list/
+* http://free-proxy.cz/en/proxylist/country/all/https/ping/all
 """
 
 PROXY_LIST = {
-    "example1": "134.209.128.61:3128",  # (Example) - set your own proxy here
-    "example2": "165.227.83.185:3128",  # (Example) - set your own proxy here
+    "example1": "152.26.66.140:3128",  # (Example) - set your own proxy here
+    "example2": "64.235.204.107:8080",  # (Example) - set your own proxy here
     "example3": "82.200.233.4:3128",  # (Example) - set your own proxy here
     "proxy1": None,
     "proxy2": None,
