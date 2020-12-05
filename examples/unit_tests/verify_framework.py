@@ -2,20 +2,23 @@
 
 
 def test_simple_cases(testdir):
-    """ Verify a simple passing test and a simple failing test. """
+    """ Verify a simple passing test and a simple failing test.
+        The failing test is marked as xfail to have it skipped. """
     testdir.makepyfile(
         """
+        import pytest
         from seleniumbase import BaseCase
         class MyTestCase(BaseCase):
             def test_passing(self):
                 self.assert_equal('yes', 'yes')
+            @pytest.mark.xfail
             def test_failing(self):
                 self.assert_equal('yes', 'no')
         """
     )
     result = testdir.inline_run("--headless", "--rs")
     assert result.matchreport("test_passing").passed
-    assert result.matchreport("test_failing").failed
+    assert result.matchreport("test_failing").skipped
 
 
 def test_basecase(testdir):
