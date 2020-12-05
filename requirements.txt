@@ -3,7 +3,7 @@ packaging>=20.7
 setuptools>=44.1.1;python_version<"3.5"
 setuptools>=50.3.2;python_version>="3.5"
 setuptools-scm>=4.1.2
-wheel>=0.36.0
+wheel>=0.36.1
 attrs>=20.3.0
 certifi>=2020.11.8
 six==1.15.0
