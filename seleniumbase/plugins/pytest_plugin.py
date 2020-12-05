@@ -8,6 +8,7 @@ from seleniumbase import config as sb_config
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
+pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
 
 def pytest_addoption(parser):
