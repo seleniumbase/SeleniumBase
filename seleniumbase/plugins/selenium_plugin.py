@@ -433,7 +433,7 @@ class SeleniumBrowser(Plugin):
         test.test.use_auto_ext = self.options.use_auto_ext
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
-        test.text.remote_debug = self.options.remote_debug
+        test.test.remote_debug = self.options.remote_debug
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
