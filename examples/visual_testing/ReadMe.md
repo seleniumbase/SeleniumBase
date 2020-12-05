@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://cdn2.hubspot.net/hubfs/100006/images/sb_logo_f6.png" alt="SeleniumBase" width="320" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_f6.png" alt="SeleniumBase" width="320" /></a></p>
 
 ## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Automated Visual Regression Testing
 
@@ -161,4 +161,4 @@ To run the example (from [examples/visual_testing/](https://github.com/seleniumb
 pytest test_layout_fail.py --html=report.html
 ```
 Here's what the pytest HTML Report looks like:<br />
-[<img src="https://cdn2.hubspot.net/hubfs/100006/visual_testing_report_2.png" title="Test Report">](https://cdn2.hubspot.net/hubfs/100006/visual_testing_report_2.png)
+[<img src="https://seleniumbase.io/cdn/img/visual_testing_report_2.png" title="Test Report">](https://seleniumbase.io/cdn/img/visual_testing_report_2.png)
