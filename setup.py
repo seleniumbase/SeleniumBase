@@ -162,7 +162,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.2.1',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.2.2',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
         'coverage==5.3',
         'brython==3.9.0',
@@ -183,7 +183,7 @@ setup(
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'allure-pytest==2.8.22;python_version<"3.5"',
-        'allure-pytest==2.8.23;python_version>="3.5"',
+        'allure-pytest==2.8.24;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
