@@ -78,6 +78,7 @@ pyflakes==2.1.1;python_version<"3.5"
 pyflakes==2.2.0;python_version>="3.5"
 tornado==5.1.1;python_version<"3.5"
 tornado==6.1;python_version>="3.5"
-allure-pytest==2.8.23
+allure-pytest==2.8.22;python_version<"3.5"
+allure-pytest==2.8.23;python_version>="3.5"
 pdfminer.six==20191110;python_version<"3.5"
 pdfminer.six==20201018;python_version>="3.5"
