@@ -1,6 +1,6 @@
-[<img src="https://cdn2.hubspot.net/hubfs/100006/images/super_logo_sb4.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" title="SeleniumBase" width="360">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Installation
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Installation</h2>
 
 If installing SeleniumBase directly [from PyPI (the Python Package Index)](https://pypi.python.org/pypi/seleniumbase), use:
 ```bash
