@@ -27,6 +27,14 @@ class Charts:
     SAVED_FOLDER = "saved_charts"
 
 
+class Dashboard:
+    TITLE = "SeleniumBase Test Results Dashboard"
+    STYLE_CSS = 'https://seleniumbase.io/cdn/css/pytest_style.css'
+    META_REFRESH_HTML = '<meta http-equiv="refresh" content="10">'
+    # LIVE_JS = 'https://livejs.com/live.js#html'
+    LIVE_JS = 'https://seleniumbase.io/cdn/js/live.js#html'
+
+
 class SavedCookies:
     STORAGE_FOLDER = "saved_cookies"
 

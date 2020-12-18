@@ -3261,6 +3261,9 @@ class BaseCase(unittest.TestCase):
 
     def skip(self, reason=""):
         """ Mark the test as Skipped. """
+        if self.dashboard:
+            test_id = self.__get_test_id_2()
+            sb_config._results[test_id] = "Skipped"
         self.skipTest(reason)
 
     ############
@@ -4036,11 +4039,18 @@ class BaseCase(unittest.TestCase):
             },
             plotOptions: {
                 pie: {
+                    size: "95%",
                     allowPointSelect: true,
+                    animation: false,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false,
-                        format: '{point.name}: {point.y:.1f}%'
+                        // enabled: false,
+                        // format: '{point.name}: {point.y:.0f}',
+                        formatter: function() {
+                          if (this.y > 0) {
+                            return this.point.name + ': ' + this.point.y
+                          }
+                        }
                     },
                     states: {
                         hover: {
@@ -4069,7 +4079,10 @@ class BaseCase(unittest.TestCase):
                 plotOptions: {
                     series: {
                         showInLegend: true,
-                        animation: true,
+                        animation: false,
+                        dataLabels: {
+                            enabled: true
+                        },
                         shadow: false,
                         lineWidth: 3,
                         fillOpacity: 0.5,
@@ -4158,13 +4171,15 @@ class BaseCase(unittest.TestCase):
         if self._chart_first_series[chart_name]:
             self._chart_label[chart_name].append(label)
 
-    def save_chart(self, chart_name=None, filename=None):
+    def save_chart(self, chart_name=None, filename=None, folder=None):
         """ Saves a SeleniumBase-generated chart to a file for later use.
             @Params
             chart_name - If creating multiple charts at the same time,
                          use this to select the one you wish to use.
             filename - The name of the HTML file that you wish to
                        save the chart to. (filename must end in ".html")
+            folder - The name of the folder where you wish to
+                     save the HTML file. (Default: "./saved_charts/")
         """
         if not chart_name:
             chart_name = "default"
@@ -4199,7 +4214,10 @@ class BaseCase(unittest.TestCase):
             axis += "'%s'," % label
         axis += "], crosshair: false},"
         the_html = the_html.replace("xAxis: { },", axis)
-        saved_charts_folder = constants.Charts.SAVED_FOLDER
+        if not folder:
+            saved_charts_folder = constants.Charts.SAVED_FOLDER
+        else:
+            saved_charts_folder = folder
         if saved_charts_folder.endswith("/"):
             saved_charts_folder = saved_charts_folder[:-1]
         if not os.path.exists(saved_charts_folder):
@@ -6268,6 +6286,8 @@ class BaseCase(unittest.TestCase):
             self.guest_mode = sb_config.guest_mode
             self.devtools = sb_config.devtools
             self.remote_debug = sb_config.remote_debug
+            self.dashboard = sb_config.dashboard
+            self._dash_initialized = sb_config._dashboard_initialized
             self.swiftshader = sb_config.swiftshader
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
@@ -6384,6 +6404,16 @@ class BaseCase(unittest.TestCase):
                     "Mozilla/5.0 (Linux; Android 9; Pixel 3 XL) "
                     "AppleWebKit/537.36 (KHTML, like Gecko) "
                     "Chrome/76.0.3809.132 Mobile Safari/537.36")
+
+        # Dashboard pre-processing:
+        if self.dashboard:
+            sb_config._sbase_detected = True
+            sb_config._only_unittest = False
+            if not self._dash_initialized:
+                sb_config._dashboard_initialized = True
+                sb_config._sbase_detected = True
+                self._dash_initialized = True
+                self.__process_dashboard(False, init=True)
 
         has_url = False
         if self._reuse_session:
@@ -6598,12 +6628,218 @@ class BaseCase(unittest.TestCase):
             test_id = self._sb_test_identifier
         return test_id
 
+    def __get_test_id_2(self):
+        """ The id for SeleniumBase Dashboard entries. """
+        test_id = "%s.%s.%s" % (self.__class__.__module__.split('.')[-1],
+                                self.__class__.__name__,
+                                self._testMethodName)
+        if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
+            test_id = self._sb_test_identifier
+            if test_id.count('.') > 1:
+                test_id = '.'.join(test_id.split('.')[1:])
+        return test_id
+
+    def __get_display_id(self):
+        test_id = "%s.py::%s::%s" % (
+            self.__class__.__module__.replace('.', '/'),
+            self.__class__.__name__,
+            self._testMethodName)
+        if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
+            test_id = self._sb_test_identifier
+            if hasattr(self, "_using_sb_fixture_class"):
+                if test_id.count('.') >= 2:
+                    parts = test_id.split('.')
+                    full = parts[-3] + '.py::' + parts[-2] + '::' + parts[-1]
+                    test_id = full
+            elif hasattr(self, "_using_sb_fixture_no_class"):
+                if test_id.count('.') >= 1:
+                    parts = test_id.split('.')
+                    full = parts[-2] + '.py::' + parts[-1]
+                    test_id = full
+        return test_id
+
     def __create_log_path_as_needed(self, test_logpath):
         if not os.path.exists(test_logpath):
             try:
                 os.makedirs(test_logpath)
             except Exception:
                 pass  # Only reachable during multi-threaded runs
+
+    def __process_dashboard(self, has_exception, init=False):
+        ''' SeleniumBase Dashboard Processing '''
+        if len(sb_config._extra_dash_entries) > 1:
+            # First take care of existing entries from non-SeleniumBase tests
+            for test_id in sb_config._extra_dash_entries:
+                if test_id in sb_config._results.keys():
+                    if sb_config._results[test_id] == "Skipped":
+                        sb_config.item_count_skipped += 1
+                        sb_config.item_count_untested -= 1
+                    elif sb_config._results[test_id] == "Failed":
+                        sb_config.item_count_failed += 1
+                        sb_config.item_count_untested -= 1
+                    elif sb_config._results[test_id] == "Passed":
+                        sb_config.item_count_passed += 1
+                        sb_config.item_count_untested -= 1
+                    else:  # Mark "Skipped" if unknown
+                        sb_config.item_count_skipped += 1
+                        sb_config.item_count_untested -= 1
+            sb_config._extra_dash_entries = []  # Reset the list to empty
+        # Process new entries
+        test_id = self.__get_test_id_2()
+        dud = "seleniumbase/plugins/pytest_plugin.py::BaseClass::base_method"
+        if not init:
+            duration_ms = int(time.time() * 1000) - sb_config.start_time_ms
+            duration = float(duration_ms) / 1000.0
+            sb_config._duration[test_id] = duration
+            if test_id not in sb_config._display_id.keys():
+                sb_config._display_id[test_id] = self.__get_display_id()
+            if sb_config._display_id[test_id] == dud:
+                return
+            if hasattr(self, "_using_sb_fixture") and (
+                    test_id not in sb_config._results.keys()):
+                cwd = os.getcwd()
+                if '\\' in cwd:
+                    cwd = cwd.split('\\')[-1]
+                else:
+                    cwd = cwd.split('/')[-1]
+                if test_id.count('.') > 1:
+                    alt_test_id = '.'.join(test_id.split('.')[1:])
+                    if alt_test_id in sb_config._results.keys():
+                        sb_config._results.pop(alt_test_id)
+            if test_id in sb_config._results.keys() and (
+                    sb_config._results[test_id] == "Skipped"):
+                sb_config.item_count_skipped += 1
+                sb_config.item_count_untested -= 1
+                sb_config._results[test_id] = "Skipped"
+            elif has_exception:
+                sb_config._results[test_id] = "Failed"
+                sb_config.item_count_failed += 1
+                sb_config.item_count_untested -= 1
+            else:
+                sb_config._results[test_id] = "Passed"
+                sb_config.item_count_passed += 1
+                sb_config.item_count_untested -= 1
+        num_passed = sb_config.item_count_passed
+        num_failed = sb_config.item_count_failed
+        num_skipped = sb_config.item_count_skipped
+        num_untested = sb_config.item_count_untested
+        self.create_pie_chart(title=constants.Dashboard.TITLE)
+        self.add_data_point("Passed", num_passed, color="#84d474")
+        self.add_data_point("Untested", num_untested, color="#eaeaea")
+        self.add_data_point("Skipped", num_skipped, color="#efd8b4")
+        self.add_data_point("Failed", num_failed, color="#f17476")
+        style = (
+            '<link rel="stylesheet" '
+            'href="%s">' % constants.Dashboard.STYLE_CSS)
+        auto_refresh_html = ''
+        if num_untested > 0:
+            # Refresh every X seconds when waiting for more test results
+            auto_refresh_html = constants.Dashboard.META_REFRESH_HTML
+        head = (
+            '<head><meta charset="utf-8" />'
+            '<meta property="og:image" '
+            'content="https://seleniumbase.io/img/dash_pie.png">'
+            '<link rel="shortcut icon" '
+            'href="https://seleniumbase.io/img/dash_pie_2.png">'
+            '%s'
+            '<title>Dashboard</title>'
+            '%s</head>' % (auto_refresh_html, style))
+        table_html = (
+            '<div></div>'
+            '<table border="1px solid #e6e6e6;" width="100%;" padding: 5px;'
+            ' font-size="12px;" text-align="left;" id="results-table">'
+            '<thead id="results-table-head"><tr>'
+            '<th col="result">Result</th><th col="name">Test</th>'
+            '<th col="duration">Duration</th><th col="links">Links</th>'
+            '</tr></thead>')
+        the_failed = []
+        the_skipped = []
+        the_passed = []
+        the_untested = []
+        for key in sb_config._results.keys():
+            t_res = sb_config._results[key]
+            t_dur = sb_config._duration[key]
+            t_d_id = sb_config._display_id[key]
+            res_low = t_res.lower()
+            if sb_config._results[key] == "Failed":
+                the_failed.append([res_low, t_res, t_d_id, t_dur])
+            if sb_config._results[key] == "Skipped":
+                the_skipped.append([res_low, t_res, t_d_id, t_dur])
+            if sb_config._results[key] == "Passed":
+                the_passed.append([res_low, t_res, t_d_id, t_dur])
+            if sb_config._results[key] == "Untested":
+                the_untested.append([res_low, t_res, t_d_id, t_dur])
+        for row in the_failed:
+            row = (
+                '<tbody class="%s results-table-row"><tr>'
+                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                '<td><a href="latest_logs/">latest_logs/</a></td>'
+                '</tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            table_html += row
+        for row in the_skipped:
+            row = (
+                '<tbody class="%s results-table-row"><tr>'
+                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            table_html += row
+        for row in the_passed:
+            row = (
+                '<tbody class="%s results-table-row"><tr>'
+                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            table_html += row
+        for row in the_untested:
+            row = (
+                '<tbody class="%s results-table-row"><tr>'
+                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            table_html += row
+        table_html += "</table>"
+        add_more = "<br /><b>Last updated:</b> "
+        timestamp, the_date, the_time = log_helper.get_master_time()
+        last_updated = "%s at %s" % (the_date, the_time)
+        add_more = add_more + "%s" % last_updated
+        status = "<p></p><div><b>Status:</b> Awaiting results..."
+        status += " (Refresh the page for updates)"
+        if num_untested == 0:
+            status = "<p></p><div><b>Status:</b> Test Run Complete:"
+            if num_failed == 0:
+                if num_passed > 0:
+                    if num_skipped == 0:
+                        status += " <b>Success!</b> (All tests passed)"
+                    else:
+                        status += " <b>Success!</b> (No failing tests)"
+                else:
+                    status += " All tests were skipped!"
+            else:
+                latest_logs_dir = "latest_logs/"
+                log_msg = "See latest logs for details"
+                if num_failed == 1:
+                    status += (
+                        ' <b>1 test failed!</b> (<a href="%s">%s</a>)'
+                        '' % (latest_logs_dir, log_msg))
+                else:
+                    status += (
+                        ' <b>%s tests failed!</b> (<a href="%s">%s</a>)'
+                        '' % (num_failed, latest_logs_dir, log_msg))
+        status += "</div><p></p>"
+        add_more = add_more + status
+        gen_by = (
+            '<p><div>Generated by: <b><a href="https://seleniumbase.io/">'
+            'SeleniumBase</a></b></div></p><p></p>')
+        add_more = add_more + gen_by
+        # Have dashboard auto-refresh on updates when using an http server
+        refresh_line = (
+            '<script type="text/javascript" src="%s">'
+            '</script>' % constants.Dashboard.LIVE_JS)
+        add_more = add_more + refresh_line
+        the_html = head + self.extract_chart() + table_html + add_more
+        abs_path = os.path.abspath('.')
+        file_path = os.path.join(abs_path, "dashboard.html")
+        out_file = codecs.open(file_path, "w+", encoding="utf-8")
+        out_file.writelines(the_html)
+        out_file.close()
+        time.sleep(0.05)  # Add time for dashboard server to process updates
 
     def has_exception(self):
         """ (This method should ONLY be used in custom tearDown() methods.)
@@ -6691,6 +6927,7 @@ class BaseCase(unittest.TestCase):
                 # Save a screenshot if logging is on when an exception occurs
                 if has_exception:
                     self.__add_pytest_html_extra()
+                    sb_config._has_exception = True
                 if self.with_testing_base and not has_exception and (
                         self.save_screenshot_after_test):
                     test_logpath = self.log_path + "/" + test_id
@@ -6742,6 +6979,8 @@ class BaseCase(unittest.TestCase):
                             log_helper.log_page_source(
                                 test_logpath, self.driver,
                                 self.__last_page_source)
+                if self.dashboard:
+                    self.__process_dashboard(has_exception)
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
             if self.headless:

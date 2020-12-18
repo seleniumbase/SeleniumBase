@@ -69,6 +69,8 @@ except (ImportError, ValueError):
     sb.demo_mode = False
     sb.time_limit = None
     sb.demo_sleep = 1
+    sb.dashboard = False
+    sb._dash_initialized = False
     sb.message_duration = 2
     sb.block_images = False
     sb.remote_debug = False

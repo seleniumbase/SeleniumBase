@@ -2,8 +2,11 @@
 """ This is the pytest configuration file """
 
 import colorama
+import os
 import pytest
+import re
 import sys
+import time
 from seleniumbase import config as sb_config
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
@@ -423,6 +426,11 @@ def pytest_addoption(parser):
                           To access the remote debugging interface, go to:
                           http://localhost:9222 while Chromedriver is running.
                           Info: chromedevtools.github.io/devtools-protocol/""")
+    parser.addoption('--dashboard',
+                     action="store_true",
+                     dest='dashboard',
+                     default=False,
+                     help="""...""")
     parser.addoption('--swiftshader',
                      action="store_true",
                      dest='swiftshader',
@@ -492,9 +500,22 @@ def pytest_addoption(parser):
                 "\n  It's not thread-safe for WebDriver processes! "
                 "\n  Use --time-limit=s from SeleniumBase instead!\n")
 
+    if "--dashboard" in sys.argv:
+        arg_join = " ".join(sys.argv)
+        if ("-n" in sys.argv) or ("-n=" in arg_join):
+            raise Exception(
+                "\n\n  Multi-threading is not yet supported using --dashboard"
+                "\n  (You can speed up tests using --reuse-session / --rs)\n")
+
 
 def pytest_configure(config):
     """ This runs after command line options have been parsed """
+    sb_config.item_count = 0
+    sb_config.item_count_passed = 0
+    sb_config.item_count_failed = 0
+    sb_config.item_count_skipped = 0
+    sb_config.item_count_untested = 0
+    sb_config.item_count_finalized = False
     sb_config.is_pytest = True
     sb_config.browser = config.getoption('browser')
     sb_config.data = config.getoption('data')
@@ -549,6 +570,7 @@ def pytest_configure(config):
     sb_config.no_sandbox = config.getoption('no_sandbox')
     sb_config.disable_gpu = config.getoption('disable_gpu')
     sb_config.remote_debug = config.getoption('remote_debug')
+    sb_config.dashboard = config.getoption('dashboard')
     sb_config.swiftshader = config.getoption('swiftshader')
     sb_config.incognito = config.getoption('incognito')
     sb_config.guest_mode = config.getoption('guest_mode')
@@ -562,12 +584,20 @@ def pytest_configure(config):
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
     sb_config._sb_node = {}  # sb node dictionary (Used with the sb fixture)
+    # Dashboard-specific variables
+    sb_config._results = {}  # SBase Dashboard test results
+    sb_config._duration = {}  # SBase Dashboard test duration
+    sb_config._display_id = {}  # SBase Dashboard display ID
+    sb_config._dashboard_initialized = False  # Becomes True after init
+    sb_config._has_exception = False  # This becomes True if any test fails
+    sb_config._multithreaded = False  # This becomes True if multithreading
+    sb_config._only_unittest = True  # If any test uses BaseCase, becomes False
+    sb_config._sbase_detected = False  # Becomes True during SeleniumBase tests
+    sb_config._extra_dash_entries = []  # Dashboard entries for non-SBase tests
 
-    if sb_config.reuse_session:
-        arg_join = " ".join(sys.argv)
-        if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
-            # sb_config.reuse_session = False
-            pass  # Allow multithreaded browser sessions to be reused now
+    arg_join = " ".join(sys.argv)
+    if ("-n" in sys.argv) or ("-n=" in arg_join):
+        sb_config._multithreaded = True
 
     if "linux" in sys.platform and (
             not sb_config.headed and not sb_config.headless):
@@ -583,25 +613,51 @@ def pytest_configure(config):
     proxy_helper.remove_proxy_zip_if_present()
 
 
-def pytest_unconfigure():
-    """ This runs after all tests have completed with pytest. """
-    proxy_helper.remove_proxy_zip_if_present()
-    if sb_config.reuse_session:
-        # Close the shared browser session
-        if sb_config.shared_driver:
-            try:
-                sb_config.shared_driver.quit()
-            except AttributeError:
-                pass
-            except Exception:
-                pass
-        sb_config.shared_driver = None
-    log_helper.archive_logs_if_set(sb_config.log_path, sb_config.archive_logs)
+def pytest_sessionstart(session):
+    pass
+
+
+def _get_test_ids_(the_item):
+    test_id = the_item.nodeid.split('/')[-1]
+    if not test_id:
+        test_id = "unidentified_TestCase"
+    test_id = test_id.replace(' ', '_')
+    if '[' in test_id:
+        test_id_intro = test_id.split('[')[0]
+        parameter = test_id.split('[')[1]
+        parameter = re.sub(re.compile(r'\W'), '', parameter)
+        test_id = test_id_intro + "__" + parameter
+    display_id = test_id
+    test_id = test_id.replace('/', '.').replace('\\', '.')
+    test_id = test_id.replace('::', '.').replace('.py', '')
+    return test_id, display_id
+
+
+def pytest_itemcollected(item):
+    if sb_config.dashboard:
+        sb_config.item_count += 1
+        test_id, display_id = _get_test_ids_(item)
+        sb_config._results[test_id] = "Untested"
+        sb_config._duration[test_id] = "-"
+        sb_config._display_id[test_id] = display_id
+
+
+def pytest_deselected(items):
+    if sb_config.dashboard:
+        sb_config.item_count -= len(items)
 
 
 def pytest_runtest_setup():
     """ This runs before every test with pytest """
-    pass
+    if sb_config.dashboard:
+        sb_config._sbase_detected = False
+        if not sb_config.item_count_finalized:
+            sb_config.item_count_finalized = True
+            sb_config.item_count_untested = sb_config.item_count
+            dashboard_html = "file://" + os.getcwd() + "/dashboard.html"
+            star_len = len("Dashboard: ") + len(dashboard_html)
+            stars = "*" * star_len
+            print("\nDashboard: %s\n%s" % (dashboard_html, stars))
 
 
 def pytest_runtest_teardown(item):
@@ -627,6 +683,61 @@ def pytest_runtest_teardown(item):
         pass
 
 
+def pytest_sessionfinish(session):
+    pass
+
+
+def pytest_unconfigure():
+    """ This runs after all tests have completed with pytest. """
+    proxy_helper.remove_proxy_zip_if_present()
+    if sb_config.reuse_session:
+        # Close the shared browser session
+        if sb_config.shared_driver:
+            try:
+                sb_config.shared_driver.quit()
+            except AttributeError:
+                pass
+            except Exception:
+                pass
+        sb_config.shared_driver = None
+    log_helper.archive_logs_if_set(sb_config.log_path, sb_config.archive_logs)
+
+    # Dashboard post-processing: Disable auto-refresh and stamp complete
+    if sb_config.dashboard and not sb_config._only_unittest:
+        stamp = "\n<!--Test Run Complete-->"
+        find_it = constants.Dashboard.META_REFRESH_HTML
+        swap_with = ''  # Stop refreshing the page after the run is done
+        try:
+            time.sleep(0.3)  # Add time for "livejs" to detect changes
+            abs_path = os.path.abspath('.')
+            dashboard_path = os.path.join(abs_path, "dashboard.html")
+            if os.path.exists(dashboard_path):
+                with open(dashboard_path, 'r', encoding='utf-8') as f:
+                    the_html = f.read()
+                # If the test run doesn't complete by itself, stop refresh
+                the_html = the_html.replace(find_it, swap_with)
+                the_html += stamp
+                time.sleep(0.25)
+                with open(dashboard_path, "w", encoding='utf-8') as f:
+                    f.write(the_html)
+        except Exception:
+            pass
+
+
+def pytest_terminal_summary(terminalreporter):
+    if sb_config._has_exception and (
+            sb_config.dashboard and not sb_config._only_unittest):
+        # Print link a second time because the first one may be off-screen
+        dashboard_file = "file://" + os.getcwd() + "/dashboard.html"
+        terminalreporter.write_sep(
+            "-", "Dashboard: %s" % dashboard_file)
+    if sb_config._has_exception or sb_config.save_screenshot:
+        # Log files are generated during test failures and Screenshot Mode
+        latest_logs_dir = os.getcwd() + "/latest_logs/"
+        terminalreporter.write_sep(
+            "-", "Log files: %s" % latest_logs_dir)
+
+
 @pytest.fixture()
 def sb(request):
     """ SeleniumBase as a pytest fixture.
@@ -650,6 +761,8 @@ def sb(request):
         request.cls.sb = BaseClass("base_method")
         request.cls.sb.setUp()
         request.cls.sb._needs_tearDown = True
+        request.cls.sb._using_sb_fixture = True
+        request.cls.sb._using_sb_fixture_class = True
         sb_config._sb_node[request.node.nodeid] = request.cls.sb
         yield request.cls.sb
         if request.cls.sb._needs_tearDown:
@@ -659,6 +772,8 @@ def sb(request):
         sb = BaseClass("base_method")
         sb.setUp()
         sb._needs_tearDown = True
+        sb._using_sb_fixture = True
+        sb._using_sb_fixture_no_class = True
         sb_config._sb_node[request.node.nodeid] = sb
         yield sb
         if sb._needs_tearDown:
@@ -672,6 +787,15 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
     if pytest_html and report.when == 'call':
+        if sb_config.dashboard and not sb_config._sbase_detected:
+            test_id, display_id = _get_test_ids_(item)
+            r_outcome = report.outcome
+            if len(r_outcome) > 1:
+                r_outcome = r_outcome[0].upper() + r_outcome[1:]
+            sb_config._results[test_id] = r_outcome
+            sb_config._duration[test_id] = "*****"
+            sb_config._display_id[test_id] = display_id
+            sb_config._extra_dash_entries.append(test_id)
         try:
             extra_report = None
             if hasattr(item, "_testcase"):
@@ -687,7 +811,6 @@ def pytest_runtest_makereport(item, call):
                     test_id = "unidentified_TestCase"
                 test_id = test_id.replace(' ', '_')
                 if '[' in test_id:
-                    import re
                     test_id_intro = test_id.split('[')[0]
                     parameter = test_id.split('[')[1]
                     parameter = re.sub(re.compile(r'\W'), '', parameter)
