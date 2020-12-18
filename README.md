@@ -3,10 +3,10 @@
 <meta property="og:description" content="Build fast, reliable, end-to-end tests." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, test automation, testing, seleniumbase, test framework, RPA, reports, website tours, presentations">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/sb_logo_dh.png" />
-<link rel="icon" href="https://seleniumbase.io/img/logo3a.png" />
+<link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></a></p>
 
 <!-- View on GitHub -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -16,7 +16,7 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p><b>SeleniumBase</b> is a complete framework for browser automation, end-to-end testing, reports, charts, presentations, website tours, and visual testing.
+<p><b>SeleniumBase</b> is a complete browser automation solution for end-to-end testing, reports, charts, presentations, website tours, and visual testing.
 Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>. Browsers are controlled by <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.</p>
 
 <p align="center">
@@ -48,11 +48,11 @@ Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-* Simplifies the process of creating UI tests for websites.
-* Uses reliable, smart-waiting code to prevent flaky tests.
-* Includes tools for [logging, screenshots, and test reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
-* Has plugins that add new [pytest command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
-* Enhances Selenium's Python API with [versatile methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* Simplifies the creation of Web-UI tests.
+* Smart-waiting code keeps tests reliable.
+* Includes tools for [logging and reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
+* Has plugins that add new [pytest options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
+* Has a vast library of [versatile methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 
 --------
 
@@ -67,14 +67,14 @@ pytest test_swag_labs.py --demo
 --------
 
 <a id="python_installation"></a>
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Quick Start: 🚀</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Quick Start: 🚀</h2>
 
 * Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
 * Create a **[Python virtual environment](https://seleniumbase.io/help_docs/virtualenv_instructions/)**.
 
 <a id="install_seleniumbase"></a>
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
 
 * You can install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
 
@@ -131,7 +131,7 @@ COMMANDS:
  * (Use "pytest" for running tests) *
 ```
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Download a webdriver:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Download a webdriver:</h3>
 
 SeleniumBase can download webdrivers to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
 
@@ -150,7 +150,7 @@ sbase install chromedriver latest
 
 (See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts.)
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Create and run tests:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Create and run tests:</h3>
 
 * ``sbase mkdir DIR`` creates a folder with sample tests:
 
@@ -261,7 +261,7 @@ self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 
 For the complete list of SeleniumBase methods, see: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Learn More:</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Learn More:</h2>
 
 <h4>Automatic WebDriver abilities:</h4>
 SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">Read more about customizing test runs</a>.</i>)
@@ -317,7 +317,7 @@ For a full list of SeleniumBase features, <a href="https://github.com/seleniumba
 <a id="detailed_instructions"></a>
 <img src="https://seleniumbase.io/img/sb_logo_10.png" title="SeleniumBase" width="290">
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
 <a id="seleniumbase_demo_mode"></a> <b>Use Demo Mode to help you see what tests are asserting.</b>
 
@@ -444,7 +444,7 @@ To pass additional data from the command-line to tests, add ``--data="ANY STRING
 Inside your tests, you can use ``self.data`` to access that.
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Test Directory Customization:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Test Directory Customization:</h3>
 
 For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST.py] --config=[MY_CONFIG.cfg]``)
 
@@ -457,7 +457,7 @@ pytest test_demo_site.py
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Logging / Results from Failing Tests:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logging / Results from Failing Tests:</h3>
 
 Let's try an example of a test that fails:
 
@@ -480,11 +480,34 @@ pytest test_fail.py
 
 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. During test runs, past results get moved to the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), or if your run tests with ``--archive-logs``. If you choose not to archive existing logs, they will be deleted and replaced by the logs of the latest test run.
 
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
+
+The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results.
+
+<img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
+
+Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
+
+```bash
+python -m http.server 1948
+```
+
+Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the served dashboard from a web browser. (Be sure to run that command in the same directory where you ran your tests.)
+
+Here's a full example of what the SeleniumBase Dashboard may look like:
+
+```bash
+pytest test_suite.py --dashboard --rs --headless
+```
+
+<img src="https://seleniumbase.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="480" />
+
+--------
 
 <a id="creating_visual_reports"></a>
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Creating Visual Test Suite Reports:</h3>
-
-(NOTE: Several command-line args are different for Pytest vs Nosetests)
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Creating Visual Test Suite Reports:</h3>
 
 <h4><b>Pytest Reports:</b></h4>
 
@@ -523,7 +546,7 @@ pytest test_suite.py --alluredir=allure_results
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
 
 If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command-line.
 
@@ -544,7 +567,7 @@ pytest proxy_test.py --proxy=proxy1
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
 
 If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
@@ -553,13 +576,13 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
 
 Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience.
 
 
 <a id="utilizing_advanced_features"></a>
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
 
 Here are some things you can do to set up a production environment for your testing:
 
@@ -580,7 +603,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 ```
 
 <a id="detailed_method_specifications"></a>
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
 
 <h4>Navigating to a web page (and related commands)</h4>
 
@@ -868,7 +891,7 @@ pytest --reruns 5 --reruns-delay 1
 Additionally, you can use the ``@retry_on_exception()`` decorator to specifically retry failing methods. (First import: ``from seleniumbase import decorators``) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
 
 <b>Congratulations on getting started with SeleniumBase!</b>
 

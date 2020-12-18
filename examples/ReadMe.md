@@ -1,6 +1,6 @@
 <img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="300" />
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_page.png" alt="SeleniumBase" width="420" /></a></p>
 
@@ -12,7 +12,7 @@
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Example run commands to help you get started:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Example run commands to help you get started:</h3>
 
 Run an example test in Chrome: (Default: ``--browser=chrome``)
 

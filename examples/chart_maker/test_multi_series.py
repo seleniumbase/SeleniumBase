@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 class MyChartMakerClass(BaseCase):
 
-    def test_multi_series_chart(self):
+    def test_multi_series(self):
         self.create_presentation(theme="league")
 
         self.create_line_chart(

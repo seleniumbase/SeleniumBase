@@ -1,3 +1,3 @@
-## <img src="https://cdn2.hubspot.net/hubfs/100006/images/super_square_logo_3.png" title="SeleniumBase" height="32"> CHANGELOG
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> CHANGELOG</h2>
 
-### See: [SeleniumBase/releases](https://github.com/seleniumbase/SeleniumBase/releases)
+<h3>See: [SeleniumBase/releases](https://github.com/seleniumbase/SeleniumBase/releases)</h3>

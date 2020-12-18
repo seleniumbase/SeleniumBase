@@ -93,6 +93,9 @@ html_report.html
 report.html
 report.xml
 
+# Dashboard
+dashboard.html
+
 # Allure Reports / Results
 allure_report
 allure-report

@@ -46,7 +46,7 @@
 <p align="center">
 <div align="center"><b>Selenium 和 pytest 组合使用.</b></div>
 </p>
-<p align="center"><div align="center"><img src="https://cdn2.hubspot.net/hubfs/100006/images/swag_labs_gif.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
+<p align="center"><div align="center"><img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase" title="SeleniumBase" /></div></p>
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 立即开始:</h2>
@@ -105,7 +105,7 @@ pytest my_first_test.py
 pytest my_first_test.py --demo
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/my_first_test_gif.gif" title="SeleniumBase" />
+<img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" />
 
 <b>此处为相关代码 [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
 

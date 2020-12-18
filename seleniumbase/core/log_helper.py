@@ -27,14 +27,8 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
             print("WARNING: Unable to get screenshot for failure logs!")
 
 
-def log_test_failure_data(test, test_logpath, driver, browser, url=None):
-    basic_info_name = settings.BASIC_INFO_NAME
-    basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
-    log_file = codecs.open(basic_file_path, "w+", "utf-8")
-    if url:
-        last_page = url
-    else:
-        last_page = get_last_page(driver)
+def get_master_time():
+    """ Returns (timestamp, the_date, the_time) """
     timestamp = str(int(time.time())) + "  (Unix Timestamp)"
     now = datetime.datetime.now()
     utc_offset = -time.timezone / 3600.0
@@ -63,6 +57,18 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     the_time = now.strftime("%I:%M:%S %p  ") + time_zone
     if the_time.startswith("0"):
         the_time = the_time[1:]
+    return timestamp, the_date, the_time
+
+
+def log_test_failure_data(test, test_logpath, driver, browser, url=None):
+    basic_info_name = settings.BASIC_INFO_NAME
+    basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
+    log_file = codecs.open(basic_file_path, "w+", "utf-8")
+    if url:
+        last_page = url
+    else:
+        last_page = get_last_page(driver)
+    timestamp, the_date, the_time = get_master_time()
     test_id = get_test_id(test)
     data_to_save = []
     data_to_save.append("%s" % test_id)

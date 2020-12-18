@@ -1,8 +1,8 @@
 # Project information
-site_name: Docs - seleniumbase.io
+site_name: SeleniumBase - Docs
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: The world's most powerful all-in-one web automation platform. Build fast, reliable, end-to-end tests with Python.
+site_description: The most advanced web automation platform for fast, reliable, end-to-end testing with Python.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -24,8 +24,8 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: img/logo3a.png
-  favicon: img/logo3a.png
+  logo: img/grad_logo.png
+  favicon: img/logo4.png
   include_homepage_in_sidebar: true
   sticky_navigation: true
   language: en
@@ -53,7 +53,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase Docs: README.md
+  - SeleniumBase - Docs: README.md
   - Features List: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
