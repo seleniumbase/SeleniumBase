@@ -11,9 +11,9 @@ class AppleTestClass(BaseCase):
         if self.headless and (
                 self.browser == "chrome" or self.browser == "edge"):
             self.get_new_driver(
-                agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) """
+                agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) """
                       """AppleWebKit/537.36 (KHTML, like Gecko) """
-                      """Chrome/75.0.3770.100 Safari/537.36""")
+                      """Chrome/86.0.4240.198 Safari/537.36""")
         self.open("https://developer.apple.com/search/")
         title = "Testing with WebDriver in Safari"
         self.type('[placeholder*="developer.apple.com"]', title + "\n")

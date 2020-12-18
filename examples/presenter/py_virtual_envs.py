@@ -110,9 +110,9 @@ class PythonVirtualEnvPresentation(BaseCase):
             code=(
                 '# Create a virtual environment:\n'
                 'mkvirtualenv ENV_NAME\n\n'
-                '# Leave your virtual environment:\n'
+                '# Exit your virtual environment:\n'
                 'deactivate\n\n'
-                '# Return to a virtual environment:\n'
+                '# Re-enter a virtual environment:\n'
                 'workon ENV_NAME\n\n'
                 '# List all virtual environments:\n'
                 'workon\n\n'
@@ -158,11 +158,11 @@ class PythonVirtualEnvPresentation(BaseCase):
             '<h3>Where to find me:</h3>'
             '<ul>'
             '<li><a href="https://github.com/mdmintz">'
-            'https://github.com/mdmintz</a></li>'
+            'github.com/mdmintz</a></li>'
             '<li><a href="https://github.com/seleniumbase/SeleniumBase">'
-            'https://github.com/seleniumbase/SeleniumBase</a></li>'
+            'github.com/seleniumbase/SeleniumBase</a></li>'
             '<li><a href="https://seleniumbase.io/">'
-            'https://seleniumbase.io/</a></li>'
+            'seleniumbase.io</a></li>'
             '</ul>')
         self.begin_presentation(
             filename="py_virtual_envs.html", show_notes=False, interval=0)

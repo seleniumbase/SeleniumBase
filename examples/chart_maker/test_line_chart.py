@@ -3,7 +3,7 @@ from seleniumbase import BaseCase
 
 class MyChartMakerClass(BaseCase):
 
-    def test_chart_maker(self):
+    def test_line_chart(self):
         self.create_presentation()
         self.create_line_chart(
             title="Time Outside", subtitle="Last Week", unit="Minutes")

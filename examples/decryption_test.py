@@ -9,7 +9,7 @@ from seleniumbase import encryption
 
 class MyTestClass(BaseCase):
 
-    def test_rate_limited_printing(self):
+    def test_decrypt_password(self):
         self.open("https://www.saucedemo.com/")
         self.type("#user-name", "standard_user")
 

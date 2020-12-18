@@ -14,11 +14,10 @@ class GitHubTests(BaseCase):
         if self.headless and (
                 self.browser == "chrome" or self.browser == "edge"):
             self.get_new_driver(
-                agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) """
+                agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) """
                       """AppleWebKit/537.36 (KHTML, like Gecko) """
-                      """Chrome/75.0.3770.100 Safari/537.36""")
-        self.open("https://github.com/")
-        self.type("input.header-search-input", "SeleniumBase\n")
+                      """Chrome/86.0.4240.198 Safari/537.36""")
+        self.open("https://github.com/search?q=SeleniumBase")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
         self.assert_element("div.repository-content")
