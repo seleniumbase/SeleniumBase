@@ -13,12 +13,12 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 85.0.4183.87
-        sbase install chromedriver 85
+        sbase install chromedriver 87.0.4280.88
+        sbase install chromedriver 87
         sbase install chromedriver latest
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 86.0.622.69
+        sbase install edgedriver 87.0.664.66
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -43,7 +43,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.28.0"
-DEFAULT_EDGEDRIVER_VERSION = "86.0.622.69"  # (Looks for LATEST_STABLE first)
+DEFAULT_EDGEDRIVER_VERSION = "87.0.664.66"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
 
 
@@ -118,6 +118,9 @@ def main(override=None):
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c4 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTWHITE_EX
+    c5 = colorama.Fore.RED + colorama.Back.LIGHTWHITE_EX
+    c6 = colorama.Fore.LIGHTYELLOW_EX + colorama.Back.BLUE
     cr = colorama.Style.RESET_ALL
     if "linux" in sys_plat:
         c1 = ''
@@ -185,9 +188,10 @@ def main(override=None):
             p_version = use_version
             p_version = c3 + use_version + cr
             if get_latest:
-                p_version = p_version + " (Latest)"
+                p_version = p_version + " " + c2 + "(Latest)" + cr
             else:
-                p_version = p_version + " (NOT Latest)"
+                not_latest = c5 + "(" + c4 + "NOT Latest" + c5 + ")" + cr
+                p_version = p_version + " " + not_latest
             msg = c2 + "chromedriver version for download" + cr
             print("\n*** %s = %s" % (msg, p_version))
         else:
@@ -195,9 +199,10 @@ def main(override=None):
         if not get_latest:
             to_upgrade = " " + c3 + "To upgrade" + cr
             run_this = c3 + "run this" + cr
-            install_sb = c1 + "seleniumbase install chromedriver latest" + cr
-            print("\n#%s to the latest version of chromedriver," % to_upgrade)
-            print('#  %s: >>> %s' % (run_this, install_sb))
+            install_sb = c6 + "sbase install chromedriver latest" + cr
+            print("\n %s to the latest version of chromedriver," % to_upgrade)
+            print('   %s: >>> %s' % (run_this, install_sb))
+            print('  (Requires the latest version of Chrome installed)')
     elif name == "geckodriver" or name == "firefoxdriver":
         use_version = DEFAULT_GECKODRIVER_VERSION
         found_geckodriver = False

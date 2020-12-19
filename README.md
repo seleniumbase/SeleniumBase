@@ -6,7 +6,7 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a></p>
 
 <!-- View on GitHub -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -49,10 +49,10 @@ Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest
 </p>
 
 * Simplifies the creation of Web-UI tests.
-* Smart-waiting code keeps tests reliable.
+* Uses smart-waiting code for reliability.
+* Expands pytest [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
 * Includes tools for [logging and reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
-* Has plugins that add new [pytest options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).
-* Has a vast library of [versatile methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* Has a vast library of [dynamic methods](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
 
 --------
 

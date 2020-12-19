@@ -1,4 +1,4 @@
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="300" />
+<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320" />
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 
@@ -73,7 +73,7 @@ pytest test_demo_site.py
 Run tests multi-threaded using [n] threads:
 
 ```bash
-pytest test_suite.py -v -n=4
+pytest test_suite.py -n=4
 ```
 
 Run a parameterized test: (Generates multiple tests from one)
@@ -82,10 +82,16 @@ Run a parameterized test: (Generates multiple tests from one)
 pytest parameterized_test.py -v
 ```
 
-Run a test suite and generate a pytest report: (pytest-only)
+Run a test suite and generate a SeleniumBase Dashboard:
 
 ```bash
-pytest test_suite.py -v --html=report.html
+pytest test_suite.py --dashboard
+```
+
+Run a test suite and generate a pytest report:
+
+```bash
+pytest test_suite.py --html=report.html
 ```
 
 Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
@@ -109,7 +115,7 @@ pytest -m marker_test_suite -v
 Run an example test suite that reuses the browser session between tests:
 
 ```bash
-pytest test_suite.py --reuse-session -v
+pytest test_suite.py --reuse-session
 ```
 
 Run an example test demonstrating the ``rate_limited`` Python decorator:
@@ -134,13 +140,13 @@ Run an example test with nosetests:
 nosetests my_first_test.py
 ```
 
-Run an example test suite and generate a nosetest report: (nosetests-only)
+Run an example test suite and generate a nosetest report:
 
 ```bash
 nosetests test_suite.py --report --show-report
 ```
 
-Run an example test using a nosetest configuration file: (nosetests-only)
+Run an example test using a nosetest configuration file:
 
 ```bash
 nosetests my_first_test.py --config=example_config.cfg
@@ -160,7 +166,7 @@ python gui_test_runner.py
 
 --------
 
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290" />
+<img src="https://seleniumbase.io/cdn/img/super_logo_sb4.png" title="SeleniumBase" width="320" />
 
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a>

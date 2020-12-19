@@ -669,7 +669,7 @@ def pytest_runtest_setup():
             star_len = len("Dashboard: ") + len(dashboard_html)
             stars = "*" * star_len
             colorama.init(autoreset=True)
-            c1 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+            c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
             if "linux" in sys.platform:
                 c1 = ''
