@@ -6735,6 +6735,11 @@ class BaseCase(unittest.TestCase):
         if num_untested > 0:
             # Refresh every X seconds when waiting for more test results
             auto_refresh_html = constants.Dashboard.META_REFRESH_HTML
+        else:
+            # The tests are complete
+            if sb_config._using_html_report:
+                # Add the pie chart to the pytest html report
+                sb_config._saved_dashboard_pie = self.extract_chart()
         head = (
             '<head><meta charset="utf-8" />'
             '<meta property="og:image" '
@@ -6832,6 +6837,8 @@ class BaseCase(unittest.TestCase):
         refresh_line = (
             '<script type="text/javascript" src="%s">'
             '</script>' % constants.Dashboard.LIVE_JS)
+        if num_untested == 0 and sb_config._using_html_report:
+            sb_config._dash_final_summary = status
         add_more = add_more + refresh_line
         the_html = head + self.extract_chart() + table_html + add_more
         abs_path = os.path.abspath('.')
