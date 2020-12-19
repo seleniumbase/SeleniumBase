@@ -260,7 +260,11 @@ The code above will leave your browser window open in case there's a failure. (i
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
-The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results.
+The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
+
+```bash
+pytest --dashboard --rs --headless
+```
 
 <img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
 
@@ -270,7 +274,7 @@ Additionally, you can host your own SeleniumBase Dashboard Server on a port of y
 python -m http.server 1948
 ```
 
-Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the served dashboard from a web browser. (Be sure to run that command in the same directory where you ran your tests.)
+Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory.
 
 Here's a full example of what the SeleniumBase Dashboard may look like:
 
@@ -282,7 +286,7 @@ pytest test_suite.py --dashboard --rs --headless
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Pytest Reports:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Pytest Reports:</h3>
 
 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
@@ -291,6 +295,16 @@ pytest test_suite.py --html=report.html
 ```
 
 <img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+
+When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
+
+If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the html to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/).
+
+You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+
+```bash
+pytest test_suite.py --junit-xml=report.xml
+```
 
 --------
 
