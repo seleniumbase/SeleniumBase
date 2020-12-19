@@ -594,10 +594,21 @@ def pytest_configure(config):
     sb_config._only_unittest = True  # If any test uses BaseCase, becomes False
     sb_config._sbase_detected = False  # Becomes True during SeleniumBase tests
     sb_config._extra_dash_entries = []  # Dashboard entries for non-SBase tests
+    sb_config._using_html_report = False  # Becomes True when using html report
+    sb_config._dash_is_html_report = False  # Dashboard becomes the html report
+    sb_config._saved_dashboard_pie = None  # Copy of pie chart for html report
+    sb_config._dash_final_summary = None  # Dash status to add to html report
+    sb_config._html_report_name = None  # The name of the pytest html report
 
     arg_join = " ".join(sys.argv)
     if ("-n" in sys.argv) or ("-n=" in arg_join):
         sb_config._multithreaded = True
+    if ("--html" in sys.argv or "--html=" in arg_join):
+        sb_config._using_html_report = True
+        sb_config._html_report_name = config.getoption("htmlpath")
+        if sb_config.dashboard:
+            if sb_config._html_report_name == "dashboard.html":
+                sb_config._dash_is_html_report = True
 
     if "linux" in sys.platform and (
             not sb_config.headed and not sb_config.headless):
@@ -654,10 +665,16 @@ def pytest_runtest_setup():
         if not sb_config.item_count_finalized:
             sb_config.item_count_finalized = True
             sb_config.item_count_untested = sb_config.item_count
-            dashboard_html = "file://" + os.getcwd() + "/dashboard.html"
+            dashboard_html = os.getcwd() + "/dashboard.html"
             star_len = len("Dashboard: ") + len(dashboard_html)
             stars = "*" * star_len
-            print("\nDashboard: %s\n%s" % (dashboard_html, stars))
+            colorama.init(autoreset=True)
+            c1 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+            cr = colorama.Style.RESET_ALL
+            if "linux" in sys.platform:
+                c1 = ''
+                cr = ''
+            print("\nDashboard: %s%s%s\n%s" % (c1, dashboard_html, cr, stars))
 
 
 def pytest_runtest_teardown(item):
@@ -687,6 +704,20 @@ def pytest_sessionfinish(session):
     pass
 
 
+def pytest_terminal_summary(terminalreporter):
+    if sb_config._has_exception and (
+            sb_config.dashboard and not sb_config._only_unittest):
+        # Print link a second time because the first one may be off-screen
+        dashboard_file = os.getcwd() + "/dashboard.html"
+        terminalreporter.write_sep(
+            "-", "Dashboard: %s" % dashboard_file)
+    if sb_config._has_exception or sb_config.save_screenshot:
+        # Log files are generated during test failures and Screenshot Mode
+        latest_logs_dir = os.getcwd() + "/latest_logs/"
+        terminalreporter.write_sep(
+            "-", "LogPath: %s" % latest_logs_dir)
+
+
 def pytest_unconfigure():
     """ This runs after all tests have completed with pytest. """
     proxy_helper.remove_proxy_zip_if_present()
@@ -702,12 +733,20 @@ def pytest_unconfigure():
         sb_config.shared_driver = None
     log_helper.archive_logs_if_set(sb_config.log_path, sb_config.archive_logs)
 
-    # Dashboard post-processing: Disable auto-refresh and stamp complete
+    # Dashboard post-processing: Disable time-based refresh and stamp complete
     if sb_config.dashboard and not sb_config._only_unittest:
-        stamp = "\n<!--Test Run Complete-->"
+        stamp = ""
+        if sb_config._dash_is_html_report:
+            # (If the Dashboard URL is the same as the HTML Report URL:)
+            # Have the html report refresh back to a dashboard on update
+            stamp += (
+                '\n<script type="text/javascript" src="%s">'
+                '</script>' % constants.Dashboard.LIVE_JS)
+        stamp += "\n<!--Test Run Complete-->"
         find_it = constants.Dashboard.META_REFRESH_HTML
         swap_with = ''  # Stop refreshing the page after the run is done
         try:
+            # Part 1: Finalizing the dashboard / integrating html report
             time.sleep(0.3)  # Add time for "livejs" to detect changes
             abs_path = os.path.abspath('.')
             dashboard_path = os.path.join(abs_path, "dashboard.html")
@@ -717,25 +756,41 @@ def pytest_unconfigure():
                 # If the test run doesn't complete by itself, stop refresh
                 the_html = the_html.replace(find_it, swap_with)
                 the_html += stamp
+                if sb_config._dash_is_html_report and (
+                        sb_config._saved_dashboard_pie):
+                    the_html = the_html.replace(
+                        "<h1>dashboard.html</h1>",
+                        sb_config._saved_dashboard_pie)
+                    the_html = the_html.replace(
+                        "</head>", '</head><link rel="shortcut icon" '
+                        'href="https://seleniumbase.io/img/dash_pie_2.png">')
+                    if sb_config._dash_final_summary:
+                        the_html += sb_config._dash_final_summary
                 time.sleep(0.25)
                 with open(dashboard_path, "w", encoding='utf-8') as f:
                     f.write(the_html)
+            # Part 2: Appending a pytest html report with dashboard data
+            html_report_path = os.path.join(
+                abs_path, sb_config._html_report_name)
+            if sb_config._using_html_report and (
+                    os.path.exists(html_report_path) and
+                    not sb_config._dash_is_html_report):
+                # Add the dashboard pie to the pytest html report
+                with open(html_report_path, 'r', encoding='utf-8') as f:
+                    the_html = f.read()
+                if sb_config._saved_dashboard_pie:
+                    the_html = the_html.replace(
+                        "<h1>%s</h1>" % sb_config._html_report_name,
+                        sb_config._saved_dashboard_pie)
+                    the_html = the_html.replace(
+                        "</head>", '</head><link rel="shortcut icon" '
+                        'href="https://seleniumbase.io/img/dash_pie_2.png">')
+                    if sb_config._dash_final_summary:
+                        the_html += sb_config._dash_final_summary
+                with open(html_report_path, "w", encoding='utf-8') as f:
+                    f.write(the_html)
         except Exception:
             pass
-
-
-def pytest_terminal_summary(terminalreporter):
-    if sb_config._has_exception and (
-            sb_config.dashboard and not sb_config._only_unittest):
-        # Print link a second time because the first one may be off-screen
-        dashboard_file = "file://" + os.getcwd() + "/dashboard.html"
-        terminalreporter.write_sep(
-            "-", "Dashboard: %s" % dashboard_file)
-    if sb_config._has_exception or sb_config.save_screenshot:
-        # Log files are generated during test failures and Screenshot Mode
-        latest_logs_dir = os.getcwd() + "/latest_logs/"
-        terminalreporter.write_sep(
-            "-", "Log files: %s" % latest_logs_dir)
 
 
 @pytest.fixture()
@@ -827,5 +882,12 @@ def pytest_runtest_makereport(item, call):
             extra = getattr(report, 'extra', [])
             if len(extra_report) > 1 and extra_report[1]["content"]:
                 report.extra = extra + extra_report
+            if sb_config._dash_is_html_report:
+                # (If the Dashboard URL is the same as the HTML Report URL:)
+                # Have the html report refresh back to a dashboard on update
+                refresh_updates = (
+                    '<script type="text/javascript" src="%s">'
+                    '</script>' % constants.Dashboard.LIVE_JS)
+                report.extra.append(pytest_html.extras.html(refresh_updates))
         except Exception:
             pass
