@@ -57,6 +57,7 @@ def pytest_addoption(parser):
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+    --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -430,7 +431,10 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='dashboard',
                      default=False,
-                     help="""...""")
+                     help="""Using this enables the SeleniumBase Dashboard.
+                          To access the SeleniumBase Dashboard interface,
+                          open the dashboard.html file located in the same
+                          folder that the pytest command was run from.""")
     parser.addoption('--swiftshader',
                      action="store_true",
                      dest='swiftshader',

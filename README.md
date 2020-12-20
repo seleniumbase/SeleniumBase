@@ -411,6 +411,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
+--dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
