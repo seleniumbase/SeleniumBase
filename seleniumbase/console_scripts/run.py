@@ -489,6 +489,7 @@ def show_options():
     print('--reuse-session / --rs  (Reuse the browser session between tests.)')
     print('--crumbs  (Delete all cookies between tests reusing a session.)')
     print('--maximize  (Start tests with the web browser window maximized.)')
+    print('--dashboard (Enable the SeleniumBase Dashboard at dashboard.html)')
     print("--incognito  (Enable Chrome's Incognito mode.)")
     print("--guest  (Enable Chrome's Guest mode.)")
     print('-m MARKER  (Run tests with the specified pytest marker.)')
