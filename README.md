@@ -6,7 +6,7 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_4.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a></p>
 
 <!-- View on GitHub -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
