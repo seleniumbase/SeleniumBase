@@ -667,6 +667,12 @@ def pytest_runtest_setup():
             sb_config.item_count_untested = sb_config.item_count
             dashboard_html = os.getcwd() + "/dashboard.html"
             star_len = len("Dashboard: ") + len(dashboard_html)
+            try:
+                terminal_size = os.get_terminal_size().columns
+                if terminal_size > 30 and star_len > terminal_size:
+                    star_len = terminal_size
+            except Exception:
+                pass
             stars = "*" * star_len
             colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
