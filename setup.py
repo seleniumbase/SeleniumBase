@@ -167,7 +167,7 @@ setup(
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
         'virtualenv>=20.2.2',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1',
-        'coverage==5.3',
+        'coverage==5.3.1',
         'brython==3.9.0',
         'pyotp==2.4.1',
         'boto==2.49.0',
