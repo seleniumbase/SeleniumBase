@@ -25,7 +25,7 @@ markdown_extensions:
 theme:
   name: material
   logo: img/grad_logo.png
-  favicon: img/logo4.png
+  favicon: img/grad_logo.png
   include_homepage_in_sidebar: true
   sticky_navigation: true
   language: en

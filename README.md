@@ -6,7 +6,7 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_4.png" alt="SeleniumBase" title="SeleniumBase" width="420" /></a></p>
 
 <!-- View on GitHub -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -16,8 +16,8 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p><b>SeleniumBase</b> is a complete browser automation solution for end-to-end testing, reports, charts, presentations, website tours, and visual testing.
-Tests are run with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>. Browsers are controlled by <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.</p>
+<p><b>SeleniumBase</b> is the leading automation framework for browser end-to-end testing, reports, charts, presentations, product tours, and visual testing.
+Integrates with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -411,6 +411,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
+--dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
