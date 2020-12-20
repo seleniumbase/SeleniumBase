@@ -16,7 +16,7 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p><b>SeleniumBase</b> is the leading automation framework for browser end-to-end testing, reports, charts, presentations, interactive website tours, and visual testing.
+<p><b>SeleniumBase</b> is the leading automation framework for browser end-to-end testing, reports, charts, presentations, interactive tours, and visual testing.
 Integrates with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>.</p>
 
 <p align="center">
