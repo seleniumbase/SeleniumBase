@@ -106,14 +106,14 @@ setup(
         'packaging>=20.8',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=51.0.0;python_version>="3.6"',
-        'setuptools-scm',
+        'setuptools>=51.1.0;python_version>="3.6"',
+        'setuptools-scm>=5.0.1',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
         'certifi>=2020.12.5',
-        'six',
-        'nose',
-        'ipdb',
+        'six==1.15.0',
+        'nose==1.3.7',
+        'ipdb==0.13.4',
         'parso==0.7.1',  # The last version for Python 2 and 3.5
         'jedi==0.17.2',  # The last version for Python 2 and 3.5
         'idna==2.10',  # Must stay in sync with "requests"
@@ -186,7 +186,7 @@ setup(
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'allure-pytest==2.8.22;python_version<"3.5"',
-        'allure-pytest==2.8.24;python_version>="3.5"',
+        'allure-pytest==2.8.29;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
