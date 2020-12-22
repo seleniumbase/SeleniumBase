@@ -2,7 +2,7 @@
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
 <meta property="og:description" content="Build fast, reliable, end-to-end tests." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, test automation, testing, seleniumbase, test framework, RPA, reports, website tours, presentations">
-<meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" />
+<meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
