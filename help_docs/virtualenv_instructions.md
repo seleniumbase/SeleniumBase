@@ -89,7 +89,7 @@ workon sbase_env
 Listing all virtual environments:
 
 ```bash
-lsvirtualenv
+workon
 ```
 
 Deleting a virtual environment:
