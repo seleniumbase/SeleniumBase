@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Virtual Environment Tutorial</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Virtual Environment Tutorial</h2>
 
 There are multiple ways of creating a **[Python virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)**. This tutorial covers two of those:
 
@@ -12,7 +12,7 @@ There are multiple ways of creating a **[Python virtual environment](https://pac
 (The [Python Software Foundation](https://www.python.org/psf/) recommends ``venv`` for creating virtual environments.)
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Part 1: Using "venv"</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Part 1: Using "venv"</h3>
 
 > macOS/Linux terminal (``python3 -m venv ENV``)
 
@@ -32,7 +32,7 @@ To exit a virtual env, type ``deactivate``.
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> Part 2: Using virtualenvwrapper</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Part 2: Using virtualenvwrapper</h3>
 
 > macOS/Linux terminal:
 
@@ -66,7 +66,7 @@ mkvirtualenv sbase_env
 (If you have multiple versions of Python installed on your machine, and you want your virtual environment to use a specific Python version, add ``--python=PATH_TO_PYTHON_EXE`` to your ``mkvirtualenv`` command with the Python executable to use.)
 
 
-<h3><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="32" /> virtualenvwrapper commands:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> virtualenvwrapper commands:</h3>
 
 Creating a virtual environment:
 

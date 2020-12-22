@@ -2,7 +2,9 @@
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logging, Dashboards, and Reports:</h3>
 
-Log files in [SeleniumBase/examples/example_logs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed. During test failures, logs and screenshots from the latest run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is set, test logs will get archived to the ``archived_logs/`` folder (otherwise they will be cleaned out when the next test run begins).
+(Log files in [SeleniumBase/examples/example_logs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed.)
+
+🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
 ```bash
 pytest test_fail.py --browser=chrome
@@ -17,13 +19,13 @@ nosetests test_fail.py --browser=firefox
 <li><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/screenshot.png">screenshot.png</a></li>
 </ul>
 
-<b>In addition to log files, you can also generate a dashboard and test reports.</b>
+<b>In addition to log files, you can also generate dashboards and test reports.</b>
 
 --------
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
-The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
+🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
 ```bash
 pytest --dashboard --rs --headless
@@ -31,15 +33,15 @@ pytest --dashboard --rs --headless
 
 <img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
 
-Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
+🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
 
 ```bash
 python -m http.server 1948
 ```
 
-Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
 
-Here's a full example of what the SeleniumBase Dashboard may look like:
+🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
 ```bash
 pytest test_suite.py --dashboard --rs --headless
@@ -51,7 +53,7 @@ pytest test_suite.py --dashboard --rs --headless
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Pytest Reports:</h3>
 
-Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
+🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
 pytest test_suite.py --html=report.html
@@ -59,9 +61,9 @@ pytest test_suite.py --html=report.html
 
 <img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
-When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
+🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
 
-Here's an example of an upgraded html report:
+🔵 Here's an example of an upgraded html report:
 
 ```bash
 pytest test_suite.py --dashboard --html=report.html

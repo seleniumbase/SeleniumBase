@@ -411,7 +411,7 @@ The code above will leave your browser window open in case there's a failure. (i
 
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
-During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you add --archive_logs to command-line options, or have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
+🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you add --archive_logs to command-line options, or have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run. The ``test_suite.py`` collection contains tests that fail on purpose so that you can see how logging works.
 
 ```bash
 cd examples/
@@ -426,15 +426,15 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 ``--settings_file=custom_settings.py``
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
-To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
+🔵 To pass additional data from the command-line to tests, add ``--data="ANY STRING"``.
 Inside your tests, you can use ``self.data`` to access that.
 
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Test Directory Customization:</h3>
 
-For running tests outside of the SeleniumBase repo with **Pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **Nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST.py] --config=[MY_CONFIG.cfg]``)
+🔵 For running tests outside of the SeleniumBase repo with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST.py] --config=[MY_CONFIG.cfg]``)
 
-As a shortcut, you'll be able to run ``sbase mkdir [DIRECTORY]`` to create a new folder that already contains necessary files and some example tests that you can run.
+🔵 As a shortcut, you'll be able to run ``sbase mkdir [DIRECTORY]`` to create a new folder that already contains necessary files and some example tests that you can run.
 
 ```bash
 sbase mkdir ui_tests
@@ -465,13 +465,13 @@ You can run it from the ``examples`` folder like this:
 pytest test_fail.py
 ```
 
-You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. During test runs, past results get moved to the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), or if your run tests with ``--archive-logs``. If you choose not to archive existing logs, they will be deleted and replaced by the logs of the latest test run.
+🔵 You'll notice that a logs folder, "latest_logs", was created to hold information about the failing test, and screenshots. During test runs, past results get moved to the archived_logs folder if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), or if your run tests with ``--archive-logs``. If you choose not to archive existing logs, they will be deleted and replaced by the logs of the latest test run.
 
 --------
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
-The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
+🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
 ```bash
 pytest --dashboard --rs --headless
@@ -479,15 +479,15 @@ pytest --dashboard --rs --headless
 
 <img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
 
-Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
+🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
 
 ```bash
 python -m http.server 1948
 ```
 
-Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
 
-Here's a full example of what the SeleniumBase Dashboard may look like:
+🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
 ```bash
 pytest test_suite.py --dashboard --rs --headless
@@ -502,7 +502,7 @@ pytest test_suite.py --dashboard --rs --headless
 
 <h4><b>Pytest Reports:</b></h4>
 
-Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
+🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
 pytest test_suite.py --html=report.html
@@ -510,9 +510,9 @@ pytest test_suite.py --html=report.html
 
 <img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
-When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
+🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
 
-Here's an example of an upgraded html report:
+🔵 Here's an example of an upgraded html report:
 
 ```bash
 pytest test_suite.py --dashboard --html=report.html
@@ -572,7 +572,7 @@ pytest proxy_test.py --proxy=proxy1
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
 
-If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
+🔵 If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
@@ -581,7 +581,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
 
-Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience.
+🔵 Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience.
 
 
 <a id="utilizing_advanced_features"></a>
@@ -608,7 +608,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 <a id="detailed_method_specifications"></a>
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
 
-<h4>Navigating to a web page (and related commands)</h4>
+🔵 Navigating to a web page: (and related commands)
 
 ```python
 self.open("https://xkcd.com/378/")  # This method opens the specified page.
@@ -624,7 +624,7 @@ self.get_current_url()  # This method returns the current page URL.
 self.get_page_source()  # This method returns the current page source.
 ```
 
-<b>ProTip™:</b> You may need to use the get_page_source() method along with Python's find() command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills for that.)
+<b>ProTip™:</b> You may need to use the <code>self.get_page_source()</code> method along with Python's <code>find()</code> command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills for that.)
 
 ```python
 source = self.get_page_source()
@@ -633,7 +633,7 @@ head_close_tag = source.find('</head>', head_open_tag)
 everything_inside_head = source[head_open_tag+len('<head>'):head_close_tag]
 ```
 
-<h4>Clicking</h4>
+🔵 Clicking:
 
 To click an element on the page:
 
@@ -643,14 +643,15 @@ self.click("div#my_id")
 
 **ProTip™:** In most web browsers, you can right-click on a page and select ``Inspect Element`` to see the CSS selector details that you'll need to create your own scripts.
 
-<h4>Typing Text</h4>
+🔵 Typing Text:
 
-self.type(selector, text)  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
+<code>self.type(selector, text)</code>  # updates the text from the specified element with the specified value. An exception is raised if the element is missing or if the text field is not editable. Example:
 
 ```python
 self.type("input#id_value", "2012")
 ```
-You can also use self.add_text() or the WebDriver .send_keys() command, but those won't clear the text box first if there's already text inside.
+
+You can also use <code>self.add_text()</code> or the WebDriver <code>.send_keys()</code> command, but those won't clear the text box first if there's already text inside.
 If you want to type in special keys, that's easy too. Here's an example:
 
 ```python
@@ -658,30 +659,31 @@ from selenium.webdriver.common.keys import Keys
 self.find_element("textarea").send_keys(Keys.SPACE + Keys.BACK_SPACE + '\n')  # The backspace should cancel out the space, leaving you with the newline
 ```
 
-<h4>Getting the text from an element on a page</h4>
+🔵 Getting the text from an element on a page:
 
 ```python
 text = self.get_text("header h2")
 ```
 
-<h4>Getting the attribute value from an element on a page</h4>
+🔵 Getting the attribute value from an element on a page:
 
 ```python
 attribute = self.get_attribute("#comic img", "title")
 ```
 
-<h4>Asserting existance of an element on a page within some number of seconds:</h4>
+🔵 Asserting existance of an element on a page within some number of seconds:
 
 ```python
 self.wait_for_element_present("div.my_class", timeout=10)
 ```
 (NOTE: You can also use: ``self.assert_element_present(ELEMENT)``)
 
-<h4>Asserting visibility of an element on a page within some number of seconds:</h4>
+🔵 Asserting visibility of an element on a page within some number of seconds:
 
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5)
 ```
+
 (NOTE: The short versions of this are ``self.find_element(ELEMENT)`` and ``self.assert_element(ELEMENT)``. The find_element() version returns the element)
 
 Since the line above returns the element, you can combine that with .click() as shown below:
@@ -702,7 +704,7 @@ You can also use ``*=`` to search for any partial value in a CSS selector as sho
 self.click('a[name*="partial_name"]')
 ```
 
-<h4>Asserting visibility of text inside an element on a page within some number of seconds:</h4>
+🔵 Asserting visibility of text inside an element on a page within some number of seconds:
 
 ```python
 self.assert_text("Make it so!", "div#trek div.picard div.quotes")
@@ -710,7 +712,7 @@ self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeo
 ```
 (NOTE: ``self.find_text(TEXT, ELEMENT)`` and ``self.wait_for_text(TEXT, ELEMENT)`` also do this. For backwords compatibility, older method names were kept, but the default timeout may be different.)
 
-<h4>Asserting Anything</h4>
+🔵 Asserting Anything:
 
 ```python
 self.assert_true(myvar1 == something)
@@ -718,7 +720,7 @@ self.assert_true(myvar1 == something)
 self.assert_equal(var1, var2)
 ```
 
-<h4>Useful Conditional Statements (with creative examples in action)</h4>
+🔵 Useful Conditional Statements: (with creative examples in action)
 
 is_element_visible(selector)  # is an element visible on a page
 
@@ -818,7 +820,7 @@ self.activate_jquery()
 
 🔵 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
 
-Here are some examples of using jQuery in your scripts:
+🔵 Here are some examples of using jQuery in your scripts:
 
 ```python
 self.execute_script('jQuery, window.scrollTo(0, 600)')  # Scrolling the page
@@ -874,8 +876,8 @@ class MyTestClass(BaseCase):
         self.process_deferred_asserts()
 ```
 
-``deferred_assert_element()`` and ``deferred_assert_text()`` will save any exceptions that would be raised.
-To flush out all the failed deferred asserts into a single exception, make sure to call ``self.process_deferred_asserts()`` at the end of your test method. If your test hits multiple pages, you can call ``self.process_deferred_asserts()`` before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
+<code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
+To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
 🔵 Accessing Raw WebDriver
 
