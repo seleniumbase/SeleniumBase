@@ -1,8 +1,8 @@
 # Project information
-site_name: SeleniumBase - Docs
+site_name: SeleniumBase
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: The most advanced web automation platform for fast, reliable, end-to-end testing with Python.
+site_description: The most reliable web automation framework for end-to-end testing with Python, pytest, and WebDriver.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -53,7 +53,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase - Docs: README.md
+  - SeleniumBase | README: README.md
   - Features List: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
