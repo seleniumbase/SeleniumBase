@@ -2,7 +2,7 @@
 site_name: SeleniumBase
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: The most reliable web automation framework for end-to-end testing with Python, pytest, and WebDriver.
+site_description: A fast and reliable web automation framework for end-to-end testing with Python, pytest, and WebDriver.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
