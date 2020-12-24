@@ -23,7 +23,7 @@ Output:
         Both a language and an action must be specified.
         The "-p" action can be paired with one other action.
         When running with "-c" (or "--copy"), the new file name
-        will be the orginal name appended with an underscore
+        will be the original name appended with an underscore
         plus the 2-letter language code of the new language.
         (Example: Translating "test_1.py" into Japanese with
         "-c" will create a new file called "test_1_ja.py".)
@@ -63,7 +63,7 @@ def invalid_run_command(msg=None):
     exp += "         Both a language and an action must be specified.\n"
     exp += '         The "-p" action can be paired with one other action.\n'
     exp += '         When running with "-c" (or "--copy"), the new file name\n'
-    exp += '         will be the orginal name appended with an underscore\n'
+    exp += '         will be the original name appended with an underscore\n'
     exp += "         plus the 2-letter language code of the new language.\n"
     exp += '         (Example: Translating "test_1.py" into Japanese with\n'
     exp += '          "-c" will create a new file called "test_1_ja.py".)\n'

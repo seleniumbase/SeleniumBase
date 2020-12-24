@@ -1,4 +1,4 @@
-<h4> Here are some organizations that've used SeleniumBase:</h4>
+<h4> Here are some organizations that have used SeleniumBase:</h4>
 
 * [HubSpot](https://www.hubspot.com/)
 * [Veracode](https://www.veracode.com/)
@@ -9,7 +9,7 @@
 * [MIT](https://web.mit.edu/)
 * [Harvard Medical School](https://hms.harvard.edu/)
 * [Mississippi State University](https://www.msstate.edu/)
-* [Queen's Univeristy](https://www.queensu.ca/)
+* [Queen's University](https://www.queensu.ca/)
 * [L1NNA Laboratory](https://l1nna.com/)
 * [First American](https://www.firstam.com/)
 * [StreamSets](https://streamsets.com/)

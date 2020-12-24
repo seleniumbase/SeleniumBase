@@ -292,7 +292,7 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 <img src="https://img.shields.io/badge/Flaky Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
 
 ✅ Automated/Manual Hybrid Mode:</h4>
-<p>SeleniumBase includes a solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md">MasterQA</a></b>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validatation.</p>
+<p>SeleniumBase includes a solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md">MasterQA</a></b>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validation.</p>
 
 ✅ Feature-Rich:
 <p>For a full list of SeleniumBase features, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">Click Here</a>.</p>
@@ -670,7 +670,7 @@ text = self.get_text("header h2")
 attribute = self.get_attribute("#comic img", "title")
 ```
 
-🔵 Asserting existance of an element on a page within some number of seconds:
+🔵 Asserting existence of an element on a page within some number of seconds:
 
 ```python
 self.wait_for_element_present("div.my_class", timeout=10)
@@ -709,7 +709,7 @@ self.click('a[name*="partial_name"]')
 self.assert_text("Make it so!", "div#trek div.picard div.quotes")
 self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=3)
 ```
-(NOTE: ``self.find_text(TEXT, ELEMENT)`` and ``self.wait_for_text(TEXT, ELEMENT)`` also do this. For backwords compatibility, older method names were kept, but the default timeout may be different.)
+(NOTE: ``self.find_text(TEXT, ELEMENT)`` and ``self.wait_for_text(TEXT, ELEMENT)`` also do this. For backwards compatibility, older method names were kept, but the default timeout may be different.)
 
 🔵 Asserting Anything:
 

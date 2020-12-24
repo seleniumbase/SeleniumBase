@@ -496,7 +496,7 @@ def pytest_addoption(parser):
                      default=None,
                      help="""Setting this overrides the default timeout
                           by the multiplier when waiting for page elements.
-                          Unused when tests overide the default value.""")
+                          Unused when tests override the default value.""")
     for arg in sys.argv:
         if "--timeout=" in arg:
             raise Exception(

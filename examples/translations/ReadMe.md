@@ -54,7 +54,7 @@ specified. Method calls and ``import`` lines get swapped.
 Both a language and an action must be specified.
 The ``-p`` action can be paired with one other action.
 When running with ``-c`` (or ``--copy``) the new file name
-will be the orginal name appended with an underscore
+will be the original name appended with an underscore
 plus the 2-letter language code of the new language.
 (Example: Translating ``test_1.py`` into Japanese with
 ``-c`` will create a new file called ``test_1_ja.py``.)

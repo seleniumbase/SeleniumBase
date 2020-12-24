@@ -1,5 +1,5 @@
 """
-The S3 Logging Plugin to upload all logs to the S3 bucket specifed.
+The S3 Logging Plugin to upload all logs to the S3 bucket specified.
 """
 
 import uuid
