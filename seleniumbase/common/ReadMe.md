@@ -48,7 +48,7 @@ Password: *********
 Here is the obfuscated password:
 $^*ENCRYPT=RXlYMSJWTz8HSwM=?&#$
 ```
-(You can also use [unobfuscate.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/unobfuscate.py) to encrypt passwords without having them masked while typing them. Or you can use it to decrypt an obfuscated pasword.)
+(You can also use [unobfuscate.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/unobfuscate.py) to encrypt passwords without having them masked while typing them. Or you can use it to decrypt an obfuscated password.)
 
 * Finally, in your tests you can now decrypt obfuscated passwords for use in login methods like this:
 ```python

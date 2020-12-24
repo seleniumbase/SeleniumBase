@@ -33,7 +33,7 @@ class MyTestClass(BaseCase):
         # Assert that the given SVG is visible on the page
         self.assert_element('svg[name="svgName"]')
 
-        # Verify that a slider control updates a progrss bar
+        # Verify that a slider control updates a progress bar
         self.assert_element('progress[value="50"]')
         self.press_right_arrow("#myslider", times=5)
         self.assert_element('progress[value="100"]')

@@ -1757,7 +1757,7 @@ class BaseCase(unittest.TestCase):
         """ Brings driver control outside the current iframe.
             (If driver control is inside an iframe, the driver control
             will be set to one level above the current frame. If the driver
-            control is not currenly in an iframe, nothing will happen.) """
+            control is not currently in an iframe, nothing will happen.) """
         self.driver.switch_to.default_content()
 
     def open_new_window(self, switch_to=True):
@@ -2665,7 +2665,7 @@ class BaseCase(unittest.TestCase):
             codec - The compression format for character encoding.
                     (The default codec used by this method is 'utf-8'.)
             wrap - Replaces ' \n' with ' ' so that individual sentences
-                   from a PDF don't get broken up into seperate lines when
+                   from a PDF don't get broken up into separate lines when
                    getting converted into text format.
             nav - If PDF is a URL, navigates to the URL in the browser first.
                   (Not needed because the PDF will be downloaded anyway.)
@@ -2737,7 +2737,7 @@ class BaseCase(unittest.TestCase):
             codec - The compression format for character encoding.
                     (The default codec used by this method is 'utf-8'.)
             wrap - Replaces ' \n' with ' ' so that individual sentences
-                   from a PDF don't get broken up into seperate lines when
+                   from a PDF don't get broken up into separate lines when
                    getting converted into text format.
             nav - If PDF is a URL, navigates to the URL in the browser first.
                   (Not needed because the PDF will be downloaded anyway.)
@@ -5364,7 +5364,7 @@ class BaseCase(unittest.TestCase):
     def wait_for_element_not_visible(self, selector, by=By.CSS_SELECTOR,
                                      timeout=None):
         """ Waits for an element to no longer be visible on a page.
-            The element can be non-existant in the HTML or hidden on the page
+            The element can be non-existent in the HTML or hidden on the page
             to qualify as not visible. """
         if not timeout:
             timeout = settings.LARGE_TIMEOUT

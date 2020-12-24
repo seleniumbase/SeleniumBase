@@ -73,7 +73,7 @@ class S3LoggingBucket(object):
         return "%s%s" % (self.bucket_url, file_name)
 
     def save_uploaded_file_names(self, files):
-        """ Keep a record of all file names that've been uploaded. Upload log
+        """ Keep a record of all file names that have been uploaded. Upload log
             files related to each test after its execution. Once done, use
             already_uploaded_files to create an index file. """
         global already_uploaded_files

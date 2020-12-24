@@ -246,7 +246,7 @@ def show_translate_usage():
     print("         Both a language and an action must be specified.")
     print('         The "-p" action can be paired with one other action.')
     print('         When running with "-c" (or "--copy"), the new file name')
-    print('         will be the orginal name appended with an underscore')
+    print('         will be the original name appended with an underscore')
     print("         plus the 2-letter language code of the new language.")
     print('         (Example: Translating "test_1.py" into Japanese with')
     print('          "-c" will create a new file called "test_1_ja.py".)')
