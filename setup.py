@@ -60,7 +60,7 @@ if sys.argv[-1] == 'publish':
 setup(
     name='seleniumbase',
     version=about['__version__'],
-    description='The complete web automation library for end-to-end testing.',
+    description='A complete web automation framework for end-to-end testing.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/seleniumbase/SeleniumBase',

@@ -1,4 +1,4 @@
-# Dutch / Nederlands - Translations
+# Dutch / Nederlands - Translations - Python 3 Only!
 from seleniumbase import BaseCase
 from seleniumbase import MasterQA
 
