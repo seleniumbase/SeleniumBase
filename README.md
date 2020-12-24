@@ -16,7 +16,7 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p><b>SeleniumBase</b>: A fast and reliable web automation framework for end-to-end testing and RPA with <a href="https://www.python.org/">Python</a>, <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>. Includes tools for reports, charts, presentations, product tours, and visual testing.</p>
+<p><b>SeleniumBase</b>: A fast and reliable web automation framework for end-to-end testing and <a href="https://en.wikipedia.org/wiki/Robotic_process_automation">RPA</a> with <a href="https://www.python.org/">Python</a>, <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> and <a href="https://www.w3.org/TR/webdriver2/#endpoints">WebDriver</a>. Includes tools for reports, charts, presentations, product tours, and visual testing.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
