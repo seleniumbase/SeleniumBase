@@ -143,7 +143,7 @@ class Reveal:
 
 
 class HighCharts:
-    VER = "8.1.2"
+    VER = "8.2.2"
     HC_CSS = ("https://code.highcharts.com/%s/css/highcharts.css" % VER)
     HC_JS = ("https://code.highcharts.com/%s/highcharts.js" % VER)
     EXPORTING_JS = ("https://code.highcharts.com/"
