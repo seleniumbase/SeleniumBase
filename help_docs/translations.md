@@ -1,7 +1,7 @@
-<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_m.png" title="SeleniumBase" width="290" /></a></h3>
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_m.png" title="SeleniumBase" width="300" /></a></h3>
 
 <a id="language_tests"></a>
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Language Tests (Python 3+)</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Language Tests (Python 3+)</h3>
 
 <b>SeleniumBase</b> supports the following 10 languages: <i>English</i>, <i>Chinese</i>, <i>Dutch</i>, <i>French</i>, <i>Italian</i>, <i>Japanese</i>, <i>Korean</i>, <i>Portuguese</i>, <i>Russian</i>, and <i>Spanish</i>.
 
@@ -13,7 +13,7 @@ self.open(URL) <=> self.开启网址(URL)
 ```
 
 <a id="translation_api"></a>
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Translation API</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Translation API</h2>
 
 You can use SeleniumBase to selectively translate the method names of any test from one language to another via the console scripts interface. Additionally, the ``import`` line at the top of the Python file will change to import the new ``BaseCase``. Example: ``BaseCase`` becomes ``CasoDeTeste`` when a test is translated into Portuguese.
 
@@ -21,7 +21,7 @@ You can use SeleniumBase to selectively translate the method names of any test f
 seleniumbase translate
 ```
 
-```
+```bash
 * Usage:
 seleniumbase translate [SB_FILE.py] [LANGUAGE] [ACTION]
 

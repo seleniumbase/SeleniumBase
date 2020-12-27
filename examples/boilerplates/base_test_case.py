@@ -48,4 +48,7 @@ class MyTests(BaseTestCase):
     def test_example(self):
         self.login()
         self.example_method()
+        self.type("input", "Name")
+        self.click("form button")
+        ...
 '''

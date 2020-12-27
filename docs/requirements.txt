@@ -1,9 +1,9 @@
 regex>=2020.11.13
-tqdm>=4.54.1
+tqdm>=4.55.0
 livereload==2.6.3;python_version>="3.6"
 Markdown==3.3.3
 readme-renderer==28.0
-pymdown-extensions==8.0.1
+pymdown-extensions==8.1
 mkdocs==1.1.2
 mkdocs-material==6.2.2
 mkdocs-simple-hooks==0.1.2

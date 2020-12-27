@@ -7,12 +7,13 @@
 
 * <b>SeleniumBase</b> tests are run with <b>pytest</b>.
 * Chrome is the default browser if not specified.
+* Example tests are located in: <b>[SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
 * During test failures, logs and screenshots from the latest test run are saved to the ``latest_logs/`` folder.
-* Example tests are located in <b>[SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
+* Tests can be structured using [15 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Example run commands to help you get started:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
 
 Run an example test in Chrome: (Default: ``--browser=chrome``)
 

@@ -2,7 +2,7 @@
 site_name: SeleniumBase
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: A fast and reliable web automation framework for end-to-end testing and RPA with Python, pytest, and WebDriver.
+site_description: A fast, reliable web automation framework for end-to-end testing (and RPA) with Python, pytest, and WebDriver.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -59,6 +59,7 @@ nav:
   - Command Line Options: help_docs/customizing_test_runs.md
   - Dashboard / Reports: examples/example_logs/ReadMe.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
+  - Syntax Formats: help_docs/syntax_formats.md
   - API Reference: help_docs/method_summary.md
   - Setup / Install:
     - Install Python, pip, git: help_docs/install_python_pip_git.md
