@@ -49,7 +49,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.55.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.55.1'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -177,7 +177,7 @@ setup(
         'toml==0.10.2',
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
-        'Pillow==8.0.1;python_version>="3.6"',
+        'Pillow==8.1.0;python_version>="3.6"',
         'rich==9.6.1;python_version>="3.6" and python_version<"4.0"',
         'zipp==1.2.0;python_version<"3.6"',
         'zipp==3.4.0;python_version>="3.6"',

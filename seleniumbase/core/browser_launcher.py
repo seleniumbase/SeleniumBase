@@ -689,15 +689,10 @@ def get_local_driver(
                             print("\nWarning: Could not install geckodriver: "
                                   "%s" % e)
                         sys.argv = sys_args  # Put back the original sys args
-                if "linux" in PLATFORM or not headless:
-                    firefox_driver = webdriver.Firefox(
-                        firefox_profile=profile,
-                        capabilities=firefox_capabilities)
-                else:
-                    firefox_driver = webdriver.Firefox(
-                        firefox_profile=profile,
-                        capabilities=firefox_capabilities,
-                        options=options)
+                firefox_driver = webdriver.Firefox(
+                    firefox_profile=profile,
+                    capabilities=firefox_capabilities,
+                    options=options)
             except Exception:
                 profile = _create_firefox_profile(
                     downloads_path, locale_code,
