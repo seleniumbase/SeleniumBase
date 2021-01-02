@@ -1,5 +1,5 @@
 regex>=2020.11.13
-tqdm>=4.55.0
+tqdm>=4.55.1
 livereload==2.6.3;python_version>="3.6"
 Markdown==3.3.3
 readme-renderer==28.0
