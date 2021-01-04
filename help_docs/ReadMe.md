@@ -8,7 +8,9 @@
 <a href="https://seleniumbase.io/help_docs/features_list/">🗂️ Features</a>
 <br />
 <a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
-<a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a> |
+<a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
+<br />
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/method_summary/">📗 API</a> |
@@ -49,6 +51,7 @@
 <div><a href="https://seleniumbase.io/help_docs/webdriver_installation/"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/verify_webdriver/"><b>Verify Webdriver Works</b></a></div>
 <div><a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/"><b>Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/syntax_formats/"><b>Syntax Formats</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mobile_testing/"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/method_summary/"><b>Method Summary (API Ref)</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/translations/"><b>Language Translations</b></a></div>
@@ -91,6 +94,7 @@
 <div><a href="https://seleniumbase.com/help_docs/webdriver_installation"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/verify_webdriver"><b>Verify Webdriver Works</b></a></div>
 <div><a href="https://seleniumbase.com/seleniumbase/console_scripts/"><b>Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.com/help_docs/syntax_formats"><b>Syntax Formats</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/mobile_testing"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/method_summary"><b>Method Summary (API Ref)</b></a></div>
 <div><a href="https://seleniumbase.com/help_docs/translations"><b>Language Translations</b></a></div>
