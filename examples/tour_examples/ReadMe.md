@@ -1,12 +1,25 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="360" /></h3>
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
 
 ## Interactive Product Tours
 
 SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
-**Example tour:**
+<b>Example tour: (with autoplay)</b>
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.io/cdn/gif/driverjs_tour.gif" title="SeleniumBase Tour of Google"><br>
+
+[SeleniumBase driverjs_maps_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/driverjs_maps_tour.py)
+
+```bash
+cd examples/tour_examples
+pytest driverjs_maps_tour.py
+```
+
+<b>Here's a longer example:</b>
+
+<img src="https://seleniumbase.io/cdn/gif/google_tour_3.gif" title="SeleniumBase Tour of Google"><br>
+
+[SeleniumBase google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py)
 
 ```bash
 cd examples/tour_examples
