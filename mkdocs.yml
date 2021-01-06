@@ -107,6 +107,7 @@ nav:
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
+    - Virtual Env Tutorial: https://seleniumbase.io/other/py_virtual_envs.html
   - Thank You: help_docs/thank_you.md
 # Google Analytics
 google_analytics: ['UA-167313767-1', 'seleniumbase.io']

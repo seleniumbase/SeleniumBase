@@ -81,6 +81,7 @@ pip install seleniumbase
 
 > (Add ``--upgrade`` OR ``-U`` to upgrade an installation.)
 > (Add ``--force-reinstall`` to upgrade dependencies.)
+> (Use ``pip3`` if multiple versions of Python are installed.)
 
 🔵 You can also install ``seleniumbase`` from a [GitHub](https://github.com/seleniumbase/SeleniumBase) clone:
 
