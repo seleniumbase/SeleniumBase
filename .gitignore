@@ -19,10 +19,14 @@ lib64
 __pycache__
 
 # Python3 pyvenv
-env
-ENV
-venv
-VENV
+.env
+.venv
+env/
+venv/
+ENV/
+VENV/
+env.bak/
+venv.bak/
 sbase
 sbase*
 seleniumbase_env
