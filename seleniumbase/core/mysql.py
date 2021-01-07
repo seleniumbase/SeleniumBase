@@ -2,6 +2,7 @@
 Wrapper for MySQL DB functions to make life easier.
 """
 
+import sys
 import time
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
@@ -40,11 +41,21 @@ class DatabaseManager():
         count = 0
         while count < retry_count:
             try:
-                self.conn = pymysql.connect(host=db_server,
-                                            port=db_port,
-                                            user=db_user,
-                                            passwd=db_pass,
-                                            db=db_schema)
+                if sys.version_info[0] == 3 and sys.version_info[1] >= 6 or (
+                        sys.version_info[0] > 3):
+                    # PyMySQL 1.0.0 or above renamed the variables.
+                    self.conn = pymysql.connect(host=db_server,
+                                                port=db_port,
+                                                user=db_user,
+                                                password=db_pass,
+                                                database=db_schema)
+                else:
+                    # PyMySQL 0.10.1 for Python 2.7 and Python 3.5
+                    self.conn = pymysql.connect(host=db_server,
+                                                port=db_port,
+                                                user=db_user,
+                                                passwd=db_pass,
+                                                db=db_schema)
                 self.conn.autocommit(True)
                 self.cursor = self.conn.cursor()
                 return
