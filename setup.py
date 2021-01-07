@@ -150,7 +150,8 @@ setup(
         'soupsieve==2.0.1;python_version>="3.5" and python_version<"3.6"',
         'soupsieve==2.1;python_version>="3.6"',
         'beautifulsoup4==4.9.3',
-        'cryptography==3.0;python_version<"3.6"',
+        'cryptography==2.9.2;python_version<"3.5"',
+        'cryptography==3.0;python_version>="3.5" and python_version<"3.6"',
         'cryptography==3.3.1;python_version>="3.6"',
         'pyopenssl==19.1.0;python_version<"3.6"',
         'pyopenssl==20.0.1;python_version>="3.6"',
@@ -168,7 +169,8 @@ setup(
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
         'virtualenv>=20.2.2',  # Sync with importlib-metadata and pathlib2
-        'pymysql==0.10.1',
+        'pymysql==0.10.1;python_version<"3.6"',
+        'pymysql==1.0.0;python_version>="3.6"',
         'coverage==5.3.1',
         'brython==3.9.1',
         'pyotp==2.4.1',
