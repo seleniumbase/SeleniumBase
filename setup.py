@@ -161,7 +161,7 @@ setup(
         'traitlets==5.0.5;python_version>="3.7"',
         'ipython==5.10.0;python_version<"3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.9;python_version>="3.6"',
+        'prompt-toolkit==3.0.10;python_version>="3.6"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.19.0;python_version>="3.7"',
@@ -170,7 +170,7 @@ setup(
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
         'virtualenv>=20.2.2',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
-        'pymysql==1.0.0;python_version>="3.6"',
+        'pymysql==1.0.1;python_version>="3.6"',
         'coverage==5.3.1',
         'brython==3.9.1',
         'pyotp==2.4.1',
