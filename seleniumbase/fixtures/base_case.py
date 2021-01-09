@@ -1474,6 +1474,28 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
         return drag_element
 
+    def drag_and_drop_with_offset(
+            self, selector, x, y, by=By.CSS_SELECTOR, timeout=None):
+        """ Drag and drop an element to an {X,Y}-offset location. """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        element = self.wait_for_element_visible(css_selector, timeout=timeout)
+        self.__demo_mode_highlight_if_active(css_selector, By.CSS_SELECTOR)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = js_utils.get_drag_and_drop_with_offset_script(
+            css_selector, x, y)
+        self.safe_execute_script(script)
+        if self.demo_mode:
+            self.__demo_mode_pause_if_active()
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+        return element
+
     def __select_option(self, dropdown_selector, option,
                         dropdown_by=By.CSS_SELECTOR, option_by="text",
                         timeout=None):
