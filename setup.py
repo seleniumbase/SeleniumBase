@@ -106,7 +106,7 @@ setup(
         'packaging>=20.8',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=51.1.1;python_version>="3.6"',
+        'setuptools>=51.1.2;python_version>="3.6"',
         'setuptools-scm>=5.0.1',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
