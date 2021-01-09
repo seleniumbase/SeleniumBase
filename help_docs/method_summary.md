@@ -131,6 +131,8 @@ self.drag_and_drop(drag_selector, drop_selector,
                    drag_by=By.CSS_SELECTOR, drop_by=By.CSS_SELECTOR,
                    timeout=None)
 
+self.drag_and_drop_with_offset(selector, x, y, by=By.CSS_SELECTOR, timeout=None)
+
 self.select_option_by_text(dropdown_selector, option,
                            dropdown_by=By.CSS_SELECTOR,
                            timeout=None)
