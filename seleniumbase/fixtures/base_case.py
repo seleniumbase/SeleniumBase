@@ -75,6 +75,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_screenshot_png = None
         self.__last_page_url = None
         self.__last_page_source = None
+        self.__skip_reason = None
         self.__added_pytest_html_extra = None
         self.__deferred_assert_count = 0
         self.__deferred_assert_failures = []
@@ -3283,9 +3284,13 @@ class BaseCase(unittest.TestCase):
 
     def skip(self, reason=""):
         """ Mark the test as Skipped. """
-        if self.dashboard:
+        if self.dashboard or (self.is_pytest and self.with_db_reporting):
             test_id = self.__get_test_id_2()
             sb_config._results[test_id] = "Skipped"
+            self.__skip_reason = reason
+        elif reason and not self.is_pytest:
+            # Only needed for nosetest db reporting
+            self._nose_skip_reason = reason
         self.skipTest(reason)
 
     ############
@@ -6368,7 +6373,8 @@ class BaseCase(unittest.TestCase):
                     self._testMethodName)
                 data_payload.env = application.split('.')[0]
                 data_payload.start_time = application.split('.')[1]
-                data_payload.state = constants.State.NOTRUN
+                data_payload.state = constants.State.UNTESTED
+                self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
             if self.headless:
@@ -6559,6 +6565,21 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 self.__last_page_source = None
 
+    def __get_exception_info(self):
+        exc_message = None
+        if sys.version_info[0] >= 3 and hasattr(self, '_outcome') and (
+                hasattr(self._outcome, 'errors') and self._outcome.errors):
+            try:
+                exc_message = self._outcome.errors[0][1][1]
+            except Exception:
+                exc_message = "(Unknown Exception)"
+        else:
+            try:
+                exc_message = sys.last_value
+            except Exception:
+                exc_message = "(Unknown Exception)"
+        return str(exc_message)
+
     def __insert_test_result(self, state, err):
         from seleniumbase.core.testcase_manager import TestcaseDataPayload
         data_payload = TestcaseDataPayload()
@@ -6577,7 +6598,15 @@ class BaseCase(unittest.TestCase):
             elif "Error: " in tb_string:
                 data_payload.message = tb_string.split("Error: ")[-1]
             else:
-                data_payload.message = "Unknown Error: See Stacktrace"
+                data_payload.message = self.__get_exception_info()
+        else:
+            test_id = self.__get_test_id_2()
+            if self.is_pytest and test_id in sb_config._results.keys() and (
+                    sb_config._results[test_id] == "Skipped"):
+                if self.__skip_reason:
+                    data_payload.message = "Skipped:   " + self.__skip_reason
+                else:
+                    data_payload.message = "Skipped:   (no reason given)"
         self.testcase_manager.update_testcase_data(data_payload)
 
     def __add_pytest_html_extra(self):
@@ -7023,9 +7052,16 @@ class BaseCase(unittest.TestCase):
                     self.display = None
             if self.with_db_reporting:
                 if has_exception:
-                    self.__insert_test_result(constants.State.ERROR, True)
+                    self.__insert_test_result(constants.State.FAILED, True)
                 else:
-                    self.__insert_test_result(constants.State.PASS, False)
+                    test_id = self.__get_test_id_2()
+                    if test_id in sb_config._results.keys() and (
+                            sb_config._results[test_id] == "Skipped"):
+                        self.__insert_test_result(
+                            constants.State.SKIPPED, False)
+                    else:
+                        self.__insert_test_result(
+                            constants.State.PASSED, False)
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime)

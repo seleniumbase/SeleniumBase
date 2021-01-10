@@ -49,7 +49,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.55.1'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.55.2'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -145,7 +145,7 @@ setup(
         'pytest-rerunfailures==9.1.1;python_version>="3.5"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
         'pytest-xdist==2.2.0;python_version>="3.5"',
-        'parameterized==0.7.5',
+        'parameterized==0.8.1',
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5" and python_version<"3.6"',
         'soupsieve==2.1;python_version>="3.6"',
@@ -170,7 +170,7 @@ setup(
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
         'virtualenv>=20.2.2',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
-        'pymysql==1.0.1;python_version>="3.6"',
+        'pymysql==1.0.2;python_version>="3.6"',
         'coverage==5.3.1',
         'brython==3.9.1',
         'pyotp==2.4.1',
@@ -180,7 +180,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.1.0;python_version>="3.6"',
-        'rich==9.6.2;python_version>="3.6" and python_version<"4.0"',
+        'rich==9.7.0;python_version>="3.6" and python_version<"4.0"',
         'zipp==1.2.0;python_version<"3.6"',
         'zipp==3.4.0;python_version>="3.6"',
         'flake8==3.7.9;python_version<"3.5"',

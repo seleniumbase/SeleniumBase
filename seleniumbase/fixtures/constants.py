@@ -268,10 +268,10 @@ class Browser:
 
 
 class State:
-    NOTRUN = "NotRun"
+    PASSED = "Passed"
+    FAILED = "Failed"
+    SKIPPED = "Skipped"
+    UNTESTED = "Untested"
     ERROR = "Error"
-    FAILURE = "Fail"
-    PASS = "Pass"
-    SKIP = "Skip"
     BLOCKED = "Blocked"
     DEPRECATED = "Deprecated"
