@@ -1,8 +1,12 @@
 """
-SeleniumBase MySQL plugin-related exceptions.
+SeleniumBase MySQL-related exceptions.
+
+This feature is DEPRECATED!
+Use self.skip() for skipping tests!
+
 Raising one of these in a test will cause the
 test-state to be logged appropriately in the DB
-for tests that use the SeleniumBase MySQL plugin.
+for tests that use the SeleniumBase MySQL option.
 """
 
 
