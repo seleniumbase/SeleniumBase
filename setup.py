@@ -168,7 +168,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.2.2',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.3.0',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         'coverage==5.3.1',
@@ -180,7 +180,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.1.0;python_version>="3.6"',
-        'rich==9.7.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==9.8.0;python_version>="3.6" and python_version<"4.0"',
         'zipp==1.2.0;python_version<"3.6"',
         'zipp==3.4.0;python_version>="3.6"',
         'flake8==3.7.9;python_version<"3.5"',
