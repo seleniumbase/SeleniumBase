@@ -5,14 +5,14 @@ class MyChartMakerClass(BaseCase):
 
     def test_seleniumbase_chart(self):
         self.create_presentation(theme="league", transition="slide")
-        self.create_pie_chart(title="There are 4 core areas of SeleniumBase:")
-        self.add_data_point("Basic API (Test methods/functions)", 1)
-        self.add_data_point("Command-line Options (pytest Options)", 1)
+        self.create_pie_chart(title="The 4 core areas of SeleniumBase:")
+        self.add_data_point("Basic API (test methods)", 1)
+        self.add_data_point("Command-line options (pytest options)", 1)
         self.add_data_point("The Console Scripts interface", 1)
         self.add_data_point("Advanced API (Tours, Charts, & Presentations)", 1)
         self.add_slide("<p>SeleniumBase core areas</p>" + self.extract_chart())
         self.add_slide(
-            "<p>Basic API (Test methods/functions) Example</p>",
+            "<p>Basic API (test methods). Example test:</p>",
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 'class MyTestClass(BaseCase):\n\n'
@@ -27,20 +27,23 @@ class MyChartMakerClass(BaseCase):
                 '        self.click_link_text("comic #249")\n'
                 '        self.assert_element(\'img[alt*="Chess"]\')\n'))
         self.add_slide(
-            "<p>Command-line Options Example</p>",
+            "<p>Command-line options. Examples:</p>",
             code=(
                 '$ pytest my_first_test.py\n'
                 '$ pytest test_swag_labs.py --mobile\n'
                 '$ pytest edge_test.py --browser=edge\n'
                 '$ pytest basic_test.py --headless\n'
-                '$ pytest my_first_test.py --demo\n'
+                '$ pytest my_first_test.py --demo --guest\n'
                 '$ pytest basic_test.py --slow\n'
                 '$ pytest -v -m marker2 --headless --save-screenshot\n'
-                '$ pytest test_suite.py --reuse-session --html=report.html\n'
-                '$ pytest basic_test.py --incognito\n'
-                '$ pytest parameterized_test.py --guest --reuse-session\n'))
+                '$ pytest parameterized_test.py --reuse-session\n'
+                '$ pytest test_suite.py --html=report.html --rs\n'
+                '$ pytest test_suite.py --dashboard --html=report.html\n'
+                '$ pytest github_test.py --demo --disable-csp\n'
+                '$ pytest test_suite.py -n=2 --rs --crumbs\n'
+                '$ pytest basic_test.py --incognito\n'))
         self.add_slide(
-            "<p>Console scripts interface Example</p>",
+            "<p>The Console Scripts interface. Examples:</p>",
             code=(
                 '$ sbase install chromedriver\n'
                 '$ sbase install chromedriver latest\n'
@@ -57,7 +60,7 @@ class MyChartMakerClass(BaseCase):
                 '$ sbase grid-hub stop\n'
                 '$ sbase options\n'))
         self.add_slide(
-            '<p>Advanced API (creating a presentation) Example</p>',
+            '<p>Advanced API. "Presenter" example:</p>',
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 'class MyPresenterClass(BaseCase):\n\n'
