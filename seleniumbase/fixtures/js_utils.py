@@ -475,20 +475,30 @@ def activate_messenger(driver):
     add_js_link(driver, underscore_js)
     add_css_link(driver, spinner_css)
     add_js_link(driver, messenger_js)
-    add_js_link(driver, msgr_theme_flat_js)
-    add_js_link(driver, msgr_theme_future_js)
     from seleniumbase.core import style_sheet
     add_css_style(driver, style_sheet.messenger_style)
 
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):
         # Messenger needs a small amount of time to load & activate.
         try:
-            driver.execute_script(msg_style)
-            wait_for_ready_state_complete(driver)
-            wait_for_angularjs(driver)
-            return
+            result = (driver.execute_script(
+                """ if (typeof Messenger === 'undefined') { return "U"; } """))
+            if result == "U":
+                time.sleep(0.01)
+                continue
+            else:
+                break
         except Exception:
-            time.sleep(0.1)
+            time.sleep(0.01)
+    try:
+        driver.execute_script(msg_style)
+        add_js_link(driver, msgr_theme_flat_js)
+        add_js_link(driver, msgr_theme_future_js)
+        wait_for_ready_state_complete(driver)
+        wait_for_angularjs(driver)
+        return
+    except Exception:
+        time.sleep(0.1)
 
 
 def set_messenger_theme(driver, theme="default", location="default",
