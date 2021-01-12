@@ -39,7 +39,7 @@ class ConvertibleToCssTranslator(GenericTranslator):
 
     def xpath_class(self, class_selector):
         xpath = self.xpath(class_selector.selector)
-        return self.xpath_attrib_equals(
+        return self.xpath_attrib_includes(
             xpath, '@class', class_selector.class_name)
 
     def xpath_descendant_combinator(self, left, right):
