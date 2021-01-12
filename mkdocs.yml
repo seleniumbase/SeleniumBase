@@ -1,5 +1,5 @@
 # Project information
-site_name: SeleniumBase
+site_name: SeleniumBase / Docs
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: A fast, reliable web automation framework for end-to-end testing (and RPA) with Python, pytest, and WebDriver.
@@ -30,7 +30,7 @@ theme:
   sticky_navigation: true
   language: en
   include_search_page: false
-  search_index_only: true
+  search_index_only: false
   features:
     - tabs
     - instant
@@ -53,7 +53,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase | README: README.md
+  - SeleniumBase / README: README.md
   - Features List: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
@@ -104,6 +104,7 @@ nav:
     - TinyMCE Demo Page: https://seleniumbase.io/other/tinymce
     - Virtual Device Farm: https://seleniumbase.io/devices/
     - Error Demo Page: https://seleniumbase.io/error_page/
+  - Presentations:
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
