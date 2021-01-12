@@ -134,6 +134,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         if page_utils.is_link_text_selector(selector) or by == By.LINK_TEXT:
             if not self.is_link_text_visible(selector):
@@ -148,7 +150,7 @@ class BaseCase(unittest.TestCase):
                 return
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
-        self.__demo_mode_highlight_if_active(selector, by)
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
@@ -226,10 +228,12 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
-        self.__demo_mode_highlight_if_active(selector, by)
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
@@ -1289,13 +1293,15 @@ class BaseCase(unittest.TestCase):
                             "element {%s}!" % selector)
 
     def hover_on_element(self, selector, by=By.CSS_SELECTOR):
+        original_selector = selector
+        original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         if page_utils.is_xpath_selector(selector):
             selector = self.convert_to_css_selector(selector, By.XPATH)
             by = By.CSS_SELECTOR
         self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
-        self.__demo_mode_highlight_if_active(selector, by)
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(selector, by=by)
         time.sleep(0.05)  # Settle down from scrolling before hovering
         if self.browser != "chrome":
@@ -1339,6 +1345,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = hover_selector
+        original_by = hover_by
         hover_selector, hover_by = self.__recalculate_selector(
             hover_selector, hover_by)
         hover_selector = self.convert_to_css_selector(
@@ -1348,7 +1356,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by)
         dropdown_element = self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
-        self.__demo_mode_highlight_if_active(hover_selector, hover_by)
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
         outdated_driver = False
@@ -1400,6 +1408,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = hover_selector
+        original_by = hover_by
         hover_selector, hover_by = self.__recalculate_selector(
             hover_selector, hover_by)
         hover_selector = self.convert_to_css_selector(
@@ -1409,7 +1419,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by)
         dropdown_element = self.wait_for_element_visible(
             hover_selector, by=hover_by, timeout=timeout)
-        self.__demo_mode_highlight_if_active(hover_selector, hover_by)
+        self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
         outdated_driver = False
@@ -2239,7 +2249,7 @@ class BaseCase(unittest.TestCase):
                     (Default: 4. Each loop lasts for about 0.18s)
             scroll - the option to scroll to the element first (Default: True)
         """
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if not loops:
@@ -2464,7 +2474,7 @@ class BaseCase(unittest.TestCase):
     def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
         """ Clicks an element using JavaScript.
             If "all_matches" is False, only the first match is clicked. """
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
             message = (
                 "Pure JavaScript doesn't support clicking by Link Text. "
@@ -2504,7 +2514,7 @@ class BaseCase(unittest.TestCase):
 
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
         """ Clicks an element using jQuery. Different from using pure JS. """
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
@@ -2517,7 +2527,7 @@ class BaseCase(unittest.TestCase):
 
     def jquery_click_all(self, selector, by=By.CSS_SELECTOR):
         """ Clicks all matching elements using jQuery. """
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         if self.is_element_visible(selector, by=by):
@@ -3137,7 +3147,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         orginal_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         self.__demo_mode_highlight_if_active(orginal_selector, by)
@@ -3249,7 +3259,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -6063,8 +6073,10 @@ class BaseCase(unittest.TestCase):
                             pass
         return False
 
-    def __recalculate_selector(self, selector, by):
-        # Use auto-detection to return the correct selector with "by" updated
+    def __recalculate_selector(self, selector, by, xp_ok=True):
+        """ Use autodetection to return the correct selector with "by" updated.
+            If "xp_ok" is False, don't call convert_css_to_xpath(), which is
+            used to make the ":contains()" selector valid outside JS calls. """
         _type = type(selector)  # First make sure the selector is a string
         if _type is not str:
             msg = 'Expecting a selector of type: "<class \'str\'>" (string)!'
@@ -6081,9 +6093,10 @@ class BaseCase(unittest.TestCase):
             name = page_utils.get_name_from_selector(selector)
             selector = '[name="%s"]' % name
             by = By.CSS_SELECTOR
-        if ":contains(" in selector and by == By.CSS_SELECTOR:
-            selector = self.convert_css_to_xpath(selector)
-            by = By.XPATH
+        if xp_ok:
+            if ":contains(" in selector and by == By.CSS_SELECTOR:
+                selector = self.convert_css_to_xpath(selector)
+                by = By.XPATH
         return (selector, by)
 
     def __looks_like_a_page_url(self, url):
