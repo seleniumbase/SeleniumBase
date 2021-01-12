@@ -90,7 +90,7 @@ class Messenger:
 
 
 class Underscore:
-    VER = "1.10.2"
+    VER = "1.12.0"
     MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
               "underscore.js/%s/underscore-min.js" % VER)
 
