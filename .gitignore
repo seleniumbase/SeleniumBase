@@ -141,4 +141,5 @@ downloaded_files
 archived_files
 assets
 temp
+temp_*/
 node_modules
