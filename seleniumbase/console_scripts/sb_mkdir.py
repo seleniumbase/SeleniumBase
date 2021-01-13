@@ -268,7 +268,7 @@ def main():
     data.append("archived_files")
     data.append("assets")
     data.append("temp")
-    data.append("temp_")
+    data.append("temp_*/")
     data.append("node_modules")
     file_path = "%s/%s" % (dir_name, ".gitignore")
     file = codecs.open(file_path, "w+", "utf-8")
