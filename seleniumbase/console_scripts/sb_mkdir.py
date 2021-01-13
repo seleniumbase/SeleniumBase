@@ -1,12 +1,16 @@
+# -*- coding: utf-8 -*-
 """
 Creates a new folder for running SeleniumBase scripts.
 
 Usage:
-    seleniumbase mkdir [DIRECTORY]
-    OR     sbase mkdir [DIRECTORY]
+    seleniumbase mkdir [DIRECTORY] [OPTIONS]
+    OR     sbase mkdir [DIRECTORY] [OPTIONS]
 
 Example:
     sbase mkdir ui_tests
+
+Options:
+    -b / --basic  (Only config files. No tests added.)
 
 Output:
     Creates a new folder for running SBase scripts.
@@ -25,10 +29,12 @@ import sys
 def invalid_run_command(msg=None):
     exp = ("  ** mkdir **\n\n")
     exp += "  Usage:\n"
-    exp += "          seleniumbase mkdir [DIRECTORY_NAME]\n"
-    exp += "          OR     sbase mkdir [DIRECTORY_NAME]\n"
+    exp += "          seleniumbase mkdir [DIRECTORY] [OPTIONS]\n"
+    exp += "          OR     sbase mkdir [DIRECTORY] [OPTIONS]\n"
     exp += "  Example:\n"
-    exp += "          sbase mkdir browser_tests\n"
+    exp += "          sbase mkdir ui_tests\n"
+    exp += "  Options:\n"
+    exp += "          -b / --basic  (Only config files. No tests added.)\n"
     exp += "  Output:\n"
     exp += "          Creates a new folder for running SBase scripts.\n"
     exp += "          The new folder contains default config files,\n"
@@ -42,14 +48,23 @@ def invalid_run_command(msg=None):
 
 
 def main():
-    colorama.init(autoreset=True)
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-    cr = colorama.Style.RESET_ALL
+    c1 = ""
+    c5 = ""
+    c7 = ""
+    cr = ""
+    if "linux" not in sys.platform:
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+        c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
+        cr = colorama.Style.RESET_ALL
+
+    basic = False
+    help_me = False
     error_msg = None
+    invalid_cmd = None
+
     command_args = sys.argv[2:]
-    if len(command_args) != 1:
-        invalid_run_command()
     dir_name = command_args[0]
     if len(str(dir_name)) < 2:
         error_msg = (
@@ -57,17 +72,44 @@ def main():
     elif "/" in str(dir_name) or "\\" in str(dir_name):
         error_msg = (
             'Directory name must not include slashes ("/", "\\")!')
+    elif dir_name.startswith("-"):
+        error_msg = 'Directory name cannot start with "-"!'
     elif os.path.exists(os.getcwd() + '/' + dir_name):
         error_msg = (
-            'Directory "%s" already exists in the current path!' % dir_name)
+            'Directory "%s" already exists in this directory!' % dir_name)
     if error_msg:
-        error_msg = c5 + error_msg + cr
+        error_msg = c5 + "ERROR: " + error_msg + cr
         invalid_run_command(error_msg)
+
+    if len(command_args) >= 2:
+        options = command_args[1:]
+        for option in options:
+            option = option.lower()
+            if option == "help" or option == "--help":
+                help_me = True
+            elif option == "-b" or option == "--basic":
+                basic = True
+            else:
+                invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
+                invalid_cmd = invalid_cmd.replace('>> ', ">>" + c5 + " ")
+                invalid_cmd = invalid_cmd.replace(' <<', " " + cr + "<<")
+                invalid_cmd = invalid_cmd.replace('>>', c7 + ">>" + cr)
+                invalid_cmd = invalid_cmd.replace('<<', c7 + "<<" + cr)
+                help_me = True
+                break
+    if help_me:
+        invalid_run_command(invalid_cmd)
 
     os.mkdir(dir_name)
 
     data = []
-    data.append("seleniumbase")
+    seleniumbase_req = "seleniumbase"
+    try:
+        from seleniumbase import __version__
+        seleniumbase_req = "seleniumbase>=%s" % str(__version__)
+    except Exception:
+        pass
+    data.append(seleniumbase_req)
     data.append("")
     file_path = "%s/%s" % (dir_name, "requirements.txt")
     file = codecs.open(file_path, "w+", "utf-8")
@@ -96,7 +138,11 @@ def main():
     data.append("    offline: custom marker")
     data.append("    develop: custom marker")
     data.append("    qa: custom marker")
+    data.append("    ci: custom marker")
+    data.append("    e2e: custom marker")
     data.append("    ready: custom marker")
+    data.append("    smoke: custom marker")
+    data.append("    deploy: custom marker")
     data.append("    active: custom marker")
     data.append("    master: custom marker")
     data.append("    release: custom marker")
@@ -202,6 +248,7 @@ def main():
     data.append("html_report.html")
     data.append("report.html")
     data.append("report.xml")
+    data.append("dashboard.html")
     data.append("allure_report")
     data.append("allure-report")
     data.append("allure_results")
@@ -221,12 +268,19 @@ def main():
     data.append("archived_files")
     data.append("assets")
     data.append("temp")
-    data.append("temp*")
+    data.append("temp_")
     data.append("node_modules")
     file_path = "%s/%s" % (dir_name, ".gitignore")
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
+
+    if basic:
+        success = (
+            '\n' + c1 + '* Directory "' + dir_name + '" was created '
+            'with config files! *' + cr + '\n')
+        print(success)
+        return
 
     data = []
     data.append("from seleniumbase import BaseCase")
@@ -481,6 +535,7 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
+
     success = (
         '\n' + c1 + '* Directory "' + dir_name + '" was created '
         'with config files and sample tests! *' + cr + '\n')

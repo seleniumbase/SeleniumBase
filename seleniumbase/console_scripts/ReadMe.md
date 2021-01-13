@@ -38,13 +38,16 @@ Installs the specified webdriver.
 ### mkdir
 
 * Usage:
-``sbase mkdir [DIRECTORY]``
+``sbase mkdir [DIRECTORY] [OPTIONS]``
 
 * Example:
 ``sbase mkdir ui_tests``
 
+* Options:
+``-b`` / ``--basic``  (Only config files. No tests added.)
+
 * Output:
-Creates a new folder for running SeleniumBase scripts.
+Creates a new folder for running SBase scripts.
 The new folder contains default config files,
 sample tests for helping new users get started,
 and Python boilerplates for setting up customized

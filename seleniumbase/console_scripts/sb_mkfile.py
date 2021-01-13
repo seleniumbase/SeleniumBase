@@ -44,13 +44,13 @@ def invalid_run_command(msg=None):
     exp += "  Example:\n"
     exp += "          sbase mkfile new_test.py\n"
     exp += "  Options:\n"
-    exp += "         -b / --basic  (Basic boilerplate / single-line test)\n"
+    exp += "          -b / --basic  (Basic boilerplate / single-line test)\n"
     exp += "  Language Options:\n"
-    exp += "         --en / --English    |    --zh / --Chinese\n"
-    exp += "         --nl / --Dutch      |    --fr / --French\n"
-    exp += "         --it / --Italian    |    --ja / --Japanese\n"
-    exp += "         --ko / --Korean     |    --pt / --Portuguese\n"
-    exp += "         --ru / --Russian    |    --es / --Spanish\n"
+    exp += "          --en / --English    |    --zh / --Chinese\n"
+    exp += "          --nl / --Dutch      |    --fr / --French\n"
+    exp += "          --it / --Italian    |    --ja / --Japanese\n"
+    exp += "          --ko / --Korean     |    --pt / --Portuguese\n"
+    exp += "          --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Output:\n"
     exp += "          Creates a new SBase test file with boilerplate code.\n"
     exp += "          If the file already exists, an error is raised.\n"
@@ -67,11 +67,17 @@ def invalid_run_command(msg=None):
 
 
 def main():
-    colorama.init(autoreset=True)
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-    c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
-    cr = colorama.Style.RESET_ALL
+    c1 = ""
+    c5 = ""
+    c7 = ""
+    cr = ""
+    if "linux" not in sys.platform:
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+        c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
+        cr = colorama.Style.RESET_ALL
+
     basic = False
     help_me = False
     error_msg = None
@@ -81,16 +87,18 @@ def main():
     command_args = sys.argv[2:]
     file_name = command_args[0]
     if not file_name.endswith(".py"):
-        error_msg = 'File Name must end with ".py"!'
+        error_msg = 'File name must end with ".py"!'
     elif "*" in file_name or len(str(file_name)) < 4:
-        error_msg = 'Invalid File Name!'
+        error_msg = 'Invalid file name!'
+    elif file_name.startswith("-"):
+        error_msg = 'File name cannot start with "-"!'
     elif "/" in str(file_name) or "\\" in str(file_name):
         error_msg = 'File must be created in the current directory!'
     elif os.path.exists(os.getcwd() + '/' + file_name):
         error_msg = (
-            'File "%s" already exists in the current path!' % file_name)
+            'File "%s" already exists in this directory!' % file_name)
     if error_msg:
-        error_msg = c5 + error_msg + cr
+        error_msg = c5 + "ERROR: " + error_msg + cr
         invalid_run_command(error_msg)
 
     if len(command_args) >= 2:
