@@ -6731,7 +6731,7 @@ class BaseCase(unittest.TestCase):
 
     def __process_dashboard(self, has_exception, init=False):
         ''' SeleniumBase Dashboard Processing '''
-        if len(sb_config._extra_dash_entries) > 1:
+        if len(sb_config._extra_dash_entries) > 0:
             # First take care of existing entries from non-SeleniumBase tests
             for test_id in sb_config._extra_dash_entries:
                 if test_id in sb_config._results.keys():
