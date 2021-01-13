@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" This is the pytest configuration file """
+""" This is the pytest configuration file for setting test options. """
 
 import colorama
 import os
@@ -69,11 +69,17 @@ def pytest_addoption(parser):
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
-    colorama.init(autoreset=True)
-    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
-    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
-    c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
-    cr = colorama.Style.RESET_ALL
+    c1 = ""
+    c2 = ""
+    c3 = ""
+    cr = ""
+    if "linux" not in sys.platform:
+        # This will be seen when typing "pytest --help" on the command line.
+        colorama.init(autoreset=True)
+        c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+        c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+        c3 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+        cr = colorama.Style.RESET_ALL
     s_str = "SeleniumBase"
     s_str = s_str.replace("SeleniumBase", c1 + "Selenium" + c2 + "Base" + cr)
     s_str = s_str + cr + " " + c3 + "command-line options for pytest" + cr
@@ -807,7 +813,7 @@ def pytest_unconfigure():
 def sb(request):
     """ SeleniumBase as a pytest fixture.
         Usage example: "def test_one(sb):"
-        You'll need to use this for tests that use other pytest fixtures. """
+        You may need to use this for tests that use other pytest fixtures. """
     from seleniumbase import BaseCase
 
     class BaseClass(BaseCase):
