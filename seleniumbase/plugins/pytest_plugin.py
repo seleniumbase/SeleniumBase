@@ -866,7 +866,8 @@ def pytest_runtest_makereport(item, call):
             sb_config._results[test_id] = r_outcome
             sb_config._duration[test_id] = "*****"
             sb_config._display_id[test_id] = display_id
-            sb_config._extra_dash_entries.append(test_id)
+            if test_id not in sb_config._extra_dash_entries:
+                sb_config._extra_dash_entries.append(test_id)
         try:
             extra_report = None
             if hasattr(item, "_testcase"):

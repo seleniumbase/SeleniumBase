@@ -6776,10 +6776,18 @@ class BaseCase(unittest.TestCase):
                 sb_config.item_count_untested -= 1
                 sb_config._results[test_id] = "Skipped"
             elif has_exception:
-                sb_config._results[test_id] = "Failed"
-                sb_config.item_count_failed += 1
-                sb_config.item_count_untested -= 1
+                # pytest-rerunfailures may cause duplicate results
+                if test_id not in sb_config._results.keys() or (
+                        (not sb_config._results[test_id] == "Failed")):
+                    sb_config._results[test_id] = "Failed"
+                    sb_config.item_count_failed += 1
+                    sb_config.item_count_untested -= 1
             else:
+                if test_id in sb_config._results.keys() and (
+                        sb_config._results[test_id] == "Failed"):
+                    # Possibly pytest-rerunfailures reran the test
+                    sb_config.item_count_failed -= 1
+                    sb_config.item_count_untested += 1
                 sb_config._results[test_id] = "Passed"
                 sb_config.item_count_passed += 1
                 sb_config.item_count_untested -= 1
