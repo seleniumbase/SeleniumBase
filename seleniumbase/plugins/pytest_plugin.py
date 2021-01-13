@@ -519,13 +519,12 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
-    """ This runs after command line options have been parsed """
+    """ This runs after command-line options have been parsed. """
     sb_config.item_count = 0
     sb_config.item_count_passed = 0
     sb_config.item_count_failed = 0
     sb_config.item_count_skipped = 0
     sb_config.item_count_untested = 0
-    sb_config.item_count_finalized = False
     sb_config.is_pytest = True
     sb_config.browser = config.getoption('browser')
     sb_config.data = config.getoption('data')
@@ -668,35 +667,39 @@ def pytest_deselected(items):
         sb_config.item_count -= len(items)
 
 
-def pytest_runtest_setup():
-    """ This runs before every test with pytest """
-    if sb_config.dashboard:
-        sb_config._sbase_detected = False
-        if not sb_config.item_count_finalized:
-            sb_config.item_count_finalized = True
-            sb_config.item_count_untested = sb_config.item_count
-            dashboard_html = os.getcwd() + "/dashboard.html"
-            star_len = len("Dashboard: ") + len(dashboard_html)
-            try:
-                terminal_size = os.get_terminal_size().columns
-                if terminal_size > 30 and star_len > terminal_size:
-                    star_len = terminal_size
-            except Exception:
-                pass
-            stars = "*" * star_len
+def pytest_collection_finish(session):
+    """ This runs after item collection is finalized.
+        Print the dashboard path if at least one test runs.
+        https://docs.pytest.org/en/stable/reference.html """
+    if sb_config.dashboard and len(session.items) > 0:
+        dash_path = os.getcwd() + "/dashboard.html"
+        star_len = len("Dashboard: ") + len(dash_path)
+        try:
+            terminal_size = os.get_terminal_size().columns
+            if terminal_size > 30 and star_len > terminal_size:
+                star_len = terminal_size
+        except Exception:
+            pass
+        stars = "*" * star_len
+        c1 = ""
+        cr = ""
+        if "linux" not in sys.platform:
             colorama.init(autoreset=True)
             c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
             cr = colorama.Style.RESET_ALL
-            if "linux" in sys.platform:
-                c1 = ''
-                cr = ''
-            print("\nDashboard: %s%s%s\n%s" % (c1, dashboard_html, cr, stars))
+        print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
+
+
+def pytest_runtest_setup():
+    """ This runs before every test with pytest. """
+    if sb_config.dashboard:
+        sb_config._sbase_detected = False
 
 
 def pytest_runtest_teardown(item):
-    """ This runs after every test with pytest """
-
-    # Make sure webdriver has exited properly and any headless display
+    """ This runs after every test with pytest.
+        Make sure that webdriver and headless displays have exited.
+        (Has zero effect on tests using --reuse-session / --rs) """
     try:
         self = item._testcase
         try:
