@@ -106,7 +106,7 @@ setup(
         'packaging>=20.8',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=51.1.2;python_version>="3.6"',
+        'setuptools>=51.3.3;python_version>="3.6"',
         'setuptools-scm>=5.0.1',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
@@ -134,7 +134,7 @@ setup(
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
         'pytest==6.2.1;python_version>="3.6"',
-        'pytest-cov==2.10.1',
+        'pytest-cov==2.11.0',
         'pytest-forked==1.3.0',
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',
@@ -168,7 +168,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.3.1',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.4.0',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         'coverage==5.3.1',
