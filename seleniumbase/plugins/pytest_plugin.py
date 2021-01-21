@@ -672,6 +672,7 @@ def pytest_collection_finish(session):
         Print the dashboard path if at least one test runs.
         https://docs.pytest.org/en/stable/reference.html """
     if sb_config.dashboard and len(session.items) > 0:
+        sb_config.item_count_untested = sb_config.item_count
         dash_path = os.getcwd() + "/dashboard.html"
         star_len = len("Dashboard: ") + len(dash_path)
         try:
