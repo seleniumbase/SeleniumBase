@@ -672,6 +672,7 @@ def pytest_collection_finish(session):
         Print the dashboard path if at least one test runs.
         https://docs.pytest.org/en/stable/reference.html """
     if sb_config.dashboard and len(session.items) > 0:
+        sb_config.item_count_untested = sb_config.item_count
         dash_path = os.getcwd() + "/dashboard.html"
         star_len = len("Dashboard: ") + len(dash_path)
         try:
@@ -765,49 +766,57 @@ def pytest_unconfigure():
         find_it = constants.Dashboard.META_REFRESH_HTML
         swap_with = ''  # Stop refreshing the page after the run is done
         try:
-            # Part 1: Finalizing the dashboard / integrating html report
-            time.sleep(0.3)  # Add time for "livejs" to detect changes
             abs_path = os.path.abspath('.')
             dashboard_path = os.path.join(abs_path, "dashboard.html")
+            # Part 1: Finalizing the dashboard / integrating html report
             if os.path.exists(dashboard_path):
+                the_html_d = None
                 with open(dashboard_path, 'r', encoding='utf-8') as f:
-                    the_html = f.read()
+                    the_html_d = f.read()
                 # If the test run doesn't complete by itself, stop refresh
-                the_html = the_html.replace(find_it, swap_with)
-                the_html += stamp
+                the_html_d = the_html_d.replace(find_it, swap_with)
+                the_html_d += stamp
                 if sb_config._dash_is_html_report and (
                         sb_config._saved_dashboard_pie):
-                    the_html = the_html.replace(
+                    the_html_d = the_html_d.replace(
                         "<h1>dashboard.html</h1>",
                         sb_config._saved_dashboard_pie)
-                    the_html = the_html.replace(
+                    the_html_d = the_html_d.replace(
                         "</head>", '</head><link rel="shortcut icon" '
                         'href="https://seleniumbase.io/img/dash_pie_2.png">')
                     if sb_config._dash_final_summary:
-                        the_html += sb_config._dash_final_summary
-                time.sleep(0.25)
+                        the_html_d += sb_config._dash_final_summary
+                    with open(dashboard_path, "w", encoding='utf-8') as f:
+                        f.write(the_html_d)  # Finalize the dashboard
+                    time.sleep(0.5)  # Add time for "livejs" to detect changes
+                    the_html_d = the_html_d.replace(
+                        "</head>", "</head><!-- Dashboard Report Done -->")
                 with open(dashboard_path, "w", encoding='utf-8') as f:
-                    f.write(the_html)
-            # Part 2: Appending a pytest html report with dashboard data
-            html_report_path = os.path.join(
-                abs_path, sb_config._html_report_name)
-            if sb_config._using_html_report and (
-                    os.path.exists(html_report_path) and
-                    not sb_config._dash_is_html_report):
-                # Add the dashboard pie to the pytest html report
-                with open(html_report_path, 'r', encoding='utf-8') as f:
-                    the_html = f.read()
-                if sb_config._saved_dashboard_pie:
-                    the_html = the_html.replace(
-                        "<h1>%s</h1>" % sb_config._html_report_name,
-                        sb_config._saved_dashboard_pie)
-                    the_html = the_html.replace(
-                        "</head>", '</head><link rel="shortcut icon" '
-                        'href="https://seleniumbase.io/img/dash_pie_2.png">')
-                    if sb_config._dash_final_summary:
-                        the_html += sb_config._dash_final_summary
-                with open(html_report_path, "w", encoding='utf-8') as f:
-                    f.write(the_html)
+                    f.write(the_html_d)  # Finalize the dashboard
+                # Part 2: Appending a pytest html report with dashboard data
+                html_report_path = None
+                if sb_config._html_report_name:
+                    html_report_path = os.path.join(
+                        abs_path, sb_config._html_report_name)
+                if sb_config._using_html_report and html_report_path and (
+                        os.path.exists(html_report_path) and
+                        not sb_config._dash_is_html_report):
+                    # Add the dashboard pie to the pytest html report
+                    the_html_r = None
+                    with open(html_report_path, 'r', encoding='utf-8') as f:
+                        the_html_r = f.read()
+                    if sb_config._saved_dashboard_pie:
+                        the_html_r = the_html_r.replace(
+                            "<h1>%s</h1>" % sb_config._html_report_name,
+                            sb_config._saved_dashboard_pie)
+                        the_html_r = the_html_r.replace(
+                            "</head>", '</head><link rel="shortcut icon" '
+                            'href='
+                            '"https://seleniumbase.io/img/dash_pie_2.png">')
+                        if sb_config._dash_final_summary:
+                            the_html_r += sb_config._dash_final_summary
+                    with open(html_report_path, "w", encoding='utf-8') as f:
+                        f.write(the_html_r)  # Finalize the HTML report
         except Exception:
             pass
 

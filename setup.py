@@ -110,6 +110,7 @@ setup(
         'setuptools-scm>=5.0.1',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
+        'PyYAML>=5.4.1;python_version>="3.6"',
         'certifi>=2020.12.5',
         'six==1.15.0',
         'nose==1.3.7',
