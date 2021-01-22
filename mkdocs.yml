@@ -17,6 +17,7 @@ markdown_extensions:
   - markdown.extensions.attr_list
   - markdown.extensions.codehilite
   - markdown.extensions.meta
+  - markdown.extensions.md_in_html
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.toc:
@@ -30,10 +31,13 @@ theme:
   sticky_navigation: true
   language: en
   include_search_page: false
-  search_index_only: false
+  search_index_only: true
+  static_templates:
+    - 404.html
   features:
-    - tabs
-    - instant
+    - navigation.sections
+    # - navigation.tabs
+    # - navigation.instant
   palette:
     scheme: default
     primary: blue
@@ -47,7 +51,7 @@ theme:
 plugins:
   - search
   - minify:
-      minify_html: false
+      minify_html: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
