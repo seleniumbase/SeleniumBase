@@ -52,8 +52,8 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 
 ✅ Has a [complete API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) for Web-UI testing.<br />
 ✅ Expands pytest [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).<br />
-✅ Includes tools for [dashboards & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
 ✅ Includes [scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md) for driver management.<br />
+✅ Includes tools for [dashboards & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
 
 --------
 
