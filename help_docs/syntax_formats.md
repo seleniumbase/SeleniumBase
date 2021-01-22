@@ -3,6 +3,12 @@
 <a id="syntax_formats"></a>
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 15 unique syntax formats</h2>
 
+<p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch this tutorial on YouTube</a></b>)</p>
+
+[<img src="http://img.youtube.com/vi/HOooW_0o468/0.jpg" title="The 15 unique syntax formats" width="255">](https://www.youtube.com/watch?v=HOooW_0o468)
+
+--------
+
 <b>SeleniumBase</b> supports 15 different syntax formats for structuring tests. (<i>The first 4 are the most common.</i>)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 1. <code>BaseCase</code> direct inheritance</h3>

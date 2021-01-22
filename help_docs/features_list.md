@@ -1,10 +1,10 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="305">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="285">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
 <p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> ⛲ Features: 🗂️</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> ⛲ Features: 🗂️</h2>
 
 * A complete test automation framework for web/mobile UI testing.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), and [nose](http://nose.readthedocs.io/en/latest/) for test discovery and running.
@@ -37,4 +37,4 @@
 * Can load and make assertions on PDF files from websites or the local file system.
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
-[<img src="https://seleniumbase.io/cdn/img/super_logo_3.png" title="SeleniumBase" width="305">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/super_logo_3.png" title="SeleniumBase" width="285">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

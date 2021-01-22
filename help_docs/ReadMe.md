@@ -1,4 +1,4 @@
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="240" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" alt="SeleniumBase" width="304" /></a></div>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Docs</h2>
 
@@ -10,7 +10,7 @@
 <a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔡 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/method_summary/">📗 API</a> |

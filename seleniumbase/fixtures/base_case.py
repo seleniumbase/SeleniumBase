@@ -2634,23 +2634,43 @@ class BaseCase(unittest.TestCase):
         bad_link_str = 'Error: "%s" returned a 404!' % link
         self.assertNotEqual(status_code, "404", bad_link_str)
 
+    def __get_link_if_404_error(self, link):
+        status_code = str(self.get_link_status_code(link))
+        if status_code == "404":
+            return link
+        else:
+            return None
+
     def assert_no_404_errors(self, multithreaded=True):
         """ Assert no 404 errors from page links obtained from:
-            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+            "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+            (A 404 error represents a broken link on a web page.) """
         all_links = self.get_unique_links()
         links = []
         for link in all_links:
             if "javascript:" not in link and "mailto:" not in link:
                 links.append(link)
+        broken_links = []
         if multithreaded:
             from multiprocessing.dummy import Pool as ThreadPool
             pool = ThreadPool(10)
-            pool.map(self.assert_link_status_code_is_not_404, links)
+            results = pool.map(self.__get_link_if_404_error, links)
             pool.close()
             pool.join()
+            for result in results:
+                if result:
+                    broken_links.append(result)
         else:
+            broken_links = []
             for link in links:
-                self.assert_link_status_code_is_not_404(link)
+                if self.__get_link_if_404_error(link):
+                    broken_links.append(link)
+        if len(broken_links) > 0:
+            bad_links_str = "\n".join(broken_links)
+            if len(broken_links) == 1:
+                self.fail("Broken link detected:\n%s" % bad_links_str)
+            elif len(broken_links) > 1:
+                self.fail("Broken links detected:\n%s" % bad_links_str)
         if self.demo_mode:
             a_t = "ASSERT NO 404 ERRORS"
             if self._language != "English":
