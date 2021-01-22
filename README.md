@@ -6,7 +6,7 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="288" /></a></p>
+<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="280" /></a></p>
 <p align="center">
 <b>Everything you need to test websites.</b>
 </p>
