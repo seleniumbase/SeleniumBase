@@ -5969,7 +5969,13 @@ class BaseCase(unittest.TestCase):
             """jQuery([document.documentElement, document.body]).animate({
             scrollTop: jQuery('%s').offset().top - 130}, %s);
             """ % (selector, scroll_time_ms))
-        self.safe_execute_script(scroll_script)
+        if js_utils.is_jquery_activated(self.driver):
+            self.execute_script(scroll_script)
+        else:
+            try:
+                self.safe_execute_script(scroll_script)
+            except Exception:
+                self.__slow_scroll_to_element(element)
         self.sleep(sleep_time)
 
     def __jquery_click(self, selector, by=By.CSS_SELECTOR):

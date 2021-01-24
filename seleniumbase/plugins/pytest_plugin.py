@@ -18,6 +18,11 @@ def pytest_addoption(parser):
     """
     This plugin adds the following command-line options to pytest:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
+    --chrome  (Shortcut for "--browser=chrome". On by default.)
+    --edge  (Shortcut for "--browser=edge".)
+    --firefox  (Shortcut for "--browser=firefox".)
+    --opera  (Shortcut for "--browser=opera".)
+    --safari  (Shortcut for "--browser=safari".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
     --data=DATA  (Extra test data. Access with "self.data" in tests.)
@@ -93,6 +98,31 @@ def pytest_addoption(parser):
                      help="""Specifies the web browser to use. Default: Chrome.
                           If you want to use Firefox, explicitly indicate that.
                           Example: (--browser=firefox)""")
+    parser.addoption('--chrome',
+                     action="store_true",
+                     dest='use_chrome',
+                     default=False,
+                     help="""Shortcut for --browser=chrome. On by default.)""")
+    parser.addoption('--edge',
+                     action="store_true",
+                     dest='use_edge',
+                     default=False,
+                     help="""Shortcut for --browser=edge.)""")
+    parser.addoption('--firefox',
+                     action="store_true",
+                     dest='use_firefox',
+                     default=False,
+                     help="""Shortcut for --browser=firefox.)""")
+    parser.addoption('--opera',
+                     action="store_true",
+                     dest='use_opera',
+                     default=False,
+                     help="""Shortcut for --browser=opera.)""")
+    parser.addoption('--safari',
+                     action="store_true",
+                     dest='use_safari',
+                     default=False,
+                     help="""Shortcut for --browser=safari.)""")
     parser.addoption('--with-selenium',
                      action="store_true",
                      dest='with_selenium',
@@ -503,19 +533,89 @@ def pytest_addoption(parser):
                      help="""Setting this overrides the default timeout
                           by the multiplier when waiting for page elements.
                           Unused when tests override the default value.""")
-    for arg in sys.argv:
+
+    sys_argv = sys.argv
+    sb_config._browser_shortcut = None
+
+    # SeleniumBase does not support pytest-timeout due to hanging browsers.
+    for arg in sys_argv:
         if "--timeout=" in arg:
             raise Exception(
                 "\n\n  Don't use --timeout=s from pytest-timeout! "
                 "\n  It's not thread-safe for WebDriver processes! "
                 "\n  Use --time-limit=s from SeleniumBase instead!\n")
 
-    if "--dashboard" in sys.argv:
-        arg_join = " ".join(sys.argv)
-        if ("-n" in sys.argv) or ("-n=" in arg_join):
+    # The SeleniumBase Dashboard does not yet support multi-threadeded tests.
+    if "--dashboard" in sys_argv:
+        arg_join = " ".join(sys_argv)
+        if ("-n" in sys_argv) or ("-n=" in arg_join):
             raise Exception(
                 "\n\n  Multi-threading is not yet supported using --dashboard"
                 "\n  (You can speed up tests using --reuse-session / --rs)\n")
+
+    # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
+    # but you can only specify one default browser for tests. (Default: chrome)
+    browser_changes = 0
+    browser_set = None
+    browser_list = []
+    if "--browser=chrome" in sys_argv or "--browser chrome" in sys_argv:
+        browser_changes += 1
+        browser_set = "chrome"
+        browser_list.append("--browser=chrome")
+    if "--browser=edge" in sys_argv or "--browser edge" in sys_argv:
+        browser_changes += 1
+        browser_set = "edge"
+        browser_list.append("--browser=edge")
+    if "--browser=firefox" in sys_argv or "--browser firefox" in sys_argv:
+        browser_changes += 1
+        browser_set = "firefox"
+        browser_list.append("--browser=firefox")
+    if "--browser=opera" in sys_argv or "--browser opera" in sys_argv:
+        browser_changes += 1
+        browser_set = "opera"
+        browser_list.append("--browser=opera")
+    if "--browser=safari" in sys_argv or "--browser safari" in sys_argv:
+        browser_changes += 1
+        browser_set = "safari"
+        browser_list.append("--browser=safari")
+    if "--browser=ie" in sys_argv or "--browser ie" in sys_argv:
+        browser_changes += 1
+        browser_set = "ie"
+        browser_list.append("--browser=ie")
+    if "--browser=phantomjs" in sys_argv or "--browser phantomjs" in sys_argv:
+        browser_changes += 1
+        browser_set = "phantomjs"
+        browser_list.append("--browser=phantomjs")
+    if "--browser=remote" in sys_argv or "--browser remote" in sys_argv:
+        browser_changes += 1
+        browser_set = "remote"
+        browser_list.append("--browser=remote")
+    if "--chrome" in sys_argv and not browser_set == "chrome":
+        browser_changes += 1
+        sb_config._browser_shortcut = "chrome"
+        browser_list.append("--chrome")
+    if "--edge" in sys_argv and not browser_set == "edge":
+        browser_changes += 1
+        sb_config._browser_shortcut = "edge"
+        browser_list.append("--edge")
+    if "--firefox" in sys_argv and not browser_set == "firefox":
+        browser_changes += 1
+        sb_config._browser_shortcut = "firefox"
+        browser_list.append("--firefox")
+    if "--opera" in sys_argv and not browser_set == "opera":
+        browser_changes += 1
+        sb_config._browser_shortcut = "opera"
+        browser_list.append("--opera")
+    if "--safari" in sys_argv and not browser_set == "safari":
+        browser_changes += 1
+        sb_config._browser_shortcut = "safari"
+        browser_list.append("--safari")
+    if browser_changes > 1:
+        message = "\n\n  Too many browser types were entered!"
+        message += "\n  There were %s found: %s" % (
+            browser_changes, ", ".join(browser_list))
+        message += "\n  Please enter ONLY ONE and try again!\n"
+        raise Exception(message)
 
 
 def pytest_configure(config):
@@ -527,6 +627,8 @@ def pytest_configure(config):
     sb_config.item_count_untested = 0
     sb_config.is_pytest = True
     sb_config.browser = config.getoption('browser')
+    if sb_config._browser_shortcut:
+        sb_config.browser = sb_config._browser_shortcut
     sb_config.data = config.getoption('data')
     sb_config.var1 = config.getoption('var1')
     sb_config.var2 = config.getoption('var2')

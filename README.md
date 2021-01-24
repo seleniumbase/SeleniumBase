@@ -361,6 +361,11 @@ The code above will leave your browser window open in case there's a failure. (i
 
 ```bash
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
+--chrome  # (Shortcut for "--browser=chrome". On by default.)
+--edge  # (Shortcut for "--browser=edge".)
+--firefox  # (Shortcut for "--browser=firefox".)
+--opera  # (Shortcut for "--browser=opera".)
+--safari  # (Shortcut for "--browser=safari".)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
