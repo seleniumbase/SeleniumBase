@@ -81,9 +81,11 @@ pip install seleniumbase
 <h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> 下载 webdriver:</h3>
 
 SeleniumBase 下载 webdriver 驱动到 [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) 文件夹下, 使用 ``install`` 命令:
+
 ```bash
 seleniumbase install chromedriver
 ```
+
 * 你可能需要不同的 webdriver 来对应各种网页浏览器来完成自动化测试,例如: ``chromedriver`` 对应 Chrome, ``edgedriver`` 对应 Edge, ``geckodriver`` 对应 Firefox, ``operadriver`` 对应 Opera,  ``iedriver`` 对应 Internet Explorer.
 * 如果你需要安装最新版本的浏览器驱动, 以以下命令获取最新版本浏览器驱动 (<i>因兼容性原因,默认下载的版本为 chromedriver 2.44 </i>):
 ```bash
@@ -96,6 +98,7 @@ seleniumbase install chromedriver latest
 cd examples/
 pytest my_first_test.py
 ```
+
 * 如果没指定版本则默认运行的浏览器驱动为 chromedriver, 使用指定版本的命令为: ``--browser=BROWSER``.
 * Linux 中 ``--headless`` 为默认值 (无界面运行).你也可以在任何系统中运行无界面模式. 如果你的 Linux服务器有 GUI 界面,你也需要在界面中查看浏览器运行用例的过程,你可以添加 ``--headed`` 或 ``--gui``.
 
@@ -114,18 +117,19 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_basic(self):
+    def test_basics(self):
+        self.open("https://store.xkcd.com/search")
+        self.type('input[name="q"]', "xkcd book")
+        self.click('input[value="Search"]')
+        self.assert_text("xkcd: volume 0", "h3")
         self.open("https://xkcd.com/353/")
         self.assert_title("xkcd: Python")
         self.assert_element('img[alt="Python"]')
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
-        self.click("link=About")
-        self.assert_text("xkcd.com", "h2")
-        self.open("://store.xkcd.com/collections/everything")
-        self.type("input.search-input", "xkcd book\n")
-        self.assert_exact_text("xkcd: volume 0", "h3")
+        self.click_link("About")
+        self.assert_exact_text("xkcd.com", "h2")
 ```
 
 * 默认情况下, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** 用来查找页面元素.
@@ -158,6 +162,7 @@ self.save_screenshot(FILE_NAME)  # 保存当前页面的截图
 ```
 
 [chinese_test_1.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/chinese_test_1.py):
+
 ```python
 from seleniumbase.translate.chinese import 硒测试用例
 
@@ -311,6 +316,7 @@ pytest --collect-only -q
 
 您可以在脚本中使用以下内容来帮助您调试问题:
 (<i>如果使用ipdb，请确保将“-s”添加到命令行选项中，除非已经在pytest.ini中</i>)
+
 ```python
 import time; time.sleep(5)  # Makes the test wait and do nothing for 5 seconds.
 import ipdb; ipdb.set_trace()  # Enter debugging mode. n = next, c = continue, s = step.
@@ -580,6 +586,7 @@ self.type(selector, text)  # 用指定的值更新来自指定元素的文本。
 ```python
 self.type("input#id_value", "2012")
 ```
+
 您也可以使用self.add_text()或WebDriver .send_keys()命令，但是如果文本框中已经有文本，这些命令不会首先清除文本框
 如果您想键入特殊的键，这也很容易。这里有一个例子:
 
@@ -605,6 +612,7 @@ attribute = self.get_attribute("#comic img", "title")
 ```python
 self.wait_for_element_present("div.my_class", timeout=10)
 ```
+
 (注意: 您也可以使用: ``self.assert_element_present(ELEMENT)``)
 
 <h4>在数秒内断言页面上元素的可见性:</h4>
@@ -612,6 +620,7 @@ self.wait_for_element_present("div.my_class", timeout=10)
 ```python
 self.wait_for_element_visible("a.my_class", timeout=5)
 ```
+
 (注意: 这个的简单版本是 ``self.find_element(ELEMENT)`` 和 ``self.assert_element(ELEMENT)``.  find_element() version 返回元素)
 
 由于上面的行返回元素，您可以将其与.click()组合起来，如下所示:
@@ -638,6 +647,7 @@ self.click('a[name*="partial_name"]')
 self.assert_text("Make it so!", "div#trek div.picard div.quotes")
 self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=3)
 ```
+
 (注意: ``self.find_text(TEXT, ELEMENT)`` 和 ``self.wait_for_text(TEXT, ELEMENT)`` 干了同一件事. 为了向后字兼容性，保留了较旧的方法名，但默认超时可能不同.)
 
 <h4>断言 anything</h4>
@@ -651,6 +661,7 @@ self.assert_equal(var1, var2)
 <h4>有用的条件语句 (with creative examples in action)</h4>
 
 is_element_visible(selector)  # is an element visible on a page
+
 ```python
 if self.is_element_visible('div#warning'):
     print("Red Alert: Something bad might be happening!")
@@ -674,6 +685,7 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
 ```
 
 is_text_visible(text, selector)  # is text visible on a page
+
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
     selector = "div.superbowl_%s div.commercials div.transcript div.picard" % superbowl_year
@@ -776,6 +788,7 @@ referral_link = '''<a class='analytics test' href='%s'>Free-Referral Button!</a>
 self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
+
 (由于大众需求,这个流量生成示例已经被嵌入到SeleniumBase中 ``self.generate_referral(start_page, end_page)`` 和 ``self.generate_traffic(start_page, end_page, loops)`` 方法中.)
 
 <h4>使用延迟的断言:</h4>
@@ -811,6 +824,7 @@ self.driver.delete_all_cookies()
 capabilities = self.driver.capabilities
 self.driver.find_elements_by_partial_link_text("GitHub")
 ```
+
 (通常，您会希望在可用时使用带方法的SeleniumBase版本.)
 
 <h4>自动重试失败的测试</h4>

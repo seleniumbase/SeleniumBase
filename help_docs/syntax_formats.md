@@ -25,7 +25,7 @@ class MyTestClass(BaseCase):
         self.click("#myButton")
         self.assert_element("tbody#tbodyId")
         self.assert_text("Automation Practice", "h3")
-        self.click_link_text("SeleniumBase Demo Page")
+        self.click_link("SeleniumBase Demo Page")
         self.assert_exact_text("Demo Page", "h1")
         self.assert_no_js_errors()
 ```

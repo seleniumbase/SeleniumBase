@@ -76,7 +76,7 @@ If you pass ``"*"`` into the ``"name"`` field of ``--cap-string``, the name will
 ```bash
 pytest test_swag_labs.py --cap-string='{"browserName":"chrome","name":"*"}' --server="127.0.0.1" --browser=chrome
 ```
-Example name: ``"my_first_test.MyTestClass.test_basic"``
+Example name: ``"my_first_test.MyTestClass.test_basics"``
 
 ### Using a local Selenium Grid
 

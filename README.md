@@ -217,8 +217,9 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_basic(self):
-        self.open("https://store.xkcd.com/search")
+    def test_basics(self):
+        url = "https://store.xkcd.com/collections/posters"
+        self.open(url)
         self.type('input[name="q"]', "xkcd book")
         self.click('input[value="Search"]')
         self.assert_text("xkcd: volume 0", "h3")
@@ -228,10 +229,8 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
-        self.click_link_text("About")
+        self.click_link("About")
         self.assert_exact_text("xkcd.com", "h2")
-        self.click_link_text("geohashing")
-        self.assert_element("#comic img")
 ```
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.

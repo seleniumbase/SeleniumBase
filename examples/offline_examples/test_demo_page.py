@@ -89,7 +89,7 @@ class OfflineTestClass(BaseCase):
         self.assert_true(self.is_selected(".fBox"))
         self.switch_to_default_content()
 
-        # Assert link text - Use click_link_text() to click
+        # Assert link text - Use click_link() to click
         self.assert_link_text("seleniumbase.com")
         self.assert_link_text("SeleniumBase on GitHub")
         self.assert_link_text("seleniumbase.io")
