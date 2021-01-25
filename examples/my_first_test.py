@@ -3,8 +3,9 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
 
-    def test_basic(self):
-        self.open("https://store.xkcd.com/search")
+    def test_basics(self):
+        url = "https://store.xkcd.com/collections/posters"
+        self.open(url)
         self.type('input[name="q"]', "xkcd book")
         self.click('input[value="Search"]')
         self.assert_text("xkcd: volume 0", "h3")
@@ -14,10 +15,8 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')
         self.assert_text("free to copy and reuse")
         self.go_back()
-        self.click_link_text("About")
+        self.click_link("About")
         self.assert_exact_text("xkcd.com", "h2")
-        self.click_link_text("geohashing")
-        self.assert_element("#comic img")
 
         ####
 
@@ -77,8 +76,8 @@ class MyTestClass(BaseCase):
         #    self.assert_text() = self.assert_text_visible()
         #    self.find_text() = self.wait_for_text_visible()
         #                     = self.wait_for_text()
-        #    self.click_link_text(text) = self.click(link=text)
-        #                               = self.click_link(text)
+        #    self.click_link(text) = self.click(link=text)
+        #                          = self.click_link_text(text)
         #    * self.get(url) is SPECIAL: *
         #    If {url} is a valid URL, self.get() works just like self.open()
         #    Otherwise {url} becomes a selector for calling self.get_element()

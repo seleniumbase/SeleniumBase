@@ -17,5 +17,5 @@ class MyTestClass(BaseCase):
         self.click('a[rel="license"]')
         self.assert_text("back to this page")
         self.go_back()
-        self.click_link_text("About")
+        self.click_link("About")
         self.assert_exact_text("xkcd.com", "h2")

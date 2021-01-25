@@ -3456,6 +3456,14 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.click_link_text(link_text, timeout=timeout)
 
+    def click_partial_link(self, partial_link_text, timeout=None):
+        """ Same as self.click_partial_link_text() """
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.click_partial_link_text(partial_link_text, timeout=timeout)
+
     def wait_for_element_visible(self, selector, by=By.CSS_SELECTOR,
                                  timeout=None):
         """ Same as self.wait_for_element() """

@@ -25,7 +25,7 @@ except (ImportError, ValueError):
     # Example run command:  "python raw_parameter_script.py"
     from my_first_test import MyTestClass  # (relative imports DON'T work)
 
-    sb = MyTestClass("test_basic")
+    sb = MyTestClass("test_basics")
     sb.browser = "chrome"
     sb.headless = False
     sb.headed = False
@@ -86,7 +86,7 @@ except (ImportError, ValueError):
 
     sb.setUp()
     try:
-        sb.test_basic()
+        sb.test_basics()
     finally:
         sb.tearDown()
         del sb

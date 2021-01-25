@@ -253,7 +253,10 @@ def _set_chrome_options(
     chrome_options.add_argument("--disable-prompt-on-repost")
     if servername != "localhost":
         use_auto_ext = True  # Use Automation Extension with the Selenium Grid
-    if not use_auto_ext:  # (It's ON by default. Disable it when not wanted.)
+    if not use_auto_ext:  # Disable Automation Extension / detection. (Default)
+        if browser_name != constants.Browser.OPERA:
+            chrome_options.add_argument(
+                "--disable-blink-features=AutomationControlled")
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
         # Headless Chrome doesn't support extensions, which are required
@@ -790,6 +793,8 @@ def get_local_driver(
                 prefs["profile.managed_default_content_settings.images"] = 2
             edge_options.add_experimental_option("prefs", prefs)
             edge_options.add_experimental_option("w3c", True)
+            edge_options.add_argument(
+                "--disable-blink-features=AutomationControlled")
             edge_options.add_experimental_option(
                 "useAutomationExtension", False)
             edge_options.add_experimental_option(

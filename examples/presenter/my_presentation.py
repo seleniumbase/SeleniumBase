@@ -45,7 +45,7 @@ class MyPresenterClass(BaseCase):
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 'class MyTestClass(BaseCase):\n\n'
-                '    def test_basic(self):\n'
+                '    def test_basics(self):\n'
                 '        self.open("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd: volume 0", "h3")\n'
@@ -55,14 +55,14 @@ class MyPresenterClass(BaseCase):
                 '        self.click(\'a[rel="license"]\')\n'
                 '        self.assert_text("free to copy and reuse")\n'
                 '        self.go_back()\n'
-                '        self.click_link_text("About")\n'
+                '        self.click_link("About")\n'
                 '        self.assert_exact_text("xkcd.com", "h2")'))
         self.add_slide(
             "<h3>Highlight <b>code</b> in slides:</h3>",
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 '<mark>class MyTestClass(BaseCase):</mark>\n\n'
-                '    def test_basic(self):\n'
+                '    def test_basics(self):\n'
                 '        self.open("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd: volume 0", "h3")'))

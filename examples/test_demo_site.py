@@ -89,7 +89,7 @@ class MyTestClass(BaseCase):
         self.assert_link_text("seleniumbase.io")
 
         # Click link text
-        self.click_link_text("SeleniumBase Demo Page")
+        self.click_link("SeleniumBase Demo Page")
 
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")

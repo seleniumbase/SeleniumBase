@@ -16,15 +16,15 @@ class MyChartMakerClass(BaseCase):
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 'class MyTestClass(BaseCase):\n\n'
-                '    def test_basic(self):\n'
+                '    def test_basics(self):\n'
                 '        self.open("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd book", "div.results")\n'
                 '        self.open("https://xkcd.com/353/")\n'
                 '        self.click(\'a[rel="license"]\')\n'
                 '        self.go_back()\n'
-                '        self.click_link_text("About")\n'
-                '        self.click_link_text("comic #249")\n'
+                '        self.click_link("About")\n'
+                '        self.click_link("comic #249")\n'
                 '        self.assert_element(\'img[alt*="Chess"]\')\n'))
         self.add_slide(
             "<p>Command-line options. Examples:</p>",
