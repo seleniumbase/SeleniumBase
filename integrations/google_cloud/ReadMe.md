@@ -1,6 +1,10 @@
 ### Building a browser-based test automation server on the [Google Cloud Platform](https://cloud.google.com/) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
-(This tutorial, [from a previous Google Cloud Meetup](https://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true), will teach you how to setup a Linux server for running automated browser tests. The cost of running this server is about [$13.61/month on Google Cloud](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins) (enough to handle **5 parallel tests**). This is less expensive than using competitors such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/pricing).)
+(This tutorial, [from a previous Google Cloud Meetup](https://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true), will teach you how to setup a Linux server for running automated browser tests. The cost of running this server is about [$13.61/month on Google Cloud](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins) (enough to handle **5 parallel tests**). This is less expensive than using other platforms such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/pricing).)
+
+[Here's a quick video recap on YouTube:](https://www.youtube.com/watch?v=n-sno20R9P0)
+
+[<img src="https://seleniumbase.io/other/gcp_video_thumb.png" title="SeleniumBase on Google Cloud Platform" width="304">](https://www.youtube.com/watch?v=n-sno20R9P0)
 
 #### Step 1. Open the Google Cloud Platform Cloud Launcher
 
@@ -73,24 +77,24 @@ cd /SeleniumBase
 sudo pip install -r requirements.txt --upgrade
 ```
 
-#### Step 12. Install SeleniumBase (Make sure you already installed the requirements above)
+#### Step 12. Install SeleniumBase
 
 ```bash
 sudo python setup.py develop
 ```
 
-#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome to verify installation (May take up to 10 seconds)
+#### Step 13. Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) on Chrome to verify installation (May take up to 10 seconds)
 
 ![](https://cdn2.hubspot.net/hubfs/100006/images/gcp_bitnami.png "Linux SSH Terminal")
 
 ```bash
-pytest examples/my_first_test.py --headless --browser=chrome
+pytest examples/my_first_test.py --headless
 ```
 
 #### Step 14. If you like nosetests better than pytest, that works too
 
 ```bash
-nosetests examples/my_first_test.py --headless --browser=chrome
+nosetests examples/my_first_test.py --headless
 ```
 
 #### Step 15. You can also verify that the example test runs on Firefox
@@ -119,7 +123,7 @@ nosetests examples/my_first_test.py --headless --browser=firefox
 * Under "Build", click the "Add build step" dropdown and then select "Execute shell".
 * For the "Command", put:
 ```bash
-pytest examples/my_first_test.py --headless --browser=chrome
+pytest examples/my_first_test.py --headless
 ```
 * Click "Save" when you're done.
 
@@ -179,7 +183,7 @@ If you have a web application that you want to test, you'll be able to create Se
 * For the "Execute shell", use the following as your updated "Command":
 
 ```bash
-pytest examples/test_suite.py --headless --browser=chrome --with-db_reporting
+pytest examples/test_suite.py --headless --with-db_reporting
 ```
 
 * Click "Save" when you're done.
@@ -189,4 +193,4 @@ pytest examples/test_suite.py --headless --browser=chrome --with-db_reporting
 * Click on "Build Now"
 * If all goes well, you should be seeing new rows appear in your MySQL DB tables.
 
-#### Step 30. Congratulations! If you made it this far, you're awesome!
+#### Step 30. Congratulations! You've successfully completed this tutorial!
