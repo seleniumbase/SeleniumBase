@@ -311,17 +311,17 @@ class MD:
     md["click_if_visible"][8] = "нажмите_если_виден"
     md["click_if_visible"][9] = "clic_si_está_muestra"
 
-    md["click_link_text"] = ["*"] * num_langs
-    md["click_link_text"][0] = "click_link_text"
-    md["click_link_text"][1] = "单击链接文本"
-    md["click_link_text"][2] = "klik_linktekst"
-    md["click_link_text"][3] = "cliquer_texte_du_lien"
-    md["click_link_text"][4] = "clic_testo_del_collegamento"
-    md["click_link_text"][5] = "リンクテキストをクリックします"
-    md["click_link_text"][6] = "링크_텍스트를_클릭합니다"
-    md["click_link_text"][7] = "clique_texto_do_link"
-    md["click_link_text"][8] = "нажмите_ссылку"
-    md["click_link_text"][9] = "clic_texto_del_enlace"
+    md["click_link"] = ["*"] * num_langs
+    md["click_link"][0] = "click_link"
+    md["click_link"][1] = "单击链接文本"
+    md["click_link"][2] = "klik_linktekst"
+    md["click_link"][3] = "cliquer_texte_du_lien"
+    md["click_link"][4] = "clic_testo_del_collegamento"
+    md["click_link"][5] = "リンクテキストをクリックします"
+    md["click_link"][6] = "링크_텍스트를_클릭합니다"
+    md["click_link"][7] = "clique_texto_do_link"
+    md["click_link"][8] = "нажмите_ссылку"
+    md["click_link"][9] = "clic_texto_del_enlace"
 
     md["update_text"] = ["*"] * num_langs
     md["update_text"][0] = "update_text"
@@ -1918,18 +1918,18 @@ class MD:
     md["get_page_title"][8] = "получить_название"
     md["get_page_title"][9] = "obtener_título"
 
-    # "click_link" -> duplicate of "click_link_text"
-    md["click_link"] = ["*"] * num_langs
-    md["click_link"][0] = "click_link"
-    md["click_link"][1] = "单击链接文本"
-    md["click_link"][2] = "klik_linktekst"
-    md["click_link"][3] = "cliquer_texte_du_lien"
-    md["click_link"][4] = "clic_testo_del_collegamento"
-    md["click_link"][5] = "リンクテキストをクリックします"
-    md["click_link"][6] = "링크_텍스트를_클릭합니다"
-    md["click_link"][7] = "clique_texto_do_link"
-    md["click_link"][8] = "нажмите_ссылку"
-    md["click_link"][9] = "clic_texto_del_enlace"
+    # "click_link_text" -> duplicate of "click_link"
+    md["click_link_text"] = ["*"] * num_langs
+    md["click_link_text"][0] = "click_link_text"
+    md["click_link_text"][1] = "单击链接文本"
+    md["click_link_text"][2] = "klik_linktekst"
+    md["click_link_text"][3] = "cliquer_texte_du_lien"
+    md["click_link_text"][4] = "clic_testo_del_collegamento"
+    md["click_link_text"][5] = "リンクテキストをクリックします"
+    md["click_link_text"][6] = "링크_텍스트를_클릭합니다"
+    md["click_link_text"][7] = "clique_texto_do_link"
+    md["click_link_text"][8] = "нажмите_ссылку"
+    md["click_link_text"][9] = "clic_texto_del_enlace"
 
     # "send_keys" -> duplicate of "add_text"
     md["send_keys"] = ["*"] * num_langs
