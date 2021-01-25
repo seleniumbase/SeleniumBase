@@ -72,10 +72,11 @@ self.get_link_attribute(link_text, attribute, hard_fail=True)
 
 self.get_partial_link_text_attribute(link_text, attribute, hard_fail=True)
 
-self.click_link_text(link_text, timeout=None)
-# Duplicates: self.click_link(link_text, timeout=None)
+self.click_link(link_text, timeout=None)
+# Duplicates: self.click_link_text(link_text, timeout=None)
 
-self.click_partial_link_text(partial_link_text, timeout=None)
+self.click_partial_link(partial_link_text, timeout=None)
+# Duplicates: self.click_partial_link_text(partial_link_text, timeout=None)
 
 self.get_text(selector, by=By.CSS_SELECTOR, timeout=None)
 
