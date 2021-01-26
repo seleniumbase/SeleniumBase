@@ -1,7 +1,7 @@
 <h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" title="SeleniumBase" width="360" /></a></h3>
 
 <a id="syntax_formats"></a>
-<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15 syntax formats</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 15 syntax formats</h2>
 
 <p>(<b><a href="https://youtu.be/VvwtS9_1m0s">Watch this tutorial on YouTube</a></b>)</p>
 
