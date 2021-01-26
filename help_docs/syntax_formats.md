@@ -3,9 +3,9 @@
 <a id="syntax_formats"></a>
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 15 unique syntax formats</h2>
 
-<p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch this tutorial on YouTube</a></b>)</p>
+<p>(<b><a href="https://youtu.be/VvwtS9_1m0s">Watch this tutorial on YouTube</a></b>)</p>
 
-[<img src="http://img.youtube.com/vi/HOooW_0o468/0.jpg" title="The 15 unique syntax formats" width="255">](https://www.youtube.com/watch?v=HOooW_0o468)
+[<img src="https://i9.ytimg.com/vi/VvwtS9_1m0s/mq1.jpg?sqp=CJjYwIAG&rs=AOn4CLATaKKJw-aAi0qan1ACUd8E56Skxw" title="The 15 unique syntax formats" width="255">](https://youtu.be/VvwtS9_1m0s)
 
 --------
 
