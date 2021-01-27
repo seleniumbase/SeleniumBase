@@ -5,19 +5,25 @@
 To run web automation, you'll need webdrivers for each browser you plan on using. Here are some commands that'll automatically download the driver you need into the SeleniumBase ``drivers`` folder once you've installed SeleniumBase:
 
 ```bash
-seleniumbase install chromedriver
-seleniumbase install geckodriver
-seleniumbase install edgedriver
-seleniumbase install iedriver
-seleniumbase install operadriver
+sbase install chromedriver
+sbase install geckodriver
+sbase install edgedriver
+sbase install iedriver
+sbase install operadriver
 ```
+
 * If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
+
 ```bash
-seleniumbase install chromedriver latest
+sbase install chromedriver latest
 ```
+
 * You can also install a specific version of chromedriver for a specific version of Chrome:
+
 ```bash
-seleniumbase install chromedriver 83.0.4103.39
+sbase install chromedriver 88.0.4324.96
+
+sbase install chromedriver 88
 ```
 
 If you plan on using the [Selenium Grid integration](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md) (which allows for remote webdriver), you'll need to put the drivers on your System PATH. On macOS and Linux, ``/usr/local/bin`` is a good PATH spot. On Windows, you may need to set the System PATH under Environment Variables to include the location where you placed the driver files. As a shortcut, you could place the driver files into your Python ``Scripts/`` folder in the location where you have Python installed, which should already be on your System PATH.
