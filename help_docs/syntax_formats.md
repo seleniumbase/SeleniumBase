@@ -5,7 +5,7 @@
 
 <p>(<b><a href="https://youtu.be/VvwtS9_1m0s">Watch this tutorial on YouTube</a></b>)</p>
 
-[<img src="http://img.youtube.com/vi/VvwtS9_1m0s/mq1.jpg" title="15 SeleniumBase syntax formats" width="255">](https://youtu.be/VvwtS9_1m0s)
+[<img src="http://img.youtube.com/vi/VvwtS9_1m0s/mq1.jpg" title="15 SeleniumBase syntax formats" width="270">](https://youtu.be/VvwtS9_1m0s)
 
 --------
 

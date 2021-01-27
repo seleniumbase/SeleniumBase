@@ -62,6 +62,9 @@ def invalid_run_command(msg=None):
     exp += '          is included.\n'
     if not msg:
         raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    elif msg == "help":
+        print("\n%s" % exp)
+        sys.exit()
     else:
         raise Exception('INVALID RUN COMMAND!\n\n%s\n%s\n' % (exp, msg))
 
@@ -86,7 +89,9 @@ def main():
 
     command_args = sys.argv[2:]
     file_name = command_args[0]
-    if not file_name.endswith(".py"):
+    if file_name == "-h" or file_name == "--help":
+        invalid_run_command("help")
+    elif not file_name.endswith(".py"):
         error_msg = 'File name must end with ".py"!'
     elif "*" in file_name or len(str(file_name)) < 4:
         error_msg = 'Invalid file name!'
@@ -105,7 +110,7 @@ def main():
         options = command_args[1:]
         for option in options:
             option = option.lower()
-            if option == "help" or option == "--help":
+            if option == "-h" or option == "--help":
                 help_me = True
             elif option == "-b" or option == "--basic":
                 basic = True

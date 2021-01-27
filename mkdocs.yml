@@ -17,7 +17,6 @@ markdown_extensions:
   - markdown.extensions.attr_list
   - markdown.extensions.codehilite
   - markdown.extensions.meta
-  - markdown.extensions.md_in_html
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.toc:
@@ -38,6 +37,9 @@ theme:
     - navigation.sections
     # - navigation.tabs
     # - navigation.instant
+  extra:
+    search:
+      language: en
   palette:
     scheme: default
     primary: blue
@@ -52,6 +54,7 @@ plugins:
   - search
   - minify:
       minify_html: true
+      minify_js: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main

@@ -734,7 +734,7 @@ def main():
         seleniumbase_lines.append(lines[line_num])
 
     seleniumbase_code = ""
-    if has_unicode:
+    if has_unicode and sys.version_info[0] < 3:
         seleniumbase_code = "# -*- coding: utf-8 -*-\n"
     if uses_keys:
         seleniumbase_code += (

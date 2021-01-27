@@ -767,6 +767,10 @@ def pytest_itemcollected(item):
 def pytest_deselected(items):
     if sb_config.dashboard:
         sb_config.item_count -= len(items)
+        for item in items:
+            test_id, display_id = _get_test_ids_(item)
+            if test_id in sb_config._results.keys():
+                sb_config._results.pop(test_id)
 
 
 def pytest_collection_finish(session):

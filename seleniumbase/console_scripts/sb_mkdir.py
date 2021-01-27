@@ -43,6 +43,9 @@ def invalid_run_command(msg=None):
     exp += "          test frameworks.\n"
     if not msg:
         raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    elif msg == "help":
+        print("\n%s" % exp)
+        sys.exit()
     else:
         raise Exception('INVALID RUN COMMAND!\n\n%s\n%s\n' % (exp, msg))
 
@@ -66,7 +69,9 @@ def main():
 
     command_args = sys.argv[2:]
     dir_name = command_args[0]
-    if len(str(dir_name)) < 2:
+    if dir_name == "-h" or dir_name == "--help":
+        invalid_run_command("help")
+    elif len(str(dir_name)) < 2:
         error_msg = (
             'Directory name length must be at least 2 characters long!')
     elif "/" in str(dir_name) or "\\" in str(dir_name):
@@ -85,7 +90,7 @@ def main():
         options = command_args[1:]
         for option in options:
             option = option.lower()
-            if option == "help" or option == "--help":
+            if option == "-h" or option == "--help":
                 help_me = True
             elif option == "-b" or option == "--basic":
                 basic = True
