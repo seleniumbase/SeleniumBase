@@ -6795,13 +6795,14 @@ class BaseCase(unittest.TestCase):
                 return
             if hasattr(self, "_using_sb_fixture") and (
                     test_id not in sb_config._results.keys()):
-                cwd = os.getcwd()
-                if '\\' in cwd:
-                    cwd = cwd.split('\\')[-1]
-                else:
-                    cwd = cwd.split('/')[-1]
                 if test_id.count('.') > 1:
                     alt_test_id = '.'.join(test_id.split('.')[1:])
+                    if alt_test_id in sb_config._results.keys():
+                        sb_config._results.pop(alt_test_id)
+                elif test_id.count('.') == 1:
+                    alt_test_id = sb_config._display_id[test_id]
+                    alt_test_id = alt_test_id.replace(".py::", ".")
+                    alt_test_id = alt_test_id.replace("::", ".")
                     if alt_test_id in sb_config._results.keys():
                         sb_config._results.pop(alt_test_id)
             if test_id in sb_config._results.keys() and (
