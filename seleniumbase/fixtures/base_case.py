@@ -2473,6 +2473,7 @@ class BaseCase(unittest.TestCase):
 
     def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
         """ Clicks an element using JavaScript.
+            Can be used to click hidden / invisible elements.
             If "all_matches" is False, only the first match is clicked. """
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
@@ -2513,7 +2514,8 @@ class BaseCase(unittest.TestCase):
         self.js_click(selector, by=By.CSS_SELECTOR, all_matches=True)
 
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
-        """ Clicks an element using jQuery. Different from using pure JS. """
+        """ Clicks an element using jQuery. (Different from using pure JS.)
+            Can be used to click hidden / invisible elements. """
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
