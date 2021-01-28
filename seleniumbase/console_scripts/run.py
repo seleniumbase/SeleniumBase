@@ -9,6 +9,7 @@ Examples:
 sbase install chromedriver
 sbase mkdir ui_tests
 sbase mkfile new_test.py
+sbase mkpres new_presentation.py
 sbase options
 sbase convert webdriver_unittest_file.py
 sbase print my_first_test.py -n
@@ -67,6 +68,7 @@ def show_basic_usage():
     sc += ("      install         [DRIVER] [OPTIONS]\n")
     sc += ("      mkdir           [DIRECTORY] [OPTIONS]\n")
     sc += ("      mkfile          [FILE.py] [OPTIONS]\n")
+    sc += ("      mkpres          [FILE.py] [LANGUAGE OPTIONS]\n")
     sc += ("      options         (List common pytest options)\n")
     sc += ("      print           [FILE] [OPTIONS]\n")
     sc += ("      translate       [SB_FILE.py] [LANG] [ACTION]\n")
@@ -180,6 +182,33 @@ def show_mkfile_usage():
     print('          "assert_element", and "assert_text". If using the')
     print('          basic boilerplate option, only the "open" method')
     print('          is included.')
+    print("")
+
+
+def show_mkpres_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "mkpres" + c2 + " **" + cr)
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase mkpres [FILE.py] [LANGUAGE OPTIONS]")
+    print("           OR:    sbase mkpres [FILE.py] [LANGUAGE OPTIONS]")
+    print("  Example:")
+    print("           sbase mkpres new_presentation.py")
+    print("  Language Options:")
+    print("          --en / --English    |    --zh / --Chinese")
+    print("          --nl / --Dutch      |    --fr / --French")
+    print("          --it / --Italian    |    --ja / --Japanese")
+    print("          --ko / --Korean     |    --pt / --Portuguese")
+    print("          --ru / --Russian    |    --es / --Spanish")
+    print("  Output:")
+    print("          Creates a new presentation with 3 example slides.")
+    print("          If the file already exists, an error is raised.")
+    print("          By default, the slides are written in English.")
+    print('          Slides use "serif" theme & "fade" transition.')
+    print("          This code can be used as a base boilerplate.")
     print("")
 
 
@@ -540,6 +569,7 @@ def show_detailed_help():
     show_install_usage()
     show_mkdir_usage()
     show_mkfile_usage()
+    show_mkpres_usage()
     show_convert_usage()
     show_print_usage()
     show_translate_usage()
@@ -591,6 +621,13 @@ def main():
         else:
             show_basic_usage()
             show_mkfile_usage()
+    elif command == "mkpres":
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkpres
+            sb_mkpres.main()
+        else:
+            show_basic_usage()
+            show_mkpres_usage()
     elif command == "convert":
         if len(command_args) == 1:
             from seleniumbase.utilities.selenium_ide import convert_ide
@@ -717,6 +754,10 @@ def main():
             elif command_args[0] == "mkfile":
                 print("")
                 show_mkfile_usage()
+                return
+            elif command_args[0] == "mkpres":
+                print("")
+                show_mkpres_usage()
                 return
             elif command_args[0] == "convert":
                 print("")
