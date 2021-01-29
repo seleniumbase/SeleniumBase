@@ -81,6 +81,28 @@ methods, which are "open", "type", "click",
 basic boilerplate option, only the "open" method
 is included.
 
+### mkpres
+
+* Usage:
+``sbase mkpres [FILE.py] [LANGUAGE OPTIONS]``
+
+* Example:
+``sbase mkpres new_presentation.py``
+
+* Language Options:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+
+* Output:
+Creates a new presentation with 3 example slides.
+If the file already exists, an error is raised.
+By default, the slides are written in English.
+Slides use "serif" theme & "fade" transition.
+This code can be used as a base boilerplate.
+
 ### options
 
 * Usage:

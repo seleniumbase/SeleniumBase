@@ -112,7 +112,8 @@ pip install seleniumbase
 COMMANDS:
       install         [DRIVER] [OPTIONS]
       mkdir           [DIRECTORY]
-      mkfile          [FILE.py]
+      mkfile          [FILE.py] [OPTIONS]
+      mkpres          [FILE.py] [LANGUAGE OPTIONS]
       options         (List common pytest options)
       print           [FILE] [OPTIONS]
       translate       [SB_FILE.py] [LANG] [ACTION]
@@ -152,53 +153,24 @@ sbase install chromedriver latest
 
 (See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts.)
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Create and run tests:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Running tests:</h3>
 
-🔵 ``sbase mkdir DIR`` creates a folder with sample tests:
-
-```bash
-sbase mkdir ui_tests
-cd ui_tests/
-```
-
-> That folder will have the following files:
-
-```
-ui_tests/
-├── __init__.py
-├── boilerplates/
-│   ├── __init__.py
-│   ├── base_test_case.py
-│   ├── boilerplate_test.py
-│   ├── page_objects.py
-│   └── samples/
-│       ├── __init__.py
-│       ├── google_objects.py
-│       └── google_test.py
-├── my_first_test.py
-├── parameterized_test.py
-├── pytest.ini
-├── requirements.txt
-├── setup.cfg
-└── test_demo_site.py
-```
-
-🔵 <b>Run a sample test with ``pytest``:</b>
-
-```bash
-pytest test_demo_site.py
-```
-
-> (Chrome is the default browser if not specified with ``--browser=BROWSER``.)
-> (On Linux, ``--headless`` is the default behavior. You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.)
-
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" /></a><br />
-
-🔵 <b>If you've cloned SeleniumBase from GitHub, you can run sample tests from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:</b>
+🔵 <b>If you've cloned SeleniumBase from GitHub, you can run sample tests from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:</b>
 
 ```bash
 cd examples/
+pytest test_demo_site.py
+```
+
+> (Chrome is the default browser if not specified with ``--browser=BROWSER``. On Linux, ``--headless`` is the default behavior. You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.)
+
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" /></a><br />
+
+🔵 <b>Here are more examples that you can run:</b>
+
+```bash
 pytest my_first_test.py
+
 pytest test_swag_labs.py
 ```
 
@@ -438,17 +410,55 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 Inside your tests, you can use ``self.data`` to access that.
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Test Directory Customization:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Test Directory Configuration:</h3>
 
-🔵 For running tests outside of the SeleniumBase repo with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** on the root folder. For running tests outside of the SeleniumBase repo with **nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** on the root folder. (Subfolders should include a blank ``__init__.py`` file.) These files specify default configuration details for tests. (For nosetest runs, you can also specify a .cfg file by using ``--config``. Example ``nosetests [MY_TEST.py] --config=[MY_CONFIG.cfg]``)
+🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file, which allows your tests to import files from that folder.
 
-🔵 As a shortcut, you'll be able to run ``sbase mkdir [DIRECTORY]`` to create a new folder that already contains necessary files and some example tests that you can run.
+🔵 ``sbase mkdir DIR`` creates a folder with config files and sample tests:
 
 ```bash
 sbase mkdir ui_tests
-cd ui_tests/
-pytest test_demo_site.py
 ```
+
+> That new folder will have these files:
+
+```bash
+ui_tests/
+├── __init__.py
+├── boilerplates/
+│   ├── __init__.py
+│   ├── base_test_case.py
+│   ├── boilerplate_test.py
+│   ├── page_objects.py
+│   └── samples/
+│       ├── __init__.py
+│       ├── google_objects.py
+│       └── google_test.py
+├── my_first_test.py
+├── parameterized_test.py
+├── pytest.ini
+├── requirements.txt
+├── setup.cfg
+└── test_demo_site.py
+```
+
+<b>ProTip™:</b> You can also create a boilerplate folder without any sample tests in it by adding ``-b`` or ``--basic`` to the ``sbase mkdir`` command:
+
+```bash
+sbase mkdir ui_tests --basic
+```
+
+> That new folder will have these files:
+
+```bash
+ui_tests/
+├── __init__.py
+├── pytest.ini
+├── requirements.txt
+└── setup.cfg
+```
+
+Of those files, the ``pytest.ini`` config file is the most important, followed by a blank ``__init__.py`` file. There's also a ``setup.cfg`` file (only needed for nosetests). Finally, the ``requirements.txt`` file can be used to help you install seleniumbase into your environments (if it's not already installed).
 
 --------
 
@@ -467,7 +477,7 @@ class MyTestClass(BaseCase):
         self.assert_element("div#ARMY_OF_ROBOTS", timeout=1)  # This should fail
 ```
 
-You can run it from the ``examples`` folder like this:
+You can run it from the ``examples/`` folder like this:
 
 ```bash
 pytest test_fail.py
@@ -589,7 +599,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
 
-🔵 Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples`` folder). It's great for prototyping a website onboarding experience.
+🔵 Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples/`` folder). It's great for prototyping a website onboarding experience.
 
 
 <a id="utilizing_advanced_features"></a>
