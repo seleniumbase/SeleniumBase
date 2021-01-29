@@ -111,20 +111,20 @@ pip install seleniumbase
 
 COMMANDS:
       install         [DRIVER] [OPTIONS]
-      mkdir           [DIRECTORY]
-      mkfile          [FILE.py] [OPTIONS]
-      mkpres          [FILE.py] [LANGUAGE OPTIONS]
       options         (List common pytest options)
+      mkdir           [DIRECTORY] [OPTIONS]
+      mkfile          [FILE.py] [OPTIONS]
+      mkpres          [FILE.py] [LANG]
       print           [FILE] [OPTIONS]
       translate       [SB_FILE.py] [LANG] [ACTION]
       convert         [WEBDRIVER_UNITTEST_FILE.py]
       extract-objects [SB_FILE.py]
       inject-objects  [SB_FILE.py] [OPTIONS]
       objectify       [SB_FILE.py] [OPTIONS]
-      revert-objects  [SB_FILE.py]
+      revert-objects  [SB_FILE.py] [OPTIONS]
       encrypt         (OR: obfuscate)
       decrypt         (OR: unobfuscate)
-      download server (Selenium Server JAR file)
+      download server (The Selenium Grid JAR file)
       grid-hub        [start|stop] [OPTIONS]
       grid-node       [start|stop] --hub=[HOST/IP]
  * (EXAMPLE: "sbase install chromedriver latest")  *

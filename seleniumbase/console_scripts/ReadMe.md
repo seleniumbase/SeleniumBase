@@ -35,6 +35,15 @@ Installs the specified webdriver.
 (``iedriver`` is required for Internet Explorer automation)
 (``operadriver`` is required for Opera Browser automation)
 
+### options
+
+* Usage:
+``sbase options``
+
+* Output:
+Displays common pytest command-line options
+that are available when using SeleniumBase.
+
 ### mkdir
 
 * Usage:
@@ -84,10 +93,10 @@ is included.
 ### mkpres
 
 * Usage:
-``sbase mkpres [FILE.py] [LANGUAGE OPTIONS]``
+``sbase mkpres [FILE.py] [LANG]``
 
 * Example:
-``sbase mkpres new_presentation.py``
+``sbase mkpres new_presentation.py --en``
 
 * Language Options:
 ``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
@@ -102,15 +111,6 @@ If the file already exists, an error is raised.
 By default, the slides are written in English.
 Slides use "serif" theme & "fade" transition.
 This code can be used as a base boilerplate.
-
-### options
-
-* Usage:
-``sbase options``
-
-* Output:
-Displays common pytest command-line options
-that are available when using SeleniumBase.
 
 ### print
 
@@ -240,15 +240,11 @@ Runs the password decryption/unobfuscation tool.
 ### download
 
 * Usage:
-``sbase download [ITEM]``
-        (Options: server)
-
-* Example:
 ``sbase download server``
 
 * Output:
-Downloads the specified item.
-(server is required for using your own Selenium Grid)
+Downloads the Selenium Server JAR file for Grid usage.
+(That JAR file is required when using a Selenium Grid)
 
 ### grid-hub
 
