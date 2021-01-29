@@ -1,10 +1,10 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="360" /></h3>
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="350" /></h3>
 
-<h3> 📊 ChartMaker 📈 </h3>
+<h2> 📊 ChartMaker 📈 </h2>
 
-SeleniumBase ChartMaker allows you to create HTML charts with Python. (Using HighCharts JS)
+<p>SeleniumBase ChartMaker lets you use Python to generate HTML charts from HighCharts JS.</p>
 
-<a href="https://seleniumbase.io/other/chart_presentation.html"><img width="500" src="https://seleniumbase.io/other/chart_presentation.gif" title="Screenshot"></a><br>
+<a href="https://seleniumbase.io/other/chart_presentation.html"><img width="480" src="https://seleniumbase.io/cdn/gif/chart_pres.gif" title="Chart Presentation"></a><br>
 
 ([Click to see a presentation with multiple charts](https://seleniumbase.io/other/chart_presentation.html))
 

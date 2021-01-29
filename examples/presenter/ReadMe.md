@@ -2,10 +2,9 @@
 
 <h1> 📰 Presenter 📑 </h1>
 
-<b>SeleniumBase Presenter allows you to create HTML presentations with Python.</b><br />
-(The "Reveal-JS" library is used for running the presentations.)
+<p>SeleniumBase Presenter lets you use Python to generate HTML presentations from Reveal JS.</p>
 
-**Here's a sample presentation:**
+<b>Here's a sample presentation:</b>
 
 <a href="https://seleniumbase.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
 
