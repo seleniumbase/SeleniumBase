@@ -4,10 +4,10 @@ FROM ubuntu:18.04
 #=======================================
 # Install Python and Basic Python Tools
 #=======================================
-RUN apt-get update && apt-get install -y python python-pip python-setuptools python-dev python-distribute
-# Above command on Windows
-#RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
-#RUN apt-get install -y python python-pip python-setuptools python-dev python-distribute
+RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update
+RUN apt-get install -y python3 python3-pip python3-setuptools python3-dev python-distribute
+RUN alias python=python3
+RUN echo "alias python=python3" >> ~/.bashrc
 
 #=================================
 # Install Bash Command Line Tools
@@ -32,13 +32,6 @@ RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-ke
     apt-get -yqq install google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
-#==================
-# Configure Chrome
-#==================
-RUN dpkg-divert --add --rename --divert /opt/google/chrome/google-chrome.real /opt/google/chrome/google-chrome && \
-    echo "#!/bin/bash\nexec /opt/google/chrome/google-chrome.real --disable-setuid-sandbox --no-sandbox \"\$@\"" > /opt/google/chrome/google-chrome && \
-    chmod 755 /opt/google/chrome/google-chrome
-
 #=================
 # Install Firefox
 #=================
@@ -61,6 +54,20 @@ RUN Xvfb -ac :99 -screen 0 1280x1024x16 > /dev/null 2>&1 &
 RUN export DISPLAY=:99
 RUN exec "$@"
 
+#=======================
+# Update Python Version
+#=======================
+RUN apt-get update -y
+RUN apt-get -qy --no-install-recommends install python3.8
+RUN rm /usr/bin/python3
+RUN ln -s python3.8 /usr/bin/python3
+
+#=============================================
+# Allow Special Characters in Python Programs
+#=============================================
+RUN export PYTHONIOENCODING=utf8
+RUN echo "export PYTHONIOENCODING=utf8" >> ~/.bashrc
+
 #=====================
 # Set up SeleniumBase
 #=====================
@@ -71,11 +78,11 @@ COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
 RUN find -name '*.pyc' -delete
 RUN find -name __pycache__ -delete
-RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools
-RUN pip install --upgrade setuptools-scm
-RUN cd /SeleniumBase && ls && pip install -r requirements.txt --upgrade
-RUN cd /SeleniumBase && python setup.py develop
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade setuptools
+RUN pip3 install --upgrade setuptools-scm
+RUN cd /SeleniumBase && ls && pip3 install -r requirements.txt --upgrade
+RUN cd /SeleniumBase && python3 setup.py develop
 RUN seleniumbase install chromedriver
 RUN seleniumbase install geckodriver
 

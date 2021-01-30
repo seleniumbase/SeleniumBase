@@ -104,7 +104,7 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.0;python_version>="3.6"',
-        'packaging>=20.8',
+        'packaging>=20.9',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=52.0.0;python_version>="3.6"',
@@ -175,7 +175,7 @@ setup(
         'pymysql==1.0.2;python_version>="3.6"',
         'coverage==5.4',
         'brython==3.9.1',
-        'pyotp==2.4.1',
+        'pyotp==2.5.1',
         'boto==2.49.0',
         'cffi==1.14.4',
         'toml==0.10.2',
