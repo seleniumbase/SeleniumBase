@@ -113,8 +113,8 @@ def hover_element(driver, element):
 
 
 def timeout_exception(exception, message):
-    exc, message = s_utils.format_exc(exception, message)
-    raise exc(message)
+    exception, message = s_utils.format_exc(exception, message)
+    raise exception(message)
 
 
 def hover_and_click(driver, hover_selector, click_selector,
