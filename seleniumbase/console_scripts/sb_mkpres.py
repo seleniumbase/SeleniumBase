@@ -3,11 +3,11 @@
 Creates a new SeleniumBase presentation with boilerplate code.
 
 Usage:
-    seleniumbase mkpres [FILE.py] [LANGUAGE OPTIONS]
-    or     sbase mkpres [FILE.py] [LANGUAGE OPTIONS]
+    seleniumbase mkpres [FILE.py] [LANG]
+    or     sbase mkpres [FILE.py] [LANG]
 
 Example:
-    sbase mkpres new_presentation.py
+    sbase mkpres new_presentation.py --en
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -33,10 +33,10 @@ import sys
 def invalid_run_command(msg=None):
     exp = ("  ** mkpres **\n\n")
     exp += "  Usage:\n"
-    exp += "          seleniumbase mkpres [FILE.py] [LANGUAGE OPTIONS]\n"
-    exp += "          OR     sbase mkpres [FILE.py] [LANGUAGE OPTIONS]\n"
+    exp += "          seleniumbase mkpres [FILE.py] [LANG]\n"
+    exp += "          OR     sbase mkpres [FILE.py] [LANG]\n"
     exp += "  Example:\n"
-    exp += "          sbase mkpres new_presentation.py\n"
+    exp += "          sbase mkpres new_presentation.py --en\n"
     exp += "  Language Options:\n"
     exp += "          --en / --English    |    --zh / --Chinese\n"
     exp += "          --nl / --Dutch      |    --fr / --French\n"
