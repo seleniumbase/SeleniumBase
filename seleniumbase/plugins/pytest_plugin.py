@@ -892,9 +892,10 @@ def pytest_unconfigure():
                         'href="https://seleniumbase.io/img/dash_pie_2.png">')
                     if sb_config._dash_final_summary:
                         the_html_d += sb_config._dash_final_summary
+                    time.sleep(0.1)  # Add time for "livejs" to detect changes
                     with open(dashboard_path, "w", encoding='utf-8') as f:
                         f.write(the_html_d)  # Finalize the dashboard
-                    time.sleep(0.5)  # Add time for "livejs" to detect changes
+                    time.sleep(0.1)  # Add time for "livejs" to detect changes
                     the_html_d = the_html_d.replace(
                         "</head>", "</head><!-- Dashboard Report Done -->")
                 with open(dashboard_path, "w", encoding='utf-8') as f:
