@@ -75,8 +75,8 @@ class Base(Plugin):
             '--log_path', '--log-path',
             dest='log_path',
             default='latest_logs/',
-            help="""Log files are saved to the "latest_logs/" folder.
-                    (This field is NOT EDITABLE anymore!)""")
+            help="""(DEPRECATED) - This field is NOT EDITABLE anymore.
+                    Log files are saved to the "latest_logs/" folder.""")
         parser.add_option(
             '--archive_logs', '--archive-logs',
             action="store_true",

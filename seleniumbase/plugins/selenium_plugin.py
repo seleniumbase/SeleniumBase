@@ -370,8 +370,9 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest='save_screenshot',
             default=False,
-            help="""Take a screenshot on last page after the last step
-                    of the test. (Added to the "latest_logs" folder.)""")
+            help="""(DEPRECATED) - Screenshots are enabled by default now.
+                    This option saves screenshots during test failures.
+                    (Added to the "latest_logs/" folder.)""")
         parser.add_option(
             '--visual_baseline', '--visual-baseline',
             action='store_true',

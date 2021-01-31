@@ -143,7 +143,8 @@ def pytest_addoption(parser):
                          constants.Environment.TEST
                      ),
                      default=constants.Environment.TEST,
-                     help="The environment to run the tests in.")
+                     help="""This option is used for setting the test env.
+                          In tests, use "self.environment" to get the env.""")
     parser.addoption('--data',
                      dest='data',
                      default=None,
@@ -191,9 +192,10 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='with_testing_base',
                      default=True,
-                     help="""Use to save logs and screenshots when tests fail.
+                     help="""(DEPRECATED) - This option is always enabled now.
+                          Use for saving logs & screenshots when tests fail.
                           The following options are now active by default
-                          with --with-testing_base (which is on by default):
+                          with --with-testing_base (which is always on now):
                           --with-screen_shots ,
                           --with-basic_test_info ,
                           --with-page_source
@@ -201,8 +203,8 @@ def pytest_addoption(parser):
     parser.addoption('--log_path', '--log-path',
                      dest='log_path',
                      default='latest_logs/',
-                     help="""Log files are saved to the "latest_logs/" folder.
-                          (This field is NOT EDITABLE anymore!)""")
+                     help="""(DEPRECATED) - This value is NOT EDITABLE anymore.
+                          Log files are saved to the "latest_logs/" folder.""")
     parser.addoption('--archive_logs', '--archive-logs',
                      action="store_true",
                      dest='archive_logs',
@@ -213,7 +215,7 @@ def pytest_addoption(parser):
                      dest='with_db_reporting',
                      default=False,
                      help="Use to record test data in the MySQL database.")
-    parser.addoption('--database_env', '--database-env',
+    parser.addoption('--database_env',
                      action='store',
                      dest='database_env',
                      choices=(
@@ -236,19 +238,24 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='with_screen_shots',
                      default=False,
-                     help="""Use to save screenshots on test failure.
+                     help="""(DEPRECATED) - Screenshots are always saved now.
+                          This option saves screenshots during test failures.
+                          Screenshots are saved in the "latest_logs/" folder.
                           (Automatically on when using --with-testing_base)""")
     parser.addoption('--with-basic_test_info', '--with-basic-test-info',
                      action="store_true",
                      dest='with_basic_test_info',
                      default=False,
-                     help="""Use to save basic test info on test failure.
+                     help="""(DEPRECATED) - Info files are always saved now.
+                          This option saves basic test info on test failures.
+                          These files are saved in the "latest_logs/" folder.
                           (Automatically on when using --with-testing_base)""")
     parser.addoption('--with-page_source', '--with-page-source',
                      action="store_true",
                      dest='with_page_source',
                      default=False,
-                     help="""Use to save page source on test failure.
+                     help="""(DEPRECATED) - Page source is saved by default.
+                          This option saves page source files on test failures.
                           (Automatically on when using --with-testing_base)""")
     parser.addoption('--server',
                      action='store',
@@ -447,14 +454,16 @@ def pytest_addoption(parser):
                      action="store_true",
                      dest='no_sandbox',
                      default=False,
-                     help="""Using this enables the "No Sandbox" feature.
+                     help="""(DEPRECATED) - "--no-sandbox" is always used now.
+                          Using this enables the "No Sandbox" feature.
                           (This setting is now always enabled by default.)""")
     parser.addoption('--disable_gpu', '--disable-gpu',
                      action="store_true",
                      dest='disable_gpu',
                      default=False,
-                     help="""Using this enables the "Disable GPU" feature.
-                          (This setting is now always enabled by default.)""")
+                     help="""(DEPRECATED) - GPU is disabled if no swiftshader.
+                          Using this enables the "Disable GPU" feature.
+                          (GPU is disabled by default if swiftshader off.)""")
     parser.addoption('--remote_debug', '--remote-debug',
                      action="store_true",
                      dest='remote_debug',
