@@ -2,7 +2,7 @@
 site_name: SeleniumBase
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: A fast & reliable web automation framework for end-to-end testing with Python, pytest and WebDriver. Includes tools for reporting, visual testing, RPA, and more.
+site_description: A complete framework for end-to-end testing with Python, pytest, and WebDriver.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -10,7 +10,7 @@ edit_uri: ""
 site_dir: "site"
 docs_dir: "docs"
 # Copyright
-copyright: Copyright &copy; 2014 - 2021 Michael Mintz / SeleniumBase
+copyright: Copyright &copy; 2014 - 2021 Michael Mintz
 # Extensions
 markdown_extensions:
   - markdown.extensions.admonition
@@ -36,7 +36,7 @@ theme:
   features:
     - navigation.sections
     # - navigation.tabs
-    # - navigation.instant
+    - navigation.instant
   extra:
     search:
       language: en
@@ -77,7 +77,7 @@ nav:
     - How it Works: help_docs/how_it_works.md
   - Languages:
     - Translations: help_docs/translations.md
-    - Chinese / 中文文件: help_docs/chinese.md
+    - Chinese Docs: help_docs/chinese.md
     - Locale Codes: help_docs/locale_codes.md
   - JS Generators:
     - Tour Maker: examples/tour_examples/ReadMe.md
@@ -97,15 +97,14 @@ nav:
     - HighCharts: examples/chart_maker/ReadMe.md
   - Help Docs:
     - Table of Contents: help_docs/ReadMe.md
-    - Master QA: seleniumbase/masterqa/ReadMe.md
     - JS Package Manager: help_docs/js_package_manager.md
+    - Master QA Hybrid Mode: seleniumbase/masterqa/ReadMe.md
     - Decorators & Security: seleniumbase/common/ReadMe.md
     - Desired Capabilities: help_docs/desired_capabilities.md
+    - Docker Start Guide: integrations/docker/ReadMe.md
     - Using Safari Driver: help_docs/using_safari_driver.md
     - macOS Hidden Files: help_docs/hidden_files_info.md
-    - Docker Help: integrations/docker/ReadMe.md
-    - MySQL Help: help_docs/mysql_installation.md
-    - Case Studies: help_docs/happy_customers.md
+    - MySQL Instructions: help_docs/mysql_installation.md
   - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
     - TinyMCE Demo Page: https://seleniumbase.io/other/tinymce
@@ -116,6 +115,9 @@ nav:
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
     - Virtual Env Tutorial: https://seleniumbase.io/other/py_virtual_envs.html
-  - Thank You: help_docs/thank_you.md
+  - Other:
+    - YouTube Link: https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m
+    - Case Studies: help_docs/happy_customers.md
+    - Thank You: help_docs/thank_you.md
 # Google Analytics
 google_analytics: ['UA-167313767-1', 'seleniumbase.io']
