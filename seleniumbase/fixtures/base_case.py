@@ -6930,11 +6930,13 @@ class BaseCase(unittest.TestCase):
                 log_msg = "See latest logs for details"
                 if num_failed == 1:
                     status += (
-                        ' <b>1 test failed!</b> (<a href="%s">%s</a>)'
+                        ' <b>1 test failed!</b> --- '
+                        '(<b><a href="%s">%s</a></b>)'
                         '' % (latest_logs_dir, log_msg))
                 else:
                     status += (
-                        ' <b>%s tests failed!</b> (<a href="%s">%s</a>)'
+                        ' <b>%s tests failed!</b> --- '
+                        '(<b><a href="%s">%s</a></b>)'
                         '' % (num_failed, latest_logs_dir, log_msg))
         status += "</div><p></p>"
         add_more = add_more + status

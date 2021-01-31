@@ -21,7 +21,7 @@ try:
             long_description_lines.append(line)
     long_description = "\n".join(long_description_lines)
 except IOError:
-    long_description = 'The complete web automation library.'
+    long_description = "A complete library for building end-to-end tests."
 about = {}
 # Get the package version from the seleniumbase/__version__.py file
 with open(os.path.join(
@@ -103,7 +103,7 @@ setup(
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.0;python_version>="3.6"',
+        'pip>=21.0.1;python_version>="3.6"',
         'packaging>=20.9',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
@@ -170,7 +170,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.4.0',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.4.1',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         'coverage==5.4',
