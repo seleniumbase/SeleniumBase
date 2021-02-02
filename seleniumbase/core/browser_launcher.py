@@ -852,6 +852,19 @@ def get_local_driver(
                 edge_options.add_experimental_option(
                     "mobileEmulation", emulator_settings)
                 edge_options.add_argument("--enable-sync")
+            if user_data_dir:
+                abs_path = os.path.abspath(user_data_dir)
+                edge_options.add_argument("user-data-dir=%s" % abs_path)
+            if extension_zip:
+                # Can be a comma-separated list of .ZIP or .CRX files
+                extension_zip_list = extension_zip.split(',')
+                for extension_zip_item in extension_zip_list:
+                    abs_path = os.path.abspath(extension_zip_item)
+                    edge_options.add_extension(abs_path)
+            if extension_dir:
+                # load-extension input can be a comma-separated list
+                abs_path = os.path.abspath(extension_dir)
+                edge_options.add_argument("--load-extension=%s" % abs_path)
             edge_options.add_argument("--disable-infobars")
             edge_options.add_argument("--disable-save-password-bubble")
             edge_options.add_argument("--disable-single-click-autofill")
@@ -865,7 +878,16 @@ def get_local_driver(
             edge_options.add_argument("--dom-automation")
             edge_options.add_argument("--disable-hang-monitor")
             edge_options.add_argument("--disable-prompt-on-repost")
+            if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and (
+                    not headless):
+                # Headless Edge doesn't support extensions, which are required
+                # for disabling the Content Security Policy on Edge
+                edge_options = _add_chrome_disable_csp_extension(edge_options)
+                edge_options.add_argument("--enable-sync")
             if proxy_string:
+                if proxy_auth:
+                    edge_options = _add_chrome_proxy_extension(
+                        edge_options, proxy_string, proxy_user, proxy_pass)
                 edge_options.add_argument('--proxy-server=%s' % proxy_string)
             edge_options.add_argument("--test-type")
             edge_options.add_argument("--log-level=3")
