@@ -340,13 +340,30 @@ def _create_firefox_profile(
         "datareporting.policy.dataSubmissionPolicyAccepted", False)
     profile.set_preference("toolkit.telemetry.unified", False)
     if proxy_string:
-        proxy_server = proxy_string.split(':')[0]
-        proxy_port = proxy_string.split(':')[1]
+        socks_proxy = False
+        socks_ver = 0
+        chunks = proxy_string.split(':')
+        if len(chunks) == 3 and (
+                chunks[0] == "socks4" or chunks[0] == "socks5"):
+            socks_proxy = True
+            socks_ver = int(chunks[0][5])
+            if chunks[1].startswith("//") and len(chunks[1]) > 2:
+                chunks[1] = chunks[1][2:]
+            proxy_server = chunks[1]
+            proxy_port = chunks[2]
+        else:
+            proxy_server = proxy_string.split(':')[0]
+            proxy_port = proxy_string.split(':')[1]
         profile.set_preference("network.proxy.type", 1)
-        profile.set_preference("network.proxy.http", proxy_server)
-        profile.set_preference("network.proxy.http_port", int(proxy_port))
-        profile.set_preference("network.proxy.ssl", proxy_server)
-        profile.set_preference("network.proxy.ssl_port", int(proxy_port))
+        if socks_proxy:
+            profile.set_preference('network.proxy.socks', proxy_server)
+            profile.set_preference('network.proxy.socks_port', int(proxy_port))
+            profile.set_preference('network.proxy.socks_version', socks_ver)
+        else:
+            profile.set_preference("network.proxy.http", proxy_server)
+            profile.set_preference("network.proxy.http_port", int(proxy_port))
+            profile.set_preference("network.proxy.ssl", proxy_server)
+            profile.set_preference("network.proxy.ssl_port", int(proxy_port))
     if user_agent:
         profile.set_preference("general.useragent.override", user_agent)
     profile.set_preference(
@@ -406,12 +423,25 @@ def validate_proxy_string(proxy_string):
         elif proxy_string.startswith('https://'):
             proxy_string = proxy_string.split('https://')[1]
         elif '://' in proxy_string:
-            proxy_string = proxy_string.split('://')[1]
+            if not proxy_string.startswith('socks4://') and not (
+                    proxy_string.startswith('socks5://')):
+                proxy_string = proxy_string.split('://')[1]
         chunks = proxy_string.split(':')
         if len(chunks) == 2:
             if re.match(r'^\d+$', chunks[1]):
                 if page_utils.is_valid_url('http://' + proxy_string):
                     valid = True
+        elif len(chunks) == 3:
+            if re.match(r'^\d+$', chunks[2]):
+                if page_utils.is_valid_url('http:' + ':'.join(chunks[1:])):
+                    if chunks[0] == "http":
+                        valid = True
+                    elif chunks[0] == "https":
+                        valid = True
+                    elif chunks[0] == "socks4":
+                        valid = True
+                    elif chunks[0] == "socks5":
+                        valid = True
     else:
         proxy_string = val_ip.group()
         valid = True
