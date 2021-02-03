@@ -6223,11 +6223,6 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT)
         try:
-            selector = self.convert_to_css_selector(selector, by=by)
-        except Exception:
-            # Don't highlight if can't convert to CSS_SELECTOR
-            return
-        try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
                 self.driver, element)
             if abs(scroll_distance) > SSMD:
@@ -6240,6 +6235,11 @@ class BaseCase(unittest.TestCase):
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=settings.SMALL_TIMEOUT)
             self.__slow_scroll_to_element(element)
+        try:
+            selector = self.convert_to_css_selector(selector, by=by)
+        except Exception:
+            # Don't highlight if can't convert to CSS_SELECTOR
+            return
 
         o_bs = ''  # original_box_shadow
         try:
