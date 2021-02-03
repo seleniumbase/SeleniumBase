@@ -136,13 +136,43 @@ def log_page_source(test_logpath, driver, source=None):
 
 
 def get_test_id(test):
-    test_id = "%s.%s.%s" % (
-        test.__class__.__module__,
-        test.__class__.__name__,
-        test._testMethodName)
-    if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
-        test_id = test._sb_test_identifier
+    test_id = None
+    try:
+        test_id = get_test_name(test)
+    except Exception:
+        test_id = "%s.%s.%s" % (
+            test.__class__.__module__,
+            test.__class__.__name__,
+            test._testMethodName)
+        if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
+            test_id = test._sb_test_identifier
     return test_id
+
+
+def get_test_name(test):
+    if test.is_pytest:
+        test_name = "%s.py::%s::%s" % (
+            test.__class__.__module__.split('.')[-1],
+            test.__class__.__name__,
+            test._testMethodName)
+    else:
+        test_name = "%s.py:%s.%s" % (
+            test.__class__.__module__.split('.')[-1],
+            test.__class__.__name__,
+            test._testMethodName)
+    if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
+        test_name = test._sb_test_identifier
+        if hasattr(test, "_using_sb_fixture_class"):
+            if test_name.count('.') >= 2:
+                parts = test_name.split('.')
+                full = parts[-3] + '.py::' + parts[-2] + '::' + parts[-1]
+                test_name = full
+        elif hasattr(test, "_using_sb_fixture_no_class"):
+            if test_name.count('.') >= 1:
+                parts = test_name.split('.')
+                full = parts[-2] + '.py::' + parts[-1]
+                test_name = full
+    return test_name
 
 
 def get_last_page(driver):
