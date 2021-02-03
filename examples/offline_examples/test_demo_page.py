@@ -97,3 +97,6 @@ class OfflineTestClass(BaseCase):
 
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")
+
+        # Highlight a page element (also assert visibility)
+        self.highlight("h2")

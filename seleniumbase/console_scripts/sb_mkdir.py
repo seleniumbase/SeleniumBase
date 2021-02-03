@@ -376,6 +376,7 @@ def main():
     data.append('        self.assert_link_text("seleniumbase.io")')
     data.append('        self.click_link("SeleniumBase Demo Page")')
     data.append('        self.assert_exact_text("Demo Page", "h1")')
+    data.append('        self.highlight("h2")')
     data.append("")
     file_path = "%s/%s" % (dir_name, "test_demo_site.py")
     file = codecs.open(file_path, "w+", "utf-8")
