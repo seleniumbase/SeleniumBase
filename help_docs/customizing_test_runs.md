@@ -338,16 +338,24 @@ nosetests test_suite.py --report
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Using a Proxy Server:</h3>
 
-If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
 ```bash
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
-If the proxy server that you wish to use requires authentication, you can do the following (Chrome only):
+If the proxy server that you wish to use requires authentication, you can do the following (Chromium only):
 
 ```bash
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+```
+
+SeleniumBase also supports SOCKS4 and SOCKS5 proxies:
+
+```bash
+pytest proxy_test.py --proxy="socks4://IP_ADDRESS:PORT"
+
+pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
 ```
 
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
