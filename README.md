@@ -111,6 +111,7 @@ pip install seleniumbase
 
 COMMANDS:
       install         [DRIVER] [OPTIONS]
+      methods         (List common Python methods)
       options         (List common pytest options)
       mkdir           [DIRECTORY] [OPTIONS]
       mkfile          [FILE.py] [OPTIONS]

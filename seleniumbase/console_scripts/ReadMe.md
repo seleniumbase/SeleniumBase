@@ -35,6 +35,14 @@ Installs the specified webdriver.
 (``iedriver`` is required for Internet Explorer automation)
 (``operadriver`` is required for Opera Browser automation)
 
+### methods
+
+* Usage:
+``sbase methods``
+
+* Output:
+Displays common SeleniumBase Python methods.
+
 ### options
 
 * Usage:
