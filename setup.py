@@ -107,7 +107,7 @@ setup(
         'packaging>=20.9',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=52.0.0;python_version>="3.6"',
+        'setuptools>=53.0.0;python_version>="3.6"',
         'setuptools-scm>=5.0.1',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
@@ -166,11 +166,11 @@ setup(
         'prompt-toolkit==3.0.14;python_version>="3.6"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.19.0;python_version>="3.7"',
+        'ipython==7.20.0;python_version>="3.7"',
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.4.1',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.4.2',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         'coverage==5.4',

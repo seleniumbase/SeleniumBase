@@ -7,10 +7,11 @@ seleniumbase [COMMAND] [PARAMETERS]
 
 Examples:
 sbase install chromedriver
+sbase methods
+sbase options
 sbase mkdir ui_tests
 sbase mkfile new_test.py
 sbase mkpres new_presentation.py
-sbase options
 sbase convert webdriver_unittest_file.py
 sbase print my_first_test.py -n
 sbase translate my_first_test.py --zh -p
@@ -66,6 +67,7 @@ def show_basic_usage():
     sc += ("\n")
     sc += ("COMMANDS:\n")
     sc += ("      install         [DRIVER] [OPTIONS]\n")
+    sc += ("      methods         (List common Python methods)\n")
     sc += ("      options         (List common pytest options)\n")
     sc += ("      mkdir           [DIRECTORY] [OPTIONS]\n")
     sc += ("      mkfile          [FILE.py] [OPTIONS]\n")
@@ -501,6 +503,62 @@ def show_package_location():
     print("%s" % location)
 
 
+def show_methods():
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+    c5 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTGREEN_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("\n " + c2 + " ** " + c3 + " SeleniumBase Python Methods "
+          "" + c2 + " ** " + cr)
+    print(sc)
+    print("")
+    line = "Here are some common methods that come with SeleniumBase:"
+    line = c1 + line + cr
+    print(line)
+    line = "(Some optional args are not shown here)"
+    print(line)
+    print("")
+    sbm = ""
+    sbm += ('*.open(url) => Navigate the browser window to the URL.\n')
+    sbm += ('*.type(selector, text) => Update the field with the text.\n')
+    sbm += ('*.click(selector) => Click the element with the selector.\n')
+    sbm += ('*.click_link(link_text) => Click the link containing text.\n')
+    sbm += ('*.go_back() => Navigate back to the previous URL.\n')
+    sbm += ('*.select_option_by_text(dropdown_selector, option)\n')
+    sbm += ('*.hover_and_click(hover_selector, click_selector)\n')
+    sbm += ('*.drag_and_drop(drag_selector, drop_selector)\n')
+    sbm += ('*.get_text(selector) => Get the text from the element.\n')
+    sbm += ('*.get_current_url() => Get the URL of the current page.\n')
+    sbm += ('*.get_page_source() => Get the HTML of the current page.\n')
+    sbm += ('*.get_attribute(selector, attribute) => Get element attribute.\n')
+    sbm += ('*.get_title() => Get the title of the current page.\n')
+    sbm += ('*.switch_to_frame(frame) => Switch into the iframe container.\n')
+    sbm += ('*.switch_to_default_content() => Leave the iframe container.\n')
+    sbm += ('*.open_new_window() => Open a new window in the same browser.\n')
+    sbm += ('*.switch_to_window(window) => Switch to the browser window.\n')
+    sbm += ('*.switch_to_default_window() => Switch to the original window.\n')
+    sbm += ('*.get_new_driver(OPTIONS) => Open a new driver with OPTIONS.\n')
+    sbm += ('*.switch_to_driver(driver) => Switch to the browser driver.\n')
+    sbm += ('*.switch_to_default_driver() => Switch to the original driver.\n')
+    sbm += ('*.is_element_visible(selector) => Return True if item visible.\n')
+    sbm += ('*.is_text_visible(text) => Return True if text is visible.\n')
+    sbm += ('*.save_screenshot(name) => Save a screenshot in PNG format.\n')
+    sbm += ('*.assert_element(selector) => Verify the element is visible.\n')
+    sbm += ('*.assert_text(text, selector) => Verify text in the element.\n')
+    sbm += ('*.assert_title(title) => Verify the title of the web page.\n')
+    sbm += ('*.assert_downloaded_file(file) => Verify file was downloaded.\n')
+    sbm += ('*.assert_no_404_errors() => Verify there are no broken links.\n')
+    sbm += ('*.assert_no_js_errors() => Verify there are no JS errors.\n')
+    sbm = sbm.replace("*.", "self." + c1).replace('(', cr + '(')
+    sbm = sbm.replace("self.", c2 + "self" + c5 + "." + cr)
+    sbm = sbm.replace('(', c3 + '(' + c4)
+    sbm = sbm.replace(')', c3 + ')' + cr)
+    print(sbm)
+    print("")
+
+
 def show_options():
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -739,6 +797,8 @@ def main():
             print()
         else:
             show_basic_usage()
+    elif command == "methods" or command == "--methods":
+        show_methods()
     elif command == "options" or command == "--options":
         show_options()
     elif command == "help" or command == "--help":
