@@ -13,33 +13,39 @@ docs_dir: "docs"
 copyright: Copyright &copy; 2014 - 2021 Michael Mintz
 # Extensions
 markdown_extensions:
-  - markdown.extensions.admonition
-  - markdown.extensions.attr_list
-  - markdown.extensions.codehilite
-  - markdown.extensions.meta
-  - markdown.extensions.def_list
-  - markdown.extensions.footnotes
-  - markdown.extensions.toc:
+  - admonition
+  - md_in_html
+  - toc:
       permalink: true
+  - pymdownx.highlight:
+      linenums: false
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.snippets
 # Configuration
 theme:
   name: material
   logo: img/grad_logo.png
   favicon: img/grad_logo.png
+  language: en
   include_homepage_in_sidebar: true
   sticky_navigation: true
-  language: en
+  # collapse_navigation: false
+  # titles_only: false
   include_search_page: false
   search_index_only: true
   static_templates:
     - 404.html
   features:
-    - navigation.sections
+    # - search.highlight
+    # - toc.integrate
+    - navigation.indexes
+    # - navigation.sections
+    # - navigation.expand
     # - navigation.tabs
     - navigation.instant
-  extra:
-    search:
-      language: en
   palette:
     scheme: default
     primary: blue
@@ -51,10 +57,12 @@ theme:
     logo: img/sb_logo_7.png
 # Plugins
 plugins:
-  - search
+  - search:
+      separator: '[\s\-]+'
+      prebuild_index: true
+      lang: en
   - minify:
       minify_html: true
-      minify_js: true
   - mkdocs-simple-hooks:
       hooks:
         on_pre_build: docs.prepare:main
@@ -99,7 +107,7 @@ nav:
     - Table of Contents: help_docs/ReadMe.md
     - JS Package Manager: help_docs/js_package_manager.md
     - Master QA Hybrid Mode: seleniumbase/masterqa/ReadMe.md
-    - Decorators & Security: seleniumbase/common/ReadMe.md
+    - Decorators / Security: seleniumbase/common/ReadMe.md
     - Desired Capabilities: help_docs/desired_capabilities.md
     - Docker Start Guide: integrations/docker/ReadMe.md
     - Using Safari Driver: help_docs/using_safari_driver.md
