@@ -67,7 +67,7 @@ def pytest_addoption(parser):
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
-    --reuse-session / --rs  (Reuse the browser session between tests.)
+    --reuse-session | --rs  (Reuse browser session between tests.)
     --crumbs  (Delete all cookies between tests reusing a session.)
     --maximize  (Start tests with the web browser window maximized.)
     --save-screenshot  (Save a screenshot at the end of each test.)
@@ -856,7 +856,7 @@ def pytest_terminal_summary(terminalreporter):
 def pytest_unconfigure():
     """ This runs after all tests have completed with pytest. """
     proxy_helper.remove_proxy_zip_if_present()
-    if sb_config.reuse_session:
+    if hasattr(sb_config, 'reuse_session') and sb_config.reuse_session:
         # Close the shared browser session
         if sb_config.shared_driver:
             try:
@@ -866,10 +866,13 @@ def pytest_unconfigure():
             except Exception:
                 pass
         sb_config.shared_driver = None
-    log_helper.archive_logs_if_set(sb_config.log_path, sb_config.archive_logs)
+    if hasattr(sb_config, 'log_path'):
+        log_helper.archive_logs_if_set(
+            sb_config.log_path, sb_config.archive_logs)
 
     # Dashboard post-processing: Disable time-based refresh and stamp complete
-    if sb_config.dashboard and not sb_config._only_unittest:
+    if hasattr(sb_config, 'dashboard') and (
+            sb_config.dashboard and not sb_config._only_unittest):
         stamp = ""
         if sb_config._dash_is_html_report:
             # (If the Dashboard URL is the same as the HTML Report URL:)
@@ -985,7 +988,8 @@ def pytest_runtest_makereport(item, call):
     pytest_html = item.config.pluginmanager.getplugin('html')
     outcome = yield
     report = outcome.get_result()
-    if pytest_html and report.when == 'call':
+    if pytest_html and report.when == 'call' and (
+            hasattr(sb_config, 'dashboard')):
         if sb_config.dashboard and not sb_config._sbase_detected:
             test_id, display_id = _get_test_ids_(item)
             r_outcome = report.outcome

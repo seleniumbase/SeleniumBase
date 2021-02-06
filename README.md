@@ -50,20 +50,19 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-✅ Has a [complete API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) for Web-UI testing.<br />
-✅ Expands pytest [command-line options](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).<br />
-✅ Includes [scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md) for driver management.<br />
-✅ Includes tools for [dashboards & reports](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
+✅ Get set up in minutes. Deploy anywhere.<br />
+✅ Build Web-UI tests with a [complete API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).<br />
+✅ Generate [test reports and dashboards](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
 
 --------
 
-<p align="center">(Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py">test_swag_labs.py</a> in Demo Mode.)</p>
+<p align="left">(Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> in Demo Mode.)</p>
 
 ```bash
-pytest test_swag_labs.py --demo
+pytest my_first_test.py --demo
 ```
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" width="400" /></a></p>
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Python Setup:</h2>
@@ -181,7 +180,7 @@ pytest test_swag_labs.py
 pytest my_first_test.py --demo
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" title="SeleniumBase" /></a>
 
 <b>Here's the code for [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
 
@@ -382,7 +381,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session  # (Reuse the browser session between tests.)
+--reuse-session | --rs  # (Reuse browser session between tests.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --maximize-window  # (Start tests with the web browser window maximized.)
 --save-screenshot  # (Save a screenshot at the end of each test.)

@@ -33,7 +33,7 @@ Run an example test in Demo Mode: (highlight assertions)
 pytest my_first_test.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/my_first_test_1.gif" title="SeleniumBase Demo Mode" /><br />
+<img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" title="SeleniumBase Demo Mode" /><br />
 
 Run a different example in Demo Mode:
 

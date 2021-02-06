@@ -575,7 +575,7 @@ def show_options():
     print('--headless  (Run tests headlessly. Default mode on Linux OS.)')
     print('--demo  (Slow down and visually see test actions as they occur.)')
     print('--slow  (Slow down the automation. Faster than using Demo Mode.)')
-    print('--reuse-session / --rs  (Reuse the browser session between tests.)')
+    print('--reuse-session / --rs  (Reuse browser session between tests.)')
     print('--crumbs  (Delete all cookies between tests reusing a session.)')
     print('--maximize  (Start tests with the web browser window maximized.)')
     print('--dashboard (Enable the SeleniumBase Dashboard at dashboard.html)')
