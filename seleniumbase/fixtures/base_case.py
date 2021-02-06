@@ -2184,6 +2184,18 @@ class BaseCase(unittest.TestCase):
                     break
                 time.sleep(0.2)
 
+    def install_addon(self, xpi_file):
+        """ Installs a Firefox add-on instantly at run-time.
+            @Params
+            xpi_file - A file archive in .xpi format. """
+        if self.browser != "firefox":
+            raise Exception(
+                "install_addon(xpi_file) is for Firefox ONLY!\n"
+                "To load a Chrome extension, use the comamnd-line:\n"
+                "--extension_zip=CRX_FILE  OR  --extension_dir=DIR")
+        xpi_path = os.path.abspath(xpi_file)
+        self.driver.install_addon(xpi_path, temporary=True)
+
     def activate_design_mode(self):
         # Activate Chrome's Design Mode, which lets you edit a site directly.
         # See: https://twitter.com/sulco/status/1177559150563344384

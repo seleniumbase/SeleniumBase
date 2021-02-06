@@ -208,6 +208,8 @@ self.wait_for_angularjs(timeout=None)
 self.sleep(seconds)
 # Duplicates: self.wait(seconds)
 
+self.install_addon(xpi_file)
+
 self.activate_design_mode()
 
 self.deactivate_design_mode()
