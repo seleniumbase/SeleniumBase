@@ -56,7 +56,7 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 
 --------
 
-<p align="left">(Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> in Demo Mode.)</p>
+<p align="left">Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> (<code>--demo</code> mode)</p>
 
 ```bash
 pytest my_first_test.py --demo
