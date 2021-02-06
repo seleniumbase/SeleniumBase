@@ -62,7 +62,7 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 pytest my_first_test.py --demo
 ```
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" width="400" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Python Setup:</h2>
@@ -180,7 +180,7 @@ pytest test_swag_labs.py
 pytest my_first_test.py --demo
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" title="SeleniumBase" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a>
 
 <b>Here's the code for [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
 
