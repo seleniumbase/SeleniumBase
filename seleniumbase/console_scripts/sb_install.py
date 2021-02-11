@@ -13,12 +13,12 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 87.0.4280.88
-        sbase install chromedriver 87
+        sbase install chromedriver 88.0.4324.96
+        sbase install chromedriver 88
         sbase install chromedriver latest
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 87.0.664.66
+        sbase install edgedriver 88.0.705.63
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -42,8 +42,8 @@ urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.28.0"
-DEFAULT_EDGEDRIVER_VERSION = "87.0.664.66"  # (Looks for LATEST_STABLE first)
+DEFAULT_GECKODRIVER_VERSION = "v0.29.0"
+DEFAULT_EDGEDRIVER_VERSION = "88.0.705.63"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
 
 

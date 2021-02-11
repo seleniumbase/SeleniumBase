@@ -919,10 +919,10 @@ self.driver.find_elements_by_partial_link_text("GitHub")
 
 🔵 Retrying failing tests automatically:
 
-<p>You can use <code>--reruns NUM</code> to retry failing tests that many times. Use <code>--reruns-delay SECONDS</code> to wait that many seconds between retries. Example:</p>
+<p>You can use <code>--reruns=NUM</code> to retry failing tests that many times. Use <code>--reruns-delay=SECONDS</code> to wait that many seconds between retries. Example:</p>
 
 ```bash
-pytest --reruns 5 --reruns-delay 1
+pytest --reruns=1 --reruns-delay=1
 ```
 
 <p>Additionally, you can use the <code>@retry_on_exception()</code> decorator to specifically retry failing methods. (First import: <code>from seleniumbase import decorators</code>) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).</p>

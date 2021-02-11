@@ -49,7 +49,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.56.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.56.2'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -128,7 +128,7 @@ setup(
         'selenium==3.141.0',
         'msedge-selenium-tools==3.141.3',
         'more-itertools==5.0.0;python_version<"3.5"',
-        'more-itertools==8.6.0;python_version>="3.5"',
+        'more-itertools==8.7.0;python_version>="3.5"',
         'cssselect==1.1.0',
         'pluggy==0.13.1',
         'py==1.8.1;python_version<"3.5"',
@@ -146,24 +146,24 @@ setup(
         'pytest-rerunfailures==8.0;python_version<"3.5"',
         'pytest-rerunfailures==9.1.1;python_version>="3.5"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
-        'pytest-xdist==2.2.0;python_version>="3.5"',
+        'pytest-xdist==2.2.1;python_version>="3.5"',
         'parameterized==0.8.1',
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5" and python_version<"3.6"',
-        'soupsieve==2.1;python_version>="3.6"',
+        'soupsieve==2.2;python_version>="3.6"',
         'beautifulsoup4==4.9.3',
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.0;python_version>="3.5" and python_version<"3.6"',
-        'cryptography==3.3.1;python_version>="3.6"',
+        'cryptography==3.3.2;python_version>="3.6"',
         'pyopenssl==19.1.0;python_version<"3.6"',
         'pyopenssl==20.0.1;python_version>="3.6"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.7.4;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.5;python_version>="3.7"',
-        'ipython==5.10.0;python_version<"3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.14;python_version>="3.6"',
+        'prompt-toolkit==3.0.15;python_version>="3.6"',
+        'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.20.0;python_version>="3.7"',
