@@ -43,7 +43,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.29.0"
-DEFAULT_EDGEDRIVER_VERSION = "87.0.664.66"  # (Looks for LATEST_STABLE first)
+DEFAULT_EDGEDRIVER_VERSION = "88.0.705.63"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
 
 
