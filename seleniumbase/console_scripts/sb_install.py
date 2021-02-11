@@ -13,12 +13,12 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 87.0.4280.88
-        sbase install chromedriver 87
+        sbase install chromedriver 88.0.4324.96
+        sbase install chromedriver 88
         sbase install chromedriver latest
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 87.0.664.66
+        sbase install edgedriver 88.0.705.63
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)

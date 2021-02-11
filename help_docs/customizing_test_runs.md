@@ -240,8 +240,8 @@ To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or
 
 You can use ``--reruns=NUM`` to retry failing tests that many times. Use ``--reruns-delay=SECONDS`` to wait that many seconds between retries. Example:
 
-```
-pytest --reruns=2 --reruns-delay=1
+```bash
+pytest --reruns=1 --reruns-delay=1
 ```
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Debugging tests:</h3>
