@@ -6137,7 +6137,14 @@ class BaseCase(unittest.TestCase):
             If "xp_ok" is False, don't call convert_css_to_xpath(), which is
             used to make the ":contains()" selector valid outside JS calls. """
         _type = type(selector)  # First make sure the selector is a string
-        if _type is not str:
+        not_string = False
+        if sys.version_info[0] < 3:
+            if _type is not str and _type is not unicode:  # noqa
+                not_string = True
+        else:
+            if _type is not str:
+                not_string = True
+        if not_string:
             msg = 'Expecting a selector of type: "<class \'str\'>" (string)!'
             raise Exception('Invalid selector type: "%s"\n%s' % (_type, msg))
         if page_utils.is_xpath_selector(selector):
@@ -6740,7 +6747,14 @@ class BaseCase(unittest.TestCase):
             if hasattr(self._outcome, 'errors') and self._outcome.errors:
                 has_exception = True
         else:
-            has_exception = sys.exc_info()[1] is not None
+            if sys.version_info[0] >= 3:
+                has_exception = sys.exc_info()[1] is not None
+            else:
+                if not hasattr(self, "_using_sb_fixture_class") and (
+                        not hasattr(self, "_using_sb_fixture_no_class")):
+                    has_exception = sys.exc_info()[1] is not None
+                else:
+                    has_exception = (len(str(sys.exc_info()[1]).strip()) > 0)
         return has_exception
 
     def __get_test_id(self):
