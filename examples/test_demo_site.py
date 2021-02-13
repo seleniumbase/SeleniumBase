@@ -94,7 +94,7 @@ class MyTestClass(BaseCase):
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")
 
-        # Highlight a page element (also assert visibility)
+        # Highlight a page element (Also asserts visibility)
         self.highlight("h2")
 
         # Assert no broken links (Can be slow if many links)
