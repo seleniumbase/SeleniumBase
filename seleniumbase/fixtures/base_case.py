@@ -2751,11 +2751,13 @@ class BaseCase(unittest.TestCase):
             raise Exception("%s is not a PDF file! (Expecting a .pdf)" % pdf)
         file_path = None
         if page_utils.is_valid_url(pdf):
+            from seleniumbase.core import download_helper
+            downloads_folder = download_helper.get_downloads_folder()
             if nav:
                 if self.get_current_url() != pdf:
                     self.open(pdf)
             file_name = pdf.split('/')[-1]
-            file_path = self.get_downloads_folder() + '/' + file_name
+            file_path = downloads_folder + '/' + file_name
             if not os.path.exists(file_path):
                 self.download_file(pdf)
             elif override:
@@ -2926,10 +2928,19 @@ class BaseCase(unittest.TestCase):
         page_utils._save_data_as(data, destination_folder, file_name)
 
     def get_downloads_folder(self):
-        """ Returns the OS path of the Downloads Folder.
-            (Works with Chrome and Firefox only, for now.) """
-        from seleniumbase.core import download_helper
-        return download_helper.get_downloads_folder()
+        """ Returns the OS path of the "downloads/" folder.
+            Chromium Guest Mode overwrites the path set by SeleniumBase. """
+        sys_plat = sys.platform
+        chromium = False
+        if self.browser in ("chrome", "edge", "opera"):
+            chromium = True
+        if chromium and self.guest_mode and "linux" not in sys_plat and (
+                not self.headless):
+            # Guest Mode (non-headless) can force the default downloads path
+            return os.path.join(os.path.expanduser('~'), 'downloads')
+        else:
+            from seleniumbase.core import download_helper
+            return download_helper.get_downloads_folder()
 
     def get_path_of_downloaded_file(self, file):
         """ Returns the OS path of the downloaded file. """
