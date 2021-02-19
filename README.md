@@ -359,7 +359,8 @@ The code above will leave your browser window open in case there's a failure. (i
 --headed  # (Run tests with a GUI on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
---archive-logs  # (Archive old log files instead of deleting them.)
+--archive-logs  #  (Archive existing log files instead of deleting them.)
+--archive-downloads  #  (Archive old downloads instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
@@ -503,7 +504,7 @@ pytest --dashboard --rs --headless
 python -m http.server 1948
 ```
 
-🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL+C`` to stop the http server.)
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
