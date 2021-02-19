@@ -8,6 +8,7 @@ import re
 import sys
 import time
 from seleniumbase import config as sb_config
+from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
@@ -45,7 +46,8 @@ def pytest_addoption(parser):
     --headed  (Run tests with a GUI on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
-    --archive-logs  (Archive old log files instead of deleting them.)
+    --archive-logs  (Archive existing log files instead of deleting them.)
+    --archive-downloads  (Archive old downloads instead of deleting them.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -210,6 +212,11 @@ def pytest_addoption(parser):
                      dest='archive_logs',
                      default=False,
                      help="Archive old log files instead of deleting them.")
+    parser.addoption('--archive_downloads', '--archive-downloads',
+                     action="store_true",
+                     dest='archive_downloads',
+                     default=False,
+                     help="Archive old downloads instead of deleting them.")
     parser.addoption('--with-db_reporting', '--with-db-reporting',
                      action="store_true",
                      dest='with_db_reporting',
@@ -669,6 +676,8 @@ def pytest_configure(config):
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = 'latest_logs/'  # (No longer editable!)
     sb_config.archive_logs = config.getoption('archive_logs')
+    if config.getoption('archive_downloads'):
+        settings.ARCHIVE_EXISTING_DOWNLOADS = True
     sb_config._time_limit = config.getoption('time_limit')
     sb_config.time_limit = config.getoption('time_limit')
     sb_config.slow_mode = config.getoption('slow_mode')
