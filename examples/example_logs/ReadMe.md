@@ -5,9 +5,7 @@
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
 ```bash
-pytest test_fail.py --browser=chrome
-
-nosetests test_fail.py --browser=firefox
+pytest test_fail.py
 ```
 
 <b>Examples of expected log files generated during failures:</b>
@@ -81,10 +79,10 @@ pytest test_suite.py --junit-xml=report.xml
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Nosetest Reports:</h3>
 
-The ``--report`` option gives you a fancy report after your test suite completes.
+The ``nosetests`` ``--report`` option gives you a fancy report after your tests complete.
 
 ```bash
-nosetests test_suite.py --report --browser=chrome
+nosetests test_suite.py --report
 ```
 
 <img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
