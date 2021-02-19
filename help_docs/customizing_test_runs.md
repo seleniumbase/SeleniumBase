@@ -280,7 +280,7 @@ pytest --dashboard --rs --headless
 python -m http.server 1948
 ```
 
-🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL+C`` to stop the http server.)
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
