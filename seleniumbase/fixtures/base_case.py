@@ -2487,6 +2487,7 @@ class BaseCase(unittest.TestCase):
         """ Clicks an element using JavaScript.
             Can be used to click hidden / invisible elements.
             If "all_matches" is False, only the first match is clicked. """
+        self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
             message = (
@@ -2502,7 +2503,12 @@ class BaseCase(unittest.TestCase):
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
             if not self.demo_mode and not self.slow_mode:
-                self.__scroll_to_element(element, selector, by)
+                success = js_utils.scroll_to_element(self.driver, element)
+                if not success:
+                    self.wait_for_ready_state_complete()
+                    timeout = settings.SMALL_TIMEOUT
+                    element = page_actions.wait_for_element_present(
+                        self.driver, selector, by, timeout=timeout)
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
