@@ -56,8 +56,8 @@ def show_basic_usage():
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
-    time.sleep(0.25)  # Enough time to see the logo
     print()
+    time.sleep(0.16)  # Enough time to see the logo
     show_package_location()
     show_version_info()
     print()
@@ -542,9 +542,11 @@ def show_methods():
     sbm += ('*.get_new_driver(OPTIONS) => Open a new driver with OPTIONS.\n')
     sbm += ('*.switch_to_driver(driver) => Switch to the browser driver.\n')
     sbm += ('*.switch_to_default_driver() => Switch to the original driver.\n')
-    sbm += ('*.is_element_visible(selector) => Return True if item visible.\n')
-    sbm += ('*.is_text_visible(text) => Return True if text is visible.\n')
-    sbm += ('*.save_screenshot(name) => Save a screenshot in PNG format.\n')
+    sbm += ('*.wait_for_element(selector) => Wait until element is visible.\n')
+    sbm += ('*.is_element_visible(selector) => Return element visibility.\n')
+    sbm += ('*.is_text_visible(text, selector) => Return text visibility.\n')
+    sbm += ('*.sleep(seconds) => Do nothing for the given amount of time.\n')
+    sbm += ('*.save_screenshot(name) => Save a screenshot in .png format.\n')
     sbm += ('*.assert_element(selector) => Verify the element is visible.\n')
     sbm += ('*.assert_text(text, selector) => Verify text in the element.\n')
     sbm += ('*.assert_title(title) => Verify the title of the web page.\n')
@@ -556,7 +558,6 @@ def show_methods():
     sbm = sbm.replace('(', c3 + '(' + c4)
     sbm = sbm.replace(')', c3 + ')' + cr)
     print(sbm)
-    print("")
 
 
 def show_options():
