@@ -182,7 +182,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.1.0;python_version>="3.6"',
-        'rich==9.11.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==9.11.1;python_version>="3.6" and python_version<"4.0"',
         'flake8==3.7.9;python_version<"3.5"',
         'flake8==3.8.4;python_version>="3.5"',
         'pyflakes==2.1.1;python_version<"3.5"',
