@@ -485,6 +485,31 @@ def main():
     file.writelines("\r\n".join(data))
     file.close()
 
+    data = []
+    data.append("from seleniumbase import BaseCase")
+    data.append("")
+    data.append("")
+    data.append("class DataPage():")
+    data.append("")
+    data.append("    def go_to_data_url(self, sb):")
+    data.append("        sb.open(\"data:text/html,<p>Hello!</p><input />\")")
+    data.append("")
+    data.append("    def add_input_text(self, sb, text):")
+    data.append("        sb.type(\"input\", text)")
+    data.append("")
+    data.append("")
+    data.append("class ObjTests(BaseCase):")
+    data.append("")
+    data.append("    def test_data_url_page(self):")
+    data.append("        DataPage().go_to_data_url(self)")
+    data.append("        self.assert_text(\"Hello!\", \"p\")")
+    data.append("        DataPage().add_input_text(self, \"Goodbye!\")")
+    data.append("")
+    file_path = "%s/%s" % (dir_name_2, "classic_obj_test.py")
+    file = codecs.open(file_path, "w+", "utf-8")
+    file.writelines("\r\n".join(data))
+    file.close()
+
     dir_name_3 = dir_name_2 + "/" + "samples"
     os.mkdir(dir_name_3)
 
