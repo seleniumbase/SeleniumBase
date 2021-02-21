@@ -70,6 +70,27 @@ sample tests for helping new users get started,
 and Python boilerplates for setting up customized
 test frameworks.
 
+```bash
+.
+├── __init__.py
+├── boilerplates/
+│   ├── __init__.py
+│   ├── base_test_case.py
+│   ├── boilerplate_test.py
+│   ├── classic_obj_test.py
+│   ├── page_objects.py
+│   └── samples/
+│       ├── __init__.py
+│       ├── google_objects.py
+│       └── google_test.py
+├── my_first_test.py
+├── parameterized_test.py
+├── pytest.ini
+├── requirements.txt
+├── setup.cfg
+└── test_demo_site.py
+```
+
 ### mkfile
 
 * Usage:
