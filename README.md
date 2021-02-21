@@ -240,7 +240,7 @@ self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
 <p>SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">Read more about customizing test runs</a>.</i>)</p>
 
 ✅ Simplified Code:
-<p>SeleniumBase uses simple syntax for commands. Example:</p>
+<p>SeleniumBase uses a simple syntax for commands. Example:</p>
 
 ```python
 self.type("input", "dogs\n")
