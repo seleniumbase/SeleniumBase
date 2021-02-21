@@ -430,6 +430,7 @@ ui_tests/
 │   ├── __init__.py
 │   ├── base_test_case.py
 │   ├── boilerplate_test.py
+│   ├── classic_obj_test.py
 │   ├── page_objects.py
 │   └── samples/
 │       ├── __init__.py
