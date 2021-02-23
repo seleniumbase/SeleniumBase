@@ -571,12 +571,12 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_element_visible(self.driver, selector, by)
 
@@ -602,7 +602,7 @@ class BaseCase(unittest.TestCase):
         """ Returns True if the link text appears in the HTML of the page.
             The element doesn't need to be visible,
             such as elements hidden inside a dropdown selection. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
@@ -614,7 +614,7 @@ class BaseCase(unittest.TestCase):
         """ Returns True if the partial link appears in the HTML of the page.
             The element doesn't need to be visible,
             such as elements hidden inside a dropdown selection. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
@@ -626,7 +626,7 @@ class BaseCase(unittest.TestCase):
         """ Finds a link by link text and then returns the attribute's value.
             If the link text or attribute cannot be found, an exception will
             get raised if hard_fail is True (otherwise None is returned). """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
@@ -658,7 +658,7 @@ class BaseCase(unittest.TestCase):
             value. If the partial link text or attribute cannot be found, an
             exception will get raised if hard_fail is True (otherwise None
             is returned). """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
         html_links = soup.find_all('a')
         for html_link in html_links:
