@@ -11,8 +11,9 @@ class DownloadTests(BaseCase):
         whl_file = pkg_name + "-py2.py3-none-any.whl"
         tar_gz_file = pkg_name + ".tar.gz"
 
-        # Click the links to download the files
-        # (If using Safari, IE, or Chromium Guest Mode, download directly.)
+        # Click the links to download the files into: "./downloaded_files/"
+        # (If using Safari, IE, or Chromium Guest Mode: download directly.)
+        # (The default Downloads Folder can't be changed when using those.)
         whl_selector = 'div#files a[href$="%s"]' % whl_file
         tar_selector = 'div#files a[href$="%s"]' % tar_gz_file
         if self.browser == "safari" or self.browser == "ie" or (

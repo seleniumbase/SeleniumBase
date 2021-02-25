@@ -84,7 +84,7 @@ class SwagLabsTests(BaseCase):
         ["problem_user"],
     ])
     @pytest.mark.run(order=2)
-    def test_swag_labs_products_page_resource_verification(self, username):
+    def test_swag_labs_products_page_links(self, username):
         """ This test checks for 404 errors on the Swag Labs products page.
             This test is parameterized, and receives the user for login. """
         self.login_to_swag_labs(username=username)
