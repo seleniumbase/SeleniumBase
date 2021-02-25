@@ -3010,7 +3010,7 @@ class BaseCase(unittest.TestCase):
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
             If no destination folder is specified, the default one is used.
-            (The default downloads folder = "./downloaded_files") """
+            (The default [Downloads Folder] = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         if not os.path.exists(destination_folder):
@@ -3028,37 +3028,81 @@ class BaseCase(unittest.TestCase):
     def save_data_as(self, data, file_name, destination_folder=None):
         """ Saves the data specified to a file of the name specified.
             If no destination folder is specified, the default one is used.
-            (The default downloads folder = "./downloaded_files") """
+            (The default [Downloads Folder] = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._save_data_as(data, destination_folder, file_name)
 
     def get_downloads_folder(self):
-        """ Returns the OS path of the "downloads/" folder.
-            Chromium Guest Mode overwrites the path set by SeleniumBase. """
+        """ Returns the path of the SeleniumBase "downloaded_files/" folder.
+            Calling self.download_file(file_url) will put that file in here.
+            With the exception of Safari, IE, and Chromium Guest Mode,
+              any clicks that download files will also use this folder
+              rather than using the browser's default "downloads/" path. """
         self.__check_scope()
-        sys_plat = sys.platform
-        chromium = False
-        if self.browser in ("chrome", "edge", "opera"):
-            chromium = True
-        if chromium and self.guest_mode and "linux" not in sys_plat and (
-                not self.headless):
+        if self.is_chromium() and self.guest_mode and not self.headless:
             # Guest Mode (non-headless) can force the default downloads path
             return os.path.join(os.path.expanduser('~'), 'downloads')
         else:
             from seleniumbase.core import download_helper
             return download_helper.get_downloads_folder()
 
-    def get_path_of_downloaded_file(self, file):
+    def get_browser_downloads_folder(self):
+        """ Returns the path that is used when a click initiates a download.
+            SeleniumBase overrides the system path to be "downloaded_files/"
+            The path can't be changed on Safari, IE, or Chromium Guest Mode.
+        """
+        self.__check_scope()
+        if self.is_chromium() and self.guest_mode and not self.headless:
+            # Guest Mode (non-headless) can force the default downloads path
+            return os.path.join(os.path.expanduser('~'), 'downloads')
+        elif self.browser == "safari" or self.browser == "ie":
+            # Can't change the system [Downloads Folder] on Safari or IE
+            return os.path.join(os.path.expanduser('~'), 'downloads')
+        else:
+            from seleniumbase.core import download_helper
+            return download_helper.get_downloads_folder()
+        return os.path.join(os.path.expanduser('~'), 'downloads')
+
+    def get_path_of_downloaded_file(self, file, browser=False):
         """ Returns the OS path of the downloaded file. """
-        return os.path.join(self.get_downloads_folder(), file)
+        if browser:
+            return os.path.join(self.get_browser_downloads_folder(), file)
+        else:
+            return os.path.join(self.get_downloads_folder(), file)
 
-    def is_downloaded_file_present(self, file):
-        """ Checks if the file exists in the Downloads Folder. """
-        return os.path.exists(self.get_path_of_downloaded_file(file))
+    def is_downloaded_file_present(self, file, browser=False):
+        """ Returns True if the file exists in the pre-set [Downloads Folder].
+            For browser click-initiated downloads, SeleniumBase will override
+                the system [Downloads Folder] to be "./downloaded_files/",
+                but that path can't be overridden when using Safari, IE,
+                or Chromium Guest Mode, which keeps the default system path.
+            self.download_file(file_url) will always use "./downloaded_files/".
+            @Params
+            file - The filename of the downloaded file.
+            browser - If True, uses the path set by click-initiated downloads.
+                      If False, uses the self.download_file(file_url) path.
+                      Those paths are often the same. (browser-dependent)
+                      (Default: False).
+        """
+        return os.path.exists(self.get_path_of_downloaded_file(
+            file, browser=browser))
 
-    def assert_downloaded_file(self, file, timeout=None):
-        """ Asserts that the file exists in the Downloads Folder. """
+    def assert_downloaded_file(self, file, timeout=None, browser=False):
+        """ Asserts that the file exists in SeleniumBase's [Downloads Folder].
+            For browser click-initiated downloads, SeleniumBase will override
+                the system [Downloads Folder] to be "./downloaded_files/",
+                but that path can't be overridden when using Safari, IE,
+                or Chromium Guest Mode, which keeps the default system path.
+            self.download_file(file_url) will always use "./downloaded_files/".
+            @Params
+            file - The filename of the downloaded file.
+            timeout - The time (seconds) to wait for the download to complete.
+            browser - If True, uses the path set by click-initiated downloads.
+                      If False, uses the self.download_file(file_url) path.
+                      Those paths are often the same. (browser-dependent)
+                      (Default: False).
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -3066,11 +3110,12 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
+        downloaded_file_path = self.get_path_of_downloaded_file(file, browser)
         for x in range(int(timeout)):
             shared_utils.check_if_time_limit_exceeded()
             try:
                 self.assertTrue(
-                    os.path.exists(self.get_path_of_downloaded_file(file)),
+                    os.path.exists(downloaded_file_path),
                     "File [%s] was not found in the downloads folder [%s]!"
                     "" % (file, self.get_downloads_folder()))
                 if self.demo_mode:
@@ -3083,7 +3128,7 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(1)
-        if not os.path.exists(self.get_path_of_downloaded_file(file)):
+        if not os.path.exists(downloaded_file_path):
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
