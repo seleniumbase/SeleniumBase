@@ -699,7 +699,9 @@ class BaseCase(unittest.TestCase):
                 try:
                     self.__jquery_slow_scroll_to(link_text, by=By.LINK_TEXT)
                 except Exception:
-                    pass
+                    element = self.wait_for_link_text_visible(
+                        link_text, timeout=timeout)
+                    self.__slow_scroll_to_element(element)
                 o_bs = ''  # original_box_shadow
                 loops = settings.HIGHLIGHTS
                 selector = self.convert_to_css_selector(
@@ -2120,7 +2122,7 @@ class BaseCase(unittest.TestCase):
 
     def save_screenshot(self, name, folder=None):
         """ The screenshot will be in PNG format. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def save_page_source(self, name, folder=None):
@@ -2130,12 +2132,12 @@ class BaseCase(unittest.TestCase):
             name - The file name to save the current page's HTML to.
             folder - The folder to save the file to. (Default = current folder)
         """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         return page_actions.save_page_source(self.driver, name, folder)
 
     def save_cookies(self, name="cookies.txt"):
         """ Saves the page cookies to the "saved_cookies" folder. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         cookies = self.driver.get_cookies()
         json_cookies = json.dumps(cookies)
         if name.endswith('/'):
@@ -2158,7 +2160,7 @@ class BaseCase(unittest.TestCase):
 
     def load_cookies(self, name="cookies.txt"):
         """ Loads the page cookies from the "saved_cookies" folder. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if name.endswith('/'):
             raise Exception("Invalid filename for Cookies!")
         if '/' in name:
@@ -2183,13 +2185,13 @@ class BaseCase(unittest.TestCase):
     def delete_all_cookies(self):
         """ Deletes all cookies in the web browser.
             Does NOT delete the saved cookies file. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         self.driver.delete_all_cookies()
 
     def delete_saved_cookies(self, name="cookies.txt"):
         """ Deletes the cookies file from the "saved_cookies" folder.
             Does NOT delete the cookies from the web browser. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if name.endswith('/'):
             raise Exception("Invalid filename for Cookies!")
         if '/' in name:
@@ -2259,7 +2261,7 @@ class BaseCase(unittest.TestCase):
         """ Installs a Firefox add-on instantly at run-time.
             @Params
             xpi_file - A file archive in .xpi format. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if self.browser != "firefox":
             raise Exception(
                 "install_addon(xpi_file) is for Firefox ONLY!\n"
@@ -2271,20 +2273,20 @@ class BaseCase(unittest.TestCase):
     def activate_design_mode(self):
         # Activate Chrome's Design Mode, which lets you edit a site directly.
         # See: https://twitter.com/sulco/status/1177559150563344384
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         script = ("""document.designMode = 'on';""")
         self.execute_script(script)
 
     def deactivate_design_mode(self):
         # Deactivate Chrome's Design Mode.
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         script = ("""document.designMode = 'off';""")
         self.execute_script(script)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         js_utils.activate_jquery(self.driver)
         self.wait_for_ready_state_complete()
 
@@ -2356,7 +2358,7 @@ class BaseCase(unittest.TestCase):
                         self.__slow_scroll_to_element(element)
                 else:
                     self.__jquery_slow_scroll_to(selector, by)
-            except (StaleElementReferenceException, ENI_Exception, JS_Exc):
+            except Exception:
                 self.wait_for_ready_state_complete()
                 time.sleep(0.12)
                 element = self.wait_for_element_visible(
@@ -2405,11 +2407,11 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.065)
 
     def __highlight_with_js(self, selector, loops, o_bs):
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
 
     def __highlight_with_jquery(self, selector, loops, o_bs):
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
     def press_up_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
@@ -2538,7 +2540,7 @@ class BaseCase(unittest.TestCase):
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
-        except (StaleElementReferenceException, ENI_Exception, JS_Exc):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -6525,7 +6527,7 @@ class BaseCase(unittest.TestCase):
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
-        except (StaleElementReferenceException, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -6540,7 +6542,7 @@ class BaseCase(unittest.TestCase):
         o_bs = ''  # original_box_shadow
         try:
             style = element.get_attribute('style')
-        except (StaleElementReferenceException, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
