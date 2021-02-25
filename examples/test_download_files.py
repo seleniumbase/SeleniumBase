@@ -6,14 +6,24 @@ class DownloadTests(BaseCase):
 
     def test_download_files(self):
         self.open("https://pypi.org/project/seleniumbase/#files")
-        pkg_header = self.get_text("h1.package-header__name")
+        pkg_header = self.get_text("h1.package-header__name").strip()
         pkg_name = pkg_header.replace(" ", "-")
         whl_file = pkg_name + "-py2.py3-none-any.whl"
         tar_gz_file = pkg_name + ".tar.gz"
 
         # Click the links to download the files
-        self.click('div#files a[href$="%s"]' % whl_file)
-        self.click('div#files a[href$="%s"]' % tar_gz_file)
+        # (If using Safari, IE, or Chromium Guest Mode, download directly.)
+        whl_selector = 'div#files a[href$="%s"]' % whl_file
+        tar_selector = 'div#files a[href$="%s"]' % tar_gz_file
+        if self.browser == "safari" or self.browser == "ie" or (
+                self.is_chromium() and self.guest_mode and not self.headless):
+            whl_href = self.get_attribute(whl_selector, "href")
+            tar_href = self.get_attribute(tar_selector, "href")
+            self.download_file(whl_href)
+            self.download_file(tar_href)
+        else:
+            self.click(whl_selector)
+            self.click(tar_selector)
 
         # Verify that the downloaded files appear in the [Downloads Folder]
         # (This only guarantees that the exact file name is in the folder.)

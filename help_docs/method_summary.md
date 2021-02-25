@@ -300,11 +300,13 @@ self.save_data_as(data, file_name, destination_folder=None)
 
 self.get_downloads_folder()
 
-self.get_path_of_downloaded_file(file)
+self.get_browser_downloads_folder()
 
-self.is_downloaded_file_present(file)
+self.get_path_of_downloaded_file(file, browser=False)
 
-self.assert_downloaded_file(file, timeout=None)
+self.is_downloaded_file_present(file, browser=False)
+
+self.assert_downloaded_file(file, timeout=None, browser=False)
 
 self.assert_true(expr, msg=None)
 
@@ -321,6 +323,8 @@ self.assert_title(title)
 self.assert_no_js_errors()
 
 self.inspect_html()
+
+self.is_chromium()
 
 self.get_google_auth_password(totp_key=None)
 

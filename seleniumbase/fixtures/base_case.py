@@ -113,7 +113,12 @@ class BaseCase(unittest.TestCase):
         if url.startswith("://"):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
-        self.driver.get(url)
+        if self.browser == "safari" and url.startswith("data:"):
+            url = re.escape(url)
+            url = self.__escape_quotes_if_needed(url)
+            self.execute_script("window.location.href='%s';" % url)
+        else:
+            self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
@@ -160,7 +165,7 @@ class BaseCase(unittest.TestCase):
         if delay and delay > 0:
             time.sleep(delay)
         try:
-            if self.browser == 'ie' and by == By.LINK_TEXT:
+            if self.browser == "ie" and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
                 self.__jquery_click(selector, by=by)
             elif self.browser == "safari":
@@ -241,15 +246,15 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
+        self.wait_for_ready_state_complete()
+        # Find the element one more time in case scrolling hid it
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout=timeout)
         pre_action_url = self.driver.current_url
         try:
-            actions = ActionChains(self.driver)
-            actions.double_click(element).perform()
-        except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
-            time.sleep(0.16)
-            element = page_actions.wait_for_element_visible(
-                self.driver, selector, by, timeout=timeout)
+            if self.browser == "safari":
+                # Jump to the "except" block where the other script should work
+                raise Exception("This Exception will be caught.")
             actions = ActionChains(self.driver)
             actions.double_click(element).perform()
         except Exception:
@@ -549,24 +554,17 @@ class BaseCase(unittest.TestCase):
     def go_back(self):
         self.__check_scope()
         self.__last_page_load_url = None
-        if self.browser != "safari":
-            self.driver.back()
-        else:
-            self.sleep(0.05)
-            self.execute_script("window.location=document.referrer;")
-            self.sleep(0.05)
+        self.driver.back()
+        if self.browser == "safari":
+            self.wait_for_ready_state_complete()
+            self.driver.refresh()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
     def go_forward(self):
         self.__check_scope()
         self.__last_page_load_url = None
-        if self.browser != "safari":
-            self.driver.forward()
-        else:
-            self.sleep(0.05)
-            self.execute_script("window.history.forward();")
-            self.sleep(0.05)
+        self.driver.forward()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -687,7 +685,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if self.browser == 'phantomjs':
+        if self.browser == "phantomjs":
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=timeout)
@@ -701,7 +699,9 @@ class BaseCase(unittest.TestCase):
                 try:
                     self.__jquery_slow_scroll_to(link_text, by=By.LINK_TEXT)
                 except Exception:
-                    pass
+                    element = self.wait_for_link_text_visible(
+                        link_text, timeout=timeout)
+                    self.__slow_scroll_to_element(element)
                 o_bs = ''  # original_box_shadow
                 loops = settings.HIGHLIGHTS
                 selector = self.convert_to_css_selector(
@@ -789,7 +789,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if self.browser == 'phantomjs':
+        if self.browser == "phantomjs":
             if self.is_partial_link_text_visible(partial_link_text):
                 element = self.wait_for_partial_link_text(partial_link_text)
                 element.click()
@@ -2054,7 +2054,7 @@ class BaseCase(unittest.TestCase):
                     # WebDrivers can get closed during tearDown().
                     pass
             else:
-                if self.browser == 'chrome' or self.browser == 'edge':
+                if self.browser == "chrome" or self.browser == "edge":
                     width = settings.CHROME_START_WIDTH
                     height = settings.CHROME_START_HEIGHT
                     try:
@@ -2065,7 +2065,7 @@ class BaseCase(unittest.TestCase):
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
-                elif self.browser == 'firefox':
+                elif self.browser == "firefox":
                     width = settings.CHROME_START_WIDTH
                     try:
                         if self.maximize_option:
@@ -2075,7 +2075,7 @@ class BaseCase(unittest.TestCase):
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
-                elif self.browser == 'safari':
+                elif self.browser == "safari":
                     width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
@@ -2088,7 +2088,7 @@ class BaseCase(unittest.TestCase):
                             self.driver.set_window_rect(10, 30, width, 630)
                         except Exception:
                             pass
-                elif self.browser == 'opera':
+                elif self.browser == "opera":
                     width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
@@ -2122,7 +2122,7 @@ class BaseCase(unittest.TestCase):
 
     def save_screenshot(self, name, folder=None):
         """ The screenshot will be in PNG format. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def save_page_source(self, name, folder=None):
@@ -2132,12 +2132,12 @@ class BaseCase(unittest.TestCase):
             name - The file name to save the current page's HTML to.
             folder - The folder to save the file to. (Default = current folder)
         """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         return page_actions.save_page_source(self.driver, name, folder)
 
     def save_cookies(self, name="cookies.txt"):
         """ Saves the page cookies to the "saved_cookies" folder. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         cookies = self.driver.get_cookies()
         json_cookies = json.dumps(cookies)
         if name.endswith('/'):
@@ -2160,7 +2160,7 @@ class BaseCase(unittest.TestCase):
 
     def load_cookies(self, name="cookies.txt"):
         """ Loads the page cookies from the "saved_cookies" folder. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if name.endswith('/'):
             raise Exception("Invalid filename for Cookies!")
         if '/' in name:
@@ -2185,13 +2185,13 @@ class BaseCase(unittest.TestCase):
     def delete_all_cookies(self):
         """ Deletes all cookies in the web browser.
             Does NOT delete the saved cookies file. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         self.driver.delete_all_cookies()
 
     def delete_saved_cookies(self, name="cookies.txt"):
         """ Deletes the cookies file from the "saved_cookies" folder.
             Does NOT delete the cookies from the web browser. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if name.endswith('/'):
             raise Exception("Invalid filename for Cookies!")
         if '/' in name:
@@ -2261,7 +2261,7 @@ class BaseCase(unittest.TestCase):
         """ Installs a Firefox add-on instantly at run-time.
             @Params
             xpi_file - A file archive in .xpi format. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if self.browser != "firefox":
             raise Exception(
                 "install_addon(xpi_file) is for Firefox ONLY!\n"
@@ -2273,20 +2273,20 @@ class BaseCase(unittest.TestCase):
     def activate_design_mode(self):
         # Activate Chrome's Design Mode, which lets you edit a site directly.
         # See: https://twitter.com/sulco/status/1177559150563344384
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         script = ("""document.designMode = 'on';""")
         self.execute_script(script)
 
     def deactivate_design_mode(self):
         # Deactivate Chrome's Design Mode.
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         script = ("""document.designMode = 'off';""")
         self.execute_script(script)
 
     def activate_jquery(self):
         """ If "jQuery is not defined", use this method to activate it for use.
             This happens because jQuery is not always defined on web sites. """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         js_utils.activate_jquery(self.driver)
         self.wait_for_ready_state_complete()
 
@@ -2358,7 +2358,7 @@ class BaseCase(unittest.TestCase):
                         self.__slow_scroll_to_element(element)
                 else:
                     self.__jquery_slow_scroll_to(selector, by)
-            except (StaleElementReferenceException, ENI_Exception, JS_Exc):
+            except Exception:
                 self.wait_for_ready_state_complete()
                 time.sleep(0.12)
                 element = self.wait_for_element_visible(
@@ -2372,14 +2372,14 @@ class BaseCase(unittest.TestCase):
 
         if self.highlights:
             loops = self.highlights
-        if self.browser == 'ie':
+        if self.browser == "ie":
             loops = 1  # Override previous setting because IE is slow
         loops = int(loops)
 
         o_bs = ''  # original_box_shadow
         try:
             style = element.get_attribute('style')
-        except (StaleElementReferenceException, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -2407,11 +2407,11 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.065)
 
     def __highlight_with_js(self, selector, loops, o_bs):
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         js_utils.highlight_with_js(self.driver, selector, loops, o_bs)
 
     def __highlight_with_jquery(self, selector, loops, o_bs):
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
     def press_up_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
@@ -2540,7 +2540,7 @@ class BaseCase(unittest.TestCase):
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
-        except (StaleElementReferenceException, ENI_Exception, JS_Exc):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -3012,7 +3012,7 @@ class BaseCase(unittest.TestCase):
     def download_file(self, file_url, destination_folder=None):
         """ Downloads the file from the url to the destination folder.
             If no destination folder is specified, the default one is used.
-            (The default downloads folder = "./downloaded_files") """
+            (The default [Downloads Folder] = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         if not os.path.exists(destination_folder):
@@ -3030,37 +3030,81 @@ class BaseCase(unittest.TestCase):
     def save_data_as(self, data, file_name, destination_folder=None):
         """ Saves the data specified to a file of the name specified.
             If no destination folder is specified, the default one is used.
-            (The default downloads folder = "./downloaded_files") """
+            (The default [Downloads Folder] = "./downloaded_files") """
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._save_data_as(data, destination_folder, file_name)
 
     def get_downloads_folder(self):
-        """ Returns the OS path of the "downloads/" folder.
-            Chromium Guest Mode overwrites the path set by SeleniumBase. """
+        """ Returns the path of the SeleniumBase "downloaded_files/" folder.
+            Calling self.download_file(file_url) will put that file in here.
+            With the exception of Safari, IE, and Chromium Guest Mode,
+              any clicks that download files will also use this folder
+              rather than using the browser's default "downloads/" path. """
         self.__check_scope()
-        sys_plat = sys.platform
-        chromium = False
-        if self.browser in ("chrome", "edge", "opera"):
-            chromium = True
-        if chromium and self.guest_mode and "linux" not in sys_plat and (
-                not self.headless):
+        if self.is_chromium() and self.guest_mode and not self.headless:
             # Guest Mode (non-headless) can force the default downloads path
             return os.path.join(os.path.expanduser('~'), 'downloads')
         else:
             from seleniumbase.core import download_helper
             return download_helper.get_downloads_folder()
 
-    def get_path_of_downloaded_file(self, file):
+    def get_browser_downloads_folder(self):
+        """ Returns the path that is used when a click initiates a download.
+            SeleniumBase overrides the system path to be "downloaded_files/"
+            The path can't be changed on Safari, IE, or Chromium Guest Mode.
+        """
+        self.__check_scope()
+        if self.is_chromium() and self.guest_mode and not self.headless:
+            # Guest Mode (non-headless) can force the default downloads path
+            return os.path.join(os.path.expanduser('~'), 'downloads')
+        elif self.browser == "safari" or self.browser == "ie":
+            # Can't change the system [Downloads Folder] on Safari or IE
+            return os.path.join(os.path.expanduser('~'), 'downloads')
+        else:
+            from seleniumbase.core import download_helper
+            return download_helper.get_downloads_folder()
+        return os.path.join(os.path.expanduser('~'), 'downloads')
+
+    def get_path_of_downloaded_file(self, file, browser=False):
         """ Returns the OS path of the downloaded file. """
-        return os.path.join(self.get_downloads_folder(), file)
+        if browser:
+            return os.path.join(self.get_browser_downloads_folder(), file)
+        else:
+            return os.path.join(self.get_downloads_folder(), file)
 
-    def is_downloaded_file_present(self, file):
-        """ Checks if the file exists in the Downloads Folder. """
-        return os.path.exists(self.get_path_of_downloaded_file(file))
+    def is_downloaded_file_present(self, file, browser=False):
+        """ Returns True if the file exists in the pre-set [Downloads Folder].
+            For browser click-initiated downloads, SeleniumBase will override
+                the system [Downloads Folder] to be "./downloaded_files/",
+                but that path can't be overridden when using Safari, IE,
+                or Chromium Guest Mode, which keeps the default system path.
+            self.download_file(file_url) will always use "./downloaded_files/".
+            @Params
+            file - The filename of the downloaded file.
+            browser - If True, uses the path set by click-initiated downloads.
+                      If False, uses the self.download_file(file_url) path.
+                      Those paths are often the same. (browser-dependent)
+                      (Default: False).
+        """
+        return os.path.exists(self.get_path_of_downloaded_file(
+            file, browser=browser))
 
-    def assert_downloaded_file(self, file, timeout=None):
-        """ Asserts that the file exists in the Downloads Folder. """
+    def assert_downloaded_file(self, file, timeout=None, browser=False):
+        """ Asserts that the file exists in SeleniumBase's [Downloads Folder].
+            For browser click-initiated downloads, SeleniumBase will override
+                the system [Downloads Folder] to be "./downloaded_files/",
+                but that path can't be overridden when using Safari, IE,
+                or Chromium Guest Mode, which keeps the default system path.
+            self.download_file(file_url) will always use "./downloaded_files/".
+            @Params
+            file - The filename of the downloaded file.
+            timeout - The time (seconds) to wait for the download to complete.
+            browser - If True, uses the path set by click-initiated downloads.
+                      If False, uses the self.download_file(file_url) path.
+                      Those paths are often the same. (browser-dependent)
+                      (Default: False).
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -3068,11 +3112,12 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
+        downloaded_file_path = self.get_path_of_downloaded_file(file, browser)
         for x in range(int(timeout)):
             shared_utils.check_if_time_limit_exceeded()
             try:
                 self.assertTrue(
-                    os.path.exists(self.get_path_of_downloaded_file(file)),
+                    os.path.exists(downloaded_file_path),
                     "File [%s] was not found in the downloads folder [%s]!"
                     "" % (file, self.get_downloads_folder()))
                 if self.demo_mode:
@@ -3085,7 +3130,7 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(1)
-        if not os.path.exists(self.get_path_of_downloaded_file(file)):
+        if not os.path.exists(downloaded_file_path):
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
@@ -3184,7 +3229,7 @@ class BaseCase(unittest.TestCase):
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, errors))
         if self.demo_mode:
-            if (self.browser == 'chrome' or self.browser == 'edge'):
+            if (self.browser == "chrome" or self.browser == "edge"):
                 a_t = "ASSERT NO JS ERRORS"
                 if self._language != "English":
                     from seleniumbase.fixtures.words import SD
@@ -3236,6 +3281,15 @@ class BaseCase(unittest.TestCase):
         results = '\n'.join(results)
         print(results)
         return(results)
+
+    def is_chromium(self):
+        """ Return True if the browser is Chrome, Edge, or Opera. """
+        self.__check_scope()
+        chromium = False
+        browser_name = self.driver.__dict__["capabilities"]["browserName"]
+        if browser_name in ("chrome", "edge", "msedge", "opera"):
+            chromium = True
+        return chromium
 
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
@@ -6036,7 +6090,7 @@ class BaseCase(unittest.TestCase):
         maybe_using_old_chromedriver = False
         if "unknown error: call function result missing" in exc_message:
             maybe_using_old_chromedriver = True
-        if self.browser == 'chrome' and maybe_using_old_chromedriver:
+        if self.browser == "chrome" and maybe_using_old_chromedriver:
             update = ("Your version of ChromeDriver may be out-of-date! "
                       "Please go to "
                       "https://sites.google.com/a/chromium.org/chromedriver/ "
@@ -6473,7 +6527,7 @@ class BaseCase(unittest.TestCase):
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
-        except (StaleElementReferenceException, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -6488,7 +6542,7 @@ class BaseCase(unittest.TestCase):
         o_bs = ''  # original_box_shadow
         try:
             style = element.get_attribute('style')
-        except (StaleElementReferenceException, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -6746,7 +6800,7 @@ class BaseCase(unittest.TestCase):
                     self.driver = sb_config.shared_driver
                     self._drivers_list = [sb_config.shared_driver]
                     url = self.get_current_url()
-                    if len(url) > 3:
+                    if url is not None:
                         has_url = True
                     if self._crumbs:
                         self.driver.delete_all_cookies()
