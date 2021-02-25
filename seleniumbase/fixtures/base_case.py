@@ -3235,6 +3235,15 @@ class BaseCase(unittest.TestCase):
         print(results)
         return(results)
 
+    def is_chromium(self):
+        """ Return True if the browser is Chrome, Edge, or Opera. """
+        self.__check_scope()
+        chromium = False
+        browser_name = self.driver.__dict__["capabilities"]["browserName"]
+        if browser_name in ("chrome", "edge", "msedge", "opera"):
+            chromium = True
+        return chromium
+
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
             Google Authenticator password algorithm. Works with Authy.
