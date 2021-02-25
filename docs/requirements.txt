@@ -1,5 +1,5 @@
 regex>=2020.11.13
-tqdm>=4.57.0
+tqdm>=4.58.0
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
 Markdown==3.3.4
@@ -8,7 +8,7 @@ readme-renderer==29.0
 pymdown-extensions==8.1.1
 lunr==0.5.8
 mkdocs==1.1.2
-mkdocs-material==7.0.1
+mkdocs-material==7.0.2
 mkdocs-simple-hooks==0.1.2
 mkdocs-material-extensions==1.0.1
 mkdocs-minify-plugin==0.4.0
