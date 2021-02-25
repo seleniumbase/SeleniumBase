@@ -775,7 +775,7 @@ class MD:
     md["js_type"][4] = "js_digitare"
     md["js_type"][5] = "JS入力"
     md["js_type"][6] = "JS_입력"
-    md["js_type"][7] = "js_tipo"
+    md["js_type"][7] = "js_digitar"
     md["js_type"][8] = "JS_введите"
     md["js_type"][9] = "js_escriba"
 
@@ -1628,7 +1628,7 @@ class MD:
     md["type"][4] = "digitare"
     md["type"][5] = "入力"
     md["type"][6] = "입력"
-    md["type"][7] = "tipo"
+    md["type"][7] = "digitar"
     md["type"][8] = "введите"
     md["type"][9] = "escriba"
 
@@ -1836,7 +1836,7 @@ class MD:
     md["input"][4] = "digitare"
     md["input"][5] = "入力"
     md["input"][6] = "입력"
-    md["input"][7] = "tipo"
+    md["input"][7] = "digitar"
     md["input"][8] = "введите"
     md["input"][9] = "escriba"
 
