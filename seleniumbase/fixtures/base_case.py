@@ -113,7 +113,12 @@ class BaseCase(unittest.TestCase):
         if url.startswith("://"):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
-        self.driver.get(url)
+        if self.browser == "safari" and url.startswith("data:"):
+            url = re.escape(url)
+            url = self.__escape_quotes_if_needed(url)
+            self.execute_script("window.location.href='%s';" % url)
+        else:
+            self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
@@ -241,15 +246,15 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
+        self.wait_for_ready_state_complete()
+        # Find the element one more time in case scrolling hid it
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout=timeout)
         pre_action_url = self.driver.current_url
         try:
-            actions = ActionChains(self.driver)
-            actions.double_click(element).perform()
-        except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
-            time.sleep(0.16)
-            element = page_actions.wait_for_element_visible(
-                self.driver, selector, by, timeout=timeout)
+            if self.browser == "safari":
+                # Jump to the "except" block where the other script should work
+                raise Exception("This Exception will be caught.")
             actions = ActionChains(self.driver)
             actions.double_click(element).perform()
         except Exception:
@@ -549,24 +554,17 @@ class BaseCase(unittest.TestCase):
     def go_back(self):
         self.__check_scope()
         self.__last_page_load_url = None
-        if self.browser != "safari":
-            self.driver.back()
-        else:
-            self.sleep(0.05)
-            self.execute_script("window.location=document.referrer;")
-            self.sleep(0.05)
+        self.driver.back()
+        if self.browser == "safari":
+            self.wait_for_ready_state_complete()
+            self.driver.refresh()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
     def go_forward(self):
         self.__check_scope()
         self.__last_page_load_url = None
-        if self.browser != "safari":
-            self.driver.forward()
-        else:
-            self.sleep(0.05)
-            self.execute_script("window.history.forward();")
-            self.sleep(0.05)
+        self.driver.forward()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -6746,7 +6744,7 @@ class BaseCase(unittest.TestCase):
                     self.driver = sb_config.shared_driver
                     self._drivers_list = [sb_config.shared_driver]
                     url = self.get_current_url()
-                    if len(url) > 3:
+                    if url is not None:
                         has_url = True
                     if self._crumbs:
                         self.driver.delete_all_cookies()
