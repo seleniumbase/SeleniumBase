@@ -627,10 +627,11 @@ def pytest_addoption(parser):
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
     if browser_changes > 1:
-        message = "\n\n  Too many browser types were entered!"
-        message += "\n  There were %s found: %s" % (
+        message = "\n\n  TOO MANY browser types were entered!"
+        message += "\n  There were %s found:\n  >  %s" % (
             browser_changes, ", ".join(browser_list))
-        message += "\n  Please enter ONLY ONE and try again!\n"
+        message += "\n  ONLY ONE default browser is allowed!"
+        message += "\n  Select a single browser & try again!\n"
         raise Exception(message)
 
 
