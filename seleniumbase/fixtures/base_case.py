@@ -165,7 +165,7 @@ class BaseCase(unittest.TestCase):
         if delay and delay > 0:
             time.sleep(delay)
         try:
-            if self.browser == 'ie' and by == By.LINK_TEXT:
+            if self.browser == "ie" and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
                 self.__jquery_click(selector, by=by)
             elif self.browser == "safari":
@@ -685,7 +685,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if self.browser == 'phantomjs':
+        if self.browser == "phantomjs":
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(
                     link_text, timeout=timeout)
@@ -787,7 +787,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        if self.browser == 'phantomjs':
+        if self.browser == "phantomjs":
             if self.is_partial_link_text_visible(partial_link_text):
                 element = self.wait_for_partial_link_text(partial_link_text)
                 element.click()
@@ -2052,7 +2052,7 @@ class BaseCase(unittest.TestCase):
                     # WebDrivers can get closed during tearDown().
                     pass
             else:
-                if self.browser == 'chrome' or self.browser == 'edge':
+                if self.browser == "chrome" or self.browser == "edge":
                     width = settings.CHROME_START_WIDTH
                     height = settings.CHROME_START_HEIGHT
                     try:
@@ -2063,7 +2063,7 @@ class BaseCase(unittest.TestCase):
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
-                elif self.browser == 'firefox':
+                elif self.browser == "firefox":
                     width = settings.CHROME_START_WIDTH
                     try:
                         if self.maximize_option:
@@ -2073,7 +2073,7 @@ class BaseCase(unittest.TestCase):
                         self.wait_for_ready_state_complete()
                     except Exception:
                         pass  # Keep existing browser resolution
-                elif self.browser == 'safari':
+                elif self.browser == "safari":
                     width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
@@ -2086,7 +2086,7 @@ class BaseCase(unittest.TestCase):
                             self.driver.set_window_rect(10, 30, width, 630)
                         except Exception:
                             pass
-                elif self.browser == 'opera':
+                elif self.browser == "opera":
                     width = settings.CHROME_START_WIDTH
                     if self.maximize_option:
                         try:
@@ -2370,14 +2370,14 @@ class BaseCase(unittest.TestCase):
 
         if self.highlights:
             loops = self.highlights
-        if self.browser == 'ie':
+        if self.browser == "ie":
             loops = 1  # Override previous setting because IE is slow
         loops = int(loops)
 
         o_bs = ''  # original_box_shadow
         try:
             style = element.get_attribute('style')
-        except (StaleElementReferenceException, ENI_Exception):
+        except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
@@ -3182,7 +3182,7 @@ class BaseCase(unittest.TestCase):
             raise Exception(
                 "JavaScript errors found on %s => %s" % (current_url, errors))
         if self.demo_mode:
-            if (self.browser == 'chrome' or self.browser == 'edge'):
+            if (self.browser == "chrome" or self.browser == "edge"):
                 a_t = "ASSERT NO JS ERRORS"
                 if self._language != "English":
                     from seleniumbase.fixtures.words import SD
@@ -6034,7 +6034,7 @@ class BaseCase(unittest.TestCase):
         maybe_using_old_chromedriver = False
         if "unknown error: call function result missing" in exc_message:
             maybe_using_old_chromedriver = True
-        if self.browser == 'chrome' and maybe_using_old_chromedriver:
+        if self.browser == "chrome" and maybe_using_old_chromedriver:
             update = ("Your version of ChromeDriver may be out-of-date! "
                       "Please go to "
                       "https://sites.google.com/a/chromium.org/chromedriver/ "
