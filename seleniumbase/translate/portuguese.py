@@ -41,7 +41,7 @@ class CasoDeTeste(BaseCase):
         # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
-    def tipo(self, *args, **kwargs):
+    def digitar(self, *args, **kwargs):
         # type(selector, text)  # Same as update_text()
         return self.type(*args, **kwargs)
 
@@ -189,7 +189,7 @@ class CasoDeTeste(BaseCase):
         # js_update_text(selector, text)
         return self.js_update_text(*args, **kwargs)
 
-    def js_tipo(self, *args, **kwargs):
+    def js_digitar(self, *args, **kwargs):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 
