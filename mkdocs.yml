@@ -35,7 +35,7 @@ theme:
   # collapse_navigation: false
   # titles_only: false
   include_search_page: false
-  search_index_only: false
+  search_index_only: true
   static_templates:
     - 404.html
   features:
@@ -58,9 +58,12 @@ theme:
 # Plugins
 plugins:
   - search:
-      separator: '[\s\-]+'
+      separator: '[\s]+'
       prebuild_index: false
       lang: en
+  - exclude-search:
+      exclude:
+        - chinese.md
   - minify:
       minify_html: true
   - mkdocs-simple-hooks:

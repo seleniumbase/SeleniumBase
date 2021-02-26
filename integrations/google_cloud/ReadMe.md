@@ -91,7 +91,7 @@ sudo python setup.py develop
 pytest examples/my_first_test.py --headless
 ```
 
-#### Step 14. If you like nosetests better than pytest, that works too
+#### Step 14. If you prefer using nosetests, that works too
 
 ```bash
 nosetests examples/my_first_test.py --headless
@@ -138,7 +138,7 @@ If you have a web application that you want to test, you'll be able to create Se
 
 #### Congratulations! You're now well on your way to becoming a build & release / automation engineer!
 
-## MySQL DB setup instructions
+### MySQL DB setup instructions
 
 #### Step 21. Return to the Google Cloud Launcher and launch a MySQL Instance
 
