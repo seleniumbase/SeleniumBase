@@ -1,3 +1,5 @@
+""" Example test that uses the Page Object Model """
+
 from seleniumbase import BaseCase
 
 

@@ -1,6 +1,4 @@
-'''
-Google.com testing example
-'''
+""" google.com example test that uses page objects """
 
 from seleniumbase import BaseCase
 from .google_objects import HomePage, ResultsPage

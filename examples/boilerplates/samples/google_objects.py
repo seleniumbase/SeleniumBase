@@ -1,6 +1,4 @@
-'''
-Google.com page objects
-'''
+""" google.com page objects """
 
 
 class HomePage(object):
