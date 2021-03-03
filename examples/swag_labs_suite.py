@@ -21,9 +21,9 @@ class SwagLabsTests(BaseCase):
         ["problem_user"],
     ])
     @pytest.mark.run(order=1)
-    def test_swag_labs_basic_functional_flow(self, username):
+    def test_swag_labs_basic_flow(self, username):
         """ This test checks functional flow of the Swag Labs store.
-            This test is parameterized, and receives the user for login. """
+            This test is parameterized on the login user. """
         self.login_to_swag_labs(username=username)
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
@@ -56,7 +56,7 @@ class SwagLabsTests(BaseCase):
 
         # Checkout - Add info
         self.click("link=CHECKOUT")
-        self.assert_exact_text("Checkout: Your Information", "div.subheader")
+        self.assert_text("Checkout: Your Information", "div.subheader")
         self.assert_element("a.cart_cancel_link")
         self.type("#first-name", "SeleniumBase")
         self.type("#last-name", "Rocks")
@@ -64,7 +64,7 @@ class SwagLabsTests(BaseCase):
 
         # Checkout - Overview
         self.click("input.btn_primary")
-        self.assert_exact_text("Checkout: Overview", "div.subheader")
+        self.assert_text("Checkout: Overview", "div.subheader")
         self.assert_element("link=CANCEL")
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_text(item_price, "div.inventory_item_price")
@@ -85,7 +85,7 @@ class SwagLabsTests(BaseCase):
     ])
     @pytest.mark.run(order=2)
     def test_swag_labs_products_page_links(self, username):
-        """ This test checks for 404 errors on the Swag Labs products page.
-            This test is parameterized, and receives the user for login. """
+        """ This test checks for 404s on the Swag Labs products page.
+            This test is parameterized on the login user. """
         self.login_to_swag_labs(username=username)
         self.assert_no_404_errors()
