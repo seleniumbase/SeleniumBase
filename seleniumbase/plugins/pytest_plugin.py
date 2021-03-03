@@ -935,8 +935,13 @@ def pytest_unconfigure():
                     with open(html_report_path, 'r', encoding='utf-8') as f:
                         the_html_r = f.read()
                     if sb_config._saved_dashboard_pie:
+                        h_r_name = sb_config._html_report_name
+                        if "/" in h_r_name and h_r_name.endswith(".html"):
+                            h_r_name = h_r_name.split('/')[-1]
+                        elif "\\" in h_r_name and h_r_name.endswith(".html"):
+                            h_r_name = h_r_name.split('\\')[-1]
                         the_html_r = the_html_r.replace(
-                            "<h1>%s</h1>" % sb_config._html_report_name,
+                            "<h1>%s</h1>" % h_r_name,
                             sb_config._saved_dashboard_pie)
                         the_html_r = the_html_r.replace(
                             "</head>", '</head><link rel="shortcut icon" '

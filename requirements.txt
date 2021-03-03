@@ -11,7 +11,8 @@ PyYAML>=5.4.1;python_version>="3.6"
 certifi>=2020.12.5
 six==1.15.0
 nose==1.3.7
-ipdb==0.13.4
+ipdb==0.13.4;python_version<"3.6"
+ipdb==0.13.5;python_version>="3.6"
 parso==0.7.1;python_version<"3.6"
 parso==0.8.1;python_version>="3.6"
 jedi==0.17.2;python_version<"3.6"
@@ -77,8 +78,8 @@ cffi==1.14.5
 toml==0.10.2
 Pillow==6.2.2;python_version<"3.5"
 Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"
-Pillow==8.1.0;python_version>="3.6"
-rich==9.12.3;python_version>="3.6" and python_version<"4.0"
+Pillow==8.1.1;python_version>="3.6"
+rich==9.12.4;python_version>="3.6" and python_version<"4.0"
 flake8==3.7.9;python_version<"3.5"
 flake8==3.8.4;python_version>="3.5"
 pyflakes==2.1.1;python_version<"3.5"
@@ -86,6 +87,6 @@ pyflakes==2.2.0;python_version>="3.5"
 tornado==5.1.1;python_version<"3.5"
 tornado==6.1;python_version>="3.5"
 allure-pytest==2.8.22;python_version<"3.5"
-allure-pytest==2.8.34;python_version>="3.5"
+allure-pytest==2.8.35;python_version>="3.5"
 pdfminer.six==20191110;python_version<"3.5"
 pdfminer.six==20201018;python_version>="3.5"
