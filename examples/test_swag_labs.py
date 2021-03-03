@@ -48,7 +48,7 @@ class SwagLabsTests(BaseCase):
 
         # Checkout - Add info
         self.click("link=CHECKOUT")
-        self.assert_exact_text("Checkout: Your Information", "div.subheader")
+        self.assert_text("Checkout: Your Information", "div.subheader")
         self.assert_element("a.cart_cancel_link")
         self.type("#first-name", "SeleniumBase")
         self.type("#last-name", "Rocks")
@@ -56,7 +56,7 @@ class SwagLabsTests(BaseCase):
 
         # Checkout - Overview
         self.click("input.btn_primary")
-        self.assert_exact_text("Checkout: Overview", "div.subheader")
+        self.assert_text("Checkout: Overview", "div.subheader")
         self.assert_element("link=CANCEL")
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_text(item_price, "div.inventory_item_price")
