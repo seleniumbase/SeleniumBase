@@ -2964,7 +2964,33 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         abs_path = os.path.abspath(file_path)
-        self.add_text(selector, abs_path, by=by, timeout=timeout)
+        element = self.wait_for_element_present(
+            selector, by=by, timeout=timeout)
+        if self.is_element_visible(selector, by=by):
+            self.__demo_mode_highlight_if_active(selector, by)
+            if not self.demo_mode and not self.slow_mode:
+                self.__scroll_to_element(element, selector, by)
+        pre_action_url = self.driver.current_url
+        if type(abs_path) is int or type(abs_path) is float:
+            abs_path = str(abs_path)
+        try:
+            element.send_keys(abs_path)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.16)
+            element = self.wait_for_element_present(
+                selector, by=by, timeout=timeout)
+            element.send_keys(abs_path)
+        except Exception:
+            exc_message = self.__get_improved_exception_message()
+            raise Exception(exc_message)
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def save_element_as_image_file(
             self, selector, file_name, folder=None, overlay_text=""):
