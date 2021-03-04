@@ -86,6 +86,23 @@ class SwagLabsTests(BaseCase):
     @pytest.mark.run(order=2)
     def test_swag_labs_products_page_links(self, username):
         """ This test checks for 404s on the Swag Labs products page.
-            This test is parameterized on the login user. """
+            This test is parameterized on the login user.
+            Swag Labs replaced broken links with dog images for the
+                "problem_user" login, so the test switches those back
+                to demonstrate the "assert_no_404_errors()" method. """
         self.login_to_swag_labs(username=username)
+        self.set_attributes('img[src*="/sl-404"]', "src", "/bad_link.jpg")
         self.assert_no_404_errors()
+
+    @parameterized.expand([
+        ["standard_user"],
+        ["problem_user"],
+    ])
+    @pytest.mark.run(order=3)
+    def test_swag_labs_visual_regressions(self, username):
+        """ This test checks for visual regressions on the Swag Labs page.
+            This test is parameterized on the login user. """
+        self.login_to_swag_labs(username="standard_user")
+        self.check_window(baseline=True)
+        self.login_to_swag_labs(username=username)
+        self.check_window(level=3)
