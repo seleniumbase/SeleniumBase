@@ -5,9 +5,12 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
 
-    def login_to_swag_labs(self, username="standard_user"):
+    def login_to_swag_labs(self, username="standard_user", v1=False):
         """ Login to Swag Labs and verify success. """
-        self.open("https://www.saucedemo.com/")
+        url = "https://www.saucedemo.com"
+        if v1:
+            url += "/v1"
+        self.open(url)
         if username not in self.get_text("#login_credentials"):
             self.fail("Invalid user for login: %s" % username)
         self.type("#user-name", username)
@@ -86,12 +89,8 @@ class SwagLabsTests(BaseCase):
     @pytest.mark.run(order=2)
     def test_swag_labs_products_page_links(self, username):
         """ This test checks for 404s on the Swag Labs products page.
-            This test is parameterized on the login user.
-            Swag Labs replaced broken links with dog images for the
-                "problem_user" login, so the test switches those back
-                to demonstrate the "assert_no_404_errors()" method. """
-        self.login_to_swag_labs(username=username)
-        self.set_attributes('img[src*="/sl-404"]', "src", "/bad_link.jpg")
+            This test is parameterized on the login user. """
+        self.login_to_swag_labs(username=username, v1=True)
         self.assert_no_404_errors()
 
     @parameterized.expand([

@@ -108,7 +108,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=54.0.0;python_version>="3.6"',
-        'setuptools-scm>=5.0.1',
+        'setuptools-scm>=5.0.2',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
         'PyYAML>=5.4.1;python_version>="3.6"',
