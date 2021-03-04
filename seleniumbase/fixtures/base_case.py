@@ -2758,7 +2758,12 @@ class BaseCase(unittest.TestCase):
     def __get_link_if_404_error(self, link):
         status_code = str(self.get_link_status_code(link))
         if status_code == "404":
-            return link
+            # Verify again to be sure. (In case of multi-threading overload.)
+            status_code = str(self.get_link_status_code(link))
+            if status_code == "404":
+                return link
+            else:
+                return None
         else:
             return None
 
