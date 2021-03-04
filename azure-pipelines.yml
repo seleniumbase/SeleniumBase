@@ -65,11 +65,11 @@ jobs:
   - script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest boilerplate_test.py --browser=chrome --headless'
 
-  - script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
-    displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
-
   - script: python -m pytest examples/test_demo_site.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest test_demo_site.py --browser=chrome --headless'
+
+  #- script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  #  displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
 
   #- script: python -m pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
   #  displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'
