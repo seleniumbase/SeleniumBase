@@ -7017,7 +7017,10 @@ class BaseCase(unittest.TestCase):
     def __quit_all_drivers(self):
         if self._reuse_session and sb_config.shared_driver:
             if len(self._drivers_list) > 0:
-                sb_config.shared_driver = self._drivers_list[0]
+                if self._drivers_list[0] != sb_config.shared_driver:
+                    if sb_config.shared_driver in self._drivers_list:
+                        self._drivers_list.remove(sb_config.shared_driver)
+                    self._drivers_list.insert(0, sb_config.shared_driver)
                 self._default_driver = self._drivers_list[0]
                 self.switch_to_default_driver()
             if len(self._drivers_list) > 1:
