@@ -45,8 +45,11 @@ jobs:
 
   - script: |
       sudo apt install google-chrome-stable
-      sudo apt-get install firefox
-    displayName: 'Install Chrome and Firefox'
+    displayName: 'Install Chrome'
+
+  #- script: |
+  #    sudo apt-get install firefox
+  #  displayName: 'Install Firefox'
 
   - script: |
       seleniumbase
@@ -65,8 +68,11 @@ jobs:
   - script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest boilerplate_test.py --browser=chrome --headless'
 
-  - script: python -m pytest examples/test_demo_site.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
-    displayName: 'Run pytest test_demo_site.py --browser=chrome --headless'
+  #- script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  #  displayName: 'Run pytest boilerplate_test.py --browser=firefox --headless'
+
+  #- script: python -m pytest examples/test_demo_site.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  #  displayName: 'Run pytest test_demo_site.py --browser=chrome --headless'
 
   #- script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
   #  displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
