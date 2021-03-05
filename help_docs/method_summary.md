@@ -2,9 +2,12 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Method Summary (API Reference)</h2>
 
-Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
+[<img src="http://img.youtube.com/vi/_yNJlHnp2JA/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=_yNJlHnp2JA)
+<p>(<b><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA">Common API Methods on YouTube</a></b>)</p>
 
-For backwards compatibility, older versions of method names have remained to keep older scripts working. *(Ex: wait_for_element_visible was later shortened to wait_for_element and then to find_element. Also, add_text and send_keys are the same, etc.)*
+Here's a list of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
+
+For backwards compatibility, older versions of method names have remained to keep older scripts working. *(E.g: wait_for_element_visible was shortened to wait_for_element and then to find_element.)*
 
 ```python
 self.open(url)

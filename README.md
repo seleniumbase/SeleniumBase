@@ -28,7 +28,7 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🗂️ Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ CLI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a>
@@ -50,9 +50,9 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-✅ Get set up in minutes. Deploy anywhere.<br />
-✅ Build Web-UI tests with a [complete API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).<br />
-✅ Generate [test reports and dashboards](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
+✅ Easy setup. Can run tests on any cloud.<br />
+✅ Uses [Python APIs](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md) for web automation.<br />
+✅ Can generate [test reports / dashboards](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
 
 --------
 
