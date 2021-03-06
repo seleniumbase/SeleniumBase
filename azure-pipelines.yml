@@ -65,8 +65,8 @@ jobs:
       pytest nothing.py
     displayName: 'Make sure pytest is working'
 
-  - script: python -m pytest examples/unit_tests/verify_framework.py
-    displayName: 'Run pytest verify_framework.py'
+  #- script: python -m pytest examples/unit_tests/verify_framework.py
+  #  displayName: 'Run pytest verify_framework.py'
 
   - script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest boilerplate_test.py --browser=chrome --headless'
