@@ -8,7 +8,7 @@ jobs:
 
 - job: 'Test'
   pool:
-    vmImage: 'Ubuntu-18.04'
+    vmImage: 'Ubuntu-20.04'
   strategy:
     matrix:
       Python2.7:
@@ -37,10 +37,10 @@ jobs:
   - script: python -m pip install seleniumbase
     displayName: 'Verify install from PyPI'
 
-  - script: python -m pip install -r requirements.txt --upgrade
-    displayName: 'Install dependencies'
+  #- script: python -m pip install -r requirements.txt --upgrade
+  #  displayName: 'Install dependencies'
 
-  - script: python setup.py install
+  - script: python -m pip install -e .
     displayName: 'Install SeleniumBase'
 
   - script: |
