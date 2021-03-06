@@ -7,7 +7,7 @@
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🖥️ CLI</a> |
 <a href="https://seleniumbase.io/help_docs/features_list/">🗂️ Features</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">📖 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/syntax_formats/">🔡 Syntax Formats</a> |
