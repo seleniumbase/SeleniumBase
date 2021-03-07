@@ -3976,6 +3976,8 @@ class BaseCase(unittest.TestCase):
             raise Exception('Presentation file must end in ".html"!')
         if not interval:
             interval = 0
+        if interval == 0 and self.interval:
+            interval = float(self.interval)
         if not type(interval) is int and not type(interval) is float:
             raise Exception('Expecting a numeric value for "interval"!')
         if interval < 0:
@@ -4046,6 +4048,8 @@ class BaseCase(unittest.TestCase):
             raise Exception('Presentation file must end in ".html"!')
         if not interval:
             interval = 0
+        if interval == 0 and self.interval:
+            interval = float(self.interval)
         if not type(interval) is int and not type(interval) is float:
             raise Exception('Expecting a numeric value for "interval"!')
         if interval < 0:
@@ -4569,6 +4573,8 @@ class BaseCase(unittest.TestCase):
             filename = "my_chart.html"
         if not interval:
             interval = 0
+        if interval == 0 and self.interval:
+            interval = float(self.interval)
         if not type(interval) is int and not type(interval) is float:
             raise Exception('Expecting a numeric value for "interval"!')
         if interval < 0:
@@ -4763,6 +4769,15 @@ class BaseCase(unittest.TestCase):
             """
             // Bootstrap Tour
             var tour = new Tour({
+            container: 'body',
+            animation: true,
+            keyboard: true,
+            orphan: true,
+            smartPlacement: true,
+            autoscroll: true,
+            backdrop: true,
+            backdropContainer: 'body',
+            backdropPadding: 3,
             });
             tour.addSteps([
             """)
@@ -4990,15 +5005,21 @@ class BaseCase(unittest.TestCase):
         else:
             duration = str(float(duration) * 1000.0)
 
+        bd = "backdrop: true,"
+        if selector == "html":
+            bd = "backdrop: false,"
+
         step = ("""{
                 %s
                 title: '%s',
                 content: '%s',
                 orphan: true,
+                autoscroll: true,
+                %s
                 placement: 'auto %s',
                 smartPlacement: true,
                 duration: %s,
-                },""" % (element_row, title, message, alignment, duration))
+                },""" % (element_row, title, message, bd, alignment, duration))
 
         self._tour_steps[name].append(step)
 
@@ -5115,6 +5136,11 @@ class BaseCase(unittest.TestCase):
         """
         if self.headless:
             return  # Tours should not run in headless mode.
+
+        if not interval:
+            interval = 0
+        if interval == 0 and self.interval:
+            interval = float(self.interval)
 
         if not name:
             name = "default"
@@ -6655,6 +6681,7 @@ class BaseCase(unittest.TestCase):
             self.headless_active = False
             self.headed = sb_config.headed
             self.locale_code = sb_config.locale_code
+            self.interval = sb_config.interval
             self.start_page = sb_config.start_page
             self.log_path = sb_config.log_path
             self.with_testing_base = sb_config.with_testing_base

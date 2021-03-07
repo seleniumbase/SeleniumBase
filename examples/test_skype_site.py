@@ -9,13 +9,13 @@ Default mobile settings for User Agent and Device Metrics if not specified:
 from seleniumbase import BaseCase
 
 
-class SkypeWebsiteTestClass(BaseCase):
+class SkypeTests(BaseCase):
 
-    def test_skype_website_on_mobile(self):
+    def test_skype_mobile_site(self):
         if not self.mobile_emulator:
-            print("\n  This test is only for mobile devices / emulators!")
-            print("  (Usage: '--mobile' with a Chromium-based browser.)")
-            self.skip("Please rerun this test using '--mobile' !!!")
+            print("\n  This test is only for mobile-device web browsers!")
+            print('  (Use "--mobile" to run this test in Mobile Mode!)')
+            self.skip('Use "--mobile" to run this test in Mobile Mode!')
         self.open("https://www.skype.com/en/")
         self.assert_text("Install Skype", "div.appInfo")
         self.highlight("div.appBannerContent")

@@ -17,6 +17,7 @@ Format: A CSS Selector that's ready for JavaScript's querySelectorAll()
 """
 
 AD_BLOCK_LIST = [
+    '[aria-label="Ads"]',
     '[src*="/adservice."]',
     '[src*="doubleclick.net"]',
     '[src*="googletagservices.com"]',

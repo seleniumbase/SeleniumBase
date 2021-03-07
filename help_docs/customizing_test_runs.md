@@ -116,6 +116,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
 --headed  # (Run tests with a GUI on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
+--interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
 --archive-logs  #  (Archive existing log files instead of deleting them.)
 --archive-downloads  #  (Archive old downloads instead of deleting them.)

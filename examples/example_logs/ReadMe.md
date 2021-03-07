@@ -1,7 +1,7 @@
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logging, Dashboards, and Reports:</h3>
 
 [<img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=XpuJCjJhJwQ)
-<p>(<b><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ">SB Dashboard Tutorial on YouTube</a></b>)</p>
+<p>(<b><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ">SBase Dashboard Tutorial on YouTube</a></b>)</p>
 
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 

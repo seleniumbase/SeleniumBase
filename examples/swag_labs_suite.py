@@ -28,6 +28,8 @@ class SwagLabsTests(BaseCase):
         """ This test checks functional flow of the Swag Labs store.
             This test is parameterized on the login user. """
         self.login_to_swag_labs(username=username)
+        if username == "problem_user":
+            print("\n(This test should fail)")
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -91,6 +93,8 @@ class SwagLabsTests(BaseCase):
         """ This test checks for 404s on the Swag Labs products page.
             This test is parameterized on the login user. """
         self.login_to_swag_labs(username=username, v1=True)
+        if username == "problem_user":
+            print("\n(This test should fail)")
         self.assert_no_404_errors()
 
     @parameterized.expand([
@@ -102,6 +106,8 @@ class SwagLabsTests(BaseCase):
         """ This test checks for visual regressions on the Swag Labs page.
             This test is parameterized on the login user. """
         self.login_to_swag_labs(username="standard_user")
+        if username == "problem_user":
+            print("\n(This test should fail)")
         self.check_window(baseline=True)
         self.login_to_swag_labs(username=username)
         self.check_window(level=3)

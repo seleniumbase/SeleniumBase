@@ -26,6 +26,7 @@ class SeleniumBrowser(Plugin):
     --headless  (Run tests headlessly. Default mode on Linux OS.)
     --headed  (Run tests with a GUI on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
+    --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
@@ -193,6 +194,16 @@ class SeleniumBrowser(Plugin):
                     The Locale alters visible text on supported websites.
                     See: https://seleniumbase.io/help_docs/locale_codes/
                     Default: None. (The web browser's default mode.)""")
+        parser.add_option(
+            '--interval',
+            action='store',
+            dest='interval',
+            default=None,
+            help="""This globally overrides the default interval,
+                    (in seconds), of features that include autoplay
+                    functionality, such as tours and presentations.
+                    Overrides from methods take priority over this.
+                    (Headless Mode skips tours and presentations.)""")
         parser.add_option(
             '--start_page', '--start-page', '--url',
             action='store',
@@ -405,6 +416,7 @@ class SeleniumBrowser(Plugin):
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
         test.test.locale_code = self.options.locale_code
+        test.test.interval = self.options.interval
         test.test.start_page = self.options.start_page
         test.test.servername = self.options.servername
         test.test.port = self.options.port
