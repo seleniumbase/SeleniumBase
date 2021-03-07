@@ -13,7 +13,7 @@ class MyTestClass(BaseCase):
     def test_deferred_asserts(self):
         self.open('https://xkcd.com/993/')
         self.wait_for_element('#comic')
-        print("\n(This test fails on purpose)")
+        print("\n(This test should fail)")
         self.deferred_assert_element('img[alt="Brand Identity"]')
         self.deferred_assert_element('img[alt="Rocket Ship"]')  # Will Fail
         self.deferred_assert_element('#comicmap')
