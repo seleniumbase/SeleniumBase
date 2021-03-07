@@ -45,6 +45,7 @@ def pytest_addoption(parser):
     --headless  (Run tests headlessly. Default mode on Linux OS.)
     --headed  (Run tests with a GUI on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
+    --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
     --archive-logs  (Archive existing log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting them.)
@@ -350,6 +351,15 @@ def pytest_addoption(parser):
                           The Locale alters visible text on supported websites.
                           See: https://seleniumbase.io/help_docs/locale_codes/
                           Default: None. (The web browser's default mode.)""")
+    parser.addoption('--interval',
+                     action='store',
+                     dest='interval',
+                     default=None,
+                     help="""This globally overrides the default interval,
+                          (in seconds), of features that include autoplay
+                          functionality, such as tours and presentations.
+                          Overrides from methods take priority over this.
+                          (Headless Mode skips tours and presentations.)""")
     parser.addoption('--start_page', '--start-page', '--url',
                      action='store',
                      dest='start_page',
@@ -658,6 +668,7 @@ def pytest_configure(config):
     sb_config.headless = config.getoption('headless')
     sb_config.headed = config.getoption('headed')
     sb_config.locale_code = config.getoption('locale_code')
+    sb_config.interval = config.getoption('interval')
     sb_config.start_page = config.getoption('start_page')
     sb_config.extension_zip = config.getoption('extension_zip')
     sb_config.extension_dir = config.getoption('extension_dir')
