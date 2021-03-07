@@ -1,7 +1,7 @@
 [<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="285">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
 [<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
-<p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the SB tutorial on YouTube!</a></b>)</p>
+<p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the SBase tutorial on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> ⛲ Features: 🗂️</h2>
@@ -37,5 +37,7 @@
 * Can load and make assertions on PDF files from websites or the local file system.
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
+--------
+
 [<img src="http://img.youtube.com/vi/yEQeAU_mrg0/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=yEQeAU_mrg0)
-<p>(<b><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0">See a quick overview on YouTube!</a></b>)</p>
+<p>(<b><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0">See SB features in action on YouTube</a></b>)</p>
