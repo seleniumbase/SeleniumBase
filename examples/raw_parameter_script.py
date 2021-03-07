@@ -81,6 +81,7 @@ except (ImportError, ValueError):
     sb.ad_block_on = False
     sb.highlights = None
     sb.check_js = False
+    sb.interval = None
     sb.cap_file = None
     sb.cap_string = None
 
