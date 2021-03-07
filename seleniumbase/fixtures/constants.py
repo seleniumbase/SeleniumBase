@@ -155,7 +155,7 @@ class HighCharts:
 
 
 class BootstrapTour:
-    VER = "0.11.0"
+    VER = "0.12.0"
     MIN_CSS = ("https://cdnjs.cloudflare.com/ajax/libs/"
                "bootstrap-tour/%s/css/bootstrap-tour-standalone.min.css" % VER)
     MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"

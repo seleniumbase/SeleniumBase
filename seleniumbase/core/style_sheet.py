@@ -101,18 +101,11 @@ style = title + '''<style type="text/css">
 bt_backdrop_style = (
     '''
     .tour-tour-element {
-        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
         pointer-events: none !important;
-        z-index: 9999;
     }
-
     :not(.tour-tour-element) .orphan.tour-tour {
-        box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.20);
-    }
-
-    .tour-tour {
-        pointer-events: auto;
-        z-index: 9999;
+        box-shadow: 0 0 0 88422px rgba(0, 0, 0, 0.42);
+        pointer-events: auto !important;
     }
     ''')
 

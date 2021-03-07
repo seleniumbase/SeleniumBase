@@ -4763,6 +4763,15 @@ class BaseCase(unittest.TestCase):
             """
             // Bootstrap Tour
             var tour = new Tour({
+            container: 'body',
+            animation: true,
+            keyboard: true,
+            orphan: true,
+            smartPlacement: true,
+            autoscroll: true,
+            backdrop: true,
+            backdropContainer: 'body',
+            backdropPadding: 3,
             });
             tour.addSteps([
             """)
@@ -4990,15 +4999,21 @@ class BaseCase(unittest.TestCase):
         else:
             duration = str(float(duration) * 1000.0)
 
+        bd = "backdrop: true,"
+        if selector == "html":
+            bd = "backdrop: false,"
+
         step = ("""{
                 %s
                 title: '%s',
                 content: '%s',
                 orphan: true,
+                autoscroll: true,
+                %s
                 placement: 'auto %s',
                 smartPlacement: true,
                 duration: %s,
-                },""" % (element_row, title, message, alignment, duration))
+                },""" % (element_row, title, message, bd, alignment, duration))
 
         self._tour_steps[name].append(step)
 
