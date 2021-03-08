@@ -1,6 +1,6 @@
 <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" alt="SeleniumBase" width="304" /></a></div>
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Help Docs</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Help Docs</h2>
 
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🚀 Start</a> |
@@ -14,7 +14,7 @@
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/method_summary/">📗 API</a> |
-<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
+<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📋 Reports</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
 <br />
 <a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">💻 Console Scripts</a> |
@@ -33,7 +33,7 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">📑 Presenter</a> |
-<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📈 ChartMaker</a>
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 ChartMaker</a>
 </p>
 
 --------
