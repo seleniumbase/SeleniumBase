@@ -18,8 +18,9 @@ class GooglePage():
 class SeleniumBaseGitHubPage():
 
     def click_seleniumbase_io_link(self, sb):
-        sb.wait_for_ready_state_complete()
-        sb.js_click('a[href*="seleniumbase.io"]')
+        link = '#readme article a[href*="seleniumbase.io"]'
+        sb.wait_for_element_visible(link)
+        sb.js_click(link)
         sb.wait_for_ready_state_complete()
         current_url = sb.get_current_url()
         if "seleniumbase.io" not in current_url:
