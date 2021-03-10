@@ -7,7 +7,7 @@ from seleniumbase import BaseCase
 from seleniumbase import encryption
 
 
-class MyTestClass(BaseCase):
+class DecryptionTests(BaseCase):
 
     def test_decrypt_password(self):
         self.open("https://www.saucedemo.com/")

@@ -7,7 +7,7 @@ See https://github.com/philipwalton/html-inspector for more details.
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class HtmlInspectorTests(BaseCase):
 
     def test_html_inspector(self):
         self.open("https://xkcd.com/1144/")

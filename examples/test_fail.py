@@ -8,7 +8,7 @@ import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class FailingTests(BaseCase):
 
     @pytest.mark.expected_failure
     def test_find_army_of_robots_on_xkcd_desert_island(self):

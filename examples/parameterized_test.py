@@ -2,7 +2,7 @@ from seleniumbase import BaseCase
 from parameterized import parameterized
 
 
-class GoogleTestClass(BaseCase):
+class GoogleTests(BaseCase):
 
     @parameterized.expand([
         ["pypi", "pypi.org"],

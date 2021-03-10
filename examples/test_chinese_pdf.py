@@ -2,7 +2,7 @@
 from seleniumbase import BaseCase
 
 
-class ChinesePdfTestClass(BaseCase):
+class ChinesePdfTests(BaseCase):
 
     def test_chinese_pdf(self):
 

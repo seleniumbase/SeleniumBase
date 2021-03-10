@@ -26,7 +26,7 @@ class MyListener(AbstractEventListener):
         print("Click complete!")
 
 
-class EventFiringTestClass(BaseCase):
+class EventFiringTests(BaseCase):
 
     def test_event_firing_webdriver(self):
         self.driver = EventFiringWebDriver(self.driver, MyListener())

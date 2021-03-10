@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class HandleAlertTests(BaseCase):
 
     def test_alerts(self):
         if self.browser == "safari":

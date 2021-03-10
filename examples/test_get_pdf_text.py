@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class PdfTestClass(BaseCase):
+class PdfTests(BaseCase):
 
     def test_get_pdf_text(self):
         pdf = ("https://nostarch.com/download/"

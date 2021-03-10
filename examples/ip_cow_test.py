@@ -2,7 +2,7 @@ import time
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class GetTextTests(BaseCase):
 
     def test_ip_cow(self):
         self.open('https://www.ipcow.com/')

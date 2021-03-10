@@ -9,7 +9,7 @@ import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class TimeLimitTests(BaseCase):
 
     @pytest.mark.expected_failure
     def test_time_limit_feature(self):

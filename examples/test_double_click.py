@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class DoubleClickTestClass(BaseCase):
+class DoubleClickTests(BaseCase):
 
     def test_switch_to_frame_and_double_click(self):
         self.open("https://www.w3schools.com/jsref"

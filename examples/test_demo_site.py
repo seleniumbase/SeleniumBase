@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class DemoSiteTests(BaseCase):
 
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page")

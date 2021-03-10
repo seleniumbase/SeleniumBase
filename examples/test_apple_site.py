@@ -2,7 +2,7 @@
 from seleniumbase import BaseCase
 
 
-class AppleTestClass(BaseCase):
+class AppleTests(BaseCase):
 
     def test_apple_developer_site_webdriver_instructions(self):
         self.demo_mode = True
