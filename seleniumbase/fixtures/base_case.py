@@ -578,6 +578,11 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_element_visible(self.driver, selector, by)
 
+    def is_element_enabled(self, selector, by=By.CSS_SELECTOR):
+        self.wait_for_ready_state_complete()
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.is_element_enabled(self.driver, selector, by)
+
     def is_text_visible(self, text, selector="html", by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)

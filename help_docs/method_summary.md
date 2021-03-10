@@ -60,6 +60,8 @@ self.is_element_present(selector, by=By.CSS_SELECTOR)
 
 self.is_element_visible(selector, by=By.CSS_SELECTOR)
 
+self.is_element_enabled(selector, by=By.CSS_SELECTOR)
+
 self.is_text_visible(text, selector="html", by=By.CSS_SELECTOR)
 
 self.is_link_text_visible(link_text)
