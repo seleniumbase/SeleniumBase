@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class VisualLayoutFailureTest(BaseCase):
+class VisualLayoutFailureTests(BaseCase):
 
     def test_applitools_change(self):
         self.open('https://applitools.com/helloworld?diff1')

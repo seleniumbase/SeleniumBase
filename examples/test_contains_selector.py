@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class ContainsSelectorTests(BaseCase):
 
     def test_contains_selector(self):
         self.open("https://xkcd.com/2207/")

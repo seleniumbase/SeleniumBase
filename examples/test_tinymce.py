@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class TinyMceTests(BaseCase):
 
     def test_tinymce(self):
         self.open("https://seleniumbase.io/tinymce/")

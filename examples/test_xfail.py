@@ -7,7 +7,7 @@ import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class XFailTests(BaseCase):
 
     @pytest.mark.xfail
     def test_xfail(self):

@@ -118,7 +118,7 @@ nav:
     - MySQL Instructions: help_docs/mysql_installation.md
   - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
-    - TinyMCE Demo Page: https://seleniumbase.io/other/tinymce
+    - TinyMCE Demo Page: https://seleniumbase.io/tinymce/
     - Virtual Device Farm: https://seleniumbase.io/devices/
     - Error Demo Page: https://seleniumbase.io/error_page/
   - Presentations:

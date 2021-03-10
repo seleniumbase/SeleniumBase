@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class PdfTestClass(BaseCase):
+class PdfAssertTests(BaseCase):
 
     def test_assert_pdf_text(self):
 

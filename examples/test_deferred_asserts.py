@@ -7,7 +7,7 @@ import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class DeferredAssertTests(BaseCase):
 
     @pytest.mark.expected_failure
     def test_deferred_asserts(self):

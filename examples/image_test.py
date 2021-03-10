@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class ImageTest(BaseCase):
+class ImageTests(BaseCase):
 
     def test_pull_image_from_website(self):
         """ Pull an image from a website and save it as a PNG file. """

@@ -137,9 +137,9 @@ is included.
 * Output:
 Creates a new presentation with 3 example slides.
 If the file already exists, an error is raised.
-By default, the slides are written in English.
-Slides use "serif" theme & "fade" transition.
-This code can be used as a base boilerplate.
+By default, the slides are written in English,
+and use "serif" theme with "slide" transition.
+The slides can be used as a basic boilerplate.
 
 ### print
 

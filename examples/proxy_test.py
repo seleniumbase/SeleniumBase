@@ -2,7 +2,7 @@ import time
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class ProxyTests(BaseCase):
 
     def test_proxy(self):
         self.open('https://ipinfo.io/')

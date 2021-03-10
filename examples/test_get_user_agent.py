@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class UserAgentTestClass(BaseCase):
+class UserAgentTests(BaseCase):
 
     def test_get_user_agent(self):
         self.open("data:,")

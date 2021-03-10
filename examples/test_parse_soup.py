@@ -2,7 +2,7 @@ import re
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class SoupParsingTests(BaseCase):
 
     def click_menu_item(self, text):
         # Use BeautifulSoup to parse the selector ID from element text.

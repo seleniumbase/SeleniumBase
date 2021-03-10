@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class XPathTests(BaseCase):
 
     def test_xpath(self):
         self.open("https://xkcd.com/1319/")

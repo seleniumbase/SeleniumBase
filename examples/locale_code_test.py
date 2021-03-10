@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class LocaleTestClass(BaseCase):
+class LocaleCodeTests(BaseCase):
 
     def test_locale_code(self):
         self.open("https://localeplanet.com/support/browser.html")

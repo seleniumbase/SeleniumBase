@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyChartMakerClass(BaseCase):
+class PresentationWithChart(BaseCase):
 
     def test_seleniumbase_chart(self):
         self.create_presentation(theme="league", transition="slide")
