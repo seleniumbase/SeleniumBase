@@ -611,6 +611,18 @@ class MD:
     md["is_element_visible"][8] = "элемент_виден"
     md["is_element_visible"][9] = "se_muestra_el_elemento"
 
+    md["is_element_enabled"] = ["*"] * num_langs
+    md["is_element_enabled"][0] = "is_element_enabled"
+    md["is_element_enabled"][1] = "元素是否启用"
+    md["is_element_enabled"][2] = "element_ingeschakeld"
+    md["is_element_enabled"][3] = "est_un_élément_activé"
+    md["is_element_enabled"][4] = "è_elemento_abilitato"
+    md["is_element_enabled"][5] = "要素が有効かどうか"
+    md["is_element_enabled"][6] = "요소가_활성화돼"
+    md["is_element_enabled"][7] = "o_elemento_está_habilitado"
+    md["is_element_enabled"][8] = "элемент_включен"
+    md["is_element_enabled"][9] = "está_habilitado_el_elemento"
+
     md["is_element_present"] = ["*"] * num_langs
     md["is_element_present"][0] = "is_element_present"
     md["is_element_present"][1] = "元素是否存在"

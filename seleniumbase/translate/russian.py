@@ -137,6 +137,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def элемент_включен(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def элемент_присутствует(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
