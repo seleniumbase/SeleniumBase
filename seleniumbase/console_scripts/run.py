@@ -56,11 +56,11 @@ def show_basic_usage():
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
-    print()
+    print("")
     time.sleep(0.25)  # Enough time to see the logo
     show_package_location()
     show_version_info()
-    print()
+    print("")
     sc = ("")
     sc += (' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n')
     sc += (' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n')
@@ -208,9 +208,9 @@ def show_mkpres_usage():
     print("  Output:")
     print("          Creates a new presentation with 3 example slides.")
     print("          If the file already exists, an error is raised.")
-    print("          By default, the slides are written in English.")
-    print('          Slides use "serif" theme & "fade" transition.')
-    print("          This code can be used as a base boilerplate.")
+    print("          By default, the slides are written in English,")
+    print('          and use "serif" theme with "slide" transition.')
+    print("          The slides can be used as a basic boilerplate.")
     print("")
 
 
@@ -798,10 +798,10 @@ def main():
             from seleniumbase.console_scripts import logo_helper
             seleniumbase_logo = logo_helper.get_seleniumbase_logo()
             print(seleniumbase_logo)
-            print()
+            print("")
             show_package_location()
             show_version_info()
-            print()
+            print("")
         else:
             show_basic_usage()
     elif command == "methods" or command == "--methods":
