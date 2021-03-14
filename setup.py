@@ -37,6 +37,7 @@ if sys.argv[-1] == 'publish':
         '>>> Confirm release PUBLISH to PyPI? (yes/no): ')).lower().strip()
     if reply == 'yes':
         print("\n*** Checking code health with flake8:\n")
+        os.system("python -m pip install 'flake8==3.8.4'")
         flake8_status = os.system("flake8 --exclude=temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -137,7 +138,6 @@ setup(
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
         'pytest==6.2.2;python_version>="3.6"',
-        'pytest-cov==2.11.1',
         'pytest-forked==1.3.0',
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',
@@ -174,7 +174,6 @@ setup(
         'virtualenv>=20.4.2',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
-        'coverage==5.5',
         'brython==3.9.1',
         'pyotp==2.6.0',
         'boto==2.49.0',
@@ -184,10 +183,6 @@ setup(
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.1.2;python_version>="3.6"',
         'rich==9.13.0;python_version>="3.6" and python_version<"4.0"',
-        'flake8==3.7.9;python_version<"3.5"',
-        'flake8==3.8.4;python_version>="3.5"',
-        'pyflakes==2.1.1;python_version<"3.5"',
-        'pyflakes==2.2.0;python_version>="3.5"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'allure-pytest==2.8.22;python_version<"3.5"',
@@ -195,6 +190,22 @@ setup(
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
+    extras_require={
+        # pip install -e .[coverage]
+        'coverage': [
+            'coverage==5.5',
+            'pytest-cov==2.11.1',
+        ],
+        # pip install -e .[flake]
+        'flake': [
+            'flake8==3.7.9;python_version<"3.5"',
+            'flake8==3.8.4;python_version>="3.5"',
+            'pyflakes==2.1.1;python_version<"3.5"',
+            'pyflakes==2.2.0;python_version>="3.5"',
+            'pycodestyle==2.5.0;python_version<"3.5"',
+            'pycodestyle==2.6.0;python_version>="3.5"',
+        ],
+    },
     packages=[
         'seleniumbase',
         'seleniumbase.common',
