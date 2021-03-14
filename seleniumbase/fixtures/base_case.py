@@ -4003,7 +4003,7 @@ class BaseCase(unittest.TestCase):
             '<script src="%s"></script>\n'
             '<script src="%s"></script>\n'
             '<script>Reveal.initialize('
-            '{showNotes: %s, slideNumber: true, hash: false, '
+            '{showNotes: %s, slideNumber: true, progress: true, hash: false, '
             'autoSlide: %s,});'
             '</script>\n'
             '</body>\n'
