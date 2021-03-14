@@ -5359,9 +5359,11 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def generate_referral(self, start_page, destination_page):
+    def generate_referral(self, start_page, destination_page, selector=None):
         """ This method opens the start_page, creates a referral link there,
             and clicks on that link, which goes to the destination_page.
+            If a selector is given, clicks that on the destination_page,
+            which can prevent an artificial rise in website bounce-rate.
             (This generates real traffic for testing analytics software.) """
         self.__check_scope()
         if not page_utils.is_valid_url(destination_page):
@@ -5387,17 +5389,19 @@ class BaseCase(unittest.TestCase):
         self.click(
             "a.analytics.referral.test", timeout=2)  # Clicks generated button
         time.sleep(0.15)
-        try:
-            self.click("html")
-            time.sleep(0.08)
-        except Exception:
-            pass
+        if selector:
+            self.click(selector)
+            time.sleep(0.15)
 
-    def generate_traffic(self, start_page, destination_page, loops=1):
-        """ Similar to generate_referral(), but can do multiple loops. """
+    def generate_traffic(
+            self, start_page, destination_page, loops=1, selector=None):
+        """ Similar to generate_referral(), but can do multiple loops.
+            If a selector is given, clicks that on the destination_page,
+            which can prevent an artificial rise in website bounce-rate. """
         self.__check_scope()
         for loop in range(loops):
-            self.generate_referral(start_page, destination_page)
+            self.generate_referral(
+                start_page, destination_page, selector=selector)
             time.sleep(0.05)
 
     def generate_referral_chain(self, pages):
