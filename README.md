@@ -8,7 +8,7 @@
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="500" /></a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
+<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a></p>
 <p align="center">
 <b>End-to-end testing for the next generation.</b>
