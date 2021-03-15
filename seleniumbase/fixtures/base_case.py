@@ -4003,7 +4003,7 @@ class BaseCase(unittest.TestCase):
             '<script src="%s"></script>\n'
             '<script src="%s"></script>\n'
             '<script>Reveal.initialize('
-            '{showNotes: %s, slideNumber: true, hash: false, '
+            '{showNotes: %s, slideNumber: true, progress: true, hash: false, '
             'autoSlide: %s,});'
             '</script>\n'
             '</body>\n'
@@ -4086,20 +4086,23 @@ class BaseCase(unittest.TestCase):
 
     def create_pie_chart(
             self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True):
+            data_name=None, unit=None, libs=True, labels=True, legend=True):
         """ Creates a JavaScript pie chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
             subtitle - The subtitle displayed for the chart.
-            data_name - Set the series name. Useful for multi-series charts.
+            data_name - The series name. Useful for multi-series charts.
+                        If no data_name, will default to using "Series 1".
             unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
                    a chart on a web page. If creating multiple charts on the
                    same web page, you won't need to re-import the libraries
                    when creating additional charts.
+            labels - If True, displays labels on the chart for data points.
+            legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4108,24 +4111,28 @@ class BaseCase(unittest.TestCase):
         style = "pie"
         self.__create_highchart(
             chart_name=chart_name, title=title, subtitle=subtitle,
-            style=style, data_name=data_name, unit=unit, libs=libs)
+            style=style, data_name=data_name, unit=unit, libs=libs,
+            labels=labels, legend=legend)
 
     def create_bar_chart(
             self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True):
+            data_name=None, unit=None, libs=True, labels=True, legend=True):
         """ Creates a JavaScript bar chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
             subtitle - The subtitle displayed for the chart.
-            data_name - Set the series name. Useful for multi-series charts.
+            data_name - The series name. Useful for multi-series charts.
+                        If no data_name, will default to using "Series 1".
             unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
                    a chart on a web page. If creating multiple charts on the
                    same web page, you won't need to re-import the libraries
                    when creating additional charts.
+            labels - If True, displays labels on the chart for data points.
+            legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4134,24 +4141,28 @@ class BaseCase(unittest.TestCase):
         style = "bar"
         self.__create_highchart(
             chart_name=chart_name, title=title, subtitle=subtitle,
-            style=style, data_name=data_name, unit=unit, libs=libs)
+            style=style, data_name=data_name, unit=unit, libs=libs,
+            labels=labels, legend=legend)
 
     def create_column_chart(
             self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True):
+            data_name=None, unit=None, libs=True, labels=True, legend=True):
         """ Creates a JavaScript column chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
             subtitle - The subtitle displayed for the chart.
-            data_name - Set the series name. Useful for multi-series charts.
+            data_name - The series name. Useful for multi-series charts.
+                        If no data_name, will default to using "Series 1".
             unit - The description label given to the chart's y-axis values.
             libs - The option to include Chart libraries (JS and CSS files).
                    Should be set to True (default) for the first time creating
                    a chart on a web page. If creating multiple charts on the
                    same web page, you won't need to re-import the libraries
                    when creating additional charts.
+            labels - If True, displays labels on the chart for data points.
+            legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4160,18 +4171,21 @@ class BaseCase(unittest.TestCase):
         style = "column"
         self.__create_highchart(
             chart_name=chart_name, title=title, subtitle=subtitle,
-            style=style, data_name=data_name, unit=unit, libs=libs)
+            style=style, data_name=data_name, unit=unit, libs=libs,
+            labels=labels, legend=legend)
 
     def create_line_chart(
             self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, zero=False, libs=True):
+            data_name=None, unit=None, zero=False, libs=True,
+            labels=True, legend=True):
         """ Creates a JavaScript line chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
             subtitle - The subtitle displayed for the chart.
-            data_name - Set the series name. Useful for multi-series charts.
+            data_name - The series name. Useful for multi-series charts.
+                        If no data_name, will default to using "Series 1".
             unit - The description label given to the chart's y-axis values.
             zero - If True, the y-axis always starts at 0. (Default: False).
             libs - The option to include Chart libraries (JS and CSS files).
@@ -4179,6 +4193,8 @@ class BaseCase(unittest.TestCase):
                    a chart on a web page. If creating multiple charts on the
                    same web page, you won't need to re-import the libraries
                    when creating additional charts.
+            labels - If True, displays labels on the chart for data points.
+            legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4187,18 +4203,21 @@ class BaseCase(unittest.TestCase):
         style = "line"
         self.__create_highchart(
             chart_name=chart_name, title=title, subtitle=subtitle,
-            style=style, data_name=data_name, unit=unit, zero=zero, libs=libs)
+            style=style, data_name=data_name, unit=unit, zero=zero, libs=libs,
+            labels=labels, legend=legend)
 
     def create_area_chart(
             self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, zero=False, libs=True):
+            data_name=None, unit=None, zero=False, libs=True,
+            labels=True, legend=True):
         """ Creates a JavaScript area chart using "HighCharts".
             @Params
             chart_name - If creating multiple charts,
                          use this to select which one.
             title - The title displayed for the chart.
             subtitle - The subtitle displayed for the chart.
-            data_name - Set the series name. Useful for multi-series charts.
+            data_name - The series name. Useful for multi-series charts.
+                        If no data_name, will default to using "Series 1".
             unit - The description label given to the chart's y-axis values.
             zero - If True, the y-axis always starts at 0. (Default: False).
             libs - The option to include Chart libraries (JS and CSS files).
@@ -4206,6 +4225,8 @@ class BaseCase(unittest.TestCase):
                    a chart on a web page. If creating multiple charts on the
                    same web page, you won't need to re-import the libraries
                    when creating additional charts.
+            labels - If True, displays labels on the chart for data points.
+            legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4214,11 +4235,13 @@ class BaseCase(unittest.TestCase):
         style = "area"
         self.__create_highchart(
             chart_name=chart_name, title=title, subtitle=subtitle,
-            style=style, data_name=data_name, unit=unit, zero=zero, libs=libs)
+            style=style, data_name=data_name, unit=unit, zero=zero, libs=libs,
+            labels=labels, legend=legend)
 
     def __create_highchart(
             self, chart_name=None, title=None, subtitle=None,
-            style=None, data_name=None, unit=None, zero=False, libs=True):
+            style=None, data_name=None, unit=None, zero=False, libs=True,
+            labels=True, legend=True):
         """ Creates a JavaScript chart using the "HighCharts" library. """
         if not chart_name:
             chart_name = "default"
@@ -4232,6 +4255,14 @@ class BaseCase(unittest.TestCase):
             data_name = "Series 1"
         if not unit:
             unit = "Values"
+        if labels:
+            labels = "true"
+        else:
+            labels = "false"
+        if legend:
+            legend = "true"
+        else:
+            legend = "false"
         title = title.replace("'", "\\'")
         subtitle = subtitle.replace("'", "\\'")
         unit = unit.replace("'", "\\'")
@@ -4355,25 +4386,45 @@ class BaseCase(unittest.TestCase):
                     padding: '6px',
                     fontSize: '14px'
                 },
+                backgroundColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, 'rgba(255, 255, 255, 0.78)'],
+                        [0.5, 'rgba(235, 235, 235, 0.76)'],
+                        [1, 'rgba(244, 252, 255, 0.74)']
+                    ]
+                },
+                hideDelay: 40,
                 pointFormat: '%s'
             },
             """ % point_format)
         chart_init_3 = (
-            r"""
+            """
             accessibility: {
                 point: {
-                    valueSuffix: '%'
+                    valueSuffix: '%%'
                 }
             },
             plotOptions: {
+                series: {
+                    states: {
+                        inactive: {
+                            opacity: 0.85
+                        }
+                    }
+                },
                 pie: {
-                    size: "95%",
+                    size: "95%%",
                     allowPointSelect: true,
                     animation: false,
                     cursor: 'pointer',
                     dataLabels: {
-                        // enabled: false,
-                        // format: '{point.name}: {point.y:.0f}',
+                        enabled: %s,
                         formatter: function() {
                           if (this.y > 0) {
                             return this.point.name + ': ' + this.point.y
@@ -4385,10 +4436,10 @@ class BaseCase(unittest.TestCase):
                             enabled: true
                         }
                     },
-                    showInLegend: true
+                    showInLegend: %s
                 }
             },
-            """)
+            """ % (labels, legend))
         if style != "pie":
             chart_init_3 = (
                 """
@@ -4406,11 +4457,11 @@ class BaseCase(unittest.TestCase):
                 },
                 plotOptions: {
                     series: {
-                        showInLegend: true,
-                        animation: false,
                         dataLabels: {
-                            enabled: true
+                            enabled: %s
                         },
+                        showInLegend: %s,
+                        animation: false,
                         shadow: false,
                         lineWidth: 3,
                         fillOpacity: 0.5,
@@ -4419,7 +4470,7 @@ class BaseCase(unittest.TestCase):
                         }
                     }
                 },
-                """)
+                """ % (labels, legend))
         chart_init = chart_init_1 + chart_init_2 + chart_init_3
         color_by_point = "true"
         if style != "pie":
@@ -5308,9 +5359,11 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def generate_referral(self, start_page, destination_page):
+    def generate_referral(self, start_page, destination_page, selector=None):
         """ This method opens the start_page, creates a referral link there,
             and clicks on that link, which goes to the destination_page.
+            If a selector is given, clicks that on the destination_page,
+            which can prevent an artificial rise in website bounce-rate.
             (This generates real traffic for testing analytics software.) """
         self.__check_scope()
         if not page_utils.is_valid_url(destination_page):
@@ -5336,17 +5389,19 @@ class BaseCase(unittest.TestCase):
         self.click(
             "a.analytics.referral.test", timeout=2)  # Clicks generated button
         time.sleep(0.15)
-        try:
-            self.click("html")
-            time.sleep(0.08)
-        except Exception:
-            pass
+        if selector:
+            self.click(selector)
+            time.sleep(0.15)
 
-    def generate_traffic(self, start_page, destination_page, loops=1):
-        """ Similar to generate_referral(), but can do multiple loops. """
+    def generate_traffic(
+            self, start_page, destination_page, loops=1, selector=None):
+        """ Similar to generate_referral(), but can do multiple loops.
+            If a selector is given, clicks that on the destination_page,
+            which can prevent an artificial rise in website bounce-rate. """
         self.__check_scope()
         for loop in range(loops):
-            self.generate_referral(start_page, destination_page)
+            self.generate_referral(
+                start_page, destination_page, selector=selector)
             time.sleep(0.05)
 
     def generate_referral_chain(self, pages):

@@ -10,13 +10,13 @@ class MyChartMakerClass(BaseCase):
         self.add_data_point("Failed", 1, color="#f1888f")
         self.display_chart(filename="pie_chart.html", interval=2.5)
 
-        self.create_bar_chart(title="Bar Chart")
+        self.create_bar_chart(title="Bar Chart", legend=False)
         self.add_data_point("Python", 33, color="Orange")
         self.add_data_point("JavaScript", 27, color="Teal")
         self.add_data_point("HTML + CSS", 21, color="Purple")
         self.display_chart(filename="bar_chart.html", interval=2.5)
 
-        self.create_column_chart(title="Column Chart")
+        self.create_column_chart(title="Column Chart", legend=False)
         self.add_data_point("Red", 10, color="Red")
         self.add_data_point("Green", 25, color="Green")
         self.add_data_point("Blue", 15, color="Blue")

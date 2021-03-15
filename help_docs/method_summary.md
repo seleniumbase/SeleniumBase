@@ -405,19 +405,24 @@ self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 ############
 
 self.create_pie_chart(chart_name=None, title=None, subtitle=None,
-                      data_name=None, unit=None, libs=True)
+                      data_name=None, unit=None, libs=True,
+                      labels=True, legend=True)
 
 self.create_bar_chart(chart_name=None, title=None, subtitle=None,
-                      data_name=None, unit=None, libs=True)
+                      data_name=None, unit=None, libs=True,
+                      labels=True, legend=True)
 
 self.create_column_chart(chart_name=None, title=None, subtitle=None,
-                         data_name=None, unit=None, libs=True)
+                         data_name=None, unit=None, libs=True,
+                         labels=True, legend=True)
 
 self.create_line_chart(chart_name=None, title=None, subtitle=None,
-                       data_name=None, unit=None, zero=False, libs=True)
+                       data_name=None, unit=None, zero=False, libs=True,
+                       labels=True, legend=True)
 
 self.create_area_chart(chart_name=None, title=None, subtitle=None,
-                       data_name=None, unit=None, zero=False, libs=True)
+                       data_name=None, unit=None, zero=False, libs=True,
+                       labels=True, legend=True)
 
 self.add_series_to_chart(data_name=None, chart_name=None)
 
@@ -465,9 +470,9 @@ self.set_messenger_theme(theme="default", location="default",
 
 ############
 
-self.generate_referral(start_page, destination_page)
+self.generate_referral(start_page, destination_page, selector=None)
 
-self.generate_traffic(start_page, destination_page, loops=1)
+self.generate_traffic(start_page, destination_page, loops=1, selector=None)
 
 self.generate_referral_chain(pages)
 

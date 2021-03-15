@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyChartMakerClass(BaseCase):
+class ChartMakerPresentation(BaseCase):
 
     def test_chart_maker_presentation(self):
         self.create_presentation(theme="sky", transition="zoom")
@@ -12,13 +12,13 @@ class MyChartMakerClass(BaseCase):
         self.add_data_point("Failed", 1, color="#f1888f")
         self.add_slide("<p>Pie Chart</p>" + self.extract_chart())
 
-        self.create_bar_chart(title="Language", libs=False)
+        self.create_bar_chart(title="Language", libs=False, legend=False)
         self.add_data_point("Python", 33, color="Orange")
         self.add_data_point("JavaScript", 27, color="Teal")
         self.add_data_point("HTML + CSS", 21, color="Purple")
         self.add_slide("<p>Bar Chart</p>" + self.extract_chart())
 
-        self.create_column_chart(title="Colors", libs=False)
+        self.create_column_chart(title="Colors", libs=False, legend=False)
         self.add_data_point("Red", 10, color="Red")
         self.add_data_point("Green", 25, color="Green")
         self.add_data_point("Blue", 15, color="Blue")
