@@ -150,13 +150,16 @@ self.create_pie_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -170,13 +173,16 @@ self.create_bar_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -190,13 +196,16 @@ self.create_column_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -210,14 +219,17 @@ self.create_line_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     zero - If True, the y-axis always starts at 0. (Default: False).
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -231,7 +243,8 @@ self.create_area_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     zero - If True, the y-axis always starts at 0. (Default: False).
     libs - The option to include Chart libraries (JS and CSS files).
@@ -239,6 +252,8 @@ self.create_area_chart(
            a chart on a web page. If creating multiple charts on the
            same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
