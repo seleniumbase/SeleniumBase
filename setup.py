@@ -37,7 +37,7 @@ if sys.argv[-1] == 'publish':
         '>>> Confirm release PUBLISH to PyPI? (yes/no): ')).lower().strip()
     if reply == 'yes':
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==3.8.4'")
+        os.system("python -m pip install 'flake8==3.9.0'")
         flake8_status = os.system("flake8 --exclude=temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -108,7 +108,7 @@ setup(
         'packaging>=20.9',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=54.1.1;python_version>="3.6"',
+        'setuptools>=54.1.2;python_version>="3.6"',
         'setuptools-scm>=5.0.2',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
@@ -163,7 +163,7 @@ setup(
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.5;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.16;python_version>="3.6"',
+        'prompt-toolkit==3.0.17;python_version>="3.6"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
@@ -199,11 +199,11 @@ setup(
         # pip install -e .[flake]
         'flake': [
             'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.8.4;python_version>="3.5"',
+            'flake8==3.9.0;python_version>="3.5"',
             'pyflakes==2.1.1;python_version<"3.5"',
-            'pyflakes==2.2.0;python_version>="3.5"',
+            'pyflakes==2.3.0;python_version>="3.5"',
             'pycodestyle==2.5.0;python_version<"3.5"',
-            'pycodestyle==2.6.0;python_version>="3.5"',
+            'pycodestyle==2.7.0;python_version>="3.5"',
         ],
     },
     packages=[
