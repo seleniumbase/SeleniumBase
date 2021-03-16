@@ -117,7 +117,7 @@ setup(
         'six==1.15.0',
         'nose==1.3.7',
         'ipdb==0.13.4;python_version<"3.6"',
-        'ipdb==0.13.6;python_version>="3.6"',
+        'ipdb==0.13.7;python_version>="3.6"',
         'parso==0.7.1;python_version<"3.6"',
         'parso==0.8.1;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
@@ -125,7 +125,7 @@ setup(
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
-        'urllib3==1.26.3',  # Must stay in sync with "requests"
+        'urllib3==1.26.4',  # Must stay in sync with "requests"
         'requests==2.25.1',
         'selenium==3.141.0',
         'msedge-selenium-tools==3.141.3',
@@ -171,7 +171,7 @@ setup(
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.4.2',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.4.3',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         'brython==3.9.1',
