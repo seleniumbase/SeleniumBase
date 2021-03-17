@@ -37,6 +37,7 @@ if sys.argv[-1] == 'publish':
         '>>> Confirm release PUBLISH to PyPI? (yes/no): ')).lower().strip()
     if reply == 'yes':
         print("\n*** Checking code health with flake8:\n")
+        os.system("python -m pip install 'flake8==3.9.0'")
         flake8_status = os.system("flake8 --exclude=temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -49,7 +50,7 @@ if sys.argv[-1] == 'publish':
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.56.2'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.59.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -107,15 +108,16 @@ setup(
         'packaging>=20.9',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=53.0.0;python_version>="3.6"',
-        'setuptools-scm>=5.0.1',
+        'setuptools>=54.1.2;python_version>="3.6"',
+        'setuptools-scm>=5.0.2',
         'wheel>=0.36.2',
         'attrs>=20.3.0',
         'PyYAML>=5.4.1;python_version>="3.6"',
         'certifi>=2020.12.5',
         'six==1.15.0',
         'nose==1.3.7',
-        'ipdb==0.13.4',
+        'ipdb==0.13.4;python_version<"3.6"',
+        'ipdb==0.13.7;python_version>="3.6"',
         'parso==0.7.1;python_version<"3.6"',
         'parso==0.8.1;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
@@ -123,7 +125,7 @@ setup(
         'idna==2.10',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
-        'urllib3==1.26.3',  # Must stay in sync with "requests"
+        'urllib3==1.26.4',  # Must stay in sync with "requests"
         'requests==2.25.1',
         'selenium==3.141.0',
         'msedge-selenium-tools==3.141.3',
@@ -136,7 +138,6 @@ setup(
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
         'pytest==6.2.2;python_version>="3.6"',
-        'pytest-cov==2.11.1',
         'pytest-forked==1.3.0',
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',
@@ -158,22 +159,21 @@ setup(
         'pyopenssl==19.1.0;python_version<"3.6"',
         'pyopenssl==20.0.1;python_version>="3.6"',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.8.0;python_version>="3.5"',
+        'pygments==2.8.1;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.5;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.16;python_version>="3.6"',
+        'prompt-toolkit==3.0.17;python_version>="3.6"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.20.0;python_version>="3.7"',
+        'ipython==7.21.0;python_version>="3.7"',
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        'virtualenv>=20.4.2',  # Sync with importlib-metadata and pathlib2
+        'virtualenv>=20.4.3',  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
-        'coverage==5.4',
         'brython==3.9.1',
         'pyotp==2.6.0',
         'boto==2.49.0',
@@ -181,19 +181,31 @@ setup(
         'toml==0.10.2',
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
-        'Pillow==8.1.0;python_version>="3.6"',
-        'rich==9.11.0;python_version>="3.6" and python_version<"4.0"',
-        'flake8==3.7.9;python_version<"3.5"',
-        'flake8==3.8.4;python_version>="3.5"',
-        'pyflakes==2.1.1;python_version<"3.5"',
-        'pyflakes==2.2.0;python_version>="3.5"',
+        'Pillow==8.1.2;python_version>="3.6"',
+        'rich==9.13.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'allure-pytest==2.8.22;python_version<"3.5"',
-        'allure-pytest==2.8.33;python_version>="3.5"',
+        'allure-pytest==2.8.36;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
+    extras_require={
+        # pip install -e .[coverage]
+        'coverage': [
+            'coverage==5.5',
+            'pytest-cov==2.11.1',
+        ],
+        # pip install -e .[flake]
+        'flake': [
+            'flake8==3.7.9;python_version<"3.5"',
+            'flake8==3.9.0;python_version>="3.5"',
+            'pyflakes==2.1.1;python_version<"3.5"',
+            'pyflakes==2.3.0;python_version>="3.5"',
+            'pycodestyle==2.5.0;python_version<"3.5"',
+            'pycodestyle==2.7.0;python_version>="3.5"',
+        ],
+    },
     packages=[
         'seleniumbase',
         'seleniumbase.common',

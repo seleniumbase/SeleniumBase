@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class UserAgentTests(BaseCase):
 
     def test_user_agent(self):
         self.open('https://www.whatsmyua.info/')

@@ -9,11 +9,11 @@ import pytest
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class TimeLimitTests(BaseCase):
 
     @pytest.mark.expected_failure
     def test_time_limit_feature(self):
         self.set_time_limit(5)  # Fail test if time exceeds 5 seconds
         self.open("https://xkcd.com/1658/")
-        print("\n(This test fails on purpose)")
+        print("\n(This test should fail)")
         self.sleep(7)

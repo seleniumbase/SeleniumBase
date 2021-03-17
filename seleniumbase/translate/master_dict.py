@@ -611,6 +611,18 @@ class MD:
     md["is_element_visible"][8] = "элемент_виден"
     md["is_element_visible"][9] = "se_muestra_el_elemento"
 
+    md["is_element_enabled"] = ["*"] * num_langs
+    md["is_element_enabled"][0] = "is_element_enabled"
+    md["is_element_enabled"][1] = "元素是否启用"
+    md["is_element_enabled"][2] = "element_ingeschakeld"
+    md["is_element_enabled"][3] = "est_un_élément_activé"
+    md["is_element_enabled"][4] = "è_elemento_abilitato"
+    md["is_element_enabled"][5] = "要素が有効かどうか"
+    md["is_element_enabled"][6] = "요소가_활성화돼"
+    md["is_element_enabled"][7] = "o_elemento_está_habilitado"
+    md["is_element_enabled"][8] = "элемент_включен"
+    md["is_element_enabled"][9] = "está_habilitado_el_elemento"
+
     md["is_element_present"] = ["*"] * num_langs
     md["is_element_present"][0] = "is_element_present"
     md["is_element_present"][1] = "元素是否存在"
@@ -775,7 +787,7 @@ class MD:
     md["js_type"][4] = "js_digitare"
     md["js_type"][5] = "JS入力"
     md["js_type"][6] = "JS_입력"
-    md["js_type"][7] = "js_tipo"
+    md["js_type"][7] = "js_digitar"
     md["js_type"][8] = "JS_введите"
     md["js_type"][9] = "js_escriba"
 
@@ -1628,7 +1640,7 @@ class MD:
     md["type"][4] = "digitare"
     md["type"][5] = "入力"
     md["type"][6] = "입력"
-    md["type"][7] = "tipo"
+    md["type"][7] = "digitar"
     md["type"][8] = "введите"
     md["type"][9] = "escriba"
 
@@ -1836,7 +1848,7 @@ class MD:
     md["input"][4] = "digitare"
     md["input"][5] = "入力"
     md["input"][6] = "입력"
-    md["input"][7] = "tipo"
+    md["input"][7] = "digitar"
     md["input"][8] = "введите"
     md["input"][9] = "escriba"
 

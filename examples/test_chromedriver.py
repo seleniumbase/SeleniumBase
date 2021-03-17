@@ -6,7 +6,7 @@ import colorama
 from seleniumbase import BaseCase
 
 
-class ChromeTestClass(BaseCase):
+class ChromedriverTests(BaseCase):
 
     def test_chromedriver_matches_chrome(self):
         if self.browser != "chrome":

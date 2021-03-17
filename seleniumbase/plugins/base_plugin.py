@@ -5,6 +5,7 @@ import sys
 import time
 from nose.plugins import Plugin
 from nose.exc import SkipTest
+from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.core import report_helper
 from seleniumbase.fixtures import constants, errors
@@ -20,6 +21,7 @@ class Base(Plugin):
     --var3=DATA  (Extra test data. Access with "self.var3" in tests.)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --archive-logs  (Archive old log files instead of deleting them.)
+    --archive-downloads  (Archive old downloads instead of deleting.)
     --report  (Create a fancy nosetests report after tests complete.)
     --show-report   If self.report is turned on, then the report will
                     display immediately after tests complete their run.
@@ -84,6 +86,12 @@ class Base(Plugin):
             default=False,
             help="Archive old log files instead of deleting them.")
         parser.add_option(
+            '--archive_downloads', '--archive-downloads',
+            action="store_true",
+            dest='archive_downloads',
+            default=False,
+            help="Archive old downloads instead of deleting them.")
+        parser.add_option(
             '--report',
             action="store_true",
             dest='report',
@@ -147,6 +155,8 @@ class Base(Plugin):
         test.test.var3 = self.options.var3
         test.test.settings_file = self.options.settings_file
         test.test.log_path = self.options.log_path
+        if self.options.archive_downloads:
+            settings.ARCHIVE_EXISTING_DOWNLOADS = True
         test.test.args = self.options
         test.test.report_on = self.report_on
         self.test_count += 1

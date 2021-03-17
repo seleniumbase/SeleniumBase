@@ -8,6 +8,7 @@ import re
 import sys
 import time
 from seleniumbase import config as sb_config
+from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
@@ -44,8 +45,10 @@ def pytest_addoption(parser):
     --headless  (Run tests headlessly. Default mode on Linux OS.)
     --headed  (Run tests with a GUI on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
+    --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
-    --archive-logs  (Archive old log files instead of deleting them.)
+    --archive-logs  (Archive existing log files instead of deleting them.)
+    --archive-downloads  (Archive old downloads instead of deleting them.)
     --time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
     --slow  (Slow down the automation. Faster than using Demo Mode.)
     --demo  (Slow down and visually see test actions as they occur.)
@@ -210,6 +213,11 @@ def pytest_addoption(parser):
                      dest='archive_logs',
                      default=False,
                      help="Archive old log files instead of deleting them.")
+    parser.addoption('--archive_downloads', '--archive-downloads',
+                     action="store_true",
+                     dest='archive_downloads',
+                     default=False,
+                     help="Archive old downloads instead of deleting them.")
     parser.addoption('--with-db_reporting', '--with-db-reporting',
                      action="store_true",
                      dest='with_db_reporting',
@@ -343,6 +351,15 @@ def pytest_addoption(parser):
                           The Locale alters visible text on supported websites.
                           See: https://seleniumbase.io/help_docs/locale_codes/
                           Default: None. (The web browser's default mode.)""")
+    parser.addoption('--interval',
+                     action='store',
+                     dest='interval',
+                     default=None,
+                     help="""This globally overrides the default interval,
+                          (in seconds), of features that include autoplay
+                          functionality, such as tours and presentations.
+                          Overrides from methods take priority over this.
+                          (Headless Mode skips tours and presentations.)""")
     parser.addoption('--start_page', '--start-page', '--url',
                      action='store',
                      dest='start_page',
@@ -620,10 +637,11 @@ def pytest_addoption(parser):
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
     if browser_changes > 1:
-        message = "\n\n  Too many browser types were entered!"
-        message += "\n  There were %s found: %s" % (
+        message = "\n\n  TOO MANY browser types were entered!"
+        message += "\n  There were %s found:\n  >  %s" % (
             browser_changes, ", ".join(browser_list))
-        message += "\n  Please enter ONLY ONE and try again!\n"
+        message += "\n  ONLY ONE default browser is allowed!"
+        message += "\n  Select a single browser & try again!\n"
         raise Exception(message)
 
 
@@ -650,6 +668,7 @@ def pytest_configure(config):
     sb_config.headless = config.getoption('headless')
     sb_config.headed = config.getoption('headed')
     sb_config.locale_code = config.getoption('locale_code')
+    sb_config.interval = config.getoption('interval')
     sb_config.start_page = config.getoption('start_page')
     sb_config.extension_zip = config.getoption('extension_zip')
     sb_config.extension_dir = config.getoption('extension_dir')
@@ -669,6 +688,8 @@ def pytest_configure(config):
     sb_config.database_env = config.getoption('database_env')
     sb_config.log_path = 'latest_logs/'  # (No longer editable!)
     sb_config.archive_logs = config.getoption('archive_logs')
+    if config.getoption('archive_downloads'):
+        settings.ARCHIVE_EXISTING_DOWNLOADS = True
     sb_config._time_limit = config.getoption('time_limit')
     sb_config.time_limit = config.getoption('time_limit')
     sb_config.slow_mode = config.getoption('slow_mode')
@@ -925,8 +946,13 @@ def pytest_unconfigure():
                     with open(html_report_path, 'r', encoding='utf-8') as f:
                         the_html_r = f.read()
                     if sb_config._saved_dashboard_pie:
+                        h_r_name = sb_config._html_report_name
+                        if "/" in h_r_name and h_r_name.endswith(".html"):
+                            h_r_name = h_r_name.split('/')[-1]
+                        elif "\\" in h_r_name and h_r_name.endswith(".html"):
+                            h_r_name = h_r_name.split('\\')[-1]
                         the_html_r = the_html_r.replace(
-                            "<h1>%s</h1>" % sb_config._html_report_name,
+                            "<h1>%s</h1>" % h_r_name,
                             sb_config._saved_dashboard_pie)
                         the_html_r = the_html_r.replace(
                             "</head>", '</head><link rel="shortcut icon" '

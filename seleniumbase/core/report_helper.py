@@ -53,15 +53,18 @@ def process_failures(test, test_count, browser_type, duration):
         file.write(test._last_page_screenshot)
     page_actions.save_test_failure_data(
         test.driver, bad_page_data, browser_type, folder=LATEST_REPORT_DIR)
-    exc_info = '(Unknown Failure)'
-    exception = sys.exc_info()[1]
-    if exception:
-        if hasattr(exception, 'msg'):
-            exc_info = exception.msg
-        elif hasattr(exception, 'message'):
-            exc_info = exception.message
-        else:
-            pass
+    exc_message = None
+    if sys.version_info[0] >= 3 and hasattr(test, '_outcome') and (
+            hasattr(test._outcome, 'errors') and test._outcome.errors):
+        try:
+            exc_message = test._outcome.errors[0][1][1]
+        except Exception:
+            exc_message = "(Unknown Exception)"
+    else:
+        try:
+            exc_message = sys.last_value
+        except Exception:
+            exc_message = "(Unknown Exception)"
     return(
         '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
             test_count,
@@ -73,7 +76,7 @@ def process_failures(test, test_count, browser_type, duration):
             get_timestamp()[:-3],
             duration,
             test.id(),
-            exc_info))
+            exc_message))
 
 
 def clear_out_old_report_logs(archive_past_runs=True, get_log_folder=False):

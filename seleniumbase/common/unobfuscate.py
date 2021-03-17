@@ -22,7 +22,7 @@ def main():
     try:
         while(1):
             code = input_method(
-                '\nEnter obfuscated/encrypted string: (CTRL-C to exit):\n')
+                '\nEnter obfuscated/encrypted string: (CTRL+C to exit):\n')
             print("\nHere is the unobfuscated string/password:")
             time.sleep(0.07)
             print(encryption.decrypt(code))

@@ -1,6 +1,6 @@
 [<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Console Scripts</h2>
+## Console Scripts
 
 SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
 
@@ -70,6 +70,27 @@ sample tests for helping new users get started,
 and Python boilerplates for setting up customized
 test frameworks.
 
+```bash
+.
+├── __init__.py
+├── boilerplates/
+│   ├── __init__.py
+│   ├── base_test_case.py
+│   ├── boilerplate_test.py
+│   ├── classic_obj_test.py
+│   ├── page_objects.py
+│   └── samples/
+│       ├── __init__.py
+│       ├── google_objects.py
+│       └── google_test.py
+├── my_first_test.py
+├── parameterized_test.py
+├── pytest.ini
+├── requirements.txt
+├── setup.cfg
+└── test_demo_site.py
+```
+
 ### mkfile
 
 * Usage:
@@ -116,9 +137,9 @@ is included.
 * Output:
 Creates a new presentation with 3 example slides.
 If the file already exists, an error is raised.
-By default, the slides are written in English.
-Slides use "serif" theme & "fade" transition.
-This code can be used as a base boilerplate.
+By default, the slides are written in English,
+and use "serif" theme with "slide" transition.
+The slides can be used as a basic boilerplate.
 
 ### print
 

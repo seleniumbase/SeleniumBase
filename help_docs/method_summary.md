@@ -2,9 +2,12 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Method Summary (API Reference)</h2>
 
-Here's a summary of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
+[<img src="https://seleniumbase.io/cdn/img/sb_api_youtube.png" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=_yNJlHnp2JA)
+<p>(<b><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA">Common API Methods on YouTube</a></b>)</p>
 
-For backwards compatibility, older versions of method names have remained to keep older scripts working. *(Ex: wait_for_element_visible was later shortened to wait_for_element and then to find_element. Also, add_text and send_keys are the same, etc.)*
+Here's a list of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
+
+For backwards compatibility, older versions of method names have remained to keep older scripts working. *(E.g: wait_for_element_visible was shortened to wait_for_element and then to find_element.)*
 
 ```python
 self.open(url)
@@ -56,6 +59,8 @@ self.go_forward()
 self.is_element_present(selector, by=By.CSS_SELECTOR)
 
 self.is_element_visible(selector, by=By.CSS_SELECTOR)
+
+self.is_element_enabled(selector, by=By.CSS_SELECTOR)
 
 self.is_text_visible(text, selector="html", by=By.CSS_SELECTOR)
 
@@ -300,11 +305,13 @@ self.save_data_as(data, file_name, destination_folder=None)
 
 self.get_downloads_folder()
 
-self.get_path_of_downloaded_file(file)
+self.get_browser_downloads_folder()
 
-self.is_downloaded_file_present(file)
+self.get_path_of_downloaded_file(file, browser=False)
 
-self.assert_downloaded_file(file, timeout=None)
+self.is_downloaded_file_present(file, browser=False)
+
+self.assert_downloaded_file(file, timeout=None, browser=False)
 
 self.assert_true(expr, msg=None)
 
@@ -321,6 +328,8 @@ self.assert_title(title)
 self.assert_no_js_errors()
 
 self.inspect_html()
+
+self.is_chromium()
 
 self.get_google_auth_password(totp_key=None)
 
@@ -396,19 +405,24 @@ self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
 ############
 
 self.create_pie_chart(chart_name=None, title=None, subtitle=None,
-                      data_name=None, unit=None, libs=True)
+                      data_name=None, unit=None, libs=True,
+                      labels=True, legend=True)
 
 self.create_bar_chart(chart_name=None, title=None, subtitle=None,
-                      data_name=None, unit=None, libs=True)
+                      data_name=None, unit=None, libs=True,
+                      labels=True, legend=True)
 
 self.create_column_chart(chart_name=None, title=None, subtitle=None,
-                         data_name=None, unit=None, libs=True)
+                         data_name=None, unit=None, libs=True,
+                         labels=True, legend=True)
 
 self.create_line_chart(chart_name=None, title=None, subtitle=None,
-                       data_name=None, unit=None, zero=False, libs=True)
+                       data_name=None, unit=None, zero=False, libs=True,
+                       labels=True, legend=True)
 
 self.create_area_chart(chart_name=None, title=None, subtitle=None,
-                       data_name=None, unit=None, zero=False, libs=True)
+                       data_name=None, unit=None, zero=False, libs=True,
+                       labels=True, legend=True)
 
 self.add_series_to_chart(data_name=None, chart_name=None)
 
@@ -456,9 +470,9 @@ self.set_messenger_theme(theme="default", location="default",
 
 ############
 
-self.generate_referral(start_page, destination_page)
+self.generate_referral(start_page, destination_page, selector=None)
 
-self.generate_traffic(start_page, destination_page, loops=1)
+self.generate_traffic(start_page, destination_page, loops=1, selector=None)
 
 self.generate_referral_chain(pages)
 

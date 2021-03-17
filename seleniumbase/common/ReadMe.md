@@ -40,7 +40,7 @@ Often in your tests, you may need to login to a website to perform testing. This
 ```bash
 python obfuscate.py
 
-Enter password to obfuscate: (CTRL-C to exit)
+Enter password to obfuscate: (CTRL+C to exit)
 Password: *********
 Verify password:
 Password: *********

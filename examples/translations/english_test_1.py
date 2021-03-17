@@ -8,7 +8,7 @@ class MyTestClass(BaseCase):
         self.open(url)
         self.type("input.search-input", "xkcd book\n")
         self.assert_text("xkcd: volume 0", "h3")
-        self.click("li.checkout-link")
+        self.click("li.checkout-link a")
         self.assert_text("Shopping Cart", "#page-title")
         self.assert_element("div#umbrella")
         self.open("https://xkcd.com/353/")

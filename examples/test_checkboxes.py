@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class CheckboxTests(BaseCase):
 
     def test_checkboxes_and_radio_buttons(self):
         self.open("https://www.w3schools.com/tags/tryit.asp"

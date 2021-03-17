@@ -8,7 +8,7 @@ jobs:
 
 - job: 'Test'
   pool:
-    vmImage: 'Ubuntu-18.04'
+    vmImage: 'Ubuntu-20.04'
   strategy:
     matrix:
       Python2.7:
@@ -37,16 +37,19 @@ jobs:
   - script: python -m pip install seleniumbase
     displayName: 'Verify install from PyPI'
 
-  - script: python -m pip install -r requirements.txt --upgrade
-    displayName: 'Install dependencies'
+  #- script: python -m pip install -r requirements.txt --upgrade
+  #  displayName: 'Install dependencies'
 
-  - script: python setup.py install
+  - script: python -m pip install -e .
     displayName: 'Install SeleniumBase'
 
   - script: |
       sudo apt install google-chrome-stable
-      sudo apt-get install firefox
-    displayName: 'Install Chrome and Firefox'
+    displayName: 'Install Chrome'
+
+  #- script: |
+  #    sudo apt-get install firefox
+  #  displayName: 'Install Firefox'
 
   - script: |
       seleniumbase
@@ -54,7 +57,7 @@ jobs:
     displayName: 'Check the console scripts interface'
 
   - script: |
-      seleniumbase install chromedriver latest
+      seleniumbase install chromedriver
     displayName: 'Install chromedriver'
 
   - script: |
@@ -62,14 +65,20 @@ jobs:
       pytest nothing.py
     displayName: 'Make sure pytest is working'
 
+  #- script: python -m pytest examples/unit_tests/verify_framework.py
+  #  displayName: 'Run pytest verify_framework.py'
+
   - script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     displayName: 'Run pytest boilerplate_test.py --browser=chrome --headless'
 
-  - script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
-    displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
+  #- script: python -m pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  #  displayName: 'Run pytest boilerplate_test.py --browser=firefox --headless'
 
-  - script: python -m pytest examples/test_demo_site.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
-    displayName: 'Run pytest test_demo_site.py --browser=chrome --headless'
+  #- script: python -m pytest examples/test_demo_site.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  #  displayName: 'Run pytest test_demo_site.py --browser=chrome --headless'
+
+  #- script: python -m pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
+  #  displayName: 'Run pytest my_first_test.py --browser=chrome --headless'
 
   #- script: python -m pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
   #  displayName: 'Run pytest test_inspect_html.py --browser=chrome --headless'

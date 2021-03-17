@@ -106,7 +106,7 @@ def main():
             subprocess.check_call(shell_command, shell=True)
         elif grid_hub_command == "stop":
             print("")
-            print("To stop the Grid Hub, use CTRL-C inside the server shell!")
+            print("To stop the Grid Hub, use CTRL+C inside the server shell!")
             print("")
         else:
             invalid_run_command()

@@ -3,11 +3,13 @@ from seleniumbase import BaseCase
 
 
 @pytest.mark.offline  # Can be run with: "pytest -m offline"
-class OfflineTestClass(BaseCase):
+class OfflineTests(BaseCase):
 
     def test_alerts(self):
+        if self.browser == "safari":
+            self.skip("This test doesn't run on Safari! (alert issues)")
         self.open("data:,")
-        self.execute_script('window.alert("ALERT!!!")')
+        self.execute_script('window.alert("ALERT!!!");')
         self.sleep(1)  # Not needed (Lets you see the alert pop up)
         self.accept_alert()
         self.sleep(1)  # Not needed (Lets you see the alert go away)

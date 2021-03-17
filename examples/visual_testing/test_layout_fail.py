@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class VisualLayoutFailureTest(BaseCase):
+class VisualLayoutFailureTests(BaseCase):
 
     def test_applitools_change(self):
         self.open('https://applitools.com/helloworld?diff1')
@@ -11,6 +11,7 @@ class VisualLayoutFailureTest(BaseCase):
         self.click('a[href="?diff1"]')
         # Click a button that makes a hidden element visible
         self.click("button")
+        print("(This test should fail)")
         self.check_window(name="helloworld", level=3)
 
     def test_python_home_change(self):
@@ -19,6 +20,7 @@ class VisualLayoutFailureTest(BaseCase):
         self.check_window(name="python_home", baseline=True)
         # Remove the "Donate" button
         self.remove_element('a.donate-button')
+        print("(This test should fail)")
         self.check_window(name="python_home", level=3)
 
     def test_xkcd_logo_change(self):
@@ -28,4 +30,5 @@ class VisualLayoutFailureTest(BaseCase):
         # Change height: (83 -> 110) , Change width: (185 -> 120)
         self.set_attribute('[alt="xkcd.com logo"]', "height", "110")
         self.set_attribute('[alt="xkcd.com logo"]', "width", "120")
+        print("(This test should fail)")
         self.check_window(name="xkcd_554", level=3)

@@ -1,8 +1,8 @@
 [<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> CLI Options</h2>
+# pytest CLI Options
 
-You can customize test runs from the command-line interface thanks to [SeleniumBase's pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py), which adds CLI options for setting/enabling the browser type, headless mode, mobile mode, multithreading mode, demo mode, proxy config, user agent config, browser extensions, and more.
+SeleniumBase's [pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) lets you customize test runs from the CLI (Command-Line Interface), which adds options for setting/enabling the browser type, headless mode, mobile mode, demo mode, multi-threading mode, reuse-session mode, proxy config, user agent config, browser extensions, report mode, and more.
 
 Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
@@ -116,8 +116,10 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
 --headed  # (Run tests with a GUI on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
+--interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
---archive-logs  # (Archive old log files instead of deleting them.)
+--archive-logs  #  (Archive existing log files instead of deleting them.)
+--archive-downloads  #  (Archive old downloads instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
@@ -280,7 +282,7 @@ pytest --dashboard --rs --headless
 python -m http.server 1948
 ```
 
-🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL+C`` to stop the http server.)
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 

@@ -56,11 +56,11 @@ def show_basic_usage():
     from seleniumbase.console_scripts import logo_helper
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
+    print("")
     time.sleep(0.25)  # Enough time to see the logo
-    print()
     show_package_location()
     show_version_info()
-    print()
+    print("")
     sc = ("")
     sc += (' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n')
     sc += (' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n')
@@ -116,12 +116,12 @@ def show_install_usage():
     print("           sbase install chromedriver")
     print("           sbase install geckodriver")
     print("           sbase install edgedriver")
-    print("           sbase install chromedriver 85")
-    print("           sbase install chromedriver 85.0.4183.87")
+    print("           sbase install chromedriver 88")
+    print("           sbase install chromedriver 88.0.4324.96")
     print("           sbase install chromedriver latest")
     print("           sbase install chromedriver -p")
     print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 85.0.564.68")
+    print("           sbase install edgedriver 88.0.705.74")
     print("  Output:")
     print("           Installs the chosen webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")
@@ -208,9 +208,9 @@ def show_mkpres_usage():
     print("  Output:")
     print("          Creates a new presentation with 3 example slides.")
     print("          If the file already exists, an error is raised.")
-    print("          By default, the slides are written in English.")
-    print('          Slides use "serif" theme & "fade" transition.')
-    print("          This code can be used as a base boilerplate.")
+    print("          By default, the slides are written in English,")
+    print('          and use "serif" theme with "slide" transition.')
+    print("          The slides can be used as a basic boilerplate.")
     print("")
 
 
@@ -542,9 +542,11 @@ def show_methods():
     sbm += ('*.get_new_driver(OPTIONS) => Open a new driver with OPTIONS.\n')
     sbm += ('*.switch_to_driver(driver) => Switch to the browser driver.\n')
     sbm += ('*.switch_to_default_driver() => Switch to the original driver.\n')
-    sbm += ('*.is_element_visible(selector) => Return True if item visible.\n')
-    sbm += ('*.is_text_visible(text) => Return True if text is visible.\n')
-    sbm += ('*.save_screenshot(name) => Save a screenshot in PNG format.\n')
+    sbm += ('*.wait_for_element(selector) => Wait until element is visible.\n')
+    sbm += ('*.is_element_visible(selector) => Return element visibility.\n')
+    sbm += ('*.is_text_visible(text, selector) => Return text visibility.\n')
+    sbm += ('*.sleep(seconds) => Do nothing for the given amount of time.\n')
+    sbm += ('*.save_screenshot(name) => Save a screenshot in .png format.\n')
     sbm += ('*.assert_element(selector) => Verify the element is visible.\n')
     sbm += ('*.assert_text(text, selector) => Verify text in the element.\n')
     sbm += ('*.assert_title(title) => Verify the title of the web page.\n')
@@ -556,7 +558,6 @@ def show_methods():
     sbm = sbm.replace('(', c3 + '(' + c4)
     sbm = sbm.replace(')', c3 + ')' + cr)
     print(sbm)
-    print("")
 
 
 def show_options():
@@ -570,48 +571,54 @@ def show_options():
     line = "Here are some common pytest options to use with SeleniumBase:"
     line = c1 + line + cr
     print(line)
-    print("")
-    print('--browser=BROWSER  (The web browser to use. Default: "chrome".)')
-    print('--headless  (Run tests headlessly. Default mode on Linux OS.)')
-    print('--demo  (Slow down and visually see test actions as they occur.)')
-    print('--slow  (Slow down the automation. Faster than using Demo Mode.)')
-    print('--reuse-session / --rs  (Reuse browser session between tests.)')
-    print('--crumbs  (Delete all cookies between tests reusing a session.)')
-    print('--maximize  (Start tests with the web browser window maximized.)')
-    print('--dashboard (Enable the SeleniumBase Dashboard at dashboard.html)')
-    print("--incognito  (Enable Chrome's Incognito mode.)")
-    print("--guest  (Enable Chrome's Guest mode.)")
-    print('-m MARKER  (Run tests with the specified pytest marker.)')
-    print('-n NUM  (Multithread the tests using that many threads.)')
-    print('-v  (Verbose mode. Prints the full names of each test run.)')
-    print('--html=report.html  (Create a detailed pytest-html report.)')
-    print('--collect-only / --co  (Only show discovered tests. No run.)')
-    print('--co -q  (Only show full names of discovered tests. No run.)')
-    print('--trace  (Enter Debug Mode immediately after starting any test.')
-    print('          n: Next line of method. s: Step through. c: Continue.)')
-    print('--pdb  (Enter Debug Mode if a test fails. h: Help. c: Continue.')
-    print('        where: Stacktrace location. u: Up stack. d: Down stack.')
-    print('        longlist / ll: See code. dir(): List namespace objects.)')
-    print('-x  (Stop running the tests after the first failure is reached.)')
-    print('--archive-logs  (Archive old log files instead of deleting them.)')
-    print('--save-screenshot  (Save a screenshot at the end of each test.)')
-    print('--check-js  (Check for JavaScript errors after page loads.)')
-    print('--start-page=URL  (The browser start page when tests begin.)')
-    print("--agent=STRING  (Modify the web browser's User-Agent string.)")
-    print('--mobile  (Use the mobile device emulator while running tests.)')
-    print('--metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)')
-    print('--ad-block  (Block some types of display ads after page loads.)')
-    print('--settings-file=FILE  (Override default SeleniumBase settings.)')
-    print('--env=ENV  (Set the test env. Access with "self.env" in tests.)')
-    print('--data=DATA  (Extra test data. Access with "self.data" in tests.)')
-    print('--disable-csp  (Disable the Content Security Policy of websites.)')
-    print('--server=SERVER  (The Selenium Grid server/IP used for tests.)')
-    print('--port=PORT  (The Selenium Grid port used by the test server.)')
-    print('--proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)')
-    print('--proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)')
-    print("")
+    line = '(Some options are Chromium-specific, e.g. "--guest --mobile")'
+    print(line)
+    op = "\n"
+    op += '--browser=BROWSER  (The web browser to use. Default: "chrome".)\n'
+    op += '--headless  (Run tests headlessly. Default mode on Linux OS.)\n'
+    op += '--demo  (Slow down and visually see test actions as they occur.)\n'
+    op += '--slow  (Slow down the automation. Faster than using Demo Mode.)\n'
+    op += '--reuse-session / --rs  (Reuse browser session between tests.)\n'
+    op += '--crumbs  (Delete all cookies between tests reusing a session.)\n'
+    op += '--maximize  (Start tests with the web browser window maximized.)\n'
+    op += "--dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
+    op += "--incognito  (Enable Chromium's Incognito mode.)\n"
+    op += "--guest  (Enable Chromium's Guest mode.)\n"
+    op += '-m=MARKER  (Run tests with the specified pytest marker.)\n'
+    op += '-n=NUM  (Multithread the tests using that many threads.)\n'
+    op += '-v  (Verbose mode. Prints the full names of each test run.)\n'
+    op += '--html=report.html  (Create a detailed pytest-html report.)\n'
+    op += '--collect-only / --co  (Only show discovered tests. No run.)\n'
+    op += '--co -q  (Only show full names of discovered tests. No run.)\n'
+    op += '--trace  (Enter Debug Mode immediately after starting any test.\n'
+    op += '          n: Next line of method. s: Step through. c: Continue.)\n'
+    op += '--pdb  (Enter Debug Mode if a test fails. h: Help. c: Continue.\n'
+    op += '        where: Stacktrace location. u: Up stack. d: Down stack.\n'
+    op += '        longlist / ll: See code. dir(): List namespace objects.)\n'
+    op += '-x  (Stop running the tests after the first failure is reached.)\n'
+    op += '--archive-logs  (Archive old log files instead of deleting them.)\n'
+    op += '--save-screenshot  (Save a screenshot at the end of each test.)\n'
+    op += '--check-js  (Check for JavaScript errors after page loads.)\n'
+    op += '--start-page=URL  (The browser start page when tests begin.)\n'
+    op += "--agent=STRING  (Modify the web browser's User-Agent string.)\n"
+    op += "--mobile  (Use Chromium's mobile device emulator during tests.)\n"
+    op += '--metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)\n'
+    op += '--ad-block  (Block some types of display ads after page loads.)\n'
+    op += '--settings-file=FILE  (Override default SeleniumBase settings.)\n'
+    op += '--env=ENV  (Set the test env. Access with "self.env" in tests.)\n'
+    op += '--data=DATA  (Extra test data. Access with "self.data" in tests.)\n'
+    op += '--disable-csp  (Disable the Content Security Policy of websites.)\n'
+    op += '--server=SERVER  (The Selenium Grid server/IP used for tests.)\n'
+    op += '--port=PORT  (The Selenium Grid port used by the test server.)\n'
+    op += '--proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n'
+    op += '--proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)\n'
+    op += cr
+    op = op.replace("\n-", "\n" + c1 + "-").replace('  (', cr + '  (')
+    op = op.replace(" / -", cr + " / " + c1 + "-")
+    op = op.replace("=", c2 + "=" + c3)
+    print(op)
     line = 'For the full list of ' + c2 + 'command-line options' + cr
-    line += ', type: "' + c1 + 'pytest' + cr + ' ' + c3 + '--help' + cr + '".'
+    line += ', type: "' + c3 + 'pytest' + cr + ' ' + c1 + '--help' + cr + '".'
     print(line)
     print("")
 
@@ -791,10 +798,10 @@ def main():
             from seleniumbase.console_scripts import logo_helper
             seleniumbase_logo = logo_helper.get_seleniumbase_logo()
             print(seleniumbase_logo)
-            print()
+            print("")
             show_package_location()
             show_version_info()
-            print()
+            print("")
         else:
             show_basic_usage()
     elif command == "methods" or command == "--methods":

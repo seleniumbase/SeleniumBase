@@ -6,21 +6,22 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="280" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="500" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
+<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=00a0c0" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
 <p align="center">
-<b>Build fast, reliable, end-to-end tests.</b>
+<b>End-to-end testing for the next generation.</b>
 </p>
 
 <!-- View on GitHub -->
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
 <p>
-SeleniumBase is a Python framework for web automation, end-to-end testing, and more.
+SeleniumBase is a Python framework for fast and reliable web automation and testing.
 Tests are run with "pytest". Browsers are controlled by WebDriver.
 </p>
 
@@ -28,13 +29,13 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🗂️ Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ CLI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📗 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📋 Reports</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔡 Syntax Formats</a> |
@@ -46,13 +47,12 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📑 Presenter</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📈 ChartMaker</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 ChartMaker</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-✅ Get set up in minutes. Deploy anywhere.<br />
-✅ Build Web-UI tests with a [complete API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).<br />
-✅ Generate [test reports and dashboards](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
+✅ Fast setup: All you need is [Python](https://www.python.org/downloads/)! 🐍<br />
+✅ Includes [reporting & dashboard tools](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
 
 --------
 
@@ -358,8 +358,10 @@ The code above will leave your browser window open in case there's a failure. (i
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
 --headed  # (Run tests with a GUI on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
+--interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
---archive-logs  # (Archive old log files instead of deleting them.)
+--archive-logs  #  (Archive existing log files instead of deleting them.)
+--archive-downloads  #  (Archive old downloads instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
@@ -429,6 +431,7 @@ ui_tests/
 │   ├── __init__.py
 │   ├── base_test_case.py
 │   ├── boilerplate_test.py
+│   ├── classic_obj_test.py
 │   ├── page_objects.py
 │   └── samples/
 │       ├── __init__.py
@@ -503,7 +506,7 @@ pytest --dashboard --rs --headless
 python -m http.server 1948
 ```
 
-🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL+C`` to stop the http server.)
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 

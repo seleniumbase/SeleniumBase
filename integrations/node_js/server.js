@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const exec = require('child_process').exec;
-var server_info = '\nServer running at http://127.0.0.1:3000/  (CTRL-C to stop)';
+var server_info = '\nServer running at http://127.0.0.1:3000/  (CTRL+C to stop)';
 
 function run_command(command) {
     console.log("\n" + command);

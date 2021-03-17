@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class PythonVirtualEnvPresentation(BaseCase):
+class PythonVirtualEnvs(BaseCase):
 
     def test_py_virtual_envs(self):
         self.create_presentation(theme="serif", transition="slide")

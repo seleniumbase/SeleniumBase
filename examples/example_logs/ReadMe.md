@@ -1,14 +1,15 @@
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logging, Dashboards, and Reports:</h3>
 
-(Log files in [SeleniumBase/examples/example_logs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed.)
+[<img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=XpuJCjJhJwQ)
+<p>(<b><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ">SBase Dashboard Tutorial on YouTube</a></b>)</p>
 
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
 ```bash
-pytest test_fail.py --browser=chrome
-
-nosetests test_fail.py --browser=firefox
+pytest test_fail.py
 ```
+
+(Log files in [SeleniumBase/examples/example_logs](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/example_logs) were generated when [test_fail.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py) ran and failed.)
 
 <b>Examples of expected log files generated during failures:</b>
 <ul>
@@ -37,7 +38,7 @@ pytest --dashboard --rs --headless
 python -m http.server 1948
 ```
 
-🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL-C`` to stop the http server.)
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL+C`` to stop the http server.)
 
 🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
 
@@ -81,10 +82,10 @@ pytest test_suite.py --junit-xml=report.xml
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Nosetest Reports:</h3>
 
-The ``--report`` option gives you a fancy report after your test suite completes.
+The ``nosetests`` ``--report`` option gives you a fancy report after your tests complete.
 
 ```bash
-nosetests test_suite.py --report --browser=chrome
+nosetests test_suite.py --report
 ```
 
 <img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />

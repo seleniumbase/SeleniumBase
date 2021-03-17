@@ -1,5 +1,5 @@
 # Project information
-site_name: SeleniumBase
+site_name: SeleniumBase Docs
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
 site_description: A complete framework for end-to-end testing with Python, pytest, and WebDriver.
@@ -39,13 +39,13 @@ theme:
   static_templates:
     - 404.html
   features:
-    # - search.highlight
-    # - toc.integrate
+    - search.highlight
+    - toc.integrate
     - navigation.indexes
     # - navigation.sections
     # - navigation.expand
     # - navigation.tabs
-    - navigation.instant
+    # - navigation.instant
   palette:
     scheme: default
     primary: blue
@@ -58,9 +58,12 @@ theme:
 # Plugins
 plugins:
   - search:
-      separator: '[\s\-]+'
-      prebuild_index: true
+      separator: '[\s]+'
+      prebuild_index: false
       lang: en
+  - exclude-search:
+      exclude:
+        - chinese.md
   - minify:
       minify_html: true
   - mkdocs-simple-hooks:
@@ -68,7 +71,7 @@ plugins:
         on_pre_build: docs.prepare:main
 # Page tree
 nav:
-  - SeleniumBase / ReadMe: README.md
+  - SeleniumBase ReadMe: README.md
   - Features List: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
@@ -115,7 +118,7 @@ nav:
     - MySQL Instructions: help_docs/mysql_installation.md
   - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
-    - TinyMCE Demo Page: https://seleniumbase.io/other/tinymce
+    - TinyMCE Demo Page: https://seleniumbase.io/tinymce/
     - Virtual Device Farm: https://seleniumbase.io/devices/
     - Error Demo Page: https://seleniumbase.io/error_page/
   - Presentations:

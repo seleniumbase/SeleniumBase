@@ -5,9 +5,12 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
 
-    def login_to_swag_labs(self, username="standard_user"):
+    def login_to_swag_labs(self, username="standard_user", v1=False):
         """ Login to Swag Labs and verify success. """
-        self.open("https://www.saucedemo.com/")
+        url = "https://www.saucedemo.com"
+        if v1:
+            url += "/v1"
+        self.open(url)
         if username not in self.get_text("#login_credentials"):
             self.fail("Invalid user for login: %s" % username)
         self.type("#user-name", username)
@@ -21,10 +24,12 @@ class SwagLabsTests(BaseCase):
         ["problem_user"],
     ])
     @pytest.mark.run(order=1)
-    def test_swag_labs_basic_functional_flow(self, username):
+    def test_swag_labs_basic_flow(self, username):
         """ This test checks functional flow of the Swag Labs store.
-            This test is parameterized, and receives the user for login. """
+            This test is parameterized on the login user. """
         self.login_to_swag_labs(username=username)
+        if username == "problem_user":
+            print("\n(This test should fail)")
 
         # Verify that the "Test.allTheThings() T-Shirt" appears on the page
         item_name = "Test.allTheThings() T-Shirt"
@@ -56,7 +61,7 @@ class SwagLabsTests(BaseCase):
 
         # Checkout - Add info
         self.click("link=CHECKOUT")
-        self.assert_exact_text("Checkout: Your Information", "div.subheader")
+        self.assert_text("Checkout: Your Information", "div.subheader")
         self.assert_element("a.cart_cancel_link")
         self.type("#first-name", "SeleniumBase")
         self.type("#last-name", "Rocks")
@@ -64,7 +69,7 @@ class SwagLabsTests(BaseCase):
 
         # Checkout - Overview
         self.click("input.btn_primary")
-        self.assert_exact_text("Checkout: Overview", "div.subheader")
+        self.assert_text("Checkout: Overview", "div.subheader")
         self.assert_element("link=CANCEL")
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_text(item_price, "div.inventory_item_price")
@@ -84,8 +89,25 @@ class SwagLabsTests(BaseCase):
         ["problem_user"],
     ])
     @pytest.mark.run(order=2)
-    def test_swag_labs_products_page_resource_verification(self, username):
-        """ This test checks for 404 errors on the Swag Labs products page.
-            This test is parameterized, and receives the user for login. """
-        self.login_to_swag_labs(username=username)
+    def test_swag_labs_products_page_links(self, username):
+        """ This test checks for 404s on the Swag Labs products page.
+            This test is parameterized on the login user. """
+        self.login_to_swag_labs(username=username, v1=True)
+        if username == "problem_user":
+            print("\n(This test should fail)")
         self.assert_no_404_errors()
+
+    @parameterized.expand([
+        ["standard_user"],
+        ["problem_user"],
+    ])
+    @pytest.mark.run(order=3)
+    def test_swag_labs_visual_regressions(self, username):
+        """ This test checks for visual regressions on the Swag Labs page.
+            This test is parameterized on the login user. """
+        self.login_to_swag_labs(username="standard_user")
+        if username == "problem_user":
+            print("\n(This test should fail)")
+        self.check_window(baseline=True)
+        self.login_to_swag_labs(username=username)
+        self.check_window(level=3)

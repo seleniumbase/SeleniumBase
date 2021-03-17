@@ -73,6 +73,23 @@ def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
+def is_element_enabled(driver, selector, by=By.CSS_SELECTOR):
+    """
+    Returns whether the specified element selector is enabled on the page.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    @Returns
+    Boolean (is element enabled)
+    """
+    try:
+        element = driver.find_element(by=by, value=selector)
+        return element.is_enabled()
+    except Exception:
+        return False
+
+
 def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
     """
     Returns whether the specified text is visible in the specified selector.

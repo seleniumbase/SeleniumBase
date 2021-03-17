@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class LocaleTestClass(BaseCase):
+class LocaleTests(BaseCase):
 
     def test_get_locale_code(self):
         self.open("data:,")

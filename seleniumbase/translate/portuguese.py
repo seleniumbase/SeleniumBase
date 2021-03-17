@@ -41,7 +41,7 @@ class CasoDeTeste(BaseCase):
         # update_text(selector, text)
         return self.update_text(*args, **kwargs)
 
-    def tipo(self, *args, **kwargs):
+    def digitar(self, *args, **kwargs):
         # type(selector, text)  # Same as update_text()
         return self.type(*args, **kwargs)
 
@@ -137,6 +137,10 @@ class CasoDeTeste(BaseCase):
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def o_elemento_está_habilitado(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def o_elemento_está_presente(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -189,7 +193,7 @@ class CasoDeTeste(BaseCase):
         # js_update_text(selector, text)
         return self.js_update_text(*args, **kwargs)
 
-    def js_tipo(self, *args, **kwargs):
+    def js_digitar(self, *args, **kwargs):
         # js_type(selector, text)
         return self.js_type(*args, **kwargs)
 

@@ -21,14 +21,15 @@ class MyTourClass(BaseCase):
         self.play_tour()
 
         self.highlight_update_text('input[title="Search"]', "GitHub\n")
+        self.ad_block()
         self.wait_for_element("#search")
 
         self.create_introjs_tour()
-        self.add_tour_step("See Results Here!", title="(5-second autoplay)")
+        self.add_tour_step("3-second autoplay...")
         self.add_tour_step("Here's the next tour:")
-        self.play_tour(interval=5)  # Tour automatically continues after 5 sec
+        self.play_tour(interval=3)  # Tour automatically continues after 3 sec
 
-        self.open("https://www.google.com/maps/@42.3598616,-71.0912631,15z")
+        self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
         self.wait_for_element("#searchboxinput", timeout=20)
         self.wait_for_element("#minimap", timeout=20)
         self.wait_for_element("#zoom", timeout=20)
