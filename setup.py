@@ -186,7 +186,7 @@ setup(
         'rich==9.13.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
-        'allure-pytest==2.8.36'
+        'allure-pytest==2.8.36;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5"',
     ],
