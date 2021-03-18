@@ -1865,6 +1865,9 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         if switch_to:
             self.switch_to_window(len(self.driver.window_handles) - 1)
+            time.sleep(0.01)
+            if self.browser == "safari":
+                self.wait_for_ready_state_complete()
 
     def switch_to_window(self, window, timeout=None):
         self.__check_scope()
