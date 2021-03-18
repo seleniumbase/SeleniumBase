@@ -13,12 +13,12 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 88.0.4324.96
-        sbase install chromedriver 88
+        sbase install chromedriver 89.0.4389.23
+        sbase install chromedriver 89
         sbase install chromedriver latest
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 88.0.705.63
+        sbase install edgedriver 89.0.774.54
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -43,8 +43,8 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.29.0"
-DEFAULT_EDGEDRIVER_VERSION = "88.0.705.63"  # (Looks for LATEST_STABLE first)
-DEFAULT_OPERADRIVER_VERSION = "v.84.0.4147.89"
+DEFAULT_EDGEDRIVER_VERSION = "89.0.774.54"  # (Looks for LATEST_STABLE first)
+DEFAULT_OPERADRIVER_VERSION = "v.88.0.4324.104"
 
 
 def invalid_run_command():
@@ -61,7 +61,8 @@ def invalid_run_command():
     exp += "  Example:\n"
     exp += "          seleniumbase install chromedriver\n"
     exp += "          seleniumbase install geckodriver\n"
-    exp += "          seleniumbase install chromedriver 76.0.3809.126\n"
+    exp += "          seleniumbase install chromedriver 89\n"
+    exp += "          seleniumbase install chromedriver 89.0.4389.23\n"
     exp += "          seleniumbase install chromedriver latest\n"
     exp += "          seleniumbase install chromedriver -p\n"
     exp += "          seleniumbase install chromedriver latest -p\n"
