@@ -6925,6 +6925,12 @@ class BaseCase(unittest.TestCase):
                     url = self.get_current_url()
                     if url is not None:
                         has_url = True
+                    if (len(self.driver.window_handles) > 1):
+                        while (len(self.driver.window_handles) > 1):
+                            self.switch_to_window(
+                                len(self.driver.window_handles) - 1)
+                            self.driver.close()
+                        self.switch_to_window(0)
                     if self._crumbs:
                         self.driver.delete_all_cookies()
                 except Exception:
