@@ -565,6 +565,14 @@ nosetests test_suite.py --report
 
 See: [https://docs.qameta.io/allure/](https://docs.qameta.io/allure/#_pytest)
 
+SeleniumBase no longer includes ``allure-pytest`` as part of installed dependencies. If you want to use it, install it first:
+
+```bash
+pip install allure-pytest
+```
+
+Now your tests can create Allure results files, which can be processed by Allure Reports.
+
 ```bash
 pytest test_suite.py --alluredir=allure_results
 ```
