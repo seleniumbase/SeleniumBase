@@ -634,10 +634,15 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     driver.execute_script(script)
     time.sleep(0.0181)
 
-    post_messenger_success_message(driver, message, msg_dur)
+    try:
+        activate_jquery(driver)
+        post_messenger_success_message(driver, message, msg_dur)
+    except Exception:
+        pass
 
-    script = ("""document.querySelector('%s').style.boxShadow =
-              '%s';""" % (selector, o_bs))
+    script = (
+        """document.querySelector('%s').style.boxShadow = '%s';""" % (
+            selector, o_bs))
     driver.execute_script(script)
 
 
@@ -668,7 +673,11 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
     driver.execute_script(script)
     time.sleep(0.0181)
 
-    post_messenger_success_message(driver, message, msg_dur)
+    try:
+        activate_jquery(driver)
+        post_messenger_success_message(driver, message, msg_dur)
+    except Exception:
+        pass
 
     script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
     driver.execute_script(script)

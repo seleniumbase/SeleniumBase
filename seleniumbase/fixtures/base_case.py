@@ -1865,6 +1865,9 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         if switch_to:
             self.switch_to_window(len(self.driver.window_handles) - 1)
+            time.sleep(0.01)
+            if self.browser == "safari":
+                self.wait_for_ready_state_complete()
 
     def switch_to_window(self, window, timeout=None):
         self.__check_scope()
@@ -3149,6 +3152,7 @@ class BaseCase(unittest.TestCase):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         downloaded_file_path = self.get_path_of_downloaded_file(file, browser)
+        found = False
         for x in range(int(timeout)):
             shared_utils.check_if_time_limit_exceeded()
             try:
@@ -3156,17 +3160,14 @@ class BaseCase(unittest.TestCase):
                     os.path.exists(downloaded_file_path),
                     "File [%s] was not found in the downloads folder [%s]!"
                     "" % (file, self.get_downloads_folder()))
-                if self.demo_mode:
-                    messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
-                    js_utils.post_messenger_success_message(
-                        self.driver, messenger_post, self.message_duration)
-                return
+                found = True
+                break
             except Exception:
                 now_ms = time.time() * 1000.0
                 if now_ms >= stop_ms:
                     break
                 time.sleep(1)
-        if not os.path.exists(downloaded_file_path):
+        if not found and not os.path.exists(downloaded_file_path):
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
@@ -3174,8 +3175,12 @@ class BaseCase(unittest.TestCase):
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.demo_mode:
             messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration)
+            except Exception:
+                pass
 
     def assert_true(self, expr, msg=None):
         """ Asserts that the expression is True.
@@ -6920,6 +6925,12 @@ class BaseCase(unittest.TestCase):
                     url = self.get_current_url()
                     if url is not None:
                         has_url = True
+                    if (len(self.driver.window_handles) > 1):
+                        while (len(self.driver.window_handles) > 1):
+                            self.switch_to_window(
+                                len(self.driver.window_handles) - 1)
+                            self.driver.close()
+                        self.switch_to_window(0)
                     if self._crumbs:
                         self.driver.delete_all_cookies()
                 except Exception:
