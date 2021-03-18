@@ -3152,6 +3152,7 @@ class BaseCase(unittest.TestCase):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (timeout * 1000.0)
         downloaded_file_path = self.get_path_of_downloaded_file(file, browser)
+        found = False
         for x in range(int(timeout)):
             shared_utils.check_if_time_limit_exceeded()
             try:
@@ -3159,17 +3160,14 @@ class BaseCase(unittest.TestCase):
                     os.path.exists(downloaded_file_path),
                     "File [%s] was not found in the downloads folder [%s]!"
                     "" % (file, self.get_downloads_folder()))
-                if self.demo_mode:
-                    messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
-                    js_utils.post_messenger_success_message(
-                        self.driver, messenger_post, self.message_duration)
-                return
+                found = True
+                break
             except Exception:
                 now_ms = time.time() * 1000.0
                 if now_ms >= stop_ms:
                     break
                 time.sleep(1)
-        if not os.path.exists(downloaded_file_path):
+        if not found and not os.path.exists(downloaded_file_path):
             message = (
                 "File {%s} was not found in the downloads folder {%s} "
                 "after %s seconds! (Or the download didn't complete!)"
