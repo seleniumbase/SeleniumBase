@@ -3174,8 +3174,12 @@ class BaseCase(unittest.TestCase):
             page_actions.timeout_exception("NoSuchFileException", message)
         if self.demo_mode:
             messenger_post = ("ASSERT DOWNLOADED FILE: [%s]" % file)
-            js_utils.post_messenger_success_message(
-                self.driver, messenger_post, self.message_duration)
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration)
+            except Exception:
+                pass
 
     def assert_true(self, expr, msg=None):
         """ Asserts that the expression is True.
