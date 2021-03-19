@@ -132,7 +132,7 @@ class ObjTests(BaseCase):
         DataPage().add_input_text(self, "Goodbye!")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/classic_obj_test.py">examples/test_demo_site.py</a> for the full test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/classic_obj_test.py">examples/boilerplates/classic_obj_test.py</a> for the full test.)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 6. The classic Page Object Model with the <code>sb</code> pytest fixture</h3>
 
@@ -155,7 +155,7 @@ class ObjTests():
         DataPage().add_input_text(sb, "Goodbye!")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/sb_fixture_test.py">examples/test_demo_site.py</a> for the full test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/sb_fixture_test.py">examples/boilerplates/sb_fixture_test.py</a> for the full test.)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 7. Using the <code>request</code> fixture to get the <code>sb</code> fixture (no class)</h3>
 
