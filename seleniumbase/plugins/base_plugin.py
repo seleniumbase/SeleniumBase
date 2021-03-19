@@ -6,6 +6,7 @@ import time
 from nose.plugins import Plugin
 from nose.exc import SkipTest
 from seleniumbase.config import settings
+from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.core import report_helper
 from seleniumbase.fixtures import constants, errors
@@ -143,6 +144,7 @@ class Base(Plugin):
         log_path = 'latest_logs/'
         archive_logs = options.archive_logs
         log_helper.log_folder_setup(log_path, archive_logs)
+        download_helper.reset_downloads_folder()
         if self.report_on:
             report_helper.clear_out_old_report_logs(archive_past_runs=False)
 

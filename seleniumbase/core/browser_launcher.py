@@ -521,7 +521,6 @@ def get_remote_driver(
         user_data_dir, extension_zip, extension_dir, test_id,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
-    download_helper.reset_downloads_folder()
     address = "http://%s:%s/wd/hub" % (servername, port)
     desired_caps = {}
     extra_caps = {}
@@ -686,7 +685,6 @@ def get_local_driver(
     Can also be used to spin up additional browsers for the same test.
     '''
     downloads_path = download_helper.get_downloads_folder()
-    download_helper.reset_downloads_folder()
 
     if browser_name == constants.Browser.FIREFOX:
         try:
