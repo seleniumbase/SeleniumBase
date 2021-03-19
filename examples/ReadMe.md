@@ -9,7 +9,7 @@
 * Chrome is the default browser if not specified.
 * Example tests are located in: <b>[SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)</b>.
 * During test failures, logs and screenshots from the latest test run are saved to the ``latest_logs/`` folder.
-* Tests can be structured using [15 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
+* Tests can be structured using [17 unique syntax formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md).
 
 (NOTE: Some example tests fail on purpose to demonstrate [logging features](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).)
 

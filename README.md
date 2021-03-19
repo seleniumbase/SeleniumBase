@@ -6,12 +6,12 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="500" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/sb_logo_gs.png" alt="SeleniumBase" title="SeleniumBase" width="450" /></a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=00a0c0" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
+<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=0090c0" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
 <p align="center">
-<b>End-to-end testing for the next generation.</b>
+<b>A complete end-to-end testing experience.</b>
 </p>
 
 <!-- View on GitHub -->
@@ -21,15 +21,16 @@
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
 <p>
-SeleniumBase is a Python framework for fast and reliable web automation and testing.
-Tests are run with "pytest". Browsers are controlled by WebDriver.
+SeleniumBase is an all-in-one Python framework for automated browser testing.
+Tests are run with "pytest", and use WebDriver APIs for web-page interaction.
 </p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🗂️ Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ CLI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a>
+<br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a>
@@ -37,22 +38,25 @@ Tests are run with "pytest". Browsers are controlled by WebDriver.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📗 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📋 Reports</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Scripts</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔡 Syntax Formats</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid Hub</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
+<br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔡 SyntaxFormats</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 GridHub</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translate</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a>
+<br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📑 Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 ChartMaker</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-✅ Fast setup: All you need is [Python](https://www.python.org/downloads/)! 🐍<br />
-✅ Includes [reporting & dashboard tools](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).<br />
+✅ Simple setup steps with [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/).<br />
+✅ Chrome/Edge/Firefox/IE/Opera/Safari.<br />
+✅ Includes [reporting and dashboard tools](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 
 --------
 
@@ -63,6 +67,29 @@ pytest my_first_test.py --demo
 ```
 
 <p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+
+```python
+from seleniumbase import BaseCase
+
+class MyTestClass(BaseCase):
+
+    def test_basics(self):
+        url = "https://store.xkcd.com/collections/posters"
+        self.open(url)
+        self.type('input[name="q"]', "xkcd book")
+        self.click('input[value="Search"]')
+        self.assert_text("xkcd: volume 0", "h3")
+        self.open("https://xkcd.com/353/")
+        self.assert_title("xkcd: Python")
+        self.assert_element('img[alt="Python"]')
+        self.click('a[rel="license"]')
+        self.assert_text("free to copy and reuse")
+        self.go_back()
+        self.click_link("About")
+        self.assert_exact_text("xkcd.com", "h2")
+```
+
+--------
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Python Setup:</h2>
@@ -182,32 +209,9 @@ pytest my_first_test.py --demo
 
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a>
 
-<b>Here's the code for [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py):</b>
-
-```python
-from seleniumbase import BaseCase
-
-class MyTestClass(BaseCase):
-
-    def test_basics(self):
-        url = "https://store.xkcd.com/collections/posters"
-        self.open(url)
-        self.type('input[name="q"]', "xkcd book")
-        self.click('input[value="Search"]')
-        self.assert_text("xkcd: volume 0", "h3")
-        self.open("https://xkcd.com/353/")
-        self.assert_title("xkcd: Python")
-        self.assert_element('img[alt="Python"]')
-        self.click('a[rel="license"]')
-        self.assert_text("free to copy and reuse")
-        self.go_back()
-        self.click_link("About")
-        self.assert_exact_text("xkcd.com", "h2")
-```
-
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
-* Here are some common ``SeleniumBase`` methods you might find in tests:
+* Here are some common ``SeleniumBase`` methods that you might find in tests:
 
 ```python
 self.open(URL)  # Navigate to the web page
@@ -426,23 +430,28 @@ sbase mkdir ui_tests
 
 ```bash
 ui_tests/
+│
 ├── __init__.py
-├── boilerplates/
-│   ├── __init__.py
-│   ├── base_test_case.py
-│   ├── boilerplate_test.py
-│   ├── classic_obj_test.py
-│   ├── page_objects.py
-│   └── samples/
-│       ├── __init__.py
-│       ├── google_objects.py
-│       └── google_test.py
 ├── my_first_test.py
 ├── parameterized_test.py
 ├── pytest.ini
 ├── requirements.txt
 ├── setup.cfg
-└── test_demo_site.py
+├── test_demo_site.py
+└── boilerplates/
+    │
+    ├── __init__.py
+    ├── base_test_case.py
+    ├── boilerplate_test.py
+    ├── classic_obj_test.py
+    ├── page_objects.py
+    ├── sb_fixture_test.py
+    └── samples/
+        │
+        ├── __init__.py
+        ├── google_objects.py
+        ├── google_test.py
+        └── swag_labs_test.py
 ```
 
 <b>ProTip™:</b> You can also create a boilerplate folder without any sample tests in it by adding ``-b`` or ``--basic`` to the ``sbase mkdir`` command:
@@ -455,6 +464,7 @@ sbase mkdir ui_tests --basic
 
 ```bash
 ui_tests/
+│
 ├── __init__.py
 ├── pytest.ini
 ├── requirements.txt
@@ -790,22 +800,24 @@ is_text_visible(text, selector)  # is text visible on a page
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
     selector = "div.superbowl_%s div.commercials div.transcript div.picard" % superbowl_year
-    if self.is_text_visible("For the Love of Marketing and Earl Grey Tea!", selector):
-        return "Picard HubSpot Superbowl Ad 2015"
+    if self.is_text_visible("Yes, it was I who summoned you all here.", selector):
+        return "Picard Paramount+ Superbowl Ad 2020"
+    elif self.is_text_visible("For the Love of Marketing and Earl Grey Tea!", selector):
+        return "Picard Mirror Universe HubSpot Superbowl Ad 2015"
     elif self.is_text_visible("Delivery Drones... Engage", selector):
-        return "Picard Amazon Superbowl Ad 2015"
+        return "Picard Mirror Universe Amazon Superbowl Ad 2015"
     elif self.is_text_visible("Bing it on Screen!", selector):
-        return "Picard Microsoft Superbowl Ad 2015"
+        return "Picard Mirror Universe Microsoft Superbowl Ad 2015"
     elif self.is_text_visible("OK Glass, Make it So!", selector):
-        return "Picard Google Superbowl Ad 2015"
+        return "Picard Mirror Universe Google Superbowl Ad 2015"
     elif self.is_text_visible("Number One, I've Never Seen Anything Like It.", selector):
-        return "Picard Tesla Superbowl Ad 2015"
+        return "Picard Mirror Universe Tesla Superbowl Ad 2015"
     elif self.is_text_visible("""With the first link, the chain is forged.
                               The first speech censored, the first thought forbidden,
                               the first freedom denied, chains us all irrevocably.""", selector):
-        return "Picard Wikimedia Superbowl Ad 2015"
+        return "Picard Mirror Universe Wikimedia Superbowl Ad 2015"
     elif self.is_text_visible("Let us make sure history never forgets the name ... Facebook", selector):
-        return "Picard Facebook Superbowl Ad 2015"
+        return "Picard Mirror Universe Facebook Superbowl Ad 2015"
     else:
         raise Exception("Reports of my assimilation are greatly exaggerated.")
 ```

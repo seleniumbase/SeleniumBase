@@ -9,6 +9,7 @@ import sys
 import time
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
@@ -762,6 +763,7 @@ def pytest_configure(config):
 
     if sb_config.with_testing_base:
         log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
+    download_helper.reset_downloads_folder()
     proxy_helper.remove_proxy_zip_if_present()
 
 

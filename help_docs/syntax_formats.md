@@ -1,15 +1,15 @@
 <h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" title="SeleniumBase" width="360" /></a></h3>
 
 <a id="syntax_formats"></a>
-<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 15 syntax formats</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 17 syntax formats</h2>
 
 <p>(<b><a href="https://youtu.be/VvwtS9_1m0s">Watch this tutorial on YouTube</a></b>)</p>
 
-[<img src="http://img.youtube.com/vi/VvwtS9_1m0s/mq1.jpg" title="15 SeleniumBase syntax formats" width="270">](https://youtu.be/VvwtS9_1m0s)
+[<img src="http://img.youtube.com/vi/VvwtS9_1m0s/mq1.jpg" title="17 SeleniumBase syntax formats" width="270">](https://youtu.be/VvwtS9_1m0s)
 
 --------
 
-<b>SeleniumBase</b> supports 15 different syntax formats for structuring tests. (<i>The first 4 are the most common.</i>)
+<b>SeleniumBase</b> supports 17 different syntax formats for structuring tests. (<i>The first 6 are the most common.</i>)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 1. <code>BaseCase</code> direct inheritance</h3>
 
@@ -19,6 +19,7 @@ This format is used by most of the examples in the <a href="https://github.com/s
 from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
+
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page")
         self.type("#myTextInput", "This is Automated")
@@ -67,8 +68,8 @@ class BaseTestCase(BaseCase):
         # <<< Placeholder. Add your code here. >>>
         pass
 
-
 class MyTests(BaseTestCase):
+
     def test_example(self):
         self.login()
         self.example_method()
@@ -108,7 +109,55 @@ class Test_SB_Fixture():
 
 (See the bottom of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_sb_fixture.py">examples/test_sb_fixture.py</a> for the test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 5. Using the <code>request</code> fixture to get the <code>sb</code> fixture (no class)</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 5. The classic Page Object Model with <code>BaseCase</code> inheritance</h3>
+
+With SeleniumBase, you can use Page Objects to break out code from tests, but remember, the <code>self</code> variable (from test methods that inherit <code>BaseCase</code>) contains the driver and all other framework-specific variable definitions. Therefore, that <code>self</code> must be passed as an arg into any outside class method in order to call SeleniumBase methods from there. In the example below, the <code>self</code> variable from the test method is passed into the <code>sb</code> arg of the Page Object class method because the <code>self</code> arg of the Page Object class method is already being used for its own class. Every Python class method definition must include the <code>self</code> as the first arg.
+
+```python
+from seleniumbase import BaseCase
+
+class DataPage():
+
+    def go_to_data_url(self, sb):
+        sb.open("data:text/html,<p>Hello!</p><input />")
+
+    def add_input_text(self, sb, text):
+        sb.type("input", text)
+
+class ObjTests(BaseCase):
+
+    def test_data_url_page(self):
+        DataPage().go_to_data_url(self)
+        self.assert_text("Hello!", "p")
+        DataPage().add_input_text(self, "Goodbye!")
+```
+
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/classic_obj_test.py">examples/test_demo_site.py</a> for the full test.)
+
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 6. The classic Page Object Model with the <code>sb</code> pytest fixture</h3>
+
+This is similar to the classic Page Object Model with <code>BaseCase</code> inheritance, except that this time we pass the <code>sb</code> pytest fixture from the test into the <code>sb</code> arg of the page object class method, (instead of passing <code>self</code>). Now that you're using <code>sb</code> as a pytest fixture, you no longer need to import <code>BaseCase</code> anywhere in your code. See the example below:
+
+```python
+class DataPage():
+
+    def go_to_data_url(self, sb):
+        sb.open("data:text/html,<p>Hello!</p><input />")
+
+    def add_input_text(self, sb, text):
+        sb.type("input", text)
+
+class ObjTests():
+
+    def test_data_url_page(self, sb):
+        DataPage().go_to_data_url(sb)
+        sb.assert_text("Hello!", "p")
+        DataPage().add_input_text(sb, "Goodbye!")
+```
+
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/sb_fixture_test.py">examples/test_demo_site.py</a> for the full test.)
+
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 7. Using the <code>request</code> fixture to get the <code>sb</code> fixture (no class)</h3>
 
 The pytest <code>request</code> fixture can be used to retrieve other pytest fixtures from within tests, such as the <code>sb</code> fixture. This allows you to have more control over when fixtures get initialized because the fixture no longer needs to be loaded at the very beginning of test methods. This is done by calling <code>request.getfixturevalue('sb')</code> from the test. Here's an example of using the pytest <code>request</code> fixture to load the <code>sb</code> fixture in a test method that does not use Python classes:
 
@@ -125,7 +174,7 @@ def test_request_sb_fixture(request):
 
 (See the top of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_request_sb_fixture.py">examples/test_request_sb_fixture.py</a> for the test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 6. Using the <code>request</code> fixture to get the <code>sb</code> fixture (in class)</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 8. Using the <code>request</code> fixture to get the <code>sb</code> fixture (in class)</h3>
 
 The pytest <code>request</code> fixture can also be used to get the <code>sb</code> fixture from inside a Python class. Here's an example of that:
 
@@ -144,7 +193,7 @@ class Test_Request_Fixture():
 
 (See the bottom of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_request_sb_fixture.py">examples/test_request_sb_fixture.py</a> for the test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 7. SeleniumBase in Chinese</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 9. SeleniumBase in Chinese</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Chinese. Here's an example of that:
 
@@ -172,7 +221,7 @@ class 我的测试类(硒测试用例):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/chinese_test_1.py">examples/translations/chinese_test_1.py</a> for the Chinese test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 8. SeleniumBase in Dutch</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 10. SeleniumBase in Dutch</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Dutch. Here's an example of that:
 
@@ -200,7 +249,7 @@ class MijnTestklasse(Testgeval):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/dutch_test_1.py">examples/translations/dutch_test_1.py</a> for the Dutch test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 9. SeleniumBase in French</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 11. SeleniumBase in French</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into French. Here's an example of that:
 
@@ -228,7 +277,7 @@ class MaClasseDeTest(CasDeBase):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/french_test_1.py">examples/translations/french_test_1.py</a> for the French test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 10. SeleniumBase in Italian</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 12. SeleniumBase in Italian</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Italian. Here's an example of that:
 
@@ -256,7 +305,7 @@ class MiaClasseDiTest(CasoDiProva):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/italian_test_1.py">examples/translations/italian_test_1.py</a> for the Italian test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 11. SeleniumBase in Japanese</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 13. SeleniumBase in Japanese</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Japanese. Here's an example of that:
 
@@ -285,7 +334,7 @@ class 私のテストクラス(セレニウムテストケース):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/japanese_test_1.py">examples/translations/japanese_test_1.py</a> for the Japanese test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 12. SeleniumBase in Korean</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 14. SeleniumBase in Korean</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Korean. Here's an example of that:
 
@@ -312,7 +361,7 @@ class 테스트_클래스(셀레늄_테스트_케이스):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/korean_test_1.py">examples/translations/korean_test_1.py</a> for the Korean test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 13. SeleniumBase in Portuguese</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15. SeleniumBase in Portuguese</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Portuguese. Here's an example of that:
 
@@ -342,7 +391,7 @@ class MinhaClasseDeTeste(CasoDeTeste):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/portuguese_test_1.py">examples/translations/portuguese_test_1.py</a> for the Portuguese test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 14. SeleniumBase in Russian</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 16. SeleniumBase in Russian</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Russian. Here's an example of that:
 
@@ -370,7 +419,7 @@ class МойТестовыйКласс(ТестНаСелен):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/russian_test_1.py">examples/translations/russian_test_1.py</a> for the Russian test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15. SeleniumBase in Spanish</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 17. SeleniumBase in Spanish</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Spanish. Here's an example of that:
 

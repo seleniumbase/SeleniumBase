@@ -3129,6 +3129,27 @@ class BaseCase(unittest.TestCase):
         return os.path.exists(self.get_path_of_downloaded_file(
             file, browser=browser))
 
+    def delete_downloaded_file_if_present(self, file, browser=False):
+        """ Deletes the file from the [Downloads Folder] if the file exists.
+            For browser click-initiated downloads, SeleniumBase will override
+                the system [Downloads Folder] to be "./downloaded_files/",
+                but that path can't be overridden when using Safari, IE,
+                or Chromium Guest Mode, which keeps the default system path.
+            self.download_file(file_url) will always use "./downloaded_files/".
+            @Params
+            file - The filename to be deleted from the [Downloads Folder].
+            browser - If True, uses the path set by click-initiated downloads.
+                      If False, uses the self.download_file(file_url) path.
+                      Those paths are often the same. (browser-dependent)
+                      (Default: False).
+        """
+        if self.is_downloaded_file_present(file, browser=browser):
+            file_path = self.get_path_of_downloaded_file(file, browser=browser)
+            try:
+                os.remove(file_path)
+            except Exception:
+                pass
+
     def assert_downloaded_file(self, file, timeout=None, browser=False):
         """ Asserts that the file exists in SeleniumBase's [Downloads Folder].
             For browser click-initiated downloads, SeleniumBase will override

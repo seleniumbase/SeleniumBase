@@ -311,6 +311,8 @@ self.get_path_of_downloaded_file(file, browser=False)
 
 self.is_downloaded_file_present(file, browser=False)
 
+self.delete_downloaded_file_if_present(file, browser=False)
+
 self.assert_downloaded_file(file, timeout=None, browser=False)
 
 self.assert_true(expr, msg=None)
