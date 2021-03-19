@@ -15,7 +15,7 @@ def test_request_fixture(request):
 
 # Use the pytest "request" fixture to get the "sb" fixture (in class)
 @pytest.mark.offline
-class Test_Request_Fixture():
+class RequestTests():
     def test_request_fixture_in_class(self, request):
         sb = request.getfixturevalue('sb')
         sb.open("data:text/html,<p>Hello<br><input></p>")

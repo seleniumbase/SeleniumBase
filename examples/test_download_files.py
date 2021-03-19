@@ -62,3 +62,11 @@ class DownloadTests(BaseCase):
             math.floor(whl_file_kb) - math.floor(whl_displayed_kb)) < 2)
         self.assert_true(abs(
             math.floor(tar_gz_file_kb) - math.floor(tar_gz_displayed_kb)) < 2)
+
+        # Delete the downloaded files from the [Downloads Folder]
+        self.delete_downloaded_file_if_present(whl_file)
+        self.delete_downloaded_file_if_present(tar_gz_file)
+
+        # Verify that the downloaded files have been successfully deleted
+        self.assert_false(self.is_downloaded_file_present(whl_file))
+        self.assert_false(self.is_downloaded_file_present(tar_gz_file))
