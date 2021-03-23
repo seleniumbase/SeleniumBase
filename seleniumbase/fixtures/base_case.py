@@ -3324,15 +3324,24 @@ class BaseCase(unittest.TestCase):
             (https://cdnjs.com/libraries/html-inspector)
             Prints the results and also returns them. """
         self.__activate_html_inspector()
+        self.wait_for_ready_state_complete()
         script = ("""HTMLInspector.inspect();""")
-        self.execute_script(script)
+        try:
+            self.execute_script(script)
+        except Exception:
+            # If unable to load the JavaScript, skip inspection and return.
+            msg = "(Unable to load HTML-Inspector JS! Inspection Skipped!)"
+            print("\n" + msg)
+            return(msg)
         time.sleep(0.1)
         browser_logs = []
         try:
             browser_logs = self.driver.get_log('browser')
         except (ValueError, WebDriverException):
             # If unable to get browser logs, skip the assert and return.
-            return("(Unable to Inspect HTML! -> Only works on Chrome!)")
+            msg = "(Unable to Inspect HTML! -> Only works on Chromium!)"
+            print("\n" + msg)
+            return(msg)
         messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
         url = self.get_current_url()
         header = '\n* HTML Inspection Results: %s' % url
