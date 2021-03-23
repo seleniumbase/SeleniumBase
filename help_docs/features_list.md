@@ -32,6 +32,7 @@
 * Can handle Google Authenticator logins with [Python's one-time password library](https://pyotp.readthedocs.io/en/latest/).
 * Is backwards-compatible with Python [WebDriver](https://www.selenium.dev/projects/) methods. (Use: ``self.driver``)
 * Can execute JavaScript code from Python calls. (Use: ``self.execute_script()``)
+* Can pierce through Shadow DOM selectors. (Add ``::shadow`` to CSS fragments.)
 * Includes integrations for [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [AWS](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * Includes a tool for [converting Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_ide) into SeleniumBase scripts.
 * Can load and make assertions on PDF files from websites or the local file system.

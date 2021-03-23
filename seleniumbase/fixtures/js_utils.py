@@ -122,7 +122,7 @@ def activate_jquery(driver):
         This happens because jQuery is not always defined on web sites. """
     try:
         # Let's first find out if jQuery is already defined.
-        driver.execute_script("jQuery('html')")
+        driver.execute_script("jQuery('html');")
         # Since that command worked, jQuery is defined. Let's return.
         return
     except Exception:
@@ -137,10 +137,16 @@ def activate_jquery(driver):
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):
         # jQuery needs a small amount of time to activate.
         try:
-            driver.execute_script("jQuery('html')")
+            driver.execute_script("jQuery('html');")
             return
         except Exception:
             time.sleep(0.1)
+    try:
+        driver.execute_script(activate_jquery_script)
+        time.sleep(0.1)
+        driver.execute_script("jQuery('head');")
+    except Exception:
+        pass
     # Since jQuery still isn't activating, give up and raise an exception
     raise_unable_to_load_jquery_exception(driver)
 

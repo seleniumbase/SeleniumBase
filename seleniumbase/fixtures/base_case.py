@@ -156,6 +156,9 @@ class BaseCase(unittest.TestCase):
                 # Handle a special case of partial links hidden in dropdowns
                 self.click_partial_link_text(selector, timeout=timeout)
                 return
+        if self.__is_shadow_selector(selector):
+            self.__shadow_click(selector)
+            return
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout)
         self.__demo_mode_highlight_if_active(original_selector, original_by)
@@ -318,6 +321,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__shadow_type(selector, text)
+            return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -389,6 +395,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__shadow_type(selector, text, clear_first=False)
+            return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.__demo_mode_highlight_if_active(selector, by)
@@ -483,6 +492,9 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__shadow_clear(selector)
+            return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout)
         self.scroll_to(selector, by=by, timeout=timeout)
@@ -900,6 +912,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__get_shadow_text(selector)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_visible(
@@ -1790,9 +1804,9 @@ class BaseCase(unittest.TestCase):
             file_path = abs_path + "/%s" % html_file
         self.open("file://" + file_path)
 
-    def execute_script(self, script):
+    def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
-        return self.driver.execute_script(script)
+        return self.driver.execute_script(script, *args, **kwargs)
 
     def execute_async_script(self, script, timeout=None):
         self.__check_scope()
@@ -1800,17 +1814,17 @@ class BaseCase(unittest.TestCase):
             timeout = settings.EXTREME_TIMEOUT
         return js_utils.execute_async_script(self.driver, script, timeout)
 
-    def safe_execute_script(self, script):
+    def safe_execute_script(self, script, *args, **kwargs):
         """ When executing a script that contains a jQuery command,
             it's important that the jQuery library has been loaded first.
             This method will load jQuery if it wasn't already loaded. """
         self.__check_scope()
         try:
-            return self.execute_script(script)
+            return self.driver.execute_script(script, *args, **kwargs)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            return self.execute_script(script)
+            return self.driver.execute_script(script, *args, **kwargs)
 
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
@@ -3584,6 +3598,256 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    # Shadow DOM / Shadow-root methods
+
+    def __get_shadow_element(self, selector, timeout=None):
+        self.wait_for_ready_state_complete()
+        if timeout is None:
+            timeout = settings.SMALL_TIMEOUT
+        elif timeout == 0:
+            timeout = 0.1  # Use for: is_shadow_element_* (* = present/visible)
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__fail_if_invalid_shadow_selector_usage(selector)
+        if "::shadow " not in selector:
+            raise Exception(
+                'A Shadow DOM selector must contain at least one "::shadow "!')
+        selectors = selector.split('::shadow ')
+        element = self.get_element(selectors[0])
+        selector_chain = selectors[0]
+        for selector_part in selectors[1:]:
+            shadow_root = self.execute_script(
+                'return arguments[0].shadowRoot', element)
+            if timeout == 0.1 and not shadow_root:
+                raise Exception(
+                        "Element {%s} has no shadow root!" % selector_chain)
+            elif not shadow_root:
+                time.sleep(2)  # Wait two seconds for the shadow root to appear
+                shadow_root = self.execute_script(
+                    'return arguments[0].shadowRoot', element)
+                if not shadow_root:
+                    raise Exception(
+                        "Element {%s} has no shadow root!" % selector_chain)
+            selector_chain += "::shadow "
+            selector_chain += selector_part
+            try:
+                element = page_actions.wait_for_element_present(
+                    shadow_root, selector_part,
+                    by=By.CSS_SELECTOR, timeout=timeout)
+            except Exception:
+                msg = (
+                    "Shadow DOM Element {%s} was not present after %s seconds!"
+                    "" % (selector_chain, timeout))
+                page_actions.timeout_exception("NoSuchElementException", msg)
+        return element
+
+    def __fail_if_invalid_shadow_selector_usage(self, selector):
+        if selector.strip().endswith("::shadow"):
+            msg = (
+                "A Shadow DOM selector cannot end on a shadow root element!"
+                " End the selector with an element inside the shadow root!")
+            raise Exception(msg)
+
+    def __is_shadow_selector(self, selector):
+        self.__fail_if_invalid_shadow_selector_usage(selector)
+        if "::shadow " in selector:
+            return True
+        return False
+
+    def __shadow_click(self, selector):
+        element = self.__get_shadow_element(selector)
+        element.click()
+
+    def __shadow_type(self, selector, text, clear_first=True):
+        element = self.__get_shadow_element(selector)
+        if clear_first:
+            try:
+                element.clear()
+                backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
+                element.send_keys(backspaces)
+            except Exception:
+                pass
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        if not text.endswith('\n'):
+            element.send_keys(text)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                self.wait_for_ready_state_complete()
+        else:
+            element.send_keys(text[:-1])
+            element.send_keys(Keys.RETURN)
+            if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
+                self.wait_for_ready_state_complete()
+
+    def __shadow_clear(self, selector):
+        element = self.__get_shadow_element(selector)
+        try:
+            element.clear()
+            backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
+            element.send_keys(backspaces)
+        except Exception:
+            pass
+
+    def __get_shadow_text(self, selector):
+        element = self.__get_shadow_element(selector)
+        return element.text
+
+    def __wait_for_shadow_text_visible(self, text, selector):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
+        for x in range(int(settings.SMALL_TIMEOUT * 10)):
+            try:
+                actual_text = self.__get_shadow_text(selector).strip()
+                text = text.strip()
+                if text not in actual_text:
+                    msg = (
+                        "Expected text {%s} in element {%s} was not visible!"
+                        "" % (text, selector))
+                    page_actions.timeout_exception(
+                        "ElementNotVisibleException", msg)
+                return True
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        actual_text = self.__get_shadow_text(selector).strip()
+        text = text.strip()
+        if text not in actual_text:
+            msg = (
+                "Expected text {%s} in element {%s} was not visible!"
+                "" % (text, selector))
+            page_actions.timeout_exception("ElementNotVisibleException", msg)
+        return True
+
+    def __wait_for_exact_shadow_text_visible(self, text, selector):
+        start_ms = time.time() * 1000.0
+        stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
+        for x in range(int(settings.SMALL_TIMEOUT * 10)):
+            try:
+                actual_text = self.__get_shadow_text(selector).strip()
+                text = text.strip()
+                if text != actual_text:
+                    msg = (
+                        "Expected exact text {%s} in element {%s} not visible!"
+                        "" % (text, selector))
+                    page_actions.timeout_exception(
+                        "ElementNotVisibleException", msg)
+                return True
+            except Exception:
+                now_ms = time.time() * 1000.0
+                if now_ms >= stop_ms:
+                    break
+                time.sleep(0.1)
+        actual_text = self.__get_shadow_text(selector).strip()
+        text = text.strip()
+        if text != actual_text:
+            msg = (
+                "Expected exact text {%s} in element {%s} was not visible!"
+                "" % (text, selector))
+            page_actions.timeout_exception("ElementNotVisibleException", msg)
+        return True
+
+    def __assert_shadow_text_visible(self, text, selector):
+        self.__wait_for_shadow_text_visible(text, selector)
+        if self.demo_mode:
+            a_t = "ASSERT TEXT"
+            i_n = "in"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = (
+                "%s: {%s} %s %s: %s" % (a_t, text, i_n, by.upper(), selector))
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration)
+            except Exception:
+                pass
+
+    def __assert_exact_shadow_text_visible(self, text, selector):
+        self.__wait_for_exact_shadow_text_visible(text, selector)
+        if self.demo_mode:
+            a_t = "ASSERT EXACT TEXT"
+            i_n = "in"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert_exact_text(self._language)
+                i_n = SD.translate_in(self._language)
+            messenger_post = (
+                "%s: {%s} %s %s: %s" % (a_t, text, i_n, by.upper(), selector))
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration)
+            except Exception:
+                pass
+
+    def __is_shadow_element_present(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return (element is not None)
+        except Exception:
+            return False
+
+    def __is_shadow_element_visible(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return element.is_displayed()
+        except Exception:
+            return False
+
+    def __wait_for_shadow_element_present(self, selector):
+        element = self.__get_shadow_element(selector)
+        return element
+
+    def __wait_for_shadow_element_visible(self, selector):
+        element = self.__get_shadow_element(selector)
+        if not element.is_displayed():
+            msg = ("Shadow DOM Element {%s} was not visible!" % selector)
+            page_actions.timeout_exception("NoSuchElementException", msg)
+        return element
+
+    def __assert_shadow_element_present(self, selector):
+        self.__get_shadow_element(selector)
+        if self.demo_mode:
+            a_t = "ASSERT"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration)
+            except Exception:
+                pass
+
+    def __assert_shadow_element_visible(self, selector):
+        element = self.__get_shadow_element(selector)
+        if not element.is_displayed():
+            msg = ("Shadow DOM Element {%s} was not visible!" % selector)
+            page_actions.timeout_exception("NoSuchElementException", msg)
+        if self.demo_mode:
+            a_t = "ASSERT"
+            by = By.CSS_SELECTOR
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_t = SD.translate_assert(self._language)
+            messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+            try:
+                js_utils.activate_jquery(self.driver)
+                js_utils.post_messenger_success_message(
+                    self.driver, messenger_post, self.message_duration)
+            except Exception:
+                pass
+
+    ############
+
     # Application "Local Storage" controls
 
     def set_local_storage_item(self, key, value):
@@ -3749,6 +4013,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_element_visible(selector)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
@@ -4948,7 +5214,7 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
-            theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
+            theme - (Shepherd Tours ONLY) The styling of the tour step.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
@@ -5018,7 +5284,7 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
-            theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
+            theme - (Shepherd Tours ONLY) The styling of the tour step.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
@@ -5218,6 +5484,8 @@ class BaseCase(unittest.TestCase):
         """
         if self.headless:
             return  # Tours should not run in headless mode.
+
+        self.wait_for_ready_state_complete()
 
         if not interval:
             interval = 0
@@ -5470,6 +5738,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_element_present(selector)
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout)
 
@@ -5482,6 +5752,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_element_visible(selector)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
@@ -5507,6 +5779,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_shadow_selector(selector):
+            self.__assert_shadow_element_present(selector)
+            return True
         self.wait_for_element_present(selector, by=by, timeout=timeout)
         return True
 
@@ -5528,8 +5803,10 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if self.__is_shadow_selector(selector):
+            self.__assert_shadow_element_visible(selector)
+            return True
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
-
         if self.demo_mode:
             selector, by = self.__recalculate_selector(selector, by)
             a_t = "ASSERT"
@@ -5562,6 +5839,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_text_visible(text, selector)
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout)
 
@@ -5574,6 +5853,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_exact_shadow_text_visible(text, selector)
         return page_actions.wait_for_exact_text_visible(
             self.driver, text, selector, by, timeout)
 
@@ -5619,10 +5900,12 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__assert_shadow_text_visible(text, selector)
+            return True
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
-
         if self.demo_mode:
-            selector, by = self.__recalculate_selector(selector, by)
             a_t = "ASSERT TEXT"
             i_n = "in"
             if self._language != "English":
@@ -5646,11 +5929,13 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            self.__assert_exact_shadow_text_visible(text, selector)
+            return True
         self.wait_for_exact_text_visible(
             text, selector, by=by, timeout=timeout)
-
         if self.demo_mode:
-            selector, by = self.__recalculate_selector(selector, by)
             a_t = "ASSERT EXACT TEXT"
             i_n = "in"
             if self._language != "English":

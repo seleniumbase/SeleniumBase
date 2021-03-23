@@ -417,13 +417,14 @@ def play_bootstrap_tour(
                     "return $tour.ended()")
             else:
                 page_actions.wait_for_element_present(
-                    driver, ".tour-tour", by=By.CSS_SELECTOR, timeout=0.4)
+                    driver, ".tour-tour", by=By.CSS_SELECTOR, timeout=0.65)
                 result = False
         except Exception:
             tour_on = False
             result = None
         if result is False:
             tour_on = True
+            time.sleep(0.05)
         else:
             try:
                 time.sleep(0.01)
@@ -432,10 +433,10 @@ def play_bootstrap_tour(
                         "return $tour.ended()")
                 else:
                     page_actions.wait_for_element_present(
-                        driver, ".tour-tour", by=By.CSS_SELECTOR, timeout=0.4)
+                        driver, ".tour-tour", by=By.CSS_SELECTOR, timeout=0.65)
                     result = False
                 if result is False:
-                    time.sleep(0.1)
+                    time.sleep(0.05)
                     continue
                 else:
                     return
@@ -502,9 +503,9 @@ def play_driverjs_tour(
                 result = not driver.execute_script(
                     "return $tour.isActivated")
             else:
-                page_actions.wait_for_element_present(
+                page_actions.wait_for_element_visible(
                     driver, "#driver-popover-item",
-                    by=By.CSS_SELECTOR, timeout=0.4)
+                    by=By.CSS_SELECTOR, timeout=1.1)
                 result = False
         except Exception:
             tour_on = False
@@ -542,9 +543,9 @@ def play_driverjs_tour(
                     result = not driver.execute_script(
                         "return $tour.isActivated")
                 else:
-                    page_actions.wait_for_element_present(
+                    page_actions.wait_for_element_visible(
                         driver, "#driver-popover-item",
-                        by=By.CSS_SELECTOR, timeout=0.4)
+                        by=By.CSS_SELECTOR, timeout=1.1)
                     result = False
                 if result is False:
                     time.sleep(0.1)

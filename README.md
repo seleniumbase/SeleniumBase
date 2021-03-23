@@ -451,6 +451,7 @@ ui_tests/
         ├── __init__.py
         ├── google_objects.py
         ├── google_test.py
+        ├── sb_swag_test.py
         └── swag_labs_test.py
 ```
 
