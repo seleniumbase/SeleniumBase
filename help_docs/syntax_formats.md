@@ -116,46 +116,46 @@ With SeleniumBase, you can use Page Objects to break out code from tests, but re
 ```python
 from seleniumbase import BaseCase
 
-class DataPage():
+class LoginPage():
 
-    def go_to_data_url(self, sb):
-        sb.open("data:text/html,<p>Hello!</p><input />")
+    def login_to_swag_labs(self, sb, username):
+        sb.open("https://www.saucedemo.com/")
+        sb.type("#user-name", username)
+        sb.type("#password", "secret_sauce")
+        sb.click('input[type="submit"]')
 
-    def add_input_text(self, sb, text):
-        sb.type("input", text)
+class MyTests(BaseCase):
 
-class ObjTests(BaseCase):
-
-    def test_data_url_page(self):
-        DataPage().go_to_data_url(self)
-        self.assert_text("Hello!", "p")
-        DataPage().add_input_text(self, "Goodbye!")
+    def test_swag_labs_login(self):
+        LoginPage().login_to_swag_labs(self, "standard_user")
+        self.assert_element("#inventory_container")
+        self.assert_text("Products", "div.product_label")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/classic_obj_test.py">examples/boilerplates/classic_obj_test.py</a> for the full test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/samples/swag_labs_test.py">examples/boilerplates/samples/swag_labs_test.py</a> for the full test.)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 6. The classic Page Object Model with the <code>sb</code> pytest fixture</h3>
 
 This is similar to the classic Page Object Model with <code>BaseCase</code> inheritance, except that this time we pass the <code>sb</code> pytest fixture from the test into the <code>sb</code> arg of the page object class method, (instead of passing <code>self</code>). Now that you're using <code>sb</code> as a pytest fixture, you no longer need to import <code>BaseCase</code> anywhere in your code. See the example below:
 
 ```python
-class DataPage():
+class LoginPage():
 
-    def go_to_data_url(self, sb):
-        sb.open("data:text/html,<p>Hello!</p><input />")
+    def login_to_swag_labs(self, sb, username):
+        sb.open("https://www.saucedemo.com/")
+        sb.type("#user-name", username)
+        sb.type("#password", "secret_sauce")
+        sb.click('input[type="submit"]')
 
-    def add_input_text(self, sb, text):
-        sb.type("input", text)
+class MyTests():
 
-class ObjTests():
-
-    def test_data_url_page(self, sb):
-        DataPage().go_to_data_url(sb)
-        sb.assert_text("Hello!", "p")
-        DataPage().add_input_text(sb, "Goodbye!")
+    def test_swag_labs_login(self, sb):
+        LoginPage().login_to_swag_labs(sb, "standard_user")
+        sb.assert_element("#inventory_container")
+        sb.assert_text("Products", "div.product_label")
 ```
 
-(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/sb_fixture_test.py">examples/boilerplates/sb_fixture_test.py</a> for the full test.)
+(See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates/samples/sb_swag_test.py">examples/boilerplates/samples/sb_swag_test.py</a> for the full test.)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 7. Using the <code>request</code> fixture to get the <code>sb</code> fixture (no class)</h3>
 
