@@ -3099,12 +3099,8 @@ class BaseCase(unittest.TestCase):
               any clicks that download files will also use this folder
               rather than using the browser's default "downloads/" path. """
         self.__check_scope()
-        if self.is_chromium() and self.guest_mode and not self.headless:
-            # Guest Mode (non-headless) can force the default downloads path
-            return os.path.join(os.path.expanduser('~'), 'downloads')
-        else:
-            from seleniumbase.core import download_helper
-            return download_helper.get_downloads_folder()
+        from seleniumbase.core import download_helper
+        return download_helper.get_downloads_folder()
 
     def get_browser_downloads_folder(self):
         """ Returns the path that is used when a click initiates a download.
