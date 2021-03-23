@@ -16,6 +16,7 @@ class ShadowDomTests(BaseCase):
         pkg_name = pkg_header.replace(" ", "-")
         tar_file = pkg_name + ".tar.gz"
         tar_selector = 'div#files a[href$="%s"]' % tar_file
+        self.delete_downloaded_file_if_present(tar_file)
         self.click(tar_selector)
         return tar_file
 
