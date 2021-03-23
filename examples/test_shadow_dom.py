@@ -16,22 +16,28 @@ class ShadowDomTests(BaseCase):
         pkg_name = pkg_header.replace(" ", "-")
         tar_file = pkg_name + ".tar.gz"
         tar_selector = 'div#files a[href$="%s"]' % tar_file
-        self.delete_downloaded_file_if_present(tar_file)
+        self.delete_downloaded_file_if_present(tar_file, browser=True)
         self.click(tar_selector)
         return tar_file
 
     def test_shadow_dom(self):
         if self.browser != "chrome":
             print("\n  This test is for Google Chrome only!")
-            self.skip('This test is for Google Chrome only!')
+            self.skip("This test is for Google Chrome only!")
         if self.headless:
-            print("\n  This test does not run in headless mode!")
-            self.skip('This test does not run in headless mode!')
+            print("\n  This test doesn't run in headless mode!")
+            self.skip("This test doesn't run in headless mode!")
 
+        # Download Python package files from PyPI
         file_name_1 = self.download_tar_file_from_pypi("sbase")
         file_name_2 = self.download_tar_file_from_pypi("tensorpy")
+        self.assert_downloaded_file(file_name_1, browser=True)
+        self.assert_downloaded_file(file_name_2, browser=True)
 
+        # Navigate to the Chrome downloads page.
         self.open("chrome://downloads/")
+
+        # Shadow DOM selectors
         search_icon = (
             "downloads-manager::shadow downloads-toolbar::shadow"
             " cr-toolbar::shadow cr-toolbar-search-field::shadow"
@@ -64,3 +70,7 @@ class ShadowDomTests(BaseCase):
         self.assert_text("No search results found", no_downloads_area)
         self.click(clear_search_icon)
         self.assert_element(remove_button)
+
+        # Delete the downloaded files from the [Downloads Folder]
+        self.delete_downloaded_file_if_present(file_name_1, browser=True)
+        self.delete_downloaded_file_if_present(file_name_2, browser=True)

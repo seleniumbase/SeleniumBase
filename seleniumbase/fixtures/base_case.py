@@ -1899,9 +1899,9 @@ class BaseCase(unittest.TestCase):
                        switch_to=True, cap_file=None, cap_string=None,
                        disable_csp=None, enable_ws=None, enable_sync=None,
                        use_auto_ext=None, no_sandbox=None, disable_gpu=None,
-                       incognito=None, guest_mode=None,
-                       devtools=None, remote_debug=None,
-                       swiftshader=None, block_images=None, user_data_dir=None,
+                       incognito=None, guest_mode=None, devtools=None,
+                       remote_debug=None, swiftshader=None, block_images=None,
+                       chromium_arg=None, user_data_dir=None,
                        extension_zip=None, extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
         """ This method spins up an extra browser for tests that require
@@ -1930,6 +1930,7 @@ class BaseCase(unittest.TestCase):
             remote_debug - the option to enable Chrome's Remote Debugger
             swiftshader - the option to use Chrome's swiftshader (Chrome-only)
             block_images - the option to block images from loading (Chrome)
+            chromium_arg - the option to add a Chromium arg to Chrome/Edge
             user_data_dir - Chrome's User Data Directory to use (Chrome-only)
             extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
             extension_dir - A Chrome Extension folder to use (Chrome-only)
@@ -2005,6 +2006,8 @@ class BaseCase(unittest.TestCase):
             swiftshader = self.swiftshader
         if block_images is None:
             block_images = self.block_images
+        if chromium_arg is None:
+            chromium_arg = self.chromium_arg
         if user_data_dir is None:
             user_data_dir = self.user_data_dir
         if extension_zip is None:
@@ -2052,6 +2055,7 @@ class BaseCase(unittest.TestCase):
                                                  remote_debug=remote_debug,
                                                  swiftshader=swiftshader,
                                                  block_images=block_images,
+                                                 chromium_arg=chromium_arg,
                                                  user_data_dir=user_data_dir,
                                                  extension_zip=extension_zip,
                                                  extension_dir=extension_dir,
@@ -3095,12 +3099,8 @@ class BaseCase(unittest.TestCase):
               any clicks that download files will also use this folder
               rather than using the browser's default "downloads/" path. """
         self.__check_scope()
-        if self.is_chromium() and self.guest_mode and not self.headless:
-            # Guest Mode (non-headless) can force the default downloads path
-            return os.path.join(os.path.expanduser('~'), 'downloads')
-        else:
-            from seleniumbase.core import download_helper
-            return download_helper.get_downloads_folder()
+        from seleniumbase.core import download_helper
+        return download_helper.get_downloads_folder()
 
     def get_browser_downloads_folder(self):
         """ Returns the path that is used when a click initiates a download.
@@ -7075,6 +7075,7 @@ class BaseCase(unittest.TestCase):
             self.js_checking_on = sb_config.js_checking_on
             self.ad_block_on = sb_config.ad_block_on
             self.block_images = sb_config.block_images
+            self.chromium_arg = sb_config.chromium_arg
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
@@ -7278,6 +7279,7 @@ class BaseCase(unittest.TestCase):
                                               remote_debug=self.remote_debug,
                                               swiftshader=self.swiftshader,
                                               block_images=self.block_images,
+                                              chromium_arg=self.chromium_arg,
                                               user_data_dir=self.user_data_dir,
                                               extension_zip=self.extension_zip,
                                               extension_dir=self.extension_dir,

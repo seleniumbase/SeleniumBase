@@ -21,6 +21,7 @@ class SeleniumBrowser(Plugin):
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
+    --chromium-arg=ARG  (Add a Chromium arg for Chrome/Edge, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (Run tests headlessly. Default mode on Linux OS.)
@@ -149,6 +150,16 @@ class SeleniumBrowser(Plugin):
                     Format: A comma-separated string with the 3 values.
                     Example: "375,734,3"
                     Default: None. (Will use default values if None)""")
+        parser.add_option(
+            '--chromium_arg', '--chromium-arg',
+            action='store',
+            dest='chromium_arg',
+            default=None,
+            help="""Add a Chromium argument for Chrome/Edge browsers.
+                    Format: A comma-separated list of Chromium args.
+                    If an arg doesn't start with "--", that will be
+                    added to the beginning of the arg automatically.
+                    Default: None.""")
         parser.add_option(
             '--extension_zip', '--extension-zip', '--crx',
             action='store',
@@ -423,6 +434,7 @@ class SeleniumBrowser(Plugin):
         test.test.user_data_dir = self.options.user_data_dir
         test.test.extension_zip = self.options.extension_zip
         test.test.extension_dir = self.options.extension_dir
+        test.test.chromium_arg = self.options.chromium_arg
         test.test.proxy_string = self.options.proxy_string
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator

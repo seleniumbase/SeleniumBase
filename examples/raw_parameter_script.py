@@ -76,6 +76,7 @@ except (ImportError, ValueError):
     sb.remote_debug = False
     sb.settings_file = None
     sb.user_data_dir = None
+    sb.chromium_arg = None
     sb.proxy_string = None
     sb.swiftshader = False
     sb.ad_block_on = False

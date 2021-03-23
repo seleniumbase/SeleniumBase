@@ -133,7 +133,7 @@ def _set_chrome_options(
         proxy_string, proxy_auth, proxy_user, proxy_pass,
         user_agent, disable_csp, enable_ws, enable_sync, use_auto_ext,
         no_sandbox, disable_gpu, incognito, guest_mode,
-        devtools, remote_debug, swiftshader, block_images,
+        devtools, remote_debug, swiftshader, block_images, chromium_arg,
         user_data_dir, extension_zip, extension_dir, servername,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     chrome_options = webdriver.ChromeOptions()
@@ -298,6 +298,18 @@ def _set_chrome_options(
         chrome_options.add_argument("--disable-gpu")
     if "linux" in PLATFORM:
         chrome_options.add_argument("--disable-dev-shm-usage")
+    if chromium_arg:
+        # Can be a comma-separated list of Chromium args
+        chromium_arg_list = chromium_arg.split(',')
+        for chromium_arg_item in chromium_arg_list:
+            chromium_arg_item = chromium_arg_item.strip()
+            if not chromium_arg_item.startswith("--"):
+                if chromium_arg_item.startswith("-"):
+                    chromium_arg_item = "-" + chromium_arg_item
+                else:
+                    chromium_arg_item = "--" + chromium_arg_item
+            if len(chromium_arg_item) >= 3:
+                chrome_options.add_argument(chromium_arg_item)
     return chrome_options
 
 
@@ -459,7 +471,7 @@ def get_driver(browser_name, headless=False, locale_code=None,
                use_auto_ext=None, no_sandbox=None, disable_gpu=None,
                incognito=None, guest_mode=None,
                devtools=None, remote_debug=None,
-               swiftshader=None, block_images=None,
+               swiftshader=None, block_images=None, chromium_arg=None,
                user_data_dir=None, extension_zip=None, extension_dir=None,
                test_id=None, mobile_emulator=False, device_width=None,
                device_height=None, device_pixel_ratio=None):
@@ -498,7 +510,7 @@ def get_driver(browser_name, headless=False, locale_code=None,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             cap_file, cap_string, disable_csp, enable_ws, enable_sync,
             use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
-            devtools, remote_debug, swiftshader, block_images,
+            devtools, remote_debug, swiftshader, block_images, chromium_arg,
             user_data_dir, extension_zip, extension_dir, test_id,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
     else:
@@ -507,7 +519,7 @@ def get_driver(browser_name, headless=False, locale_code=None,
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_ws, enable_sync,
             use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
-            devtools, remote_debug, swiftshader, block_images,
+            devtools, remote_debug, swiftshader, block_images, chromium_arg,
             user_data_dir, extension_zip, extension_dir,
             mobile_emulator, device_width, device_height, device_pixel_ratio)
 
@@ -517,7 +529,7 @@ def get_remote_driver(
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         cap_file, cap_string, disable_csp, enable_ws, enable_sync,
         use_auto_ext, no_sandbox, disable_gpu, incognito, guest_mode,
-        devtools, remote_debug, swiftshader, block_images,
+        devtools, remote_debug, swiftshader, block_images, chromium_arg,
         user_data_dir, extension_zip, extension_dir, test_id,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     downloads_path = download_helper.get_downloads_folder()
@@ -549,7 +561,7 @@ def get_remote_driver(
             proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
             disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
             disable_gpu, incognito, guest_mode,
-            devtools, remote_debug, swiftshader, block_images,
+            devtools, remote_debug, swiftshader, block_images, chromium_arg,
             user_data_dir, extension_zip, extension_dir,
             servername, mobile_emulator,
             device_width, device_height, device_pixel_ratio)
@@ -677,7 +689,7 @@ def get_local_driver(
         proxy_string, proxy_auth, proxy_user, proxy_pass, user_agent,
         disable_csp, enable_ws, enable_sync, use_auto_ext, no_sandbox,
         disable_gpu, incognito, guest_mode,
-        devtools, remote_debug, swiftshader, block_images,
+        devtools, remote_debug, swiftshader, block_images, chromium_arg,
         user_data_dir, extension_zip, extension_dir,
         mobile_emulator, device_width, device_height, device_pixel_ratio):
     '''
@@ -765,8 +777,8 @@ def get_local_driver(
                 disable_csp, enable_ws, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode,
                 devtools, remote_debug, swiftshader, block_images,
-                user_data_dir, extension_zip, extension_dir, servername,
-                mobile_emulator, device_width, device_height,
+                chromium_arg, user_data_dir, extension_zip, extension_dir,
+                servername, mobile_emulator, device_width, device_height,
                 device_pixel_ratio)
             if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
                 try:
@@ -910,6 +922,18 @@ def get_local_driver(
                 edge_options.add_argument("--disable-gpu")
             if "linux" in PLATFORM:
                 edge_options.add_argument("--disable-dev-shm-usage")
+            if chromium_arg:
+                # Can be a comma-separated list of Chromium args
+                chromium_arg_list = chromium_arg.split(',')
+                for chromium_arg_item in chromium_arg_list:
+                    chromium_arg_item = chromium_arg_item.strip()
+                    if not chromium_arg_item.startswith("--"):
+                        if chromium_arg_item.startswith("-"):
+                            chromium_arg_item = "-" + chromium_arg_item
+                        else:
+                            chromium_arg_item = "--" + chromium_arg_item
+                    if len(chromium_arg_item) >= 3:
+                        edge_options.add_argument(chromium_arg_item)
             capabilities = edge_options.to_capabilities()
             capabilities["platform"] = ''
             return Edge(
@@ -935,7 +959,7 @@ def get_local_driver(
                 disable_csp, enable_ws, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode,
                 devtools, remote_debug, swiftshader, block_images,
-                user_data_dir, extension_zip, extension_dir,
+                chromium_arg, user_data_dir, extension_zip, extension_dir,
                 servername, mobile_emulator,
                 device_width, device_height, device_pixel_ratio)
             opera_options.headless = False  # No support for headless Opera
@@ -955,7 +979,7 @@ def get_local_driver(
                 disable_csp, enable_ws, enable_sync, use_auto_ext,
                 no_sandbox, disable_gpu, incognito, guest_mode,
                 devtools, remote_debug, swiftshader, block_images,
-                user_data_dir, extension_zip, extension_dir,
+                chromium_arg, user_data_dir, extension_zip, extension_dir,
                 servername, mobile_emulator,
                 device_width, device_height, device_pixel_ratio)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
