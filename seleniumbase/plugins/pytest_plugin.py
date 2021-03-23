@@ -41,6 +41,7 @@ def pytest_addoption(parser):
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
+    --chromium-arg=ARG  (Add a Chromium arg for Chrome/Edge, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (Run tests headlessly. Default mode on Linux OS.)
@@ -311,6 +312,15 @@ def pytest_addoption(parser):
                           Format: A comma-separated string with the 3 values.
                           Example: "375,734,3"
                           Default: None. (Will use default values if None)""")
+    parser.addoption('--chromium_arg', '--chromium-arg',
+                     action='store',
+                     dest='chromium_arg',
+                     default=None,
+                     help="""Add a Chromium argument for Chrome/Edge browsers.
+                          Format: A comma-separated list of Chromium args.
+                          If an arg doesn't start with "--", that will be
+                          added to the beginning of the arg automatically.
+                          Default: None.""")
     parser.addoption('--extension_zip', '--extension-zip', '--crx',
                      action='store',
                      dest='extension_zip',
@@ -671,6 +681,7 @@ def pytest_configure(config):
     sb_config.locale_code = config.getoption('locale_code')
     sb_config.interval = config.getoption('interval')
     sb_config.start_page = config.getoption('start_page')
+    sb_config.chromium_arg = config.getoption('chromium_arg')
     sb_config.extension_zip = config.getoption('extension_zip')
     sb_config.extension_dir = config.getoption('extension_dir')
     sb_config.with_testing_base = config.getoption('with_testing_base')
