@@ -5214,7 +5214,7 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
-            theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
+            theme - (Shepherd Tours ONLY) The styling of the tour step.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
@@ -5284,7 +5284,7 @@ class BaseCase(unittest.TestCase):
             name - If creating multiple tours at the same time,
                    use this to select the tour you wish to add steps to.
             title - Additional header text that appears above the message.
-            theme - (NON-Bootstrap Tours ONLY) The styling of the tour step.
+            theme - (Shepherd Tours ONLY) The styling of the tour step.
                     Choose from "light"/"arrows", "dark", "default", "square",
                     and "square-dark". ("arrows" is used if None is selected.)
             alignment - Choose from "top", "bottom", "left", and "right".
@@ -5484,6 +5484,8 @@ class BaseCase(unittest.TestCase):
         """
         if self.headless:
             return  # Tours should not run in headless mode.
+
+        self.wait_for_ready_state_complete()
 
         if not interval:
             interval = 0
