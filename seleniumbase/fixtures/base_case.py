@@ -1804,9 +1804,9 @@ class BaseCase(unittest.TestCase):
             file_path = abs_path + "/%s" % html_file
         self.open("file://" + file_path)
 
-    def execute_script(self, script):
+    def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
-        return self.driver.execute_script(script)
+        return self.driver.execute_script(script, *args, **kwargs)
 
     def execute_async_script(self, script, timeout=None):
         self.__check_scope()
@@ -1814,17 +1814,17 @@ class BaseCase(unittest.TestCase):
             timeout = settings.EXTREME_TIMEOUT
         return js_utils.execute_async_script(self.driver, script, timeout)
 
-    def safe_execute_script(self, script):
+    def safe_execute_script(self, script, *args, **kwargs):
         """ When executing a script that contains a jQuery command,
             it's important that the jQuery library has been loaded first.
             This method will load jQuery if it wasn't already loaded. """
         self.__check_scope()
         try:
-            return self.execute_script(script)
+            return self.driver.execute_script(script, *args, **kwargs)
         except Exception:
             # The likely reason this fails is because: "jQuery is not defined"
             self.activate_jquery()  # It's a good thing we can define it here
-            return self.execute_script(script)
+            return self.driver.execute_script(script, *args, **kwargs)
 
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
