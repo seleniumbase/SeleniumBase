@@ -9,6 +9,8 @@ on:
 jobs:
   build:
 
+    env:
+      PY_COLORS: "1"
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
