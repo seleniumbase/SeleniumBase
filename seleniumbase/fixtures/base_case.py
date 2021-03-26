@@ -6174,7 +6174,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.wait_for_text_not_visible(text, selector, by=by, timeout=timeout)
+        return self.wait_for_text_not_visible(
+            text, selector, by=by, timeout=timeout)
 
     ############
 
