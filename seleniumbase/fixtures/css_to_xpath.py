@@ -1,8 +1,7 @@
 """
 Convert CSS selectors into XPath selectors
 """
-
-from cssselect.xpath import GenericTranslator, is_non_whitespace
+from cssselect.xpath import GenericTranslator
 
 
 class ConvertibleToCssTranslator(GenericTranslator):
@@ -20,6 +19,7 @@ class ConvertibleToCssTranslator(GenericTranslator):
         return xpath
 
     def xpath_attrib_includes(self, xpath, name, value):
+        from cssselect.xpath import is_non_whitespace
         if is_non_whitespace(value):
             xpath.add_condition(
                 "contains(%s, %s)"

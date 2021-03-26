@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import codecs
-import datetime
 import os
 import shutil
 import sys
 import time
-import traceback
 from seleniumbase.config import settings
 
 
@@ -29,6 +27,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
 
 def get_master_time():
     """ Returns (timestamp, the_date, the_time) """
+    import datetime
     timestamp = str(int(time.time())) + "  (Unix Timestamp)"
     now = datetime.datetime.now()
     utc_offset = -time.timezone / 3600.0
@@ -61,6 +60,7 @@ def get_master_time():
 
 
 def log_test_failure_data(test, test_logpath, driver, browser, url=None):
+    import traceback
     basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
     log_file = codecs.open(basic_file_path, "w+", "utf-8")

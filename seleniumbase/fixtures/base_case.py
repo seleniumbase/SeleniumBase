@@ -25,7 +25,6 @@ Code becomes greatly simplified and easier to maintain.
 import codecs
 import json
 import logging
-import math
 import os
 import re
 import sys
@@ -43,7 +42,6 @@ from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
-from seleniumbase.core import tour_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
 from seleniumbase.fixtures import js_utils
@@ -5491,6 +5489,8 @@ class BaseCase(unittest.TestCase):
             interval - The delay time between autoplaying tour steps. (Seconds)
                        If set to 0 (default), the tour is fully manual control.
         """
+        from seleniumbase.core import tour_helper
+
         if self.headless:
             return  # Tours should not run in headless mode.
 
@@ -5542,6 +5542,7 @@ class BaseCase(unittest.TestCase):
                        save the tour to.
             url - The URL where the tour starts. If not specified, the URL
                   of the current page will be used. """
+        from seleniumbase.core import tour_helper
         if not url:
             url = self.get_current_url()
         tour_helper.export_tour(
@@ -6470,6 +6471,7 @@ class BaseCase(unittest.TestCase):
 
     def __get_new_timeout(self, timeout):
         """ When using --timeout_multiplier=#.# """
+        import math
         self.__check_scope()
         try:
             timeout_multiplier = float(self.timeout_multiplier)
