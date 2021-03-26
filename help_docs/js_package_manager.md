@@ -1,11 +1,11 @@
 [<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> JS Package Manager</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> JS Package Manager</h2>
 
 <div>SeleniumBase lets you load JavaScript packages from any CDN link into any website.</div>
 <p><div>Here's an example of loading a website-tour library into the browser while visiting Google:</div></p>
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/google_tour_3.gif" title="SeleniumBase Tour of Google" /><br />
+<img src="https://seleniumbase.io/cdn/gif/driverjs_tour.gif" title="SeleniumBase Tour of Google" /><br />
 
 This example, ([google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py) from the SeleniumBase ``examples/tour_examples/`` folder), can be run with ``pytest`` after you've cloned and installed [SeleniumBase from GitHub](https://github.com/seleniumbase/SeleniumBase):
 
@@ -82,7 +82,7 @@ def add_css_link(driver, css_link):
 <div>Website tours are just one of the many ways of using the SeleniumBase JS Package Manager.</div>
 <p><div>The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/masterqa6.gif" alt="MasterQA by SeleniumBase" title="MasterQA by SeleniumBase" /><br />
+<img src="https://seleniumbase.io/cdn/gif/masterqa6.gif" alt="MasterQA by SeleniumBase" title="MasterQA by SeleniumBase" /><br />
 
 <p><div>(Example from <a href="https://seleniumbase.io/examples/master_qa/ReadMe/">SeleniumBase's MasterQA ReadMe</a>)</div></p>
 

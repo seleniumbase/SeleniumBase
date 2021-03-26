@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Language Locale Codes</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="25" /> Language Locale Codes</h2>
 
 You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase you can change the web browser's Locale on the command line by adding:
 
@@ -6,7 +6,7 @@ You can specify a Language Locale Code to customize web pages on supported websi
 --locale=CODE  # Example: --locale=ru
 ```
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> List of Language Locale Codes:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="25" /> List of Language Locale Codes:</h3>
 
 <table>
     <thead><tr><th>Language</th><th>Code</th></tr></thead>
