@@ -1,6 +1,6 @@
-## <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Resources Help
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Resource Files</h2>
 
-SeleniumBase uses some JavaScript libraries for optional advanced features such as website tours, messenger, HTML validation, highlighting elements on a page, and other jQuery actions. In some cases, you may want to host these JavaScript and CSS files from your own websites. For simplicity and convenience, these resources have been downloaded into the "resources" folder. If you decide to use your local versions, you may need to update the corresponding URLs in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py).
+SeleniumBase uses JavaScript libraries for bonus features such as the Website Tour Maker, Presentation Maker, Chart Maker, Demo Mode, HTML Inspector, and more. In general, SeleniumBase retrieves these resources via CDN link. In some cases, you may want to host these JavaScript and CSS files from your own CDN. For simplicity and convenience, some of these resources have been downloaded into the "resources" folder. If you decide to use your own CDN, you may need to update links in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) and [constants.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/constants.py).
 
 Here are some of the resource files you'll find here:
 
@@ -12,7 +12,15 @@ Here are some of the resource files you'll find here:
 
 **html_inspector/** - Files in this folder are used for the HTML Inspector, which validates website pages.
 
-**shepherd/** - Files in this folder are used for creating website tours using the Shepherd JavaScript library. (This is the default tour library.)
+--------
+
+The remaining resources have been moved into [github.com/seleniumbase/resource-files](https://github.com/seleniumbase/resource-files) in order to reduce the size of SeleniumBase:
+
+**reveal/** - Files in this folder are used for the HTML Presentation Maker.
+
+**prettify/** - Files in this folder are used to assist the HTML Presentation Maker.
+
+**shepherd/** - Files in this folder are used for creating website tours using the Shepherd JavaScript library.
 
 **bootstrap_tour/** - Files in this folder are used for creating website tours using the Bootstrap Tour JavaScript library.
 
