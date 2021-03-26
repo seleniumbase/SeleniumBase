@@ -1,21 +1,16 @@
-import json
 import logging
 import os
-import random
 import re
 import sys
 import time
 import urllib3
 import warnings
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from seleniumbase.config import proxy_list
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
-from seleniumbase.fixtures import page_utils
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 urllib3.disable_warnings()
@@ -98,6 +93,7 @@ def _add_chrome_proxy_extension(
     """ Implementation of https://stackoverflow.com/a/35293284 for
         https://stackoverflow.com/questions/12848327/
         (Run Selenium on a proxy server that requires authentication.) """
+    import random
     arg_join = " ".join(sys.argv)
     if not ("-n" in sys.argv or "-n=" in arg_join or arg_join == "-c"):
         # Single-threaded
@@ -267,7 +263,7 @@ def _set_chrome_options(
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
                 chrome_options, proxy_string, proxy_user, proxy_pass)
-        chrome_options.add_argument('--proxy-server=%s' % proxy_string)
+        chrome_options.add_argument("--proxy-server=%s" % proxy_string)
     if headless:
         if not proxy_auth and not browser_name == constants.Browser.OPERA:
             # Headless Chrome doesn't support extensions, which are
@@ -291,7 +287,7 @@ def _set_chrome_options(
         # To access the Remote Debugger, go to: http://localhost:9222
         # while a Chromium driver is running.
         # Info: https://chromedevtools.github.io/devtools-protocol/
-        chrome_options.add_argument('--remote-debugging-port=9222')
+        chrome_options.add_argument("--remote-debugging-port=9222")
     if swiftshader:
         chrome_options.add_argument("--use-gl=swiftshader")
     else:
@@ -320,37 +316,38 @@ def _set_safari_capabilities():
     return safari_capabilities
 
 
-def _create_firefox_profile(
-        downloads_path, locale_code, proxy_string, user_agent, disable_csp):
-    profile = webdriver.FirefoxProfile()
-    profile.accept_untrusted_certs = True
-    profile.set_preference("reader.parse-on-load.enabled", False)
-    profile.set_preference("pdfjs.disabled", True)
-    profile.set_preference("app.update.auto", False)
-    profile.set_preference("app.update.enabled", False)
-    profile.set_preference("app.update.silent", True)
-    profile.set_preference("browser.formfill.enable", False)
-    profile.set_preference("browser.privatebrowsing.autostart", True)
-    profile.set_preference("devtools.errorconsole.enabled", True)
-    profile.set_preference("dom.webnotifications.enabled", False)
-    profile.set_preference("dom.disable_beforeunload", True)
-    profile.set_preference("browser.contentblocking.database.enabled", False)
-    profile.set_preference("extensions.allowPrivateBrowsingByDefault", True)
-    profile.set_preference("extensions.PrivateBrowsing.notification", False)
-    profile.set_preference("extensions.systemAddon.update.enabled", False)
-    profile.set_preference("extensions.update.autoUpdateDefault", False)
-    profile.set_preference("extensions.update.enabled", False)
-    profile.set_preference("extensions.update.silent", True)
-    profile.set_preference(
+def _set_firefox_options(
+        downloads_path, headless, locale_code,
+        proxy_string, user_agent, disable_csp):
+    options = webdriver.FirefoxOptions()
+    options.accept_untrusted_certs = True
+    options.set_preference("reader.parse-on-load.enabled", False)
+    options.set_preference("pdfjs.disabled", True)
+    options.set_preference("app.update.auto", False)
+    options.set_preference("app.update.enabled", False)
+    options.set_preference("app.update.silent", True)
+    options.set_preference("browser.formfill.enable", False)
+    options.set_preference("browser.privatebrowsing.autostart", True)
+    options.set_preference("devtools.errorconsole.enabled", True)
+    options.set_preference("dom.webnotifications.enabled", False)
+    options.set_preference("dom.disable_beforeunload", True)
+    options.set_preference("browser.contentblocking.database.enabled", False)
+    options.set_preference("extensions.allowPrivateBrowsingByDefault", True)
+    options.set_preference("extensions.PrivateBrowsing.notification", False)
+    options.set_preference("extensions.systemAddon.update.enabled", False)
+    options.set_preference("extensions.update.autoUpdateDefault", False)
+    options.set_preference("extensions.update.enabled", False)
+    options.set_preference("extensions.update.silent", True)
+    options.set_preference(
         "datareporting.healthreport.logging.consoleEnabled", False)
-    profile.set_preference("datareporting.healthreport.service.enabled", False)
-    profile.set_preference(
+    options.set_preference("datareporting.healthreport.service.enabled", False)
+    options.set_preference(
         "datareporting.healthreport.service.firstRun", False)
-    profile.set_preference("datareporting.healthreport.uploadEnabled", False)
-    profile.set_preference("datareporting.policy.dataSubmissionEnabled", False)
-    profile.set_preference(
+    options.set_preference("datareporting.healthreport.uploadEnabled", False)
+    options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
+    options.set_preference(
         "datareporting.policy.dataSubmissionPolicyAccepted", False)
-    profile.set_preference("toolkit.telemetry.unified", False)
+    options.set_preference("toolkit.telemetry.unified", False)
     if proxy_string:
         socks_proxy = False
         socks_ver = 0
@@ -366,44 +363,46 @@ def _create_firefox_profile(
         else:
             proxy_server = proxy_string.split(':')[0]
             proxy_port = proxy_string.split(':')[1]
-        profile.set_preference("network.proxy.type", 1)
+        options.set_preference("network.proxy.type", 1)
         if socks_proxy:
-            profile.set_preference('network.proxy.socks', proxy_server)
-            profile.set_preference('network.proxy.socks_port', int(proxy_port))
-            profile.set_preference('network.proxy.socks_version', socks_ver)
+            options.set_preference('network.proxy.socks', proxy_server)
+            options.set_preference('network.proxy.socks_port', int(proxy_port))
+            options.set_preference('network.proxy.socks_version', socks_ver)
         else:
-            profile.set_preference("network.proxy.http", proxy_server)
-            profile.set_preference("network.proxy.http_port", int(proxy_port))
-            profile.set_preference("network.proxy.ssl", proxy_server)
-            profile.set_preference("network.proxy.ssl_port", int(proxy_port))
+            options.set_preference("network.proxy.http", proxy_server)
+            options.set_preference("network.proxy.http_port", int(proxy_port))
+            options.set_preference("network.proxy.ssl", proxy_server)
+            options.set_preference("network.proxy.ssl_port", int(proxy_port))
     if user_agent:
-        profile.set_preference("general.useragent.override", user_agent)
-    profile.set_preference(
+        options.set_preference("general.useragent.override", user_agent)
+    options.set_preference(
         "security.mixed_content.block_active_content", False)
     if settings.DISABLE_CSP_ON_FIREFOX or disable_csp:
-        profile.set_preference("security.csp.enable", False)
-    profile.set_preference(
+        options.set_preference("security.csp.enable", False)
+    options.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
+    if headless:
+        options.add_argument("--headless")
     if locale_code:
-        profile.set_preference("intl.accept_languages", locale_code)
-    profile.set_preference("browser.shell.checkDefaultBrowser", False)
-    profile.set_preference("browser.startup.page", 0)
-    profile.set_preference("browser.download.panel.shown", False)
-    profile.set_preference(
+        options.set_preference("intl.accept_languages", locale_code)
+    options.set_preference("browser.shell.checkDefaultBrowser", False)
+    options.set_preference("browser.startup.page", 0)
+    options.set_preference("browser.download.panel.shown", False)
+    options.set_preference(
         "browser.download.animateNotifications", False)
-    profile.set_preference("browser.download.dir", downloads_path)
-    profile.set_preference("browser.download.folderList", 2)
-    profile.set_preference("browser.helperApps.alwaysAsk.force", False)
-    profile.set_preference(
+    options.set_preference("browser.download.dir", downloads_path)
+    options.set_preference("browser.download.folderList", 2)
+    options.set_preference("browser.helperApps.alwaysAsk.force", False)
+    options.set_preference(
         "browser.download.manager.showWhenStarting", False)
-    profile.set_preference(
+    options.set_preference(
         "browser.helperApps.neverAsk.saveToDisk",
         ("application/pdf, application/zip, application/octet-stream, "
          "text/csv, text/xml, application/xml, text/plain, "
          "text/octet-stream, application/x-gzip, application/x-tar "
          "application/"
          "vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-    return profile
+    return options
 
 
 def display_proxy_warning(proxy_string):
@@ -422,6 +421,7 @@ def display_proxy_warning(proxy_string):
 
 
 def validate_proxy_string(proxy_string):
+    from seleniumbase.fixtures import page_utils
     if proxy_string in proxy_list.PROXY_LIST.keys():
         proxy_string = proxy_list.PROXY_LIST[proxy_string]
         if not proxy_string:
@@ -464,7 +464,7 @@ def validate_proxy_string(proxy_string):
 
 
 def get_driver(browser_name, headless=False, locale_code=None,
-               use_grid=False, servername='localhost', port=4444,
+               use_grid=False, servername="localhost", port=4444,
                proxy_string=None, user_agent=None,
                cap_file=None, cap_string=None,
                disable_csp=None, enable_ws=None, enable_sync=None,
@@ -540,6 +540,7 @@ def get_remote_driver(
         from seleniumbase.core import capabilities_parser
         desired_caps = capabilities_parser.get_desired_capabilities(cap_file)
     if cap_string:
+        import json
         try:
             extra_caps = json.loads(cap_string)
         except Exception as e:
@@ -568,52 +569,28 @@ def get_remote_driver(
         capabilities = chrome_options.to_capabilities()
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+        warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities,
             keep_alive=True)
     elif browser_name == constants.Browser.FIREFOX:
-        try:
-            # Use Geckodriver for Firefox if it's on the PATH
-            profile = _create_firefox_profile(
-                downloads_path, locale_code,
-                proxy_string, user_agent, disable_csp)
-            firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
-            firefox_capabilities['marionette'] = True
-            if headless:
-                firefox_capabilities['moz:firefoxOptions'] = (
-                    {'args': ['-headless']})
-            for key in desired_caps.keys():
-                firefox_capabilities[key] = desired_caps[key]
-            capabilities = firefox_capabilities
-            warnings.simplefilter("ignore", category=DeprecationWarning)
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-                browser_profile=profile,
-                keep_alive=True)
-        except WebDriverException:
-            # Don't use Geckodriver: Only works for old versions of Firefox
-            profile = _create_firefox_profile(
-                downloads_path, locale_code,
-                proxy_string, user_agent, disable_csp)
-            firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
-            firefox_capabilities['marionette'] = False
-            if headless:
-                firefox_capabilities['moz:firefoxOptions'] = (
-                    {'args': ['-headless']})
-            for key in desired_caps.keys():
-                firefox_capabilities[key] = desired_caps[key]
-            capabilities = firefox_capabilities
-            return webdriver.Remote(
-                command_executor=address,
-                desired_capabilities=capabilities,
-                browser_profile=profile,
-                keep_alive=True)
+        firefox_options = _set_firefox_options(
+            downloads_path, headless, locale_code,
+            proxy_string, user_agent, disable_csp)
+        capabilities = firefox_options.to_capabilities()
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
+        warnings.simplefilter("ignore", category=DeprecationWarning)
+        return webdriver.Remote(
+            command_executor=address,
+            desired_capabilities=capabilities,
+            keep_alive=True)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+        warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities,
@@ -622,6 +599,7 @@ def get_remote_driver(
         capabilities = webdriver.DesiredCapabilities.EDGE
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+        warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities,
@@ -630,6 +608,7 @@ def get_remote_driver(
         capabilities = webdriver.DesiredCapabilities.SAFARI
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+        warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities,
@@ -638,6 +617,7 @@ def get_remote_driver(
         capabilities = webdriver.DesiredCapabilities.OPERA
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+        warnings.simplefilter("ignore", category=DeprecationWarning)
         return webdriver.Remote(
             command_executor=address,
             desired_capabilities=capabilities,
@@ -699,56 +679,31 @@ def get_local_driver(
     downloads_path = download_helper.get_downloads_folder()
 
     if browser_name == constants.Browser.FIREFOX:
-        try:
+        firefox_options = _set_firefox_options(
+            downloads_path, headless, locale_code,
+            proxy_string, user_agent, disable_csp)
+        if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
             try:
-                # Use Geckodriver for Firefox if it's on the PATH
-                profile = _create_firefox_profile(
-                    downloads_path, locale_code,
-                    proxy_string, user_agent, disable_csp)
-                firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
-                firefox_capabilities['marionette'] = True
-                options = webdriver.FirefoxOptions()
-                if headless:
-                    options.add_argument('-headless')
-                    firefox_capabilities['moz:firefoxOptions'] = (
-                        {'args': ['-headless']})
-                if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
-                    try:
-                        make_driver_executable_if_not(LOCAL_GECKODRIVER)
-                    except Exception as e:
-                        logging.debug("\nWarning: Could not make geckodriver"
-                                      " executable: %s" % e)
-                elif not is_geckodriver_on_path():
-                    args = " ".join(sys.argv)
-                    if not ("-n" in sys.argv or "-n=" in args or args == "-c"):
-                        # (Not multithreaded)
-                        from seleniumbase.console_scripts import sb_install
-                        sys_args = sys.argv  # Save a copy of current sys args
-                        print("\nWarning: geckodriver not found!"
-                              " Installing now:")
-                        try:
-                            sb_install.main(override="geckodriver")
-                        except Exception as e:
-                            print("\nWarning: Could not install geckodriver: "
-                                  "%s" % e)
-                        sys.argv = sys_args  # Put back the original sys args
-                firefox_driver = webdriver.Firefox(
-                    firefox_profile=profile,
-                    capabilities=firefox_capabilities,
-                    options=options)
-            except Exception:
-                profile = _create_firefox_profile(
-                    downloads_path, locale_code,
-                    proxy_string, user_agent, disable_csp)
-                firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
-                firefox_driver = webdriver.Firefox(
-                    firefox_profile=profile,
-                    capabilities=firefox_capabilities)
-            return firefox_driver
-        except Exception as e:
-            if headless:
-                raise Exception(e)
-            return webdriver.Firefox()
+                make_driver_executable_if_not(LOCAL_GECKODRIVER)
+            except Exception as e:
+                logging.debug("\nWarning: Could not make geckodriver"
+                              " executable: %s" % e)
+        elif not is_geckodriver_on_path():
+            args = " ".join(sys.argv)
+            if not ("-n" in sys.argv or "-n=" in args or args == "-c"):
+                # (Not multithreaded)
+                from seleniumbase.console_scripts import sb_install
+                sys_args = sys.argv  # Save a copy of current sys args
+                print("\nWarning: geckodriver not found!"
+                      " Installing now:")
+                try:
+                    sb_install.main(override="geckodriver")
+                except Exception as e:
+                    print("\nWarning: Could not install geckodriver: "
+                          "%s" % e)
+                sys.argv = sys_args  # Put back the original sys args
+        warnings.simplefilter("ignore", category=DeprecationWarning)
+        return webdriver.Firefox(options=firefox_options)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
             raise Exception(
@@ -898,7 +853,7 @@ def get_local_driver(
                 if proxy_auth:
                     edge_options = _add_chrome_proxy_extension(
                         edge_options, proxy_string, proxy_user, proxy_pass)
-                edge_options.add_argument('--proxy-server=%s' % proxy_string)
+                edge_options.add_argument("--proxy-server=%s" % proxy_string)
             edge_options.add_argument("--test-type")
             edge_options.add_argument("--log-level=3")
             edge_options.add_argument("--no-first-run")
@@ -915,7 +870,7 @@ def get_local_driver(
                 # To access the Remote Debugger, go to: http://localhost:9222
                 # while a Chromium driver is running.
                 # Info: https://chromedevtools.github.io/devtools-protocol/
-                edge_options.add_argument('--remote-debugging-port=9222')
+                edge_options.add_argument("--remote-debugging-port=9222")
             if swiftshader:
                 edge_options.add_argument("--use-gl=swiftshader")
             else:
