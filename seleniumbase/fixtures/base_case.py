@@ -3371,7 +3371,7 @@ class BaseCase(unittest.TestCase):
         """ Return True if the browser is Chrome, Edge, or Opera. """
         self.__check_scope()
         chromium = False
-        browser_name = self.driver.__dict__["capabilities"]["browserName"]
+        browser_name = self.driver.capabilities["browserName"]
         if browser_name in ("chrome", "edge", "msedge", "opera"):
             chromium = True
         return chromium
