@@ -1,7 +1,6 @@
 """
 Convert XPath selectors into CSS selectors
 """
-
 import re
 
 _sub_regexes = {

@@ -4,12 +4,11 @@
 import sys
 import time
 from nose.plugins import Plugin
-from nose.exc import SkipTest
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.core import report_helper
-from seleniumbase.fixtures import constants, errors
+from seleniumbase.fixtures import constants
 
 
 class Base(Plugin):
@@ -227,6 +226,7 @@ class Base(Plugin):
         error states, we want to make sure that they don't show up in
         the nose output as errors.
         """
+        from seleniumbase.fixtures import errors
         if (err[0] == errors.BlockedTest or (
                 err[0] == errors.SkipTest) or (
                 err[0] == errors.DeprecatedTest)):
@@ -243,6 +243,8 @@ class Base(Plugin):
         If the database plugin is not present, we have to handle capturing
         "errors" that shouldn't be reported as such in base.
         """
+        from nose.exc import SkipTest
+        from seleniumbase.fixtures import errors
         if not hasattr(test.test, "testcase_guid"):
             if err[0] == errors.BlockedTest:
                 raise SkipTest(err[1])

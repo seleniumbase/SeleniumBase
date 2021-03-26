@@ -33,8 +33,6 @@ from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 from selenium.webdriver.remote.errorhandler import NoSuchFrameException
 from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase.config import settings
-from seleniumbase.core import log_helper
-from seleniumbase.fixtures import page_utils
 from seleniumbase.fixtures import shared_utils as s_utils
 ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
@@ -598,6 +596,7 @@ def save_page_source(driver, name, folder=None):
     name - The file name to save the current page's HTML to.
     folder - The folder to save the file to. (Default = current folder)
     """
+    from seleniumbase.core import log_helper
     if not name.endswith(".html"):
         name = name + ".html"
     if folder:
@@ -716,6 +715,7 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     frame - the frame element, name, id, index, or selector
     timeout - the time to wait for the alert in seconds
     """
+    from seleniumbase.fixtures import page_utils
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):

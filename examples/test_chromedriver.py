@@ -13,13 +13,13 @@ class ChromedriverTests(BaseCase):
             print("\n  This test is only for Chrome!")
             print("  (Run with: '--browser=chrome')")
             self.skip("This test is only for Chrome!")
-        driver_capabilities = self.driver.__dict__["capabilities"]
+        driver_capabilities = self.driver.capabilities
         if "version" in driver_capabilities:
             chrome_version = driver_capabilities["version"]
         else:
             chrome_version = driver_capabilities["browserVersion"]
         major_chrome_version = chrome_version.split('.')[0]
-        chrome_dict = self.driver.__dict__["capabilities"]["chrome"]
+        chrome_dict = self.driver.capabilities["chrome"]
         chromedriver_version = chrome_dict["chromedriverVersion"]
         chromedriver_version = chromedriver_version.split(' ')[0]
         major_chromedriver_version = chromedriver_version.split('.')[0]

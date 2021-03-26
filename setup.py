@@ -200,7 +200,7 @@ setup(
             'flake8==3.7.9;python_version<"3.5"',
             'flake8==3.9.0;python_version>="3.5"',
             'pyflakes==2.1.1;python_version<"3.5"',
-            'pyflakes==2.3.0;python_version>="3.5"',
+            'pyflakes==2.3.1;python_version>="3.5"',
             'pycodestyle==2.5.0;python_version<"3.5"',
             'pycodestyle==2.7.0;python_version>="3.5"',
         ],

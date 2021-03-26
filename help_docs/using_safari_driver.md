@@ -1,4 +1,4 @@
-## Using Safari's WebDriver for running browser tests on macOS
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Using Safari's WebDriver for running browser tests on macOS</h2>
 
 *(NOTE: Safari's WebDriver requires macOS 10.13 "High Sierra" or later.)*
 
