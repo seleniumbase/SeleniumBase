@@ -115,6 +115,7 @@ nav:
     - Docker Start Guide: integrations/docker/ReadMe.md
     - Using Safari Driver: help_docs/using_safari_driver.md
     - Shadow DOM Support: help_docs/shadow_dom.md
+    - The HTML Inspector: help_docs/html_inspector.md
     - macOS Hidden Files: help_docs/hidden_files_info.md
     - MySQL Instructions: help_docs/mysql_installation.md
   - Demo Pages:
