@@ -12,6 +12,9 @@ class EdgeTests(BaseCase):
             print("\n  This test is only for Microsoft Edge (Chromium)!")
             print('  (Run this test using "--edge" or "--browser=edge")')
             self.skip('Use "--edge" or "--browser=edge"')
+        if self.headless:
+            print("\n  This test is NOT designed for Headless Mode!")
+            self.skip('Do NOT use "--headless" with this test!')
         self.open("edge://settings/help")
         self.highlight('div[role="main"]')
         self.highlight('img[srcset*="logo"]')

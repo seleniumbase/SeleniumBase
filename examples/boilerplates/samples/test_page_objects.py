@@ -24,8 +24,7 @@ class SeleniumBaseGitHubPage():
         sb.wait_for_ready_state_complete()
         current_url = sb.get_current_url()
         if "seleniumbase.io" not in current_url:
-            # GitHub probably opened a new window
-            sb.switch_to_window(1)
+            sb.switch_to_window(1)  # GitHub probably opened a new window
 
 
 class SeleniumBaseIOPage():

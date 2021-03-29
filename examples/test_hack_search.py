@@ -18,6 +18,8 @@ class HackingTests(BaseCase):
         self.click('[value="Bing Search"]')
         self.highlight("h1.b_logo")
         self.highlight_click('a[href*="github.com/seleniumbase/SeleniumBase"]')
+        if self.browser == "firefox":
+            self.switch_to_window(1)  # Firefox opens a new window
         self.assert_element('[href="/seleniumbase/SeleniumBase"]')
         self.assert_true("seleniumbase/SeleniumBase" in self.get_current_url())
         self.click('a[title="examples"]')
