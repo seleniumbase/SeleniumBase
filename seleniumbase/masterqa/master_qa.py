@@ -2,8 +2,8 @@ import os
 import shutil
 import sys
 import time
+from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.remote.errorhandler import NoAlertPresentException
 from seleniumbase import BaseCase
 from seleniumbase.core.style_sheet import style
 from seleniumbase.config import settings

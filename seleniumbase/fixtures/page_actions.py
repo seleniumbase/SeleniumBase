@@ -23,15 +23,15 @@ import codecs
 import os
 import sys
 import time
+from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchFrameException
+from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common import exceptions as selenium_exceptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
-from selenium.webdriver.remote.errorhandler import NoSuchElementException
-from selenium.webdriver.remote.errorhandler import NoAlertPresentException
-from selenium.webdriver.remote.errorhandler import NoSuchFrameException
-from selenium.webdriver.remote.errorhandler import NoSuchWindowException
 from seleniumbase.config import settings
 from seleniumbase.fixtures import shared_utils as s_utils
 ENI_Exception = selenium_exceptions.ElementNotInteractableException

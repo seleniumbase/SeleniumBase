@@ -168,7 +168,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.21.0;python_version>="3.7"',
+        'ipython==7.22.0;python_version>="3.7"',
         'colorama==0.4.4',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
@@ -183,7 +183,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.1.2;python_version>="3.6"',
-        'rich==9.13.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.0.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
