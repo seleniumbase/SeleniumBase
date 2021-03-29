@@ -14,12 +14,16 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
 
 
-def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
+def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
     """
     The DOM (Document Object Model) has a property called "readyState".
     When the value of this becomes "complete", page resources are considered
-    fully loaded (although AJAX and other loads might still be happening).
+      fully loaded (although AJAX and other loads might still be happening).
     This method will wait until document.readyState == "complete".
+    This may be redundant, as methods already wait for page elements to load.
+    If the timeout is exceeded, the test will still continue
+      because readyState == "interactive" may be good enough.
+    (Previously, tests would fail immediately if exceeding the timeout.)
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -39,8 +43,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.EXTREME_TIMEOUT):
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-    raise Exception(
-        "Page elements never fully loaded after %s seconds!" % timeout)
+    return False  # readyState stayed "interactive" (Not "complete")
 
 
 def execute_async_script(driver, script, timeout=settings.EXTREME_TIMEOUT):
