@@ -464,7 +464,7 @@ pytest test_fail.py
 pytest test_suite.py --html=report.html
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/pytest_report_3c.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
+<img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
 还可以使用``--junit-xml=report``。获取一个xml报告。Jenkins可以使用这个文件为您的测试显示更好的报告。
 
@@ -480,7 +480,7 @@ pytest test_suite.py --junit-xml=report.xml
 nosetests test_suite.py --report
 ```
 
-<img src="https://cdn2.hubspot.net/hubfs/100006/images/Test_Report_2.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
+<img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (注意:您可以添加``--show-report ``来在测试套件完成后立即显示Nosetest报告。只在本地运行测试时使用``--show-report ``，因为它会暂停测试运行.)
 

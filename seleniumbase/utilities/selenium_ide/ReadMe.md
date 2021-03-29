@@ -4,7 +4,7 @@ Katalon Recorder (Selenium IDE) is a tool that allows you to record and playback
 
 ### Step 1: Make a recording with the Katalon Recorder
 
-![](https://cdn2.hubspot.net/hubfs/100006/images/katalon_recorder_2.png "Katalon Recorder example")
+![](https://seleniumbase.io/cdn/img/katalon_recorder_2.png "Katalon Recorder example")
 
 ### Step 2: Export your recording as a Python 2 Webdriver script
 
