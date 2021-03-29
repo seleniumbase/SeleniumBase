@@ -2,11 +2,11 @@
 This module contains shared utility methods.
 """
 import time
-from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
-from selenium.webdriver.remote.errorhandler import NoSuchElementException
-from selenium.webdriver.remote.errorhandler import NoAlertPresentException
-from selenium.webdriver.remote.errorhandler import NoSuchFrameException
-from selenium.webdriver.remote.errorhandler import NoSuchWindowException
+from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchFrameException
+from selenium.common.exceptions import NoSuchWindowException
 from seleniumbase.common.exceptions import NoSuchFileException
 from seleniumbase.common.exceptions import TimeLimitExceededException
 from seleniumbase import config as sb_config

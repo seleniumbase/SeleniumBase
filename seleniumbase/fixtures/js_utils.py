@@ -5,6 +5,7 @@ These helper methods SHOULD NOT be called directly from tests.
 import re
 import requests
 import time
+from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import WebDriverException
 from seleniumbase import config as sb_config
 from seleniumbase.common import decorators
@@ -214,8 +215,7 @@ def wait_for_css_query_selector(
             if now_ms >= stop_ms:
                 break
             time.sleep(0.1)
-
-    raise Exception(
+    raise NoSuchElementException(
         "Element {%s} was not present after %s seconds!" % (
             selector, timeout))
 
