@@ -17,7 +17,8 @@ class SwagLabsTests(BaseCase):
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
-        self.assert_text("Products", "div.product_label")
+        if v1:
+            self.assert_text("Products", "div.product_label")
 
     @parameterized.expand([
         ["standard_user"],
@@ -27,7 +28,7 @@ class SwagLabsTests(BaseCase):
     def test_swag_labs_basic_flow(self, username):
         """ This test checks functional flow of the Swag Labs store.
             This test is parameterized on the login user. """
-        self.login_to_swag_labs(username=username)
+        self.login_to_swag_labs(username=username, v1=True)
         if username == "problem_user":
             print("\n(This test should fail)")
 

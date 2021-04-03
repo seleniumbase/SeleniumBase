@@ -6,7 +6,7 @@ from seleniumbase import BaseCase
 class LoginPage():
 
     def login_to_swag_labs(self, sb, username):
-        sb.open("https://www.saucedemo.com/")
+        sb.open("https://www.saucedemo.com/v1")
         sb.type("#user-name", username)
         sb.type("#password", "secret_sauce")
         sb.click('input[type="submit"]')

@@ -10,7 +10,7 @@ from seleniumbase import encryption
 class DecryptionTests(BaseCase):
 
     def test_decrypt_password(self):
-        self.open("https://www.saucedemo.com/")
+        self.open("https://www.saucedemo.com/v1")
         self.type("#user-name", "standard_user")
 
         encrypted_password = "$^*ENCRYPT=S3BDTAdCWzMmKEY8Gjg=?&#$"
