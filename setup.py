@@ -46,6 +46,7 @@ if sys.argv[-1] == 'publish':
             print("*** No flake8 issues detected. Continuing...")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system('rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl')
+        os.system('rm -rf build/bdist.*; rm -rf build/lib')
         os.system('python setup.py sdist bdist_wheel')  # Create new tar/wheel
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
