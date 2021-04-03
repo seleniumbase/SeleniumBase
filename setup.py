@@ -46,6 +46,7 @@ if sys.argv[-1] == 'publish':
             print("*** No flake8 issues detected. Continuing...")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system('rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl')
+        os.system('rm -rf build/bdist.*; rm -rf build/lib')
         os.system('python setup.py sdist bdist_wheel')  # Create new tar/wheel
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
@@ -120,7 +121,7 @@ setup(
         'ipdb==0.13.4;python_version<"3.6"',
         'ipdb==0.13.7;python_version>="3.6"',
         'parso==0.7.1;python_version<"3.6"',
-        'parso==0.8.1;python_version>="3.6"',
+        'parso==0.8.2;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
         'jedi==0.18.0;python_version>="3.6"',
         'idna==2.10',  # Must stay in sync with "requests"
@@ -165,6 +166,7 @@ setup(
         'traitlets==5.0.5;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
         'prompt-toolkit==3.0.18;python_version>="3.6"',
+        'decorator==4.4.2',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
@@ -182,8 +184,8 @@ setup(
         'toml==0.10.2',
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
-        'Pillow==8.1.2;python_version>="3.6"',
-        'rich==10.0.0;python_version>="3.6" and python_version<"4.0"',
+        'Pillow==8.2.0;python_version>="3.6"',
+        'rich==10.0.1;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',

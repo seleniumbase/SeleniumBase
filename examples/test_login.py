@@ -5,7 +5,7 @@ class SwagLabsLoginTests(BaseCase):
 
     def login_to_swag_labs(self):
         """ Login to Swag Labs and verify that login was successful. """
-        self.open("https://www.saucedemo.com/")
+        self.open("https://www.saucedemo.com/v1")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')

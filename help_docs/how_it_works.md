@@ -23,4 +23,4 @@ class MyTestClass(BaseCase):
 
 --------
 
-For more ways of using SeleniumBase, see: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">SyntaxFormats</a>.
+For more ways of using SeleniumBase, see: <a href="https://seleniumbase.io/help_docs/syntax_formats/">SyntaxFormats</a>.

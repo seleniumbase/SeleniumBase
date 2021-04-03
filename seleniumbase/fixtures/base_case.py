@@ -7715,6 +7715,10 @@ class BaseCase(unittest.TestCase):
             will still be taken after the last step of your tearDown(), where
             you should be calling "super(SubClassOfBaseCase, self).tearDown()"
         """
+        try:
+            self.__check_scope()
+        except Exception:
+            return
         if self.__has_exception() or self.save_screenshot_after_test:
             test_id = self.__get_test_id()
             test_logpath = self.log_path + "/" + test_id
