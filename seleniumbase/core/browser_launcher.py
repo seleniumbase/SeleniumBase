@@ -381,7 +381,7 @@ def _set_firefox_options(
         options.set_preference("security.csp.enable", False)
     options.set_preference(
         "browser.download.manager.showAlertOnComplete", False)
-    if headless:
+    if headless and "linux" not in PLATFORM:
         options.add_argument("--headless")
     if locale_code:
         options.set_preference("intl.accept_languages", locale_code)
@@ -579,6 +579,11 @@ def get_remote_driver(
             downloads_path, headless, locale_code,
             proxy_string, user_agent, disable_csp)
         capabilities = firefox_options.to_capabilities()
+        capabilities['marionette'] = True
+        if "linux" in PLATFORM:
+            if headless:
+                capabilities['moz:firefoxOptions'] = (
+                    {'args': ['-headless']})
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
         warnings.simplefilter("ignore", category=DeprecationWarning)
@@ -703,7 +708,19 @@ def get_local_driver(
                           "%s" % e)
                 sys.argv = sys_args  # Put back the original sys args
         warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Firefox(options=firefox_options)
+        if "linux" in PLATFORM:
+            from selenium.webdriver.common.desired_capabilities import (
+                DesiredCapabilities)
+            firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
+            firefox_capabilities['marionette'] = True
+            if headless:
+                firefox_capabilities['moz:firefoxOptions'] = (
+                    {'args': ['-headless']})
+            return webdriver.Firefox(
+                capabilities=firefox_capabilities,
+                options=firefox_options)
+        else:
+            return webdriver.Firefox(options=firefox_options)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
             raise Exception(
