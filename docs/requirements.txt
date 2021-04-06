@@ -1,8 +1,9 @@
-regex>=2021.3.17
-tqdm>=4.59.0
+regex>=2021.4.4
+tqdm>=4.60.0
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
 Markdown==3.3.4
+docutils==0.17
 Jinja2==2.11.3
 readme-renderer==29.0
 pymdown-extensions==8.1.1
