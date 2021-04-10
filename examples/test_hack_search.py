@@ -13,13 +13,12 @@ class HackingTests(BaseCase):
         self.assert_element('input[title="Search"]')
         self.set_attribute('[action="/search"]', "action", "//bing.com/search")
         self.set_attributes('[value="Google Search"]', "value", "Bing Search")
-        self.type('input[title="Search"]', "SeleniumBase GitHub.com")
+        self.type('input[title="Search"]', "SeleniumBase GitHub")
         self.highlight('[value="Bing Search"]')
         self.click('[value="Bing Search"]')
         self.highlight("h1.b_logo")
         self.highlight_click('a[href*="github.com/seleniumbase/SeleniumBase"]')
-        if self.browser == "firefox":
-            self.switch_to_window(1)  # Firefox opens a new window
+        self.switch_to_newest_window()
         self.assert_element('[href="/seleniumbase/SeleniumBase"]')
         self.assert_true("seleniumbase/SeleniumBase" in self.get_current_url())
         self.click('a[title="examples"]')

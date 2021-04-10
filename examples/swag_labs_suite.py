@@ -1,15 +1,12 @@
-import pytest
 from parameterized import parameterized
 from seleniumbase import BaseCase
 
 
 class SwagLabsTests(BaseCase):
 
-    def login_to_swag_labs(self, username="standard_user", v1=False):
+    def login_to_swag_labs(self, username="standard_user"):
         """ Login to Swag Labs and verify success. """
         url = "https://www.saucedemo.com"
-        if v1:
-            url += "/v1"
         self.open(url)
         if username not in self.get_text("#login_credentials"):
             self.fail("Invalid user for login: %s" % username)
@@ -17,18 +14,16 @@ class SwagLabsTests(BaseCase):
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
-        if v1:
-            self.assert_text("Products", "div.product_label")
+        self.assert_element('div:contains("Sauce Labs Backpack")')
 
     @parameterized.expand([
         ["standard_user"],
         ["problem_user"],
     ])
-    @pytest.mark.run(order=1)
     def test_swag_labs_basic_flow(self, username):
         """ This test checks functional flow of the Swag Labs store.
             This test is parameterized on the login user. """
-        self.login_to_swag_labs(username=username, v1=True)
+        self.login_to_swag_labs(username=username)
         if username == "problem_user":
             print("\n(This test should fail)")
 
@@ -49,60 +44,42 @@ class SwagLabsTests(BaseCase):
         self.assert_exact_text("1", "span.shopping_cart_badge")
 
         # Verify your cart
-        self.click("#shopping_cart_container path")
-        self.assert_exact_text("Your Cart", "div.subheader")
+        self.click("#shopping_cart_container")
+        self.assert_element('span:contains("Your Cart")')
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_exact_text("1", "div.cart_quantity")
         self.assert_exact_text("REMOVE", "button.cart_button")
-        continue_shopping_button = "link=CONTINUE SHOPPING"
-        if self.browser == "safari":
-            # Safari sees this element differently
-            continue_shopping_button = "link=Continue Shopping"
-        self.assert_element(continue_shopping_button)
+        self.assert_element("button#continue-shopping")
 
         # Checkout - Add info
-        self.click("link=CHECKOUT")
-        self.assert_text("Checkout: Your Information", "div.subheader")
-        self.assert_element("a.cart_cancel_link")
+        self.click("button#checkout")
+        self.assert_element('span:contains("Checkout: Your Information")')
+        self.assert_element("button#cancel")
         self.type("#first-name", "SeleniumBase")
         self.type("#last-name", "Rocks")
         self.type("#postal-code", "01720")
 
         # Checkout - Overview
-        self.click("input.btn_primary")
-        self.assert_text("Checkout: Overview", "div.subheader")
-        self.assert_element("link=CANCEL")
+        self.click("input#continue")
+        self.assert_element('span:contains("Checkout: Overview")')
+        self.assert_element("button#cancel")
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_text(item_price, "div.inventory_item_price")
-        self.assert_exact_text("1", "div.summary_quantity")
+        self.assert_exact_text("1", "div.cart_quantity")
 
-        # Finish Checkout and verify the item was removed from the cart
-        self.click("link=FINISH")
+        # Finish Checkout and verify that the cart is now empty
+        self.click("button#finish")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
         self.assert_element("img.pony_express")
-        self.click("#shopping_cart_container path")
+        self.click("#shopping_cart_container")
         self.assert_element_absent("div.inventory_item_name")
-        self.click(continue_shopping_button)
+        self.click("button#continue-shopping")
         self.assert_element_absent("span.shopping_cart_badge")
 
     @parameterized.expand([
         ["standard_user"],
         ["problem_user"],
     ])
-    @pytest.mark.run(order=2)
-    def test_swag_labs_products_page_links(self, username):
-        """ This test checks for 404s on the Swag Labs products page.
-            This test is parameterized on the login user. """
-        self.login_to_swag_labs(username=username, v1=True)
-        if username == "problem_user":
-            print("\n(This test should fail)")
-        self.assert_no_404_errors()
-
-    @parameterized.expand([
-        ["standard_user"],
-        ["problem_user"],
-    ])
-    @pytest.mark.run(order=3)
     def test_swag_labs_visual_regressions(self, username):
         """ This test checks for visual regressions on the Swag Labs page.
             This test is parameterized on the login user. """

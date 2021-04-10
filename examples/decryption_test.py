@@ -1,6 +1,6 @@
 """
 This test demonstrates the use of encryption/decryption.
-(Technically, obfuscation/unobfuscation.)
+(Technically, obfuscation/unobfuscation of passwords.)
 """
 
 from seleniumbase import BaseCase
@@ -10,7 +10,7 @@ from seleniumbase import encryption
 class DecryptionTests(BaseCase):
 
     def test_decrypt_password(self):
-        self.open("https://www.saucedemo.com/v1")
+        self.open("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
 
         encrypted_password = "$^*ENCRYPT=S3BDTAdCWzMmKEY8Gjg=?&#$"
@@ -20,5 +20,5 @@ class DecryptionTests(BaseCase):
         self.type("#password", password)
 
         self.click('input[type="submit"]')
-        self.assert_text("Products", "div.product_label")
         self.assert_element("#inventory_container")
+        self.assert_element('div:contains("Sauce Labs Backpack")')
