@@ -1817,12 +1817,9 @@ class BaseCase(unittest.TestCase):
             it's important that the jQuery library has been loaded first.
             This method will load jQuery if it wasn't already loaded. """
         self.__check_scope()
-        try:
-            return self.driver.execute_script(script, *args, **kwargs)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            return self.driver.execute_script(script, *args, **kwargs)
+        if not js_utils.is_jquery_activated(self.driver):
+            self.activate_jquery()
+        return self.driver.execute_script(script, *args, **kwargs)
 
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
