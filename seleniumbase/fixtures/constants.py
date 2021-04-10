@@ -30,7 +30,7 @@ class Charts:
 class Dashboard:
     TITLE = "SeleniumBase Test Results Dashboard"
     STYLE_CSS = 'https://seleniumbase.io/cdn/css/pytest_style.css'
-    META_REFRESH_HTML = '<meta http-equiv="refresh" content="10">'
+    META_REFRESH_HTML = '<meta http-equiv="refresh" content="12">'
     # LIVE_JS = 'https://livejs.com/live.js#html'
     LIVE_JS = 'https://seleniumbase.io/cdn/js/live.js#html'
 
