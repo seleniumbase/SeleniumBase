@@ -1944,7 +1944,7 @@ class BaseCase(unittest.TestCase):
         self.driver.execute_script("window.open('');")
         time.sleep(0.01)
         if switch_to:
-            self.switch_to_window(len(self.driver.window_handles) - 1)
+            self.switch_to_newest_window()
             time.sleep(0.01)
             if self.browser == "safari":
                 self.wait_for_ready_state_complete()
@@ -1959,6 +1959,9 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_window(self):
         self.switch_to_window(0)
+
+    def switch_to_newest_window(self):
+        self.switch_to_window(len(self.driver.window_handles) - 1)
 
     def get_new_driver(self, browser=None, headless=None, locale_code=None,
                        servername=None, port=None, proxy=None, agent=None,
