@@ -113,6 +113,6 @@
 --------
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="260" />
+<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="260" />
 </a></p>
 <!-- View on GitHub -->

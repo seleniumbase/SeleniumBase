@@ -94,4 +94,4 @@ nosetests test_suite.py --report
 
 --------
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/sb_logo_7.png" alt="SeleniumBase" width="240" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="240" /></a></div>
