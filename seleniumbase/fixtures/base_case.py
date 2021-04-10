@@ -175,13 +175,84 @@ class BaseCase(unittest.TestCase):
                 else:
                     self.__js_click(selector, by=by)
             else:
+                href = None
+                new_tab = False
+                onclick = None
+                try:
+                    if self.headless and element.tag_name == "a":
+                        # Handle a special case of opening a new tab (headless)
+                        href = element.get_attribute("href").strip()
+                        onclick = element.get_attribute("onclick")
+                        target = element.get_attribute("target")
+                        if target == "_blank":
+                            new_tab = True
+                        if new_tab and self.__looks_like_a_page_url(href):
+                            if onclick:
+                                try:
+                                    self.execute_script(onclick)
+                                except Exception:
+                                    pass
+                            current_window = self.driver.current_window_handle
+                            self.open_new_window()
+                            try:
+                                self.open(href)
+                            except Exception:
+                                pass
+                            self.switch_to_window(current_window)
+                            return
+                except Exception:
+                    pass
                 # Normal click
                 element.click()
-        except (StaleElementReferenceException, ENI_Exception):
+        except StaleElementReferenceException:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
+            try:
+                self.__scroll_to_element(element, selector, by)
+            except Exception:
+                pass
+            if self.browser == "safari":
+                if by == By.LINK_TEXT:
+                    self.__jquery_click(selector, by=by)
+                else:
+                    self.__js_click(selector, by=by)
+            else:
+                element.click()
+        except ENI_Exception:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.1)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=timeout)
+            href = None
+            new_tab = False
+            onclick = None
+            try:
+                if element.tag_name == "a":
+                    # Handle a special case of opening a new tab (non-headless)
+                    href = element.get_attribute("href").strip()
+                    onclick = element.get_attribute("onclick")
+                    target = element.get_attribute("target")
+                    if target == "_blank":
+                        new_tab = True
+                    if new_tab and self.__looks_like_a_page_url(href):
+                        if onclick:
+                            try:
+                                self.execute_script(onclick)
+                            except Exception:
+                                pass
+                        current_window = self.driver.current_window_handle
+                        self.open_new_window()
+                        try:
+                            self.open(href)
+                        except Exception:
+                            pass
+                        self.switch_to_window(current_window)
+                        return
+            except Exception:
+                pass
+            self.__scroll_to_element(element, selector, by)
             if self.browser == "safari":
                 if by == By.LINK_TEXT:
                     self.__jquery_click(selector, by=by)
