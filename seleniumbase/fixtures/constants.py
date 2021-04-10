@@ -54,6 +54,11 @@ class Values:
     SSMD = 900  # Smooth Scroll Minimum Distance (for advanced slow scroll)
 
 
+class Warnings:
+    SCREENSHOT_UNDEFINED = "Unable to get screenshot!"
+    PAGE_SOURCE_UNDEFINED = "Unable to get page source!"
+
+
 class JQuery:
     VER = "3.5.1"
     MIN_JS = (

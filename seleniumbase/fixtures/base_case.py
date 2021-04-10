@@ -7495,13 +7495,15 @@ class BaseCase(unittest.TestCase):
                             self.__last_page_screenshot = (
                                 self.driver.get_screenshot_as_base64())
                         except Exception:
-                            pass
+                            self.__last_page_screenshot = (
+                                constants.Warnings.SCREENSHOT_UNDEFINED)
                 if not self.__last_page_screenshot_png:
                     try:
                         self.__last_page_screenshot_png = (
                             self.driver.get_screenshot_as_png())
                     except Exception:
-                        pass
+                        self.__last_page_screenshot_png = (
+                                constants.Warnings.SCREENSHOT_UNDEFINED)
 
     def __set_last_page_url(self):
         if not self.__last_page_url:
@@ -7517,7 +7519,8 @@ class BaseCase(unittest.TestCase):
                     log_helper.get_html_source_with_base_href(
                         self.driver, self.driver.page_source))
             except Exception:
-                self.__last_page_source = None
+                self.__last_page_source = (
+                    constants.Warnings.PAGE_SOURCE_UNDEFINED)
 
     def __get_exception_info(self):
         exc_message = None
@@ -7585,8 +7588,10 @@ class BaseCase(unittest.TestCase):
                         extra_image['mime_type'] = 'image/png'
                         extra_image['extension'] = 'png'
                         self.__added_pytest_html_extra = True
-                        self._html_report_extra.append(extra_url)
-                        self._html_report_extra.append(extra_image)
+                        if self.__last_page_screenshot != (
+                                constants.Warnings.SCREENSHOT_UNDEFINED):
+                            self._html_report_extra.append(extra_url)
+                            self._html_report_extra.append(extra_image)
             except Exception:
                 pass
 
