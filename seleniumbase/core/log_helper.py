@@ -5,24 +5,29 @@ import shutil
 import sys
 import time
 from seleniumbase.config import settings
+from seleniumbase.fixtures import constants
 
 
 def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_name = settings.SCREENSHOT_NAME
     screenshot_path = "%s/%s" % (test_logpath, screenshot_name)
+    screenshot_warning = constants.Warnings.SCREENSHOT_UNDEFINED
     try:
         if not screenshot:
             element = driver.find_element_by_tag_name('body')
             screenshot = element.screenshot_as_base64
-        with open(screenshot_path, "wb") as file:
-            file.write(screenshot)
+        if screenshot != screenshot_warning:
+            with open(screenshot_path, "wb") as file:
+                file.write(screenshot)
+        else:
+            print("WARNING: %s" % screenshot_warning)
         if get:
             return screenshot
     except Exception:
         try:
             driver.get_screenshot_as_file(screenshot_path)
         except Exception:
-            print("WARNING: Unable to get screenshot for failure logs!")
+            print("WARNING: %s" % screenshot_warning)
 
 
 def get_master_time():
@@ -72,13 +77,15 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     test_id = get_test_id(test)
     data_to_save = []
     data_to_save.append("%s" % test_id)
-    data_to_save.append("----------------------------------------------------")
+    data_to_save.append(
+        "--------------------------------------------------------------------")
     data_to_save.append("Last Page: %s" % last_page)
     data_to_save.append("  Browser: %s" % browser)
     data_to_save.append("Timestamp: %s" % timestamp)
     data_to_save.append("     Date: %s" % the_date)
     data_to_save.append("     Time: %s" % the_time)
-    data_to_save.append("----------------------------------------------------")
+    data_to_save.append(
+        "--------------------------------------------------------------------")
     if sys.version_info[0] >= 3 and hasattr(test, '_outcome') and (
             hasattr(test._outcome, 'errors') and test._outcome.errors):
         try:
@@ -128,6 +135,10 @@ def log_page_source(test_logpath, driver, source=None):
         except Exception:
             # Since we can't get the page source from here, skip saving it
             return
+    if source == constants.Warnings.PAGE_SOURCE_UNDEFINED:
+        page_source = "<h3>Warning: " + source + (
+            "</h3>\n<h4>The browser window was either unreachable, "
+            "unresponsive, or closed prematurely!</h4>")
     html_file_path = "%s/%s" % (test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
     rendered_source = get_html_source_with_base_href(driver, page_source)

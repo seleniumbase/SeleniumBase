@@ -123,8 +123,7 @@ def main():
 
     data = []
     data.append("[pytest]")
-    data.append("addopts = --capture=no --ignore conftest.py "
-                "-p no:cacheprovider")
+    data.append("addopts = --capture=no -p no:cacheprovider")
     data.append("filterwarnings =")
     data.append("    ignore::pytest.PytestWarning")
     data.append("    ignore:.*U.*mode is deprecated:DeprecationWarning")

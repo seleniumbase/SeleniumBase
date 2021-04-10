@@ -21,10 +21,7 @@ class SeleniumBaseGitHubPage():
         link = '#readme article a[href*="seleniumbase.io"]'
         sb.wait_for_element_visible(link)
         sb.js_click(link)
-        sb.wait_for_ready_state_complete()
-        current_url = sb.get_current_url()
-        if "seleniumbase.io" not in current_url:
-            sb.switch_to_window(1)  # GitHub probably opened a new window
+        sb.switch_to_newest_window()
 
 
 class SeleniumBaseIOPage():

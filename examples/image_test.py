@@ -1,8 +1,10 @@
+import pytest
 from seleniumbase import BaseCase
 
 
 class ImageTests(BaseCase):
 
+    @pytest.mark.run(order=1)
     def test_pull_image_from_website(self):
         """ Pull an image from a website and save it as a PNG file. """
         self.open("https://xkcd.com/1117/")
@@ -12,6 +14,7 @@ class ImageTests(BaseCase):
         self.save_element_as_image_file(selector, file_name, folder)
         print('"%s/%s" has been saved!' % (folder, file_name))
 
+    @pytest.mark.run(order=2)
     def test_add_text_overlay_to_image(self):
         """ Add a text overlay to an image. """
         self.open("https://xkcd.com/1117/")
@@ -23,6 +26,7 @@ class ImageTests(BaseCase):
             selector, file_name, folder, overlay_text)
         print('"%s/%s" has been saved!' % (folder, file_name))
 
+    @pytest.mark.run(order=3)
     def test_add_text_overlay_to_page_section(self):
         """ Add a text overlay to a section of a page. """
         self.open("https://xkcd.com/2200/")
@@ -38,6 +42,7 @@ class ImageTests(BaseCase):
             selector, file_name, folder, overlay_text)
         print('"%s/%s" has been saved!' % (folder, file_name))
 
+    @pytest.mark.run(order=4)
     def test_add_text_overlay_to_full_page(self):
         """ Add a text overlay to a full page. """
         self.open("https://xkcd.com/1922/")

@@ -179,6 +179,8 @@ self.switch_to_window(window, timeout=None)
 
 self.switch_to_default_window()
 
+self.switch_to_newest_window()
+
 self.get_new_driver(browser=None, headless=None, locale_code=None,
                     servername=None, port=None, proxy=None, agent=None,
                     switch_to=True, cap_file=None, cap_string=None,
@@ -485,14 +487,21 @@ self.generate_traffic_chain(pages, loops=1)
 self.get_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
 
+self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
+
+self.assert_elements_present(*args, **kwargs)
+
+############
+
 self.find_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.wait_for_element(selector, by=By.CSS_SELECTOR, timeout=None)
 #             self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
-
 self.assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
+
+self.assert_elements(*args, **kwargs)
+# Duplicates: self.assert_elements_visible(*args, **kwargs)
 
 ############
 
@@ -579,6 +588,20 @@ self.fail(msg=None)  # Inherited from "unittest"
 self._print(TEXT)  # Calls Python's print() / Allows for translations
 ```
 
----
+--------
 
-Example Test: [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py)
+<h2>🔵 Examples</h2>
+
+✅ Test Folder: [SeleniumBase/examples](https://github.com/seleniumbase/SeleniumBase/tree/master/examples)
+
+* [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py)
+* [parameterized_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/parameterized_test.py)
+* [test_deferred_asserts.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_deferred_asserts.py)
+* [test_demo_site.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py)
+* [test_error_page.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_error_page.py)
+* [test_login.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_login.py)
+* [test_markers.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_markers.py)
+* [test_swag_labs.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py)
+* [test_suite.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py)
+* [test_tinymce.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_tinymce.py)
+* And many more...

@@ -257,6 +257,10 @@ class CasoDeTeste(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def mudar_para_a_janela_última(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
+
     def maximizar_janela(self, *args, **kwargs):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)

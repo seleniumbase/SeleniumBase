@@ -54,7 +54,7 @@ theme:
     text: Roboto
     code: Roboto Mono
   icon:
-    logo: img/sb_logo_7.png
+    logo: img/sb_logo_10.png
 # Plugins
 plugins:
   - search:

@@ -253,9 +253,13 @@ class ТестНаСелен(BaseCase):  # noqa
         # switch_to_window(window)
         return self.switch_to_window(*args, **kwargs)
 
-    def переключиться_в_окно_по_умолчанию(self, *args, **kwargs):
+    def переключиться_на_окно_по_умолчанию(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def переключиться_на_последнее_окно(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def максимальное_окно(self, *args, **kwargs):
         # maximize_window()

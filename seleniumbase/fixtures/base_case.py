@@ -143,6 +143,8 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
+        if delay and (type(delay) in [int, float]) and delay > 0:
+            time.sleep(delay)
         if page_utils.is_link_text_selector(selector) or by == By.LINK_TEXT:
             if not self.is_link_text_visible(selector):
                 # Handle a special case of links hidden in dropdowns
@@ -163,8 +165,6 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
-        if delay and delay > 0:
-            time.sleep(delay)
         try:
             if self.browser == "ie" and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
@@ -175,13 +175,84 @@ class BaseCase(unittest.TestCase):
                 else:
                     self.__js_click(selector, by=by)
             else:
+                href = None
+                new_tab = False
+                onclick = None
+                try:
+                    if self.headless and element.tag_name == "a":
+                        # Handle a special case of opening a new tab (headless)
+                        href = element.get_attribute("href").strip()
+                        onclick = element.get_attribute("onclick")
+                        target = element.get_attribute("target")
+                        if target == "_blank":
+                            new_tab = True
+                        if new_tab and self.__looks_like_a_page_url(href):
+                            if onclick:
+                                try:
+                                    self.execute_script(onclick)
+                                except Exception:
+                                    pass
+                            current_window = self.driver.current_window_handle
+                            self.open_new_window()
+                            try:
+                                self.open(href)
+                            except Exception:
+                                pass
+                            self.switch_to_window(current_window)
+                            return
+                except Exception:
+                    pass
                 # Normal click
                 element.click()
-        except (StaleElementReferenceException, ENI_Exception):
+        except StaleElementReferenceException:
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
                 self.driver, selector, by, timeout=timeout)
+            try:
+                self.__scroll_to_element(element, selector, by)
+            except Exception:
+                pass
+            if self.browser == "safari":
+                if by == By.LINK_TEXT:
+                    self.__jquery_click(selector, by=by)
+                else:
+                    self.__js_click(selector, by=by)
+            else:
+                element.click()
+        except ENI_Exception:
+            self.wait_for_ready_state_complete()
+            time.sleep(0.1)
+            element = page_actions.wait_for_element_visible(
+                self.driver, selector, by, timeout=timeout)
+            href = None
+            new_tab = False
+            onclick = None
+            try:
+                if element.tag_name == "a":
+                    # Handle a special case of opening a new tab (non-headless)
+                    href = element.get_attribute("href").strip()
+                    onclick = element.get_attribute("onclick")
+                    target = element.get_attribute("target")
+                    if target == "_blank":
+                        new_tab = True
+                    if new_tab and self.__looks_like_a_page_url(href):
+                        if onclick:
+                            try:
+                                self.execute_script(onclick)
+                            except Exception:
+                                pass
+                        current_window = self.driver.current_window_handle
+                        self.open_new_window()
+                        try:
+                            self.open(href)
+                        except Exception:
+                            pass
+                        self.switch_to_window(current_window)
+                        return
+            except Exception:
+                pass
+            self.__scroll_to_element(element, selector, by)
             if self.browser == "safari":
                 if by == By.LINK_TEXT:
                     self.__jquery_click(selector, by=by)
@@ -1817,12 +1888,9 @@ class BaseCase(unittest.TestCase):
             it's important that the jQuery library has been loaded first.
             This method will load jQuery if it wasn't already loaded. """
         self.__check_scope()
-        try:
-            return self.driver.execute_script(script, *args, **kwargs)
-        except Exception:
-            # The likely reason this fails is because: "jQuery is not defined"
-            self.activate_jquery()  # It's a good thing we can define it here
-            return self.driver.execute_script(script, *args, **kwargs)
+        if not js_utils.is_jquery_activated(self.driver):
+            self.activate_jquery()
+        return self.driver.execute_script(script, *args, **kwargs)
 
     def set_window_rect(self, x, y, width, height):
         self.__check_scope()
@@ -1876,7 +1944,7 @@ class BaseCase(unittest.TestCase):
         self.driver.execute_script("window.open('');")
         time.sleep(0.01)
         if switch_to:
-            self.switch_to_window(len(self.driver.window_handles) - 1)
+            self.switch_to_newest_window()
             time.sleep(0.01)
             if self.browser == "safari":
                 self.wait_for_ready_state_complete()
@@ -1891,6 +1959,9 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_window(self):
         self.switch_to_window(0)
+
+    def switch_to_newest_window(self):
+        self.switch_to_window(len(self.driver.window_handles) - 1)
 
     def get_new_driver(self, browser=None, headless=None, locale_code=None,
                        servername=None, port=None, proxy=None, agent=None,
@@ -2798,7 +2869,8 @@ class BaseCase(unittest.TestCase):
         all_links = self.get_unique_links()
         links = []
         for link in all_links:
-            if "javascript:" not in link and "mailto:" not in link:
+            if "javascript:" not in link and "mailto:" not in link and (
+                    "data:" not in link):
                 links.append(link)
         broken_links = []
         if multithreaded:
@@ -5766,10 +5838,61 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if type(selector) is list:
+            self.assert_elements_present(selector, by=by, timeout=timeout)
+            return True
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_element_present(selector)
             return True
         self.wait_for_element_present(selector, by=by, timeout=timeout)
+        return True
+
+    def assert_elements_present(self, *args, **kwargs):
+        """ Similar to self.assert_element_present(),
+                but can assert that multiple elements are present in the HTML.
+            The input is a list of elements.
+            Optional kwargs include "by" and "timeout" (used by all selectors).
+            Raises an exception if any of the elements are not visible.
+            Examples:
+                self.assert_elements_present("head", "style", "script", "body")
+                OR
+                self.assert_elements_present(["head", "body", "h1", "h2"]) """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        by = By.CSS_SELECTOR
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                by = kwargs["by"]
+            elif kwarg == "selector":
+                selector = kwargs["selector"]
+                if type(selector) is str:
+                    selectors.append(selector)
+                elif type(selector) is list:
+                    for a_selector in selector:
+                        if type(a_selector) is str:
+                            selectors.append(a_selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if type(arg) is list:
+                for selector in arg:
+                    if type(selector) is str:
+                        selectors.append(selector)
+            elif type(arg) is str:
+                selectors.append(arg)
+        for selector in selectors:
+            if self.__is_shadow_selector(selector):
+                self.__assert_shadow_element_visible(selector)
+                continue
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            continue
         return True
 
     def find_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
@@ -5790,6 +5913,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if type(selector) is list:
+            self.assert_elements(selector, by=by, timeout=timeout)
+            return True
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_element_visible(selector)
             return True
@@ -5815,6 +5941,67 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.assert_element(selector, by=by, timeout=timeout)
         return True
+
+    def assert_elements(self, *args, **kwargs):
+        """ Similar to self.assert_element(), but can assert multiple elements.
+            The input is a list of elements.
+            Optional kwargs include "by" and "timeout" (used by all selectors).
+            Raises an exception if any of the elements are not visible.
+            Examples:
+                self.assert_elements("h1", "h2", "h3")
+                OR
+                self.assert_elements(["h1", "h2", "h3"]) """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        by = By.CSS_SELECTOR
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                by = kwargs["by"]
+            elif kwarg == "selector":
+                selector = kwargs["selector"]
+                if type(selector) is str:
+                    selectors.append(selector)
+                elif type(selector) is list:
+                    for a_selector in selector:
+                        if type(a_selector) is str:
+                            selectors.append(a_selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if type(arg) is list:
+                for selector in arg:
+                    if type(selector) is str:
+                        selectors.append(selector)
+            elif type(arg) is str:
+                selectors.append(arg)
+        for selector in selectors:
+            if self.__is_shadow_selector(selector):
+                self.__assert_shadow_element_visible(selector)
+                continue
+            self.wait_for_element_visible(selector, by=by, timeout=timeout)
+            if self.demo_mode:
+                selector, by = self.__recalculate_selector(selector, by)
+                a_t = "ASSERT"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+                    a_t = SD.translate_assert(self._language)
+                messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+                self.__highlight_with_assert_success(
+                    messenger_post, selector, by)
+            continue
+        return True
+
+    def assert_elements_visible(self, *args, **kwargs):
+        """ Same as self.assert_elements()
+            Raises an exception if any element cannot be found. """
+        return self.assert_elements(*args, **kwargs)
 
     ############
 
@@ -6690,10 +6877,7 @@ class BaseCase(unittest.TestCase):
         if js_utils.is_jquery_activated(self.driver):
             self.execute_script(scroll_script)
         else:
-            try:
-                self.safe_execute_script(scroll_script)
-            except Exception:
-                self.__slow_scroll_to_element(element)
+            self.__slow_scroll_to_element(element)
         self.sleep(sleep_time)
 
     def __jquery_click(self, selector, by=By.CSS_SELECTOR):
@@ -6898,7 +7082,7 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by)
         elif self.slow_mode:
             # Just do the slow scroll part of the highlight() method
-            self.sleep(0.08)
+            time.sleep(0.08)
             selector, by = self.__recalculate_selector(selector, by)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=settings.SMALL_TIMEOUT)
@@ -6915,7 +7099,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_element_visible(
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
-            self.sleep(0.12)
+            time.sleep(0.12)
 
     def __scroll_to_element(self, element, selector=None, by=By.CSS_SELECTOR):
         success = js_utils.scroll_to_element(self.driver, element)
@@ -7314,13 +7498,15 @@ class BaseCase(unittest.TestCase):
                             self.__last_page_screenshot = (
                                 self.driver.get_screenshot_as_base64())
                         except Exception:
-                            pass
+                            self.__last_page_screenshot = (
+                                constants.Warnings.SCREENSHOT_UNDEFINED)
                 if not self.__last_page_screenshot_png:
                     try:
                         self.__last_page_screenshot_png = (
                             self.driver.get_screenshot_as_png())
                     except Exception:
-                        pass
+                        self.__last_page_screenshot_png = (
+                                constants.Warnings.SCREENSHOT_UNDEFINED)
 
     def __set_last_page_url(self):
         if not self.__last_page_url:
@@ -7336,7 +7522,8 @@ class BaseCase(unittest.TestCase):
                     log_helper.get_html_source_with_base_href(
                         self.driver, self.driver.page_source))
             except Exception:
-                self.__last_page_source = None
+                self.__last_page_source = (
+                    constants.Warnings.PAGE_SOURCE_UNDEFINED)
 
     def __get_exception_info(self):
         exc_message = None
@@ -7404,8 +7591,10 @@ class BaseCase(unittest.TestCase):
                         extra_image['mime_type'] = 'image/png'
                         extra_image['extension'] = 'png'
                         self.__added_pytest_html_extra = True
-                        self._html_report_extra.append(extra_url)
-                        self._html_report_extra.append(extra_image)
+                        if self.__last_page_screenshot != (
+                                constants.Warnings.SCREENSHOT_UNDEFINED):
+                            self._html_report_extra.append(extra_url)
+                            self._html_report_extra.append(extra_image)
             except Exception:
                 pass
 
@@ -7588,7 +7777,7 @@ class BaseCase(unittest.TestCase):
             '<meta property="og:image" '
             'content="https://seleniumbase.io/img/dash_pie.png">'
             '<link rel="shortcut icon" '
-            'href="https://seleniumbase.io/img/dash_pie_2.png">'
+            'href="https://seleniumbase.io/img/dash_pie.png">'
             '%s'
             '<title>Dashboard</title>'
             '%s</head>' % (auto_refresh_html, style))

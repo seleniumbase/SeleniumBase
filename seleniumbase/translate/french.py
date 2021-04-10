@@ -257,6 +257,10 @@ class CasDeBase(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def passer_à_fenêtre_dernière(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
+
     def maximiser_fenêtre(self, *args, **kwargs):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)
