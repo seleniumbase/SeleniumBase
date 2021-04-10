@@ -917,6 +917,13 @@ def pytest_unconfigure():
         stamp += "\n<!--Test Run Complete-->"
         find_it = constants.Dashboard.META_REFRESH_HTML
         swap_with = ''  # Stop refreshing the page after the run is done
+        find_it_2 = "Awaiting results... (Refresh the page for updates)"
+        swap_with_2 = (
+            "Test Run ENDED: Some results UNREPORTED due to skipped tearDown!")
+        find_it_3 = '<td class="col-result">Untested</td>'
+        swap_with_3 = '<td class="col-result">Unreported</td>'
+        find_it_4 = 'href="https://seleniumbase.io/img/dash_pie.png"'
+        swap_with_4 = 'href="https://seleniumbase.io/img/dash_pie_2.png"'
         try:
             abs_path = os.path.abspath('.')
             dashboard_path = os.path.join(abs_path, "dashboard.html")
@@ -927,6 +934,9 @@ def pytest_unconfigure():
                     the_html_d = f.read()
                 # If the test run doesn't complete by itself, stop refresh
                 the_html_d = the_html_d.replace(find_it, swap_with)
+                the_html_d = the_html_d.replace(find_it_2, swap_with_2)
+                the_html_d = the_html_d.replace(find_it_3, swap_with_3)
+                the_html_d = the_html_d.replace(find_it_4, swap_with_4)
                 the_html_d += stamp
                 if sb_config._dash_is_html_report and (
                         sb_config._saved_dashboard_pie):
@@ -935,7 +945,7 @@ def pytest_unconfigure():
                         sb_config._saved_dashboard_pie)
                     the_html_d = the_html_d.replace(
                         "</head>", '</head><link rel="shortcut icon" '
-                        'href="https://seleniumbase.io/img/dash_pie_2.png">')
+                        'href="https://seleniumbase.io/img/dash_pie_3.png">')
                     if sb_config._dash_final_summary:
                         the_html_d += sb_config._dash_final_summary
                     time.sleep(0.1)  # Add time for "livejs" to detect changes
@@ -970,7 +980,7 @@ def pytest_unconfigure():
                         the_html_r = the_html_r.replace(
                             "</head>", '</head><link rel="shortcut icon" '
                             'href='
-                            '"https://seleniumbase.io/img/dash_pie_2.png">')
+                            '"https://seleniumbase.io/img/dash_pie_3.png">')
                         if sb_config._dash_final_summary:
                             the_html_r += sb_config._dash_final_summary
                     with open(html_report_path, "w", encoding='utf-8') as f:

@@ -7769,7 +7769,7 @@ class BaseCase(unittest.TestCase):
             '<meta property="og:image" '
             'content="https://seleniumbase.io/img/dash_pie.png">'
             '<link rel="shortcut icon" '
-            'href="https://seleniumbase.io/img/dash_pie_2.png">'
+            'href="https://seleniumbase.io/img/dash_pie.png">'
             '%s'
             '<title>Dashboard</title>'
             '%s</head>' % (auto_refresh_html, style))
