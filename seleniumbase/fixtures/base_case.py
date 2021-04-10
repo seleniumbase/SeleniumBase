@@ -143,6 +143,8 @@ class BaseCase(unittest.TestCase):
         original_selector = selector
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
+        if delay and (type(delay) in [int, float]) and delay > 0:
+            time.sleep(delay)
         if page_utils.is_link_text_selector(selector) or by == By.LINK_TEXT:
             if not self.is_link_text_visible(selector):
                 # Handle a special case of links hidden in dropdowns
@@ -163,8 +165,6 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
-        if delay and delay > 0:
-            time.sleep(delay)
         try:
             if self.browser == "ie" and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
@@ -6805,10 +6805,7 @@ class BaseCase(unittest.TestCase):
         if js_utils.is_jquery_activated(self.driver):
             self.execute_script(scroll_script)
         else:
-            try:
-                self.safe_execute_script(scroll_script)
-            except Exception:
-                self.__slow_scroll_to_element(element)
+            self.__slow_scroll_to_element(element)
         self.sleep(sleep_time)
 
     def __jquery_click(self, selector, by=By.CSS_SELECTOR):
@@ -7013,7 +7010,7 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by)
         elif self.slow_mode:
             # Just do the slow scroll part of the highlight() method
-            self.sleep(0.08)
+            time.sleep(0.08)
             selector, by = self.__recalculate_selector(selector, by)
             element = self.wait_for_element_visible(
                 selector, by=by, timeout=settings.SMALL_TIMEOUT)
@@ -7030,7 +7027,7 @@ class BaseCase(unittest.TestCase):
                 element = self.wait_for_element_visible(
                     selector, by=by, timeout=settings.SMALL_TIMEOUT)
                 self.__slow_scroll_to_element(element)
-            self.sleep(0.12)
+            time.sleep(0.12)
 
     def __scroll_to_element(self, element, selector=None, by=By.CSS_SELECTOR):
         success = js_utils.scroll_to_element(self.driver, element)
