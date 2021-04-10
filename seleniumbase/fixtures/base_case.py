@@ -2798,7 +2798,8 @@ class BaseCase(unittest.TestCase):
         all_links = self.get_unique_links()
         links = []
         for link in all_links:
-            if "javascript:" not in link and "mailto:" not in link:
+            if "javascript:" not in link and "mailto:" not in link and (
+                    "data:" not in link):
                 links.append(link)
         broken_links = []
         if multithreaded:
