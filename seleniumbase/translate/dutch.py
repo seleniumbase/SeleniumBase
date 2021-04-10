@@ -257,6 +257,10 @@ class Testgeval(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def overschakelen_naar_nieuwste_venster(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
+
     def venster_maximaliseren(self, *args, **kwargs):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)

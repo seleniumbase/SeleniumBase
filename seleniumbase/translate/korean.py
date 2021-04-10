@@ -257,6 +257,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def 최신_창으로_전환(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
+
     def 창_최대화(self, *args, **kwargs):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)

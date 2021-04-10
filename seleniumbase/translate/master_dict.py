@@ -969,8 +969,20 @@ class MD:
     md["switch_to_default_window"][5] = "デフォルトのウィンドウに切り替える"
     md["switch_to_default_window"][6] = "기본_창으로_전환"
     md["switch_to_default_window"][7] = "mudar_para_a_janela_padrão"
-    md["switch_to_default_window"][8] = "переключиться_в_окно_по_умолчанию"
+    md["switch_to_default_window"][8] = "переключиться_на_окно_по_умолчанию"
     md["switch_to_default_window"][9] = "cambiar_a_ventana_predeterminada"
+
+    md["switch_to_newest_window"] = ["*"] * num_langs
+    md["switch_to_newest_window"][0] = "switch_to_newest_window"
+    md["switch_to_newest_window"][1] = "切换到最新的窗口"
+    md["switch_to_newest_window"][2] = "overschakelen_naar_nieuwste_venster"
+    md["switch_to_newest_window"][3] = "passer_à_fenêtre_dernière"
+    md["switch_to_newest_window"][4] = "passa_alla_finestra_ultimo"
+    md["switch_to_newest_window"][5] = "最新のウィンドウに切り替えます"
+    md["switch_to_newest_window"][6] = "최신_창으로_전환"
+    md["switch_to_newest_window"][7] = "mudar_para_a_janela_última"
+    md["switch_to_newest_window"][8] = "переключиться_на_последнее_окно"
+    md["switch_to_newest_window"][9] = "cambiar_a_ventana_última"
 
     md["maximize_window"] = ["*"] * num_langs
     md["maximize_window"][0] = "maximize_window"

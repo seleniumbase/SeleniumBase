@@ -257,6 +257,10 @@ class CasoDiProva(BaseCase):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def passa_alla_finestra_ultimo(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
+
     def ingrandisci_finestra(self, *args, **kwargs):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)

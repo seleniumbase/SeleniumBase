@@ -257,6 +257,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
 
+    def 最新のウィンドウに切り替えます(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
+
     def ウィンドウを最大化する(self, *args, **kwargs):
         # maximize_window()
         return self.maximize_window(*args, **kwargs)
