@@ -5766,10 +5766,61 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if type(selector) is list:
+            self.assert_elements_present(selector, by=by, timeout=timeout)
+            return True
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_element_present(selector)
             return True
         self.wait_for_element_present(selector, by=by, timeout=timeout)
+        return True
+
+    def assert_elements_present(self, *args, **kwargs):
+        """ Similar to self.assert_element_present(),
+                but can assert that multiple elements are present in the HTML.
+            The input is a list of elements.
+            Optional kwargs include "by" and "timeout" (used by all selectors).
+            Raises an exception if any of the elements are not visible.
+            Examples:
+                self.assert_elements_present("head", "style", "script", "body")
+                OR
+                self.assert_elements_present(["head", "body", "h1", "h2"]) """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        by = By.CSS_SELECTOR
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                by = kwargs["by"]
+            elif kwarg == "selector":
+                selector = kwargs["selector"]
+                if type(selector) is str:
+                    selectors.append(selector)
+                elif type(selector) is list:
+                    for a_selector in selector:
+                        if type(a_selector) is str:
+                            selectors.append(a_selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if type(arg) is list:
+                for selector in arg:
+                    if type(selector) is str:
+                        selectors.append(selector)
+            elif type(arg) is str:
+                selectors.append(arg)
+        for selector in selectors:
+            if self.__is_shadow_selector(selector):
+                self.__assert_shadow_element_visible(selector)
+                continue
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            continue
         return True
 
     def find_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
@@ -5790,6 +5841,9 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        if type(selector) is list:
+            self.assert_elements(selector, by=by, timeout=timeout)
+            return True
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_element_visible(selector)
             return True
@@ -5815,6 +5869,67 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.assert_element(selector, by=by, timeout=timeout)
         return True
+
+    def assert_elements(self, *args, **kwargs):
+        """ Similar to self.assert_element(), but can assert multiple elements.
+            The input is a list of elements.
+            Optional kwargs include "by" and "timeout" (used by all selectors).
+            Raises an exception if any of the elements are not visible.
+            Examples:
+                self.assert_elements("h1", "h2", "h3")
+                OR
+                self.assert_elements(["h1", "h2", "h3"]) """
+        self.__check_scope()
+        selectors = []
+        timeout = None
+        by = By.CSS_SELECTOR
+        for kwarg in kwargs:
+            if kwarg == "timeout":
+                timeout = kwargs["timeout"]
+            elif kwarg == "by":
+                by = kwargs["by"]
+            elif kwarg == "selector":
+                selector = kwargs["selector"]
+                if type(selector) is str:
+                    selectors.append(selector)
+                elif type(selector) is list:
+                    for a_selector in selector:
+                        if type(a_selector) is str:
+                            selectors.append(a_selector)
+            else:
+                raise Exception('Unknown kwarg: "%s"!' % kwarg)
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        for arg in args:
+            if type(arg) is list:
+                for selector in arg:
+                    if type(selector) is str:
+                        selectors.append(selector)
+            elif type(arg) is str:
+                selectors.append(arg)
+        for selector in selectors:
+            if self.__is_shadow_selector(selector):
+                self.__assert_shadow_element_visible(selector)
+                continue
+            self.wait_for_element_visible(selector, by=by, timeout=timeout)
+            if self.demo_mode:
+                selector, by = self.__recalculate_selector(selector, by)
+                a_t = "ASSERT"
+                if self._language != "English":
+                    from seleniumbase.fixtures.words import SD
+                    a_t = SD.translate_assert(self._language)
+                messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
+                self.__highlight_with_assert_success(
+                    messenger_post, selector, by)
+            continue
+        return True
+
+    def assert_elements_visible(self, *args, **kwargs):
+        """ Same as self.assert_elements()
+            Raises an exception if any element cannot be found. """
+        return self.assert_elements(*args, **kwargs)
 
     ############
 
