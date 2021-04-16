@@ -7,7 +7,7 @@ docutils==0.17
 Jinja2==2.11.3
 readme-renderer==29.0
 pymdown-extensions==8.1.1
-importlib-metadata==3.10.0;python_version>="3.6"
+importlib-metadata==3.10.1;python_version>="3.6"
 lunr==0.5.8
 mkdocs==1.1.2
 mkdocs-material==7.1.1

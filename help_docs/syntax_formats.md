@@ -9,7 +9,7 @@
 
 --------
 
-<b>SeleniumBase</b> supports 17 different syntax formats for structuring tests. (<i>The first 6 are the most common.</i>)
+<b>SeleniumBase</b> supports 17 different syntax formats (<i>design patterns</i>) for structuring tests. (<i>The first 6 are the most common.</i>)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 1. <code>BaseCase</code> direct inheritance</h3>
 

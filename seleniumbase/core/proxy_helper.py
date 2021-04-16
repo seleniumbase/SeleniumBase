@@ -7,6 +7,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 PROXY_ZIP_PATH = "%s/%s" % (DRIVER_DIR, "proxy.zip")
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
 PROXY_ZIP_PATH_2 = "%s/%s" % (DOWNLOADS_DIR, "proxy.zip")
+PROXY_ZIP_LOCK = "%s/%s" % (DOWNLOADS_DIR, "proxy.lock")
 
 
 def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
@@ -90,5 +91,7 @@ def remove_proxy_zip_if_present():
             os.remove(PROXY_ZIP_PATH)
         elif os.path.exists(PROXY_ZIP_PATH_2):
             os.remove(PROXY_ZIP_PATH_2)
+        if os.path.exists(PROXY_ZIP_LOCK):
+            os.remove(PROXY_ZIP_LOCK)
     except Exception:
         pass

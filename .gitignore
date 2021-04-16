@@ -99,6 +99,9 @@ report.xml
 
 # Dashboard
 dashboard.html
+dashboard.json
+dash_pie.json
+dashboard.lock
 
 # Allure Reports / Results
 allure_report
@@ -134,6 +137,7 @@ docs/*/*/*/*.md
 # Other
 selenium-server-standalone.jar
 proxy.zip
+proxy.lock
 verbose_hub_server.dat
 verbose_node_server.dat
 ip_of_grid_hub.dat

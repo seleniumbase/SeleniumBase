@@ -2,7 +2,6 @@ import logging
 import os
 import re
 import sys
-import time
 import urllib3
 import warnings
 from selenium import webdriver
@@ -29,6 +28,7 @@ EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_PATH_2 = proxy_helper.PROXY_ZIP_PATH_2
+PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
 PLATFORM = sys.platform
 IS_WINDOWS = False
 LOCAL_CHROMEDRIVER = None
@@ -93,21 +93,18 @@ def _add_chrome_proxy_extension(
     """ Implementation of https://stackoverflow.com/a/35293284 for
         https://stackoverflow.com/questions/12848327/
         (Run Selenium on a proxy server that requires authentication.) """
-    import random
     arg_join = " ".join(sys.argv)
-    if not ("-n" in sys.argv or "-n=" in arg_join or arg_join == "-c"):
+    if not ("-n" in sys.argv or " -n=" in arg_join or arg_join == "-c"):
         # Single-threaded
         proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
     else:
         # Pytest multi-threaded test
-        import threading
-        lock = threading.Lock()
-        with lock:
-            time.sleep(random.uniform(0.02, 0.15))
+        import fasteners
+        proxy_zip_lock = fasteners.InterProcessLock(PROXY_ZIP_LOCK)
+        with proxy_zip_lock:
             if not os.path.exists(PROXY_ZIP_PATH):
                 proxy_helper.create_proxy_zip(
                     proxy_string, proxy_user, proxy_pass)
-            time.sleep(random.uniform(0.1, 0.2))
     proxy_zip = PROXY_ZIP_PATH
     if not os.path.exists(PROXY_ZIP_PATH):
         # Handle "Permission denied" on the default proxy.zip path

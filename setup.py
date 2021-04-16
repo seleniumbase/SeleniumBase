@@ -37,7 +37,7 @@ if sys.argv[-1] == 'publish':
         '>>> Confirm release PUBLISH to PyPI? (yes/no): ')).lower().strip()
     if reply == 'yes':
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==3.9.0'")
+        os.system("python -m pip install 'flake8==3.9.1'")
         flake8_status = os.system("flake8 --exclude=temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -134,6 +134,8 @@ setup(
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.7.0;python_version>="3.5"',
         'cssselect==1.1.0',
+        'filelock==3.0.12',
+        'fasteners==0.16',
         'pluggy==0.13.1',
         'py==1.8.1;python_version<"3.5"',
         'py==1.10.0;python_version>="3.5"',
@@ -200,7 +202,7 @@ setup(
         # pip install -e .[flake]
         'flake': [
             'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.9.0;python_version>="3.5"',
+            'flake8==3.9.1;python_version>="3.5"',
             'pyflakes==2.1.1;python_version<"3.5"',
             'pyflakes==2.3.1;python_version>="3.5"',
             'pycodestyle==2.5.0;python_version<"3.5"',
