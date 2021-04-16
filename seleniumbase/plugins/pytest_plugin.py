@@ -582,13 +582,18 @@ def pytest_addoption(parser):
                 "\n  It's not thread-safe for WebDriver processes! "
                 "\n  Use --time-limit=s from SeleniumBase instead!\n")
 
-    # The SeleniumBase Dashboard does not yet support multi-threadeded tests.
-    if "--dashboard" in sys_argv:
-        arg_join = " ".join(sys_argv)
-        if ("-n" in sys_argv) or ("-n=" in arg_join):
-            raise Exception(
-                "\n\n  Multi-threading is not yet supported using --dashboard"
-                "\n  (You can speed up tests using --reuse-session / --rs)\n")
+    # Dashboard Mode does not support tests using forked subprocesses.
+    if "--forked" in sys_argv and "--dashboard" in sys_argv:
+        raise Exception(
+            '\n\n  Dashboard Mode does NOT support forked subprocesses!'
+            '\n  (*** DO NOT combine "--forked" with "--dashboard"! ***)\n')
+
+    # Reuse-Session Mode does not support tests using forked subprocesses.
+    if "--forked" in sys_argv and (
+            "--rs" in sys_argv or "--reuse-session" in sys_argv):
+        raise Exception(
+            '\n\n  Reuse-Session Mode does NOT support forked subprocesses!'
+            '\n  (DO NOT combine "--forked" with "--rs"/"--reuse-session"!)\n')
 
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
     # but you can only specify one default browser for tests. (Default: chrome)
@@ -874,6 +879,16 @@ def pytest_sessionfinish(session):
 
 
 def pytest_terminal_summary(terminalreporter):
+    latest_logs_dir = os.getcwd() + "/latest_logs/"
+    if sb_config._multithreaded:
+        if os.path.exists(latest_logs_dir) and os.listdir(latest_logs_dir):
+            sb_config._has_exception = True
+        if sb_config.dashboard:
+            abs_path = os.path.abspath('.')
+            dash_lock = constants.Dashboard.LOCKFILE
+            dash_lock_path = os.path.join(abs_path, dash_lock)
+            if os.path.exists(dash_lock_path):
+                sb_config._only_unittest = False
     if sb_config._has_exception and (
             sb_config.dashboard and not sb_config._only_unittest):
         # Print link a second time because the first one may be off-screen
@@ -882,7 +897,6 @@ def pytest_terminal_summary(terminalreporter):
             "-", "Dashboard: %s" % dashboard_file)
     if sb_config._has_exception or sb_config.save_screenshot:
         # Log files are generated during test failures and Screenshot Mode
-        latest_logs_dir = os.getcwd() + "/latest_logs/"
         terminalreporter.write_sep(
             "-", "LogPath: %s" % latest_logs_dir)
 
@@ -903,10 +917,19 @@ def pytest_unconfigure():
     if hasattr(sb_config, 'log_path'):
         log_helper.archive_logs_if_set(
             sb_config.log_path, sb_config.archive_logs)
-
     # Dashboard post-processing: Disable time-based refresh and stamp complete
+    if sb_config._multithreaded and sb_config.dashboard:
+        abs_path = os.path.abspath('.')
+        dash_lock = constants.Dashboard.LOCKFILE
+        dash_lock_path = os.path.join(abs_path, dash_lock)
+        if os.path.exists(dash_lock_path):
+            sb_config._only_unittest = False
     if hasattr(sb_config, 'dashboard') and (
             sb_config.dashboard and not sb_config._only_unittest):
+        if sb_config._multithreaded:
+            import fasteners
+            dash_lock = fasteners.InterProcessLock(
+                constants.Dashboard.LOCKFILE)
         stamp = ""
         if sb_config._dash_is_html_report:
             # (If the Dashboard URL is the same as the HTML Report URL:)
@@ -924,7 +947,11 @@ def pytest_unconfigure():
         swap_with_3 = '<td class="col-result">Unreported</td>'
         find_it_4 = 'href="https://seleniumbase.io/img/dash_pie.png"'
         swap_with_4 = 'href="https://seleniumbase.io/img/dash_pie_2.png"'
+        find_it_5 = 'content="https://seleniumbase.io/img/dash_pie.png"'
+        swap_with_5 = 'content="https://seleniumbase.io/img/dash_pie_2.png"'
         try:
+            if sb_config._multithreaded:
+                dash_lock.acquire()
             abs_path = os.path.abspath('.')
             dashboard_path = os.path.join(abs_path, "dashboard.html")
             # Part 1: Finalizing the dashboard / integrating html report
@@ -932,11 +959,23 @@ def pytest_unconfigure():
                 the_html_d = None
                 with open(dashboard_path, 'r', encoding='utf-8') as f:
                     the_html_d = f.read()
+                if sb_config._multithreaded and "-c" in sys.argv:
+                    # Threads have "-c" in sys.argv, except for the last
+                    raise Exception('Break out of "try" block.')
+                if sb_config._multithreaded:
+                    dash_pie_loc = constants.Dashboard.DASH_PIE
+                    pie_path = os.path.join(abs_path, dash_pie_loc)
+                    if os.path.exists(pie_path):
+                        import json
+                        with open(pie_path, 'r') as f:
+                            dash_pie = f.read().strip()
+                        sb_config._saved_dashboard_pie = json.loads(dash_pie)
                 # If the test run doesn't complete by itself, stop refresh
                 the_html_d = the_html_d.replace(find_it, swap_with)
                 the_html_d = the_html_d.replace(find_it_2, swap_with_2)
                 the_html_d = the_html_d.replace(find_it_3, swap_with_3)
                 the_html_d = the_html_d.replace(find_it_4, swap_with_4)
+                the_html_d = the_html_d.replace(find_it_5, swap_with_5)
                 the_html_d += stamp
                 if sb_config._dash_is_html_report and (
                         sb_config._saved_dashboard_pie):
@@ -985,8 +1024,13 @@ def pytest_unconfigure():
                             the_html_r += sb_config._dash_final_summary
                     with open(html_report_path, "w", encoding='utf-8') as f:
                         f.write(the_html_r)  # Finalize the HTML report
+        except KeyboardInterrupt:
+            pass
         except Exception:
             pass
+        finally:
+            if sb_config._multithreaded:
+                dash_lock.release()
 
 
 @pytest.fixture()
@@ -1037,6 +1081,8 @@ def pytest_runtest_makereport(item, call):
     pytest_html = item.config.pluginmanager.getplugin('html')
     outcome = yield
     report = outcome.get_result()
+    if sb_config._multithreaded:
+        sb_config._using_html_report = True  # For Dashboard use
     if pytest_html and report.when == 'call' and (
             hasattr(sb_config, 'dashboard')):
         if sb_config.dashboard and not sb_config._sbase_detected:

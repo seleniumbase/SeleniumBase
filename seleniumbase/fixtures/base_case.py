@@ -7269,15 +7269,20 @@ class BaseCase(unittest.TestCase):
             self.guest_mode = sb_config.guest_mode
             self.devtools = sb_config.devtools
             self.remote_debug = sb_config.remote_debug
+            self._multithreaded = sb_config._multithreaded
+            self._reuse_session = sb_config.reuse_session
+            self._crumbs = sb_config.crumbs
             self.dashboard = sb_config.dashboard
             self._dash_initialized = sb_config._dashboard_initialized
+            if self.dashboard and self._multithreaded:
+                import fasteners
+                self.dash_lock = fasteners.InterProcessLock(
+                    constants.Dashboard.LOCKFILE)
             self.swiftshader = sb_config.swiftshader
             self.user_data_dir = sb_config.user_data_dir
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
             self.maximize_option = sb_config.maximize_option
-            self._reuse_session = sb_config.reuse_session
-            self._crumbs = sb_config.crumbs
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline
             self.timeout_multiplier = sb_config.timeout_multiplier
@@ -7391,13 +7396,21 @@ class BaseCase(unittest.TestCase):
 
         # Dashboard pre-processing:
         if self.dashboard:
-            sb_config._sbase_detected = True
-            sb_config._only_unittest = False
-            if not self._dash_initialized:
-                sb_config._dashboard_initialized = True
+            if self._multithreaded:
+                with self.dash_lock:
+                    sb_config._sbase_detected = True
+                    sb_config._only_unittest = False
+                    if not self._dash_initialized:
+                        sb_config._dashboard_initialized = True
+                        self._dash_initialized = True
+                        self.__process_dashboard(False, init=True)
+            else:
                 sb_config._sbase_detected = True
-                self._dash_initialized = True
-                self.__process_dashboard(False, init=True)
+                sb_config._only_unittest = False
+                if not self._dash_initialized:
+                    sb_config._dashboard_initialized = True
+                    self._dash_initialized = True
+                    self.__process_dashboard(False, init=True)
 
         has_url = False
         if self._reuse_session:
@@ -7696,6 +7709,23 @@ class BaseCase(unittest.TestCase):
 
     def __process_dashboard(self, has_exception, init=False):
         ''' SeleniumBase Dashboard Processing '''
+        existing_res = sb_config._results  # Used by multithreaded tests
+        if self._multithreaded:
+            abs_path = os.path.abspath('.')
+            dash_json_loc = constants.Dashboard.DASH_JSON
+            dash_jsonpath = os.path.join(abs_path, dash_json_loc)
+            if not init and os.path.exists(dash_jsonpath):
+                with open(dash_jsonpath, 'r') as f:
+                    dash_json = f.read().strip()
+                dash_data, d_id, dash_runtimes, d_stats = json.loads(dash_json)
+                num_passed, num_failed, num_skipped, num_untested = d_stats
+                sb_config._results = dash_data
+                sb_config._display_id = d_id
+                sb_config._duration = dash_runtimes
+                sb_config.item_count_passed = num_passed
+                sb_config.item_count_failed = num_failed
+                sb_config.item_count_skipped = num_skipped
+                sb_config.item_count_untested = num_untested
         if len(sb_config._extra_dash_entries) > 0:
             # First take care of existing entries from non-SeleniumBase tests
             for test_id in sb_config._extra_dash_entries:
@@ -7741,6 +7771,11 @@ class BaseCase(unittest.TestCase):
                 sb_config.item_count_skipped += 1
                 sb_config.item_count_untested -= 1
                 sb_config._results[test_id] = "Skipped"
+            elif self._multithreaded and test_id in existing_res.keys() and (
+                    existing_res[test_id] == "Skipped"):
+                sb_config.item_count_skipped += 1
+                sb_config.item_count_untested -= 1
+                sb_config._results[test_id] = "Skipped"
             elif has_exception:
                 # pytest-rerunfailures may cause duplicate results
                 if test_id not in sb_config._results.keys() or (
@@ -7778,6 +7813,14 @@ class BaseCase(unittest.TestCase):
             if sb_config._using_html_report:
                 # Add the pie chart to the pytest html report
                 sb_config._saved_dashboard_pie = self.extract_chart()
+                if self._multithreaded:
+                    abs_path = os.path.abspath('.')
+                    dash_pie = json.dumps(sb_config._saved_dashboard_pie)
+                    dash_pie_loc = constants.Dashboard.DASH_PIE
+                    pie_path = os.path.join(abs_path, dash_pie_loc)
+                    pie_file = codecs.open(pie_path, "w+", encoding="utf-8")
+                    pie_file.writelines(dash_pie)
+                    pie_file.close()
         head = (
             '<head><meta charset="utf-8" />'
             '<meta property="og:image" '
@@ -7887,6 +7930,17 @@ class BaseCase(unittest.TestCase):
         out_file.writelines(the_html)
         out_file.close()
         time.sleep(0.05)  # Add time for dashboard server to process updates
+        if self._multithreaded:
+            d_stats = (num_passed, num_failed, num_skipped, num_untested)
+            _results = sb_config._results
+            _display_id = sb_config._display_id
+            _duration = sb_config._duration
+            dash_json = json.dumps((_results, _display_id, _duration, d_stats))
+            dash_json_loc = constants.Dashboard.DASH_JSON
+            dash_jsonpath = os.path.join(abs_path, dash_json_loc)
+            dash_json_file = codecs.open(dash_jsonpath, "w+", encoding="utf-8")
+            dash_json_file.writelines(dash_json)
+            dash_json_file.close()
 
     def has_exception(self):
         """ (This method should ONLY be used in custom tearDown() methods.)
@@ -8031,7 +8085,11 @@ class BaseCase(unittest.TestCase):
                                 test_logpath, self.driver,
                                 self.__last_page_source)
                 if self.dashboard:
-                    self.__process_dashboard(has_exception)
+                    if self._multithreaded:
+                        with self.dash_lock:
+                            self.__process_dashboard(has_exception)
+                    else:
+                        self.__process_dashboard(has_exception)
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
             if self.headless:
