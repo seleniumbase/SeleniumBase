@@ -134,6 +134,8 @@ setup(
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.7.0;python_version>="3.5"',
         'cssselect==1.1.0',
+        'filelock==3.0.12',
+        'fasteners==0.16',
         'pluggy==0.13.1',
         'py==1.8.1;python_version<"3.5"',
         'py==1.10.0;python_version>="3.5"',
