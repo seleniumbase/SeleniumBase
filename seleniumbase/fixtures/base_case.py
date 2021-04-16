@@ -80,6 +80,7 @@ class BaseCase(unittest.TestCase):
         self.__device_width = None
         self.__device_height = None
         self.__device_pixel_ratio = None
+        self.__driver_browser_map = {}
         # Requires self._* instead of self.__* for external class use
         self._language = "English"
         self._presentation_slides = {}
@@ -2134,8 +2135,10 @@ class BaseCase(unittest.TestCase):
                                                  device_height=d_height,
                                                  device_pixel_ratio=d_p_r)
         self._drivers_list.append(new_driver)
+        self.__driver_browser_map[new_driver] = browser_name
         if switch_to:
             self.driver = new_driver
+            self.browser = browser_name
             if self.headless:
                 # Make sure the invisible browser window is big enough
                 width = settings.HEADLESS_START_WIDTH
@@ -2209,11 +2212,15 @@ class BaseCase(unittest.TestCase):
         """ Sets self.driver to the specified driver.
             You may need this if using self.get_new_driver() in your code. """
         self.driver = driver
+        if self.driver in self.__driver_browser_map:
+            self.browser = self.__driver_browser_map[self.driver]
 
     def switch_to_default_driver(self):
         """ Sets self.driver to the default/original driver. """
         self.__check_scope()
         self.driver = self._default_driver
+        if self.driver in self.__driver_browser_map:
+            self.browser = self.__driver_browser_map[self.driver]
 
     def save_screenshot(self, name, folder=None):
         """ The screenshot will be in PNG format. """
