@@ -6504,7 +6504,7 @@ class BaseCase(unittest.TestCase):
                 self.check_window(name="github_page", level=2)
                 self.check_window(name="wikipedia_page", level=3)
         """
-        self.__check_scope()
+        self.wait_for_ready_state_complete()
         if level == "0":
             level = 0
         if level == "1":
@@ -6517,11 +6517,10 @@ class BaseCase(unittest.TestCase):
             raise Exception('Parameter "level" must be set to 0, 1, 2, or 3!')
 
         if self.demo_mode:
-            raise Exception(
-                "WARNING: Using Demo Mode will break layout tests "
-                "that use the check_window() method due to custom "
-                "HTML edits being made on the page!\n"
-                "Please rerun without using Demo Mode!")
+            message = (
+                "WARNING: Using check_window() from Demo Mode may lead "
+                "to unexpected results caused by Demo Mode HTML changes.")
+            logging.info(message)
 
         module = self.__class__.__module__
         if '.' in module and len(module.split('.')[-1]) > 1:
