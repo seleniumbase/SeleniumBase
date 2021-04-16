@@ -63,7 +63,7 @@ class Warnings:
 
 
 class JQuery:
-    VER = "3.5.1"
+    VER = "3.6.0"
     MIN_JS = (
         "https://cdnjs.cloudflare.com/ajax/libs/jquery/%s/jquery.min.js" % VER)
     # MIN_JS = (
@@ -98,7 +98,7 @@ class Messenger:
 
 
 class Underscore:
-    VER = "1.12.0"
+    VER = "1.12.1"
     MIN_JS = ("https://cdnjs.cloudflare.com/ajax/libs/"
               "underscore.js/%s/underscore-min.js" % VER)
 
@@ -151,7 +151,7 @@ class Reveal:
 
 
 class HighCharts:
-    VER = "8.2.2"
+    VER = "9.0.1"
     HC_CSS = ("https://code.highcharts.com/%s/css/highcharts.css" % VER)
     HC_JS = ("https://code.highcharts.com/%s/highcharts.js" % VER)
     EXPORTING_JS = ("https://code.highcharts.com/"
