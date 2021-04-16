@@ -53,6 +53,7 @@ except (ImportError, ValueError):
     sb.use_auto_ext = False
     sb.no_sandbox = False
     sb.disable_gpu = False
+    sb._multithreaded = False
     sb._reuse_session = False
     sb._crumbs = False
     sb.visual_baseline = False

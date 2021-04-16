@@ -754,9 +754,9 @@ def pytest_configure(config):
     sb_config._html_report_name = None  # The name of the pytest html report
 
     arg_join = " ".join(sys.argv)
-    if ("-n" in sys.argv) or ("-n=" in arg_join):
+    if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
         sb_config._multithreaded = True
-    if ("--html" in sys.argv or "--html=" in arg_join):
+    if ("--html" in sys.argv or " --html=" in arg_join):
         sb_config._using_html_report = True
         sb_config._html_report_name = config.getoption("htmlpath")
         if sb_config.dashboard:
