@@ -6,7 +6,7 @@
 <a id="feature_list"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> ⛲ Features: 🗂️</h2>
 
-* A complete test automation framework for web & mobile E2E UI testing.
+* A complete test automation framework for web and mobile E2E UI testing.
 * Supports multiple browsers, tabs, iFrames, and proxies in the same test.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), and [nose](http://nose.readthedocs.io/en/latest/) for test discovery and execution.
