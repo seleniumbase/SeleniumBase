@@ -84,8 +84,24 @@ class SwagLabsTests(BaseCase):
         """ This test checks for visual regressions on the Swag Labs page.
             This test is parameterized on the login user. """
         self.login_to_swag_labs(username="standard_user")
+        self.js_click("a#reset_sidebar_link")
+        self.js_click("a#logout_sidebar_link")
+        self.login_to_swag_labs(username="standard_user")
+        self.check_window(baseline=True)
+        self.js_click("a#logout_sidebar_link")
         if username == "problem_user":
             print("\n(This test should fail)")
-        self.check_window(baseline=True)
         self.login_to_swag_labs(username=username)
         self.check_window(level=3)
+
+    def tearDown(self):
+        self.save_teardown_screenshot()
+        # Reset App State and Logout if the controls are present
+        try:
+            if self.is_element_present("a#reset_sidebar_link"):
+                self.js_click("a#reset_sidebar_link")
+            if self.is_element_present("a#logout_sidebar_link"):
+                self.js_click("a#logout_sidebar_link")
+        except Exception:
+            pass
+        super(SwagLabsTests, self).tearDown()

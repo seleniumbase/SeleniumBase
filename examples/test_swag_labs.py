@@ -66,3 +66,15 @@ class SwagLabsTests(BaseCase):
         self.assert_element_absent("div.inventory_item_name")
         self.click("button#continue-shopping")
         self.assert_element_absent("span.shopping_cart_badge")
+
+    def tearDown(self):
+        self.save_teardown_screenshot()
+        # Reset App State and Logout if the controls are present
+        try:
+            if self.is_element_present("a#reset_sidebar_link"):
+                self.js_click("a#reset_sidebar_link")
+            if self.is_element_present("a#logout_sidebar_link"):
+                self.js_click("a#logout_sidebar_link")
+        except Exception:
+            pass
+        super(SwagLabsTests, self).tearDown()
