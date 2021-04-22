@@ -142,6 +142,7 @@ COMMANDS:
       mkdir           [DIRECTORY] [OPTIONS]
       mkfile          [FILE.py] [OPTIONS]
       mkpres          [FILE.py] [LANG]
+      mkchart         [FILE.py] [LANG]
       print           [FILE] [OPTIONS]
       translate       [SB_FILE.py] [LANG] [ACTION]
       convert         [WEBDRIVER_UNITTEST_FILE.py]
