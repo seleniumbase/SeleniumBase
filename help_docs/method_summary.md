@@ -155,6 +155,8 @@ self.select_option_by_value(dropdown_selector, option,
 
 self.load_html_string(html_string, new_page=True)
 
+self.set_content(html_string, new_page=False)
+
 self.load_html_file(html_file, new_page=True)
 
 self.open_html_file(html_file)

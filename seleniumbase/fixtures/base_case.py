@@ -1853,11 +1853,16 @@ class BaseCase(unittest.TestCase):
                     line = line.strip()
                     new_lines.append(line)
                 js_code = '\n'.join(new_lines)
+                js_code = re.escape(js_code)
                 js_utils.add_js_code(self.driver, js_code)
             elif js_src:
                 js_utils.add_js_link(self.driver, js_src)
             else:
                 pass
+
+    def set_content(self, html_string, new_page=False):
+        """ Same as load_html_string(), but "new_page" defaults to False. """
+        self.load_html_string(html_string, new_page=new_page)
 
     def load_html_file(self, html_file, new_page=True):
         """ Loads a local html file into the browser from a relative file path.
