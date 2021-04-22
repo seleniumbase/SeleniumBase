@@ -158,6 +158,28 @@ By default, the slides are written in English,
 and use "serif" theme with "slide" transition.
 The slides can be used as a basic boilerplate.
 
+### mkchart
+
+* Usage:
+``sbase mkchart [FILE.py] [LANG]``
+
+* Example:
+``sbase mkchart new_chart.py --en``
+
+* Language Options:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+
+* Output:
+Creates a new SeleniumBase chart presentation.
+If the file already exists, an error is raised.
+By default, the slides are written in English,
+and use a "sky" theme with "slide" transition.
+The chart can be used as a basic boilerplate.
+
 ### print
 
 * Usage:

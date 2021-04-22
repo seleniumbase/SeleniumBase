@@ -15,6 +15,7 @@
     specific needs, you may need to call SeleniumBase commands without
     using Pytest, and this example shows you how. """
 
+pure_python = False
 try:
     # Running with Pytest / (Finds test methods to run using autodiscovery)
     # Example run command:  "pytest raw_parameter_script.py"
@@ -23,8 +24,10 @@ try:
 except (ImportError, ValueError):
     # Running with pure Python OR from a Python interactive interpreter
     # Example run command:  "python raw_parameter_script.py"
-    from my_first_test import MyTestClass  # (relative imports DON'T work)
+    from my_first_test import MyTestClass  # (relative imports do not work)
+    pure_python = True
 
+if pure_python:
     sb = MyTestClass("test_basics")
     sb.browser = "chrome"
     sb.headless = False

@@ -185,6 +185,10 @@ class Testgeval(BaseCase):
         # clear(selector)
         return self.clear(*args, **kwargs)
 
+    def focussen(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
+
     def js_klik(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -535,6 +539,10 @@ class Testgeval(BaseCase):
     def slepen_en_neerzetten(self, *args, **kwargs):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
+
+    def html_instellen(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
 
     def html_bestand_laden(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)

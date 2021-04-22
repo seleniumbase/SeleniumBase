@@ -740,6 +740,9 @@ def pytest_configure(config):
     sb_config.save_screenshot = config.getoption('save_screenshot')
     sb_config.visual_baseline = config.getoption('visual_baseline')
     sb_config.timeout_multiplier = config.getoption('timeout_multiplier')
+    sb_config._is_timeout_changed = False
+    sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
+    sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
     sb_config.pytest_html_report = config.getoption('htmlpath')  # --html=FILE
     sb_config._sb_node = {}  # sb node dictionary (Used with the sb fixture)
     # Dashboard-specific variables

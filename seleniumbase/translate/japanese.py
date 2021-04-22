@@ -185,6 +185,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # clear(selector)
         return self.clear(*args, **kwargs)
 
+    def 集中する(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
+
     def JSクリックして(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -535,6 +539,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def ドラッグアンドドロップ(self, *args, **kwargs):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
+
+    def HTML設定する(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
 
     def HTMLファイルを読み込む(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)

@@ -6,7 +6,7 @@ class AngularJSHomePageTests(BaseCase):
     def test_greet_user(self):
         self.open("http://www.angularjs.org")
         self.type('[ng-model="yourName"]', "Julie")
-        self.assert_text("Hello Julie!", "h1.ng-binding")
+        self.assert_exact_text("Hello Julie!", "h1.ng-binding")
 
     def test_todo_list(self):
         self.open("http://www.angularjs.org")

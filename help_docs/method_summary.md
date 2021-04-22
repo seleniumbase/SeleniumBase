@@ -29,6 +29,7 @@ self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
 self.type(selector, text, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 #             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None)
+#             self.fill(selector, text, by=By.CSS_SELECTOR, timeout=None)
 #             self.write(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
@@ -37,6 +38,8 @@ self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 self.submit(selector, by=By.CSS_SELECTOR)
 
 self.clear(selector, by=By.CSS_SELECTOR, timeout=None)
+
+self.focus(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.refresh_page()
 # Duplicates: self.refresh(), self.reload(), self.reload_page()
@@ -55,6 +58,8 @@ self.get_locale_code()
 self.go_back()
 
 self.go_forward()
+
+self.open_start_page()
 
 self.is_element_present(selector, by=By.CSS_SELECTOR)
 
@@ -152,6 +157,8 @@ self.select_option_by_value(dropdown_selector, option,
                             timeout=None)
 
 self.load_html_string(html_string, new_page=True)
+
+self.set_content(html_string, new_page=False)
 
 self.load_html_file(html_file, new_page=True)
 
@@ -352,6 +359,10 @@ self.js_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 self.jquery_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.set_time_limit(time_limit)
+
+self.set_default_timeout(timeout)
+
+self.reset_default_timeout()
 
 self.skip(reason="")
 

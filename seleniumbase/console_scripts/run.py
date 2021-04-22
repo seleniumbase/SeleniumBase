@@ -12,6 +12,7 @@ sbase options
 sbase mkdir ui_tests
 sbase mkfile new_test.py
 sbase mkpres new_presentation.py
+sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
 sbase print my_first_test.py -n
 sbase translate my_first_test.py --zh -p
@@ -72,6 +73,7 @@ def show_basic_usage():
     sc += ("      mkdir           [DIRECTORY] [OPTIONS]\n")
     sc += ("      mkfile          [FILE.py] [OPTIONS]\n")
     sc += ("      mkpres          [FILE.py] [LANG]\n")
+    sc += ("      mkchart         [FILE.py] [LANG]\n")
     sc += ("      print           [FILE] [OPTIONS]\n")
     sc += ("      translate       [SB_FILE.py] [LANG] [ACTION]\n")
     sc += ("      convert         [WEBDRIVER_UNITTEST_FILE.py]\n")
@@ -211,6 +213,33 @@ def show_mkpres_usage():
     print("          By default, the slides are written in English,")
     print('          and use "serif" theme with "slide" transition.')
     print("          The slides can be used as a basic boilerplate.")
+    print("")
+
+
+def show_mkchart_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = ("  " + c2 + "** " + c3 + "mkchart" + c2 + " **" + cr)
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase mkchart [FILE.py] [LANG]")
+    print("           OR:    sbase mkchart [FILE.py] [LANG]")
+    print("  Example:")
+    print("           sbase mkchart new_chart.py --en")
+    print("  Language Options:")
+    print("          --en / --English    |    --zh / --Chinese")
+    print("          --nl / --Dutch      |    --fr / --French")
+    print("          --it / --Italian    |    --ja / --Japanese")
+    print("          --ko / --Korean     |    --pt / --Portuguese")
+    print("          --ru / --Russian    |    --es / --Spanish")
+    print("  Output:")
+    print("          Creates a new SeleniumBase chart presentation.")
+    print("          If the file already exists, an error is raised.")
+    print("          By default, the slides are written in English,")
+    print('          and use a "sky" theme with "slide" transition.')
+    print("          The chart can be used as a basic boilerplate.")
     print("")
 
 
@@ -635,6 +664,7 @@ def show_detailed_help():
     show_mkdir_usage()
     show_mkfile_usage()
     show_mkpres_usage()
+    show_mkchart_usage()
     show_convert_usage()
     show_print_usage()
     show_translate_usage()
@@ -693,6 +723,13 @@ def main():
         else:
             show_basic_usage()
             show_mkpres_usage()
+    elif command == "mkchart":
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkchart
+            sb_mkchart.main()
+        else:
+            show_basic_usage()
+            show_mkchart_usage()
     elif command == "convert":
         if len(command_args) == 1:
             from seleniumbase.utilities.selenium_ide import convert_ide
@@ -825,6 +862,10 @@ def main():
             elif command_args[0] == "mkpres":
                 print("")
                 show_mkpres_usage()
+                return
+            elif command_args[0] == "mkchart":
+                print("")
+                show_mkchart_usage()
                 return
             elif command_args[0] == "convert":
                 print("")

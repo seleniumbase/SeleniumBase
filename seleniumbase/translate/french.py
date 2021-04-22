@@ -185,6 +185,10 @@ class CasDeBase(BaseCase):
         # clear(selector)
         return self.clear(*args, **kwargs)
 
+    def concentrer(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
+
     def js_cliquer(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -535,6 +539,10 @@ class CasDeBase(BaseCase):
     def glisser_et_déposer(self, *args, **kwargs):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
+
+    def définir_html(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
 
     def charger_html_fichier(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
