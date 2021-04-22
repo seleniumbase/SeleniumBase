@@ -63,7 +63,7 @@ plugins:
       lang: en
   - exclude-search:
       exclude:
-        - chinese.md
+        - help_docs/chinese.md
   - minify:
       minify_html: true
   - mkdocs-simple-hooks:
