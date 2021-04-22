@@ -353,6 +353,10 @@ self.jquery_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
 self.set_time_limit(time_limit)
 
+self.set_default_timeout(timeout)
+
+self.reset_default_timeout()
+
 self.skip(reason="")
 
 ############

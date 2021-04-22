@@ -3,6 +3,8 @@
 
 import sys
 from nose.plugins import Plugin
+from seleniumbase import config as sb_config
+from seleniumbase.config import settings
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
@@ -495,6 +497,9 @@ class SeleniumBrowser(Plugin):
                 # pyvirtualdisplay might not be necessary anymore because
                 # Chrome and Firefox now have built-in headless displays
                 pass
+        sb_config._is_timeout_changed = False
+        sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
+        sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
         # The driver will be received later
         self.driver = None
         test.test.driver = self.driver

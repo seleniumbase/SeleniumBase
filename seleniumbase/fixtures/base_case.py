@@ -74,6 +74,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_url = None
         self.__last_page_source = None
         self.__skip_reason = None
+        self.__overrided_default_timeouts = False
         self.__added_pytest_html_extra = None
         self.__deferred_assert_count = 0
         self.__deferred_assert_failures = []
@@ -3647,6 +3648,46 @@ class BaseCase(unittest.TestCase):
             self.time_limit = None
             sb_config.time_limit = None
             sb_config.time_limit_ms = None
+
+    def set_default_timeout(self, timeout):
+        """ This method changes the default timeout values of test methods
+            for the duration of the current test.
+            Effected timeouts: (used by methods that wait for elements)
+                * settings.SMALL_TIMEOUT - (default value: 6 seconds)
+                * settings.LARGE_TIMEOUT - (default value: 10 seconds)
+            The minimum allowable default timeout is: 0.5 seconds.
+            The maximum allowable default timeout is: 60.0 seconds.
+            (Test methods can still override timeouts outside that range.)
+        """
+        self.__check_scope()
+        if not type(timeout) is int and not type(timeout) is float:
+            raise Exception('Expecting a numeric value for "timeout"!')
+        if timeout < 0:
+            raise Exception('The "timeout" cannot be a negative number!')
+        timeout = float(timeout)
+        # Min default timeout: 0.5 seconds. Max default timeout: 60.0 seconds.
+        min_timeout = 0.5
+        max_timeout = 60.0
+        if timeout < min_timeout:
+            logging.info("Minimum default timeout = %s" % min_timeout)
+            timeout = min_timeout
+        elif timeout > max_timeout:
+            logging.info("Maximum default timeout = %s" % max_timeout)
+            timeout = max_timeout
+        self.__overrided_default_timeouts = True
+        sb_config._is_timeout_changed = True
+        settings.SMALL_TIMEOUT = timeout
+        settings.LARGE_TIMEOUT = timeout
+
+    def reset_default_timeout(self):
+        """ Reset default timeout values to the original from settings.py
+            This method reverts the changes made by set_default_timeout() """
+        if self.__overrided_default_timeouts:
+            if sb_config._SMALL_TIMEOUT and sb_config._LARGE_TIMEOUT:
+                settings.SMALL_TIMEOUT = sb_config._SMALL_TIMEOUT
+                settings.LARGE_TIMEOUT = sb_config._LARGE_TIMEOUT
+                sb_config._is_timeout_changed = False
+                self.__overrided_default_timeouts = False
 
     def skip(self, reason=""):
         """ Mark the test as Skipped. """
@@ -7383,6 +7424,17 @@ class BaseCase(unittest.TestCase):
                             """    >>> "pip install -r requirements.txt"\n"""
                             """    >>> "python setup.py install" """)
 
+        if not hasattr(sb_config, '_is_timeout_changed'):
+            # Should only be reachable from pure Python runs
+            sb_config._is_timeout_changed = False
+            sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
+            sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
+
+        if sb_config._is_timeout_changed:
+            if sb_config._SMALL_TIMEOUT and sb_config._LARGE_TIMEOUT:
+                settings.SMALL_TIMEOUT = sb_config._SMALL_TIMEOUT
+                settings.LARGE_TIMEOUT = sb_config._LARGE_TIMEOUT
+
         # Parse the settings file
         if self.settings_file:
             from seleniumbase.core import settings_parser
@@ -8037,6 +8089,14 @@ class BaseCase(unittest.TestCase):
         # *** Start tearDown() officially ***
         self.__slow_mode_pause_if_active()
         has_exception = self.__has_exception()
+        if self.__overrided_default_timeouts:
+            # Reset default timeouts in case there are more tests
+            # These were changed in set_default_timeout()
+            if sb_config._SMALL_TIMEOUT and sb_config._LARGE_TIMEOUT:
+                settings.SMALL_TIMEOUT = sb_config._SMALL_TIMEOUT
+                settings.LARGE_TIMEOUT = sb_config._LARGE_TIMEOUT
+                sb_config._is_timeout_changed = False
+                self.__overrided_default_timeouts = False
         if self.__deferred_assert_failures:
             print(
                 "\nWhen using self.deferred_assert_*() methods in your tests, "
