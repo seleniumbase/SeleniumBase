@@ -92,6 +92,7 @@ class BaseCase(unittest.TestCase):
         self._chart_data = {}
         self._chart_count = 0
         self._chart_label = {}
+        self._chart_xcount = 0
         self._chart_first_series = {}
         self._chart_series_count = {}
         self._tour_steps = {}
@@ -4368,6 +4369,24 @@ class BaseCase(unittest.TestCase):
                   show_notes_str,
                   interval_ms))
 
+        # Remove duplicate ChartMaker library declarations
+        chart_libs = (
+            """
+            <script src="%s"></script>
+            <script src="%s"></script>
+            <script src="%s"></script>
+            <script src="%s"></script>
+            """ % (
+                constants.HighCharts.HC_JS,
+                constants.HighCharts.EXPORTING_JS,
+                constants.HighCharts.EXPORT_DATA_JS,
+                constants.HighCharts.ACCESSIBILITY_JS))
+        if the_html.count(chart_libs) > 1:
+            chart_libs_comment = '<!-- HighCharts Libraries Imported -->'
+            the_html = the_html.replace(chart_libs, chart_libs_comment)
+            # Only need to import the HighCharts libraries once
+            the_html = the_html.replace(chart_libs_comment, chart_libs, 1)
+
         saved_presentations_folder = constants.Presentations.SAVED_FOLDER
         if saved_presentations_folder.endswith("/"):
             saved_presentations_folder = saved_presentations_folder[:-1]
@@ -4622,15 +4641,14 @@ class BaseCase(unittest.TestCase):
         subtitle = subtitle.replace("'", "\\'")
         unit = unit.replace("'", "\\'")
         self._chart_count += 1
+        # If chart_libs format is changed, also change: save_presentation()
         chart_libs = (
             """
             <script src="%s"></script>
             <script src="%s"></script>
             <script src="%s"></script>
             <script src="%s"></script>
-            <script src="%s"></script>
             """ % (
-                constants.JQuery.MIN_JS,
                 constants.HighCharts.HC_JS,
                 constants.HighCharts.EXPORTING_JS,
                 constants.HighCharts.EXPORT_DATA_JS,
@@ -4682,7 +4700,7 @@ class BaseCase(unittest.TestCase):
         chart_figure = (
             """
             <figure class="highcharts-figure">
-                <div id="chartcontainer%s"></div>
+                <div id="chartcontainer_num_%s"></div>
                 <p class="highcharts-description">%s</p>
             </figure>
             """ % (self._chart_count, chart_description))
@@ -4693,7 +4711,7 @@ class BaseCase(unittest.TestCase):
             """
             <script>
             // Build the chart
-            Highcharts.chart('chartcontainer%s', {
+            Highcharts.chart('chartcontainer_num_%s', {
             credits: {
                 enabled: false
             },
@@ -5054,6 +5072,9 @@ class BaseCase(unittest.TestCase):
             axis += "'%s'," % label
         axis += "], crosshair: false},"
         the_html = the_html.replace("xAxis: { },", axis)
+        self._chart_xcount += 1
+        the_html = the_html.replace(
+            "chartcontainer_num_", "chartcontainer_%s_" % self._chart_xcount)
         return the_html
 
     ############
