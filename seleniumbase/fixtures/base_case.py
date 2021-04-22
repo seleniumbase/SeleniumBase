@@ -1415,14 +1415,14 @@ class BaseCase(unittest.TestCase):
         if self.is_element_present(selector, by=by):
             return False
         soup = self.get_beautiful_soup()
-        iframe_list = soup.select('iframe')
+        iframe_list = soup.select("iframe")
         for iframe in iframe_list:
             iframe_identifier = None
-            if iframe.has_attr('name') and len(iframe['name']) > 0:
-                iframe_identifier = iframe['name']
-            elif iframe.has_attr('id') and len(iframe['id']) > 0:
-                iframe_identifier = iframe['id']
-            elif iframe.has_attr('class') and len(iframe['class']) > 0:
+            if iframe.has_attr("name") and len(iframe["name"]) > 0:
+                iframe_identifier = iframe["name"]
+            elif iframe.has_attr("id") and len(iframe["id"]) > 0:
+                iframe_identifier = iframe["id"]
+            elif iframe.has_attr("class") and len(iframe["class"]) > 0:
                 iframe_class = " ".join(iframe["class"])
                 iframe_identifier = '[class="%s"]' % iframe_class
             else:
@@ -1444,14 +1444,14 @@ class BaseCase(unittest.TestCase):
         if self.is_element_present(selector, by=by):
             return None
         soup = self.get_beautiful_soup()
-        iframe_list = soup.select('iframe')
+        iframe_list = soup.select("iframe")
         for iframe in iframe_list:
             iframe_identifier = None
-            if iframe.has_attr('name') and len(iframe['name']) > 0:
-                iframe_identifier = iframe['name']
-            elif iframe.has_attr('id') and len(iframe['id']) > 0:
-                iframe_identifier = iframe['id']
-            elif iframe.has_attr('class') and len(iframe['class']) > 0:
+            if iframe.has_attr("name") and len(iframe["name"]) > 0:
+                iframe_identifier = iframe["name"]
+            elif iframe.has_attr("id") and len(iframe["id"]) > 0:
+                iframe_identifier = iframe["id"]
+            elif iframe.has_attr("class") and len(iframe["class"]) > 0:
                 iframe_class = " ".join(iframe["class"])
                 iframe_identifier = '[class="%s"]' % iframe_class
             else:
@@ -2336,8 +2336,8 @@ class BaseCase(unittest.TestCase):
             json_cookies = f.read().strip()
         cookies = json.loads(json_cookies)
         for cookie in cookies:
-            if 'expiry' in cookie:
-                del cookie['expiry']
+            if "expiry" in cookie:
+                del cookie["expiry"]
             self.driver.add_cookie(cookie)
 
     def delete_all_cookies(self):
@@ -3429,8 +3429,8 @@ class BaseCase(unittest.TestCase):
         messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
         errors = []
         for entry in browser_logs:
-            if entry['level'] == 'SEVERE':
-                if messenger_library not in entry['message']:
+            if entry["level"] == "SEVERE":
+                if messenger_library not in entry["message"]:
                     # Add errors if not caused by SeleniumBase dependencies
                     errors.append(entry)
         if len(errors) > 0:
@@ -3477,11 +3477,11 @@ class BaseCase(unittest.TestCase):
             return(msg)
         messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
         url = self.get_current_url()
-        header = '\n* HTML Inspection Results: %s' % url
+        header = "\n* HTML Inspection Results: %s" % url
         results = [header]
         row_count = 0
         for entry in browser_logs:
-            message = entry['message']
+            message = entry["message"]
             if "0:6053 " in message:
                 message = message.split("0:6053")[1]
             message = message.replace("\\u003C", "<")
@@ -3493,10 +3493,10 @@ class BaseCase(unittest.TestCase):
                     results.append(message)
                     row_count += 1
         if row_count > 0:
-            results.append('* (See the Console output for details!)')
+            results.append("* (See the Console output for details!)")
         else:
-            results.append('* (No issues detected!)')
-        results = '\n'.join(results)
+            results.append("* (No issues detected!)")
+        results = "\n".join(results)
         print(results)
         return(results)
 
@@ -3551,9 +3551,9 @@ class BaseCase(unittest.TestCase):
         if by == By.CSS_SELECTOR:
             return selector
         elif by == By.ID:
-            return '#%s' % selector
+            return "#%s" % selector
         elif by == By.CLASS_NAME:
-            return '.%s' % selector
+            return ".%s" % selector
         elif by == By.NAME:
             return '[name="%s"]' % selector
         elif by == By.TAG_NAME:
@@ -3770,23 +3770,27 @@ class BaseCase(unittest.TestCase):
         self.__fail_if_invalid_shadow_selector_usage(selector)
         if "::shadow " not in selector:
             raise Exception(
-                'A Shadow DOM selector must contain at least one "::shadow "!')
-        selectors = selector.split('::shadow ')
+                'A Shadow DOM selector must contain at least one "::shadow "!'
+            )
+        selectors = selector.split("::shadow ")
         element = self.get_element(selectors[0])
         selector_chain = selectors[0]
         for selector_part in selectors[1:]:
             shadow_root = self.execute_script(
-                'return arguments[0].shadowRoot', element)
+                "return arguments[0].shadowRoot", element)
             if timeout == 0.1 and not shadow_root:
                 raise Exception(
-                        "Element {%s} has no shadow root!" % selector_chain)
+                    "Element {%s} has no shadow root!" % selector_chain
+                )
             elif not shadow_root:
                 time.sleep(2)  # Wait two seconds for the shadow root to appear
                 shadow_root = self.execute_script(
-                    'return arguments[0].shadowRoot', element)
+                    "return arguments[0].shadowRoot", element
+                )
                 if not shadow_root:
                     raise Exception(
-                        "Element {%s} has no shadow root!" % selector_chain)
+                        "Element {%s} has no shadow root!" % selector_chain
+                    )
             selector_chain += "::shadow "
             selector_chain += selector_part
             try:
@@ -4505,7 +4509,7 @@ class BaseCase(unittest.TestCase):
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
-        print('\n>>> [%s] was saved!\n' % file_path)
+        print("\n>>> [%s] was saved!\n" % file_path)
         return file_path
 
     def begin_presentation(
@@ -4529,7 +4533,7 @@ class BaseCase(unittest.TestCase):
             filename = "my_presentation.html"
         if name not in self._presentation_slides:
             raise Exception("Presentation {%s} does not exist!" % name)
-        if not filename.endswith('.html'):
+        if not filename.endswith(".html"):
             raise Exception('Presentation file must end in ".html"!')
         if not interval:
             interval = 0
@@ -5045,7 +5049,7 @@ class BaseCase(unittest.TestCase):
             filename = "my_chart.html"
         if chart_name not in self._chart_data:
             raise Exception("Chart {%s} does not exist!" % chart_name)
-        if not filename.endswith('.html'):
+        if not filename.endswith(".html"):
             raise Exception('Chart file must end in ".html"!')
         the_html = '<meta charset="utf-8">\n'
         the_html += '<meta http-equiv="Content-Type" '
@@ -5087,7 +5091,7 @@ class BaseCase(unittest.TestCase):
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
-        print('\n>>> [%s] was saved!' % file_path)
+        print("\n>>> [%s] was saved!" % file_path)
         return file_path
 
     def display_chart(self, chart_name=None, filename=None, interval=0):
@@ -5116,7 +5120,7 @@ class BaseCase(unittest.TestCase):
             raise Exception('The "interval" cannot be a negative number!')
         if chart_name not in self._chart_data:
             raise Exception("Chart {%s} does not exist!" % chart_name)
-        if not filename.endswith('.html'):
+        if not filename.endswith(".html"):
             raise Exception('Chart file must end in ".html"!')
         file_path = self.save_chart(chart_name=chart_name, filename=filename)
         self.open_html_file(file_path)
@@ -6541,25 +6545,25 @@ class BaseCase(unittest.TestCase):
         except Exception as e:
             str_e = str(e)
             minified_exception = "\nAssertionError:\n"
-            lines = str_e.split('\n')
+            lines = str_e.split("\n")
             countdown = 3
             countdown_on = False
             for line in lines:
                 if countdown_on:
-                    minified_exception += line + '\n'
+                    minified_exception += line + "\n"
                     countdown = countdown - 1
                     if countdown == 0:
                         countdown_on = False
-                elif line.startswith('F'):
+                elif line.startswith("F"):
                     countdown_on = True
                     countdown = 3
-                    minified_exception += line + '\n'
-                elif line.startswith('+') or line.startswith('-'):
-                    minified_exception += line + '\n'
-                elif line.startswith('?'):
-                    minified_exception += line + '\n'
-                elif line.strip().startswith('*'):
-                    minified_exception += line + '\n'
+                    minified_exception += line + "\n"
+                elif line.startswith("+") or line.startswith("-"):
+                    minified_exception += line + "\n"
+                elif line.startswith("?"):
+                    minified_exception += line + "\n"
+                elif line.strip().startswith("*"):
+                    minified_exception += line + "\n"
         if minified_exception:
             raise Exception(minified_exception)
 
@@ -6650,8 +6654,8 @@ class BaseCase(unittest.TestCase):
             logging.info(message)
 
         module = self.__class__.__module__
-        if '.' in module and len(module.split('.')[-1]) > 1:
-            module = module.split('.')[-1]
+        if "." in module and len(module.split(".")[-1]) > 1:
+            module = module.split(".")[-1]
         test_id = "%s.%s" % (module, self._testMethodName)
         if not name or len(name) < 1:
             name = "default"
@@ -6712,16 +6716,16 @@ class BaseCase(unittest.TestCase):
             out_file.close()
 
         if not set_baseline:
-            f = open(page_url_file, 'r')
+            f = open(page_url_file, "r")
             page_url_data = f.read().strip()
             f.close()
-            f = open(level_1_file, 'r')
+            f = open(level_1_file, "r")
             level_1_data = json.loads(f.read())
             f.close()
-            f = open(level_2_file, 'r')
+            f = open(level_2_file, "r")
             level_2_data = json.loads(f.read())
             f.close()
-            f = open(level_3_file, 'r')
+            f = open(level_3_file, "r")
             level_3_data = json.loads(f.read())
             f.close()
 
@@ -6809,9 +6813,9 @@ class BaseCase(unittest.TestCase):
             was an exception that occurred during the test, assuming
             that the exception was in a try/except block and not thrown. """
         exception_info = sys.exc_info()[1]
-        if hasattr(exception_info, 'msg'):
+        if hasattr(exception_info, "msg"):
             exc_message = exception_info.msg
-        elif hasattr(exception_info, 'message'):
+        elif hasattr(exception_info, "message"):
             exc_message = exception_info.message
         else:
             exc_message = sys.exc_info()
@@ -7030,9 +7034,9 @@ class BaseCase(unittest.TestCase):
         href = self.get_link_attribute(link_text, "href", hard_fail)
         if not href:
             return None
-        if href.startswith('//'):
+        if href.startswith("//"):
             link = "http:" + href
-        elif href.startswith('/'):
+        elif href.startswith("/"):
             url = self.driver.current_url
             domain_url = self.get_domain_url(url)
             link = domain_url + href
@@ -7044,16 +7048,16 @@ class BaseCase(unittest.TestCase):
         """ When a link may be hidden under a dropdown menu, use this. """
         soup = self.get_beautiful_soup()
         drop_down_list = []
-        for item in soup.select('li[class]'):
+        for item in soup.select("li[class]"):
             drop_down_list.append(item)
-        csstype = link_css.split('[')[1].split('=')[0]
+        csstype = link_css.split("[")[1].split("=")[0]
         for item in drop_down_list:
-            item_text_list = item.text.split('\n')
+            item_text_list = item.text.split("\n")
             if link_text in item_text_list and csstype in item.decode():
                 dropdown_css = ""
                 try:
-                    for css_class in item['class']:
-                        dropdown_css += '.'
+                    for css_class in item["class"]:
+                        dropdown_css += "."
                         dropdown_css += css_class
                 except Exception:
                     continue
@@ -7086,9 +7090,9 @@ class BaseCase(unittest.TestCase):
             link_text, "href", hard_fail)
         if not href:
             return None
-        if href.startswith('//'):
+        if href.startswith("//"):
             link = "http:" + href
-        elif href.startswith('/'):
+        elif href.startswith("/"):
             url = self.driver.current_url
             domain_url = self.get_domain_url(url)
             link = domain_url + href
@@ -7100,16 +7104,16 @@ class BaseCase(unittest.TestCase):
         """ When a partial link may be hidden under a dropdown, use this. """
         soup = self.get_beautiful_soup()
         drop_down_list = []
-        for item in soup.select('li[class]'):
+        for item in soup.select("li[class]"):
             drop_down_list.append(item)
-        csstype = link_css.split('[')[1].split('=')[0]
+        csstype = link_css.split("[")[1].split("=")[0]
         for item in drop_down_list:
-            item_text_list = item.text.split('\n')
+            item_text_list = item.text.split("\n")
             if link_text in item_text_list and csstype in item.decode():
                 dropdown_css = ""
                 try:
-                    for css_class in item['class']:
-                        dropdown_css += '.'
+                    for css_class in item["class"]:
+                        dropdown_css += "."
                         dropdown_css += css_class
                 except Exception:
                     continue
@@ -7278,17 +7282,17 @@ class BaseCase(unittest.TestCase):
 
         o_bs = ''  # original_box_shadow
         try:
-            style = element.get_attribute('style')
+            style = element.get_attribute("style")
         except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
-            style = element.get_attribute('style')
+            style = element.get_attribute("style")
         if style:
-            if 'box-shadow: ' in style:
-                box_start = style.find('box-shadow: ')
-                box_end = style.find(';', box_start) + 1
+            if "box-shadow: " in style:
+                box_start = style.find("box-shadow: ")
+                box_end = style.find(";", box_start) + 1
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
 
@@ -7492,7 +7496,7 @@ class BaseCase(unittest.TestCase):
                             """    >>> "pip install -r requirements.txt"\n"""
                             """    >>> "python setup.py install" """)
 
-        if not hasattr(sb_config, '_is_timeout_changed'):
+        if not hasattr(sb_config, "_is_timeout_changed"):
             # Should only be reachable from pure Python runs
             sb_config._is_timeout_changed = False
             sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
@@ -7511,13 +7515,14 @@ class BaseCase(unittest.TestCase):
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
         if self.device_metrics:
             metrics_string = self.device_metrics
-            metrics_string = metrics_string.replace(' ', '')
-            metrics_list = metrics_string.split(',')
+            metrics_string = metrics_string.replace(" ", "")
+            metrics_list = metrics_string.split(",")
             exception_string = (
-                'Invalid input for Mobile Emulator device metrics!\n'
-                'Expecting a comma-separated string with three\n'
-                'integer values for Width, Height, and Pixel-Ratio.\n'
-                'Example: --metrics="411,731,3" ')
+                "Invalid input for Mobile Emulator device metrics!\n"
+                "Expecting a comma-separated string with three\n"
+                "integer values for Width, Height, and Pixel-Ratio.\n"
+                'Example: --metrics="411,731,3" '
+            )
             if len(metrics_list) != 3:
                 raise Exception(exception_string)
             try:
@@ -7533,7 +7538,8 @@ class BaseCase(unittest.TestCase):
                 self.user_agent = (
                     "Mozilla/5.0 (Linux; Android 9; Pixel 3 XL) "
                     "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/76.0.3809.132 Mobile Safari/537.36")
+                    "Chrome/76.0.3809.132 Mobile Safari/537.36"
+                )
 
         # Dashboard pre-processing:
         if self.dashboard:
@@ -7555,7 +7561,7 @@ class BaseCase(unittest.TestCase):
 
         has_url = False
         if self._reuse_session:
-            if not hasattr(sb_config, 'shared_driver'):
+            if not hasattr(sb_config, "shared_driver"):
                 sb_config.shared_driver = None
             if sb_config.shared_driver:
                 try:
@@ -7656,17 +7662,21 @@ class BaseCase(unittest.TestCase):
                     if self.is_pytest and self.report_on:
                         try:
                             self.__last_page_screenshot = (
-                                self.driver.get_screenshot_as_base64())
+                                self.driver.get_screenshot_as_base64()
+                            )
                         except Exception:
                             self.__last_page_screenshot = (
-                                constants.Warnings.SCREENSHOT_UNDEFINED)
+                                constants.Warnings.SCREENSHOT_UNDEFINED
+                            )
                 if not self.__last_page_screenshot_png:
                     try:
                         self.__last_page_screenshot_png = (
-                            self.driver.get_screenshot_as_png())
+                            self.driver.get_screenshot_as_png()
+                        )
                     except Exception:
                         self.__last_page_screenshot_png = (
-                                constants.Warnings.SCREENSHOT_UNDEFINED)
+                            constants.Warnings.SCREENSHOT_UNDEFINED
+                        )
 
     def __set_last_page_url(self):
         if not self.__last_page_url:
@@ -7687,8 +7697,11 @@ class BaseCase(unittest.TestCase):
 
     def __get_exception_info(self):
         exc_message = None
-        if sys.version_info[0] >= 3 and hasattr(self, '_outcome') and (
-                hasattr(self._outcome, 'errors') and self._outcome.errors):
+        if (
+            sys.version_info[0] >= 3
+            and hasattr(self, '_outcome')
+            and (hasattr(self._outcome, 'errors') and self._outcome.errors)
+        ):
             try:
                 exc_message = self._outcome.errors[0][1][1]
             except Exception:
@@ -7711,8 +7724,9 @@ class BaseCase(unittest.TestCase):
             import traceback
             tb_string = traceback.format_exc()
             if "Message: " in tb_string:
-                data_payload.message = "Message: " + tb_string.split(
-                    "Message: ")[-1]
+                data_payload.message = (
+                    "Message: " + tb_string.split("Message: ")[-1]
+                )
             elif "Exception: " in tb_string:
                 data_payload.message = tb_string.split("Exception: ")[-1]
             elif "Error: " in tb_string:
@@ -7721,8 +7735,11 @@ class BaseCase(unittest.TestCase):
                 data_payload.message = self.__get_exception_info()
         else:
             test_id = self.__get_test_id_2()
-            if self.is_pytest and test_id in sb_config._results.keys() and (
-                    sb_config._results[test_id] == "Skipped"):
+            if (
+                self.is_pytest
+                and test_id in sb_config._results.keys()
+                and (sb_config._results[test_id] == "Skipped")
+            ):
                 if self.__skip_reason:
                     data_payload.message = "Skipped:   " + self.__skip_reason
                 else:
@@ -7739,20 +7756,21 @@ class BaseCase(unittest.TestCase):
                         self.__set_last_page_source()
                     if self.report_on:
                         extra_url = {}
-                        extra_url['name'] = 'URL'
-                        extra_url['format'] = 'url'
-                        extra_url['content'] = self.get_current_url()
-                        extra_url['mime_type'] = None
-                        extra_url['extension'] = None
+                        extra_url["name"] = "URL"
+                        extra_url["format"] = "url"
+                        extra_url["content"] = self.get_current_url()
+                        extra_url["mime_type"] = None
+                        extra_url["extension"] = None
                         extra_image = {}
-                        extra_image['name'] = 'Screenshot'
-                        extra_image['format'] = 'image'
-                        extra_image['content'] = self.__last_page_screenshot
-                        extra_image['mime_type'] = 'image/png'
-                        extra_image['extension'] = 'png'
+                        extra_image["name"] = "Screenshot"
+                        extra_image["format"] = "image"
+                        extra_image["content"] = self.__last_page_screenshot
+                        extra_image["mime_type"] = "image/png"
+                        extra_image["extension"] = "png"
                         self.__added_pytest_html_extra = True
                         if self.__last_page_screenshot != (
-                                constants.Warnings.SCREENSHOT_UNDEFINED):
+                            constants.Warnings.SCREENSHOT_UNDEFINED
+                        ):
                             self._html_report_extra.append(extra_url)
                             self._html_report_extra.append(extra_image)
             except Exception:
