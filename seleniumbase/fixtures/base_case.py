@@ -652,6 +652,28 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
+    def open_start_page(self):
+        """ Navigates the current browser window to the start_page.
+            You can set the start_page on the command-line in three ways:
+            '--start_page=URL', '--start-page=URL', or '--url=URL'.
+            If the start_page is not set, then "data:," will be used. """
+        self.__check_scope()
+        start_page = self.start_page
+        if type(start_page) is str:
+            start_page = start_page.strip()  # Remove extra whitespace
+        if start_page and len(start_page) >= 4:
+            if page_utils.is_valid_url(start_page):
+                self.open(start_page)
+            else:
+                new_start_page = "http://" + start_page
+                if page_utils.is_valid_url(new_start_page):
+                    self.open(new_start_page)
+                else:
+                    logging.info('Invalid URL: "%s"!' % start_page)
+                    self.open("data:,")
+        else:
+            self.open("data:,")
+
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)

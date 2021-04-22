@@ -56,6 +56,8 @@ self.go_back()
 
 self.go_forward()
 
+self.open_start_page()
+
 self.is_element_present(selector, by=By.CSS_SELECTOR)
 
 self.is_element_visible(selector, by=By.CSS_SELECTOR)
