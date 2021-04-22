@@ -4097,6 +4097,17 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
+    def fill(self, selector, text, by=By.CSS_SELECTOR,
+             timeout=None, retry=False):
+        """ Same as self.update_text() """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
     def write(self, selector, text, by=By.CSS_SELECTOR,
               timeout=None, retry=False):
         """ Same as self.update_text() """
