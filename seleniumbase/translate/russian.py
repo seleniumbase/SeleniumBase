@@ -185,6 +185,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # clear(selector)
         return self.clear(*args, **kwargs)
 
+    def сосредоточиться(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
+
     def JS_нажмите(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -535,6 +539,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def перетащить_и_падение(self, *args, **kwargs):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
+
+    def набор_HTML(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
 
     def загрузить_HTML_файл(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)

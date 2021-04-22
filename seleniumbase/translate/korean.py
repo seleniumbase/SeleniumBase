@@ -185,6 +185,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # clear(selector)
         return self.clear(*args, **kwargs)
 
+    def 집중하다(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
+
     def JS_클릭(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -535,6 +539,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 드래그_앤_드롭(self, *args, **kwargs):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
+
+    def HTML_설정(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
 
     def HTML_파일_로드(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)

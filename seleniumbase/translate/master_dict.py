@@ -755,6 +755,18 @@ class MD:
     md["clear"][8] = "очистить"
     md["clear"][9] = "despejar"
 
+    md["focus"] = ["*"] * num_langs
+    md["focus"][0] = "focus"
+    md["focus"][1] = "专注于"
+    md["focus"][2] = "focussen"
+    md["focus"][3] = "concentrer"
+    md["focus"][4] = "focalizzare"
+    md["focus"][5] = "集中する"
+    md["focus"][6] = "집중하다"
+    md["focus"][7] = "focar"
+    md["focus"][8] = "сосредоточиться"
+    md["focus"][9] = "centrarse"
+
     md["js_click"] = ["*"] * num_langs
     md["js_click"][0] = "js_click"
     md["js_click"][1] = "JS单击"
@@ -1644,6 +1656,18 @@ class MD:
     md["set_attributes"][8] = "набор_атрибутов"
     md["set_attributes"][9] = "establecer_atributos"
 
+    md["set_content"] = ["*"] * num_langs
+    md["set_content"][0] = "set_content"
+    md["set_content"][1] = "设置HTML"
+    md["set_content"][2] = "html_instellen"
+    md["set_content"][3] = "définir_html"
+    md["set_content"][4] = "impostare_html"
+    md["set_content"][5] = "HTML設定する"
+    md["set_content"][6] = "HTML_설정"
+    md["set_content"][7] = "definir_html"
+    md["set_content"][8] = "набор_HTML"
+    md["set_content"][9] = "establecer_html"
+
     md["type"] = ["*"] * num_langs
     md["type"][0] = "type"
     md["type"][1] = "输入文本"
@@ -1864,6 +1888,19 @@ class MD:
     md["input"][8] = "введите"
     md["input"][9] = "escriba"
 
+    # "fill" -> duplicate of "type"
+    md["fill"] = ["*"] * num_langs
+    md["fill"][0] = "fill"
+    md["fill"][1] = "输入文本"
+    md["fill"][2] = "typ"
+    md["fill"][3] = "taper"
+    md["fill"][4] = "digitare"
+    md["fill"][5] = "入力"
+    md["fill"][6] = "입력"
+    md["fill"][7] = "digitar"
+    md["fill"][8] = "введите"
+    md["fill"][9] = "escriba"
+
     # "goto" -> duplicate of "visit"
     md["goto"] = ["*"] * num_langs
     md["goto"][0] = "goto"
@@ -1967,6 +2004,19 @@ class MD:
     md["send_keys"][7] = "adicionar_texto"
     md["send_keys"][8] = "добавить_текст"
     md["send_keys"][9] = "agregar_texto"
+
+    # "load_html_string" -> duplicate of "set_content"
+    md["load_html_string"] = ["*"] * num_langs
+    md["load_html_string"][0] = "load_html_string"
+    md["load_html_string"][1] = "设置HTML"
+    md["load_html_string"][2] = "html_instellen"
+    md["load_html_string"][3] = "définir_html"
+    md["load_html_string"][4] = "impostare_html"
+    md["load_html_string"][5] = "HTML設定する"
+    md["load_html_string"][6] = "HTML_설정"
+    md["load_html_string"][7] = "definir_html"
+    md["load_html_string"][8] = "набор_HTML"
+    md["load_html_string"][9] = "establecer_html"
 
     # "set_attribute_all" -> duplicate of "set_attributes"
     md["set_attribute_all"] = ["*"] * num_langs

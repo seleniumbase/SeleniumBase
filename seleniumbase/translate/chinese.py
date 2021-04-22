@@ -185,6 +185,10 @@ class 硒测试用例(BaseCase):  # noqa
         # clear(selector)
         return self.clear(*args, **kwargs)
 
+    def 专注于(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
+
     def JS单击(self, *args, **kwargs):
         # js_click(selector)
         return self.js_click(*args, **kwargs)
@@ -535,6 +539,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 拖放(self, *args, **kwargs):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
+
+    def 设置HTML(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
 
     def 加载HTML文件(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
