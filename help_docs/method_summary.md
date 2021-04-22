@@ -39,6 +39,8 @@ self.submit(selector, by=By.CSS_SELECTOR)
 
 self.clear(selector, by=By.CSS_SELECTOR, timeout=None)
 
+self.focus(selector, by=By.CSS_SELECTOR, timeout=None)
+
 self.refresh_page()
 # Duplicates: self.refresh(), self.reload(), self.reload_page()
 

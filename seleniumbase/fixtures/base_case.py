@@ -588,6 +588,33 @@ class BaseCase(unittest.TestCase):
         except Exception:
             element.clear()
 
+    def focus(self, selector, by=By.CSS_SELECTOR, timeout=None):
+        """ Make the current page focus on an interactable element.
+            If the element is not interactable, only scrolls to it.
+            The "tab" key is another way of setting the page focus. """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        element = self.wait_for_element_visible(
+            selector, by=by, timeout=timeout)
+        self.scroll_to(selector, by=by, timeout=timeout)
+        try:
+            element.send_keys(Keys.NULL)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.12)
+            element = self.wait_for_element_visible(
+                selector, by=by, timeout=timeout)
+            try:
+                element.send_keys(Keys.NULL)
+            except ENI_Exception:
+                # Non-interactable element. Skip focus and continue.
+                pass
+        self.__demo_mode_pause_if_active()
+
     def refresh_page(self):
         self.__check_scope()
         self.__last_page_load_url = None
