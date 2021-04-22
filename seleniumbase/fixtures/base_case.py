@@ -6789,13 +6789,16 @@ class BaseCase(unittest.TestCase):
             from seleniumbase.common.exceptions import OutOfScopeException
             message = (
                 "\n It looks like you are trying to call a SeleniumBase method"
-                "\n from outside the scope of your test class's `self` object."
+                "\n from outside the scope of your test class's `self` object,"
+                "\n which is initialized by calling BaseCase's setUp() method."
+                "\n The `self` object is where all test variables are defined."
+                "\n If you created a custom setUp() method (that overrided the"
+                "\n the default one), make sure to call super().setUp() in it."
                 "\n When using page objects, be sure to pass the `self` object"
                 "\n from your test class into your page object methods so that"
                 "\n they can call BaseCase class methods with all the required"
                 "\n variables, which are initialized during the setUp() method"
                 "\n that runs automatically before all tests called by pytest."
-                "\n The `self` object is where all test variables are defined."
                 )
             raise OutOfScopeException(message)
 
