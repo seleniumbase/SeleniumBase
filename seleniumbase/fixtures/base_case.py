@@ -67,6 +67,10 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
+        self.__called_setup = False
+        self.__called_teardown = False
+        self.__start_time_ms = None
+        self.__passed_then_skipped = False
         self.__last_url_of_deferred_assert = "data:,"
         self.__last_page_load_url = "data:,"
         self.__last_page_screenshot = None
@@ -3748,6 +3752,12 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if self.dashboard or (self.is_pytest and self.with_db_reporting):
             test_id = self.__get_test_id_2()
+            if (
+                test_id in sb_config._results.keys()
+                and sb_config._results[test_id] == "Passed"
+            ):
+                # Duplicate tearDown() called where test already passed
+                self.__passed_then_skipped = True
             sb_config._results[test_id] = "Skipped"
             self.__skip_reason = reason
         elif reason and not self.is_pytest:
@@ -7336,6 +7346,11 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass setUp() method:
         super(SubClassOfBaseCase, self).setUp()
         """
+        if not hasattr(self, "_using_sb_fixture") and self.__called_setup:
+            # This test already called setUp()
+            return
+        self.__called_setup = True
+        self.__called_teardown = False
         self.masterqa_mode = masterqa_mode
         self.is_pytest = None
         try:
@@ -7642,6 +7657,9 @@ class BaseCase(unittest.TestCase):
         # Although the pytest clock starts before setUp() begins,
         # the time-limit clock starts at the end of the setUp() method.
         sb_config.start_time_ms = int(time.time() * 1000.0)
+        if not self.__start_time_ms:
+            # Call this once in case of multiple setUp() calls in the same test
+            self.__start_time_ms = sb_config.start_time_ms
 
     def __set_last_page_screenshot(self):
         """ self.__last_page_screenshot is only for pytest html report logs
@@ -7906,7 +7924,7 @@ class BaseCase(unittest.TestCase):
         test_id = self.__get_test_id_2()
         dud = "seleniumbase/plugins/pytest_plugin.py::BaseClass::base_method"
         if not init:
-            duration_ms = int(time.time() * 1000) - sb_config.start_time_ms
+            duration_ms = int(time.time() * 1000) - self.__start_time_ms
             duration = float(duration_ms) / 1000.0
             sb_config._duration[test_id] = duration
             if test_id not in sb_config._display_id.keys():
@@ -7927,26 +7945,52 @@ class BaseCase(unittest.TestCase):
                         sb_config._results.pop(alt_test_id)
             if test_id in sb_config._results.keys() and (
                     sb_config._results[test_id] == "Skipped"):
+                if self.__passed_then_skipped:
+                    # Multiple calls of setUp() and tearDown() in the same test
+                    sb_config.item_count_passed -= 1
+                    sb_config.item_count_untested += 1
+                    self.__passed_then_skipped = False
+                sb_config._results[test_id] = "Skipped"
                 sb_config.item_count_skipped += 1
                 sb_config.item_count_untested -= 1
-                sb_config._results[test_id] = "Skipped"
             elif self._multithreaded and test_id in existing_res.keys() and (
                     existing_res[test_id] == "Skipped"):
+                sb_config._results[test_id] = "Skipped"
                 sb_config.item_count_skipped += 1
                 sb_config.item_count_untested -= 1
-                sb_config._results[test_id] = "Skipped"
             elif has_exception:
-                # pytest-rerunfailures may cause duplicate results
-                if test_id not in sb_config._results.keys() or (
-                        (not sb_config._results[test_id] == "Failed")):
+                if test_id not in sb_config._results.keys():
                     sb_config._results[test_id] = "Failed"
                     sb_config.item_count_failed += 1
                     sb_config.item_count_untested -= 1
+                elif not sb_config._results[test_id] == "Failed":
+                    # tearDown() was called more than once in the test
+                    if sb_config._results[test_id] == "Passed":
+                        # Passed earlier, but last run failed
+                        sb_config._results[test_id] = "Failed"
+                        sb_config.item_count_failed += 1
+                        sb_config.item_count_passed -= 1
+                    else:
+                        sb_config._results[test_id] = "Failed"
+                        sb_config.item_count_failed += 1
+                        sb_config.item_count_untested -= 1
+                else:
+                    # pytest-rerunfailures caused a duplicate failure
+                    sb_config._results[test_id] = "Failed"
             else:
-                if test_id in sb_config._results.keys() and (
-                        sb_config._results[test_id] == "Failed"):
-                    # Possibly pytest-rerunfailures reran the test
+                if (
+                    test_id in sb_config._results.keys()
+                    and sb_config._results[test_id] == "Failed"
+                ):
+                    # pytest-rerunfailures reran a test that failed
                     sb_config.item_count_failed -= 1
+                    sb_config.item_count_untested += 1
+                elif (
+                    test_id in sb_config._results.keys()
+                    and sb_config._results[test_id] == "Passed"
+                ):
+                    # tearDown() was called more than once in the test
+                    sb_config.item_count_passed -= 1
                     sb_config.item_count_untested += 1
                 sb_config._results[test_id] = "Passed"
                 sb_config.item_count_passed += 1
@@ -8143,17 +8187,23 @@ class BaseCase(unittest.TestCase):
         You'll need to add the following line to the subclass's tearDown():
         super(SubClassOfBaseCase, self).tearDown()
         """
+        if not hasattr(self, "_using_sb_fixture") and self.__called_teardown:
+            # This test already called tearDown()
+            return
+        self.__called_teardown = True
+        self.__called_setup = False
         try:
             is_pytest = self.is_pytest  # This fails if overriding setUp()
             if is_pytest:
                 with_selenium = self.with_selenium
         except Exception:
-            sub_class_name = str(
-                self.__class__.__bases__[0]).split('.')[-1].split("'")[0]
-            sub_file_name = str(self.__class__.__bases__[0]).split('.')[-2]
+            sub_class_name = (
+                str(self.__class__.__bases__[0]).split(".")[-1].split("'")[0]
+            )
+            sub_file_name = str(self.__class__.__bases__[0]).split(".")[-2]
             sub_file_name = sub_file_name + ".py"
-            class_name = str(self.__class__).split('.')[-1].split("'")[0]
-            file_name = str(self.__class__).split('.')[-2] + ".py"
+            class_name = str(self.__class__).split(".")[-1].split("'")[0]
+            file_name = str(self.__class__).split(".")[-2] + ".py"
             class_name_used = sub_class_name
             file_name_used = sub_file_name
             if sub_class_name == "BaseCase":
@@ -8187,7 +8237,8 @@ class BaseCase(unittest.TestCase):
             print(
                 "\nWhen using self.deferred_assert_*() methods in your tests, "
                 "remember to call self.process_deferred_asserts() afterwards. "
-                "Now calling in tearDown()...\nFailures Detected:")
+                "Now calling in tearDown()...\nFailures Detected:"
+            )
             if not has_exception:
                 self.process_deferred_asserts()
             else:
@@ -8200,8 +8251,11 @@ class BaseCase(unittest.TestCase):
                 if has_exception:
                     self.__add_pytest_html_extra()
                     sb_config._has_exception = True
-                if self.with_testing_base and not has_exception and (
-                        self.save_screenshot_after_test):
+                if (
+                    self.with_testing_base
+                    and not has_exception
+                    and self.save_screenshot_after_test
+                ):
                     test_logpath = self.log_path + "/" + test_id
                     self.__create_log_path_as_needed(test_logpath)
                     if not self.__last_page_screenshot_png:
@@ -8211,7 +8265,8 @@ class BaseCase(unittest.TestCase):
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
-                        self.__last_page_screenshot_png)
+                        self.__last_page_screenshot_png
+                    )
                     self.__add_pytest_html_extra()
                 if self.with_testing_base and has_exception:
                     test_logpath = self.log_path + "/" + test_id
@@ -8227,12 +8282,17 @@ class BaseCase(unittest.TestCase):
                         log_helper.log_screenshot(
                             test_logpath,
                             self.driver,
-                            self.__last_page_screenshot_png)
+                            self.__last_page_screenshot_png
+                        )
                         log_helper.log_test_failure_data(
-                            self, test_logpath, self.driver, self.browser,
-                            self.__last_page_url)
+                            self, test_logpath,
+                            self.driver,
+                            self.browser,
+                            self.__last_page_url
+                        )
                         log_helper.log_page_source(
-                            test_logpath, self.driver, self.__last_page_source)
+                            test_logpath, self.driver, self.__last_page_source
+                        )
                     else:
                         if self.with_screen_shots:
                             if not self.__last_page_screenshot_png:
@@ -8242,15 +8302,22 @@ class BaseCase(unittest.TestCase):
                             log_helper.log_screenshot(
                                 test_logpath,
                                 self.driver,
-                                self.__last_page_screenshot_png)
+                                self.__last_page_screenshot_png
+                            )
                         if self.with_basic_test_info:
                             log_helper.log_test_failure_data(
-                                self, test_logpath, self.driver, self.browser,
-                                self.__last_page_url)
+                                self,
+                                test_logpath,
+                                self.driver,
+                                self.browser,
+                                self.__last_page_url
+                            )
                         if self.with_page_source:
                             log_helper.log_page_source(
-                                test_logpath, self.driver,
-                                self.__last_page_source)
+                                test_logpath,
+                                self.driver,
+                                self.__last_page_source
+                            )
                 if self.dashboard:
                     if self._multithreaded:
                         with self.dash_lock:
@@ -8274,15 +8341,19 @@ class BaseCase(unittest.TestCase):
                 else:
                     test_id = self.__get_test_id_2()
                     if test_id in sb_config._results.keys() and (
-                            sb_config._results[test_id] == "Skipped"):
+                        sb_config._results[test_id] == "Skipped"
+                    ):
                         self.__insert_test_result(
-                            constants.State.SKIPPED, False)
+                            constants.State.SKIPPED, False
+                        )
                     else:
                         self.__insert_test_result(
-                            constants.State.PASSED, False)
+                            constants.State.PASSED, False
+                        )
                 runtime = int(time.time() * 1000) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
-                    self.execution_guid, runtime)
+                    self.execution_guid, runtime
+                )
             if self.with_s3_logging and has_exception:
                 """ If enabled, upload logs to S3 during test exceptions. """
                 import uuid
@@ -8292,22 +8363,28 @@ class BaseCase(unittest.TestCase):
                 path = "%s/%s" % (self.log_path, test_id)
                 uploaded_files = []
                 for logfile in os.listdir(path):
-                    logfile_name = "%s/%s/%s" % (guid,
-                                                 test_id,
-                                                 logfile.split(path)[-1])
-                    s3_bucket.upload_file(logfile_name,
-                                          "%s/%s" % (path, logfile))
+                    logfile_name = "%s/%s/%s" % (
+                        guid,
+                        test_id,
+                        logfile.split(path)[-1]
+                    )
+                    s3_bucket.upload_file(
+                        logfile_name, "%s/%s" % (path, logfile)
+                    )
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)
                 index_file = s3_bucket.upload_index_file(test_id, guid)
                 print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
                 logging.info(
-                    "\n\n*** Log files uploaded: ***\n%s\n" % index_file)
+                    "\n\n*** Log files uploaded: ***\n%s\n" % index_file
+                )
                 if self.with_db_reporting:
                     from seleniumbase.core.testcase_manager import (
-                        TestcaseDataPayload)
+                        TestcaseDataPayload
+                    )
                     from seleniumbase.core.testcase_manager import (
-                        TestcaseManager)
+                        TestcaseManager
+                    )
                     self.testcase_manager = TestcaseManager(self.database_env)
                     data_payload = TestcaseDataPayload()
                     data_payload.guid = self.testcase_guid
@@ -8320,8 +8397,12 @@ class BaseCase(unittest.TestCase):
                 test_logpath = self.log_path + "/" + test_id
                 self.__create_log_path_as_needed(test_logpath)
                 log_helper.log_test_failure_data(
-                    self, test_logpath, self.driver, self.browser,
-                    self.__last_page_url)
+                    self,
+                    test_logpath,
+                    self.driver,
+                    self.browser,
+                    self.__last_page_url
+                )
                 if len(self._drivers_list) > 0:
                     if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
@@ -8330,9 +8411,11 @@ class BaseCase(unittest.TestCase):
                     log_helper.log_screenshot(
                         test_logpath,
                         self.driver,
-                        self.__last_page_screenshot_png)
+                        self.__last_page_screenshot_png
+                    )
                     log_helper.log_page_source(
-                        test_logpath, self.driver, self.__last_page_source)
+                        test_logpath, self.driver, self.__last_page_source
+                    )
             elif self.save_screenshot_after_test:
                 test_id = self.__get_test_id()
                 test_logpath = self.log_path + "/" + test_id
@@ -8342,9 +8425,8 @@ class BaseCase(unittest.TestCase):
                     self.__set_last_page_url()
                     self.__set_last_page_source()
                 log_helper.log_screenshot(
-                    test_logpath,
-                    self.driver,
-                    self.__last_page_screenshot_png)
+                    test_logpath, self.driver, self.__last_page_screenshot_png
+                )
             if self.report_on:
                 self._last_page_screenshot = self.__last_page_screenshot_png
                 try:
