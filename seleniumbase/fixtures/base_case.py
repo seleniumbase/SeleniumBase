@@ -8052,11 +8052,11 @@ class BaseCase(unittest.TestCase):
             res_low = t_res.lower()
             if sb_config._results[key] == "Failed":
                 the_failed.append([res_low, t_res, t_d_id, t_dur])
-            if sb_config._results[key] == "Skipped":
+            elif sb_config._results[key] == "Skipped":
                 the_skipped.append([res_low, t_res, t_d_id, t_dur])
-            if sb_config._results[key] == "Passed":
+            elif sb_config._results[key] == "Passed":
                 the_passed.append([res_low, t_res, t_d_id, t_dur])
-            if sb_config._results[key] == "Untested":
+            elif sb_config._results[key] == "Untested":
                 the_untested.append([res_low, t_res, t_d_id, t_dur])
         for row in the_failed:
             row = (
