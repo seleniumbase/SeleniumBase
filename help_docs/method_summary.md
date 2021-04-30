@@ -342,6 +342,12 @@ self.inspect_html()
 
 self.is_chromium()
 
+self.get_chrome_version()
+
+self.get_chromedriver_version()
+
+self.is_chromedriver_too_old()
+
 self.get_google_auth_password(totp_key=None)
 
 self.convert_css_to_xpath(css)

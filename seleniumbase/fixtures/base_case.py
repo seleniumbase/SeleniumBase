@@ -3245,6 +3245,7 @@ class BaseCase(unittest.TestCase):
         """ Returns the path that is used when a click initiates a download.
             SeleniumBase overrides the system path to be "downloaded_files/"
             The path can't be changed on Safari, IE, or Chromium Guest Mode.
+            The same problem occurs when using an out-of-date chromedriver.
         """
         self.__check_scope()
         if self.is_chromium() and self.guest_mode and not self.headless:
@@ -3252,6 +3253,12 @@ class BaseCase(unittest.TestCase):
             return os.path.join(os.path.expanduser('~'), 'downloads')
         elif self.browser == "safari" or self.browser == "ie":
             # Can't change the system [Downloads Folder] on Safari or IE
+            return os.path.join(os.path.expanduser('~'), 'downloads')
+        elif (
+            self.driver.capabilities["browserName"].lower() == "chrome"
+            and int(self.get_chromedriver_version().split(".")[0]) < 73
+            and self.headless
+        ):
             return os.path.join(os.path.expanduser('~'), 'downloads')
         else:
             from seleniumbase.core import download_helper
@@ -3511,9 +3518,57 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         chromium = False
         browser_name = self.driver.capabilities["browserName"]
-        if browser_name in ("chrome", "edge", "msedge", "opera"):
+        if browser_name.lower() in ("chrome", "edge", "msedge", "opera"):
             chromium = True
         return chromium
+
+    def __fail_if_not_using_chrome(self, method):
+        chrome = False
+        browser_name = self.driver.capabilities["browserName"]
+        if browser_name.lower() == "chrome":
+            chrome = True
+        if not chrome:
+            from seleniumbase.common.exceptions import NotUsingChromeException
+            message = (
+                'Error: "%s" should only be called '
+                'by tests running with self.browser == "chrome"! '
+                'You should add an "if" statement to your code before calling '
+                'this method if using browsers that are Not Chrome! '
+                'The browser detected was: "%s".' % (method, browser_name)
+            )
+            raise NotUsingChromeException(message)
+
+    def get_chrome_version(self):
+        self.__check_scope()
+        self.__fail_if_not_using_chrome("get_chrome_version()")
+        driver_capabilities = self.driver.capabilities
+        if "version" in driver_capabilities:
+            chrome_version = driver_capabilities["version"]
+        else:
+            chrome_version = driver_capabilities["browserVersion"]
+        return chrome_version
+
+    def get_chromedriver_version(self):
+        self.__check_scope()
+        self.__fail_if_not_using_chrome("get_chromedriver_version()")
+        chrome_dict = self.driver.capabilities["chrome"]
+        chromedriver_version = chrome_dict["chromedriverVersion"]
+        chromedriver_version = chromedriver_version.split(' ')[0]
+        return chromedriver_version
+
+    def is_chromedriver_too_old(self):
+        """There are known issues with chromedriver versions below 73.
+        This can impact tests that need to hover over an element, or ones
+        that require a custom downloads folder ("./downloaded_files").
+        Due to the situation that newer versions of chromedriver require
+        an exact match to the version of Chrome, an "old" version of
+        chromedriver is installed by default. It is then up to the user
+        to upgrade to the correct version of chromedriver from there."""
+        self.__check_scope()
+        self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
+        if int(self.get_chromedriver_version().split(".")[0]) < 73:
+            return True  # chromedriver is too old! Please upgrade!
+        return False
 
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
