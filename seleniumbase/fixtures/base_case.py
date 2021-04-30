@@ -3393,6 +3393,63 @@ class BaseCase(unittest.TestCase):
         """
         self.assertRaises(*args, **kwargs)
 
+    def wait_for_attribute(
+            self, selector, attribute, value=None,
+            by=By.CSS_SELECTOR, timeout=None):
+        """Raises an exception if the element attribute/value is not found.
+        If the value is not specified, the attribute only needs to exist.
+        Returns the element that contains the attribute.
+        Default timeout = LARGE_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_attribute_present(
+                selector, attribute, value=value, timeout=timeout
+            )
+        return page_actions.wait_for_attribute(
+            self.driver, selector, attribute, value=value,
+            by=by, timeout=timeout)
+
+    def assert_attribute(
+            self, selector, attribute, value=None,
+            by=By.CSS_SELECTOR, timeout=None):
+        """Raises an exception if the element attribute/value is not found.
+        If the value is not specified, the attribute only needs to exist.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_attribute(
+            selector, attribute, value=value, by=by, timeout=timeout)
+        if (
+            self.demo_mode
+            and not self.__is_shadow_selector(selector)
+            and self.is_element_visible(selector, by=by)
+        ):
+            a_a = "ASSERT ATTRIBUTE"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_a = SD.translate_assert_attribute(self._language)
+                i_n = SD.translate_in(self._language)
+            if not value:
+                messenger_post = (
+                    "%s: {%s} %s %s: %s"
+                    % (a_a, attribute, i_n, by.upper(), selector))
+            else:
+                messenger_post = (
+                    '%s: {%s == "%s"} %s %s: %s'
+                    % (a_a, attribute, value, i_n, by.upper(), selector))
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        return True
+
     def assert_title(self, title):
         """ Asserts that the web page title matches the expected title.
             When a web page initially loads, the title starts as the URL,
@@ -4054,6 +4111,42 @@ class BaseCase(unittest.TestCase):
             msg = ("Shadow DOM Element {%s} was not visible!" % selector)
             page_actions.timeout_exception("NoSuchElementException", msg)
         return element
+
+    def __wait_for_shadow_attribute_present(
+            self, selector, attribute, value=None, timeout=None):
+        element = self.__get_shadow_element(selector, timeout=timeout)
+        actual_value = element.get_attribute(attribute)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        if value is None:
+            # The element attribute only needs to exist
+            if actual_value is not None:
+                return element
+            else:
+                # The element does not have the attribute
+                message = (
+                    "Expected attribute {%s} of element {%s} "
+                    "was not present after %s second%s!"
+                    % (attribute, selector, timeout, plural)
+                )
+                page_actions.timeout_exception(
+                    "NoSuchAttributeException", message)
+        else:
+            if actual_value == value:
+                return element
+            else:
+                message = (
+                    "Expected value {%s} for attribute {%s} of element "
+                    "{%s} was not present after %s second%s! "
+                    "(The actual value was {%s})"
+                    % (
+                        value, attribute, selector,
+                        timeout, plural, actual_value
+                    )
+                )
+                page_actions.timeout_exception(
+                    "NoSuchAttributeException", message)
 
     def __assert_shadow_element_present(self, selector):
         self.__get_shadow_element(selector)

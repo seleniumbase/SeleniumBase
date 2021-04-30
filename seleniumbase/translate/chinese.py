@@ -85,6 +85,10 @@ class 硒测试用例(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def 断言属性(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def 断言标题(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -168,6 +172,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 等待元素不存在(self, *args, **kwargs):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
+
+    def 等待属性(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
 
     def 睡(self, *args, **kwargs):
         # sleep(seconds)

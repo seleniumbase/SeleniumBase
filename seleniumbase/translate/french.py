@@ -85,6 +85,10 @@ class CasDeBase(BaseCase):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def vérifier_attribut(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def vérifier_titre(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -168,6 +172,10 @@ class CasDeBase(BaseCase):
     def attendre_un_élément_pas_présent(self, *args, **kwargs):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
+
+    def attendre_un_attribut(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)

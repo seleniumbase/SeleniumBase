@@ -85,6 +85,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def подтвердить_атрибут(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def подтвердить_название(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -168,6 +172,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def ждать_элемента_отсутствует(self, *args, **kwargs):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
+
+    def ждать_атрибут(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
 
     def спать(self, *args, **kwargs):
         # sleep(seconds)

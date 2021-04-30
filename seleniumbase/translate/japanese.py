@@ -85,6 +85,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def 属性を確認する(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def タイトルを確認(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -168,6 +172,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def 要素が存在しないのを待つ(self, *args, **kwargs):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
+
+    def 属性を待つ(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
 
     def 眠る(self, *args, **kwargs):
         # sleep(seconds)

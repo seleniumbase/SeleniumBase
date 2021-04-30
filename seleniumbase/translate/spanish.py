@@ -85,6 +85,10 @@ class CasoDePrueba(BaseCase):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def verificar_atributo(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def verificar_título(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -168,6 +172,10 @@ class CasoDePrueba(BaseCase):
     def espera_el_elemento_ausente(self, *args, **kwargs):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
+
+    def espera_el_atributo(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
 
     def dormir(self, *args, **kwargs):
         # sleep(seconds)

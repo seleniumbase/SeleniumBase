@@ -455,6 +455,18 @@ class MD:
     md["assert_element_absent"][8] = "подтвердить_элемент_отсутствует"
     md["assert_element_absent"][9] = "verificar_elemento_ausente"
 
+    md["assert_attribute"] = ["*"] * num_langs
+    md["assert_attribute"][0] = "assert_attribute"
+    md["assert_attribute"][1] = "断言属性"
+    md["assert_attribute"][2] = "controleren_attribuut"
+    md["assert_attribute"][3] = "vérifier_attribut"
+    md["assert_attribute"][4] = "verificare_attributo"
+    md["assert_attribute"][5] = "属性を確認する"
+    md["assert_attribute"][6] = "특성_확인"
+    md["assert_attribute"][7] = "verificar_atributo"
+    md["assert_attribute"][8] = "подтвердить_атрибут"
+    md["assert_attribute"][9] = "verificar_atributo"
+
     md["assert_title"] = ["*"] * num_langs
     md["assert_title"][0] = "assert_title"
     md["assert_title"][1] = "断言标题"
@@ -706,6 +718,18 @@ class MD:
     md["wait_for_element_absent"][7] = "aguardar_o_elemento_ausente"
     md["wait_for_element_absent"][8] = "ждать_элемента_отсутствует"
     md["wait_for_element_absent"][9] = "espera_el_elemento_ausente"
+
+    md["wait_for_attribute"] = ["*"] * num_langs
+    md["wait_for_attribute"][0] = "wait_for_attribute"
+    md["wait_for_attribute"][1] = "等待属性"
+    md["wait_for_attribute"][2] = "wachten_op_attribuut"
+    md["wait_for_attribute"][3] = "attendre_un_attribut"
+    md["wait_for_attribute"][4] = "attendere_un_attributo"
+    md["wait_for_attribute"][5] = "属性を待つ"
+    md["wait_for_attribute"][6] = "특성_때까지_기다립니다"
+    md["wait_for_attribute"][7] = "aguardar_o_atributo"
+    md["wait_for_attribute"][8] = "ждать_атрибут"
+    md["wait_for_attribute"][9] = "espera_el_atributo"
 
     md["sleep"] = ["*"] * num_langs
     md["sleep"][0] = "sleep"
