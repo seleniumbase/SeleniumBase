@@ -3750,19 +3750,33 @@ class BaseCase(unittest.TestCase):
     def skip(self, reason=""):
         """ Mark the test as Skipped. """
         self.__check_scope()
-        if self.dashboard or (self.is_pytest and self.with_db_reporting):
+        if self.dashboard:
             test_id = self.__get_test_id_2()
+            if hasattr(self, "_using_sb_fixture"):
+                test_id = sb_config._test_id
             if (
                 test_id in sb_config._results.keys()
                 and sb_config._results[test_id] == "Passed"
             ):
                 # Duplicate tearDown() called where test already passed
                 self.__passed_then_skipped = True
+            self.__will_be_skipped = True
             sb_config._results[test_id] = "Skipped"
+        elif self.is_pytest and self.with_db_reporting:
             self.__skip_reason = reason
         elif reason and not self.is_pytest:
             # Only needed for nosetest db reporting
             self._nose_skip_reason = reason
+        # Add skip reason to the logs
+        if not hasattr(self, "_using_sb_fixture"):
+            test_id = self.__get_test_id()  # Recalculate the test id
+        test_logpath = os.path.join(self.log_path, test_id)
+        self.__create_log_path_as_needed(test_logpath)
+        browser = self.browser
+        if not reason:
+            reason = "No skip reason given"
+        log_helper.log_skipped_test_data(self, test_logpath, browser, reason)
+        # Finally skip the test for real
         self.skipTest(reason)
 
     ############
