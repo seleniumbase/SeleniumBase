@@ -217,6 +217,10 @@ class CasoDePrueba(BaseCase):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
+    def guardar_captura_de_pantalla_para_logs(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
+
     def seleccionar_archivo(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)

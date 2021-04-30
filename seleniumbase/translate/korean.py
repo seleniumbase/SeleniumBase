@@ -217,6 +217,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
+    def 로그에_스크린_샷_저장(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
+
     def 파일을_선택(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)

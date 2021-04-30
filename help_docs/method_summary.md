@@ -205,6 +205,8 @@ self.switch_to_default_driver()
 
 self.save_screenshot(name, folder=None)
 
+self.save_screenshot_to_logs(name=None)
+
 self.save_page_source(name, folder=None)
 
 self.save_cookies(name="cookies.txt")

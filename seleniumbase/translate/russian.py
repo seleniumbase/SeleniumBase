@@ -217,6 +217,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
+    def сохранить_скриншот_в_логи(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
+
     def выберите_файл(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)

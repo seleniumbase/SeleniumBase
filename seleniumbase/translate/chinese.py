@@ -217,6 +217,10 @@ class 硒测试用例(BaseCase):  # noqa
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
 
+    def 保存截图到日志(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
+
     def 选择文件(self, *args, **kwargs):
         # choose_file(selector, file_path)
         return self.choose_file(*args, **kwargs)

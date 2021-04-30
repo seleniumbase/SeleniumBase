@@ -851,6 +851,18 @@ class MD:
     md["save_screenshot"][8] = "сохранить_скриншот"
     md["save_screenshot"][9] = "guardar_captura_de_pantalla"
 
+    md["save_screenshot_to_logs"] = ["*"] * num_langs
+    md["save_screenshot_to_logs"][0] = "save_screenshot_to_logs"
+    md["save_screenshot_to_logs"][1] = "保存截图到日志"
+    md["save_screenshot_to_logs"][2] = "bewaar_screenshot_om_te_loggen"
+    md["save_screenshot_to_logs"][3] = "enregistrer_capture_d_écran_aux_logs"
+    md["save_screenshot_to_logs"][4] = "salva_screenshot_nei_logs"
+    md["save_screenshot_to_logs"][5] = "ログにスクリーンショットを保存"
+    md["save_screenshot_to_logs"][6] = "로그에_스크린_샷_저장"
+    md["save_screenshot_to_logs"][7] = "salvar_captura_de_tela_para_logs"
+    md["save_screenshot_to_logs"][8] = "сохранить_скриншот_в_логи"
+    md["save_screenshot_to_logs"][9] = "guardar_captura_de_pantalla_para_logs"
+
     md["choose_file"] = ["*"] * num_langs
     md["choose_file"][0] = "choose_file"
     md["choose_file"][1] = "选择文件"

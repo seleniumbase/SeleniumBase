@@ -2285,9 +2285,36 @@ class BaseCase(unittest.TestCase):
             self.browser = self.__driver_browser_map[self.driver]
 
     def save_screenshot(self, name, folder=None):
-        """ The screenshot will be in PNG format. """
+        """Saves a screenshot of the current page.
+        If no folder is specified, uses the folder where pytest was called.
+        The screenshot will be in PNG format."""
         self.wait_for_ready_state_complete()
         return page_actions.save_screenshot(self.driver, name, folder)
+
+    def save_screenshot_to_logs(self, name=None):
+        """Saves a screenshot of the current page to the "latest_logs" folder.
+        Naming is automatic:
+            If NO NAME provided: "_1_screenshot.png", "_2_screenshot.png", etc.
+            If NAME IS provided, it becomes: "_1_name.png", "_2_name.png", etc.
+        (The last_page / failure screenshot is always "screenshot.png")
+        The screenshot will be in PNG format."""
+        self.wait_for_ready_state_complete()
+        test_id = self.__get_test_id()
+        test_logpath = self.log_path + "/" + test_id
+        self.__create_log_path_as_needed(test_logpath)
+        if name:
+            name = str(name)
+        self.__screenshot_count += 1
+        if not name or len(name) == 0:
+            name = "_%s_screenshot.png" % self.__screenshot_count
+        else:
+            pre_name = "_%s_" % self.__screenshot_count
+            if len(name) >= 4 and name[-4:].lower() == ".png":
+                name = name[:-4]
+                if len(name) == 0:
+                    name = "screenshot"
+            name = "%s%s.png" % (pre_name, name)
+        return page_actions.save_screenshot(self.driver, name, test_logpath)
 
     def save_page_source(self, name, folder=None):
         """ Saves the page HTML to the current directory (or given subfolder).
