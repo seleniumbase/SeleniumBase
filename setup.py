@@ -105,7 +105,7 @@ setup(
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.0.1;python_version>="3.6"',
+        'pip>=21.1.1;python_version>="3.6"',
         'packaging>=20.9',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
