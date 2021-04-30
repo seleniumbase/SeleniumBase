@@ -1647,7 +1647,7 @@ class MD:
     md["get_attribute"] = ["*"] * num_langs
     md["get_attribute"][0] = "get_attribute"
     md["get_attribute"][1] = "获取属性"
-    md["get_attribute"][2] = "kenmerk_ophalen"
+    md["get_attribute"][2] = "attribuut_ophalen"
     md["get_attribute"][3] = "obtenir_attribut"
     md["get_attribute"][4] = "ottenere_attributo"
     md["get_attribute"][5] = "属性を取得する"
@@ -1659,7 +1659,7 @@ class MD:
     md["set_attribute"] = ["*"] * num_langs
     md["set_attribute"][0] = "set_attribute"
     md["set_attribute"][1] = "设置属性"
-    md["set_attribute"][2] = "kenmerk_instellen"
+    md["set_attribute"][2] = "attribuut_instellen"
     md["set_attribute"][3] = "définir_attribut"
     md["set_attribute"][4] = "imposta_attributo"
     md["set_attribute"][5] = "属性を設定する"
@@ -1671,7 +1671,7 @@ class MD:
     md["set_attributes"] = ["*"] * num_langs
     md["set_attributes"][0] = "set_attributes"
     md["set_attributes"][1] = "设置所有属性"
-    md["set_attributes"][2] = "kenmerken_instellen"
+    md["set_attributes"][2] = "attributen_instellen"
     md["set_attributes"][3] = "définir_attributs"
     md["set_attributes"][4] = "impostare_gli_attributi"
     md["set_attributes"][5] = "すべての属性を設定"
@@ -2046,7 +2046,7 @@ class MD:
     md["set_attribute_all"] = ["*"] * num_langs
     md["set_attribute_all"][0] = "set_attribute_all"
     md["set_attribute_all"][1] = "设置所有属性"
-    md["set_attribute_all"][2] = "kenmerken_instellen"
+    md["set_attribute_all"][2] = "attributen_instellen"
     md["set_attribute_all"][3] = "définir_attributs"
     md["set_attribute_all"][4] = "impostare_gli_attributi"
     md["set_attribute_all"][5] = "すべての属性を設定"
