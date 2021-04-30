@@ -820,6 +820,40 @@ def _get_test_ids_(the_item):
     return test_id, display_id
 
 
+def _create_dashboard_assets_():
+    import codecs
+    from seleniumbase.core.js_snippets import live_js
+    from seleniumbase.core.style_sheet import pytest_style
+    abs_path = os.path.abspath('.')
+    assets_folder = os.path.join(abs_path, "assets")
+    if not os.path.exists(assets_folder):
+        os.makedirs(assets_folder)
+    pytest_style_css = os.path.join(assets_folder, "pytest_style.css")
+    add_pytest_style_css = True
+    if os.path.exists(pytest_style_css):
+        existing_pytest_style = None
+        with open(pytest_style_css, 'r') as f:
+            existing_pytest_style = f.read()
+        if existing_pytest_style == pytest_style:
+            add_pytest_style_css = False
+    if add_pytest_style_css:
+        out_file = codecs.open(pytest_style_css, "w+", encoding="utf-8")
+        out_file.writelines(pytest_style)
+        out_file.close()
+    live_js_file = os.path.join(assets_folder, "live.js")
+    add_live_js_file = True
+    if os.path.exists(live_js_file):
+        existing_live_js = None
+        with open(live_js_file, 'r') as f:
+            existing_live_js = f.read()
+        if existing_live_js == live_js:
+            add_live_js_file = False
+    if add_live_js_file:
+        out_file = codecs.open(live_js_file, "w+", encoding="utf-8")
+        out_file.writelines(live_js)
+        out_file.close()
+
+
 def pytest_itemcollected(item):
     if sb_config.dashboard:
         sb_config.item_count += 1
@@ -843,6 +877,8 @@ def pytest_collection_finish(session):
         Print the dashboard path if at least one test runs.
         https://docs.pytest.org/en/stable/reference.html """
     if sb_config.dashboard and len(session.items) > 0:
+        _create_dashboard_assets_()
+        # Output Dashboard info to the console
         sb_config.item_count_untested = sb_config.item_count
         dash_path = os.getcwd() + "/dashboard.html"
         star_len = len("Dashboard: ") + len(dash_path)
@@ -962,10 +998,8 @@ def pytest_unconfigure():
             "Test Run ENDED: Some results UNREPORTED due to skipped tearDown!")
         find_it_3 = '<td class="col-result">Untested</td>'
         swap_with_3 = '<td class="col-result">Unreported</td>'
-        find_it_4 = 'href="https://seleniumbase.io/img/dash_pie.png"'
-        swap_with_4 = 'href="https://seleniumbase.io/img/dash_pie_2.png"'
-        find_it_5 = 'content="https://seleniumbase.io/img/dash_pie.png"'
-        swap_with_5 = 'content="https://seleniumbase.io/img/dash_pie_2.png"'
+        find_it_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_1
+        swap_with_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_2
         try:
             if sb_config._multithreaded:
                 dash_lock.acquire()
@@ -992,7 +1026,6 @@ def pytest_unconfigure():
                 the_html_d = the_html_d.replace(find_it_2, swap_with_2)
                 the_html_d = the_html_d.replace(find_it_3, swap_with_3)
                 the_html_d = the_html_d.replace(find_it_4, swap_with_4)
-                the_html_d = the_html_d.replace(find_it_5, swap_with_5)
                 the_html_d += stamp
                 if sb_config._dash_is_html_report and (
                         sb_config._saved_dashboard_pie):
@@ -1001,7 +1034,13 @@ def pytest_unconfigure():
                         sb_config._saved_dashboard_pie)
                     the_html_d = the_html_d.replace(
                         "</head>", '</head><link rel="shortcut icon" '
-                        'href="https://seleniumbase.io/img/dash_pie_3.png">')
+                        'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3)
+                    the_html_d = the_html_d.replace(
+                        "<html>", '<html lang="en">')
+                    the_html_d = the_html_d.replace(
+                        "<head>", '<head><meta http-equiv="Content-Type" '
+                        'content="text/html, charset=utf-8;">'
+                        '<meta name="viewport" content="shrink-to-fit=no">')
                     if sb_config._dash_final_summary:
                         the_html_d += sb_config._dash_final_summary
                     time.sleep(0.1)  # Add time for "livejs" to detect changes
@@ -1036,7 +1075,7 @@ def pytest_unconfigure():
                         the_html_r = the_html_r.replace(
                             "</head>", '</head><link rel="shortcut icon" '
                             'href='
-                            '"https://seleniumbase.io/img/dash_pie_3.png">')
+                            '"%s">' % constants.Dashboard.DASH_PIE_PNG_3)
                         if sb_config._dash_final_summary:
                             the_html_r += sb_config._dash_final_summary
                     with open(html_report_path, "w", encoding='utf-8') as f:

@@ -28,14 +28,23 @@ class Charts:
 
 
 class Dashboard:
+    from seleniumbase.core import encoded_images
     TITLE = "SeleniumBase Test Results Dashboard"
-    STYLE_CSS = "https://seleniumbase.io/cdn/css/pytest_style.css"
+    # STYLE_CSS = "https://seleniumbase.io/cdn/css/pytest_style.css"
+    STYLE_CSS = "assets/pytest_style.css"  # Generated before tests
     META_REFRESH_HTML = '<meta http-equiv="refresh" content="12">'
-    # LIVE_JS = 'https://livejs.com/live.js#html'
-    LIVE_JS = "https://seleniumbase.io/cdn/js/live.js#html"
+    # LIVE_JS = "https://livejs.com/live.js#html"
+    # LIVE_JS = "https://seleniumbase.io/cdn/js/live.js#html"
+    LIVE_JS = "assets/live.js#html"  # Generated before tests
     LOCKFILE = Files.DOWNLOADS_FOLDER + "/dashboard.lock"
     DASH_JSON = Files.DOWNLOADS_FOLDER + "/dashboard.json"
     DASH_PIE = Files.DOWNLOADS_FOLDER + "/dash_pie.json"
+    # DASH_PIE_PNG_1 = "https://seleniumbase.io/img/dash_pie.png"
+    # DASH_PIE_PNG_2 = "https://seleniumbase.io/img/dash_pie_2.png"
+    # DASH_PIE_PNG_3 = "https://seleniumbase.io/img/dash_pie_3.png"
+    DASH_PIE_PNG_1 = encoded_images.DASH_PIE_PNG_1  # Faster than CDN
+    DASH_PIE_PNG_2 = encoded_images.DASH_PIE_PNG_2  # Faster than CDN
+    DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
 
 
 class SavedCookies:

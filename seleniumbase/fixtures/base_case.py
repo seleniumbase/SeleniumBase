@@ -8025,63 +8025,99 @@ class BaseCase(unittest.TestCase):
                     pie_file.writelines(dash_pie)
                     pie_file.close()
         head = (
-            '<head><meta charset="utf-8" />'
-            '<meta property="og:image" '
-            'content="https://seleniumbase.io/img/dash_pie.png">'
-            '<link rel="shortcut icon" '
-            'href="https://seleniumbase.io/img/dash_pie.png">'
-            '%s'
-            '<title>Dashboard</title>'
-            '%s</head>' % (auto_refresh_html, style))
+            '<head><meta charset="utf-8">'
+            '<meta http-equiv="Content-Type" content="text/html">'
+            '<meta name="viewport" content="shrink-to-fit=no">'
+            '<link rel="shortcut icon" href="%s">'
+            "%s"
+            "<title>Dashboard</title>"
+            "%s</head>" % (
+                constants.Dashboard.DASH_PIE_PNG_1,
+                auto_refresh_html,
+                style))
         table_html = (
-            '<div></div>'
+            "<div></div>"
             '<table border="1px solid #e6e6e6;" width="100%;" padding: 5px;'
             ' font-size="12px;" text-align="left;" id="results-table">'
-            '<thead id="results-table-head"><tr>'
+            '<thead id="results-table-head">'
+            '<tr style="background-color: #F7F7FD;">'
             '<th col="result">Result</th><th col="name">Test</th>'
             '<th col="duration">Duration</th><th col="links">Links</th>'
-            '</tr></thead>')
+            "</tr></thead>")
         the_failed = []
         the_skipped = []
         the_passed = []
         the_untested = []
+        if dud2 in sb_config._results.keys():
+            sb_config._results.pop(dud2)
         for key in sb_config._results.keys():
             t_res = sb_config._results[key]
             t_dur = sb_config._duration[key]
             t_d_id = sb_config._display_id[key]
+            t_l_path = sb_config._d_t_log_path[key]
             res_low = t_res.lower()
             if sb_config._results[key] == "Failed":
-                the_failed.append([res_low, t_res, t_d_id, t_dur])
+                if not sb_config._d_t_log_path[key]:
+                    sb_config._d_t_log_path[key] = os.path.join(log_dir, ft_id)
+                the_failed.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Skipped":
-                the_skipped.append([res_low, t_res, t_d_id, t_dur])
+                the_skipped.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Passed":
-                the_passed.append([res_low, t_res, t_d_id, t_dur])
+                the_passed.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Untested":
-                the_untested.append([res_low, t_res, t_d_id, t_dur])
+                the_untested.append([res_low, t_res, t_d_id, t_dur, t_l_path])
         for row in the_failed:
             row = (
-                '<tbody class="%s results-table-row"><tr>'
+                '<tbody class="%s results-table-row">'
+                '<tr style="background-color: #FFF8F8;">'
                 '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td><a href="latest_logs/">latest_logs/</a></td>'
-                '</tr></tbody>' % (row[0], row[1], row[2], row[3]))
+                '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                "</td></tr></tbody>"
+                "" % (row[0], row[1], row[2], row[3], log_dir, row[4]))
             table_html += row
         for row in the_skipped:
-            row = (
-                '<tbody class="%s results-table-row"><tr>'
-                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            if not row[4]:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #FEFEF9;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td>-</td></tr></tbody>'
+                    % (row[0], row[1], row[2], row[3])
+                )
+            else:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #FEFEF9;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                    "</td></tr></tbody>"
+                    "" % (row[0], row[1], row[2], row[3], log_dir, row[4]))
             table_html += row
         for row in the_passed:
-            row = (
-                '<tbody class="%s results-table-row"><tr>'
-                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            if not row[4]:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #F8FFF8;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td>-</td></tr></tbody>'
+                    % (row[0], row[1], row[2], row[3])
+                )
+            else:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #F8FFF8;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                    "</td></tr></tbody>"
+                    "" % (row[0], row[1], row[2], row[3], log_dir, row[4]))
             table_html += row
         for row in the_untested:
             row = (
                 '<tbody class="%s results-table-row"><tr>'
                 '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+                '<td>-</td></tr></tbody>'
+                % (row[0], row[1], row[2], row[3])
+            )
             table_html += row
         table_html += "</table>"
         add_more = "<br /><b>Last updated:</b> "
