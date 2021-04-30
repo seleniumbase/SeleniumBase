@@ -132,17 +132,17 @@ def log_page_source(test_logpath, driver, source=None):
     else:
         try:
             page_source = driver.page_source
+            page_source = get_html_source_with_base_href(driver, page_source)
         except Exception:
-            # Since we can't get the page source from here, skip saving it
-            return
+            source = constants.Warnings.PAGE_SOURCE_UNDEFINED
+            page_source = constants.Warnings.PAGE_SOURCE_UNDEFINED
     if source == constants.Warnings.PAGE_SOURCE_UNDEFINED:
         page_source = "<h3>Warning: " + source + (
             "</h3>\n<h4>The browser window was either unreachable, "
             "unresponsive, or closed prematurely!</h4>")
     html_file_path = "%s/%s" % (test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
-    rendered_source = get_html_source_with_base_href(driver, page_source)
-    html_file.write(rendered_source)
+    html_file.write(page_source)
     html_file.close()
 
 
@@ -213,11 +213,16 @@ def get_base_href_html(full_url):
 
 def get_html_source_with_base_href(driver, page_source):
     ''' Combines the domain base href with the html source.
+        Also adds on the meta charset, which may get dropped.
         This is needed for the page html to render correctly. '''
     last_page = get_last_page(driver)
+    meta_charset = '<meta charset="utf-8">'
     if '://' in last_page:
         base_href_html = get_base_href_html(last_page)
-        return '%s\n%s' % (base_href_html, page_source)
+        if ' charset="' not in page_source:
+            return '%s\n%s\n%s' % (base_href_html, meta_charset, page_source)
+        else:
+            return '%s\n%s' % (base_href_html, page_source)
     return ''
 
 
