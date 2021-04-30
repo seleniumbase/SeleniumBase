@@ -492,15 +492,15 @@ class Testgeval(BaseCase):
         # set_text(selector, text)
         return self.set_text(*args, **kwargs)
 
-    def kenmerk_ophalen(self, *args, **kwargs):
+    def attribuut_ophalen(self, *args, **kwargs):
         # get_attribute(selector, attribute)
         return self.get_attribute(*args, **kwargs)
 
-    def kenmerk_instellen(self, *args, **kwargs):
+    def attribuut_instellen(self, *args, **kwargs):
         # set_attribute(selector, attribute, value)
         return self.set_attribute(*args, **kwargs)
 
-    def kenmerken_instellen(self, *args, **kwargs):
+    def attributen_instellen(self, *args, **kwargs):
         # set_attributes(selector, attribute, value)
         return self.set_attributes(*args, **kwargs)
 
