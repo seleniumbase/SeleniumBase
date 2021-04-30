@@ -1,3 +1,4 @@
+import os
 import pytest
 from seleniumbase import BaseCase
 
@@ -12,7 +13,8 @@ class ImageTests(BaseCase):
         file_name = "comic.png"
         folder = "images_exported"
         self.save_element_as_image_file(selector, file_name, folder)
-        print('"%s/%s" has been saved!' % (folder, file_name))
+        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
+        print('\n"%s/%s" was saved!' % (folder, file_name))
 
     @pytest.mark.run(order=2)
     def test_add_text_overlay_to_image(self):
@@ -24,7 +26,8 @@ class ImageTests(BaseCase):
         overlay_text = 'This is an XKCD comic!\nTitle: "My Sky"'
         self.save_element_as_image_file(
             selector, file_name, folder, overlay_text)
-        print('"%s/%s" has been saved!' % (folder, file_name))
+        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
+        print('\n"%s/%s" was saved!' % (folder, file_name))
 
     @pytest.mark.run(order=3)
     def test_add_text_overlay_to_page_section(self):
@@ -40,7 +43,8 @@ class ImageTests(BaseCase):
             % self.get_current_url())
         self.save_element_as_image_file(
             selector, file_name, folder, overlay_text)
-        print('"%s/%s" has been saved!' % (folder, file_name))
+        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
+        print('\n"%s/%s" was saved!' % (folder, file_name))
 
     @pytest.mark.run(order=4)
     def test_add_text_overlay_to_full_page(self):
@@ -53,4 +57,5 @@ class ImageTests(BaseCase):
         overlay_text = ("A text overlay on %s" % self.get_current_url())
         self.save_element_as_image_file(
             selector, file_name, folder, overlay_text)
-        print('"%s/%s" has been saved!' % (folder, file_name))
+        self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
+        print('\n"%s/%s" was saved!' % (folder, file_name))
