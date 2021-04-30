@@ -70,6 +70,8 @@ class BaseCase(unittest.TestCase):
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = None
+        self.__screenshot_count = 0
+        self.__will_be_skipped = False
         self.__passed_then_skipped = False
         self.__last_url_of_deferred_assert = "data:,"
         self.__last_page_load_url = "data:,"
@@ -4359,8 +4361,7 @@ class BaseCase(unittest.TestCase):
             '<html>\n'
             '<head>\n'
             '<meta charset="utf-8">\n'
-            '<meta http-equiv="Content-Type" '
-            'content="text/html, charset=utf-8;">\n'
+            '<meta http-equiv="Content-Type" content="text/html">\n'
             '<meta name="viewport" content="shrink-to-fit=no">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
@@ -5076,8 +5077,7 @@ class BaseCase(unittest.TestCase):
         if not filename.endswith(".html"):
             raise Exception('Chart file must end in ".html"!')
         the_html = '<meta charset="utf-8">\n'
-        the_html += '<meta http-equiv="Content-Type" '
-        the_html += 'content="text/html, charset=utf-8;">\n'
+        the_html += '<meta http-equiv="Content-Type" content="text/html">\n'
         the_html += '<meta name="viewport" content="shrink-to-fit=no">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
@@ -7376,6 +7376,9 @@ class BaseCase(unittest.TestCase):
         if self.is_pytest:
             # pytest-specific code
             test_id = self.__get_test_id()
+            self.test_id = test_id
+            if hasattr(self, "_using_sb_fixture"):
+                self.test_id = sb_config._test_id
             self.browser = sb_config.browser
             self.data = sb_config.data
             self.var1 = sb_config.var1
@@ -7851,9 +7854,12 @@ class BaseCase(unittest.TestCase):
                     has_exception = sys.exc_info()[1] is not None
                 else:
                     has_exception = (len(str(sys.exc_info()[1]).strip()) > 0)
+        if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
+            has_exception = False
         return has_exception
 
     def __get_test_id(self):
+        """ The id used in various places such as the test log path. """
         test_id = "%s.%s.%s" % (self.__class__.__module__,
                                 self.__class__.__name__,
                                 self._testMethodName)
@@ -7873,6 +7879,7 @@ class BaseCase(unittest.TestCase):
         return test_id
 
     def __get_display_id(self):
+        """ The id for running a test from pytest. (Displayed on Dashboard) """
         test_id = "%s.py::%s::%s" % (
             self.__class__.__module__.replace('.', '/'),
             self.__class__.__name__,
@@ -7899,7 +7906,7 @@ class BaseCase(unittest.TestCase):
                 pass  # Only reachable during multi-threaded runs
 
     def __process_dashboard(self, has_exception, init=False):
-        ''' SeleniumBase Dashboard Processing '''
+        """ SeleniumBase Dashboard Processing """
         existing_res = sb_config._results  # Used by multithreaded tests
         if self._multithreaded:
             abs_path = os.path.abspath('.')
@@ -7908,11 +7915,12 @@ class BaseCase(unittest.TestCase):
             if not init and os.path.exists(dash_jsonpath):
                 with open(dash_jsonpath, 'r') as f:
                     dash_json = f.read().strip()
-                dash_data, d_id, dash_runtimes, d_stats = json.loads(dash_json)
+                dash_data, d_id, dash_rt, tlp, d_stats = json.loads(dash_json)
                 num_passed, num_failed, num_skipped, num_untested = d_stats
                 sb_config._results = dash_data
                 sb_config._display_id = d_id
-                sb_config._duration = dash_runtimes
+                sb_config._duration = dash_rt  # Dashboard Run Time
+                sb_config._d_t_log_path = tlp  # Test Log Path
                 sb_config.item_count_passed = num_passed
                 sb_config.item_count_failed = num_failed
                 sb_config.item_count_skipped = num_skipped
@@ -7935,12 +7943,26 @@ class BaseCase(unittest.TestCase):
                         sb_config.item_count_untested -= 1
             sb_config._extra_dash_entries = []  # Reset the list to empty
         # Process new entries
-        test_id = self.__get_test_id_2()
+        log_dir = self.log_path
+        ft_id = self.__get_test_id()  # Full test id with path to log files
+        test_id = self.__get_test_id_2()  # The test id used by the DashBoard
         dud = "seleniumbase/plugins/pytest_plugin.py::BaseClass::base_method"
+        dud2 = "pytest_plugin.BaseClass.base_method"
+        if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
+            test_id = sb_config._test_id
         if not init:
             duration_ms = int(time.time() * 1000) - self.__start_time_ms
             duration = float(duration_ms) / 1000.0
             sb_config._duration[test_id] = duration
+            if (
+                has_exception
+                or self.save_screenshot_after_test
+                or self.__screenshot_count > 0
+                or self.__will_be_skipped
+            ):
+                sb_config._d_t_log_path[test_id] = os.path.join(log_dir, ft_id)
+            else:
+                sb_config._d_t_log_path[test_id] = None
             if test_id not in sb_config._display_id.keys():
                 sb_config._display_id[test_id] = self.__get_display_id()
             if sb_config._display_id[test_id] == dud:
@@ -7997,6 +8019,9 @@ class BaseCase(unittest.TestCase):
                     and sb_config._results[test_id] == "Failed"
                 ):
                     # pytest-rerunfailures reran a test that failed
+                    sb_config._d_t_log_path[test_id] = (
+                        os.path.join(log_dir, ft_id)
+                    )
                     sb_config.item_count_failed -= 1
                     sb_config.item_count_untested += 1
                 elif (
@@ -8009,6 +8034,8 @@ class BaseCase(unittest.TestCase):
                 sb_config._results[test_id] = "Passed"
                 sb_config.item_count_passed += 1
                 sb_config.item_count_untested -= 1
+        else:
+            pass  # Only initialize the Dashboard on the first processing
         num_passed = sb_config.item_count_passed
         num_failed = sb_config.item_count_failed
         num_skipped = sb_config.item_count_skipped
@@ -8176,19 +8203,22 @@ class BaseCase(unittest.TestCase):
         if num_untested == 0 and sb_config._using_html_report:
             sb_config._dash_final_summary = status
         add_more = add_more + refresh_line
-        the_html = head + self.extract_chart() + table_html + add_more
+        the_html = (
+            '<html lang="en">' + head + self.extract_chart()
+            + table_html + add_more
+        )
         abs_path = os.path.abspath('.')
         file_path = os.path.join(abs_path, "dashboard.html")
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
-        time.sleep(0.05)  # Add time for dashboard server to process updates
         if self._multithreaded:
             d_stats = (num_passed, num_failed, num_skipped, num_untested)
             _results = sb_config._results
             _display_id = sb_config._display_id
-            _duration = sb_config._duration
-            dash_json = json.dumps((_results, _display_id, _duration, d_stats))
+            _rt = sb_config._duration  # Run Time (RT)
+            _tlp = sb_config._d_t_log_path  # Test Log Path (TLP)
+            dash_json = json.dumps((_results, _display_id, _rt, _tlp, d_stats))
             dash_json_loc = constants.Dashboard.DASH_JSON
             dash_jsonpath = os.path.join(abs_path, dash_json_loc)
             dash_json_file = codecs.open(dash_jsonpath, "w+", encoding="utf-8")

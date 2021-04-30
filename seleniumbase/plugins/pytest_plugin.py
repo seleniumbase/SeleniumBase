@@ -749,6 +749,9 @@ def pytest_configure(config):
     sb_config._results = {}  # SBase Dashboard test results
     sb_config._duration = {}  # SBase Dashboard test duration
     sb_config._display_id = {}  # SBase Dashboard display ID
+    sb_config._d_t_log_path = {}  # SBase Dashboard test log path
+    sb_config._test_id = None  # The SBase Dashboard test id
+    sb_config._latest_display_id = None  # The latest SBase display id
     sb_config._dashboard_initialized = False  # Becomes True after init
     sb_config._has_exception = False  # This becomes True if any test fails
     sb_config._multithreaded = False  # This becomes True if multithreading
@@ -861,6 +864,7 @@ def pytest_itemcollected(item):
         sb_config._results[test_id] = "Untested"
         sb_config._duration[test_id] = "-"
         sb_config._display_id[test_id] = display_id
+        sb_config._d_t_log_path[test_id] = None
 
 
 def pytest_deselected(items):
@@ -898,10 +902,13 @@ def pytest_collection_finish(session):
         print("Dashboard: %s%s%s\n%s" % (c1, dash_path, cr, stars))
 
 
-def pytest_runtest_setup():
+def pytest_runtest_setup(item):
     """ This runs before every test with pytest. """
     if sb_config.dashboard:
         sb_config._sbase_detected = False
+    test_id, display_id = _get_test_ids_(item)
+    sb_config._test_id = test_id
+    sb_config._latest_display_id = display_id
 
 
 def pytest_runtest_teardown(item):
@@ -1149,6 +1156,7 @@ def pytest_runtest_makereport(item, call):
             sb_config._results[test_id] = r_outcome
             sb_config._duration[test_id] = "*****"
             sb_config._display_id[test_id] = display_id
+            sb_config._d_t_log_path[test_id] = ""
             if test_id not in sb_config._extra_dash_entries:
                 sb_config._extra_dash_entries.append(test_id)
         try:
