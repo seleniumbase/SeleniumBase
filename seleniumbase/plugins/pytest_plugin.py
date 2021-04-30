@@ -780,6 +780,20 @@ def pytest_configure(config):
     if not sb_config.headless:
         sb_config.headed = True
 
+    if sb_config._multithreaded:
+        if config.getoption('use_chrome'):
+            sb_config.browser = "chrome"
+        elif config.getoption('use_edge'):
+            sb_config.browser = "edge"
+        elif config.getoption('use_firefox'):
+            sb_config.browser = "firefox"
+        elif config.getoption('use_opera'):
+            sb_config.browser = "opera"
+        elif config.getoption('use_safari'):
+            sb_config.browser = "safari"
+        else:
+            pass  # Use the browser specified using "--browser=BROWSER"
+
     if sb_config.with_testing_base:
         log_helper.log_folder_setup(sb_config.log_path, sb_config.archive_logs)
     download_helper.reset_downloads_folder()
