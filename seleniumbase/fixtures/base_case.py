@@ -3448,7 +3448,7 @@ class BaseCase(unittest.TestCase):
             by=By.CSS_SELECTOR, timeout=None):
         """Raises an exception if the element attribute/value is not found.
         If the value is not specified, the attribute only needs to exist.
-        Returns the element that contains the attribute.
+        Returns the element that contains the attribute if successful.
         Default timeout = LARGE_TIMEOUT."""
         self.__check_scope()
         if not timeout:
