@@ -3671,7 +3671,10 @@ class BaseCase(unittest.TestCase):
         Due to the situation that newer versions of chromedriver require
         an exact match to the version of Chrome, an "old" version of
         chromedriver is installed by default. It is then up to the user
-        to upgrade to the correct version of chromedriver from there."""
+        to upgrade to the correct version of chromedriver from there.
+        This method can be used to change test behavior when trying
+        to perform an action that is impacted by having an old version
+        of chromedriver installed."""
         self.__check_scope()
         self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
         if int(self.get_chromedriver_version().split(".")[0]) < 73:
