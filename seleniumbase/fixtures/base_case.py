@@ -3903,11 +3903,11 @@ class BaseCase(unittest.TestCase):
                 self.__passed_then_skipped = True
             self.__will_be_skipped = True
             sb_config._results[test_id] = "Skipped"
-        elif self.is_pytest and self.with_db_reporting:
-            self.__skip_reason = reason
-        elif reason and not self.is_pytest:
-            # Only needed for nosetest db reporting
-            self._nose_skip_reason = reason
+        if self.with_db_reporting:
+            if self.is_pytest:
+                self.__skip_reason = reason
+            else:
+                self._nose_skip_reason = reason
         # Add skip reason to the logs
         if not hasattr(self, "_using_sb_fixture"):
             test_id = self.__get_test_id()  # Recalculate the test id
