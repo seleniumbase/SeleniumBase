@@ -31,10 +31,13 @@ import sys
 import time
 import urllib3
 import unittest
-from selenium.common.exceptions import (StaleElementReferenceException,
-                                        MoveTargetOutOfBoundsException,
-                                        WebDriverException)
-from selenium.common import exceptions as selenium_exceptions
+from selenium.common.exceptions import (
+    ElementClickInterceptedException as ECI_Exception,
+    ElementNotInteractableException as ENI_Exception,
+    MoveTargetOutOfBoundsException,
+    StaleElementReferenceException,
+    WebDriverException,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
@@ -53,10 +56,6 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
-SSMD = constants.Values.SSMD  # Smooth Scrolling
-JS_Exc = selenium_exceptions.JavascriptException
-ECI_Exception = selenium_exceptions.ElementClickInterceptedException
-ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
 class BaseCase(unittest.TestCase):
@@ -2551,7 +2550,7 @@ class BaseCase(unittest.TestCase):
                 if self.browser != "safari":
                     scroll_distance = js_utils.get_scroll_distance_to_element(
                         self.driver, element)
-                    if abs(scroll_distance) > SSMD:
+                    if abs(scroll_distance) > constants.Values.SSMD:
                         self.__jquery_slow_scroll_to(selector, by)
                     else:
                         self.__slow_scroll_to_element(element)
@@ -2735,7 +2734,7 @@ class BaseCase(unittest.TestCase):
         try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
                 self.driver, element)
-            if abs(scroll_distance) > SSMD:
+            if abs(scroll_distance) > constants.Values.SSMD:
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
@@ -7258,8 +7257,9 @@ class BaseCase(unittest.TestCase):
         dist = js_utils.get_scroll_distance_to_element(self.driver, element)
         time_offset = 0
         try:
-            if dist and abs(dist) > SSMD:
-                time_offset = int(float(abs(dist) - SSMD) / 12.5)
+            if dist and abs(dist) > constants.Values.SSMD:
+                time_offset = int(
+                    float(abs(dist) - constants.Values.SSMD) / 12.5)
                 if time_offset > 950:
                     time_offset = 950
         except Exception:
@@ -7487,7 +7487,7 @@ class BaseCase(unittest.TestCase):
             try:
                 scroll_distance = js_utils.get_scroll_distance_to_element(
                     self.driver, element)
-                if abs(scroll_distance) > SSMD:
+                if abs(scroll_distance) > constants.Values.SSMD:
                     self.__jquery_slow_scroll_to(selector, by)
                 else:
                     self.__slow_scroll_to_element(element)
@@ -7522,7 +7522,7 @@ class BaseCase(unittest.TestCase):
         try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
                 self.driver, element)
-            if abs(scroll_distance) > SSMD:
+            if abs(scroll_distance) > constants.Values.SSMD:
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
