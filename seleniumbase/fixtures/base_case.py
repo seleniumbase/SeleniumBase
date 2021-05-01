@@ -4769,24 +4769,32 @@ class BaseCase(unittest.TestCase):
     ############
 
     def create_pie_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True, labels=True, legend=True):
-        """ Creates a JavaScript pie chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript pie chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4799,24 +4807,32 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_bar_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True, labels=True, legend=True):
-        """ Creates a JavaScript bar chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript bar chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4829,24 +4845,32 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_column_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True, labels=True, legend=True):
-        """ Creates a JavaScript column chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript column chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4859,26 +4883,34 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_line_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, zero=False, libs=True,
-            labels=True, legend=True):
-        """ Creates a JavaScript line chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            zero - If True, the y-axis always starts at 0. (Default: False).
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            zero=False,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript line chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        zero - If True, the y-axis always starts at 0. (Default: False).
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4891,26 +4923,34 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_area_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, zero=False, libs=True,
-            labels=True, legend=True):
-        """ Creates a JavaScript area chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            zero - If True, the y-axis always starts at 0. (Default: False).
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            zero=False,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript area chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        zero - If True, the y-axis always starts at 0. (Default: False).
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4923,9 +4963,18 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def __create_highchart(
-            self, chart_name=None, title=None, subtitle=None,
-            style=None, data_name=None, unit=None, zero=False, libs=True,
-            labels=True, legend=True):
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            style=None,
+            data_name=None,
+            unit=None,
+            zero=False,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
         """ Creates a JavaScript chart using the "HighCharts" library. """
         if not chart_name:
             chart_name = "default"
@@ -5173,12 +5222,12 @@ class BaseCase(unittest.TestCase):
         self._chart_series_count[chart_name] = 1
 
     def add_series_to_chart(self, data_name=None, chart_name=None):
-        """ Add a new data series to an existing chart.
-            This allows charts to have multiple data sets.
-            @Params
-            data_name - Set the series name. Useful for multi-series charts.
-            chart_name - If creating multiple charts,
-                         use this to select which one.
+        """Add a new data series to an existing chart.
+        This allows charts to have multiple data sets.
+        @Params
+        data_name - Set the series name. Useful for multi-series charts.
+        chart_name - If creating multiple charts,
+                     use this to select which one.
         """
         if not chart_name:
             chart_name = "default"
@@ -5198,15 +5247,15 @@ class BaseCase(unittest.TestCase):
         self._chart_first_series[chart_name] = False
 
     def add_data_point(self, label, value, color=None, chart_name=None):
-        """ Add a data point to a SeleniumBase-generated chart.
-            @Params
-            label - The label name for the data point.
-            value - The numeric value of the data point.
-            color - The HTML color of the data point.
-                    Can be an RGB color. Eg: "#55ACDC".
-                    Can also be a named color. Eg: "Teal".
-            chart_name - If creating multiple charts,
-                         use this to select which one.
+        """Add a data point to a SeleniumBase-generated chart.
+        @Params
+        label - The label name for the data point.
+        value - The numeric value of the data point.
+        color - The HTML color of the data point.
+                Can be an RGB color. Eg: "#55ACDC".
+                Can also be a named color. Eg: "Teal".
+        chart_name - If creating multiple charts,
+                     use this to select which one.
         """
         if not chart_name:
             chart_name = "default"
@@ -5234,14 +5283,14 @@ class BaseCase(unittest.TestCase):
             self._chart_label[chart_name].append(label)
 
     def save_chart(self, chart_name=None, filename=None, folder=None):
-        """ Saves a SeleniumBase-generated chart to a file for later use.
-            @Params
-            chart_name - If creating multiple charts at the same time,
-                         use this to select the one you wish to use.
-            filename - The name of the HTML file that you wish to
-                       save the chart to. (filename must end in ".html")
-            folder - The name of the folder where you wish to
-                     save the HTML file. (Default: "./saved_charts/")
+        """Saves a SeleniumBase-generated chart to a file for later use.
+        @Params
+        chart_name - If creating multiple charts at the same time,
+                     use this to select the one you wish to use.
+        filename - The name of the HTML file that you wish to
+                   save the chart to. (filename must end in ".html")
+        folder - The name of the folder where you wish to
+                 save the HTML file. (Default: "./saved_charts/")
         """
         if not chart_name:
             chart_name = "default"
@@ -5294,14 +5343,14 @@ class BaseCase(unittest.TestCase):
         return file_path
 
     def display_chart(self, chart_name=None, filename=None, interval=0):
-        """ Displays a SeleniumBase-generated chart in the browser window.
-            @Params
-            chart_name - If creating multiple charts at the same time,
-                         use this to select the one you wish to use.
-            filename - The name of the HTML file that you wish to
-                       save the chart to. (filename must end in ".html")
-            interval - The delay time for auto-advancing charts. (in seconds)
-                       If set to 0 (default), auto-advancing is disabled.
+        """Displays a SeleniumBase-generated chart in the browser window.
+        @Params
+        chart_name - If creating multiple charts at the same time,
+                     use this to select the one you wish to use.
+        filename - The name of the HTML file that you wish to
+                   save the chart to. (filename must end in ".html")
+        interval - The delay time for auto-advancing charts. (in seconds)
+                   If set to 0 (default), auto-advancing is disabled.
         """
         if self.headless:
             interval = 1  # Race through chart if running in headless mode
@@ -5350,10 +5399,10 @@ class BaseCase(unittest.TestCase):
                 pass
 
     def extract_chart(self, chart_name=None):
-        """ Extracts the HTML from a SeleniumBase-generated chart.
-            @Params
-            chart_name - If creating multiple charts at the same time,
-                         use this to select the one you wish to use.
+        """Extracts the HTML from a SeleniumBase-generated chart.
+        @Params
+        chart_name - If creating multiple charts at the same time,
+                     use this to select the one you wish to use.
         """
         if not chart_name:
             chart_name = "default"
