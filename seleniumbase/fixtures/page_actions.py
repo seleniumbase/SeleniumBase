@@ -25,6 +25,7 @@ import sys
 import time
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
@@ -432,6 +433,83 @@ def wait_for_exact_text_visible(driver, text, selector, by=By.CSS_SELECTOR,
             "Expected exact text {%s} for {%s} was not visible "
             "after %s second%s!" % (text, selector, timeout, plural))
         timeout_exception(ElementNotVisibleException, message)
+
+
+def wait_for_attribute(
+        driver, selector, attribute, value=None,
+        by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT):
+    """
+    Searches for the specified element attribute by the given selector.
+    Returns the element object if the expected attribute is present
+    and the expected attribute value is present (if specified).
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
+    Raises NoSuchAttributeException if the element exists in the HTML,
+    but the expected attribute/value is not present within the timeout.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    attribute - the attribute that is expected for the element (required)
+    value - the attribute value that is expected (Default: None)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for elements in seconds
+    @Returns
+    A web element object that contains the expected attribute/value
+    """
+    element = None
+    element_present = False
+    attribute_present = False
+    found_value = None
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        s_utils.check_if_time_limit_exceeded()
+        try:
+            element = driver.find_element(by=by, value=selector)
+            element_present = True
+            attribute_present = False
+            found_value = element.get_attribute(attribute)
+            if found_value is not None:
+                attribute_present = True
+            else:
+                element = None
+                raise Exception()
+
+            if value is not None:
+                if found_value == value:
+                    return element
+                else:
+                    element = None
+                    raise Exception()
+            else:
+                return element
+        except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    if not element:
+        if not element_present:
+            # The element does not exist in the HTML
+            message = (
+                "Element {%s} was not present after %s second%s!"
+                "" % (selector, timeout, plural))
+            timeout_exception(NoSuchElementException, message)
+        if not attribute_present:
+            # The element does not have the attribute
+            message = (
+                "Expected attribute {%s} of element {%s} was not present "
+                "after %s second%s!" % (attribute, selector, timeout, plural))
+            timeout_exception(NoSuchAttributeException, message)
+        # The element attribute exists, but the expected value does not match
+        message = (
+            "Expected value {%s} for attribute {%s} of element {%s} was not "
+            "present after %s second%s! (The actual value was {%s})"
+            % (value, attribute, selector, timeout, plural, found_value))
+        timeout_exception(NoSuchAttributeException, message)
 
 
 def wait_for_element_absent(driver, selector, by=By.CSS_SELECTOR,

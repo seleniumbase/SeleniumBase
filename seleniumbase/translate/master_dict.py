@@ -455,6 +455,18 @@ class MD:
     md["assert_element_absent"][8] = "подтвердить_элемент_отсутствует"
     md["assert_element_absent"][9] = "verificar_elemento_ausente"
 
+    md["assert_attribute"] = ["*"] * num_langs
+    md["assert_attribute"][0] = "assert_attribute"
+    md["assert_attribute"][1] = "断言属性"
+    md["assert_attribute"][2] = "controleren_attribuut"
+    md["assert_attribute"][3] = "vérifier_attribut"
+    md["assert_attribute"][4] = "verificare_attributo"
+    md["assert_attribute"][5] = "属性を確認する"
+    md["assert_attribute"][6] = "특성_확인"
+    md["assert_attribute"][7] = "verificar_atributo"
+    md["assert_attribute"][8] = "подтвердить_атрибут"
+    md["assert_attribute"][9] = "verificar_atributo"
+
     md["assert_title"] = ["*"] * num_langs
     md["assert_title"][0] = "assert_title"
     md["assert_title"][1] = "断言标题"
@@ -707,6 +719,18 @@ class MD:
     md["wait_for_element_absent"][8] = "ждать_элемента_отсутствует"
     md["wait_for_element_absent"][9] = "espera_el_elemento_ausente"
 
+    md["wait_for_attribute"] = ["*"] * num_langs
+    md["wait_for_attribute"][0] = "wait_for_attribute"
+    md["wait_for_attribute"][1] = "等待属性"
+    md["wait_for_attribute"][2] = "wachten_op_attribuut"
+    md["wait_for_attribute"][3] = "attendre_un_attribut"
+    md["wait_for_attribute"][4] = "attendere_un_attributo"
+    md["wait_for_attribute"][5] = "属性を待つ"
+    md["wait_for_attribute"][6] = "특성_때까지_기다립니다"
+    md["wait_for_attribute"][7] = "aguardar_o_atributo"
+    md["wait_for_attribute"][8] = "ждать_атрибут"
+    md["wait_for_attribute"][9] = "espera_el_atributo"
+
     md["sleep"] = ["*"] * num_langs
     md["sleep"][0] = "sleep"
     md["sleep"][1] = "睡"
@@ -826,6 +850,18 @@ class MD:
     md["save_screenshot"][7] = "salvar_captura_de_tela"
     md["save_screenshot"][8] = "сохранить_скриншот"
     md["save_screenshot"][9] = "guardar_captura_de_pantalla"
+
+    md["save_screenshot_to_logs"] = ["*"] * num_langs
+    md["save_screenshot_to_logs"][0] = "save_screenshot_to_logs"
+    md["save_screenshot_to_logs"][1] = "保存截图到日志"
+    md["save_screenshot_to_logs"][2] = "bewaar_screenshot_om_te_loggen"
+    md["save_screenshot_to_logs"][3] = "enregistrer_capture_d_écran_aux_logs"
+    md["save_screenshot_to_logs"][4] = "salva_screenshot_nei_logs"
+    md["save_screenshot_to_logs"][5] = "ログにスクリーンショットを保存"
+    md["save_screenshot_to_logs"][6] = "로그에_스크린_샷_저장"
+    md["save_screenshot_to_logs"][7] = "salvar_captura_de_tela_para_logs"
+    md["save_screenshot_to_logs"][8] = "сохранить_скриншот_в_логи"
+    md["save_screenshot_to_logs"][9] = "guardar_captura_de_pantalla_para_logs"
 
     md["choose_file"] = ["*"] * num_langs
     md["choose_file"][0] = "choose_file"
@@ -1623,7 +1659,7 @@ class MD:
     md["get_attribute"] = ["*"] * num_langs
     md["get_attribute"][0] = "get_attribute"
     md["get_attribute"][1] = "获取属性"
-    md["get_attribute"][2] = "kenmerk_ophalen"
+    md["get_attribute"][2] = "attribuut_ophalen"
     md["get_attribute"][3] = "obtenir_attribut"
     md["get_attribute"][4] = "ottenere_attributo"
     md["get_attribute"][5] = "属性を取得する"
@@ -1635,7 +1671,7 @@ class MD:
     md["set_attribute"] = ["*"] * num_langs
     md["set_attribute"][0] = "set_attribute"
     md["set_attribute"][1] = "设置属性"
-    md["set_attribute"][2] = "kenmerk_instellen"
+    md["set_attribute"][2] = "attribuut_instellen"
     md["set_attribute"][3] = "définir_attribut"
     md["set_attribute"][4] = "imposta_attributo"
     md["set_attribute"][5] = "属性を設定する"
@@ -1647,7 +1683,7 @@ class MD:
     md["set_attributes"] = ["*"] * num_langs
     md["set_attributes"][0] = "set_attributes"
     md["set_attributes"][1] = "设置所有属性"
-    md["set_attributes"][2] = "kenmerken_instellen"
+    md["set_attributes"][2] = "attributen_instellen"
     md["set_attributes"][3] = "définir_attributs"
     md["set_attributes"][4] = "impostare_gli_attributi"
     md["set_attributes"][5] = "すべての属性を設定"
@@ -2022,7 +2058,7 @@ class MD:
     md["set_attribute_all"] = ["*"] * num_langs
     md["set_attribute_all"][0] = "set_attribute_all"
     md["set_attribute_all"][1] = "设置所有属性"
-    md["set_attribute_all"][2] = "kenmerken_instellen"
+    md["set_attribute_all"][2] = "attributen_instellen"
     md["set_attribute_all"][3] = "définir_attributs"
     md["set_attribute_all"][4] = "impostare_gli_attributi"
     md["set_attribute_all"][5] = "すべての属性を設定"

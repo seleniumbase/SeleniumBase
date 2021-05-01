@@ -68,13 +68,12 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     import traceback
     basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
-    log_file = codecs.open(basic_file_path, "w+", "utf-8")
     if url:
         last_page = url
     else:
         last_page = get_last_page(driver)
     timestamp, the_date, the_time = get_master_time()
-    test_id = get_test_id(test)
+    test_id = get_test_id(test)  # pytest runnable display_id (with the "::")
     data_to_save = []
     data_to_save.append("%s" % test_id)
     data_to_save.append(
@@ -121,6 +120,29 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
                 data_to_save.append("Exception: " + str(last_value))
         else:
             data_to_save.append("Traceback: " + the_traceback)
+    log_file = codecs.open(basic_file_path, "w+", "utf-8")
+    log_file.writelines("\r\n".join(data_to_save))
+    log_file.close()
+
+
+def log_skipped_test_data(test, test_logpath, browser, reason):
+    timestamp, the_date, the_time = get_master_time()
+    test_id = get_test_id(test)  # pytest runnable display_id (with the "::")
+    data_to_save = []
+    data_to_save.append("%s" % test_id)
+    data_to_save.append(
+        "--------------------------------------------------------------------")
+    data_to_save.append("       Outcome: SKIPPED")
+    data_to_save.append("       Browser: %s" % browser)
+    data_to_save.append("     Timestamp: %s" % timestamp)
+    data_to_save.append("          Date: %s" % the_date)
+    data_to_save.append("          Time: %s" % the_time)
+    data_to_save.append(
+        "--------------------------------------------------------------------")
+    data_to_save.append(" * Skip Reason: %s" % reason)
+    data_to_save.append("")
+    file_path = os.path.join(test_logpath, "skip_reason.txt")
+    log_file = codecs.open(file_path, "w+", encoding="utf-8")
     log_file.writelines("\r\n".join(data_to_save))
     log_file.close()
 
@@ -132,17 +154,17 @@ def log_page_source(test_logpath, driver, source=None):
     else:
         try:
             page_source = driver.page_source
+            page_source = get_html_source_with_base_href(driver, page_source)
         except Exception:
-            # Since we can't get the page source from here, skip saving it
-            return
+            source = constants.Warnings.PAGE_SOURCE_UNDEFINED
+            page_source = constants.Warnings.PAGE_SOURCE_UNDEFINED
     if source == constants.Warnings.PAGE_SOURCE_UNDEFINED:
         page_source = "<h3>Warning: " + source + (
             "</h3>\n<h4>The browser window was either unreachable, "
             "unresponsive, or closed prematurely!</h4>")
     html_file_path = "%s/%s" % (test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
-    rendered_source = get_html_source_with_base_href(driver, page_source)
-    html_file.write(rendered_source)
+    html_file.write(page_source)
     html_file.close()
 
 
@@ -213,11 +235,16 @@ def get_base_href_html(full_url):
 
 def get_html_source_with_base_href(driver, page_source):
     ''' Combines the domain base href with the html source.
+        Also adds on the meta charset, which may get dropped.
         This is needed for the page html to render correctly. '''
     last_page = get_last_page(driver)
+    meta_charset = '<meta charset="utf-8">'
     if '://' in last_page:
         base_href_html = get_base_href_html(last_page)
-        return '%s\n%s' % (base_href_html, page_source)
+        if ' charset="' not in page_source:
+            return '%s\n%s\n%s' % (base_href_html, meta_charset, page_source)
+        else:
+            return '%s\n%s' % (base_href_html, page_source)
     return ''
 
 

@@ -4,6 +4,7 @@ This module contains shared utility methods.
 import time
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
@@ -31,6 +32,10 @@ def format_exc(exception, message):
         exc = NoAlertPresentException
     elif exception == "NoAlertPresentException":
         exc = NoAlertPresentException
+    elif exception == NoSuchAttributeException:
+        exc = NoSuchAttributeException
+    elif exception == "NoSuchAttributeException":
+        exc = NoSuchAttributeException
     elif exception == NoSuchFrameException:
         exc = NoSuchFrameException
     elif exception == "NoSuchFrameException":
@@ -39,6 +44,8 @@ def format_exc(exception, message):
         exc = NoSuchWindowException
     elif exception == "NoSuchWindowException":
         exc = NoSuchWindowException
+    elif exception == NoSuchFileException:
+        exc = NoSuchFileException
     elif exception == "NoSuchFileException":
         exc = NoSuchFileException
     elif type(exception) is str:

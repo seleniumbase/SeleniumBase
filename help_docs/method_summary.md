@@ -205,6 +205,8 @@ self.switch_to_default_driver()
 
 self.save_screenshot(name, folder=None)
 
+self.save_screenshot_to_logs(name=None)
+
 self.save_page_source(name, folder=None)
 
 self.save_cookies(name="cookies.txt")
@@ -334,6 +336,12 @@ self.assert_not_equal(first, second, msg=None)
 
 self.assert_raises(*args, **kwargs)
 
+self.wait_for_attribute(selector, attribute, value=None,
+                        by=By.CSS_SELECTOR, timeout=None)
+
+self.assert_attribute(selector, attribute, value=None,
+                      by=By.CSS_SELECTOR, timeout=None)
+
 self.assert_title(title)
 
 self.assert_no_js_errors()
@@ -341,6 +349,12 @@ self.assert_no_js_errors()
 self.inspect_html()
 
 self.is_chromium()
+
+self.get_chrome_version()
+
+self.get_chromedriver_version()
+
+self.is_chromedriver_too_old()
 
 self.get_google_auth_password(totp_key=None)
 

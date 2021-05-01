@@ -31,10 +31,13 @@ import sys
 import time
 import urllib3
 import unittest
-from selenium.common.exceptions import (StaleElementReferenceException,
-                                        MoveTargetOutOfBoundsException,
-                                        WebDriverException)
-from selenium.common import exceptions as selenium_exceptions
+from selenium.common.exceptions import (
+    ElementClickInterceptedException as ECI_Exception,
+    ElementNotInteractableException as ENI_Exception,
+    MoveTargetOutOfBoundsException,
+    StaleElementReferenceException,
+    WebDriverException,
+)
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
@@ -53,10 +56,6 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
-SSMD = constants.Values.SSMD  # Smooth Scrolling
-JS_Exc = selenium_exceptions.JavascriptException
-ECI_Exception = selenium_exceptions.ElementClickInterceptedException
-ENI_Exception = selenium_exceptions.ElementNotInteractableException
 
 
 class BaseCase(unittest.TestCase):
@@ -70,6 +69,8 @@ class BaseCase(unittest.TestCase):
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = None
+        self.__screenshot_count = 0
+        self.__will_be_skipped = False
         self.__passed_then_skipped = False
         self.__last_url_of_deferred_assert = "data:,"
         self.__last_page_load_url = "data:,"
@@ -129,11 +130,11 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def get(self, url):
-        """ If url looks like a page URL, opens the URL in the web browser.
-            Otherwise, returns self.get_element(URL_AS_A_SELECTOR)
-            Examples:
-                self.get("https://seleniumbase.io")  # Navigates to the URL
-                self.get("input.class")  # Finds and returns the WebElement
+        """If "url" looks like a page URL, open the URL in the web browser.
+        Otherwise, return self.get_element(URL_AS_A_SELECTOR)
+        Examples:
+            self.get("https://seleniumbase.io")  # Navigates to the URL
+            self.get("input.class")  # Finds and returns the WebElement
         """
         self.__check_scope()
         if self.__looks_like_a_page_url(url):
@@ -290,13 +291,14 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
 
     def slow_click(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        """ Similar to click(), but pauses for a brief moment before clicking.
-            When used in combination with setting the user-agent, you can often
-            bypass bot-detection by tricking websites into thinking that you're
-            not a bot. (Useful on websites that block web automation tools.)
-            To set the user-agent, use: ``--agent=AGENT``.
-            Here's an example message from GitHub's bot-blocker:
-            ``You have triggered an abuse detection mechanism...`` """
+        """Similar to click(), but pauses for a brief moment before clicking.
+        When used in combination with setting the user-agent, you can often
+        bypass bot-detection by tricking websites into thinking that you're
+        not a bot. (Useful on websites that block web automation tools.)
+        To set the user-agent, use: ``--agent=AGENT``.
+        Here's an example message from GitHub's bot-blocker:
+        ``You have triggered an abuse detection mechanism...``
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -363,8 +365,13 @@ class BaseCase(unittest.TestCase):
 
     def click_chain(self, selectors_list, by=By.CSS_SELECTOR,
                     timeout=None, spacing=0):
-        """ This method clicks on a list of elements in succession.
-            'spacing' is the amount of time to wait between clicks. (sec) """
+        """This method clicks on a list of elements in succession.
+        @Params
+        selectors_list - The list of selectors to click on.
+        by - The type of selector to search by (Default: CSS_Selector).
+        timeout - How long to wait for the selector to be visible.
+        spacing - The amount of time to wait between clicks (in seconds).
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -377,19 +384,19 @@ class BaseCase(unittest.TestCase):
 
     def update_text(self, selector, text, by=By.CSS_SELECTOR,
                     timeout=None, retry=False):
-        """ This method updates an element's text field with new text.
-            Has multiple parts:
-            * Waits for the element to be visible.
-            * Waits for the element to be interactive.
-            * Clears the text field.
-            * Types in the new text.
-            * Hits Enter/Submit (if the text ends in "\n").
-            @Params
-            selector - the selector of the text field
-            text - the new text to type into the text field
-            by - the type of selector to search by (Default: CSS Selector)
-            timeout - how long to wait for the selector to be visible
-            retry - if True, use JS if the Selenium text update fails
+        """This method updates an element's text field with new text.
+        Has multiple parts:
+        * Waits for the element to be visible.
+        * Waits for the element to be interactive.
+        * Clears the text field.
+        * Types in the new text.
+        * Hits Enter/Submit (if the text ends in "\n").
+        @Params
+        selector - the selector of the text field
+        text - the new text to type into the text field
+        by - the type of selector to search by (Default: CSS Selector)
+        timeout - how long to wait for the selector to be visible
+        retry - if True, use JS if the Selenium text update fails
         """
         self.__check_scope()
         if not timeout:
@@ -450,9 +457,9 @@ class BaseCase(unittest.TestCase):
         except Exception:
             exc_message = self.__get_improved_exception_message()
             raise Exception(exc_message)
-        if (retry and element.get_attribute('value') != text and (
+        if (retry and element.get_attribute("value") != text and (
                 not text.endswith('\n'))):
-            logging.debug('update_text() is falling back to JavaScript!')
+            logging.debug("update_text() is falling back to JavaScript!")
             self.set_value(selector, text, by=by)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
@@ -515,21 +522,21 @@ class BaseCase(unittest.TestCase):
 
     def type(self, selector, text, by=By.CSS_SELECTOR,
              timeout=None, retry=False):
-        """ Same as self.update_text()
-            This method updates an element's text field with new text.
-            Has multiple parts:
-            * Waits for the element to be visible.
-            * Waits for the element to be interactive.
-            * Clears the text field.
-            * Types in the new text.
-            * Hits Enter/Submit (if the text ends in "\n").
-            @Params
-            selector - the selector of the text field
-            text - the new text to type into the text field
-            by - the type of selector to search by (Default: CSS Selector)
-            timeout - how long to wait for the selector to be visible
-            retry - if True, use JS if the Selenium text update fails
-            DO NOT confuse self.type() with Python type()! They are different!
+        """Same as self.update_text()
+        This method updates an element's text field with new text.
+        Has multiple parts:
+        * Waits for the element to be visible.
+        * Waits for the element to be interactive.
+        * Clears the text field.
+        * Types in the new text.
+        * Hits Enter/Submit (if the text ends in "\n").
+        @Params
+        selector - the selector of the text field
+        text - the new text to type into the text field
+        by - the type of selector to search by (Default: CSS Selector)
+        timeout - how long to wait for the selector to be visible
+        retry - if True, use JS if the Selenium text update fails
+        DO NOT confuse self.type() with Python type()! They are different!
         """
         self.__check_scope()
         if not timeout:
@@ -549,18 +556,18 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def clear(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        """ This method clears an element's text field.
-            A clear() is already included with most methods that type text,
-            such as self.type(), self.update_text(), etc.
-            Does not use Demo Mode highlights, mainly because we expect
-            that some users will be calling an unnecessary clear() before
-            calling a method that already includes clear() as part of it.
-            In case websites trigger an autofill after clearing a field,
-            add backspaces to make sure autofill doesn't undo the clear.
-            @Params
-            selector - the selector of the text field
-            by - the type of selector to search by (Default: CSS Selector)
-            timeout - how long to wait for the selector to be visible
+        """This method clears an element's text field.
+        A clear() is already included with most methods that type text,
+        such as self.type(), self.update_text(), etc.
+        Does not use Demo Mode highlights, mainly because we expect
+        that some users will be calling an unnecessary clear() before
+        calling a method that already includes clear() as part of it.
+        In case websites trigger an autofill after clearing a field,
+        add backspaces to make sure autofill doesn't undo the clear.
+        @Params
+        selector - the selector of the text field
+        by - the type of selector to search by (Default: CSS Selector)
+        timeout - how long to wait for the selector to be visible
         """
         self.__check_scope()
         if not timeout:
@@ -593,9 +600,9 @@ class BaseCase(unittest.TestCase):
             element.clear()
 
     def focus(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        """ Make the current page focus on an interactable element.
-            If the element is not interactable, only scrolls to it.
-            The "tab" key is another way of setting the page focus. """
+        """Make the current page focus on an interactable element.
+        If the element is not interactable, only scrolls to it.
+        The "tab" key is another way of setting the page focus."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -684,10 +691,10 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def open_start_page(self):
-        """ Navigates the current browser window to the start_page.
-            You can set the start_page on the command-line in three ways:
-            '--start_page=URL', '--start-page=URL', or '--url=URL'.
-            If the start_page is not set, then "data:," will be used. """
+        """Navigates the current browser window to the start_page.
+        You can set the start_page on the command-line in three ways:
+        '--start_page=URL', '--start-page=URL', or '--url=URL'.
+        If the start_page is not set, then "data:," will be used."""
         self.__check_scope()
         start_page = self.start_page
         if type(start_page) is str:
@@ -763,12 +770,12 @@ class BaseCase(unittest.TestCase):
         return False
 
     def get_link_attribute(self, link_text, attribute, hard_fail=True):
-        """ Finds a link by link text and then returns the attribute's value.
-            If the link text or attribute cannot be found, an exception will
-            get raised if hard_fail is True (otherwise None is returned). """
+        """Finds a link by link text and then returns the attribute's value.
+        If the link text or attribute cannot be found, an exception will
+        get raised if hard_fail is True (otherwise None is returned)."""
         self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
-        html_links = soup.find_all('a')
+        html_links = soup.find_all("a")
         for html_link in html_links:
             if html_link.text.strip() == link_text.strip():
                 if html_link.has_attr(attribute):
@@ -776,7 +783,7 @@ class BaseCase(unittest.TestCase):
                     return attribute_value
                 if hard_fail:
                     raise Exception(
-                        'Unable to find attribute {%s} from link text {%s}!'
+                        "Unable to find attribute {%s} from link text {%s}!"
                         % (attribute, link_text))
                 else:
                     return None
@@ -786,21 +793,22 @@ class BaseCase(unittest.TestCase):
             return None
 
     def get_link_text_attribute(self, link_text, attribute, hard_fail=True):
-        """ Same as self.get_link_attribute()
-            Finds a link by link text and then returns the attribute's value.
-            If the link text or attribute cannot be found, an exception will
-            get raised if hard_fail is True (otherwise None is returned). """
+        """Same as self.get_link_attribute()
+        Finds a link by link text and then returns the attribute's value.
+        If the link text or attribute cannot be found, an exception will
+        get raised if hard_fail is True (otherwise None is returned)."""
         return self.get_link_attribute(link_text, attribute, hard_fail)
 
-    def get_partial_link_text_attribute(self, link_text, attribute,
-                                        hard_fail=True):
-        """ Finds a link by partial link text and then returns the attribute's
-            value. If the partial link text or attribute cannot be found, an
-            exception will get raised if hard_fail is True (otherwise None
-            is returned). """
+    def get_partial_link_text_attribute(
+        self, link_text, attribute, hard_fail=True
+    ):
+        """Finds a link by partial link text and then returns the attribute's
+        value. If the partial link text or attribute cannot be found, an
+        exception will get raised if hard_fail is True (otherwise None
+        is returned)."""
         self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
-        html_links = soup.find_all('a')
+        html_links = soup.find_all("a")
         for html_link in html_links:
             if link_text.strip() in html_link.text.strip():
                 if html_link.has_attr(attribute):
@@ -808,9 +816,9 @@ class BaseCase(unittest.TestCase):
                     return attribute_value
                 if hard_fail:
                     raise Exception(
-                        'Unable to find attribute {%s} from '
-                        'partial link text {%s}!'
-                        % (attribute, link_text))
+                        "Unable to find attribute {%s} from "
+                        "partial link text {%s}!" % (attribute, link_text)
+                    )
                 else:
                     return None
         if hard_fail:
@@ -830,7 +838,8 @@ class BaseCase(unittest.TestCase):
         if self.browser == "phantomjs":
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(
-                    link_text, timeout=timeout)
+                    link_text, timeout=timeout
+                )
                 element.click()
                 return
             self.open(self.__get_href_from_link_text(link_text))
@@ -842,12 +851,14 @@ class BaseCase(unittest.TestCase):
                     self.__jquery_slow_scroll_to(link_text, by=By.LINK_TEXT)
                 except Exception:
                     element = self.wait_for_link_text_visible(
-                        link_text, timeout=timeout)
+                        link_text, timeout=timeout
+                    )
                     self.__slow_scroll_to_element(element)
-                o_bs = ''  # original_box_shadow
+                o_bs = ""  # original_box_shadow
                 loops = settings.HIGHLIGHTS
                 selector = self.convert_to_css_selector(
-                    link_text, by=By.LINK_TEXT)
+                    link_text, by=By.LINK_TEXT
+                )
                 selector = self.__make_css_match_first_element_only(selector)
                 try:
                     selector = re.escape(selector)
@@ -861,8 +872,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_link_text_present(link_text, timeout=timeout)
         pre_action_url = self.get_current_url()
         try:
-            element = self.wait_for_link_text_visible(
-                link_text, timeout=0.2)
+            element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
             try:
                 element.click()
@@ -870,7 +880,8 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_link_text_visible(
-                    link_text, timeout=timeout)
+                    link_text, timeout=timeout
+                )
                 element.click()
         except Exception:
             found_css = False
@@ -882,7 +893,7 @@ class BaseCase(unittest.TestCase):
             if not found_css:
                 href = self.__get_href_from_link_text(link_text, False)
                 if href:
-                    if href.startswith('/') or page_utils.is_valid_url(href):
+                    if href.startswith("/") or page_utils.is_valid_url(href):
                         link_css = '[href="%s"]' % href
                         found_css = True
 
@@ -1085,8 +1096,8 @@ class BaseCase(unittest.TestCase):
 
     def set_attribute(self, selector, attribute, value, by=By.CSS_SELECTOR,
                       timeout=None):
-        """ This method uses JavaScript to set/update an attribute.
-            Only the first matching selector from querySelector() is used. """
+        """This method uses JavaScript to set/update an attribute.
+        Only the first matching selector from querySelector() is used."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1110,10 +1121,10 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def set_attributes(self, selector, attribute, value, by=By.CSS_SELECTOR):
-        """ This method uses JavaScript to set/update a common attribute.
-            All matching selectors from querySelectorAll() are used.
-            Example => (Make all links on a website redirect to Google):
-            self.set_attributes("a", "href", "https://google.com") """
+        """This method uses JavaScript to set/update a common attribute.
+        All matching selectors from querySelectorAll() are used.
+        Example => (Make all links on a website redirect to Google):
+        self.set_attributes("a", "href", "https://google.com")"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
         attribute = re.escape(attribute)
@@ -1135,17 +1146,17 @@ class BaseCase(unittest.TestCase):
 
     def set_attribute_all(self, selector, attribute, value,
                           by=By.CSS_SELECTOR):
-        """ Same as set_attributes(), but using querySelectorAll naming scheme.
-            This method uses JavaScript to set/update a common attribute.
-            All matching selectors from querySelectorAll() are used.
-            Example => (Make all links on a website redirect to Google):
-            self.set_attribute_all("a", "href", "https://google.com") """
+        """Same as set_attributes(), but using querySelectorAll naming scheme.
+        This method uses JavaScript to set/update a common attribute.
+        All matching selectors from querySelectorAll() are used.
+        Example => (Make all links on a website redirect to Google):
+        self.set_attribute_all("a", "href", "https://google.com")"""
         self.set_attributes(selector, attribute, value, by=by)
 
     def remove_attribute(self, selector, attribute, by=By.CSS_SELECTOR,
                          timeout=None):
-        """ This method uses JavaScript to remove an attribute.
-            Only the first matching selector from querySelector() is used. """
+        """This method uses JavaScript to remove an attribute.
+        Only the first matching selector from querySelector() is used."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1167,8 +1178,8 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def remove_attributes(self, selector, attribute, by=By.CSS_SELECTOR):
-        """ This method uses JavaScript to remove a common attribute.
-            All matching selectors from querySelectorAll() are used. """
+        """This method uses JavaScript to remove a common attribute.
+        All matching selectors from querySelectorAll() are used."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
         attribute = re.escape(attribute)
@@ -1188,10 +1199,10 @@ class BaseCase(unittest.TestCase):
 
     def get_property_value(self, selector, property, by=By.CSS_SELECTOR,
                            timeout=None):
-        """ Returns the property value of a page element's computed style.
-            Example:
-                opacity = self.get_property_value("html body a", "opacity")
-                self.assertTrue(float(opacity) > 0, "Element not visible!") """
+        """Returns the property value of a page element's computed style.
+        Example:
+            opacity = self.get_property_value("html body a", "opacity")
+            self.assertTrue(float(opacity) > 0, "Element not visible!")"""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1231,9 +1242,9 @@ class BaseCase(unittest.TestCase):
                                   attribute='src', by=by, timeout=timeout)
 
     def find_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
-        """ Returns a list of matching WebElements.
-            Elements could be either hidden or visible on the page.
-            If "limit" is set and > 0, will only return that many elements. """
+        """Returns a list of matching WebElements.
+        Elements could be either hidden or visible on the page.
+        If "limit" is set and > 0, will only return that many elements."""
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.05)
@@ -1243,8 +1254,8 @@ class BaseCase(unittest.TestCase):
         return elements
 
     def find_visible_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
-        """ Returns a list of matching WebElements that are visible.
-            If "limit" is set and > 0, will only return that many elements. """
+        """Returns a list of matching WebElements that are visible.
+        If "limit" is set and > 0, will only return that many elements."""
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.05)
@@ -1255,13 +1266,13 @@ class BaseCase(unittest.TestCase):
 
     def click_visible_elements(
             self, selector, by=By.CSS_SELECTOR, limit=0, timeout=None):
-        """ Finds all matching page elements and clicks visible ones in order.
-            If a click reloads or opens a new page, the clicking will stop.
-            If no matching elements appear, an Exception will be raised.
-            If "limit" is set and > 0, will only click that many elements.
-            Also clicks elements that become visible from previous clicks.
-            Works best for actions such as clicking all checkboxes on a page.
-            Example:  self.click_visible_elements('input[type="checkbox"]') """
+        """Finds all matching page elements and clicks visible ones in order.
+        If a click reloads or opens a new page, the clicking will stop.
+        If no matching elements appear, an Exception will be raised.
+        If "limit" is set and > 0, will only click that many elements.
+        Also clicks elements that become visible from previous clicks.
+        Works best for actions such as clicking all checkboxes on a page.
+        Example:  self.click_visible_elements('input[type="checkbox"]')"""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1319,9 +1330,9 @@ class BaseCase(unittest.TestCase):
 
     def click_nth_visible_element(
             self, selector, number, by=By.CSS_SELECTOR, timeout=None):
-        """ Finds all matching page elements and clicks the nth visible one.
-            Example:  self.click_nth_visible_element('[type="checkbox"]', 5)
-                        (Clicks the 5th visible checkbox on the page.) """
+        """Finds all matching page elements and clicks the nth visible one.
+        Example:  self.click_nth_visible_element('[type="checkbox"]', 5)
+                    (Clicks the 5th visible checkbox on the page.)"""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1348,19 +1359,19 @@ class BaseCase(unittest.TestCase):
             element.click()
 
     def click_if_visible(self, selector, by=By.CSS_SELECTOR):
-        """ If the page selector exists and is visible, clicks on the element.
-            This method only clicks on the first matching element found.
-            (Use click_visible_elements() to click all matching elements.) """
+        """If the page selector exists and is visible, clicks on the element.
+        This method only clicks on the first matching element found.
+        (Use click_visible_elements() to click all matching elements.)"""
         self.wait_for_ready_state_complete()
         if self.is_element_visible(selector, by=by):
             self.click(selector, by=by)
 
     def is_checked(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        """ Determines if a checkbox or a radio button element is checked.
-            Returns True if the element is checked.
-            Returns False if the element is not checked.
-            If the element is not present on the page, raises an exception.
-            If the element is not a checkbox or radio, raises an exception. """
+        """Determines if a checkbox or a radio button element is checked.
+        Returns True if the element is checked.
+        Returns False if the element is not checked.
+        If the element is not present on the page, raises an exception.
+        If the element is not a checkbox or radio, raises an exception."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1412,8 +1423,8 @@ class BaseCase(unittest.TestCase):
         self.uncheck_if_checked(selector, by=by)
 
     def is_element_in_an_iframe(self, selector, by=By.CSS_SELECTOR):
-        """ Returns True if the selector's element is located in an iframe.
-            Otherwise returns False. """
+        """Returns True if the selector's element is located in an iframe.
+        Otherwise returns False."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
@@ -1439,10 +1450,10 @@ class BaseCase(unittest.TestCase):
         return False
 
     def switch_to_frame_of_element(self, selector, by=By.CSS_SELECTOR):
-        """ Set driver control to the iframe containing element (assuming the
-            element is in a single-nested iframe) and returns the iframe name.
-            If element is not in an iframe, returns None, and nothing happens.
-            May not work if multiple iframes are nested within each other. """
+        """Set driver control to the iframe containing element (assuming the
+        element is in a single-nested iframe) and returns the iframe name.
+        If element is not in an iframe, returns None, and nothing happens.
+        May not work if multiple iframes are nested within each other."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
         if self.is_element_present(selector, by=by):
@@ -1524,8 +1535,8 @@ class BaseCase(unittest.TestCase):
     def hover_and_click(self, hover_selector, click_selector,
                         hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
                         timeout=None):
-        """ When you want to hover over an element or dropdown menu,
-            and then click an element that appears after that. """
+        """When you want to hover over an element or dropdown menu,
+        and then click an element that appears after that."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1588,8 +1599,8 @@ class BaseCase(unittest.TestCase):
                                hover_by=By.CSS_SELECTOR,
                                click_by=By.CSS_SELECTOR,
                                timeout=None):
-        """ When you want to hover over an element or dropdown menu,
-            and then double-click an element that appears after that. """
+        """When you want to hover over an element or dropdown menu,
+        and then double-click an element that appears after that."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1699,9 +1710,9 @@ class BaseCase(unittest.TestCase):
     def __select_option(self, dropdown_selector, option,
                         dropdown_by=By.CSS_SELECTOR, option_by="text",
                         timeout=None):
-        """ Selects an HTML <select> option by specification.
-            Option specifications are by "text", "index", or "value".
-            Defaults to "text" if option_by is unspecified or unknown. """
+        """Selects an HTML <select> option by specification.
+        Option specifications are by "text", "index", or "value".
+        Defaults to "text" if option_by is unspecified or unknown."""
         from selenium.webdriver.support.ui import Select
         self.__check_scope()
         if not timeout:
@@ -1748,10 +1759,11 @@ class BaseCase(unittest.TestCase):
     def select_option_by_text(self, dropdown_selector, option,
                               dropdown_by=By.CSS_SELECTOR,
                               timeout=None):
-        """ Selects an HTML <select> option by option text.
-            @Params
-            dropdown_selector - the <select> selector
-            option - the text of the option """
+        """Selects an HTML <select> option by option text.
+        @Params
+        dropdown_selector - the <select> selector.
+        option - the text of the option.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1764,10 +1776,11 @@ class BaseCase(unittest.TestCase):
     def select_option_by_index(self, dropdown_selector, option,
                                dropdown_by=By.CSS_SELECTOR,
                                timeout=None):
-        """ Selects an HTML <select> option by option index.
-            @Params
-            dropdown_selector - the <select> selector
-            option - the index number of the option """
+        """Selects an HTML <select> option by option index.
+        @Params
+        dropdown_selector - the <select> selector.
+        option - the index number of the option.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1780,10 +1793,11 @@ class BaseCase(unittest.TestCase):
     def select_option_by_value(self, dropdown_selector, option,
                                dropdown_by=By.CSS_SELECTOR,
                                timeout=None):
-        """ Selects an HTML <select> option by option value.
-            @Params
-            dropdown_selector - the <select> selector
-            option - the value property of the option """
+        """Selects an HTML <select> option by option value.
+        @Params
+        dropdown_selector - the <select> selector.
+        option - the value property of the option.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1794,16 +1808,14 @@ class BaseCase(unittest.TestCase):
                              timeout=timeout)
 
     def load_html_string(self, html_string, new_page=True):
-        """ Loads an HTML string into the web browser.
-            If new_page==True, the page will switch to: "data:text/html,"
-            If new_page==False, will load HTML into the current page. """
-
+        """Loads an HTML string into the web browser.
+        If new_page==True, the page will switch to: "data:text/html,"
+        If new_page==False, will load HTML into the current page."""
         self.__check_scope()
         soup = self.get_beautiful_soup(html_string)
         found_base = False
         links = soup.findAll("link")
         href = None
-
         for link in links:
             if link.get("rel") == ["canonical"] and link.get("href"):
                 found_base = True
@@ -1896,10 +1908,11 @@ class BaseCase(unittest.TestCase):
         self.load_html_string(html_string, new_page=new_page)
 
     def load_html_file(self, html_file, new_page=True):
-        """ Loads a local html file into the browser from a relative file path.
-            If new_page==True, the page will switch to: "data:text/html,"
-            If new_page==False, will load HTML into the current page.
-            Local images and other local src content WILL BE IGNORED. """
+        """Loads a local html file into the browser from a relative file path.
+        If new_page==True, the page will switch to: "data:text/html,"
+        If new_page==False, will load HTML into the current page.
+        Local images and other local src content WILL BE IGNORED.
+        """
         self.__check_scope()
         if self.__looks_like_a_page_url(html_file):
             self.open(html_file)
@@ -1913,20 +1926,21 @@ class BaseCase(unittest.TestCase):
         else:
             file_path = abs_path + "/%s" % html_file
         html_string = None
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             html_string = f.read().strip()
         self.load_html_string(html_string, new_page)
 
     def open_html_file(self, html_file):
-        """ Opens a local html file into the browser from a relative file path.
-            The URL displayed in the web browser will start with "file://". """
+        """Opens a local html file into the browser from a relative file path.
+        The URL displayed in the web browser will start with "file://".
+        """
         self.__check_scope()
         if self.__looks_like_a_page_url(html_file):
             self.open(html_file)
             return
         if len(html_file) < 6 or not html_file.endswith(".html"):
             raise Exception('Expecting a ".html" file!')
-        abs_path = os.path.abspath('.')
+        abs_path = os.path.abspath(".")
         file_path = None
         if abs_path in html_file:
             file_path = html_file
@@ -1945,9 +1959,9 @@ class BaseCase(unittest.TestCase):
         return js_utils.execute_async_script(self.driver, script, timeout)
 
     def safe_execute_script(self, script, *args, **kwargs):
-        """ When executing a script that contains a jQuery command,
-            it's important that the jQuery library has been loaded first.
-            This method will load jQuery if it wasn't already loaded. """
+        """When executing a script that contains a jQuery command,
+        it's important that the jQuery library has been loaded first.
+        This method will load jQuery if it wasn't already loaded."""
         self.__check_scope()
         if not js_utils.is_jquery_activated(self.driver):
             self.activate_jquery()
@@ -1969,8 +1983,7 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def switch_to_frame(self, frame, timeout=None):
-        """
-        Wait for an iframe to appear, and switch to it. This should be
+        """Wait for an iframe to appear, and switch to it. This should be
         usable as a drop-in replacement for driver.switch_to.frame().
         The iframe identifier can be a selector, an index, an id, a name,
         or a web element, but scrolling to the iframe first will only occur
@@ -1992,10 +2005,10 @@ class BaseCase(unittest.TestCase):
         page_actions.switch_to_frame(self.driver, frame, timeout)
 
     def switch_to_default_content(self):
-        """ Brings driver control outside the current iframe.
-            (If driver control is inside an iframe, the driver control
-            will be set to one level above the current frame. If the driver
-            control is not currently in an iframe, nothing will happen.) """
+        """Brings driver control outside the current iframe.
+        (If driver control is inside an iframe, the driver control
+        will be set to one level above the current frame. If the driver
+        control is not currently in an iframe, nothing will happen.)"""
         self.__check_scope()
         self.driver.switch_to.default_content()
 
@@ -2034,40 +2047,40 @@ class BaseCase(unittest.TestCase):
                        chromium_arg=None, user_data_dir=None,
                        extension_zip=None, extension_dir=None, is_mobile=False,
                        d_width=None, d_height=None, d_p_r=None):
-        """ This method spins up an extra browser for tests that require
-            more than one. The first browser is already provided by tests
-            that import base_case.BaseCase from seleniumbase. If parameters
-            aren't specified, the method uses the same as the default driver.
-            @Params
-            browser - the browser to use. (Ex: "chrome", "firefox")
-            headless - the option to run webdriver in headless mode
-            locale_code - the Language Locale Code for the web browser
-            servername - if using a Selenium Grid, set the host address here
-            port - if using a Selenium Grid, set the host port here
-            proxy - if using a proxy server, specify the "host:port" combo here
-            switch_to - the option to switch to the new driver (default = True)
-            cap_file - the file containing desired capabilities for the browser
-            cap_string - the string with desired capabilities for the browser
-            disable_csp - an option to disable Chrome's Content Security Policy
-            enable_ws - the option to enable the Web Security feature (Chrome)
-            enable_sync - the option to enable the Chrome Sync feature (Chrome)
-            use_auto_ext - the option to enable Chrome's Automation Extension
-            no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
-            disable_gpu - the option to enable Chrome's "Disable GPU" feature
-            incognito - the option to enable Chrome's Incognito mode (Chrome)
-            guest - the option to enable Chrome's Guest mode (Chrome)
-            devtools - the option to open Chrome's DevTools on start (Chrome)
-            remote_debug - the option to enable Chrome's Remote Debugger
-            swiftshader - the option to use Chrome's swiftshader (Chrome-only)
-            block_images - the option to block images from loading (Chrome)
-            chromium_arg - the option to add a Chromium arg to Chrome/Edge
-            user_data_dir - Chrome's User Data Directory to use (Chrome-only)
-            extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
-            extension_dir - A Chrome Extension folder to use (Chrome-only)
-            is_mobile - the option to use the mobile emulator (Chrome-only)
-            d_width - the device width of the mobile emulator (Chrome-only)
-            d_height - the device height of the mobile emulator (Chrome-only)
-            d_p_r - the device pixel ratio of the mobile emulator (Chrome-only)
+        """This method spins up an extra browser for tests that require
+        more than one. The first browser is already provided by tests
+        that import base_case.BaseCase from seleniumbase. If parameters
+        aren't specified, the method uses the same as the default driver.
+        @Params
+        browser - the browser to use. (Ex: "chrome", "firefox")
+        headless - the option to run webdriver in headless mode
+        locale_code - the Language Locale Code for the web browser
+        servername - if using a Selenium Grid, set the host address here
+        port - if using a Selenium Grid, set the host port here
+        proxy - if using a proxy server, specify the "host:port" combo here
+        switch_to - the option to switch to the new driver (default = True)
+        cap_file - the file containing desired capabilities for the browser
+        cap_string - the string with desired capabilities for the browser
+        disable_csp - an option to disable Chrome's Content Security Policy
+        enable_ws - the option to enable the Web Security feature (Chrome)
+        enable_sync - the option to enable the Chrome Sync feature (Chrome)
+        use_auto_ext - the option to enable Chrome's Automation Extension
+        no_sandbox - the option to enable the "No-Sandbox" feature (Chrome)
+        disable_gpu - the option to enable Chrome's "Disable GPU" feature
+        incognito - the option to enable Chrome's Incognito mode (Chrome)
+        guest - the option to enable Chrome's Guest mode (Chrome)
+        devtools - the option to open Chrome's DevTools on start (Chrome)
+        remote_debug - the option to enable Chrome's Remote Debugger
+        swiftshader - the option to use Chrome's swiftshader (Chrome-only)
+        block_images - the option to block images from loading (Chrome)
+        chromium_arg - the option to add a Chromium arg to Chrome/Edge
+        user_data_dir - Chrome's User Data Directory to use (Chrome-only)
+        extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
+        extension_dir - A Chrome Extension folder to use (Chrome-only)
+        is_mobile - the option to use the mobile emulator (Chrome-only)
+        d_width - the device width of the mobile emulator (Chrome-only)
+        d_height - the device height of the mobile emulator (Chrome-only)
+        d_p_r - the device pixel ratio of the mobile emulator (Chrome-only)
         """
         self.__check_scope()
         if self.browser == "remote" and self.servername == "localhost":
@@ -2159,41 +2172,45 @@ class BaseCase(unittest.TestCase):
             d_p_r = self.__device_pixel_ratio
         valid_browsers = constants.ValidBrowsers.valid_browsers
         if browser_name not in valid_browsers:
-            raise Exception("Browser: {%s} is not a valid browser option. "
-                            "Valid options = {%s}" % (browser, valid_browsers))
+            raise Exception(
+                "Browser: {%s} is not a valid browser option. "
+                "Valid options = {%s}" % (browser, valid_browsers)
+            )
         # Launch a web browser
         from seleniumbase.core import browser_launcher
-        new_driver = browser_launcher.get_driver(browser_name=browser_name,
-                                                 headless=headless,
-                                                 locale_code=locale_code,
-                                                 use_grid=use_grid,
-                                                 servername=servername,
-                                                 port=port,
-                                                 proxy_string=proxy_string,
-                                                 user_agent=user_agent,
-                                                 cap_file=cap_file,
-                                                 cap_string=cap_string,
-                                                 disable_csp=disable_csp,
-                                                 enable_ws=enable_ws,
-                                                 enable_sync=enable_sync,
-                                                 use_auto_ext=use_auto_ext,
-                                                 no_sandbox=no_sandbox,
-                                                 disable_gpu=disable_gpu,
-                                                 incognito=incognito,
-                                                 guest_mode=guest_mode,
-                                                 devtools=devtools,
-                                                 remote_debug=remote_debug,
-                                                 swiftshader=swiftshader,
-                                                 block_images=block_images,
-                                                 chromium_arg=chromium_arg,
-                                                 user_data_dir=user_data_dir,
-                                                 extension_zip=extension_zip,
-                                                 extension_dir=extension_dir,
-                                                 test_id=test_id,
-                                                 mobile_emulator=is_mobile,
-                                                 device_width=d_width,
-                                                 device_height=d_height,
-                                                 device_pixel_ratio=d_p_r)
+        new_driver = browser_launcher.get_driver(
+            browser_name=browser_name,
+            headless=headless,
+            locale_code=locale_code,
+            use_grid=use_grid,
+            servername=servername,
+            port=port,
+            proxy_string=proxy_string,
+            user_agent=user_agent,
+            cap_file=cap_file,
+            cap_string=cap_string,
+            disable_csp=disable_csp,
+            enable_ws=enable_ws,
+            enable_sync=enable_sync,
+            use_auto_ext=use_auto_ext,
+            no_sandbox=no_sandbox,
+            disable_gpu=disable_gpu,
+            incognito=incognito,
+            guest_mode=guest_mode,
+            devtools=devtools,
+            remote_debug=remote_debug,
+            swiftshader=swiftshader,
+            block_images=block_images,
+            chromium_arg=chromium_arg,
+            user_data_dir=user_data_dir,
+            extension_zip=extension_zip,
+            extension_dir=extension_dir,
+            test_id=test_id,
+            mobile_emulator=is_mobile,
+            device_width=d_width,
+            device_height=d_height,
+            device_pixel_ratio=d_p_r,
+        )
         self._drivers_list.append(new_driver)
         self.__driver_browser_map[new_driver] = browser_name
         if switch_to:
@@ -2283,16 +2300,43 @@ class BaseCase(unittest.TestCase):
             self.browser = self.__driver_browser_map[self.driver]
 
     def save_screenshot(self, name, folder=None):
-        """ The screenshot will be in PNG format. """
+        """Saves a screenshot of the current page.
+        If no folder is specified, uses the folder where pytest was called.
+        The screenshot will be in PNG format."""
         self.wait_for_ready_state_complete()
         return page_actions.save_screenshot(self.driver, name, folder)
 
+    def save_screenshot_to_logs(self, name=None):
+        """Saves a screenshot of the current page to the "latest_logs" folder.
+        Naming is automatic:
+            If NO NAME provided: "_1_screenshot.png", "_2_screenshot.png", etc.
+            If NAME IS provided, it becomes: "_1_name.png", "_2_name.png", etc.
+        (The last_page / failure screenshot is always "screenshot.png")
+        The screenshot will be in PNG format."""
+        self.wait_for_ready_state_complete()
+        test_id = self.__get_test_id()
+        test_logpath = self.log_path + "/" + test_id
+        self.__create_log_path_as_needed(test_logpath)
+        if name:
+            name = str(name)
+        self.__screenshot_count += 1
+        if not name or len(name) == 0:
+            name = "_%s_screenshot.png" % self.__screenshot_count
+        else:
+            pre_name = "_%s_" % self.__screenshot_count
+            if len(name) >= 4 and name[-4:].lower() == ".png":
+                name = name[:-4]
+                if len(name) == 0:
+                    name = "screenshot"
+            name = "%s%s.png" % (pre_name, name)
+        return page_actions.save_screenshot(self.driver, name, test_logpath)
+
     def save_page_source(self, name, folder=None):
-        """ Saves the page HTML to the current directory (or given subfolder).
-            If the folder specified doesn't exist, it will get created.
-            @Params
-            name - The file name to save the current page's HTML to.
-            folder - The folder to save the file to. (Default = current folder)
+        """Saves the page HTML to the current directory (or given subfolder).
+        If the folder specified doesn't exist, it will get created.
+        @Params
+        name - The file name to save the current page's HTML to.
+        folder - The folder to save the file to. (Default = current folder)
         """
         self.wait_for_ready_state_complete()
         return page_actions.save_page_source(self.driver, name, folder)
@@ -2323,20 +2367,20 @@ class BaseCase(unittest.TestCase):
     def load_cookies(self, name="cookies.txt"):
         """ Loads the page cookies from the "saved_cookies" folder. """
         self.wait_for_ready_state_complete()
-        if name.endswith('/'):
+        if name.endswith("/"):
             raise Exception("Invalid filename for Cookies!")
-        if '/' in name:
+        if "/" in name:
             name = name.split('/')[-1]
         if len(name) < 1:
             raise Exception("Filename for Cookies is too short!")
         if not name.endswith(".txt"):
             name = name + ".txt"
         folder = constants.SavedCookies.STORAGE_FOLDER
-        abs_path = os.path.abspath('.')
+        abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
         cookies_file_path = "%s/%s" % (file_path, name)
         json_cookies = None
-        with open(cookies_file_path, 'r') as f:
+        with open(cookies_file_path, "r") as f:
             json_cookies = f.read().strip()
         cookies = json.loads(json_cookies)
         for cookie in cookies:
@@ -2345,19 +2389,19 @@ class BaseCase(unittest.TestCase):
             self.driver.add_cookie(cookie)
 
     def delete_all_cookies(self):
-        """ Deletes all cookies in the web browser.
-            Does NOT delete the saved cookies file. """
+        """Deletes all cookies in the web browser.
+        Does NOT delete the saved cookies file."""
         self.wait_for_ready_state_complete()
         self.driver.delete_all_cookies()
 
     def delete_saved_cookies(self, name="cookies.txt"):
-        """ Deletes the cookies file from the "saved_cookies" folder.
-            Does NOT delete the cookies from the web browser. """
+        """Deletes the cookies file from the "saved_cookies" folder.
+        Does NOT delete the cookies from the web browser."""
         self.wait_for_ready_state_complete()
-        if name.endswith('/'):
+        if name.endswith("/"):
             raise Exception("Invalid filename for Cookies!")
-        if '/' in name:
-            name = name.split('/')[-1]
+        if "/" in name:
+            name = name.split("/")[-1]
         if len(name) < 1:
             raise Exception("Filename for Cookies is too short!")
         if not name.endswith(".txt"):
@@ -2367,7 +2411,7 @@ class BaseCase(unittest.TestCase):
         file_path = abs_path + "/%s" % folder
         cookies_file_path = "%s/%s" % (file_path, name)
         if os.path.exists(cookies_file_path):
-            if cookies_file_path.endswith('.txt'):
+            if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
 
     def wait_for_ready_state_complete(self, timeout=None):
@@ -2420,9 +2464,10 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.2)
 
     def install_addon(self, xpi_file):
-        """ Installs a Firefox add-on instantly at run-time.
-            @Params
-            xpi_file - A file archive in .xpi format. """
+        """Installs a Firefox add-on instantly at run-time.
+        @Params
+        xpi_file - A file archive in .xpi format.
+        """
         self.wait_for_ready_state_complete()
         if self.browser != "firefox":
             raise Exception(
@@ -2446,8 +2491,8 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def activate_jquery(self):
-        """ If "jQuery is not defined", use this method to activate it for use.
-            This happens because jQuery is not always defined on web sites. """
+        """If "jQuery is not defined", use this method to activate it for use.
+        This happens because jQuery is not always defined on web sites."""
         self.wait_for_ready_state_complete()
         js_utils.activate_jquery(self.driver)
         self.wait_for_ready_state_complete()
@@ -2459,10 +2504,10 @@ class BaseCase(unittest.TestCase):
         return js_utils.escape_quotes_if_needed(string)
 
     def bring_to_front(self, selector, by=By.CSS_SELECTOR):
-        """ Updates the Z-index of a page element to bring it into view.
-            Useful when getting a WebDriverException, such as the one below:
-                { Element is not clickable at point (#, #).
-                  Other element would receive the click: ... } """
+        """Updates the Z-index of a page element to bring it into view.
+        Useful when getting a WebDriverException, such as the one below:
+            { Element is not clickable at point (#, #).
+              Other element would receive the click: ... }"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_visible(
@@ -2494,14 +2539,14 @@ class BaseCase(unittest.TestCase):
 
     def highlight(self, selector, by=By.CSS_SELECTOR,
                   loops=None, scroll=True):
-        """ This method uses fancy JavaScript to highlight an element.
-            Used during demo_mode.
-            @Params
-            selector - the selector of the element to find
-            by - the type of selector to search by (Default: CSS)
-            loops - # of times to repeat the highlight animation
-                    (Default: 4. Each loop lasts for about 0.18s)
-            scroll - the option to scroll to the element first (Default: True)
+        """This method uses fancy JavaScript to highlight an element.
+        Used during demo_mode.
+        @Params
+        selector - the selector of the element to find
+        by - the type of selector to search by (Default: CSS)
+        loops - # of times to repeat the highlight animation
+                (Default: 4. Each loop lasts for about 0.18s)
+        scroll - the option to scroll to the element first (Default: True)
         """
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
@@ -2514,7 +2559,7 @@ class BaseCase(unittest.TestCase):
                 if self.browser != "safari":
                     scroll_distance = js_utils.get_scroll_distance_to_element(
                         self.driver, element)
-                    if abs(scroll_distance) > SSMD:
+                    if abs(scroll_distance) > constants.Values.SSMD:
                         self.__jquery_slow_scroll_to(selector, by)
                     else:
                         self.__slow_scroll_to_element(element)
@@ -2538,19 +2583,19 @@ class BaseCase(unittest.TestCase):
             loops = 1  # Override previous setting because IE is slow
         loops = int(loops)
 
-        o_bs = ''  # original_box_shadow
+        o_bs = ""  # original_box_shadow
         try:
-            style = element.get_attribute('style')
+            style = element.get_attribute("style")
         except Exception:
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
                 selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT)
-            style = element.get_attribute('style')
+            style = element.get_attribute("style")
         if style:
-            if 'box-shadow: ' in style:
-                box_start = style.find('box-shadow: ')
-                box_end = style.find(';', box_start) + 1
+            if "box-shadow: " in style:
+                box_start = style.find("box-shadow: ")
+                box_end = style.find(";", box_start) + 1
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
 
@@ -2577,9 +2622,9 @@ class BaseCase(unittest.TestCase):
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
     def press_up_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
-        """ Simulates pressing the UP Arrow on the keyboard.
-            By default, "html" will be used as the CSS Selector target.
-            You can specify how many times in-a-row the action happens. """
+        """Simulates pressing the UP Arrow on the keyboard.
+        By default, "html" will be used as the CSS Selector target.
+        You can specify how many times in-a-row the action happens."""
         self.__check_scope()
         if times < 1:
             return
@@ -2599,9 +2644,9 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.1)
 
     def press_down_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
-        """ Simulates pressing the DOWN Arrow on the keyboard.
-            By default, "html" will be used as the CSS Selector target.
-            You can specify how many times in-a-row the action happens. """
+        """Simulates pressing the DOWN Arrow on the keyboard.
+        By default, "html" will be used as the CSS Selector target.
+        You can specify how many times in-a-row the action happens."""
         self.__check_scope()
         if times < 1:
             return
@@ -2621,9 +2666,9 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.1)
 
     def press_left_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
-        """ Simulates pressing the LEFT Arrow on the keyboard.
-            By default, "html" will be used as the CSS Selector target.
-            You can specify how many times in-a-row the action happens. """
+        """Simulates pressing the LEFT Arrow on the keyboard.
+        By default, "html" will be used as the CSS Selector target.
+        You can specify how many times in-a-row the action happens."""
         self.__check_scope()
         if times < 1:
             return
@@ -2643,9 +2688,9 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.1)
 
     def press_right_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
-        """ Simulates pressing the RIGHT Arrow on the keyboard.
-            By default, "html" will be used as the CSS Selector target.
-            You can specify how many times in-a-row the action happens. """
+        """Simulates pressing the RIGHT Arrow on the keyboard.
+        By default, "html" will be used as the CSS Selector target.
+        You can specify how many times in-a-row the action happens."""
         self.__check_scope()
         if times < 1:
             return
@@ -2665,7 +2710,7 @@ class BaseCase(unittest.TestCase):
                 time.sleep(0.1)
 
     def scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        ''' Fast scroll to destination '''
+        """ Fast scroll to destination """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2686,7 +2731,7 @@ class BaseCase(unittest.TestCase):
             self.__scroll_to_element(element, selector, by)
 
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
-        ''' Slow motion scroll to destination '''
+        """ Slow motion scroll to destination """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2698,7 +2743,7 @@ class BaseCase(unittest.TestCase):
         try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
                 self.driver, element)
-            if abs(scroll_distance) > SSMD:
+            if abs(scroll_distance) > constants.Values.SSMD:
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
@@ -2737,9 +2782,9 @@ class BaseCase(unittest.TestCase):
         self.click(xpath, by=By.XPATH)
 
     def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
-        """ Clicks an element using JavaScript.
-            Can be used to click hidden / invisible elements.
-            If "all_matches" is False, only the first match is clicked. """
+        """Clicks an element using JavaScript.
+        Can be used to click hidden / invisible elements.
+        If "all_matches" is False, only the first match is clicked."""
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
@@ -2747,7 +2792,8 @@ class BaseCase(unittest.TestCase):
                 "Pure JavaScript doesn't support clicking by Link Text. "
                 "You may want to use self.jquery_click() instead, which "
                 "allows this with :contains(), assuming jQuery isn't blocked. "
-                "For now, self.js_click() will use a regular WebDriver click.")
+                "For now, self.js_click() will use a regular WebDriver click."
+            )
             logging.debug(message)
             self.click(selector, by=by)
             return
@@ -2785,8 +2831,8 @@ class BaseCase(unittest.TestCase):
         self.js_click(selector, by=By.CSS_SELECTOR, all_matches=True)
 
     def jquery_click(self, selector, by=By.CSS_SELECTOR):
-        """ Clicks an element using jQuery. (Different from using pure JS.)
-            Can be used to click hidden / invisible elements. """
+        """Clicks an element using jQuery. (Different from using pure JS.)
+        Can be used to click hidden / invisible elements."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         self.wait_for_element_present(
@@ -2885,9 +2931,10 @@ class BaseCase(unittest.TestCase):
         return page_utils.get_domain_url(url)
 
     def get_beautiful_soup(self, source=None):
-        """ BeautifulSoup is a toolkit for dissecting an HTML document
-            and extracting what you need. It's great for screen-scraping!
-            See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/ """
+        """BeautifulSoup is a toolkit for dissecting an HTML document
+        and extracting what you need. It's great for screen-scraping!
+        See: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+        """
         from bs4 import BeautifulSoup
         if not source:
             source = self.get_page_source()
@@ -2895,19 +2942,21 @@ class BaseCase(unittest.TestCase):
         return soup
 
     def get_unique_links(self):
-        """ Get all unique links in the html of the page source.
-            Page links include those obtained from:
-            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        """Get all unique links in the html of the page source.
+        Page links include those obtained from:
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+        """
         page_url = self.get_current_url()
         soup = self.get_beautiful_soup(self.get_page_source())
         links = page_utils._get_unique_links(page_url, soup)
         return links
 
     def get_link_status_code(self, link, allow_redirects=False, timeout=5):
-        """ Get the status code of a link.
-            If the timeout is exceeded, will return a 404.
-            For a list of available status codes, see:
-            https://en.wikipedia.org/wiki/List_of_HTTP_status_codes """
+        """Get the status code of a link.
+        If the timeout is exceeded, will return a 404.
+        For a list of available status codes, see:
+        https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+        """
         status_code = page_utils._get_link_status_code(
             link, allow_redirects=allow_redirects, timeout=timeout)
         return status_code
@@ -2930,9 +2979,10 @@ class BaseCase(unittest.TestCase):
             return None
 
     def assert_no_404_errors(self, multithreaded=True):
-        """ Assert no 404 errors from page links obtained from:
-            "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
-            (A 404 error represents a broken link on a web page.) """
+        """Assert no 404 errors from page links obtained from:
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+        (A 404 error represents a broken link on a web page.)
+        """
         all_links = self.get_unique_links()
         links = []
         for link in all_links:
@@ -2969,11 +3019,12 @@ class BaseCase(unittest.TestCase):
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def print_unique_links_with_status_codes(self):
-        """ Finds all unique links in the html of the page source
-            and then prints out those links with their status codes.
-            Format:  ["link"  ->  "status_code"]  (per line)
-            Page links include those obtained from:
-            "a"->"href", "img"->"src", "link"->"href", and "script"->"src". """
+        """Finds all unique links in the html of the page source
+        and then prints out those links with their status codes.
+        Format:  ["link"  ->  "status_code"]  (per line)
+        Page links include those obtained from:
+        "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+        """
         page_url = self.get_current_url()
         soup = self.get_beautiful_soup(self.get_page_source())
         page_utils._print_unique_links_with_status_codes(page_url, soup)
@@ -2993,36 +3044,36 @@ class BaseCase(unittest.TestCase):
     def get_pdf_text(self, pdf, page=None, maxpages=None,
                      password=None, codec='utf-8', wrap=False, nav=False,
                      override=False):
-        """ Gets text from a PDF file.
-            PDF can be either a URL or a file path on the local file system.
-            @Params
-            pdf - The URL or file path of the PDF file.
-            page - The page number (or a list of page numbers) of the PDF.
-                    If a page number is provided, looks only at that page.
-                        (1 is the first page, 2 is the second page, etc.)
-                    If no page number is provided, returns all PDF text.
-            maxpages - Instead of providing a page number, you can provide
-                       the number of pages to use from the beginning.
-            password - If the PDF is password-protected, enter it here.
-            codec - The compression format for character encoding.
-                    (The default codec used by this method is 'utf-8'.)
-            wrap - Replaces ' \n' with ' ' so that individual sentences
-                   from a PDF don't get broken up into separate lines when
-                   getting converted into text format.
-            nav - If PDF is a URL, navigates to the URL in the browser first.
-                  (Not needed because the PDF will be downloaded anyway.)
-            override - If the PDF file to be downloaded already exists in the
-                       downloaded_files/ folder, that PDF will be used
-                       instead of downloading it again. """
+        """Gets text from a PDF file.
+        PDF can be either a URL or a file path on the local file system.
+        @Params
+        pdf - The URL or file path of the PDF file.
+        page - The page number (or a list of page numbers) of the PDF.
+                If a page number is provided, looks only at that page.
+                    (1 is the first page, 2 is the second page, etc.)
+                If no page number is provided, returns all PDF text.
+        maxpages - Instead of providing a page number, you can provide
+                   the number of pages to use from the beginning.
+        password - If the PDF is password-protected, enter it here.
+        codec - The compression format for character encoding.
+                (The default codec used by this method is 'utf-8'.)
+        wrap - Replaces ' \n' with ' ' so that individual sentences
+               from a PDF don't get broken up into separate lines when
+               getting converted into text format.
+        nav - If PDF is a URL, navigates to the URL in the browser first.
+              (Not needed because the PDF will be downloaded anyway.)
+        override - If the PDF file to be downloaded already exists in the
+                   downloaded_files/ folder, that PDF will be used
+                   instead of downloading it again."""
         import warnings
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
             from pdfminer.high_level import extract_text
         if not password:
-            password = ''
+            password = ""
         if not maxpages:
             maxpages = 0
-        if not pdf.lower().endswith('.pdf'):
+        if not pdf.lower().endswith(".pdf"):
             raise Exception("%s is not a PDF file! (Expecting a .pdf)" % pdf)
         file_path = None
         if page_utils.is_valid_url(pdf):
@@ -3031,8 +3082,8 @@ class BaseCase(unittest.TestCase):
             if nav:
                 if self.get_current_url() != pdf:
                     self.open(pdf)
-            file_name = pdf.split('/')[-1]
-            file_path = downloads_folder + '/' + file_name
+            file_name = pdf.split("/")[-1]
+            file_path = downloads_folder + "/" + file_name
             if not os.path.exists(file_path):
                 self.download_file(pdf)
             elif override:
@@ -3055,39 +3106,39 @@ class BaseCase(unittest.TestCase):
         else:
             page_search = None
         pdf_text = extract_text(
-            file_path, password='', page_numbers=page_search,
+            file_path, password="", page_numbers=page_search,
             maxpages=maxpages, caching=False, codec=codec)
         pdf_text = self.__fix_unicode_conversion(pdf_text)
         if wrap:
-            pdf_text = pdf_text.replace(' \n', ' ')
+            pdf_text = pdf_text.replace(" \n", " ")
         pdf_text = pdf_text.strip()  # Remove leading and trailing whitespace
         return pdf_text
 
     def assert_pdf_text(self, pdf, text, page=None, maxpages=None,
-                        password=None, codec='utf-8', wrap=True, nav=False,
+                        password=None, codec="utf-8", wrap=True, nav=False,
                         override=False):
-        """ Asserts text in a PDF file.
-            PDF can be either a URL or a file path on the local file system.
-            @Params
-            pdf - The URL or file path of the PDF file.
-            text - The expected text to verify in the PDF.
-            page - The page number of the PDF to use (optional).
-                    If a page number is provided, looks only at that page.
-                        (1 is the first page, 2 is the second page, etc.)
-                    If no page number is provided, looks at all the pages.
-            maxpages - Instead of providing a page number, you can provide
-                       the number of pages to use from the beginning.
-            password - If the PDF is password-protected, enter it here.
-            codec - The compression format for character encoding.
-                    (The default codec used by this method is 'utf-8'.)
-            wrap - Replaces ' \n' with ' ' so that individual sentences
-                   from a PDF don't get broken up into separate lines when
-                   getting converted into text format.
-            nav - If PDF is a URL, navigates to the URL in the browser first.
-                  (Not needed because the PDF will be downloaded anyway.)
-            override - If the PDF file to be downloaded already exists in the
-                       downloaded_files/ folder, that PDF will be used
-                       instead of downloading it again. """
+        """Asserts text in a PDF file.
+        PDF can be either a URL or a file path on the local file system.
+        @Params
+        pdf - The URL or file path of the PDF file.
+        text - The expected text to verify in the PDF.
+        page - The page number of the PDF to use (optional).
+                If a page number is provided, looks only at that page.
+                    (1 is the first page, 2 is the second page, etc.)
+                If no page number is provided, looks at all the pages.
+        maxpages - Instead of providing a page number, you can provide
+                   the number of pages to use from the beginning.
+        password - If the PDF is password-protected, enter it here.
+        codec - The compression format for character encoding.
+                (The default codec used by this method is 'utf-8'.)
+        wrap - Replaces ' \n' with ' ' so that individual sentences
+               from a PDF don't get broken up into separate lines when
+               getting converted into text format.
+        nav - If PDF is a URL, navigates to the URL in the browser first.
+              (Not needed because the PDF will be downloaded anyway.)
+        override - If the PDF file to be downloaded already exists in the
+                   downloaded_files/ folder, that PDF will be used
+                   instead of downloading it again."""
         text = self.__fix_unicode_conversion(text)
         if not codec:
             codec = 'utf-8'
@@ -3116,14 +3167,15 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
-    def choose_file(self, selector, file_path, by=By.CSS_SELECTOR,
-                    timeout=None):
-        """ This method is used to choose a file to upload to a website.
-            It works by populating a file-chooser "input" field of type="file".
-            A relative file_path will get converted into an absolute file_path.
+    def choose_file(
+        self, selector, file_path, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """This method is used to choose a file to upload to a website.
+        It works by populating a file-chooser "input" field of type="file".
+        A relative file_path will get converted into an absolute file_path.
 
-            Example usage:
-                self.choose_file('input[type="file"]', "my_dir/my_file.txt")
+        Example usage:
+            self.choose_file('input[type="file"]', "my_dir/my_file.txt")
         """
         self.__check_scope()
         if not timeout:
@@ -3162,12 +3214,12 @@ class BaseCase(unittest.TestCase):
 
     def save_element_as_image_file(
             self, selector, file_name, folder=None, overlay_text=""):
-        """ Take a screenshot of an element and save it as an image file.
-            If no folder is specified, will save it to the current folder.
-            If overlay_text is provided, will add that to the saved image. """
+        """Take a screenshot of an element and save it as an image file.
+        If no folder is specified, will save it to the current folder.
+        If overlay_text is provided, will add that to the saved image."""
         element = self.wait_for_element_visible(selector)
         element_png = element.screenshot_as_png
-        if len(file_name.split('.')[0]) < 1:
+        if len(file_name.split(".")[0]) < 1:
             raise Exception("Error: file_name length must be > 0.")
         if not file_name.endswith(".png"):
             file_name = file_name + ".png"
@@ -3201,12 +3253,12 @@ class BaseCase(unittest.TestCase):
                 overlay_text,  # Text
                 (8, 38, 176)  # Color
             )
-            image.save(image_file_path, 'PNG', quality=100, optimize=True)
+            image.save(image_file_path, "PNG", quality=100, optimize=True)
 
     def download_file(self, file_url, destination_folder=None):
-        """ Downloads the file from the url to the destination folder.
-            If no destination folder is specified, the default one is used.
-            (The default [Downloads Folder] = "./downloaded_files") """
+        """Downloads the file from the url to the destination folder.
+        If no destination folder is specified, the default one is used.
+        (The default [Downloads Folder] = "./downloaded_files")"""
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         if not os.path.exists(destination_folder):
@@ -3214,47 +3266,54 @@ class BaseCase(unittest.TestCase):
         page_utils._download_file_to(file_url, destination_folder)
 
     def save_file_as(self, file_url, new_file_name, destination_folder=None):
-        """ Similar to self.download_file(), except that you get to rename the
-            file being downloaded to whatever you want. """
+        """Similar to self.download_file(), except that you get to rename the
+        file being downloaded to whatever you want."""
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._download_file_to(
             file_url, destination_folder, new_file_name)
 
     def save_data_as(self, data, file_name, destination_folder=None):
-        """ Saves the data specified to a file of the name specified.
-            If no destination folder is specified, the default one is used.
-            (The default [Downloads Folder] = "./downloaded_files") """
+        """Saves the data specified to a file of the name specified.
+        If no destination folder is specified, the default one is used.
+        (The default [Downloads Folder] = "./downloaded_files")"""
         if not destination_folder:
             destination_folder = constants.Files.DOWNLOADS_FOLDER
         page_utils._save_data_as(data, destination_folder, file_name)
 
     def get_downloads_folder(self):
-        """ Returns the path of the SeleniumBase "downloaded_files/" folder.
-            Calling self.download_file(file_url) will put that file in here.
-            With the exception of Safari, IE, and Chromium Guest Mode,
-              any clicks that download files will also use this folder
-              rather than using the browser's default "downloads/" path. """
+        """Returns the path of the SeleniumBase "downloaded_files/" folder.
+        Calling self.download_file(file_url) will put that file in here.
+        With the exception of Safari, IE, and Chromium Guest Mode,
+          any clicks that download files will also use this folder
+          rather than using the browser's default "downloads/" path."""
         self.__check_scope()
         from seleniumbase.core import download_helper
         return download_helper.get_downloads_folder()
 
     def get_browser_downloads_folder(self):
-        """ Returns the path that is used when a click initiates a download.
-            SeleniumBase overrides the system path to be "downloaded_files/"
-            The path can't be changed on Safari, IE, or Chromium Guest Mode.
+        """Returns the path that is used when a click initiates a download.
+        SeleniumBase overrides the system path to be "downloaded_files/"
+        The path can't be changed on Safari, IE, or Chromium Guest Mode.
+        The same problem occurs when using an out-of-date chromedriver.
         """
         self.__check_scope()
         if self.is_chromium() and self.guest_mode and not self.headless:
             # Guest Mode (non-headless) can force the default downloads path
-            return os.path.join(os.path.expanduser('~'), 'downloads')
+            return os.path.join(os.path.expanduser("~"), "downloads")
         elif self.browser == "safari" or self.browser == "ie":
             # Can't change the system [Downloads Folder] on Safari or IE
-            return os.path.join(os.path.expanduser('~'), 'downloads')
+            return os.path.join(os.path.expanduser("~"), "downloads")
+        elif (
+            self.driver.capabilities["browserName"].lower() == "chrome"
+            and int(self.get_chromedriver_version().split(".")[0]) < 73
+            and self.headless
+        ):
+            return os.path.join(os.path.expanduser("~"), "downloads")
         else:
             from seleniumbase.core import download_helper
             return download_helper.get_downloads_folder()
-        return os.path.join(os.path.expanduser('~'), 'downloads')
+        return os.path.join(os.path.expanduser("~"), "downloads")
 
     def get_path_of_downloaded_file(self, file, browser=False):
         """ Returns the OS path of the downloaded file. """
@@ -3264,35 +3323,35 @@ class BaseCase(unittest.TestCase):
             return os.path.join(self.get_downloads_folder(), file)
 
     def is_downloaded_file_present(self, file, browser=False):
-        """ Returns True if the file exists in the pre-set [Downloads Folder].
-            For browser click-initiated downloads, SeleniumBase will override
-                the system [Downloads Folder] to be "./downloaded_files/",
-                but that path can't be overridden when using Safari, IE,
-                or Chromium Guest Mode, which keeps the default system path.
-            self.download_file(file_url) will always use "./downloaded_files/".
-            @Params
-            file - The filename of the downloaded file.
-            browser - If True, uses the path set by click-initiated downloads.
-                      If False, uses the self.download_file(file_url) path.
-                      Those paths are often the same. (browser-dependent)
-                      (Default: False).
+        """Returns True if the file exists in the pre-set [Downloads Folder].
+        For browser click-initiated downloads, SeleniumBase will override
+            the system [Downloads Folder] to be "./downloaded_files/",
+            but that path can't be overridden when using Safari, IE,
+            or Chromium Guest Mode, which keeps the default system path.
+        self.download_file(file_url) will always use "./downloaded_files/".
+        @Params
+        file - The filename of the downloaded file.
+        browser - If True, uses the path set by click-initiated downloads.
+                  If False, uses the self.download_file(file_url) path.
+                  Those paths are often the same. (browser-dependent)
+                  (Default: False).
         """
         return os.path.exists(self.get_path_of_downloaded_file(
             file, browser=browser))
 
     def delete_downloaded_file_if_present(self, file, browser=False):
-        """ Deletes the file from the [Downloads Folder] if the file exists.
-            For browser click-initiated downloads, SeleniumBase will override
-                the system [Downloads Folder] to be "./downloaded_files/",
-                but that path can't be overridden when using Safari, IE,
-                or Chromium Guest Mode, which keeps the default system path.
-            self.download_file(file_url) will always use "./downloaded_files/".
-            @Params
-            file - The filename to be deleted from the [Downloads Folder].
-            browser - If True, uses the path set by click-initiated downloads.
-                      If False, uses the self.download_file(file_url) path.
-                      Those paths are often the same. (browser-dependent)
-                      (Default: False).
+        """Deletes the file from the [Downloads Folder] if the file exists.
+        For browser click-initiated downloads, SeleniumBase will override
+            the system [Downloads Folder] to be "./downloaded_files/",
+            but that path can't be overridden when using Safari, IE,
+            or Chromium Guest Mode, which keeps the default system path.
+        self.download_file(file_url) will always use "./downloaded_files/".
+        @Params
+        file - The filename to be deleted from the [Downloads Folder].
+        browser - If True, uses the path set by click-initiated downloads.
+                  If False, uses the self.download_file(file_url) path.
+                  Those paths are often the same. (browser-dependent)
+                  (Default: False).
         """
         if self.is_downloaded_file_present(file, browser=browser):
             file_path = self.get_path_of_downloaded_file(file, browser=browser)
@@ -3302,19 +3361,19 @@ class BaseCase(unittest.TestCase):
                 pass
 
     def assert_downloaded_file(self, file, timeout=None, browser=False):
-        """ Asserts that the file exists in SeleniumBase's [Downloads Folder].
-            For browser click-initiated downloads, SeleniumBase will override
-                the system [Downloads Folder] to be "./downloaded_files/",
-                but that path can't be overridden when using Safari, IE,
-                or Chromium Guest Mode, which keeps the default system path.
-            self.download_file(file_url) will always use "./downloaded_files/".
-            @Params
-            file - The filename of the downloaded file.
-            timeout - The time (seconds) to wait for the download to complete.
-            browser - If True, uses the path set by click-initiated downloads.
-                      If False, uses the self.download_file(file_url) path.
-                      Those paths are often the same. (browser-dependent)
-                      (Default: False).
+        """Asserts that the file exists in SeleniumBase's [Downloads Folder].
+        For browser click-initiated downloads, SeleniumBase will override
+            the system [Downloads Folder] to be "./downloaded_files/",
+            but that path can't be overridden when using Safari, IE,
+            or Chromium Guest Mode, which keeps the default system path.
+        self.download_file(file_url) will always use "./downloaded_files/".
+        @Params
+        file - The filename of the downloaded file.
+        timeout - The time (seconds) to wait for the download to complete.
+        browser - If True, uses the path set by click-initiated downloads.
+                  If False, uses the self.download_file(file_url) path.
+                  Those paths are often the same. (browser-dependent)
+                  (Default: False).
         """
         self.__check_scope()
         if not timeout:
@@ -3355,40 +3414,97 @@ class BaseCase(unittest.TestCase):
                 pass
 
     def assert_true(self, expr, msg=None):
-        """ Asserts that the expression is True.
-            Will raise an exception if the statement if False. """
+        """Asserts that the expression is True.
+        Will raise an exception if the statement if False."""
         self.assertTrue(expr, msg=msg)
 
     def assert_false(self, expr, msg=None):
-        """ Asserts that the expression is False.
-            Will raise an exception if the statement if True. """
+        """Asserts that the expression is False.
+        Will raise an exception if the statement if True."""
         self.assertFalse(expr, msg=msg)
 
     def assert_equal(self, first, second, msg=None):
-        """ Asserts that the two values are equal.
-            Will raise an exception if the values are not equal. """
+        """Asserts that the two values are equal.
+        Will raise an exception if the values are not equal."""
         self.assertEqual(first, second, msg=msg)
 
     def assert_not_equal(self, first, second, msg=None):
-        """ Asserts that the two values are not equal.
-            Will raise an exception if the values are equal. """
+        """Asserts that the two values are not equal.
+        Will raise an exception if the values are equal."""
         self.assertNotEqual(first, second, msg=msg)
 
     def assert_raises(self, *args, **kwargs):
-        """ Asserts that the following block of code raises an exception.
-            Will raise an exception if the block of code has no exception.
-            Usage Example =>
-                    # Verify that the expected exception is raised.
-                    with self.assert_raises(Exception):
-                        raise Exception("Expected Exception!")
+        """Asserts that the following block of code raises an exception.
+        Will raise an exception if the block of code has no exception.
+        Usage Example =>
+                # Verify that the expected exception is raised.
+                with self.assert_raises(Exception):
+                    raise Exception("Expected Exception!")
         """
         self.assertRaises(*args, **kwargs)
 
+    def wait_for_attribute(
+            self, selector, attribute, value=None,
+            by=By.CSS_SELECTOR, timeout=None):
+        """Raises an exception if the element attribute/value is not found.
+        If the value is not specified, the attribute only needs to exist.
+        Returns the element that contains the attribute if successful.
+        Default timeout = LARGE_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__wait_for_shadow_attribute_present(
+                selector, attribute, value=value, timeout=timeout
+            )
+        return page_actions.wait_for_attribute(
+            self.driver, selector, attribute, value=value,
+            by=by, timeout=timeout)
+
+    def assert_attribute(
+            self, selector, attribute, value=None,
+            by=By.CSS_SELECTOR, timeout=None):
+        """Raises an exception if the element attribute/value is not found.
+        If the value is not specified, the attribute only needs to exist.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_attribute(
+            selector, attribute, value=value, by=by, timeout=timeout)
+        if (
+            self.demo_mode
+            and not self.__is_shadow_selector(selector)
+            and self.is_element_visible(selector, by=by)
+        ):
+            a_a = "ASSERT ATTRIBUTE"
+            i_n = "in"
+            if self._language != "English":
+                from seleniumbase.fixtures.words import SD
+                a_a = SD.translate_assert_attribute(self._language)
+                i_n = SD.translate_in(self._language)
+            if not value:
+                messenger_post = (
+                    "%s: {%s} %s %s: %s"
+                    % (a_a, attribute, i_n, by.upper(), selector))
+            else:
+                messenger_post = (
+                    '%s: {%s == "%s"} %s %s: %s'
+                    % (a_a, attribute, value, i_n, by.upper(), selector))
+            self.__highlight_with_assert_success(messenger_post, selector, by)
+        return True
+
     def assert_title(self, title):
-        """ Asserts that the web page title matches the expected title.
-            When a web page initially loads, the title starts as the URL,
-            but then the title switches over to the actual page title.
-            A slow connection could delay the actual title from displaying. """
+        """Asserts that the web page title matches the expected title.
+        When a web page initially loads, the title starts as the URL,
+        but then the title switches over to the actual page title.
+        A slow connection could delay the actual title from displaying."""
         self.wait_for_ready_state_complete()
         expected = title.strip()
         actual = self.get_page_title().strip()
@@ -3416,16 +3532,17 @@ class BaseCase(unittest.TestCase):
             self.__highlight_with_assert_success(messenger_post, "html")
 
     def assert_no_js_errors(self):
-        """ Asserts that there are no JavaScript "SEVERE"-level page errors.
-            Works ONLY for Chrome (non-headless) and Chrome-based browsers.
-            Does NOT work on Firefox, Edge, IE, and some other browsers:
-                * See https://github.com/SeleniumHQ/selenium/issues/1161
-            Based on the following Stack Overflow solution:
-                * https://stackoverflow.com/a/41150512/7058266 """
+        """Asserts that there are no JavaScript "SEVERE"-level page errors.
+        Works ONLY for Chrome (non-headless) and Chrome-based browsers.
+        Does NOT work on Firefox, Edge, IE, and some other browsers:
+            * See https://github.com/SeleniumHQ/selenium/issues/1161
+        Based on the following Stack Overflow solution:
+            * https://stackoverflow.com/a/41150512/7058266
+        """
         self.__check_scope()
         time.sleep(0.1)  # May take a moment for errors to appear after loads.
         try:
-            browser_logs = self.driver.get_log('browser')
+            browser_logs = self.driver.get_log("browser")
         except (ValueError, WebDriverException):
             # If unable to get browser logs, skip the assert and return.
             return
@@ -3456,10 +3573,10 @@ class BaseCase(unittest.TestCase):
         js_utils.activate_html_inspector(self.driver)
 
     def inspect_html(self):
-        """ Inspects the Page HTML with HTML-Inspector.
-            (https://github.com/philipwalton/html-inspector)
-            (https://cdnjs.com/libraries/html-inspector)
-            Prints the results and also returns them. """
+        """Inspects the Page HTML with HTML-Inspector.
+        (https://github.com/philipwalton/html-inspector)
+        (https://cdnjs.com/libraries/html-inspector)
+        Prints the results and also returns them."""
         self.__activate_html_inspector()
         self.wait_for_ready_state_complete()
         script = ("""HTMLInspector.inspect();""")
@@ -3509,9 +3626,60 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         chromium = False
         browser_name = self.driver.capabilities["browserName"]
-        if browser_name in ("chrome", "edge", "msedge", "opera"):
+        if browser_name.lower() in ("chrome", "edge", "msedge", "opera"):
             chromium = True
         return chromium
+
+    def __fail_if_not_using_chrome(self, method):
+        chrome = False
+        browser_name = self.driver.capabilities["browserName"]
+        if browser_name.lower() == "chrome":
+            chrome = True
+        if not chrome:
+            from seleniumbase.common.exceptions import NotUsingChromeException
+            message = (
+                'Error: "%s" should only be called '
+                'by tests running with self.browser == "chrome"! '
+                'You should add an "if" statement to your code before calling '
+                'this method if using browsers that are Not Chrome! '
+                'The browser detected was: "%s".' % (method, browser_name)
+            )
+            raise NotUsingChromeException(message)
+
+    def get_chrome_version(self):
+        self.__check_scope()
+        self.__fail_if_not_using_chrome("get_chrome_version()")
+        driver_capabilities = self.driver.capabilities
+        if "version" in driver_capabilities:
+            chrome_version = driver_capabilities["version"]
+        else:
+            chrome_version = driver_capabilities["browserVersion"]
+        return chrome_version
+
+    def get_chromedriver_version(self):
+        self.__check_scope()
+        self.__fail_if_not_using_chrome("get_chromedriver_version()")
+        chrome_dict = self.driver.capabilities["chrome"]
+        chromedriver_version = chrome_dict["chromedriverVersion"]
+        chromedriver_version = chromedriver_version.split(' ')[0]
+        return chromedriver_version
+
+    def is_chromedriver_too_old(self):
+        """There are known issues with chromedriver versions below 73.
+        This can impact tests that need to hover over an element, or ones
+        that require a custom downloads folder ("./downloaded_files").
+        Due to the situation that newer versions of chromedriver require
+        an exact match to the version of Chrome, an "old" version of
+        chromedriver is installed by default. It is then up to the user
+        to upgrade to the correct version of chromedriver from there.
+        This method can be used to change test behavior when trying
+        to perform an action that is impacted by having an old version
+        of chromedriver installed."""
+        self.__check_scope()
+        self.__fail_if_not_using_chrome("is_chromedriver_too_old()")
+        if int(self.get_chromedriver_version().split(".")[0]) < 73:
+            return True  # chromedriver is too old! Please upgrade!
+        return False
 
     def get_google_auth_password(self, totp_key=None):
         """ Returns a time-based one-time password based on the
@@ -3548,10 +3716,10 @@ class BaseCase(unittest.TestCase):
         return xpath_to_css.convert_xpath_to_css(xpath)
 
     def convert_to_css_selector(self, selector, by):
-        """ This method converts a selector to a CSS_SELECTOR.
-            jQuery commands require a CSS_SELECTOR for finding elements.
-            This method should only be used for jQuery/JavaScript actions.
-            Pure JavaScript doesn't support using a:contains("LINK_TEXT"). """
+        """This method converts a selector to a CSS_SELECTOR.
+        jQuery commands require a CSS_SELECTOR for finding elements.
+        This method should only be used for jQuery/JavaScript actions.
+        Pure JavaScript doesn't support using a:contains("LINK_TEXT")."""
         if by == By.CSS_SELECTOR:
             return selector
         elif by == By.ID:
@@ -3611,10 +3779,10 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def js_update_text(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
-        """ JavaScript + send_keys are used to update a text field.
-            Performs self.set_value() and triggers event listeners.
-            If text ends in "\n", set_value() presses RETURN after.
-            Works faster than send_keys() alone due to the JS call.
+        """JavaScript + send_keys are used to update a text field.
+        Performs self.set_value() and triggers event listeners.
+        If text ends in "\n", set_value() presses RETURN after.
+        Works faster than send_keys() alone due to the JS call.
         """
         self.__check_scope()
         if not timeout:
@@ -3625,7 +3793,7 @@ class BaseCase(unittest.TestCase):
         if type(text) is int or type(text) is float:
             text = str(text)
         self.set_value(selector, text, by=by, timeout=timeout)
-        if not text.endswith('\n'):
+        if not text.endswith("\n"):
             try:
                 element = page_actions.wait_for_element_present(
                     self.driver, selector, by, timeout=0.2)
@@ -3634,11 +3802,11 @@ class BaseCase(unittest.TestCase):
                 pass
 
     def js_type(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
-        """ Same as self.js_update_text()
-            JavaScript + send_keys are used to update a text field.
-            Performs self.set_value() and triggers event listeners.
-            If text ends in "\n", set_value() presses RETURN after.
-            Works faster than send_keys() alone due to the JS call.
+        """Same as self.js_update_text()
+        JavaScript + send_keys are used to update a text field.
+        Performs self.set_value() and triggers event listeners.
+        If text ends in "\n", set_value() presses RETURN after.
+        Works faster than send_keys() alone due to the JS call.
         """
         self.__check_scope()
         if not timeout:
@@ -3662,12 +3830,13 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.js_update_text(selector, text, by=by, timeout=timeout)
 
-    def jquery_update_text(self, selector, text, by=By.CSS_SELECTOR,
-                           timeout=None):
-        """ This method uses jQuery to update a text field.
-            If the text string ends with the newline character,
-            Selenium finishes the call, which simulates pressing
-            {Enter/Return} after the text is entered. """
+    def jquery_update_text(
+        self, selector, text, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """This method uses jQuery to update a text field.
+        If the text string ends with the newline character,
+        Selenium finishes the call, which simulates pressing
+        {Enter/Return} after the text is entered."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -3686,8 +3855,8 @@ class BaseCase(unittest.TestCase):
         update_text_script = """jQuery('%s').val('%s');""" % (
             selector, text)
         self.safe_execute_script(update_text_script)
-        if text.endswith('\n'):
-            element.send_keys('\n')
+        if text.endswith("\n"):
+            element.send_keys("\n")
         self.__demo_mode_pause_if_active()
 
     def set_time_limit(self, time_limit):
@@ -3708,14 +3877,14 @@ class BaseCase(unittest.TestCase):
             sb_config.time_limit_ms = None
 
     def set_default_timeout(self, timeout):
-        """ This method changes the default timeout values of test methods
-            for the duration of the current test.
-            Effected timeouts: (used by methods that wait for elements)
-                * settings.SMALL_TIMEOUT - (default value: 6 seconds)
-                * settings.LARGE_TIMEOUT - (default value: 10 seconds)
-            The minimum allowable default timeout is: 0.5 seconds.
-            The maximum allowable default timeout is: 60.0 seconds.
-            (Test methods can still override timeouts outside that range.)
+        """This method changes the default timeout values of test methods
+        for the duration of the current test.
+        Effected timeouts: (used by methods that wait for elements)
+            * settings.SMALL_TIMEOUT - (default value: 6 seconds)
+            * settings.LARGE_TIMEOUT - (default value: 10 seconds)
+        The minimum allowable default timeout is: 0.5 seconds.
+        The maximum allowable default timeout is: 60.0 seconds.
+        (Test methods can still override timeouts outside that range.)
         """
         self.__check_scope()
         if not type(timeout) is int and not type(timeout) is float:
@@ -3738,8 +3907,8 @@ class BaseCase(unittest.TestCase):
         settings.LARGE_TIMEOUT = timeout
 
     def reset_default_timeout(self):
-        """ Reset default timeout values to the original from settings.py
-            This method reverts the changes made by set_default_timeout() """
+        """Reset default timeout values to the original from settings.py
+        This method reverts the changes made by set_default_timeout()"""
         if self.__overrided_default_timeouts:
             if sb_config._SMALL_TIMEOUT and sb_config._LARGE_TIMEOUT:
                 settings.SMALL_TIMEOUT = sb_config._SMALL_TIMEOUT
@@ -3750,19 +3919,33 @@ class BaseCase(unittest.TestCase):
     def skip(self, reason=""):
         """ Mark the test as Skipped. """
         self.__check_scope()
-        if self.dashboard or (self.is_pytest and self.with_db_reporting):
+        if self.dashboard:
             test_id = self.__get_test_id_2()
+            if hasattr(self, "_using_sb_fixture"):
+                test_id = sb_config._test_id
             if (
                 test_id in sb_config._results.keys()
                 and sb_config._results[test_id] == "Passed"
             ):
                 # Duplicate tearDown() called where test already passed
                 self.__passed_then_skipped = True
+            self.__will_be_skipped = True
             sb_config._results[test_id] = "Skipped"
-            self.__skip_reason = reason
-        elif reason and not self.is_pytest:
-            # Only needed for nosetest db reporting
-            self._nose_skip_reason = reason
+        if self.with_db_reporting:
+            if self.is_pytest:
+                self.__skip_reason = reason
+            else:
+                self._nose_skip_reason = reason
+        # Add skip reason to the logs
+        if not hasattr(self, "_using_sb_fixture"):
+            test_id = self.__get_test_id()  # Recalculate the test id
+        test_logpath = os.path.join(self.log_path, test_id)
+        self.__create_log_path_as_needed(test_logpath)
+        browser = self.browser
+        if not reason:
+            reason = "No skip reason given"
+        log_helper.log_skipped_test_data(self, test_logpath, browser, reason)
+        # Finally skip the test for real
         self.skipTest(reason)
 
     ############
@@ -3984,6 +4167,42 @@ class BaseCase(unittest.TestCase):
             page_actions.timeout_exception("NoSuchElementException", msg)
         return element
 
+    def __wait_for_shadow_attribute_present(
+            self, selector, attribute, value=None, timeout=None):
+        element = self.__get_shadow_element(selector, timeout=timeout)
+        actual_value = element.get_attribute(attribute)
+        plural = "s"
+        if timeout == 1:
+            plural = ""
+        if value is None:
+            # The element attribute only needs to exist
+            if actual_value is not None:
+                return element
+            else:
+                # The element does not have the attribute
+                message = (
+                    "Expected attribute {%s} of element {%s} "
+                    "was not present after %s second%s!"
+                    % (attribute, selector, timeout, plural)
+                )
+                page_actions.timeout_exception(
+                    "NoSuchAttributeException", message)
+        else:
+            if actual_value == value:
+                return element
+            else:
+                message = (
+                    "Expected value {%s} for attribute {%s} of element "
+                    "{%s} was not present after %s second%s! "
+                    "(The actual value was {%s})"
+                    % (
+                        value, attribute, selector,
+                        timeout, plural, actual_value
+                    )
+                )
+                page_actions.timeout_exception(
+                    "NoSuchAttributeException", message)
+
     def __assert_shadow_element_present(self, selector):
         self.__get_shadow_element(selector)
         if self.demo_mode:
@@ -4202,13 +4421,14 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout)
 
-    def wait_for_element_not_present(self, selector, by=By.CSS_SELECTOR,
-                                     timeout=None):
-        """ Same as self.wait_for_element_absent()
-            Waits for an element to no longer appear in the HTML of a page.
-            A hidden element still counts as appearing in the page HTML.
-            If an element with "hidden" status is acceptable,
-            use wait_for_element_not_visible() instead. """
+    def wait_for_element_not_present(
+        self, selector, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """Same as self.wait_for_element_absent()
+        Waits for an element to no longer appear in the HTML of a page.
+        A hidden element still counts as appearing in the page HTML.
+        If an element with "hidden" status is acceptable,
+        use wait_for_element_not_visible() instead."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -4218,11 +4438,12 @@ class BaseCase(unittest.TestCase):
         return page_actions.wait_for_element_absent(
             self.driver, selector, by, timeout)
 
-    def assert_element_not_present(self, selector, by=By.CSS_SELECTOR,
-                                   timeout=None):
-        """ Same as self.assert_element_absent()
-            Will raise an exception if the element stays present.
-            Returns True if successful. Default timeout = SMALL_TIMEOUT. """
+    def assert_element_not_present(
+        self, selector, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """Same as self.assert_element_absent()
+        Will raise an exception if the element stays present.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -4281,17 +4502,17 @@ class BaseCase(unittest.TestCase):
 
     def create_presentation(
             self, name=None, theme="default", transition="default"):
-        """ Creates a Reveal-JS presentation that you can add slides to.
-            @Params
-            name - If creating multiple presentations at the same time,
-                   use this to specify the name of the current presentation.
-            theme - Set a theme with a unique style for the presentation.
-                    Valid themes: "serif" (default), "sky", "white", "black",
-                                  "simple", "league", "moon", "night",
-                                  "beige", "blood", and "solarized".
-            transition - Set a transition between slides.
-                         Valid transitions: "none" (default), "slide", "fade",
-                                            "zoom", "convex", and "concave".
+        """Creates a Reveal-JS presentation that you can add slides to.
+        @Params
+        name - If creating multiple presentations at the same time,
+               use this to specify the name of the current presentation.
+        theme - Set a theme with a unique style for the presentation.
+                Valid themes: "serif" (default), "sky", "white", "black",
+                              "simple", "league", "moon", "night",
+                              "beige", "blood", and "solarized".
+        transition - Set a transition between slides.
+                     Valid transitions: "none" (default), "slide", "fade",
+                                        "zoom", "convex", and "concave".
         """
         if not name:
             name = "default"
@@ -4345,8 +4566,7 @@ class BaseCase(unittest.TestCase):
             '<html>\n'
             '<head>\n'
             '<meta charset="utf-8">\n'
-            '<meta http-equiv="Content-Type" '
-            'content="text/html, charset=utf-8;">\n'
+            '<meta http-equiv="Content-Type" content="text/html">\n'
             '<meta name="viewport" content="shrink-to-fit=no">\n'
             '<link rel="stylesheet" href="%s">\n'
             '<link rel="stylesheet" href="%s">\n'
@@ -4369,21 +4589,21 @@ class BaseCase(unittest.TestCase):
 
     def add_slide(self, content=None, image=None, code=None, iframe=None,
                   content2=None, notes=None, transition=None, name=None):
-        """ Allows the user to add slides to a presentation.
-            @Params
-            content - The HTML content to display on the presentation slide.
-            image - Attach an image (from a URL link) to the slide.
-            code - Attach code of any programming language to the slide.
-                   Language-detection will be used to add syntax formatting.
-            iframe - Attach an iFrame (from a URL link) to the slide.
-            content2 - HTML content to display after adding an image or code.
-            notes - Additional notes to include with the slide.
-                    ONLY SEEN if show_notes is set for the presentation.
-            transition - Set a transition between slides. (overrides previous)
-                         Valid transitions: "none" (default), "slide", "fade",
-                                            "zoom", "convex", and "concave".
-            name - If creating multiple presentations at the same time,
-                   use this to select the presentation to add slides to.
+        """Allows the user to add slides to a presentation.
+        @Params
+        content - The HTML content to display on the presentation slide.
+        image - Attach an image (from a URL link) to the slide.
+        code - Attach code of any programming language to the slide.
+               Language-detection will be used to add syntax formatting.
+        iframe - Attach an iFrame (from a URL link) to the slide.
+        content2 - HTML content to display after adding an image or code.
+        notes - Additional notes to include with the slide.
+                ONLY SEEN if show_notes is set for the presentation.
+        transition - Set a transition between slides. (overrides previous)
+                     Valid transitions: "none" (default), "slide", "fade",
+                                        "zoom", "convex", and "concave".
+        name - If creating multiple presentations at the same time,
+               use this to select the presentation to add slides to.
         """
 
         if not name:
@@ -4435,16 +4655,16 @@ class BaseCase(unittest.TestCase):
 
     def save_presentation(
             self, name=None, filename=None, show_notes=False, interval=0):
-        """ Saves a Reveal-JS Presentation to a file for later use.
-            @Params
-            name - If creating multiple presentations at the same time,
-                   use this to select the one you wish to use.
-            filename - The name of the HTML file that you wish to
-                       save the presentation to. (filename must end in ".html")
-            show_notes - When set to True, the Notes feature becomes enabled,
-                         which allows presenters to see notes next to slides.
-            interval - The delay time between autoplaying slides. (in seconds)
-                       If set to 0 (default), autoplay is disabled.
+        """Saves a Reveal-JS Presentation to a file for later use.
+        @Params
+        name - If creating multiple presentations at the same time,
+               use this to select the one you wish to use.
+        filename - The name of the HTML file that you wish to
+                   save the presentation to. (filename must end in ".html")
+        show_notes - When set to True, the Notes feature becomes enabled,
+                     which allows presenters to see notes next to slides.
+        interval - The delay time between autoplaying slides. (in seconds)
+                   If set to 0 (default), autoplay is disabled.
         """
 
         if not name:
@@ -4524,16 +4744,16 @@ class BaseCase(unittest.TestCase):
 
     def begin_presentation(
             self, name=None, filename=None, show_notes=False, interval=0):
-        """ Begin a Reveal-JS Presentation in the web browser.
-            @Params
-            name - If creating multiple presentations at the same time,
-                   use this to select the one you wish to use.
-            filename - The name of the HTML file that you wish to
-                       save the presentation to. (filename must end in ".html")
-            show_notes - When set to True, the Notes feature becomes enabled,
-                         which allows presenters to see notes next to slides.
-            interval - The delay time between autoplaying slides. (in seconds)
-                       If set to 0 (default), autoplay is disabled.
+        """Begin a Reveal-JS Presentation in the web browser.
+        @Params
+        name - If creating multiple presentations at the same time,
+               use this to select the one you wish to use.
+        filename - The name of the HTML file that you wish to
+                   save the presentation to. (filename must end in ".html")
+        show_notes - When set to True, the Notes feature becomes enabled,
+                     which allows presenters to see notes next to slides.
+        interval - The delay time between autoplaying slides. (in seconds)
+                   If set to 0 (default), autoplay is disabled.
         """
         if self.headless:
             return  # Presentations should not run in headless mode.
@@ -4579,24 +4799,32 @@ class BaseCase(unittest.TestCase):
     ############
 
     def create_pie_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True, labels=True, legend=True):
-        """ Creates a JavaScript pie chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript pie chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4609,24 +4837,32 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_bar_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True, labels=True, legend=True):
-        """ Creates a JavaScript bar chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript bar chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4639,24 +4875,32 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_column_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, libs=True, labels=True, legend=True):
-        """ Creates a JavaScript column chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript column chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4669,26 +4913,34 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_line_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, zero=False, libs=True,
-            labels=True, legend=True):
-        """ Creates a JavaScript line chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            zero - If True, the y-axis always starts at 0. (Default: False).
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            zero=False,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript line chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        zero - If True, the y-axis always starts at 0. (Default: False).
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4701,26 +4953,34 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def create_area_chart(
-            self, chart_name=None, title=None, subtitle=None,
-            data_name=None, unit=None, zero=False, libs=True,
-            labels=True, legend=True):
-        """ Creates a JavaScript area chart using "HighCharts".
-            @Params
-            chart_name - If creating multiple charts,
-                         use this to select which one.
-            title - The title displayed for the chart.
-            subtitle - The subtitle displayed for the chart.
-            data_name - The series name. Useful for multi-series charts.
-                        If no data_name, will default to using "Series 1".
-            unit - The description label given to the chart's y-axis values.
-            zero - If True, the y-axis always starts at 0. (Default: False).
-            libs - The option to include Chart libraries (JS and CSS files).
-                   Should be set to True (default) for the first time creating
-                   a chart on a web page. If creating multiple charts on the
-                   same web page, you won't need to re-import the libraries
-                   when creating additional charts.
-            labels - If True, displays labels on the chart for data points.
-            legend - If True, displays the data point legend on the chart.
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            data_name=None,
+            unit=None,
+            zero=False,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
+        """Creates a JavaScript area chart using "HighCharts".
+        @Params
+        chart_name - If creating multiple charts,
+                     use this to select which one.
+        title - The title displayed for the chart.
+        subtitle - The subtitle displayed for the chart.
+        data_name - The series name. Useful for multi-series charts.
+                    If no data_name, will default to using "Series 1".
+        unit - The description label given to the chart's y-axis values.
+        zero - If True, the y-axis always starts at 0. (Default: False).
+        libs - The option to include Chart libraries (JS and CSS files).
+               Should be set to True (default) for the first time creating
+               a chart on a web page. If creating multiple charts on the
+               same web page, you won't need to re-import the libraries
+               when creating additional charts.
+        labels - If True, displays labels on the chart for data points.
+        legend - If True, displays the data point legend on the chart.
         """
         if not chart_name:
             chart_name = "default"
@@ -4733,9 +4993,18 @@ class BaseCase(unittest.TestCase):
             labels=labels, legend=legend)
 
     def __create_highchart(
-            self, chart_name=None, title=None, subtitle=None,
-            style=None, data_name=None, unit=None, zero=False, libs=True,
-            labels=True, legend=True):
+            self,
+            chart_name=None,
+            title=None,
+            subtitle=None,
+            style=None,
+            data_name=None,
+            unit=None,
+            zero=False,
+            libs=True,
+            labels=True,
+            legend=True
+    ):
         """ Creates a JavaScript chart using the "HighCharts" library. """
         if not chart_name:
             chart_name = "default"
@@ -4983,12 +5252,12 @@ class BaseCase(unittest.TestCase):
         self._chart_series_count[chart_name] = 1
 
     def add_series_to_chart(self, data_name=None, chart_name=None):
-        """ Add a new data series to an existing chart.
-            This allows charts to have multiple data sets.
-            @Params
-            data_name - Set the series name. Useful for multi-series charts.
-            chart_name - If creating multiple charts,
-                         use this to select which one.
+        """Add a new data series to an existing chart.
+        This allows charts to have multiple data sets.
+        @Params
+        data_name - Set the series name. Useful for multi-series charts.
+        chart_name - If creating multiple charts,
+                     use this to select which one.
         """
         if not chart_name:
             chart_name = "default"
@@ -5008,15 +5277,15 @@ class BaseCase(unittest.TestCase):
         self._chart_first_series[chart_name] = False
 
     def add_data_point(self, label, value, color=None, chart_name=None):
-        """ Add a data point to a SeleniumBase-generated chart.
-            @Params
-            label - The label name for the data point.
-            value - The numeric value of the data point.
-            color - The HTML color of the data point.
-                    Can be an RGB color. Eg: "#55ACDC".
-                    Can also be a named color. Eg: "Teal".
-            chart_name - If creating multiple charts,
-                         use this to select which one.
+        """Add a data point to a SeleniumBase-generated chart.
+        @Params
+        label - The label name for the data point.
+        value - The numeric value of the data point.
+        color - The HTML color of the data point.
+                Can be an RGB color. Eg: "#55ACDC".
+                Can also be a named color. Eg: "Teal".
+        chart_name - If creating multiple charts,
+                     use this to select which one.
         """
         if not chart_name:
             chart_name = "default"
@@ -5044,14 +5313,14 @@ class BaseCase(unittest.TestCase):
             self._chart_label[chart_name].append(label)
 
     def save_chart(self, chart_name=None, filename=None, folder=None):
-        """ Saves a SeleniumBase-generated chart to a file for later use.
-            @Params
-            chart_name - If creating multiple charts at the same time,
-                         use this to select the one you wish to use.
-            filename - The name of the HTML file that you wish to
-                       save the chart to. (filename must end in ".html")
-            folder - The name of the folder where you wish to
-                     save the HTML file. (Default: "./saved_charts/")
+        """Saves a SeleniumBase-generated chart to a file for later use.
+        @Params
+        chart_name - If creating multiple charts at the same time,
+                     use this to select the one you wish to use.
+        filename - The name of the HTML file that you wish to
+                   save the chart to. (filename must end in ".html")
+        folder - The name of the folder where you wish to
+                 save the HTML file. (Default: "./saved_charts/")
         """
         if not chart_name:
             chart_name = "default"
@@ -5062,8 +5331,7 @@ class BaseCase(unittest.TestCase):
         if not filename.endswith(".html"):
             raise Exception('Chart file must end in ".html"!')
         the_html = '<meta charset="utf-8">\n'
-        the_html += '<meta http-equiv="Content-Type" '
-        the_html += 'content="text/html, charset=utf-8;">\n'
+        the_html += '<meta http-equiv="Content-Type" content="text/html">\n'
         the_html += '<meta name="viewport" content="shrink-to-fit=no">\n'
         for chart_data_point in self._chart_data[chart_name]:
             the_html += chart_data_point
@@ -5105,14 +5373,14 @@ class BaseCase(unittest.TestCase):
         return file_path
 
     def display_chart(self, chart_name=None, filename=None, interval=0):
-        """ Displays a SeleniumBase-generated chart in the browser window.
-            @Params
-            chart_name - If creating multiple charts at the same time,
-                         use this to select the one you wish to use.
-            filename - The name of the HTML file that you wish to
-                       save the chart to. (filename must end in ".html")
-            interval - The delay time for auto-advancing charts. (in seconds)
-                       If set to 0 (default), auto-advancing is disabled.
+        """Displays a SeleniumBase-generated chart in the browser window.
+        @Params
+        chart_name - If creating multiple charts at the same time,
+                     use this to select the one you wish to use.
+        filename - The name of the HTML file that you wish to
+                   save the chart to. (filename must end in ".html")
+        interval - The delay time for auto-advancing charts. (in seconds)
+                   If set to 0 (default), auto-advancing is disabled.
         """
         if self.headless:
             interval = 1  # Race through chart if running in headless mode
@@ -5161,10 +5429,10 @@ class BaseCase(unittest.TestCase):
                 pass
 
     def extract_chart(self, chart_name=None):
-        """ Extracts the HTML from a SeleniumBase-generated chart.
-            @Params
-            chart_name - If creating multiple charts at the same time,
-                         use this to select the one you wish to use.
+        """Extracts the HTML from a SeleniumBase-generated chart.
+        @Params
+        chart_name - If creating multiple charts at the same time,
+                     use this to select the one you wish to use.
         """
         if not chart_name:
             chart_name = "default"
@@ -5200,17 +5468,17 @@ class BaseCase(unittest.TestCase):
     ############
 
     def create_tour(self, name=None, theme=None):
-        """ Creates a tour for a website. By default, the Shepherd JavaScript
-            Library is used with the Shepherd "Light" / "Arrows" theme.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            theme - Sets the default theme for the tour.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("arrows" is used if None is selected.)
-                    Alternatively, you may use a different JavaScript Library
-                    as the theme. Those include "IntroJS", "DriverJS",
-                    "Hopscotch", and "Bootstrap".
+        """Creates a tour for a website. By default, the Shepherd JavaScript
+        Library is used with the Shepherd "Light" / "Arrows" theme.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        theme - Sets the default theme for the tour.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("arrows" is used if None is selected.)
+                Alternatively, you may use a different JavaScript Library
+                as the theme. Those include "IntroJS", "DriverJS",
+                "Hopscotch", and "Bootstrap".
         """
         if not name:
             name = "default"
@@ -5248,13 +5516,13 @@ class BaseCase(unittest.TestCase):
             self.create_shepherd_tour(name, theme="light")
 
     def create_shepherd_tour(self, name=None, theme=None):
-        """ Creates a Shepherd JS website tour.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            theme - Sets the default theme for the tour.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("light" is used if None is selected.)
+        """Creates a Shepherd JS website tour.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        theme - Sets the default theme for the tour.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("light" is used if None is selected.)
         """
 
         shepherd_theme = "shepherd-theme-arrows"
@@ -5309,10 +5577,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_bootstrap_tour(self, name=None):
-        """ Creates a Bootstrap tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates a Bootstrap tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5338,10 +5606,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_driverjs_tour(self, name=None):
-        """ Creates a DriverJS tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates a DriverJS tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5369,10 +5637,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_hopscotch_tour(self, name=None):
-        """ Creates a Hopscotch tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates a Hopscotch tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5389,10 +5657,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_introjs_tour(self, name=None):
-        """ Creates an IntroJS tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates an IntroJS tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5411,20 +5679,20 @@ class BaseCase(unittest.TestCase):
 
     def add_tour_step(self, message, selector=None, name=None,
                       title=None, theme=None, alignment=None, duration=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            theme - (Shepherd Tours ONLY) The styling of the tour step.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("arrows" is used if None is selected.)
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is default, except for Hopscotch and DriverJS).
-            duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
-                       before automatically advancing to the next tour step.
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        theme - (Shepherd Tours ONLY) The styling of the tour step.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("arrows" is used if None is selected.)
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is default, except for Hopscotch and DriverJS).
+        duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
+                   before automatically advancing to the next tour step.
         """
         if not selector:
             selector = "html"
@@ -5481,18 +5749,18 @@ class BaseCase(unittest.TestCase):
 
     def __add_shepherd_tour_step(self, message, selector=None, name=None,
                                  title=None, theme=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            theme - (Shepherd Tours ONLY) The styling of the tour step.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("arrows" is used if None is selected.)
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        theme - (Shepherd Tours ONLY) The styling of the tour step.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("arrows" is used if None is selected.)
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
         """
         if theme == "default":
             shepherd_theme = "shepherd-theme-default"
@@ -5535,17 +5803,17 @@ class BaseCase(unittest.TestCase):
 
     def __add_bootstrap_tour_step(self, message, selector=None, name=None,
                                   title=None, alignment=None, duration=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
-            duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
-                       before automatically advancing to the next tour step.
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
+        duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
+                   before automatically advancing to the next tour step.
         """
         if selector != "html":
             selector = self.__make_css_match_first_element_only(selector)
@@ -5577,15 +5845,15 @@ class BaseCase(unittest.TestCase):
 
     def __add_driverjs_tour_step(self, message, selector=None, name=None,
                                  title=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
         """
         message = (
             '<font size=\"3\" color=\"#33477B\"><b>' + message + '</b></font>')
@@ -5619,15 +5887,15 @@ class BaseCase(unittest.TestCase):
 
     def __add_hopscotch_tour_step(self, message, selector=None, name=None,
                                   title=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("bottom" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("bottom" is the default alignment).
         """
         arrow_offset_row = None
         if not selector or selector == "html":
@@ -5651,15 +5919,15 @@ class BaseCase(unittest.TestCase):
 
     def __add_introjs_tour_step(self, message, selector=None, name=None,
                                 title=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
         """
         if selector != "html":
             element_row = "element: '%s'," % selector
@@ -5679,12 +5947,12 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(step)
 
     def play_tour(self, name=None, interval=0):
-        """ Plays a tour on the current website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            interval - The delay time between autoplaying tour steps. (Seconds)
-                       If set to 0 (default), the tour is fully manual control.
+        """Plays a tour on the current website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        interval - The delay time between autoplaying tour steps. (Seconds)
+                   If set to 0 (default), the tour is fully manual control.
         """
         from seleniumbase.core import tour_helper
 
@@ -5726,19 +5994,20 @@ class BaseCase(unittest.TestCase):
                 self.message_duration, name=name, interval=interval)
 
     def export_tour(self, name=None, filename="my_tour.js", url=None):
-        """ Exports a tour as a JS file.
-            You can call self.export_tour() anywhere where you would
-            normally use self.play_tour() to play a website tour.
-            It will include necessary resources as well, such as jQuery.
-            You'll be able to copy the tour directly into the Console of
-            any web browser to play the tour outside of SeleniumBase runs.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            filename - The name of the JavaScript file that you wish to
-                       save the tour to.
-            url - The URL where the tour starts. If not specified, the URL
-                  of the current page will be used. """
+        """Exports a tour as a JS file.
+        You can call self.export_tour() anywhere where you would
+        normally use self.play_tour() to play a website tour.
+        It will include necessary resources as well, such as jQuery.
+        You'll be able to copy the tour directly into the Console of
+        any web browser to play the tour outside of SeleniumBase runs.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        filename - The name of the JavaScript file that you wish to
+                   save the tour to.
+        url - The URL where the tour starts. If not specified, the URL
+              of the current page will be used.
+        """
         from seleniumbase.core import tour_helper
         if not url:
             url = self.get_current_url()
@@ -5758,11 +6027,12 @@ class BaseCase(unittest.TestCase):
 
     def set_messenger_theme(self, theme="default", location="default",
                             max_messages="default"):
-        """ Sets a theme for posting messages.
-            Themes: ["flat", "future", "block", "air", "ice"]
-            Locations: ["top_left", "top_center", "top_right",
-                        "bottom_left", "bottom_center", "bottom_right"]
-            max_messages is the limit of concurrent messages to display. """
+        """Sets a theme for posting messages.
+        Themes: ["flat", "future", "block", "air", "ice"]
+        Locations: ["top_left", "top_center", "top_right",
+                    "bottom_left", "bottom_center", "bottom_right"]
+        max_messages is the limit of concurrent messages to display.
+        """
         self.__check_scope()
         if not theme:
             theme = "default"  # "flat"
@@ -5777,15 +6047,15 @@ class BaseCase(unittest.TestCase):
             location=location, max_messages=max_messages)
 
     def post_message(self, message, duration=None, pause=True, style="info"):
-        """ Post a message on the screen with Messenger.
-            Arguments:
-                message: The message to display.
-                duration: The time until the message vanishes. (Default: 2.55s)
-                pause: If True, the program waits until the message completes.
-                style: "info", "success", or "error".
+        """Post a message on the screen with Messenger.
+        Arguments:
+            message: The message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
+            style: "info", "success", or "error".
 
-            You can also post messages by using =>
-                self.execute_script('Messenger().post("My Message")')
+        You can also post messages by using =>
+            self.execute_script('Messenger().post("My Message")')
         """
         self.__check_scope()
         if style not in ["info", "success", "error"]:
@@ -5805,21 +6075,21 @@ class BaseCase(unittest.TestCase):
 
     def post_message_and_highlight(
             self, message, selector, by=By.CSS_SELECTOR):
-        """ Post a message on the screen and highlight an element.
-            Arguments:
-                message: The message to display.
-                selector: The selector of the Element to highlight.
-                by: The type of selector to search by. (Default: CSS Selector)
+        """Post a message on the screen and highlight an element.
+        Arguments:
+            message: The message to display.
+            selector: The selector of the Element to highlight.
+            by: The type of selector to search by. (Default: CSS Selector)
         """
         self.__check_scope()
         self.__highlight_with_assert_success(message, selector, by=by)
 
     def post_success_message(self, message, duration=None, pause=True):
-        """ Post a success message on the screen with Messenger.
-            Arguments:
-                message: The success message to display.
-                duration: The time until the message vanishes. (Default: 2.55s)
-                pause: If True, the program waits until the message completes.
+        """Post a success message on the screen with Messenger.
+        Arguments:
+            message: The success message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
         """
         self.__check_scope()
         if not duration:
@@ -5837,11 +6107,11 @@ class BaseCase(unittest.TestCase):
             time.sleep(float(duration))
 
     def post_error_message(self, message, duration=None, pause=True):
-        """ Post an error message on the screen with Messenger.
-            Arguments:
-                message: The error message to display.
-                duration: The time until the message vanishes. (Default: 2.55s)
-                pause: If True, the program waits until the message completes.
+        """Post an error message on the screen with Messenger.
+        Arguments:
+            message: The error message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
         """
         self.__check_scope()
         if not duration:
@@ -5861,11 +6131,11 @@ class BaseCase(unittest.TestCase):
     ############
 
     def generate_referral(self, start_page, destination_page, selector=None):
-        """ This method opens the start_page, creates a referral link there,
-            and clicks on that link, which goes to the destination_page.
-            If a selector is given, clicks that on the destination_page,
-            which can prevent an artificial rise in website bounce-rate.
-            (This generates real traffic for testing analytics software.) """
+        """This method opens the start_page, creates a referral link there,
+        and clicks on that link, which goes to the destination_page.
+        If a selector is given, clicks that on the destination_page,
+        which can prevent an artificial rise in website bounce-rate.
+        (This generates real traffic for testing analytics software.)"""
         self.__check_scope()
         if not page_utils.is_valid_url(destination_page):
             raise Exception(
@@ -5896,9 +6166,9 @@ class BaseCase(unittest.TestCase):
 
     def generate_traffic(
             self, start_page, destination_page, loops=1, selector=None):
-        """ Similar to generate_referral(), but can do multiple loops.
-            If a selector is given, clicks that on the destination_page,
-            which can prevent an artificial rise in website bounce-rate. """
+        """Similar to generate_referral(), but can do multiple loops.
+        If a selector is given, clicks that on the destination_page,
+        which can prevent an artificial rise in website bounce-rate."""
         self.__check_scope()
         for loop in range(loops):
             self.generate_referral(
@@ -5906,11 +6176,11 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.05)
 
     def generate_referral_chain(self, pages):
-        """ Use this method to chain the action of creating button links on
-            one website page that will take you to the next page.
-            (When you want to create a referral to a website for traffic
-            generation without increasing the bounce rate, you'll want to visit
-            at least one additional page on that site with a button click.) """
+        """Use this method to chain the action of creating button links on
+        one website page that will take you to the next page.
+        (When you want to create a referral to a website for traffic
+        generation without increasing the bounce rate, you'll want to visit
+        at least one additional page on that site with a button click.)"""
         self.__check_scope()
         if not type(pages) is tuple and not type(pages) is list:
             raise Exception(
@@ -6578,72 +6848,72 @@ class BaseCase(unittest.TestCase):
             raise Exception(minified_exception)
 
     def check_window(self, name="default", level=0, baseline=False):
-        """ ***  Automated Visual Testing with SeleniumBase  ***
+        """***  Automated Visual Testing with SeleniumBase  ***
 
-            The first time a test calls self.check_window() for a unique "name"
-            parameter provided, it will set a visual baseline, meaning that it
-            creates a folder, saves the URL to a file, saves the current window
-            screenshot to a file, and creates the following three files
-            with the listed data saved:
-            tags_level1.txt  ->  HTML tags from the window
-            tags_level2.txt  ->  HTML tags + attributes from the window
-            tags_level3.txt  ->  HTML tags + attributes/values from the window
+        The first time a test calls self.check_window() for a unique "name"
+        parameter provided, it will set a visual baseline, meaning that it
+        creates a folder, saves the URL to a file, saves the current window
+        screenshot to a file, and creates the following three files
+        with the listed data saved:
+        tags_level1.txt  ->  HTML tags from the window
+        tags_level2.txt  ->  HTML tags + attributes from the window
+        tags_level3.txt  ->  HTML tags + attributes/values from the window
 
-            Baseline folders are named based on the test name and the name
-            parameter passed to self.check_window(). The same test can store
-            multiple baseline folders.
+        Baseline folders are named based on the test name and the name
+        parameter passed to self.check_window(). The same test can store
+        multiple baseline folders.
 
-            If the baseline is being set/reset, the "level" doesn't matter.
+        If the baseline is being set/reset, the "level" doesn't matter.
 
-            After the first run of self.check_window(), it will compare the
-            HTML tags of the latest window to the one from the initial run.
-            Here's how the level system works:
-            * level=0 ->
-                DRY RUN ONLY - Will perform a comparison to the baseline, and
-                               print out any differences that are found, but
-                               won't fail the test even if differences exist.
-            * level=1 ->
-                HTML tags are compared to tags_level1.txt
-            * level=2 ->
-                HTML tags are compared to tags_level1.txt and
-                HTML tags/attributes are compared to tags_level2.txt
-            * level=3 ->
-                HTML tags are compared to tags_level1.txt and
-                HTML tags + attributes are compared to tags_level2.txt and
-                HTML tags + attributes/values are compared to tags_level3.txt
-            As shown, Level-3 is the most strict, Level-1 is the least strict.
-            If the comparisons from the latest window to the existing baseline
-            don't match, the current test will fail, except for Level-0 tests.
+        After the first run of self.check_window(), it will compare the
+        HTML tags of the latest window to the one from the initial run.
+        Here's how the level system works:
+        * level=0 ->
+            DRY RUN ONLY - Will perform a comparison to the baseline, and
+                           print out any differences that are found, but
+                           won't fail the test even if differences exist.
+        * level=1 ->
+            HTML tags are compared to tags_level1.txt
+        * level=2 ->
+            HTML tags are compared to tags_level1.txt and
+            HTML tags/attributes are compared to tags_level2.txt
+        * level=3 ->
+            HTML tags are compared to tags_level1.txt and
+            HTML tags + attributes are compared to tags_level2.txt and
+            HTML tags + attributes/values are compared to tags_level3.txt
+        As shown, Level-3 is the most strict, Level-1 is the least strict.
+        If the comparisons from the latest window to the existing baseline
+        don't match, the current test will fail, except for Level-0 tests.
 
-            You can reset the visual baseline on the command line by using:
-                --visual_baseline
-            As long as "--visual_baseline" is used on the command line while
-            running tests, the self.check_window() method cannot fail because
-            it will rebuild the visual baseline rather than comparing the html
-            tags of the latest run to the existing baseline. If there are any
-            expected layout changes to a website that you're testing, you'll
-            need to reset the baseline to prevent unnecessary failures.
+        You can reset the visual baseline on the command line by using:
+            --visual_baseline
+        As long as "--visual_baseline" is used on the command line while
+        running tests, the self.check_window() method cannot fail because
+        it will rebuild the visual baseline rather than comparing the html
+        tags of the latest run to the existing baseline. If there are any
+        expected layout changes to a website that you're testing, you'll
+        need to reset the baseline to prevent unnecessary failures.
 
-            self.check_window() will fail with "Page Domain Mismatch Failure"
-            if the page domain doesn't match the domain of the baseline.
+        self.check_window() will fail with "Page Domain Mismatch Failure"
+        if the page domain doesn't match the domain of the baseline.
 
-            If you want to use self.check_window() to compare a web page to
-            a later version of itself from within the same test run, you can
-            add the parameter "baseline=True" to the first time you call
-            self.check_window() in a test to use that as the baseline. This
-            only makes sense if you're calling self.check_window() more than
-            once with the same name parameter in the same test.
+        If you want to use self.check_window() to compare a web page to
+        a later version of itself from within the same test run, you can
+        add the parameter "baseline=True" to the first time you call
+        self.check_window() in a test to use that as the baseline. This
+        only makes sense if you're calling self.check_window() more than
+        once with the same name parameter in the same test.
 
-            Automated Visual Testing with self.check_window() is not very
-            effective for websites that have dynamic content that changes
-            the layout and structure of web pages. For those, you're much
-            better off using regular SeleniumBase functional testing.
+        Automated Visual Testing with self.check_window() is not very
+        effective for websites that have dynamic content that changes
+        the layout and structure of web pages. For those, you're much
+        better off using regular SeleniumBase functional testing.
 
-            Example usage:
-                self.check_window(name="testing", level=0)
-                self.check_window(name="xkcd_home", level=1)
-                self.check_window(name="github_page", level=2)
-                self.check_window(name="wikipedia_page", level=3)
+        Example usage:
+            self.check_window(name="testing", level=0)
+            self.check_window(name="xkcd_home", level=1)
+            self.check_window(name="github_page", level=2)
+            self.check_window(name="wikipedia_page", level=3)
         """
         self.wait_for_ready_state_complete()
         if level == "0":
@@ -6819,9 +7089,9 @@ class BaseCase(unittest.TestCase):
     ############
 
     def __get_exception_message(self):
-        """ This method extracts the message from an exception if there
-            was an exception that occurred during the test, assuming
-            that the exception was in a try/except block and not thrown. """
+        """This method extracts the message from an exception if there
+        was an exception that occurred during the test, assuming
+        that the exception was in a try/except block and not thrown."""
         exception_info = sys.exc_info()[1]
         if hasattr(exception_info, "msg"):
             exc_message = exception_info.msg
@@ -6832,8 +7102,7 @@ class BaseCase(unittest.TestCase):
         return exc_message
 
     def __get_improved_exception_message(self):
-        """
-        If Chromedriver is out-of-date, make it clear!
+        """If Chromedriver is out-of-date, make it clear!
         Given the high popularity of the following StackOverflow article:
         https://stackoverflow.com/questions/49162667/unknown-error-
                 call-function-result-missing-value-for-selenium-send-keys-even
@@ -6867,9 +7136,9 @@ class BaseCase(unittest.TestCase):
 
     def deferred_assert_element(self, selector, by=By.CSS_SELECTOR,
                                 timeout=None):
-        """ A non-terminating assertion for an element on a page.
-            Failures will be saved until the process_deferred_asserts()
-            method is called from inside a test, likely at the end of it. """
+        """A non-terminating assertion for an element on a page.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it."""
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -6893,9 +7162,9 @@ class BaseCase(unittest.TestCase):
 
     def deferred_assert_text(self, text, selector="html", by=By.CSS_SELECTOR,
                              timeout=None):
-        """ A non-terminating assertion for text from an element on a page.
-            Failures will be saved until the process_deferred_asserts()
-            method is called from inside a test, likely at the end of it. """
+        """A non-terminating assertion for text from an element on a page.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it."""
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -6918,18 +7187,18 @@ class BaseCase(unittest.TestCase):
             return False
 
     def process_deferred_asserts(self, print_only=False):
-        """ To be used with any test that uses deferred_asserts, which are
-            non-terminating verifications that only raise exceptions
-            after this method is called.
-            This is useful for pages with multiple elements to be checked when
-            you want to find as many bugs as possible in a single test run
-            before having all the exceptions get raised simultaneously.
-            Might be more useful if this method is called after processing all
-            the deferred asserts on a single html page so that the failure
-            screenshot matches the location of the deferred asserts.
-            If "print_only" is set to True, the exception won't get raised. """
+        """To be used with any test that uses deferred_asserts, which are
+        non-terminating verifications that only raise exceptions
+        after this method is called.
+        This is useful for pages with multiple elements to be checked when
+        you want to find as many bugs as possible in a single test run
+        before having all the exceptions get raised simultaneously.
+        Might be more useful if this method is called after processing all
+        the deferred asserts on a single html page so that the failure
+        screenshot matches the location of the deferred asserts.
+        If "print_only" is set to True, the exception won't get raised."""
         if self.__deferred_assert_failures:
-            exception_output = ''
+            exception_output = ""
             exception_output += "\n*** DEFERRED ASSERTION FAILURES FROM: "
             exception_output += "%s\n" % self.id()
             all_failing_checks = self.__deferred_assert_failures
@@ -7010,8 +7279,9 @@ class BaseCase(unittest.TestCase):
         dist = js_utils.get_scroll_distance_to_element(self.driver, element)
         time_offset = 0
         try:
-            if dist and abs(dist) > SSMD:
-                time_offset = int(float(abs(dist) - SSMD) / 12.5)
+            if dist and abs(dist) > constants.Values.SSMD:
+                time_offset = int(
+                    float(abs(dist) - constants.Values.SSMD) / 12.5)
                 if time_offset > 950:
                     time_offset = 950
         except Exception:
@@ -7152,9 +7422,9 @@ class BaseCase(unittest.TestCase):
         return False
 
     def __recalculate_selector(self, selector, by, xp_ok=True):
-        """ Use autodetection to return the correct selector with "by" updated.
-            If "xp_ok" is False, don't call convert_css_to_xpath(), which is
-            used to make the ":contains()" selector valid outside JS calls. """
+        """Use autodetection to return the correct selector with "by" updated.
+        If "xp_ok" is False, don't call convert_css_to_xpath(), which is
+        used to make the ":contains()" selector valid outside JS calls."""
         _type = type(selector)  # First make sure the selector is a string
         not_string = False
         if sys.version_info[0] < 3:
@@ -7185,11 +7455,11 @@ class BaseCase(unittest.TestCase):
         return (selector, by)
 
     def __looks_like_a_page_url(self, url):
-        """ Returns True if the url parameter looks like a URL. This method
-            is slightly more lenient than page_utils.is_valid_url(url) due to
-            possible typos when calling self.get(url), which will try to
-            navigate to the page if a URL is detected, but will instead call
-            self.get_element(URL_AS_A_SELECTOR) if the input in not a URL. """
+        """Returns True if the url parameter looks like a URL. This method
+        is slightly more lenient than page_utils.is_valid_url(url) due to
+        possible typos when calling self.get(url), which will try to
+        navigate to the page if a URL is detected, but will instead call
+        self.get_element(URL_AS_A_SELECTOR) if the input in not a URL."""
         if (url.startswith("http:") or url.startswith("https:") or (
                 url.startswith("://") or url.startswith("chrome:") or (
                 url.startswith("about:") or url.startswith("data:") or (
@@ -7239,7 +7509,7 @@ class BaseCase(unittest.TestCase):
             try:
                 scroll_distance = js_utils.get_scroll_distance_to_element(
                     self.driver, element)
-                if abs(scroll_distance) > SSMD:
+                if abs(scroll_distance) > constants.Values.SSMD:
                     self.__jquery_slow_scroll_to(selector, by)
                 else:
                     self.__slow_scroll_to_element(element)
@@ -7274,7 +7544,7 @@ class BaseCase(unittest.TestCase):
         try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
                 self.driver, element)
-            if abs(scroll_distance) > SSMD:
+            if abs(scroll_distance) > constants.Values.SSMD:
                 self.__jquery_slow_scroll_to(selector, by)
             else:
                 self.__slow_scroll_to_element(element)
@@ -7362,6 +7632,9 @@ class BaseCase(unittest.TestCase):
         if self.is_pytest:
             # pytest-specific code
             test_id = self.__get_test_id()
+            self.test_id = test_id
+            if hasattr(self, "_using_sb_fixture"):
+                self.test_id = sb_config._test_id
             self.browser = sb_config.browser
             self.data = sb_config.data
             self.var1 = sb_config.var1
@@ -7837,9 +8110,12 @@ class BaseCase(unittest.TestCase):
                     has_exception = sys.exc_info()[1] is not None
                 else:
                     has_exception = (len(str(sys.exc_info()[1]).strip()) > 0)
+        if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
+            has_exception = False
         return has_exception
 
     def __get_test_id(self):
+        """ The id used in various places such as the test log path. """
         test_id = "%s.%s.%s" % (self.__class__.__module__,
                                 self.__class__.__name__,
                                 self._testMethodName)
@@ -7859,6 +8135,7 @@ class BaseCase(unittest.TestCase):
         return test_id
 
     def __get_display_id(self):
+        """ The id for running a test from pytest. (Displayed on Dashboard) """
         test_id = "%s.py::%s::%s" % (
             self.__class__.__module__.replace('.', '/'),
             self.__class__.__name__,
@@ -7885,7 +8162,7 @@ class BaseCase(unittest.TestCase):
                 pass  # Only reachable during multi-threaded runs
 
     def __process_dashboard(self, has_exception, init=False):
-        ''' SeleniumBase Dashboard Processing '''
+        """ SeleniumBase Dashboard Processing """
         existing_res = sb_config._results  # Used by multithreaded tests
         if self._multithreaded:
             abs_path = os.path.abspath('.')
@@ -7894,11 +8171,12 @@ class BaseCase(unittest.TestCase):
             if not init and os.path.exists(dash_jsonpath):
                 with open(dash_jsonpath, 'r') as f:
                     dash_json = f.read().strip()
-                dash_data, d_id, dash_runtimes, d_stats = json.loads(dash_json)
+                dash_data, d_id, dash_rt, tlp, d_stats = json.loads(dash_json)
                 num_passed, num_failed, num_skipped, num_untested = d_stats
                 sb_config._results = dash_data
                 sb_config._display_id = d_id
-                sb_config._duration = dash_runtimes
+                sb_config._duration = dash_rt  # Dashboard Run Time
+                sb_config._d_t_log_path = tlp  # Test Log Path
                 sb_config.item_count_passed = num_passed
                 sb_config.item_count_failed = num_failed
                 sb_config.item_count_skipped = num_skipped
@@ -7921,12 +8199,26 @@ class BaseCase(unittest.TestCase):
                         sb_config.item_count_untested -= 1
             sb_config._extra_dash_entries = []  # Reset the list to empty
         # Process new entries
-        test_id = self.__get_test_id_2()
+        log_dir = self.log_path
+        ft_id = self.__get_test_id()  # Full test id with path to log files
+        test_id = self.__get_test_id_2()  # The test id used by the DashBoard
         dud = "seleniumbase/plugins/pytest_plugin.py::BaseClass::base_method"
+        dud2 = "pytest_plugin.BaseClass.base_method"
+        if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
+            test_id = sb_config._test_id
         if not init:
             duration_ms = int(time.time() * 1000) - self.__start_time_ms
             duration = float(duration_ms) / 1000.0
             sb_config._duration[test_id] = duration
+            if (
+                has_exception
+                or self.save_screenshot_after_test
+                or self.__screenshot_count > 0
+                or self.__will_be_skipped
+            ):
+                sb_config._d_t_log_path[test_id] = os.path.join(log_dir, ft_id)
+            else:
+                sb_config._d_t_log_path[test_id] = None
             if test_id not in sb_config._display_id.keys():
                 sb_config._display_id[test_id] = self.__get_display_id()
             if sb_config._display_id[test_id] == dud:
@@ -7983,6 +8275,9 @@ class BaseCase(unittest.TestCase):
                     and sb_config._results[test_id] == "Failed"
                 ):
                     # pytest-rerunfailures reran a test that failed
+                    sb_config._d_t_log_path[test_id] = (
+                        os.path.join(log_dir, ft_id)
+                    )
                     sb_config.item_count_failed -= 1
                     sb_config.item_count_untested += 1
                 elif (
@@ -7995,6 +8290,8 @@ class BaseCase(unittest.TestCase):
                 sb_config._results[test_id] = "Passed"
                 sb_config.item_count_passed += 1
                 sb_config.item_count_untested -= 1
+        else:
+            pass  # Only initialize the Dashboard on the first processing
         num_passed = sb_config.item_count_passed
         num_failed = sb_config.item_count_failed
         num_skipped = sb_config.item_count_skipped
@@ -8025,63 +8322,99 @@ class BaseCase(unittest.TestCase):
                     pie_file.writelines(dash_pie)
                     pie_file.close()
         head = (
-            '<head><meta charset="utf-8" />'
-            '<meta property="og:image" '
-            'content="https://seleniumbase.io/img/dash_pie.png">'
-            '<link rel="shortcut icon" '
-            'href="https://seleniumbase.io/img/dash_pie.png">'
-            '%s'
-            '<title>Dashboard</title>'
-            '%s</head>' % (auto_refresh_html, style))
+            '<head><meta charset="utf-8">'
+            '<meta http-equiv="Content-Type" content="text/html">'
+            '<meta name="viewport" content="shrink-to-fit=no">'
+            '<link rel="shortcut icon" href="%s">'
+            "%s"
+            "<title>Dashboard</title>"
+            "%s</head>" % (
+                constants.Dashboard.DASH_PIE_PNG_1,
+                auto_refresh_html,
+                style))
         table_html = (
-            '<div></div>'
+            "<div></div>"
             '<table border="1px solid #e6e6e6;" width="100%;" padding: 5px;'
             ' font-size="12px;" text-align="left;" id="results-table">'
-            '<thead id="results-table-head"><tr>'
+            '<thead id="results-table-head">'
+            '<tr style="background-color: #F7F7FD;">'
             '<th col="result">Result</th><th col="name">Test</th>'
             '<th col="duration">Duration</th><th col="links">Links</th>'
-            '</tr></thead>')
+            "</tr></thead>")
         the_failed = []
         the_skipped = []
         the_passed = []
         the_untested = []
+        if dud2 in sb_config._results.keys():
+            sb_config._results.pop(dud2)
         for key in sb_config._results.keys():
             t_res = sb_config._results[key]
             t_dur = sb_config._duration[key]
             t_d_id = sb_config._display_id[key]
+            t_l_path = sb_config._d_t_log_path[key]
             res_low = t_res.lower()
             if sb_config._results[key] == "Failed":
-                the_failed.append([res_low, t_res, t_d_id, t_dur])
+                if not sb_config._d_t_log_path[key]:
+                    sb_config._d_t_log_path[key] = os.path.join(log_dir, ft_id)
+                the_failed.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Skipped":
-                the_skipped.append([res_low, t_res, t_d_id, t_dur])
+                the_skipped.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Passed":
-                the_passed.append([res_low, t_res, t_d_id, t_dur])
+                the_passed.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Untested":
-                the_untested.append([res_low, t_res, t_d_id, t_dur])
+                the_untested.append([res_low, t_res, t_d_id, t_dur, t_l_path])
         for row in the_failed:
             row = (
-                '<tbody class="%s results-table-row"><tr>'
+                '<tbody class="%s results-table-row">'
+                '<tr style="background-color: #FFF8F8;">'
                 '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td><a href="latest_logs/">latest_logs/</a></td>'
-                '</tr></tbody>' % (row[0], row[1], row[2], row[3]))
+                '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                "</td></tr></tbody>"
+                "" % (row[0], row[1], row[2], row[3], log_dir, row[4]))
             table_html += row
         for row in the_skipped:
-            row = (
-                '<tbody class="%s results-table-row"><tr>'
-                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            if not row[4]:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #FEFEF9;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td>-</td></tr></tbody>'
+                    % (row[0], row[1], row[2], row[3])
+                )
+            else:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #FEFEF9;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                    "</td></tr></tbody>"
+                    "" % (row[0], row[1], row[2], row[3], log_dir, row[4]))
             table_html += row
         for row in the_passed:
-            row = (
-                '<tbody class="%s results-table-row"><tr>'
-                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+            if not row[4]:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #F8FFF8;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td>-</td></tr></tbody>'
+                    % (row[0], row[1], row[2], row[3])
+                )
+            else:
+                row = (
+                    '<tbody class="%s results-table-row">'
+                    '<tr style="background-color: #F8FFF8;">'
+                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                    '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                    "</td></tr></tbody>"
+                    "" % (row[0], row[1], row[2], row[3], log_dir, row[4]))
             table_html += row
         for row in the_untested:
             row = (
                 '<tbody class="%s results-table-row"><tr>'
                 '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                '<td></td></tr></tbody>' % (row[0], row[1], row[2], row[3]))
+                '<td>-</td></tr></tbody>'
+                % (row[0], row[1], row[2], row[3])
+            )
             table_html += row
         table_html += "</table>"
         add_more = "<br /><b>Last updated:</b> "
@@ -8126,19 +8459,22 @@ class BaseCase(unittest.TestCase):
         if num_untested == 0 and sb_config._using_html_report:
             sb_config._dash_final_summary = status
         add_more = add_more + refresh_line
-        the_html = head + self.extract_chart() + table_html + add_more
+        the_html = (
+            '<html lang="en">' + head + self.extract_chart()
+            + table_html + add_more
+        )
         abs_path = os.path.abspath('.')
         file_path = os.path.join(abs_path, "dashboard.html")
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
-        time.sleep(0.05)  # Add time for dashboard server to process updates
         if self._multithreaded:
             d_stats = (num_passed, num_failed, num_skipped, num_untested)
             _results = sb_config._results
             _display_id = sb_config._display_id
-            _duration = sb_config._duration
-            dash_json = json.dumps((_results, _display_id, _duration, d_stats))
+            _rt = sb_config._duration  # Run Time (RT)
+            _tlp = sb_config._d_t_log_path  # Test Log Path (TLP)
+            dash_json = json.dumps((_results, _display_id, _rt, _tlp, d_stats))
             dash_json_loc = constants.Dashboard.DASH_JSON
             dash_jsonpath = os.path.join(abs_path, dash_json_loc)
             dash_json_file = codecs.open(dash_jsonpath, "w+", encoding="utf-8")
@@ -8211,16 +8547,17 @@ class BaseCase(unittest.TestCase):
                 file_name_used = file_name
             fix_setup = "super(%s, self).setUp()" % class_name_used
             fix_teardown = "super(%s, self).tearDown()" % class_name_used
-            message = ("You're overriding SeleniumBase's BaseCase setUp() "
-                       "method with your own setUp() method, which breaks "
-                       "SeleniumBase. You can fix this by going to your "
-                       "%s class located in your %s file and adding the "
-                       "following line of code AT THE BEGINNING of your "
-                       "setUp() method:\n%s\n\nAlso make sure "
-                       "you have added the following line of code AT THE "
-                       "END of your tearDown() method:\n%s\n"
-                       % (class_name_used, file_name_used,
-                          fix_setup, fix_teardown))
+            message = (
+                "You're overriding SeleniumBase's BaseCase setUp() "
+                "method with your own setUp() method, which breaks "
+                "SeleniumBase. You can fix this by going to your "
+                "%s class located in your %s file and adding the "
+                "following line of code AT THE BEGINNING of your "
+                "setUp() method:\n%s\n\nAlso make sure "
+                "you have added the following line of code AT THE "
+                "END of your tearDown() method:\n%s\n"
+                % (class_name_used, file_name_used, fix_setup, fix_teardown)
+            )
             raise Exception(message)
         # *** Start tearDown() officially ***
         self.__slow_mode_pause_if_active()
