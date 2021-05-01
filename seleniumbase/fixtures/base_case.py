@@ -765,12 +765,12 @@ class BaseCase(unittest.TestCase):
         return False
 
     def get_link_attribute(self, link_text, attribute, hard_fail=True):
-        """ Finds a link by link text and then returns the attribute's value.
-            If the link text or attribute cannot be found, an exception will
-            get raised if hard_fail is True (otherwise None is returned). """
+        """Finds a link by link text and then returns the attribute's value.
+        If the link text or attribute cannot be found, an exception will
+        get raised if hard_fail is True (otherwise None is returned)."""
         self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
-        html_links = soup.find_all('a')
+        html_links = soup.find_all("a")
         for html_link in html_links:
             if html_link.text.strip() == link_text.strip():
                 if html_link.has_attr(attribute):
@@ -778,7 +778,7 @@ class BaseCase(unittest.TestCase):
                     return attribute_value
                 if hard_fail:
                     raise Exception(
-                        'Unable to find attribute {%s} from link text {%s}!'
+                        "Unable to find attribute {%s} from link text {%s}!"
                         % (attribute, link_text))
                 else:
                     return None
@@ -788,21 +788,22 @@ class BaseCase(unittest.TestCase):
             return None
 
     def get_link_text_attribute(self, link_text, attribute, hard_fail=True):
-        """ Same as self.get_link_attribute()
-            Finds a link by link text and then returns the attribute's value.
-            If the link text or attribute cannot be found, an exception will
-            get raised if hard_fail is True (otherwise None is returned). """
+        """Same as self.get_link_attribute()
+        Finds a link by link text and then returns the attribute's value.
+        If the link text or attribute cannot be found, an exception will
+        get raised if hard_fail is True (otherwise None is returned)."""
         return self.get_link_attribute(link_text, attribute, hard_fail)
 
-    def get_partial_link_text_attribute(self, link_text, attribute,
-                                        hard_fail=True):
-        """ Finds a link by partial link text and then returns the attribute's
-            value. If the partial link text or attribute cannot be found, an
-            exception will get raised if hard_fail is True (otherwise None
-            is returned). """
+    def get_partial_link_text_attribute(
+        self, link_text, attribute, hard_fail=True
+    ):
+        """Finds a link by partial link text and then returns the attribute's
+        value. If the partial link text or attribute cannot be found, an
+        exception will get raised if hard_fail is True (otherwise None
+        is returned)."""
         self.wait_for_ready_state_complete()
         soup = self.get_beautiful_soup()
-        html_links = soup.find_all('a')
+        html_links = soup.find_all("a")
         for html_link in html_links:
             if link_text.strip() in html_link.text.strip():
                 if html_link.has_attr(attribute):
@@ -810,9 +811,9 @@ class BaseCase(unittest.TestCase):
                     return attribute_value
                 if hard_fail:
                     raise Exception(
-                        'Unable to find attribute {%s} from '
-                        'partial link text {%s}!'
-                        % (attribute, link_text))
+                        "Unable to find attribute {%s} from "
+                        "partial link text {%s}!" % (attribute, link_text)
+                    )
                 else:
                     return None
         if hard_fail:
@@ -832,7 +833,8 @@ class BaseCase(unittest.TestCase):
         if self.browser == "phantomjs":
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(
-                    link_text, timeout=timeout)
+                    link_text, timeout=timeout
+                )
                 element.click()
                 return
             self.open(self.__get_href_from_link_text(link_text))
@@ -844,12 +846,14 @@ class BaseCase(unittest.TestCase):
                     self.__jquery_slow_scroll_to(link_text, by=By.LINK_TEXT)
                 except Exception:
                     element = self.wait_for_link_text_visible(
-                        link_text, timeout=timeout)
+                        link_text, timeout=timeout
+                    )
                     self.__slow_scroll_to_element(element)
-                o_bs = ''  # original_box_shadow
+                o_bs = ""  # original_box_shadow
                 loops = settings.HIGHLIGHTS
                 selector = self.convert_to_css_selector(
-                    link_text, by=By.LINK_TEXT)
+                    link_text, by=By.LINK_TEXT
+                )
                 selector = self.__make_css_match_first_element_only(selector)
                 try:
                     selector = re.escape(selector)
@@ -863,8 +867,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_link_text_present(link_text, timeout=timeout)
         pre_action_url = self.get_current_url()
         try:
-            element = self.wait_for_link_text_visible(
-                link_text, timeout=0.2)
+            element = self.wait_for_link_text_visible(link_text, timeout=0.2)
             self.__demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
             try:
                 element.click()
@@ -872,7 +875,8 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_link_text_visible(
-                    link_text, timeout=timeout)
+                    link_text, timeout=timeout
+                )
                 element.click()
         except Exception:
             found_css = False
@@ -884,7 +888,7 @@ class BaseCase(unittest.TestCase):
             if not found_css:
                 href = self.__get_href_from_link_text(link_text, False)
                 if href:
-                    if href.startswith('/') or page_utils.is_valid_url(href):
+                    if href.startswith("/") or page_utils.is_valid_url(href):
                         link_css = '[href="%s"]' % href
                         found_css = True
 
@@ -2161,41 +2165,45 @@ class BaseCase(unittest.TestCase):
             d_p_r = self.__device_pixel_ratio
         valid_browsers = constants.ValidBrowsers.valid_browsers
         if browser_name not in valid_browsers:
-            raise Exception("Browser: {%s} is not a valid browser option. "
-                            "Valid options = {%s}" % (browser, valid_browsers))
+            raise Exception(
+                "Browser: {%s} is not a valid browser option. "
+                "Valid options = {%s}" % (browser, valid_browsers)
+            )
         # Launch a web browser
         from seleniumbase.core import browser_launcher
-        new_driver = browser_launcher.get_driver(browser_name=browser_name,
-                                                 headless=headless,
-                                                 locale_code=locale_code,
-                                                 use_grid=use_grid,
-                                                 servername=servername,
-                                                 port=port,
-                                                 proxy_string=proxy_string,
-                                                 user_agent=user_agent,
-                                                 cap_file=cap_file,
-                                                 cap_string=cap_string,
-                                                 disable_csp=disable_csp,
-                                                 enable_ws=enable_ws,
-                                                 enable_sync=enable_sync,
-                                                 use_auto_ext=use_auto_ext,
-                                                 no_sandbox=no_sandbox,
-                                                 disable_gpu=disable_gpu,
-                                                 incognito=incognito,
-                                                 guest_mode=guest_mode,
-                                                 devtools=devtools,
-                                                 remote_debug=remote_debug,
-                                                 swiftshader=swiftshader,
-                                                 block_images=block_images,
-                                                 chromium_arg=chromium_arg,
-                                                 user_data_dir=user_data_dir,
-                                                 extension_zip=extension_zip,
-                                                 extension_dir=extension_dir,
-                                                 test_id=test_id,
-                                                 mobile_emulator=is_mobile,
-                                                 device_width=d_width,
-                                                 device_height=d_height,
-                                                 device_pixel_ratio=d_p_r)
+        new_driver = browser_launcher.get_driver(
+            browser_name=browser_name,
+            headless=headless,
+            locale_code=locale_code,
+            use_grid=use_grid,
+            servername=servername,
+            port=port,
+            proxy_string=proxy_string,
+            user_agent=user_agent,
+            cap_file=cap_file,
+            cap_string=cap_string,
+            disable_csp=disable_csp,
+            enable_ws=enable_ws,
+            enable_sync=enable_sync,
+            use_auto_ext=use_auto_ext,
+            no_sandbox=no_sandbox,
+            disable_gpu=disable_gpu,
+            incognito=incognito,
+            guest_mode=guest_mode,
+            devtools=devtools,
+            remote_debug=remote_debug,
+            swiftshader=swiftshader,
+            block_images=block_images,
+            chromium_arg=chromium_arg,
+            user_data_dir=user_data_dir,
+            extension_zip=extension_zip,
+            extension_dir=extension_dir,
+            test_id=test_id,
+            mobile_emulator=is_mobile,
+            device_width=d_width,
+            device_height=d_height,
+            device_pixel_ratio=d_p_r,
+        )
         self._drivers_list.append(new_driver)
         self.__driver_browser_map[new_driver] = browser_name
         if switch_to:
@@ -5438,17 +5446,17 @@ class BaseCase(unittest.TestCase):
     ############
 
     def create_tour(self, name=None, theme=None):
-        """ Creates a tour for a website. By default, the Shepherd JavaScript
-            Library is used with the Shepherd "Light" / "Arrows" theme.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            theme - Sets the default theme for the tour.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("arrows" is used if None is selected.)
-                    Alternatively, you may use a different JavaScript Library
-                    as the theme. Those include "IntroJS", "DriverJS",
-                    "Hopscotch", and "Bootstrap".
+        """Creates a tour for a website. By default, the Shepherd JavaScript
+        Library is used with the Shepherd "Light" / "Arrows" theme.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        theme - Sets the default theme for the tour.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("arrows" is used if None is selected.)
+                Alternatively, you may use a different JavaScript Library
+                as the theme. Those include "IntroJS", "DriverJS",
+                "Hopscotch", and "Bootstrap".
         """
         if not name:
             name = "default"
@@ -5486,13 +5494,13 @@ class BaseCase(unittest.TestCase):
             self.create_shepherd_tour(name, theme="light")
 
     def create_shepherd_tour(self, name=None, theme=None):
-        """ Creates a Shepherd JS website tour.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            theme - Sets the default theme for the tour.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("light" is used if None is selected.)
+        """Creates a Shepherd JS website tour.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        theme - Sets the default theme for the tour.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("light" is used if None is selected.)
         """
 
         shepherd_theme = "shepherd-theme-arrows"
@@ -5547,10 +5555,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_bootstrap_tour(self, name=None):
-        """ Creates a Bootstrap tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates a Bootstrap tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5576,10 +5584,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_driverjs_tour(self, name=None):
-        """ Creates a DriverJS tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates a DriverJS tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5607,10 +5615,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_hopscotch_tour(self, name=None):
-        """ Creates a Hopscotch tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates a Hopscotch tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5627,10 +5635,10 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(new_tour)
 
     def create_introjs_tour(self, name=None):
-        """ Creates an IntroJS tour for a website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
+        """Creates an IntroJS tour for a website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
         """
         if not name:
             name = "default"
@@ -5649,20 +5657,20 @@ class BaseCase(unittest.TestCase):
 
     def add_tour_step(self, message, selector=None, name=None,
                       title=None, theme=None, alignment=None, duration=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            theme - (Shepherd Tours ONLY) The styling of the tour step.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("arrows" is used if None is selected.)
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is default, except for Hopscotch and DriverJS).
-            duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
-                       before automatically advancing to the next tour step.
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        theme - (Shepherd Tours ONLY) The styling of the tour step.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("arrows" is used if None is selected.)
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is default, except for Hopscotch and DriverJS).
+        duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
+                   before automatically advancing to the next tour step.
         """
         if not selector:
             selector = "html"
@@ -5719,18 +5727,18 @@ class BaseCase(unittest.TestCase):
 
     def __add_shepherd_tour_step(self, message, selector=None, name=None,
                                  title=None, theme=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            theme - (Shepherd Tours ONLY) The styling of the tour step.
-                    Choose from "light"/"arrows", "dark", "default", "square",
-                    and "square-dark". ("arrows" is used if None is selected.)
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        theme - (Shepherd Tours ONLY) The styling of the tour step.
+                Choose from "light"/"arrows", "dark", "default", "square",
+                and "square-dark". ("arrows" is used if None is selected.)
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
         """
         if theme == "default":
             shepherd_theme = "shepherd-theme-default"
@@ -5773,17 +5781,17 @@ class BaseCase(unittest.TestCase):
 
     def __add_bootstrap_tour_step(self, message, selector=None, name=None,
                                   title=None, alignment=None, duration=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
-            duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
-                       before automatically advancing to the next tour step.
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
+        duration - (Bootstrap Tours ONLY) The amount of time, in seconds,
+                   before automatically advancing to the next tour step.
         """
         if selector != "html":
             selector = self.__make_css_match_first_element_only(selector)
@@ -5815,15 +5823,15 @@ class BaseCase(unittest.TestCase):
 
     def __add_driverjs_tour_step(self, message, selector=None, name=None,
                                  title=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
         """
         message = (
             '<font size=\"3\" color=\"#33477B\"><b>' + message + '</b></font>')
@@ -5857,15 +5865,15 @@ class BaseCase(unittest.TestCase):
 
     def __add_hopscotch_tour_step(self, message, selector=None, name=None,
                                   title=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("bottom" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("bottom" is the default alignment).
         """
         arrow_offset_row = None
         if not selector or selector == "html":
@@ -5889,15 +5897,15 @@ class BaseCase(unittest.TestCase):
 
     def __add_introjs_tour_step(self, message, selector=None, name=None,
                                 title=None, alignment=None):
-        """ Allows the user to add tour steps for a website.
-            @Params
-            message - The message to display.
-            selector - The CSS Selector of the Element to attach to.
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            title - Additional header text that appears above the message.
-            alignment - Choose from "top", "bottom", "left", and "right".
-                        ("top" is the default alignment).
+        """Allows the user to add tour steps for a website.
+        @Params
+        message - The message to display.
+        selector - The CSS Selector of the Element to attach to.
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        title - Additional header text that appears above the message.
+        alignment - Choose from "top", "bottom", "left", and "right".
+                    ("top" is the default alignment).
         """
         if selector != "html":
             element_row = "element: '%s'," % selector
@@ -5917,12 +5925,12 @@ class BaseCase(unittest.TestCase):
         self._tour_steps[name].append(step)
 
     def play_tour(self, name=None, interval=0):
-        """ Plays a tour on the current website.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            interval - The delay time between autoplaying tour steps. (Seconds)
-                       If set to 0 (default), the tour is fully manual control.
+        """Plays a tour on the current website.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        interval - The delay time between autoplaying tour steps. (Seconds)
+                   If set to 0 (default), the tour is fully manual control.
         """
         from seleniumbase.core import tour_helper
 
@@ -5964,19 +5972,20 @@ class BaseCase(unittest.TestCase):
                 self.message_duration, name=name, interval=interval)
 
     def export_tour(self, name=None, filename="my_tour.js", url=None):
-        """ Exports a tour as a JS file.
-            You can call self.export_tour() anywhere where you would
-            normally use self.play_tour() to play a website tour.
-            It will include necessary resources as well, such as jQuery.
-            You'll be able to copy the tour directly into the Console of
-            any web browser to play the tour outside of SeleniumBase runs.
-            @Params
-            name - If creating multiple tours at the same time,
-                   use this to select the tour you wish to add steps to.
-            filename - The name of the JavaScript file that you wish to
-                       save the tour to.
-            url - The URL where the tour starts. If not specified, the URL
-                  of the current page will be used. """
+        """Exports a tour as a JS file.
+        You can call self.export_tour() anywhere where you would
+        normally use self.play_tour() to play a website tour.
+        It will include necessary resources as well, such as jQuery.
+        You'll be able to copy the tour directly into the Console of
+        any web browser to play the tour outside of SeleniumBase runs.
+        @Params
+        name - If creating multiple tours at the same time,
+               use this to select the tour you wish to add steps to.
+        filename - The name of the JavaScript file that you wish to
+                   save the tour to.
+        url - The URL where the tour starts. If not specified, the URL
+              of the current page will be used.
+        """
         from seleniumbase.core import tour_helper
         if not url:
             url = self.get_current_url()
@@ -5996,11 +6005,12 @@ class BaseCase(unittest.TestCase):
 
     def set_messenger_theme(self, theme="default", location="default",
                             max_messages="default"):
-        """ Sets a theme for posting messages.
-            Themes: ["flat", "future", "block", "air", "ice"]
-            Locations: ["top_left", "top_center", "top_right",
-                        "bottom_left", "bottom_center", "bottom_right"]
-            max_messages is the limit of concurrent messages to display. """
+        """Sets a theme for posting messages.
+        Themes: ["flat", "future", "block", "air", "ice"]
+        Locations: ["top_left", "top_center", "top_right",
+                    "bottom_left", "bottom_center", "bottom_right"]
+        max_messages is the limit of concurrent messages to display.
+        """
         self.__check_scope()
         if not theme:
             theme = "default"  # "flat"
@@ -6015,15 +6025,15 @@ class BaseCase(unittest.TestCase):
             location=location, max_messages=max_messages)
 
     def post_message(self, message, duration=None, pause=True, style="info"):
-        """ Post a message on the screen with Messenger.
-            Arguments:
-                message: The message to display.
-                duration: The time until the message vanishes. (Default: 2.55s)
-                pause: If True, the program waits until the message completes.
-                style: "info", "success", or "error".
+        """Post a message on the screen with Messenger.
+        Arguments:
+            message: The message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
+            style: "info", "success", or "error".
 
-            You can also post messages by using =>
-                self.execute_script('Messenger().post("My Message")')
+        You can also post messages by using =>
+            self.execute_script('Messenger().post("My Message")')
         """
         self.__check_scope()
         if style not in ["info", "success", "error"]:
@@ -6043,21 +6053,21 @@ class BaseCase(unittest.TestCase):
 
     def post_message_and_highlight(
             self, message, selector, by=By.CSS_SELECTOR):
-        """ Post a message on the screen and highlight an element.
-            Arguments:
-                message: The message to display.
-                selector: The selector of the Element to highlight.
-                by: The type of selector to search by. (Default: CSS Selector)
+        """Post a message on the screen and highlight an element.
+        Arguments:
+            message: The message to display.
+            selector: The selector of the Element to highlight.
+            by: The type of selector to search by. (Default: CSS Selector)
         """
         self.__check_scope()
         self.__highlight_with_assert_success(message, selector, by=by)
 
     def post_success_message(self, message, duration=None, pause=True):
-        """ Post a success message on the screen with Messenger.
-            Arguments:
-                message: The success message to display.
-                duration: The time until the message vanishes. (Default: 2.55s)
-                pause: If True, the program waits until the message completes.
+        """Post a success message on the screen with Messenger.
+        Arguments:
+            message: The success message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
         """
         self.__check_scope()
         if not duration:
@@ -6075,11 +6085,11 @@ class BaseCase(unittest.TestCase):
             time.sleep(float(duration))
 
     def post_error_message(self, message, duration=None, pause=True):
-        """ Post an error message on the screen with Messenger.
-            Arguments:
-                message: The error message to display.
-                duration: The time until the message vanishes. (Default: 2.55s)
-                pause: If True, the program waits until the message completes.
+        """Post an error message on the screen with Messenger.
+        Arguments:
+            message: The error message to display.
+            duration: The time until the message vanishes. (Default: 2.55s)
+            pause: If True, the program waits until the message completes.
         """
         self.__check_scope()
         if not duration:
@@ -6099,11 +6109,11 @@ class BaseCase(unittest.TestCase):
     ############
 
     def generate_referral(self, start_page, destination_page, selector=None):
-        """ This method opens the start_page, creates a referral link there,
-            and clicks on that link, which goes to the destination_page.
-            If a selector is given, clicks that on the destination_page,
-            which can prevent an artificial rise in website bounce-rate.
-            (This generates real traffic for testing analytics software.) """
+        """This method opens the start_page, creates a referral link there,
+        and clicks on that link, which goes to the destination_page.
+        If a selector is given, clicks that on the destination_page,
+        which can prevent an artificial rise in website bounce-rate.
+        (This generates real traffic for testing analytics software.)"""
         self.__check_scope()
         if not page_utils.is_valid_url(destination_page):
             raise Exception(
@@ -6134,9 +6144,9 @@ class BaseCase(unittest.TestCase):
 
     def generate_traffic(
             self, start_page, destination_page, loops=1, selector=None):
-        """ Similar to generate_referral(), but can do multiple loops.
-            If a selector is given, clicks that on the destination_page,
-            which can prevent an artificial rise in website bounce-rate. """
+        """Similar to generate_referral(), but can do multiple loops.
+        If a selector is given, clicks that on the destination_page,
+        which can prevent an artificial rise in website bounce-rate."""
         self.__check_scope()
         for loop in range(loops):
             self.generate_referral(
@@ -6144,11 +6154,11 @@ class BaseCase(unittest.TestCase):
             time.sleep(0.05)
 
     def generate_referral_chain(self, pages):
-        """ Use this method to chain the action of creating button links on
-            one website page that will take you to the next page.
-            (When you want to create a referral to a website for traffic
-            generation without increasing the bounce rate, you'll want to visit
-            at least one additional page on that site with a button click.) """
+        """Use this method to chain the action of creating button links on
+        one website page that will take you to the next page.
+        (When you want to create a referral to a website for traffic
+        generation without increasing the bounce rate, you'll want to visit
+        at least one additional page on that site with a button click.)"""
         self.__check_scope()
         if not type(pages) is tuple and not type(pages) is list:
             raise Exception(
@@ -6816,72 +6826,72 @@ class BaseCase(unittest.TestCase):
             raise Exception(minified_exception)
 
     def check_window(self, name="default", level=0, baseline=False):
-        """ ***  Automated Visual Testing with SeleniumBase  ***
+        """***  Automated Visual Testing with SeleniumBase  ***
 
-            The first time a test calls self.check_window() for a unique "name"
-            parameter provided, it will set a visual baseline, meaning that it
-            creates a folder, saves the URL to a file, saves the current window
-            screenshot to a file, and creates the following three files
-            with the listed data saved:
-            tags_level1.txt  ->  HTML tags from the window
-            tags_level2.txt  ->  HTML tags + attributes from the window
-            tags_level3.txt  ->  HTML tags + attributes/values from the window
+        The first time a test calls self.check_window() for a unique "name"
+        parameter provided, it will set a visual baseline, meaning that it
+        creates a folder, saves the URL to a file, saves the current window
+        screenshot to a file, and creates the following three files
+        with the listed data saved:
+        tags_level1.txt  ->  HTML tags from the window
+        tags_level2.txt  ->  HTML tags + attributes from the window
+        tags_level3.txt  ->  HTML tags + attributes/values from the window
 
-            Baseline folders are named based on the test name and the name
-            parameter passed to self.check_window(). The same test can store
-            multiple baseline folders.
+        Baseline folders are named based on the test name and the name
+        parameter passed to self.check_window(). The same test can store
+        multiple baseline folders.
 
-            If the baseline is being set/reset, the "level" doesn't matter.
+        If the baseline is being set/reset, the "level" doesn't matter.
 
-            After the first run of self.check_window(), it will compare the
-            HTML tags of the latest window to the one from the initial run.
-            Here's how the level system works:
-            * level=0 ->
-                DRY RUN ONLY - Will perform a comparison to the baseline, and
-                               print out any differences that are found, but
-                               won't fail the test even if differences exist.
-            * level=1 ->
-                HTML tags are compared to tags_level1.txt
-            * level=2 ->
-                HTML tags are compared to tags_level1.txt and
-                HTML tags/attributes are compared to tags_level2.txt
-            * level=3 ->
-                HTML tags are compared to tags_level1.txt and
-                HTML tags + attributes are compared to tags_level2.txt and
-                HTML tags + attributes/values are compared to tags_level3.txt
-            As shown, Level-3 is the most strict, Level-1 is the least strict.
-            If the comparisons from the latest window to the existing baseline
-            don't match, the current test will fail, except for Level-0 tests.
+        After the first run of self.check_window(), it will compare the
+        HTML tags of the latest window to the one from the initial run.
+        Here's how the level system works:
+        * level=0 ->
+            DRY RUN ONLY - Will perform a comparison to the baseline, and
+                           print out any differences that are found, but
+                           won't fail the test even if differences exist.
+        * level=1 ->
+            HTML tags are compared to tags_level1.txt
+        * level=2 ->
+            HTML tags are compared to tags_level1.txt and
+            HTML tags/attributes are compared to tags_level2.txt
+        * level=3 ->
+            HTML tags are compared to tags_level1.txt and
+            HTML tags + attributes are compared to tags_level2.txt and
+            HTML tags + attributes/values are compared to tags_level3.txt
+        As shown, Level-3 is the most strict, Level-1 is the least strict.
+        If the comparisons from the latest window to the existing baseline
+        don't match, the current test will fail, except for Level-0 tests.
 
-            You can reset the visual baseline on the command line by using:
-                --visual_baseline
-            As long as "--visual_baseline" is used on the command line while
-            running tests, the self.check_window() method cannot fail because
-            it will rebuild the visual baseline rather than comparing the html
-            tags of the latest run to the existing baseline. If there are any
-            expected layout changes to a website that you're testing, you'll
-            need to reset the baseline to prevent unnecessary failures.
+        You can reset the visual baseline on the command line by using:
+            --visual_baseline
+        As long as "--visual_baseline" is used on the command line while
+        running tests, the self.check_window() method cannot fail because
+        it will rebuild the visual baseline rather than comparing the html
+        tags of the latest run to the existing baseline. If there are any
+        expected layout changes to a website that you're testing, you'll
+        need to reset the baseline to prevent unnecessary failures.
 
-            self.check_window() will fail with "Page Domain Mismatch Failure"
-            if the page domain doesn't match the domain of the baseline.
+        self.check_window() will fail with "Page Domain Mismatch Failure"
+        if the page domain doesn't match the domain of the baseline.
 
-            If you want to use self.check_window() to compare a web page to
-            a later version of itself from within the same test run, you can
-            add the parameter "baseline=True" to the first time you call
-            self.check_window() in a test to use that as the baseline. This
-            only makes sense if you're calling self.check_window() more than
-            once with the same name parameter in the same test.
+        If you want to use self.check_window() to compare a web page to
+        a later version of itself from within the same test run, you can
+        add the parameter "baseline=True" to the first time you call
+        self.check_window() in a test to use that as the baseline. This
+        only makes sense if you're calling self.check_window() more than
+        once with the same name parameter in the same test.
 
-            Automated Visual Testing with self.check_window() is not very
-            effective for websites that have dynamic content that changes
-            the layout and structure of web pages. For those, you're much
-            better off using regular SeleniumBase functional testing.
+        Automated Visual Testing with self.check_window() is not very
+        effective for websites that have dynamic content that changes
+        the layout and structure of web pages. For those, you're much
+        better off using regular SeleniumBase functional testing.
 
-            Example usage:
-                self.check_window(name="testing", level=0)
-                self.check_window(name="xkcd_home", level=1)
-                self.check_window(name="github_page", level=2)
-                self.check_window(name="wikipedia_page", level=3)
+        Example usage:
+            self.check_window(name="testing", level=0)
+            self.check_window(name="xkcd_home", level=1)
+            self.check_window(name="github_page", level=2)
+            self.check_window(name="wikipedia_page", level=3)
         """
         self.wait_for_ready_state_complete()
         if level == "0":
@@ -8515,16 +8525,17 @@ class BaseCase(unittest.TestCase):
                 file_name_used = file_name
             fix_setup = "super(%s, self).setUp()" % class_name_used
             fix_teardown = "super(%s, self).tearDown()" % class_name_used
-            message = ("You're overriding SeleniumBase's BaseCase setUp() "
-                       "method with your own setUp() method, which breaks "
-                       "SeleniumBase. You can fix this by going to your "
-                       "%s class located in your %s file and adding the "
-                       "following line of code AT THE BEGINNING of your "
-                       "setUp() method:\n%s\n\nAlso make sure "
-                       "you have added the following line of code AT THE "
-                       "END of your tearDown() method:\n%s\n"
-                       % (class_name_used, file_name_used,
-                          fix_setup, fix_teardown))
+            message = (
+                "You're overriding SeleniumBase's BaseCase setUp() "
+                "method with your own setUp() method, which breaks "
+                "SeleniumBase. You can fix this by going to your "
+                "%s class located in your %s file and adding the "
+                "following line of code AT THE BEGINNING of your "
+                "setUp() method:\n%s\n\nAlso make sure "
+                "you have added the following line of code AT THE "
+                "END of your tearDown() method:\n%s\n"
+                % (class_name_used, file_name_used, fix_setup, fix_teardown)
+            )
             raise Exception(message)
         # *** Start tearDown() officially ***
         self.__slow_mode_pause_if_active()
