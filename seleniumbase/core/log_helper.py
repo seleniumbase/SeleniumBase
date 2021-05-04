@@ -14,7 +14,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
     screenshot_warning = constants.Warnings.SCREENSHOT_UNDEFINED
     try:
         if not screenshot:
-            element = driver.find_element_by_tag_name('body')
+            element = driver.find_element_by_tag_name("body")
             screenshot = element.screenshot_as_base64
         if screenshot != screenshot_warning:
             with open(screenshot_path, "wb") as file:
@@ -33,6 +33,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
 def get_master_time():
     """ Returns (timestamp, the_date, the_time) """
     import datetime
+
     timestamp = str(int(time.time())) + "  (Unix Timestamp)"
     now = datetime.datetime.now()
     utc_offset = -time.timezone / 3600.0
@@ -47,17 +48,17 @@ def get_master_time():
             utc_str = "UTC-0%s" % abs(utc_offset)
         else:
             utc_str = "UTC-%s" % abs(utc_offset)
-    utc_str = utc_str.replace('.5', '.3').replace('.', ':') + "0"
+    utc_str = utc_str.replace(".5", ".3").replace(".", ":") + "0"
     time_zone = ""
     try:
-        time_zone = '(' + time.tzname[time.daylight] + ', ' + utc_str + ')'
+        time_zone = "(" + time.tzname[time.daylight] + ", " + utc_str + ")"
     except Exception:
-        time_zone = '(' + utc_str + ')'
+        time_zone = "(" + utc_str + ")"
     # Use [Day-of-Week, Month Day, Year] format when time zone < GMT/UTC-3
-    the_date = now.strftime("%A, %B %d, %Y").replace(' 0', ' ')
+    the_date = now.strftime("%A, %B %d, %Y").replace(" 0", " ")
     if utc_offset >= -3:
         # Use [Day-of-Week, Day Month Year] format when time zone >= GMT/UTC-3
-        the_date = now.strftime("%A, %d %B %Y").replace(' 0', ' ')
+        the_date = now.strftime("%A, %d %B %Y").replace(" 0", " ")
     the_time = now.strftime("%I:%M:%S %p  ") + time_zone
     if the_time.startswith("0"):
         the_time = the_time[1:]
@@ -66,6 +67,7 @@ def get_master_time():
 
 def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     import traceback
+
     basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
     if url:
@@ -77,22 +79,28 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     data_to_save = []
     data_to_save.append("%s" % test_id)
     data_to_save.append(
-        "--------------------------------------------------------------------")
+        "--------------------------------------------------------------------"
+    )
     data_to_save.append("Last Page: %s" % last_page)
     data_to_save.append("  Browser: %s" % browser)
     data_to_save.append("Timestamp: %s" % timestamp)
     data_to_save.append("     Date: %s" % the_date)
     data_to_save.append("     Time: %s" % the_time)
     data_to_save.append(
-        "--------------------------------------------------------------------")
-    if sys.version_info[0] >= 3 and hasattr(test, '_outcome') and (
-            hasattr(test._outcome, 'errors') and test._outcome.errors):
+        "--------------------------------------------------------------------"
+    )
+    if (
+        sys.version_info[0] >= 3
+        and hasattr(test, "_outcome")
+        and (hasattr(test._outcome, "errors") and test._outcome.errors)
+    ):
         try:
             exc_message = test._outcome.errors[0][1][1]
             traceback_address = test._outcome.errors[0][1][2]
             traceback_list = traceback.format_list(
-                traceback.extract_tb(traceback_address)[1:])
-            traceback_message = ''.join(traceback_list).strip()
+                traceback.extract_tb(traceback_address)[1:]
+            )
+            traceback_message = "".join(traceback_list).strip()
         except Exception:
             exc_message = "(Unknown Exception)"
             traceback_message = "(Unknown Traceback)"
@@ -100,20 +108,27 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         data_to_save.append("Exception: " + str(exc_message))
     else:
         the_traceback = None
-        the_traceback = ''.join(
-            traceback.format_exception(sys.exc_info()[0],
-                                       sys.exc_info()[1],
-                                       sys.exc_info()[2]))
-        if not the_traceback or len(str(the_traceback)) < 30 or (
-                the_traceback.endswith("StopIteration\n")):
+        the_traceback = "".join(
+            traceback.format_exception(
+                sys.exc_info()[0],
+                sys.exc_info()[1],
+                sys.exc_info()[2],
+            )
+        )
+        if (
+            not the_traceback
+            or len(str(the_traceback)) < 30
+            or the_traceback.endswith("StopIteration\n")
+        ):
             good_stack = []
             the_stacks = traceback.format_list(
-                traceback.extract_tb(sys.last_traceback))
+                traceback.extract_tb(sys.last_traceback)
+            )
             for stack in the_stacks:
                 if "/site-packages/pluggy/" not in stack:
                     if "/site-packages/_pytest/" not in stack:
                         good_stack.append(stack)
-            the_traceback = ''.join(good_stack)
+            the_traceback = "".join(good_stack)
             data_to_save.append("Traceback: " + the_traceback)
             last_value = sys.last_value
             if last_value:
@@ -131,14 +146,16 @@ def log_skipped_test_data(test, test_logpath, browser, reason):
     data_to_save = []
     data_to_save.append("%s" % test_id)
     data_to_save.append(
-        "--------------------------------------------------------------------")
+        "--------------------------------------------------------------------"
+    )
     data_to_save.append("       Outcome: SKIPPED")
     data_to_save.append("       Browser: %s" % browser)
     data_to_save.append("     Timestamp: %s" % timestamp)
     data_to_save.append("          Date: %s" % the_date)
     data_to_save.append("          Time: %s" % the_time)
     data_to_save.append(
-        "--------------------------------------------------------------------")
+        "--------------------------------------------------------------------"
+    )
     data_to_save.append(" * Skip Reason: %s" % reason)
     data_to_save.append("")
     file_path = os.path.join(test_logpath, "skip_reason.txt")
@@ -159,9 +176,14 @@ def log_page_source(test_logpath, driver, source=None):
             source = constants.Warnings.PAGE_SOURCE_UNDEFINED
             page_source = constants.Warnings.PAGE_SOURCE_UNDEFINED
     if source == constants.Warnings.PAGE_SOURCE_UNDEFINED:
-        page_source = "<h3>Warning: " + source + (
-            "</h3>\n<h4>The browser window was either unreachable, "
-            "unresponsive, or closed prematurely!</h4>")
+        page_source = (
+            "<h3>Warning: "
+            + source
+            + (
+                "</h3>\n<h4>The browser window was either unreachable, "
+                "unresponsive, or closed prematurely!</h4>"
+            )
+        )
     html_file_path = "%s/%s" % (test_logpath, html_file_name)
     html_file = codecs.open(html_file_path, "w+", "utf-8")
     html_file.write(page_source)
@@ -176,7 +198,8 @@ def get_test_id(test):
         test_id = "%s.%s.%s" % (
             test.__class__.__module__,
             test.__class__.__name__,
-            test._testMethodName)
+            test._testMethodName,
+        )
         if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
             test_id = test._sb_test_identifier
     return test_id
@@ -185,25 +208,27 @@ def get_test_id(test):
 def get_test_name(test):
     if test.is_pytest:
         test_name = "%s.py::%s::%s" % (
-            test.__class__.__module__.split('.')[-1],
+            test.__class__.__module__.split(".")[-1],
             test.__class__.__name__,
-            test._testMethodName)
+            test._testMethodName,
+        )
     else:
         test_name = "%s.py:%s.%s" % (
-            test.__class__.__module__.split('.')[-1],
+            test.__class__.__module__.split(".")[-1],
             test.__class__.__name__,
-            test._testMethodName)
+            test._testMethodName,
+        )
     if test._sb_test_identifier and len(str(test._sb_test_identifier)) > 6:
         test_name = test._sb_test_identifier
         if hasattr(test, "_using_sb_fixture_class"):
-            if test_name.count('.') >= 2:
-                parts = test_name.split('.')
-                full = parts[-3] + '.py::' + parts[-2] + '::' + parts[-1]
+            if test_name.count(".") >= 2:
+                parts = test_name.split(".")
+                full = parts[-3] + ".py::" + parts[-2] + "::" + parts[-1]
                 test_name = full
         elif hasattr(test, "_using_sb_fixture_no_class"):
-            if test_name.count('.') >= 1:
-                parts = test_name.split('.')
-                full = parts[-2] + '.py::' + parts[-1]
+            if test_name.count(".") >= 1:
+                parts = test_name.split(".")
+                full = parts[-2] + ".py::" + parts[-1]
                 test_name = full
     return test_name
 
@@ -212,40 +237,40 @@ def get_last_page(driver):
     try:
         last_page = driver.current_url
     except Exception:
-        last_page = '[WARNING! Browser Not Open!]'
+        last_page = "[WARNING! Browser Not Open!]"
     if len(last_page) < 5:
-        last_page = '[WARNING! Browser Not Open!]'
+        last_page = "[WARNING! Browser Not Open!]"
     return last_page
 
 
 def get_base_url(full_url):
-    protocol = full_url.split('://')[0]
-    simple_url = full_url.split('://')[1]
-    base_url = simple_url.split('/')[0]
+    protocol = full_url.split("://")[0]
+    simple_url = full_url.split("://")[1]
+    base_url = simple_url.split("/")[0]
     full_base_url = "%s://%s" % (protocol, base_url)
     return full_base_url
 
 
 def get_base_href_html(full_url):
-    ''' The base href line tells the html what the base page really is.
-        This is important when trying to open the page outside it's home. '''
+    """The base href line tells the html what the base page really is.
+    This is important when trying to open the page outside it's home."""
     base_url = get_base_url(full_url)
     return '<base href="%s">' % base_url
 
 
 def get_html_source_with_base_href(driver, page_source):
-    ''' Combines the domain base href with the html source.
-        Also adds on the meta charset, which may get dropped.
-        This is needed for the page html to render correctly. '''
+    """Combines the domain base href with the html source.
+    Also adds on the meta charset, which may get dropped.
+    This is needed for the page html to render correctly."""
     last_page = get_last_page(driver)
     meta_charset = '<meta charset="utf-8">'
-    if '://' in last_page:
+    if "://" in last_page:
         base_href_html = get_base_href_html(last_page)
         if ' charset="' not in page_source:
-            return '%s\n%s\n%s' % (base_href_html, meta_charset, page_source)
+            return "%s\n%s\n%s" % (base_href_html, meta_charset, page_source)
         else:
-            return '%s\n%s' % (base_href_html, page_source)
-    return ''
+            return "%s\n%s" % (base_href_html, page_source)
+    return ""
 
 
 def copytree(src, dst, symlinks=False, ignore=None):
@@ -258,7 +283,8 @@ def copytree(src, dst, symlinks=False, ignore=None):
             copytree(s, d, symlinks, ignore)
         else:
             if not os.path.exists(d) or (
-                    os.stat(s).st_mtime - os.stat(d).st_mtime > 1):
+                os.stat(s).st_mtime - os.stat(d).st_mtime > 1
+            ):
                 shutil.copy2(s, d)
 
 
@@ -278,8 +304,8 @@ def archive_logs_if_set(log_path, archive_logs=False):
         if settings.ARCHIVE_EXISTING_LOGS or archive_logs:
             if len(os.listdir(log_path)) > 0:
                 archived_folder = "%s/../archived_logs/" % log_path
-                archived_folder = os.path.realpath(archived_folder) + '/'
-                log_path = os.path.realpath(log_path) + '/'
+                archived_folder = os.path.realpath(archived_folder) + "/"
+                log_path = os.path.realpath(log_path) + "/"
                 if not os.path.exists(archived_folder):
                     try:
                         os.makedirs(archived_folder)
@@ -301,15 +327,13 @@ def log_folder_setup(log_path, archive_logs=False):
             pass  # Should only be reachable during multi-threaded runs
     else:
         archived_folder = "%s/../archived_logs/" % log_path
-        archived_folder = os.path.realpath(archived_folder) + '/'
+        archived_folder = os.path.realpath(archived_folder) + "/"
         if not os.path.exists(archived_folder):
             try:
                 os.makedirs(archived_folder)
             except Exception:
                 pass  # Should only be reachable during multi-threaded runs
-        archived_logs = "%slogs_%s" % (
-            archived_folder, int(time.time()))
-
+        archived_logs = "%slogs_%s" % (archived_folder, int(time.time()))
         if len(os.listdir(log_path)) > 0:
             try:
                 shutil.move(log_path, archived_logs)

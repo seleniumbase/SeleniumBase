@@ -12,9 +12,9 @@ this_dir = os.path.abspath(os.path.dirname(__file__))
 long_description = None
 total_description = None
 try:
-    with open(os.path.join(this_dir, 'README.md'), 'rb') as f:
-        total_description = f.read().decode('utf-8')
-    description_lines = total_description.split('\n')
+    with open(os.path.join(this_dir, "README.md"), "rb") as f:
+        total_description = f.read().decode("utf-8")
+    description_lines = total_description.split("\n")
     long_description_lines = []
     for line in description_lines:
         if not line.startswith("<meta ") and not line.startswith("<link "):
@@ -24,18 +24,17 @@ except IOError:
     long_description = "A complete library for building end-to-end tests."
 about = {}
 # Get the package version from the seleniumbase/__version__.py file
-with open(os.path.join(
-        this_dir, 'seleniumbase', '__version__.py'), 'rb') as f:
-    exec(f.read().decode('utf-8'), about)
+with open(os.path.join(this_dir, "seleniumbase", "__version__.py"), "rb") as f:
+    exec(f.read().decode("utf-8"), about)
 
-if sys.argv[-1] == 'publish':
+if sys.argv[-1] == "publish":
     reply = None
     input_method = input
     if not sys.version_info[0] >= 3:
         input_method = raw_input  # noqa
-    reply = str(input_method(
-        '>>> Confirm release PUBLISH to PyPI? (yes/no): ')).lower().strip()
-    if reply == 'yes':
+    confirm_text = ">>> Confirm release PUBLISH to PyPI? (yes/no): "
+    reply = str(input_method(confirm_text)).lower().strip()
+    if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
         os.system("python -m pip install 'flake8==3.9.1'")
         flake8_status = os.system("flake8 --exclude=temp")
@@ -45,43 +44,41 @@ if sys.argv[-1] == 'publish':
         else:
             print("*** No flake8 issues detected. Continuing...")
         print("\n*** Rebuilding distribution packages: ***\n")
-        os.system('rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl')
-        os.system('rm -rf build/bdist.*; rm -rf build/lib')
-        os.system('python setup.py sdist bdist_wheel')  # Create new tar/wheel
+        os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
+        os.system("rm -rf build/bdist.*; rm -rf build/lib")
+        os.system("python setup.py sdist bdist_wheel")  # Create new tar/wheel
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.60.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
-        os.system('python -m twine upload dist/*')  # Requires ~/.pypirc Keys
+        os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
     else:
         print("\n>>> The Release was NOT PUBLISHED to PyPI! <<<\n")
     sys.exit()
 
 setup(
-    name='seleniumbase',
-    version=about['__version__'],
-    description='A complete web automation framework for end-to-end testing.',
+    name="seleniumbase",
+    version=about["__version__"],
+    description="A complete web automation framework for end-to-end testing.",
     long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='https://github.com/seleniumbase/SeleniumBase',
+    long_description_content_type="text/markdown",
+    url="https://github.com/seleniumbase/SeleniumBase",
     project_urls={
-        "Documentation": "https://seleniumbase.io/",
-        "Source": "https://github.com/seleniumbase/SeleniumBase",
         "Changelog": "https://github.com/seleniumbase/SeleniumBase/releases",
-        "Tracker": "https://github.com/seleniumbase/SeleniumBase/issues",
+        "Download": "https://pypi.org/project/seleniumbase/#files",
         "Gitter": "https://gitter.im/seleniumbase/SeleniumBase",
         "Slack": "https://app.slack.com/client/T0ABCRTNX/C01SM888REZ",
-        "Twitter": "https://twitter.com/SeleniumBase",
         "Blog": "https://seleniumbase.com/",
         "PyPI": "https://pypi.org/project/seleniumbase/",
-        "Download": "https://pypi.org/project/seleniumbase/#files",
+        "Source": "https://github.com/seleniumbase/SeleniumBase",
+        "Documentation": "https://seleniumbase.io/",
     },
     platforms=["Windows", "Linux", "Mac OS-X"],
-    author='Michael Mintz',
-    author_email='mdmintz@gmail.com',
-    maintainer='Michael Mintz',
+    author="Michael Mintz",
+    author_email="mdmintz@gmail.com",
+    maintainer="Michael Mintz",
     license="MIT",
     classifiers=[
         "Development Status :: 5 - Production/Stable",

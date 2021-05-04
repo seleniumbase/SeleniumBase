@@ -1,5 +1,4 @@
-live_js = (
-    r'''
+live_js = r"""
     (function () {
     var headers = {
     "Etag": 1, "Last-Modified": 1, "Content-Length": 1, "Content-Type": 1 },
@@ -174,4 +173,4 @@ live_js = (
       window.liveJsLoaded = true;
     }
     })();
-    ''')
+    """

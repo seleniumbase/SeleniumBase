@@ -6,7 +6,7 @@ import re
 _sub_regexes = {
     "tag": r"([a-zA-Z][a-zA-Z0-9]{0,10}|\*)",
     "attribute": r"[.a-zA-Z_:][-\w:.]*(\(\))?)",
-    "value": r"\s*[\w/:][-/\w\s,:;.\S]*"
+    "value": r"\s*[\w/:][-/\w\s,:;.\S]*",
 }
 
 _validation_re = (
@@ -45,9 +45,11 @@ def _handle_brackets_in_strings(xpath):
     for chunk_num in range(len_chunks):
         if chunk_num % 2 != 0:
             chunks[chunk_num] = chunks[chunk_num].replace(
-                '[', '_STR_L_bracket_')
+                "[", "_STR_L_bracket_"
+            )
             chunks[chunk_num] = chunks[chunk_num].replace(
-                ']', '_STR_R_bracket_')
+                "]", "_STR_R_bracket_"
+            )
         new_xpath += chunks[chunk_num]
         if chunk_num != len_chunks - 1:
             new_xpath += '"'
@@ -66,10 +68,11 @@ def _filter_xpath_grouping(xpath):
     xpath = xpath[1:]
 
     # Next remove the last closed parentheses
-    index = xpath.rfind(')')
+    index = xpath.rfind(")")
+    index_p1 = index + 1  # Make "flake8" and "black" agree
     if index == -1:
         raise XpathException("Invalid or unsupported Xpath: %s" % xpath)
-    xpath = xpath[:index] + xpath[index + 1:]
+    xpath = xpath[:index] + xpath[index_p1:]
     return xpath
 
 
@@ -85,37 +88,41 @@ def _get_raw_css_from_xpath(xpath):
         match = node.groupdict()
 
         if position != 0:
-            nav = " " if match['nav'] == "//" else " > "
+            nav = " " if match["nav"] == "//" else " > "
         else:
             nav = ""
 
-        tag = "" if match['tag'] == "*" else match['tag'] or ""
+        tag = "" if match["tag"] == "*" else match["tag"] or ""
 
-        if match['idvalue']:
-            attr = "#%s" % match['idvalue'].replace(" ", "#")
-        elif match['matched']:
-            if match['mattr'] == "@id":
-                attr = "#%s" % match['mvalue'].replace(" ", "#")
-            elif match['mattr'] == "@class":
-                attr = ".%s" % match['mvalue'].replace(" ", ".")
-            elif match['mattr'] in ["text()", "."]:
-                attr = ":contains(^%s$)" % match['mvalue']
-            elif match['mattr']:
-                attr = '[%s="%s"]' % (match['mattr'].replace("@", ""),
-                                      match['mvalue'])
-        elif match['contained']:
-            if match['cattr'].startswith("@"):
-                attr = '[%s*="%s"]' % (match['cattr'].replace("@", ""),
-                                       match['cvalue'])
-            elif match['cattr'] == "text()":
-                attr = ':contains("%s")' % match['cvalue']
-            elif match['cattr'] == ".":
-                attr = ':contains("%s")' % match['cvalue']
+        if match["idvalue"]:
+            attr = "#%s" % match["idvalue"].replace(" ", "#")
+        elif match["matched"]:
+            if match["mattr"] == "@id":
+                attr = "#%s" % match["mvalue"].replace(" ", "#")
+            elif match["mattr"] == "@class":
+                attr = ".%s" % match["mvalue"].replace(" ", ".")
+            elif match["mattr"] in ["text()", "."]:
+                attr = ":contains(^%s$)" % match["mvalue"]
+            elif match["mattr"]:
+                attr = '[%s="%s"]' % (
+                    match["mattr"].replace("@", ""),
+                    match["mvalue"],
+                )
+        elif match["contained"]:
+            if match["cattr"].startswith("@"):
+                attr = '[%s*="%s"]' % (
+                    match["cattr"].replace("@", ""),
+                    match["cvalue"],
+                )
+            elif match["cattr"] == "text()":
+                attr = ':contains("%s")' % match["cvalue"]
+            elif match["cattr"] == ".":
+                attr = ':contains("%s")' % match["cvalue"]
         else:
             attr = ""
 
-        if match['nth']:
-            nth = ":nth-of-type(%s)" % match['nth']
+        if match["nth"]:
+            nth = ":nth-of-type(%s)" % match["nth"]
         else:
             nth = ""
 
@@ -136,8 +143,12 @@ def convert_xpath_to_css(xpath):
     c3 = "@class and contains(concat(' ', normalize-space(@class), ' '), ' "
     if c3 in xpath and xpath.count(c3) == 1 and xpath.count("[@") == 1:
         p2 = " ') and (contains(., '"
-        if xpath.count(p2) == 1 and xpath.endswith("'))]") and (
-                xpath.count("//") == 1 and (xpath.count(" ') and (") == 1)):
+        if (
+            xpath.count(p2) == 1
+            and xpath.endswith("'))]")
+            and xpath.count("//") == 1
+            and xpath.count(" ') and (") == 1
+        ):
             s_contains = xpath.split(p2)[1].split("'))]")[0]
             s_tag = xpath.split("//")[1].split("[@class")[0]
             s_class = xpath.split(c3)[1].split(" ') and (")[0]
@@ -145,8 +156,10 @@ def convert_xpath_to_css(xpath):
 
     # Find instance of: //tag[@attribute='value' and (contains(., 'TEXT'))]
     data = re.match(
-        r'''^\s*//(\S+)\[@(\S+)='(\S+)'\s+and\s+'''
-        r'''\(contains\(\.,\s'(\S+)'\)\)\]''', xpath)
+        r"""^\s*//(\S+)\[@(\S+)='(\S+)'\s+and\s+"""
+        r"""\(contains\(\.,\s'(\S+)'\)\)\]""",
+        xpath,
+    )
     if data:
         s_tag = data.group(1)
         s_atr = data.group(2)
@@ -156,8 +169,10 @@ def convert_xpath_to_css(xpath):
 
     # Find instance of: //tag[@attribute1='value1' and (@attribute2='value2')]
     data = re.match(
-        r'''^\s*//(\S+)\[@(\S+)='(\S+)'\s+and\s+'''
-        r'''\(@(\S+)='(\S+)'\)\]''', xpath)
+        r"""^\s*//(\S+)\[@(\S+)='(\S+)'\s+and\s+"""
+        r"""\(@(\S+)='(\S+)'\)\]""",
+        xpath,
+    )
     if data:
         s_tag = data.group(1)
         s_atr1 = data.group(2)
@@ -172,7 +187,7 @@ def convert_xpath_to_css(xpath):
         xpath = _handle_brackets_in_strings(xpath)
     xpath = xpath.replace("descendant-or-self::*/", "descORself/")
     if len(xpath) > 3:
-        xpath = xpath[0:3] + xpath[3:].replace('//', '/descORself/')
+        xpath = xpath[0:3] + xpath[3:].replace("//", "/descORself/")
 
     if " and contains(@" in xpath and xpath.count(" and contains(@") == 1:
         spot1 = xpath.find(" and contains(@")
@@ -182,43 +197,49 @@ def convert_xpath_to_css(xpath):
         swap = " and contains(@%s, " % attr
         if swap in xpath:
             swap_spot = xpath.find(swap)
-            close_paren = xpath.find(']', swap_spot) - 1
+            close_paren = xpath.find("]", swap_spot) - 1
+            close_paren_p1 = close_paren + 1  # Make "flake8" and "black" agree
             if close_paren > 1:
-                xpath = xpath[:close_paren] + xpath[close_paren+1:]
+                xpath = xpath[:close_paren] + xpath[close_paren_p1:]
                 xpath = xpath.replace(swap, "_STAR_=")
 
-    if xpath.startswith('('):
+    if xpath.startswith("("):
         xpath = _filter_xpath_grouping(xpath)
 
     css = _get_raw_css_from_xpath(xpath)
 
-    attribute_defs = re.findall(r'(\[\w+\=\S+\])', css)
+    attribute_defs = re.findall(r"(\[\w+\=\S+\])", css)
     for attr_def in attribute_defs:
-        if (attr_def.count('[') == 1 and attr_def.count(']') == 1 and (
-                attr_def.count('=') == 1) and attr_def.count('"') == 0 and (
-                attr_def.count("'") == 0)) and attr_def.count(' ') == 0:
+        if (
+            attr_def.count("[") == 1
+            and attr_def.count("]") == 1
+            and attr_def.count("=") == 1
+            and attr_def.count('"') == 0
+            and attr_def.count("'") == 0
+            and attr_def.count(" ") == 0
+        ):
             # Now safe to manipulate
-            q1 = attr_def.find('=') + 1
-            q2 = attr_def.find(']')
+            q1 = attr_def.find("=") + 1
+            q2 = attr_def.find("]")
             new_attr_def = attr_def[:q1] + "'" + attr_def[q1:q2] + "']"
             css = css.replace(attr_def, new_attr_def)
 
     # Replace the string-brackets with escaped ones
-    css = css.replace('_STR_L_bracket_', '\\[')
-    css = css.replace('_STR_R_bracket_', '\\]')
+    css = css.replace("_STR_L_bracket_", "\\[")
+    css = css.replace("_STR_R_bracket_", "\\]")
 
     # Handle a lot of edge cases with conversion
-    css = css.replace(" > descORself > ", ' ')
-    css = css.replace(" descORself > ", ' ')
-    css = css.replace("/descORself/*", ' ')
-    css = css.replace("/descORself/", ' ')
-    css = css.replace("descORself > ", '')
-    css = css.replace("descORself/", ' ')
-    css = css.replace("descORself", ' ')
+    css = css.replace(" > descORself > ", " ")
+    css = css.replace(" descORself > ", " ")
+    css = css.replace("/descORself/*", " ")
+    css = css.replace("/descORself/", " ")
+    css = css.replace("descORself > ", "")
+    css = css.replace("descORself/", " ")
+    css = css.replace("descORself", " ")
     css = css.replace("_STAR_=", "*=")
     css = css.replace("]/", "] ")
     css = css.replace("] *[", "] > [")
-    css = css.replace("\'", '"')
-    css = css.replace("[@", '[')
+    css = css.replace("'", '"')
+    css = css.replace("[@", "[")
 
     return css

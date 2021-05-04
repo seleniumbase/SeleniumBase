@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-''' Small Dictionary '''
+""" Small Dictionary """
 
 
 class SD:
-
     def translate_in(language):
         words = {}
         words["English"] = "in"

@@ -13,7 +13,7 @@ from seleniumbase.fixtures import constants
 DOWNLOADS_DIR = constants.Files.DOWNLOADS_FOLDER
 ARCHIVE_DIR = constants.Files.ARCHIVED_DOWNLOADS_FOLDER
 
-abs_path = os.path.abspath('.')
+abs_path = os.path.abspath(".")
 downloads_path = os.path.join(abs_path, DOWNLOADS_DIR)
 
 
@@ -22,11 +22,12 @@ def get_downloads_folder():
 
 
 def reset_downloads_folder():
-    ''' Clears the downloads folder.
-        If settings.ARCHIVE_EXISTING_DOWNLOADS is set to True, archives it. '''
+    """Clears the downloads folder.
+    If settings.ARCHIVE_EXISTING_DOWNLOADS is set to True, archives it."""
     if os.path.exists(downloads_path) and not os.listdir(downloads_path) == []:
-        archived_downloads_folder = os.path.join(downloads_path, '..',
-                                                 ARCHIVE_DIR)
+        archived_downloads_folder = os.path.join(
+            downloads_path, "..", ARCHIVE_DIR
+        )
         reset_downloads_folder_assistant(archived_downloads_folder)
 
 
@@ -37,7 +38,9 @@ def reset_downloads_folder_assistant(archived_downloads_folder):
         except Exception:
             pass  # Should only be reachable during multi-threaded test runs
     new_archived_downloads_sub_folder = "%s/downloads_%s" % (
-        archived_downloads_folder, int(time.time()))
+        archived_downloads_folder,
+        int(time.time()),
+    )
     if os.path.exists(downloads_path):
         if not os.listdir(downloads_path) == []:
             try:
