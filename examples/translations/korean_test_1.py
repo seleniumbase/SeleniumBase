@@ -3,7 +3,6 @@ from seleniumbase.translate.korean import 셀레늄_테스트_케이스  # noqa
 
 
 class 테스트_클래스(셀레늄_테스트_케이스):
-
     def test_실시예_1(self):
         self.열기("https://ko.wikipedia.org/wiki/")
         self.텍스트_확인("위키백과")

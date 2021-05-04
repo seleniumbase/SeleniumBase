@@ -3,7 +3,6 @@ from seleniumbase.translate.chinese import 硒测试用例  # noqa
 
 
 class 我的测试类(硒测试用例):
-
     def test_例子1(self):
         self.开启("https://zh.wikipedia.org/wiki/")
         self.断言标题("维基百科，自由的百科全书")

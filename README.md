@@ -72,7 +72,6 @@ pytest my_first_test.py --demo
 from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
-
     def test_basics(self):
         url = "https://store.xkcd.com/collections/posters"
         self.open(url)

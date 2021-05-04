@@ -3,7 +3,6 @@ from seleniumbase.translate.spanish import CasoDePrueba
 
 
 class MiClaseDePrueba(CasoDePrueba):
-
     def test_ejemplo_1(self):
         self.abrir("https://es.wikipedia.org/wiki/")
         self.verificar_texto("Wikipedia")

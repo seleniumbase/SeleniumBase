@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_basics(self):
         self.open("https://store.xkcd.com/search")
         self.type('input[name="q"]', "xkcd book\n")

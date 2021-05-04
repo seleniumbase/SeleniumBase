@@ -3,7 +3,6 @@ from seleniumbase.translate.dutch import Testgeval
 
 
 class MijnTestklasse(Testgeval):
-
     def test_voorbeeld_1(self):
         self.openen("https://nl.wikipedia.org/wiki/Hoofdpagina")
         self.controleren_element('a[title*="hoofdpagina gaan"]')

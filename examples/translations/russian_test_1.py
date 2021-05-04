@@ -3,7 +3,6 @@ from seleniumbase.translate.russian import ТестНаСелен  # noqa
 
 
 class МойТестовыйКласс(ТестНаСелен):
-
     def test_пример_1(self):
         self.открыть("https://ru.wikipedia.org/wiki/")
         self.подтвердить_элемент('[title="Русский язык"]')

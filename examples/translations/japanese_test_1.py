@@ -3,7 +3,6 @@ from seleniumbase.translate.japanese import セレニウムテストケース  #
 
 
 class 私のテストクラス(セレニウムテストケース):
-
     def test_例1(self):
         self.を開く("https://ja.wikipedia.org/wiki/")
         self.テキストを確認する("ウィキペディア")

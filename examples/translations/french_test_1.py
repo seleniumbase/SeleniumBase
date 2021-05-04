@@ -3,7 +3,6 @@ from seleniumbase.translate.french import CasDeBase
 
 
 class MaClasseDeTest(CasDeBase):
-
     def test_exemple_1(self):
         self.ouvrir("https://fr.wikipedia.org/wiki/")
         self.vérifier_texte("Wikipédia")  # noqa
