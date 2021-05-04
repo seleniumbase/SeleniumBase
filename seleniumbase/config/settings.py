@@ -38,19 +38,19 @@ REPORT_ARCHIVE_DIR = "archived_reports"
 HTML_REPORT = "report.html"
 RESULTS_TABLE = "results_table.csv"
 
-'''
+"""
 This adds wait_for_ready_state_complete() after various browser actions.
 Setting this to True may improve reliability at the cost of speed.
-'''
+"""
 # Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
 WAIT_FOR_RSC_ON_CLICKS = True
 
-'''
+"""
 This adds wait_for_angularjs() after various browser actions.
 (Requires WAIT_FOR_RSC_ON_PAGE_LOADS and WAIT_FOR_RSC_ON_CLICKS to also be on.)
-'''
+"""
 WAIT_FOR_ANGULARJS = True
 
 # Default time to wait after each browser action performed during Demo Mode.

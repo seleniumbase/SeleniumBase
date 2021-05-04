@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_example_1(self):
         url = "https://store.xkcd.com/collections/posters"
         self.open(url)

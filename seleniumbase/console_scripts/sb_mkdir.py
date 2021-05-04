@@ -295,7 +295,6 @@ def main():
     data.append("")
     data.append("")
     data.append("class MyTestClass(BaseCase):")
-    data.append("")
     data.append("    def test_basics(self):")
     data.append('        url = "https://store.xkcd.com/collections/posters"')
     data.append("        self.open(url)")

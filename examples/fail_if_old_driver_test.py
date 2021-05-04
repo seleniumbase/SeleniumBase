@@ -9,9 +9,9 @@ class ChromedriverTests(BaseCase):
             print("  (Run with: '--browser=chrome')")
             self.skip("This test is only for Chrome!")
         chrome_version = self.get_chrome_version()
-        major_chrome_version = chrome_version.split('.')[0]
+        major_chrome_version = chrome_version.split(".")[0]
         chromedriver_version = self.get_chromedriver_version()
-        major_chromedriver_version = chromedriver_version.split('.')[0]
+        major_chromedriver_version = chromedriver_version.split(".")[0]
         install_sb = "sbase install chromedriver %s" % major_chrome_version
         if (
             int(major_chromedriver_version) < 73
@@ -20,7 +20,7 @@ class ChromedriverTests(BaseCase):
             message = (
                 'Your version of chromedriver: "%s"\n  '
                 'is too old for your version of Chrome: "%s"\n'
-                'You should upgrade chromedriver '
+                "You should upgrade chromedriver "
                 "to receive important bug fixes!\n"
                 'Run this command to upgrade: "%s"'
                 % (chromedriver_version, chrome_version, install_sb)
