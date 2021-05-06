@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class CasDeBase(BaseCase):
-
     def __init__(self, *args, **kwargs):
         super(CasDeBase, self).__init__(*args, **kwargs)
         self._language = "French"
@@ -578,7 +577,6 @@ class CasDeBase(BaseCase):
 
 
 class MasterQA_Français(MasterQA, CasDeBase):
-
     def vérifier(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Vérification manuelle"

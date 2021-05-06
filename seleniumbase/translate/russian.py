@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class ТестНаСелен(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(ТестНаСелен, self).__init__(*args, **kwargs)
         self._language = "Russian"
@@ -578,7 +577,6 @@ class ТестНаСелен(BaseCase):  # noqa
 
 
 class MasterQA_Русский(MasterQA, ТестНаСелен):
-
     def подтвердить(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Ручная проверка"

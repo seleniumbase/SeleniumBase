@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class 硒测试用例(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(硒测试用例, self).__init__(*args, **kwargs)
         self._language = "Chinese"
@@ -578,7 +577,6 @@ class 硒测试用例(BaseCase):  # noqa
 
 
 class MasterQA_中文(MasterQA, 硒测试用例):
-
     def 校验(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "手动检查"

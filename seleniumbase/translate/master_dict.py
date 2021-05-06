@@ -74,8 +74,10 @@ class MD_F:
         parent_class_lang["ТестНаСелен"] = "Russian"
         parent_class_lang["CasoDePrueba"] = "Spanish"
         if parent_class not in parent_class_lang.keys():
-            raise Exception("Invalid parent_class {%s} not in {%s}!"
-                            "" % (parent_class, parent_class_lang.keys()))
+            raise Exception(
+                "Invalid parent_class {%s} not in {%s}!"
+                % (parent_class, parent_class_lang.keys())
+            )
         return parent_class_lang[parent_class]
 
     def get_mqa_par_class_lang(parent_class):
@@ -91,8 +93,10 @@ class MD_F:
         parent_class_lang["MasterQA_Русский"] = "Russian"
         parent_class_lang["MasterQA_Español"] = "Spanish"
         if parent_class not in parent_class_lang.keys():
-            raise Exception("Invalid parent_class {%s} not in {%s}!"
-                            "" % (parent_class, parent_class_lang.keys()))
+            raise Exception(
+                "Invalid parent_class {%s} not in {%s}!"
+                % (parent_class, parent_class_lang.keys())
+            )
         return parent_class_lang[parent_class]
 
     def get_lang_parent_class(language):
@@ -108,8 +112,10 @@ class MD_F:
         lang_parent_class["Russian"] = "ТестНаСелен"
         lang_parent_class["Spanish"] = "CasoDePrueba"
         if language not in lang_parent_class.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, lang_parent_class.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, lang_parent_class.keys())
+            )
         return lang_parent_class[language]
 
     def get_mqa_lang_par_class(language):
@@ -125,66 +131,88 @@ class MD_F:
         lang_parent_class["Russian"] = "MasterQA_Русский"
         lang_parent_class["Spanish"] = "MasterQA_Español"
         if language not in lang_parent_class.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, lang_parent_class.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, lang_parent_class.keys())
+            )
         return lang_parent_class[language]
 
     def get_import_line(language):
         import_line = {}
         # - The Default Import Line:
-        import_line["English"] = (
-            "from seleniumbase import BaseCase")
+        import_line["English"] = "from seleniumbase import BaseCase"
         # - Translated Import Lines:
-        import_line["Chinese"] = (
-            "from seleniumbase.translate.chinese import 硒测试用例")
-        import_line["Dutch"] = (
-            "from seleniumbase.translate.dutch import Testgeval")
-        import_line["French"] = (
-            "from seleniumbase.translate.french import CasDeBase")
-        import_line["Italian"] = (
-            "from seleniumbase.translate.italian import CasoDiProva")
-        import_line["Japanese"] = (
-            "from seleniumbase.translate.japanese import セレニウムテストケース")
-        import_line["Korean"] = (
-            "from seleniumbase.translate.korean import 셀레늄_테스트_케이스")
-        import_line["Portuguese"] = (
-            "from seleniumbase.translate.portuguese import CasoDeTeste")
-        import_line["Russian"] = (
-            "from seleniumbase.translate.russian import ТестНаСелен")
-        import_line["Spanish"] = (
-            "from seleniumbase.translate.spanish import CasoDePrueba")
+        import_line[
+            "Chinese"
+        ] = "from seleniumbase.translate.chinese import 硒测试用例"
+        import_line[
+            "Dutch"
+        ] = "from seleniumbase.translate.dutch import Testgeval"
+        import_line[
+            "French"
+        ] = "from seleniumbase.translate.french import CasDeBase"
+        import_line[
+            "Italian"
+        ] = "from seleniumbase.translate.italian import CasoDiProva"
+        import_line[
+            "Japanese"
+        ] = "from seleniumbase.translate.japanese import セレニウムテストケース"
+        import_line[
+            "Korean"
+        ] = "from seleniumbase.translate.korean import 셀레늄_테스트_케이스"
+        import_line[
+            "Portuguese"
+        ] = "from seleniumbase.translate.portuguese import CasoDeTeste"
+        import_line[
+            "Russian"
+        ] = "from seleniumbase.translate.russian import ТестНаСелен"
+        import_line[
+            "Spanish"
+        ] = "from seleniumbase.translate.spanish import CasoDePrueba"
         if language not in import_line.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, import_line.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, import_line.keys())
+            )
         return import_line[language]
 
     def get_mqa_im_line(language):
         import_line = {}
         # - The Default Import Line:
-        import_line["English"] = (
-            "from seleniumbase import MasterQA")
+        import_line["English"] = "from seleniumbase import MasterQA"
         # - Translated Import Lines:
-        import_line["Chinese"] = (
-            "from seleniumbase.translate.chinese import MasterQA_中文")
-        import_line["Dutch"] = (
-            "from seleniumbase.translate.dutch import MasterQA_Nederlands")
-        import_line["French"] = (
-            "from seleniumbase.translate.french import MasterQA_Français")
-        import_line["Italian"] = (
-            "from seleniumbase.translate.italian import MasterQA_Italiano")
-        import_line["Japanese"] = (
-            "from seleniumbase.translate.japanese import MasterQA_日本語")
-        import_line["Korean"] = (
-            "from seleniumbase.translate.korean import MasterQA_한국어")
-        import_line["Portuguese"] = (
-            "from seleniumbase.translate.portuguese import MasterQA_Português")
-        import_line["Russian"] = (
-            "from seleniumbase.translate.russian import MasterQA_Русский")
-        import_line["Spanish"] = (
-            "from seleniumbase.translate.spanish import MasterQA_Español")
+        import_line[
+            "Chinese"
+        ] = "from seleniumbase.translate.chinese import MasterQA_中文"
+        import_line[
+            "Dutch"
+        ] = "from seleniumbase.translate.dutch import MasterQA_Nederlands"
+        import_line[
+            "French"
+        ] = "from seleniumbase.translate.french import MasterQA_Français"
+        import_line[
+            "Italian"
+        ] = "from seleniumbase.translate.italian import MasterQA_Italiano"
+        import_line[
+            "Japanese"
+        ] = "from seleniumbase.translate.japanese import MasterQA_日本語"
+        import_line[
+            "Korean"
+        ] = "from seleniumbase.translate.korean import MasterQA_한국어"
+        import_line[
+            "Portuguese"
+        ] = "from seleniumbase.translate.portuguese import MasterQA_Português"
+        import_line[
+            "Russian"
+        ] = "from seleniumbase.translate.russian import MasterQA_Русский"
+        import_line[
+            "Spanish"
+        ] = "from seleniumbase.translate.spanish import MasterQA_Español"
         if language not in import_line.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, import_line.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, import_line.keys())
+            )
         return import_line[language]
 
     def get_locale_code(language):
@@ -200,8 +228,10 @@ class MD_F:
         locale_codes["Russian"] = "ru"
         locale_codes["Spanish"] = "es"
         if language not in locale_codes.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, locale_codes.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, locale_codes.keys())
+            )
         return locale_codes[language]
 
     def get_locale_list():
@@ -980,8 +1010,8 @@ class MD:
     md["switch_to_default_content"][5] = "デフォルトのコンテンツに切り替える"
     md["switch_to_default_content"][6] = "기본_콘텐츠로_전환"
     md["switch_to_default_content"][7] = "mudar_para_o_conteúdo_padrão"
-    md["switch_to_default_content"][8] = (
-        "переключиться_на_содержимое_по_умолчанию")
+    switch_to_default_content_ru = "переключиться_на_содержимое_по_умолчанию"
+    md["switch_to_default_content"][8] = switch_to_default_content_ru
     md["switch_to_default_content"][9] = "cambiar_al_contenido_predeterminado"
 
     md["open_new_window"] = ["*"] * num_langs

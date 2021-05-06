@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class セレニウムテストケース(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(セレニウムテストケース, self).__init__(*args, **kwargs)
         self._language = "Japanese"
@@ -578,7 +577,6 @@ class セレニウムテストケース(BaseCase):  # noqa
 
 
 class MasterQA_日本語(MasterQA, セレニウムテストケース):
-
     def を確認する(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "手動チェック"
