@@ -9058,7 +9058,8 @@ class BaseCase(unittest.TestCase):
         )
         the_failed = []
         the_skipped = []
-        the_passed = []
+        the_passed_hl = []  # Passed and has logs
+        the_passed_nl = []  # Passed and no logs
         the_untested = []
         if dud2 in sb_config._results.keys():
             sb_config._results.pop(dud2)
@@ -9074,8 +9075,10 @@ class BaseCase(unittest.TestCase):
                 the_failed.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Skipped":
                 the_skipped.append([res_low, t_res, t_d_id, t_dur, t_l_path])
-            elif sb_config._results[key] == "Passed":
-                the_passed.append([res_low, t_res, t_d_id, t_dur, t_l_path])
+            elif sb_config._results[key] == "Passed" and t_l_path:
+                the_passed_hl.append([res_low, t_res, t_d_id, t_dur, t_l_path])
+            elif sb_config._results[key] == "Passed" and not t_l_path:
+                the_passed_nl.append([res_low, t_res, t_d_id, t_dur, t_l_path])
             elif sb_config._results[key] == "Untested":
                 the_untested.append([res_low, t_res, t_d_id, t_dur, t_l_path])
         for row in the_failed:
@@ -9107,24 +9110,26 @@ class BaseCase(unittest.TestCase):
                     "" % (row[0], row[1], row[2], row[3], log_dir, row[4])
                 )
             table_html += row
-        for row in the_passed:
-            if not row[4]:
-                row = (
-                    '<tbody class="%s results-table-row">'
-                    '<tr style="background-color: #F8FFF8;">'
-                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                    "<td>-</td></tr></tbody>"
-                    % (row[0], row[1], row[2], row[3])
-                )
-            else:
-                row = (
-                    '<tbody class="%s results-table-row">'
-                    '<tr style="background-color: #F8FFF8;">'
-                    '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                    '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
-                    "</td></tr></tbody>"
-                    "" % (row[0], row[1], row[2], row[3], log_dir, row[4])
-                )
+        for row in the_passed_hl:
+            # Passed and has logs
+            row = (
+                '<tbody class="%s results-table-row">'
+                '<tr style="background-color: #F8FFF8;">'
+                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                '<td><a href="%s">Logs</a> / <a href="%s/">Data</a>'
+                "</td></tr></tbody>"
+                "" % (row[0], row[1], row[2], row[3], log_dir, row[4])
+            )
+            table_html += row
+        for row in the_passed_nl:
+            # Passed and no logs
+            row = (
+                '<tbody class="%s results-table-row">'
+                '<tr style="background-color: #F8FFF8;">'
+                '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
+                "<td>-</td></tr></tbody>"
+                % (row[0], row[1], row[2], row[3])
+            )
             table_html += row
         for row in the_untested:
             row = (
