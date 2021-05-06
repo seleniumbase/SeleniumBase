@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyTourClass(BaseCase):
-
     def test_octocat_tour(self):
         self.maximize_window()
         self.open("https://seleniumbase.io/error_page/")
@@ -15,7 +14,8 @@ class MyTourClass(BaseCase):
         self.add_tour_step("This is a Star Wars speeder.", "#speeder")
         self.add_tour_step("This is a sign with a 500-Error", "#parallax_sign")
         self.add_tour_step(
-            "This is not the page you're looking for.", 'img[alt*="404"]')
+            "This is not the page you're looking for.", 'img[alt*="404"]'
+        )
         self.add_tour_step("<b>Have a great day!</b>", title="☀️ ☀️ ☀️ ☀️")
         self.add_tour_step("<b>And may the Force be with you!</b>", title="⭐")
         self.export_tour(filename="octocat_tour.js")

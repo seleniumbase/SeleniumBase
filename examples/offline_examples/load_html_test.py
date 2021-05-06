@@ -4,7 +4,6 @@ from seleniumbase import BaseCase
 
 @pytest.mark.offline  # Can be run with: "pytest -m offline"
 class OfflineTests(BaseCase):
-
     def test_load_html_string(self):
         html = "<h2>Hello</h2><p><input />&nbsp;&nbsp;<button>OK!</button></p>"
         self.load_html_string(html)  # Open "data:text/html," then replace html

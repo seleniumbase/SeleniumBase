@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class ChromedriverTests(BaseCase):
-
     def test_fail_if_using_an_old_chromedriver(self):
         if self.browser != "chrome":
             print("\n  This test is only for Chrome!")

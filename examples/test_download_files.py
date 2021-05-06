@@ -3,7 +3,6 @@ from seleniumbase import BaseCase
 
 
 class DownloadTests(BaseCase):
-
     def test_download_files(self):
         self.open("https://pypi.org/project/seleniumbase/#files")
         pkg_header = self.get_text("h1.package-header__name").strip()
@@ -47,11 +46,11 @@ class DownloadTests(BaseCase):
 
         # Get the actual size of the downloaded files (in bytes)
         whl_path = self.get_path_of_downloaded_file(whl_file)
-        with open(whl_path, 'rb') as f:
+        with open(whl_path, "rb") as f:
             whl_file_bytes = len(f.read())
         print("\n%s | Download = %s bytes." % (whl_file, whl_file_bytes))
         tar_gz_path = self.get_path_of_downloaded_file(tar_gz_file)
-        with open(tar_gz_path, 'rb') as f:
+        with open(tar_gz_path, "rb") as f:
             tar_gz_file_bytes = len(f.read())
         print("%s | Download = %s bytes." % (tar_gz_file, tar_gz_file_bytes))
 
@@ -62,16 +61,18 @@ class DownloadTests(BaseCase):
         # Get file sizes in kB to compare actual values with displayed values
         whl_file_kb = whl_file_bytes / 1000.0
         whl_line = self.get_text("tbody tr:nth-of-type(1) th")
-        whl_displayed_kb = float(whl_line.split("(")[1].split(" ")[0])
+        whl_display_kb = float(whl_line.split("(")[1].split(" ")[0])
         tar_gz_file_kb = tar_gz_file_bytes / 1000.0
         tar_gz_line = self.get_text("tbody tr:nth-of-type(2) th")
-        tar_gz_displayed_kb = float(tar_gz_line.split("(")[1].split(" ")[0])
+        tar_gz_display_kb = float(tar_gz_line.split("(")[1].split(" ")[0])
 
         # Verify downloaded files are the correct size (account for rounding)
-        self.assert_true(abs(
-            math.floor(whl_file_kb) - math.floor(whl_displayed_kb)) < 2)
-        self.assert_true(abs(
-            math.floor(tar_gz_file_kb) - math.floor(tar_gz_displayed_kb)) < 2)
+        self.assert_true(
+            abs(math.floor(whl_file_kb) - math.floor(whl_display_kb)) < 2
+        )
+        self.assert_true(
+            abs(math.floor(tar_gz_file_kb) - math.floor(tar_gz_display_kb)) < 2
+        )
 
         # Delete the downloaded files from the [Downloads Folder]
         self.delete_downloaded_file_if_present(whl_file)

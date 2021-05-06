@@ -2,8 +2,7 @@
 from seleniumbase import BaseCase
 
 
-class DataPage():
-
+class DataPage:
     def go_to_data_url(self, sb):
         sb.open("data:text/html,<p>Hello!</p><input />")
 
@@ -12,7 +11,6 @@ class DataPage():
 
 
 class ObjTests(BaseCase):
-
     def test_data_url_page(self):
         DataPage().go_to_data_url(self)
         self.assert_text("Hello!", "p")

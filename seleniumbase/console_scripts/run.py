@@ -593,6 +593,8 @@ def show_options():
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+    c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
     sc = ("\n " + c2 + " ** " + c3 + " pytest CLI Options " + c2 + " ** " + cr)
     print(sc)
@@ -603,27 +605,29 @@ def show_options():
     line = '(Some options are Chromium-specific, e.g. "--guest --mobile")'
     print(line)
     op = "\n"
-    op += '--browser=BROWSER  (The web browser to use. Default: "chrome".)\n'
+    op += '--browser=BROWSER  (The web browser to use. Default is "chrome")\n'
     op += '--headless  (Run tests headlessly. Default mode on Linux OS.)\n'
     op += '--demo  (Slow down and visually see test actions as they occur.)\n'
     op += '--slow  (Slow down the automation. Faster than using Demo Mode.)\n'
     op += '--reuse-session / --rs  (Reuse browser session between tests.)\n'
-    op += '--crumbs  (Delete all cookies between tests reusing a session.)\n'
+    op += '--crumbs  (Clear all cookies between tests reusing a session.)\n'
     op += '--maximize  (Start tests with the web browser window maximized.)\n'
     op += "--dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
     op += "--incognito  (Enable Chromium's Incognito mode.)\n"
     op += "--guest  (Enable Chromium's Guest mode.)\n"
     op += '-m=MARKER  (Run tests with the specified pytest marker.)\n'
     op += '-n=NUM  (Multithread the tests using that many threads.)\n'
-    op += '-v  (Verbose mode. Prints the full names of each test run.)\n'
+    op += '-v  (Verbose mode. Print the full names of each test run.)\n'
     op += '--html=report.html  (Create a detailed pytest-html report.)\n'
     op += '--collect-only / --co  (Only show discovered tests. No run.)\n'
     op += '--co -q  (Only show full names of discovered tests. No run.)\n'
-    op += '--trace  (Enter Debug Mode immediately after starting any test.\n'
-    op += '          n: Next line of method. s: Step through. c: Continue.)\n'
-    op += '--pdb  (Enter Debug Mode if a test fails. h: Help. c: Continue.\n'
-    op += '        where: Stacktrace location. u: Up stack. d: Down stack.\n'
-    op += '        longlist / ll: See code. dir(): List namespace objects.)\n'
+    op += '--pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n'
+    op += '--trace  (Enter Debug Mode immediately after starting any test.)\n'
+    op += '      | Debug Mode Commands  >>>   help / h: List all commands. |\n'
+    op += '      |   n: Next line of method. s: Step through. c: Continue. |\n'
+    op += '      |  return / r: Run until method returns. j: Jump to line. |\n'
+    op += '      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n'
+    op += '      | longlist / ll: See code. dir(): List namespace objects. |\n'
     op += '-x  (Stop running the tests after the first failure is reached.)\n'
     op += '--archive-logs  (Archive old log files instead of deleting them.)\n'
     op += '--save-screenshot  (Save a screenshot at the end of each test.)\n'
@@ -645,6 +649,10 @@ def show_options():
     op = op.replace("\n-", "\n" + c1 + "-").replace('  (', cr + '  (')
     op = op.replace(" / -", cr + " / " + c1 + "-")
     op = op.replace("=", c2 + "=" + c3)
+    op = op.replace(" | ", " |" + c3 + " ").replace("|\n", cr + "|\n")
+    op = op.replace(": ", c5 + ":" + c3 + " ")
+    op = op.replace("Debug Mode Commands", c5 + "Debug Mode Commands" + c3)
+    op = op.replace(">>>", c4 + ">>>" + c3)
     print(op)
     line = 'For the full list of ' + c2 + 'command-line options' + cr
     line += ', type: "' + c3 + 'pytest' + cr + ' ' + c1 + '--help' + cr + '".'

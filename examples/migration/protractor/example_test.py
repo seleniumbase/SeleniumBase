@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class AngularJSHomePageTests(BaseCase):
-
     def test_greet_user(self):
         self.open("http://www.angularjs.org")
         self.type('[ng-model="yourName"]', "Julie")

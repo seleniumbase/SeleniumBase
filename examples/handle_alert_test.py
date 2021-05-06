@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class HandleAlertTests(BaseCase):
-
     def test_alerts(self):
         if self.browser == "safari":
             self.skip("This test doesn't run on Safari! (alert issues)")

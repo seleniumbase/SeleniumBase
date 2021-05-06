@@ -6,10 +6,10 @@ class HomePage(object):
     search_box = 'input[title="Search"]'
     list_box = '[role="listbox"]'
     search_button = 'input[value="Google Search"]'
-    feeling_lucky_button = '''input[value="I'm Feeling Lucky"]'''
+    feeling_lucky_button = """input[value="I'm Feeling Lucky"]"""
 
 
 class ResultsPage(object):
     google_logo = 'img[alt="Google"]'
-    images_link = 'link=Images'
-    search_results = 'div#center_col'
+    images_link = "link=Images"
+    search_results = "div#center_col"

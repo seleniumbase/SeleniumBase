@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class LocaleCodeTests(BaseCase):
-
     def test_locale_code(self):
         self.open("https://localeplanet.com/support/browser.html")
         locale_code = self.get_locale_code()

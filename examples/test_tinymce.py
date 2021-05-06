@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class TinyMceTests(BaseCase):
-
     def test_tinymce(self):
         self.open("https://seleniumbase.io/tinymce/")
         self.wait_for_element("div.mce-container-body")
@@ -13,7 +12,7 @@ class TinyMceTests(BaseCase):
         self.switch_to_frame("iframe")
         self.add_text("#tinymce", "Automate anything with SeleniumBase!\n")
         self.switch_to_default_content()
-        self.click('button i.mce-i-image')
+        self.click("button i.mce-i-image")
         self.type('input[aria-label="Width"].mce-textbox', "300")
         image_url = "https://seleniumbase.io/img/sb_logo_10.png"
         self.type("input.mce-textbox", image_url + "\n")

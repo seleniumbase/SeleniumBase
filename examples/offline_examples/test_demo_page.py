@@ -5,7 +5,6 @@ from seleniumbase import BaseCase
 
 @pytest.mark.offline  # Can be run with: "pytest -m offline"
 class OfflineTests(BaseCase):
-
     def test_demo_page(self):
         # Load a local html file into the web browser
         dir_path = os.path.dirname(os.path.abspath(__file__))

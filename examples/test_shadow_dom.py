@@ -9,7 +9,6 @@ from seleniumbase import BaseCase
 
 
 class ShadowDomTests(BaseCase):
-
     def download_tar_file_from_pypi(self, package):
         self.open("https://pypi.org/project/%s/#files" % package)
         pkg_header = self.get_text("h1.package-header__name").strip()
@@ -41,21 +40,26 @@ class ShadowDomTests(BaseCase):
         search_icon = (
             "downloads-manager::shadow downloads-toolbar::shadow"
             " cr-toolbar::shadow cr-toolbar-search-field::shadow"
-            " cr-icon-button")
+            " cr-icon-button"
+        )
         search_input = (
             "downloads-manager::shadow downloads-toolbar::shadow"
             " cr-toolbar::shadow cr-toolbar-search-field::shadow"
-            " #searchInput")
+            " #searchInput"
+        )
         clear_search_icon = (
             "downloads-manager::shadow downloads-toolbar::shadow"
             " cr-toolbar::shadow cr-toolbar-search-field::shadow"
-            " #clearSearch")
+            " #clearSearch"
+        )
         file_link = (
             "downloads-manager::shadow #downloadsList"
-            " downloads-item::shadow #file-link")
+            " downloads-item::shadow #file-link"
+        )
         remove_button = (
             "downloads-manager::shadow #downloadsList"
-            " downloads-item::shadow #remove")
+            " downloads-item::shadow #remove"
+        )
         no_downloads_area = "downloads-manager::shadow #no-downloads"
 
         self.assert_element(search_icon)

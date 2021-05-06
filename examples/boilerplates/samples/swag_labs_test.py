@@ -3,8 +3,7 @@
 from seleniumbase import BaseCase
 
 
-class LoginPage():
-
+class LoginPage:
     def login_to_swag_labs(self, sb, username):
         sb.open("https://www.saucedemo.com")
         sb.type("#user-name", username)
@@ -13,7 +12,6 @@ class LoginPage():
 
 
 class MyTests(BaseCase):
-
     def test_swag_labs_login(self):
         LoginPage().login_to_swag_labs(self, "standard_user")
         self.assert_element("#inventory_container")

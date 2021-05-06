@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class CasoDePrueba(BaseCase):
-
     def __init__(self, *args, **kwargs):
         super(CasoDePrueba, self).__init__(*args, **kwargs)
         self._language = "Spanish"
@@ -578,7 +577,6 @@ class CasoDePrueba(BaseCase):
 
 
 class MasterQA_Español(MasterQA, CasoDePrueba):
-
     def verificar(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Comprobación manual"

@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class 셀레늄_테스트_케이스(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(셀레늄_테스트_케이스, self).__init__(*args, **kwargs)
         self._language = "Korean"
@@ -578,7 +577,6 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
 
 class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):
-
     def 확인(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "수동 검사"

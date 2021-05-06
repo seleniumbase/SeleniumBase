@@ -25,6 +25,7 @@ except (ImportError, ValueError):
     # Running with pure Python OR from a Python interactive interpreter
     # Example run command:  "python raw_parameter_script.py"
     from my_first_test import MyTestClass  # (relative imports do not work)
+
     pure_python = True
 
 if pure_python:

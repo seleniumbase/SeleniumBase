@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyChartMakerClass(BaseCase):
-
     def test_chart_maker(self):
         self.create_presentation()
         self.create_pie_chart(title="Automated Tests")

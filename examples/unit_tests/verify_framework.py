@@ -2,8 +2,8 @@
 
 
 def test_simple_cases(testdir):
-    """ Verify a simple passing test and a simple failing test.
-        The failing test is marked as xfail to have it skipped. """
+    """Verify a simple passing test and a simple failing test.
+    The failing test is marked as xfail to have it skipped."""
     testdir.makepyfile(
         """
         import pytest

@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class AngularMaterialPaginatorTests(BaseCase):
-
     def test_pagination(self):
         self.open("https://material.angular.io/components/paginator/examples")
         self.assert_element(".mat-button-wrapper > .mat-icon")

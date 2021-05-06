@@ -10,7 +10,6 @@ from seleniumbase import BaseCase
 
 
 class SkypeTests(BaseCase):
-
     def test_skype_mobile_site(self):
         if not self.mobile_emulator:
             print("\n  This test is only for mobile-device web browsers!")
@@ -31,6 +30,6 @@ class SkypeTests(BaseCase):
         self.highlight("h2")
         self.highlight("#get-skype-0")
         self.highlight_click('[data-bi-name="arrow-dropdown-mobile"]')
-        self.highlight('#get-skype-0_android-download')
+        self.highlight("#get-skype-0_android-download")
         self.highlight('[data-bi-id*="ios"]')
         self.highlight('[data-bi-id*="windows10"]')

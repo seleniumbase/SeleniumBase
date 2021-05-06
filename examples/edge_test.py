@@ -6,7 +6,6 @@ from seleniumbase import BaseCase
 
 
 class EdgeTests(BaseCase):
-
     def test_edge(self):
         if self.browser != "edge":
             print("\n  This test is only for Microsoft Edge (Chromium)!")
