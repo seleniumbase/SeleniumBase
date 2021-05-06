@@ -17,7 +17,6 @@ from seleniumbase import BaseCase
 
 @pytest.mark.marker_test_suite
 class MarkerTestSuite(BaseCase):
-
     @pytest.mark.marker1
     def test_A(self):
         self.open("https://xkcd.com/1319/")

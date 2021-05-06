@@ -2,11 +2,11 @@ from seleniumbase import BaseCase
 
 
 class MyChartMakerClass(BaseCase):
-
     def test_line_chart(self):
         self.create_presentation()
         self.create_line_chart(
-            title="Time Outside", subtitle="Last Week", unit="Minutes")
+            title="Time Outside", subtitle="Last Week", unit="Minutes"
+        )
         self.add_data_point("Sun", 5)
         self.add_data_point("Mon", 10)
         self.add_data_point("Tue", 20)

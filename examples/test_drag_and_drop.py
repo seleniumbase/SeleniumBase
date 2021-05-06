@@ -6,9 +6,8 @@ from seleniumbase import BaseCase
 
 
 class DragAndDropTests(BaseCase):
-
     def test_drag_and_drop(self):
-        url = '://w3schools.com/html/tryit.asp?filename=tryhtml5_draganddrop'
+        url = "://w3schools.com/html/tryit.asp?filename=tryhtml5_draganddrop"
         self.open(url)
         self.remove_elements("#tryitLeaderboard")
         self.switch_to_frame("iframeResult")

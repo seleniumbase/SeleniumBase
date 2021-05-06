@@ -1,8 +1,7 @@
 """ Classic Page Object Model with the "sb" fixture """
 
 
-class LoginPage():
-
+class LoginPage:
     def login_to_swag_labs(self, sb, username):
         sb.open("https://www.saucedemo.com")
         sb.type("#user-name", username)
@@ -10,8 +9,7 @@ class LoginPage():
         sb.click('input[type="submit"]')
 
 
-class MyTests():
-
+class MyTests:
     def test_swag_labs_login(self, sb):
         LoginPage().login_to_swag_labs(sb, "standard_user")
         sb.assert_element("#inventory_container")

@@ -8,7 +8,6 @@ from seleniumbase import BaseCase
 
 
 class XFailTests(BaseCase):
-
     @pytest.mark.xfail
     def test_xfail(self):
         self.open("https://xkcd.com/376/")

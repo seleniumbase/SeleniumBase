@@ -3,7 +3,6 @@ from seleniumbase import BaseCase
 
 
 class SwagLabsTests(BaseCase):
-
     def login_to_swag_labs(self, username="standard_user"):
         """ Login to Swag Labs and verify success. """
         url = "https://www.saucedemo.com"
@@ -16,13 +15,15 @@ class SwagLabsTests(BaseCase):
         self.assert_element("#inventory_container")
         self.assert_element('div:contains("Sauce Labs Backpack")')
 
-    @parameterized.expand([
-        ["standard_user"],
-        ["problem_user"],
-    ])
+    @parameterized.expand(
+        [
+            ["standard_user"],
+            ["problem_user"],
+        ]
+    )
     def test_swag_labs_basic_flow(self, username):
-        """ This test checks functional flow of the Swag Labs store.
-            This test is parameterized on the login user. """
+        """This test checks functional flow of the Swag Labs store.
+        This test is parameterized on the login user."""
         self.login_to_swag_labs(username=username)
         if username == "problem_user":
             print("\n(This test should fail)")

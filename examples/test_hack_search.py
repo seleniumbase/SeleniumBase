@@ -7,7 +7,6 @@ from seleniumbase import BaseCase
 
 
 class HackingTests(BaseCase):
-
     def test_hack_search(self):
         self.open("https://google.com/ncr")
         self.assert_element('input[title="Search"]')

@@ -3,7 +3,6 @@ from seleniumbase import BaseCase
 
 
 class SoupParsingTests(BaseCase):
-
     def click_menu_item(self, text):
         # Use BeautifulSoup to parse the selector ID from element text.
         # Then click on the element with the ID.
@@ -23,7 +22,7 @@ class SoupParsingTests(BaseCase):
         self.switch_to_frame("iframe")
         self.add_text("#tinymce", "Automate anything with SeleniumBase!\n")
         self.switch_to_default_content()
-        self.click('button i.mce-i-image')
+        self.click("button i.mce-i-image")
         self.type('input[aria-label="Width"].mce-textbox', "300")
         image_url = "https://seleniumbase.io/img/sb_logo_10.png"
         self.type("input.mce-textbox", image_url + "\n")

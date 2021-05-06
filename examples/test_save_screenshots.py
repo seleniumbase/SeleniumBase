@@ -3,7 +3,6 @@ from seleniumbase import BaseCase
 
 
 class ScreenshotTests(BaseCase):
-
     def test_save_screenshot(self):
         self.open("https://seleniumbase.io/demo_page")
         # "./downloaded_files" is a special SeleniumBase folder for downloads

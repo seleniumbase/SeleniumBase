@@ -7,7 +7,6 @@ from seleniumbase import BaseCase
 
 
 class TabSwitchingTests(BaseCase):
-
     def test_switch_to_tabs(self):
         self.open("data:text/html,<h1>Page A</h1>")
         self.assert_text("Page A")

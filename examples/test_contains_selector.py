@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class ContainsSelectorTests(BaseCase):
-
     def test_contains_selector(self):
         self.open("https://xkcd.com/2207/")
         self.assert_text("Math Work", "#ctitle")

@@ -2,7 +2,6 @@ from seleniumbase import MasterQA
 
 
 class MasterQATests(MasterQA):
-
     def test_xkcd(self):
         self.open("https://xkcd.com/1512/")
         for i in range(4):

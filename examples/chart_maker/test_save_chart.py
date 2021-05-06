@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class MyChartMakerClass(BaseCase):
-
     def test_save_chart(self):
         self.create_pie_chart(title="Pie Chart")
         self.add_data_point("Passed", 7, color="#95d96f")

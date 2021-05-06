@@ -2,12 +2,12 @@ from seleniumbase import BaseCase
 
 
 class MyChartMakerClass(BaseCase):
-
     def test_multi_series(self):
         self.create_presentation(theme="league")
 
         self.create_line_chart(
-            title="Fruit Sold Last Week", data_name="Apples", unit="Count")
+            title="Fruit Sold Last Week", data_name="Apples", unit="Count"
+        )
         self.add_data_point("Sun", 33)
         self.add_data_point("Mon", 16)
         self.add_data_point("Tue", 19)

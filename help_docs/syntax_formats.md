@@ -19,7 +19,6 @@ This format is used by most of the examples in the <a href="https://github.com/s
 from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
-
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page")
         self.type("#myTextInput", "This is Automated")
@@ -41,7 +40,6 @@ There are situations where you may want to customize the <code>setUp</code> and 
 from seleniumbase import BaseCase
 
 class BaseTestCase(BaseCase):
-
     def setUp(self):
         super(BaseTestCase, self).setUp()
         # <<< Run custom setUp() code for tests AFTER the super().setUp() >>>
@@ -69,7 +67,6 @@ class BaseTestCase(BaseCase):
         pass
 
 class MyTests(BaseTestCase):
-
     def test_example(self):
         self.login()
         self.example_method()
@@ -99,7 +96,7 @@ def test_sb_fixture_with_no_class(sb):
 The <code>sb</code> pytest fixture can also be used inside of a class. There is a slight change to the syntax because that means test methods must also include <code>self</code> in their argument definitions when test methods are defined. (The <code>self</code> argument represents the class object, and is used in every test method that lives inside of a class.) Once again, no import statements are needed in your Python files for this to work. Here's an example of using the <code>sb</code> fixture in a test method that lives inside of a Python class:
 
 ```python
-class Test_SB_Fixture():
+class Test_SB_Fixture:
     def test_sb_fixture_inside_class(self, sb):
         sb.open("https://google.com/ncr")
         sb.type('input[title="Search"]', 'SeleniumBase\n')
@@ -116,8 +113,7 @@ With SeleniumBase, you can use Page Objects to break out code from tests, but re
 ```python
 from seleniumbase import BaseCase
 
-class LoginPage():
-
+class LoginPage:
     def login_to_swag_labs(self, sb, username):
         sb.open("https://www.saucedemo.com")
         sb.type("#user-name", username)
@@ -125,7 +121,6 @@ class LoginPage():
         sb.click('input[type="submit"]')
 
 class MyTests(BaseCase):
-
     def test_swag_labs_login(self):
         LoginPage().login_to_swag_labs(self, "standard_user")
         self.assert_element("#inventory_container")
@@ -139,16 +134,14 @@ class MyTests(BaseCase):
 This is similar to the classic Page Object Model with <code>BaseCase</code> inheritance, except that this time we pass the <code>sb</code> pytest fixture from the test into the <code>sb</code> arg of the page object class method, (instead of passing <code>self</code>). Now that you're using <code>sb</code> as a pytest fixture, you no longer need to import <code>BaseCase</code> anywhere in your code. See the example below:
 
 ```python
-class LoginPage():
-
+class LoginPage:
     def login_to_swag_labs(self, sb, username):
         sb.open("https://www.saucedemo.com")
         sb.type("#user-name", username)
         sb.type("#password", "secret_sauce")
         sb.click('input[type="submit"]')
 
-class MyTests():
-
+class MyTests:
     def test_swag_labs_login(self, sb):
         LoginPage().login_to_swag_labs(sb, "standard_user")
         sb.assert_element("#inventory_container")
@@ -179,7 +172,7 @@ def test_request_sb_fixture(request):
 The pytest <code>request</code> fixture can also be used to get the <code>sb</code> fixture from inside a Python class. Here's an example of that:
 
 ```python
-class Test_Request_Fixture():
+class Test_Request_Fixture:
     def test_request_sb_fixture_in_class(self, request):
         sb = request.getfixturevalue('sb')
         sb.open("https://seleniumbase.io/demo_page")

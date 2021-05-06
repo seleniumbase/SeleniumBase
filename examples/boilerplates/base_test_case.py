@@ -1,16 +1,15 @@
-'''
+"""
 You can use this as a boilerplate for your test framework.
 Define your customized library methods in a master class like this.
 Then have all your test classes inherit it.
 BaseTestCase will inherit SeleniumBase methods from BaseCase.
 With Python 3, simplify "super(...)" to super().setUp() and super().tearDown()
-'''
+"""
 
 from seleniumbase import BaseCase
 
 
 class BaseTestCase(BaseCase):
-
     def setUp(self):
         super(BaseTestCase, self).setUp()
         # <<< Run custom setUp() code for tests AFTER the super().setUp() >>>
@@ -38,7 +37,7 @@ class BaseTestCase(BaseCase):
         pass
 
 
-'''
+"""
 # Now you can do something like this in your test files:
 
 from base_test_case import BaseTestCase
@@ -51,4 +50,4 @@ class MyTests(BaseTestCase):
         self.type("input", "Name")
         self.click("form button")
         ...
-'''
+"""

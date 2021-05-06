@@ -4,7 +4,6 @@ from seleniumbase import BaseCase
 
 
 class ImageTests(BaseCase):
-
     @pytest.mark.run(order=1)
     def test_pull_image_from_website(self):
         """ Pull an image from a website and save it as a PNG file. """
@@ -25,7 +24,8 @@ class ImageTests(BaseCase):
         folder = "images_exported"
         overlay_text = 'This is an XKCD comic!\nTitle: "My Sky"'
         self.save_element_as_image_file(
-            selector, file_name, folder, overlay_text)
+            selector, file_name, folder, overlay_text
+        )
         self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
         print('\n"%s/%s" was saved!' % (folder, file_name))
 
@@ -37,12 +37,14 @@ class ImageTests(BaseCase):
         file_name = "section_overlay.png"
         folder = "images_exported"
         overlay_text = (
-            'Welcome to %s\n'
-            'This is a comment added to the image.\n'
-            'Unreachable states come from logic errors.'
-            % self.get_current_url())
+            "Welcome to %s\n"
+            "This is a comment added to the image.\n"
+            "Unreachable states come from logic errors."
+            % self.get_current_url()
+        )
         self.save_element_as_image_file(
-            selector, file_name, folder, overlay_text)
+            selector, file_name, folder, overlay_text
+        )
         self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
         print('\n"%s/%s" was saved!' % (folder, file_name))
 
@@ -54,8 +56,9 @@ class ImageTests(BaseCase):
         selector = "body"
         file_name = "page_overlay.png"
         folder = "images_exported"
-        overlay_text = ("A text overlay on %s" % self.get_current_url())
+        overlay_text = "A text overlay on %s" % self.get_current_url()
         self.save_element_as_image_file(
-            selector, file_name, folder, overlay_text)
+            selector, file_name, folder, overlay_text
+        )
         self.assert_true(os.path.exists("%s/%s" % (folder, file_name)))
         print('\n"%s/%s" was saved!' % (folder, file_name))

@@ -2,7 +2,6 @@ from seleniumbase import BaseCase
 
 
 class NthChildSelectorTests(BaseCase):
-
     def test_locate_rows_with_colors(self):
         self.open("https://xkcd.com/color/rgb/")
         tbody = "center > table tbody"
@@ -28,5 +27,4 @@ class NthChildSelectorTests(BaseCase):
                 message = '"%s" found on row %s' % (color, row + 1)
                 self.post_message_and_highlight(message, row_selector)
                 return  # Found row and done
-        self.post_error_message(
-            '"%s" could not be found on any row!' % color)
+        self.post_error_message('"%s" could not be found on any row!' % color)

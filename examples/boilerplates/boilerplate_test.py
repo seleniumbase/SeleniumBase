@@ -3,7 +3,6 @@ from .page_objects import Page
 
 
 class MyTestClass(BaseTestCase):
-
     def test_boilerplate(self):
         self.login()
         self.example_method()

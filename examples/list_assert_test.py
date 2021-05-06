@@ -6,7 +6,6 @@ from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-
     def test_assert_list_of_elements(self):
         self.open("https://store.xkcd.com/collections/posters")
         self.assert_elements_present("head", "style", "script")

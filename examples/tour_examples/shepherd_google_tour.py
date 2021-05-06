@@ -2,9 +2,8 @@ from seleniumbase import BaseCase
 
 
 class MyTourClass(BaseCase):
-
     def test_google_tour(self):
-        self.open('https://google.com/ncr')
+        self.open("https://google.com/ncr")
         self.wait_for_element('input[title="Search"]')
 
         self.create_shepherd_tour(theme="dark")
@@ -36,24 +35,48 @@ class MyTourClass(BaseCase):
 
         self.create_shepherd_tour(theme="dark")
         self.add_tour_step("Welcome to Google Maps!")
-        self.add_tour_step("Type in a location here.",
-                           "#searchboxinput", title="Search Box")
-        self.add_tour_step("Then click here to show it on the map.",
-                           "#searchbox-searchbutton", alignment="bottom")
-        self.add_tour_step("Or click here to get driving directions.",
-                           "#searchbox-directions",
-                           alignment="bottom", theme="dark")
-        self.add_tour_step("Use this button to switch to Satellite view.",
-                           "#minimap div.widget-minimap", alignment="right")
-        self.add_tour_step("Click here to zoom in.",
-                           "#widget-zoom-in", alignment="left")
-        self.add_tour_step("Or click here to zoom out.",
-                           "#widget-zoom-out", alignment="left", theme="light")
-        self.add_tour_step("Use the Menu button to see more options.",
-                           ".searchbox-hamburger-container", alignment="right")
-        self.add_tour_step("Or click here to see more Google apps.",
-                           '[title="Google apps"]', alignment="left")
-        self.add_tour_step("Thanks for using SeleniumBase Tours!",
-                           title="End of Guided Tour", theme="light")
+        self.add_tour_step(
+            "Type in a location here.", "#searchboxinput", title="Search Box"
+        )
+        self.add_tour_step(
+            "Then click here to show it on the map.",
+            "#searchbox-searchbutton",
+            alignment="bottom",
+        )
+        self.add_tour_step(
+            "Or click here to get driving directions.",
+            "#searchbox-directions",
+            alignment="bottom",
+            theme="dark",
+        )
+        self.add_tour_step(
+            "Use this button to switch to Satellite view.",
+            "#minimap div.widget-minimap",
+            alignment="right",
+        )
+        self.add_tour_step(
+            "Click here to zoom in.", "#widget-zoom-in", alignment="left"
+        )
+        self.add_tour_step(
+            "Or click here to zoom out.",
+            "#widget-zoom-out",
+            alignment="left",
+            theme="light",
+        )
+        self.add_tour_step(
+            "Use the Menu button to see more options.",
+            ".searchbox-hamburger-container",
+            alignment="right",
+        )
+        self.add_tour_step(
+            "Or click here to see more Google apps.",
+            '[title="Google apps"]',
+            alignment="left",
+        )
+        self.add_tour_step(
+            "Thanks for using SeleniumBase Tours!",
+            title="End of Guided Tour",
+            theme="light",
+        )
         self.export_tour(filename="shepherd_google_maps_tour.js")
         self.play_tour()
