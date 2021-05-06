@@ -9,6 +9,7 @@ readme-renderer==29.0
 pymdown-extensions==8.1.1
 importlib-metadata==4.0.1;python_version>="3.6"
 lunr==0.5.8
+nltk==3.6.2
 mkdocs==1.1.2
 mkdocs-material==7.1.3
 mkdocs-exclude-search==0.5.2;python_version>="3.6"
