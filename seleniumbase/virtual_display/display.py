@@ -28,7 +28,7 @@ class Display(AbstractDisplay):
         color_depth=24,
         bgcolor="black",
         use_xauth=False,
-        **kwargs,
+        **kwargs
     ):
         self.color_depth = color_depth
         self.size = size
