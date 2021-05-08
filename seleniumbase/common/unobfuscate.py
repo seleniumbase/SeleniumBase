@@ -20,9 +20,10 @@ def main():
         # Python 2 has the raw_input() method. Python 3 does not.
         input_method = raw_input  # noqa: ignore=F821
     try:
-        while(1):
+        while 1:
             code = input_method(
-                '\nEnter obfuscated/encrypted string: (CTRL+C to exit):\n')
+                "\nEnter obfuscated/encrypted string: (CTRL+C to exit):\n"
+            )
             print("\nHere is the unobfuscated string/password:")
             time.sleep(0.07)
             print(encryption.decrypt(code))

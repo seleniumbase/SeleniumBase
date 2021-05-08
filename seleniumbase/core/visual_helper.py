@@ -2,7 +2,7 @@ import os
 from seleniumbase.fixtures import constants
 
 VISUAL_BASELINE_DIR = constants.VisualBaseline.STORAGE_FOLDER
-abs_path = os.path.abspath('.')
+abs_path = os.path.abspath(".")
 visual_baseline_path = os.path.join(abs_path, VISUAL_BASELINE_DIR)
 
 

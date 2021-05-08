@@ -3610,7 +3610,29 @@ class BaseCase(unittest.TestCase):
         file - The filename to be deleted from the [Downloads Folder].
         browser - If True, uses the path set by click-initiated downloads.
                   If False, uses the self.download_file(file_url) path.
-                  Those paths are often the same. (browser-dependent)
+                  Those paths are usually the same. (browser-dependent)
+                  (Default: False).
+        """
+        if self.is_downloaded_file_present(file, browser=browser):
+            file_path = self.get_path_of_downloaded_file(file, browser=browser)
+            try:
+                os.remove(file_path)
+            except Exception:
+                pass
+
+    def delete_downloaded_file(self, file, browser=False):
+        """Same as self.delete_downloaded_file_if_present()
+        Deletes the file from the [Downloads Folder] if the file exists.
+        For browser click-initiated downloads, SeleniumBase will override
+            the system [Downloads Folder] to be "./downloaded_files/",
+            but that path can't be overridden when using Safari, IE,
+            or Chromium Guest Mode, which keeps the default system path.
+        self.download_file(file_url) will always use "./downloaded_files/".
+        @Params
+        file - The filename to be deleted from the [Downloads Folder].
+        browser - If True, uses the path set by click-initiated downloads.
+                  If False, uses the self.download_file(file_url) path.
+                  Those paths are usually the same. (browser-dependent)
                   (Default: False).
         """
         if self.is_downloaded_file_present(file, browser=browser):
@@ -9127,8 +9149,7 @@ class BaseCase(unittest.TestCase):
                 '<tbody class="%s results-table-row">'
                 '<tr style="background-color: #F8FFF8;">'
                 '<td class="col-result">%s</td><td>%s</td><td>%s</td>'
-                "<td>-</td></tr></tbody>"
-                % (row[0], row[1], row[2], row[3])
+                "<td>-</td></tr></tbody>" % (row[0], row[1], row[2], row[3])
             )
             table_html += row
         for row in the_untested:

@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
@@ -11,7 +12,8 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
     os.environ["PATH"] = os.environ["PATH"].replace(DRIVER_DIR, "")
     # If two path separators are next to each other, replace with just one
     os.environ["PATH"] = os.environ["PATH"].replace(
-        os.pathsep + os.pathsep, os.pathsep)
+        os.pathsep + os.pathsep, os.pathsep
+    )
     # Put the SeleniumBase DRIVER_DIR at the beginning of the System PATH
     os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 
@@ -19,13 +21,13 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
 def is_chromedriver_on_path():
     paths = os.environ["PATH"].split(os.pathsep)
     for path in paths:
-        if os.path.exists(path + '/' + "chromedriver"):
+        if os.path.exists(path + "/" + "chromedriver"):
             return True
     return False
 
 
 def invalid_run_command():
-    exp = ("  ** grid-node **\n\n")
+    exp = "  ** grid-node **\n\n"
     exp += "  Usage:\n"
     exp += "        seleniumbase grid-node {start|stop|restart} [OPTIONS]\n"
     exp += "  Options:\n"
@@ -39,13 +41,14 @@ def invalid_run_command():
     exp += "        Controls the Selenium Grid Node, which serves as a\n"
     exp += "        worker machine for your Selenium Grid Hub Server.\n"
     exp += "        You can start, restart, or stop the Grid Node.\n"
-    raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
 
 
 def main():
     # Install chromedriver if not installed
     if not is_chromedriver_on_path():
         from seleniumbase.console_scripts import sb_install
+
         sys_args = sys.argv  # Save a copy of current sys args
         print("\nWarning: chromedriver not found. Installing now:")
         sb_install.main(override="chromedriver")
@@ -53,10 +56,12 @@ def main():
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     num_args = len(sys.argv)
-    if sys.argv[0].split('/')[-1] == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1] == "seleniumbase") or (
-            sys.argv[0].split('/')[-1] == "sbase") or (
-            sys.argv[0].split('\\')[-1] == "sbase"):
+    if (
+        sys.argv[0].split("/")[-1] == "seleniumbase"
+        or (sys.argv[0].split("\\")[-1] == "seleniumbase")
+        or (sys.argv[0].split("/")[-1] == "sbase")
+        or (sys.argv[0].split("\\")[-1] == "sbase")
+    ):
         if num_args < 3:
             invalid_run_command()
     else:
@@ -70,10 +75,11 @@ def main():
     if num_args >= 4:
         options = sys.argv[3:]
         for option in options:
-            if option.startswith('--hub=') and (
-                    len(option.split('--hub=')[1]) > 0):
-                server_ip = option.split('--hub=')[1]
-            elif option == '-v' or option == '--verbose':
+            if option.startswith("--hub=") and (
+                len(option.split("--hub=")[1]) > 0
+            ):
+                server_ip = option.split("--hub=")[1]
+            elif option == "-v" or option == "--verbose":
                 verbose = "True"
             else:
                 invalid_run_command()
@@ -93,6 +99,7 @@ def main():
     file.close()
 
     from seleniumbase.utilities.selenium_grid import download_selenium_server
+
     download_selenium_server.main(force_download=False)  # Only runs if needed
 
     if "linux" in sys.platform or "darwin" in sys.platform:
@@ -115,12 +122,15 @@ def main():
                 """version=ANY,seleniumProtocol=WebDriver -browser browser"""
                 """Name=MicrosoftEdge,maxInstances=1,version=ANY,"""
                 """platform=WIN10,seleniumProtocol=WebDriver"""
-                % (dir_path, server_ip))
+                % (dir_path, server_ip)
+            )
             print("\nStarting Selenium-WebDriver Grid node...\n")
             print(shell_command)
             print("")
-            print("""Browser Sessions: http://127.0.0.1:5555"""
-                  """/wd/hub/static/resource/hub.html""")
+            print(
+                """Browser Sessions: http://127.0.0.1:5555"""
+                """/wd/hub/static/resource/hub.html"""
+            )
             print("")
             subprocess.check_call(shell_command, shell=True)
         elif grid_hub_command == "stop":

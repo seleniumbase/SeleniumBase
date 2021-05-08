@@ -3,19 +3,22 @@
 import os
 import shutil
 import sys
+
 if sys.version_info[0] == 2:
     from urllib import urlopen
 else:
     from urllib.request import urlopen
 
-SELENIUM_JAR = ("http://selenium-release.storage.googleapis.com"
-                "/3.141/selenium-server-standalone-3.141.59.jar")
+SELENIUM_JAR = (
+    "http://selenium-release.storage.googleapis.com"
+    "/3.141/selenium-server-standalone-3.141.59.jar"
+)
 JAR_FILE = "selenium-server-standalone-3.141.59.jar"
 RENAMED_JAR_FILE = "selenium-server-standalone.jar"
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 FULL_EXPECTED_PATH = dir_path + "/" + RENAMED_JAR_FILE
-FULL_DOWNLOAD_PATH = os.getcwd() + '/' + RENAMED_JAR_FILE
+FULL_DOWNLOAD_PATH = os.getcwd() + "/" + RENAMED_JAR_FILE
 
 
 def download_selenium_server():
@@ -24,16 +27,18 @@ def download_selenium_server():
     online location and stores it locally.
     """
     try:
-        local_file = open(JAR_FILE, 'wb')
+        local_file = open(JAR_FILE, "wb")
         remote_file = urlopen(SELENIUM_JAR)
-        print('Downloading the Selenium Server JAR file...\n')
+        print("Downloading the Selenium Server JAR file...\n")
         local_file.write(remote_file.read())
         local_file.close()
         remote_file.close()
-        print('Download Complete!')
+        print("Download Complete!")
     except Exception:
-        raise Exception("Error downloading the Selenium Server JAR file.\n"
-                        "Details: %s" % sys.exc_info()[1])
+        raise Exception(
+            "Error downloading the Selenium Server JAR file.\n"
+            "Details: %s" % sys.exc_info()[1]
+        )
 
 
 def is_available_locally():

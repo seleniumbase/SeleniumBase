@@ -23,6 +23,7 @@ class BasicTestInfo(Plugin):
     raises an error. It will store that basic test info in
     the default logs or in the file specified by the user.
     """
+
     name = "basic_test_info"  # Usage: --with-basic_test_info
 
     logfile_name = settings.BASIC_INFO_NAME
@@ -61,6 +62,7 @@ class BasicTestInfo(Plugin):
         data_to_save.append("Timestamp: %s" % int(time.time()))
         data_to_save.append("Server: %s " % self.options.servername)
         data_to_save.append("%s: %s" % (type, err[0]))
-        data_to_save.append("Traceback: " + ''.join(
-            traceback.format_exception(*err)))
+        data_to_save.append(
+            "Traceback: " + "".join(traceback.format_exception(*err))
+        )
         log_file.writelines("\r\n".join(data_to_save))

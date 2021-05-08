@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
+
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
@@ -11,13 +12,14 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
     os.environ["PATH"] = os.environ["PATH"].replace(DRIVER_DIR, "")
     # If two path separators are next to each other, replace with just one
     os.environ["PATH"] = os.environ["PATH"].replace(
-        os.pathsep + os.pathsep, os.pathsep)
+        os.pathsep + os.pathsep, os.pathsep
+    )
     # Put the SeleniumBase DRIVER_DIR at the beginning of the System PATH
     os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 
 
 def invalid_run_command(msg=None):
-    exp = ("  ** grid-hub **\n\n")
+    exp = "  ** grid-hub **\n\n"
     exp += "  Usage:\n"
     exp += "        seleniumbase grid-hub {start|stop|restart} [OPTIONS]\n"
     exp += "  Options:\n"
@@ -36,17 +38,19 @@ def invalid_run_command(msg=None):
     exp += "        You can start, restart, or stop the Grid Hub Server.\n"
     if msg:
         exp += msg
-    raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+    raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
 
 
 def main():
     timeout = 230  # The default number of seconds that a test can be idle
     dir_path = os.path.dirname(os.path.realpath(__file__))
     num_args = len(sys.argv)
-    if sys.argv[0].split('/')[-1] == "seleniumbase" or (
-            sys.argv[0].split('\\')[-1] == "seleniumbase") or (
-            sys.argv[0].split('/')[-1] == "sbase") or (
-            sys.argv[0].split('\\')[-1] == "sbase"):
+    if (
+        sys.argv[0].split("/")[-1] == "seleniumbase"
+        or (sys.argv[0].split("\\")[-1] == "seleniumbase")
+        or (sys.argv[0].split("/")[-1] == "sbase")
+        or (sys.argv[0].split("\\")[-1] == "sbase")
+    ):
         if num_args < 3:
             invalid_run_command()
     else:
@@ -59,7 +63,7 @@ def main():
     if num_args >= 4:
         options = sys.argv[3:]
         for option in options:
-            if option == '-v' or option == '--verbose':
+            if option == "-v" or option == "--verbose":
                 verbose = "True"
             elif option.startswith("--timeout=") and len(option) > 10:
                 timeout = option.split("--timeout=")[1]
@@ -78,16 +82,19 @@ def main():
     file.close()
 
     from seleniumbase.utilities.selenium_grid import download_selenium_server
+
     download_selenium_server.main(force_download=False)  # Only runs if needed
 
     if "linux" in sys.platform or "darwin" in sys.platform:
         if grid_hub_command == "start":
             subprocess.check_call(
-                dir_path + "/grid-hub start %s" % timeout, shell=True)
+                dir_path + "/grid-hub start %s" % timeout, shell=True
+            )
         elif grid_hub_command == "restart":
             subprocess.check_call(dir_path + "/grid-hub stop .", shell=True)
             subprocess.check_call(
-                dir_path + "/grid-hub start %s" % timeout, shell=True)
+                dir_path + "/grid-hub start %s" % timeout, shell=True
+            )
         elif grid_hub_command == "stop":
             subprocess.check_call(dir_path + "/grid-hub stop .", shell=True)
         else:
@@ -97,7 +104,8 @@ def main():
             shell_command = (
                 """java -jar %s/selenium-server-standalone.jar -role hub """
                 """-timeout %s -browserTimeout 170 -port 4444"""
-                "" % (dir_path, timeout))
+                "" % (dir_path, timeout)
+            )
             print("\nStarting Selenium-WebDriver Grid Hub...\n")
             print(shell_command)
             print("")
