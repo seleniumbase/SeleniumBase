@@ -12,9 +12,10 @@ USED_DISPLAY_NR_LIST = []
 
 
 class AbstractDisplay(EasyProcess):
-    '''
+    """
     Common parent for Xvfb and Xephyr
-    '''
+    """
+
     def __init__(self, use_xauth=False):
         mutex.acquire()
         try:
@@ -33,15 +34,15 @@ class AbstractDisplay(EasyProcess):
 
     @property
     def new_display_var(self):
-        return ':%s' % (self.display)
+        return ":%s" % (self.display)
 
     @property
     def _cmd(self):
         raise NotImplementedError()
 
     def lock_files(self):
-        tmpdir = '/tmp'
-        pattern = '.X*-lock'
+        tmpdir = "/tmp"
+        pattern = ".X*-lock"
         # remove path.py dependency
         names = fnmatch.filter(os.listdir(tmpdir), pattern)
         ls = [os.path.join(tmpdir, child) for child in names]
@@ -50,7 +51,7 @@ class AbstractDisplay(EasyProcess):
 
     def search_for_display(self):
         # search for free display
-        ls = [int(x.split('X')[1].split('-')[0]) for x in self.lock_files()]
+        ls = [int(x.split("X")[1].split("-")[0]) for x in self.lock_files()]
         if len(ls):
             display = max(MIN_DISPLAY_NR, max(ls) + 3)
         else:
@@ -58,32 +59,32 @@ class AbstractDisplay(EasyProcess):
         return display
 
     def redirect_display(self, on):
-        '''
+        """
         on:
          * True -> set $DISPLAY to virtual screen
          * False -> set $DISPLAY to original screen
 
         :param on: bool
-        '''
+        """
         d = self.new_display_var if on else self.old_display_var
         if d is None:
-            del os.environ['DISPLAY']
+            del os.environ["DISPLAY"]
         else:
-            os.environ['DISPLAY'] = d
+            os.environ["DISPLAY"] = d
 
     def start(self):
-        '''
+        """
         start display
 
         :rtype: self
-        '''
+        """
         if self.use_xauth:
             self._setup_xauth()
         EasyProcess.start(self)
 
         # https://github.com/ponty/PyVirtualDisplay/issues/2
         # https://github.com/ponty/PyVirtualDisplay/issues/14
-        self.old_display_var = os.environ.get('DISPLAY', None)
+        self.old_display_var = os.environ.get("DISPLAY", None)
 
         self.redirect_display(True)
         # wait until X server is active
@@ -92,11 +93,11 @@ class AbstractDisplay(EasyProcess):
         return self
 
     def stop(self):
-        '''
+        """
         stop display
 
         :rtype: self
-        '''
+        """
         self.redirect_display(False)
         EasyProcess.stop(self)
         if self.use_xauth:
@@ -104,28 +105,29 @@ class AbstractDisplay(EasyProcess):
         return self
 
     def _setup_xauth(self):
-        '''
+        """
         Set up the Xauthority file and the XAUTHORITY environment variable.
-        '''
-        handle, filename = tempfile.mkstemp(prefix='PyVirtualDisplay.',
-                                            suffix='.Xauthority')
+        """
+        handle, filename = tempfile.mkstemp(
+            prefix="PyVirtualDisplay.", suffix=".Xauthority"
+        )
         self._xauth_filename = filename
         os.close(handle)
         # Save old environment
         self._old_xauth = {}
-        self._old_xauth['AUTHFILE'] = os.getenv('AUTHFILE')
-        self._old_xauth['XAUTHORITY'] = os.getenv('XAUTHORITY')
+        self._old_xauth["AUTHFILE"] = os.getenv("AUTHFILE")
+        self._old_xauth["XAUTHORITY"] = os.getenv("XAUTHORITY")
 
-        os.environ['AUTHFILE'] = os.environ['XAUTHORITY'] = filename
+        os.environ["AUTHFILE"] = os.environ["XAUTHORITY"] = filename
         cookie = xauth.generate_mcookie()
-        xauth.call('add', self.new_display_var, '.', cookie)
+        xauth.call("add", self.new_display_var, ".", cookie)
 
     def _clear_xauth(self):
-        '''
+        """
         Clear the Xauthority file and restore the environment variables.
-        '''
+        """
         os.remove(self._xauth_filename)
-        for varname in ['AUTHFILE', 'XAUTHORITY']:
+        for varname in ["AUTHFILE", "XAUTHORITY"]:
             if self._old_xauth[varname] is None:
                 del os.environ[varname]
             else:

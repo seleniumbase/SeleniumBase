@@ -31,7 +31,7 @@ import sys
 
 
 def invalid_run_command(msg=None):
-    exp = ("  ** mkchart **\n\n")
+    exp = "  ** mkchart **\n\n"
     exp += "  Usage:\n"
     exp += "          seleniumbase mkchart [FILE.py] [LANG]\n"
     exp += "          OR     sbase mkchart [FILE.py] [LANG]\n"
@@ -44,18 +44,18 @@ def invalid_run_command(msg=None):
     exp += "          --ko / --Korean     |    --pt / --Portuguese\n"
     exp += "          --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Output:\n"
-    exp += '          Creates a new SeleniumBase chart presentation.\n'
-    exp += '          If the file already exists, an error is raised.\n'
-    exp += '          By default, the slides are written in English,\n'
+    exp += "          Creates a new SeleniumBase chart presentation.\n"
+    exp += "          If the file already exists, an error is raised.\n"
+    exp += "          By default, the slides are written in English,\n"
     exp += '          and use a "sky" theme with "slide" transition.\n'
-    exp += '          The chart can be used as a basic boilerplate.\n'
+    exp += "          The chart can be used as a basic boilerplate.\n"
     if not msg:
-        raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+        raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
         print("\n%s" % exp)
         sys.exit()
     else:
-        raise Exception('INVALID RUN COMMAND!\n\n%s\n%s\n' % (exp, msg))
+        raise Exception("INVALID RUN COMMAND!\n\n%s\n%s\n" % (exp, msg))
 
 
 def main():
@@ -82,14 +82,13 @@ def main():
     elif not file_name.endswith(".py"):
         error_msg = 'File name must end with ".py"!'
     elif "*" in file_name or len(str(file_name)) < 4:
-        error_msg = 'Invalid file name!'
+        error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
     elif "/" in str(file_name) or "\\" in str(file_name):
-        error_msg = 'File must be created in the current directory!'
-    elif os.path.exists(os.getcwd() + '/' + file_name):
-        error_msg = (
-            'File "%s" already exists in this directory!' % file_name)
+        error_msg = "File must be created in the current directory!"
+    elif os.path.exists(os.getcwd() + "/" + file_name):
+        error_msg = 'File "%s" already exists in this directory!' % file_name
     if error_msg:
         error_msg = c5 + "ERROR: " + error_msg + cr
         invalid_run_command(error_msg)
@@ -122,10 +121,10 @@ def main():
                 language = "Spanish"
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
-                invalid_cmd = invalid_cmd.replace('>> ', ">>" + c5 + " ")
-                invalid_cmd = invalid_cmd.replace(' <<', " " + cr + "<<")
-                invalid_cmd = invalid_cmd.replace('>>', c7 + ">>" + cr)
-                invalid_cmd = invalid_cmd.replace('<<', c7 + "<<" + cr)
+                invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
+                invalid_cmd = invalid_cmd.replace(" <<", " " + cr + "<<")
+                invalid_cmd = invalid_cmd.replace(">>", c7 + ">>" + cr)
+                invalid_cmd = invalid_cmd.replace("<<", c7 + "<<" + cr)
                 help_me = True
                 break
     if help_me:
@@ -134,7 +133,7 @@ def main():
     if language != "English" and sys.version_info[0] == 2:
         print("")
         msg = 'Multi-language support for "sbase mkchart" '
-        msg += 'is not available on Python 2!'
+        msg += "is not available on Python 2!"
         msg = "\n" + c5 + msg + cr
         msg += '\nPlease run in "English" mode or upgrade to Python 3!\n'
         raise Exception(msg)
@@ -198,6 +197,7 @@ def main():
     class_line = "class MyTestClass(BaseCase):"
     if language != "English":
         from seleniumbase.translate.master_dict import MD_F
+
         import_line = MD_F.get_import_line(language)
         parent_class = MD_F.get_lang_parent_class(language)
     class_line = "class %s(%s):" % (class_name, parent_class)
@@ -209,19 +209,18 @@ def main():
     data.append("")
     data.append("")
     data.append("%s" % class_line)
-    data.append("")
     data.append("    def test_chart_presentation(self):")
-    data.append('        self.create_presentation(%s)' % settings)
+    data.append("        self.create_presentation(%s)" % settings)
     data.append("")
-    data.append('        # %s => %s' % (select_option, chart_options))
-    data.append('        self.create_pie_chart(%s)' % chart_settings)
+    data.append("        # %s => %s" % (select_option, chart_options))
+    data.append("        self.create_pie_chart(%s)" % chart_settings)
     data.append('        self.add_data_point("%s A", 50)' % item)
     data.append('        self.add_data_point("%s B", 40)' % item)
     data.append('        self.add_data_point("%s C", 35)' % item)
     data.append('        self.add_data_point("%s D", 30)' % item)
     data.append('        self.add_data_point("%s E", 25)' % item)
     data.append('        self.add_data_point("%s F", 20)' % item)
-    data.append('        self.add_slide(%s)' % add_slide)
+    data.append("        self.add_slide(%s)" % add_slide)
     data.append("")
     data.append('        self.begin_presentation(filename="%s")' % html_name)
     data.append("")
@@ -232,6 +231,7 @@ def main():
     else:
         from seleniumbase.translate.master_dict import MD
         from seleniumbase.translate.master_dict import MD_L_Codes
+
         md = MD.md
         lang_codes = MD_L_Codes.lang
         nl_code = lang_codes[language]
@@ -255,7 +255,7 @@ def main():
                         continue
             if found_swap:
                 if new_line.endswith("  # noqa"):  # Remove flake8 skip
-                    new_line = new_line[0:-len("  # noqa")]
+                    new_line = new_line[0 : -len("  # noqa")]
                 new_data.append(new_line)
                 continue
             new_data.append(line)
@@ -264,8 +264,9 @@ def main():
     file.writelines("\r\n".join(data))
     file.close()
     success = (
-        '\n' + c1 + '* Chart Presentation: "' + file_name + '" was created! *'
-        '' + cr + '\n')
+        "\n" + c1 + '* Chart Presentation: "' + file_name + '" was created! *'
+        "" + cr + "\n"
+    )
     print(success)
 
 

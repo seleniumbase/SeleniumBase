@@ -37,7 +37,7 @@ import sys
 
 
 def invalid_run_command(msg=None):
-    exp = ("  ** mkfile **\n\n")
+    exp = "  ** mkfile **\n\n"
     exp += "  Usage:\n"
     exp += "          seleniumbase mkfile [FILE.py] [OPTIONS]\n"
     exp += "          OR     sbase mkfile [FILE.py] [OPTIONS]\n"
@@ -59,14 +59,14 @@ def invalid_run_command(msg=None):
     exp += '          methods, which are "open", "type", "click",\n'
     exp += '          "assert_element", and "assert_text". If using the\n'
     exp += '          basic boilerplate option, only the "open" method\n'
-    exp += '          is included.\n'
+    exp += "          is included.\n"
     if not msg:
-        raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+        raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
         print("\n%s" % exp)
         sys.exit()
     else:
-        raise Exception('INVALID RUN COMMAND!\n\n%s\n%s\n' % (exp, msg))
+        raise Exception("INVALID RUN COMMAND!\n\n%s\n%s\n" % (exp, msg))
 
 
 def main():
@@ -94,14 +94,13 @@ def main():
     elif not file_name.endswith(".py"):
         error_msg = 'File name must end with ".py"!'
     elif "*" in file_name or len(str(file_name)) < 4:
-        error_msg = 'Invalid file name!'
+        error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
     elif "/" in str(file_name) or "\\" in str(file_name):
-        error_msg = 'File must be created in the current directory!'
-    elif os.path.exists(os.getcwd() + '/' + file_name):
-        error_msg = (
-            'File "%s" already exists in this directory!' % file_name)
+        error_msg = "File must be created in the current directory!"
+    elif os.path.exists(os.getcwd() + "/" + file_name):
+        error_msg = 'File "%s" already exists in this directory!' % file_name
     if error_msg:
         error_msg = c5 + "ERROR: " + error_msg + cr
         invalid_run_command(error_msg)
@@ -136,10 +135,10 @@ def main():
                 language = "Spanish"
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
-                invalid_cmd = invalid_cmd.replace('>> ', ">>" + c5 + " ")
-                invalid_cmd = invalid_cmd.replace(' <<', " " + cr + "<<")
-                invalid_cmd = invalid_cmd.replace('>>', c7 + ">>" + cr)
-                invalid_cmd = invalid_cmd.replace('<<', c7 + "<<" + cr)
+                invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
+                invalid_cmd = invalid_cmd.replace(" <<", " " + cr + "<<")
+                invalid_cmd = invalid_cmd.replace(">>", c7 + ">>" + cr)
+                invalid_cmd = invalid_cmd.replace("<<", c7 + "<<" + cr)
                 help_me = True
                 break
     if help_me:
@@ -148,7 +147,7 @@ def main():
     if language != "English" and sys.version_info[0] == 2:
         print("")
         msg = 'Multi-language support for "sbase mkfile" '
-        msg += 'is not available on Python 2!'
+        msg += "is not available on Python 2!"
         msg = "\n" + c5 + msg + cr
         msg += '\nPlease run in "English" mode or upgrade to Python 3!\n'
         raise Exception(msg)
@@ -210,6 +209,7 @@ def main():
     class_line = "class MyTestClass(BaseCase):"
     if language != "English":
         from seleniumbase.translate.master_dict import MD_F
+
         import_line = MD_F.get_import_line(language)
         parent_class = MD_F.get_lang_parent_class(language)
     class_line = "class %s(%s):" % (class_name, parent_class)
@@ -219,15 +219,17 @@ def main():
     data.append("")
     data.append("")
     data.append("%s" % class_line)
-    data.append("")
     data.append("    def test_base(self):")
     data.append('        self.open("%s")' % url)
     if not basic:
         data.append('        self.assert_element("%s")  # selector' % body)
-        data.append('        self.assert_text("%s", "%s")'
-                    '  # text, selector' % (hello, para))
-        data.append('        self.type("input", "%s")'
-                    '  # selector, text' % goodbye)
+        data.append(
+            '        self.assert_text("%s", "%s")'
+            "  # text, selector" % (hello, para)
+        )
+        data.append(
+            '        self.type("input", "%s")' "  # selector, text" % goodbye
+        )
         data.append('        self.click("%s")  # selector' % para)
     data.append("")
 
@@ -237,6 +239,7 @@ def main():
     else:
         from seleniumbase.translate.master_dict import MD
         from seleniumbase.translate.master_dict import MD_L_Codes
+
         md = MD.md
         lang_codes = MD_L_Codes.lang
         nl_code = lang_codes[language]
@@ -260,7 +263,7 @@ def main():
                         continue
             if found_swap:
                 if new_line.endswith("  # noqa"):  # Remove flake8 skip
-                    new_line = new_line[0:-len("  # noqa")]
+                    new_line = new_line[0 : -len("  # noqa")]
                 new_data.append(new_line)
                 continue
             new_data.append(line)
@@ -269,8 +272,9 @@ def main():
     file.writelines("\r\n".join(data))
     file.close()
     success = (
-        '\n' + c1 + '* Test file: "' + file_name + '" was created! *'
-        '' + cr + '\n')
+        "\n" + c1 + '* Test file: "' + file_name + '" was created! *'
+        "" + cr + "\n"
+    )
     print(success)
 
 

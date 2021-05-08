@@ -31,7 +31,7 @@ import sys
 
 
 def invalid_run_command(msg=None):
-    exp = ("  ** mkpres **\n\n")
+    exp = "  ** mkpres **\n\n"
     exp += "  Usage:\n"
     exp += "          seleniumbase mkpres [FILE.py] [LANG]\n"
     exp += "          OR     sbase mkpres [FILE.py] [LANG]\n"
@@ -44,18 +44,18 @@ def invalid_run_command(msg=None):
     exp += "          --ko / --Korean     |    --pt / --Portuguese\n"
     exp += "          --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Output:\n"
-    exp += '          Creates a new presentation with 3 example slides.\n'
-    exp += '          If the file already exists, an error is raised.\n'
-    exp += '          By default, the slides are written in English,\n'
+    exp += "          Creates a new presentation with 3 example slides.\n"
+    exp += "          If the file already exists, an error is raised.\n"
+    exp += "          By default, the slides are written in English,\n"
     exp += '          and use "serif" theme with "slide" transition.\n'
-    exp += '          The slides can be used as a basic boilerplate.\n'
+    exp += "          The slides can be used as a basic boilerplate.\n"
     if not msg:
-        raise Exception('INVALID RUN COMMAND!\n\n%s' % exp)
+        raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
         print("\n%s" % exp)
         sys.exit()
     else:
-        raise Exception('INVALID RUN COMMAND!\n\n%s\n%s\n' % (exp, msg))
+        raise Exception("INVALID RUN COMMAND!\n\n%s\n%s\n" % (exp, msg))
 
 
 def main():
@@ -82,14 +82,13 @@ def main():
     elif not file_name.endswith(".py"):
         error_msg = 'File name must end with ".py"!'
     elif "*" in file_name or len(str(file_name)) < 4:
-        error_msg = 'Invalid file name!'
+        error_msg = "Invalid file name!"
     elif file_name.startswith("-"):
         error_msg = 'File name cannot start with "-"!'
     elif "/" in str(file_name) or "\\" in str(file_name):
-        error_msg = 'File must be created in the current directory!'
-    elif os.path.exists(os.getcwd() + '/' + file_name):
-        error_msg = (
-            'File "%s" already exists in this directory!' % file_name)
+        error_msg = "File must be created in the current directory!"
+    elif os.path.exists(os.getcwd() + "/" + file_name):
+        error_msg = 'File "%s" already exists in this directory!' % file_name
     if error_msg:
         error_msg = c5 + "ERROR: " + error_msg + cr
         invalid_run_command(error_msg)
@@ -122,10 +121,10 @@ def main():
                 language = "Spanish"
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
-                invalid_cmd = invalid_cmd.replace('>> ', ">>" + c5 + " ")
-                invalid_cmd = invalid_cmd.replace(' <<', " " + cr + "<<")
-                invalid_cmd = invalid_cmd.replace('>>', c7 + ">>" + cr)
-                invalid_cmd = invalid_cmd.replace('<<', c7 + "<<" + cr)
+                invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
+                invalid_cmd = invalid_cmd.replace(" <<", " " + cr + "<<")
+                invalid_cmd = invalid_cmd.replace(">>", c7 + ">>" + cr)
+                invalid_cmd = invalid_cmd.replace("<<", c7 + "<<" + cr)
                 help_me = True
                 break
     if help_me:
@@ -134,7 +133,7 @@ def main():
     if language != "English" and sys.version_info[0] == 2:
         print("")
         msg = 'Multi-language support for "sbase mkpres" '
-        msg += 'is not available on Python 2!'
+        msg += "is not available on Python 2!"
         msg = "\n" + c5 + msg + cr
         msg += '\nPlease run in "English" mode or upgrade to Python 3!\n'
         raise Exception(msg)
@@ -209,6 +208,7 @@ def main():
     class_line = "class MyTestClass(BaseCase):"
     if language != "English":
         from seleniumbase.translate.master_dict import MD_F
+
         import_line = MD_F.get_import_line(language)
         parent_class = MD_F.get_lang_parent_class(language)
     class_line = "class %s(%s):" % (class_name, parent_class)
@@ -218,27 +218,29 @@ def main():
     hello_page = (
         "\n            '<h1>%s</h1><hr /><br />'"
         "\n            '<p>%s</p>'"
-        '' % (hello, press_right_arrow))
+        "" % (hello, press_right_arrow)
+    )
     add_text_page = (
         "\n            '<h2><b>*</b>  %s  <b>*</b></h2>'"
         "\n            '<img %s>'"
-        '' % (add_text, img_src_1))
+        "" % (add_text, img_src_1)
+    )
     goodbye_page = (
         "\n            '<h2>%s</h2>'"
         "\n            '<img %s>'"
-        '' % (goodbye, img_src_2))
+        "" % (goodbye, img_src_2)
+    )
 
     data = []
     data.append("%s" % import_line)
     data.append("")
     data.append("")
     data.append("%s" % class_line)
-    data.append("")
     data.append("    def test_presentation(self):")
-    data.append('        self.create_presentation(%s)' % settings)
-    data.append('        self.add_slide(%s)' % hello_page)
-    data.append('        self.add_slide(%s)' % add_text_page)
-    data.append('        self.add_slide(%s)' % goodbye_page)
+    data.append("        self.create_presentation(%s)" % settings)
+    data.append("        self.add_slide(%s)" % hello_page)
+    data.append("        self.add_slide(%s)" % add_text_page)
+    data.append("        self.add_slide(%s)" % goodbye_page)
     data.append('        self.begin_presentation(filename="%s")' % html_name)
     data.append("")
 
@@ -248,6 +250,7 @@ def main():
     else:
         from seleniumbase.translate.master_dict import MD
         from seleniumbase.translate.master_dict import MD_L_Codes
+
         md = MD.md
         lang_codes = MD_L_Codes.lang
         nl_code = lang_codes[language]
@@ -271,7 +274,7 @@ def main():
                         continue
             if found_swap:
                 if new_line.endswith("  # noqa"):  # Remove flake8 skip
-                    new_line = new_line[0:-len("  # noqa")]
+                    new_line = new_line[0 : -len("  # noqa")]
                 new_data.append(new_line)
                 continue
             new_data.append(line)
@@ -280,8 +283,9 @@ def main():
     file.writelines("\r\n".join(data))
     file.close()
     success = (
-        '\n' + c1 + '* Presentation: "' + file_name + '" was created! *'
-        '' + cr + '\n')
+        "\n" + c1 + '* Presentation: "' + file_name + '" was created! *'
+        "" + cr + "\n"
+    )
     print(success)
 
 

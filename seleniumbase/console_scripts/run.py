@@ -29,15 +29,16 @@ sbase grid-node start --hub=127.0.0.1
 
 import colorama
 import sys
+
 colorama.init(autoreset=True)
 
 
 def show_usage():
     show_basic_usage()
-    sc = ("")
-    sc += ('    Type "sbase help [COMMAND]" for specific command info.\n')
-    sc += ('    For info on all commands, type: "seleniumbase --help".\n')
-    sc += (' * (Use "pytest" for running tests) *\n')
+    sc = ""
+    sc += '    Type "sbase help [COMMAND]" for specific command info.\n'
+    sc += '    For info on all commands, type: "seleniumbase --help".\n'
+    sc += ' * (Use "pytest" for running tests) *\n'
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -55,6 +56,7 @@ def show_usage():
 def show_basic_usage():
     import time
     from seleniumbase.console_scripts import logo_helper
+
     seleniumbase_logo = logo_helper.get_seleniumbase_logo()
     print(seleniumbase_logo)
     print("")
@@ -62,32 +64,32 @@ def show_basic_usage():
     show_package_location()
     show_version_info()
     print("")
-    sc = ("")
-    sc += (' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n')
-    sc += (' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n')
-    sc += ("\n")
-    sc += ("COMMANDS:\n")
-    sc += ("      install         [DRIVER] [OPTIONS]\n")
-    sc += ("      methods         (List common Python methods)\n")
-    sc += ("      options         (List common pytest options)\n")
-    sc += ("      mkdir           [DIRECTORY] [OPTIONS]\n")
-    sc += ("      mkfile          [FILE.py] [OPTIONS]\n")
-    sc += ("      mkpres          [FILE.py] [LANG]\n")
-    sc += ("      mkchart         [FILE.py] [LANG]\n")
-    sc += ("      print           [FILE] [OPTIONS]\n")
-    sc += ("      translate       [SB_FILE.py] [LANG] [ACTION]\n")
-    sc += ("      convert         [WEBDRIVER_UNITTEST_FILE.py]\n")
-    sc += ("      extract-objects [SB_FILE.py]\n")
-    sc += ("      inject-objects  [SB_FILE.py] [OPTIONS]\n")
-    sc += ("      objectify       [SB_FILE.py] [OPTIONS]\n")
-    sc += ("      revert-objects  [SB_FILE.py] [OPTIONS]\n")
-    sc += ("      encrypt         (OR: obfuscate)\n")
-    sc += ("      decrypt         (OR: unobfuscate)\n")
-    sc += ("      download server (The Selenium Grid JAR file)\n")
-    sc += ("      grid-hub        [start|stop] [OPTIONS]\n")
-    sc += ("      grid-node       [start|stop] --hub=[HOST/IP]\n")
-    sc += (' * (EXAMPLE: "sbase install chromedriver latest")  *\n')
-    sc += ("")
+    sc = ""
+    sc += ' * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"\n'
+    sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
+    sc += "\n"
+    sc += "COMMANDS:\n"
+    sc += "      install         [DRIVER] [OPTIONS]\n"
+    sc += "      methods         (List common Python methods)\n"
+    sc += "      options         (List common pytest options)\n"
+    sc += "      mkdir           [DIRECTORY] [OPTIONS]\n"
+    sc += "      mkfile          [FILE.py] [OPTIONS]\n"
+    sc += "      mkpres          [FILE.py] [LANG]\n"
+    sc += "      mkchart         [FILE.py] [LANG]\n"
+    sc += "      print           [FILE] [OPTIONS]\n"
+    sc += "      translate       [SB_FILE.py] [LANG] [ACTION]\n"
+    sc += "      convert         [WEBDRIVER_UNITTEST_FILE.py]\n"
+    sc += "      extract-objects [SB_FILE.py]\n"
+    sc += "      inject-objects  [SB_FILE.py] [OPTIONS]\n"
+    sc += "      objectify       [SB_FILE.py] [OPTIONS]\n"
+    sc += "      revert-objects  [SB_FILE.py] [OPTIONS]\n"
+    sc += "      encrypt         (OR: obfuscate)\n"
+    sc += "      decrypt         (OR: unobfuscate)\n"
+    sc += "      download server (The Selenium Grid JAR file)\n"
+    sc += "      grid-hub        [start|stop] [OPTIONS]\n"
+    sc += "      grid-node       [start|stop] --hub=[HOST/IP]\n"
+    sc += ' * (EXAMPLE: "sbase install chromedriver latest")  *\n'
+    sc += ""
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -101,7 +103,7 @@ def show_install_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "install" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "install" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -138,7 +140,7 @@ def show_mkdir_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "mkdir" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "mkdir" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -161,7 +163,7 @@ def show_mkfile_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "mkfile" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "mkfile" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -185,7 +187,7 @@ def show_mkfile_usage():
     print('          methods, which are "open", "type", "click",')
     print('          "assert_element", and "assert_text". If using the')
     print('          basic boilerplate option, only the "open" method')
-    print('          is included.')
+    print("          is included.")
     print("")
 
 
@@ -193,7 +195,7 @@ def show_mkpres_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "mkpres" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "mkpres" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -220,7 +222,7 @@ def show_mkchart_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "mkchart" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "mkchart" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -247,7 +249,7 @@ def show_convert_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "convert" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "convert" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -266,7 +268,7 @@ def show_print_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "print" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "print" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -284,7 +286,7 @@ def show_translate_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "translate" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "translate" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -308,7 +310,7 @@ def show_translate_usage():
     print("         Both a language and an action must be specified.")
     print('         The "-p" action can be paired with one other action.')
     print('         When running with "-c" (or "--copy"), the new file name')
-    print('         will be the original name appended with an underscore')
+    print("         will be the original name appended with an underscore")
     print("         plus the 2-letter language code of the new language.")
     print('         (Example: Translating "test_1.py" into Japanese with')
     print('          "-c" will create a new file called "test_1_ja.py".)')
@@ -319,7 +321,7 @@ def show_extract_objects_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "extract-objects" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "extract-objects" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -336,7 +338,7 @@ def show_inject_objects_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "inject-objects" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "inject-objects" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -347,8 +349,8 @@ def show_inject_objects_usage():
     print("                           (Default: No added comments.)")
     print("  Output:")
     print('           Takes the page objects found in the "page_objects.py"')
-    print('           file and uses those to replace matching selectors in')
-    print('           the selected seleniumbase Python file.')
+    print("           file and uses those to replace matching selectors in")
+    print("           the selected seleniumbase Python file.")
     print("")
 
 
@@ -356,7 +358,7 @@ def show_objectify_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "objectify" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "objectify" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -366,8 +368,8 @@ def show_objectify_usage():
     print("           -c, --comments  (Add object selectors to the comments.)")
     print("                           (Default: No added comments.)")
     print("  Output:")
-    print('           A modified version of the file where the selectors')
-    print('           have been replaced with variable names defined in')
+    print("           A modified version of the file where the selectors")
+    print("           have been replaced with variable names defined in")
     print('           "page_objects.py", supporting the Page Object Pattern.')
     print("")
     print('           (seleniumbase "objectify" has the same outcome as')
@@ -379,7 +381,7 @@ def show_revert_objects_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "revert-objects" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "revert-objects" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -391,7 +393,7 @@ def show_revert_objects_usage():
     print("  Output:")
     print('           Reverts the changes made by "seleniumbase objectify" or')
     print('           "seleniumbase inject-objects" when run against a')
-    print('           seleniumbase Python file. Objects will get replaced by')
+    print("           seleniumbase Python file. Objects will get replaced by")
     print('           selectors stored in the "page_objects.py" file.')
     print("")
 
@@ -400,7 +402,7 @@ def show_encrypt_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "encrypt OR obfuscate" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "encrypt OR obfuscate" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -417,7 +419,7 @@ def show_decrypt_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "decrypt OR unobfuscate" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "decrypt OR unobfuscate" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -434,7 +436,7 @@ def show_download_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "download" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "download" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -450,7 +452,7 @@ def show_grid_hub_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "grid-hub" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "grid-hub" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -477,7 +479,7 @@ def show_grid_node_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("  " + c2 + "** " + c3 + "grid-node" + c2 + " **" + cr)
+    sc = "  " + c2 + "** " + c3 + "grid-node" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
@@ -501,6 +503,7 @@ def get_version_info():
     # from pkg_resources import get_distribution
     # version = get_distribution("seleniumbase").version
     from seleniumbase import __version__
+
     version_info = None
     c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -513,7 +516,7 @@ def get_version_info():
 
 def show_version_info():
     version_info = get_version_info()
-    print('%s' % version_info)
+    print("%s" % version_info)
 
 
 def get_package_location():
@@ -521,9 +524,10 @@ def get_package_location():
     # location = get_distribution("seleniumbase").location
     import os
     import seleniumbase
+
     location = os.path.dirname(os.path.realpath(seleniumbase.__file__))
     if location.endswith("seleniumbase"):
-        location = location[0:-len("seleniumbase")]
+        location = location[0 : -len("seleniumbase")]  # noqa: E203
     return location
 
 
@@ -539,8 +543,10 @@ def show_methods():
     c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
     c5 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTGREEN_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("\n " + c2 + " ** " + c3 + " SeleniumBase Python Methods "
-          "" + c2 + " ** " + cr)
+    sc = (
+        "\n " + c2 + " ** " + c3 + " SeleniumBase Python Methods "
+        "" + c2 + " ** " + cr
+    )
     print(sc)
     print("")
     line = "Here are some common methods that come with SeleniumBase:"
@@ -550,42 +556,42 @@ def show_methods():
     print(line)
     print("")
     sbm = ""
-    sbm += ('*.open(url) => Navigate the browser window to the URL.\n')
-    sbm += ('*.type(selector, text) => Update the field with the text.\n')
-    sbm += ('*.click(selector) => Click the element with the selector.\n')
-    sbm += ('*.click_link(link_text) => Click the link containing text.\n')
-    sbm += ('*.go_back() => Navigate back to the previous URL.\n')
-    sbm += ('*.select_option_by_text(dropdown_selector, option)\n')
-    sbm += ('*.hover_and_click(hover_selector, click_selector)\n')
-    sbm += ('*.drag_and_drop(drag_selector, drop_selector)\n')
-    sbm += ('*.get_text(selector) => Get the text from the element.\n')
-    sbm += ('*.get_current_url() => Get the URL of the current page.\n')
-    sbm += ('*.get_page_source() => Get the HTML of the current page.\n')
-    sbm += ('*.get_attribute(selector, attribute) => Get element attribute.\n')
-    sbm += ('*.get_title() => Get the title of the current page.\n')
-    sbm += ('*.switch_to_frame(frame) => Switch into the iframe container.\n')
-    sbm += ('*.switch_to_default_content() => Leave the iframe container.\n')
-    sbm += ('*.open_new_window() => Open a new window in the same browser.\n')
-    sbm += ('*.switch_to_window(window) => Switch to the browser window.\n')
-    sbm += ('*.switch_to_default_window() => Switch to the original window.\n')
-    sbm += ('*.get_new_driver(OPTIONS) => Open a new driver with OPTIONS.\n')
-    sbm += ('*.switch_to_driver(driver) => Switch to the browser driver.\n')
-    sbm += ('*.switch_to_default_driver() => Switch to the original driver.\n')
-    sbm += ('*.wait_for_element(selector) => Wait until element is visible.\n')
-    sbm += ('*.is_element_visible(selector) => Return element visibility.\n')
-    sbm += ('*.is_text_visible(text, selector) => Return text visibility.\n')
-    sbm += ('*.sleep(seconds) => Do nothing for the given amount of time.\n')
-    sbm += ('*.save_screenshot(name) => Save a screenshot in .png format.\n')
-    sbm += ('*.assert_element(selector) => Verify the element is visible.\n')
-    sbm += ('*.assert_text(text, selector) => Verify text in the element.\n')
-    sbm += ('*.assert_title(title) => Verify the title of the web page.\n')
-    sbm += ('*.assert_downloaded_file(file) => Verify file was downloaded.\n')
-    sbm += ('*.assert_no_404_errors() => Verify there are no broken links.\n')
-    sbm += ('*.assert_no_js_errors() => Verify there are no JS errors.\n')
-    sbm = sbm.replace("*.", "self." + c1).replace('(', cr + '(')
+    sbm += "*.open(url) => Navigate the browser window to the URL.\n"
+    sbm += "*.type(selector, text) => Update the field with the text.\n"
+    sbm += "*.click(selector) => Click the element with the selector.\n"
+    sbm += "*.click_link(link_text) => Click the link containing text.\n"
+    sbm += "*.go_back() => Navigate back to the previous URL.\n"
+    sbm += "*.select_option_by_text(dropdown_selector, option)\n"
+    sbm += "*.hover_and_click(hover_selector, click_selector)\n"
+    sbm += "*.drag_and_drop(drag_selector, drop_selector)\n"
+    sbm += "*.get_text(selector) => Get the text from the element.\n"
+    sbm += "*.get_current_url() => Get the URL of the current page.\n"
+    sbm += "*.get_page_source() => Get the HTML of the current page.\n"
+    sbm += "*.get_attribute(selector, attribute) => Get element attribute.\n"
+    sbm += "*.get_title() => Get the title of the current page.\n"
+    sbm += "*.switch_to_frame(frame) => Switch into the iframe container.\n"
+    sbm += "*.switch_to_default_content() => Leave the iframe container.\n"
+    sbm += "*.open_new_window() => Open a new window in the same browser.\n"
+    sbm += "*.switch_to_window(window) => Switch to the browser window.\n"
+    sbm += "*.switch_to_default_window() => Switch to the original window.\n"
+    sbm += "*.get_new_driver(OPTIONS) => Open a new driver with OPTIONS.\n"
+    sbm += "*.switch_to_driver(driver) => Switch to the browser driver.\n"
+    sbm += "*.switch_to_default_driver() => Switch to the original driver.\n"
+    sbm += "*.wait_for_element(selector) => Wait until element is visible.\n"
+    sbm += "*.is_element_visible(selector) => Return element visibility.\n"
+    sbm += "*.is_text_visible(text, selector) => Return text visibility.\n"
+    sbm += "*.sleep(seconds) => Do nothing for the given amount of time.\n"
+    sbm += "*.save_screenshot(name) => Save a screenshot in .png format.\n"
+    sbm += "*.assert_element(selector) => Verify the element is visible.\n"
+    sbm += "*.assert_text(text, selector) => Verify text in the element.\n"
+    sbm += "*.assert_title(title) => Verify the title of the web page.\n"
+    sbm += "*.assert_downloaded_file(file) => Verify file was downloaded.\n"
+    sbm += "*.assert_no_404_errors() => Verify there are no broken links.\n"
+    sbm += "*.assert_no_js_errors() => Verify there are no JS errors.\n"
+    sbm = sbm.replace("*.", "self." + c1).replace("(", cr + "(")
     sbm = sbm.replace("self.", c2 + "self" + c5 + "." + cr)
-    sbm = sbm.replace('(', c3 + '(' + c4)
-    sbm = sbm.replace(')', c3 + ')' + cr)
+    sbm = sbm.replace("(", c3 + "(" + c4)
+    sbm = sbm.replace(")", c3 + ")" + cr)
     print(sbm)
 
 
@@ -596,7 +602,7 @@ def show_options():
     c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
     c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = ("\n " + c2 + " ** " + c3 + " pytest CLI Options " + c2 + " ** " + cr)
+    sc = "\n " + c2 + " ** " + c3 + " pytest CLI Options " + c2 + " ** " + cr
     print(sc)
     print("")
     line = "Here are some common pytest options to use with SeleniumBase:"
@@ -606,47 +612,47 @@ def show_options():
     print(line)
     op = "\n"
     op += '--browser=BROWSER  (The web browser to use. Default is "chrome")\n'
-    op += '--headless  (Run tests headlessly. Default mode on Linux OS.)\n'
-    op += '--demo  (Slow down and visually see test actions as they occur.)\n'
-    op += '--slow  (Slow down the automation. Faster than using Demo Mode.)\n'
-    op += '--reuse-session / --rs  (Reuse browser session between tests.)\n'
-    op += '--crumbs  (Clear all cookies between tests reusing a session.)\n'
-    op += '--maximize  (Start tests with the web browser window maximized.)\n'
+    op += "--headless  (Run tests headlessly. Default mode on Linux OS.)\n"
+    op += "--demo  (Slow down and visually see test actions as they occur.)\n"
+    op += "--slow  (Slow down the automation. Faster than using Demo Mode.)\n"
+    op += "--reuse-session / --rs  (Reuse browser session between tests.)\n"
+    op += "--crumbs  (Clear all cookies between tests reusing a session.)\n"
+    op += "--maximize  (Start tests with the web browser window maximized.)\n"
     op += "--dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
     op += "--incognito  (Enable Chromium's Incognito mode.)\n"
     op += "--guest  (Enable Chromium's Guest mode.)\n"
-    op += '-m=MARKER  (Run tests with the specified pytest marker.)\n'
-    op += '-n=NUM  (Multithread the tests using that many threads.)\n'
-    op += '-v  (Verbose mode. Print the full names of each test run.)\n'
-    op += '--html=report.html  (Create a detailed pytest-html report.)\n'
-    op += '--collect-only / --co  (Only show discovered tests. No run.)\n'
-    op += '--co -q  (Only show full names of discovered tests. No run.)\n'
-    op += '--pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n'
-    op += '--trace  (Enter Debug Mode immediately after starting any test.)\n'
-    op += '      | Debug Mode Commands  >>>   help / h: List all commands. |\n'
-    op += '      |   n: Next line of method. s: Step through. c: Continue. |\n'
-    op += '      |  return / r: Run until method returns. j: Jump to line. |\n'
-    op += '      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n'
-    op += '      | longlist / ll: See code. dir(): List namespace objects. |\n'
-    op += '-x  (Stop running the tests after the first failure is reached.)\n'
-    op += '--archive-logs  (Archive old log files instead of deleting them.)\n'
-    op += '--save-screenshot  (Save a screenshot at the end of each test.)\n'
-    op += '--check-js  (Check for JavaScript errors after page loads.)\n'
-    op += '--start-page=URL  (The browser start page when tests begin.)\n'
+    op += "-m=MARKER  (Run tests with the specified pytest marker.)\n"
+    op += "-n=NUM  (Multithread the tests using that many threads.)\n"
+    op += "-v  (Verbose mode. Print the full names of each test run.)\n"
+    op += "--html=report.html  (Create a detailed pytest-html report.)\n"
+    op += "--collect-only / --co  (Only show discovered tests. No run.)\n"
+    op += "--co -q  (Only show full names of discovered tests. No run.)\n"
+    op += "--pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n"
+    op += "--trace  (Enter Debug Mode immediately after starting any test.)\n"
+    op += "      | Debug Mode Commands  >>>   help / h: List all commands. |\n"
+    op += "      |   n: Next line of method. s: Step through. c: Continue. |\n"
+    op += "      |  return / r: Run until method returns. j: Jump to line. |\n"
+    op += "      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n"
+    op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
+    op += "-x  (Stop running the tests after the first failure is reached.)\n"
+    op += "--archive-logs  (Archive old log files instead of deleting them.)\n"
+    op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"
+    op += "--check-js  (Check for JavaScript errors after page loads.)\n"
+    op += "--start-page=URL  (The browser start page when tests begin.)\n"
     op += "--agent=STRING  (Modify the web browser's User-Agent string.)\n"
     op += "--mobile  (Use Chromium's mobile device emulator during tests.)\n"
     op += '--metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)\n'
-    op += '--ad-block  (Block some types of display ads after page loads.)\n'
-    op += '--settings-file=FILE  (Override default SeleniumBase settings.)\n'
+    op += "--ad-block  (Block some types of display ads after page loads.)\n"
+    op += "--settings-file=FILE  (Override default SeleniumBase settings.)\n"
     op += '--env=ENV  (Set the test env. Access with "self.env" in tests.)\n'
     op += '--data=DATA  (Extra test data. Access with "self.data" in tests.)\n'
-    op += '--disable-csp  (Disable the Content Security Policy of websites.)\n'
-    op += '--server=SERVER  (The Selenium Grid server/IP used for tests.)\n'
-    op += '--port=PORT  (The Selenium Grid port used by the test server.)\n'
-    op += '--proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n'
-    op += '--proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)\n'
+    op += "--disable-csp  (Disable the Content Security Policy of websites.)\n"
+    op += "--server=SERVER  (The Selenium Grid server/IP used for tests.)\n"
+    op += "--port=PORT  (The Selenium Grid port used by the test server.)\n"
+    op += "--proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n"
+    op += "--proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)\n"
     op += cr
-    op = op.replace("\n-", "\n" + c1 + "-").replace('  (', cr + '  (')
+    op = op.replace("\n-", "\n" + c1 + "-").replace("  (", cr + "  (")
     op = op.replace(" / -", cr + " / " + c1 + "-")
     op = op.replace("=", c2 + "=" + c3)
     op = op.replace(" | ", " |" + c3 + " ").replace("|\n", cr + "|\n")
@@ -654,8 +660,8 @@ def show_options():
     op = op.replace("Debug Mode Commands", c5 + "Debug Mode Commands" + c3)
     op = op.replace(">>>", c4 + ">>>" + c3)
     print(op)
-    line = 'For the full list of ' + c2 + 'command-line options' + cr
-    line += ', type: "' + c3 + 'pytest' + cr + ' ' + c1 + '--help' + cr + '".'
+    line = "For the full list of " + c2 + "command-line options" + cr
+    line += ', type: "' + c3 + "pytest" + cr + " " + c1 + "--help" + cr + '".'
     print(line)
     print("")
 
@@ -685,7 +691,7 @@ def show_detailed_help():
     show_download_usage()
     show_grid_hub_usage()
     show_grid_node_usage()
-    print('* (Use "' + c3 + 'pytest' + cr + '" for running tests) *\n')
+    print('* (Use "' + c3 + "pytest" + cr + '" for running tests) *\n')
 
 
 def main():
@@ -706,6 +712,7 @@ def main():
     if command == "install":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_install
+
             sb_install.main()
         else:
             show_basic_usage()
@@ -713,6 +720,7 @@ def main():
     elif command == "mkdir":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkdir
+
             sb_mkdir.main()
         else:
             show_basic_usage()
@@ -720,6 +728,7 @@ def main():
     elif command == "mkfile":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkfile
+
             sb_mkfile.main()
         else:
             show_basic_usage()
@@ -727,6 +736,7 @@ def main():
     elif command == "mkpres":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkpres
+
             sb_mkpres.main()
         else:
             show_basic_usage()
@@ -734,6 +744,7 @@ def main():
     elif command == "mkchart":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkchart
+
             sb_mkchart.main()
         else:
             show_basic_usage()
@@ -741,6 +752,7 @@ def main():
     elif command == "convert":
         if len(command_args) == 1:
             from seleniumbase.utilities.selenium_ide import convert_ide
+
             convert_ide.main()
         else:
             show_basic_usage()
@@ -756,6 +768,7 @@ def main():
                 print("")
                 raise Exception(message)
             from seleniumbase.console_scripts import sb_print
+
             sb_print.main()
         else:
             show_basic_usage()
@@ -770,6 +783,7 @@ def main():
                 print("")
                 raise Exception(message)
             from seleniumbase.translate import translator
+
             translator.main()
         else:
             show_basic_usage()
@@ -777,6 +791,7 @@ def main():
     elif command == "extract-objects" or command == "extract_objects":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import objectify
+
             objectify.extract_objects()
         else:
             show_basic_usage()
@@ -784,6 +799,7 @@ def main():
     elif command == "inject-objects" or command == "inject_objects":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import objectify
+
             objectify.inject_objects()
         else:
             show_basic_usage()
@@ -791,6 +807,7 @@ def main():
     elif command == "objectify":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import objectify
+
             objectify.objectify()
         else:
             show_basic_usage()
@@ -798,6 +815,7 @@ def main():
     elif command == "revert-objects" or command == "revert_objects":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import objectify
+
             objectify.revert_objects()
         else:
             show_basic_usage()
@@ -805,6 +823,7 @@ def main():
     elif command == "encrypt" or command == "obfuscate":
         if len(command_args) >= 0:
             from seleniumbase.common import obfuscate
+
             obfuscate.main()
         else:
             show_basic_usage()
@@ -812,6 +831,7 @@ def main():
     elif command == "decrypt" or command == "unobfuscate":
         if len(command_args) >= 0:
             from seleniumbase.common import unobfuscate
+
             unobfuscate.main()
         else:
             show_basic_usage()
@@ -819,7 +839,9 @@ def main():
     elif command == "download":
         if len(command_args) >= 1 and command_args[0].lower() == "server":
             from seleniumbase.utilities.selenium_grid import (
-                download_selenium_server)
+                download_selenium_server,
+            )
+
             download_selenium_server.main(force_download=True)
         else:
             show_basic_usage()
@@ -827,6 +849,7 @@ def main():
     elif command == "grid-hub" or command == "grid_hub":
         if len(command_args) >= 1:
             from seleniumbase.utilities.selenium_grid import grid_hub
+
             grid_hub.main()
         else:
             show_basic_usage()
@@ -834,6 +857,7 @@ def main():
     elif command == "grid-node" or command == "grid_node":
         if len(command_args) >= 1:
             from seleniumbase.utilities.selenium_grid import grid_node
+
             grid_node.main()
         else:
             show_basic_usage()
@@ -841,6 +865,7 @@ def main():
     elif command == "version" or command == "--version":
         if len(command_args) == 0:
             from seleniumbase.console_scripts import logo_helper
+
             seleniumbase_logo = logo_helper.get_seleniumbase_logo()
             print(seleniumbase_logo)
             print("")
@@ -934,6 +959,16 @@ def main():
         show_detailed_help()
     else:
         show_usage()
+        colorama.init(autoreset=True)
+        c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+        c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
+        cr = colorama.Style.RESET_ALL
+        invalid_cmd = "===> INVALID COMMAND: >> %s <<\n" % command
+        invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
+        invalid_cmd = invalid_cmd.replace(" <<", " " + cr + "<<")
+        invalid_cmd = invalid_cmd.replace(">>", c7 + ">>" + cr)
+        invalid_cmd = invalid_cmd.replace("<<", c7 + "<<" + cr)
+        print(invalid_cmd)
 
 
 if __name__ == "__main__":
