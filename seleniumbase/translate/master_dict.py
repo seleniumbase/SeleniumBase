@@ -1010,8 +1010,8 @@ class MD:
     md["switch_to_default_content"][5] = "デフォルトのコンテンツに切り替える"
     md["switch_to_default_content"][6] = "기본_콘텐츠로_전환"
     md["switch_to_default_content"][7] = "mudar_para_o_conteúdo_padrão"
-    switch_to_default_content_ru = "переключиться_на_содержимое_по_умолчанию"
-    md["switch_to_default_content"][8] = switch_to_default_content_ru
+    stdc_ru = "переключиться_на_содержимое_по_умолчанию"
+    md["switch_to_default_content"][8] = stdc_ru
     md["switch_to_default_content"][9] = "cambiar_al_contenido_predeterminado"
 
     md["open_new_window"] = ["*"] * num_langs
@@ -1554,6 +1554,45 @@ class MD:
     md["assert_pdf_text"][8] = "подтвердить_текст_PDF"
     md["assert_pdf_text"][9] = "verificar_texto_pdf"
 
+    md["download_file"] = ["*"] * num_langs
+    md["download_file"][0] = "download_file"
+    md["download_file"][1] = "下载文件"
+    md["download_file"][2] = "bestand_downloaden"
+    md["download_file"][3] = "télécharger_fichier"
+    md["download_file"][4] = "scaricare_file"
+    md["download_file"][5] = "ファイルをダウンロード"
+    md["download_file"][6] = "파일_다운로드"
+    md["download_file"][7] = "baixar_arquivo"
+    md["download_file"][8] = "скачать_файл"
+    md["download_file"][9] = "descargar_archivo"
+
+    md["is_downloaded_file_present"] = ["*"] * num_langs
+    md["is_downloaded_file_present"][0] = "is_downloaded_file_present"
+    md["is_downloaded_file_present"][1] = "下载的文件是否存在"
+    md["is_downloaded_file_present"][2] = "gedownloade_bestand_aanwezig"
+    md["is_downloaded_file_present"][3] = "est_un_fichier_téléchargé_présent"
+    md["is_downloaded_file_present"][4] = "è_file_scaricato_presente"
+    md["is_downloaded_file_present"][5] = "ダウンロードしたファイルが存在するかどうか"
+    md["is_downloaded_file_present"][6] = "다운로드한_파일이_있습니다"
+    md["is_downloaded_file_present"][7] = "o_arquivo_baixado_está_presente"
+    md["is_downloaded_file_present"][8] = "загруженный_файл_присутствует"
+    md["is_downloaded_file_present"][9] = "está_presente_el_archivo_descargado"
+
+    md["get_path_of_downloaded_file"] = ["*"] * num_langs
+    md["get_path_of_downloaded_file"][0] = "get_path_of_downloaded_file"
+    md["get_path_of_downloaded_file"][1] = "获取下载的文件路径"
+    md["get_path_of_downloaded_file"][2] = "pad_gedownloade_bestand_ophalen"
+    gpodf_fr = "obtenir_chemin_du_fichier_téléchargé"
+    md["get_path_of_downloaded_file"][3] = gpodf_fr
+    gpodf_it = "ottenere_percorso_del_file_scaricato"
+    md["get_path_of_downloaded_file"][4] = gpodf_it
+    md["get_path_of_downloaded_file"][5] = "ダウンロードしたファイルパスを取得する"
+    md["get_path_of_downloaded_file"][6] = "다운로드한_파일_경로_가져_오기"
+    md["get_path_of_downloaded_file"][7] = "obter_caminho_do_arquivo_baixado"
+    md["get_path_of_downloaded_file"][8] = "получить_путь_к_загруженному_файлу"
+    gpodf_es = "obtener_ruta_del_archivo_descargado"
+    md["get_path_of_downloaded_file"][9] = gpodf_es
+
     md["assert_downloaded_file"] = ["*"] * num_langs
     md["assert_downloaded_file"][0] = "assert_downloaded_file"
     md["assert_downloaded_file"][1] = "检查下载的文件"
@@ -1565,6 +1604,18 @@ class MD:
     md["assert_downloaded_file"][7] = "verificar_arquivo_baixado"
     md["assert_downloaded_file"][8] = "подтвердить_загруженный_файл"
     md["assert_downloaded_file"][9] = "verificar_archivo_descargado"
+
+    md["delete_downloaded_file"] = ["*"] * num_langs
+    md["delete_downloaded_file"][0] = "delete_downloaded_file"
+    md["delete_downloaded_file"][1] = "删除下载的文件"
+    md["delete_downloaded_file"][2] = "verwijder_gedownloade_bestand"
+    md["delete_downloaded_file"][3] = "supprimer_fichier_téléchargé"
+    md["delete_downloaded_file"][4] = "eliminare_file_scaricato"
+    md["delete_downloaded_file"][5] = "ダウンロードしたファイルを削除する"
+    md["delete_downloaded_file"][6] = "다운로드한_파일_삭제"
+    md["delete_downloaded_file"][7] = "exclua_arquivo_baixado"
+    md["delete_downloaded_file"][8] = "удалить_загруженный_файл"
+    md["delete_downloaded_file"][9] = "eliminar_archivo_descargado"
 
     md["fail"] = ["*"] * num_langs
     md["fail"][0] = "fail"
@@ -2174,6 +2225,21 @@ class MD:
     md["start_tour"][7] = "jogar_o_tour"
     md["start_tour"][8] = "играть_тур"
     md["start_tour"][9] = "reproducir_la_gira"
+
+    # "delete_downloaded_file_if_present" -> double of "delete_downloaded_file"
+    md["delete_downloaded_file_if_present"] = ["*"] * num_langs
+    ddfip_en = "delete_downloaded_file_if_present"
+    md["delete_downloaded_file_if_present"][0] = ddfip_en
+    md["delete_downloaded_file_if_present"][1] = "删除下载的文件"
+    ddfip_nl = "verwijder_gedownloade_bestand"
+    md["delete_downloaded_file_if_present"][2] = ddfip_nl
+    md["delete_downloaded_file_if_present"][3] = "supprimer_fichier_téléchargé"
+    md["delete_downloaded_file_if_present"][4] = "eliminare_file_scaricato"
+    md["delete_downloaded_file_if_present"][5] = "ダウンロードしたファイルを削除する"
+    md["delete_downloaded_file_if_present"][6] = "다운로드한_파일_삭제"
+    md["delete_downloaded_file_if_present"][7] = "exclua_arquivo_baixado"
+    md["delete_downloaded_file_if_present"][8] = "удалить_загруженный_файл"
+    md["delete_downloaded_file_if_present"][9] = "eliminar_archivo_descargado"
 
     # "wait_for_and_accept_alert" -> duplicate of "accept_alert"
     md["wait_for_and_accept_alert"] = ["*"] * num_langs
