@@ -57,6 +57,9 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+if sys.version_info[0] < 3:
+    reload(sys)  # noqa: F821
+    sys.setdefaultencoding("utf8")
 
 
 class BaseCase(unittest.TestCase):
@@ -3248,14 +3251,14 @@ class BaseCase(unittest.TestCase):
 
     def __fix_unicode_conversion(self, text):
         """ Fixing Chinese characters when converting from PDF to HTML. """
-        if sys.version_info[0] < 3:
-            # Update encoding for Python 2 users
-            reload(sys)  # noqa
-            sys.setdefaultencoding("utf8")
         text = text.replace("\u2f8f", "\u884c")
         text = text.replace("\u2f45", "\u65b9")
         text = text.replace("\u2f08", "\u4eba")
         text = text.replace("\u2f70", "\u793a")
+        text = text.replace("\xe2\xbe\x8f", "\xe8\xa1\x8c")
+        text = text.replace("\xe2\xbd\xb0", "\xe7\xa4\xba")
+        text = text.replace("\xe2\xbe\x8f", "\xe8\xa1\x8c")
+        text = text.replace("\xe2\xbd\x85", "\xe6\x96\xb9")
         return text
 
     def get_pdf_text(
@@ -8114,7 +8117,7 @@ class BaseCase(unittest.TestCase):
         _type = type(selector)  # First make sure the selector is a string
         not_string = False
         if sys.version_info[0] < 3:
-            if _type is not str and _type is not unicode:  # noqa
+            if _type is not str and _type is not unicode:  # noqa: F821
                 not_string = True
         else:
             if _type is not str:
