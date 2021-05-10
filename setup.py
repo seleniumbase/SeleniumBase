@@ -3,7 +3,7 @@ The setup package to install SeleniumBase dependencies and plugins
 (Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.5+)
 """
 
-from setuptools import setup, find_packages  # noqa
+from setuptools import setup, find_packages  # noqa: F401
 import os
 import sys
 
@@ -31,12 +31,12 @@ if sys.argv[-1] == "publish":
     reply = None
     input_method = input
     if not sys.version_info[0] >= 3:
-        input_method = raw_input  # noqa
+        input_method = raw_input  # noqa: F821
     confirm_text = ">>> Confirm release PUBLISH to PyPI? (yes/no): "
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==3.9.1'")
+        os.system("python -m pip install 'flake8==3.9.2'")
         flake8_status = os.system("flake8 --exclude=temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -119,7 +119,7 @@ setup(
         "typing-extensions>=3.10.0.0",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=56.1.0;python_version>="3.6"',
+        'setuptools>=56.2.0;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.0.1;python_version>="3.6"',
         "wheel>=0.36.2",
@@ -178,7 +178,8 @@ setup(
         'traitlets==5.0.5;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
         'prompt-toolkit==3.0.18;python_version>="3.6"',
-        "decorator==4.4.2",
+        'decorator==4.4.2;python_version<"3.5"',
+        'decorator==5.0.7;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
@@ -212,7 +213,7 @@ setup(
         # pip install -e .[flake]
         "flake": [
             'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.9.1;python_version>="3.5"',
+            'flake8==3.9.2;python_version>="3.5"',
             'pyflakes==2.1.1;python_version<"3.5"',
             'pyflakes==2.3.1;python_version>="3.5"',
             'pycodestyle==2.5.0;python_version<"3.5"',
