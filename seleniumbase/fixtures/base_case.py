@@ -7582,10 +7582,8 @@ class BaseCase(unittest.TestCase):
             )
             logging.info(message)
 
-        module = self.__class__.__module__
-        if "." in module and len(module.split(".")[-1]) > 1:
-            module = module.split(".")[-1]
-        test_id = "%s.%s" % (module, self._testMethodName)
+        test_id = self.__get_display_id().split("::")[-1]
+
         if not name or len(name) < 1:
             name = "default"
         name = str(name)
