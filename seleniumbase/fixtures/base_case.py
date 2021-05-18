@@ -8948,6 +8948,7 @@ class BaseCase(unittest.TestCase):
         if not init:
             duration_ms = int(time.time() * 1000) - self.__start_time_ms
             duration = float(duration_ms) / 1000.0
+            duration = "{:.2f}".format(duration)
             sb_config._duration[test_id] = duration
             if (
                 has_exception
