@@ -125,6 +125,7 @@ setup(
         "wheel>=0.36.2",
         "attrs>=21.2.0",
         'PyYAML>=5.4.1;python_version>="3.6"',
+        "sortedcontainers==2.4.0",
         "certifi>=2020.12.5",
         "six==1.16.0",
         "nose==1.3.7",
@@ -179,7 +180,7 @@ setup(
         'prompt-toolkit==1.0.18;python_version<"3.6"',
         'prompt-toolkit==3.0.18;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.5"',
-        'decorator==5.0.7;python_version>="3.5"',
+        'decorator==5.0.9;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
@@ -198,7 +199,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.2.0;python_version>="3.6"',
-        'rich==10.2.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.2.1;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
@@ -208,7 +209,7 @@ setup(
         # pip install -e .[coverage]
         "coverage": [
             "coverage==5.5",
-            "pytest-cov==2.11.1",
+            "pytest-cov==2.12.0",
         ],
         # pip install -e .[flake]
         "flake": [

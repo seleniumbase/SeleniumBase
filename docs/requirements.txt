@@ -2,7 +2,8 @@ regex>=2021.4.4
 tqdm>=4.60.0
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
-Markdown==3.3.4
+Markdown==3.3.4;python_version>="3.6"
+MarkupSafe==2.0.1;python_version>="3.6"
 docutils==0.17.1
 Jinja2==3.0.0;python_version>="3.6"
 click==8.0.0

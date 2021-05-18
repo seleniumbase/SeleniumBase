@@ -536,6 +536,7 @@ def get_driver(
     headless=False,
     locale_code=None,
     use_grid=False,
+    protocol="http",
     servername="localhost",
     port=4444,
     proxy_string=None,
@@ -602,6 +603,7 @@ def get_driver(
             browser_name,
             headless,
             locale_code,
+            protocol,
             servername,
             port,
             proxy_string,
@@ -671,6 +673,7 @@ def get_remote_driver(
     browser_name,
     headless,
     locale_code,
+    protocol,
     servername,
     port,
     proxy_string,
@@ -703,7 +706,7 @@ def get_remote_driver(
     device_pixel_ratio,
 ):
     downloads_path = download_helper.get_downloads_folder()
-    address = "http://%s:%s/wd/hub" % (servername, port)
+    address = "%s://%s:%s/wd/hub" % (protocol, servername, port)
     desired_caps = {}
     extra_caps = {}
     if cap_file:

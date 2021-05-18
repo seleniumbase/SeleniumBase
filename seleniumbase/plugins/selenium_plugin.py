@@ -14,6 +14,7 @@ class SeleniumBrowser(Plugin):
     This plugin adds the following command-line options to nosetests:
     --browser=BROWSER  (The web browser to use. Default: "chrome".)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
+    --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
     --port=PORT  (The Selenium Grid port used by the test server.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
@@ -110,6 +111,18 @@ class SeleniumBrowser(Plugin):
             default=None,
             help="""The Chrome User Data Directory to use. (Chrome Profile)
                     If the directory doesn't exist, it'll be created.""",
+        )
+        parser.add_option(
+            "--protocol",
+            action="store",
+            dest="protocol",
+            choices=(
+                constants.Protocol.HTTP,
+                constants.Protocol.HTTPS,
+            ),
+            default=constants.Protocol.HTTP,
+            help="""Designates the Selenium Grid protocol to use.
+                    Default: http.""",
         )
         parser.add_option(
             "--server",
@@ -532,6 +545,7 @@ class SeleniumBrowser(Plugin):
         test.test.locale_code = self.options.locale_code
         test.test.interval = self.options.interval
         test.test.start_page = self.options.start_page
+        test.test.protocol = self.options.protocol
         test.test.servername = self.options.servername
         test.test.port = self.options.port
         test.test.user_data_dir = self.options.user_data_dir
