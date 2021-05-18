@@ -35,6 +35,7 @@ if pure_python:
     sb.headed = False
     sb.start_page = None
     sb.locale_code = None
+    sb.protocol = "http"
     sb.servername = "localhost"
     sb.port = 4444
     sb.data = None

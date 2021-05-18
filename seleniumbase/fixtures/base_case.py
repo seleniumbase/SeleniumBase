@@ -2206,6 +2206,7 @@ class BaseCase(unittest.TestCase):
         browser=None,
         headless=None,
         locale_code=None,
+        protocol=None,
         servername=None,
         port=None,
         proxy=None,
@@ -2242,6 +2243,7 @@ class BaseCase(unittest.TestCase):
         browser - the browser to use. (Ex: "chrome", "firefox")
         headless - the option to run webdriver in headless mode
         locale_code - the Language Locale Code for the web browser
+        protocol - if using a Selenium Grid, set the host protocol here
         servername - if using a Selenium Grid, set the host address here
         port - if using a Selenium Grid, set the host port here
         proxy - if using a proxy server, specify the "host:port" combo here
@@ -2302,6 +2304,8 @@ class BaseCase(unittest.TestCase):
             headless = self.headless
         if locale_code is None:
             locale_code = self.locale_code
+        if protocol is None:
+            protocol = self.protocol
         if servername is None:
             servername = self.servername
         if port is None:
@@ -2375,6 +2379,7 @@ class BaseCase(unittest.TestCase):
             headless=headless,
             locale_code=locale_code,
             use_grid=use_grid,
+            protocol=protocol,
             servername=servername,
             port=port,
             proxy_string=proxy_string,
@@ -8367,6 +8372,7 @@ class BaseCase(unittest.TestCase):
             self.with_page_source = sb_config.with_page_source
             self.with_db_reporting = sb_config.with_db_reporting
             self.with_s3_logging = sb_config.with_s3_logging
+            self.protocol = sb_config.protocol
             self.servername = sb_config.servername
             self.port = sb_config.port
             self.proxy_string = sb_config.proxy_string
@@ -8604,6 +8610,7 @@ class BaseCase(unittest.TestCase):
                 browser=self.browser,
                 headless=self.headless,
                 locale_code=self.locale_code,
+                protocol=self.protocol,
                 servername=self.servername,
                 port=self.port,
                 proxy=self.proxy_string,

@@ -385,6 +385,11 @@ class Browser:
     }
 
 
+class Protocol:
+    HTTP = "http"
+    HTTPS = "https"
+
+
 class State:
     PASSED = "Passed"
     FAILED = "Failed"

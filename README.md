@@ -350,6 +350,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
 --var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
+--protocol=PROTOCOL  # (The Selenium Grid protocol: http|https.)
 --server=SERVER  # (The Selenium Grid server/IP used for tests.)
 --port=PORT  # (The Selenium Grid port used by the test server.)
 --proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)

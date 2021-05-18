@@ -33,6 +33,7 @@ def pytest_addoption(parser):
     --var2=DATA  (Extra test data. Access with "self.var2" in tests.)
     --var3=DATA  (Extra test data. Access with "self.var3" in tests.)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
+    --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
     --port=PORT  (The Selenium Grid port used by the test server.)
     --cap-file=FILE  (The web browser's desired capabilities to use.)
@@ -333,6 +334,18 @@ def pytest_addoption(parser):
         help="""(DEPRECATED) - Page source is saved by default.
                 This option saves page source files on test failures.
                 (Automatically on when using --with-testing_base)""",
+    )
+    parser.addoption(
+        "--protocol",
+        action="store",
+        dest="protocol",
+        choices=(
+            constants.Protocol.HTTP,
+            constants.Protocol.HTTPS,
+        ),
+        default=constants.Protocol.HTTP,
+        help="""Designates the Selenium Grid protocol to use.
+                Default: http.""",
     )
     parser.addoption(
         "--server",
@@ -911,6 +924,7 @@ def pytest_configure(config):
     sb_config.with_screen_shots = config.getoption("with_screen_shots")
     sb_config.with_basic_test_info = config.getoption("with_basic_test_info")
     sb_config.with_page_source = config.getoption("with_page_source")
+    sb_config.protocol = config.getoption("protocol")
     sb_config.servername = config.getoption("servername")
     sb_config.port = config.getoption("port")
     sb_config.proxy_string = config.getoption("proxy_string")
