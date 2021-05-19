@@ -27,8 +27,8 @@ ENV/
 VENV/
 env.bak/
 venv.bak/
-sbase
-sbase*
+.sbase
+.sbase*
 seleniumbase_env
 seleniumbase_venv
 sbase_env

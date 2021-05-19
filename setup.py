@@ -223,6 +223,7 @@ setup(
     },
     packages=[
         "seleniumbase",
+        "sbase",
         "seleniumbase.common",
         "seleniumbase.config",
         "seleniumbase.console_scripts",
