@@ -211,6 +211,12 @@ pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 
 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
+To use a server on the ``https`` protocol, add ``--protocol=https``:
+
+```bash
+pytest test_suite.py --protocol=https --server=IP_ADDRESS --port=PORT
+```
+
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Example tests using Logging:</h3>
 
 ```bash

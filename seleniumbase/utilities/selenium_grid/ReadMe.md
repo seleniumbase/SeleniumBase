@@ -13,6 +13,7 @@ The following commands will work once you've installed seleniumbase.
 ```bash
 seleniumbase download server
 ```
+
 * (Required for using your own Selenium Grid)
 
 <h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Grid Hub server controls:</h4>
@@ -20,6 +21,7 @@ seleniumbase download server
 ```bash
 seleniumbase grid-hub {start|stop|restart} [OPTIONS]
 ```
+
 <b>Options:</b>
 <ul>
 <li> -v / --verbose  (Increases verbosity of logging output.)</li>
@@ -31,6 +33,7 @@ seleniumbase grid-hub {start|stop|restart} [OPTIONS]
 ```bash
 seleniumbase grid-node {start|stop|restart} --hub=[HUB_IP] [OPTIONS]
 ```
+
 <b>Options:</b>
 <ul>
 <li> -v / --verbose  (Increases verbosity of logging output.)</li>
@@ -48,28 +51,39 @@ pytest test_suite.py --server=IP_ADDRESS --port=4444
 You can also run your tests on someone else's Selenium Grid to avoid managing your own. Here are some Selenium Grids that you can use (and the run command format):
 
 * [BrowserStack](https://www.browserstack.com/automate#) Selenium Grid:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
 * [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
 ```
 
 * [TestingBot](https://testingbot.com/features) Selenium Grid:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
 * [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
 ```
 
 * [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
+
 ```bash
 pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
+```
+
+To use a server on the ``https`` protocol, add ``--protocol=https``:
+
+```bash
+pytest test_suite.py --protocol=https --server=IP_ADDRESS --port=PORT
 ```
 
 (For setting browser desired capabilities while running Selenium remotely, see the <a href="https://seleniumbase.io/help_docs/desired_capabilities/">desired capabilities documentation</a> and the sample files located in <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities">SeleniumBase/examples/capabilities</a>)
