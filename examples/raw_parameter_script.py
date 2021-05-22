@@ -83,6 +83,8 @@ if pure_python:
     sb.settings_file = None
     sb.user_data_dir = None
     sb.chromium_arg = None
+    sb.firefox_arg = None
+    sb.firefox_pref = None
     sb.proxy_string = None
     sb.swiftshader = False
     sb.ad_block_on = False

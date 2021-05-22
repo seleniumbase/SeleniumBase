@@ -4,7 +4,6 @@
     This uses the "::shadow" selector for piercing shadow-root elements.
     Here's the URL that contains Shadow DOM: chrome://downloads/ """
 
-
 from seleniumbase import BaseCase
 
 

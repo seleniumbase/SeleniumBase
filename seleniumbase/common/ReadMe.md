@@ -9,6 +9,7 @@
 * @rate_limited(max_per_second)
 
 Example demonstrating a rate-limited printing functionality:
+
 ```python
 import unittest
 from seleniumbase import decorators
@@ -37,6 +38,7 @@ Often in your tests, you may need to login to a website to perform testing. This
 * First, set your custom encryption/decryption key in your local clone of [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). (If you modify the key later, you'll need to encrypt all your passwords again.)
 
 * Next, use [obfuscate.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/obfuscate.py) to obfuscate/encrypt passwords into coded strings:
+
 ```bash
 python obfuscate.py
 
@@ -48,14 +50,17 @@ Password: *********
 Here is the obfuscated password:
 $^*ENCRYPT=RXlYMSJWTz8HSwM=?&#$
 ```
+
 (You can also use [unobfuscate.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/unobfuscate.py) to encrypt passwords without having them masked while typing them. Or you can use it to decrypt an obfuscated password.)
 
 * Finally, in your tests you can now decrypt obfuscated passwords for use in login methods like this:
+
 ```python
 from seleniumbase import encryption
 ...
 password = encryption.decrypt('$^*ENCRYPT=RXlYMSJWTz8HSwM=?&#$')
 ```
+
 (You'll notice that encrypted strings have a common start token and end token. This is to help tell them apart from non-encrypted strings. You can customize these tokens in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py). The current default setting is `$^*ENCRYPT=` for the start token and `?&#$` for the end token.)
 
 See [decryption_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/decryption_test.py) for an example of decrypting encrypted passwords in tests.
