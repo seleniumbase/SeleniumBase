@@ -90,7 +90,9 @@ self.click_partial_link(partial_link_text, timeout=None)
 
 self.get_text(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.get_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None, hard_fail=True)
+self.get_attribute(
+    selector, attribute, by=By.CSS_SELECTOR,
+    timeout=None, hard_fail=True)
 
 self.set_attribute(selector, attribute, value, by=By.CSS_SELECTOR, timeout=None)
 
@@ -130,31 +132,37 @@ self.switch_to_frame_of_element(selector, by=By.CSS_SELECTOR)
 
 self.hover_on_element(selector, by=By.CSS_SELECTOR)
 
-self.hover_and_click(hover_selector, click_selector,
-                     hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
-                     timeout=None)
+self.hover_and_click(
+    hover_selector, click_selector,
+    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
+    timeout=None)
 
-self.hover_and_double_click(hover_selector, click_selector,
-                            hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
-                            timeout=None)
+self.hover_and_double_click(
+    hover_selector, click_selector,
+    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
+    timeout=None)
 
 self.drag_and_drop(drag_selector, drop_selector,
                    drag_by=By.CSS_SELECTOR, drop_by=By.CSS_SELECTOR,
                    timeout=None)
 
-self.drag_and_drop_with_offset(selector, x, y, by=By.CSS_SELECTOR, timeout=None)
+self.drag_and_drop_with_offset(
+    selector, x, y, by=By.CSS_SELECTOR, timeout=None)
 
-self.select_option_by_text(dropdown_selector, option,
-                           dropdown_by=By.CSS_SELECTOR,
-                           timeout=None)
+self.select_option_by_text(
+    dropdown_selector, option,
+    dropdown_by=By.CSS_SELECTOR,
+    timeout=None)
 
-self.select_option_by_index(dropdown_selector, option,
-                            dropdown_by=By.CSS_SELECTOR,
-                            timeout=None)
+self.select_option_by_index(
+    dropdown_selector, option,
+    dropdown_by=By.CSS_SELECTOR,
+    timeout=None)
 
-self.select_option_by_value(dropdown_selector, option,
-                            dropdown_by=By.CSS_SELECTOR,
-                            timeout=None)
+self.select_option_by_value(
+    dropdown_selector, option,
+    dropdown_by=By.CSS_SELECTOR,
+    timeout=None)
 
 self.load_html_string(html_string, new_page=True)
 
@@ -188,16 +196,17 @@ self.switch_to_default_window()
 
 self.switch_to_newest_window()
 
-self.get_new_driver(browser=None, headless=None, locale_code=None,
-                    servername=None, port=None, proxy=None, agent=None,
-                    switch_to=True, cap_file=None, cap_string=None,
-                    disable_csp=None, enable_ws=None, enable_sync=None,
-                    use_auto_ext=None, no_sandbox=None, disable_gpu=None,
-                    incognito=None, guest_mode=None,
-                    devtools=None, remote_debug=None,
-                    swiftshader=None, block_images=None, user_data_dir=None,
-                    extension_zip=None, extension_dir=None, is_mobile=False,
-                    d_width=None, d_height=None, d_p_r=None)
+self.get_new_driver(
+    browser=None, headless=None, locale_code=None,
+    servername=None, port=None, proxy=None, agent=None,
+    switch_to=True, cap_file=None, cap_string=None,
+    disable_csp=None, enable_ws=None, enable_sync=None,
+    use_auto_ext=None, no_sandbox=None, disable_gpu=None,
+    incognito=None, guest_mode=None,
+    devtools=None, remote_debug=None,
+    swiftshader=None, block_images=None, user_data_dir=None,
+    extension_zip=None, extension_dir=None, is_mobile=None,
+    d_width=None, d_height=None, d_p_r=None)
 
 self.switch_to_driver(driver)
 
@@ -236,7 +245,8 @@ self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
 self.highlight_click(selector, by=By.CSS_SELECTOR, loops=3, scroll=True)
 
-self.highlight_update_text(selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
+self.highlight_update_text(
+    selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
 
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
 
@@ -296,17 +306,20 @@ self.assert_no_404_errors(multithreaded=True)
 
 self.print_unique_links_with_status_codes()
 
-self.get_pdf_text(pdf, page=None, maxpages=None, password=None,
-                  codec='utf-8', wrap=False, nav=False, override=False)
+self.get_pdf_text(
+    pdf, page=None, maxpages=None, password=None,
+    codec='utf-8', wrap=False, nav=False, override=False)
 
-self.assert_pdf_text(pdf, text, page=None, maxpages=None, password=None,
-                     codec='utf-8', wrap=True, nav=False, override=False)
+self.assert_pdf_text(
+    pdf, text, page=None, maxpages=None, password=None,
+    codec='utf-8', wrap=True, nav=False, override=False)
 
 self.create_folder(folder)
 
 self.choose_file(selector, file_path, by=By.CSS_SELECTOR, timeout=None)
 
-self.save_element_as_image_file(selector, file_name, folder=None, overlay_text="")
+self.save_element_as_image_file(
+    selector, file_name, folder=None, overlay_text="")
 
 self.download_file(file_url, destination_folder=None)
 
@@ -337,11 +350,13 @@ self.assert_not_equal(first, second, msg=None)
 
 self.assert_raises(*args, **kwargs)
 
-self.wait_for_attribute(selector, attribute, value=None,
-                        by=By.CSS_SELECTOR, timeout=None)
+self.wait_for_attribute(
+    selector, attribute, value=None,
+    by=By.CSS_SELECTOR, timeout=None)
 
-self.assert_attribute(selector, attribute, value=None,
-                      by=By.CSS_SELECTOR, timeout=None)
+self.assert_attribute(
+    selector, attribute, value=None,
+    by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_title(title)
 
@@ -425,34 +440,42 @@ self.add_meta_tag(http_equiv=None, content=None)
 
 self.create_presentation(name=None, theme="default", transition="default")
 
-self.add_slide(content=None, image=None, code=None, iframe=None,
-               content2=None, notes=None, transition=None, name=None)
+self.add_slide(
+    content=None, image=None, code=None, iframe=None,
+    content2=None, notes=None, transition=None, name=None)
 
-self.save_presentation(name=None, filename=None, show_notes=False, interval=0)
+self.save_presentation(
+    name=None, filename=None, show_notes=False, interval=0)
 
-self.begin_presentation(name=None, filename=None, show_notes=False, interval=0)
+self.begin_presentation(
+    name=None, filename=None, show_notes=False, interval=0)
 
 ############
 
-self.create_pie_chart(chart_name=None, title=None, subtitle=None,
-                      data_name=None, unit=None, libs=True,
-                      labels=True, legend=True)
+self.create_pie_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, libs=True,
+    labels=True, legend=True)
 
-self.create_bar_chart(chart_name=None, title=None, subtitle=None,
-                      data_name=None, unit=None, libs=True,
-                      labels=True, legend=True)
+self.create_bar_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, libs=True,
+    labels=True, legend=True)
 
-self.create_column_chart(chart_name=None, title=None, subtitle=None,
-                         data_name=None, unit=None, libs=True,
-                         labels=True, legend=True)
+self.create_column_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, libs=True,
+    labels=True, legend=True)
 
-self.create_line_chart(chart_name=None, title=None, subtitle=None,
-                       data_name=None, unit=None, zero=False, libs=True,
-                       labels=True, legend=True)
+self.create_line_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, zero=False, libs=True,
+    labels=True, legend=True)
 
-self.create_area_chart(chart_name=None, title=None, subtitle=None,
-                       data_name=None, unit=None, zero=False, libs=True,
-                       labels=True, legend=True)
+self.create_area_chart(
+    chart_name=None, title=None, subtitle=None,
+    data_name=None, unit=None, zero=False, libs=True,
+    labels=True, legend=True)
 
 self.add_series_to_chart(data_name=None, chart_name=None)
 
@@ -535,7 +558,8 @@ self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 #             self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
-self.wait_for_exact_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.wait_for_exact_text_visible(
+    text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)

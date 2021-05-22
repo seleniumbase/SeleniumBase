@@ -114,6 +114,8 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
 --chromium-arg=ARG  # (Add a Chromium arg for Chrome/Edge, comma-separated.)
+--firefox-arg=ARG  # (Add a Firefox arg for Firefox, comma-separated.)
+--firefox-pref=SET  # (Set a Firefox preference:value set, comma-separated.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (Run tests headlessly. Default mode on Linux OS.)

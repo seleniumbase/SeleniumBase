@@ -44,6 +44,8 @@ def pytest_addoption(parser):
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
     --chromium-arg=ARG  (Add a Chromium arg for Chrome/Edge, comma-separated.)
+    --firefox-arg=ARG  (Add a Firefox arg for Firefox, comma-separated.)
+    --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (Run tests headlessly. Default mode on Linux OS.)
@@ -420,6 +422,35 @@ def pytest_addoption(parser):
                 Format: A comma-separated list of Chromium args.
                 If an arg doesn't start with "--", that will be
                 added to the beginning of the arg automatically.
+                Default: None.""",
+    )
+    parser.addoption(
+        "--firefox_arg",
+        "--firefox-arg",
+        action="store",
+        dest="firefox_arg",
+        default=None,
+        help="""Add a Firefox argument for Firefox browser runs.
+                Format: A comma-separated list of Firefox args.
+                If an arg doesn't start with "--", that will be
+                added to the beginning of the arg automatically.
+                Default: None.""",
+    )
+    parser.addoption(
+        "--firefox_pref",
+        "--firefox-pref",
+        action="store",
+        dest="firefox_pref",
+        default=None,
+        help="""Set a Firefox preference:value combination.
+                Format: A comma-separated list of pref:value items.
+                Example usage:
+                    --firefox-pref="browser.formfill.enable:True"
+                    --firefox-pref="pdfjs.disabled:False"
+                    --firefox-pref="abc.def.xyz:42,hello.world:text"
+                Boolean and integer values to the right of the ":"
+                will be automatically converted into proper format.
+                If there's no ":" in the string, then True is used.
                 Default: None.""",
     )
     parser.addoption(
@@ -916,6 +947,8 @@ def pytest_configure(config):
     sb_config.interval = config.getoption("interval")
     sb_config.start_page = config.getoption("start_page")
     sb_config.chromium_arg = config.getoption("chromium_arg")
+    sb_config.firefox_arg = config.getoption("firefox_arg")
+    sb_config.firefox_pref = config.getoption("firefox_pref")
     sb_config.extension_zip = config.getoption("extension_zip")
     sb_config.extension_dir = config.getoption("extension_dir")
     sb_config.with_testing_base = config.getoption("with_testing_base")

@@ -153,6 +153,8 @@ Run an example test using a nosetest configuration file:
 nosetests my_first_test.py --config=example_config.cfg
 ```
 
+--------
+
 For more advanced run commands, such as using a proxy server, see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
 
 --------

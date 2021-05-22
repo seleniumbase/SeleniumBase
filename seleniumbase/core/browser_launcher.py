@@ -375,6 +375,8 @@ def _set_firefox_options(
     proxy_string,
     user_agent,
     disable_csp,
+    firefox_arg,
+    firefox_pref,
 ):
     options = webdriver.FirefoxOptions()
     options.accept_untrusted_certs = True
@@ -466,6 +468,51 @@ def _set_firefox_options(
             "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ),
     )
+    if firefox_arg:
+        # Can be a comma-separated list of Firefox args
+        firefox_arg_list = firefox_arg.split(",")
+        for firefox_arg_item in firefox_arg_list:
+            firefox_arg_item = firefox_arg_item.strip()
+            if not firefox_arg_item.startswith("--"):
+                if firefox_arg_item.startswith("-"):
+                    firefox_arg_item = "-" + firefox_arg_item
+                else:
+                    firefox_arg_item = "--" + firefox_arg_item
+            if len(firefox_arg_item) >= 3:
+                options.add_argument(firefox_arg_item)
+    if firefox_pref:
+        # Can be a comma-separated list of Firefox preference:value pairs
+        firefox_pref_list = firefox_pref.split(",")
+        for firefox_pref_item in firefox_pref_list:
+            f_pref = None
+            f_pref_value = None
+            needs_conversion = False
+            if firefox_pref_item.count(":") == 0:
+                f_pref = firefox_pref_item
+                f_pref_value = True
+            elif firefox_pref_item.count(":") == 1:
+                f_pref = firefox_pref_item.split(":")[0]
+                f_pref_value = firefox_pref_item.split(":")[1]
+                needs_conversion = True
+            else:  # More than one ":" in the set. (Too many!)
+                raise Exception(
+                    'Incorrect formatting for Firefox "pref:value" set!'
+                )
+            f_pref = firefox_pref_item.strip()
+            if needs_conversion:
+                f_pref_value = firefox_pref_item.strip()
+                if f_pref_value.lower == "true" or len(f_pref_value) == 0:
+                    f_pref_value = True
+                elif f_pref_value.lower == "false":
+                    f_pref_value = False
+                elif f_pref_value.isdigit():
+                    f_pref_value = int(f_pref_value)
+                elif f_pref_value.isdecimal():
+                    f_pref_value = float(f_pref_value)
+                else:
+                    pass  # keep as string
+            if len(f_pref) >= 1:
+                options.set_preference(f_pref, f_pref_value)
     return options
 
 
@@ -556,6 +603,8 @@ def get_driver(
     swiftshader=None,
     block_images=None,
     chromium_arg=None,
+    firefox_arg=None,
+    firefox_pref=None,
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
@@ -626,6 +675,8 @@ def get_driver(
             swiftshader,
             block_images,
             chromium_arg,
+            firefox_arg,
+            firefox_pref,
             user_data_dir,
             extension_zip,
             extension_dir,
@@ -659,6 +710,8 @@ def get_driver(
             swiftshader,
             block_images,
             chromium_arg,
+            firefox_arg,
+            firefox_pref,
             user_data_dir,
             extension_zip,
             extension_dir,
@@ -696,6 +749,8 @@ def get_remote_driver(
     swiftshader,
     block_images,
     chromium_arg,
+    firefox_arg,
+    firefox_pref,
     user_data_dir,
     extension_zip,
     extension_dir,
@@ -783,6 +838,8 @@ def get_remote_driver(
             proxy_string,
             user_agent,
             disable_csp,
+            firefox_arg,
+            firefox_pref,
         )
         capabilities = firefox_options.to_capabilities()
         capabilities["marionette"] = True
@@ -907,6 +964,8 @@ def get_local_driver(
     swiftshader,
     block_images,
     chromium_arg,
+    firefox_arg,
+    firefox_pref,
     user_data_dir,
     extension_zip,
     extension_dir,
@@ -929,6 +988,8 @@ def get_local_driver(
             proxy_string,
             user_agent,
             disable_csp,
+            firefox_arg,
+            firefox_pref,
         )
         if LOCAL_GECKODRIVER and os.path.exists(LOCAL_GECKODRIVER):
             try:
