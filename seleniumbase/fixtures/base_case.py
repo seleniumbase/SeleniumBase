@@ -2227,10 +2227,12 @@ class BaseCase(unittest.TestCase):
         swiftshader=None,
         block_images=None,
         chromium_arg=None,
+        firefox_arg=None,
+        firefox_pref=None,
         user_data_dir=None,
         extension_zip=None,
         extension_dir=None,
-        is_mobile=False,
+        is_mobile=None,
         d_width=None,
         d_height=None,
         d_p_r=None,
@@ -2263,6 +2265,8 @@ class BaseCase(unittest.TestCase):
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
         block_images - the option to block images from loading (Chrome)
         chromium_arg - the option to add a Chromium arg to Chrome/Edge
+        firefox_arg - the option to add a Firefox arg to Firefox runs
+        firefox_pref - the option to add a Firefox pref:value set (Firefox)
         user_data_dir - Chrome's User Data Directory to use (Chrome-only)
         extension_zip - A Chrome Extension ZIP file to use (Chrome-only)
         extension_dir - A Chrome Extension folder to use (Chrome-only)
@@ -2346,6 +2350,10 @@ class BaseCase(unittest.TestCase):
             block_images = self.block_images
         if chromium_arg is None:
             chromium_arg = self.chromium_arg
+        if firefox_arg is None:
+            firefox_arg = self.firefox_arg
+        if firefox_pref is None:
+            firefox_pref = self.firefox_pref
         if user_data_dir is None:
             user_data_dir = self.user_data_dir
         if extension_zip is None:
@@ -2358,7 +2366,7 @@ class BaseCase(unittest.TestCase):
         if cap_string is None:
             cap_string = self.cap_string
         if is_mobile is None:
-            is_mobile = False
+            is_mobile = self.mobile_emulator
         if d_width is None:
             d_width = self.__device_width
         if d_height is None:
@@ -2399,6 +2407,8 @@ class BaseCase(unittest.TestCase):
             swiftshader=swiftshader,
             block_images=block_images,
             chromium_arg=chromium_arg,
+            firefox_arg=firefox_arg,
+            firefox_pref=firefox_pref,
             user_data_dir=user_data_dir,
             extension_zip=extension_zip,
             extension_dir=extension_dir,
@@ -8388,6 +8398,8 @@ class BaseCase(unittest.TestCase):
             self.ad_block_on = sb_config.ad_block_on
             self.block_images = sb_config.block_images
             self.chromium_arg = sb_config.chromium_arg
+            self.firefox_arg = sb_config.firefox_arg
+            self.firefox_pref = sb_config.firefox_pref
             self.verify_delay = sb_config.verify_delay
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
@@ -8631,6 +8643,8 @@ class BaseCase(unittest.TestCase):
                 swiftshader=self.swiftshader,
                 block_images=self.block_images,
                 chromium_arg=self.chromium_arg,
+                firefox_arg=self.firefox_arg,
+                firefox_pref=self.firefox_pref,
                 user_data_dir=self.user_data_dir,
                 extension_zip=self.extension_zip,
                 extension_dir=self.extension_dir,

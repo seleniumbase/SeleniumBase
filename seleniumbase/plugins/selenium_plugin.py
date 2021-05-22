@@ -25,6 +25,8 @@ class SeleniumBrowser(Plugin):
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
     --chromium-arg=ARG  (Add a Chromium arg for Chrome/Edge, comma-separated.)
+    --firefox-arg=ARG  (Add a Firefox arg for Firefox, comma-separated.)
+    --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
     --headless  (Run tests headlessly. Default mode on Linux OS.)
@@ -197,6 +199,35 @@ class SeleniumBrowser(Plugin):
                     Format: A comma-separated list of Chromium args.
                     If an arg doesn't start with "--", that will be
                     added to the beginning of the arg automatically.
+                    Default: None.""",
+        )
+        parser.add_option(
+            "--firefox_arg",
+            "--firefox-arg",
+            action="store",
+            dest="firefox_arg",
+            default=None,
+            help="""Add a Firefox argument for Firefox browser runs.
+                    Format: A comma-separated list of Firefox args.
+                    If an arg doesn't start with "--", that will be
+                    added to the beginning of the arg automatically.
+                    Default: None.""",
+        )
+        parser.add_option(
+            "--firefox_pref",
+            "--firefox-pref",
+            action="store",
+            dest="firefox_pref",
+            default=None,
+            help="""Set a Firefox preference:value combination.
+                    Format: A comma-separated list of pref:value items.
+                    Example usage:
+                        --firefox-pref="browser.formfill.enable:True"
+                        --firefox-pref="pdfjs.disabled:False"
+                        --firefox-pref="abc.def.xyz:42,hello.world:text"
+                    Boolean and integer values to the right of the ":"
+                    will be automatically converted into proper format.
+                    If there's no ":" in the string, then True is used.
                     Default: None.""",
         )
         parser.add_option(
@@ -552,6 +583,8 @@ class SeleniumBrowser(Plugin):
         test.test.extension_zip = self.options.extension_zip
         test.test.extension_dir = self.options.extension_dir
         test.test.chromium_arg = self.options.chromium_arg
+        test.test.firefox_arg = self.options.firefox_arg
+        test.test.firefox_pref = self.options.firefox_pref
         test.test.proxy_string = self.options.proxy_string
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
