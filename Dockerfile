@@ -71,6 +71,7 @@ RUN echo "export PYTHONIOENCODING=utf8" >> ~/.bashrc
 #=====================
 # Set up SeleniumBase
 #=====================
+COPY sbase /SeleniumBase/sbase/
 COPY seleniumbase /SeleniumBase/seleniumbase/
 COPY examples /SeleniumBase/examples/
 COPY integrations /SeleniumBase/integrations/
