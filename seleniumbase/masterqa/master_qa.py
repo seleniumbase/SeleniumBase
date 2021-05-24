@@ -59,7 +59,10 @@ class MasterQA(BaseCase):
 
     def tearDown(self):
         if self.headless and self.check_count > 0:
-            print("WARNING: %s manual checks were skipped!" % self.check_count)
+            print(
+                "WARNING: %s manual checks were skipped! (MasterQA)"
+                % self.check_count
+            )
         if sys.exc_info()[1]:
             self.__add_failure(sys.exc_info()[1])
         self.__process_manual_check_results(self.auto_close_results_page)
@@ -362,7 +365,9 @@ class MasterQA(BaseCase):
     def __process_manual_check_results(self, auto_close_results_page=False):
         perfection = True
         failures_count = self.manual_check_count - self.manual_check_successes
-        print("\n\n*** Test Result: ***")
+        if not self.headless:
+            print("")
+        print("\n*** MasterQA Manual Test Results: ***")
         if self.manual_check_successes == self.manual_check_count:
             pass
         else:
@@ -469,9 +474,10 @@ class MasterQA(BaseCase):
         results_file = self.__add_results_page(report_html)
         archived_results_file = log_path + "/" + self.RESULTS_PAGE
         shutil.copyfile(results_file, archived_results_file)
-        print(
-            "\n*** The results html page is located at: ***\n" + results_file
-        )
+        if self.manual_check_count > 0:
+            print(
+                "\n*** The manual test report is located at:\n" + results_file
+            )
         self.open("file://%s" % archived_results_file)
         if auto_close_results_page:
             # Long enough to notice the results before closing the page
