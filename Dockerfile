@@ -77,8 +77,8 @@ COPY examples /SeleniumBase/examples/
 COPY integrations /SeleniumBase/integrations/
 COPY requirements.txt /SeleniumBase/requirements.txt
 COPY setup.py /SeleniumBase/setup.py
-RUN find -name '*.pyc' -delete
-RUN find -name __pycache__ -delete
+RUN find . -name '*.pyc' -delete
+RUN find . -name __pycache__ -delete
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN pip3 install --upgrade setuptools-scm

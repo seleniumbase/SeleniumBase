@@ -339,6 +339,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --chrome  # (Shortcut for "--browser=chrome". On by default.)
 --edge  # (Shortcut for "--browser=edge".)
 --firefox  # (Shortcut for "--browser=firefox".)
+--ie  # (Shortcut for "--browser=ie".)
 --opera  # (Shortcut for "--browser=opera".)
 --safari  # (Shortcut for "--browser=safari".)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)

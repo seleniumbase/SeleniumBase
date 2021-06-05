@@ -126,11 +126,11 @@ setup(
         "attrs>=21.2.0",
         'PyYAML>=5.4.1;python_version>="3.6"',
         "sortedcontainers==2.4.0",
-        "certifi>=2020.12.5",
+        "certifi>=2021.5.30",
         "six==1.16.0",
         "nose==1.3.7",
         'ipdb==0.13.4;python_version<"3.6"',
-        'ipdb==0.13.7;python_version>="3.6"',
+        'ipdb==0.13.9;python_version>="3.6"',
         'parso==0.7.1;python_version<"3.6"',
         'parso==0.8.2;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
@@ -138,7 +138,7 @@ setup(
         "idna==2.10",  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
-        "urllib3==1.26.4",  # Must stay in sync with "requests"
+        "urllib3==1.26.5",  # Must stay in sync with "requests"
         "requests==2.25.1",
         "selenium==3.141.0",
         "msedge-selenium-tools==3.141.3",
@@ -146,7 +146,8 @@ setup(
         'more-itertools==8.8.0;python_version>="3.5"',
         "cssselect==1.1.0",
         "filelock==3.0.12",
-        "fasteners==0.16",
+        'fasteners==0.16;python_version<"3.6"',
+        'fasteners==0.16.1;python_version>="3.6"',
         "pluggy==0.13.1",
         'py==1.8.1;python_version<"3.5"',
         'py==1.10.0;python_version>="3.5"',
@@ -160,7 +161,8 @@ setup(
         'pytest-metadata==1.11.0;python_version>="3.6"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==8.0;python_version<"3.5"',
-        'pytest-rerunfailures==9.1.1;python_version>="3.5"',
+        'pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'pytest-rerunfailures==10.0;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
         'pytest-xdist==2.2.1;python_version>="3.5"',
         "parameterized==0.8.1",
@@ -184,7 +186,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.23.1;python_version>="3.7"',
+        'ipython==7.24.1;python_version>="3.7"',
         'matplotlib-inline==0.1.2;python_version>="3.7"',
         "colorama==0.4.4",
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
@@ -209,7 +211,7 @@ setup(
         # pip install -e .[coverage]
         "coverage": [
             "coverage==5.5",
-            "pytest-cov==2.12.0",
+            "pytest-cov==2.12.1",
         ],
         # pip install -e .[flake]
         "flake": [
