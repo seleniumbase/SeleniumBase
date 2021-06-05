@@ -24,6 +24,7 @@ def pytest_addoption(parser):
     --chrome  (Shortcut for "--browser=chrome". On by default.)
     --edge  (Shortcut for "--browser=edge".)
     --firefox  (Shortcut for "--browser=firefox".)
+    --ie  (Shortcut for "--browser=ie".)
     --opera  (Shortcut for "--browser=opera".)
     --safari  (Shortcut for "--browser=safari".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
@@ -129,6 +130,13 @@ def pytest_addoption(parser):
         dest="use_firefox",
         default=False,
         help="""Shortcut for --browser=firefox.)""",
+    )
+    parser.addoption(
+        "--ie",
+        action="store_true",
+        dest="use_ie",
+        default=False,
+        help="""Shortcut for --browser=ie.)""",
     )
     parser.addoption(
         "--opera",
@@ -902,6 +910,10 @@ def pytest_addoption(parser):
         browser_changes += 1
         sb_config._browser_shortcut = "firefox"
         browser_list.append("--firefox")
+    if "--ie" in sys_argv and not browser_set == "ie":
+        browser_changes += 1
+        sb_config._browser_shortcut = "ie"
+        browser_list.append("--ie")
     if "--opera" in sys_argv and not browser_set == "opera":
         browser_changes += 1
         sb_config._browser_shortcut = "opera"
@@ -1057,6 +1069,8 @@ def pytest_configure(config):
             sb_config.browser = "edge"
         elif config.getoption("use_firefox"):
             sb_config.browser = "firefox"
+        elif config.getoption("use_ie"):
+            sb_config.browser = "ie"
         elif config.getoption("use_opera"):
             sb_config.browser = "opera"
         elif config.getoption("use_safari"):
