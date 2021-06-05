@@ -92,6 +92,8 @@ def main(override=None):
         sys.argv = ["seleniumbase", "install", "edgedriver"]
     elif override == "geckodriver":
         sys.argv = ["seleniumbase", "install", "geckodriver"]
+    elif override == "iedriver":
+        sys.argv = ["seleniumbase", "install", "iedriver"]
 
     num_args = len(sys.argv)
     if (
@@ -108,6 +110,9 @@ def main(override=None):
 
     file_name = None
     download_url = None
+    headless_ie_url = None
+    headless_ie_exists = False
+    headless_ie_file_name = None
     downloads_folder = DRIVER_DIR
     sys_plat = sys.platform
     expected_contents = None
@@ -336,6 +341,19 @@ def main(override=None):
             "https://selenium-release.storage.googleapis.com/"
             "%s/%s" % (major_version, file_name)
         )
+        headless_ie_version = "v1.4"
+        headless_ie_file_name = "headless-selenium-for-win-v1-4.zip"
+        headless_ie_url = (
+            "https://github.com/kybu/headless-selenium-for-win/"
+            "releases/download/"
+            "%s/%s" % (headless_ie_version, headless_ie_file_name)
+        )
+        url_request = requests.get(headless_ie_url)
+        if url_request.ok:
+            headless_ie_exists = True
+            msg = c2 + "HeadlessIEDriver version for download" + cr
+            p_version = c3 + headless_ie_version + cr
+            print("\n*** %s = %s" % (msg, p_version))
     elif name == "operadriver" or name == "operachromiumdriver":
         name = "operadriver"
         use_version = DEFAULT_OPERADRIVER_VERSION
@@ -410,6 +428,86 @@ def main(override=None):
     file_path = downloads_folder + "/" + file_name
     if not os.path.exists(downloads_folder):
         os.mkdir(downloads_folder)
+
+    if headless_ie_exists:
+        headless_ie_file_path = downloads_folder + "/" + headless_ie_file_name
+        print(
+            "\nDownloading %s from:\n%s ..."
+            % (headless_ie_file_name, headless_ie_url)
+        )
+        remote_file = requests.get(headless_ie_url)
+        with open(headless_ie_file_path, "wb") as file:
+            file.write(remote_file.content)
+        print("Download Complete!\n")
+        zip_file_path = headless_ie_file_path
+        zip_ref = zipfile.ZipFile(zip_file_path, "r")
+        contents = zip_ref.namelist()
+        h_ie_fn = headless_ie_file_name.split(".zip")[0]
+        expected_contents = [
+            "%s/" % h_ie_fn,
+            "%s/ruby_example/" % h_ie_fn,
+            "%s/ruby_example/Gemfile" % h_ie_fn,
+            "%s/ruby_example/Gemfile.lock" % h_ie_fn,
+            "%s/ruby_example/ruby_example.rb" % h_ie_fn,
+            "%s/desktop_utils.exe" % h_ie_fn,
+            "%s/headless_ie_selenium.exe" % h_ie_fn,
+            "%s/README.md" % h_ie_fn,
+        ]
+        if len(contents) > 8:
+            raise Exception("Unexpected content in HeadlessIEDriver Zip file!")
+        for content in contents:
+            if content not in expected_contents:
+                raise Exception(
+                    "Expected file [%s] missing from [%s]"
+                    % (content, expected_contents)
+                )
+        # Zip file is valid. Proceed.
+        driver_path = None
+        driver_file = None
+        filename = None
+        for f_name in contents:
+            # Remove existing version if exists
+            str_name = str(f_name)
+            new_file = downloads_folder + "/" + str_name
+            if str_name == "%s/headless_ie_selenium.exe" % h_ie_fn:
+                driver_file = str_name
+                driver_path = new_file
+                filename = "headless_ie_selenium.exe"
+                if os.path.exists(new_file):
+                    os.remove(new_file)
+        if not driver_file or not driver_path or not filename:
+            raise Exception("headless_ie_selenium.exe missing from Zip file!")
+        print("Extracting %s from %s ..." % (filename, headless_ie_file_name))
+        zip_ref.extractall(downloads_folder)
+        zip_ref.close()
+        os.remove(zip_file_path)
+        shutil.copyfile(driver_path, "%s/%s" % (downloads_folder, filename))
+        print("Unzip Complete!\n")
+        to_remove = [
+            "%s/%s/ruby_example/Gemfile" % (downloads_folder, h_ie_fn),
+            "%s/%s/ruby_example/Gemfile.lock" % (downloads_folder, h_ie_fn),
+            "%s/%s/ruby_example/ruby_example.rb" % (downloads_folder, h_ie_fn),
+            "%s/%s/desktop_utils.exe" % (downloads_folder, h_ie_fn),
+            "%s/%s/headless_ie_selenium.exe" % (downloads_folder, h_ie_fn),
+            "%s/%s/README.md" % (downloads_folder, h_ie_fn),
+        ]
+        for file_to_remove in to_remove:
+            if os.path.exists(file_to_remove):
+                os.remove(file_to_remove)
+        if os.path.exists("%s/%s/ruby_example/" % (downloads_folder, h_ie_fn)):
+            # Only works if the directory is empty
+            os.rmdir("%s/%s/ruby_example/" % (downloads_folder, h_ie_fn))
+        if os.path.exists("%s/%s/" % (downloads_folder, h_ie_fn)):
+            # Only works if the directory is empty
+            os.rmdir("%s/%s/" % (downloads_folder, h_ie_fn))
+        driver_path = "%s/%s" % (downloads_folder, filename)
+        print(
+            "The file [%s] was saved to:\n%s%s%s\n"
+            % (filename, c3, driver_path, cr)
+        )
+        print("Making [%s %s] executable ..." % (driver_file, use_version))
+        make_executable(driver_path)
+        print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
 
     print("\nDownloading %s from:\n%s ..." % (file_name, download_url))
     remote_file = requests.get(download_url)

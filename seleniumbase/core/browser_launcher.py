@@ -37,6 +37,7 @@ LOCAL_CHROMEDRIVER = None
 LOCAL_GECKODRIVER = None
 LOCAL_EDGEDRIVER = None
 LOCAL_IEDRIVER = None
+LOCAL_HEADLESS_IEDRIVER = None
 LOCAL_OPERADRIVER = None
 if "darwin" in PLATFORM or "linux" in PLATFORM:
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver"
@@ -47,6 +48,7 @@ elif "win32" in PLATFORM or "win64" in PLATFORM or "x64" in PLATFORM:
     IS_WINDOWS = True
     LOCAL_EDGEDRIVER = DRIVER_DIR + "/msedgedriver.exe"
     LOCAL_IEDRIVER = DRIVER_DIR + "/IEDriverServer.exe"
+    LOCAL_HEADLESS_IEDRIVER = DRIVER_DIR + "/headless_ie_selenium.exe"
     LOCAL_CHROMEDRIVER = DRIVER_DIR + "/chromedriver.exe"
     LOCAL_GECKODRIVER = DRIVER_DIR + "/geckodriver.exe"
     LOCAL_OPERADRIVER = DRIVER_DIR + "/operadriver.exe"
@@ -73,7 +75,9 @@ def make_driver_executable_if_not(driver_path):
 def is_chromedriver_on_path():
     paths = os.environ["PATH"].split(os.pathsep)
     for path in paths:
-        if os.path.exists(path + "/" + "chromedriver"):
+        if (not IS_WINDOWS) and os.path.exists(path + "/chromedriver"):
+            return True
+        elif IS_WINDOWS and os.path.exists(path + "/chromedriver.exe"):
             return True
     return False
 
@@ -85,9 +89,23 @@ def is_edgedriver_on_path():
 def is_geckodriver_on_path():
     paths = os.environ["PATH"].split(os.pathsep)
     for path in paths:
-        if os.path.exists(path + "/" + "geckodriver"):
+        if (not IS_WINDOWS) and os.path.exists(path + "/geckodriver"):
+            return True
+        elif IS_WINDOWS and os.path.exists(path + "/geckodriver.exe"):
             return True
     return False
+
+
+def is_iedriver_on_path():
+    paths = os.environ["PATH"].split(os.pathsep)
+    for path in paths:
+        if os.path.exists(path + "/IEDriverServer.exe"):
+            return True
+    return False
+
+
+def is_headless_iedriver_on_path():
+    return os.path.exists(LOCAL_HEADLESS_IEDRIVER)
 
 
 def _add_chrome_proxy_extension(
@@ -1049,9 +1067,43 @@ def get_local_driver(
                 make_driver_executable_if_not(LOCAL_IEDRIVER)
             except Exception as e:
                 logging.debug(
-                    "\nWarning: Could not make iedriver executable: %s" % e
+                    "\nWarning: Could not make IEDriver executable: %s" % e
                 )
-        return webdriver.Ie(capabilities=ie_capabilities)
+        elif not is_iedriver_on_path():
+            args = " ".join(sys.argv)
+            if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                # (Not multithreaded)
+                from seleniumbase.console_scripts import sb_install
+
+                sys_args = sys.argv  # Save a copy of current sys args
+                print("\nWarning: IEDriver not found. Installing now:")
+                sb_install.main(override="iedriver")
+                sys.argv = sys_args  # Put back the original sys args
+        if LOCAL_HEADLESS_IEDRIVER and os.path.exists(LOCAL_HEADLESS_IEDRIVER):
+            try:
+                make_driver_executable_if_not(LOCAL_HEADLESS_IEDRIVER)
+            except Exception as e:
+                logging.debug(
+                    "\nWarning: Could not make HeadlessIEDriver executable: %s"
+                    % e
+                )
+        elif not is_headless_iedriver_on_path():
+            args = " ".join(sys.argv)
+            if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                # (Not multithreaded)
+                from seleniumbase.console_scripts import sb_install
+
+                sys_args = sys.argv  # Save a copy of current sys args
+                print("\nWarning: HeadlessIEDriver not found. Installing now:")
+                sb_install.main(override="iedriver")
+                sys.argv = sys_args  # Put back the original sys args
+        if not headless:
+            return webdriver.Ie(capabilities=ie_capabilities)
+        else:
+            return webdriver.Ie(
+                executable_path=LOCAL_HEADLESS_IEDRIVER,
+                capabilities=ie_capabilities,
+            )
     elif browser_name == constants.Browser.EDGE:
         prefs = {
             "download.default_directory": downloads_path,
