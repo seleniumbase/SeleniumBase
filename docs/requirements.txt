@@ -9,7 +9,7 @@ Jinja2==3.0.1;python_version>="3.6"
 click==8.0.1
 readme-renderer==29.0
 pymdown-extensions==8.2
-importlib-metadata==4.0.1;python_version>="3.6"
+importlib-metadata==4.5.0;python_version>="3.6"
 lunr==0.5.8
 nltk==3.6.2
 mkdocs==1.1.2
