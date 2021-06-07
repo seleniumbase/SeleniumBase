@@ -6,12 +6,12 @@
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/sb_logo_g.png" alt="SeleniumBase" title="SeleniumBase" width="460" /></a></p>
+<img src="https://seleniumbase.io/cdn/img/long_logo.png" alt="SeleniumBase" title="SeleniumBase" width="690" /></a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=0090c0" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
 <p align="center">
-<b>A complete end-to-end testing experience.</b>
+<b>Python Web UI Testing Made Easy.</b>
 </p>
 
 <!-- View on GitHub -->
@@ -20,9 +20,8 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p>
-SeleniumBase is an all-in-one Python framework for automated browser testing.
-Tests are run with "pytest", and use WebDriver APIs for web-page interaction.
+<p align="center">
+SeleniumBase is a complete framework for automated browser testing with pytest.
 </p>
 
 <p align="center">
@@ -54,7 +53,6 @@ Tests are run with "pytest", and use WebDriver APIs for web-page interaction.
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
-✅ Simple setup steps with [Python](https://www.python.org/downloads/) and [Git](https://git-scm.com/).<br />
 ✅ Chrome/Edge/Firefox/IE/Opera/Safari.<br />
 ✅ Includes [reporting and dashboard tools](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 
