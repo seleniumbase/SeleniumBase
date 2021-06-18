@@ -50,7 +50,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.61.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.61.1'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -147,7 +147,8 @@ setup(
         "cssselect==1.1.0",
         "filelock==3.0.12",
         'fasteners==0.16;python_version<"3.6"',
-        'fasteners==0.16.1;python_version>="3.6"',
+        'fasteners==0.16.3;python_version>="3.6"',
+        "execnet==1.9.0",
         "pluggy==0.13.1",
         'py==1.8.1;python_version<"3.5"',
         'py==1.10.0;python_version>="3.5"',
@@ -164,7 +165,8 @@ setup(
         'pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
         'pytest-rerunfailures==10.0;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
-        'pytest-xdist==2.2.1;python_version>="3.5"',
+        'pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"',
+        'pytest-xdist==2.3.0;python_version>="3.6"',
         "parameterized==0.8.1",
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5" and python_version<"3.6"',
@@ -180,7 +182,7 @@ setup(
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.5;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.18;python_version>="3.6"',
+        'prompt-toolkit==3.0.19;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.0.9;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
@@ -201,7 +203,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.2.0;python_version>="3.6"',
-        'rich==10.2.2;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.3.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
