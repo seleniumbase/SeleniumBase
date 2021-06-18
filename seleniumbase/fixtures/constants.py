@@ -215,7 +215,7 @@ class Reveal:
 
 
 class HighCharts:
-    VER = "9.1.1"
+    VER = "9.0.1"  # Later versions have a bug that removes default colors
     HC_CSS = "https://code.highcharts.com/%s/css/highcharts.css" % VER
     HC_JS = "https://code.highcharts.com/%s/highcharts.js" % VER
     EXPORTING_JS = "https://code.highcharts.com/%s/modules/exporting.js" % VER
