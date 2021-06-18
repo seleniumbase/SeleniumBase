@@ -1,5 +1,5 @@
 regex>=2021.4.4
-tqdm>=4.61.0
+tqdm>=4.61.1
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
 Markdown==3.3.4;python_version>="3.6"
@@ -10,9 +10,9 @@ click==8.0.1
 readme-renderer==29.0
 pymdown-extensions==8.2
 importlib-metadata==4.5.0;python_version>="3.6"
-lunr==0.5.8
+lunr==0.6.0
 nltk==3.6.2
-mkdocs==1.1.2
+mkdocs==1.2.1
 mkdocs-material==7.1.3
 mkdocs-exclude-search==0.5.2;python_version>="3.6"
 mkdocs-simple-hooks==0.1.3
