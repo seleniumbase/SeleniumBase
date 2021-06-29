@@ -18,7 +18,7 @@ class CheckboxTests(BaseCase):
             "?filename=tryhtml5_input_type_radio"
         )
         self.switch_to_frame("iframeResult")
-        option_button = "input#male"
+        option_button = "input#css"
         self.assert_false(self.is_selected(option_button))
         self.click(option_button)
         self.assert_true(self.is_selected(option_button))
