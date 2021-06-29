@@ -114,7 +114,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.1.2;python_version>="3.6"',
+        'pip>=21.1.3;python_version>="3.6"',
         "packaging>=20.9",
         "typing-extensions>=3.10.0.0",
         'setuptools>=44.1.1;python_version<"3.5"',
@@ -138,7 +138,7 @@ setup(
         "idna==2.10",  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
-        "urllib3==1.26.5",  # Must stay in sync with "requests"
+        "urllib3==1.26.6",  # Must stay in sync with "requests"
         "requests==2.25.1",
         "selenium==3.141.0",
         "msedge-selenium-tools==3.141.3",
@@ -188,7 +188,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.24.1;python_version>="3.7"',
+        'ipython==7.25.0;python_version>="3.7"',
         'matplotlib-inline==0.1.2;python_version>="3.7"',
         "colorama==0.4.4",
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
