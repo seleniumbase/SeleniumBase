@@ -208,7 +208,7 @@ pytest my_first_test.py --demo
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a>
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
-* If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
+* If you're new to CSS Selectors, games like [CSS Diner](http://flukeout.github.io/) can help you learn.
 * Here are some common ``SeleniumBase`` methods that you might find in tests:
 
 ```python

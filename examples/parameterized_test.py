@@ -6,7 +6,7 @@ class GoogleTests(BaseCase):
     @parameterized.expand(
         [
             ["PyPI", "pypi.org", 'img[alt="PyPI"]'],
-            ["Wikipedia", "wikipedia.org", "div#p-logo"],
+            ["Wikipedia", "wikipedia.org", "img.central-featured-logo"],
             ["SeleniumBase", "seleniumbase/SeleniumBase", 'img[title*="Sel"]'],
         ]
     )
