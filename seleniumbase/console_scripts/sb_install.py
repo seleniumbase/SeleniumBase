@@ -13,12 +13,12 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 89.0.4389.23
-        sbase install chromedriver 89
+        sbase install chromedriver 91.0.4472.101
+        sbase install chromedriver 91
         sbase install chromedriver latest
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 89.0.774.54
+        sbase install edgedriver 91.0.864.67
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -83,6 +83,17 @@ def make_executable(file_path):
     mode = os.stat(file_path).st_mode
     mode |= (mode & 0o444) >> 2  # copy R bits to X
     os.chmod(file_path, mode)
+
+
+def requests_get(url):
+    response = None
+    try:
+        response = requests.get(url)
+    except Exception:
+        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+        url = url.replace("https://", "http://")
+        response = requests.get(url)
+    return response
 
 
 def main(override=None):
@@ -163,22 +174,24 @@ def main(override=None):
             file_name = "chromedriver_linux64.zip"
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
+            if not get_latest and not get_v_latest and num_args < 4:
+                get_latest = True
         else:
             raise Exception(
                 "Cannot determine which version of chromedriver to download!"
             )
         found_chromedriver = False
         if get_latest:
-            url_request = requests.get(last)
+            url_request = requests_get(last)
             if url_request.ok:
                 found_chromedriver = True
                 use_version = url_request.text
         elif get_v_latest:
-            url_req = requests.get(last)
+            url_req = requests_get(last)
             if url_req.ok:
                 latest_version = url_req.text
             last = last + "_" + use_version
-            url_request = requests.get(last)
+            url_request = requests_get(last)
             if url_request.ok:
                 found_chromedriver = True
                 use_version = url_request.text
@@ -190,12 +203,12 @@ def main(override=None):
         )
         url_request = None
         if not found_chromedriver:
-            url_req = requests.get(last)
+            url_req = requests_get(last)
             if url_req.ok:
                 latest_version = url_req.text
                 if use_version == latest_version:
                     get_latest = True
-            url_request = requests.get(download_url)
+            url_request = requests_get(download_url)
         if found_chromedriver or url_request.ok:
             p_version = use_version
             p_version = c3 + use_version + cr
@@ -226,7 +239,7 @@ def main(override=None):
                         "https://api.github.com/repos/"
                         "mozilla/geckodriver/releases/latest"
                     )
-                    url_request = requests.get(last)
+                    url_request = requests_get(last)
                     if url_request.ok:
                         found_geckodriver = True
                         use_version = url_request.json()["tag_name"]
@@ -260,7 +273,7 @@ def main(override=None):
         )
         url_request = None
         if not found_geckodriver:
-            url_request = requests.get(download_url)
+            url_request = requests_get(download_url)
         if found_geckodriver or url_request.ok:
             msg = c2 + "geckodriver version for download" + cr
             p_version = c3 + use_version + cr
