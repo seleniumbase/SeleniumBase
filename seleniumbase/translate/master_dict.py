@@ -2213,6 +2213,19 @@ class MD:
     md["block_ads"][8] = "блокировать_рекламу"
     md["block_ads"][9] = "bloquear_anuncios"
 
+    # "scroll_to_element" -> duplicate of "scroll_to"
+    md["scroll_to_element"] = ["*"] * num_langs
+    md["scroll_to_element"][0] = "scroll_to_element"
+    md["scroll_to_element"][1] = "滚动到"
+    md["scroll_to_element"][2] = "scrollen_naar"
+    md["scroll_to_element"][3] = "déménager_à"
+    md["scroll_to_element"][4] = "scorrere_fino_a"
+    md["scroll_to_element"][5] = "スクロールして"
+    md["scroll_to_element"][6] = "요소로_스크롤"
+    md["scroll_to_element"][7] = "rolar_para"
+    md["scroll_to_element"][8] = "прокрутить_к"
+    md["scroll_to_element"][9] = "desplazarse_a"
+
     # "start_tour" -> duplicate of "play_tour"
     md["start_tour"] = ["*"] * num_langs
     md["start_tour"][0] = "start_tour"
