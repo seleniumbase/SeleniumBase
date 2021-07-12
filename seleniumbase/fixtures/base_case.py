@@ -2948,6 +2948,9 @@ class BaseCase(unittest.TestCase):
             )
             self.__scroll_to_element(element, selector, by)
 
+    def scroll_to_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+        self.scroll_to(selector, by=by, timeout=timeout)
+
     def slow_scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """ Slow motion scroll to destination """
         self.__check_scope()
@@ -2974,6 +2977,11 @@ class BaseCase(unittest.TestCase):
                 selector, by=by, timeout=timeout
             )
             self.__slow_scroll_to_element(element)
+
+    def slow_scroll_to_element(
+        self, selector, by=By.CSS_SELECTOR, timeout=None
+    ):
+        self.slow_scroll_to(selector, by=by, timeout=timeout)
 
     def scroll_to_top(self):
         """ Scroll to the top of the page. """
