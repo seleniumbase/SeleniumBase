@@ -117,13 +117,30 @@ def wait_for_jquery_active(driver, timeout=None):
 
 
 def raise_unable_to_load_jquery_exception(driver):
-    """ The most-likely reason for jQuery not loading on web pages. """
-    raise Exception(
-        """Unable to load jQuery on "%s" due to a possible violation """
-        """of the website's Content Security Policy directive. """
-        """To override this policy, add "--disable-csp" on the """
-        """command-line when running your tests.""" % driver.current_url
-    )
+    has_csp_error = False
+    csp_violation = "violates the following Content Security Policy directive"
+    browser_logs = []
+    try:
+        browser_logs = driver.get_log("browser")
+    except (ValueError, WebDriverException):
+        pass
+    for entry in browser_logs:
+        if entry["level"] == "SEVERE":
+            if csp_violation in entry["message"]:
+                has_csp_error = True
+    if has_csp_error:
+        raise Exception(
+            """Unable to load jQuery on "%s" due to a violation """
+            """of the website's Content Security Policy directive. """
+            """To override this policy, add "--disable-csp" on the """
+            """command-line when running your tests.""" % driver.current_url
+        )
+    else:
+        raise Exception(
+            """Unable to load jQuery on "%s" because this website """
+            """restricts external JavaScript resources from loading."""
+            % driver.current_url
+        )
 
 
 def activate_jquery(driver):
