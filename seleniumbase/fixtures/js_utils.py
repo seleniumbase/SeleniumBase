@@ -117,13 +117,30 @@ def wait_for_jquery_active(driver, timeout=None):
 
 
 def raise_unable_to_load_jquery_exception(driver):
-    """ The most-likely reason for jQuery not loading on web pages. """
-    raise Exception(
-        """Unable to load jQuery on "%s" due to a possible violation """
-        """of the website's Content Security Policy directive. """
-        """To override this policy, add "--disable-csp" on the """
-        """command-line when running your tests.""" % driver.current_url
-    )
+    has_csp_error = False
+    csp_violation = "violates the following Content Security Policy directive"
+    browser_logs = []
+    try:
+        browser_logs = driver.get_log("browser")
+    except (ValueError, WebDriverException):
+        pass
+    for entry in browser_logs:
+        if entry["level"] == "SEVERE":
+            if csp_violation in entry["message"]:
+                has_csp_error = True
+    if has_csp_error:
+        raise Exception(
+            """Unable to load jQuery on "%s" due to a violation """
+            """of the website's Content Security Policy directive. """
+            """To override this policy, add "--disable-csp" on the """
+            """command-line when running your tests.""" % driver.current_url
+        )
+    else:
+        raise Exception(
+            """Unable to load jQuery on "%s" because this website """
+            """restricts external JavaScript resources from loading."""
+            % driver.current_url
+        )
 
 
 def activate_jquery(driver):
@@ -138,12 +155,7 @@ def activate_jquery(driver):
         # jQuery is not currently defined. Let's proceed by defining it.
         pass
     jquery_js = constants.JQuery.MIN_JS
-    activate_jquery_script = (
-        """var script = document.createElement('script');"""
-        """script.src = "%s";document.getElementsByTagName('head')[0]"""
-        """.appendChild(script);""" % jquery_js
-    )
-    driver.execute_script(activate_jquery_script)
+    add_js_link(driver, jquery_js)
     for x in range(int(settings.MINI_TIMEOUT * 10.0)):
         # jQuery needs a small amount of time to activate.
         try:
@@ -152,7 +164,7 @@ def activate_jquery(driver):
         except Exception:
             time.sleep(0.1)
     try:
-        driver.execute_script(activate_jquery_script)
+        add_js_link(driver, jquery_js)
         time.sleep(0.1)
         driver.execute_script("jQuery('head');")
     except Exception:
@@ -349,13 +361,13 @@ def highlight_with_jquery(driver, selector, loops, o_bs):
 
 def add_css_link(driver, css_link):
     script_to_add_css = """function injectCSS(css) {
-          var head = document.getElementsByTagName("head")[0];
-          var link = document.createElement("link");
-          link.rel = "stylesheet";
-          link.type = "text/css";
-          link.href = css;
-          link.crossorigin = "anonymous";
-          head.appendChild(link);
+          var head_tag=document.getElementsByTagName("head")[0];
+          var link_tag=document.createElement("link");
+          link_tag.rel="stylesheet";
+          link_tag.type="text/css";
+          link_tag.href=css;
+          link_tag.crossorigin="anonymous";
+          head_tag.appendChild(link_tag);
        }
        injectCSS("%s");"""
     css_link = escape_quotes_if_needed(css_link)
@@ -364,14 +376,14 @@ def add_css_link(driver, css_link):
 
 def add_js_link(driver, js_link):
     script_to_add_js = """function injectJS(link) {
-          var body = document.getElementsByTagName("body")[0];
-          var script = document.createElement("script");
-          script.src = link;
-          script.defer;
-          script.type="text/javascript";
-          script.crossorigin = "anonymous";
-          script.onload = function() { null };
-          body.appendChild(script);
+          var body_tag=document.getElementsByTagName("body")[0];
+          var script_tag=document.createElement("script");
+          script_tag.src=link;
+          script_tag.type="text/javascript";
+          script_tag.crossorigin="anonymous";
+          script_tag.defer;
+          script_tag.onload=function() { null };
+          body_tag.appendChild(script_tag);
        }
        injectJS("%s");"""
     js_link = escape_quotes_if_needed(js_link)
@@ -380,11 +392,11 @@ def add_js_link(driver, js_link):
 
 def add_css_style(driver, css_style):
     add_css_style_script = """function injectStyle(css) {
-          var head = document.getElementsByTagName("head")[0];
-          var style = document.createElement("style");
-          style.type = "text/css";
-          style.appendChild(document.createTextNode(css));
-          head.appendChild(style);
+          var head_tag=document.getElementsByTagName("head")[0];
+          var style_tag=document.createElement("style");
+          style_tag.type="text/css";
+          style_tag.appendChild(document.createTextNode(css));
+          head_tag.appendChild(style_tag);
        }
        injectStyle("%s");"""
     css_style = css_style.replace("\n", "")
@@ -397,12 +409,12 @@ def add_js_code_from_link(driver, js_link):
         js_link = "http:" + js_link
     js_code = requests.get(js_link).text
     add_js_code_script = (
-        """var body = document.getElementsByTagName('body').item(0);"""
-        """var script = document.createElement("script");"""
-        """script.type = "text/javascript";"""
-        """script.onload = function() { null };"""
-        """script.appendChild(document.createTextNode("%s"));"""
-        """body.appendChild(script);"""
+        """var body_tag=document.getElementsByTagName('body').item(0);"""
+        """var script_tag=document.createElement("script");"""
+        """script_tag.type="text/javascript";"""
+        """script_tag.onload=function() { null };"""
+        """script_tag.appendChild(document.createTextNode("%s"));"""
+        """body_tag.appendChild(script_tag);"""
     )
     js_code = js_code.replace("\n", " ")
     js_code = escape_quotes_if_needed(js_code)
@@ -411,12 +423,12 @@ def add_js_code_from_link(driver, js_link):
 
 def add_js_code(driver, js_code):
     add_js_code_script = (
-        """var body = document.getElementsByTagName('body').item(0);"""
-        """var script = document.createElement("script");"""
-        """script.type = "text/javascript";"""
-        """script.onload = function() { null };"""
-        """script.appendChild(document.createTextNode("%s"));"""
-        """body.appendChild(script);"""
+        """var body_tag=document.getElementsByTagName('body').item(0);"""
+        """var script_tag=document.createElement("script");"""
+        """script_tag.type="text/javascript";"""
+        """script_tag.onload=function() { null };"""
+        """script_tag.appendChild(document.createTextNode("%s"));"""
+        """body_tag.appendChild(script_tag);"""
     )
     js_code = js_code.replace("\n", " ")
     js_code = escape_quotes_if_needed(js_code)
@@ -432,10 +444,10 @@ def add_meta_tag(driver, http_equiv=None, content=None):
             "script-src: 'self' 'unsafe-inline' 'unsafe-eval'"
         )
     script_to_add_meta = """function injectMeta() {
-           var meta = document.createElement('meta');
-           meta.httpEquiv = "%s";
-           meta.content = "%s";
-           document.getElementsByTagName('head')[0].appendChild(meta);
+           var meta_tag=document.createElement('meta');
+           meta_tag.httpEquiv="%s";
+           meta_tag.content="%s";
+           document.getElementsByTagName('head')[0].appendChild(meta_tag);
         }
         injectMeta();""" % (
         http_equiv,

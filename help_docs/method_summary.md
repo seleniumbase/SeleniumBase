@@ -258,9 +258,11 @@ self.press_left_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
 
 self.press_right_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
 
-self.scroll_to(selector, by=By.CSS_SELECTOR)
+self.scroll_to(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.scroll_to_element(selector, by=By.CSS_SELECTOR)
 
-self.slow_scroll_to(selector, by=By.CSS_SELECTOR)
+self.slow_scroll_to(selector, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.slow_scroll_to_element(selector, by=By.CSS_SELECTOR)
 
 self.scroll_to_top()
 

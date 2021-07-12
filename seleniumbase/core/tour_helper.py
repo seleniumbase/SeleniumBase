@@ -192,7 +192,7 @@ def is_introjs_activated(driver):
 
 def activate_shepherd(driver):
     """Allows you to use Shepherd Tours with SeleniumBase
-    http://github.hubspot.com/shepherd/docs/welcome/
+    https://cdnjs.com/libraries/shepherd/1.8.1
     """
     shepherd_js = constants.Shepherd.MIN_JS
     sh_theme_arrows_css = constants.Shepherd.THEME_ARROWS_CSS
