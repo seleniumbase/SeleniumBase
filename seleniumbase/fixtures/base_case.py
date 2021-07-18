@@ -8502,7 +8502,7 @@ class BaseCase(unittest.TestCase):
                 height = settings.HEADLESS_START_HEIGHT
                 try:
                     # from pyvirtualdisplay import Display  # Skip for own lib
-                    from seleniumbase.virtual_display.display import Display
+                    from sbvirtualdisplay import Display
 
                     self.display = Display(visible=0, size=(width, height))
                     self.display.start()

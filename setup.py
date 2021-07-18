@@ -120,7 +120,7 @@ setup(
         "typing-extensions>=3.10.0.0",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=57.1.0;python_version>="3.6"',
+        'setuptools>=57.2.0;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.0.1;python_version>="3.6"',
         "wheel>=0.36.2",
@@ -136,11 +136,15 @@ setup(
         'parso==0.8.2;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
         'jedi==0.18.0;python_version>="3.6"',
-        "idna==2.10",  # Must stay in sync with "requests"
+        'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
+        'idna==3.2;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
+        'charset-normalizer==2.0.3;python_version>="3.6"',  # Sync "requests"
         "urllib3==1.26.6",  # Must stay in sync with "requests"
-        "requests==2.25.1",
+        'requests==2.26.0;python_version<"3.5"',
+        'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
+        'requests==2.26.0;python_version>="3.6"',
         "selenium==3.141.0",
         "msedge-selenium-tools==3.141.3",
         'more-itertools==5.0.0;python_version<"3.5"',
@@ -169,6 +173,7 @@ setup(
         'pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"',
         'pytest-xdist==2.3.0;python_version>="3.6"',
         "parameterized==0.8.1",
+        "sbvirtualdisplay==1.0.0",
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.0.1;python_version>="3.5" and python_version<"3.6"',
         'soupsieve==2.2.1;python_version>="3.6"',
@@ -192,9 +197,10 @@ setup(
         'ipython==7.25.0;python_version>="3.7"',
         'matplotlib-inline==0.1.2;python_version>="3.7"',
         "colorama==0.4.4",
+        "platformdirs==2.0.2",
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        "virtualenv>=20.4.7",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.6.0",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",
@@ -204,7 +210,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.3.1;python_version>="3.6"',
-        'rich==10.5.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.6.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
@@ -242,7 +248,6 @@ setup(
         "seleniumbase.utilities",
         "seleniumbase.utilities.selenium_grid",
         "seleniumbase.utilities.selenium_ide",
-        "seleniumbase.virtual_display",
     ],
     include_package_data=True,
     entry_points={

@@ -390,7 +390,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session | --rs  # (Reuse browser session between tests.)
+--reuse-session | --rs  # (Reuse the browser session between tests.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --maximize-window  # (Start tests with the web browser window maximized.)
 --save-screenshot  # (Save a screenshot at the end of each test.)

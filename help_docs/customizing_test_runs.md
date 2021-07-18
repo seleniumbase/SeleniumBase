@@ -147,7 +147,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session  # (Reuse the browser session between tests.)
+--reuse-session | --rs  # (Reuse the browser session between tests.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
 --maximize-window  # (Start tests with the web browser window maximized.)
 --save-screenshot  # (Save a screenshot at the end of each test.)
