@@ -1235,7 +1235,7 @@ def pytest_terminal_summary(terminalreporter):
             dash_lock_path = os.path.join(abs_path, dash_lock)
             if os.path.exists(dash_lock_path):
                 sb_config._only_unittest = False
-    if sb_config._has_exception and (
+    if (sb_config._has_exception or sb_config._multithreaded) and (
         sb_config.dashboard and not sb_config._only_unittest
     ):
         # Print link a second time because the first one may be off-screen
