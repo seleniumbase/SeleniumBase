@@ -7,7 +7,7 @@ class GoogleTests(BaseCase):
         [
             ["PyPI", "pypi.org", 'img[alt="PyPI"]'],
             ["Wikipedia", "www.wikipedia.org", "img.central-featured-logo"],
-            ["SeleniumBase", "seleniumbase/SeleniumBase", 'img[title*="Sel"]'],
+            ["SeleniumBase GitHub", "base/SeleniumBase", 'img[title*="Sele"]'],
         ]
     )
     def test_parameterized_google_search(self, search_key, expected_text, img):
