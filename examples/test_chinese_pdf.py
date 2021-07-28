@@ -13,7 +13,10 @@ class ChinesePdfTests(BaseCase):
 
         # Get and print PDF text
         pdf_text = self.get_pdf_text(pdf, page=2)
-        print("\n" + pdf_text, file=sys.stderr)
+        if sys.version_info[0] >= 3:
+            print("\n" + pdf_text, file=sys.stderr)  # noqa
+        else:
+            print("\n" + pdf_text)  # Use older print()
 
         # Assert PDF contains the expected text on Page 2
         self.assert_pdf_text(pdf, "个测试类", page=2)
