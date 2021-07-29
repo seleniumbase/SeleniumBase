@@ -1,4 +1,3 @@
-import sys
 from seleniumbase import BaseCase
 
 
@@ -9,7 +8,4 @@ class PdfTests(BaseCase):
             "Automate_the_Boring_Stuff_sample_ch17.pdf"
         )
         pdf_text = self.get_pdf_text(pdf, page=1)
-        if sys.version_info[0] >= 3:
-            print("\n" + pdf_text, file=sys.stderr)  # noqa
-        else:
-            print("\n" + pdf_text)  # Use older print()
+        self._print("\n" + pdf_text)
