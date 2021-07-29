@@ -1424,6 +1424,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
         elements = self.find_visible_elements(selector, by=by)
         if len(elements) < number:
@@ -1435,14 +1436,23 @@ class BaseCase(unittest.TestCase):
         if number < 0:
             number = 0
         element = elements[number]
-        self.wait_for_ready_state_complete()
         try:
             self.__scroll_to_element(element)
             element.click()
         except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
             time.sleep(0.12)
-            self.__scroll_to_element(element)
+            self.wait_for_ready_state_complete()
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            elements = self.find_visible_elements(selector, by=by)
+            if len(elements) < number:
+                raise Exception(
+                    "Not enough matching {%s} elements of type {%s} to "
+                    "click number %s!" % (selector, by, number)
+                )
+            number = number - 1
+            if number < 0:
+                number = 0
+            element = elements[number]
             element.click()
 
     def click_if_visible(self, selector, by=By.CSS_SELECTOR):
@@ -4083,6 +4093,8 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
+        self.wait_for_ready_state_complete()
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
         orginal_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         self.__demo_mode_highlight_if_active(orginal_selector, by)
@@ -4853,8 +4865,16 @@ class BaseCase(unittest.TestCase):
         self.ad_block()
 
     def _print(self, msg):
-        """ Same as Python's print() """
-        print(msg)
+        """Same as Python's print(), but won't print during multithreaded runs
+        because overlapping print() commands may lead to unexpected output.
+        In most cases, the print() command won't print for multithreaded tests,
+        but there are some exceptions, and this will take care of those.
+        Here's an example of running tests multithreaded: "pytest -n=4".
+        To force a print during multithreaded tests, use: "sys.stderr.write()".
+        To print without the new-line character end, use: "sys.stdout.write()".
+        """
+        if not sb_config._multithreaded:
+            print(msg)
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
