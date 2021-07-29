@@ -114,7 +114,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.1.3;python_version>="3.6"',
+        'pip>=21.2.1;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.0;python_version>="3.6"',
         "typing-extensions>=3.10.0.0",
@@ -197,7 +197,8 @@ setup(
         'ipython==7.25.0;python_version>="3.7"',
         'matplotlib-inline==0.1.2;python_version>="3.7"',
         "colorama==0.4.4",
-        "platformdirs==2.0.2",
+        'platformdirs==2.0.2;python_version<"3.6"',
+        'platformdirs==2.2.0;python_version>="3.6"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
         "virtualenv>=20.6.0",  # Sync with importlib-metadata and pathlib2
