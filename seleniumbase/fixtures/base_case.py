@@ -1424,6 +1424,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
         self.wait_for_element_present(selector, by=by, timeout=timeout)
         elements = self.find_visible_elements(selector, by=by)
         if len(elements) < number:
@@ -1435,14 +1436,23 @@ class BaseCase(unittest.TestCase):
         if number < 0:
             number = 0
         element = elements[number]
-        self.wait_for_ready_state_complete()
         try:
             self.__scroll_to_element(element)
             element.click()
         except (StaleElementReferenceException, ENI_Exception):
-            self.wait_for_ready_state_complete()
             time.sleep(0.12)
-            self.__scroll_to_element(element)
+            self.wait_for_ready_state_complete()
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            elements = self.find_visible_elements(selector, by=by)
+            if len(elements) < number:
+                raise Exception(
+                    "Not enough matching {%s} elements of type {%s} to "
+                    "click number %s!" % (selector, by, number)
+                )
+            number = number - 1
+            if number < 0:
+                number = 0
+            element = elements[number]
             element.click()
 
     def click_if_visible(self, selector, by=By.CSS_SELECTOR):
