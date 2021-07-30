@@ -6984,7 +6984,9 @@ class BaseCase(unittest.TestCase):
             return True
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
         if self.demo_mode:
-            selector, by = self.__recalculate_selector(selector, by)
+            selector, by = self.__recalculate_selector(
+                selector, by, xp_ok=False
+            )
             a_t = "ASSERT"
             if self._language != "English":
                 from seleniumbase.fixtures.words import SD
@@ -8279,7 +8281,7 @@ class BaseCase(unittest.TestCase):
     def __highlight_with_assert_success(
         self, message, selector, by=By.CSS_SELECTOR
     ):
-        selector, by = self.__recalculate_selector(selector, by)
+        selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         element = self.wait_for_element_visible(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
