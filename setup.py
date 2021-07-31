@@ -50,7 +50,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.61.2'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.62.0'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -114,7 +114,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.2.1;python_version>="3.6"',
+        'pip>=21.2.2;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.0;python_version>="3.6"',
         "typing-extensions>=3.10.0.0",
@@ -140,7 +140,7 @@ setup(
         'idna==3.2;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.3;python_version>="3.6"',  # Sync "requests"
+        'charset-normalizer==2.0.4;python_version>="3.6"',  # Sync "requests"
         "urllib3==1.26.6",  # Must stay in sync with "requests"
         'requests==2.26.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
@@ -201,7 +201,7 @@ setup(
         'platformdirs==2.2.0;python_version>="3.6"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        "virtualenv>=20.6.0",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.7.0",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",

@@ -1,5 +1,5 @@
 pip>=20.3.4;python_version<"3.6"
-pip>=21.2.1;python_version>="3.6"
+pip>=21.2.2;python_version>="3.6"
 packaging>=20.9;python_version<"3.6"
 packaging>=21.0;python_version>="3.6"
 typing-extensions>=3.10.0.0
@@ -25,7 +25,7 @@ idna==2.10;python_version<"3.6"
 idna==3.2;python_version>="3.6"
 chardet==3.0.4;python_version<"3.6"
 chardet==4.0.0;python_version>="3.6"
-charset-normalizer==2.0.3;python_version>="3.6"
+charset-normalizer==2.0.4;python_version>="3.6"
 urllib3==1.26.6
 requests==2.26.0;python_version<"3.5"
 requests==2.25.1;python_version>="3.5" and python_version<"3.6"
@@ -86,7 +86,7 @@ platformdirs==2.0.2;python_version<"3.6"
 platformdirs==2.2.0;python_version>="3.6"
 pathlib2==2.3.5;python_version<"3.5"
 importlib-metadata==2.0.0;python_version<"3.6"
-virtualenv>=20.6.0
+virtualenv>=20.7.0
 pymysql==0.10.1;python_version<"3.6"
 pymysql==1.0.2;python_version>="3.6"
 pyotp==2.6.0
