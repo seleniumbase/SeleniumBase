@@ -20,16 +20,6 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p align="left">
-✅ SeleniumBase is a Python framework for web testing.<br / >
-✅ Tests can be run with <b>pytest</b> from the command-line.<br / >
-✅ Includes code to simplify & improve WebDriver APIs.<br / >
-✅ Supports Chrome, Edge, Firefox, IE, Opera, and Safari.<br />
-✅ Includes powerful <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">reporting and dashboard features</a>.
-</p>
-
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" width="450" /></a></p>
-
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a> |
@@ -57,6 +47,14 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📑 Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 ChartMaker</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
+</p>
+
+<p align="left">
+✅ SeleniumBase is a Python framework for web testing.<br / >
+✅ Tests can be run with <b>pytest</b> from the command-line.<br / >
+✅ Includes code to simplify & improve WebDriver APIs.<br / >
+✅ Supports Chrome, Edge, Firefox, IE, Opera, and Safari.<br />
+✅ Includes powerful <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">reporting and dashboard features</a>.
 </p>
 
 --------
