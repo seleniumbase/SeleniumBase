@@ -169,56 +169,26 @@ Or the short form:
 sbase options
 ```
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Customizing default settings:</h3>
+--------
 
-An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
-Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
-``--settings-file=custom_settings.py``
-(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Combinations:</h3>
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Running tests on a remote Selenium Grid:</h3>
+There are times when you'll want to combine various command-line options for added effect.
+For instance, the multi-process option, ``-n=4``, can be customized by adding:
+``--dist=loadscope`` or ``--dist=loadfile`` to it.
+Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/pytest-xdist/):
 
-SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, [TestingBot](https://testingbot.com/features)'s Selenium Grid, other Grids, and even your own Grid:
+* ``-n=4 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
 
-(For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
+* ``-n=4 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
 
-Here's how to connect to a BrowserStack Selenium Grid server for running tests:
-
-```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
-```
-
-Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
+You might also want to combine multiple different options at once. For example:
 
 ```bash
-pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
+pytest -n=4 --reuse-session --headless -v --dashboard --html=report.html
 ```
 
-Here's how to connect to a TestingBot Selenium Grid server for running tests:
-
-```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
-```
-
-Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
-
-```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
-```
-
-Here's how to connect to a LambdaTest Selenium Grid server for running tests:
-
-```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
-```
-
-Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
-
-To use a server on the ``https`` protocol, add ``--protocol=https``:
-
-```bash
-pytest test_suite.py --protocol=https --server=IP_ADDRESS --port=PORT
-```
+The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a realtime dashboard of the test results, and creates a full report after all tests complete.
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Example tests using Logging:</h3>
 
@@ -347,6 +317,61 @@ nosetests test_suite.py --report
 <img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
+
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Customizing default settings:</h3>
+
+An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
+Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
+``--settings-file=custom_settings.py``
+(Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
+
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Running tests on a remote Selenium Grid:</h3>
+
+SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, [TestingBot](https://testingbot.com/features)'s Selenium Grid, other Grids, and even your own Grid:
+
+(For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
+
+Here's how to connect to a BrowserStack Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
+```
+
+Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
+```
+
+Here's how to connect to a TestingBot Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
+```
+
+Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
+```
+
+Here's how to connect to a LambdaTest Selenium Grid server for running tests:
+
+```bash
+pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
+```
+
+Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
+
+To use a server on the ``https`` protocol, add ``--protocol=https``:
+
+```bash
+pytest test_suite.py --protocol=https --server=IP_ADDRESS --port=PORT
+```
 
 --------
 
