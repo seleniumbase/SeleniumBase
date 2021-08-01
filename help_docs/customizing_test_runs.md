@@ -171,29 +171,12 @@ sbase options
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Combinations:</h3>
-
-There are times when you'll want to combine various command-line options for added effect.
-For instance, the multi-process option, ``-n=4``, can be customized by adding:
-``--dist=loadscope`` or ``--dist=loadfile`` to it.
-Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/pytest-xdist/):
-
-* ``-n=4 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
-
-* ``-n=4 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
-
-You might also want to combine multiple different options at once. For example:
-
-```bash
-pytest -n=4 --reuse-session --headless -v --dashboard --html=report.html
-```
-
-The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a realtime dashboard of the test results, and creates a full report after all tests complete.
-
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Example tests using Logging:</h3>
 
+To see logging abilities, you can run a test suite that includes tests that fail on purpose:
+
 ```bash
-pytest test_suite.py --browser=chrome
+pytest test_suite.py
 ```
 
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
@@ -218,7 +201,7 @@ If you want to pass additional data from the command line to your tests, you can
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Running tests multithreaded:</h3>
 
-To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
+To run pytest tests using multiple processes, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Retrying failing tests automatically:</h3>
 
@@ -245,6 +228,25 @@ pytest my_first_test.py --pdb -s
 ```
 
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Combinations of options:</h3>
+
+There are times when you'll want to combine various command-line options for added effect.
+For instance, the multi-process option, ``-n=4``, can be customized by adding:
+``--dist=loadscope`` or ``--dist=loadfile`` to it.
+Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/pytest-xdist/):
+
+* ``-n=4 --dist=loadscope``: Tests are grouped by module for test functions and by class for test methods. Groups are distributed to available workers as whole units. This guarantees that all tests in a group run in the same process. This can be useful if you have expensive module-level or class-level fixtures. Grouping by class takes priority over grouping by module.
+
+* ``-n=4 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
+
+You might also want to combine multiple options at once. For example:
+
+```bash
+pytest -n=4 --reuse-session --headless -v --dashboard --html=report.html
+```
+
+The above not only runs tests in parallel processes, but it also tells tests in the same process to share the same browser session, runs the tests in headless mode, displays the full name of each test on a separate line, creates a realtime dashboard of the test results, and creates a full report after all tests complete.
 
 --------
 
