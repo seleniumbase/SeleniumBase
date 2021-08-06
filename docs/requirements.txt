@@ -1,4 +1,4 @@
-regex>=2021.7.6
+regex>=2021.8.3
 tqdm>=4.62.0
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
