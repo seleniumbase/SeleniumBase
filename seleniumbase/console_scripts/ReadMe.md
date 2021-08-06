@@ -19,6 +19,8 @@ SeleniumBase console scripts help you get things done more easily, such as insta
     (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
               ``iedriver``, ``operadriver``)
     (Versions: ``latest`` or a specific driver version.
+               For chromedriver, you can also specify the major
+               version int, or ``latest-1`` for latest minus 1.
                If none specified, installs the default version.)
 
 * Examples:
