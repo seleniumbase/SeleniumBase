@@ -3762,6 +3762,16 @@ class BaseCase(unittest.TestCase):
         Will raise an exception if the values are equal."""
         self.assertNotEqual(first, second, msg=msg)
 
+    def assert_in(self, first, second, msg=None):
+        """Asserts that the first string is in the second string.
+        Will raise an exception if the first string is not in the second."""
+        self.assertIn(first, second, msg=msg)
+
+    def assert_not_in(self, first, second, msg=None):
+        """Asserts that the first string is not in the second string.
+        Will raise an exception if the first string is in the second string."""
+        self.assertNotIn(first, second, msg=msg)
+
     def assert_raises(self, *args, **kwargs):
         """Asserts that the following block of code raises an exception.
         Will raise an exception if the block of code has no exception.
