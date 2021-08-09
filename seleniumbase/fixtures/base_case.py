@@ -3762,7 +3762,7 @@ class BaseCase(unittest.TestCase):
                 with self.assert_raises(Exception):
                     raise Exception("Expected Exception!")
         """
-        self.assertRaises(*args, **kwargs)
+        return self.assertRaises(*args, **kwargs)
 
     def wait_for_attribute(
         self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
