@@ -29,8 +29,8 @@ import os
 import re
 import sys
 import time
-import urllib3
 import unittest
+import urllib3
 from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
