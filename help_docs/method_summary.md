@@ -350,6 +350,10 @@ self.assert_equal(first, second, msg=None)
 
 self.assert_not_equal(first, second, msg=None)
 
+self.assert_in(first, second, msg=None)
+
+self.assert_not_in(first, second, msg=None)
+
 self.assert_raises(*args, **kwargs)
 
 self.wait_for_attribute(

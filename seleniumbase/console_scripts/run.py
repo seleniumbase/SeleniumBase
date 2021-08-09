@@ -760,14 +760,6 @@ def main():
             show_convert_usage()
     elif command == "print":
         if len(command_args) >= 1:
-            if sys.version_info[0] == 2:
-                c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-                cr = colorama.Style.RESET_ALL
-                msg = '"sbase print" does NOT support Python 2! '
-                msg += 'Try using the Unix "cat" command instead!'
-                message = "\n" + c5 + msg + cr + "\n"
-                print("")
-                raise Exception(message)
             from seleniumbase.console_scripts import sb_print
 
             sb_print.main()

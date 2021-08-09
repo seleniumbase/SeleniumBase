@@ -114,7 +114,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.2.2;python_version>="3.6"',
+        'pip>=21.2.3;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.0;python_version>="3.6"',
         "typing-extensions>=3.10.0.0",
@@ -123,7 +123,7 @@ setup(
         'setuptools>=57.4.0;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.0.1;python_version>="3.6"',
-        "wheel>=0.36.2",
+        "wheel>=0.37.0",
         "attrs>=21.2.0",
         'PyYAML>=5.4.1;python_version>="3.6"',
         "sortedcontainers==2.4.0",
@@ -201,7 +201,7 @@ setup(
         'platformdirs==2.2.0;python_version>="3.6"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
-        "virtualenv>=20.7.0",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.7.1",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",

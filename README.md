@@ -8,7 +8,7 @@
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/cdn/img/logo_and_pie.png" alt="SeleniumBase" title="SeleniumBase" width="690" /></a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=0090c0" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
+<img src="https://img.shields.io/badge/View Releases-%20GitHub-0090c0.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
 <p align="center">
 <b>Python Web-UI Testing Made Awesome.</b>
@@ -50,9 +50,9 @@
 </p>
 
 <p align="left">
-✅ SeleniumBase is a Python framework for web testing.<br / >
-✅ Tests can be run with <b>pytest</b> from the command-line.<br / >
-✅ Includes code to simplify & improve WebDriver APIs.<br / >
+✅ SeleniumBase is a Python framework for web testing.<br />
+✅ Tests can be run with <b>pytest</b> from the command-line.<br />
+✅ Includes code to simplify & improve WebDriver APIs.<br />
 ✅ Supports Chrome, Edge, Firefox, IE, Opera, and Safari.<br />
 ✅ Includes powerful <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">reporting and dashboard features</a>.
 </p>
@@ -907,7 +907,7 @@ self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
 
-(Due to popular demand, this traffic generation example has been baked into SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
+(Due to popular demand, this traffic generation example has been included in SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
 
 🔵 Using deferred asserts:
 

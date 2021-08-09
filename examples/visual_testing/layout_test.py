@@ -19,7 +19,7 @@ class VisualLayoutTests(BaseCase):
         self.click("button")
         self.check_window(name="helloworld", level=1)
         self.check_window(name="helloworld", level=2)
-        with self.assertRaises(Exception):
+        with self.assert_raises(Exception):
             self.check_window(name="helloworld", level=3)
         # Now that we know the Exception was raised as expected,
         # let's print out the comparison results by running a Level-0 check.

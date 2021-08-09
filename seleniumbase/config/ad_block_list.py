@@ -107,4 +107,5 @@ AD_BLOCK_LIST = [
     "img.img_ad",
     'link[href*="/adservice."]',
     "section.dianomi-ad",
+    "ytd-promoted-video-renderer",
 ]

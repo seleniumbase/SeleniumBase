@@ -1,5 +1,5 @@
 pip>=20.3.4;python_version<"3.6"
-pip>=21.2.2;python_version>="3.6"
+pip>=21.2.3;python_version>="3.6"
 packaging>=20.9;python_version<"3.6"
 packaging>=21.0;python_version>="3.6"
 typing-extensions>=3.10.0.0
@@ -8,7 +8,7 @@ setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"
 setuptools>=57.4.0;python_version>="3.6"
 setuptools-scm==5.0.2;python_version<"3.6"
 setuptools-scm>=6.0.1;python_version>="3.6"
-wheel>=0.36.2
+wheel>=0.37.0
 attrs>=21.2.0
 PyYAML>=5.4.1;python_version>="3.6"
 sortedcontainers==2.4.0
@@ -86,7 +86,7 @@ platformdirs==2.0.2;python_version<"3.6"
 platformdirs==2.2.0;python_version>="3.6"
 pathlib2==2.3.5;python_version<"3.5"
 importlib-metadata==2.0.0;python_version<"3.6"
-virtualenv>=20.7.0
+virtualenv>=20.7.1
 pymysql==0.10.1;python_version<"3.6"
 pymysql==1.0.2;python_version>="3.6"
 pyotp==2.6.0

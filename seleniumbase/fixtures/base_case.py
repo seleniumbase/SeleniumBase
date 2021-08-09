@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
+r"""  ------------>  ------------>  ------------>  ------------>
+   ______     __           _                 ____
+  / ____/__  / /__  ____  (_)_  ______ ___  / _  \____  ________
+  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
+ ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
+/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/
+
+------------>  ------------>  ------------>  ------------>
+
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
 It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
 All tests using BaseCase automatically launch WebDriver browsers for tests.
@@ -29,8 +37,8 @@ import os
 import re
 import sys
 import time
-import urllib3
 import unittest
+import urllib3
 from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
@@ -3754,6 +3762,16 @@ class BaseCase(unittest.TestCase):
         Will raise an exception if the values are equal."""
         self.assertNotEqual(first, second, msg=msg)
 
+    def assert_in(self, first, second, msg=None):
+        """Asserts that the first string is in the second string.
+        Will raise an exception if the first string is not in the second."""
+        self.assertIn(first, second, msg=msg)
+
+    def assert_not_in(self, first, second, msg=None):
+        """Asserts that the first string is not in the second string.
+        Will raise an exception if the first string is in the second string."""
+        self.assertNotIn(first, second, msg=msg)
+
     def assert_raises(self, *args, **kwargs):
         """Asserts that the following block of code raises an exception.
         Will raise an exception if the block of code has no exception.
@@ -3762,7 +3780,7 @@ class BaseCase(unittest.TestCase):
                 with self.assert_raises(Exception):
                     raise Exception("Expected Exception!")
         """
-        self.assertRaises(*args, **kwargs)
+        return self.assertRaises(*args, **kwargs)
 
     def wait_for_attribute(
         self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
