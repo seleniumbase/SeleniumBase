@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
+r"""  ------------>  ------------>  ------------>  ------------>
+   ______     __           _                 ____
+  / ____/__  / /__  ____  (_)_  ______ ___  / _  \____  ________
+  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
+ ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
+/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/
+
+------------>  ------------>  ------------>  ------------>
+
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
 It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
 All tests using BaseCase automatically launch WebDriver browsers for tests.
