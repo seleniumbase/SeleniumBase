@@ -8,7 +8,7 @@
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
 <img src="https://seleniumbase.io/cdn/img/logo_and_pie.png" alt="SeleniumBase" title="SeleniumBase" width="690" /></a></p>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/badge/View Releases-%20GitHub-0090c0.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://pypi.org/project/seleniumbase/">
+<img src="https://img.shields.io/badge/View Releases-%20GitHub-0090c0.svg" alt="View Releases on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
 <p align="center">
 <b>Python Web-UI Testing Made Awesome.</b>
