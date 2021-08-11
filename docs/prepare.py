@@ -71,8 +71,31 @@ def process_file(file_name):
 
 def main(*args, **kwargs):
     files_to_process = ["README.md"]
-    for dir_ in os.listdir(ROOT_DIR / "help_docs"):
-        files_to_process.append(os.path.join("help_docs", dir_))
+    scanned_dir_list = []
+    scanned_dir_list.append("help_docs")
+    scanned_dir_list.append("examples/example_logs")
+    scanned_dir_list.append("examples/visual_testing")
+    scanned_dir_list.append("integrations/google_cloud")
+    for scanned_dir in scanned_dir_list:
+        for dir_ in os.listdir(ROOT_DIR / scanned_dir):
+            files_to_process.append(os.path.join(scanned_dir, dir_))
+
+    video_embed = (
+        '<figure class="wp-block-embed wp-block-embed-youtube is-type-video '
+        'is-provider-youtube"><div class="wp-block-embed__wrapper">'
+        '<div class="epyt-video-wrapper fluid-width-video-wrapper" '
+        'style="padding-top: 3px !important;"><iframe loading="lazy" '
+        'id="_ytid_36718" data-origwidth="1200" data-origheight="675" '
+        'src="https://www.youtube.com/embed/yt_code?enablejsapi=1&amp;'
+        'origin=https://seleniumbase.io&amp;autoplay=0&amp;cc_load_policy=0'
+        '&amp;cc_lang_pref=&amp;iv_load_policy=1&amp;loop=0&amp;'
+        'modestbranding=1&amp;rel=0&amp;fs=1&amp;playsinline=0&amp;'
+        'autohide=2&amp;theme=dark&amp;color=red&amp;controls=1&amp;" '
+        'class="__youtube_prefs__ no-lazyload" title="YouTube player" '
+        'allow="autoplay; encrypted-media" allowfullscreen="" '
+        'data-no-lazy="1" data-skipgform_ajax_framebjll="">'
+        '</iframe></div></div></figure>'
+    )
 
     updated_files_to_process = []
     for file_ in files_to_process:
@@ -82,44 +105,54 @@ def main(*args, **kwargs):
     for file_ in updated_files_to_process:
         process_file(file_)
 
-    readme_file = "./docs/README.md"
-    with open(readme_file, "r", encoding="utf-8") as f:
-        all_code = f.read()
-    code_lines = all_code.split("\n")
+    for file_ in updated_files_to_process:
+        readme_file = "./docs/" + file_
+        with open(readme_file, "r", encoding="utf-8") as f:
+            all_code = f.read()
+        code_lines = all_code.split("\n")
 
-    changed = False
-    seleniumbase_lines = []
-    for line in code_lines:
-        if ' href="' in line and '.md"' in line:
-            changed = True
-            line = line.replace('.md"', '/"')
-        if "<!-- View on GitHub -->" in line:
-            changed = True
-            line = (
-                r'<p align="center"><div align="center">'
-                r'<a href="https://github.com/seleniumbase/SeleniumBase">'
-                r'<img src="https://img.shields.io/badge/'
-                r"✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀"
-                r'-02A79E.svg" alt="SeleniumBase on GitHub" />'
-                r"</a></div></p>"
-            )
-        if "<!-- SeleniumBase Header1 -->" in line:
-            changed = True
-            line = (
-                '<section align="center"><div align="center">'
-                "<h2>✅ Reliable Browser Testing</h2>"
-                "</div></section>"
-            )
-        if "<!-- SeleniumBase Docs -->" in line:
-            changed = True
-            line = (
-                '<h2><img src="https://seleniumbase.io/img/sb_icon.png" '
-                'title="SeleniumBase" width="20" /> SeleniumBase Docs '
-                '<img src="https://seleniumbase.io/img/sb_icon.png" '
-                'title="SeleniumBase" width="20" /></h2>'
-            )
-        seleniumbase_lines.append(line)
-    if changed:
-        out_file = codecs.open(readme_file, "w+", encoding="utf-8")
-        out_file.writelines("\r\n".join(seleniumbase_lines))
-        out_file.close()
+        changed = False
+        seleniumbase_lines = []
+        for line in code_lines:
+            if ' href="' in line and '.md"' in line:
+                changed = True
+                line = line.replace('.md"', '/"')
+            if "<!-- View on GitHub -->" in line:
+                changed = True
+                line = (
+                    r'<p align="center"><div align="center">'
+                    r'<a href="https://github.com/seleniumbase/SeleniumBase">'
+                    r'<img src="https://img.shields.io/badge/'
+                    r"✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀"
+                    r'-02A79E.svg" alt="SeleniumBase on GitHub" />'
+                    r"</a></div></p>"
+                )
+            if "<!-- GitHub Only -->" in line:
+                changed = True
+                continue
+            if '<!-- YouTube View -->' in line and "watch?v=" in line:
+                start_pt = line.find("watch?v=") + len("watch?v=")
+                end_pt = line.find('"', start_pt + 1)
+                yt_code = line[start_pt:end_pt]
+                changed = True
+                line = video_embed.replace("yt_code", yt_code)
+            if "<!-- SeleniumBase Header1 -->" in line:
+                changed = True
+                line = (
+                    '<section align="center"><div align="center">'
+                    "<h2>✅ Reliable Browser Testing</h2>"
+                    "</div></section>"
+                )
+            if "<!-- SeleniumBase Docs -->" in line:
+                changed = True
+                line = (
+                    '<h2><img src="https://seleniumbase.io/img/sb_icon.png" '
+                    'title="SeleniumBase" width="20" /> SeleniumBase Docs '
+                    '<img src="https://seleniumbase.io/img/sb_icon.png" '
+                    'title="SeleniumBase" width="20" /></h2>'
+                )
+            seleniumbase_lines.append(line)
+        if changed:
+            out_file = codecs.open(readme_file, "w+", encoding="utf-8")
+            out_file.writelines("\r\n".join(seleniumbase_lines))
+            out_file.close()

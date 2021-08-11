@@ -1,7 +1,7 @@
 [<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="285">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-[<img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=Sjzq9kU5kOw)
-<p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw"><img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> ⛲ Features: 🗂️</h2>
@@ -42,5 +42,5 @@
 
 --------
 
-[<img src="http://img.youtube.com/vi/yEQeAU_mrg0/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=yEQeAU_mrg0)
-<p>(<b><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0">Video of SeleniumBase features</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0"><img src="http://img.youtube.com/vi/yEQeAU_mrg0/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0">Have fun with test automation!</a></b>)</p>

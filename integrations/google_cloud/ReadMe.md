@@ -2,9 +2,8 @@
 
 (This tutorial, [from a previous Google Cloud Meetup](https://www.meetup.com/Boston-Google-Cloud-Meetup/events/230839686/?showDescription=true), will teach you how to setup a Linux server for running automated browser tests. The cost of running this server is about [$13.61/month on Google Cloud](https://console.cloud.google.com/launcher/details/bitnami-launchpad/jenkins) (enough to handle **5 parallel tests**). This is less expensive than using other platforms such as [BrowserStack](https://www.browserstack.com/pricing) or [Sauce Labs](https://saucelabs.com/pricing).)
 
-([Here's a quick video recap on YouTube:](https://www.youtube.com/watch?v=n-sno20R9P0))
-
-[<img src="https://seleniumbase.io/other/gcp_video_thumb.png" title="SeleniumBase on Google Cloud Platform" width="304">](https://www.youtube.com/watch?v=n-sno20R9P0)
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=n-sno20R9P0"><img src="https://seleniumbase.io/other/gcp_video_thumb.png" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=n-sno20R9P0">SeleniumBase Google Cloud Video</a></b>)</p>
 
 #### Step 1. Open the Google Cloud Platform Cloud Launcher
 

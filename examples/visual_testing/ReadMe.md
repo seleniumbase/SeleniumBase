@@ -4,9 +4,8 @@
 
 Automated Visual Regression Testing can help you detect when the layout of a web page has changed. Instead of comparing pixels from screenshots, layout differences can be detected by comparing HTML tags and attributes with a baseline. If a change is detected, it could mean that something broke, the web page was redesigned, or dynamic content changed.
 
-<p>(<b><a href="https://www.youtube.com/watch?v=erwkoiDeNzA">Watch the tutorial on YouTube ↘️</a></b>)</p>
-
-[<img src="https://img.youtube.com/vi/erwkoiDeNzA/0.jpg" title="Automated Visual Regression Testing" width="376">](https://www.youtube.com/watch?v=erwkoiDeNzA)
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=erwkoiDeNzA"><img src="http://img.youtube.com/vi/erwkoiDeNzA/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=erwkoiDeNzA">Watch the tutorial on YouTube</a></b>)</p>
 
 To handle automated visual testing, SeleniumBase uses the ``self.check_window()`` method, which can set visual baselines for comparison and then compare the latest versions of web pages to the existing baseline.
 

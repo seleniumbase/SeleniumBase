@@ -3,9 +3,8 @@
 <a id="syntax_formats"></a>
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 17 syntax formats</h2>
 
-<p>(<b><a href="https://youtu.be/VvwtS9_1m0s">Watch this tutorial on YouTube</a></b>)</p>
-
-[<img src="http://img.youtube.com/vi/VvwtS9_1m0s/mq1.jpg" title="17 SeleniumBase syntax formats" width="270">](https://youtu.be/VvwtS9_1m0s)
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=VvwtS9_1m0s"><img src="http://img.youtube.com/vi/VvwtS9_1m0s/mq1.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=VvwtS9_1m0s">Watch this tutorial on YouTube</a></b>)</p>
 
 --------
 

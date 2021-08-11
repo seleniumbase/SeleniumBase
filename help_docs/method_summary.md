@@ -1,9 +1,9 @@
 [<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Method Summary (API Reference)</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Methods (API Reference)</h2>
 
-[<img src="https://seleniumbase.io/cdn/img/sb_api_youtube.png" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=_yNJlHnp2JA)
-<p>(<b><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA">Common API Methods on YouTube</a></b>)</p>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA"><img src="https://seleniumbase.io/cdn/img/sb_api_youtube.png" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=_yNJlHnp2JA">Common API Methods on YouTube</a></b>)</p>
 
 Here's a list of SeleniumBase method definitions, which are defined in [base_case.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py)
 
