@@ -230,6 +230,11 @@ def process_test_file(
     for line in code_lines:
         line = line.rstrip()
 
+        # Keep lines with "%s" in them as they were
+        if r"%s" in line:
+            seleniumbase_lines.append(line)
+            continue
+
         # Handle self.click(SELECTOR)
         if not object_dict:
             data = re.match(
@@ -387,6 +392,59 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.double_click(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.double_click"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.double_click"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.double_click(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.double_click(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.double_click(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.click_visible_elements(SELECTOR)
         if not object_dict:
             data = re.match(
@@ -440,6 +498,112 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.highlight(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.highlight"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.highlight"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.highlight(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.highlight(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.highlight(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.highlight_click(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.highlight_click"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.highlight_click"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.highlight_click(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.highlight_click(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.highlight_click(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.switch_to_frame(SELECTOR)
         if not object_dict:
             data = re.match(
@@ -486,6 +650,59 @@ def process_test_file(
                     selector_object = object_dict[object_name]
                     changed.append(object_name.split(".")[0])
                     command = """%sself.switch_to_frame(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.switch_to_frame_of_element(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.switch_to_frame_of_element"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.switch_to_frame_of_element"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.switch_to_frame_of_element(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.switch_to_frame_of_element(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.switch_to_frame_of_element(%s)%s""" % (
                         whitespace,
                         selector_object,
                         comments,
@@ -1986,6 +2203,130 @@ def process_test_file(
                         a_type,
                         v_type,
                         selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.set_attribute(SELECTOR, ATTRIBUTE, VALUE)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.set_attribute"""
+                r"""\((r?['"][\S\s]+['"])"""
+                r""",\s?([\S\s]+),\s?([\S\s]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.set_attribute"""
+                r"""\(([\S]+),\s?([\S\s]+),\s?([\S\s]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            attribute = data.group(3)
+            value = data.group(4)
+            comments = data.group(5)
+            command = """%sself.set_attribute(%s, %s, %s)%s""" % (
+                whitespace,
+                selector,
+                attribute,
+                value,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.set_attribute(%s, %s, %s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        attribute,
+                        value,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.set_attribute(%s, %s, %s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        attribute,
+                        value,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.set_attributes(SELECTOR, ATTRIBUTE, VALUE)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.set_attributes"""
+                r"""\((r?['"][\S\s]+['"]),"""
+                r"""\s?([\S\s]+),\s?([\S\s]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.set_attributes"""
+                r"""\(([\S]+),\s?([\S\s]+),\s?([\S\s]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            attribute = data.group(3)
+            value = data.group(4)
+            comments = data.group(5)
+            command = """%sself.set_attributes(%s, %s, %s)%s""" % (
+                whitespace,
+                selector,
+                attribute,
+                value,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.set_attributes(%s, %s, %s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        attribute,
+                        value,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.set_attributes(%s, %s, %s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        attribute,
+                        value,
                         comments,
                     )
             seleniumbase_lines.append(command)
