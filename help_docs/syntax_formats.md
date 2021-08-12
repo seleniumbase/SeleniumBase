@@ -3,7 +3,7 @@
 <a id="syntax_formats"></a>
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 17 syntax formats</h2>
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=PYpO9kNBjgM"><img src="http://img.youtube.com/vi/PYpO9kNBjgM/mq1.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=PYpO9kNBjgM"><img src="http://img.youtube.com/vi/PYpO9kNBjgM/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=PYpO9kNBjgM">Watch this tutorial on YouTube</a></b>)</p>
 
 --------

@@ -74,6 +74,9 @@ def main(*args, **kwargs):
     scanned_dir_list = []
     scanned_dir_list.append("help_docs")
     scanned_dir_list.append("examples/example_logs")
+    scanned_dir_list.append("examples/presenter")
+    scanned_dir_list.append("examples/chart_maker")
+    scanned_dir_list.append("examples/tour_examples")
     scanned_dir_list.append("examples/visual_testing")
     scanned_dir_list.append("integrations/google_cloud")
     for scanned_dir in scanned_dir_list:

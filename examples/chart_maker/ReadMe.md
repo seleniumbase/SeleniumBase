@@ -335,3 +335,8 @@ self.display_chart(chart_name=None, filename=None):
 ```
 
 All methods have the optional ``chart_name`` argument, which is only needed when storing multiple charts at the same time.
+
+--------
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=TMQx3FLWvUY"><img src="http://img.youtube.com/vi/TMQx3FLWvUY/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=TMQx3FLWvUY">Video: Pie Charts on Pi Day</a></b>)</p>
