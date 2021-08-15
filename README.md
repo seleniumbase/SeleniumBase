@@ -47,7 +47,7 @@
 </p>
 
 <p align="left">
-✅ Get set up in minutes. Deploy anywhere.<br />
+✅ Get set up in minutes. <a href="https://www.youtube.com/watch?v=n-sno20R9P0">Deploy anywhere</a>.<br />
 ✅ Provides <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md"> browser testing APIs</a> for <a href="https://docs.pytest.org/">pytest</a>.<br />
 ✅ Supports Chromium, Firefox, IE, & Safari.<br />
 ✅ Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">dashboards and reporting tools</a>.
@@ -929,7 +929,7 @@ class MyTestClass(BaseCase):
 <code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
 To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
-🔵 Accessing Raw WebDriver
+🔵 Accessing Raw WebDriver:
 
 <p>If you need access to any commands that come with standard WebDriver, you can call them directly like this:</p>
 
