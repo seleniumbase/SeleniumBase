@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="332" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="278" /></a></h2>
 <h3 align="center">Create web/mobile tests 8x faster.</h3>
 <h4 align="center">Bring <a href="https://www.selenium.dev/documentation/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</h4>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -54,6 +54,8 @@
 </p>
 
 --------
+
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="202" /></a>
 
 <p align="left">Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> (<code>--demo</code> mode)</p>
 
