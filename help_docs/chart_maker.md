@@ -1,6 +1,6 @@
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="350" /></h3>
 
-<h2> 📊 ChartMaker 📈 </h2>
+<h2> 📊 ChartMaker 📶 </h2>
 
 <p>SeleniumBase ChartMaker lets you use Python to generate HTML charts from HighCharts JS.</p>
 

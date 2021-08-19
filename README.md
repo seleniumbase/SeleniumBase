@@ -1,18 +1,16 @@
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
-<meta property="og:description" content="Build fast, reliable, end-to-end tests." />
+<meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
 <meta property="og:keywords" content="Python, pytest, selenium, webdriver, test automation, testing, seleniumbase, test framework, RPA, reports, website tours, presentations">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="280" /></a></p>
-<p align="center">
-<b>Build fast, reliable, end-to-end tests.</b>
-</p>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="332" /></a></h2>
+<h3 align="center">Create web/mobile tests 8x faster.</h3>
+<h4 align="center">Bring <a href="https://www.selenium.dev/documentation/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</h4>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></p>
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
 
 <!-- View on GitHub -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions">
@@ -20,19 +18,21 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
+<p align="center">SeleniumBase is an all-in-one framework for Web/UI testing with Python.</p>
+
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🗂️ Features</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ CLI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Scripts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🧙‍♂️ Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ JSManager</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSManager</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📗 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔡 Syntaxes</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Syntaxes</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Record</a>
@@ -40,15 +40,15 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translate</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📑 Present</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📈 Charts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📶 Charts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📰 Present</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
 </p>
 
 <p align="left">
-✅ Get set up in minutes. <a href="https://www.youtube.com/watch?v=n-sno20R9P0">Deploy anywhere</a>.<br />
-✅ Provides <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md"> browser testing APIs</a> for <a href="https://docs.pytest.org/">pytest</a>.<br />
+✅ Smart-waiting code prevents flaky tests.<br />
+✅ Can run on  <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">GHA</a>, <a href="https://seleniumbase.io/integrations/google_cloud/ReadMe/">GCP</a>, <a href="https://seleniumbase.io/integrations/azure/jenkins/ReadMe/">Azure</a>, & <a href="https://seleniumbase.io/integrations/docker/ReadMe/">Docker</a>.<br />
 ✅ Supports Chromium, Firefox, IE, & Safari.<br />
 ✅ Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">dashboards and reporting tools</a>.
 </p>
@@ -90,7 +90,7 @@ class MyTestClass(BaseCase):
 
 🔵 Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
-🔵 Create a **[Python virtual environment](https://seleniumbase.io/help_docs/virtualenv_instructions/)**.
+🔵 Using a [Python virtual env](https://seleniumbase.io/help_docs/virtualenv_instructions/) is recommended.
 
 <a id="install_seleniumbase"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
@@ -963,7 +963,7 @@ pytest --reruns=1 --reruns-delay=1
 
 <p>
 <div><b>If you like us, give us a star!</b></div>
-<div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
