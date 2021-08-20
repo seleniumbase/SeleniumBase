@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="255" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="245" /></a></h2>
 <h4 align="center">Automate tests with <a href="https://www.selenium.dev/documentation/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</h4>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
