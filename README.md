@@ -17,7 +17,7 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p align="center">SeleniumBase is an all-in-one framework for Web/UI testing with Python.</p>
+<p align="center">SeleniumBase powers web automation, UI testing, and more.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
