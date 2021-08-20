@@ -5,9 +5,8 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="278" /></a></h2>
-<h3 align="center">Create web/mobile tests 8x faster.</h3>
-<h4 align="center">Bring <a href="https://www.selenium.dev/documentation/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a> to the next level.</h4>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10.png" alt="SeleniumBase" title="SeleniumBase" width="255" /></a></h2>
+<h4 align="center">Automate tests with <a href="https://www.selenium.dev/documentation/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</h4>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
@@ -57,7 +56,7 @@
 
 <a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="202" /></a>
 
-<p align="left">Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> (<code>--demo</code> mode)</p>
+<p align="left"><b>Example:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> (<code>--demo</code> mode)</p>
 
 ```bash
 pytest my_first_test.py --demo
