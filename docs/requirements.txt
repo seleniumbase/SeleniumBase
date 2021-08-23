@@ -1,5 +1,5 @@
-regex>=2021.8.3
-tqdm>=4.62.0
+regex>=2021.8.21
+tqdm>=4.62.2
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
 Markdown==3.3.4;python_version>="3.6"
