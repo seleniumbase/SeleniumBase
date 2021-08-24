@@ -1,5 +1,5 @@
 """
-The S3 Logging Plugin to upload all logs to the S3 bucket specified.
+The S3 Logging Plugin lets you upload test logs to the S3 bucket specified.
 """
 
 import uuid
@@ -10,11 +10,8 @@ from nose.plugins import Plugin
 
 
 class S3Logging(Plugin):
-    """
-    The plugin for uploading test logs to the S3 bucket specified.
-    """
-
-    name = "s3_logging"  # Usage: --with-s3_logging
+    """The plugin for uploading test logs to the S3 bucket specified."""
+    name = "s3_logging"  # Usage: --with-s3-logging
 
     def configure(self, options, conf):
         """ Get the options. """
@@ -40,8 +37,8 @@ class S3Logging(Plugin):
         print("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
         logging.error("\n\n*** Log files uploaded: ***\n%s\n" % index_file)
 
-        # If the database plugin is running, attach a link
-        # to the logs index database row
+        # If the SB database plugin is also being used,
+        # attach a link to the logs index database row.
         if hasattr(test.test, "testcase_guid"):
             from seleniumbase.core.testcase_manager import (
                 TestcaseDataPayload,
