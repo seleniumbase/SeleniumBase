@@ -106,6 +106,37 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
         return False
 
 
+def is_attribute_present(
+    driver, selector, attribute, value=None, by=By.CSS_SELECTOR
+):
+    """
+    Returns whether the specified attribute is present in the given selector.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    attribute - the attribute that is expected for the element (required)
+    value - the attribute value that is expected (Default: None)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    @Returns
+    Boolean (is attribute present)
+    """
+    try:
+        element = driver.find_element(by=by, value=selector)
+        found_value = element.get_attribute(attribute)
+        if found_value is None:
+            raise Exception()
+
+        if value is not None:
+            if found_value == value:
+                return True
+            else:
+                raise Exception()
+        else:
+            return True
+    except Exception:
+        return False
+
+
 def hover_on_element(driver, selector, by=By.CSS_SELECTOR):
     """
     Fires the hover event for the specified element by the given selector.
@@ -493,7 +524,7 @@ def wait_for_attribute(
     attribute - the attribute that is expected for the element (required)
     value - the attribute value that is expected (Default: None)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
-    timeout - the time to wait for elements in seconds
+    timeout - the time to wait for the element attribute in seconds
     @Returns
     A web element object that contains the expected attribute/value
     """
@@ -667,6 +698,55 @@ def wait_for_text_not_visible(
         timeout,
         plural,
     )
+    timeout_exception(Exception, message)
+
+
+def wait_for_attribute_not_present(
+    driver,
+    selector,
+    attribute,
+    value=None,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT
+):
+    """
+    Searches for the specified element attribute by the given selector.
+    Returns True if the attribute isn't present on the page within the timeout.
+    Also returns True if the element is not present within the timeout.
+    Raises an exception if the attribute is still present after the timeout.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    attribute - the element attribute (required)
+    value - the attribute value (Default: None)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for the element attribute in seconds
+    """
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        s_utils.check_if_time_limit_exceeded()
+        if not is_attribute_present(
+            driver, selector, attribute, value=value, by=by
+        ):
+            return True
+        now_ms = time.time() * 1000.0
+        if now_ms >= stop_ms:
+            break
+        time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    message = (
+        "Attribute {%s} of element {%s} was still present after %s second%s!"
+        "" % (attribute, selector, timeout, plural)
+    )
+    if value:
+        message = (
+            "Value {%s} for attribute {%s} of element {%s} was still present "
+            "after %s second%s!"
+            "" % (value, attribute, selector, timeout, plural)
+        )
     timeout_exception(Exception, message)
 
 

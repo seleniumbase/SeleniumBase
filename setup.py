@@ -50,7 +50,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.62.0'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.62.2'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -114,7 +114,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.2.3;python_version>="3.6"',
+        'pip>=21.2.4;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.0;python_version>="3.6"',
         "typing-extensions>=3.10.0.0",
@@ -130,16 +130,16 @@ setup(
         "certifi>=2021.5.30",
         "six==1.16.0",
         "nose==1.3.7",
-        'ipdb==0.13.4;python_version<"3.6"',
-        'ipdb==0.13.9;python_version>="3.6"',
+        'ipdb==0.13.4;python_version<"3.5"',
+        'ipdb==0.13.9;python_version>="3.5"',
         'parso==0.7.1;python_version<"3.6"',
         'parso==0.8.2;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
         'jedi==0.18.0;python_version>="3.6"',
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
         'idna==3.2;python_version>="3.6"',  # Must stay in sync with "requests"
-        'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
-        'chardet==4.0.0;python_version>="3.6"',  # Stay in sync with "requests"
+        'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
+        'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.4;python_version>="3.6"',  # Sync "requests"
         "urllib3==1.26.6",  # Must stay in sync with "requests"
         'requests==2.26.0;python_version<"3.5"',
@@ -151,8 +151,8 @@ setup(
         'more-itertools==8.8.0;python_version>="3.5"',
         "cssselect==1.1.0",
         "filelock==3.0.12",
-        'fasteners==0.16;python_version<"3.6"',
-        'fasteners==0.16.3;python_version>="3.6"',
+        'fasteners==0.16;python_version<"3.5"',
+        'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
         "pluggy==0.13.1",
         'py==1.8.1;python_version<"3.5"',
@@ -175,24 +175,25 @@ setup(
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.0.0",
         'soupsieve==1.9.6;python_version<"3.5"',
-        'soupsieve==2.0.1;python_version>="3.5" and python_version<"3.6"',
+        'soupsieve==2.1;python_version>="3.5" and python_version<"3.6"',
         'soupsieve==2.2.1;python_version>="3.6"',
         "beautifulsoup4==4.9.3",
         'cryptography==2.9.2;python_version<"3.5"',
-        'cryptography==3.0;python_version>="3.5" and python_version<"3.6"',
+        'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==3.4.7;python_version>="3.6"',
-        'pyopenssl==19.1.0;python_version<"3.6"',
-        'pyopenssl==20.0.1;python_version>="3.6"',
+        'pyopenssl==19.1.0;python_version<"3.5"',
+        'pyopenssl==20.0.1;python_version>="3.5"',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.9.0;python_version>="3.5"',
+        'pygments==2.10.0;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
         'traitlets==5.0.5;python_version>="3.7"',
-        'prompt-toolkit==1.0.18;python_version<"3.6"',
-        'prompt-toolkit==3.0.19;python_version>="3.6"',
+        'prompt-toolkit==1.0.18;python_version<"3.5"',
+        'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
+        'prompt-toolkit==3.0.20;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.0.9;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
-        'ipython==6.5.0;python_version>="3.5" and python_version<"3.6"',
+        'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.26.0;python_version>="3.7"',
         'matplotlib-inline==0.1.2;python_version>="3.7"',
@@ -200,7 +201,8 @@ setup(
         'platformdirs==2.0.2;python_version<"3.6"',
         'platformdirs==2.2.0;python_version>="3.6"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
-        'importlib-metadata==2.0.0;python_version<"3.6"',  # Sync "virtualenv"
+        'importlib-metadata==2.0.0;python_version<"3.5"',
+        'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
         "virtualenv>=20.7.2",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',

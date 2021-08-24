@@ -321,6 +321,7 @@ class SeleniumBrowser(Plugin):
         parser.add_option(
             "--slow_mode",
             "--slow-mode",
+            "--slowmo",
             "--slow",
             action="store_true",
             dest="slow_mode",
@@ -529,6 +530,7 @@ class SeleniumBrowser(Plugin):
             help="""The option to start with the web browser maximized.""",
         )
         parser.add_option(
+            "--screenshot",
             "--save_screenshot",
             "--save-screenshot",
             action="store_true",

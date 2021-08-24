@@ -81,6 +81,7 @@ class BaseCase(unittest.TestCase):
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = None
+        self.__requests_timeout = None
         self.__screenshot_count = 0
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
@@ -99,6 +100,10 @@ class BaseCase(unittest.TestCase):
         self.__device_height = None
         self.__device_pixel_ratio = None
         self.__driver_browser_map = {}
+        self.__changed_jqc_theme = False
+        self.__jqc_default_theme = None
+        self.__jqc_default_color = None
+        self.__jqc_default_width = None
         # Requires self._* instead of self.__* for external class use
         self._language = "English"
         self._presentation_slides = {}
@@ -774,6 +779,18 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_text_visible(self.driver, text, selector, by)
+
+    def is_attribute_present(
+        self, selector, attribute, value=None, by=By.CSS_SELECTOR
+    ):
+        """Returns True if the element attribute/value is found.
+        If the value is not specified, the attribute only needs to exist."""
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.is_attribute_present(
+            self.driver, selector, attribute, value, by
+        )
 
     def is_link_text_visible(self, link_text):
         self.wait_for_ready_state_complete()
@@ -3208,10 +3225,15 @@ class BaseCase(unittest.TestCase):
 
     def get_link_status_code(self, link, allow_redirects=False, timeout=5):
         """Get the status code of a link.
-        If the timeout is exceeded, will return a 404.
+        If the timeout is set to less than 1, it becomes 1.
+        If the timeout is exceeded by requests.get(), it will return a 404.
         For a list of available status codes, see:
         https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         """
+        if self.__requests_timeout:
+            timeout = self.__requests_timeout
+        if timeout < 1:
+            timeout = 1
         status_code = page_utils._get_link_status_code(
             link, allow_redirects=allow_redirects, timeout=timeout
         )
@@ -3234,9 +3256,10 @@ class BaseCase(unittest.TestCase):
         else:
             return None
 
-    def assert_no_404_errors(self, multithreaded=True):
+    def assert_no_404_errors(self, multithreaded=True, timeout=None):
         """Assert no 404 errors from page links obtained from:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+        Timeout is on a per-link basis using the "requests" library.
         (A 404 error represents a broken link on a web page.)
         """
         all_links = self.get_unique_links()
@@ -3248,6 +3271,12 @@ class BaseCase(unittest.TestCase):
                 and "data:" not in link
             ):
                 links.append(link)
+        if timeout:
+            if not type(timeout) is int and not type(timeout) is float:
+                raise Exception('Expecting a numeric value for "timeout"!')
+            if timeout < 0:
+                raise Exception('The "timeout" cannot be a negative number!')
+            self.__requests_timeout = timeout
         broken_links = []
         if multithreaded:
             from multiprocessing.dummy import Pool as ThreadPool
@@ -3264,6 +3293,7 @@ class BaseCase(unittest.TestCase):
             for link in links:
                 if self.__get_link_if_404_error(link):
                     broken_links.append(link)
+        self.__requests_timeout = None  # Reset the requests.get() timeout
         if len(broken_links) > 0:
             bad_links_str = "\n".join(broken_links)
             if len(broken_links) == 1:
@@ -6655,11 +6685,336 @@ class BaseCase(unittest.TestCase):
             self._tour_steps, name=name, filename=filename, url=url
         )
 
+    ############
+
     def activate_jquery_confirm(self):
         """ See https://craftpip.github.io/jquery-confirm/ for usage. """
         self.__check_scope()
         js_utils.activate_jquery_confirm(self.driver)
         self.wait_for_ready_state_complete()
+
+    def set_jqc_theme(self, theme, color=None, width=None):
+        """ Sets the default jquery-confirm theme and width (optional).
+        Available themes: "bootstrap", "modern", "material", "supervan",
+                          "light", "dark", and "seamless".
+        Available colors: (This sets the BORDER color, NOT the button color.)
+            "blue", "default", "green", "red", "purple", "orange", "dark".
+        Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        if not self.__changed_jqc_theme:
+            self.__jqc_default_theme = constants.JqueryConfirm.DEFAULT_THEME
+            self.__jqc_default_color = constants.JqueryConfirm.DEFAULT_COLOR
+            self.__jqc_default_width = constants.JqueryConfirm.DEFAULT_WIDTH
+        valid_themes = [
+            "bootstrap",
+            "modern",
+            "material",
+            "supervan",
+            "light",
+            "dark",
+            "seamless",
+        ]
+        if theme.lower() not in valid_themes:
+            raise Exception(
+                "%s is not a valid jquery-confirm theme! "
+                "Select from %s" % (theme.lower(), valid_themes)
+            )
+        constants.JqueryConfirm.DEFAULT_THEME = theme.lower()
+        if color:
+            valid_colors = [
+                "blue",
+                "default",
+                "green",
+                "red",
+                "purple",
+                "orange",
+                "dark",
+            ]
+            if color.lower() not in valid_colors:
+                raise Exception(
+                    "%s is not a valid jquery-confirm border color! "
+                    "Select from %s" % (color.lower(), valid_colors)
+                )
+            constants.JqueryConfirm.DEFAULT_COLOR = color.lower()
+        if width:
+            if type(width) is int or type(width) is float:
+                # Convert to a string if a number is given
+                width = str(width)
+            if width.isnumeric():
+                if int(width) <= 0:
+                    raise Exception("Width must be set to a positive number!")
+                elif int(width) <= 100:
+                    width = str(width) + "%"
+                else:
+                    width = str(width) + "px"  # Use pixels if width is > 100
+            if not width.endswith("%") and not width.endswith("px"):
+                raise Exception(
+                    "jqc width must end with %% for percent or px for pixels!"
+                )
+            value = None
+            if width.endswith("%"):
+                value = width[:-1]
+            if width.endswith("px"):
+                value = width[:-2]
+            try:
+                value = float(value)
+            except Exception:
+                raise Exception("%s is not a numeric value!" % value)
+            if value <= 0:
+                raise Exception("%s is not a positive number!" % value)
+            constants.JqueryConfirm.DEFAULT_WIDTH = width
+
+    def reset_jqc_theme(self):
+        """ Resets the jqc theme settings to factory defaults. """
+        if self.__changed_jqc_theme:
+            constants.JqueryConfirm.DEFAULT_THEME = self.__jqc_default_theme
+            constants.JqueryConfirm.DEFAULT_COLOR = self.__jqc_default_color
+            constants.JqueryConfirm.DEFAULT_WIDTH = self.__jqc_default_width
+            self.__changed_jqc_theme = False
+
+    def get_jqc_button_input(self, message, buttons, options=None):
+        """
+        Pop up a jquery-confirm box and return the text of the button clicked.
+        If running in headless mode, the last button text is returned.
+        @Params
+        message: The message to display in the jquery-confirm dialog.
+        buttons: A list of tuples for text and color.
+            Example: [("Yes!", "green"), ("No!", "red")]
+            Available colors: blue, green, red, orange, purple, default, dark.
+            A simple text string also works: "My Button". (Uses default color.)
+        options: A list of tuples for options to set.
+            Example: [("theme", "bootstrap"), ("width", "450px")]
+            Available theme options: bootstrap, modern, material, supervan,
+                                     light, dark, and seamless.
+            Available colors: (For the BORDER color, NOT the button color.)
+                "blue", "default", "green", "red", "purple", "orange", "dark".
+            Example option for changing the border color: ("color", "default")
+            Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        from seleniumbase.core import jqc_helper
+
+        if message and type(message) is not str:
+            raise Exception('Expecting a string for arg: "message"!')
+        if not type(buttons) is list and not type(buttons) is tuple:
+            raise Exception('Expecting a list or tuple for arg: "button"!')
+        if len(buttons) < 1:
+            raise Exception('List "buttons" requires at least one button!')
+        new_buttons = []
+        for button in buttons:
+            if (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) == 1)
+            ):
+                new_buttons.append(button[0])
+            elif (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) > 1)
+            ):
+                new_buttons.append((button[0], str(button[1]).lower()))
+            else:
+                new_buttons.append((str(button), ""))
+        buttons = new_buttons
+        if options:
+            for option in options:
+                if not type(option) is list and not type(option) is tuple:
+                    raise Exception('"options" should be a list of tuples!')
+        if self.headless:
+            return buttons[-1][0]
+        jqc_helper.jquery_confirm_button_dialog(
+            self.driver, message, buttons, options
+        )
+        self.sleep(0.02)
+        jf = "document.querySelector('.jconfirm-box').focus();"
+        try:
+            self.execute_script(jf)
+        except Exception:
+            pass
+        waiting_for_response = True
+        while waiting_for_response:
+            self.sleep(0.05)
+            jqc_open = self.execute_script(
+                "return jconfirm.instances.length"
+            )
+            if str(jqc_open) == "0":
+                break
+        self.sleep(0.1)
+        status = None
+        try:
+            status = self.execute_script("return $jqc_status")
+        except Exception:
+            status = self.execute_script(
+                "return jconfirm.lastButtonText"
+            )
+        return status
+
+    def get_jqc_text_input(self, message, button=None, options=None):
+        """
+        Pop up a jquery-confirm box and return the text submitted by the input.
+        If running in headless mode, the text returned is "" by default.
+        @Params
+        message: The message to display in the jquery-confirm dialog.
+        button: A 2-item list or tuple for text and color. Or just the text.
+            Example: ["Submit", "blue"] -> (default button if not specified)
+            Available colors: blue, green, red, orange, purple, default, dark.
+            A simple text string also works: "My Button". (Uses default color.)
+        options: A list of tuples for options to set.
+            Example: [("theme", "bootstrap"), ("width", "450px")]
+            Available theme options: bootstrap, modern, material, supervan,
+                                     light, dark, and seamless.
+            Available colors: (For the BORDER color, NOT the button color.)
+                "blue", "default", "green", "red", "purple", "orange", "dark".
+            Example option for changing the border color: ("color", "default")
+            Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        from seleniumbase.core import jqc_helper
+
+        if message and type(message) is not str:
+            raise Exception('Expecting a string for arg: "message"!')
+        if button:
+            if (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) == 1)
+            ):
+                button = (str(button[0]), "")
+            elif (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) > 1)
+            ):
+                valid_colors = [
+                    "blue",
+                    "default",
+                    "green",
+                    "red",
+                    "purple",
+                    "orange",
+                    "dark",
+                ]
+                detected_color = str(button[1]).lower()
+                if str(button[1]).lower() not in valid_colors:
+                    raise Exception(
+                        "%s is an invalid jquery-confirm button color!\n"
+                        "Select from %s" % (detected_color, valid_colors)
+                    )
+                button = (str(button[0]), str(button[1]).lower())
+            else:
+                button = (str(button), "")
+        else:
+            button = ("Submit", "blue")
+
+        if options:
+            for option in options:
+                if not type(option) is list and not type(option) is tuple:
+                    raise Exception('"options" should be a list of tuples!')
+        if self.headless:
+            return ""
+        jqc_helper.jquery_confirm_text_dialog(
+            self.driver, message, button, options
+        )
+        self.sleep(0.02)
+        jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
+        try:
+            self.execute_script(jf)
+        except Exception:
+            pass
+        waiting_for_response = True
+        while waiting_for_response:
+            self.sleep(0.05)
+            jqc_open = self.execute_script(
+                "return jconfirm.instances.length"
+            )
+            if str(jqc_open) == "0":
+                break
+        self.sleep(0.1)
+        status = None
+        try:
+            status = self.execute_script("return $jqc_input")
+        except Exception:
+            status = self.execute_script(
+                "return jconfirm.lastInputText"
+            )
+        return status
+
+    def get_jqc_form_inputs(self, message, buttons, options=None):
+        """
+        Pop up a jquery-confirm box and return the input/button texts as tuple.
+        If running in headless mode, returns the ("", buttons[-1][0]) tuple.
+        @Params
+        message: The message to display in the jquery-confirm dialog.
+        buttons: A list of tuples for text and color.
+            Example: [("Yes!", "green"), ("No!", "red")]
+            Available colors: blue, green, red, orange, purple, default, dark.
+            A simple text string also works: "My Button". (Uses default color.)
+        options: A list of tuples for options to set.
+            Example: [("theme", "bootstrap"), ("width", "450px")]
+            Available theme options: bootstrap, modern, material, supervan,
+                                     light, dark, and seamless.
+            Available colors: (For the BORDER color, NOT the button color.)
+                "blue", "default", "green", "red", "purple", "orange", "dark".
+            Example option for changing the border color: ("color", "default")
+            Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        from seleniumbase.core import jqc_helper
+
+        if message and type(message) is not str:
+            raise Exception('Expecting a string for arg: "message"!')
+        if not type(buttons) is list and not type(buttons) is tuple:
+            raise Exception('Expecting a list or tuple for arg: "button"!')
+        if len(buttons) < 1:
+            raise Exception('List "buttons" requires at least one button!')
+        new_buttons = []
+        for button in buttons:
+            if (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) == 1)
+            ):
+                new_buttons.append(button[0])
+            elif (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) > 1)
+            ):
+                new_buttons.append((button[0], str(button[1]).lower()))
+            else:
+                new_buttons.append((str(button), ""))
+        buttons = new_buttons
+        if options:
+            for option in options:
+                if not type(option) is list and not type(option) is tuple:
+                    raise Exception('"options" should be a list of tuples!')
+        if self.headless:
+            return ("", buttons[-1][0])
+        jqc_helper.jquery_confirm_full_dialog(
+            self.driver, message, buttons, options
+        )
+        self.sleep(0.02)
+        jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
+        try:
+            self.execute_script(jf)
+        except Exception:
+            pass
+        waiting_for_response = True
+        while waiting_for_response:
+            self.sleep(0.05)
+            jqc_open = self.execute_script(
+                "return jconfirm.instances.length"
+            )
+            if str(jqc_open) == "0":
+                break
+        self.sleep(0.1)
+        text_status = None
+        button_status = None
+        try:
+            text_status = self.execute_script("return $jqc_input")
+            button_status = self.execute_script("return $jqc_status")
+        except Exception:
+            text_status = self.execute_script(
+                "return jconfirm.lastInputText"
+            )
+            button_status = self.execute_script(
+                "return jconfirm.lastButtonText"
+            )
+        return (text_status, button_status)
+
+    ############
 
     def activate_messenger(self):
         self.__check_scope()
@@ -7460,7 +7815,7 @@ class BaseCase(unittest.TestCase):
         self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
     ):
         """Similar to wait_for_text_not_visible()
-        Raises an exception if the element or the text is not found.
+        Raises an exception if the text is still visible after timeout.
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
         if not timeout:
@@ -7469,6 +7824,36 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         return self.wait_for_text_not_visible(
             text, selector, by=by, timeout=timeout
+        )
+
+    ############
+
+    def wait_for_attribute_not_present(
+        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_attribute_not_present(
+            self.driver, selector, attribute, value, by, timeout
+        )
+
+    def assert_attribute_not_present(
+        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """Similar to wait_for_attribute_not_present()
+        Raises an exception if the attribute is still present after timeout.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_attribute_not_present(
+            selector, attribute, value=value, by=by, timeout=timeout
         )
 
     ############
@@ -8558,10 +8943,11 @@ class BaseCase(unittest.TestCase):
         # Verify that SeleniumBase is installed successfully
         if not hasattr(self, "browser"):
             raise Exception(
-                """SeleniumBase plugins DID NOT load!\n\n"""
-                """*** Please REINSTALL SeleniumBase using: >\n"""
-                """    >>> "pip install -r requirements.txt"\n"""
-                """    >>> "python setup.py install" """
+                'SeleniumBase plugins DID NOT load! * Please REINSTALL!\n'
+                '*** Either install SeleniumBase in Dev Mode from a clone:\n'
+                '    >>> "pip install -e ."     (Run in DIR with setup.py)\n'
+                '*** Or install the latest SeleniumBase version from PyPI:\n'
+                '    >>> "pip install -U seleniumbase"    (Run in any DIR)'
             )
 
         if not hasattr(sb_config, "_is_timeout_changed"):

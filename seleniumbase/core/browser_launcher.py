@@ -108,6 +108,57 @@ def is_headless_iedriver_on_path():
     return os.path.exists(LOCAL_HEADLESS_IEDRIVER)
 
 
+def _repair_chromedriver(chrome_options, headless_options):
+    import subprocess
+
+    driver = None
+    subprocess.check_call(
+        "sbase install chromedriver 2.44", shell=True
+    )
+    try:
+        driver = webdriver.Chrome(options=headless_options)
+    except Exception:
+        subprocess.check_call(
+            "sbase install chromedriver latest-1", shell=True
+        )
+        return
+    chrome_version = None
+    if "version" in driver.capabilities:
+        chrome_version = driver.capabilities["version"]
+    else:
+        chrome_version = driver.capabilities["browserVersion"]
+    major_chrome_ver = chrome_version.split(".")[0]
+    chrome_dict = driver.capabilities["chrome"]
+    driver.quit()
+    chromedriver_ver = chrome_dict["chromedriverVersion"]
+    chromedriver_ver = chromedriver_ver.split(" ")[0]
+    major_chromedriver_ver = chromedriver_ver.split(".")[0]
+    if major_chromedriver_ver != major_chrome_ver:
+        subprocess.check_call(
+            "sbase install chromedriver %s" % major_chrome_ver,
+            shell=True
+        )
+    return
+
+
+def _mark_chromedriver_repaired():
+    import codecs
+
+    abs_path = os.path.abspath(".")
+    chromedriver_repaired_lock = constants.MultiBrowser.CHROMEDRIVER_REPAIRED
+    file_path = os.path.join(abs_path, chromedriver_repaired_lock)
+    out_file = codecs.open(file_path, "w+", encoding="utf-8")
+    out_file.writelines("")
+    out_file.close()
+
+
+def _was_chromedriver_repaired():
+    abs_path = os.path.abspath(".")
+    chromedriver_repaired_lock = constants.MultiBrowser.CHROMEDRIVER_REPAIRED
+    file_path = os.path.join(abs_path, chromedriver_repaired_lock)
+    return os.path.exists(file_path)
+
+
 def _add_chrome_proxy_extension(
     chrome_options, proxy_string, proxy_user, proxy_pass
 ):
@@ -303,6 +354,7 @@ def _set_chrome_options(
     if user_agent:
         chrome_options.add_argument("--user-agent=%s" % user_agent)
     chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument(
@@ -1248,6 +1300,7 @@ def get_local_driver(
                 abs_path = os.path.abspath(extension_dir)
                 edge_options.add_argument("--load-extension=%s" % abs_path)
             edge_options.add_argument("--disable-infobars")
+            edge_options.add_argument("--disable-notifications")
             edge_options.add_argument("--disable-save-password-bubble")
             edge_options.add_argument("--disable-single-click-autofill")
             edge_options.add_argument(
@@ -1424,8 +1477,87 @@ def get_local_driver(
                     print("\nWarning: chromedriver not found. Installing now:")
                     sb_install.main(override="chromedriver")
                     sys.argv = sys_args  # Put back the original sys args
+                else:
+                    import fasteners
+                    from seleniumbase.console_scripts import sb_install
+
+                    chromedriver_fixing_lock = fasteners.InterProcessLock(
+                        constants.MultiBrowser.CHROMEDRIVER_FIXING_LOCK
+                    )
+                    with chromedriver_fixing_lock:
+                        if not is_chromedriver_on_path():
+                            sys_args = sys.argv  # Save a copy of sys args
+                            print(
+                                "\nWarning: chromedriver not found. "
+                                "Installing now:"
+                            )
+                            sb_install.main(override="chromedriver")
+                            sys.argv = sys_args  # Put back original sys args
             if not headless or "linux" not in PLATFORM:
-                return webdriver.Chrome(options=chrome_options)
+                try:
+                    driver = webdriver.Chrome(options=chrome_options)
+                except Exception as e:
+                    auto_upgrade_chromedriver = False
+                    if "This version of ChromeDriver only supports" in e.msg:
+                        auto_upgrade_chromedriver = True
+                    if not auto_upgrade_chromedriver:
+                        raise Exception(e.msg)  # Not an obvious fix. Raise.
+                    else:
+                        pass  # Try upgrading ChromeDriver to match Chrome.
+                    headless = True
+                    headless_options = _set_chrome_options(
+                        browser_name,
+                        downloads_path,
+                        headless,
+                        locale_code,
+                        proxy_string,
+                        proxy_auth,
+                        proxy_user,
+                        proxy_pass,
+                        user_agent,
+                        disable_csp,
+                        enable_ws,
+                        enable_sync,
+                        use_auto_ext,
+                        no_sandbox,
+                        disable_gpu,
+                        incognito,
+                        guest_mode,
+                        devtools,
+                        remote_debug,
+                        swiftshader,
+                        block_images,
+                        chromium_arg,
+                        user_data_dir,
+                        extension_zip,
+                        extension_dir,
+                        servername,
+                        mobile_emulator,
+                        device_width,
+                        device_height,
+                        device_pixel_ratio,
+                    )
+                    args = " ".join(sys.argv)
+                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                        import fasteners
+
+                        chromedriver_fixing_lock = fasteners.InterProcessLock(
+                            constants.MultiBrowser.CHROMEDRIVER_FIXING_LOCK
+                        )
+                        with chromedriver_fixing_lock:
+                            if not _was_chromedriver_repaired():
+                                _repair_chromedriver(
+                                    chrome_options, headless_options
+                                )
+                                _mark_chromedriver_repaired()
+                    else:
+                        if not _was_chromedriver_repaired():
+                            _repair_chromedriver(
+                                chrome_options, headless_options
+                            )
+                        _mark_chromedriver_repaired()
+                    driver = webdriver.Chrome(options=chrome_options)
+                return driver
             else:  # Running headless on Linux
                 try:
                     return webdriver.Chrome(options=chrome_options)

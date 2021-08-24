@@ -139,18 +139,22 @@ class MasterQA(BaseCase):
                     title: '%s',
                     content: '',
                     buttons: {
-                        fail_button: {
-                            btnClass: 'btn-red',
-                            text: 'NO / FAIL',
-                            action: function(){
-                                $jqc_status = "Failure!"
-                            }
-                        },
                         pass_button: {
                             btnClass: 'btn-green',
                             text: 'YES / PASS',
+                            keys: ['y', 'p', '1'],
                             action: function(){
-                                $jqc_status = "Success!"
+                                $jqc_status = "Success!";
+                                jconfirm.lastButtonText = "Success!";
+                            }
+                        },
+                        fail_button: {
+                            btnClass: 'btn-red',
+                            text: 'NO / FAIL',
+                            keys: ['n', 'f', '2'],
+                            action: function(){
+                                $jqc_status = "Failure!";
+                                jconfirm.lastButtonText = "Failure!";
                             }
                         }
                     }
@@ -210,12 +214,7 @@ class MasterQA(BaseCase):
             try:
                 status = self.execute_script("return $jqc_status")
             except Exception:
-                status = "Failure!"
-                pre_status = self.execute_script(
-                    "return jconfirm.lastClicked.hasClass('btn-green')"
-                )
-                if pre_status:
-                    status = "Success!"
+                status = self.execute_script("return jconfirm.lastButtonText")
         else:
             # Fallback to plain js confirm dialogs if can't load jquery_confirm
             if self.browser == "ie":

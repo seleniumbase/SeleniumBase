@@ -48,6 +48,11 @@ class Dashboard:
     DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
 
 
+class MultiBrowser:
+    CHROMEDRIVER_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/driver_fixing.lock"
+    CHROMEDRIVER_REPAIRED = Files.DOWNLOADS_FOLDER + "/driver_fixed.lock"
+
+
 class SavedCookies:
     STORAGE_FOLDER = "saved_cookies"
 
@@ -285,6 +290,9 @@ class JqueryConfirm:
         "https://cdnjs.cloudflare.com/ajax/libs/"
         "jquery-confirm/%s/jquery-confirm.min.js" % VER
     )
+    DEFAULT_THEME = "bootstrap"
+    DEFAULT_COLOR = "blue"
+    DEFAULT_WIDTH = "38%"
 
 
 class Shepherd:

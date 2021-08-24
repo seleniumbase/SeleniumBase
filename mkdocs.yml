@@ -92,8 +92,9 @@ nav:
     - Locale Codes: help_docs/locale_codes.md
   - JS Generators:
     - Tour Maker: examples/tour_examples/ReadMe.md
-    - Presentation Maker: examples/presenter/ReadMe.md
+    - Dialog Boxes: examples/dialog_boxes/ReadMe.md
     - Chart Maker: help_docs/chart_maker.md
+    - Presentation Maker: examples/presenter/ReadMe.md
   - Integrations:
     - Mobile Testing: help_docs/mobile_testing.md
     - GitHub CI: integrations/github/workflows/ReadMe.md

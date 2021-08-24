@@ -561,6 +561,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--slow_mode",
         "--slow-mode",
+        "--slowmo",
         "--slow",
         action="store_true",
         dest="slow_mode",
@@ -803,6 +804,7 @@ def pytest_addoption(parser):
                 maximized.""",
     )
     parser.addoption(
+        "--screenshot",
         "--save_screenshot",
         "--save-screenshot",
         action="store_true",

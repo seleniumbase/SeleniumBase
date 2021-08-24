@@ -28,16 +28,16 @@
 * Has a [global config file](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) for configuring settings as needed.
 * Includes a tool for [creating interactive web presentations](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md).
 * Includes [Chart Maker](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md), a tool for creating interactive charts.
+* Includes a [dialog box builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md) to allow user-input during automation.
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for creating interactive walkthroughs.
-* Has a tool to [export Katalon Recorder scripts into SeleniumBase format](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/katalon/ReadMe.md).
+* Includes integrations for [GitHub Actions](https://seleniumbase.io/integrations/github/workflows/ReadMe/), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * Can handle Google Authenticator logins with [Python's one-time password library](https://pyotp.readthedocs.io/en/latest/).
 * Can load and make assertions on PDF files from websites or the local file system.
 * Is backwards-compatible with Python [WebDriver](https://www.selenium.dev/projects/) methods. (Use: ``self.driver``)
 * Can execute JavaScript code from Python calls. (Use: ``self.execute_script()``)
 * Can pierce through Shadow DOM selectors. (Add ``::shadow`` to CSS fragments.)
-* Includes integrations for [MySQL](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/core/testcase_manager.py), [Selenium Grid](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [GCP](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [AWS](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * Includes a hybrid-automation solution, [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md), for speeding up manual testing.
-* Includes a tool for [converting Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_ide) into SeleniumBase scripts.
+* Includes a tool to [convert Katalon & Selenium IDE recordings](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/katalon/ReadMe.md) into SeleniumBase scripts.
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
 --------
