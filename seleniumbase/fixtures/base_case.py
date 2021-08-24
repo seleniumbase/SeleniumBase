@@ -100,6 +100,10 @@ class BaseCase(unittest.TestCase):
         self.__device_height = None
         self.__device_pixel_ratio = None
         self.__driver_browser_map = {}
+        self.__changed_jqc_theme = False
+        self.__jqc_default_theme = None
+        self.__jqc_default_color = None
+        self.__jqc_default_width = None
         # Requires self._* instead of self.__* for external class use
         self._language = "English"
         self._presentation_slides = {}
@@ -6681,11 +6685,336 @@ class BaseCase(unittest.TestCase):
             self._tour_steps, name=name, filename=filename, url=url
         )
 
+    ############
+
     def activate_jquery_confirm(self):
         """ See https://craftpip.github.io/jquery-confirm/ for usage. """
         self.__check_scope()
         js_utils.activate_jquery_confirm(self.driver)
         self.wait_for_ready_state_complete()
+
+    def set_jqc_theme(self, theme, color=None, width=None):
+        """ Sets the default jquery-confirm theme and width (optional).
+        Available themes: "bootstrap", "modern", "material", "supervan",
+                          "light", "dark", and "seamless".
+        Available colors: (This sets the BORDER color, NOT the button color.)
+            "blue", "default", "green", "red", "purple", "orange", "dark".
+        Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        if not self.__changed_jqc_theme:
+            self.__jqc_default_theme = constants.JqueryConfirm.DEFAULT_THEME
+            self.__jqc_default_color = constants.JqueryConfirm.DEFAULT_COLOR
+            self.__jqc_default_width = constants.JqueryConfirm.DEFAULT_WIDTH
+        valid_themes = [
+            "bootstrap",
+            "modern",
+            "material",
+            "supervan",
+            "light",
+            "dark",
+            "seamless",
+        ]
+        if theme.lower() not in valid_themes:
+            raise Exception(
+                "%s is not a valid jquery-confirm theme! "
+                "Select from %s" % (theme.lower(), valid_themes)
+            )
+        constants.JqueryConfirm.DEFAULT_THEME = theme.lower()
+        if color:
+            valid_colors = [
+                "blue",
+                "default",
+                "green",
+                "red",
+                "purple",
+                "orange",
+                "dark",
+            ]
+            if color.lower() not in valid_colors:
+                raise Exception(
+                    "%s is not a valid jquery-confirm border color! "
+                    "Select from %s" % (color.lower(), valid_colors)
+                )
+            constants.JqueryConfirm.DEFAULT_COLOR = color.lower()
+        if width:
+            if type(width) is int or type(width) is float:
+                # Convert to a string if a number is given
+                width = str(width)
+            if width.isnumeric():
+                if int(width) <= 0:
+                    raise Exception("Width must be set to a positive number!")
+                elif int(width) <= 100:
+                    width = str(width) + "%"
+                else:
+                    width = str(width) + "px"  # Use pixels if width is > 100
+            if not width.endswith("%") and not width.endswith("px"):
+                raise Exception(
+                    "jqc width must end with %% for percent or px for pixels!"
+                )
+            value = None
+            if width.endswith("%"):
+                value = width[:-1]
+            if width.endswith("px"):
+                value = width[:-2]
+            try:
+                value = float(value)
+            except Exception:
+                raise Exception("%s is not a numeric value!" % value)
+            if value <= 0:
+                raise Exception("%s is not a positive number!" % value)
+            constants.JqueryConfirm.DEFAULT_WIDTH = width
+
+    def reset_jqc_theme(self):
+        """ Resets the jqc theme settings to factory defaults. """
+        if self.__changed_jqc_theme:
+            constants.JqueryConfirm.DEFAULT_THEME = self.__jqc_default_theme
+            constants.JqueryConfirm.DEFAULT_COLOR = self.__jqc_default_color
+            constants.JqueryConfirm.DEFAULT_WIDTH = self.__jqc_default_width
+            self.__changed_jqc_theme = False
+
+    def get_jqc_button_input(self, message, buttons, options=None):
+        """
+        Pop up a jquery-confirm box and return the text of the button clicked.
+        If running in headless mode, the last button text is returned.
+        @Params
+        message: The message to display in the jquery-confirm dialog.
+        buttons: A list of tuples for text and color.
+            Example: [("Yes!", "green"), ("No!", "red")]
+            Available colors: blue, green, red, orange, purple, default, dark.
+            A simple text string also works: "My Button". (Uses default color.)
+        options: A list of tuples for options to set.
+            Example: [("theme", "bootstrap"), ("width", "450px")]
+            Available theme options: bootstrap, modern, material, supervan,
+                                     light, dark, and seamless.
+            Available colors: (For the BORDER color, NOT the button color.)
+                "blue", "default", "green", "red", "purple", "orange", "dark".
+            Example option for changing the border color: ("color", "default")
+            Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        from seleniumbase.core import jqc_helper
+
+        if message and type(message) is not str:
+            raise Exception('Expecting a string for arg: "message"!')
+        if not type(buttons) is list and not type(buttons) is tuple:
+            raise Exception('Expecting a list or tuple for arg: "button"!')
+        if len(buttons) < 1:
+            raise Exception('List "buttons" requires at least one button!')
+        new_buttons = []
+        for button in buttons:
+            if (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) == 1)
+            ):
+                new_buttons.append(button[0])
+            elif (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) > 1)
+            ):
+                new_buttons.append((button[0], str(button[1]).lower()))
+            else:
+                new_buttons.append((str(button), ""))
+        buttons = new_buttons
+        if options:
+            for option in options:
+                if not type(option) is list and not type(option) is tuple:
+                    raise Exception('"options" should be a list of tuples!')
+        if self.headless:
+            return buttons[-1][0]
+        jqc_helper.jquery_confirm_button_dialog(
+            self.driver, message, buttons, options
+        )
+        self.sleep(0.02)
+        jf = "document.querySelector('.jconfirm-box').focus();"
+        try:
+            self.execute_script(jf)
+        except Exception:
+            pass
+        waiting_for_response = True
+        while waiting_for_response:
+            self.sleep(0.05)
+            jqc_open = self.execute_script(
+                "return jconfirm.instances.length"
+            )
+            if str(jqc_open) == "0":
+                break
+        self.sleep(0.1)
+        status = None
+        try:
+            status = self.execute_script("return $jqc_status")
+        except Exception:
+            status = self.execute_script(
+                "return jconfirm.lastButtonText"
+            )
+        return status
+
+    def get_jqc_text_input(self, message, button=None, options=None):
+        """
+        Pop up a jquery-confirm box and return the text submitted by the input.
+        If running in headless mode, the text returned is "" by default.
+        @Params
+        message: The message to display in the jquery-confirm dialog.
+        button: A 2-item list or tuple for text and color. Or just the text.
+            Example: ["Submit", "blue"] -> (default button if not specified)
+            Available colors: blue, green, red, orange, purple, default, dark.
+            A simple text string also works: "My Button". (Uses default color.)
+        options: A list of tuples for options to set.
+            Example: [("theme", "bootstrap"), ("width", "450px")]
+            Available theme options: bootstrap, modern, material, supervan,
+                                     light, dark, and seamless.
+            Available colors: (For the BORDER color, NOT the button color.)
+                "blue", "default", "green", "red", "purple", "orange", "dark".
+            Example option for changing the border color: ("color", "default")
+            Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        from seleniumbase.core import jqc_helper
+
+        if message and type(message) is not str:
+            raise Exception('Expecting a string for arg: "message"!')
+        if button:
+            if (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) == 1)
+            ):
+                button = (str(button[0]), "")
+            elif (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) > 1)
+            ):
+                valid_colors = [
+                    "blue",
+                    "default",
+                    "green",
+                    "red",
+                    "purple",
+                    "orange",
+                    "dark",
+                ]
+                detected_color = str(button[1]).lower()
+                if str(button[1]).lower() not in valid_colors:
+                    raise Exception(
+                        "%s is an invalid jquery-confirm button color!\n"
+                        "Select from %s" % (detected_color, valid_colors)
+                    )
+                button = (str(button[0]), str(button[1]).lower())
+            else:
+                button = (str(button), "")
+        else:
+            button = ("Submit", "blue")
+
+        if options:
+            for option in options:
+                if not type(option) is list and not type(option) is tuple:
+                    raise Exception('"options" should be a list of tuples!')
+        if self.headless:
+            return ""
+        jqc_helper.jquery_confirm_text_dialog(
+            self.driver, message, button, options
+        )
+        self.sleep(0.02)
+        jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
+        try:
+            self.execute_script(jf)
+        except Exception:
+            pass
+        waiting_for_response = True
+        while waiting_for_response:
+            self.sleep(0.05)
+            jqc_open = self.execute_script(
+                "return jconfirm.instances.length"
+            )
+            if str(jqc_open) == "0":
+                break
+        self.sleep(0.1)
+        status = None
+        try:
+            status = self.execute_script("return $jqc_input")
+        except Exception:
+            status = self.execute_script(
+                "return jconfirm.lastInputText"
+            )
+        return status
+
+    def get_jqc_form_inputs(self, message, buttons, options=None):
+        """
+        Pop up a jquery-confirm box and return the input/button texts as tuple.
+        If running in headless mode, returns the ("", buttons[-1][0]) tuple.
+        @Params
+        message: The message to display in the jquery-confirm dialog.
+        buttons: A list of tuples for text and color.
+            Example: [("Yes!", "green"), ("No!", "red")]
+            Available colors: blue, green, red, orange, purple, default, dark.
+            A simple text string also works: "My Button". (Uses default color.)
+        options: A list of tuples for options to set.
+            Example: [("theme", "bootstrap"), ("width", "450px")]
+            Available theme options: bootstrap, modern, material, supervan,
+                                     light, dark, and seamless.
+            Available colors: (For the BORDER color, NOT the button color.)
+                "blue", "default", "green", "red", "purple", "orange", "dark".
+            Example option for changing the border color: ("color", "default")
+            Width can be set using percent or pixels. Eg: "36.0%", "450px".
+        """
+        from seleniumbase.core import jqc_helper
+
+        if message and type(message) is not str:
+            raise Exception('Expecting a string for arg: "message"!')
+        if not type(buttons) is list and not type(buttons) is tuple:
+            raise Exception('Expecting a list or tuple for arg: "button"!')
+        if len(buttons) < 1:
+            raise Exception('List "buttons" requires at least one button!')
+        new_buttons = []
+        for button in buttons:
+            if (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) == 1)
+            ):
+                new_buttons.append(button[0])
+            elif (
+                (type(button) is list or type(button) is tuple) and (
+                 len(button) > 1)
+            ):
+                new_buttons.append((button[0], str(button[1]).lower()))
+            else:
+                new_buttons.append((str(button), ""))
+        buttons = new_buttons
+        if options:
+            for option in options:
+                if not type(option) is list and not type(option) is tuple:
+                    raise Exception('"options" should be a list of tuples!')
+        if self.headless:
+            return ("", buttons[-1][0])
+        jqc_helper.jquery_confirm_full_dialog(
+            self.driver, message, buttons, options
+        )
+        self.sleep(0.02)
+        jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
+        try:
+            self.execute_script(jf)
+        except Exception:
+            pass
+        waiting_for_response = True
+        while waiting_for_response:
+            self.sleep(0.05)
+            jqc_open = self.execute_script(
+                "return jconfirm.instances.length"
+            )
+            if str(jqc_open) == "0":
+                break
+        self.sleep(0.1)
+        text_status = None
+        button_status = None
+        try:
+            text_status = self.execute_script("return $jqc_input")
+            button_status = self.execute_script("return $jqc_status")
+        except Exception:
+            text_status = self.execute_script(
+                "return jconfirm.lastInputText"
+            )
+            button_status = self.execute_script(
+                "return jconfirm.lastButtonText"
+            )
+        return (text_status, button_status)
+
+    ############
 
     def activate_messenger(self):
         self.__check_scope()

@@ -290,6 +290,9 @@ class JqueryConfirm:
         "https://cdnjs.cloudflare.com/ajax/libs/"
         "jquery-confirm/%s/jquery-confirm.min.js" % VER
     )
+    DEFAULT_THEME = "bootstrap"
+    DEFAULT_COLOR = "blue"
+    DEFAULT_WIDTH = "38%"
 
 
 class Shepherd:
