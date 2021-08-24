@@ -68,7 +68,7 @@ def is_name_selector(selector):
     """
     A basic method to determine if a selector is a name selector.
     """
-    if selector.startswith("name="):
+    if selector.startswith("name=") or selector.startswith("&"):
         return True
     return False
 
@@ -110,7 +110,9 @@ def get_name_from_selector(selector):
     A basic method to get the name from a name selector.
     """
     if selector.startswith("name="):
-        return selector.split("name=")[1]
+        return selector[len("name="):]
+    if selector.startswith("&"):
+        return selector[len("&"):]
     return selector
 
 
