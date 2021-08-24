@@ -106,6 +106,37 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
         return False
 
 
+def is_attribute_present(
+    driver, selector, attribute, value=None, by=By.CSS_SELECTOR
+):
+    """
+    Returns whether the specified attribute is present in the given selector.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    attribute - the attribute that is expected for the element (required)
+    value - the attribute value that is expected (Default: None)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    @Returns
+    Boolean (is attribute present)
+    """
+    try:
+        element = driver.find_element(by=by, value=selector)
+        found_value = element.get_attribute(attribute)
+        if found_value is None:
+            raise Exception()
+
+        if value is not None:
+            if found_value == value:
+                return True
+            else:
+                raise Exception()
+        else:
+            return True
+    except Exception:
+        return False
+
+
 def hover_on_element(driver, selector, by=By.CSS_SELECTOR):
     """
     Fires the hover event for the specified element by the given selector.

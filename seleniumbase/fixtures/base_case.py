@@ -776,6 +776,18 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
+    def is_attribute_present(
+        self, selector, attribute, value=None, by=By.CSS_SELECTOR
+    ):
+        """Returns True if the element attribute/value is found.
+        If the value is not specified, the attribute only needs to exist."""
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.is_attribute_present(
+            self.driver, selector, attribute, value, by
+        )
+
     def is_link_text_visible(self, link_text):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
