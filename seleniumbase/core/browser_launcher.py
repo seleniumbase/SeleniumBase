@@ -147,6 +147,9 @@ def _mark_chromedriver_repaired():
     abs_path = os.path.abspath(".")
     chromedriver_repaired_lock = constants.MultiBrowser.CHROMEDRIVER_REPAIRED
     file_path = os.path.join(abs_path, chromedriver_repaired_lock)
+    downloads_folder = download_helper.get_downloads_folder()
+    if not os.path.exists(downloads_folder):
+        os.makedirs(downloads_folder)
     out_file = codecs.open(file_path, "w+", encoding="utf-8")
     out_file.writelines("")
     out_file.close()
