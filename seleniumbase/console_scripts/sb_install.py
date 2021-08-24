@@ -447,7 +447,7 @@ def main(override=None):
 
     file_path = downloads_folder + "/" + file_name
     if not os.path.exists(downloads_folder):
-        os.mkdir(downloads_folder)
+        os.makedirs(downloads_folder)
 
     if headless_ie_exists:
         headless_ie_file_path = downloads_folder + "/" + headless_ie_file_name
