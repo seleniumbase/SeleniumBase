@@ -7486,7 +7486,7 @@ class BaseCase(unittest.TestCase):
         self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
     ):
         """Similar to wait_for_text_not_visible()
-        Raises an exception if the element or the text is not found.
+        Raises an exception if the text is still visible after timeout.
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
         if not timeout:
