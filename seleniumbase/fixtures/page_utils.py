@@ -56,6 +56,9 @@ def is_partial_link_text_selector(selector):
         selector.startswith("partial_link=")
         or selector.startswith("partial_link_text=")
         or selector.startswith("partial_text=")
+        or selector.startswith("p_link=")
+        or selector.startswith("p_link_text=")
+        or selector.startswith("p_text=")
     ):
         return True
     return False
