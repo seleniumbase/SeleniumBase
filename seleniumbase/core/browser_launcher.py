@@ -303,6 +303,7 @@ def _set_chrome_options(
     if user_agent:
         chrome_options.add_argument("--user-agent=%s" % user_agent)
     chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--disable-notifications")
     chrome_options.add_argument("--disable-save-password-bubble")
     chrome_options.add_argument("--disable-single-click-autofill")
     chrome_options.add_argument(
@@ -1248,6 +1249,7 @@ def get_local_driver(
                 abs_path = os.path.abspath(extension_dir)
                 edge_options.add_argument("--load-extension=%s" % abs_path)
             edge_options.add_argument("--disable-infobars")
+            edge_options.add_argument("--disable-notifications")
             edge_options.add_argument("--disable-save-password-bubble")
             edge_options.add_argument("--disable-single-click-autofill")
             edge_options.add_argument(
