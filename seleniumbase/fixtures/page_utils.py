@@ -78,11 +78,11 @@ def get_link_text_from_selector(selector):
     A basic method to get the link text from a link text selector.
     """
     if selector.startswith("link="):
-        return selector.split("link=")[1]
+        return selector[len("link="):]
     elif selector.startswith("link_text="):
-        return selector.split("link_text=")[1]
+        return selector[len("link_text="):]
     elif selector.startswith("text="):
-        return selector.split("text=")[1]
+        return selector[len("text="):]
     return selector
 
 
@@ -91,11 +91,17 @@ def get_partial_link_text_from_selector(selector):
     A basic method to get the partial link text from a partial link selector.
     """
     if selector.startswith("partial_link="):
-        return selector.split("partial_link=")[1]
+        return selector[len("partial_link="):]
     elif selector.startswith("partial_link_text="):
-        return selector.split("partial_link_text=")[1]
+        return selector[len("partial_link_text="):]
     elif selector.startswith("partial_text="):
-        return selector.split("partial_text=")[1]
+        return selector[len("partial_text="):]
+    elif selector.startswith("p_link="):
+        return selector[len("p_link="):]
+    elif selector.startswith("p_link_text="):
+        return selector[len("p_link_text="):]
+    elif selector.startswith("p_text="):
+        return selector[len("p_text="):]
     return selector
 
 
