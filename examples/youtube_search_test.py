@@ -8,6 +8,7 @@ class YouTubeSearchTests(BaseCase):
         search_term = "seleniumbase"
         search_selector = "input#search"
         result_selector = 'li[role="presentation"] b'
+        self.click_if_visible('button[aria-label="Close"]')
         self.double_click(search_selector)
         self.type(search_selector, search_term)
         # First verify that an autocomplete result exists
