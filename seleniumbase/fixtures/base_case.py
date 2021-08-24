@@ -81,6 +81,7 @@ class BaseCase(unittest.TestCase):
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = None
+        self.__requests_timeout = None
         self.__screenshot_count = 0
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
@@ -3208,10 +3209,15 @@ class BaseCase(unittest.TestCase):
 
     def get_link_status_code(self, link, allow_redirects=False, timeout=5):
         """Get the status code of a link.
-        If the timeout is exceeded, will return a 404.
+        If the timeout is set to less than 1, it becomes 1.
+        If the timeout is exceeded by requests.get(), it will return a 404.
         For a list of available status codes, see:
         https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         """
+        if self.__requests_timeout:
+            timeout = self.__requests_timeout
+        if timeout < 1:
+            timeout = 1
         status_code = page_utils._get_link_status_code(
             link, allow_redirects=allow_redirects, timeout=timeout
         )
@@ -3234,9 +3240,10 @@ class BaseCase(unittest.TestCase):
         else:
             return None
 
-    def assert_no_404_errors(self, multithreaded=True):
+    def assert_no_404_errors(self, multithreaded=True, timeout=None):
         """Assert no 404 errors from page links obtained from:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
+        Timeout is on a per-link basis using the "requests" library.
         (A 404 error represents a broken link on a web page.)
         """
         all_links = self.get_unique_links()
@@ -3248,6 +3255,12 @@ class BaseCase(unittest.TestCase):
                 and "data:" not in link
             ):
                 links.append(link)
+        if timeout:
+            if not type(timeout) is int and not type(timeout) is float:
+                raise Exception('Expecting a numeric value for "timeout"!')
+            if timeout < 0:
+                raise Exception('The "timeout" cannot be a negative number!')
+            self.__requests_timeout = timeout
         broken_links = []
         if multithreaded:
             from multiprocessing.dummy import Pool as ThreadPool
@@ -3264,6 +3277,7 @@ class BaseCase(unittest.TestCase):
             for link in links:
                 if self.__get_link_if_404_error(link):
                     broken_links.append(link)
+        self.__requests_timeout = None  # Reset the requests.get() timeout
         if len(broken_links) > 0:
             bad_links_str = "\n".join(broken_links)
             if len(broken_links) == 1:
