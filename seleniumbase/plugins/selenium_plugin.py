@@ -321,6 +321,7 @@ class SeleniumBrowser(Plugin):
         parser.add_option(
             "--slow_mode",
             "--slow-mode",
+            "--slowmo",
             "--slow",
             action="store_true",
             dest="slow_mode",

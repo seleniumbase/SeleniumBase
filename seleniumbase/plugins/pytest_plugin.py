@@ -561,6 +561,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--slow_mode",
         "--slow-mode",
+        "--slowmo",
         "--slow",
         action="store_true",
         dest="slow_mode",
