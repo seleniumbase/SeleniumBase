@@ -401,7 +401,7 @@ def main():
     data.append("        [")
     data.append('            ["pypi", "pypi.org"],')
     data.append('            ["wikipedia", "wikipedia.org"],')
-    data.append('            ["seleniumbase", "seleniumbase/SeleniumBase"],')
+    data.append('            ["seleniumbase", "SeleniumBase"],')
     data.append("        ]")
     data.append("    )")
     data.append(
