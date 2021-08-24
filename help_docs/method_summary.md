@@ -69,6 +69,8 @@ self.is_element_enabled(selector, by=By.CSS_SELECTOR)
 
 self.is_text_visible(text, selector="html", by=By.CSS_SELECTOR)
 
+self.is_attribute_present(selector, attribute, value=None, by=By.CSS_SELECTOR)
+
 self.is_link_text_visible(link_text)
 
 self.is_partial_link_text_visible(partial_link_text)
@@ -303,7 +305,7 @@ self.get_link_status_code(link, allow_redirects=False, timeout=5)
 
 self.assert_link_status_code_is_not_404(link)
 
-self.assert_no_404_errors(multithreaded=True)
+self.assert_no_404_errors(multithreaded=True, timeout=None)
 # Duplicates: self.assert_no_broken_links(multithreaded=True)
 
 self.print_unique_links_with_status_codes()
@@ -512,7 +514,21 @@ self.play_tour(name=None)
 
 self.export_tour(name=None, filename="my_tour.js", url=None)
 
+############
+
 self.activate_jquery_confirm()
+
+self.set_jqc_theme(theme, color=None, width=None)
+
+self.reset_jqc_theme()
+
+self.get_jqc_button_input(message, buttons, options=None)
+
+self.get_jqc_text_input(message, button=None, options=None)
+
+self.get_jqc_form_inputs(message, buttons, options=None)
+
+############
 
 self.activate_messenger()
 
@@ -610,6 +626,14 @@ self.assert_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=None)
 self.wait_for_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.assert_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+
+############
+
+self.wait_for_attribute_not_present(
+    selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None)
+
+self.assert_attribute_not_present(
+    selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None)
 
 ############
 
