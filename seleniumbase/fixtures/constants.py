@@ -48,6 +48,11 @@ class Dashboard:
     DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
 
 
+class MultiBrowser:
+    CHROMEDRIVER_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/driver_fixing.lock"
+    CHROMEDRIVER_REPAIRED = Files.DOWNLOADS_FOLDER + "/driver_fixed.lock"
+
+
 class SavedCookies:
     STORAGE_FOLDER = "saved_cookies"
 
