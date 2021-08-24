@@ -1503,6 +1503,8 @@ def get_local_driver(
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:
                         auto_upgrade_chromedriver = True
+                    elif "Chrome version must be between" in e.msg:
+                        auto_upgrade_chromedriver = True
                     if not auto_upgrade_chromedriver:
                         raise Exception(e.msg)  # Not an obvious fix. Raise.
                     else:
