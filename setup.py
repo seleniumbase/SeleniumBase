@@ -180,7 +180,7 @@ setup(
         "beautifulsoup4==4.9.3",
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
-        'cryptography==3.4.7;python_version>="3.6"',
+        'cryptography==3.4.8;python_version>="3.6"',
         'pyopenssl==19.1.0;python_version<"3.5"',
         'pyopenssl==20.0.1;python_version>="3.5"',
         'pygments==2.5.2;python_version<"3.5"',
