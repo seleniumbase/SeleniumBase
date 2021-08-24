@@ -8584,10 +8584,11 @@ class BaseCase(unittest.TestCase):
         # Verify that SeleniumBase is installed successfully
         if not hasattr(self, "browser"):
             raise Exception(
-                """SeleniumBase plugins DID NOT load!\n\n"""
-                """*** Please REINSTALL SeleniumBase using: >\n"""
-                """    >>> "pip install -r requirements.txt"\n"""
-                """    >>> "python setup.py install" """
+                'SeleniumBase plugins DID NOT load! * Please REINSTALL!\n'
+                '*** Either install SeleniumBase in Dev Mode from a clone:\n'
+                '    >>> "pip install -e ."     (Run in DIR with setup.py)\n'
+                '*** Or install the latest SeleniumBase version from PyPI:\n'
+                '    >>> "pip install -U seleniumbase"    (Run in any DIR)'
             )
 
         if not hasattr(sb_config, "_is_timeout_changed"):
