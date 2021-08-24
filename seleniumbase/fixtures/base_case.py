@@ -7499,6 +7499,36 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def wait_for_attribute_not_present(
+        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+    ):
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        return page_actions.wait_for_attribute_not_present(
+            self.driver, selector, attribute, value, by, timeout
+        )
+
+    def assert_attribute_not_present(
+        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """Similar to wait_for_attribute_not_present()
+        Raises an exception if the attribute is still present after timeout.
+        Returns True if successful. Default timeout = SMALL_TIMEOUT."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        return self.wait_for_attribute_not_present(
+            selector, attribute, value=value, by=by, timeout=timeout
+        )
+
+    ############
+
     def wait_for_and_accept_alert(self, timeout=None):
         self.__check_scope()
         if not timeout:
