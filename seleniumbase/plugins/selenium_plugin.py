@@ -530,6 +530,7 @@ class SeleniumBrowser(Plugin):
             help="""The option to start with the web browser maximized.""",
         )
         parser.add_option(
+            "--screenshot",
             "--save_screenshot",
             "--save-screenshot",
             action="store_true",

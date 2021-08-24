@@ -804,6 +804,7 @@ def pytest_addoption(parser):
                 maximized.""",
     )
     parser.addoption(
+        "--screenshot",
         "--save_screenshot",
         "--save-screenshot",
         action="store_true",
