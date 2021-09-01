@@ -18,7 +18,7 @@ self.get(url)
 # If the url parameter is a URL: Perform self.open(url)
 # Otherwise: return self.get_element(URL_AS_A_SELECTOR)
 
-self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0)
+self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0, scroll=True)
 
 self.slow_click(selector, by=By.CSS_SELECTOR, timeout=None)
 
@@ -96,7 +96,8 @@ self.get_attribute(
     selector, attribute, by=By.CSS_SELECTOR,
     timeout=None, hard_fail=True)
 
-self.set_attribute(selector, attribute, value, by=By.CSS_SELECTOR, timeout=None)
+self.set_attribute(
+    selector, attribute, value, by=By.CSS_SELECTOR, timeout=None, scroll=False)
 
 self.set_attributes(selector, attribute, value, by=By.CSS_SELECTOR)
 # Duplicates: self.set_attribute_all(selector, attribute, value, by=By.CSS_SELECTOR)
@@ -272,7 +273,7 @@ self.scroll_to_bottom()
 
 self.click_xpath(xpath)
 
-self.js_click(selector, by=By.CSS_SELECTOR, all_matches=False)
+self.js_click(selector, by=By.CSS_SELECTOR, all_matches=False, scroll=True)
 
 self.js_click_all(selector, by=By.CSS_SELECTOR)
 
@@ -388,13 +389,17 @@ self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
 
-self.set_value(selector, text, by=By.CSS_SELECTOR, timeout=None)
+self.set_value(selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=True)
 
 self.js_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.js_type(selector, text, by=By.CSS_SELECTOR, timeout=None)
 #             self.set_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
 
+self.set_text_content(selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=False)
+
 self.jquery_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
+
+self.get_value(selector, by=By.CSS_SELECTOR, timeout=None)
 
 self.set_time_limit(time_limit)
 
