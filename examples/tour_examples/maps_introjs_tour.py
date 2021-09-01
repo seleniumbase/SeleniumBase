@@ -27,7 +27,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "#minimap div.widget-minimap",
+            "div.widget-minimap-shim",
             alignment="right",
         )
         self.add_tour_step(
@@ -50,5 +50,5 @@ class MyTourClass(BaseCase):
             "Thanks for using SeleniumBase Tours!",
             title="🚃 End of Guided Tour 🚃",
         )
-        self.export_tour(filename="google_maps_introjs_tour.js")
+        self.export_tour(filename="maps_introjs_tour.js")
         self.play_tour()
