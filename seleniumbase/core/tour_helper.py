@@ -6,6 +6,7 @@ import os
 import re
 import time
 from selenium.webdriver.common.by import By
+from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.core import style_sheet
 from seleniumbase.fixtures import constants
@@ -154,6 +155,16 @@ def activate_introjs(driver):
     intro_css = constants.IntroJS.MIN_CSS
     intro_js = constants.IntroJS.MIN_JS
 
+    theme_color = sb_config.introjs_theme_color
+    hover_color = sb_config.introjs_hover_color
+    backdrop_style = style_sheet.introjs_style % (
+        theme_color,
+        hover_color,
+        hover_color,
+        hover_color,
+        theme_color,
+    )
+
     verify_script = """// Verify IntroJS activated
                      var intro2 = introJs();
                      """
@@ -161,6 +172,7 @@ def activate_introjs(driver):
     activate_bootstrap(driver)
     js_utils.wait_for_ready_state_complete(driver)
     js_utils.wait_for_angularjs(driver)
+    js_utils.add_css_style(driver, backdrop_style)
     for x in range(4):
         js_utils.activate_jquery(driver)
         js_utils.add_css_link(driver, intro_css)
@@ -727,7 +739,9 @@ def play_introjs_tour(
         intro.setOption("overlayOpacity", .29);
         intro.setOption("scrollToElement", true);
         intro.setOption("keyboardNavigation", true);
-        intro.setOption("exitOnEsc", false);
+        intro.setOption("exitOnEsc", true);
+        intro.setOption("hidePrev", true);
+        intro.setOption("nextToDone", true);
         intro.setOption("exitOnOverlayClick", false);
         intro.setOption("showStepNumbers", false);
         intro.setOption("showProgress", false);
@@ -946,7 +960,19 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
     elif tour_type == "introjs":
         intro_css = constants.IntroJS.MIN_CSS
         intro_js = constants.IntroJS.MIN_JS
+        theme_color = sb_config.introjs_theme_color
+        hover_color = sb_config.introjs_hover_color
+        backdrop_style = style_sheet.introjs_style % (
+            theme_color,
+            hover_color,
+            hover_color,
+            hover_color,
+            theme_color,
+        )
+        backdrop_style = backdrop_style.replace("\n", "")
+        backdrop_style = js_utils.escape_quotes_if_needed(backdrop_style)
         instructions += 'injectCSS("%s");\n' % intro_css
+        instructions += 'injectStyle("%s");\n' % backdrop_style
         instructions += 'injectJS("%s");' % intro_js
 
     elif tour_type == "shepherd":
@@ -1028,7 +1054,9 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
             intro.setOption("overlayOpacity", .29);
             intro.setOption("scrollToElement", true);
             intro.setOption("keyboardNavigation", true);
-            intro.setOption("exitOnEsc", false);
+            intro.setOption("exitOnEsc", true);
+            intro.setOption("hidePrev", true);
+            intro.setOption("nextToDone", true);
             intro.setOption("exitOnOverlayClick", false);
             intro.setOption("showStepNumbers", false);
             intro.setOption("showProgress", false);

@@ -9,7 +9,8 @@
 <h4 align="center">A super framework for <a href="https://www.selenium.dev/documentation/">Selenium</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</h4>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a> <a href="https://pepy.tech/project/seleniumbase">
+<img src="https://pepy.tech/badge/seleniumbase/month" alt="SeleniumBase downloads per month" /></a></p>
 
 <!-- View on GitHub -->
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions">
@@ -360,8 +361,9 @@ The code above will leave your browser window open in case there's a failure. (i
 --firefox-pref=SET  # (Set a Firefox preference:value set, comma-separated.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
---headless  # (Run tests headlessly. Default mode on Linux OS.)
---headed  # (Run tests with a GUI on Linux OS.)
+--headless  # (Run tests in headless mode. The default arg on Linux OS.)
+--headed  # (Run tests in headed/GUI mode on Linux OS.)
+--xvfb  # (Run tests using the Xvfb virtual display server on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)

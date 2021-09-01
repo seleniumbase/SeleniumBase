@@ -33,6 +33,7 @@ if pure_python:
     sb.browser = "chrome"
     sb.headless = False
     sb.headed = False
+    sb.xvfb = False
     sb.start_page = None
     sb.locale_code = None
     sb.protocol = "http"

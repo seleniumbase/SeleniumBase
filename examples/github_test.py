@@ -14,9 +14,9 @@ class GitHubTests(BaseCase):
             self.browser == "chrome" or self.browser == "edge"
         ):
             self.get_new_driver(
-                agent="""Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) """
+                agent="""Mozilla/5.0 """
                 """AppleWebKit/537.36 (KHTML, like Gecko) """
-                """Chrome/90.0.4430.85 Safari/537.36"""
+                """Chrome/92.0.4515.159 Safari/537.36"""
             )
         self.open("https://github.com/search?q=SeleniumBase")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')

@@ -50,7 +50,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "#minimap div.widget-minimap",
+            "div.widget-minimap-shim",
             alignment="right",
         )
         self.add_tour_step(

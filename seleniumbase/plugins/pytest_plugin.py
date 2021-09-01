@@ -49,8 +49,9 @@ def pytest_addoption(parser):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
-    --headless  (Run tests headlessly. Default mode on Linux OS.)
-    --headed  (Run tests with a GUI on Linux OS.)
+    --headless  (Run tests in headless mode. The default arg on Linux OS.)
+    --headed  (Run tests in headed/GUI mode on Linux OS.)
+    --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
@@ -505,6 +506,17 @@ def pytest_addoption(parser):
                 (The default setting on Mac or Windows is headed.)""",
     )
     parser.addoption(
+        "--xvfb",
+        action="store_true",
+        dest="xvfb",
+        default=False,
+        help="""Using this makes tests run headlessly using Xvfb
+                instead of the browser's built-in headless mode.
+                When using "--xvfb", the "--headless" option
+                will no longer be enabled by default on Linux.
+                Default: False. (Linux-ONLY!)""",
+        )
+    parser.addoption(
         "--locale_code",
         "--locale-code",
         "--locale",
@@ -957,6 +969,7 @@ def pytest_configure(config):
     sb_config.device_metrics = config.getoption("device_metrics")
     sb_config.headless = config.getoption("headless")
     sb_config.headed = config.getoption("headed")
+    sb_config.xvfb = config.getoption("xvfb")
     sb_config.locale_code = config.getoption("locale_code")
     sb_config.interval = config.getoption("interval")
     sb_config.start_page = config.getoption("start_page")
@@ -1051,14 +1064,20 @@ def pytest_configure(config):
             if sb_config._html_report_name == "dashboard.html":
                 sb_config._dash_is_html_report = True
 
+    if sb_config.xvfb and "linux" not in sys.platform:
+        # The Xvfb virtual display server is for Linux OS Only!
+        sb_config.xvfb = False
     if (
         "linux" in sys.platform
         and not sb_config.headed
         and not sb_config.headless
+        and not sb_config.xvfb
     ):
         print(
-            "(Running with --headless on Linux. "
-            "Use --headed or --gui to override.)"
+            "(Linux uses --headless by default. "
+            "To override, use --headed / --gui. "
+            "For Xvfb mode instead, use --xvfb. "
+            "Or hide this info with --headless.)"
         )
         sb_config.headless = True
     if not sb_config.headless:
@@ -1212,7 +1231,11 @@ def pytest_runtest_teardown(item):
         except Exception:
             pass
         try:
-            if hasattr(self, "headless") and self.headless:
+            if hasattr(self, "xvfb") and self.xvfb:
+                if self.headless_active and "--pdb" not in sys.argv:
+                    if hasattr(self, "display") and self.display:
+                        self.display.stop()
+            elif hasattr(self, "headless") and self.headless:
                 if self.headless_active and "--pdb" not in sys.argv:
                     if hasattr(self, "display") and self.display:
                         self.display.stop()

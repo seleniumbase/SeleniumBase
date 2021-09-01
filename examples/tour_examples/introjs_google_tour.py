@@ -33,6 +33,7 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#minimap", timeout=20)
         self.wait_for_element("#zoom", timeout=20)
 
+        self.set_introjs_colors("#f26721", "#db5409")
         self.create_introjs_tour()
         self.add_tour_step("Welcome to Google Maps!")
         self.add_tour_step(
@@ -50,7 +51,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "#minimap div.widget-minimap",
+            "div.widget-minimap-shim",
             alignment="right",
         )
         self.add_tour_step(

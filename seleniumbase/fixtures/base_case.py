@@ -159,7 +159,9 @@ class BaseCase(unittest.TestCase):
         else:
             return self.get_element(url)  # url is treated like a selector
 
-    def click(self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0):
+    def click(
+        self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0, scroll=True
+    ):
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -190,7 +192,7 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
-        if not self.demo_mode and not self.slow_mode:
+        if scroll and not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
@@ -1184,7 +1186,13 @@ class BaseCase(unittest.TestCase):
                 return None
 
     def set_attribute(
-        self, selector, attribute, value, by=By.CSS_SELECTOR, timeout=None
+        self,
+        selector,
+        attribute,
+        value,
+        by=By.CSS_SELECTOR,
+        timeout=None,
+        scroll=False,
     ):
         """This method uses JavaScript to set/update an attribute.
         Only the first matching selector from querySelector() is used."""
@@ -1194,7 +1202,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        if self.is_element_visible(selector, by=by):
+        if scroll and self.is_element_visible(selector, by=by):
             try:
                 self.scroll_to(selector, by=by, timeout=timeout)
             except Exception:
@@ -2458,7 +2466,7 @@ class BaseCase(unittest.TestCase):
         if switch_to:
             self.driver = new_driver
             self.browser = browser_name
-            if self.headless:
+            if self.headless or self.xvfb:
                 # Make sure the invisible browser window is big enough
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
@@ -3045,10 +3053,13 @@ class BaseCase(unittest.TestCase):
         # so self.click_xpath() is just a longer name for the same action.
         self.click(xpath, by=By.XPATH)
 
-    def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
+    def js_click(
+        self, selector, by=By.CSS_SELECTOR, all_matches=False, scroll=True
+    ):
         """Clicks an element using JavaScript.
         Can be used to click hidden / invisible elements.
-        If "all_matches" is False, only the first match is clicked."""
+        If "all_matches" is False, only the first match is clicked.
+        If "scroll" is False, won't scroll unless running in Demo Mode."""
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
@@ -3066,7 +3077,7 @@ class BaseCase(unittest.TestCase):
         )
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
-            if not self.demo_mode and not self.slow_mode:
+            if scroll and not self.demo_mode and not self.slow_mode:
                 success = js_utils.scroll_to_element(self.driver, element)
                 if not success:
                     self.wait_for_ready_state_complete()
@@ -4133,7 +4144,9 @@ class BaseCase(unittest.TestCase):
                 % (selector, by)
             )
 
-    def set_value(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def set_value(
+        self, selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=True
+    ):
         """ This method uses JavaScript to update a text field. """
         self.__check_scope()
         if not timeout:
@@ -4146,7 +4159,7 @@ class BaseCase(unittest.TestCase):
         orginal_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         self.__demo_mode_highlight_if_active(orginal_selector, by)
-        if not self.demo_mode and not self.slow_mode:
+        if scroll and not self.demo_mode and not self.slow_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
         if type(text) is int or type(text) is float:
             text = str(text)
@@ -4216,14 +4229,66 @@ class BaseCase(unittest.TestCase):
         JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
         If text ends in "\n", set_value() presses RETURN after.
-        Works faster than send_keys() alone due to the JS call."""
+        Works faster than send_keys() alone due to the JS call.
+        If not an input or textarea, sets textContent instead."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        self.js_update_text(selector, text, by=by, timeout=timeout)
+        self.wait_for_ready_state_complete()
+        element = page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout
+        )
+        if element.tag_name == "input" or element.tag_name == "textarea":
+            self.js_update_text(selector, text, by=by, timeout=timeout)
+        else:
+            self.set_text_content(selector, text, by=by, timeout=timeout)
+
+    def set_text_content(
+        self, selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=False
+    ):
+        """This method uses JavaScript to set an element's textContent.
+        If the element is an input or textarea, sets the value instead."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        element = page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout
+        )
+        if element.tag_name == "input" or element.tag_name == "textarea":
+            self.js_update_text(selector, text, by=by, timeout=timeout)
+            return
+        orginal_selector = selector
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if scroll:
+            self.__demo_mode_highlight_if_active(orginal_selector, by)
+            if not self.demo_mode and not self.slow_mode:
+                self.scroll_to(orginal_selector, by=by, timeout=timeout)
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        value = re.escape(text)
+        value = self.__escape_quotes_if_needed(value)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        if ":contains\\(" not in css_selector:
+            script = """document.querySelector('%s').textContent='%s';""" % (
+                css_selector,
+                value,
+            )
+            self.execute_script(script)
+        else:
+            script = """jQuery('%s')[0].textContent='%s';""" % (
+                css_selector,
+                value,
+            )
+            self.safe_execute_script(script)
+        self.__demo_mode_pause_if_active()
 
     def jquery_update_text(
         self, selector, text, by=By.CSS_SELECTOR, timeout=None
@@ -4253,6 +4318,36 @@ class BaseCase(unittest.TestCase):
         if text.endswith("\n"):
             element.send_keys("\n")
         self.__demo_mode_pause_if_active()
+
+    def get_value(
+        self, selector, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """This method uses JavaScript to get the value of an input field.
+        (Works on both input fields and textarea fields.)"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
+        orginal_selector = selector
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        self.__demo_mode_highlight_if_active(orginal_selector, by)
+        if not self.demo_mode and not self.slow_mode:
+            self.scroll_to(orginal_selector, by=by, timeout=timeout)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        if ":contains\\(" not in css_selector:
+            script = """return document.querySelector('%s').value;""" % (
+                css_selector
+            )
+            value = self.execute_script(script)
+        else:
+            script = """return jQuery('%s')[0].value;""" % css_selector
+            value = self.safe_execute_script(script)
+        return value
 
     def set_time_limit(self, time_limit):
         self.__check_scope()
@@ -5258,7 +5353,7 @@ class BaseCase(unittest.TestCase):
         interval - The delay time between autoplaying slides. (in seconds)
                    If set to 0 (default), autoplay is disabled.
         """
-        if self.headless:
+        if self.headless or self.xvfb:
             return  # Presentations should not run in headless mode.
         if not name:
             name = "default"
@@ -5949,7 +6044,7 @@ class BaseCase(unittest.TestCase):
         interval - The delay time for auto-advancing charts. (in seconds)
                    If set to 0 (default), auto-advancing is disabled.
         """
-        if self.headless:
+        if self.headless or self.xvfb:
             interval = 1  # Race through chart if running in headless mode
         if not chart_name:
             chart_name = "default"
@@ -6228,6 +6323,10 @@ class BaseCase(unittest.TestCase):
         name - If creating multiple tours at the same time,
                use this to select the tour you wish to add steps to.
         """
+        if not hasattr(sb_config, "introjs_theme_color"):
+            sb_config.introjs_theme_color = constants.TourColor.theme_color
+        if not hasattr(sb_config, "introjs_hover_color"):
+            sb_config.introjs_hover_color = constants.TourColor.hover_color
         if not name:
             name = "default"
 
@@ -6241,6 +6340,36 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
+
+    def set_introjs_colors(self, theme_color=None, hover_color=None):
+        """Use this method to set the theme colors for IntroJS tours.
+        Args must be hex color values that start with a "#" sign.
+        If a color isn't specified, the color will reset to the default.
+        The border color of buttons is set to the hover color.
+        @Params
+        theme_color - The color of buttons.
+        hover_color - The color of buttons after hovering over them.
+        """
+        if not hasattr(sb_config, "introjs_theme_color"):
+            sb_config.introjs_theme_color = constants.TourColor.theme_color
+        if not hasattr(sb_config, "introjs_hover_color"):
+            sb_config.introjs_hover_color = constants.TourColor.hover_color
+        if theme_color:
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', theme_color)
+            if not match:
+                raise Exception(
+                    'Expecting a hex value color that starts with "#"!')
+            sb_config.introjs_theme_color = theme_color
+        else:
+            sb_config.introjs_theme_color = constants.TourColor.theme_color
+        if hover_color:
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', hover_color)
+            if not match:
+                raise Exception(
+                    'Expecting a hex value color that starts with "#"!')
+            sb_config.introjs_hover_color = hover_color
+        else:
+            sb_config.introjs_hover_color = constants.TourColor.hover_color
 
     def add_tour_step(
         self,
@@ -6601,7 +6730,7 @@ class BaseCase(unittest.TestCase):
         """
         from seleniumbase.core import tour_helper
 
-        if self.headless:
+        if self.headless or self.xvfb:
             return  # Tours should not run in headless mode.
 
         self.wait_for_ready_state_complete()
@@ -6818,7 +6947,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless:
+        if self.headless or self.xvfb:
             return buttons[-1][0]
         jqc_helper.jquery_confirm_button_dialog(
             self.driver, message, buttons, options
@@ -6905,7 +7034,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless:
+        if self.headless or self.xvfb:
             return ""
         jqc_helper.jquery_confirm_text_dialog(
             self.driver, message, button, options
@@ -6980,7 +7109,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless:
+        if self.headless or self.xvfb:
             return ("", buttons[-1][0])
         jqc_helper.jquery_confirm_full_dialog(
             self.driver, message, buttons, options
@@ -8805,6 +8934,7 @@ class BaseCase(unittest.TestCase):
             self.headless = sb_config.headless
             self.headless_active = False
             self.headed = sb_config.headed
+            self.xvfb = sb_config.xvfb
             self.locale_code = sb_config.locale_code
             self.interval = sb_config.interval
             self.start_page = sb_config.start_page
@@ -8922,7 +9052,7 @@ class BaseCase(unittest.TestCase):
                 self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
-            if self.headless:
+            if self.headless or self.xvfb:
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
                 try:
@@ -9873,7 +10003,7 @@ class BaseCase(unittest.TestCase):
                         self.__process_dashboard(has_exception)
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
-            if self.headless:
+            if self.headless or self.xvfb:
                 if self.headless_active:
                     try:
                         self.display.stop()

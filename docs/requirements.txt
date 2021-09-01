@@ -1,4 +1,4 @@
-regex>=2021.8.21
+regex>=2021.8.27
 tqdm>=4.62.2
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
@@ -12,7 +12,8 @@ click==8.0.1;python_version>="3.6"
 zipp==3.5.0;python_version>="3.6"
 readme-renderer==29.0
 pymdown-extensions==8.2;python_version>="3.6"
-importlib-metadata==4.6.4;python_version>="3.6"
+importlib-metadata==4.8.1;python_version>="3.6"
+bleach==4.1.0
 lunr==0.6.0;python_version>="3.6"
 nltk==3.6.2;python_version>="3.6"
 watchdog==2.1.5;python_version>="3.6"

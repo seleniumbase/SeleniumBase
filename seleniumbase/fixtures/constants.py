@@ -232,6 +232,13 @@ class HighCharts:
     )
 
 
+class TourColor:
+    # theme_color = "#f26721"  # Orange
+    # hover_color = "#db5409"  # Darker Orange
+    theme_color = "#2167e2"  # Blue
+    hover_color = "#0954cb"  # Darker Blue
+
+
 class BootstrapTour:
     VER = "0.12.0"
     MIN_CSS = (
@@ -269,15 +276,9 @@ class Hopscotch:
 
 
 class IntroJS:
-    VER = "2.9.3"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "intro.js/%s/introjs.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "intro.js/%s/intro.min.js" % VER
-    )
+    VER = "4.2.2"
+    MIN_CSS = "https://unpkg.com/intro.js@%s/minified/introjs.min.css" % VER
+    MIN_JS = "https://unpkg.com/intro.js@%s/minified/intro.min.js" % VER
 
 
 class JqueryConfirm:
