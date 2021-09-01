@@ -159,7 +159,9 @@ class BaseCase(unittest.TestCase):
         else:
             return self.get_element(url)  # url is treated like a selector
 
-    def click(self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0):
+    def click(
+        self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0, scroll=True
+    ):
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -190,7 +192,7 @@ class BaseCase(unittest.TestCase):
             self.driver, selector, by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
-        if not self.demo_mode and not self.slow_mode:
+        if scroll and not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         try:
@@ -1184,7 +1186,13 @@ class BaseCase(unittest.TestCase):
                 return None
 
     def set_attribute(
-        self, selector, attribute, value, by=By.CSS_SELECTOR, timeout=None
+        self,
+        selector,
+        attribute,
+        value,
+        by=By.CSS_SELECTOR,
+        timeout=None,
+        scroll=False,
     ):
         """This method uses JavaScript to set/update an attribute.
         Only the first matching selector from querySelector() is used."""
@@ -1194,7 +1202,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        if self.is_element_visible(selector, by=by):
+        if scroll and self.is_element_visible(selector, by=by):
             try:
                 self.scroll_to(selector, by=by, timeout=timeout)
             except Exception:
@@ -3045,10 +3053,13 @@ class BaseCase(unittest.TestCase):
         # so self.click_xpath() is just a longer name for the same action.
         self.click(xpath, by=By.XPATH)
 
-    def js_click(self, selector, by=By.CSS_SELECTOR, all_matches=False):
+    def js_click(
+        self, selector, by=By.CSS_SELECTOR, all_matches=False, scroll=True
+    ):
         """Clicks an element using JavaScript.
         Can be used to click hidden / invisible elements.
-        If "all_matches" is False, only the first match is clicked."""
+        If "all_matches" is False, only the first match is clicked.
+        If "scroll" is False, won't scroll unless running in Demo Mode."""
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         if by == By.LINK_TEXT:
@@ -3066,7 +3077,7 @@ class BaseCase(unittest.TestCase):
         )
         if self.is_element_visible(selector, by=by):
             self.__demo_mode_highlight_if_active(selector, by)
-            if not self.demo_mode and not self.slow_mode:
+            if scroll and not self.demo_mode and not self.slow_mode:
                 success = js_utils.scroll_to_element(self.driver, element)
                 if not success:
                     self.wait_for_ready_state_complete()
@@ -4133,7 +4144,9 @@ class BaseCase(unittest.TestCase):
                 % (selector, by)
             )
 
-    def set_value(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def set_value(
+        self, selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=True
+    ):
         """ This method uses JavaScript to update a text field. """
         self.__check_scope()
         if not timeout:
@@ -4146,7 +4159,7 @@ class BaseCase(unittest.TestCase):
         orginal_selector = selector
         css_selector = self.convert_to_css_selector(selector, by=by)
         self.__demo_mode_highlight_if_active(orginal_selector, by)
-        if not self.demo_mode and not self.slow_mode:
+        if scroll and not self.demo_mode and not self.slow_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
         if type(text) is int or type(text) is float:
             text = str(text)
