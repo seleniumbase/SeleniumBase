@@ -4216,14 +4216,66 @@ class BaseCase(unittest.TestCase):
         JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
         If text ends in "\n", set_value() presses RETURN after.
-        Works faster than send_keys() alone due to the JS call."""
+        Works faster than send_keys() alone due to the JS call.
+        If not an input or textarea, sets textContent instead."""
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        self.js_update_text(selector, text, by=by, timeout=timeout)
+        self.wait_for_ready_state_complete()
+        element = page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout
+        )
+        if element.tag_name == "input" or element.tag_name == "textarea":
+            self.js_update_text(selector, text, by=by, timeout=timeout)
+        else:
+            self.set_text_content(selector, text, by=by, timeout=timeout)
+
+    def set_text_content(
+        self, selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=False
+    ):
+        """This method uses JavaScript to set an element's textContent.
+        If the element is an input or textarea, sets the value instead."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        element = page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout
+        )
+        if element.tag_name == "input" or element.tag_name == "textarea":
+            self.js_update_text(selector, text, by=by, timeout=timeout)
+            return
+        orginal_selector = selector
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if scroll:
+            self.__demo_mode_highlight_if_active(orginal_selector, by)
+            if not self.demo_mode and not self.slow_mode:
+                self.scroll_to(orginal_selector, by=by, timeout=timeout)
+        if type(text) is int or type(text) is float:
+            text = str(text)
+        value = re.escape(text)
+        value = self.__escape_quotes_if_needed(value)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        if ":contains\\(" not in css_selector:
+            script = """document.querySelector('%s').textContent='%s';""" % (
+                css_selector,
+                value,
+            )
+            self.execute_script(script)
+        else:
+            script = """jQuery('%s')[0].textContent='%s';""" % (
+                css_selector,
+                value,
+            )
+            self.safe_execute_script(script)
+        self.__demo_mode_pause_if_active()
 
     def jquery_update_text(
         self, selector, text, by=By.CSS_SELECTOR, timeout=None
