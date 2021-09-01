@@ -4254,6 +4254,36 @@ class BaseCase(unittest.TestCase):
             element.send_keys("\n")
         self.__demo_mode_pause_if_active()
 
+    def get_value(
+        self, selector, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """This method uses JavaScript to get the value of an input field.
+        (Works on both input fields and textarea fields.)"""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        self.wait_for_element_present(selector, by=by, timeout=timeout)
+        orginal_selector = selector
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        self.__demo_mode_highlight_if_active(orginal_selector, by)
+        if not self.demo_mode and not self.slow_mode:
+            self.scroll_to(orginal_selector, by=by, timeout=timeout)
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        if ":contains\\(" not in css_selector:
+            script = """return document.querySelector('%s').value;""" % (
+                css_selector
+            )
+            value = self.execute_script(script)
+        else:
+            script = """return jQuery('%s')[0].value;""" % css_selector
+            value = self.safe_execute_script(script)
+        return value
+
     def set_time_limit(self, time_limit):
         self.__check_scope()
         if time_limit:
