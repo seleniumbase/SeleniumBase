@@ -6228,6 +6228,10 @@ class BaseCase(unittest.TestCase):
         name - If creating multiple tours at the same time,
                use this to select the tour you wish to add steps to.
         """
+        if not hasattr(sb_config, "introjs_theme_color"):
+            sb_config.introjs_theme_color = constants.TourColor.theme_color
+        if not hasattr(sb_config, "introjs_hover_color"):
+            sb_config.introjs_hover_color = constants.TourColor.hover_color
         if not name:
             name = "default"
 
@@ -6241,6 +6245,36 @@ class BaseCase(unittest.TestCase):
 
         self._tour_steps[name] = []
         self._tour_steps[name].append(new_tour)
+
+    def set_introjs_colors(self, theme_color=None, hover_color=None):
+        """Use this method to set the theme colors for IntroJS tours.
+        Args must be hex color values that start with a "#" sign.
+        If a color isn't specified, the color will reset to the default.
+        The border color of buttons is set to the hover color.
+        @Params
+        theme_color - The color of buttons.
+        hover_color - The color of buttons after hovering over them.
+        """
+        if not hasattr(sb_config, "introjs_theme_color"):
+            sb_config.introjs_theme_color = constants.TourColor.theme_color
+        if not hasattr(sb_config, "introjs_hover_color"):
+            sb_config.introjs_hover_color = constants.TourColor.hover_color
+        if theme_color:
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', theme_color)
+            if not match:
+                raise Exception(
+                    'Expecting a hex value color that starts with "#"!')
+            sb_config.introjs_theme_color = theme_color
+        else:
+            sb_config.introjs_theme_color = constants.TourColor.theme_color
+        if hover_color:
+            match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', hover_color)
+            if not match:
+                raise Exception(
+                    'Expecting a hex value color that starts with "#"!')
+            sb_config.introjs_hover_color = hover_color
+        else:
+            sb_config.introjs_hover_color = constants.TourColor.hover_color
 
     def add_tour_step(
         self,

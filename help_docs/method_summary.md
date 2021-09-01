@@ -507,6 +507,8 @@ self.create_hopscotch_tour(name=None)
 
 self.create_introjs_tour(name=None)
 
+self.set_introjs_colors(theme_color=None, hover_color=None)
+
 self.add_tour_step(message, selector=None, name=None,
                    title=None, theme=None, alignment=None)
 
