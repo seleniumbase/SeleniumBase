@@ -519,7 +519,7 @@ def _set_firefox_options(
     options.set_preference(
         "browser.download.manager.showAlertOnComplete", False
     )
-    if headless and "linux" not in PLATFORM:
+    if headless:
         options.add_argument("--headless")
     if locale_code:
         options.set_preference("intl.accept_languages", locale_code)

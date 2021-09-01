@@ -29,8 +29,9 @@ class SeleniumBrowser(Plugin):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
-    --headless  (Run tests headlessly. Default mode on Linux OS.)
-    --headed  (Run tests with a GUI on Linux OS.)
+    --headless  (Run tests in headless mode. The default arg on Linux OS.)
+    --headed  (Run tests in headed/GUI mode on Linux OS.)
+    --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
@@ -272,6 +273,17 @@ class SeleniumBrowser(Plugin):
                     a GUI when running tests on Linux machines.
                     (The default setting on Linux is headless.)
                     (The default setting on Mac or Windows is headed.)""",
+        )
+        parser.add_option(
+            "--xvfb",
+            action="store_true",
+            dest="xvfb",
+            default=False,
+            help="""Using this makes tests run headlessly using Xvfb
+                    instead of the browser's built-in headless mode.
+                    When using "--xvfb", the "--headless" option
+                    will no longer be enabled by default on Linux.
+                    Default: False. (Linux-ONLY!)""",
         )
         parser.add_option(
             "--locale_code",
@@ -575,6 +587,7 @@ class SeleniumBrowser(Plugin):
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
+        test.test.xvfb = self.options.xvfb
         test.test.locale_code = self.options.locale_code
         test.test.interval = self.options.interval
         test.test.start_page = self.options.start_page
@@ -626,12 +639,20 @@ class SeleniumBrowser(Plugin):
         if test.test.servername != "localhost":
             # Use Selenium Grid (Use --server="127.0.0.1" for localhost Grid)
             test.test.use_grid = True
-        if "linux" in sys.platform and (
-            not self.options.headed and not self.options.headless
+        if self.options.xvfb and "linux" not in sys.platform:
+            # The Xvfb virtual display server is for Linux OS Only!
+            self.options.xvfb = False
+        if (
+            "linux" in sys.platform
+            and not self.options.headed
+            and not self.options.headless
+            and not self.options.xvfb
         ):
             print(
-                "(Running with --headless on Linux. "
-                "Use --headed or --gui to override.)"
+                "(Linux uses --headless by default. "
+                "To override, use --headed / --gui. "
+                "For Xvfb mode instead, use --xvfb. "
+                "Or hide this info with --headless.)"
             )
             self.options.headless = True
             test.test.headless = True
@@ -669,7 +690,7 @@ class SeleniumBrowser(Plugin):
             pass
         except Exception:
             pass
-        if self.options.headless:
+        if self.options.headless or self.options.xvfb:
             if self.headless_active:
                 try:
                     self.display.stop()

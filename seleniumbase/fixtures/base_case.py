@@ -2458,7 +2458,7 @@ class BaseCase(unittest.TestCase):
         if switch_to:
             self.driver = new_driver
             self.browser = browser_name
-            if self.headless:
+            if self.headless or self.xvfb:
                 # Make sure the invisible browser window is big enough
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
@@ -5258,7 +5258,7 @@ class BaseCase(unittest.TestCase):
         interval - The delay time between autoplaying slides. (in seconds)
                    If set to 0 (default), autoplay is disabled.
         """
-        if self.headless:
+        if self.headless or self.xvfb:
             return  # Presentations should not run in headless mode.
         if not name:
             name = "default"
@@ -5949,7 +5949,7 @@ class BaseCase(unittest.TestCase):
         interval - The delay time for auto-advancing charts. (in seconds)
                    If set to 0 (default), auto-advancing is disabled.
         """
-        if self.headless:
+        if self.headless or self.xvfb:
             interval = 1  # Race through chart if running in headless mode
         if not chart_name:
             chart_name = "default"
@@ -6635,7 +6635,7 @@ class BaseCase(unittest.TestCase):
         """
         from seleniumbase.core import tour_helper
 
-        if self.headless:
+        if self.headless or self.xvfb:
             return  # Tours should not run in headless mode.
 
         self.wait_for_ready_state_complete()
@@ -6852,7 +6852,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless:
+        if self.headless or self.xvfb:
             return buttons[-1][0]
         jqc_helper.jquery_confirm_button_dialog(
             self.driver, message, buttons, options
@@ -6939,7 +6939,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless:
+        if self.headless or self.xvfb:
             return ""
         jqc_helper.jquery_confirm_text_dialog(
             self.driver, message, button, options
@@ -7014,7 +7014,7 @@ class BaseCase(unittest.TestCase):
             for option in options:
                 if not type(option) is list and not type(option) is tuple:
                     raise Exception('"options" should be a list of tuples!')
-        if self.headless:
+        if self.headless or self.xvfb:
             return ("", buttons[-1][0])
         jqc_helper.jquery_confirm_full_dialog(
             self.driver, message, buttons, options
@@ -8839,6 +8839,7 @@ class BaseCase(unittest.TestCase):
             self.headless = sb_config.headless
             self.headless_active = False
             self.headed = sb_config.headed
+            self.xvfb = sb_config.xvfb
             self.locale_code = sb_config.locale_code
             self.interval = sb_config.interval
             self.start_page = sb_config.start_page
@@ -8956,7 +8957,7 @@ class BaseCase(unittest.TestCase):
                 self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
                 self.case_start_time = int(time.time() * 1000)
-            if self.headless:
+            if self.headless or self.xvfb:
                 width = settings.HEADLESS_START_WIDTH
                 height = settings.HEADLESS_START_HEIGHT
                 try:
@@ -9907,7 +9908,7 @@ class BaseCase(unittest.TestCase):
                         self.__process_dashboard(has_exception)
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
-            if self.headless:
+            if self.headless or self.xvfb:
                 if self.headless_active:
                     try:
                         self.display.stop()
