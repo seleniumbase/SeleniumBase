@@ -1,15 +1,15 @@
-### <img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Using Desired Capabilities
+### <img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Using Desired Capabilities
 
 You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote SeleniumGrid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/), or [TestingBot](https://testingbot.com/support/other/test-options).
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
 ```bash
-pytest my_first_test.py --browser=remote --server=USERNAME:KEY@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
+pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@hub.browserstack.com --port=80 --cap_file=capabilities/sample_cap_file_BS.py
 ```
 
 ```bash
-pytest my_first_test.py --browser=remote --server=USERNAME:KEY@ondemand.saucelabs.com --port=80 --cap_file=capabilities/sample_cap_file_SL.py
+pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https --cap_file=capabilities/sample_cap_file_SL.py
 ```
 
 (Parameters: ``--browser=remote``, ``--server=SERVER``, ``--port=PORT``, and ``--cap_file=CAP_FILE.py``)
