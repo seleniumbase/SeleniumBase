@@ -200,16 +200,15 @@ self.switch_to_default_window()
 self.switch_to_newest_window()
 
 self.get_new_driver(
-    browser=None, headless=None, locale_code=None,
-    servername=None, port=None, proxy=None, agent=None,
-    switch_to=True, cap_file=None, cap_string=None,
-    disable_csp=None, enable_ws=None, enable_sync=None,
-    use_auto_ext=None, no_sandbox=None, disable_gpu=None,
-    incognito=None, guest_mode=None,
-    devtools=None, remote_debug=None,
-    swiftshader=None, block_images=None, user_data_dir=None,
-    extension_zip=None, extension_dir=None, is_mobile=None,
-    d_width=None, d_height=None, d_p_r=None)
+    browser=None, headless=None, locale_code=None, protocol=None,
+    servername=None, port=None, proxy=None, agent=None, switch_to=True,
+    cap_file=None, cap_string=None, disable_csp=None, enable_ws=None,
+    enable_sync=None, use_auto_ext=None, no_sandbox=None, disable_gpu=None,
+    incognito=None, guest_mode=None, devtools=None, remote_debug=None,
+    swiftshader=None, block_images=None,
+    chromium_arg=None, firefox_arg=None, firefox_pref=None,
+    user_data_dir=None, extension_zip=None, extension_dir=None,
+    is_mobile=None, d_width=None, d_height=None, d_p_r=None)
 
 self.switch_to_driver(driver)
 

@@ -143,7 +143,7 @@ class SeleniumBrowser(Plugin):
             dest="port",
             default="4444",
             help="""Designates the Selenium Grid port to use.
-                    Default: 4444.""",
+                    Default: 4444. (If 443, protocol becomes "https")""",
         )
         parser.add_option(
             "--proxy",
@@ -632,13 +632,14 @@ class SeleniumBrowser(Plugin):
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
         test.test.timeout_multiplier = self.options.timeout_multiplier
-        test.test.use_grid = False
         test.test.dashboard = False
         test.test._multithreaded = False
         test.test._reuse_session = False
         if test.test.servername != "localhost":
-            # Use Selenium Grid (Use --server="127.0.0.1" for localhost Grid)
-            test.test.use_grid = True
+            # Using Selenium Grid
+            # (Set --server="127.0.0.1" for localhost Grid)
+            if str(self.options.port) == "443":
+                test.test.protocol = "https"
         if self.options.xvfb and "linux" not in sys.platform:
             # The Xvfb virtual display server is for Linux OS Only!
             self.options.xvfb = False

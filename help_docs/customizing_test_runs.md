@@ -344,31 +344,31 @@ SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
 
 ```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.browserstack.com --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
 Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
 
 ```bash
-pytest my_first_test.py --server=USERNAME:KEY@ondemand.saucelabs.com --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
 ```
 
 Here's how to connect to a TestingBot Selenium Grid server for running tests:
 
 ```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.testingbot.com --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
 Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:
 
 ```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
 ```
 
 Here's how to connect to a LambdaTest Selenium Grid server for running tests:
 
 ```bash
-pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
 
 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
@@ -376,7 +376,7 @@ Or you can create your own Selenium Grid for test distribution. ([See this ReadM
 To use a server on the ``https`` protocol, add ``--protocol=https``:
 
 ```bash
-pytest test_suite.py --protocol=https --server=IP_ADDRESS --port=PORT
+pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 ```
 
 --------
