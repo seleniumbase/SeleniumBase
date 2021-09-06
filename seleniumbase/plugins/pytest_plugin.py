@@ -374,7 +374,7 @@ def pytest_addoption(parser):
         dest="port",
         default="4444",
         help="""Designates the Selenium Grid port to use.
-                Default: 4444.""",
+                Default: 4444. (If 443, protocol becomes "https")""",
     )
     parser.addoption(
         "--proxy",
@@ -987,6 +987,11 @@ def pytest_configure(config):
     sb_config.protocol = config.getoption("protocol")
     sb_config.servername = config.getoption("servername")
     sb_config.port = config.getoption("port")
+    if sb_config.servername != "localhost":
+        # Using Selenium Grid
+        # (Set --server="127.0.0.1" for localhost Grid)
+        if str(sb_config.port) == "443":
+            sb_config.protocol = "https"
     sb_config.proxy_string = config.getoption("proxy_string")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")
