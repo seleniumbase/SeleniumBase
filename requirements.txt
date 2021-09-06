@@ -5,9 +5,10 @@ packaging>=21.0;python_version>="3.6"
 typing-extensions>=3.10.0.2
 setuptools>=44.1.1;python_version<"3.5"
 setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"
-setuptools>=57.4.0;python_version>="3.6"
+setuptools>=58.0.0;python_version>="3.6"
 setuptools-scm==5.0.2;python_version<"3.6"
-setuptools-scm>=6.0.1;python_version>="3.6"
+setuptools-scm>=6.3.1;python_version>="3.6"
+tomli>=1.2.1;python_version>="3.6"
 wheel>=0.37.0
 attrs>=21.2.0
 PyYAML>=5.4.1;python_version>="3.6"
@@ -33,7 +34,7 @@ requests==2.26.0;python_version>="3.6"
 selenium==3.141.0
 msedge-selenium-tools==3.141.3
 more-itertools==5.0.0;python_version<"3.5"
-more-itertools==8.8.0;python_version>="3.5"
+more-itertools==8.9.0;python_version>="3.5"
 cssselect==1.1.0
 filelock==3.0.12
 fasteners==0.16;python_version<"3.5"
@@ -98,7 +99,7 @@ cffi==1.14.6
 toml==0.10.2
 Pillow==6.2.2;python_version<"3.5"
 Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"
-Pillow==8.3.1;python_version>="3.6"
+Pillow==8.3.2;python_version>="3.6"
 rich==10.9.0;python_version>="3.6" and python_version<"4.0"
 tornado==5.1.1;python_version<"3.5"
 tornado==6.1;python_version>="3.5"
