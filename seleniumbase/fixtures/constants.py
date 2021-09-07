@@ -232,13 +232,6 @@ class HighCharts:
     )
 
 
-class TourColor:
-    # theme_color = "#f26721"  # Orange
-    # hover_color = "#db5409"  # Darker Orange
-    theme_color = "#2167e2"  # Blue
-    hover_color = "#0954cb"  # Darker Blue
-
-
 class BootstrapTour:
     VER = "0.12.0"
     MIN_CSS = (
@@ -279,6 +272,14 @@ class IntroJS:
     VER = "4.2.2"
     MIN_CSS = "https://unpkg.com/intro.js@%s/minified/introjs.min.css" % VER
     MIN_JS = "https://unpkg.com/intro.js@%s/minified/intro.min.js" % VER
+
+
+class TourColor:
+    """Used for button colors in IntroJS Tours"""
+    # theme_color = "#f26721"  # Orange
+    # hover_color = "#db5409"  # Darker Orange
+    theme_color = "#458bca"  # Blue
+    hover_color = "#336aa5"  # Darker Blue
 
 
 class JqueryConfirm:
