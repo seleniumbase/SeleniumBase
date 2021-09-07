@@ -654,7 +654,7 @@ self.switch_to_alert(timeout=None)
 
 ############
 
-self.check_window(name="default", level=0, baseline=False)
+self.check_window(name="default", level=0, baseline=False, check_domain=True)
 
 ############
 
