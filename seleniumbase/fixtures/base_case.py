@@ -8053,12 +8053,28 @@ class BaseCase(unittest.TestCase):
             lines = str_e.split("\n")
             countdown = 3
             countdown_on = False
+            first_differing = False
+            skip_lines = False
             for line in lines:
                 if countdown_on:
-                    minified_exception += line + "\n"
+                    if not skip_lines:
+                        minified_exception += line + "\n"
                     countdown = countdown - 1
                     if countdown == 0:
                         countdown_on = False
+                        skip_lines = False
+                elif line.startswith("First differing"):
+                    first_differing = True
+                    countdown_on = True
+                    countdown = 3
+                    minified_exception += line + "\n"
+                elif line.startswith("First list"):
+                    countdown_on = True
+                    countdown = 3
+                    if not first_differing:
+                        minified_exception += line + "\n"
+                    else:
+                        skip_lines = True
                 elif line.startswith("F"):
                     countdown_on = True
                     countdown = 3
@@ -8072,7 +8088,9 @@ class BaseCase(unittest.TestCase):
         if minified_exception:
             raise Exception(minified_exception)
 
-    def check_window(self, name="default", level=0, baseline=False):
+    def check_window(
+        self, name="default", level=0, baseline=False, check_domain=True
+    ):
         """***  Automated Visual Testing with SeleniumBase  ***
 
         The first time a test calls self.check_window() for a unique "name"
@@ -8094,8 +8112,8 @@ class BaseCase(unittest.TestCase):
         HTML tags of the latest window to the one from the initial run.
         Here's how the level system works:
         * level=0 ->
-            DRY RUN ONLY - Will perform a comparison to the baseline, and
-                           print out any differences that are found, but
+            DRY RUN ONLY - Will perform comparisons to the baseline (and
+                           print out any differences that are found) but
                            won't fail the test even if differences exist.
         * level=1 ->
             HTML tags are compared to tags_level1.txt
@@ -8120,7 +8138,8 @@ class BaseCase(unittest.TestCase):
         need to reset the baseline to prevent unnecessary failures.
 
         self.check_window() will fail with "Page Domain Mismatch Failure"
-        if the page domain doesn't match the domain of the baseline.
+        if the page domain doesn't match the domain of the baseline,
+        unless "check_domain" is set to False when calling check_window().
 
         If you want to use self.check_window() to compare a web page to
         a later version of itself from within the same test run, you can
@@ -8235,7 +8254,7 @@ class BaseCase(unittest.TestCase):
             f.close()
 
             domain_fail = (
-                "\nPage Domain Mismatch Failure: "
+                "\n*\nPage Domain Mismatch Failure: "
                 "Current Page Domain doesn't match the Page Domain of the "
                 "Baseline! Can't compare two completely different sites! "
                 "Run with --visual_baseline to reset the baseline!"
@@ -8255,28 +8274,42 @@ class BaseCase(unittest.TestCase):
 
             page_domain = self.get_domain_url(page_url)
             page_data_domain = self.get_domain_url(page_url_data)
-            unittest.TestCase.maxDiff = 1000
-            if level != 0:
+            unittest.TestCase.maxDiff = 3200
+            if level != 0 and check_domain:
                 self.assertEqual(page_data_domain, page_domain, domain_fail)
-            unittest.TestCase.maxDiff = None
+            unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 3:
                 self.__assert_eq(level_3_data, level_3, level_3_failure)
+            unittest.TestCase.maxDiff = 3200
             if level == 2:
                 self.__assert_eq(level_2_data, level_2, level_2_failure)
-            unittest.TestCase.maxDiff = 1000
             if level == 1:
                 self.__assert_eq(level_1_data, level_1, level_1_failure)
-            unittest.TestCase.maxDiff = None
+            unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 0:
                 try:
-                    unittest.TestCase.maxDiff = 1000
-                    self.assertEqual(
-                        page_domain, page_data_domain, domain_fail
-                    )
-                    unittest.TestCase.maxDiff = None
+                    unittest.TestCase.maxDiff = 3200
+                    if check_domain:
+                        self.assertEqual(
+                            page_domain, page_data_domain, domain_fail
+                        )
+                    try:
+                        self.__assert_eq(
+                            level_1_data, level_1, level_1_failure
+                        )
+                    except Exception as e:
+                        print(e)
+                    try:
+                        self.__assert_eq(
+                            level_2_data, level_2, level_2_failure
+                        )
+                    except Exception as e:
+                        print(e)
+                    unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
                     self.__assert_eq(level_3_data, level_3, level_3_failure)
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
+            unittest.TestCase.maxDiff = None  # Reset unittest.TestCase.maxDiff
 
     ############
 
