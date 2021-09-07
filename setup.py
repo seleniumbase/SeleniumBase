@@ -121,7 +121,7 @@ setup(
         "typing-extensions>=3.10.0.2",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=58.0.0;python_version>="3.6"',
+        'setuptools>=58.0.2;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.1;python_version>="3.6"',
         'tomli>=1.2.1;python_version>="3.6"',
@@ -199,7 +199,7 @@ setup(
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.27.0;python_version>="3.7"',  # Requires matplotlib-inline
-        'matplotlib-inline==0.1.2;python_version>="3.7"',  # ipython needs this
+        'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
         'platformdirs==2.3.0;python_version>="3.6"',
