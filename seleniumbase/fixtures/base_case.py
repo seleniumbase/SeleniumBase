@@ -2228,7 +2228,7 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_content(self):
         """Brings driver control outside the current iframe.
-        (If driver control is inside an iframe, the driver control
+        (If the driver control is inside an iframe, the driver control
         will be set to one level above the current frame. If the driver
         control is not currently in an iframe, nothing will happen.)"""
         self.__check_scope()
@@ -5224,8 +5224,9 @@ class BaseCase(unittest.TestCase):
         """Same as self.wait_for_element_absent()
         Waits for an element to no longer appear in the HTML of a page.
         A hidden element still counts as appearing in the page HTML.
-        If an element with "hidden" status is acceptable,
-        use wait_for_element_not_visible() instead."""
+        If waiting for elements to be hidden instead of nonexistent,
+        use wait_for_element_not_visible() instead.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -5241,6 +5242,10 @@ class BaseCase(unittest.TestCase):
     ):
         """Same as self.assert_element_absent()
         Will raise an exception if the element stays present.
+        A hidden element counts as a present element, which fails this assert.
+        If you want to assert that elements are hidden instead of nonexistent,
+        use assert_element_not_visible() instead.
+        (Note that hidden elements are still present in the HTML of the page.)
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
         if not timeout:
@@ -8121,9 +8126,10 @@ class BaseCase(unittest.TestCase):
         self, selector, by=By.CSS_SELECTOR, timeout=None
     ):
         """Waits for an element to no longer appear in the HTML of a page.
-        A hidden element still counts as appearing in the page HTML.
-        If an element with "hidden" status is acceptable,
-        use wait_for_element_not_visible() instead."""
+        A hidden element counts as a present element, which fails this assert.
+        If waiting for elements to be hidden instead of nonexistent,
+        use wait_for_element_not_visible() instead.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.LARGE_TIMEOUT
@@ -8137,8 +8143,12 @@ class BaseCase(unittest.TestCase):
     def assert_element_absent(
         self, selector, by=By.CSS_SELECTOR, timeout=None
     ):
-        """Similar to wait_for_element_absent() - returns nothing.
+        """Similar to wait_for_element_absent()
         As above, will raise an exception if the element stays present.
+        A hidden element counts as a present element, which fails this assert.
+        If you want to assert that elements are hidden instead of nonexistent,
+        use assert_element_not_visible() instead.
+        (Note that hidden elements are still present in the HTML of the page.)
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
         if not timeout:
@@ -8169,7 +8179,7 @@ class BaseCase(unittest.TestCase):
     def assert_element_not_visible(
         self, selector, by=By.CSS_SELECTOR, timeout=None
     ):
-        """Similar to wait_for_element_not_visible() - returns nothing.
+        """Similar to wait_for_element_not_visible()
         As above, will raise an exception if the element stays visible.
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
