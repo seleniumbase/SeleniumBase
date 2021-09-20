@@ -8,6 +8,7 @@
 * <b>[console_scripts](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/console_scripts):</b> Includes [run.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/run.py), which is used to call SeleniumBase console scripts.
 * <b>[drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers):</b> This is the folder where web drivers get downloaded to when installing them.
 * <b>[config](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/config):</b> Includes [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), which provides default configuration options for tests.
+* <b>[js_code](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/js_code):</b> This folder contains JavaScript code for various SeleniumBase components.
 * <b>[extensions](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/extensions):</b> This folder contains Chrome extensions that can be used during test runs.
 * <b>[common](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common):</b> This folder contains useful Python decorators that can be used in tests.
 * <b>[utilities](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities):</b> This folder contains code for spinning up your own Selenium Grid, and more.

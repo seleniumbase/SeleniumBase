@@ -43,8 +43,9 @@ class SeleniumBrowser(Plugin):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
     --ad-block  (Block some types of display ads after page loads.)
-    --block-images (Block images from loading during tests.)
+    --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
+    --recorder  (Enables the Recorder for turning browser actions into code.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -416,6 +417,17 @@ class SeleniumBrowser(Plugin):
                     before each MasterQA verification pop-up.""",
         )
         parser.add_option(
+            "--recorder",
+            "--record",
+            "--rec",
+            action="store_true",
+            dest="recorder_mode",
+            default=False,
+            help="""Using this enables the SeleniumBase Recorder,
+                    which records browser actions for converting
+                    into SeleniumBase scripts.""",
+        )
+        parser.add_option(
             "--disable_csp",
             "--disable-csp",
             action="store_true",
@@ -614,6 +626,8 @@ class SeleniumBrowser(Plugin):
         test.test.ad_block_on = self.options.ad_block_on
         test.test.block_images = self.options.block_images
         test.test.verify_delay = self.options.verify_delay  # MasterQA
+        test.test.recorder_mode = self.options.recorder_mode
+        test.test.recorder_ext = self.options.recorder_mode  # Again
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws

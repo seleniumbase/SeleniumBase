@@ -140,6 +140,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --ad-block  # (Block some types of display ads after page loads.)
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--recorder  # (Enables the Recorder for turning browser actions into code.)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)

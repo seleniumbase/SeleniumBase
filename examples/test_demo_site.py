@@ -60,9 +60,11 @@ class DemoSiteTests(BaseCase):
         self.assert_true(self.is_selected("#radioButton2"))
 
         # Verify that clicking a checkbox makes it selected
+        self.assert_element_not_visible("img#logo")
         self.assert_false(self.is_selected("#checkBox1"))
         self.click("#checkBox1")
         self.assert_true(self.is_selected("#checkBox1"))
+        self.assert_element("img#logo")
 
         # Verify clicking on multiple elements with one call
         self.assert_false(self.is_selected("#checkBox2"))
@@ -81,6 +83,11 @@ class DemoSiteTests(BaseCase):
         self.click(".fBox")
         self.assert_true(self.is_selected(".fBox"))
         self.switch_to_default_content()
+
+        # Verify Drag and Drop
+        self.assert_element_not_visible("div#drop2 img#logo")
+        self.drag_and_drop("img#logo", "div#drop2")
+        self.assert_element("div#drop2 img#logo")
 
         # Assert link text
         self.assert_link_text("seleniumbase.com")

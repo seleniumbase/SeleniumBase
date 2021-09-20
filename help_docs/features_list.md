@@ -20,6 +20,7 @@
 * Can run tests through an authenticated proxy server. (``--proxy=USER:PASS@HOST:PORT``)
 * Can run tests with a customized browser user agent. (``--agent=USER_AGENT_STRING``)
 * Can set a Chromium User Data Directory/Profile to load. (``--user_data_dir=DIR``)
+* Has [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for generating scripts from recorded actions. (``--recorder``)
 * Can load Chrome Extension ZIP files. (``--extension_zip=ZIP``)
 * Can load Chrome Extension folders. (``--extension_dir=DIR``)
 * Powerful [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md). (Type **``seleniumbase``** or **``sbase``** to use.)

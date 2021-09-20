@@ -1,8 +1,6 @@
 """
-Manager for dealing with uploading/managing files on Amazon S3
+Methods for uploading/managing files on Amazon S3.
 """
-from boto.s3.connection import S3Connection
-from boto.s3.key import Key
 from seleniumbase.config import settings
 
 already_uploaded_files = []
@@ -10,10 +8,9 @@ already_uploaded_files = []
 
 class S3LoggingBucket(object):
     """
-    A class to upload log files from tests to Amazon S3.
+    A class for uploading log files from tests to Amazon S3.
     Those files can then be shared easily.
     """
-
     def __init__(
         self,
         log_bucket=settings.S3_LOG_BUCKET,
@@ -21,14 +18,17 @@ class S3LoggingBucket(object):
         selenium_access_key=settings.S3_SELENIUM_ACCESS_KEY,
         selenium_secret_key=settings.S3_SELENIUM_SECRET_KEY,
     ):
+        from boto.s3.connection import S3Connection
 
         self.conn = S3Connection(selenium_access_key, selenium_secret_key)
         self.bucket = self.conn.get_bucket(log_bucket)
         self.bucket_url = bucket_url
 
-    def get_key(self, _name):
+    def get_key(self, file_name):
         """ Create a new Key instance with the given name. """
-        return Key(bucket=self.bucket, name=_name)
+        from boto.s3.key import Key
+
+        return Key(bucket=self.bucket, name=file_name)
 
     def get_bucket(self):
         """ Return the bucket being used. """
@@ -37,7 +37,7 @@ class S3LoggingBucket(object):
     def upload_file(self, file_name, file_path):
         """Upload a given file from the file_path to the bucket
         with the new name/path file_name."""
-        upload_key = Key(bucket=self.bucket, name=file_name)
+        upload_key = self.get_key(file_name)
         content_type = "text/plain"
         if file_name.endswith(".html"):
             content_type = "text/html"

@@ -27,6 +27,10 @@ class Charts:
     SAVED_FOLDER = "saved_charts"
 
 
+class Recordings:
+    SAVED_FOLDER = "recordings"
+
+
 class Dashboard:
     from seleniumbase.core import encoded_images
 

@@ -1,5 +1,5 @@
 """
-The setup package to install SeleniumBase dependencies and plugins
+The setup package to install SeleniumBase dependencies and plugins.
 (Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.5+)
 """
 
@@ -37,7 +37,7 @@ if sys.argv[-1] == "publish":
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
         os.system("python -m pip install 'flake8==3.9.2'")
-        flake8_status = os.system("flake8 --exclude=temp")
+        flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
             sys.exit()
@@ -121,9 +121,9 @@ setup(
         "typing-extensions>=3.10.0.2",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=58.0.2;python_version>="3.6"',
+        'setuptools>=58.0.4;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
-        'setuptools-scm>=6.3.1;python_version>="3.6"',
+        'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.1;python_version>="3.6"',
         "wheel>=0.37.0",
         "attrs>=21.2.0",
@@ -142,7 +142,7 @@ setup(
         'idna==3.2;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.4;python_version>="3.6"',  # Sync "requests"
+        'charset-normalizer==2.0.6;python_version>="3.5"',  # Sync "requests"
         "urllib3==1.26.6",  # Must stay in sync with "requests"
         'requests==2.26.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
@@ -150,7 +150,7 @@ setup(
         "selenium==3.141.0",
         "msedge-selenium-tools==3.141.3",
         'more-itertools==5.0.0;python_version<"3.5"',
-        'more-itertools==8.9.0;python_version>="3.5"',
+        'more-itertools==8.10.0;python_version>="3.5"',
         "cssselect==1.1.0",
         "filelock==3.0.12",
         'fasteners==0.16;python_version<"3.5"',
@@ -171,7 +171,7 @@ setup(
         "pytest-ordering==0.6",
         'pytest-rerunfailures==8.0;python_version<"3.5"',
         'pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        'pytest-rerunfailures==10.1;python_version>="3.6"',
+        'pytest-rerunfailures==10.2;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
         'pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"',
         'pytest-xdist==2.3.0;python_version>="3.6"',
@@ -180,7 +180,8 @@ setup(
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.1;python_version>="3.5" and python_version<"3.6"',
         'soupsieve==2.2.1;python_version>="3.6"',
-        "beautifulsoup4==4.9.3",
+        'beautifulsoup4==4.9.3;python_version<"3.5"',
+        'beautifulsoup4==4.10.0;python_version>="3.5"',
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==3.4.8;python_version>="3.6"',
@@ -194,7 +195,7 @@ setup(
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
         'prompt-toolkit==3.0.20;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
-        'decorator==5.0.9;python_version>="3.5"',
+        'decorator==5.1.0;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
@@ -206,7 +207,7 @@ setup(
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        "virtualenv>=20.7.2",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.8.0",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",
@@ -216,7 +217,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.3.2;python_version>="3.6"',
-        'rich==10.9.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.10.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
@@ -248,6 +249,7 @@ setup(
         "seleniumbase.drivers",
         "seleniumbase.extensions",
         "seleniumbase.fixtures",
+        "seleniumbase.js_code",
         "seleniumbase.masterqa",
         "seleniumbase.plugins",
         "seleniumbase.translate",

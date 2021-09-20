@@ -162,6 +162,9 @@ def main():
     file.close()
 
     data = []
+    data.append("[flake8]")
+    data.append("exclude=recordings,temp")
+    data.append("")
     data.append("[nosetests]")
     data.append("nocapture=1")
     data.append("logging-level=INFO")
@@ -268,6 +271,7 @@ def main():
     data.append("tours_exported")
     data.append("images_exported")
     data.append("saved_cookies")
+    data.append("recordings")
     data.append("visual_baseline")
     data.append("selenium-server-standalone.jar")
     data.append("proxy.zip")
@@ -379,6 +383,10 @@ def main():
     data.append('        self.click(".fBox")')
     data.append('        self.assert_true(self.is_selected(".fBox"))')
     data.append("        self.switch_to_default_content()")
+    data.append(
+        '        self.assert_element_not_visible("div#drop2 img#logo")')
+    data.append('        self.drag_and_drop("img#logo", "div#drop2")')
+    data.append('        self.assert_element("div#drop2 img#logo")')
     data.append('        self.assert_link_text("seleniumbase.com")')
     data.append('        self.assert_link_text("SeleniumBase on GitHub")')
     data.append('        self.assert_link_text("seleniumbase.io")')
