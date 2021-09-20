@@ -1511,6 +1511,20 @@ class BaseCase(unittest.TestCase):
         if self.is_element_visible(selector, by=by):
             self.click(selector, by=by)
 
+    def click_active_element(self):
+        self.wait_for_ready_state_complete()
+        pre_action_url = self.driver.current_url
+        self.execute_script("document.activeElement.click();")
+        if settings.WAIT_FOR_RSC_ON_CLICKS:
+            self.wait_for_ready_state_complete()
+        if self.demo_mode:
+            if self.driver.current_url != pre_action_url:
+                self.__demo_mode_pause_if_active()
+            else:
+                self.__demo_mode_pause_if_active(tiny=True)
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+
     def is_checked(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """Determines if a checkbox or a radio button element is checked.
         Returns True if the element is checked.
