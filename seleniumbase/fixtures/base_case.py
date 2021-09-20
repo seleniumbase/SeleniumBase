@@ -9773,6 +9773,8 @@ class BaseCase(unittest.TestCase):
 
     def __get_test_id_2(self):
         """ The id for SeleniumBase Dashboard entries. """
+        if "PYTEST_CURRENT_TEST" in os.environ:
+            return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
         test_id = "%s.%s.%s" % (
             self.__class__.__module__.split(".")[-1],
             self.__class__.__name__,
@@ -9786,6 +9788,8 @@ class BaseCase(unittest.TestCase):
 
     def __get_display_id(self):
         """ The id for running a test from pytest. (Displayed on Dashboard) """
+        if "PYTEST_CURRENT_TEST" in os.environ:
+            return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
         test_id = "%s.py::%s::%s" % (
             self.__class__.__module__.replace(".", "/"),
             self.__class__.__name__,
@@ -10139,7 +10143,9 @@ class BaseCase(unittest.TestCase):
         out_file = codecs.open(file_path, "w+", encoding="utf-8")
         out_file.writelines(the_html)
         out_file.close()
+        sb_config._dash_html = the_html
         if self._multithreaded:
+            sb_config._dash_html_for_multithreading = the_html
             d_stats = (num_passed, num_failed, num_skipped, num_untested)
             _results = sb_config._results
             _display_id = sb_config._display_id

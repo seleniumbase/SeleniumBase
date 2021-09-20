@@ -4,7 +4,6 @@
 import colorama
 import os
 import pytest
-import re
 import sys
 import time
 from seleniumbase import config as sb_config
@@ -967,6 +966,7 @@ def pytest_configure(config):
     sb_config.item_count_skipped = 0
     sb_config.item_count_untested = 0
     sb_config.is_pytest = True
+    sb_config.pytest_config = config
     sb_config.browser = config.getoption("browser")
     if sb_config._browser_shortcut:
         sb_config.browser = sb_config._browser_shortcut
@@ -1129,10 +1129,16 @@ def pytest_sessionstart(session):
 
 
 def _get_test_ids_(the_item):
-    test_id = the_item.nodeid.split("/")[-1]
+    test_id = the_item.nodeid
     if not test_id:
         test_id = "unidentified_TestCase"
-    test_id = test_id.replace(" ", "_")
+    display_id = test_id
+    r"""
+    # Due to changes in SeleniumBase 1.66.0, we're now using the
+    # item's original nodeid for both the test_id and display_id.
+    # (This only impacts tests using The Dashboard.)
+    # If there are any issues, we'll revert back to the old code.
+    test_id = the_item.nodeid.split("/")[-1].replace(" ", "_")
     if "[" in test_id:
         test_id_intro = test_id.split("[")[0]
         parameter = test_id.split("[")[1]
@@ -1141,12 +1147,13 @@ def _get_test_ids_(the_item):
     display_id = test_id
     test_id = test_id.replace("/", ".").replace("\\", ".")
     test_id = test_id.replace("::", ".").replace(".py", "")
+    """
     return test_id, display_id
 
 
 def _create_dashboard_assets_():
     import codecs
-    from seleniumbase.core.js_snippets import live_js
+    from seleniumbase.js_code.live_js import live_js
     from seleniumbase.core.style_sheet import pytest_style
 
     abs_path = os.path.abspath(".")
@@ -1292,6 +1299,14 @@ def pytest_terminal_summary(terminalreporter):
 
 def pytest_unconfigure():
     """ This runs after all tests have completed with pytest. """
+    if (
+        hasattr(sb_config, "_dash_html_for_multithreading")
+        and sb_config._multithreaded
+    ):
+        abs_path = os.path.abspath(".")
+        dashboard_path = os.path.join(abs_path, "dashboard.html")
+        with open(dashboard_path, "w", encoding="utf-8") as f:
+            f.write(sb_config._dash_html)
     proxy_helper.remove_proxy_zip_if_present()
     if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
         # Close the shared browser session
@@ -1336,7 +1351,7 @@ def pytest_unconfigure():
         swap_with = ""  # Stop refreshing the page after the run is done
         find_it_2 = "Awaiting results... (Refresh the page for updates)"
         swap_with_2 = (
-            "Test Run ENDED: Some results UNREPORTED due to skipped tearDown!"
+            "Test Run ENDED: Some results UNREPORTED due to skipped tearDown()"
         )
         find_it_3 = '<td class="col-result">Untested</td>'
         swap_with_3 = '<td class="col-result">Unreported</td>'
@@ -1525,7 +1540,12 @@ def pytest_runtest_makereport(item, call):
                 test_id = item.nodeid
                 if not test_id:
                     test_id = "unidentified_TestCase"
-                test_id = test_id.replace(" ", "_")
+                r"""
+                # Due to changes in SeleniumBase 1.66.0, we're now using the
+                # item's original nodeid for both the test_id and display_id.
+                # (This only impacts tests using The Dashboard.)
+                # If there are any issues, we'll revert back to the old code.
+                test_id = test_id.split("/")[-1].replace(" ", "_")
                 if "[" in test_id:
                     test_id_intro = test_id.split("[")[0]
                     parameter = test_id.split("[")[1]
@@ -1533,6 +1553,7 @@ def pytest_runtest_makereport(item, call):
                     test_id = test_id_intro + "__" + parameter
                 test_id = test_id.replace("/", ".").replace("\\", ".")
                 test_id = test_id.replace("::", ".").replace(".py", "")
+                """
                 sb_node._sb_test_identifier = test_id
                 if sb_node._needs_tearDown:
                     sb_node.tearDown()
