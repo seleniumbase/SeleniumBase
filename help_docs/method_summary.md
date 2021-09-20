@@ -46,6 +46,8 @@ self.refresh_page()
 
 self.get_current_url()
 
+self.get_origin()
+
 self.get_page_source()
 
 self.get_title()
@@ -60,6 +62,8 @@ self.go_back()
 self.go_forward()
 
 self.open_start_page()
+
+self.open_if_not_url(url)
 
 self.is_element_present(selector, by=By.CSS_SELECTOR)
 
@@ -119,6 +123,8 @@ self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0, timeout=None)
 self.click_nth_visible_element(selector, number, by=By.CSS_SELECTOR, timeout=None)
 
 self.click_if_visible(selector, by=By.CSS_SELECTOR)
+
+self.click_active_element()
 
 self.is_selected(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.is_checked(selector, by=By.CSS_SELECTOR, timeout=None)
@@ -240,6 +246,8 @@ self.install_addon(xpi_file)
 self.activate_design_mode()
 
 self.deactivate_design_mode()
+
+self.activate_recorder()
 
 self.activate_jquery()
 

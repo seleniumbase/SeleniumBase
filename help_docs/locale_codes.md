@@ -3,7 +3,7 @@
 You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase you can change the web browser's Locale on the command line by adding:
 
 ```bash
---locale=CODE  # Example: --locale=ru
+pytest --locale=CODE  # Example: --locale=ru
 ```
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="25" /> List of Language Locale Codes:</h3>

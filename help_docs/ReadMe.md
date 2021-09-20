@@ -29,7 +29,7 @@
 <a href="https://seleniumbase.io/help_docs/translations/">🌏 Translate</a> |
 <a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">🛂 DialogBoxes</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/">⏺️ Recorder</a> |
+<a href="https://seleniumbase.io/help_docs/recorder_mode.md">⏺️ Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">📰 Presenter</a> |
@@ -75,6 +75,7 @@
 <div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE Demo Page</b></a></div>
 <div><a href="https://seleniumbase.io/devices/"><b>Virtual Device Farm</b></a></div>
 <div><a href="https://seleniumbase.io/error_page/"><b>Error Page for Tests</b></a></div>
+<div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag-&-Drop Test Page</b></a></div>
 <div><a href="https://seleniumbase.io/other/presenter.html"><b>Presenter Demo</b></a></div>
 <div><a href="https://seleniumbase.io/other/core_presentation.html"><b>Core Presentation</b></a></div>
 <div><a href="https://seleniumbase.io/other/chart_presentation.html"><b>Chart Maker Demo</b></a></div>

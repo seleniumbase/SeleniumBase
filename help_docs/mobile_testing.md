@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/README.md"><img src="https://seleniumbase.io/cdn/img/sb_text_f.png" alt="SeleniumBase" title="SeleniumBase" width="290" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_text_f.png" alt="SeleniumBase" title="SeleniumBase" width="290" /></a></p>
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Mobile Testing</h2>
 

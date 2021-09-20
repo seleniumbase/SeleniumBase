@@ -78,6 +78,7 @@ nav:
   - Dashboard / Reports: examples/example_logs/ReadMe.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - Syntax Formats: help_docs/syntax_formats.md
+  - Recorder Mode: help_docs/recorder_mode.md
   - API Reference: help_docs/method_summary.md
   - Setup / Install:
     - Install Python, pip, git: help_docs/install_python_pip_git.md
@@ -98,15 +99,15 @@ nav:
   - Integrations:
     - Mobile Testing: help_docs/mobile_testing.md
     - GitHub CI: integrations/github/workflows/ReadMe.md
-    - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
-    - Katalon Recorder: integrations/katalon/ReadMe.md
-    - MasterQA: examples/master_qa/ReadMe.md
     - Visual Testing: examples/visual_testing/ReadMe.md
+    - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
+    - HighCharts: examples/chart_maker/ReadMe.md
+    - MasterQA: examples/master_qa/ReadMe.md
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
-    - Recorder Export/Convert: seleniumbase/utilities/selenium_ide/ReadMe.md
+    - Katalon Recorder: integrations/katalon/ReadMe.md
+    - Old Recorder / Export: seleniumbase/utilities/selenium_ide/ReadMe.md
     - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
-    - HighCharts: examples/chart_maker/ReadMe.md
   - Help Docs:
     - Table of Contents: help_docs/ReadMe.md
     - JS Package Manager: help_docs/js_package_manager.md
@@ -122,6 +123,7 @@ nav:
   - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
     - TinyMCE Demo Page: https://seleniumbase.io/tinymce/
+    - Drag & Drop Demo Page: https://seleniumbase.io/other/drag_and_drop
     - Virtual Device Farm: https://seleniumbase.io/devices/
     - Error Demo Page: https://seleniumbase.io/error_page/
   - Presentations:
@@ -134,4 +136,8 @@ nav:
     - Case Studies: help_docs/happy_customers.md
     - Thank You: help_docs/thank_you.md
 # Google Analytics
-google_analytics: ['UA-167313767-1', 'seleniumbase.io']
+extra:
+  analytics:
+    provider: google
+    property: UA-167313767-1
+#google_analytics: ['UA-167313767-1', 'seleniumbase.io']

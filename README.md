@@ -31,11 +31,11 @@
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📊 Reports</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplate</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Syntaxes</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Record</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">⏺️ Recorder</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locale</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translate</a> |
@@ -108,7 +108,7 @@ pip install -e .  # Editable install
 
 > (When using a virtual env, the Editable install is faster.)
 
-🔵 You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
+🔵 You can also install ``seleniumbase`` from [pypi](https://pypi.org/project/seleniumbase/):
 
 ```bash
 pip install seleniumbase
@@ -379,6 +379,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --ad-block  # (Block some types of display ads after page loads.)
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--recorder  # (Enables the Recorder for turning browser actions into code.)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
