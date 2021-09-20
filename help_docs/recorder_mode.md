@@ -6,7 +6,7 @@ SeleniumBase <b>Recorder Mode</b> gives you the power to create automation scrip
 
 <img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-To activate Recorder Mode, add ``--recorder`` to your ``pytest`` run command when running an existing test:
+To activate Recorder Mode, add <code>--recorder</code> to your <code>pytest</code> run command when running an existing test:
 
 ```bash
 pytest TEST_NAME.py --recorder
@@ -27,7 +27,7 @@ Once you've reached the breakpoint, you can take control of the browser and add 
 
 While a recording is in progress, you can hit the ``[ESC]`` key to pause the recording. To resume the recording, you can hit the ``[~`]`` key, which is located directly below the ``[ESC]`` key on most keyboards.
 
-<p>If you want to create a recording from scratch, just run:<br><code>pytest --recorder</code> on a Python file such as this one:
+<p>If you want to create a recording from scratch, just run:<br><code>pytest --recorder</code> on a Python file such as this one:</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -37,15 +37,15 @@ class RecorderTest(BaseCase):
         import ipdb; ipdb.set_trace()
 ```
 
-The above file gives you a basic SeleniumBase file with a breakpoint in it so that you can immediately start recording after you've opened a new web page in the browser.
+<p>The above file gives you a basic SeleniumBase file with a breakpoint in it so that you can immediately start recording after you've opened a new web page in the browser.</p>
 
-Recorder Mode works by saving your recorded actions into the browser's ``sessionStorage``. SeleniumBase then reads from the browser's ``sessionStorage`` to take the raw data and generate a full test from it. Keep in mind that ``sessionStorage`` is only present for a website while the browser tab remains on a web page of the same domain/origin. If you leave that domain/origin, the ``sessionStorage`` of that tab will no longer have the raw data that SeleniumBase needs to create a full recording. To compensate for this, all links to web pages of a different domain/origin will automatically open a new tab for you while in Recorder Mode. Additionally, the SeleniumBase ``self.open(URL)`` method will also open a new tab for you in Recorder Mode if the domain/origin is different from the current URL. When the recorded test completes, SeleniumBase will scan the ``sessionStorage`` of all open browser tabs for the data it needs to generate the complete SeleniumBase automation script.
+<p>Recorder Mode works by saving your recorded actions into the browser's <code>sessionStorage</code>. SeleniumBase then reads from the browser's <code>sessionStorage</code> to take the raw data and generate a full test from it. Keep in mind that <code>sessionStorage</code> is only present for a website while the browser tab remains on a web page of the same domain/origin. If you leave that domain/origin, the <code>sessionStorage</code> of that tab will no longer have the raw data that SeleniumBase needs to create a full recording. To compensate for this, all links to web pages of a different domain/origin will automatically open a new tab for you while in Recorder Mode. Additionally, the SeleniumBase <code>self.open(URL)</code> method will also open a new tab for you in Recorder Mode if the domain/origin is different from the current URL. When the recorded test completes, SeleniumBase will scan the <code>sessionStorage</code> of all open browser tabs for the data it needs to generate the complete SeleniumBase automation script.</p>
 
-If you just want to record actions on a single URL of a multi-URL test, you can call ``self.activate_recorder()`` from the test instead of using ``pytest --recorder`` from the command-line. When doing so, make sure that the browser tab is still on the same domain/origin at the end of the test, or else SeleniumBase will not have access to the ``sessionStorage`` data that it needs for generating a complete test.
+<p>If you just want to record actions on a single URL of a multi-URL test, you can call <code>self.activate_recorder()</code> from the test instead of using <code>pytest --recorder</code> from the command-line. When doing so, make sure that the browser tab is still on the same domain/origin at the end of the test, or else SeleniumBase will not have access to the <code>sessionStorage</code> data that it needs for generating a complete test.</p>
 
-(Note that **same domain/origin** is not the same as **same URL**. Example: ``https://xkcd.com/353/`` and ``https://xkcd.com/1537/`` are two different URLs with the **same domain/origin**. That means that both URLs will share the same ``sessionStorage`` data, and that any changes to ``sessionStorage`` from one URL will carry on to the ``sessionStorage`` of a different URL when the domain/origin is the same. If you want to find out a website's origin during a test, just call: ``self.get_origin()``, which returns the value of ``window.location.origin`` from the browser's console.)
+<p>(Note that <b>same domain/origin</b> is not the same as <b>same URL</b>. Example: <code>https://xkcd.com/353/</code> and <code>https://xkcd.com/1537/</code> are two different URLs with the <b>same domain/origin</b>. That means that both URLs will share the same <code>sessionStorage</code> data, and that any changes to <code>sessionStorage</code> from one URL will carry on to the <code>sessionStorage</code> of a different URL when the domain/origin is the same. If you want to find out a website's origin during a test, just call: <code>self.get_origin()</code>, which returns the value of <code>window.location.origin</code> from the browser's console.)</p>
 
-The launch of Recorder Mode has brought a new SeleniumBase method along with it: ``self.open_if_not_url(URL)``. This method will open the URL given if the browser is not currently on that page. This is used as a method in recorded scripts when SeleniumBase detects that a click action has already brought the test to the given page. This method not only prevents an extra page load if not needed, but it also lets people know the current page of the browser at that point in the test.
+<p>The launch of Recorder Mode has brought a new SeleniumBase method along with it: <code>self.open_if_not_url(URL)</code>. This method will open the URL given if the browser is not currently on that page. This is used as a method in recorded scripts when SeleniumBase detects that a click action has already brought the test to the given page. This method not only prevents an extra page load if not needed, but it also lets people know the current page of the browser at that point in the test.</p>
 
 --------
 
