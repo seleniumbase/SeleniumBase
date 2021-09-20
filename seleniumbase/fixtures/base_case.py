@@ -4422,7 +4422,13 @@ class BaseCase(unittest.TestCase):
         value = self.__escape_quotes_if_needed(value)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
+        the_type = None
         if ":contains\\(" not in css_selector:
+            get_type_script = (
+                """return document.querySelector('%s').getAttribute('type');"""
+                % css_selector
+            )
+            the_type = self.execute_script(get_type_script)  # Used later
             script = """document.querySelector('%s').value='%s';""" % (
                 css_selector,
                 value,
@@ -4438,6 +4444,19 @@ class BaseCase(unittest.TestCase):
             element.send_keys(Keys.RETURN)
             if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                 self.wait_for_ready_state_complete()
+        else:
+            if the_type == "range" and ":contains\\(" not in css_selector:
+                # Some input sliders need a mouse event to trigger listeners.
+                try:
+                    mouse_move_script = (
+                        """m_elm = document.querySelector('%s');"""
+                        """m_evt = new Event('mousemove');"""
+                        """m_elm.dispatchEvent(m_evt);"""
+                        % css_selector
+                    )
+                    self.execute_script(mouse_move_script)
+                except Exception:
+                    pass
         self.__demo_mode_pause_if_active()
 
     def js_update_text(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
