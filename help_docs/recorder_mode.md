@@ -6,13 +6,13 @@
 
 <img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-🔴 To activate Recorder Mode, add ``--recorder`` to your ``pytest`` run command when running an existing test:
+🔴 To activate Recorder Mode, add ``--recorder`` to your ``pytest`` run command when running an existing test: (Also add ``-s`` to allow breakpoints, unless you already have a ``pytest.ini`` file present with ``--capture=no`` in it.)
 
 ```bash
-pytest TEST_NAME.py --recorder
+pytest TEST_NAME.py --recorder -s
 ```
 
-🔴 In order to add actions to the test being run, you'll need to create a breakpoint somewhere inside your test:
+🔴 To add your own actions inside the test, you'll need to create a breakpoint somewhere inside of it:
 
 ```python
 import ipdb; ipdb.set_trace()
