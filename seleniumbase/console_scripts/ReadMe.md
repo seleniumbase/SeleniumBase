@@ -225,18 +225,6 @@ plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
 ``-c`` will create a new file called "test_1_ja.py".)
 
-### convert
-
-* Usage:
-``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
-
-* Output:
-Converts a Selenium IDE exported WebDriver unittest file
-into a SeleniumBase file. Adds ``_SB`` to the new
-file name while keeping the original file intact.
-Works with Katalon Recorder scripts.
-See [The Recorder ReadMe](https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/) for details.
-
 ### extract-objects
 
 * Usage:
@@ -288,6 +276,18 @@ Reverts the changes made by ``seleniumbase objectify ...`` or
 ``seleniumbase inject-objects ...`` when run against a
 seleniumbase Python file. Objects will get replaced by
 selectors stored in the "page_objects.py" file.
+
+### convert
+
+* Usage:
+``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
+
+* Output:
+Converts a Selenium IDE exported WebDriver unittest file
+into a SeleniumBase file. Adds ``_SB`` to the new
+file name while keeping the original file intact.
+Works with Katalon Recorder scripts.
+See [This ReadMe](https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/) for details.
 
 ### encrypt / obfuscate
 
