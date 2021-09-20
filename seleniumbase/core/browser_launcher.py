@@ -28,6 +28,7 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
     os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
+RECORDER_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "recorder.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_PATH_2 = proxy_helper.PROXY_ZIP_PATH_2
 PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
@@ -198,6 +199,13 @@ def _add_chrome_disable_csp_extension(chrome_options):
     return chrome_options
 
 
+def _add_chrome_recorder_extension(chrome_options):
+    """The SeleniumBase Recorder Chromium extension."""
+    recorder_zip = RECORDER_ZIP_PATH
+    chrome_options.add_extension(recorder_zip)
+    return chrome_options
+
+
 def _set_chrome_options(
     browser_name,
     downloads_path,
@@ -208,6 +216,7 @@ def _set_chrome_options(
     proxy_user,
     proxy_pass,
     user_agent,
+    recorder_ext,
     disable_csp,
     enable_ws,
     enable_sync,
@@ -317,6 +326,7 @@ def _set_chrome_options(
     if (
         not proxy_auth
         and not disable_csp
+        and not recorder_ext
         and (not extension_zip and not extension_dir)
     ):
         if incognito:
@@ -382,6 +392,8 @@ def _set_chrome_options(
         # for disabling the Content Security Policy on Chrome
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
         chrome_options.add_argument("--enable-sync")
+    if recorder_ext and not headless:
+        chrome_options = _add_chrome_recorder_extension(chrome_options)
     if proxy_string:
         if proxy_auth:
             chrome_options = _add_chrome_proxy_extension(
@@ -663,6 +675,7 @@ def get_driver(
     user_agent=None,
     cap_file=None,
     cap_string=None,
+    recorder_ext=None,
     disable_csp=None,
     enable_ws=None,
     enable_sync=None,
@@ -735,6 +748,7 @@ def get_driver(
             user_agent,
             cap_file,
             cap_string,
+            recorder_ext,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -770,6 +784,7 @@ def get_driver(
             proxy_user,
             proxy_pass,
             user_agent,
+            recorder_ext,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -809,6 +824,7 @@ def get_remote_driver(
     user_agent,
     cap_file,
     cap_string,
+    recorder_ext,
     disable_csp,
     enable_ws,
     enable_sync,
@@ -872,6 +888,7 @@ def get_remote_driver(
             proxy_user,
             proxy_pass,
             user_agent,
+            recorder_ext,
             disable_csp,
             enable_ws,
             enable_sync,
@@ -1024,6 +1041,7 @@ def get_local_driver(
     proxy_user,
     proxy_pass,
     user_agent,
+    recorder_ext,
     disable_csp,
     enable_ws,
     enable_sync,
@@ -1190,6 +1208,7 @@ def get_local_driver(
                 proxy_user,
                 proxy_pass,
                 user_agent,
+                recorder_ext,
                 disable_csp,
                 enable_ws,
                 enable_sync,
@@ -1324,6 +1343,9 @@ def get_local_driver(
                 # for disabling the Content Security Policy on Edge
                 edge_options = _add_chrome_disable_csp_extension(edge_options)
                 edge_options.add_argument("--enable-sync")
+            if recorder_ext and not headless:
+                edge_options = _add_chrome_recorder_extension(edge_options)
+                edge_options.add_argument("--enable-sync")
             if proxy_string:
                 if proxy_auth:
                     edge_options = _add_chrome_proxy_extension(
@@ -1397,6 +1419,7 @@ def get_local_driver(
                 proxy_user,
                 proxy_pass,
                 user_agent,
+                recorder_ext,
                 disable_csp,
                 enable_ws,
                 enable_sync,
@@ -1440,6 +1463,7 @@ def get_local_driver(
                 proxy_user,
                 proxy_pass,
                 user_agent,
+                recorder_ext,
                 disable_csp,
                 enable_ws,
                 enable_sync,
@@ -1520,6 +1544,7 @@ def get_local_driver(
                         proxy_user,
                         proxy_pass,
                         user_agent,
+                        recorder_ext,
                         disable_csp,
                         enable_ws,
                         enable_sync,

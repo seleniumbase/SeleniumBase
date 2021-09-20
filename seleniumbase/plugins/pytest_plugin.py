@@ -65,8 +65,9 @@ def pytest_addoption(parser):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
     --ad-block  (Block some types of display ads after page loads.)
-    --block-images (Block images from loading during tests.)
+    --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
+    --recorder  (Enables the Recorder for turning browser actions into code.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -656,6 +657,17 @@ def pytest_addoption(parser):
                 before each MasterQA verification pop-up.""",
     )
     parser.addoption(
+        "--recorder",
+        "--record",
+        "--rec",
+        action="store_true",
+        dest="recorder_mode",
+        default=False,
+        help="""Using this enables the SeleniumBase Recorder,
+                which records browser actions for converting
+                into SeleniumBase scripts.""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -1013,6 +1025,8 @@ def pytest_configure(config):
     sb_config.ad_block_on = config.getoption("ad_block_on")
     sb_config.block_images = config.getoption("block_images")
     sb_config.verify_delay = config.getoption("verify_delay")
+    sb_config.recorder_mode = config.getoption("recorder_mode")
+    sb_config.recorder_ext = config.getoption("recorder_mode")  # Again
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
     sb_config.enable_ws = config.getoption("enable_ws")

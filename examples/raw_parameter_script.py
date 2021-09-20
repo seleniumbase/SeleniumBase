@@ -70,6 +70,8 @@ if pure_python:
     sb.with_db_reporting = False
     sb.with_s3_logging = False
     sb.js_checking_on = False
+    sb.recorder_mode = False
+    sb.recorder_ext = False
     sb.report_on = False
     sb.is_pytest = False
     sb.slow_mode = False

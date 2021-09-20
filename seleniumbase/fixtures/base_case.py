@@ -136,6 +136,11 @@ class BaseCase(unittest.TestCase):
         if url.startswith("://"):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
+        if self.recorder_mode:
+            c_url = self.driver.current_url
+            if ("http:") in c_url or ("https:") in c_url or ("file:") in c_url:
+                if self.get_domain_url(url) != self.get_domain_url(c_url):
+                    self.open_new_window(switch_to=True)
         if self.browser == "safari" and url.startswith("data:"):
             url = re.escape(url)
             url = self.__escape_quotes_if_needed(url)
@@ -696,6 +701,10 @@ class BaseCase(unittest.TestCase):
                 pass
         return current_url
 
+    def get_origin(self):
+        self.__check_scope()
+        return self.execute_script("return window.location.origin;")
+
     def get_page_source(self):
         self.wait_for_ready_state_complete()
         return self.driver.page_source
@@ -760,6 +769,12 @@ class BaseCase(unittest.TestCase):
                     self.open("data:,")
         else:
             self.open("data:,")
+
+    def open_if_not_url(self, url):
+        """ Opens the url in the browser if it's not the current url. """
+        self.__check_scope()
+        if self.driver.current_url != url:
+            self.open(url)
 
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
@@ -2257,6 +2272,7 @@ class BaseCase(unittest.TestCase):
         switch_to=True,
         cap_file=None,
         cap_string=None,
+        recorder_ext=None,
         disable_csp=None,
         enable_ws=None,
         enable_sync=None,
@@ -2295,6 +2311,7 @@ class BaseCase(unittest.TestCase):
         switch_to - the option to switch to the new driver (default = True)
         cap_file - the file containing desired capabilities for the browser
         cap_string - the string with desired capabilities for the browser
+        recorder_ext - the option to enable the SBase Recorder extension
         disable_csp - an option to disable Chrome's Content Security Policy
         enable_ws - the option to enable the Web Security feature (Chrome)
         enable_sync - the option to enable the Chrome Sync feature (Chrome)
@@ -2367,6 +2384,8 @@ class BaseCase(unittest.TestCase):
         user_agent = agent
         if user_agent is None:
             user_agent = self.user_agent
+        if recorder_ext is None:
+            recorder_ext = self.recorder_ext
         if disable_csp is None:
             disable_csp = self.disable_csp
         if enable_ws is None:
@@ -2437,6 +2456,7 @@ class BaseCase(unittest.TestCase):
             user_agent=user_agent,
             cap_file=cap_file,
             cap_string=cap_string,
+            recorder_ext=recorder_ext,
             disable_csp=disable_csp,
             enable_ws=enable_ws,
             enable_sync=enable_sync,
@@ -2740,6 +2760,241 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         script = """document.designMode = 'off';"""
         self.execute_script(script)
+
+    def activate_recorder(self):
+        from seleniumbase.js_code.recorder_js import recorder_js
+
+        if not self.is_chromium():
+            raise Exception(
+                "The Recorder is only for Chromium browsers: (Chrome or Edge)")
+        url = self.driver.current_url
+        if (
+            url.startswith("data:") or url.startswith("about:")
+            or url.startswith("chrome:") or url.startswith("edge:")
+        ):
+            message = (
+                'The URL in Recorder-Mode cannot start with: '
+                '"data:", "about:", "chrome:", or "edge:"!')
+            print("\n" + message)
+            return
+        if self.recorder_ext:
+            return  # The Recorder extension is already active
+        try:
+            recorder_on = self.get_session_storage_item("recorder_activated")
+            if not recorder_on == "yes":
+                self.execute_script(recorder_js)
+            self.recorder_mode = True
+            message = "Recorder Mode ACTIVE. [ESC]: Pause. [~`]: Resume."
+            print("\n" + message)
+            p_msg = "Recorder Mode ACTIVE.<br>[ESC]: Pause. [~`]: Resume."
+            self.post_message(p_msg, pause=False, style="error")
+        except Exception:
+            pass
+
+    def __get_recorded_actions_on_active_tab(self):
+        url = self.driver.current_url
+        if (
+            url.startswith("data:") or url.startswith("about:")
+            or url.startswith("chrome:") or url.startswith("edge:")
+        ):
+            return []
+        actions = self.get_session_storage_item('recorded_actions')
+        if actions:
+            actions = json.loads(actions)
+            return actions
+        else:
+            return []
+
+    def __process_recorded_actions(self):
+        import colorama
+
+        raw_actions = []  # All raw actions from sessionStorage
+        srt_actions = []
+        cleaned_actions = []
+        sb_actions = []
+        used_actions = []
+        action_dict = {}
+        for window in self.driver.window_handles:
+            self.switch_to_window(window)
+            tab_actions = self.__get_recorded_actions_on_active_tab()
+            for action in tab_actions:
+                if action not in used_actions:
+                    used_actions.append(action)
+                    raw_actions.append(action)
+        for action in raw_actions:
+            # Use key because multiple actions can happen at the same timestamp
+            key = str(action[3]) + "-" + str(action[0])
+            action_dict[key] = action
+        for key in sorted(action_dict):
+            # print(action_dict[key])  # For debugging purposes
+            srt_actions.append(action_dict[key])
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and srt_actions[n-1][0] == "click"
+            ):
+                url1 = srt_actions[n-1][2]
+                if url1.endswith("/"):
+                    url1 = url1[:-1]
+                url2 = srt_actions[n][2]
+                if url2.endswith("/"):
+                    url2 = url2[:-1]
+                if url1 == url2:
+                    srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and (
+                    srt_actions[n-1][0] == "begin"
+                    or srt_actions[n-1][0] == "_url_"
+                )
+            ):
+                url1 = srt_actions[n-1][2]
+                if url1.endswith("/"):
+                    url1 = url1[:-1]
+                url2 = srt_actions[n][2]
+                if url2.endswith("/"):
+                    url2 = url2[:-1]
+                if url1 == url2:
+                    srt_actions[n-1][0] = "_skip"
+        for n in range(len(srt_actions)):
+            cleaned_actions.append(srt_actions[n])
+        for action in srt_actions:
+            if action[0] == "begin" or action[0] == "_url_":
+                sb_actions.append('self.open("%s")' % action[2])
+            elif action[0] == "f_url":
+                sb_actions.append('self.open_if_not_url("%s")' % action[2])
+            elif action[0] == "click":
+                if '"' not in action[1]:
+                    sb_actions.append('self.click("%s")' % action[1])
+                else:
+                    sb_actions.append("self.click('%s')" % action[1])
+            elif action[0] == "input":
+                text = action[2].replace("\n", "\\n")
+                if '"' not in action[1] and '"' not in text:
+                    sb_actions.append('self.type("%s", "%s")' % (
+                        action[1], text))
+                elif '"' not in action[1] and '"' in text:
+                    sb_actions.append('self.type("%s", \'%s\')' % (
+                        action[1], text))
+                elif '"' in action[1] and '"' not in text:
+                    sb_actions.append('self.type(\'%s\', "%s")' % (
+                        action[1], text))
+                elif '"' in action[1] and '"' in text:
+                    sb_actions.append("self.type('%s', '%s')" % (
+                        action[1], text))
+            elif action[0] == "h_clk":
+                if '"' not in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.hover_and_click("%s", "%s")' % (
+                        action[1], action[2]))
+                elif '"' not in action[1] and '"' in action[2]:
+                    sb_actions.append('self.hover_and_click("%s", \'%s\')' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.hover_and_click(\'%s\', "%s")' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' in action[2]:
+                    sb_actions.append("self.hover_and_click('%s', '%s')" % (
+                        action[1], action[2]))
+            elif action[0] == "ddrop":
+                if '"' not in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.drag_and_drop("%s", "%s")' % (
+                        action[1], action[2]))
+                elif '"' not in action[1] and '"' in action[2]:
+                    sb_actions.append('self.drag_and_drop("%s", \'%s\')' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.drag_and_drop(\'%s\', "%s")' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' in action[2]:
+                    sb_actions.append("self.drag_and_drop('%s', '%s')" % (
+                        action[1], action[2]))
+            elif action[0] == "s_opt":
+                if '"' not in action[1] and '"' not in action[2]:
+                    sb_actions.append(
+                        'self.select_option_by_text("%s", "%s")' % (
+                            action[1], action[2]))
+                elif '"' not in action[1] and '"' in action[2]:
+                    sb_actions.append(
+                        'self.select_option_by_text("%s", \'%s\')' % (
+                            action[1], action[2]))
+                elif '"' in action[1] and '"' not in action[2]:
+                    sb_actions.append(
+                        'self.select_option_by_text(\'%s\', "%s")' % (
+                            action[1], action[2]))
+                elif '"' in action[1] and '"' in action[2]:
+                    sb_actions.append(
+                        "self.select_option_by_text('%s', '%s')" % (
+                            action[1], action[2]))
+            elif action[0] == "set_v":
+                if '"' not in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.set_value("%s", "%s")' % (
+                        action[1], action[2]))
+                elif '"' not in action[1] and '"' in action[2]:
+                    sb_actions.append('self.set_value("%s", \'%s\')' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.set_value(\'%s\', "%s")' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' in action[2]:
+                    sb_actions.append("self.set_value('%s', '%s')" % (
+                        action[1], action[2]))
+            elif action[0] == "c_box":
+                cb_method = "check_if_unchecked"
+                if action[2] == "no":
+                    cb_method = "uncheck_if_checked"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (cb_method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (cb_method, action[1]))
+        data = []
+        data.append("from seleniumbase import BaseCase")
+        data.append("")
+        data.append("")
+        data.append("class %s(BaseCase):" % self.__class__.__name__)
+        data.append("    def %s(self):" % self._testMethodName)
+        if len(sb_actions) > 0:
+            for action in sb_actions:
+                data.append("        " + action)
+        else:
+            data.append("        pass")
+        data.append("")
+
+        recordings_folder = constants.Recordings.SAVED_FOLDER
+        if recordings_folder.endswith("/"):
+            recordings_folder = recordings_folder[:-1]
+        if not os.path.exists(recordings_folder):
+            try:
+                os.makedirs(recordings_folder)
+            except Exception:
+                pass
+
+        file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+        file_path = "%s/%s" % (recordings_folder, file_name)
+        out_file = codecs.open(file_path, "w+", "utf-8")
+        out_file.writelines("\r\n".join(data))
+        out_file.close()
+        rec_message = ">>> RECORDING saved to: "
+        star_len = len(rec_message) + len(file_path)
+        try:
+            terminal_size = os.get_terminal_size().columns
+            if terminal_size > 30 and star_len > terminal_size:
+                star_len = terminal_size
+        except Exception:
+            pass
+        stars = "*" * star_len
+        c1 = ""
+        c2 = ""
+        cr = ""
+        if "linux" not in sys.platform:
+            colorama.init(autoreset=True)
+            c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+            c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
+            cr = colorama.Style.RESET_ALL
+            rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
+        print("\n\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
 
     def activate_jquery(self):
         """If "jQuery is not defined", use this method to activate it for use.
@@ -8997,6 +9252,8 @@ class BaseCase(unittest.TestCase):
             self.firefox_arg = sb_config.firefox_arg
             self.firefox_pref = sb_config.firefox_pref
             self.verify_delay = sb_config.verify_delay
+            self.recorder_mode = sb_config.recorder_mode
+            self.recorder_ext = sb_config.recorder_mode
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
             self.enable_ws = sb_config.enable_ws
@@ -9227,6 +9484,7 @@ class BaseCase(unittest.TestCase):
                 switch_to=True,
                 cap_file=self.cap_file,
                 cap_string=self.cap_string,
+                recorder_ext=self.recorder_ext,
                 disable_csp=self.disable_csp,
                 enable_ws=self.enable_ws,
                 enable_sync=self.enable_sync,
@@ -9896,6 +10154,8 @@ class BaseCase(unittest.TestCase):
         if not hasattr(self, "_using_sb_fixture") and self.__called_teardown:
             # This test already called tearDown()
             return
+        if self.recorder_mode:
+            self.__process_recorded_actions()
         self.__called_teardown = True
         self.__called_setup = False
         try:

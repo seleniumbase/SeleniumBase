@@ -124,6 +124,9 @@ images_exported
 # Cookies
 saved_cookies
 
+# Recordings
+recordings
+
 # Automated Visual Testing
 visual_baseline
 
