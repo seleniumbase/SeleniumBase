@@ -32,7 +32,7 @@
 <a href="https://seleniumbase.io/help_docs/recorder_mode.md">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
-<a href="https://seleniumbase.io/examples/presenter/ReadMe/">📰 Presenter</a> |
+<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Presenter</a> |
 <a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📶 ChartMaker</a>
 </p>
 
