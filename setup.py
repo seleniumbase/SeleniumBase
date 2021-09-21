@@ -50,7 +50,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=1.15.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.62.2'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.62.3'")
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -174,7 +174,7 @@ setup(
         'pytest-rerunfailures==10.2;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
         'pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"',
-        'pytest-xdist==2.3.0;python_version>="3.6"',
+        'pytest-xdist==2.4.0;python_version>="3.6"',
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.0.0",
         'soupsieve==1.9.6;python_version<"3.5"',

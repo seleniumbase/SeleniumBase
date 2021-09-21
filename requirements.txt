@@ -58,7 +58,7 @@ pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"
 pytest-rerunfailures==10.2;python_version>="3.6"
 pytest-xdist==1.34.0;python_version<"3.5"
 pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"
-pytest-xdist==2.3.0;python_version>="3.6"
+pytest-xdist==2.4.0;python_version>="3.6"
 parameterized==0.8.1
 sbvirtualdisplay==1.0.0
 soupsieve==1.9.6;python_version<"3.5"
