@@ -2955,6 +2955,20 @@ class BaseCase(unittest.TestCase):
                 elif '"' in action[1] and '"' in action[2]:
                     sb_actions.append("self.set_value('%s', '%s')" % (
                         action[1], action[2]))
+            elif action[0] == "cho_f":
+                action[2] = action[2].replace("\\", "\\\\")
+                if '"' not in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.choose_file("%s", "%s")' % (
+                        action[1], action[2]))
+                elif '"' not in action[1] and '"' in action[2]:
+                    sb_actions.append('self.choose_file("%s", \'%s\')' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.choose_file(\'%s\', "%s")' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' in action[2]:
+                    sb_actions.append("self.choose_file('%s', '%s')" % (
+                        action[1], action[2]))
             elif action[0] == "c_box":
                 cb_method = "check_if_unchecked"
                 if action[2] == "no":

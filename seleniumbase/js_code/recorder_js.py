@@ -97,6 +97,9 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-test');
     non_id_attributes.push('data-test-id');
     non_id_attributes.push('data-test-selector');
+    non_id_attributes.push('data-nav');
+    non_id_attributes.push('data-action');
+    non_id_attributes.push('data-target');
     non_id_attributes.push('alt');
     non_id_attributes.push('title');
     non_id_attributes.push('heading');
@@ -314,6 +317,17 @@ document.body.addEventListener('change', function (event) {
         }
         value = element.value;
         document.recorded_actions.push(['set_v', selector, value, d_now]);
+    }
+    else if (tag_name === 'input' && element.type === 'file')
+    {
+        if (ra_len > 0 &&
+            document.recorded_actions[ra_len-1][1] === selector)
+        {
+            document.recorded_actions.pop();
+            ra_len = document.recorded_actions.length;
+        }
+        value = element.value;
+        document.recorded_actions.push(['cho_f', selector, value, d_now]);
     }
     else if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][1] === selector &&
