@@ -3498,6 +3498,29 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
 
+    def show_file_choosers(self):
+        """Display hidden file-chooser input fields on sites if present."""
+        css_selector = 'input[type="file"]'
+        try:
+            self.show_elements(css_selector)
+        except Exception:
+            pass
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = (
+            """var $elements = document.querySelectorAll('%s');
+            var index = 0, length = $elements.length;
+            for(; index < length; index++){
+            the_class = $elements[index].getAttribute('class');
+            new_class = the_class.replaceAll('hidden', 'visible');
+            $elements[index].setAttribute('class', new_class);}"""
+            % css_selector
+        )
+        try:
+            self.execute_script(script)
+        except Exception:
+            pass
+
     def get_domain_url(self, url):
         self.__check_scope()
         return page_utils.get_domain_url(url)

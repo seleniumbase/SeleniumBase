@@ -305,6 +305,8 @@ self.remove_elements(selector, by=By.CSS_SELECTOR)
 self.ad_block()
 # Duplicates: self.block_ads()
 
+self.show_file_choosers()
+
 self.get_domain_url(url)
 
 self.get_beautiful_soup(source=None)
