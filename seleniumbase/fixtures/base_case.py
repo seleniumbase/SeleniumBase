@@ -2248,6 +2248,13 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.driver.switch_to.default_content()
 
+    def set_content_to_frame(self, frame, timeout=None):
+        """Replaces the page html with an iframe's html from that page."""
+        self.switch_to_frame(frame, timeout=timeout)
+        iframe_html = self.get_page_source()
+        self.switch_to_default_content()
+        self.set_content(iframe_html)
+
     def open_new_window(self, switch_to=True):
         """ Opens a new browser tab/window and switches to it by default. """
         self.__check_scope()
@@ -2955,6 +2962,20 @@ class BaseCase(unittest.TestCase):
                 elif '"' in action[1] and '"' in action[2]:
                     sb_actions.append("self.set_value('%s', '%s')" % (
                         action[1], action[2]))
+            elif action[0] == "cho_f":
+                action[2] = action[2].replace("\\", "\\\\")
+                if '"' not in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.choose_file("%s", "%s")' % (
+                        action[1], action[2]))
+                elif '"' not in action[1] and '"' in action[2]:
+                    sb_actions.append('self.choose_file("%s", \'%s\')' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' not in action[2]:
+                    sb_actions.append('self.choose_file(\'%s\', "%s")' % (
+                        action[1], action[2]))
+                elif '"' in action[1] and '"' in action[2]:
+                    sb_actions.append("self.choose_file('%s', '%s')" % (
+                        action[1], action[2]))
             elif action[0] == "c_box":
                 cb_method = "check_if_unchecked"
                 if action[2] == "no":
@@ -3476,6 +3497,29 @@ class BaseCase(unittest.TestCase):
                 self.execute_script(script)
             except Exception:
                 pass  # Don't fail test if ad_blocking fails
+
+    def show_file_choosers(self):
+        """Display hidden file-chooser input fields on sites if present."""
+        css_selector = 'input[type="file"]'
+        try:
+            self.show_elements(css_selector)
+        except Exception:
+            pass
+        css_selector = re.escape(css_selector)  # Add "\\" to special chars
+        css_selector = self.__escape_quotes_if_needed(css_selector)
+        script = (
+            """var $elements = document.querySelectorAll('%s');
+            var index = 0, length = $elements.length;
+            for(; index < length; index++){
+            the_class = $elements[index].getAttribute('class');
+            new_class = the_class.replaceAll('hidden', 'visible');
+            $elements[index].setAttribute('class', new_class);}"""
+            % css_selector
+        )
+        try:
+            self.execute_script(script)
+        except Exception:
+            pass
 
     def get_domain_url(self, url):
         self.__check_scope()

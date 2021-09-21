@@ -10,8 +10,7 @@ class FileUploadButtonTests(BaseCase):
             "https://www.w3schools.com/jsref/tryit.asp"
             "?filename=tryjsref_fileupload_get"
         )
-        self.ad_block()
-        self.switch_to_frame("iframeResult")
+        self.set_content_to_frame("iframeResult")
         zoom_in = 'input[type="file"]{zoom: 1.6;-moz-transform: scale(1.6);}'
         self.add_css_style(zoom_in)
         self.highlight('input[type="file"]')
