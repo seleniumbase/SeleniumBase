@@ -197,6 +197,8 @@ self.switch_to_frame(frame, timeout=None)
 
 self.switch_to_default_content()
 
+self.set_content_to_frame(frame, timeout=None)
+
 self.open_new_window(switch_to=True)
 
 self.switch_to_window(window, timeout=None)

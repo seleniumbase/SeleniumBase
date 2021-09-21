@@ -2248,6 +2248,13 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         self.driver.switch_to.default_content()
 
+    def set_content_to_frame(self, frame, timeout=None):
+        """Replaces the page html with an iframe's html from that page."""
+        self.switch_to_frame(frame, timeout=timeout)
+        iframe_html = self.get_page_source()
+        self.switch_to_default_content()
+        self.set_content(iframe_html)
+
     def open_new_window(self, switch_to=True):
         """ Opens a new browser tab/window and switches to it by default. """
         self.__check_scope()
