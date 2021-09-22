@@ -47,7 +47,7 @@ class RecorderTest(BaseCase):
 
 <p>🔴 The launch of Recorder Mode has brought a new SeleniumBase method along with it: <code>self.open_if_not_url(URL)</code>. This method will open the URL given if the browser is not currently on that page. This is used as a method in recorded scripts when SeleniumBase detects that a click action has already brought the test to the given page. This method not only prevents an extra page load if not needed, but it also lets people know the current page of the browser at that point in the test.</p>
 
-<p>🔴 SeleniumBase <code>1.66.1</code> adds the ability to record changes to <i>"Choose File"</i> <code>input</code> fields. It also adds the <code>self.set_content_to_frame(frame)</code> method, which lets you record actions inside of iframes on pages. Sometimes the <i>"Choose File"</i> input field is hidden on some sites, so <code>self.show_file_choosers()</code> was also added to get around this edge case.
+<p>🔴 SeleniumBase <code>1.66.1</code> adds the ability to record changes to <i>"Choose File"</i> <code>input</code> fields. Sometimes the <i>"Choose File"</i> input field is hidden on websites, so <code>self.show_file_choosers()</code> was added to get around this edge case. Version <code>1.66.1</code> also adds <code>self.set_content_to_frame(frame)</code>, which lets you record actions inside of iframes.</p>
 
 --------
 
