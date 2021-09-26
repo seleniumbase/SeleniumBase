@@ -13,8 +13,7 @@ class DragAndDropTests(BaseCase):
         self.sleep(0.8)
 
     def test_w3schools_drag_and_drop(self):
-        url = "://w3schools.com/html/tryit.asp?filename=tryhtml5_draganddrop"
-        self.open(url)
+        self.open("https://seleniumbase.io/w3schools/drag_drop")
         self.remove_elements("#tryitLeaderboard")
         self.switch_to_frame("iframeResult")
         self.assert_element_not_visible("#div1 img#drag1")

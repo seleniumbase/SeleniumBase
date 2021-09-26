@@ -37,7 +37,7 @@ class DialogBoxTests(BaseCase):
                 buttons = [(btn_text_1, "green"), (btn_text_2, "purple")]
                 choice_2 = self.get_jqc_button_input(message, buttons)
                 if choice_2 == btn_text_2:
-                    self.open("https://xkcd.com/1287/")
+                    self.open_if_not_url("https://xkcd.com/1287/")
                     message = "Brain sports count as sports!<br /><br />"
                     message += "Are you ready for more?"
                     self.get_jqc_button_input(message, ["Let's Go!"])
@@ -77,14 +77,12 @@ class DialogBoxTests(BaseCase):
         self.set_jqc_theme("bootstrap", color="red", width="32%")
         if self.is_text_visible("No matching documents", ".md-search-result"):
             self.get_jqc_button_input("Your search had no results!", ["OK"])
-        elif self.is_element_visible("a.md-search-result__link"):
-            self.click("a.md-search-result__link")
-            self.set_jqc_theme("bootstrap", color="green", width="32%")
-            self.get_jqc_button_input("You found search results!", ["OK"])
         elif self.is_text_visible("Type to start searching", "div.md-search"):
             self.get_jqc_button_input("You did not do a search!", ["OK"])
         else:
-            self.get_jqc_button_input("We're not sure what happened.", ["OK"])
+            self.click_if_visible("a.md-search-result__link")
+            self.set_jqc_theme("bootstrap", color="green", width="32%")
+            self.get_jqc_button_input("You found search results!", ["OK"])
 
         self.open("https://seleniumbase.io/help_docs/ReadMe/")
         self.highlight("h1")
@@ -99,19 +97,20 @@ class DialogBoxTests(BaseCase):
         message = "Now let's combine form inputs with multiple button options!"
         message += "<br /><br />"
         message += "Pick something to search. Then pick the site to search on."
-        buttons = ["XKCD.com", "Wikipedia.org"]
+        buttons = ["XKCD.com Store", "Wikipedia.org"]
         text, choice = self.get_jqc_form_inputs(message, buttons)
-        if choice == "XKCD.com":
-            self.open("https://relevant-xkcd.github.io/")
+        if choice == "XKCD.com Store":
+            self.open("https://store.xkcd.com/search")
         else:
-            self.open("https://en.wikipedia.org/wiki/Main_Page")
-        self.highlight_update_text('input[name="search"]', text + "\n")
+            self.open("https://en.wikipedia.org/wiki/Special:Search")
+        self.highlight_update_text('input[id*="search"]', text + "\n")
         self.wait_for_ready_state_complete()
+        self.sleep(1)
         self.highlight("body")
         self.reset_jqc_theme()
         self.get_jqc_button_input("<b>Here are your results.</b>", ["OK"])
         message = "<h3>You've reached the end of this tutorial!</h3><br />"
-        message += "Thanks for learning about SeleniumBase Dialog Boxes!<br />"
-        message += "<br />Check out the SeleniumBase page on GitHub for more!"
+        message += "Now you know about SeleniumBase Dialog Boxes!<br />"
+        message += "<br />Check out SeleniumBase on GitHub for more!"
         self.set_jqc_theme("modern", color="purple", width="56%")
         self.get_jqc_button_input(message, ["Goodbye!"])
