@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
 # pytest CLI Options
 

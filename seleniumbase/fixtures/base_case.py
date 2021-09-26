@@ -78,6 +78,10 @@ class BaseCase(unittest.TestCase):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
+        self.__page_sources = []
+        self.__extra_actions = []
+        self.__js_start_time = 0
+        self.__set_c_from_switch = False
         self.__called_setup = False
         self.__called_teardown = False
         self.__start_time_ms = None
@@ -108,6 +112,7 @@ class BaseCase(unittest.TestCase):
         self._language = "English"
         self._presentation_slides = {}
         self._presentation_transition = {}
+        self._rec_overrides_switch = True  # Recorder-Mode uses set_c vs switch
         self._sb_test_identifier = None
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
@@ -200,6 +205,7 @@ class BaseCase(unittest.TestCase):
         if scroll and not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         try:
             if self.browser == "ie" and by == By.LINK_TEXT:
                 # An issue with clicking Link Text on IE means using jquery
@@ -310,6 +316,10 @@ class BaseCase(unittest.TestCase):
                         self.driver, selector, by, timeout=timeout
                     )
                     element.click()
+        if self.recorder_mode:
+            latest_window_count = len(self.driver.window_handles)
+            if latest_window_count > pre_window_count:
+                self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -2238,6 +2248,23 @@ class BaseCase(unittest.TestCase):
                 self.scroll_to(frame, timeout=1)
             except Exception:
                 pass
+        if self.recorder_mode and self._rec_overrides_switch:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    r_a = self.get_session_storage_item("recorder_activated")
+                    if r_a == "yes":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["sk_op", "", "", time_stamp]
+                        self.__extra_actions.append(action)
+                        self.__set_c_from_switch = True
+                        self.set_content_to_frame(frame, timeout=timeout)
+                        self.__set_c_from_switch = False
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["sw_fr", frame, origin, time_stamp]
+                        self.__extra_actions.append(action)
+                        return
         page_actions.switch_to_frame(self.driver, frame, timeout)
 
     def switch_to_default_content(self):
@@ -2246,14 +2273,162 @@ class BaseCase(unittest.TestCase):
         will be set to one level above the current frame. If the driver
         control is not currently in an iframe, nothing will happen.)"""
         self.__check_scope()
+        if self.recorder_mode and self._rec_overrides_switch:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    r_a = self.get_session_storage_item("recorder_activated")
+                    if r_a == "yes":
+                        self.__set_c_from_switch = True
+                        self.set_content_to_default()
+                        self.__set_c_from_switch = False
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["sw_dc", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+                        return
         self.driver.switch_to.default_content()
 
     def set_content_to_frame(self, frame, timeout=None):
-        """Replaces the page html with an iframe's html from that page."""
-        self.switch_to_frame(frame, timeout=timeout)
+        """Replaces the page html with an iframe's html from that page.
+        If the iFrame contains an "src" field that includes a valid URL,
+        then instead of replacing the current html, this method will then
+        open up the "src" URL of the iFrame in a new browser tab.
+        To return to default content, use: self.set_content_to_default().
+        This method also sets the state of the browser window so that the
+        self.set_content_to_default() method can bring the user back to
+        the original content displayed, which is similar to how the methods
+        self.switch_to_frame(frame) and self.switch_to_default_content()
+        work together to get the user into frames and out of all of them.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        current_url = self.get_current_url()
+        c_tab = self.driver.current_window_handle
+        current_page_source = self.get_page_source()
+        self.execute_script("document.cframe_swap = 0;")
+        page_actions.switch_to_frame(self.driver, frame, timeout)
         iframe_html = self.get_page_source()
-        self.switch_to_default_content()
-        self.set_content(iframe_html)
+        self.driver.switch_to.default_content()
+        self.wait_for_ready_state_complete()
+        frame_found = False
+        o_frame = frame
+        if self.is_element_present(frame):
+            frame_found = True
+        elif " " not in frame:
+            frame = 'iframe[name="%s"]' % frame
+            if self.is_element_present(frame):
+                frame_found = True
+        url = None
+        if frame_found:
+            url = self.execute_script(
+                """return document.querySelector('%s').src;""" % frame
+            )
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    pass
+                else:
+                    url = None
+        cframe_tab = False
+        if url:
+            cframe_tab = True
+        self.__page_sources.append([current_url, current_page_source, c_tab])
+
+        if self.recorder_mode and not self.__set_c_from_switch:
+            time_stamp = self.execute_script("return Date.now();")
+            action = ["sk_op", "", "", time_stamp]
+            self.__extra_actions.append(action)
+
+        if cframe_tab:
+            self.execute_script("document.cframe_tab = 1;")
+            self.open_new_window(switch_to=True)
+            self.open(url)
+            self.execute_script("document.cframe_tab = 1;")
+        else:
+            self.set_content(iframe_html)
+            if not self.execute_script("return document.cframe_swap;"):
+                self.execute_script("document.cframe_swap = 1;")
+            else:
+                self.execute_script("document.cframe_swap += 1;")
+
+        if self.recorder_mode and not self.__set_c_from_switch:
+            time_stamp = self.execute_script("return Date.now();")
+            action = ["s_c_f", o_frame, "", time_stamp]
+            self.__extra_actions.append(action)
+
+    def set_content_to_default(self, nested=True):
+        """After using self.set_content_to_frame(), this reverts the page back.
+        If self.set_content_to_frame() hasn't been called here, only refreshes.
+        If "nested" is set to False when the content was set to nested iFrames,
+        then the control will only move above the last iFrame that was entered.
+        """
+        self.__check_scope()
+        swap_cnt = self.execute_script("return document.cframe_swap;")
+        tab_sta = self.execute_script("return document.cframe_tab;")
+
+        if self.recorder_mode and not self.__set_c_from_switch:
+            time_stamp = self.execute_script("return Date.now();")
+            action = ["sk_op", "", "", time_stamp]
+            self.__extra_actions.append(action)
+
+        if nested:
+            if (
+                len(self.__page_sources) > 0
+                and (
+                    (swap_cnt and int(swap_cnt) > 0)
+                    or (tab_sta and int(tab_sta) > 0)
+                )
+            ):
+                past_content = self.__page_sources[0]
+                past_url = past_content[0]
+                past_source = past_content[1]
+                past_tab = past_content[2]
+                current_tab = self.driver.current_window_handle
+                if not current_tab == past_tab:
+                    if past_tab in self.driver.window_handles:
+                        self.switch_to_window(past_tab)
+                url_of_past_tab = self.get_current_url()
+                if url_of_past_tab == past_url:
+                    self.set_content(past_source)
+                else:
+                    self.refresh_page()
+            else:
+                self.refresh_page()
+            self.execute_script("document.cframe_swap = 0;")
+            self.__page_sources = []
+        else:
+            just_refresh = False
+            if swap_cnt and int(swap_cnt) > 0 and len(self.__page_sources) > 0:
+                self.execute_script("document.cframe_swap -= 1;")
+                current_url = self.get_current_url()
+                past_content = self.__page_sources.pop()
+                past_url = past_content[0]
+                past_source = past_content[1]
+                if current_url == past_url:
+                    self.set_content(past_source)
+                else:
+                    just_refresh = True
+            elif tab_sta and int(tab_sta) > 0 and len(self.__page_sources) > 0:
+                past_content = self.__page_sources.pop()
+                past_tab = past_content[2]
+                if past_tab in self.driver.window_handles:
+                    self.switch_to_window(past_tab)
+                else:
+                    just_refresh = True
+            else:
+                just_refresh = True
+            if just_refresh:
+                self.refresh_page()
+                self.execute_script("document.cframe_swap = 0;")
+                self.__page_sources = []
+
+        if self.recorder_mode and not self.__set_c_from_switch:
+            time_stamp = self.execute_script("return Date.now();")
+            action = ["s_c_d", nested, "", time_stamp]
+            self.__extra_actions.append(action)
 
     def open_new_window(self, switch_to=True):
         """ Opens a new browser tab/window and switches to it by default. """
@@ -2305,6 +2480,7 @@ class BaseCase(unittest.TestCase):
         devtools=None,
         remote_debug=None,
         swiftshader=None,
+        ad_block_on=None,
         block_images=None,
         chromium_arg=None,
         firefox_arg=None,
@@ -2344,6 +2520,7 @@ class BaseCase(unittest.TestCase):
         devtools - the option to open Chrome's DevTools on start (Chrome)
         remote_debug - the option to enable Chrome's Remote Debugger
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
+        ad_block_on - the option to block ads from loading (Chromium-only)
         block_images - the option to block images from loading (Chrome)
         chromium_arg - the option to add a Chromium arg to Chrome/Edge
         firefox_arg - the option to add a Firefox arg to Firefox runs
@@ -2429,6 +2606,8 @@ class BaseCase(unittest.TestCase):
             remote_debug = self.remote_debug
         if swiftshader is None:
             swiftshader = self.swiftshader
+        if ad_block_on is None:
+            ad_block_on = self.ad_block_on
         if block_images is None:
             block_images = self.block_images
         if chromium_arg is None:
@@ -2489,6 +2668,7 @@ class BaseCase(unittest.TestCase):
             devtools=devtools,
             remote_debug=remote_debug,
             swiftshader=swiftshader,
+            ad_block_on=ad_block_on,
             block_images=block_images,
             chromium_arg=chromium_arg,
             firefox_arg=firefox_arg,
@@ -2579,6 +2759,7 @@ class BaseCase(unittest.TestCase):
     def switch_to_driver(self, driver):
         """Sets self.driver to the specified driver.
         You may need this if using self.get_new_driver() in your code."""
+        self.__check_scope()
         self.driver = driver
         if self.driver in self.__driver_browser_map:
             self.browser = self.__driver_browser_map[self.driver]
@@ -2715,13 +2896,11 @@ class BaseCase(unittest.TestCase):
         self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
         if self.js_checking_on:
             self.assert_no_js_errors()
-        if self.ad_block_on:
-            # If the ad_block feature is enabled, then block ads for new URLs
+        if self.ad_block_on and (self.headless or not self.is_chromium()):
+            # For Chromium browsers in headed mode, the extension is used
             current_url = self.get_current_url()
             if not current_url == self.__last_page_load_url:
-                time.sleep(0.02)
                 self.ad_block()
-                time.sleep(0.02)
                 if self.is_element_present("iframe"):
                     time.sleep(0.1)  # iframe ads take slightly longer to load
                     self.ad_block()  # Do ad_block on slower-loading iframes
@@ -2842,13 +3021,27 @@ class BaseCase(unittest.TestCase):
                 if action not in used_actions:
                     used_actions.append(action)
                     raw_actions.append(action)
+        for action in self.__extra_actions:
+            if action not in used_actions:
+                used_actions.append(action)
+                raw_actions.append(action)
         for action in raw_actions:
-            # Use key because multiple actions can happen at the same timestamp
+            if self._reuse_session:
+                if int(action[3]) < int(self.__js_start_time):
+                    continue
+            # Use key for sorting and preventing duplicates
             key = str(action[3]) + "-" + str(action[0])
             action_dict[key] = action
         for key in sorted(action_dict):
             # print(action_dict[key])  # For debugging purposes
             srt_actions.append(action_dict[key])
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and srt_actions[n-1][0] == "sk_op"
+            ):
+                srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
@@ -2881,6 +3074,25 @@ class BaseCase(unittest.TestCase):
                 if url1 == url2:
                     srt_actions[n-1][0] = "_skip"
         for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and (
+                    srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "input"
+                )
+                and (int(srt_actions[n][3]) - int(srt_actions[n-1][3]) < 6500)
+            ):
+                if srt_actions[n-1][0] == "click":
+                    if (
+                        srt_actions[n-1][1].startswith("input")
+                        or srt_actions[n-1][1].startswith("button")
+                    ):
+                        srt_actions[n][0] = "f_url"
+                elif srt_actions[n-1][0] == "input":
+                    if srt_actions[n-1][2].endswith("\n"):
+                        srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
             if action[0] == "begin" or action[0] == "_url_":
@@ -2888,94 +3100,172 @@ class BaseCase(unittest.TestCase):
             elif action[0] == "f_url":
                 sb_actions.append('self.open_if_not_url("%s")' % action[2])
             elif action[0] == "click":
+                method = "click"
                 if '"' not in action[1]:
-                    sb_actions.append('self.click("%s")' % action[1])
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
-                    sb_actions.append("self.click('%s')" % action[1])
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "input":
+                method = "type"
                 text = action[2].replace("\n", "\\n")
                 if '"' not in action[1] and '"' not in text:
-                    sb_actions.append('self.type("%s", "%s")' % (
-                        action[1], text))
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], text))
                 elif '"' not in action[1] and '"' in text:
-                    sb_actions.append('self.type("%s", \'%s\')' % (
-                        action[1], text))
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], text))
                 elif '"' in action[1] and '"' not in text:
-                    sb_actions.append('self.type(\'%s\', "%s")' % (
-                        action[1], text))
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], text))
                 elif '"' in action[1] and '"' in text:
-                    sb_actions.append("self.type('%s', '%s')" % (
-                        action[1], text))
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], text))
             elif action[0] == "h_clk":
+                method = "hover_and_click"
                 if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.hover_and_click("%s", "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append('self.hover_and_click("%s", \'%s\')' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.hover_and_click(\'%s\', "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append("self.hover_and_click('%s', '%s')" % (
-                        action[1], action[2]))
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], action[2]))
             elif action[0] == "ddrop":
+                method = "drag_and_drop"
                 if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.drag_and_drop("%s", "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append('self.drag_and_drop("%s", \'%s\')' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.drag_and_drop(\'%s\', "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append("self.drag_and_drop('%s', '%s')" % (
-                        action[1], action[2]))
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], action[2]))
             elif action[0] == "s_opt":
+                method = "select_option_by_text"
                 if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.select_option_by_text("%s", "%s")' % (
-                            action[1], action[2]))
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        'self.select_option_by_text("%s", \'%s\')' % (
-                            action[1], action[2]))
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append(
-                        'self.select_option_by_text(\'%s\', "%s")' % (
-                            action[1], action[2]))
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append(
-                        "self.select_option_by_text('%s', '%s')" % (
-                            action[1], action[2]))
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], action[2]))
             elif action[0] == "set_v":
+                method = "set_value"
                 if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.set_value("%s", "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append('self.set_value("%s", \'%s\')' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.set_value(\'%s\', "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append("self.set_value('%s', '%s')" % (
-                        action[1], action[2]))
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], action[2]))
             elif action[0] == "cho_f":
+                method = "choose_file"
                 action[2] = action[2].replace("\\", "\\\\")
                 if '"' not in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.choose_file("%s", "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' not in action[1] and '"' in action[2]:
-                    sb_actions.append('self.choose_file("%s", \'%s\')' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' not in action[2]:
-                    sb_actions.append('self.choose_file(\'%s\', "%s")' % (
-                        action[1], action[2]))
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], action[2]))
                 elif '"' in action[1] and '"' in action[2]:
-                    sb_actions.append("self.choose_file('%s', '%s')" % (
-                        action[1], action[2]))
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], action[2]))
+            elif action[0] == "sw_fr":
+                method = "switch_to_frame"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "sw_dc":
+                sb_actions.append("self.switch_to_default_content()")
+            elif action[0] == "s_c_f":
+                method = "set_content_to_frame"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "s_c_d":
+                method = "set_content_to_default"
+                nested = action[1]
+                if nested:
+                    sb_actions.append("self.%s()" % method)
+                else:
+                    sb_actions.append("self.%s(nested=False)" % method)
+            elif action[0] == "as_el":
+                method = "assert_element"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_ep":
+                method = "assert_element_present"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "asenv":
+                method = "assert_element_not_visible"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_lt":
+                method = "assert_link_text"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_ti":
+                method = "assert_title"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_te" or action[0] == "as_et":
+                method = "assert_text"
+                if action[0] == "as_et":
+                    method = "assert_exact_text"
+                if action[2] != "html":
+                    if '"' not in action[1] and '"' not in action[2]:
+                        sb_actions.append('self.%s("%s", "%s")' % (
+                            method, action[1], action[2]))
+                    elif '"' not in action[1] and '"' in action[2]:
+                        sb_actions.append('self.%s("%s", \'%s\')' % (
+                            method, action[1], action[2]))
+                    elif '"' in action[1] and '"' not in action[2]:
+                        sb_actions.append('self.%s(\'%s\', "%s")' % (
+                            method, action[1], action[2]))
+                    elif '"' in action[1] and '"' in action[2]:
+                        sb_actions.append("self.%s('%s', '%s')" % (
+                            method, action[1], action[2]))
+                else:
+                    if '"' not in action[1]:
+                        sb_actions.append('self.%s("%s")' % (
+                            method, action[1]))
+                    else:
+                        sb_actions.append("self.%s('%s')" % (
+                            method, action[1]))
             elif action[0] == "c_box":
                 cb_method = "check_if_unchecked"
                 if action[2] == "no":
@@ -2984,11 +3274,19 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (cb_method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (cb_method, action[1]))
+
+        filename = self.__get_filename()
+        new_file = False
         data = []
-        data.append("from seleniumbase import BaseCase")
-        data.append("")
-        data.append("")
-        data.append("class %s(BaseCase):" % self.__class__.__name__)
+        if filename not in sb_config._recorded_actions:
+            new_file = True
+            sb_config._recorded_actions[filename] = []
+            data.append("from seleniumbase import BaseCase")
+            data.append("")
+            data.append("")
+            data.append("class %s(BaseCase):" % self.__class__.__name__)
+        else:
+            data = sb_config._recorded_actions[filename]
         data.append("    def %s(self):" % self._testMethodName)
         if len(sb_actions) > 0:
             for action in sb_actions:
@@ -2996,6 +3294,7 @@ class BaseCase(unittest.TestCase):
         else:
             data.append("        pass")
         data.append("")
+        sb_config._recorded_actions[filename] = data
 
         recordings_folder = constants.Recordings.SAVED_FOLDER
         if recordings_folder.endswith("/"):
@@ -3011,7 +3310,9 @@ class BaseCase(unittest.TestCase):
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
         out_file.close()
-        rec_message = ">>> RECORDING saved to: "
+        rec_message = ">>> RECORDING SAVED as: "
+        if not new_file:
+            rec_message = ">>> RECORDING ADDED to: "
         star_len = len(rec_message) + len(file_path)
         try:
             terminal_size = os.get_terminal_size().columns
@@ -4241,6 +4542,15 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert_title(self._language)
             messenger_post = "%s: {%s}" % (a_t, title)
             self.__highlight_with_assert_success(messenger_post, "html")
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["as_ti", title, "", time_stamp]
+                        self.__extra_actions.append(action)
+        return True
 
     def assert_no_js_errors(self):
         """Asserts that there are no JavaScript "SEVERE"-level page errors.
@@ -7746,6 +8056,14 @@ class BaseCase(unittest.TestCase):
             self.__assert_shadow_element_present(selector)
             return True
         self.wait_for_element_present(selector, by=by, timeout=timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["as_ep", selector, "", time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     def assert_elements_present(self, *args, **kwargs):
@@ -7773,9 +8091,10 @@ class BaseCase(unittest.TestCase):
                 if type(selector) is str:
                     selectors.append(selector)
                 elif type(selector) is list:
-                    for a_selector in selector:
-                        if type(a_selector) is str:
-                            selectors.append(a_selector)
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if type(selector) is str:
+                            selectors.append(selector)
             else:
                 raise Exception('Unknown kwarg: "%s"!' % kwarg)
         if not timeout:
@@ -7833,6 +8152,14 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert(self._language)
             messenger_post = "%s %s: %s" % (a_t, by.upper(), selector)
             self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["as_el", selector, "", time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     def assert_element_visible(
@@ -7871,9 +8198,10 @@ class BaseCase(unittest.TestCase):
                 if type(selector) is str:
                     selectors.append(selector)
                 elif type(selector) is list:
-                    for a_selector in selector:
-                        if type(a_selector) is str:
-                            selectors.append(a_selector)
+                    selectors_list = selector
+                    for selector in selectors_list:
+                        if type(selector) is str:
+                            selectors.append(selector)
             else:
                 raise Exception('Unknown kwarg: "%s"!' % kwarg)
         if not timeout:
@@ -8012,6 +8340,14 @@ class BaseCase(unittest.TestCase):
                 selector,
             )
             self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["as_te", text, selector, time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     def assert_exact_text(
@@ -8050,6 +8386,14 @@ class BaseCase(unittest.TestCase):
                 selector,
             )
             self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["as_et", text, selector, time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     ############
@@ -8152,6 +8496,14 @@ class BaseCase(unittest.TestCase):
             self.__highlight_with_assert_success(
                 messenger_post, link_text, by=By.LINK_TEXT
             )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["as_lt", link_text, "", time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     def wait_for_partial_link_text(self, partial_link_text, timeout=None):
@@ -8265,6 +8617,14 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        action = ["asenv", selector, "", time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     ############
@@ -9468,6 +9828,10 @@ class BaseCase(unittest.TestCase):
                 settings.SMALL_TIMEOUT = sb_config._SMALL_TIMEOUT
                 settings.LARGE_TIMEOUT = sb_config._LARGE_TIMEOUT
 
+        if not hasattr(sb_config, "_recorded_actions"):
+            # Only filled when Recorder Mode is enabled
+            sb_config._recorded_actions = {}
+
         # Parse the settings file
         if self.settings_file:
             from seleniumbase.core import settings_parser
@@ -9583,6 +9947,7 @@ class BaseCase(unittest.TestCase):
                 devtools=self.devtools,
                 remote_debug=self.remote_debug,
                 swiftshader=self.swiftshader,
+                ad_block_on=self.ad_block_on,
                 block_images=self.block_images,
                 chromium_arg=self.chromium_arg,
                 firefox_arg=self.firefox_arg,
@@ -9614,6 +9979,11 @@ class BaseCase(unittest.TestCase):
         if not self.__start_time_ms:
             # Call this once in case of multiple setUp() calls in the same test
             self.__start_time_ms = sb_config.start_time_ms
+
+        # Set the JS start time for Recorder Mode if reusing the session.
+        # Use this to skip saving recorded actions from previous tests.
+        if self.recorder_mode and self._reuse_session:
+            self.__js_start_time = self.execute_script("return Date.now();")
 
     def __set_last_page_screenshot(self):
         """self.__last_page_screenshot is only for pytest html report logs.
@@ -9852,6 +10222,16 @@ class BaseCase(unittest.TestCase):
                     full = parts[-2] + ".py::" + parts[-1]
                     test_id = full
         return test_id
+
+    def __get_filename(self):
+        """ The filename of the current SeleniumBase test. (NOT Path) """
+        filename = None
+        if "PYTEST_CURRENT_TEST" in os.environ:
+            test_id = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+            filename = test_id.split("::")[0].split("/")[-1]
+        else:
+            filename = self.__class__.__module__.split(".")[-1] + ".py"
+        return filename
 
     def __create_log_path_as_needed(self, test_logpath):
         if not os.path.exists(test_logpath):

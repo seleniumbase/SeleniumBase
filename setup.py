@@ -121,7 +121,7 @@ setup(
         "typing-extensions>=3.10.0.2",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=58.0.4;python_version>="3.6"',
+        'setuptools>=58.1.0;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.1;python_version>="3.6"',
@@ -143,7 +143,7 @@ setup(
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.6;python_version>="3.5"',  # Sync "requests"
-        "urllib3==1.26.6",  # Must stay in sync with "requests"
+        "urllib3==1.26.7",  # Must stay in sync with "requests"
         'requests==2.26.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
         'requests==2.26.0;python_version>="3.6"',
@@ -199,15 +199,15 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.27.0;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.28.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
-        'platformdirs==2.3.0;python_version>="3.6"',
+        'platformdirs==2.4.0;python_version>="3.6"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        "virtualenv>=20.8.0",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.8.1",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",
@@ -217,7 +217,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.3.2;python_version>="3.6"',
-        'rich==10.10.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.11.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',

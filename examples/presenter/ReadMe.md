@@ -1,8 +1,8 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="360" /></h3>
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
-<h1> 📰 Presenter 📑 </h1>
+<h1> 📑 Presenter / Slides 🎞️ </h1>
 
-<p>SeleniumBase Presenter lets you use Python to generate HTML presentations from Reveal JS.</p>
+<p>SeleniumBase Presenter / Slides lets you use Python to generate HTML presentations and slide shows from Reveal-JS.</p>
 
 <b>Here's a sample presentation:</b>
 
@@ -244,3 +244,7 @@ Presentations automatically get saved when calling:
 ```python
 self.begin_presentation(show_notes=True)
 ```
+
+--------
+
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="240" /></h3>
