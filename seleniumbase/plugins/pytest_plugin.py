@@ -886,6 +886,19 @@ def pytest_addoption(parser):
             '\n  (DO NOT combine "--forked" with "--rs"/"--reuse-session"!)\n'
         )
 
+    # Recorder Mode does not support multi-threaded / multi-process runs.
+    if (
+        "--recorder" in sys_argv
+        or "--record" in sys_argv
+        or "--rec" in sys_argv
+    ):
+        arg_join = " ".join(sys.argv)
+        if ("-n" in sys_argv) or (" -n=" in arg_join) or ("-c" in sys_argv):
+            raise Exception(
+                "\n\n  Recorder Mode does NOT support multi-process mode (-n)!"
+                '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)\n'
+            )
+
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
     # but you can only specify one default browser for tests. (Default: chrome)
     browser_changes = 0
