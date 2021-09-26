@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="260">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Recorder Mode</h2>
 
@@ -21,7 +21,14 @@ import ipdb; ipdb.set_trace()
 🔴 Once you've reached the breakpoint, you can take control of the browser and add in any actions that you want recorded. When you are finished recording, type "``c``" on the command-line and press ``[Enter]`` to let the test continue from the breakpoint. After the test completes, a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder, which will include the actions performed by the test, and the manual actions that you added in. Below is a command-line notification:
 
 ```bash
->>> RECORDING saved to: recordings/my_first_test_rec.py
+>>> RECORDING SAVED as: recordings/my_first_test_rec.py
+*******************************************************
+```
+
+If a Python file contains more tests, they'll be added:
+
+```bash
+>>> RECORDING ADDED to: recordings/my_first_test_rec.py
 *******************************************************
 ```
 
@@ -48,6 +55,8 @@ class RecorderTest(BaseCase):
 <p>🔴 The launch of Recorder Mode has brought a new SeleniumBase method along with it: <code>self.open_if_not_url(URL)</code>. This method will open the URL given if the browser is not currently on that page. This is used as a method in recorded scripts when SeleniumBase detects that a click action has already brought the test to the given page. This method not only prevents an extra page load if not needed, but it also lets people know the current page of the browser at that point in the test.</p>
 
 <p>🔴 SeleniumBase <code>1.66.1</code> adds the ability to record changes to <i>"Choose File"</i> <code>input</code> fields. Sometimes the <i>"Choose File"</i> input field is hidden on websites, so <code>self.show_file_choosers()</code> was added to get around this edge case. Version <code>1.66.1</code> also adds <code>self.set_content_to_frame(frame)</code>, which lets you record actions inside of iframes.</p>
+
+<p>🔴 SeleniumBase <code>1.66.2</code> adds the ability to save selectors using the <code>":contains(TEXT)"</code> selector. If a Python file being recorded has multiple tests being run, then all those tests will get saved to the generated "*_rec.py" file. In order to escape iframes when using <code>self.set_content_to_frame(frame)</code>, a new method was added: <code>self.set_content_to_default()</code>. The <code>self.set_content_to_*()</code> methods will be automatically used in place of <code>self.switch_to_*()</code> methods in Recorder Mode, unless a test explicitly calls <code>self._rec_overrides_switch = False</code> before the <code>self.switch_to_*()</code> methods are called. Additionally, if an iframe contains the <code>src</code> attribute, that page will get loaded in a new tab when switching to it in Recorder Mode.</p>
 
 --------
 

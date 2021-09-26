@@ -39,7 +39,7 @@ theme:
   static_templates:
     - 404.html
   features:
-    - search.highlight
+    # - search.highlight
     - toc.integrate
     - navigation.indexes
     # - navigation.sections

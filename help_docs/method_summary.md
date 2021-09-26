@@ -199,6 +199,8 @@ self.switch_to_default_content()
 
 self.set_content_to_frame(frame, timeout=None)
 
+self.set_content_to_default(nested=True)
+
 self.open_new_window(switch_to=True)
 
 self.switch_to_window(window, timeout=None)
