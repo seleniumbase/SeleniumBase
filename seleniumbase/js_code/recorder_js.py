@@ -107,6 +107,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('aria-label');
     non_id_attributes.push('ng-href');
     non_id_attributes.push('href');
+    non_id_attributes.push('label');
     non_id_attributes.push('value');
     non_id_attributes.push('ng-model');
     non_id_attributes.push('ng-if');
@@ -125,16 +126,50 @@ var getBestSelector = function(el) {
         }
         child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], child_sep);
     }
+    tag_name = el.tagName.toLowerCase();
     basic_tags = [];
+    basic_tags.push('h1');
     basic_tags.push('input');
-    basic_tags.push('button');
     basic_tags.push('textarea');
     for (var i = 0; i < basic_tags.length; i++) {
-        tag_name = el.tagName.toLowerCase();
         if (tag_name == basic_tags[i] &&
             el == document.querySelector(basic_tags[i]))
         {
             return basic_tags[i];
+        }
+    }
+    contains_tags = [];
+    contains_tags.push('a');
+    contains_tags.push('b');
+    contains_tags.push('i');
+    contains_tags.push('td');
+    contains_tags.push('h1');
+    contains_tags.push('h2');
+    contains_tags.push('h3');
+    contains_tags.push('h4');
+    contains_tags.push('code');
+    contains_tags.push('button');
+    all_by_tag = [];
+    for (var i = 0; i < contains_tags.length; i++) {
+        if (tag_name == contains_tags[i] &&
+            el.innerText.trim().length > 1 &&
+            el.innerText.trim().length <= 64)
+        {
+            t_count = 0;
+            inner_text = el.innerText.trim();
+            all_by_tag[i] = document.querySelectorAll(contains_tags[i]);
+            for (var j = 0; j < all_by_tag[i].length; j++) {
+                if (all_by_tag[i][j].innerText.includes(inner_text))
+                {
+                    t_count += 1;
+                }
+            }
+            if (t_count === 1 && !inner_text.includes('\n'))
+            {
+                inner_text = inner_text.replace("'", "\\'");
+                inner_text = inner_text.replace('"', '\\"');
+                return tag_name += ':contains("'+inner_text+'")';
+            }
         }
     }
     best_selector = selector_by_id;
@@ -211,7 +246,7 @@ reset_recorder_state();
 document.body.addEventListener('click', function (event) {
     // Do nothing here.
 });
-document.body.addEventListener('submit', function (event) {
+document.body.addEventListener('formdata', function (event) {
     if (typeof document.recorded_actions === 'undefined')
         reset_recorder_state();
     if (sessionStorage.getItem('pause_recorder') === 'yes')
