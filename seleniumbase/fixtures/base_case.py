@@ -2480,6 +2480,7 @@ class BaseCase(unittest.TestCase):
         devtools=None,
         remote_debug=None,
         swiftshader=None,
+        ad_block_on=None,
         block_images=None,
         chromium_arg=None,
         firefox_arg=None,
@@ -2519,6 +2520,7 @@ class BaseCase(unittest.TestCase):
         devtools - the option to open Chrome's DevTools on start (Chrome)
         remote_debug - the option to enable Chrome's Remote Debugger
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
+        ad_block_on - the option to block ads from loading (Chromium-only)
         block_images - the option to block images from loading (Chrome)
         chromium_arg - the option to add a Chromium arg to Chrome/Edge
         firefox_arg - the option to add a Firefox arg to Firefox runs
@@ -2604,6 +2606,8 @@ class BaseCase(unittest.TestCase):
             remote_debug = self.remote_debug
         if swiftshader is None:
             swiftshader = self.swiftshader
+        if ad_block_on is None:
+            ad_block_on = self.ad_block_on
         if block_images is None:
             block_images = self.block_images
         if chromium_arg is None:
@@ -2664,6 +2668,7 @@ class BaseCase(unittest.TestCase):
             devtools=devtools,
             remote_debug=remote_debug,
             swiftshader=swiftshader,
+            ad_block_on=ad_block_on,
             block_images=block_images,
             chromium_arg=chromium_arg,
             firefox_arg=firefox_arg,
@@ -2891,13 +2896,11 @@ class BaseCase(unittest.TestCase):
         self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
         if self.js_checking_on:
             self.assert_no_js_errors()
-        if self.ad_block_on:
-            # If the ad_block feature is enabled, then block ads for new URLs
+        if self.ad_block_on and (self.headless or not self.is_chromium()):
+            # For Chromium browsers in headed mode, the extension is used
             current_url = self.get_current_url()
             if not current_url == self.__last_page_load_url:
-                time.sleep(0.02)
                 self.ad_block()
-                time.sleep(0.02)
                 if self.is_element_present("iframe"):
                     time.sleep(0.1)  # iframe ads take slightly longer to load
                     self.ad_block()  # Do ad_block on slower-loading iframes
@@ -9944,6 +9947,7 @@ class BaseCase(unittest.TestCase):
                 devtools=self.devtools,
                 remote_debug=self.remote_debug,
                 swiftshader=self.swiftshader,
+                ad_block_on=self.ad_block_on,
                 block_images=self.block_images,
                 chromium_arg=self.chromium_arg,
                 firefox_arg=self.firefox_arg,

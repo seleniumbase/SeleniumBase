@@ -28,6 +28,7 @@ if not os.environ["PATH"].startswith(DRIVER_DIR):
     os.environ["PATH"] = DRIVER_DIR + os.pathsep + os.environ["PATH"]
 EXTENSIONS_DIR = os.path.dirname(os.path.realpath(extensions.__file__))
 DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
+AD_BLOCK_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "ad_block.zip")
 RECORDER_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "recorder.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
 PROXY_ZIP_PATH_2 = proxy_helper.PROXY_ZIP_PATH_2
@@ -199,8 +200,17 @@ def _add_chrome_disable_csp_extension(chrome_options):
     return chrome_options
 
 
+def _add_chrome_ad_block_extension(chrome_options):
+    """Block Ads on Chromium Browsers with a browser extension.
+    See https://github.com/slingamn/simpleblock for details."""
+    ad_block_zip = AD_BLOCK_ZIP_PATH
+    chrome_options.add_extension(ad_block_zip)
+    return chrome_options
+
+
 def _add_chrome_recorder_extension(chrome_options):
-    """The SeleniumBase Recorder Chromium extension."""
+    """The SeleniumBase Recorder Chrome/Edge extension.
+    https://seleniumbase.io/help_docs/recorder_mode/"""
     recorder_zip = RECORDER_ZIP_PATH
     chrome_options.add_extension(recorder_zip)
     return chrome_options
@@ -228,6 +238,7 @@ def _set_chrome_options(
     devtools,
     remote_debug,
     swiftshader,
+    ad_block_on,
     block_images,
     chromium_arg,
     user_data_dir,
@@ -322,10 +333,10 @@ def _set_chrome_options(
         chrome_options.add_experimental_option(
             "mobileEmulation", emulator_settings
         )
-        chrome_options.add_argument("--enable-sync")
     if (
         not proxy_auth
         and not disable_csp
+        and not ad_block_on
         and not recorder_ext
         and (not extension_zip and not extension_dir)
     ):
@@ -391,7 +402,8 @@ def _set_chrome_options(
         # Headless Chrome doesn't support extensions, which are required
         # for disabling the Content Security Policy on Chrome
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
-        chrome_options.add_argument("--enable-sync")
+    if ad_block_on and not headless:
+        chrome_options = _add_chrome_ad_block_extension(chrome_options)
     if recorder_ext and not headless:
         chrome_options = _add_chrome_recorder_extension(chrome_options)
     if proxy_string:
@@ -687,6 +699,7 @@ def get_driver(
     devtools=None,
     remote_debug=None,
     swiftshader=None,
+    ad_block_on=None,
     block_images=None,
     chromium_arg=None,
     firefox_arg=None,
@@ -760,6 +773,7 @@ def get_driver(
             devtools,
             remote_debug,
             swiftshader,
+            ad_block_on,
             block_images,
             chromium_arg,
             firefox_arg,
@@ -796,6 +810,7 @@ def get_driver(
             devtools,
             remote_debug,
             swiftshader,
+            ad_block_on,
             block_images,
             chromium_arg,
             firefox_arg,
@@ -836,6 +851,7 @@ def get_remote_driver(
     devtools,
     remote_debug,
     swiftshader,
+    ad_block_on,
     block_images,
     chromium_arg,
     firefox_arg,
@@ -900,6 +916,7 @@ def get_remote_driver(
             devtools,
             remote_debug,
             swiftshader,
+            ad_block_on,
             block_images,
             chromium_arg,
             user_data_dir,
@@ -1053,6 +1070,7 @@ def get_local_driver(
     devtools,
     remote_debug,
     swiftshader,
+    ad_block_on,
     block_images,
     chromium_arg,
     firefox_arg,
@@ -1220,6 +1238,7 @@ def get_local_driver(
                 devtools,
                 remote_debug,
                 swiftshader,
+                ad_block_on,
                 block_images,
                 chromium_arg,
                 user_data_dir,
@@ -1307,7 +1326,6 @@ def get_local_driver(
                 edge_options.add_experimental_option(
                     "mobileEmulation", emulator_settings
                 )
-                edge_options.add_argument("--enable-sync")
             if user_data_dir:
                 abs_path = os.path.abspath(user_data_dir)
                 edge_options.add_argument("user-data-dir=%s" % abs_path)
@@ -1342,10 +1360,10 @@ def get_local_driver(
                 # Headless Edge doesn't support extensions, which are required
                 # for disabling the Content Security Policy on Edge
                 edge_options = _add_chrome_disable_csp_extension(edge_options)
-                edge_options.add_argument("--enable-sync")
+            if ad_block_on and not headless:
+                edge_options = _add_chrome_ad_block_extension(edge_options)
             if recorder_ext and not headless:
                 edge_options = _add_chrome_recorder_extension(edge_options)
-                edge_options.add_argument("--enable-sync")
             if proxy_string:
                 if proxy_auth:
                     edge_options = _add_chrome_proxy_extension(
@@ -1431,6 +1449,7 @@ def get_local_driver(
                 devtools,
                 remote_debug,
                 swiftshader,
+                ad_block_on,
                 block_images,
                 chromium_arg,
                 user_data_dir,
@@ -1475,6 +1494,7 @@ def get_local_driver(
                 devtools,
                 remote_debug,
                 swiftshader,
+                ad_block_on,
                 block_images,
                 chromium_arg,
                 user_data_dir,
@@ -1556,6 +1576,7 @@ def get_local_driver(
                         devtools,
                         remote_debug,
                         swiftshader,
+                        ad_block_on,
                         block_images,
                         chromium_arg,
                         user_data_dir,
