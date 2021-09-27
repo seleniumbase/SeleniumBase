@@ -25,7 +25,7 @@ import ipdb; ipdb.set_trace()
 *******************************************************
 ```
 
-If a Python file contains more tests, they'll be added:
+🔴 If running tests from one module, recordings will share a file:
 
 ```bash
 >>> RECORDING ADDED to: recordings/my_first_test_rec.py
