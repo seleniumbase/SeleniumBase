@@ -1,4 +1,4 @@
-<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_m.png" title="SeleniumBase" width="300" /></a></h3>
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" title="SeleniumBase" width="300" /></a></h3>
 
 <a id="language_tests"></a>
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Language Tests (Python 3+)</h3>
@@ -7,15 +7,26 @@
 
 Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>].
 
-Multi-language tests are run with **pytest** like any other test. Every test method has a one-to-one mapping to every other supported language. <i>Example:</i>
-```
-self.open(URL) <=> self.开启网址(URL)
+Multi-language tests are run with **pytest** like any other test. Test methods have a one-to-one mapping to the other supported languages. Here's an example of a translated test:
+
+```python
+from seleniumbase.translate.chinese import 硒测试用例
+
+class 我的测试类(硒测试用例):
+    def test_例子1(self):
+        self.开启("https://zh.wikipedia.org/wiki/")
+        self.断言标题("维基百科，自由的百科全书")
+        self.断言元素('a[title="首页"]')
+        self.断言文本("新闻动态", "span#新闻动态")
+        self.输入文本("#searchInput", "舞龍")
+        self.单击("#searchButton")
+        self.断言文本("舞龍", "#firstHeading")
 ```
 
 <a id="translation_api"></a>
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Translation API</h2>
 
-You can use SeleniumBase to selectively translate the method names of any test from one language to another via the console scripts interface. Additionally, the ``import`` line at the top of the Python file will change to import the new ``BaseCase``. Example: ``BaseCase`` becomes ``CasoDeTeste`` when a test is translated into Portuguese.
+You can use SeleniumBase to selectively translate the method names of any test from one language to another with the console scripts interface. Additionally, the ``import`` line at the top of the Python file will change to import the new ``BaseCase``. Example: ``BaseCase`` becomes ``CasoDeTeste`` when a test is translated into Portuguese.
 
 ```bash
 seleniumbase translate
@@ -59,3 +70,7 @@ plus the 2-letter language code of the new language.
 (Example: Translating ``test_1.py`` into Japanese with
 ``-c`` will create a new file called ``test_1_ja.py``.)
 ```
+
+--------
+
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_m.png" title="SeleniumBase" width="280" /></a></h3>

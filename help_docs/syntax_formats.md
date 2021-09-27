@@ -1,4 +1,4 @@
-<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" title="SeleniumBase" width="360" /></a></h3>
+<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" title="SeleniumBase" width="320" /></a></h3>
 
 <a id="syntax_formats"></a>
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 17 syntax formats</h2>
@@ -194,21 +194,22 @@ from seleniumbase.translate.chinese import 硒测试用例
 
 class 我的测试类(硒测试用例):
     def test_例子1(self):
-        self.开启网址("https://xkcd.in/comic?lg=cn&id=353")
-        self.断言标题("Python - XKCD中文站")
-        self.断言元素("#content div.comic-body")
-        self.断言文本("上漫画")
-        self.单击("div.nextLink")
-        self.断言文本("母亲的功绩", "#content h1")
-        self.单击链接文本("下一篇")
-        self.断言文本("敲打", "#content h1")
-        self.断言文本("有时，最有趣的事也会显得无聊")
-        self.回去()
-        self.单击链接文本("兰德尔·门罗")
-        self.断言文本("兰德尔·门罗", "#firstHeading")
-        self.输入文本("#searchInput", "程式设计")
+        self.开启("https://zh.wikipedia.org/wiki/")
+        self.断言标题("维基百科，自由的百科全书")
+        self.断言元素('a[title="首页"]')
+        self.断言文本("新闻动态", "span#新闻动态")
+        self.输入文本("#searchInput", "舞龍")
         self.单击("#searchButton")
-        self.断言文本("程序设计", "#firstHeading")
+        self.断言文本("舞龍", "#firstHeading")
+        self.断言元素('img[src*="Chinese_draak.jpg"]')
+        self.输入文本("#searchInput", "火鍋")
+        self.单击("#searchButton")
+        self.断言文本("火鍋", "#firstHeading")
+        self.断言元素('td:contains("火鍋的各種食材")')
+        self.输入文本("#searchInput", "精武英雄")
+        self.单击("#searchButton")
+        self.断言元素('img[src*="Fist_of_legend.jpg"]')
+        self.断言文本("李连杰", 'li a[title="李连杰"]')
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/chinese_test_1.py">examples/translations/chinese_test_1.py</a> for the Chinese test.)

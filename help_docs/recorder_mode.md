@@ -58,6 +58,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.2</code> adds the ability to save selectors using the <code>":contains(TEXT)"</code> selector. If a Python file being recorded has multiple tests being run, then all those tests will get saved to the generated <code>*_rec.py</code> file. The Recorder will now save common <code>self.assert_*</code> calls made during tests. In order to escape iframes when using <code>self.set_content_to_frame(frame)</code>, a new method was added: <code>self.set_content_to_default()</code>. The <code>self.set_content_to_*()</code> methods will be automatically used in place of <code>self.switch_to_*()</code> methods in Recorder Mode, unless a test explicitly calls <code>self._rec_overrides_switch = False</code> before the <code>self.switch_to_*()</code> methods are called. Additionally, if an iframe contains the <code>src</code> attribute, that page will get loaded in a new tab when switching to it in Recorder Mode.</p>
 
+<p>🔴 SeleniumBase <code>1.66.3</code> improves the algorithm for generating efficient selectors. Additionally, single and double quotes in selectors will now be properly escaped with backslashes as needed.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>

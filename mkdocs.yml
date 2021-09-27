@@ -142,4 +142,4 @@ extra:
   analytics:
     provider: google
     property: UA-167313767-1
-google_analytics: ['UA-167313767-1', 'seleniumbase.io']
+# google_analytics: ['UA-167313767-1', 'seleniumbase.io']
