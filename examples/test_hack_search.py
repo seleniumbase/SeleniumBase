@@ -16,6 +16,12 @@ class HackingTests(BaseCase):
         self.sleep(0.5)
         self.js_click('[value="Bing Search"]')
         self.highlight("h1.b_logo")
+        help_docs_install_link = 'a[href*="seleniumbase.io/help_docs/install"]'
+        if self.is_element_visible(help_docs_install_link):
+            self.highlight_click(help_docs_install_link)
+            self.switch_to_newest_window()
+            self.assert_text("Install SeleniumBase", "h1")
+            self.click_link_text("GitHub branch")
         self.highlight_click('a[href*="github.com/seleniumbase/SeleniumBase"]')
         self.switch_to_newest_window()
         self.assert_element('[href="/seleniumbase/SeleniumBase"]')

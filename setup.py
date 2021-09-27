@@ -152,7 +152,7 @@ setup(
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.10.0;python_version>="3.5"',
         "cssselect==1.1.0",
-        "filelock==3.0.12",
+        "filelock==3.0.12",  # Newer ones had issues
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
@@ -165,7 +165,7 @@ setup(
         'pytest==6.2.5;python_version>="3.6"',
         "pytest-forked==1.3.0",
         'pytest-html==1.22.1;python_version<"3.6"',
-        'pytest-html==2.0.1;python_version>="3.6"',
+        'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.8.0;python_version<"3.6"',
         'pytest-metadata==1.11.0;python_version>="3.6"',
         "pytest-ordering==0.6",
