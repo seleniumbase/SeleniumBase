@@ -10603,7 +10603,6 @@ class BaseCase(unittest.TestCase):
         out_file.close()
         sb_config._dash_html = the_html
         if self._multithreaded:
-            sb_config._dash_html_for_multithreading = the_html
             d_stats = (num_passed, num_failed, num_skipped, num_untested)
             _results = sb_config._results
             _display_id = sb_config._display_id
