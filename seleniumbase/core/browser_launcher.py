@@ -495,18 +495,9 @@ def _set_firefox_options(
     options.set_preference("extensions.update.autoUpdateDefault", False)
     options.set_preference("extensions.update.enabled", False)
     options.set_preference("extensions.update.silent", True)
-    options.set_preference(
-        "datareporting.healthreport.logging.consoleEnabled", False
-    )
     options.set_preference("datareporting.healthreport.service.enabled", False)
-    options.set_preference(
-        "datareporting.healthreport.service.firstRun", False
-    )
     options.set_preference("datareporting.healthreport.uploadEnabled", False)
     options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
-    options.set_preference(
-        "datareporting.policy.dataSubmissionPolicyAccepted", False
-    )
     options.set_preference("toolkit.telemetry.unified", False)
     if proxy_string:
         socks_proxy = False
