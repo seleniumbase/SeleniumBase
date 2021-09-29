@@ -44,8 +44,8 @@ urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.29.1"
-DEFAULT_EDGEDRIVER_VERSION = "91.0.864.71"  # (Looks for LATEST_STABLE first)
+DEFAULT_GECKODRIVER_VERSION = "v0.30.0"
+DEFAULT_EDGEDRIVER_VERSION = "93.0.961.52"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.88.0.4324.104"
 
 
