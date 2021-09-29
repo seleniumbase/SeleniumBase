@@ -399,10 +399,11 @@ def _set_chrome_options(
             )
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
-        # Headless Chrome doesn't support extensions, which are required
-        # for disabling the Content Security Policy on Chrome
+        # Headless Chrome does not support extensions, which are required
+        # for disabling the Content Security Policy on Chrome.
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
     if ad_block_on and not headless:
+        # Headless Chrome does not support extensions.
         chrome_options = _add_chrome_ad_block_extension(chrome_options)
     if recorder_ext and not headless:
         chrome_options = _add_chrome_recorder_extension(chrome_options)

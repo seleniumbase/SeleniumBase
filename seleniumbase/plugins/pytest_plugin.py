@@ -899,6 +899,19 @@ def pytest_addoption(parser):
                 '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)\n'
             )
 
+    # Recorder Mode does not support headless browser runs.
+    # (Chromium does not allow extensions in Headless Mode)
+    if (
+        "--recorder" in sys_argv
+        or "--record" in sys_argv
+        or "--rec" in sys_argv
+    ):
+        if ("--headless" in sys_argv):
+            raise Exception(
+                "\n\n  Recorder Mode does NOT support Headless Mode!"
+                '\n  (DO NOT combine "--recorder" with "--headless"!)\n'
+            )
+
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
     # but you can only specify one default browser for tests. (Default: chrome)
     browser_changes = 0

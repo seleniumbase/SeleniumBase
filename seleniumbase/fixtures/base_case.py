@@ -9964,10 +9964,14 @@ class BaseCase(unittest.TestCase):
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
 
-        if self.browser in ["firefox", "ie", "safari"]:
-            # Only Chromium-based browsers have the mobile emulator.
+        if self.browser in ["firefox", "ie", "safari", "opera"]:
+            # Only Chrome and Edge browsers have the mobile emulator.
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
+            # The Recorder Mode browser extension is only for Chrome/Edge.
+            if self.recorder_mode:
+                print('\n* The Recorder extension is for Chrome & Edge only!')
+                self.recorder_mode = False
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)
