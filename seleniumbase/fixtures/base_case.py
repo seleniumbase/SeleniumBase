@@ -3046,7 +3046,10 @@ class BaseCase(unittest.TestCase):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
-                and srt_actions[n-1][0] == "click"
+                and (
+                    srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "js_cl"
+                )
             ):
                 url1 = srt_actions[n-1][2]
                 if url1.endswith("/"):
@@ -3079,11 +3082,15 @@ class BaseCase(unittest.TestCase):
                 and n > 0
                 and (
                     srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "js_cl"
                     or srt_actions[n-1][0] == "input"
                 )
                 and (int(srt_actions[n][3]) - int(srt_actions[n-1][3]) < 6500)
             ):
-                if srt_actions[n-1][0] == "click":
+                if (
+                    srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "js_cl"
+                ):
                     if (
                         srt_actions[n-1][1].startswith("input")
                         or srt_actions[n-1][1].startswith("button")
@@ -3101,6 +3108,12 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append('self.open_if_not_url("%s")' % action[2])
             elif action[0] == "click":
                 method = "click"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "js_cl":
+                method = "js_click"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
@@ -3679,6 +3692,23 @@ class BaseCase(unittest.TestCase):
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
+        action = None
+        pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            tag_name = None
+            href = ""
+            if ":contains\\(" not in css_selector:
+                tag_name = self.execute_script(
+                    "return document.querySelector('%s').tagName.toLowerCase()"
+                    % css_selector
+                )
+            if tag_name == "a":
+                href = self.execute_script(
+                    "return document.querySelector('%s').href" % css_selector
+                )
+            action = ["js_cl", selector, href, time_stamp]
         if not all_matches:
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
