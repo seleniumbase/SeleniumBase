@@ -773,11 +773,16 @@ def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
         return v_elems
 
 
-def save_screenshot(driver, name, folder=None):
+def save_screenshot(
+    driver, name, folder=None, selector=None, by=By.CSS_SELECTOR
+):
     """
-    Saves a screenshot to the current directory (or to a subfolder if provided)
+    Saves a screenshot of the current page.
+    If no folder is specified, uses the folder where pytest was called.
+    The screenshot will include the entire page unless a selector is given.
+    If a provided selector is not found, then takes a full-page screenshot.
     If the folder provided doesn't exist, it will get created.
-    The screenshot will be in PNG format.
+    The screenshot will be in PNG format: (*.png)
     """
     if not name.endswith(".png"):
         name = name + ".png"
@@ -789,12 +794,18 @@ def save_screenshot(driver, name, folder=None):
         screenshot_path = "%s/%s" % (file_path, name)
     else:
         screenshot_path = name
-    try:
-        element = driver.find_element(by=By.TAG_NAME, value="body")
-        element_png = element.screenshot_as_png
-        with open(screenshot_path, "wb") as file:
-            file.write(element_png)
-    except Exception:
+    if selector:
+        try:
+            element = driver.find_element(by=by, value=selector)
+            element_png = element.screenshot_as_png
+            with open(screenshot_path, "wb") as file:
+                file.write(element_png)
+        except Exception:
+            if driver:
+                driver.get_screenshot_as_file(screenshot_path)
+            else:
+                pass
+    else:
         if driver:
             driver.get_screenshot_as_file(screenshot_path)
         else:

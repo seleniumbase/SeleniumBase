@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> JS Package Manager</h2>
 
@@ -89,6 +89,8 @@ def add_css_link(driver, css_link):
 <div>Since packages are loaded directly from a CDN, such as <a href="https://cdnjs.com/">CloudFlare's cdnjs</a>, there's no need to use NPM, Bower, Yarn, or other package managers to get the packages that you need into the websites that you want.</div>
 
 --------
+
+[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>
 <a href="https://seleniumbase.io">

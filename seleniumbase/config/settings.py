@@ -39,6 +39,15 @@ HTML_REPORT = "report.html"
 RESULTS_TABLE = "results_table.csv"
 
 """
+If True, switch to new tabs/windows automatically if a click opens a new one.
+(This switch only happens if the initial tab is still on same URL as before,
+which prevents a situation where a click opens up a new URL in the same tab,
+where a pop-up might open up a new tab on its own, leading to a double open.
+If False, the browser will stay on the current tab where the click happened.
+"""
+SWITCH_TO_NEW_TABS_ON_CLICK = True
+
+"""
 This adds wait_for_ready_state_complete() after various browser actions.
 Setting this to True may improve reliability at the cost of speed.
 """

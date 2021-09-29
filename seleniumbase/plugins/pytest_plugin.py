@@ -627,6 +627,7 @@ def pytest_addoption(parser):
                 every page load.""",
     )
     parser.addoption(
+        "--adblock",
         "--ad_block",
         "--ad-block",
         "--block_ads",
@@ -899,6 +900,19 @@ def pytest_addoption(parser):
                 '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)\n'
             )
 
+    # Recorder Mode does not support headless browser runs.
+    # (Chromium does not allow extensions in Headless Mode)
+    if (
+        "--recorder" in sys_argv
+        or "--record" in sys_argv
+        or "--rec" in sys_argv
+    ):
+        if ("--headless" in sys_argv):
+            raise Exception(
+                "\n\n  Recorder Mode does NOT support Headless Mode!"
+                '\n  (DO NOT combine "--recorder" with "--headless"!)\n'
+            )
+
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
     # but you can only specify one default browser for tests. (Default: chrome)
     browser_changes = 0
@@ -1072,7 +1086,8 @@ def pytest_configure(config):
     sb_config._duration = {}  # SBase Dashboard test duration
     sb_config._display_id = {}  # SBase Dashboard display ID
     sb_config._d_t_log_path = {}  # SBase Dashboard test log path
-    sb_config._test_id = None  # The SBase Dashboard test id
+    sb_config._dash_html = None  # SBase Dashboard HTML copy
+    sb_config._test_id = None  # SBase Dashboard test id
     sb_config._latest_display_id = None  # The latest SBase display id
     sb_config._dashboard_initialized = False  # Becomes True after init
     sb_config._has_exception = False  # This becomes True if any test fails
@@ -1310,16 +1325,7 @@ def pytest_terminal_summary(terminalreporter):
         terminalreporter.write_sep("-", "LogPath: %s" % latest_logs_dir)
 
 
-def pytest_unconfigure():
-    """ This runs after all tests have completed with pytest. """
-    if (
-        hasattr(sb_config, "_dash_html_for_multithreading")
-        and sb_config._multithreaded
-    ):
-        abs_path = os.path.abspath(".")
-        dashboard_path = os.path.join(abs_path, "dashboard.html")
-        with open(dashboard_path, "w", encoding="utf-8") as f:
-            f.write(sb_config._dash_html)
+def _perform_pytest_unconfigure_():
     proxy_helper.remove_proxy_zip_if_present()
     if hasattr(sb_config, "reuse_session") and sb_config.reuse_session:
         # Close the shared browser session
@@ -1336,142 +1342,157 @@ def pytest_unconfigure():
             sb_config.log_path, sb_config.archive_logs
         )
     # Dashboard post-processing: Disable time-based refresh and stamp complete
-    if sb_config._multithreaded and sb_config.dashboard:
-        abs_path = os.path.abspath(".")
-        dash_lock = constants.Dashboard.LOCKFILE
-        dash_lock_path = os.path.join(abs_path, dash_lock)
-        if os.path.exists(dash_lock_path):
-            sb_config._only_unittest = False
-    if hasattr(sb_config, "dashboard") and (
-        sb_config.dashboard and not sb_config._only_unittest
-    ):
-        if sb_config._multithreaded:
-            import fasteners
-
-            dash_lock = fasteners.InterProcessLock(
-                constants.Dashboard.LOCKFILE
-            )
-        stamp = ""
-        if sb_config._dash_is_html_report:
-            # (If the Dashboard URL is the same as the HTML Report URL:)
-            # Have the html report refresh back to a dashboard on update
-            stamp += (
-                '\n<script type="text/javascript" src="%s">'
-                "</script>" % constants.Dashboard.LIVE_JS
-            )
-        stamp += "\n<!--Test Run Complete-->"
-        find_it = constants.Dashboard.META_REFRESH_HTML
-        swap_with = ""  # Stop refreshing the page after the run is done
-        find_it_2 = "Awaiting results... (Refresh the page for updates)"
-        swap_with_2 = (
-            "Test Run ENDED: Some results UNREPORTED due to skipped tearDown()"
+    if not hasattr(sb_config, "dashboard") or not sb_config.dashboard:
+        # Done with "pytest_unconfigure" unless using the Dashboard
+        return
+    stamp = ""
+    if sb_config._dash_is_html_report:
+        # (If the Dashboard URL is the same as the HTML Report URL:)
+        # Have the html report refresh back to a dashboard on update
+        stamp += (
+            '\n<script type="text/javascript" src="%s">'
+            "</script>" % constants.Dashboard.LIVE_JS
         )
-        find_it_3 = '<td class="col-result">Untested</td>'
-        swap_with_3 = '<td class="col-result">Unreported</td>'
-        find_it_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_1
-        swap_with_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_2
-        try:
+    stamp += "\n<!--Test Run Complete-->"
+    find_it = constants.Dashboard.META_REFRESH_HTML
+    swap_with = ""  # Stop refreshing the page after the run is done
+    find_it_2 = "Awaiting results... (Refresh the page for updates)"
+    swap_with_2 = (
+        "Test Run ENDED: Some results UNREPORTED due to skipped tearDown()"
+    )
+    find_it_3 = '<td class="col-result">Untested</td>'
+    swap_with_3 = '<td class="col-result">Unreported</td>'
+    find_it_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_1
+    swap_with_4 = 'href="%s"' % constants.Dashboard.DASH_PIE_PNG_2
+    try:
+        abs_path = os.path.abspath(".")
+        dashboard_path = os.path.join(abs_path, "dashboard.html")
+        # Part 1: Finalizing the dashboard / integrating html report
+        if os.path.exists(dashboard_path):
+            the_html_d = None
+            with open(dashboard_path, "r", encoding="utf-8") as f:
+                the_html_d = f.read()
+            if sb_config._multithreaded and "-c" in sys.argv:
+                # Threads have "-c" in sys.argv, except for the last
+                raise Exception('Break out of "try" block.')
             if sb_config._multithreaded:
-                dash_lock.acquire()
-            abs_path = os.path.abspath(".")
-            dashboard_path = os.path.join(abs_path, "dashboard.html")
-            # Part 1: Finalizing the dashboard / integrating html report
-            if os.path.exists(dashboard_path):
-                the_html_d = None
-                with open(dashboard_path, "r", encoding="utf-8") as f:
-                    the_html_d = f.read()
-                if sb_config._multithreaded and "-c" in sys.argv:
-                    # Threads have "-c" in sys.argv, except for the last
-                    raise Exception('Break out of "try" block.')
-                if sb_config._multithreaded:
-                    dash_pie_loc = constants.Dashboard.DASH_PIE
-                    pie_path = os.path.join(abs_path, dash_pie_loc)
-                    if os.path.exists(pie_path):
-                        import json
+                dash_pie_loc = constants.Dashboard.DASH_PIE
+                pie_path = os.path.join(abs_path, dash_pie_loc)
+                if os.path.exists(pie_path):
+                    import json
 
-                        with open(pie_path, "r") as f:
-                            dash_pie = f.read().strip()
-                        sb_config._saved_dashboard_pie = json.loads(dash_pie)
-                # If the test run doesn't complete by itself, stop refresh
-                the_html_d = the_html_d.replace(find_it, swap_with)
-                the_html_d = the_html_d.replace(find_it_2, swap_with_2)
-                the_html_d = the_html_d.replace(find_it_3, swap_with_3)
-                the_html_d = the_html_d.replace(find_it_4, swap_with_4)
-                the_html_d += stamp
-                if sb_config._dash_is_html_report and (
-                    sb_config._saved_dashboard_pie
-                ):
-                    the_html_d = the_html_d.replace(
-                        "<h1>dashboard.html</h1>",
-                        sb_config._saved_dashboard_pie,
-                    )
-                    the_html_d = the_html_d.replace(
-                        "</head>",
-                        '</head><link rel="shortcut icon" '
-                        'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3,
-                    )
-                    the_html_d = the_html_d.replace(
-                        "<html>", '<html lang="en">'
-                    )
-                    the_html_d = the_html_d.replace(
-                        "<head>",
-                        '<head><meta http-equiv="Content-Type" '
-                        'content="text/html, charset=utf-8;">'
-                        '<meta name="viewport" content="shrink-to-fit=no">',
-                    )
-                    if sb_config._dash_final_summary:
-                        the_html_d += sb_config._dash_final_summary
-                    time.sleep(0.1)  # Add time for "livejs" to detect changes
-                    with open(dashboard_path, "w", encoding="utf-8") as f:
-                        f.write(the_html_d)  # Finalize the dashboard
-                    time.sleep(0.1)  # Add time for "livejs" to detect changes
-                    the_html_d = the_html_d.replace(
-                        "</head>", "</head><!-- Dashboard Report Done -->"
-                    )
+                    with open(pie_path, "r") as f:
+                        dash_pie = f.read().strip()
+                    sb_config._saved_dashboard_pie = json.loads(dash_pie)
+            # If the test run doesn't complete by itself, stop refresh
+            the_html_d = the_html_d.replace(find_it, swap_with)
+            the_html_d = the_html_d.replace(find_it_2, swap_with_2)
+            the_html_d = the_html_d.replace(find_it_3, swap_with_3)
+            the_html_d = the_html_d.replace(find_it_4, swap_with_4)
+            the_html_d += stamp
+            if sb_config._dash_is_html_report and (
+                sb_config._saved_dashboard_pie
+            ):
+                the_html_d = the_html_d.replace(
+                    "<h1>dashboard.html</h1>",
+                    sb_config._saved_dashboard_pie,
+                )
+                the_html_d = the_html_d.replace(
+                    "</head>",
+                    '</head><link rel="shortcut icon" '
+                    'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3,
+                )
+                the_html_d = the_html_d.replace(
+                    "<html>", '<html lang="en">'
+                )
+                the_html_d = the_html_d.replace(
+                    "<head>",
+                    '<head><meta http-equiv="Content-Type" '
+                    'content="text/html, charset=utf-8;">'
+                    '<meta name="viewport" content="shrink-to-fit=no">',
+                )
+                if sb_config._dash_final_summary:
+                    the_html_d += sb_config._dash_final_summary
+                time.sleep(0.1)  # Add time for "livejs" to detect changes
                 with open(dashboard_path, "w", encoding="utf-8") as f:
                     f.write(the_html_d)  # Finalize the dashboard
-                # Part 2: Appending a pytest html report with dashboard data
-                html_report_path = None
-                if sb_config._html_report_name:
-                    html_report_path = os.path.join(
-                        abs_path, sb_config._html_report_name
+                time.sleep(0.1)  # Add time for "livejs" to detect changes
+                the_html_d = the_html_d.replace(
+                    "</head>", "</head><!-- Dashboard Report Done -->"
+                )
+            with open(dashboard_path, "w", encoding="utf-8") as f:
+                f.write(the_html_d)  # Finalize the dashboard
+            # Part 2: Appending a pytest html report with dashboard data
+            html_report_path = None
+            if sb_config._html_report_name:
+                html_report_path = os.path.join(
+                    abs_path, sb_config._html_report_name
+                )
+            if (
+                sb_config._using_html_report
+                and html_report_path
+                and os.path.exists(html_report_path)
+                and not sb_config._dash_is_html_report
+            ):
+                # Add the dashboard pie to the pytest html report
+                the_html_r = None
+                with open(html_report_path, "r", encoding="utf-8") as f:
+                    the_html_r = f.read()
+                if sb_config._saved_dashboard_pie:
+                    h_r_name = sb_config._html_report_name
+                    if "/" in h_r_name and h_r_name.endswith(".html"):
+                        h_r_name = h_r_name.split("/")[-1]
+                    elif "\\" in h_r_name and h_r_name.endswith(".html"):
+                        h_r_name = h_r_name.split("\\")[-1]
+                    the_html_r = the_html_r.replace(
+                        "<h1>%s</h1>" % h_r_name,
+                        sb_config._saved_dashboard_pie,
                     )
-                if (
-                    sb_config._using_html_report
-                    and html_report_path
-                    and os.path.exists(html_report_path)
-                    and not sb_config._dash_is_html_report
-                ):
-                    # Add the dashboard pie to the pytest html report
-                    the_html_r = None
-                    with open(html_report_path, "r", encoding="utf-8") as f:
-                        the_html_r = f.read()
-                    if sb_config._saved_dashboard_pie:
-                        h_r_name = sb_config._html_report_name
-                        if "/" in h_r_name and h_r_name.endswith(".html"):
-                            h_r_name = h_r_name.split("/")[-1]
-                        elif "\\" in h_r_name and h_r_name.endswith(".html"):
-                            h_r_name = h_r_name.split("\\")[-1]
-                        the_html_r = the_html_r.replace(
-                            "<h1>%s</h1>" % h_r_name,
-                            sb_config._saved_dashboard_pie,
-                        )
-                        the_html_r = the_html_r.replace(
-                            "</head>",
-                            '</head><link rel="shortcut icon" href='
-                            '"%s">' % constants.Dashboard.DASH_PIE_PNG_3,
-                        )
-                        if sb_config._dash_final_summary:
-                            the_html_r += sb_config._dash_final_summary
-                    with open(html_report_path, "w", encoding="utf-8") as f:
-                        f.write(the_html_r)  # Finalize the HTML report
-        except KeyboardInterrupt:
-            pass
-        except Exception:
-            pass
-        finally:
-            if sb_config._multithreaded:
-                dash_lock.release()
+                    the_html_r = the_html_r.replace(
+                        "</head>",
+                        '</head><link rel="shortcut icon" href='
+                        '"%s">' % constants.Dashboard.DASH_PIE_PNG_3,
+                    )
+                    if sb_config._dash_final_summary:
+                        the_html_r += sb_config._dash_final_summary
+                with open(html_report_path, "w", encoding="utf-8") as f:
+                    f.write(the_html_r)  # Finalize the HTML report
+    except KeyboardInterrupt:
+        pass
+    except Exception:
+        pass
+
+
+def pytest_unconfigure():
+    """ This runs after all tests have completed with pytest. """
+    if sb_config._multithreaded:
+        import fasteners
+
+        dash_lock = fasteners.InterProcessLock(constants.Dashboard.LOCKFILE)
+        if (
+            hasattr(sb_config, "dashboard")
+            and sb_config.dashboard
+            and sb_config._dash_html
+        ):
+            # Multi-threaded tests with the Dashboard
+            abs_path = os.path.abspath(".")
+            dash_lock_file = constants.Dashboard.LOCKFILE
+            dash_lock_path = os.path.join(abs_path, dash_lock_file)
+            if os.path.exists(dash_lock_path):
+                sb_config._only_unittest = False
+                dashboard_path = os.path.join(abs_path, "dashboard.html")
+                with dash_lock:
+                    with open(dashboard_path, "w", encoding="utf-8") as f:
+                        f.write(sb_config._dash_html)
+                    _perform_pytest_unconfigure_()
+                    return
+        with dash_lock:
+            # Multi-threaded tests
+            _perform_pytest_unconfigure_()
+            return
+    else:
+        # Single-threaded tests
+        _perform_pytest_unconfigure_()
 
 
 @pytest.fixture()

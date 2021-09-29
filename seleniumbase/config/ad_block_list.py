@@ -69,7 +69,7 @@ AD_BLOCK_LIST = [
     "[data-google-av-adk]",
     "[data-google-query-id]",
     '[data-ylk*="sponsored_cluster"]',
-    '[data-google-av-cxn*="pagead"]',
+    "[data-google-av-cxn]",
     "[data-ad-client]",
     "[data-ad-slot]",
     '[href*="doubleclick"]',
@@ -108,4 +108,5 @@ AD_BLOCK_LIST = [
     'link[href*="/adservice."]',
     "section.dianomi-ad",
     "ytd-promoted-video-renderer",
+    "ytd-video-masthead-ad-v3-renderer",
 ]

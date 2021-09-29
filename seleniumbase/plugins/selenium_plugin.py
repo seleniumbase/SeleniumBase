@@ -388,6 +388,7 @@ class SeleniumBrowser(Plugin):
                     every page load.""",
         )
         parser.add_option(
+            "--adblock",
             "--ad_block",
             "--ad-block",
             "--block_ads",

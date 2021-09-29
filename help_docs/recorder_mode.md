@@ -2,11 +2,11 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Recorder Mode</h2>
 
-🔴 SeleniumBase <b>Recorder Mode</b> gives you the power to create automation scripts from manual browser actions.<br>(<i>Only Chromium browsers such as Chrome and Edge are supported.</i>)
+🔴 <b>SeleniumBase Recorder Mode</b> lets you record & export browser actions into automation scripts.<br>
 
 <img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-🔴 To activate Recorder Mode, add ``--recorder`` to your ``pytest`` run command when running an existing test: (Also add ``-s`` to allow breakpoints, unless you already have a ``pytest.ini`` file present with ``--capture=no`` in it.)
+🔴 To activate Recorder Mode, add ``--recorder`` to your ``pytest`` run command when running an existing test on Chrome or Edge. (Also add ``-s`` to allow breakpoints, unless you already have a ``pytest.ini`` file present with ``addopts = --capture=no`` in it.)
 
 ```bash
 pytest TEST_NAME.py --recorder -s
@@ -59,6 +59,8 @@ class RecorderTest(BaseCase):
 <p>🔴 SeleniumBase <code>1.66.2</code> adds the ability to save selectors using the <code>":contains(TEXT)"</code> selector. If a Python file being recorded has multiple tests being run, then all those tests will get saved to the generated <code>*_rec.py</code> file. The Recorder will now save common <code>self.assert_*</code> calls made during tests. In order to escape iframes when using <code>self.set_content_to_frame(frame)</code>, a new method was added: <code>self.set_content_to_default()</code>. The <code>self.set_content_to_*()</code> methods will be automatically used in place of <code>self.switch_to_*()</code> methods in Recorder Mode, unless a test explicitly calls <code>self._rec_overrides_switch = False</code> before the <code>self.switch_to_*()</code> methods are called. Additionally, if an iframe contains the <code>src</code> attribute, that page will get loaded in a new tab when switching to it in Recorder Mode.</p>
 
 <p>🔴 SeleniumBase <code>1.66.3</code> improves the algorithm for generating efficient selectors. Additionally, single and double quotes in selectors will now be properly escaped with backslashes as needed.</p>
+
+<p>🔴 SeleniumBase <code>1.66.4</code> adds better error-handling when using The Recorder, as well as a few other improvements.</p>
 
 --------
 

@@ -399,10 +399,11 @@ def _set_chrome_options(
             )
         chrome_options.add_experimental_option("useAutomationExtension", False)
     if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
-        # Headless Chrome doesn't support extensions, which are required
-        # for disabling the Content Security Policy on Chrome
+        # Headless Chrome does not support extensions, which are required
+        # for disabling the Content Security Policy on Chrome.
         chrome_options = _add_chrome_disable_csp_extension(chrome_options)
     if ad_block_on and not headless:
+        # Headless Chrome does not support extensions.
         chrome_options = _add_chrome_ad_block_extension(chrome_options)
     if recorder_ext and not headless:
         chrome_options = _add_chrome_recorder_extension(chrome_options)
@@ -494,18 +495,9 @@ def _set_firefox_options(
     options.set_preference("extensions.update.autoUpdateDefault", False)
     options.set_preference("extensions.update.enabled", False)
     options.set_preference("extensions.update.silent", True)
-    options.set_preference(
-        "datareporting.healthreport.logging.consoleEnabled", False
-    )
     options.set_preference("datareporting.healthreport.service.enabled", False)
-    options.set_preference(
-        "datareporting.healthreport.service.firstRun", False
-    )
     options.set_preference("datareporting.healthreport.uploadEnabled", False)
     options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
-    options.set_preference(
-        "datareporting.policy.dataSubmissionPolicyAccepted", False
-    )
     options.set_preference("toolkit.telemetry.unified", False)
     if proxy_string:
         socks_proxy = False

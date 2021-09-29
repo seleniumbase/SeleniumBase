@@ -47,10 +47,12 @@
 </p>
 
 <p align="left">
-✅ Smart-waiting code prevents flaky tests.<br />
-✅ Can run on  <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">GHA</a>, <a href="https://seleniumbase.io/integrations/google_cloud/ReadMe/">GCP</a>, <a href="https://seleniumbase.io/integrations/azure/jenkins/ReadMe/">Azure</a>, & <a href="https://seleniumbase.io/integrations/docker/ReadMe/">Docker</a>.<br />
+✅ Get set up in minutes. Deploy anywhere.<br />
+✅ Build reliable tests with a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">complete API</a>.<br />
+✅ Learn from 100s of real-world <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">examples</a>.<br />
+✅ Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">dashboards and reporting tools</a>.<br />
 ✅ Supports Chromium, Firefox, IE, & Safari.<br />
-✅ Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">dashboards and reporting tools</a>.
+✅ Can run on  <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">GHA</a>, <a href="https://seleniumbase.io/integrations/google_cloud/ReadMe/">GCP</a>, <a href="https://seleniumbase.io/integrations/azure/jenkins/ReadMe/">Azure</a>, & <a href="https://seleniumbase.io/integrations/docker/ReadMe/">Docker</a>.<br />
 </p>
 
 --------

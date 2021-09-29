@@ -316,10 +316,18 @@ class BaseCase(unittest.TestCase):
                         self.driver, selector, by, timeout=timeout
                     )
                     element.click()
-        if self.recorder_mode:
-            latest_window_count = len(self.driver.window_handles)
-            if latest_window_count > pre_window_count:
-                self.switch_to_newest_window()
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -2771,18 +2779,35 @@ class BaseCase(unittest.TestCase):
         if self.driver in self.__driver_browser_map:
             self.browser = self.__driver_browser_map[self.driver]
 
-    def save_screenshot(self, name, folder=None):
-        """Saves a screenshot of the current page.
+    def save_screenshot(
+        self, name, folder=None, selector=None, by=By.CSS_SELECTOR
+    ):
+        """
+        Saves a screenshot of the current page.
         If no folder is specified, uses the folder where pytest was called.
-        The screenshot will be in PNG format."""
+        The screenshot will include the entire page unless a selector is given.
+        If a provided selector is not found, then takes a full-page screenshot.
+        If the folder provided doesn't exist, it will get created.
+        The screenshot will be in PNG format: (*.png)
+        """
         self.wait_for_ready_state_complete()
+        if selector and by:
+            selector, by = self.__recalculate_selector(selector, by)
+            if page_actions.is_element_present(self.driver, selector, by):
+                return page_actions.save_screenshot(
+                    self.driver, name, folder, selector, by
+                )
         return page_actions.save_screenshot(self.driver, name, folder)
 
-    def save_screenshot_to_logs(self, name=None):
+    def save_screenshot_to_logs(
+        self, name=None, selector=None, by=By.CSS_SELECTOR
+    ):
         """Saves a screenshot of the current page to the "latest_logs" folder.
         Naming is automatic:
             If NO NAME provided: "_1_screenshot.png", "_2_screenshot.png", etc.
             If NAME IS provided, it becomes: "_1_name.png", "_2_name.png", etc.
+        The screenshot will include the entire page unless a selector is given.
+        If a provided selector is not found, then takes a full-page screenshot.
         (The last_page / failure screenshot is always "screenshot.png")
         The screenshot will be in PNG format."""
         self.wait_for_ready_state_complete()
@@ -2801,6 +2826,12 @@ class BaseCase(unittest.TestCase):
                 if len(name) == 0:
                     name = "screenshot"
             name = "%s%s.png" % (pre_name, name)
+        if selector and by:
+            selector, by = self.__recalculate_selector(selector, by)
+            if page_actions.is_element_present(self.driver, selector, by):
+                return page_actions.save_screenshot(
+                    self.driver, name, test_logpath, selector, by
+                )
         return page_actions.save_screenshot(self.driver, name, test_logpath)
 
     def save_page_source(self, name, folder=None):
@@ -2900,10 +2931,10 @@ class BaseCase(unittest.TestCase):
             # For Chromium browsers in headed mode, the extension is used
             current_url = self.get_current_url()
             if not current_url == self.__last_page_load_url:
-                self.ad_block()
-                if self.is_element_present("iframe"):
-                    time.sleep(0.1)  # iframe ads take slightly longer to load
-                    self.ad_block()  # Do ad_block on slower-loading iframes
+                if page_actions.is_element_present(
+                    self.driver, "iframe", By.CSS_SELECTOR
+                ):
+                    self.ad_block()
                 self.__last_page_load_url = current_url
         return is_ready
 
@@ -3046,7 +3077,10 @@ class BaseCase(unittest.TestCase):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
-                and srt_actions[n-1][0] == "click"
+                and (
+                    srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "js_cl"
+                )
             ):
                 url1 = srt_actions[n-1][2]
                 if url1.endswith("/"):
@@ -3079,11 +3113,15 @@ class BaseCase(unittest.TestCase):
                 and n > 0
                 and (
                     srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "js_cl"
                     or srt_actions[n-1][0] == "input"
                 )
                 and (int(srt_actions[n][3]) - int(srt_actions[n-1][3]) < 6500)
             ):
-                if srt_actions[n-1][0] == "click":
+                if (
+                    srt_actions[n-1][0] == "click"
+                    or srt_actions[n-1][0] == "js_cl"
+                ):
                     if (
                         srt_actions[n-1][1].startswith("input")
                         or srt_actions[n-1][1].startswith("button")
@@ -3101,6 +3139,12 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append('self.open_if_not_url("%s")' % action[2])
             elif action[0] == "click":
                 method = "click"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "js_cl":
+                method = "js_click"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
@@ -3679,6 +3723,23 @@ class BaseCase(unittest.TestCase):
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
+        action = None
+        pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            tag_name = None
+            href = ""
+            if ":contains\\(" not in css_selector:
+                tag_name = self.execute_script(
+                    "return document.querySelector('%s').tagName.toLowerCase()"
+                    % css_selector
+                )
+            if tag_name == "a":
+                href = self.execute_script(
+                    "return document.querySelector('%s').href" % css_selector
+                )
+            action = ["js_cl", selector, href, time_stamp]
         if not all_matches:
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
@@ -3691,6 +3752,20 @@ class BaseCase(unittest.TestCase):
             else:
                 click_script = """jQuery('%s').click();""" % css_selector
                 self.safe_execute_script(click_script)
+        if self.recorder_mode and action:
+            self.__extra_actions.append(action)
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -3783,7 +3858,7 @@ class BaseCase(unittest.TestCase):
         """ Block ads that appear on the current web page. """
         from seleniumbase.config import ad_block_list
 
-        self.__check_scope()
+        self.__check_scope()  # Using wait_for_RSC would cause an infinite loop
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)  # Add "\\" to special chars
             css_selector = self.__escape_quotes_if_needed(css_selector)
@@ -9832,6 +9907,10 @@ class BaseCase(unittest.TestCase):
             # Only filled when Recorder Mode is enabled
             sb_config._recorded_actions = {}
 
+        if not hasattr(settings, "SWITCH_TO_NEW_TABS_ON_CLICK"):
+            # If using an older settings file, set the new definitions manually
+            settings.SWITCH_TO_NEW_TABS_ON_CLICK = True
+
         # Parse the settings file
         if self.settings_file:
             from seleniumbase.core import settings_parser
@@ -9964,10 +10043,14 @@ class BaseCase(unittest.TestCase):
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
 
-        if self.browser in ["firefox", "ie", "safari"]:
-            # Only Chromium-based browsers have the mobile emulator.
+        if self.browser in ["firefox", "ie", "safari", "opera"]:
+            # Only Chrome and Edge browsers have the mobile emulator.
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
+            # The Recorder Mode browser extension is only for Chrome/Edge.
+            if self.recorder_mode:
+                print('\n* The Recorder extension is for Chrome & Edge only!')
+                self.recorder_mode = False
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)
@@ -10569,7 +10652,6 @@ class BaseCase(unittest.TestCase):
         out_file.close()
         sb_config._dash_html = the_html
         if self._multithreaded:
-            sb_config._dash_html_for_multithreading = the_html
             d_stats = (num_passed, num_failed, num_skipped, num_untested)
             _results = sb_config._results
             _display_id = sb_config._display_id

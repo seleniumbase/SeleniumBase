@@ -224,9 +224,9 @@ self.switch_to_driver(driver)
 
 self.switch_to_default_driver()
 
-self.save_screenshot(name, folder=None)
+self.save_screenshot(name, folder=None, selector=None, by=By.CSS_SELECTOR)
 
-self.save_screenshot_to_logs(name=None)
+self.save_screenshot_to_logs(name=None, selector=None, by=By.CSS_SELECTOR)
 
 self.save_page_source(name, folder=None)
 

@@ -11,7 +11,7 @@ keyring==23.2.1;python_version>="3.6"
 pkginfo==1.7.1;python_version>="3.6"
 Jinja2==3.0.1;python_version>="3.6"
 click==8.0.1;python_version>="3.6"
-zipp==3.5.0;python_version>="3.6"
+zipp==3.5.1;python_version>="3.6"
 readme-renderer==29.0
 pymdown-extensions==8.2;python_version>="3.6"
 importlib-metadata==4.8.1;python_version>="3.6"
