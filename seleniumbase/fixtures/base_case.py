@@ -2900,10 +2900,10 @@ class BaseCase(unittest.TestCase):
             # For Chromium browsers in headed mode, the extension is used
             current_url = self.get_current_url()
             if not current_url == self.__last_page_load_url:
-                self.ad_block()
-                if self.is_element_present("iframe"):
-                    time.sleep(0.1)  # iframe ads take slightly longer to load
-                    self.ad_block()  # Do ad_block on slower-loading iframes
+                if page_actions.is_element_present(
+                    self.driver, "iframe", By.CSS_SELECTOR
+                ):
+                    self.ad_block()
                 self.__last_page_load_url = current_url
         return is_ready
 
@@ -3813,7 +3813,7 @@ class BaseCase(unittest.TestCase):
         """ Block ads that appear on the current web page. """
         from seleniumbase.config import ad_block_list
 
-        self.__check_scope()
+        self.__check_scope()  # Using wait_for_RSC would cause an infinite loop
         for css_selector in ad_block_list.AD_BLOCK_LIST:
             css_selector = re.escape(css_selector)  # Add "\\" to special chars
             css_selector = self.__escape_quotes_if_needed(css_selector)

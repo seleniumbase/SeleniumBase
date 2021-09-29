@@ -627,6 +627,7 @@ def pytest_addoption(parser):
                 every page load.""",
     )
     parser.addoption(
+        "--adblock",
         "--ad_block",
         "--ad-block",
         "--block_ads",
