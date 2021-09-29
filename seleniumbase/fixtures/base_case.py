@@ -2779,18 +2779,35 @@ class BaseCase(unittest.TestCase):
         if self.driver in self.__driver_browser_map:
             self.browser = self.__driver_browser_map[self.driver]
 
-    def save_screenshot(self, name, folder=None):
-        """Saves a screenshot of the current page.
+    def save_screenshot(
+        self, name, folder=None, selector=None, by=By.CSS_SELECTOR
+    ):
+        """
+        Saves a screenshot of the current page.
         If no folder is specified, uses the folder where pytest was called.
-        The screenshot will be in PNG format."""
+        The screenshot will include the entire page unless a selector is given.
+        If a provided selector is not found, then takes a full-page screenshot.
+        If the folder provided doesn't exist, it will get created.
+        The screenshot will be in PNG format: (*.png)
+        """
         self.wait_for_ready_state_complete()
+        if selector and by:
+            selector, by = self.__recalculate_selector(selector, by)
+            if page_actions.is_element_present(self.driver, selector, by):
+                return page_actions.save_screenshot(
+                    self.driver, name, folder, selector, by
+                )
         return page_actions.save_screenshot(self.driver, name, folder)
 
-    def save_screenshot_to_logs(self, name=None):
+    def save_screenshot_to_logs(
+        self, name=None, selector=None, by=By.CSS_SELECTOR
+    ):
         """Saves a screenshot of the current page to the "latest_logs" folder.
         Naming is automatic:
             If NO NAME provided: "_1_screenshot.png", "_2_screenshot.png", etc.
             If NAME IS provided, it becomes: "_1_name.png", "_2_name.png", etc.
+        The screenshot will include the entire page unless a selector is given.
+        If a provided selector is not found, then takes a full-page screenshot.
         (The last_page / failure screenshot is always "screenshot.png")
         The screenshot will be in PNG format."""
         self.wait_for_ready_state_complete()
@@ -2809,6 +2826,12 @@ class BaseCase(unittest.TestCase):
                 if len(name) == 0:
                     name = "screenshot"
             name = "%s%s.png" % (pre_name, name)
+        if selector and by:
+            selector, by = self.__recalculate_selector(selector, by)
+            if page_actions.is_element_present(self.driver, selector, by):
+                return page_actions.save_screenshot(
+                    self.driver, name, test_logpath, selector, by
+                )
         return page_actions.save_screenshot(self.driver, name, test_logpath)
 
     def save_page_source(self, name, folder=None):
