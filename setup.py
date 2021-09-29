@@ -152,7 +152,7 @@ setup(
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.10.0;python_version>="3.5"',
         "cssselect==1.1.0",
-        "filelock==3.0.12",  # Newer ones had issues
+        "filelock==3.1.0",
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
@@ -185,8 +185,6 @@ setup(
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==3.4.8;python_version>="3.6"',
-        'pyopenssl==19.1.0;python_version<"3.5"',
-        'pyopenssl==20.0.1;python_version>="3.5"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.10.0;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
