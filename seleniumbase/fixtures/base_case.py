@@ -316,10 +316,18 @@ class BaseCase(unittest.TestCase):
                         self.driver, selector, by, timeout=timeout
                     )
                     element.click()
-        if self.recorder_mode:
-            latest_window_count = len(self.driver.window_handles)
-            if latest_window_count > pre_window_count:
-                self.switch_to_newest_window()
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -3721,6 +3729,20 @@ class BaseCase(unittest.TestCase):
             else:
                 click_script = """jQuery('%s').click();""" % css_selector
                 self.safe_execute_script(click_script)
+        if self.recorder_mode and action:
+            self.__extra_actions.append(action)
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
@@ -9861,6 +9883,10 @@ class BaseCase(unittest.TestCase):
         if not hasattr(sb_config, "_recorded_actions"):
             # Only filled when Recorder Mode is enabled
             sb_config._recorded_actions = {}
+
+        if not hasattr(settings, "SWITCH_TO_NEW_TABS_ON_CLICK"):
+            # If using an older settings file, set the new definitions manually
+            settings.SWITCH_TO_NEW_TABS_ON_CLICK = True
 
         # Parse the settings file
         if self.settings_file:
