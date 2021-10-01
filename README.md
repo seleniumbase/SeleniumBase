@@ -18,7 +18,7 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p align="center">SeleniumBase is a complete framework for web automation and end-to-end testing with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.<br />The API simplifies <a href="https://www.selenium.dev/documentation/">Selenium</a>'s out-of-the-box API, leading to tests with more maintainable code. <br />SeleniumBase includes advanced features such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">realtime Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and more.</p>
+<p align="center">SeleniumBase is a complete framework for web automation and end-to-end testing with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.<br />The API simplifies <a href="https://www.selenium.dev/documentation/">Selenium</a>'s out-of-the-box API, leading to tests with more maintainable code. <br />SeleniumBase includes advanced features such as a realtime <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and more.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
