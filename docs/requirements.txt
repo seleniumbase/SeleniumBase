@@ -1,4 +1,4 @@
-regex>=2021.9.24
+regex>=2021.9.30
 tqdm>=4.62.3
 livereload==2.6.3;python_version>="3.6"
 joblib==1.0.1;python_version>="3.6"
@@ -11,13 +11,13 @@ keyring==23.2.1;python_version>="3.6"
 pkginfo==1.7.1;python_version>="3.6"
 Jinja2==3.0.1;python_version>="3.6"
 click==8.0.1;python_version>="3.6"
-zipp==3.5.1;python_version>="3.6"
-readme-renderer==29.0
-pymdown-extensions==8.2;python_version>="3.6"
+zipp==3.6.0;python_version>="3.6"
+readme-renderer==30.0
+pymdown-extensions==9.0;python_version>="3.6"
 importlib-metadata==4.8.1;python_version>="3.6"
 bleach==4.1.0
 lunr==0.6.0;python_version>="3.6"
-nltk==3.6.3;python_version>="3.6"
+nltk==3.6.4;python_version>="3.6"
 watchdog==2.1.5;python_version>="3.6"
 mkdocs==1.2.2;python_version>="3.6"
 mkdocs-material==7.3.0;python_version>="3.6"

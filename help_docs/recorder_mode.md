@@ -62,6 +62,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.4</code> adds better error-handling when using The Recorder, as well as a few other improvements.</p>
 
+<p>🔴 SeleniumBase <code>1.66.5</code> improves the algorithm for converting recorded actions into SeleniumBase code.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>

@@ -1,8 +1,8 @@
 [<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
-# pytest CLI Options
+## pytest options for SeleniumBase
 
-SeleniumBase's [pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) lets you customize test runs from the CLI (Command-Line Interface), which adds options for setting/enabling the browser type, headless mode, mobile mode, demo mode, multi-threading mode, reuse-session mode, proxy config, user agent config, browser extensions, report mode, and more.
+SeleniumBase's [pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) lets you customize test runs from the CLI (Command-Line Interface), which adds options for setting/enabling the browser type, Dashboard Mode, Demo Mode, Headless Mode, Mobile Mode, Multi-threading Mode, Recorder Mode, reuse-session mode, proxy config, user agent config, browser extensions, html-report mode, and more.
 
 Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
@@ -34,11 +34,17 @@ pytest test_suite.py --dashboard
 # Create a pytest html report after tests are done
 pytest test_suite.py --html=report.html
 
-# Enter Debug Mode on failures
-pytest test_fail.py --pdb
+# Activate Debug Mode on failures ("c" to continue)
+pytest test_fail.py --pdb -s
 
 # Rerun failing tests more times
 pytest test_suite.py --reruns=1
+
+# Activate Debug Mode as the test begins ("n": next. "c": continue)
+pytest test_null.py --trace -s
+
+# Activate Recorder/Debug Mode as the test begins ("c" to continue)
+pytest test_null.py --recorder --trace -s
 
 # Pass extra data into tests (retrieve by calling self.data)
 pytest my_first_test.py --data="ABC,DEF"
