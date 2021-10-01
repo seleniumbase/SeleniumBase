@@ -2,7 +2,7 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Installation</h2>
 
-<h4>If installing SeleniumBase directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:
+<h4>If installing SeleniumBase directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:</h4>
 
 ```bash
 pip install seleniumbase
