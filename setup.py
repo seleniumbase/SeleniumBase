@@ -152,7 +152,7 @@ setup(
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.10.0;python_version>="3.5"',
         "cssselect==1.1.0",
-        "filelock==3.1.0",
+        "filelock==3.2.0",
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",

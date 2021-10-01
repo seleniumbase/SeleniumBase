@@ -933,6 +933,8 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         if self.browser == "phantomjs":
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(
@@ -1024,6 +1026,18 @@ class BaseCase(unittest.TestCase):
                 )
                 element.click()
 
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1075,7 +1089,8 @@ class BaseCase(unittest.TestCase):
             self.wait_for_partial_link_text_present(
                 partial_link_text, timeout=timeout
             )
-        pre_action_url = self.get_current_url()
+        pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         try:
             element = self.wait_for_partial_link_text(
                 partial_link_text, timeout=0.2
@@ -1143,6 +1158,18 @@ class BaseCase(unittest.TestCase):
                 )
                 element.click()
 
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1454,6 +1481,8 @@ class BaseCase(unittest.TestCase):
                         self.__js_click(new_selector)
                         self.wait_for_ready_state_complete()
                 return
+        pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         click_count = 0
         for element in elements:
             if limit and limit > 0 and click_count >= limit:
@@ -1476,7 +1505,31 @@ class BaseCase(unittest.TestCase):
                         click_count += 1
                         self.wait_for_ready_state_complete()
                 except (StaleElementReferenceException, ENI_Exception):
+                    latest_window_count = len(self.driver.window_handles)
+                    if (
+                        latest_window_count > pre_window_count
+                        and (
+                            self.recorder_mode
+                            or (
+                                settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                                and self.driver.current_url == pre_action_url
+                            )
+                        )
+                    ):
+                        self.switch_to_newest_window()
                     return  # Probably on new page / Elements are all stale
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
 
     def click_nth_visible_element(
         self, selector, number, by=By.CSS_SELECTOR, timeout=None
@@ -1502,6 +1555,8 @@ class BaseCase(unittest.TestCase):
         if number < 0:
             number = 0
         element = elements[number]
+        pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         try:
             self.__scroll_to_element(element)
             element.click()
@@ -1520,6 +1575,18 @@ class BaseCase(unittest.TestCase):
                 number = 0
             element = elements[number]
             element.click()
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
 
     def click_if_visible(self, selector, by=By.CSS_SELECTOR):
         """If the page selector exists and is visible, clicks on the element.
@@ -1532,7 +1599,20 @@ class BaseCase(unittest.TestCase):
     def click_active_element(self):
         self.wait_for_ready_state_complete()
         pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         self.execute_script("document.activeElement.click();")
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1746,6 +1826,7 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         outdated_driver = False
         element = None
         try:
@@ -1783,6 +1864,18 @@ class BaseCase(unittest.TestCase):
                 click_by,
                 timeout,
             )
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1823,6 +1916,7 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         outdated_driver = False
         element = None
         try:
@@ -1848,6 +1942,18 @@ class BaseCase(unittest.TestCase):
                 click_by=By.CSS_SELECTOR,
                 timeout=timeout,
             )
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1958,6 +2064,7 @@ class BaseCase(unittest.TestCase):
                 dropdown_selector, dropdown_by
             )
         pre_action_url = self.driver.current_url
+        pre_window_count = len(self.driver.window_handles)
         try:
             if option_by == "index":
                 Select(element).select_by_index(option)
@@ -1977,6 +2084,18 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
+        latest_window_count = len(self.driver.window_handles)
+        if (
+            latest_window_count > pre_window_count
+            and (
+                self.recorder_mode
+                or (
+                    settings.SWITCH_TO_NEW_TABS_ON_CLICK
+                    and self.driver.current_url == pre_action_url
+                )
+            )
+        ):
+            self.switch_to_newest_window()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -2263,7 +2382,8 @@ class BaseCase(unittest.TestCase):
                     r_a = self.get_session_storage_item("recorder_activated")
                     if r_a == "yes":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["sk_op", "", "", time_stamp]
+                        origin = self.get_origin()
+                        action = ["sk_op", "", origin, time_stamp]
                         self.__extra_actions.append(action)
                         self.__set_c_from_switch = True
                         self.set_content_to_frame(frame, timeout=timeout)
@@ -2347,7 +2467,8 @@ class BaseCase(unittest.TestCase):
 
         if self.recorder_mode and not self.__set_c_from_switch:
             time_stamp = self.execute_script("return Date.now();")
-            action = ["sk_op", "", "", time_stamp]
+            origin = self.get_origin()
+            action = ["sk_op", "", origin, time_stamp]
             self.__extra_actions.append(action)
 
         if cframe_tab:
@@ -2364,7 +2485,8 @@ class BaseCase(unittest.TestCase):
 
         if self.recorder_mode and not self.__set_c_from_switch:
             time_stamp = self.execute_script("return Date.now();")
-            action = ["s_c_f", o_frame, "", time_stamp]
+            origin = self.get_origin()
+            action = ["s_c_f", o_frame, origin, time_stamp]
             self.__extra_actions.append(action)
 
     def set_content_to_default(self, nested=True):
@@ -2379,7 +2501,8 @@ class BaseCase(unittest.TestCase):
 
         if self.recorder_mode and not self.__set_c_from_switch:
             time_stamp = self.execute_script("return Date.now();")
-            action = ["sk_op", "", "", time_stamp]
+            origin = self.get_origin()
+            action = ["sk_op", "", origin, time_stamp]
             self.__extra_actions.append(action)
 
         if nested:
@@ -2435,7 +2558,8 @@ class BaseCase(unittest.TestCase):
 
         if self.recorder_mode and not self.__set_c_from_switch:
             time_stamp = self.execute_script("return Date.now();")
-            action = ["s_c_d", nested, "", time_stamp]
+            origin = self.get_origin()
+            action = ["s_c_d", nested, origin, time_stamp]
             self.__extra_actions.append(action)
 
     def open_new_window(self, switch_to=True):
@@ -3083,6 +3207,8 @@ class BaseCase(unittest.TestCase):
                 )
             ):
                 url1 = srt_actions[n-1][2]
+                if srt_actions[n-1][0] == "js_cl":
+                    url1 = srt_actions[n-1][2][0]
                 if url1.endswith("/"):
                     url1 = url1[:-1]
                 url2 = srt_actions[n][2]
@@ -3130,6 +3256,50 @@ class BaseCase(unittest.TestCase):
                 elif srt_actions[n-1][0] == "input":
                     if srt_actions[n-1][2].endswith("\n"):
                         srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "cho_f"
+                and n > 0
+                and srt_actions[n-1][0] == "chfil"
+            ):
+                srt_actions[n-1][0] = "_skip"
+                srt_actions[n][2] = srt_actions[n-1][1]
+        origins = []
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "begin"
+                or srt_actions[n][0] == "_url_"
+                or srt_actions[n][0] == "f_url"
+            ):
+                origin = srt_actions[n][1]
+                if origin.endswith("/"):
+                    origin = origin[0:-1]
+                if origin not in origins:
+                    origins.append(origin)
+        ext_actions = []
+        ext_actions.append("js_cl")
+        ext_actions.append("as_el")
+        ext_actions.append("as_ep")
+        ext_actions.append("asenv")
+        ext_actions.append("hi_li")
+        ext_actions.append("as_lt")
+        ext_actions.append("as_ti")
+        ext_actions.append("as_te")
+        ext_actions.append("as_et")
+        ext_actions.append("as_at")
+        ext_actions.append("sw_fr")
+        ext_actions.append("sw_dc")
+        ext_actions.append("s_c_f")
+        ext_actions.append("s_c_d")
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] in ext_actions:
+                origin = srt_actions[n][2]
+                if srt_actions[n][0] == "js_cl":
+                    origin = srt_actions[n][2][1]
+                if origin.endswith("/"):
+                    origin = origin[0:-1]
+                if origin not in origins:
+                    srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
@@ -3274,6 +3444,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "hi_li":
+                method = "highlight"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "as_lt":
                 method = "assert_link_text"
                 if '"' not in action[1]:
@@ -3286,30 +3462,44 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_at":
+                method = "assert_attribute"
+                if ('"' not in action[1][0]) and action[1][2]:
+                    sb_actions.append('self.%s("%s", "%s", "%s")' % (
+                        method, action[1][0], action[1][1], action[1][2]))
+                elif ('"' not in action[1][0]) and not action[1][2]:
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1][0], action[1][1]))
+                elif ('"' in action[1][0]) and action[1][2]:
+                    sb_actions.append('self.%s(\'%s\', "%s", "%s")' % (
+                        method, action[1][0], action[1][1], action[1][2]))
+                else:
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1][0], action[1][1]))
             elif action[0] == "as_te" or action[0] == "as_et":
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
-                if action[2] != "html":
-                    if '"' not in action[1] and '"' not in action[2]:
+                if action[1][1] != "html":
+                    if '"' not in action[1][0] and '"' not in action[1][1]:
                         sb_actions.append('self.%s("%s", "%s")' % (
-                            method, action[1], action[2]))
-                    elif '"' not in action[1] and '"' in action[2]:
+                            method, action[1][0], action[1][1]))
+                    elif '"' not in action[1][0] and '"' in action[1][1]:
                         sb_actions.append('self.%s("%s", \'%s\')' % (
-                            method, action[1], action[2]))
-                    elif '"' in action[1] and '"' not in action[2]:
+                            method, action[1][0], action[1][1]))
+                    elif '"' in action[1] and '"' not in action[1][1]:
                         sb_actions.append('self.%s(\'%s\', "%s")' % (
-                            method, action[1], action[2]))
-                    elif '"' in action[1] and '"' in action[2]:
+                            method, action[1][0], action[1][1]))
+                    elif '"' in action[1] and '"' in action[1][1]:
                         sb_actions.append("self.%s('%s', '%s')" % (
-                            method, action[1], action[2]))
+                            method, action[1][0], action[1][1]))
                 else:
-                    if '"' not in action[1]:
+                    if '"' not in action[1][0]:
                         sb_actions.append('self.%s("%s")' % (
-                            method, action[1]))
+                            method, action[1][0]))
                     else:
                         sb_actions.append("self.%s('%s')" % (
-                            method, action[1]))
+                            method, action[1][0]))
             elif action[0] == "c_box":
                 cb_method = "check_if_unchecked"
                 if action[2] == "no":
@@ -3335,6 +3525,7 @@ class BaseCase(unittest.TestCase):
         if len(sb_actions) > 0:
             for action in sb_actions:
                 data.append("        " + action)
+                print("        " + action)
         else:
             data.append("        pass")
         data.append("")
@@ -3493,6 +3684,7 @@ class BaseCase(unittest.TestCase):
                 original_box_shadow = style[box_start:box_end]
                 o_bs = original_box_shadow
 
+        orig_selector = selector
         if ":contains" not in selector and ":first" not in selector:
             selector = re.escape(selector)
             selector = self.__escape_quotes_if_needed(selector)
@@ -3505,6 +3697,15 @@ class BaseCase(unittest.TestCase):
                 self.__highlight_with_jquery(selector, loops, o_bs)
             except Exception:
                 pass  # JQuery probably couldn't load. Skip highlighting.
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["hi_li", orig_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         time.sleep(0.065)
 
     def __highlight_with_js(self, selector, loops, o_bs):
@@ -3739,7 +3940,9 @@ class BaseCase(unittest.TestCase):
                 href = self.execute_script(
                     "return document.querySelector('%s').href" % css_selector
                 )
-            action = ["js_cl", selector, href, time_stamp]
+            origin = self.get_origin()
+            href_origin = [href, origin]
+            action = ["js_cl", selector, href_origin, time_stamp]
         if not all_matches:
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
@@ -4217,6 +4420,15 @@ class BaseCase(unittest.TestCase):
             if not self.demo_mode and not self.slow_mode:
                 self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["chfil", file_path, origin, time_stamp]
+                        self.__extra_actions.append(action)
         if type(abs_path) is int or type(abs_path) is float:
             abs_path = str(abs_path)
         try:
@@ -4583,6 +4795,17 @@ class BaseCase(unittest.TestCase):
                     selector,
                 )
             self.__highlight_with_assert_success(messenger_post, selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        value = value.replace("\\", "\\\\")
+                        sel_att_val = [selector, attribute, value]
+                        action = ["as_at", sel_att_val, origin, time_stamp]
+                        self.__extra_actions.append(action)
         return True
 
     def assert_title(self, title):
@@ -4623,7 +4846,8 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["as_ti", title, "", time_stamp]
+                        origin = self.get_origin()
+                        action = ["as_ti", title, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
@@ -8137,7 +8361,8 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["as_ep", selector, "", time_stamp]
+                        origin = self.get_origin()
+                        action = ["as_ep", selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
@@ -8233,7 +8458,8 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["as_el", selector, "", time_stamp]
+                        origin = self.get_origin()
+                        action = ["as_el", selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
@@ -8421,7 +8647,9 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["as_te", text, selector, time_stamp]
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["as_te", text_selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
@@ -8467,7 +8695,9 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["as_et", text, selector, time_stamp]
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["as_et", text_selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
@@ -8577,7 +8807,8 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["as_lt", link_text, "", time_stamp]
+                        origin = self.get_origin()
+                        action = ["as_lt", link_text, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
@@ -8698,7 +8929,8 @@ class BaseCase(unittest.TestCase):
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
-                        action = ["asenv", selector, "", time_stamp]
+                        origin = self.get_origin()
+                        action = ["asenv", selector, origin, time_stamp]
                         self.__extra_actions.append(action)
         return True
 
