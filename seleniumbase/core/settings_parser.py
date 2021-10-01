@@ -89,6 +89,8 @@ def set_settings(settings_file):
             settings.HTML_REPORT = override_settings[key]
         elif key == "RESULTS_TABLE":
             settings.RESULTS_TABLE = override_settings[key]
+        elif key == "SWITCH_TO_NEW_TABS_ON_CLICK":
+            settings.SWITCH_TO_NEW_TABS_ON_CLICK = override_settings[key]
         elif key == "WAIT_FOR_RSC_ON_PAGE_LOADS":
             settings.WAIT_FOR_RSC_ON_PAGE_LOADS = override_settings[key]
         elif key == "WAIT_FOR_RSC_ON_CLICKS":
