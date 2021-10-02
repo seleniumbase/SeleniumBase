@@ -1827,6 +1827,16 @@ class BaseCase(unittest.TestCase):
         self.scroll_to(hover_selector, by=hover_by)
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        the_selectors = [hover_selector, click_selector]
+                        action = ["ho_cl", the_selectors, origin, time_stamp]
+                        self.__extra_actions.append(action)
         outdated_driver = False
         element = None
         try:
@@ -3276,6 +3286,17 @@ class BaseCase(unittest.TestCase):
                     origin = origin[0:-1]
                 if origin not in origins:
                     origins.append(origin)
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "click"
+                and n > 0
+                and srt_actions[n-1][0] == "ho_cl"
+                and srt_actions[n-1][2] in origins
+            ):
+                srt_actions[n-1][0] = "_skip"
+                srt_actions[n][0] = "h_clk"
+                srt_actions[n][1] = srt_actions[n-1][1][0]
+                srt_actions[n][2] = srt_actions[n-1][1][1]
         ext_actions = []
         ext_actions.append("js_cl")
         ext_actions.append("as_el")
