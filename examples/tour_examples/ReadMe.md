@@ -6,13 +6,13 @@ SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkt
 
 <b>Example tour: (with autoplay)</b>
 
-<img src="https://seleniumbase.io/cdn/gif/driverjs_tour.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google"><br>
 
-[SeleniumBase driverjs_maps_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/driverjs_maps_tour.py)
+[SeleniumBase maps_introjs_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py)
 
 ```bash
 cd examples/tour_examples
-pytest driverjs_maps_tour.py
+pytest maps_introjs_tour.py --interval=1
 ```
 
 <b>Here's a longer example:</b>

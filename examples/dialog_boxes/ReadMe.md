@@ -7,11 +7,11 @@ SeleniumBase Dialog Boxes let your users provide input in the middle of automati
 * This feature utilizes the [jquery-confirm](https://craftpip.github.io/jquery-confirm/) library.
 * A Python API is used to call the JavaScript API.
 
-<img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="440" />
+<img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="400" />
 
 <h4>↕️ (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/dialog_box_tour.py">Example: dialog_box_tour.py</a>) ↕️</h4>
 
-<img src="https://seleniumbase.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="440" />
+<img src="https://seleniumbase.io/cdn/gif/sports_dialog.gif" alt="SeleniumBase" width="400" />
 
 <h4>Here's how to run that example:</h4>
 
