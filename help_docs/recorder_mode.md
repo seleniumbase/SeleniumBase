@@ -21,7 +21,7 @@ import ipdb; ipdb.set_trace()
 🔴 You can also activate Debug Mode at the start of your test by adding ``--trace`` as a ``pytest`` command-line option:
 
 ```bash
-pytest TEST_NAME.py --trace -s
+pytest TEST_NAME.py --trace --recorder -s
 ```
 
 🔴 Once you've reached the breakpoint, you can take control of the browser and add in any actions that you want recorded. When you are finished recording, type "``c``" on the command-line and press ``[Enter]`` to let the test continue from the breakpoint. After the test completes, a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder, which will include the actions performed by the test, and the manual actions that you added in. Below is a command-line notification:
