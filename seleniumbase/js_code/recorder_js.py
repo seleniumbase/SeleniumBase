@@ -101,6 +101,8 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-test-id');
     non_id_attributes.push('data-test-selector');
     non_id_attributes.push('data-nav');
+    non_id_attributes.push('data-sb');
+    non_id_attributes.push('data-cy');
     non_id_attributes.push('data-action');
     non_id_attributes.push('data-target');
     non_id_attributes.push('alt');
@@ -114,6 +116,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('value');
     non_id_attributes.push('ng-model');
     non_id_attributes.push('ng-if');
+    non_id_attributes.push('src');
     selector_by_attr = [];
     all_by_attr = [];
     num_by_attr = [];
@@ -149,9 +152,13 @@ var getBestSelector = function(el) {
     contains_tags.push('h2');
     contains_tags.push('h3');
     contains_tags.push('h4');
+    contains_tags.push('li');
     contains_tags.push('td');
     contains_tags.push('code');
+    contains_tags.push('mark');
+    contains_tags.push('label');
     contains_tags.push('button');
+    contains_tags.push('legend');
     contains_tags.push('strong');
     all_by_tag = [];
     inner_text = el.innerText.trim();

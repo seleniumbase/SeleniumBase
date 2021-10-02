@@ -604,6 +604,218 @@ def process_test_file(
             seleniumbase_lines.append(command)
             continue
 
+        # Handle self.check_if_unchecked(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.check_if_unchecked"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.check_if_unchecked"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.check_if_unchecked(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.check_if_unchecked(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.check_if_unchecked(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.uncheck_if_checked(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.uncheck_if_checked"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.uncheck_if_checked"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.uncheck_if_checked(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.uncheck_if_checked(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.uncheck_if_checked(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.select_if_unselected(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.select_if_unselected"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.select_if_unselected"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.select_if_unselected(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.select_if_unselected(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.select_if_unselected(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.unselect_if_selected(SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.unselect_if_selected"""
+                r"""\((r?['"][\S\s]+['"])\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.unselect_if_selected"""
+                r"""\(([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector = "%s" % data.group(2)
+            selector = remove_extra_slashes(selector)
+            page_selectors.append(selector)
+            comments = data.group(3)
+            command = """%sself.unselect_if_selected(%s)%s""" % (
+                whitespace,
+                selector,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector = optimize_selector(selector)
+                if selector in selector_dict.keys():
+                    selector_object = selector_dict[selector]
+                    changed.append(selector_object.split(".")[0])
+                    command = """%sself.unselect_if_selected(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name = selector
+                if object_name in object_dict.keys():
+                    selector_object = object_dict[object_name]
+                    changed.append(object_name.split(".")[0])
+                    command = """%sself.unselect_if_selected(%s)%s""" % (
+                        whitespace,
+                        selector_object,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
         # Handle self.switch_to_frame(SELECTOR)
         if not object_dict:
             data = re.match(
@@ -1430,6 +1642,75 @@ def process_test_file(
                         whitespace,
                         selector_object,
                         text,
+                        comments,
+                    )
+            seleniumbase_lines.append(command)
+            continue
+
+        # Handle self.drag_and_drop(SELECTOR, SELECTOR)
+        if not object_dict:
+            data = re.match(
+                r"""^(\s*)self\.drag_and_drop"""
+                r"""\((r?['"][\S\s]+['"]),\s?([\S\s]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        else:
+            data = re.match(
+                r"""^(\s*)self\.drag_and_drop"""
+                r"""\(([\S]+),\s?([\S]+)\)([\S\s]*)"""
+                r"""$""",
+                line,
+            )
+        if data:
+            whitespace = data.group(1)
+            selector1 = "%s" % data.group(2)
+            selector1 = remove_extra_slashes(selector1)
+            page_selectors.append(selector1)
+            selector2 = "%s" % data.group(3)
+            selector2 = remove_extra_slashes(selector2)
+            page_selectors.append(selector2)
+            comments = data.group(4)
+            command = """%sself.drag_and_drop(%s, %s)%s""" % (
+                whitespace,
+                selector1,
+                selector2,
+                comments,
+            )
+            if selector_dict:
+                if add_comments:
+                    comments = "  # %s" % selector
+                selector1 = optimize_selector(selector1)
+                selector2 = optimize_selector(selector2)
+                if selector1 in selector_dict.keys() and (
+                    selector2 in selector_dict.keys()
+                ):
+                    selector_object1 = selector_dict[selector1]
+                    selector_object2 = selector_dict[selector2]
+                    changed.append(selector_object1.split(".")[0])
+                    changed.append(selector_object2.split(".")[0])
+                    command = """%sself.drag_and_drop(%s, %s)%s""" % (
+                        whitespace,
+                        selector_object1,
+                        selector_object2,
+                        comments,
+                    )
+            if object_dict:
+                if not add_comments:
+                    comments = ""
+                object_name1 = selector1
+                object_name2 = selector2
+                if object_name1 in object_dict.keys() and (
+                    object_name2 in object_dict.keys()
+                ):
+                    selector_object1 = object_dict[object_name1]
+                    selector_object2 = object_dict[object_name2]
+                    changed.append(object_name1.split(".")[0])
+                    changed.append(object_name2.split(".")[0])
+                    command = """%sself.drag_and_drop(%s, %s)%s""" % (
+                        whitespace,
+                        selector_object1,
+                        selector_object2,
                         comments,
                     )
             seleniumbase_lines.append(command)
