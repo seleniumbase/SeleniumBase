@@ -5,8 +5,8 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="248" /></a></h2>
-<h4 align="center">Fast and reliable testing for web apps.</h4>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="590" /></a></h2>
+<h4 align="center">Create web & mobile tests 10x faster.</h4>
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a> <a href="https://pepy.tech/project/seleniumbase">
@@ -18,7 +18,7 @@
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p align="center">SeleniumBase is a complete framework for web automation and end-to-end testing with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.<br />The API simplifies <a href="https://www.selenium.dev/documentation/">Selenium</a>'s out-of-the-box API, leading to tests with more maintainable code. <br />SeleniumBase includes advanced features such as a realtime <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and more.</p>
+<p align="center">SeleniumBase is a complete framework for web automation & end-to-end testing with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.<br />The API simplifies <a href="https://www.selenium.dev/documentation/">Selenium</a>'s out-of-the-box API, which leads to more maintainable test code. <br />SeleniumBase includes advanced features such as a realtime <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, & more.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -65,7 +65,7 @@
 pytest my_first_test.py --demo
 ```
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_2.gif" width="480" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
 
 ```python
 from seleniumbase import BaseCase
@@ -190,7 +190,7 @@ pytest test_demo_site.py
 
 > (Chrome is the default browser if not specified with ``--browser=BROWSER``. On Linux, ``--headless`` is the default behavior. You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.)
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" width="450" /></a><br />
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_2.gif" title="SeleniumBase Demo Page" width="450" /></a><br />
 
 🔵 <b>Here are more examples that you can run:</b>
 
@@ -206,7 +206,7 @@ pytest test_swag_labs.py
 pytest my_first_test.py --demo
 ```
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_2.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a>
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [CSS Diner](http://flukeout.github.io/) can help you learn.

@@ -12,10 +12,16 @@
 pytest TEST_NAME.py --recorder -s
 ```
 
-🔴 To add your own actions inside the test, you'll need to create a breakpoint somewhere inside of it:
+🔴 To add your own actions inside the test, you'll need to create a breakpoint inside your test to activate Debug Mode:
 
 ```python
 import ipdb; ipdb.set_trace()
+```
+
+🔴 You can also activate Debug Mode at the start of your test by adding ``--trace`` as a ``pytest`` command-line option:
+
+```bash
+pytest TEST_NAME.py --trace -s
 ```
 
 🔴 Once you've reached the breakpoint, you can take control of the browser and add in any actions that you want recorded. When you are finished recording, type "``c``" on the command-line and press ``[Enter]`` to let the test continue from the breakpoint. After the test completes, a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder, which will include the actions performed by the test, and the manual actions that you added in. Below is a command-line notification:
@@ -63,6 +69,8 @@ class RecorderTest(BaseCase):
 <p>🔴 SeleniumBase <code>1.66.4</code> adds better error-handling when using The Recorder, as well as a few other improvements.</p>
 
 <p>🔴 SeleniumBase <code>1.66.5</code> improves the algorithm for converting recorded actions into SeleniumBase code.</p>
+
+<p>🔴 SeleniumBase <code>1.66.6</code> adds more selector options and improves the algorithm for converting recorded actions into SeleniumBase code.</p>
 
 --------
 

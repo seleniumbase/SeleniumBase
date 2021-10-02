@@ -34,7 +34,7 @@ Run an example test in Demo Mode: (highlight assertions)
 pytest my_first_test.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" title="SeleniumBase Demo Mode" /><br />
+<img src="https://seleniumbase.io/cdn/gif/my_first_test_2.gif" title="SeleniumBase Demo Mode" /><br />
 
 Run a different example in Demo Mode:
 
@@ -42,7 +42,7 @@ Run a different example in Demo Mode:
 pytest test_swag_labs.py --demo
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/swag_demo_2.gif" /><br />
+<img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 
@@ -70,7 +70,7 @@ Run a test on the Demo Site to try many SeleniumBase methods:
 pytest test_demo_site.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" /><br />
+<img src="https://seleniumbase.io/cdn/gif/demo_page_2.gif" title="SeleniumBase Demo Page" /><br />
 
 Run tests multi-threaded using [n] threads:
 
@@ -157,6 +157,12 @@ nosetests my_first_test.py --config=example_config.cfg
 --------
 
 For more advanced run commands, such as using a proxy server, see [../help_docs/customizing_test_runs.md](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md)
+
+--------
+
+If you just need to perform some quick website verification on various devices, you can use the <a href="https://seleniumbase.io/devices/">SeleniumBase Device Farm</a>. Just plug in a website URL, and it will display how the website looks on four different devices:
+
+<a href="https://seleniumbase.io/devices/"><img src="https://seleniumbase.io/cdn/img/github_demo.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
 
 --------
 
