@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="240">](https://github.com/seleniumbase/SeleniumBase/)
 
 ## Console Scripts
 
@@ -345,3 +345,7 @@ You can start, restart, or stop the Grid Hub server.
 Controls the Selenium Grid node, which serves as a
 worker machine for your Selenium Grid Hub server.
 You can start, restart, or stop the Grid node.
+
+--------
+
+[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

@@ -152,7 +152,8 @@ setup(
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.10.0;python_version>="3.5"',
         "cssselect==1.1.0",
-        "filelock==3.2.0",
+        'filelock==3.2.1;python_version<"3.6"',
+        'filelock==3.3.0;python_version>="3.6"',
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
@@ -224,7 +225,8 @@ setup(
     extras_require={
         # pip install -e .[coverage]
         "coverage": [
-            "coverage==5.5",
+            'coverage==5.5;python_version<"3.6"',
+            'coverage==6.0;python_version>="3.6"',
             "pytest-cov==2.12.1",
         ],
         # pip install -e .[flake]

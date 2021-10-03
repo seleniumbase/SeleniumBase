@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="240">](https://github.com/seleniumbase/SeleniumBase/)
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 
