@@ -3562,7 +3562,6 @@ class BaseCase(unittest.TestCase):
         if len(sb_actions) > 0:
             for action in sb_actions:
                 data.append("        " + action)
-                print("        " + action)
         else:
             data.append("        pass")
         data.append("")
