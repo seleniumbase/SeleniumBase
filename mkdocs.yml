@@ -32,7 +32,7 @@ theme:
   language: en
   include_homepage_in_sidebar: true
   sticky_navigation: true
-  # collapse_navigation: false
+  collapse_navigation: true
   # titles_only: false
   include_search_page: false
   search_index_only: true
@@ -43,9 +43,10 @@ theme:
     - toc.integrate
     - navigation.indexes
     # - navigation.sections
-    # - navigation.expand
+    - navigation.expand
     # - navigation.tabs
-    # - navigation.instant
+    - navigation.tracking
+    - navigation.instant
   palette:
     scheme: default
     primary: blue
@@ -59,7 +60,6 @@ theme:
 plugins:
   - search:
       separator: '[\s]+'
-      prebuild_index: false
       lang: en
   - exclude-search:
       exclude:
@@ -107,9 +107,9 @@ nav:
     - MasterQA: examples/master_qa/ReadMe.md
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
-    - Katalon Recorder: integrations/katalon/ReadMe.md
-    - Old Recorder / Export: seleniumbase/utilities/selenium_ide/ReadMe.md
     - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
+    - Katalon Recorder Export: integrations/katalon/ReadMe.md
+    - Selenium IDE Export: seleniumbase/utilities/selenium_ide/ReadMe.md
   - Help Docs:
     - Table of Contents: help_docs/ReadMe.md
     - JS Package Manager: help_docs/js_package_manager.md

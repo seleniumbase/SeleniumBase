@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="240">](https://github.com/seleniumbase/SeleniumBase/)
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Recorder Mode</h2>
 
@@ -12,11 +12,13 @@
 pytest TEST_NAME.py --recorder -s
 ```
 
-🔴 To add your own actions inside the test, you'll need to create a breakpoint inside your test to activate Debug Mode:
+🔴 To add manual actions, you'll need to create a breakpoint inside your test to activate "Debug Mode" while in "Recorder Mode": (For reference, "Debug Mode" is also known as the "ipdb debugger".)
 
 ```python
 import ipdb; ipdb.set_trace()
 ```
+
+🔴 The Recorder will capture browser actions on URLs that begin with ``https:``, ``http:``, and ``file:``. (The Recorder won't work on ``data:`` URLS.)
 
 🔴 You can also activate Debug Mode at the start of your test by adding ``--trace`` as a ``pytest`` command-line option:
 
@@ -58,7 +60,7 @@ class RecorderTest(BaseCase):
 
 <p>🔴 (Note that <b>same domain/origin</b> is not the same as <b>same URL</b>. Example: <code>https://xkcd.com/353/</code> and <code>https://xkcd.com/1537/</code> are two different URLs with the <b>same domain/origin</b>. That means that both URLs will share the same <code>sessionStorage</code> data, and that any changes to <code>sessionStorage</code> from one URL will carry on to the <code>sessionStorage</code> of a different URL when the domain/origin is the same. If you want to find out a website's origin during a test, just call: <code>self.get_origin()</code>, which returns the value of <code>window.location.origin</code> from the browser's console.)</p>
 
-<p>🔴 The launch of Recorder Mode has brought a new SeleniumBase method along with it: <code>self.open_if_not_url(URL)</code>. This method will open the URL given if the browser is not currently on that page. This is used as a method in recorded scripts when SeleniumBase detects that a click action has already brought the test to the given page. This method not only prevents an extra page load if not needed, but it also lets people know the current page of the browser at that point in the test.</p>
+<p>🔴 The launch of Recorder Mode has brought a new SeleniumBase method along with it: <code>self.open_if_not_url(URL)</code>. This method will open the URL given if the browser is not currently on that page. This is used as a method in recorded scripts when SeleniumBase detects that a click action has already brought the test to the given page. This method not only prevents an extra page load if not needed, but it also lets people know the current page of the browser during that part of the test.</p>
 
 <p>🔴 SeleniumBase <code>1.66.1</code> adds the ability to record changes to <i>"Choose File"</i> <code>input</code> fields. Sometimes the <i>"Choose File"</i> input field is hidden on websites, so <code>self.show_file_choosers()</code> was added to get around this edge case. Version <code>1.66.1</code> also adds <code>self.set_content_to_frame(frame)</code>, which lets you record actions inside of iframes.</p>
 
@@ -71,6 +73,8 @@ class RecorderTest(BaseCase):
 <p>🔴 SeleniumBase <code>1.66.5</code> improves the algorithm for converting recorded actions into SeleniumBase code.</p>
 
 <p>🔴 SeleniumBase <code>1.66.6</code> adds more selector options and improves the algorithm for converting recorded actions into SeleniumBase code.</p>
+
+<p>🔴 SeleniumBase <code>1.66.7</code> improves Recorder Mode post-processing and automatically adds <code>self.show_file_choosers()</code> if file-upload fields are hidden when calling <code>self.choose_file(selector, file_path)</code>.</p>
 
 --------
 
