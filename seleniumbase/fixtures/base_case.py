@@ -3273,7 +3273,7 @@ class BaseCase(unittest.TestCase):
                 and srt_actions[n-1][0] == "chfil"
             ):
                 srt_actions[n-1][0] = "_skip"
-                srt_actions[n][2] = srt_actions[n-1][1]
+                srt_actions[n][2] = srt_actions[n-1][1][1]
         origins = []
         for n in range(len(srt_actions)):
             if (
@@ -3297,6 +3297,18 @@ class BaseCase(unittest.TestCase):
                 srt_actions[n][0] = "h_clk"
                 srt_actions[n][1] = srt_actions[n-1][1][0]
                 srt_actions[n][2] = srt_actions[n-1][1][1]
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "chfil" and srt_actions[n][2] in origins:
+                srt_actions[n][0] = "cho_f"
+                srt_actions[n][2] = srt_actions[n][1][1]
+                srt_actions[n][1] = srt_actions[n][1][0]
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "sh_fc"
+                and n > 0
+                and srt_actions[n-1][0] == "sh_fc"
+            ):
+                srt_actions[n-1][0] = "_skip"
         ext_actions = []
         ext_actions.append("js_cl")
         ext_actions.append("as_el")
@@ -3312,6 +3324,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("sw_dc")
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
+        ext_actions.append("sh_fc")
         for n in range(len(srt_actions)):
             if srt_actions[n][0] in ext_actions:
                 origin = srt_actions[n][2]
@@ -3521,6 +3534,9 @@ class BaseCase(unittest.TestCase):
                     else:
                         sb_actions.append("self.%s('%s')" % (
                             method, action[1][0]))
+            elif action[0] == "sh_fc":
+                cb_method = "show_file_choosers"
+                sb_actions.append('self.%s()' % cb_method)
             elif action[0] == "c_box":
                 cb_method = "check_if_unchecked"
                 if action[2] == "no":
@@ -4120,6 +4136,15 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["sh_fc", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
 
     def get_domain_url(self, url):
         self.__check_scope()
@@ -4440,6 +4465,15 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(selector, by)
             if not self.demo_mode and not self.slow_mode:
                 self.__scroll_to_element(element, selector, by)
+        else:
+            choose_file_selector = 'input[type="file"]'
+            if self.is_element_present(choose_file_selector):
+                if not self.is_element_visible(choose_file_selector):
+                    self.show_file_choosers()
+                    if self.is_element_visible(selector, by=by):
+                        self.__demo_mode_highlight_if_active(selector, by)
+                        if not self.demo_mode and not self.slow_mode:
+                            self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
         if self.recorder_mode:
             url = self.get_current_url()
@@ -4448,7 +4482,8 @@ class BaseCase(unittest.TestCase):
                     if self.get_session_storage_item("pause_recorder") == "no":
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
-                        action = ["chfil", file_path, origin, time_stamp]
+                        sele_file_path = [selector, file_path]
+                        action = ["chfil", sele_file_path, origin, time_stamp]
                         self.__extra_actions.append(action)
         if type(abs_path) is int or type(abs_path) is float:
             abs_path = str(abs_path)
