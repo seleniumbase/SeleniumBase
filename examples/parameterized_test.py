@@ -1,5 +1,5 @@
-from seleniumbase import BaseCase
 from parameterized import parameterized
+from seleniumbase import BaseCase
 
 
 class GoogleTests(BaseCase):
