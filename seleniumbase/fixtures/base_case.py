@@ -10283,11 +10283,11 @@ class BaseCase(unittest.TestCase):
                 raise Exception(exception_string)
         if self.mobile_emulator:
             if not self.user_agent:
-                # Use the Pixel 3 user agent by default if not specified
+                # Use the Pixel 4 user agent by default if not specified
                 self.user_agent = (
-                    "Mozilla/5.0 (Linux; Android 9; Pixel 3 XL) "
+                    "Mozilla/5.0 (Linux; Android 11; Pixel 4 XL) "
                     "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/76.0.3809.132 Mobile Safari/537.36"
+                    "Chrome/89.0.4389.105 Mobile Safari/537.36"
                 )
 
         # Dashboard pre-processing:
