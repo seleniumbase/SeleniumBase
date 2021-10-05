@@ -96,6 +96,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_url = None
         self.__last_page_source = None
         self.__skip_reason = None
+        self.__dont_record_js_click = False
         self.__overrided_default_timeouts = False
         self.__added_pytest_html_extra = None
         self.__deferred_assert_count = 0
@@ -1659,7 +1660,9 @@ class BaseCase(unittest.TestCase):
                 self.click(selector, by=by)
             else:
                 selector = self.convert_to_css_selector(selector, by=by)
+                self.__dont_record_js_click = True
                 self.js_click(selector, by=By.CSS_SELECTOR)
+                self.__dont_record_js_click = False
 
     def select_if_unselected(self, selector, by=By.CSS_SELECTOR):
         """ Same as check_if_unchecked() """
@@ -1674,7 +1677,9 @@ class BaseCase(unittest.TestCase):
                 self.click(selector, by=by)
             else:
                 selector = self.convert_to_css_selector(selector, by=by)
+                self.__dont_record_js_click = True
                 self.js_click(selector, by=By.CSS_SELECTOR)
+                self.__dont_record_js_click = False
 
     def unselect_if_selected(self, selector, by=By.CSS_SELECTOR):
         """ Same as uncheck_if_checked() """
@@ -1860,7 +1865,9 @@ class BaseCase(unittest.TestCase):
                     self.__get_href_from_partial_link_text(click_selector)
                 )
             else:
+                self.__dont_record_js_click = True
                 self.js_click(click_selector, by=click_by)
+                self.__dont_record_js_click = False
         if outdated_driver:
             pass  # Already did the click workaround
         elif self.mobile_emulator:
@@ -1943,7 +1950,9 @@ class BaseCase(unittest.TestCase):
                     self.__get_href_from_partial_link_text(click_selector)
                 )
             else:
+                self.__dont_record_js_click = True
                 self.js_click(click_selector, click_by)
+                self.__dont_record_js_click = False
         if not outdated_driver:
             element = page_actions.hover_element_and_double_click(
                 self.driver,
@@ -3214,15 +3223,23 @@ class BaseCase(unittest.TestCase):
                 and (
                     srt_actions[n-1][0] == "click"
                     or srt_actions[n-1][0] == "js_cl"
+                    or srt_actions[n-1][0] == "js_ca"
                 )
             ):
                 url1 = srt_actions[n-1][2]
-                if srt_actions[n-1][0] == "js_cl":
+                if (
+                    srt_actions[n-1][0] == "js_cl"
+                    or srt_actions[n-1][0] == "js_ca"
+                ):
                     url1 = srt_actions[n-1][2][0]
-                if url1.endswith("/"):
+                if url1.endswith("/#/"):
+                    url1 = url1[:-3]
+                elif url1.endswith("/"):
                     url1 = url1[:-1]
                 url2 = srt_actions[n][2]
-                if url2.endswith("/"):
+                if url2.endswith("/#/"):
+                    url2 = url1[:-3]
+                elif url2.endswith("/"):
                     url2 = url2[:-1]
                 if url1 == url2:
                     srt_actions[n][0] = "f_url"
@@ -3236,10 +3253,14 @@ class BaseCase(unittest.TestCase):
                 )
             ):
                 url1 = srt_actions[n-1][2]
-                if url1.endswith("/"):
+                if url1.endswith("/#/"):
+                    url1 = url1[:-3]
+                elif url1.endswith("/"):
                     url1 = url1[:-1]
                 url2 = srt_actions[n][2]
-                if url2.endswith("/"):
+                if url2.endswith("/#/"):
+                    url2 = url1[:-3]
+                elif url2.endswith("/"):
                     url2 = url2[:-1]
                 if url1 == url2:
                     srt_actions[n-1][0] = "_skip"
@@ -3250,6 +3271,7 @@ class BaseCase(unittest.TestCase):
                 and (
                     srt_actions[n-1][0] == "click"
                     or srt_actions[n-1][0] == "js_cl"
+                    or srt_actions[n-1][0] == "js_ca"
                     or srt_actions[n-1][0] == "input"
                 )
                 and (int(srt_actions[n][3]) - int(srt_actions[n-1][3]) < 6500)
@@ -3257,6 +3279,7 @@ class BaseCase(unittest.TestCase):
                 if (
                     srt_actions[n-1][0] == "click"
                     or srt_actions[n-1][0] == "js_cl"
+                    or srt_actions[n-1][0] == "js_ca"
                 ):
                     if (
                         srt_actions[n-1][1].startswith("input")
@@ -3311,6 +3334,7 @@ class BaseCase(unittest.TestCase):
                 srt_actions[n-1][0] = "_skip"
         ext_actions = []
         ext_actions.append("js_cl")
+        ext_actions.append("js_ca")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
         ext_actions.append("asenv")
@@ -3325,10 +3349,14 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
         ext_actions.append("sh_fc")
+        ext_actions.append("c_l_s")
         for n in range(len(srt_actions)):
             if srt_actions[n][0] in ext_actions:
                 origin = srt_actions[n][2]
-                if srt_actions[n][0] == "js_cl":
+                if (
+                    srt_actions[n][0] == "js_cl"
+                    or srt_actions[n][0] == "js_ca"
+                ):
                     origin = srt_actions[n][2][1]
                 if origin.endswith("/"):
                     origin = origin[0:-1]
@@ -3349,6 +3377,12 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "js_cl":
                 method = "js_click"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "js_ca":
+                method = "js_click_all"
                 if '"' not in action[1]:
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
@@ -3537,6 +3571,8 @@ class BaseCase(unittest.TestCase):
             elif action[0] == "sh_fc":
                 cb_method = "show_file_choosers"
                 sb_actions.append('self.%s()' % cb_method)
+            elif action[0] == "c_l_s":
+                sb_actions.append("self.clear_local_storage()")
             elif action[0] == "c_box":
                 cb_method = "check_if_unchecked"
                 if action[2] == "no":
@@ -3963,7 +3999,7 @@ class BaseCase(unittest.TestCase):
         action = None
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
-        if self.recorder_mode:
+        if self.recorder_mode and not self.__dont_record_js_click:
             time_stamp = self.execute_script("return Date.now();")
             tag_name = None
             href = ""
@@ -3979,6 +4015,8 @@ class BaseCase(unittest.TestCase):
             origin = self.get_origin()
             href_origin = [href, origin]
             action = ["js_cl", selector, href_origin, time_stamp]
+            if all_matches:
+                action[0] = "js_ca"
         if not all_matches:
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
@@ -5786,6 +5824,11 @@ class BaseCase(unittest.TestCase):
     def clear_local_storage(self):
         self.__check_scope()
         self.execute_script("window.localStorage.clear();")
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["c_l_s", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def get_local_storage_keys(self):
         self.__check_scope()
