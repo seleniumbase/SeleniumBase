@@ -328,7 +328,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1038,7 +1038,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1170,7 +1170,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1517,7 +1517,7 @@ class BaseCase(unittest.TestCase):
                             )
                         )
                     ):
-                        self.switch_to_newest_window()
+                        self.__switch_to_newest_window_if_not_blank()
                     return  # Probably on new page / Elements are all stale
         latest_window_count = len(self.driver.window_handles)
         if (
@@ -1530,7 +1530,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
 
     def click_nth_visible_element(
         self, selector, number, by=By.CSS_SELECTOR, timeout=None
@@ -1587,7 +1587,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
 
     def click_if_visible(self, selector, by=By.CSS_SELECTOR):
         """If the page selector exists and is visible, clicks on the element.
@@ -1613,7 +1613,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -1892,7 +1892,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1972,7 +1972,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -2114,7 +2114,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
@@ -2602,6 +2602,15 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_window(self):
         self.switch_to_window(0)
+
+    def __switch_to_newest_window_if_not_blank(self):
+        current_window = self.driver.current_window_handle
+        try:
+            self.switch_to_window(len(self.driver.window_handles) - 1)
+            if self.get_current_url() == "about:blank":
+                self.switch_to_window(current_window)
+        except Exception:
+            self.switch_to_window(current_window)
 
     def switch_to_newest_window(self):
         self.switch_to_window(len(self.driver.window_handles) - 1)
@@ -4042,7 +4051,7 @@ class BaseCase(unittest.TestCase):
                 )
             )
         ):
-            self.switch_to_newest_window()
+            self.__switch_to_newest_window_if_not_blank()
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
