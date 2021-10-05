@@ -10256,6 +10256,11 @@ class BaseCase(unittest.TestCase):
 
             settings_parser.set_settings(self.settings_file)
 
+        # Set variables that may be useful to developers
+        self.log_abspath = os.path.abspath(self.log_path)
+        self.data_path = os.path.join(self.log_path, self.__get_test_id())
+        self.data_abspath = os.path.abspath(self.data_path)
+
         # Mobile Emulator device metrics: CSS Width, CSS Height, & Pixel-Ratio
         if self.device_metrics:
             metrics_string = self.device_metrics
