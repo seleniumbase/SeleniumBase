@@ -185,7 +185,8 @@ setup(
         'beautifulsoup4==4.10.0;python_version>="3.5"',
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
-        'cryptography==3.4.8;python_version>="3.6"',
+        'cryptography==3.4.8;python_version>="3.6" and python_version<"3.7"',
+        'cryptography==35.0.0;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.10.0;python_version>="3.5"',
         'traitlets==4.3.3;python_version<"3.7"',
@@ -227,7 +228,8 @@ setup(
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.0;python_version>="3.6"',
-            "pytest-cov==2.12.1",
+            'pytest-cov==2.12.1;python_version<"3.6"',
+            'pytest-cov==3.0.0;python_version>="3.6"',
         ],
         # pip install -e .[flake]
         "flake": [

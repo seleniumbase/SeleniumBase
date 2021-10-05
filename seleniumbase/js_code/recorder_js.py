@@ -7,10 +7,13 @@ var cssPathById = function(el) {
     if (!(el instanceof Element))
         return;
     var path = [];
-    while (el !== null && el.nodeType === Node.ELEMENT_NODE) {
+    while (el != null && el.nodeType === Node.ELEMENT_NODE) {
         var selector = el.nodeName.toLowerCase();
         if (el.id) {
-            selector += '#' + el.id;
+            elid = el.id;
+            if (elid.includes('.') || elid.includes('(') || elid.includes(')'))
+                return cssPathByAttribute(el, 'id');
+            selector += '#' + elid;
             path.unshift(selector);
             break;
         } else {
@@ -57,6 +60,35 @@ var cssPathByAttribute = function(el, attr) {
     }
     return path.join(' > ');
 };
+var cssPathByClass = function(el) {
+    if (!(el instanceof Element))
+        return;
+    var path = [];
+    while (el !== null && el.nodeType === Node.ELEMENT_NODE) {
+        var selector = el.nodeName.toLowerCase();
+        if (el.hasAttribute("class") &&
+            el.getAttribute("class").length > 0 &&
+            !el.getAttribute("class").includes(' ') &&
+                (el.getAttribute("class").includes('-')) &&
+            document.querySelectorAll(
+                selector + '.' + el.getAttribute("class")).length == 1) {
+            selector += '.' + el.getAttribute("class");
+            path.unshift(selector);
+            break;
+        } else {
+            var sib = el, nth = 1;
+            while (sib = sib.previousElementSibling) {
+                if (sib.nodeName.toLowerCase() == selector)
+                   nth++;
+            }
+            if (nth != 1)
+                selector += ':nth-of-type('+nth+')';
+        }
+        path.unshift(selector);
+        el = el.parentNode;
+    }
+    return path.join(' > ');
+};
 var ssOccurrences = function(string, subString, allowOverlapping) {
     string += '';
     subString += '';
@@ -80,14 +112,11 @@ var getBestSelector = function(el) {
         return;
     child_sep = ' > ';
     selector_by_id = cssPathById(el);
-    if (selector_by_id.includes('.') ||
-        selector_by_id.includes('(') || selector_by_id.includes(')'))
-    {
-        selector_by_id = cssPathByAttribute(el, 'id');
-    }
     if (!selector_by_id.includes(child_sep))
         return selector_by_id;
     child_count_by_id = ssOccurrences(selector_by_id, child_sep);
+    selector_by_class = cssPathByClass(el);
+    tag_name = el.tagName.toLowerCase();
     non_id_attributes = [];
     non_id_attributes.push('name');
     non_id_attributes.push('data-qa');
@@ -98,6 +127,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-auto');
     non_id_attributes.push('data-text');
     non_id_attributes.push('data-test');
+    non_id_attributes.push('data-testid');
     non_id_attributes.push('data-test-id');
     non_id_attributes.push('data-test-selector');
     non_id_attributes.push('data-nav');
@@ -110,11 +140,14 @@ var getBestSelector = function(el) {
     non_id_attributes.push('heading');
     non_id_attributes.push('translate');
     non_id_attributes.push('aria-label');
+    non_id_attributes.push('ng-model');
     non_id_attributes.push('ng-href');
     non_id_attributes.push('href');
     non_id_attributes.push('label');
+    non_id_attributes.push('class');
     non_id_attributes.push('value');
-    non_id_attributes.push('ng-model');
+    non_id_attributes.push('for');
+    non_id_attributes.push('placeholder');
     non_id_attributes.push('ng-if');
     non_id_attributes.push('src');
     selector_by_attr = [];
@@ -122,6 +155,18 @@ var getBestSelector = function(el) {
     num_by_attr = [];
     child_count_by_attr = [];
     for (var i = 0; i < non_id_attributes.length; i++) {
+        if (non_id_attributes[i] == 'class' && el.hasAttribute('class')) {
+            class_name = el.getAttribute('class');
+            if (class_name.length > 0 && !class_name.includes(' ') &&
+                class_name.includes('-'))
+            {
+                selector_by_class = tag_name + '.' + class_name;
+                all_by_class = document.querySelectorAll(selector_by_class);
+                if (all_by_class.length == 1)
+                    return selector_by_class;
+            }
+            continue;
+        }
         selector_by_attr[i] = cssPathByAttribute(el, non_id_attributes[i]);
         all_by_attr[i] = document.querySelectorAll(selector_by_attr[i]);
         num_by_attr[i] = all_by_attr[i].length;
@@ -132,17 +177,14 @@ var getBestSelector = function(el) {
         }
         child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], child_sep);
     }
-    tag_name = el.tagName.toLowerCase();
     basic_tags = [];
     basic_tags.push('h1');
     basic_tags.push('input');
     basic_tags.push('textarea');
     for (var i = 0; i < basic_tags.length; i++) {
-        if (tag_name == basic_tags[i] &&
-            el == document.querySelector(basic_tags[i]))
-        {
+        d_qs_bt_i = document.querySelector(basic_tags[i]);
+        if (tag_name == basic_tags[i] && el == d_qs_bt_i)
             return basic_tags[i];
-        }
     }
     contains_tags = [];
     contains_tags.push('a');
@@ -205,6 +247,11 @@ var getBestSelector = function(el) {
     }
     best_selector = selector_by_id;
     lowest_child_count = child_count_by_id;
+    child_count_by_class = ssOccurrences(selector_by_class, child_sep);
+    if (child_count_by_class < lowest_child_count) {
+        best_selector = selector_by_class;
+        lowest_child_count = child_count_by_class;
+    }
     for (var i = 0; i < non_id_attributes.length; i++) {
         if (child_count_by_attr[i] < lowest_child_count &&
             ((num_by_attr[i] == 1) || (el == all_by_attr[i][0])))
@@ -213,6 +260,11 @@ var getBestSelector = function(el) {
             lowest_child_count = child_count_by_attr[i];
         }
     }
+    best_selector = best_selector.replaceAll('html > body', 'body');
+    selector = best_selector.replaceAll(' > ', ' ');
+    selector = selector.replaceAll(' div ', ' ');
+    if (document.querySelector(selector) == el)
+        best_selector = selector;
     return best_selector;
 };
 
@@ -269,7 +321,7 @@ var reset_recorder_state = function() {
 reset_recorder_state();
 
 document.body.addEventListener('click', function (event) {
-    // Do nothing here.
+    // Do Nothing.
 });
 document.body.addEventListener('formdata', function (event) {
     if (typeof document.recorded_actions === 'undefined')
@@ -351,13 +403,14 @@ document.body.addEventListener('change', function (event) {
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
     tag_name = element.tagName.toLowerCase();
+    e_type = element.type
     if (tag_name === 'select')
     {
         el_computed = document.querySelector(selector);
         optxt = el_computed.options[el_computed.selectedIndex].text;
         document.recorded_actions.push(['s_opt', selector, optxt, d_now]);
     }
-    else if (tag_name === 'input' && element.type === 'range')
+    else if (tag_name === 'input' && e_type === 'range')
     {
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
         {
@@ -373,7 +426,7 @@ document.body.addEventListener('change', function (event) {
         value = element.value;
         document.recorded_actions.push(['set_v', selector, value, d_now]);
     }
-    else if (tag_name === 'input' && element.type === 'file') {
+    else if (tag_name === 'input' && e_type === 'file') {
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
         {
             document.recorded_actions.pop();
@@ -384,7 +437,7 @@ document.body.addEventListener('change', function (event) {
     }
     else if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][1] === selector &&
-        tag_name === 'input' && element.type === 'checkbox')
+        tag_name === 'input' && e_type === 'checkbox')
     {
         // The checkbox state only needs to be set once. (Pop duplicates.)
         document.recorded_actions.pop();
@@ -393,15 +446,10 @@ document.body.addEventListener('change', function (event) {
             document.recorded_actions.pop();
     }
     // Go back to `if`, not `else if`.
-    if (tag_name === 'input' && element.type === 'checkbox' && element.checked)
-    {
+    if (tag_name === 'input' && e_type === 'checkbox' && element.checked)
         document.recorded_actions.push(['c_box', selector, 'yes', d_now]);
-    }
-    else if (tag_name === 'input' && element.type === 'checkbox' &&
-             !element.checked)
-    {
+    else if (tag_name === 'input' && e_type === 'checkbox' && !element.checked)
         document.recorded_actions.push(['c_box', selector, 'no', d_now]);
-    }
     json_rec_act = JSON.stringify(document.recorded_actions);
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
@@ -442,7 +490,7 @@ document.body.addEventListener('mouseup', function (event) {
     grand_element = "";
     grand_tag_name = "";
     origin = "";
-    if (parent_element.parentElement != 'null') {
+    if (parent_element.parentElement != null) {
         grand_element = parent_element.parentElement;
         grand_tag_name = grand_element.tagName.toLowerCase();
     }
@@ -595,26 +643,39 @@ document.body.addEventListener('keyup', function (event) {
         element.tagName.toLowerCase() === 'textarea')
     {
         ra_len = document.recorded_actions.length;
-        if (ra_len > 0 &&
+        if (ra_len > 0 && event.key.toLowerCase() === 'enter' &&
+            document.recorded_actions[ra_len-1][0] === 'input' &&
+            document.recorded_actions[ra_len-1][1] === selector &&
+            !document.recorded_actions[ra_len-1][2].endsWith('\n') &&
+            document.recorded_actions[ra_len-1][2].length > 0 &&
+            element.value.length == 0)
+        {
+            s_text = document.recorded_actions[ra_len-1][2] + '\n';
+            document.recorded_actions.pop();
+            document.recorded_actions.push(['input', selector, s_text, d_now]);
+            document.recorded_actions.push(['submi', selector, s_text, d_now]);
+            skip_input = true;
+        }
+        else if (ra_len > 0 &&
             document.recorded_actions[ra_len-1][0] === 'click' &&
             document.recorded_actions[ra_len-1][1] === selector)
-            {
-                document.recorded_actions.pop();
-            }
+        {
+            document.recorded_actions.pop();
+        }
         else if (ra_len > 0 &&
             document.recorded_actions[ra_len-1][0] === 'input' &&
             document.recorded_actions[ra_len-1][1] === selector &&
             !document.recorded_actions[ra_len-1][2].endsWith('\n'))
-            {
-                document.recorded_actions.pop();
-            }
+        {
+            document.recorded_actions.pop();
+        }
         else if (ra_len > 0 &&
             document.recorded_actions[ra_len-1][0] === 'input' &&
             document.recorded_actions[ra_len-1][1] === selector &&
             document.recorded_actions[ra_len-1][2].endsWith('\n'))
-            {
-                skip_input = true;
-            }
+        {
+            skip_input = true;
+        }
         if (!skip_input) {
             document.recorded_actions.push(
                 ['input', selector, element.value, d_now]);
