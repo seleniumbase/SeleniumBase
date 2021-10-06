@@ -155,19 +155,12 @@ var getBestSelector = function(el) {
     num_by_attr = [];
     child_count_by_attr = [];
     for (var i = 0; i < non_id_attributes.length; i++) {
-        if (non_id_attributes[i] == 'class' && el.hasAttribute('class')) {
-            class_name = el.getAttribute('class');
-            if (class_name.length > 0 && !class_name.includes(' ') &&
-                class_name.includes('-'))
-            {
-                selector_by_class = tag_name + '.' + class_name;
-                all_by_class = document.querySelectorAll(selector_by_class);
-                if (all_by_class.length == 1)
-                    return selector_by_class;
-            }
-            continue;
+        selector_by_attr[i] = null;
+        if (non_id_attributes[i] == 'class')
+            selector_by_attr[i] = selector_by_class;
+        else {
+            selector_by_attr[i] = cssPathByAttribute(el, non_id_attributes[i]);
         }
-        selector_by_attr[i] = cssPathByAttribute(el, non_id_attributes[i]);
         all_by_attr[i] = document.querySelectorAll(selector_by_attr[i]);
         num_by_attr[i] = all_by_attr[i].length;
         if (!selector_by_attr[i].includes(child_sep) &&
@@ -646,9 +639,7 @@ document.body.addEventListener('keyup', function (event) {
         if (ra_len > 0 && event.key.toLowerCase() === 'enter' &&
             document.recorded_actions[ra_len-1][0] === 'input' &&
             document.recorded_actions[ra_len-1][1] === selector &&
-            !document.recorded_actions[ra_len-1][2].endsWith('\n') &&
-            document.recorded_actions[ra_len-1][2].length > 0 &&
-            element.value.length == 0)
+            !document.recorded_actions[ra_len-1][2].endsWith('\n'))
         {
             s_text = document.recorded_actions[ra_len-1][2] + '\n';
             document.recorded_actions.pop();
