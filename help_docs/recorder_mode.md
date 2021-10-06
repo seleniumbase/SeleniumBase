@@ -78,6 +78,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.8</code> generates better selectors in Recorder Mode and improves the algorithm for converting recorded actions into SeleniumBase code.</p>
 
+<p>🔴 SeleniumBase <code>1.66.9</code> allows the Recorder to record methods related to file downloads. It also updates how the Recorder handles class-parsing and form submissions.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>

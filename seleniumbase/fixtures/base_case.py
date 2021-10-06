@@ -3350,9 +3350,11 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("hi_li")
         ext_actions.append("as_lt")
         ext_actions.append("as_ti")
+        ext_actions.append("as_df")
+        ext_actions.append("do_fi")
+        ext_actions.append("as_at")
         ext_actions.append("as_te")
         ext_actions.append("as_et")
-        ext_actions.append("as_at")
         ext_actions.append("sw_fr")
         ext_actions.append("sw_dc")
         ext_actions.append("s_c_f")
@@ -3539,6 +3541,22 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "as_df":
+                method = "assert_downloaded_file"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "do_fi":
+                method = "download_file"
+                file_url = action[1][0]
+                dest = action[1][1]
+                if not dest:
+                    sb_actions.append('self.%s("%s")' % (
+                        method, file_url))
+                else:
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, file_url, dest))
             elif action[0] == "as_at":
                 method = "assert_attribute"
                 if ('"' not in action[1][0]) and action[1][2]:
@@ -4608,6 +4626,16 @@ class BaseCase(unittest.TestCase):
         if not os.path.exists(destination_folder):
             os.makedirs(destination_folder)
         page_utils._download_file_to(file_url, destination_folder)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        url_dest = [file_url, destination_folder]
+                        action = ["do_fi", url_dest, origin, time_stamp]
+                        self.__extra_actions.append(action)
 
     def save_file_as(self, file_url, new_file_name, destination_folder=None):
         """Similar to self.download_file(), except that you get to rename the
@@ -4776,6 +4804,15 @@ class BaseCase(unittest.TestCase):
                 % (file, self.get_downloads_folder(), timeout)
             )
             page_actions.timeout_exception("NoSuchFileException", message)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["as_df", file, origin, time_stamp]
+                        self.__extra_actions.append(action)
         if self.demo_mode:
             messenger_post = "ASSERT DOWNLOADED FILE: [%s]" % file
             try:
