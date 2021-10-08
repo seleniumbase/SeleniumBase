@@ -217,7 +217,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.3.2;python_version>="3.6"',
-        'rich==10.11.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.12.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
@@ -227,7 +227,7 @@ setup(
         # pip install -e .[coverage]
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
-            'coverage==6.0;python_version>="3.6"',
+            'coverage==6.0.1;python_version>="3.6"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
