@@ -484,7 +484,7 @@ def _set_firefox_options(
     options.set_preference("app.update.enabled", False)
     options.set_preference("app.update.silent", True)
     options.set_preference("browser.formfill.enable", False)
-    options.set_preference("browser.privatebrowsing.autostart", True)
+    options.set_preference("browser.privatebrowsing.autostart", False)
     options.set_preference("devtools.errorconsole.enabled", True)
     options.set_preference("dom.webnotifications.enabled", False)
     options.set_preference("dom.disable_beforeunload", True)

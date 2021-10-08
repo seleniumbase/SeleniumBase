@@ -297,8 +297,8 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             self.__scroll_to_element(element, selector, by)
-            if self.browser == "safari":
-                if by == By.LINK_TEXT:
+            if self.browser == "firefox" or self.browser == "safari":
+                if by == By.LINK_TEXT or "contains(" in selector:
                     self.__jquery_click(selector, by=by)
                 else:
                     self.__js_click(selector, by=by)
