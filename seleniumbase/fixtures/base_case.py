@@ -5005,18 +5005,33 @@ class BaseCase(unittest.TestCase):
         except (ValueError, WebDriverException):
             # If unable to get browser logs, skip the assert and return.
             return
-
         messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
+        underscore_library = "//cdnjs.cloudflare.com/ajax/libs/underscore"
         errors = []
         for entry in browser_logs:
             if entry["level"] == "SEVERE":
-                if messenger_library not in entry["message"]:
+                if (
+                    messenger_library not in entry["message"]
+                    and underscore_library not in entry["message"]
+                ):
                     # Add errors if not caused by SeleniumBase dependencies
                     errors.append(entry)
         if len(errors) > 0:
+            for n in range(len(errors)):
+                f_t_l_r = " - Failed to load resource"
+                u_c_t_e = " Uncaught TypeError: "
+                if f_t_l_r in errors[n]["message"]:
+                    url = errors[n]["message"].split(f_t_l_r)[0]
+                    errors[n] = {"Error 404 (broken link)": url}
+                elif u_c_t_e in errors[n]["message"]:
+                    url = errors[n]["message"].split(u_c_t_e)[0]
+                    error = errors[n]["message"].split(u_c_t_e)[1]
+                    errors[n] = {"Uncaught TypeError (%s)" % error: url}
+            er_str = str(errors)
+            er_str = er_str.replace("[{", "[\n{").replace("}, {", "},\n{")
             current_url = self.get_current_url()
             raise Exception(
-                "JavaScript errors found on %s => %s" % (current_url, errors)
+                "JavaScript errors found on %s => %s" % (current_url, er_str)
             )
         if self.demo_mode:
             if self.browser == "chrome" or self.browser == "edge":
