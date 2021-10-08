@@ -11,6 +11,7 @@ Example:
 
 Options:
     -b / --basic  (Basic boilerplate / single-line test)
+    -r / --recorder  (Recorder Mode has ipdb breakpoint)
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -39,27 +40,28 @@ import sys
 def invalid_run_command(msg=None):
     exp = "  ** mkfile **\n\n"
     exp += "  Usage:\n"
-    exp += "          seleniumbase mkfile [FILE.py] [OPTIONS]\n"
-    exp += "          OR     sbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "           seleniumbase mkfile [FILE.py] [OPTIONS]\n"
+    exp += "           OR     sbase mkfile [FILE.py] [OPTIONS]\n"
     exp += "  Example:\n"
-    exp += "          sbase mkfile new_test.py\n"
+    exp += "           sbase mkfile new_test.py\n"
     exp += "  Options:\n"
-    exp += "          -b / --basic  (Basic boilerplate / single-line test)\n"
+    exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
+    exp += "           -r / --recorder  (Recorder Mode has ipdb breakpoint)\n"
     exp += "  Language Options:\n"
-    exp += "          --en / --English    |    --zh / --Chinese\n"
-    exp += "          --nl / --Dutch      |    --fr / --French\n"
-    exp += "          --it / --Italian    |    --ja / --Japanese\n"
-    exp += "          --ko / --Korean     |    --pt / --Portuguese\n"
-    exp += "          --ru / --Russian    |    --es / --Spanish\n"
+    exp += "           --en / --English    |    --zh / --Chinese\n"
+    exp += "           --nl / --Dutch      |    --fr / --French\n"
+    exp += "           --it / --Italian    |    --ja / --Japanese\n"
+    exp += "           --ko / --Korean     |    --pt / --Portuguese\n"
+    exp += "           --ru / --Russian    |    --es / --Spanish\n"
     exp += "  Output:\n"
-    exp += "          Creates a new SBase test file with boilerplate code.\n"
-    exp += "          If the file already exists, an error is raised.\n"
-    exp += "          By default, uses English mode and creates a\n"
-    exp += "          boilerplate with the 5 most common SeleniumBase\n"
-    exp += '          methods, which are "open", "type", "click",\n'
-    exp += '          "assert_element", and "assert_text". If using the\n'
-    exp += '          basic boilerplate option, only the "open" method\n'
-    exp += "          is included.\n"
+    exp += "           Creates a new SBase test file with boilerplate code.\n"
+    exp += "           If the file already exists, an error is raised.\n"
+    exp += "           By default, uses English mode and creates a\n"
+    exp += "           boilerplate with the 5 most common SeleniumBase\n"
+    exp += '           methods, which are "open", "type", "click",\n'
+    exp += '           "assert_element", and "assert_text". If using the\n'
+    exp += '           basic boilerplate option, only the "open" method\n'
+    exp += "           is included.\n"
     if not msg:
         raise Exception("INVALID RUN COMMAND!\n\n%s" % exp)
     elif msg == "help":
@@ -83,6 +85,7 @@ def main():
 
     basic = False
     help_me = False
+    recorder = False
     error_msg = None
     invalid_cmd = None
     language = "English"
@@ -113,6 +116,10 @@ def main():
                 help_me = True
             elif option == "-b" or option == "--basic":
                 basic = True
+            elif option == "-r" or option == "--rec":
+                recorder = True
+            elif option == "--record" or option == "--recorder":
+                recorder = True
             elif option == "--en" or option == "--english":
                 language = "English"
             elif option == "--zh" or option == "--chinese":
@@ -155,8 +162,9 @@ def main():
     dir_name = os.getcwd()
     file_path = "%s/%s" % (dir_name, file_name)
 
-    body = "html > body"
-    para = "body p"
+    body = "body"
+    para1 = "html body > p"
+    para2 = "p"
     hello = "Hello"
     goodbye = "Goodbye"
     class_name = "MyTestClass"
@@ -200,9 +208,9 @@ def main():
     if basic:
         url = "about:blank"
     elif language not in ["English", "Dutch", "French", "Italian"]:
-        url = "data:text/html,<meta charset='utf-8'><p>%s <input>" % hello
+        url = "data:text/html,<meta charset='utf-8'><p>%s<br><input>" % hello
     else:
-        url = "data:text/html,<p>%s<br><input></p>" % hello
+        url = "data:text/html,<p>%s<br><input>" % hello
 
     import_line = "from seleniumbase import BaseCase"
     parent_class = "BaseCase"
@@ -220,16 +228,20 @@ def main():
     data.append("")
     data.append("%s" % class_line)
     data.append("    def test_base(self):")
-    data.append('        self.open("%s")' % url)
-    if not basic:
+    if not recorder:
+        data.append('        self.open("%s")' % url)
+    else:
+        data.append('        if self.recorder_ext and not self.xvfb:')
+        data.append('            import ipdb; ipdb.set_trace()')
+    if not basic and not recorder:
         data.append(
             '        self.type("input", "%s")' "  # selector, text" % goodbye
         )
-        data.append('        self.click("%s")  # selector' % para)
+        data.append('        self.click("%s")  # selector' % para1)
         data.append('        self.assert_element("%s")  # selector' % body)
         data.append(
             '        self.assert_text("%s", "%s")'
-            "  # text, selector" % (hello, para)
+            "  # text, selector" % (hello, para2)
         )
     data.append("")
 
@@ -271,6 +283,7 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
+    os.system("sbase print %s -n" % file_name)
     success = (
         "\n" + c1 + '* Test file: "' + file_name + '" was created! *'
         "" + cr + "\n"
