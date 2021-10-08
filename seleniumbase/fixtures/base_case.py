@@ -514,9 +514,6 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except Exception:
-            exc_message = self.__get_improved_exception_message()
-            raise Exception(exc_message)
         if (
             retry
             and element.get_attribute("value") != text
@@ -574,9 +571,6 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except Exception:
-            exc_message = self.__get_improved_exception_message()
-            raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -4561,9 +4555,6 @@ class BaseCase(unittest.TestCase):
                 selector, by=by, timeout=timeout
             )
             element.send_keys(abs_path)
-        except Exception:
-            exc_message = self.__get_improved_exception_message()
-            raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -9533,30 +9524,6 @@ class BaseCase(unittest.TestCase):
             exc_message = exception_info.message
         else:
             exc_message = sys.exc_info()
-        return exc_message
-
-    def __get_improved_exception_message(self):
-        """If Chromedriver is out-of-date, make it clear!
-        Given the high popularity of the following StackOverflow article:
-        https://stackoverflow.com/questions/49162667/unknown-error-
-                call-function-result-missing-value-for-selenium-send-keys-even
-        ... the original error message was not helpful. Tell people directly.
-        (Only expected when using driver.send_keys() with an old Chromedriver.)
-        """
-        exc_message = self.__get_exception_message()
-        maybe_using_old_chromedriver = False
-        if "unknown error: call function result missing" in exc_message:
-            maybe_using_old_chromedriver = True
-        if self.browser == "chrome" and maybe_using_old_chromedriver:
-            update = (
-                "Your version of ChromeDriver may be out-of-date! "
-                "Please go to "
-                "https://sites.google.com/a/chromium.org/chromedriver/ "
-                "and download the latest version to your system PATH! "
-                "Or use: ``seleniumbase install chromedriver`` . "
-                "Original Exception Message: %s" % exc_message
-            )
-            exc_message = update
         return exc_message
 
     def __add_deferred_assert_failure(self):
