@@ -68,7 +68,7 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.3</code> improves the algorithm for generating efficient selectors. Additionally, single and double quotes in selectors will now be properly escaped with backslashes as needed.</p>
 
-<p>🔴 SeleniumBase <code>1.66.4</code> adds better error-handling when using The Recorder, as well as a few other improvements.</p>
+<p>🔴 SeleniumBase <code>1.66.4</code> adds better error-handling for the Recorder, and a few other improvements.</p>
 
 <p>🔴 SeleniumBase <code>1.66.5</code> improves the algorithm for converting recorded actions into SeleniumBase code.</p>
 
@@ -79,6 +79,8 @@ class RecorderTest(BaseCase):
 <p>🔴 SeleniumBase <code>1.66.8</code> generates better selectors in Recorder Mode and improves the algorithm for converting recorded actions into SeleniumBase code.</p>
 
 <p>🔴 SeleniumBase <code>1.66.9</code> allows the Recorder to record methods related to file downloads. It also updates how the Recorder handles class-parsing and form submissions.</p>
+
+<p>🔴 SeleniumBase <code>1.66.10</code> adds better error-handling for the Recorder. It also adds the console script option <code>-r</code> for <code>sbase mkfile</code> to generate a new test file with a breakpoint for Recorder Mode: <code>sbase mkfile NEW_FILE.py -r</code></p>
 
 --------
 

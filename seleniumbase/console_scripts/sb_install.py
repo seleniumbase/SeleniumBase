@@ -13,13 +13,13 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 91.0.4472.101
-        sbase install chromedriver 91
+        sbase install chromedriver 94.0.4606.61
+        sbase install chromedriver 94
         sbase install chromedriver latest
         sbase install chromedriver latest-1  # (Latest minus one)
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 91.0.864.67
+        sbase install edgedriver 94.0.992.38
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -52,7 +52,8 @@ DEFAULT_OPERADRIVER_VERSION = "v.88.0.4324.104"
 def invalid_run_command():
     exp = "  ** install **\n\n"
     exp += "  Usage:\n"
-    exp += "          seleniumbase install [DRIVER_NAME] [OPTIONS]\n"
+    exp += "          seleniumbase install [DRIVER] [OPTIONS]\n"
+    exp += "          OR     sbase install [DRIVER] [OPTIONS]\n"
     exp += "              (Drivers: chromedriver, geckodriver, edgedriver,\n"
     exp += "                        iedriver, operadriver)\n"
     exp += "  Options:\n"
@@ -61,13 +62,16 @@ def invalid_run_command():
     exp += '                          Use "latest" for the latest version.\n'
     exp += "          -p OR --path    Also copy the driver to /usr/local/bin\n"
     exp += "  Example:\n"
-    exp += "          seleniumbase install chromedriver\n"
-    exp += "          seleniumbase install geckodriver\n"
-    exp += "          seleniumbase install chromedriver 91\n"
-    exp += "          seleniumbase install chromedriver 91.0.4472.101\n"
-    exp += "          seleniumbase install chromedriver latest\n"
-    exp += "          seleniumbase install chromedriver -p\n"
-    exp += "          seleniumbase install chromedriver latest -p\n"
+    exp += "          sbase install chromedriver\n"
+    exp += "          sbase install geckodriver\n"
+    exp += "          sbase install edgedriver"
+    exp += "          sbase install chromedriver 94\n"
+    exp += "          sbase install chromedriver 94.0.4606.61\n"
+    exp += "          sbase install chromedriver latest\n"
+    exp += "          sbase install chromedriver latest-1\n"
+    exp += "          sbase install chromedriver -p\n"
+    exp += "          sbase install chromedriver latest -p\n"
+    exp += "          sbase install edgedriver 94.0.992.38"
     exp += "  Output:\n"
     exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -571,6 +575,7 @@ def main(override=None):
                 # Mac / Linux
                 expected_contents = [
                     "Driver_Notes/",
+                    "Driver_Notes/EULA",
                     "Driver_Notes/LICENSE",
                     "Driver_Notes/credits.html",
                     "msedgedriver",
@@ -581,6 +586,7 @@ def main(override=None):
                 expected_contents = [
                     "Driver_Notes/",
                     "Driver_Notes/credits.html",
+                    "Driver_Notes/EULA",
                     "Driver_Notes/LICENSE",
                     "msedgedriver.exe",
                 ]
@@ -623,6 +629,7 @@ def main(override=None):
             print("Unzip Complete!\n")
             to_remove = [
                 "%s/Driver_Notes/credits.html" % downloads_folder,
+                "%s/Driver_Notes/EULA" % downloads_folder,
                 "%s/Driver_Notes/LICENSE" % downloads_folder,
             ]
             for file_to_remove in to_remove:

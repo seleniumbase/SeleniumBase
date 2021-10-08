@@ -128,6 +128,14 @@ nav:
     - Drag & Drop Demo Page: https://seleniumbase.io/other/drag_and_drop
     - Virtual Device Farm: https://seleniumbase.io/devices/
     - Error Demo Page: https://seleniumbase.io/error_page/
+    - Page with broken links: https://seleniumbase.io/other/broken_page
+    - W3Schools iframes: https://seleniumbase.io/w3schools/iframes
+    - W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
+    - W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
+    - W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
+    - W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
+    - SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
+    - HTML Playground Page: https://seleniumbase.io/w3schools/
   - Presentations:
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html

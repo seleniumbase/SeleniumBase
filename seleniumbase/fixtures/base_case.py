@@ -297,8 +297,8 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
             self.__scroll_to_element(element, selector, by)
-            if self.browser == "safari":
-                if by == By.LINK_TEXT:
+            if self.browser == "firefox" or self.browser == "safari":
+                if by == By.LINK_TEXT or "contains(" in selector:
                     self.__jquery_click(selector, by=by)
                 else:
                     self.__js_click(selector, by=by)
@@ -514,9 +514,6 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except Exception:
-            exc_message = self.__get_improved_exception_message()
-            raise Exception(exc_message)
         if (
             retry
             and element.get_attribute("value") != text
@@ -574,9 +571,6 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(Keys.RETURN)
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
-        except Exception:
-            exc_message = self.__get_improved_exception_message()
-            raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -4282,6 +4276,7 @@ class BaseCase(unittest.TestCase):
                 "javascript:" not in link
                 and "mailto:" not in link
                 and "data:" not in link
+                and "://fonts.gstatic.com" not in link
             ):
                 links.append(link)
         if timeout:
@@ -4560,9 +4555,6 @@ class BaseCase(unittest.TestCase):
                 selector, by=by, timeout=timeout
             )
             element.send_keys(abs_path)
-        except Exception:
-            exc_message = self.__get_improved_exception_message()
-            raise Exception(exc_message)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -4992,8 +4984,8 @@ class BaseCase(unittest.TestCase):
 
     def assert_no_js_errors(self):
         """Asserts that there are no JavaScript "SEVERE"-level page errors.
-        Works ONLY for Chrome (non-headless) and Chrome-based browsers.
-        Does NOT work on Firefox, Edge, IE, and some other browsers:
+        Works ONLY on Chromium browsers (Chrome or Edge).
+        Does NOT work on Firefox, IE, Safari, or some other browsers:
             * See https://github.com/SeleniumHQ/selenium/issues/1161
         Based on the following Stack Overflow solution:
             * https://stackoverflow.com/a/41150512/7058266
@@ -5005,18 +4997,33 @@ class BaseCase(unittest.TestCase):
         except (ValueError, WebDriverException):
             # If unable to get browser logs, skip the assert and return.
             return
-
         messenger_library = "//cdnjs.cloudflare.com/ajax/libs/messenger"
+        underscore_library = "//cdnjs.cloudflare.com/ajax/libs/underscore"
         errors = []
         for entry in browser_logs:
             if entry["level"] == "SEVERE":
-                if messenger_library not in entry["message"]:
+                if (
+                    messenger_library not in entry["message"]
+                    and underscore_library not in entry["message"]
+                ):
                     # Add errors if not caused by SeleniumBase dependencies
                     errors.append(entry)
         if len(errors) > 0:
+            for n in range(len(errors)):
+                f_t_l_r = " - Failed to load resource"
+                u_c_t_e = " Uncaught TypeError: "
+                if f_t_l_r in errors[n]["message"]:
+                    url = errors[n]["message"].split(f_t_l_r)[0]
+                    errors[n] = {"Error 404 (broken link)": url}
+                elif u_c_t_e in errors[n]["message"]:
+                    url = errors[n]["message"].split(u_c_t_e)[0]
+                    error = errors[n]["message"].split(u_c_t_e)[1]
+                    errors[n] = {"Uncaught TypeError (%s)" % error: url}
+            er_str = str(errors)
+            er_str = er_str.replace("[{", "[\n{").replace("}, {", "},\n{")
             current_url = self.get_current_url()
             raise Exception(
-                "JavaScript errors found on %s => %s" % (current_url, errors)
+                "JavaScript errors found on %s => %s" % (current_url, er_str)
             )
         if self.demo_mode:
             if self.browser == "chrome" or self.browser == "edge":
@@ -9519,30 +9526,6 @@ class BaseCase(unittest.TestCase):
             exc_message = sys.exc_info()
         return exc_message
 
-    def __get_improved_exception_message(self):
-        """If Chromedriver is out-of-date, make it clear!
-        Given the high popularity of the following StackOverflow article:
-        https://stackoverflow.com/questions/49162667/unknown-error-
-                call-function-result-missing-value-for-selenium-send-keys-even
-        ... the original error message was not helpful. Tell people directly.
-        (Only expected when using driver.send_keys() with an old Chromedriver.)
-        """
-        exc_message = self.__get_exception_message()
-        maybe_using_old_chromedriver = False
-        if "unknown error: call function result missing" in exc_message:
-            maybe_using_old_chromedriver = True
-        if self.browser == "chrome" and maybe_using_old_chromedriver:
-            update = (
-                "Your version of ChromeDriver may be out-of-date! "
-                "Please go to "
-                "https://sites.google.com/a/chromium.org/chromedriver/ "
-                "and download the latest version to your system PATH! "
-                "Or use: ``seleniumbase install chromedriver`` . "
-                "Original Exception Message: %s" % exc_message
-            )
-            exc_message = update
-        return exc_message
-
     def __add_deferred_assert_failure(self):
         """ Add a deferred_assert failure to a list for future processing. """
         self.__check_scope()
@@ -10327,6 +10310,14 @@ class BaseCase(unittest.TestCase):
                     "Chrome/89.0.4389.105 Mobile Safari/537.36"
                 )
 
+        if self.browser in ["firefox", "ie", "safari", "opera"]:
+            # The Recorder Mode browser extension is only for Chrome/Edge.
+            if self.recorder_mode:
+                message = (
+                    "Recorder Mode ONLY supports Chrome and Edge!\n"
+                    '(Your browser choice was: "%s")' % self.browser)
+                raise Exception(message)
+
         # Dashboard pre-processing:
         if self.dashboard:
             if self._multithreaded:
@@ -10428,10 +10419,6 @@ class BaseCase(unittest.TestCase):
             # Only Chrome and Edge browsers have the mobile emulator.
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
-            # The Recorder Mode browser extension is only for Chrome/Edge.
-            if self.recorder_mode:
-                print('\n* The Recorder extension is for Chrome & Edge only!')
-                self.recorder_mode = False
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)

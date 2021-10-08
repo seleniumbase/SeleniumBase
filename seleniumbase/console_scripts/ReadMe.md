@@ -15,19 +15,31 @@ SeleniumBase console scripts help you get things done more easily, such as insta
 ### install
 
 * Usage:
-``sbase install [DRIVER] [VERSION]``
-    (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
-              ``iedriver``, ``operadriver``)
-    (Versions: ``latest`` or a specific driver version.
-               For chromedriver, you can also specify the major
-               version int, or ``latest-1`` for latest minus 1.
-               If none specified, installs the default version.)
+``sbase install [DRIVER] [OPTIONS]``
 
 * Examples:
-``sbase install chromedriver``
 
-* Options:
-    ``latest``:
+```bash
+sbase install chromedriver
+sbase install geckodriver
+sbase install edgedriver
+sbase install chromedriver 94
+sbase install chromedriver 94.0.4606.61
+sbase install chromedriver latest
+sbase install chromedriver latest-1  # (Latest minus one)
+sbase install chromedriver -p
+sbase install chromedriver latest -p
+sbase install edgedriver 94.0.992.38
+```
+
+(Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
+           ``iedriver``, ``operadriver``)
+
+(Options:  ``latest`` or a specific driver version.
+           For chromedriver, you can also specify the major
+           version int, or ``latest-1`` for latest minus 1.
+           If none specified, installs the default version.
+           ``-p`` / ``--path``: Also copy to "/usr/local/bin".)
 
 * Output:
 Installs the specified webdriver.
@@ -120,6 +132,7 @@ ui_tests/
 
 * Options:
 ``-b`` / ``--basic``  (Basic boilerplate / single-line test)
+``-r`` / ``--recorder``  (Recorder Mode has ipdb breakpoint)
 
 * Language Options:
 ``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``

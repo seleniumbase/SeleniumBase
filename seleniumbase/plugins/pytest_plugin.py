@@ -902,6 +902,7 @@ def pytest_addoption(parser):
 
     # Recorder Mode does not support headless browser runs.
     # (Chromium does not allow extensions in Headless Mode)
+    using_recorder = False
     if (
         "--recorder" in sys_argv
         or "--record" in sys_argv
@@ -912,11 +913,13 @@ def pytest_addoption(parser):
                 "\n\n  Recorder Mode does NOT support Headless Mode!"
                 '\n  (DO NOT combine "--recorder" with "--headless"!)\n'
             )
+        using_recorder = True
 
     # As a shortcut, you can use "--edge" instead of "--browser=edge", etc,
     # but you can only specify one default browser for tests. (Default: chrome)
     browser_changes = 0
     browser_set = None
+    browser_text = None
     browser_list = []
     if "--browser=chrome" in sys_argv or "--browser chrome" in sys_argv:
         browser_changes += 1
@@ -950,28 +953,35 @@ def pytest_addoption(parser):
         browser_changes += 1
         browser_set = "remote"
         browser_list.append("--browser=remote")
+    browser_text = browser_set
     if "--chrome" in sys_argv and not browser_set == "chrome":
         browser_changes += 1
+        browser_text = "chrome"
         sb_config._browser_shortcut = "chrome"
         browser_list.append("--chrome")
     if "--edge" in sys_argv and not browser_set == "edge":
         browser_changes += 1
+        browser_text = "edge"
         sb_config._browser_shortcut = "edge"
         browser_list.append("--edge")
     if "--firefox" in sys_argv and not browser_set == "firefox":
         browser_changes += 1
+        browser_text = "firefox"
         sb_config._browser_shortcut = "firefox"
         browser_list.append("--firefox")
     if "--ie" in sys_argv and not browser_set == "ie":
         browser_changes += 1
+        browser_text = "ie"
         sb_config._browser_shortcut = "ie"
         browser_list.append("--ie")
     if "--opera" in sys_argv and not browser_set == "opera":
         browser_changes += 1
+        browser_text = "opera"
         sb_config._browser_shortcut = "opera"
         browser_list.append("--opera")
     if "--safari" in sys_argv and not browser_set == "safari":
         browser_changes += 1
+        browser_text = "opera"
         sb_config._browser_shortcut = "safari"
         browser_list.append("--safari")
     if browser_changes > 1:
@@ -982,6 +992,15 @@ def pytest_addoption(parser):
         )
         message += "\n  ONLY ONE default browser is allowed!"
         message += "\n  Select a single browser & try again!\n"
+        raise Exception(message)
+    if (
+        using_recorder
+        and browser_changes == 1
+        and browser_text not in ["chrome", "edge"]
+    ):
+        message = (
+            "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
+            '\n  (Your browser choice was: "%s")\n' % browser_list[0])
         raise Exception(message)
 
 
