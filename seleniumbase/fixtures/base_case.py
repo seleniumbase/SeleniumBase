@@ -4282,6 +4282,7 @@ class BaseCase(unittest.TestCase):
                 "javascript:" not in link
                 and "mailto:" not in link
                 and "data:" not in link
+                and "://fonts.gstatic.com" not in link
             ):
                 links.append(link)
         if timeout:
