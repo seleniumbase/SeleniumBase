@@ -571,6 +571,7 @@ def main(override=None):
                 # Mac / Linux
                 expected_contents = [
                     "Driver_Notes/",
+                    "Driver_Notes/EULA",
                     "Driver_Notes/LICENSE",
                     "Driver_Notes/credits.html",
                     "msedgedriver",
@@ -581,6 +582,7 @@ def main(override=None):
                 expected_contents = [
                     "Driver_Notes/",
                     "Driver_Notes/credits.html",
+                    "Driver_Notes/EULA",
                     "Driver_Notes/LICENSE",
                     "msedgedriver.exe",
                 ]
@@ -623,6 +625,7 @@ def main(override=None):
             print("Unzip Complete!\n")
             to_remove = [
                 "%s/Driver_Notes/credits.html" % downloads_folder,
+                "%s/Driver_Notes/EULA" % downloads_folder,
                 "%s/Driver_Notes/LICENSE" % downloads_folder,
             ]
             for file_to_remove in to_remove:
