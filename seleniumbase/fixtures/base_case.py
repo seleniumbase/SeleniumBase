@@ -10327,6 +10327,14 @@ class BaseCase(unittest.TestCase):
                     "Chrome/89.0.4389.105 Mobile Safari/537.36"
                 )
 
+        if self.browser in ["firefox", "ie", "safari", "opera"]:
+            # The Recorder Mode browser extension is only for Chrome/Edge.
+            if self.recorder_mode:
+                message = (
+                    "Recorder Mode ONLY supports Chrome and Edge!\n"
+                    '(Your browser choice was: "%s")' % self.browser)
+                raise Exception(message)
+
         # Dashboard pre-processing:
         if self.dashboard:
             if self._multithreaded:
@@ -10428,10 +10436,6 @@ class BaseCase(unittest.TestCase):
             # Only Chrome and Edge browsers have the mobile emulator.
             # Some actions such as hover-clicking are different on mobile.
             self.mobile_emulator = False
-            # The Recorder Mode browser extension is only for Chrome/Edge.
-            if self.recorder_mode:
-                print('\n* The Recorder extension is for Chrome & Edge only!')
-                self.recorder_mode = False
 
         # Configure the test time limit (if used).
         self.set_time_limit(self.time_limit)

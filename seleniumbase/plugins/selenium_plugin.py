@@ -595,6 +595,12 @@ class SeleniumBrowser(Plugin):
         proxy_helper.remove_proxy_zip_if_present()
 
     def beforeTest(self, test):
+        browser = self.options.browser
+        if self.options.recorder_mode and browser not in ["chrome", "edge"]:
+            message = (
+                "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
+                '\n  (Your browser choice was: "%s")\n' % browser)
+            raise Exception(message)
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
