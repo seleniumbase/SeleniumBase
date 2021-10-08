@@ -13,6 +13,7 @@ class FileUpload(BaseCase):
         uploaded_image = "#anywhere-upload-queue li.queue-item"
         self.assert_element_not_visible(choose_file_selector)
         self.show_file_choosers()
+        self.highlight(choose_file_selector)
         self.assert_element(choose_file_selector)
         self.assert_attribute(choose_file_selector, "value", "")
         self.assert_element_not_visible(uploaded_image)
