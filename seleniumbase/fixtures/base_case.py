@@ -4984,8 +4984,8 @@ class BaseCase(unittest.TestCase):
 
     def assert_no_js_errors(self):
         """Asserts that there are no JavaScript "SEVERE"-level page errors.
-        Works ONLY for Chrome (non-headless) and Chrome-based browsers.
-        Does NOT work on Firefox, Edge, IE, and some other browsers:
+        Works ONLY on Chromium browsers (Chrome or Edge).
+        Does NOT work on Firefox, IE, Safari, or some other browsers:
             * See https://github.com/SeleniumHQ/selenium/issues/1161
         Based on the following Stack Overflow solution:
             * https://stackoverflow.com/a/41150512/7058266
