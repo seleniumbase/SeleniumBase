@@ -22,9 +22,10 @@ class DemoSiteTests(BaseCase):
         # Verify that a hover dropdown link changes page text
         self.assert_text("Automation Practice", "h3")
         try:
-            self.hover_and_click("#myDropdown", "#dropOption2")
+            self.hover_and_click(
+                "#myDropdown", "#dropOption2", timeout=2)
         except Exception:
-            # If the user moves the mouse while the test runs
+            # If a human moves the mouse while the test runs
             self.js_click("#dropOption2")
         self.assert_text("Link Two Selected", "h3")
 
@@ -106,6 +107,11 @@ class DemoSiteTests(BaseCase):
 
         # Highlight a page element (Also asserts visibility)
         self.highlight("h2")
+
+        # Actions with Demo Mode enabled
+        self.demo_mode = True
+        self.type("input", "Have a Nice Day!")
+        self.assert_text("SeleniumBase", "h2")
 
         # Assert no broken links (Can be slow if many links)
         # self.assert_no_404_errors()

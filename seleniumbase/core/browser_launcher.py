@@ -1129,7 +1129,13 @@ def get_local_driver(
                 capabilities=firefox_capabilities, options=firefox_options
             )
         else:
-            return webdriver.Firefox(options=firefox_options)
+            if os.path.exists(LOCAL_GECKODRIVER):
+                return webdriver.Firefox(
+                    executable_path=LOCAL_GECKODRIVER,
+                    options=firefox_options,
+                )
+            else:
+                return webdriver.Firefox(options=firefox_options)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
             raise Exception(
@@ -1534,7 +1540,13 @@ def get_local_driver(
                             sys.argv = sys_args  # Put back original sys args
             if not headless or "linux" not in PLATFORM:
                 try:
-                    driver = webdriver.Chrome(options=chrome_options)
+                    if os.path.exists(LOCAL_CHROMEDRIVER):
+                        driver = webdriver.Chrome(
+                            executable_path=LOCAL_CHROMEDRIVER,
+                            options=chrome_options,
+                        )
+                    else:
+                        driver = webdriver.Chrome(options=chrome_options)
                 except Exception as e:
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:
@@ -1599,7 +1611,13 @@ def get_local_driver(
                                 chrome_options, headless_options
                             )
                         _mark_chromedriver_repaired()
-                    driver = webdriver.Chrome(options=chrome_options)
+                    if os.path.exists(LOCAL_CHROMEDRIVER):
+                        driver = webdriver.Chrome(
+                            executable_path=LOCAL_CHROMEDRIVER,
+                            options=chrome_options,
+                        )
+                    else:
+                        driver = webdriver.Chrome(options=chrome_options)
                 return driver
             else:  # Running headless on Linux
                 try:
