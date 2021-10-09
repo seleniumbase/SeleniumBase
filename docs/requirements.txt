@@ -1,4 +1,4 @@
-regex>=2021.9.30
+regex>=2021.10.8
 tqdm>=4.62.3
 livereload==2.6.3;python_version>="3.6"
 joblib==1.1.0;python_version>="3.6"
@@ -10,7 +10,7 @@ python-dateutil==2.8.2
 keyring==23.2.1;python_version>="3.6"
 pkginfo==1.7.1;python_version>="3.6"
 Jinja2==3.0.2;python_version>="3.6"
-click==8.0.1;python_version>="3.6"
+click==8.0.2;python_version>="3.6"
 zipp==3.6.0;python_version>="3.6"
 readme-renderer==30.0
 pymdown-extensions==9.0;python_version>="3.6"

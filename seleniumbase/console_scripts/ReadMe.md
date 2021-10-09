@@ -86,7 +86,6 @@ test frameworks.
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── my_first_test.py
 ├── parameterized_test.py
@@ -95,7 +94,6 @@ ui_tests/
 ├── setup.cfg
 ├── test_demo_site.py
 └── boilerplates/
-    │
     ├── __init__.py
     ├── base_test_case.py
     ├── boilerplate_test.py
@@ -103,7 +101,6 @@ ui_tests/
     ├── page_objects.py
     ├── sb_fixture_test.py
     └── samples/
-        │
         ├── __init__.py
         ├── google_objects.py
         ├── google_test.py
@@ -115,7 +112,6 @@ If running with the ``-b`` or ``--basic`` option:
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── pytest.ini
 ├── requirements.txt
