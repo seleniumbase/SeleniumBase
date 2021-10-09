@@ -291,6 +291,18 @@ def main():
     file.close()
 
     if basic:
+        data = []
+        data.append("  %s/" % dir_name)
+        data.append("  ├── __init__.py")
+        data.append("  ├── pytest.ini")
+        data.append("  ├── requirements.txt")
+        data.append("  └── setup.cfg")
+        file_path = "%s/%s" % (dir_name, "outline.txt")
+        file = codecs.open(file_path, "w+", "utf-8")
+        file.writelines("\r\n".join(data))
+        file.close()
+        os.system("sbase print %s -n" % file_path)
+        os.remove(file_path)
         success = (
             "\n" + c1 + '* Directory "' + dir_name + '" was created '
             "with config files! *" + cr + "\n"
@@ -656,6 +668,35 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
+
+    data = []
+    data.append("  %s/" % dir_name)
+    data.append("  ├── __init__.py")
+    data.append("  ├── my_first_test.py")
+    data.append("  ├── parameterized_test.py")
+    data.append("  ├── pytest.ini")
+    data.append("  ├── requirements.txt")
+    data.append("  ├── setup.cfg")
+    data.append("  ├── test_demo_site.py")
+    data.append("  └── boilerplates/")
+    data.append("      ├── __init__.py")
+    data.append("      ├── base_test_case.py")
+    data.append("      ├── boilerplate_test.py")
+    data.append("      ├── classic_obj_test.py")
+    data.append("      ├── page_objects.py")
+    data.append("      ├── sb_fixture_test.py")
+    data.append("      └── samples/")
+    data.append("          ├── __init__.py")
+    data.append("          ├── google_objects.py")
+    data.append("          ├── google_test.py")
+    data.append("          ├── sb_swag_test.py")
+    data.append("          └── swag_labs_test.py")
+    file_path = "%s/%s" % (dir_name, "outline.txt")
+    file = codecs.open(file_path, "w+", "utf-8")
+    file.writelines("\r\n".join(data))
+    file.close()
+    os.system("sbase print %s -n" % file_path)
+    os.remove(file_path)
 
     success = (
         "\n" + c1 + '* Directory "' + dir_name + '" was created '

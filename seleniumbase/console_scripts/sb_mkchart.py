@@ -263,6 +263,7 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
+    os.system("sbase print %s -n" % file_name)
     success = (
         "\n" + c1 + '* Chart Presentation: "' + file_name + '" was created! *'
         "" + cr + "\n"
