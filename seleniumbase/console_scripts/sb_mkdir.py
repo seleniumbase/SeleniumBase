@@ -621,6 +621,8 @@ def main():
     file.close()
 
     data = []
+    data.append('""" Classic Page Object Model with BaseCase inheritance """')
+    data.append("")
     data.append("from seleniumbase import BaseCase")
     data.append("")
     data.append("")
@@ -648,6 +650,9 @@ def main():
     file.close()
 
     data = []
+    data.append('""" Classic Page Object Model with the "sb" fixture """')
+    data.append("")
+    data.append("")
     data.append("class LoginPage:")
     data.append("    def login_to_swag_labs(self, sb, username):")
     data.append('        sb.open("https://www.saucedemo.com/")')

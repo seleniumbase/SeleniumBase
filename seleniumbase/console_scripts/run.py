@@ -193,6 +193,24 @@ def show_mkfile_usage():
     print("")
 
 
+def show_mkrec_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "mkrec" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase mkrec [FILE.py]")
+    print("           OR:    sbase mkrec [FILE.py]")
+    print("  Example:")
+    print("           sbase mkrec new_test.py")
+    print("  Output:")
+    print("           Creates a new SeleniumBase test using the Recorder.")
+    print("           If the filename already exists, an error is raised.")
+    print("")
+
+
 def show_mkpres_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -680,6 +698,7 @@ def show_detailed_help():
     show_install_usage()
     show_mkdir_usage()
     show_mkfile_usage()
+    show_mkrec_usage()
     show_mkpres_usage()
     show_mkchart_usage()
     show_convert_usage()
@@ -736,6 +755,14 @@ def main():
         else:
             show_basic_usage()
             show_mkfile_usage()
+    elif command == "mkrec":
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkrec
+
+            sb_mkrec.main()
+        else:
+            show_basic_usage()
+            show_mkrec_usage()
     elif command == "mkpres":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkpres
@@ -886,6 +913,10 @@ def main():
             elif command_args[0] == "mkfile":
                 print("")
                 show_mkfile_usage()
+                return
+            elif command_args[0] == "mkrec":
+                print("")
+                show_mkrec_usage()
                 return
             elif command_args[0] == "mkpres":
                 print("")

@@ -115,7 +115,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.2.4;python_version>="3.6"',
+        'pip>=21.3;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.0;python_version>="3.6"',
         "typing-extensions>=3.10.0.2",
@@ -234,11 +234,14 @@ setup(
         # pip install -e .[flake]
         "flake": [
             'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.9.2;python_version>="3.5"',
+            'flake8==3.9.2;python_version>="3.5" and python_version<"3.6"',
+            'flake8==4.0.1;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.5"',
-            'pyflakes==2.3.1;python_version>="3.5"',
+            'pyflakes==2.3.1;python_version>="3.5" and python_version<"3.6"',
+            'pyflakes==2.4.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.5"',
-            'pycodestyle==2.7.0;python_version>="3.5"',
+            'pycodestyle==2.7.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+            'pycodestyle==2.8.0;python_version>="3.6"',
         ],
     },
     packages=[

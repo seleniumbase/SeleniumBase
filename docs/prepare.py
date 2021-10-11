@@ -1,3 +1,5 @@
+""" For preparing the mkdocs-generated seleniumbase.io website. """
+
 import codecs
 import os
 import re
