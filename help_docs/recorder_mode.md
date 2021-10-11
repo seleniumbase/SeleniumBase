@@ -82,6 +82,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.10</code> adds better error-handling for the Recorder. It also adds the console script option <code>-r</code> for <code>sbase mkfile</code> to generate a new test file with a breakpoint for Recorder Mode: <code>sbase mkfile NEW_FILE.py -r</code></p>
 
+<p>🔴 SeleniumBase <code>1.66.12</code> adds the ability to instantly create a new test recording by running <code>sbase mkrec FILE.py</code>. Once the browser spins up, you can open a new web page and start performing actions that will get recorded and saved to the file you specified.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>
