@@ -238,7 +238,7 @@ setup(
             'flake8==4.0.1;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.5"',
             'pyflakes==2.3.1;python_version>="3.5" and python_version<"3.6"',
-            'pyflakes==2.4.0;python_version>="3.5"',
+            'pyflakes==2.4.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.5"',
             'pycodestyle==2.7.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
             'pycodestyle==2.8.0;python_version>="3.6"',
