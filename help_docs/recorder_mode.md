@@ -18,15 +18,13 @@ pytest TEST_NAME.py --rec -s
 import ipdb; ipdb.set_trace()
 ```
 
-🔴 The Recorder will capture browser actions on URLs that begin with ``https:``, ``http:``, and ``file:``. (The Recorder won't work on ``data:`` URLS.)
-
-🔴 You can also activate Debug Mode at the start of your test by adding ``--trace`` as a ``pytest`` command-line option:
+🔴 You can also activate Debug Mode at the start of your test by adding ``--trace`` as a ``pytest`` command-line option: (This is useful when running Recorder Mode without any breakpoints.)
 
 ```bash
 pytest TEST_NAME.py --trace --rec -s
 ```
 
-🔴 Once you've reached the breakpoint, you can take control of the browser and add in any actions that you want recorded. When you are finished recording, type "``c``" on the command-line and press ``[Enter]`` to let the test continue from the breakpoint. After the test completes, a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder, which will include the actions performed by the test, and the manual actions that you added in. Below is a command-line notification:
+🔴 Once you've reached the breakpoint, you can take control of the browser and add in any actions that you want recorded. The Recorder will capture browser actions on URLs that begin with ``https:``, ``http:``, and ``file:``; (the Recorder won't work on ``data:`` URLS). When you are finished recording, type "``c``" on the command-line and press ``[Enter]`` to let the test continue from the breakpoint. After the test completes, a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder, which will include the actions performed by the test, and the manual actions that you added in. Below is a command-line notification:
 
 ```bash
 >>> RECORDING SAVED as: recordings/my_first_test_rec.py
@@ -52,7 +50,7 @@ class RecorderTest(BaseCase):
         import ipdb; ipdb.set_trace()
 ```
 
-<p>🔴 The above file gives you a basic SeleniumBase file with a breakpoint in it so that you can immediately start recording after you've opened a new web page in the browser.</p>
+<p>🔴 The above code gives you a basic SeleniumBase file with a breakpoint in it so that you can immediately start recording after you've opened a new web page in the browser.</p>
 
 <p>🔴 Recorder Mode works by saving your recorded actions into the browser's <code>sessionStorage</code>. SeleniumBase then reads from the browser's <code>sessionStorage</code> to take the raw data and generate a full test from it. Keep in mind that <code>sessionStorage</code> is only present for a website while the browser tab remains on a web page of the same domain/origin. If you leave that domain/origin, the <code>sessionStorage</code> of that tab will no longer have the raw data that SeleniumBase needs to create a full recording. To compensate for this, all links to web pages of a different domain/origin will automatically open a new tab for you while in Recorder Mode. Additionally, the SeleniumBase <code>self.open(URL)</code> method will also open a new tab for you in Recorder Mode if the domain/origin is different from the current URL. When the recorded test completes, SeleniumBase will scan the <code>sessionStorage</code> of all open browser tabs for the data it needs to generate the complete SeleniumBase automation script.</p>
 
@@ -66,25 +64,15 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.2</code> adds the ability to save selectors using the <code>":contains(TEXT)"</code> selector. If a Python file being recorded has multiple tests being run, then all those tests will get saved to the generated <code>*_rec.py</code> file. The Recorder will now save common <code>self.assert_*</code> calls made during tests. In order to escape iframes when using <code>self.set_content_to_frame(frame)</code>, a new method was added: <code>self.set_content_to_default()</code>. The <code>self.set_content_to_*()</code> methods will be automatically used in place of <code>self.switch_to_*()</code> methods in Recorder Mode, unless a test explicitly calls <code>self._rec_overrides_switch = False</code> before the <code>self.switch_to_*()</code> methods are called. Additionally, if an iframe contains the <code>src</code> attribute, that page will get loaded in a new tab when switching to it in Recorder Mode.</p>
 
-<p>🔴 SeleniumBase <code>1.66.3</code> improves the algorithm for generating efficient selectors. Additionally, single and double quotes in selectors will now be properly escaped with backslashes as needed.</p>
+<p>🔴 SeleniumBase versions <code>1.66.3</code>, <code>1.66.4</code>, <code>1.66.5</code>, <code>1.66.6</code>, <code>1.66.7</code>, <code>1.66.8</code>, and <code>1.66.9</code> improve the algorithm for converting recorded actions into SeleniumBase code.</p>
 
-<p>🔴 SeleniumBase <code>1.66.4</code> adds better error-handling for the Recorder, and a few other improvements.</p>
-
-<p>🔴 SeleniumBase <code>1.66.5</code> improves the algorithm for converting recorded actions into SeleniumBase code.</p>
-
-<p>🔴 SeleniumBase <code>1.66.6</code> improves the algorithm for converting recorded actions into SeleniumBase code.</p>
-
-<p>🔴 SeleniumBase <code>1.66.7</code> improves Recorder Mode post-processing and automatically adds <code>self.show_file_choosers()</code> if file-upload fields are hidden when calling <code>self.choose_file(selector, file_path)</code>.</p>
-
-<p>🔴 SeleniumBase <code>1.66.8</code> generates better selectors in Recorder Mode and improves the algorithm for converting recorded actions into SeleniumBase code.</p>
-
-<p>🔴 SeleniumBase <code>1.66.9</code> allows the Recorder to record methods related to file downloads. It also updates how the Recorder handles class-parsing and form submissions.</p>
-
-<p>🔴 SeleniumBase <code>1.66.10</code> adds better error-handling for the Recorder. It also adds the console script option <code>-r</code> for <code>sbase mkfile</code> to generate a new test file with a breakpoint for Recorder Mode: <code>sbase mkfile NEW_FILE.py -r</code></p>
+<p>🔴 SeleniumBase <code>1.66.10</code> adds better error-handling to the Recorder. It also adds the console script option <code>-r</code> for <code>sbase mkfile</code> to generate a new test file with a breakpoint for Recorder Mode: <code>sbase mkfile NEW_FILE.py -r</code></p>
 
 <p>🔴 SeleniumBase <code>1.66.12</code> adds the ability to instantly create a new test recording by running <code>sbase mkrec FILE.py</code>. Once the browser spins up, you can open a new web page and start performing actions that will get recorded and saved to the file you specified.</p>
 
 <p>🔴 SeleniumBase <code>1.66.13</code> lets you add assertions for elements and text while making a recording. To add an element assertion, press the <code>[^]-key (SHIFT+6)</code>, (the border will become purple) then click on elements that you'd like to assert. To add a text assertion, press the <code>[&]-key (SHIFT+7)</code>, (the border will become orange) then click on text elements that you'd like to assert. To go back to the regular Record Mode, press any other key. While in the special assertion modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without certain actions getting in the way.</p>
+
+<p>🔴 SeleniumBase <code>1.66.14</code> improves the algorithm for converting recorded assertions into SeleniumBase code. Text assertions that contain the newline character will now be handled correctly. If a text assertion has a <code>:contains</code> selector, then the text assertion will be changed to an element assertion. Asserted text from multi-line assertions with use <code>self.assert_text()</code> while asserted text from single-line assertions will use <code>self.assert_exact_text()</code>.</p>
 
 --------
 
