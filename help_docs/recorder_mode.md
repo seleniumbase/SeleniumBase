@@ -72,7 +72,7 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.13</code> lets you add assertions for elements and text while making a recording. To add an element assertion, press the <code>[^]-key (SHIFT+6)</code>, (the border will become purple) then click on elements that you'd like to assert. To add a text assertion, press the <code>[&]-key (SHIFT+7)</code>, (the border will become orange) then click on text elements that you'd like to assert. To go back to the regular Record Mode, press any other key. While in the special assertion modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without certain actions getting in the way.</p>
 
-<p>🔴 SeleniumBase <code>1.66.14</code> improves the algorithm for converting recorded assertions into SeleniumBase code. Text assertions that contain the newline character will now be handled correctly. If a text assertion has a <code>:contains</code> selector, then the text assertion will be changed to an element assertion. Asserted text from multi-line assertions with use <code>self.assert_text()</code> while asserted text from single-line assertions will use <code>self.assert_exact_text()</code>.</p>
+<p>🔴 SeleniumBase <code>1.66.14</code> improves the algorithm for converting recorded assertions into SeleniumBase code. Text assertions that contain the newline character will now be handled correctly. If a text assertion has a <code>:contains</code> selector, then the text assertion will be changed to an element assertion. Asserted text from multi-line assertions will use <code>self.assert_text()</code>. Asserted text from single-line assertions will use <code>self.assert_exact_text()</code>.</p>
 
 --------
 
