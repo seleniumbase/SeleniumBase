@@ -11,7 +11,7 @@ class MaClasseDeTest(CasDeBase):
         self.cliquer("#searchform button")
         self.vérifier_texte("Crème brûlée", "#firstHeading")
         self.vérifier_élément('img[alt*="Crème brûlée"]')
-        self.taper("#searchform input", "Jardin des Tuileries")
+        self.js_taper("#searchform input", "Jardin des Tuileries")
         self.cliquer("#searchform button")
         self.vérifier_texte("Jardin des Tuileries", "#firstHeading")
         self.vérifier_élément('img[alt*="Jardin des Tuileries"]')
