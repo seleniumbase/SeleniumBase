@@ -11,6 +11,7 @@ sbase methods
 sbase options
 sbase mkdir ui_tests
 sbase mkfile new_test.py
+sbase mkrec new_test.py
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -74,6 +75,7 @@ def show_basic_usage():
     sc += "      options         (List common pytest options)\n"
     sc += "      mkdir           [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile          [FILE.py] [OPTIONS]\n"
+    sc += "      mkrec           [FILE.py]\n"
     sc += "      mkpres          [FILE.py] [LANG]\n"
     sc += "      mkchart         [FILE.py] [LANG]\n"
     sc += "      print           [FILE] [OPTIONS]\n"

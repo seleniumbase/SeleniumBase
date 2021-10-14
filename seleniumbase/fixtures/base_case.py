@@ -97,6 +97,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_source = None
         self.__skip_reason = None
         self.__dont_record_js_click = False
+        self.__new_window_on_rec_open = True
         self.__overrided_default_timeouts = False
         self.__added_pytest_html_extra = None
         self.__deferred_assert_count = 0
@@ -143,6 +144,11 @@ class BaseCase(unittest.TestCase):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
         if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["_url_", origin, url, time_stamp]
+            self.__extra_actions.append(action)
+        if self.recorder_mode and self.__new_window_on_rec_open:
             c_url = self.driver.current_url
             if ("http:") in c_url or ("https:") in c_url or ("file:") in c_url:
                 if self.get_domain_url(url) != self.get_domain_url(c_url):
@@ -3125,6 +3131,12 @@ class BaseCase(unittest.TestCase):
         xpi_path = os.path.abspath(xpi_file)
         self.driver.install_addon(xpi_path, temporary=True)
 
+    def activate_demo_mode(self):
+        self.demo_mode = True
+
+    def deactivate_demo_mode(self):
+        self.demo_mode = False
+
     def activate_design_mode(self):
         # Activate Chrome's Design Mode, which lets you edit a site directly.
         # See: https://twitter.com/sulco/status/1177559150563344384
@@ -3267,6 +3279,16 @@ class BaseCase(unittest.TestCase):
                     url2 = url2[:-1]
                 if url1 == url2:
                     srt_actions[n-1][0] = "_skip"
+                elif url2.startswith(url1):
+                    srt_actions[n][0] = "f_url"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 0
+                and srt_actions[n-1][0] == "input"
+                and srt_actions[n-1][2] == ""
+            ):
+                srt_actions[n-1][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
@@ -3336,8 +3358,10 @@ class BaseCase(unittest.TestCase):
             ):
                 srt_actions[n-1][0] = "_skip"
         ext_actions = []
+        ext_actions.append("_url_")
         ext_actions.append("js_cl")
         ext_actions.append("js_ca")
+        ext_actions.append("js_ty")
         ext_actions.append("as_el")
         ext_actions.append("as_ep")
         ext_actions.append("asenv")
@@ -3365,8 +3389,21 @@ class BaseCase(unittest.TestCase):
                     origin = srt_actions[n][2][1]
                 if origin.endswith("/"):
                     origin = origin[0:-1]
+                if srt_actions[n][0] == "js_ty":
+                    srt_actions[n][2] = srt_actions[n][1][1]
+                    srt_actions[n][1] = srt_actions[n][1][0]
+                if srt_actions[n][0] == "_url_" and origin not in origins:
+                    origins.append(origin)
                 if origin not in origins:
                     srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 0
+                and srt_actions[n-1][0] == "js_ty"
+                and srt_actions[n][2] == srt_actions[n-1][2]
+            ):
+                srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
@@ -3392,8 +3429,10 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
-            elif action[0] == "input":
+            elif action[0] == "input" or action[0] == "js_ty":
                 method = "type"
+                if action[0] == "js_ty":
+                    method = "js_type"
                 text = action[2].replace("\n", "\\n")
                 if '"' not in action[1] and '"' not in text:
                     sb_actions.append('self.%s("%s", "%s")' % (
@@ -5233,6 +5272,7 @@ class BaseCase(unittest.TestCase):
             text = str(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
+        pre_escape_css_selector = css_selector
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
         the_type = None
@@ -5247,6 +5287,12 @@ class BaseCase(unittest.TestCase):
                 value,
             )
             self.execute_script(script)
+            if self.recorder_mode:
+                time_stamp = self.execute_script("return Date.now();")
+                origin = self.get_origin()
+                sel_tex = [pre_escape_css_selector, text]
+                action = ["js_ty", sel_tex, origin, time_stamp]
+                self.__extra_actions.append(action)
         else:
             script = """jQuery('%s')[0].value='%s';""" % (css_selector, value)
             self.safe_execute_script(script)
@@ -10336,6 +10382,11 @@ class BaseCase(unittest.TestCase):
                     self._dash_initialized = True
                     self.__process_dashboard(False, init=True)
 
+        # Set the JS start time for Recorder Mode if reusing the session.
+        # Use this to skip saving recorded actions from previous tests.
+        if self.recorder_mode and self._reuse_session:
+            self.__js_start_time = int(time.time() * 1000.0)
+
         has_url = False
         if self._reuse_session:
             if not hasattr(sb_config, "shared_driver"):
@@ -10360,18 +10411,27 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     pass
         if self._reuse_session and sb_config.shared_driver and has_url:
+            good_start_page = False
+            if self.recorder_ext:
+                self.__js_start_time = int(time.time() * 1000.0)
             if self.start_page and len(self.start_page) >= 4:
                 if page_utils.is_valid_url(self.start_page):
+                    good_start_page = True
+                    self.__new_window_on_rec_open = False
                     self.open(self.start_page)
+                    self.__new_window_on_rec_open = True
                 else:
                     new_start_page = "http://" + self.start_page
                     if page_utils.is_valid_url(new_start_page):
+                        good_start_page = True
                         self.open(new_start_page)
-            elif self._crumbs:
+            if self.recorder_ext or (self._crumbs and not good_start_page):
                 if self.get_current_url() != "data:,":
+                    self.__new_window_on_rec_open = False
                     self.open("data:,")
-            else:
-                pass
+                    self.__new_window_on_rec_open = True
+                    if self.recorder_ext:
+                        self.__js_start_time = int(time.time() * 1000.0)
         else:
             # Launch WebDriver for both Pytest and Nosetests
             self.driver = self.get_new_driver(
@@ -10430,11 +10490,6 @@ class BaseCase(unittest.TestCase):
         if not self.__start_time_ms:
             # Call this once in case of multiple setUp() calls in the same test
             self.__start_time_ms = sb_config.start_time_ms
-
-        # Set the JS start time for Recorder Mode if reusing the session.
-        # Use this to skip saving recorded actions from previous tests.
-        if self.recorder_mode and self._reuse_session:
-            self.__js_start_time = self.execute_script("return Date.now();")
 
     def __set_last_page_screenshot(self):
         """self.__last_page_screenshot is only for pytest html report logs.

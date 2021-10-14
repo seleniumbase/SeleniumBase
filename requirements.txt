@@ -11,7 +11,7 @@ setuptools-scm>=6.3.2;python_version>="3.6"
 tomli>=1.2.1;python_version>="3.6"
 wheel>=0.37.0
 attrs>=21.2.0
-PyYAML>=5.4.1;python_version>="3.6"
+PyYAML>=6.0;python_version>="3.6"
 sortedcontainers==2.4.0
 certifi>=2021.10.8
 six==1.16.0
@@ -23,10 +23,10 @@ parso==0.8.2;python_version>="3.6"
 jedi==0.17.2;python_version<"3.6"
 jedi==0.18.0;python_version>="3.6"
 idna==2.10;python_version<"3.6"
-idna==3.2;python_version>="3.6"
+idna==3.3;python_version>="3.6"
 chardet==3.0.4;python_version<"3.5"
 chardet==4.0.0;python_version>="3.5"
-charset-normalizer==2.0.6;python_version>="3.5"
+charset-normalizer==2.0.7;python_version>="3.5"
 urllib3==1.26.7
 requests==2.26.0;python_version<"3.5"
 requests==2.25.1;python_version>="3.5" and python_version<"3.6"
@@ -96,7 +96,7 @@ pymysql==0.10.1;python_version<"3.6"
 pymysql==1.0.2;python_version>="3.6"
 pyotp==2.6.0
 boto==2.49.0
-cffi==1.14.6
+cffi==1.15.0
 toml==0.10.2
 Pillow==6.2.2;python_version<"3.5"
 Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"
@@ -105,13 +105,14 @@ rich==10.12.0;python_version>="3.6" and python_version<"4.0"
 tornado==5.1.1;python_version<"3.5"
 tornado==6.1;python_version>="3.5"
 pdfminer.six==20191110;python_version<"3.5"
-pdfminer.six==20201018;python_version>="3.5"
+pdfminer.six==20201018;python_version>="3.5" and python_version<"3.6"
+pdfminer.six==20211012;python_version>="3.6"
 
 # --- Testing Requirements --- #
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
 
 coverage==5.5;python_version<"3.6"
-coverage==6.0.1;python_version>="3.6"
+coverage==6.0.2;python_version>="3.6"
 pytest-cov==2.12.1;python_version<"3.6"
 pytest-cov==3.0.0;python_version>="3.6"
 flake8==3.7.9;python_version<"3.5"

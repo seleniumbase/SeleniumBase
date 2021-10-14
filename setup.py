@@ -127,7 +127,7 @@ setup(
         'tomli>=1.2.1;python_version>="3.6"',
         "wheel>=0.37.0",
         "attrs>=21.2.0",
-        'PyYAML>=5.4.1;python_version>="3.6"',
+        'PyYAML>=6.0;python_version>="3.6"',
         "sortedcontainers==2.4.0",
         "certifi>=2021.10.8",
         "six==1.16.0",
@@ -139,10 +139,10 @@ setup(
         'jedi==0.17.2;python_version<"3.6"',
         'jedi==0.18.0;python_version>="3.6"',
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
-        'idna==3.2;python_version>="3.6"',  # Must stay in sync with "requests"
+        'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.6;python_version>="3.5"',  # Sync "requests"
+        'charset-normalizer==2.0.7;python_version>="3.5"',  # Sync "requests"
         "urllib3==1.26.7",  # Must stay in sync with "requests"
         'requests==2.26.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
@@ -212,7 +212,7 @@ setup(
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",
         "boto==2.49.0",
-        "cffi==1.14.6",
+        "cffi==1.15.0",
         "toml==0.10.2",
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
@@ -221,13 +221,14 @@ setup(
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
-        'pdfminer.six==20201018;python_version>="3.5"',
+        'pdfminer.six==20201018;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'pdfminer.six==20211012;python_version>="3.6"',
     ],
     extras_require={
         # pip install -e .[coverage]
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
-            'coverage==6.0.1;python_version>="3.6"',
+            'coverage==6.0.2;python_version>="3.6"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
