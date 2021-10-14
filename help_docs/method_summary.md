@@ -247,6 +247,10 @@ self.sleep(seconds)
 
 self.install_addon(xpi_file)
 
+self.activate_demo_mode()
+
+self.deactivate_demo_mode()
+
 self.activate_design_mode()
 
 self.deactivate_design_mode()

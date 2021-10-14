@@ -3131,6 +3131,12 @@ class BaseCase(unittest.TestCase):
         xpi_path = os.path.abspath(xpi_file)
         self.driver.install_addon(xpi_path, temporary=True)
 
+    def activate_demo_mode(self):
+        self.demo_mode = True
+
+    def deactivate_demo_mode(self):
+        self.demo_mode = False
+
     def activate_design_mode(self):
         # Activate Chrome's Design Mode, which lets you edit a site directly.
         # See: https://twitter.com/sulco/status/1177559150563344384
