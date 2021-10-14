@@ -84,6 +84,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.12</code> adds the ability to instantly create a new test recording by running <code>sbase mkrec FILE.py</code>. Once the browser spins up, you can open a new web page and start performing actions that will get recorded and saved to the file you specified.</p>
 
+<p>🔴 SeleniumBase <code>1.66.13</code> lets you add assertions for elements and text while making a recording. To add an element assertion, press <code>[^](SHIFT+6)</code>, (the border will become purple) then click on elements that you'd like to assert. To add a text assertion, press <code>[&](SHIFT+7)</code>, (the border will become orange) then click on text elements that you'd like to assert. To go back to the regular Record Mode, press any other key. While in the special assertion modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without certain actions getting in the way.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>
