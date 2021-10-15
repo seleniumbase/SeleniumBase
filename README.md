@@ -16,7 +16,7 @@
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
 <img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20📓📖📚-11BBCC.svg" alt="SeleniumBase.io Docs" title="SeleniumBase.io Docs" /></a></p>
+<img src="https://img.shields.io/badge/docs-%20📓%20📖%20📚-11BBCC.svg" alt="SeleniumBase.io Docs" title="SeleniumBase.io Docs" /></a></p>
 
 <p align="center">SeleniumBase is a complete framework for browser automation and testing with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.<br />The API simplifies <a href="https://www.selenium.dev/documentation/">Selenium</a>'s out-of-the-box API, leading to cleaner, maintainable code. <br />Includes advanced features such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">JS code generators</a>.</p>
 
