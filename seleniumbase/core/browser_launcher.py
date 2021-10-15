@@ -1212,202 +1212,196 @@ def get_local_driver(
             "profile.managed_default_content_settings.popups": 0,
             "profile.default_content_setting_values.automatic_downloads": 1,
         }
-        try:
-            # Microsoft Edge (Chromium) version 79 or lower
-            chrome_options = _set_chrome_options(
-                browser_name,
-                downloads_path,
-                headless,
-                locale_code,
-                proxy_string,
-                proxy_auth,
-                proxy_user,
-                proxy_pass,
-                user_agent,
-                recorder_ext,
-                disable_csp,
-                enable_ws,
-                enable_sync,
-                use_auto_ext,
-                no_sandbox,
-                disable_gpu,
-                incognito,
-                guest_mode,
-                devtools,
-                remote_debug,
-                swiftshader,
-                ad_block_on,
-                block_images,
-                chromium_arg,
-                user_data_dir,
-                extension_zip,
-                extension_dir,
-                servername,
-                mobile_emulator,
-                device_width,
-                device_height,
-                device_pixel_ratio,
-            )
-            if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
-                try:
-                    make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-                except Exception as e:
-                    logging.debug(
-                        "\nWarning: Could not make edgedriver"
-                        " executable: %s" % e
-                    )
-            elif not is_edgedriver_on_path():
-                args = " ".join(sys.argv)
-                if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
-                    # (Not multithreaded)
-                    from seleniumbase.console_scripts import sb_install
-
-                    sys_args = sys.argv  # Save a copy of current sys args
-                    print("\nWarning: msedgedriver not found. Installing now:")
-                    sb_install.main(override="edgedriver")
-                    sys.argv = sys_args  # Put back the original sys args
-            # For Microsoft Edge (Chromium) version 79 or lower
-            return webdriver.Chrome(
-                executable_path=LOCAL_EDGEDRIVER, options=chrome_options
-            )
-        except Exception:
-            # For Microsoft Edge (Chromium) version 80 or higher
-            from msedge.selenium_tools import Edge, EdgeOptions
-
-            if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
-                try:
-                    make_driver_executable_if_not(LOCAL_EDGEDRIVER)
-                except Exception as e:
-                    logging.debug(
-                        "\nWarning: Could not make edgedriver"
-                        " executable: %s" % e
-                    )
-            edge_options = EdgeOptions()
-            edge_options.use_chromium = True
-            if locale_code:
-                prefs["intl.accept_languages"] = locale_code
-            if block_images:
-                prefs["profile.managed_default_content_settings.images"] = 2
-            edge_options.add_experimental_option("prefs", prefs)
-            edge_options.add_experimental_option("w3c", True)
-            edge_options.add_argument(
-                "--disable-blink-features=AutomationControlled"
-            )
-            edge_options.add_experimental_option(
-                "useAutomationExtension", False
-            )
-            edge_options.add_experimental_option(
-                "excludeSwitches", ["enable-automation", "enable-logging"]
-            )
-            if guest_mode:
-                edge_options.add_argument("--guest")
-            if headless:
-                edge_options.add_argument("--headless")
-            if mobile_emulator:
-                emulator_settings = {}
-                device_metrics = {}
-                if (
-                    type(device_width) is int
-                    and type(device_height) is int
-                    and type(device_pixel_ratio) is int
-                ):
-                    device_metrics["width"] = device_width
-                    device_metrics["height"] = device_height
-                    device_metrics["pixelRatio"] = device_pixel_ratio
-                else:
-                    device_metrics["width"] = 411
-                    device_metrics["height"] = 731
-                    device_metrics["pixelRatio"] = 3
-                emulator_settings["deviceMetrics"] = device_metrics
-                if user_agent:
-                    emulator_settings["userAgent"] = user_agent
-                edge_options.add_experimental_option(
-                    "mobileEmulation", emulator_settings
+        chrome_options = _set_chrome_options(
+            browser_name,
+            downloads_path,
+            headless,
+            locale_code,
+            proxy_string,
+            proxy_auth,
+            proxy_user,
+            proxy_pass,
+            user_agent,
+            recorder_ext,
+            disable_csp,
+            enable_ws,
+            enable_sync,
+            use_auto_ext,
+            no_sandbox,
+            disable_gpu,
+            incognito,
+            guest_mode,
+            devtools,
+            remote_debug,
+            swiftshader,
+            ad_block_on,
+            block_images,
+            chromium_arg,
+            user_data_dir,
+            extension_zip,
+            extension_dir,
+            servername,
+            mobile_emulator,
+            device_width,
+            device_height,
+            device_pixel_ratio,
+        )
+        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+            try:
+                make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+            except Exception as e:
+                logging.debug(
+                    "\nWarning: Could not make edgedriver"
+                    " executable: %s" % e
                 )
-            if user_data_dir:
-                abs_path = os.path.abspath(user_data_dir)
-                edge_options.add_argument("user-data-dir=%s" % abs_path)
-            if extension_zip:
-                # Can be a comma-separated list of .ZIP or .CRX files
-                extension_zip_list = extension_zip.split(",")
-                for extension_zip_item in extension_zip_list:
-                    abs_path = os.path.abspath(extension_zip_item)
-                    edge_options.add_extension(abs_path)
-            if extension_dir:
-                # load-extension input can be a comma-separated list
-                abs_path = os.path.abspath(extension_dir)
-                edge_options.add_argument("--load-extension=%s" % abs_path)
-            edge_options.add_argument("--disable-infobars")
-            edge_options.add_argument("--disable-notifications")
-            edge_options.add_argument("--disable-save-password-bubble")
-            edge_options.add_argument("--disable-single-click-autofill")
-            edge_options.add_argument(
-                "--disable-autofill-keyboard-accessory-view[8]"
-            )
-            edge_options.add_argument("--disable-translate")
-            if not enable_ws:
-                edge_options.add_argument("--disable-web-security")
-            edge_options.add_argument("--homepage=about:blank")
-            edge_options.add_argument("--dns-prefetch-disable")
-            edge_options.add_argument("--dom-automation")
-            edge_options.add_argument("--disable-hang-monitor")
-            edge_options.add_argument("--disable-prompt-on-repost")
+        elif not is_edgedriver_on_path():
+            args = " ".join(sys.argv)
+            if not ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                # (Not multithreaded)
+                from seleniumbase.console_scripts import sb_install
+
+                sys_args = sys.argv  # Save a copy of current sys args
+                print("\nWarning: msedgedriver not found. Installing now:")
+                sb_install.main(override="edgedriver")
+                sys.argv = sys_args  # Put back the original sys args
+
+        # For Microsoft Edge (Chromium) version 80 or higher
+        from msedge.selenium_tools import Edge, EdgeOptions
+
+        if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
+            try:
+                make_driver_executable_if_not(LOCAL_EDGEDRIVER)
+            except Exception as e:
+                logging.debug(
+                    "\nWarning: Could not make edgedriver"
+                    " executable: %s" % e
+                )
+        edge_options = EdgeOptions()
+        edge_options.use_chromium = True
+        if locale_code:
+            prefs["intl.accept_languages"] = locale_code
+        if block_images:
+            prefs["profile.managed_default_content_settings.images"] = 2
+        edge_options.add_experimental_option("prefs", prefs)
+        edge_options.add_experimental_option("w3c", True)
+        edge_options.add_argument(
+            "--disable-blink-features=AutomationControlled"
+        )
+        edge_options.add_experimental_option(
+            "useAutomationExtension", False
+        )
+        edge_options.add_experimental_option(
+            "excludeSwitches", ["enable-automation", "enable-logging"]
+        )
+        if guest_mode:
+            edge_options.add_argument("--guest")
+        if headless:
+            edge_options.add_argument("--headless")
+        if mobile_emulator:
+            emulator_settings = {}
+            device_metrics = {}
             if (
-                settings.DISABLE_CSP_ON_CHROME or disable_csp
-            ) and not headless:
-                # Headless Edge doesn't support extensions, which are required
-                # for disabling the Content Security Policy on Edge
-                edge_options = _add_chrome_disable_csp_extension(edge_options)
-            if ad_block_on and not headless:
-                edge_options = _add_chrome_ad_block_extension(edge_options)
-            if recorder_ext and not headless:
-                edge_options = _add_chrome_recorder_extension(edge_options)
-            if proxy_string:
-                if proxy_auth:
-                    edge_options = _add_chrome_proxy_extension(
-                        edge_options, proxy_string, proxy_user, proxy_pass
-                    )
-                edge_options.add_argument("--proxy-server=%s" % proxy_string)
-            edge_options.add_argument("--test-type")
-            edge_options.add_argument("--log-level=3")
-            edge_options.add_argument("--no-first-run")
-            edge_options.add_argument("--ignore-certificate-errors")
-            if devtools and not headless:
-                edge_options.add_argument("--auto-open-devtools-for-tabs")
-            edge_options.add_argument("--allow-file-access-from-files")
-            edge_options.add_argument("--allow-insecure-localhost")
-            edge_options.add_argument("--allow-running-insecure-content")
-            if user_agent:
-                edge_options.add_argument("--user-agent=%s" % user_agent)
-            edge_options.add_argument("--no-sandbox")
-            if remote_debug:
-                # To access the Remote Debugger, go to: http://localhost:9222
-                # while a Chromium driver is running.
-                # Info: https://chromedevtools.github.io/devtools-protocol/
-                edge_options.add_argument("--remote-debugging-port=9222")
-            if swiftshader:
-                edge_options.add_argument("--use-gl=swiftshader")
+                type(device_width) is int
+                and type(device_height) is int
+                and type(device_pixel_ratio) is int
+            ):
+                device_metrics["width"] = device_width
+                device_metrics["height"] = device_height
+                device_metrics["pixelRatio"] = device_pixel_ratio
             else:
-                edge_options.add_argument("--disable-gpu")
-            if "linux" in PLATFORM:
-                edge_options.add_argument("--disable-dev-shm-usage")
-            if chromium_arg:
-                # Can be a comma-separated list of Chromium args
-                chromium_arg_list = chromium_arg.split(",")
-                for chromium_arg_item in chromium_arg_list:
-                    chromium_arg_item = chromium_arg_item.strip()
-                    if not chromium_arg_item.startswith("--"):
-                        if chromium_arg_item.startswith("-"):
-                            chromium_arg_item = "-" + chromium_arg_item
-                        else:
-                            chromium_arg_item = "--" + chromium_arg_item
-                    if len(chromium_arg_item) >= 3:
-                        edge_options.add_argument(chromium_arg_item)
-            capabilities = edge_options.to_capabilities()
-            capabilities["platform"] = ""
-            return Edge(
-                executable_path=LOCAL_EDGEDRIVER, capabilities=capabilities
+                device_metrics["width"] = 411
+                device_metrics["height"] = 731
+                device_metrics["pixelRatio"] = 3
+            emulator_settings["deviceMetrics"] = device_metrics
+            if user_agent:
+                emulator_settings["userAgent"] = user_agent
+            edge_options.add_experimental_option(
+                "mobileEmulation", emulator_settings
             )
+        if user_data_dir:
+            abs_path = os.path.abspath(user_data_dir)
+            edge_options.add_argument("user-data-dir=%s" % abs_path)
+        if extension_zip:
+            # Can be a comma-separated list of .ZIP or .CRX files
+            extension_zip_list = extension_zip.split(",")
+            for extension_zip_item in extension_zip_list:
+                abs_path = os.path.abspath(extension_zip_item)
+                edge_options.add_extension(abs_path)
+        if extension_dir:
+            # load-extension input can be a comma-separated list
+            abs_path = os.path.abspath(extension_dir)
+            edge_options.add_argument("--load-extension=%s" % abs_path)
+        edge_options.add_argument("--disable-infobars")
+        edge_options.add_argument("--disable-notifications")
+        edge_options.add_argument("--disable-save-password-bubble")
+        edge_options.add_argument("--disable-single-click-autofill")
+        edge_options.add_argument(
+            "--disable-autofill-keyboard-accessory-view[8]"
+        )
+        edge_options.add_argument("--disable-translate")
+        if not enable_ws:
+            edge_options.add_argument("--disable-web-security")
+        edge_options.add_argument("--homepage=about:blank")
+        edge_options.add_argument("--dns-prefetch-disable")
+        edge_options.add_argument("--dom-automation")
+        edge_options.add_argument("--disable-hang-monitor")
+        edge_options.add_argument("--disable-prompt-on-repost")
+        if (
+            settings.DISABLE_CSP_ON_CHROME or disable_csp
+        ) and not headless:
+            # Headless Edge doesn't support extensions, which are required
+            # for disabling the Content Security Policy on Edge
+            edge_options = _add_chrome_disable_csp_extension(edge_options)
+        if ad_block_on and not headless:
+            edge_options = _add_chrome_ad_block_extension(edge_options)
+        if recorder_ext and not headless:
+            edge_options = _add_chrome_recorder_extension(edge_options)
+        if proxy_string:
+            if proxy_auth:
+                edge_options = _add_chrome_proxy_extension(
+                    edge_options, proxy_string, proxy_user, proxy_pass
+                )
+            edge_options.add_argument("--proxy-server=%s" % proxy_string)
+        edge_options.add_argument("--test-type")
+        edge_options.add_argument("--log-level=3")
+        edge_options.add_argument("--no-first-run")
+        edge_options.add_argument("--ignore-certificate-errors")
+        if devtools and not headless:
+            edge_options.add_argument("--auto-open-devtools-for-tabs")
+        edge_options.add_argument("--allow-file-access-from-files")
+        edge_options.add_argument("--allow-insecure-localhost")
+        edge_options.add_argument("--allow-running-insecure-content")
+        if user_agent:
+            edge_options.add_argument("--user-agent=%s" % user_agent)
+        edge_options.add_argument("--no-sandbox")
+        if remote_debug:
+            # To access the Remote Debugger, go to: http://localhost:9222
+            # while a Chromium driver is running.
+            # Info: https://chromedevtools.github.io/devtools-protocol/
+            edge_options.add_argument("--remote-debugging-port=9222")
+        if swiftshader:
+            edge_options.add_argument("--use-gl=swiftshader")
+        else:
+            edge_options.add_argument("--disable-gpu")
+        if "linux" in PLATFORM:
+            edge_options.add_argument("--disable-dev-shm-usage")
+        if chromium_arg:
+            # Can be a comma-separated list of Chromium args
+            chromium_arg_list = chromium_arg.split(",")
+            for chromium_arg_item in chromium_arg_list:
+                chromium_arg_item = chromium_arg_item.strip()
+                if not chromium_arg_item.startswith("--"):
+                    if chromium_arg_item.startswith("-"):
+                        chromium_arg_item = "-" + chromium_arg_item
+                    else:
+                        chromium_arg_item = "--" + chromium_arg_item
+                if len(chromium_arg_item) >= 3:
+                    edge_options.add_argument(chromium_arg_item)
+        capabilities = edge_options.to_capabilities()
+        capabilities["platform"] = ""
+        return Edge(
+            executable_path=LOCAL_EDGEDRIVER, capabilities=capabilities
+        )
     elif browser_name == constants.Browser.SAFARI:
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
