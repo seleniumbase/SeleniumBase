@@ -32,7 +32,7 @@ requests==2.26.0;python_version<"3.5"
 requests==2.25.1;python_version>="3.5" and python_version<"3.6"
 requests==2.26.0;python_version>="3.6"
 selenium==3.141.0
-msedge-selenium-tools==3.141.3
+msedge-selenium-tools==3.141.3;python_version<"3.7"
 more-itertools==5.0.0;python_version<"3.5"
 more-itertools==8.10.0;python_version>="3.5"
 cssselect==1.1.0
