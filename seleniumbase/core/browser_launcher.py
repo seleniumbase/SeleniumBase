@@ -1266,7 +1266,11 @@ def get_local_driver(
                 sys.argv = sys_args  # Put back the original sys args
 
         # For Microsoft Edge (Chromium) version 80 or higher
-        from msedge.selenium_tools import Edge, EdgeOptions
+        try:
+            from msedge.selenium_tools import Edge, EdgeOptions
+        except Exception:
+            os.system("pip install msedge-selenium-tools")
+            from msedge.selenium_tools import Edge, EdgeOptions
 
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             try:
