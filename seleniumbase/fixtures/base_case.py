@@ -153,10 +153,6 @@ class BaseCase(unittest.TestCase):
             if ("http:") in c_url or ("https:") in c_url or ("file:") in c_url:
                 if self.get_domain_url(url) != self.get_domain_url(c_url):
                     self.open_new_window(switch_to=True)
-        if self.browser == "safari" and url.startswith("data:"):
-            url = re.escape(url)
-            url = self.__escape_quotes_if_needed(url)
-            self.execute_script("window.location.href='%s';" % url)
         else:
             self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:

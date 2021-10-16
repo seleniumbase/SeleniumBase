@@ -458,14 +458,6 @@ def _set_chrome_options(
     return chrome_options
 
 
-def _set_safari_capabilities():
-    from selenium.webdriver.safari.webdriver import DesiredCapabilities as SDC
-
-    safari_capabilities = SDC.SAFARI.copy()
-    safari_capabilities["cleanSession"] = True
-    return safari_capabilities
-
-
 def _set_firefox_options(
     downloads_path,
     headless,
@@ -1130,6 +1122,7 @@ def get_local_driver(
             )
         else:
             if os.path.exists(LOCAL_GECKODRIVER):
+                warnings.simplefilter("ignore", category=DeprecationWarning)
                 return webdriver.Firefox(
                     executable_path=LOCAL_GECKODRIVER,
                     options=firefox_options,
@@ -1189,6 +1182,7 @@ def get_local_driver(
         if not headless:
             return webdriver.Ie(capabilities=ie_capabilities)
         else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Ie(
                 executable_path=LOCAL_HEADLESS_IEDRIVER,
                 capabilities=ie_capabilities,
@@ -1265,11 +1259,15 @@ def get_local_driver(
                 sb_install.main(override="edgedriver")
                 sys.argv = sys_args  # Put back the original sys args
 
+        selenium4 = False
+        if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+            selenium4 = True
+
         # For Microsoft Edge (Chromium) version 80 or higher
-        try:
-            from msedge.selenium_tools import Edge, EdgeOptions
-        except Exception:
-            os.system("pip install msedge-selenium-tools")
+        if selenium4:
+            Edge = webdriver.edge.webdriver.WebDriver
+            EdgeOptions = webdriver.edge.webdriver.Options
+        else:
             from msedge.selenium_tools import Edge, EdgeOptions
 
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
@@ -1401,18 +1399,26 @@ def get_local_driver(
                         chromium_arg_item = "--" + chromium_arg_item
                 if len(chromium_arg_item) >= 3:
                     edge_options.add_argument(chromium_arg_item)
-        capabilities = edge_options.to_capabilities()
-        capabilities["platform"] = ""
-        return Edge(
-            executable_path=LOCAL_EDGEDRIVER, capabilities=capabilities
-        )
+        if selenium4:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            return Edge(
+                executable_path=LOCAL_EDGEDRIVER,
+                options=edge_options,
+            )
+        else:
+            capabilities = edge_options.to_capabilities()
+            capabilities["platform"] = ""
+            return Edge(
+                executable_path=LOCAL_EDGEDRIVER,
+                capabilities=capabilities,
+            )
     elif browser_name == constants.Browser.SAFARI:
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
             # Skip if multithreaded
             raise Exception("Can't run Safari tests in multi-threaded mode!")
-        safari_capabilities = _set_safari_capabilities()
-        return webdriver.Safari(desired_capabilities=safari_capabilities)
+        warnings.simplefilter("ignore", category=DeprecationWarning)
+        return webdriver.safari.webdriver.WebDriver(quiet=False)
     elif browser_name == constants.Browser.OPERA:
         try:
             if LOCAL_OPERADRIVER and os.path.exists(LOCAL_OPERADRIVER):
@@ -1539,6 +1545,8 @@ def get_local_driver(
             if not headless or "linux" not in PLATFORM:
                 try:
                     if os.path.exists(LOCAL_CHROMEDRIVER):
+                        warnings.simplefilter(
+                            "ignore", category=DeprecationWarning)
                         driver = webdriver.Chrome(
                             executable_path=LOCAL_CHROMEDRIVER,
                             options=chrome_options,
@@ -1610,6 +1618,8 @@ def get_local_driver(
                             )
                         _mark_chromedriver_repaired()
                     if os.path.exists(LOCAL_CHROMEDRIVER):
+                        warnings.simplefilter(
+                            "ignore", category=DeprecationWarning)
                         driver = webdriver.Chrome(
                             executable_path=LOCAL_CHROMEDRIVER,
                             options=chrome_options,
