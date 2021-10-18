@@ -153,8 +153,7 @@ class BaseCase(unittest.TestCase):
             if ("http:") in c_url or ("https:") in c_url or ("file:") in c_url:
                 if self.get_domain_url(url) != self.get_domain_url(c_url):
                     self.open_new_window(switch_to=True)
-        else:
-            self.driver.get(url)
+        self.driver.get(url)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
@@ -4977,8 +4976,10 @@ class BaseCase(unittest.TestCase):
     def assert_title(self, title):
         """Asserts that the web page title matches the expected title.
         When a web page initially loads, the title starts as the URL,
-        but then the title switches over to the actual page title.
-        A slow connection could delay the actual title from displaying."""
+            but then the title switches over to the actual page title.
+        In Recorder Mode, this assertion is skipped because the Recorder
+            changes the page title to the selector of the hovered element.
+        """
         self.wait_for_ready_state_complete()
         expected = title.strip()
         actual = self.get_page_title().strip()
@@ -4986,7 +4987,8 @@ class BaseCase(unittest.TestCase):
             "Expected page title [%s] does not match the actual title [%s]!"
         )
         try:
-            self.assertEqual(expected, actual, error % (expected, actual))
+            if not self.recorder_mode:
+                self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
             self.sleep(settings.MINI_TIMEOUT)
@@ -4998,7 +5000,7 @@ class BaseCase(unittest.TestCase):
                 self.sleep(settings.MINI_TIMEOUT)
                 actual = self.get_page_title().strip()
                 self.assertEqual(expected, actual, error % (expected, actual))
-        if self.demo_mode:
+        if self.demo_mode and not self.recorder_mode:
             a_t = "ASSERT TITLE"
             if self._language != "English":
                 from seleniumbase.fixtures.words import SD

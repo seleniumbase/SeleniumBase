@@ -298,6 +298,7 @@ var reset_recorder_state = function() {
     document.recorded_actions = [];
     sessionStorage.setItem('pause_recorder', 'no');
     sessionStorage.setItem('recorder_mode', '1');
+    sessionStorage.setItem('recorder_title', document.title)
     const d_now = Date.now();
     w_orig = window.location.origin;
     w_href = window.location.href;
@@ -316,14 +317,31 @@ var reset_recorder_state = function() {
 };
 reset_recorder_state();
 
+var reset_if_recorder_undefined = function() {
+    if (typeof document.recorded_actions === 'undefined')
+        reset_recorder_state();
+};
+
+document.body.addEventListener('mouseover', function (event) {
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    const element = event.target;
+    const selector = getBestSelector(element);
+    if (!selector.startsWith('body') && !selector.includes(' div')) {
+        document.title = selector;
+    }
+});
+document.body.addEventListener('mouseout', function (event) {
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    document.title = sessionStorage.getItem('recorder_title');
+});
 document.body.addEventListener('click', function (event) {
     // Do Nothing.
 });
 document.body.addEventListener('formdata', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     ra_len = document.recorded_actions.length;
     if (ra_len > 0 &&
@@ -339,10 +357,8 @@ document.body.addEventListener('formdata', function (event) {
     }
 });
 document.body.addEventListener('dragstart', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
     const selector = getBestSelector(element);
@@ -360,10 +376,8 @@ document.body.addEventListener('dragstart', function (event) {
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
 document.body.addEventListener('dragend', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     ra_len = document.recorded_actions.length;
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'drags')
     {
@@ -373,10 +387,8 @@ document.body.addEventListener('dragend', function (event) {
     }
 });
 document.body.addEventListener('drop', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
     const selector = getBestSelector(element);
@@ -391,10 +403,8 @@ document.body.addEventListener('drop', function (event) {
     }
 });
 document.body.addEventListener('change', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
     const selector = getBestSelector(element);
@@ -414,7 +424,7 @@ document.body.addEventListener('change', function (event) {
             document.recorded_actions.pop();
             ra_len = document.recorded_actions.length;
         }
-        // Do it twice for click and multiple changes.
+        // Again for click & more changes.
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
         {
             document.recorded_actions.pop();
@@ -436,13 +446,13 @@ document.body.addEventListener('change', function (event) {
         document.recorded_actions[ra_len-1][1] === selector &&
         tag_name === 'input' && e_type === 'checkbox')
     {
-        // Pop duplicate checkbox state changes.
+        // Pop extra checkbox changes.
         document.recorded_actions.pop();
         ra_len = document.recorded_actions.length;
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
             document.recorded_actions.pop();
     }
-    // Go back to `if`, not `else if`.
+    // Use 'if' again, not 'else if'.
     if (tag_name === 'input' && e_type === 'checkbox' && element.checked)
         document.recorded_actions.push(['c_box', selector, 'yes', d_now]);
     else if (tag_name === 'input' && e_type === 'checkbox' && !element.checked)
@@ -451,10 +461,8 @@ document.body.addEventListener('change', function (event) {
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
 document.body.addEventListener('mousedown', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
     const selector = getBestSelector(element);
@@ -463,7 +471,7 @@ document.body.addEventListener('mousedown', function (event) {
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
-        // Do Nothing. (Handle select in 'change' action.)
+        // Do Nothing. (Handle in 'change' action.)
     }
     else
         document.recorded_actions.push(['mo_dn', selector, '', d_now]);
@@ -471,10 +479,8 @@ document.body.addEventListener('mousedown', function (event) {
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
 document.body.addEventListener('mouseup', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
     const selector = getBestSelector(element);
@@ -606,10 +612,8 @@ document.body.addEventListener('mouseup', function (event) {
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
 document.body.addEventListener('contextmenu', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
@@ -623,10 +627,8 @@ document.body.addEventListener('contextmenu', function (event) {
     }
 });
 document.body.addEventListener('keydown', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     ra_len = document.recorded_actions.length;
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
@@ -638,8 +640,7 @@ document.body.addEventListener('keydown', function (event) {
     }
 });
 document.body.addEventListener('keyup', function (event) {
-    if (typeof document.recorded_actions === 'undefined')
-        reset_recorder_state();
+    reset_if_recorder_undefined();
     // Controls for Pausing & Resuming.
     pause_rec = sessionStorage.getItem('pause_recorder');
     if (event.key.toLowerCase() === 'escape' && pause_rec === 'no')
@@ -650,6 +651,7 @@ document.body.addEventListener('keyup', function (event) {
         console.log('The SeleniumBase Recorder has paused.');
         no_border = 'none';
         document.querySelector('body').style.border = no_border;
+        document.title = sessionStorage.getItem('recorder_title');
     }
     else if ((event.key === '`' || event.key === '~') && pause_rec === 'yes')
     {
@@ -678,9 +680,8 @@ document.body.addEventListener('keyup', function (event) {
         red_border = 'thick solid #EE3344';
         document.querySelector('body').style.border = red_border;
     }
-    // Continue after checking for pause/resume controls.
-    if (sessionStorage.getItem('pause_recorder') === 'yes')
-        return;
+    // After checking for pause/resume controls.
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
     const selector = getBestSelector(element);
