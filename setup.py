@@ -149,6 +149,7 @@ setup(
         'requests==2.26.0;python_version>="3.6"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.0.0;python_version>="3.7"',
+        'wsproto==1.0.0;python_version>="3.7"',
         'trio==0.19.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
         'pyopenssl==21.0.0;python_version>="3.7"',
