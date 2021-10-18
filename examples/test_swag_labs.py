@@ -60,7 +60,6 @@ class SwagLabsTests(BaseCase):
         # Finish Checkout and verify that the cart is now empty
         self.click("button#finish")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
-        self.assert_element("img.pony_express")
         self.click("#shopping_cart_container")
         self.assert_element_absent("div.inventory_item_name")
         self.click("button#continue-shopping")
