@@ -12,7 +12,7 @@ There are multiple ways of creating a **[Python virtual environment](https://pac
 (The [Python Software Foundation](https://www.python.org/psf/) recommends ``venv`` for creating virtual environments.)
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Part 1: Using "venv"</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Option 1: Using "venv"</h3>
 
 > macOS/Linux terminal (``python3 -m venv ENV``)
 
@@ -32,7 +32,7 @@ To exit a virtual env, type ``deactivate``.
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Part 2: Using virtualenvwrapper</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Option 2: Using virtualenvwrapper</h3>
 
 > macOS/Linux terminal:
 

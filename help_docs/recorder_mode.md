@@ -74,6 +74,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>1.66.14</code> improves the algorithm for converting recorded assertions into SeleniumBase code. Text assertions that contain the newline character will now be handled correctly. If a text assertion has a <code>:contains</code> selector, then the text assertion will be changed to an element assertion. Asserted text from multi-line assertions will use <code>self.assert_text()</code> on the first non-empty line. Asserted text from single-line assertions will use <code>self.assert_exact_text()</code>. Element assertions will be handled with <code>self.assert_element()</code>.</p>
 
+<p>🔴 SeleniumBase <code>2.0.1</code> adds the ability to preview selectors via the page title when hovering over elements. It also fixes an issue that may occur when opening up new URLs while in Recorder Mode.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>

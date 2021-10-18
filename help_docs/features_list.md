@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="285">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="240">](https://github.com/seleniumbase/SeleniumBase/)
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw"><img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
@@ -45,3 +45,5 @@
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0"><img src="http://img.youtube.com/vi/yEQeAU_mrg0/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=yEQeAU_mrg0">Have fun with test automation!</a></b>)</p>
+
+[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="285">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
