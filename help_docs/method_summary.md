@@ -1,4 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="240">](https://github.com/seleniumbase/SeleniumBase/)
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Methods (API Reference)</h2>
 
@@ -709,3 +709,5 @@ self._print(TEXT)  # Calls Python's print() / Allows for translations
 * [test_suite.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py)
 * [test_tinymce.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_tinymce.py)
 * And many more...
+
+[<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)

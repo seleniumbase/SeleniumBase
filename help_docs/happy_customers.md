@@ -7,6 +7,7 @@
 * [Veracode](https://www.veracode.com/)
 * [Autodesk](https://www.autodesk.com/)
 * [Broadcom](https://www.broadcom.com/)
+* [FortressIQ](https://www.fortressiq.com/)
 * [Thoma Bravo](https://www.thomabravo.com/)
 * [Expedia Group](https://lifeatexpediagroup.com/)
 * [Texture Health](https://www.texturehealth.com/)
@@ -35,8 +36,8 @@
 * [netLex](https://netlex.io/en/)
 * [Cubic](https://www.cubic.com/)
 * [Baidu](https://www.baidu.com/)
-* [Iver](https://www.iver.com/)
 * [HqO](https://www.hqo.co/)
+* [Iver](https://www.iver.com/)
 * And more...
 
 <h3>Case Study: (<i>HubSpot</i>)</h3>

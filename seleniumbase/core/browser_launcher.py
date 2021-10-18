@@ -5,7 +5,6 @@ import sys
 import urllib3
 import warnings
 from selenium import webdriver
-from seleniumbase.config import proxy_list
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
@@ -614,6 +613,7 @@ def display_proxy_warning(proxy_string):
 
 
 def validate_proxy_string(proxy_string):
+    from seleniumbase.config import proxy_list
     from seleniumbase.fixtures import page_utils
 
     if proxy_string in proxy_list.PROXY_LIST.keys():
