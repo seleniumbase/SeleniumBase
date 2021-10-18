@@ -39,7 +39,7 @@ def show_usage():
     sc = ""
     sc += '    Type "sbase help [COMMAND]" for specific command info.\n'
     sc += '    For info on all commands, type: "seleniumbase --help".\n'
-    sc += ' * (Use "pytest" for running tests) *\n'
+    sc += '    Use "pytest" for running tests.\n'
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -90,7 +90,7 @@ def show_basic_usage():
     sc += "      download server (The Selenium Grid JAR file)\n"
     sc += "      grid-hub        [start|stop] [OPTIONS]\n"
     sc += "      grid-node       [start|stop] --hub=[HOST/IP]\n"
-    sc += ' * (EXAMPLE: "sbase install chromedriver latest")  *\n'
+    sc += ' * (EXAMPLE: "sbase install chromedriver latest") *\n'
     sc += ""
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
