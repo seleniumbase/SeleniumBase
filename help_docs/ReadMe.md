@@ -51,6 +51,8 @@
 <div><a href="https://seleniumbase.io/help_docs/webdriver_installation/"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/verify_webdriver/"><b>Verify Webdriver Works</b></a></div>
 <div><a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/"><b>Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.io/examples/example_logs/ReadMe/"><b>The Dashboard</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/recorder_mode/"><b>Recorder Mode</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/syntax_formats/"><b>Syntax Formats</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mobile_testing/"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/method_summary/"><b>Method Summary (API Ref)</b></a></div>
@@ -95,6 +97,8 @@
 <div><a href="https://seleniumbase.dev/help_docs/webdriver_installation"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/verify_webdriver"><b>Verify Webdriver Works</b></a></div>
 <div><a href="https://seleniumbase.dev/seleniumbase/console_scripts/"><b>Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.dev/examples/example_logs/"><b>The Dashboard</b></a></div>
+<div><a href="https://seleniumbase.dev/help_docs/recorder_mode"><b>Recorder Mode</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/syntax_formats"><b>Syntax Formats</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/mobile_testing"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/method_summary"><b>Method Summary (API Ref)</b></a></div>

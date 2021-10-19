@@ -132,6 +132,7 @@ setup(
         "certifi>=2021.10.8",
         "six==1.16.0",
         "nose==1.3.7",
+        'sniffio;python_version>="3.7"',  # For "trio". (Funnier under "nose")
         'ipdb==0.13.4;python_version<"3.5"',
         'ipdb==0.13.9;python_version>="3.5"',
         'parso==0.7.1;python_version<"3.6"',

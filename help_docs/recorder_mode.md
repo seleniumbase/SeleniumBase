@@ -76,6 +76,8 @@ class RecorderTest(BaseCase):
 
 <p>🔴 SeleniumBase <code>2.0.1</code> adds the ability to preview selectors via the page title when hovering over elements. It also fixes an issue that may occur when opening up new URLs while in Recorder Mode.</p>
 
+<p>🔴 SeleniumBase <code>2.0.2</code> fixes a bug with Recorder Mode that was preventing the last recorded assert on a domain from being saved unless it was followed by a non-assert recorded action on the same domain.</p>
+
 --------
 
 <div>To learn more about SeleniumBase, check out the Docs Site:</div>

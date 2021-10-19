@@ -710,4 +710,4 @@ self._print(TEXT)  # Calls Python's print() / Allows for translations
 * [test_tinymce.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_tinymce.py)
 * And many more...
 
-[<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="360">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/sb_text_f.png" title="SeleniumBase" align="center" width="280">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
