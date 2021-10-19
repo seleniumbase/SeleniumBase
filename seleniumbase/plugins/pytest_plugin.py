@@ -1484,7 +1484,7 @@ def _perform_pytest_unconfigure_():
 
 def pytest_unconfigure():
     """ This runs after all tests have completed with pytest. """
-    if sb_config._multithreaded:
+    if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
 
         dash_lock = fasteners.InterProcessLock(constants.Dashboard.LOCKFILE)
