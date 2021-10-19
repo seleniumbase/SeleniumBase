@@ -50,7 +50,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
-from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
@@ -10094,8 +10093,9 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    # Deprecated Methods (Replace these if they're still in your code!)
+    from seleniumbase.common import decorators
 
+    # Deprecated Methods (Replace these if they're still in your code!)
     @decorators.deprecated(
         "jq_format() is deprecated. Use re.escape() instead!"
     )
