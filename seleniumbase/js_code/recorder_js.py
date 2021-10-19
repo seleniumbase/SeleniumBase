@@ -424,7 +424,6 @@ document.body.addEventListener('change', function (event) {
             document.recorded_actions.pop();
             ra_len = document.recorded_actions.length;
         }
-        // Again for click & more changes.
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
         {
             document.recorded_actions.pop();
@@ -446,13 +445,11 @@ document.body.addEventListener('change', function (event) {
         document.recorded_actions[ra_len-1][1] === selector &&
         tag_name === 'input' && e_type === 'checkbox')
     {
-        // Pop extra checkbox changes.
         document.recorded_actions.pop();
         ra_len = document.recorded_actions.length;
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
             document.recorded_actions.pop();
     }
-    // Use 'if' again, not 'else if'.
     if (tag_name === 'input' && e_type === 'checkbox' && element.checked)
         document.recorded_actions.push(['c_box', selector, 'yes', d_now]);
     else if (tag_name === 'input' && e_type === 'checkbox' && !element.checked)
@@ -471,7 +468,7 @@ document.body.addEventListener('mousedown', function (event) {
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
-        // Do Nothing. (Handle in 'change' action.)
+        // Do Nothing. ('change' action.)
     }
     else
         document.recorded_actions.push(['mo_dn', selector, '', d_now]);
@@ -500,6 +497,8 @@ document.body.addEventListener('mouseup', function (event) {
         if (rec_mode === '2' || (rec_mode === '3' && sel_has_contains)) {
             origin = window.location.origin;
             document.recorded_actions.push(['as_el', selector, origin, d_now]);
+            json_rec_act = JSON.stringify(document.recorded_actions);
+            sessionStorage.setItem('recorded_actions', json_rec_act);
             return;
         }
         else if (rec_mode === '3') {
@@ -522,6 +521,8 @@ document.body.addEventListener('mouseup', function (event) {
             }
             tex_sel = [text, selector];
             document.recorded_actions.push([action, tex_sel, origin, d_now]);
+            json_rec_act = JSON.stringify(document.recorded_actions);
+            sessionStorage.setItem('recorded_actions', json_rec_act);
             return;
         }
     }
