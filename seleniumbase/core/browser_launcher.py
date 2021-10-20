@@ -30,7 +30,6 @@ DISABLE_CSP_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "disable_csp.zip")
 AD_BLOCK_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "ad_block.zip")
 RECORDER_ZIP_PATH = "%s/%s" % (EXTENSIONS_DIR, "recorder.zip")
 PROXY_ZIP_PATH = proxy_helper.PROXY_ZIP_PATH
-PROXY_ZIP_PATH_2 = proxy_helper.PROXY_ZIP_PATH_2
 PROXY_ZIP_LOCK = proxy_helper.PROXY_ZIP_LOCK
 PLATFORM = sys.platform
 IS_WINDOWS = False
@@ -173,6 +172,8 @@ def _add_chrome_proxy_extension(
     if not ("-n" in sys.argv or " -n=" in arg_join or arg_join == "-c"):
         # Single-threaded
         proxy_helper.create_proxy_zip(proxy_string, proxy_user, proxy_pass)
+        proxy_zip = PROXY_ZIP_PATH
+        chrome_options.add_extension(proxy_zip)
     else:
         # Pytest multi-threaded test
         import fasteners
@@ -183,11 +184,8 @@ def _add_chrome_proxy_extension(
                 proxy_helper.create_proxy_zip(
                     proxy_string, proxy_user, proxy_pass
                 )
-    proxy_zip = PROXY_ZIP_PATH
-    if not os.path.exists(PROXY_ZIP_PATH):
-        # Handle "Permission denied" on the default proxy.zip path
-        proxy_zip = PROXY_ZIP_PATH_2
-    chrome_options.add_extension(proxy_zip)
+            proxy_zip = PROXY_ZIP_PATH
+            chrome_options.add_extension(proxy_zip)
     return chrome_options
 
 
