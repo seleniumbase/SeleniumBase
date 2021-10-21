@@ -8,7 +8,7 @@ repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
 edit_uri: ""
 site_dir: "site"
-docs_dir: "docs"
+docs_dir: "mkdocs_gen"
 # Copyright
 copyright: Copyright &copy; 2014 - 2021 Michael Mintz
 # Extensions
@@ -70,7 +70,7 @@ plugins:
       minify_html: true
   - mkdocs-simple-hooks:
       hooks:
-        on_pre_build: docs.prepare:main
+        on_pre_build: mkdocs_gen.prepare:main
 # Page tree
 nav:
   - SeleniumBase ReadMe: README.md

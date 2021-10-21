@@ -130,12 +130,12 @@ recordings
 # Automated Visual Testing
 visual_baseline
 
-# MkDocs
+# MkDocs WebSite Generator
 site/*
-docs/*.md
-docs/*/*.md
-docs/*/*/*.md
-docs/*/*/*/*.md
+mkdocs_gen/*.md
+mkdocs_gen/*/*.md
+mkdocs_gen/*/*/*.md
+mkdocs_gen/*/*/*/*.md
 
 # Other
 selenium-server-standalone.jar
