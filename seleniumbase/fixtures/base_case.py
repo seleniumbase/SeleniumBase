@@ -10095,12 +10095,9 @@ class BaseCase(unittest.TestCase):
 
     from seleniumbase.common import decorators
 
-    # Deprecated Methods (Replace these if they're still in your code!)
-    @decorators.deprecated(
-        "jq_format() is deprecated. Use re.escape() instead!"
-    )
+    @decorators.deprecated("You should use re.escape() instead.")
     def jq_format(self, code):
-        # DEPRECATED - re.escape() already performs the intended action!
+        # DEPRECATED - re.escape() already performs the intended action.
         return js_utils._jq_format(code)
 
     ############

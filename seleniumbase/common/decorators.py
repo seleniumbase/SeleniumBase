@@ -1,8 +1,6 @@
-import inspect
 import logging
 import math
 import sys
-import threading
 import time
 import warnings
 from functools import wraps
@@ -55,6 +53,8 @@ def rate_limited(max_per_second):
     If the limit is exceeded, the call will be held in a queue until
     enough time has passed.
     Useful when trying to avoid overloading a system with rapid calls."""
+    import threading
+
     min_interval = 1.0 / float(max_per_second)
 
     def decorate(func):
@@ -88,13 +88,14 @@ def rate_limited(max_per_second):
 def deprecated(message=None):
     """This decorator marks methods as deprecated.
     A warning is displayed if the method is called."""
+    import inspect
 
     def decorated_method_to_deprecate(func):
         if inspect.isclass(func):
             # Handle a deprecated class differently from a deprecated method
-            msg = "Class {}() is DEPRECATED! *** ".format(func.__name__)
+            msg = "Class {}() is DEPRECATED!".format(func.__name__)
             if message:
-                msg += "<> %s <>" % message
+                msg += " *** %s ***" % message
             warnings.simplefilter("always", DeprecationWarning)  # See Warnings
             warnings.warn(msg, category=DeprecationWarning, stacklevel=2)
             warnings.simplefilter("default", DeprecationWarning)  # Set Default
@@ -102,9 +103,9 @@ def deprecated(message=None):
 
         @wraps(func)
         def new_func(*args, **kwargs):
-            msg = "Method {}() is DEPRECATED! *** ".format(func.__name__)
+            msg = "Method {}() is DEPRECATED!".format(func.__name__)
             if message:
-                msg += "<> %s <>" % message
+                msg += " *** %s ***" % message
             warnings.simplefilter("always", DeprecationWarning)  # See Warnings
             warnings.warn(msg, category=DeprecationWarning, stacklevel=2)
             warnings.simplefilter("default", DeprecationWarning)  # Set Default
