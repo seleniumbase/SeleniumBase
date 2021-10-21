@@ -11,7 +11,7 @@ Example:
 
 Options:
     -b / --basic  (Basic boilerplate / single-line test)
-    -r / --recorder  (Recorder Mode has ipdb breakpoint)
+    -r / --rec  (adds ipdb breakpoint for Recorder Mode)
 
 Language Options:
     --en / --English    |    --zh / --Chinese
@@ -46,7 +46,7 @@ def invalid_run_command(msg=None):
     exp += "           sbase mkfile new_test.py\n"
     exp += "  Options:\n"
     exp += "           -b / --basic  (Basic boilerplate / single-line test)\n"
-    exp += "           -r / --recorder  (Recorder Mode has ipdb breakpoint)\n"
+    exp += "           -r / --rec  (adds ipdb breakpoint for Recorder Mode)\n"
     exp += "  Language Options:\n"
     exp += "           --en / --English    |    --zh / --Chinese\n"
     exp += "           --nl / --Dutch      |    --fr / --French\n"

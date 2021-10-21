@@ -3,11 +3,14 @@
 Creates a new SeleniumBase test file using the Recorder.
 
 Usage:
-    seleniumbase mkrec [FILE.py]
-    or     sbase mkrec [FILE.py]
+      seleniumbase mkrec [FILE.py]
+             sbase mkrec [FILE.py]
+    seleniumbase codegen [FILE.py]
+           sbase codegen [FILE.py]
 
-Example:
+Examples:
     sbase mkrec new_test.py
+    sbase codegen new_test.py
 
 Output:
     Creates a new SeleniumBase test using the Recorder.
@@ -22,12 +25,15 @@ import sys
 
 
 def invalid_run_command(msg=None):
-    exp = "  ** mkrec **\n\n"
+    exp = "  ** mkrec / codegen **\n\n"
     exp += "  Usage:\n"
     exp += "           seleniumbase mkrec [FILE.py]\n"
-    exp += "           OR     sbase mkrec [FILE.py]\n"
-    exp += "  Example:\n"
+    exp += "                  sbase mkrec [FILE.py]\n"
+    exp += "         seleniumbase codegen [FILE.py]\n"
+    exp += "                sbase codegen [FILE.py]\n"
+    exp += "  Examples:\n"
     exp += "           sbase mkrec new_test.py\n"
+    exp += "           sbase codegen new_test.py\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"

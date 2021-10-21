@@ -14,26 +14,26 @@ SeleniumBase console scripts help you get things done more easily, such as insta
 
 ```
 COMMANDS:
-      install         [DRIVER] [OPTIONS]
-      methods         (List common Python methods)
-      options         (List common pytest options)
-      mkdir           [DIRECTORY] [OPTIONS]
-      mkfile          [FILE.py] [OPTIONS]
-      mkrec           [FILE.py]
-      mkpres          [FILE.py] [LANG]
-      mkchart         [FILE.py] [LANG]
-      print           [FILE] [OPTIONS]
-      translate       [SB_FILE.py] [LANG] [ACTION]
-      convert         [WEBDRIVER_UNITTEST_FILE.py]
-      extract-objects [SB_FILE.py]
-      inject-objects  [SB_FILE.py] [OPTIONS]
-      objectify       [SB_FILE.py] [OPTIONS]
-      revert-objects  [SB_FILE.py] [OPTIONS]
-      encrypt         (OR: obfuscate)
-      decrypt         (OR: unobfuscate)
-      download server (The Selenium Grid JAR file)
-      grid-hub        [start|stop] [OPTIONS]
-      grid-node       [start|stop] --hub=[HOST/IP]
+      install          [DRIVER] [OPTIONS]
+      methods          (List common Python methods)
+      options          (List common pytest options)
+      mkdir            [DIRECTORY] [OPTIONS]
+      mkfile           [FILE.py] [OPTIONS]
+      mkrec / codegen  [FILE.py]
+      mkpres           [FILE.py] [LANG]
+      mkchart          [FILE.py] [LANG]
+      print            [FILE] [OPTIONS]
+      translate        [SB_FILE.py] [LANG] [ACTION]
+      convert          [WEBDRIVER_UNITTEST_FILE.py]
+      extract-objects  [SB_FILE.py]
+      inject-objects   [SB_FILE.py] [OPTIONS]
+      objectify        [SB_FILE.py] [OPTIONS]
+      revert-objects   [SB_FILE.py] [OPTIONS]
+      encrypt / obfuscate
+      decrypt / unobfuscate
+      download server  (Get Selenium Grid JAR file)
+      grid-hub         [start|stop] [OPTIONS]
+      grid-node        [start|stop] --hub=[HOST/IP]
  * (EXAMPLE: "sbase install chromedriver latest") *
 
     Type "sbase help [COMMAND]" for specific command info.
@@ -203,7 +203,7 @@ ui_tests/
 
 * Options:
 ``-b`` / ``--basic``  (Basic boilerplate / single-line test)
-``-r`` / ``--recorder``  (Recorder Mode has ipdb breakpoint)
+``-r`` / ``--rec``  (adds ipdb breakpoint for Recorder Mode)
 
 * Language Options:
 ``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
@@ -222,13 +222,15 @@ methods, which are "open", "type", "click",
 basic boilerplate option, only the "open" method
 is included.
 
-<h3>mkrec</h3>
+<h3>mkrec / codegen</h3>
 
 * Usage:
 ``sbase mkrec [FILE.py]``
+``sbase codegen [FILE.py]``
 
-* Example:
+* Examples:
 ``sbase mkrec new_test.py``
+``sbase codegen new_test.py``
 
 * Output:
 Creates a new SeleniumBase test using the Recorder.

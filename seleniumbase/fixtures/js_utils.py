@@ -8,7 +8,6 @@ import time
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import WebDriverException
 from seleniumbase import config as sb_config
-from seleniumbase.common import decorators
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import shared_utils
@@ -976,7 +975,6 @@ def clear_out_console_logs(driver):
         pass
 
 
-@decorators.deprecated("Use re.escape() instead, which does what you want!")
 def _jq_format(code):
     """
     DEPRECATED - Use re.escape() instead, which performs the intended action.

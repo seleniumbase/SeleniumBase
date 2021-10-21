@@ -421,6 +421,7 @@ class SeleniumBrowser(Plugin):
             "--recorder",
             "--record",
             "--rec",
+            "--codegen",
             action="store_true",
             dest="recorder_mode",
             default=False,
