@@ -27,8 +27,8 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: img/grad_logo.png
-  favicon: img/grad_logo.png
+  logo: img/green_logo2.png
+  favicon: img/green_logo3.png
   language: en
   include_homepage_in_sidebar: true
   sticky_navigation: true
