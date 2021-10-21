@@ -1,5 +1,4 @@
 import os
-import threading
 import zipfile
 from seleniumbase.fixtures import constants
 
@@ -65,6 +64,8 @@ def create_proxy_zip(proxy_string, proxy_user, proxy_pass):
         """"minimum_chrome_version":"22.0.0"\n"""
         """}"""
     )
+    import threading
+
     lock = threading.RLock()  # Support multi-threaded test runs with Pytest
     with lock:
         abs_path = os.path.abspath(".")
