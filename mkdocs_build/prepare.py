@@ -58,7 +58,7 @@ def process_file(file_name):
             url, normalize_path(os.path.relpath(path, directory))
         )
 
-    output_path = ROOT_DIR / "mkdocs_gen" / file_name
+    output_path = ROOT_DIR / "mkdocs_build" / file_name
     if not output_path.parent.is_dir():
         os.makedirs(output_path.parent)
 
@@ -111,7 +111,7 @@ def main(*args, **kwargs):
         process_file(file_)
 
     for file_ in updated_files_to_process:
-        readme_file = "./mkdocs_gen/" + file_
+        readme_file = "./mkdocs_build/" + file_
         with open(readme_file, "r", encoding="utf-8") as f:
             all_code = f.read()
         code_lines = all_code.split("\n")

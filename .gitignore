@@ -132,10 +132,10 @@ visual_baseline
 
 # MkDocs WebSite Generator
 site/*
-mkdocs_gen/*.md
-mkdocs_gen/*/*.md
-mkdocs_gen/*/*/*.md
-mkdocs_gen/*/*/*/*.md
+mkdocs_build/*.md
+mkdocs_build/*/*.md
+mkdocs_build/*/*/*.md
+mkdocs_build/*/*/*/*.md
 
 # Other
 selenium-server-standalone.jar
