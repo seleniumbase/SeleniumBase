@@ -134,30 +134,31 @@ pip install seleniumbase
  *    OR:        "sbase [COMMAND] [PARAMETERS]"
 
 COMMANDS:
-      install         [DRIVER] [OPTIONS]
-      methods         (List common Python methods)
-      options         (List common pytest options)
-      mkdir           [DIRECTORY] [OPTIONS]
-      mkfile          [FILE.py] [OPTIONS]
-      mkpres          [FILE.py] [LANG]
-      mkchart         [FILE.py] [LANG]
-      print           [FILE] [OPTIONS]
-      translate       [SB_FILE.py] [LANG] [ACTION]
-      convert         [WEBDRIVER_UNITTEST_FILE.py]
-      extract-objects [SB_FILE.py]
-      inject-objects  [SB_FILE.py] [OPTIONS]
-      objectify       [SB_FILE.py] [OPTIONS]
-      revert-objects  [SB_FILE.py] [OPTIONS]
-      encrypt         (OR: obfuscate)
-      decrypt         (OR: unobfuscate)
-      download server (The Selenium Grid JAR file)
-      grid-hub        [start|stop] [OPTIONS]
-      grid-node       [start|stop] --hub=[HOST/IP]
- * (EXAMPLE: "sbase install chromedriver latest")  *
+      install          [DRIVER] [OPTIONS]
+      methods          (List common Python methods)
+      options          (List common pytest options)
+      mkdir            [DIRECTORY] [OPTIONS]
+      mkfile           [FILE.py] [OPTIONS]
+      mkrec / codegen  [FILE.py]
+      mkpres           [FILE.py] [LANG]
+      mkchart          [FILE.py] [LANG]
+      print            [FILE] [OPTIONS]
+      translate        [SB_FILE.py] [LANG] [ACTION]
+      convert          [WEBDRIVER_UNITTEST_FILE.py]
+      extract-objects  [SB_FILE.py]
+      inject-objects   [SB_FILE.py] [OPTIONS]
+      objectify        [SB_FILE.py] [OPTIONS]
+      revert-objects   [SB_FILE.py] [OPTIONS]
+      encrypt / obfuscate
+      decrypt / unobfuscate
+      download server  (Get Selenium Grid JAR file)
+      grid-hub         [start|stop] [OPTIONS]
+      grid-node        [start|stop] --hub=[HOST/IP]
+ * (EXAMPLE: "sbase install chromedriver latest") *
 
     Type "sbase help [COMMAND]" for specific command info.
     For info on all commands, type: "seleniumbase --help".
- * (Use "pytest" for running tests) *
+    Use "pytest" for running tests.
 ```
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Download a webdriver:</h3>
@@ -213,26 +214,38 @@ pytest my_first_test.py --demo
 * Here are some common ``SeleniumBase`` methods that you might find in tests:
 
 ```python
-self.open(URL)  # Navigate to the web page
-self.click(SELECTOR)  # Click a page element
-self.type(SELECTOR, TEXT)  # Type text (Add "\n" to text for pressing enter/return.)
-self.assert_element(SELECTOR)  # Assert element is visible
-self.assert_text(TEXT)  # Assert text is visible (has optional SELECTOR arg)
-self.assert_title(PAGE_TITLE)  # Assert page title
-self.assert_no_404_errors()  # Assert no 404 errors from files on the page
-self.assert_no_js_errors()  # Assert no JavaScript errors on the page (Chrome-ONLY)
-self.execute_script(JAVASCRIPT)  # Execute JavaScript code
-self.go_back()  # Navigate to the previous URL
-self.get_text(SELECTOR)  # Get text from a selector
-self.get_attribute(SELECTOR, ATTRIBUTE)  # Get a specific attribute from a selector
-self.is_element_visible(SELECTOR)  # Determine if an element is visible on the page
-self.is_text_visible(TEXT)  # Determine if text is visible on the page (optional SELECTOR)
-self.hover_and_click(HOVER_SELECTOR, CLICK_SELECTOR)  # Mouseover element & click another
-self.select_option_by_text(DROPDOWN_SELECTOR, OPTION_TEXT)  # Select a dropdown option
-self.switch_to_frame(FRAME_NAME)  # Switch webdriver control to an iframe on the page
-self.switch_to_default_content()  # Switch webdriver control out of the current iframe
-self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
-self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
+self.open(url)  # Navigate the browser window to the URL.
+self.type(selector, text)  # Update the field with the text.
+self.click(selector)  # Click the element with the selector.
+self.click_link(link_text)  # Click the link containing text.
+self.go_back()  # Navigate back to the previous URL.
+self.select_option_by_text(dropdown_selector, option)
+self.hover_and_click(hover_selector, click_selector)
+self.drag_and_drop(drag_selector, drop_selector)
+self.get_text(selector)  # Get the text from the element.
+self.get_current_url()  # Get the URL of the current page.
+self.get_page_source()  # Get the HTML of the current page.
+self.get_attribute(selector, attribute)  # Get element attribute.
+self.get_title()  # Get the title of the current page.
+self.switch_to_frame(frame)  # Switch into the iframe container.
+self.switch_to_default_content()  # Leave the iframe container.
+self.open_new_window()  # Open a new window in the same browser.
+self.switch_to_window(window)  # Switch to the browser window.
+self.switch_to_default_window()  # Switch to the original window.
+self.get_new_driver(OPTIONS)  # Open a new driver with OPTIONS.
+self.switch_to_driver(driver)  # Switch to the browser driver.
+self.switch_to_default_driver()  # Switch to the original driver.
+self.wait_for_element(selector)  # Wait until element is visible.
+self.is_element_visible(selector)  # Return element visibility.
+self.is_text_visible(text, selector)  # Return text visibility.
+self.sleep(seconds)  # Do nothing for the given amount of time.
+self.save_screenshot(name)  # Save a screenshot in .png format.
+self.assert_element(selector)  # Verify the element is visible.
+self.assert_text(text, selector)  # Verify text in the element.
+self.assert_title(title)  # Verify the title of the web page.
+self.assert_downloaded_file(file)  # Verify file was downloaded.
+self.assert_no_404_errors()  # Verify there are no broken links.
+self.assert_no_js_errors()  # Verify there are no JS errors.
 ```
 
 🔵 For the complete list of SeleniumBase methods, see: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
@@ -436,7 +449,6 @@ sbase mkdir ui_tests
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── my_first_test.py
 ├── parameterized_test.py
@@ -445,7 +457,6 @@ ui_tests/
 ├── setup.cfg
 ├── test_demo_site.py
 └── boilerplates/
-    │
     ├── __init__.py
     ├── base_test_case.py
     ├── boilerplate_test.py
@@ -453,7 +464,6 @@ ui_tests/
     ├── page_objects.py
     ├── sb_fixture_test.py
     └── samples/
-        │
         ├── __init__.py
         ├── google_objects.py
         ├── google_test.py
