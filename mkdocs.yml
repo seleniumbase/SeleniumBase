@@ -8,7 +8,7 @@ repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
 edit_uri: ""
 site_dir: "site"
-docs_dir: "docs"
+docs_dir: "mkdocs_build"
 # Copyright
 copyright: Copyright &copy; 2014 - 2021 Michael Mintz
 # Extensions
@@ -27,8 +27,8 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: img/grad_logo.png
-  favicon: img/grad_logo.png
+  logo: img/green_logo2.png
+  favicon: img/green_logo3.png
   language: en
   include_homepage_in_sidebar: true
   sticky_navigation: true
@@ -70,7 +70,7 @@ plugins:
       minify_html: true
   - mkdocs-simple-hooks:
       hooks:
-        on_pre_build: docs.prepare:main
+        on_pre_build: mkdocs_build.prepare:main
 # Page tree
 nav:
   - SeleniumBase ReadMe: README.md
