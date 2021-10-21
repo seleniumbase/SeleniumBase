@@ -660,6 +660,7 @@ def pytest_addoption(parser):
         "--recorder",
         "--record",
         "--rec",
+        "--codegen",
         action="store_true",
         dest="recorder_mode",
         default=False,

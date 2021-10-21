@@ -606,7 +606,7 @@ document.body.addEventListener('mouseup', function (event) {
     else if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn')
     {
-        // Probably an accidental drag & drop.
+        // Maybe an accidental drag & drop.
         document.recorded_actions.pop();
     }
     json_rec_act = JSON.stringify(document.recorded_actions);
@@ -642,14 +642,15 @@ document.body.addEventListener('keydown', function (event) {
 });
 document.body.addEventListener('keyup', function (event) {
     reset_if_recorder_undefined();
-    // Controls for Pausing & Resuming.
+    // Controls to Pause & Resume.
     pause_rec = sessionStorage.getItem('pause_recorder');
-    if (event.key.toLowerCase() === 'escape' && pause_rec === 'no')
+    rec_mode = sessionStorage.getItem('recorder_mode');
+    l_key = event.key.toLowerCase();
+    if (l_key === 'escape' && pause_rec === 'no' && rec_mode === '1')
     {
         sessionStorage.setItem('pause_recorder', 'yes');
         pause_rec = 'yes';
-        sessionStorage.setItem('recorder_mode', '1');
-        console.log('The SeleniumBase Recorder has paused.');
+        console.log('SeleniumBase Recorder paused');
         no_border = 'none';
         document.querySelector('body').style.border = no_border;
         document.title = sessionStorage.getItem('recorder_title');
@@ -658,15 +659,14 @@ document.body.addEventListener('keyup', function (event) {
     {
         sessionStorage.setItem('pause_recorder', 'no');
         pause_rec = 'no';
-        sessionStorage.setItem('recorder_mode', '1');
-        console.log('The SeleniumBase Recorder has resumed.');
+        console.log('SeleniumBase Recorder resumed');
         red_border = 'thick solid #EE3344';
         document.querySelector('body').style.border = red_border;
     }
     else if (event.key === '^' && pause_rec === 'no')
     {
         sessionStorage.setItem('recorder_mode', '2');
-        purple_border = 'thick solid #BF40BF';
+        purple_border = 'thick solid #EF5BE9';
         document.querySelector('body').style.border = purple_border;
     }
     else if (event.key === '&' && pause_rec === 'no')
@@ -675,13 +675,13 @@ document.body.addEventListener('keyup', function (event) {
         orange_border = 'thick solid #F28C28';
         document.querySelector('body').style.border = orange_border;
     }
-    else if (pause_rec === 'no' && event.key.toLowerCase() !== 'shift')
+    else if (pause_rec === 'no' && l_key !== 'shift' && l_key !== 'backspace')
     {
         sessionStorage.setItem('recorder_mode', '1');
         red_border = 'thick solid #EE3344';
         document.querySelector('body').style.border = red_border;
     }
-    // After checking for pause/resume controls.
+    // After controls for switching modes.
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
@@ -692,7 +692,7 @@ document.body.addEventListener('keyup', function (event) {
         element.tagName.toLowerCase() === 'textarea')
     {
         ra_len = document.recorded_actions.length;
-        if (ra_len > 0 && event.key.toLowerCase() === 'enter' &&
+        if (ra_len > 0 && l_key === 'enter' &&
             document.recorded_actions[ra_len-1][0] === 'input' &&
             document.recorded_actions[ra_len-1][1] === selector &&
             !document.recorded_actions[ra_len-1][2].endsWith('\n'))

@@ -11,7 +11,7 @@ sbase methods
 sbase options
 sbase mkdir ui_tests
 sbase mkfile new_test.py
-sbase mkrec new_test.py
+sbase mkrec new_test.py  # Same as "sbase codegen new_test.py"
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -70,26 +70,26 @@ def show_basic_usage():
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
     sc += "\n"
     sc += "COMMANDS:\n"
-    sc += "      install         [DRIVER] [OPTIONS]\n"
-    sc += "      methods         (List common Python methods)\n"
-    sc += "      options         (List common pytest options)\n"
-    sc += "      mkdir           [DIRECTORY] [OPTIONS]\n"
-    sc += "      mkfile          [FILE.py] [OPTIONS]\n"
-    sc += "      mkrec           [FILE.py]\n"
-    sc += "      mkpres          [FILE.py] [LANG]\n"
-    sc += "      mkchart         [FILE.py] [LANG]\n"
-    sc += "      print           [FILE] [OPTIONS]\n"
-    sc += "      translate       [SB_FILE.py] [LANG] [ACTION]\n"
-    sc += "      convert         [WEBDRIVER_UNITTEST_FILE.py]\n"
-    sc += "      extract-objects [SB_FILE.py]\n"
-    sc += "      inject-objects  [SB_FILE.py] [OPTIONS]\n"
-    sc += "      objectify       [SB_FILE.py] [OPTIONS]\n"
-    sc += "      revert-objects  [SB_FILE.py] [OPTIONS]\n"
-    sc += "      encrypt         (OR: obfuscate)\n"
-    sc += "      decrypt         (OR: unobfuscate)\n"
-    sc += "      download server (The Selenium Grid JAR file)\n"
-    sc += "      grid-hub        [start|stop] [OPTIONS]\n"
-    sc += "      grid-node       [start|stop] --hub=[HOST/IP]\n"
+    sc += "      install          [DRIVER] [OPTIONS]\n"
+    sc += "      methods          (List common Python methods)\n"
+    sc += "      options          (List common pytest options)\n"
+    sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
+    sc += "      mkfile           [FILE.py] [OPTIONS]\n"
+    sc += "      mkrec / codegen  [FILE.py]\n"
+    sc += "      mkpres           [FILE.py] [LANG]\n"
+    sc += "      mkchart          [FILE.py] [LANG]\n"
+    sc += "      print            [FILE] [OPTIONS]\n"
+    sc += "      translate        [SB_FILE.py] [LANG] [ACTION]\n"
+    sc += "      convert          [WEBDRIVER_UNITTEST_FILE.py]\n"
+    sc += "      extract-objects  [SB_FILE.py]\n"
+    sc += "      inject-objects   [SB_FILE.py] [OPTIONS]\n"
+    sc += "      objectify        [SB_FILE.py] [OPTIONS]\n"
+    sc += "      revert-objects   [SB_FILE.py] [OPTIONS]\n"
+    sc += "      encrypt / obfuscate\n"
+    sc += "      decrypt / unobfuscate\n"
+    sc += "      download server  (Get Selenium Grid JAR file)\n"
+    sc += "      grid-hub         [start|stop] [OPTIONS]\n"
+    sc += "      grid-node        [start|stop] --hub=[HOST/IP]\n"
     sc += ' * (EXAMPLE: "sbase install chromedriver latest") *\n'
     sc += ""
     if "linux" not in sys.platform:
@@ -176,7 +176,7 @@ def show_mkfile_usage():
     print("           sbase mkfile new_test.py")
     print("  Options:")
     print("           -b / --basic  (Basic boilerplate / single-line test)")
-    print("           -r / --recorder  (Recorder Mode has ipdb breakpoint)")
+    print("           -r / --rec  (adds ipdb breakpoint for Recorder Mode)")
     print("  Language Options:")
     print("           --en / --English    |    --zh / --Chinese")
     print("           --nl / --Dutch      |    --fr / --French")
@@ -207,6 +207,24 @@ def show_mkrec_usage():
     print("           OR:    sbase mkrec [FILE.py]")
     print("  Example:")
     print("           sbase mkrec new_test.py")
+    print("  Output:")
+    print("           Creates a new SeleniumBase test using the Recorder.")
+    print("           If the filename already exists, an error is raised.")
+    print("")
+
+
+def show_codegen_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "codegen" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase codegen [FILE.py]")
+    print("           OR:    sbase codegen [FILE.py]")
+    print("  Example:")
+    print("           sbase codegen new_test.py")
     print("  Output:")
     print("           Creates a new SeleniumBase test using the Recorder.")
     print("           If the filename already exists, an error is raised.")
@@ -701,6 +719,7 @@ def show_detailed_help():
     show_mkdir_usage()
     show_mkfile_usage()
     show_mkrec_usage()
+    show_codegen_usage()
     show_mkpres_usage()
     show_mkchart_usage()
     show_convert_usage()
@@ -765,6 +784,14 @@ def main():
         else:
             show_basic_usage()
             show_mkrec_usage()
+    elif command == "codegen":
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkrec
+
+            sb_mkrec.main()
+        else:
+            show_basic_usage()
+            show_codegen_usage()
     elif command == "mkpres":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkpres
@@ -919,6 +946,10 @@ def main():
             elif command_args[0] == "mkrec":
                 print("")
                 show_mkrec_usage()
+                return
+            elif command_args[0] == "codegen":
+                print("")
+                show_codegen_usage()
                 return
             elif command_args[0] == "mkpres":
                 print("")
