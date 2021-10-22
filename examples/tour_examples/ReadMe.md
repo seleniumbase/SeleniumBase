@@ -1,4 +1,4 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/g_maps_tour.png" alt="SeleniumBase Tour" width="340" /></h3>
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Interactive Product Tours</h2>
 
@@ -135,3 +135,5 @@ OR
 ``self.export_tour(name=None, filename="my_tour.js")``
 
 (``name`` is optional unless you gave custom names to your tours when you created them. ``filename`` is the name of the file to save the JavaScript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's JavaScript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
+
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
