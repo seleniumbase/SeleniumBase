@@ -34,9 +34,9 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#zoom", timeout=20)
 
         self.create_bootstrap_tour()
-        self.add_tour_step("Welcome to Google Maps!")
+        self.add_tour_step("Welcome to Google Maps", title="SeleniumBase Tour")
         self.add_tour_step(
-            "Type in a location here.", "#searchboxinput", title="Search Box"
+            "The location goes here.", "#searchboxinput", title="Search Box"
         )
         self.add_tour_step(
             "Then click here to show it on the map.",
@@ -45,12 +45,12 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Or click here to get driving directions.",
-            "#searchbox-directions",
+            'button[aria-label="Directions"]',
             alignment="bottom",
         )
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "div.widget-minimap-shim",
+            'button[jsaction*="minimap.main;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -61,7 +61,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Use the Menu button to see more options.",
-            ".searchbox-hamburger-container",
+            'button[jsaction*="settings.open;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -70,7 +70,7 @@ class MyTourClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour",
         )
         self.export_tour(filename="bootstrap_google_maps_tour.js")
         self.play_tour()
