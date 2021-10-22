@@ -11,27 +11,23 @@ class MyTestClass(BaseCase):
         # Create a website tour using the DriverJS library
         # Same as:  self.create_driverjs_tour()
         self.create_tour(theme="driverjs")
+        self.add_tour_step("Welcome to Google Maps", title="SeleniumBase Tour")
         self.add_tour_step(
-            "🗺️ Welcome to Google Maps 🗺️",
-            "html",
-            title="✅ SeleniumBase Tours 🌎",
+            "The location goes here.", "#searchboxinput", title="Search Box"
         )
         self.add_tour_step(
-            "You can type a location into this Search box.", "#searchboxinput"
-        )
-        self.add_tour_step(
-            "Then click here to view it on the map.",
+            "Then click here to show it on the map.",
             "#searchbox-searchbutton",
             alignment="bottom",
         )
         self.add_tour_step(
             "Or click here to get driving directions.",
-            "#searchbox-directions",
+            'button[aria-label="Directions"]',
             alignment="bottom",
         )
         self.add_tour_step(
-            "Use this button to get a Satellite view.",
-            "div.widget-minimap-shim",
+            "Use this button to switch to Satellite view.",
+            'button[jsaction*="minimap.main;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -41,8 +37,8 @@ class MyTestClass(BaseCase):
             "Or click here to zoom out.", "#widget-zoom-out", alignment="left"
         )
         self.add_tour_step(
-            "Use the Menu button for more options.",
-            ".searchbox-hamburger-container",
+            "Use the Menu button to see more options.",
+            'button[jsaction*="settings.open;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -51,9 +47,7 @@ class MyTestClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours",
-            "html",
-            title="🚃 End of Guided Tour 🚃",
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour",
         )
         self.export_tour()  # The default name for exports is "my_tour.js"
         self.play_tour(interval=0)  # If interval > 0, autoplay after N seconds

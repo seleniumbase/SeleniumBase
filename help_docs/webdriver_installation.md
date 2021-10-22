@@ -21,17 +21,19 @@ sbase install chromedriver latest
 * You can also install a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
-sbase install chromedriver 88.0.4324.96
+sbase install chromedriver 94.0.4606.61
 
-sbase install chromedriver 88
+sbase install chromedriver 94
 ```
 
-* You can run the following two commands on Mac/Linux (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)
+* On Linux, you can run the following two commands (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)
 
 ```bash
 wget https://raw.githubusercontent.com/seleniumbase/SeleniumBase/master/examples/upgrade_chromedriver.py
 pytest upgrade_chromedriver.py -s
 ```
+
+* If you run a test without the correct webdriver installed, the driver will be downloaded automatically.
 
 If you plan on using the [Selenium Grid integration](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md) (which allows for remote webdriver), you'll need to put the drivers on your System PATH. On macOS and Linux, ``/usr/local/bin`` is a good PATH spot. On Windows, you may need to set the System PATH under Environment Variables to include the location where you placed the driver files. As a shortcut, you could place the driver files into your Python ``Scripts/`` folder in the location where you have Python installed, which should already be on your System PATH.
 
@@ -79,8 +81,8 @@ chmod +x /usr/local/bin/chromedriver
 ```
 
 ```bash
-wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
-tar xvfz geckodriver-v0.26.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
+tar xvfz geckodriver-v0.30.0-linux64.tar.gz
 mv geckodriver /usr/local/bin/
 chmod +x /usr/local/bin/geckodriver
 ```

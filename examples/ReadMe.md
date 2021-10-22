@@ -69,7 +69,7 @@ Run a test on the Demo Site to try many SeleniumBase methods:
 pytest test_demo_site.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/demo_page_2.gif" title="SeleniumBase Demo Page" /><br />
+<img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
 
 Run tests multi-threaded using [n] threads:
 
