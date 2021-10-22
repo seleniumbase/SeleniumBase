@@ -115,7 +115,7 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.3;python_version>="3.6"',
+        'pip>=21.3.1;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.0;python_version>="3.6"',
         "typing-extensions>=3.10.0.2",
@@ -199,7 +199,7 @@ setup(
         'traitlets==5.1.0;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
-        'prompt-toolkit==3.0.20;python_version>="3.6.2"',
+        'prompt-toolkit==3.0.21;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.0;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
