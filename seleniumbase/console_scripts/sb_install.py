@@ -298,7 +298,7 @@ def main(override=None):
         name = "edgedriver"
         last = (
             "https://msedgewebdriverstorage.blob.core.windows.net"
-            "/edgewebdriver/LATEST_STABLE"
+            "/edgewebdriver/LATEST_BETA"
         )
         get_latest = False
         if num_args == 3:
@@ -330,12 +330,13 @@ def main(override=None):
             file_name = "edgedriver_win32.zip"
         elif "darwin" in sys_plat:
             file_name = "edgedriver_mac64.zip"
+        elif "linux" in sys_plat:
+            file_name = "edgedriver_linux64.zip"
         else:
             raise Exception(
-                "Sorry! Microsoft WebDriver / EdgeDriver is "
-                "only for Windows or Mac operating systems!"
+                "Cannot determine which version of EdgeDriver to download!"
             )
-        download_url = "https://msedgedriver.azureedge.net/" "%s/%s" % (
+        download_url = "https://msedgedriver.azureedge.net/%s/%s" % (
             use_version,
             file_name,
         )
