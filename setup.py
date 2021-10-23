@@ -121,7 +121,7 @@ setup(
         "typing-extensions>=3.10.0.2",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=58.2.0;python_version>="3.6"',
+        'setuptools>=58.3.0;python_version>="3.6"',
         'setuptools-scm==5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.1;python_version>="3.6"',
@@ -213,7 +213,7 @@ setup(
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        "virtualenv>=20.8.1",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.9.0",  # Sync with importlib-metadata and pathlib2
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
         "pyotp==2.6.0",
