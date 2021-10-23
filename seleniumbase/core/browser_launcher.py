@@ -1704,7 +1704,46 @@ def get_local_driver(
             else:  # Running headless on Linux
                 try:
                     return webdriver.Chrome(options=chrome_options)
-                except Exception:
+                except Exception as e:
+                    auto_upgrade_chromedriver = False
+                    if "This version of ChromeDriver only supports" in e.msg:
+                        auto_upgrade_chromedriver = True
+                    elif "Chrome version must be between" in e.msg:
+                        auto_upgrade_chromedriver = True
+                    if auto_upgrade_chromedriver:
+                        args = " ".join(sys.argv)
+                        if (
+                            "-n" in sys.argv
+                            or " -n=" in args
+                            or args == "-c"
+                        ):
+                            import fasteners
+
+                            chromedr_fixing_lock = fasteners.InterProcessLock(
+                                constants.MultiBrowser.CHROMEDRIVER_FIXING_LOCK
+                            )
+                            with chromedr_fixing_lock:
+                                if not _was_chromedriver_repaired():
+                                    try:
+                                        _repair_chromedriver(
+                                            chrome_options, chrome_options
+                                        )
+                                        _mark_chromedriver_repaired()
+                                    except Exception:
+                                        pass
+                        else:
+                            if not _was_chromedriver_repaired():
+                                try:
+                                    _repair_chromedriver(
+                                        chrome_options, chrome_options
+                                    )
+                                except Exception:
+                                    pass
+                            _mark_chromedriver_repaired()
+                        try:
+                            return webdriver.Chrome(options=chrome_options)
+                        except Exception:
+                            pass
                     # Use the virtual display on Linux during headless errors
                     logging.debug(
                         "\nWarning: Chrome failed to launch in"
