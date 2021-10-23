@@ -141,6 +141,18 @@ def _repair_chromedriver(chrome_options, headless_options):
     return
 
 
+def _repair_edgedriver(edge_version):
+    import subprocess
+
+    print(
+        "\nWarning: msedgedriver version doesn't match Edge version!"
+        "\nAttempting to install a matching version of msedgedriver:")
+    subprocess.check_call(
+        "sbase install edgedriver %s" % edge_version, shell=True
+    )
+    return
+
+
 def _mark_chromedriver_repaired():
     import codecs
 
@@ -1399,17 +1411,81 @@ def get_local_driver(
                     edge_options.add_argument(chromium_arg_item)
         if selenium4:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            return Edge(
-                executable_path=LOCAL_EDGEDRIVER,
-                options=edge_options,
-            )
+            try:
+                driver = Edge(
+                    executable_path=LOCAL_EDGEDRIVER,
+                    options=edge_options,
+                )
+            except Exception as e:
+                auto_upgrade_edgedriver = False
+                if "This version of MSEdgeDriver only supports" in e.msg:
+                    if "Current browser version is " in e.msg:
+                        auto_upgrade_edgedriver = True
+                if not auto_upgrade_edgedriver:
+                    raise Exception(e.msg)  # Not an obvious fix. Raise.
+                else:
+                    pass  # Try upgrading EdgeDriver to match Edge.
+                edge_version = e.msg.split(
+                    "Current browser version is ")[1].split(' ')[0]
+                args = " ".join(sys.argv)
+                if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                    import fasteners
+
+                    edgedriver_fixing_lock = fasteners.InterProcessLock(
+                        constants.MultiBrowser.CHROMEDRIVER_FIXING_LOCK
+                    )
+                    with edgedriver_fixing_lock:
+                        if not _was_chromedriver_repaired():  # Works for Edge
+                            _repair_edgedriver(edge_version)
+                            _mark_chromedriver_repaired()  # Works for Edge
+                else:
+                    if not _was_chromedriver_repaired():  # Works for Edge
+                        _repair_edgedriver(edge_version)
+                    _mark_chromedriver_repaired()  # Works for Edge
+                driver = Edge(
+                    executable_path=LOCAL_EDGEDRIVER,
+                    options=edge_options,
+                )
+            return driver
         else:
             capabilities = edge_options.to_capabilities()
             capabilities["platform"] = ""
-            return Edge(
-                executable_path=LOCAL_EDGEDRIVER,
-                capabilities=capabilities,
-            )
+            try:
+                driver = Edge(
+                    executable_path=LOCAL_EDGEDRIVER,
+                    capabilities=capabilities,
+                )
+            except Exception as e:
+                auto_upgrade_edgedriver = False
+                if "This version of MSEdgeDriver only supports" in e.msg:
+                    if "Current browser version is " in e.msg:
+                        auto_upgrade_edgedriver = True
+                if not auto_upgrade_edgedriver:
+                    raise Exception(e.msg)  # Not an obvious fix. Raise.
+                else:
+                    pass  # Try upgrading EdgeDriver to match Edge.
+                edge_version = e.msg.split(
+                    "Current browser version is ")[1].split(' ')[0]
+                args = " ".join(sys.argv)
+                if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                    import fasteners
+
+                    edgedriver_fixing_lock = fasteners.InterProcessLock(
+                        constants.MultiBrowser.CHROMEDRIVER_FIXING_LOCK
+                    )
+                    with edgedriver_fixing_lock:
+                        if not _was_chromedriver_repaired():  # Works for Edge
+                            _repair_edgedriver(edge_version)
+                            _mark_chromedriver_repaired()  # Works for Edge
+                else:
+                    if not _was_chromedriver_repaired():  # Works for Edge
+                        _repair_edgedriver(edge_version)
+                    _mark_chromedriver_repaired()  # Works for Edge
+                driver = Edge(
+                    executable_path=LOCAL_EDGEDRIVER,
+                    capabilities=capabilities,
+                )
+            return driver
     elif browser_name == constants.Browser.SAFARI:
         arg_join = " ".join(sys.argv)
         if ("-n" in sys.argv) or (" -n=" in arg_join) or (arg_join == "-c"):
