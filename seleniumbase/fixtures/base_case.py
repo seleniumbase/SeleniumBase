@@ -9292,7 +9292,12 @@ class BaseCase(unittest.TestCase):
             raise Exception(minified_exception)
 
     def check_window(
-        self, name="default", level=0, baseline=False, check_domain=True
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
     ):
         """***  Automated Visual Testing with SeleniumBase  ***
 
@@ -9350,6 +9355,10 @@ class BaseCase(unittest.TestCase):
         self.check_window() in a test to use that as the baseline. This
         only makes sense if you're calling self.check_window() more than
         once with the same name parameter in the same test.
+
+        If "full_diff" is set to False, the error output will only
+        include the first differing element in the list comparison.
+        Set "full_diff" to True if you want to see the full output.
 
         Automated Visual Testing with self.check_window() is not very
         effective for websites that have dynamic content that changes
@@ -9482,12 +9491,21 @@ class BaseCase(unittest.TestCase):
                 self.assertEqual(page_data_domain, page_domain, domain_fail)
             unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 3:
-                self.__assert_eq(level_3_data, level_3, level_3_failure)
+                if not full_diff:
+                    self.__assert_eq(level_3_data, level_3, level_3_failure)
+                else:
+                    self.assertEqual(level_3_data, level_3, level_3_failure)
             unittest.TestCase.maxDiff = 3200
             if level == 2:
-                self.__assert_eq(level_2_data, level_2, level_2_failure)
+                if not full_diff:
+                    self.__assert_eq(level_2_data, level_2, level_2_failure)
+                else:
+                    self.assertEqual(level_2_data, level_2, level_2_failure)
             if level == 1:
-                self.__assert_eq(level_1_data, level_1, level_1_failure)
+                if not full_diff:
+                    self.__assert_eq(level_1_data, level_1, level_1_failure)
+                else:
+                    self.assertEqual(level_1_data, level_1, level_1_failure)
             unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 0:
                 try:
@@ -9497,19 +9515,36 @@ class BaseCase(unittest.TestCase):
                             page_domain, page_data_domain, domain_fail
                         )
                     try:
-                        self.__assert_eq(
-                            level_1_data, level_1, level_1_failure
-                        )
+                        if not full_diff:
+                            self.__assert_eq(
+                                level_1_data, level_1, level_1_failure
+                            )
+                        else:
+                            self.assertEqual(
+                                level_1_data, level_1, level_1_failure
+                            )
                     except Exception as e:
                         print(e)
                     try:
-                        self.__assert_eq(
-                            level_2_data, level_2, level_2_failure
-                        )
+                        if not full_diff:
+                            self.__assert_eq(
+                                level_2_data, level_2, level_2_failure
+                            )
+                        else:
+                            self.assertEqual(
+                                level_2_data, level_2, level_2_failure
+                            )
                     except Exception as e:
                         print(e)
                     unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
-                    self.__assert_eq(level_3_data, level_3, level_3_failure)
+                    if not full_diff:
+                        self.__assert_eq(
+                            level_3_data, level_3, level_3_failure
+                        )
+                    else:
+                        self.assertEqual(
+                            level_3_data, level_3, level_3_failure
+                        )
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
             unittest.TestCase.maxDiff = None  # Reset unittest.TestCase.maxDiff
@@ -9635,6 +9670,32 @@ class BaseCase(unittest.TestCase):
             self.__add_deferred_assert_failure()
             return False
 
+    def deferred_check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
+    ):
+        """A non-terminating assertion for the check_window() method.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it."""
+        self.__check_scope()
+        self.__deferred_assert_count += 1
+        try:
+            self.check_window(
+                name=name,
+                level=level,
+                baseline=baseline,
+                check_domain=check_domain,
+                full_diff=full_diff,
+            )
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure()
+            return False
+
     def process_deferred_asserts(self, print_only=False):
         """To be used with any test that uses deferred_asserts, which are
         non-terminating verifications that only raise exceptions
@@ -9657,7 +9718,7 @@ class BaseCase(unittest.TestCase):
             if print_only:
                 print(exception_output)
             else:
-                raise Exception(exception_output)
+                raise Exception(exception_output.replace("\\n", "\n"))
 
     ############
 
@@ -9677,6 +9738,23 @@ class BaseCase(unittest.TestCase):
         """ Same as self.deferred_assert_text() """
         return self.deferred_assert_text(
             text=text, selector=selector, by=by, timeout=timeout
+        )
+
+    def delayed_check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False
+    ):
+        """ Same as self.deferred_check_window() """
+        return self.deferred_check_window(
+            name=name,
+            level=level,
+            baseline=baseline,
+            check_domain=check_domain,
+            full_diff=full_diff,
         )
 
     def process_delayed_asserts(self, print_only=False):
@@ -10743,7 +10821,6 @@ class BaseCase(unittest.TestCase):
 
     def __process_dashboard(self, has_exception, init=False):
         """ SeleniumBase Dashboard Processing """
-        existing_res = sb_config._results  # Used by multithreaded tests
         if self._multithreaded:
             abs_path = os.path.abspath(".")
             dash_json_loc = constants.Dashboard.DASH_JSON
@@ -10831,8 +10908,8 @@ class BaseCase(unittest.TestCase):
                 sb_config.item_count_untested -= 1
             elif (
                 self._multithreaded
-                and test_id in existing_res.keys()
-                and existing_res[test_id] == "Skipped"
+                and test_id in sb_config._results.keys()
+                and sb_config._results[test_id] == "Skipped"
             ):
                 sb_config._results[test_id] = "Skipped"
                 sb_config.item_count_skipped += 1

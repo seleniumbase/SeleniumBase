@@ -1,12 +1,12 @@
 regex>=2021.10.23
 tqdm>=4.62.3
+docutils==0.17.1
+python-dateutil==2.8.2
 livereload==2.6.3;python_version>="3.6"
 joblib==1.1.0;python_version>="3.6"
 Markdown==3.3.4;python_version>="3.6"
 MarkupSafe==2.0.1;python_version>="3.6"
-jsmin==3.0.0;python_version>="3.6"
-docutils==0.17.1
-python-dateutil==2.8.2
+pyparsing==3.0.1;python_version>="3.6"
 keyring==23.2.1;python_version>="3.6"
 pkginfo==1.7.1;python_version>="3.6"
 Jinja2==3.0.2;python_version>="3.6"
@@ -16,6 +16,7 @@ readme-renderer==30.0
 pymdown-extensions==9.0;python_version>="3.6"
 importlib-metadata==4.8.1;python_version>="3.6"
 bleach==4.1.0
+jsmin==3.0.0;python_version>="3.6"
 lunr==0.6.1;python_version>="3.6"
 nltk==3.6.5;python_version>="3.6"
 watchdog==2.1.6;python_version>="3.6"

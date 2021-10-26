@@ -7,7 +7,7 @@
 
 <h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></h3>
 <!-- View on GitHub -->
-<h4 align="center">Better web testing with <a href="https://www.selenium.dev/documentation/">Selenium</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</h4>
+<h4 align="center">Better web testing with <a href="https://www.selenium.dev/documentation/">Selenium</a> and <a href="https://docs.pytest.org/en/stable/">pytest</a>.</h4>
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase">
@@ -84,8 +84,9 @@ pip install -e .  # Editable install
 pip install seleniumbase
 ```
 
-> (Add ``--upgrade`` OR ``-U`` to upgrade an installation.)
-> (Add ``--force-reinstall`` to upgrade dependencies.)
+> (Add ``--upgrade`` OR ``-U`` to install the latest ``seleniumbase``.)
+> (Add ``--force-reinstall`` to also install the latest dependencies.)
+> (Add ``--index-url=http://pypi.python.org/simple/`` if blocked by a VPN.)
 > (Use ``pip3`` if multiple versions of Python are installed.)
 
 🔵 Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
