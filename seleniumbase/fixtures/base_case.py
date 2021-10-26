@@ -10821,7 +10821,6 @@ class BaseCase(unittest.TestCase):
 
     def __process_dashboard(self, has_exception, init=False):
         """ SeleniumBase Dashboard Processing """
-        existing_res = sb_config._results  # Used by multithreaded tests
         if self._multithreaded:
             abs_path = os.path.abspath(".")
             dash_json_loc = constants.Dashboard.DASH_JSON
@@ -10909,8 +10908,8 @@ class BaseCase(unittest.TestCase):
                 sb_config.item_count_untested -= 1
             elif (
                 self._multithreaded
-                and test_id in existing_res.keys()
-                and existing_res[test_id] == "Skipped"
+                and test_id in sb_config._results.keys()
+                and sb_config._results[test_id] == "Skipped"
             ):
                 sb_config._results[test_id] = "Skipped"
                 sb_config.item_count_skipped += 1

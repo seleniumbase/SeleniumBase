@@ -1483,7 +1483,7 @@ def _perform_pytest_unconfigure_():
         pass
 
 
-def pytest_unconfigure():
+def pytest_unconfigure(config):
     """ This runs after all tests have completed with pytest. """
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
@@ -1492,7 +1492,6 @@ def pytest_unconfigure():
         if (
             hasattr(sb_config, "dashboard")
             and sb_config.dashboard
-            and sb_config._dash_html
         ):
             # Multi-threaded tests with the Dashboard
             abs_path = os.path.abspath(".")
@@ -1502,10 +1501,21 @@ def pytest_unconfigure():
                 sb_config._only_unittest = False
                 dashboard_path = os.path.join(abs_path, "dashboard.html")
                 with dash_lock:
-                    with open(dashboard_path, "w", encoding="utf-8") as f:
-                        f.write(sb_config._dash_html)
+                    if (
+                        sb_config._dash_html
+                        and config.getoption("htmlpath") == "dashboard.html"
+                    ):
+                        # Dash is HTML Report (Multithreaded)
+                        sb_config._dash_is_html_report = True
+                        with open(dashboard_path, "w", encoding="utf-8") as f:
+                            f.write(sb_config._dash_html)
+                    # Dashboard Multithreaded
                     _perform_pytest_unconfigure_()
                     return
+            else:
+                # Dash Lock is missing
+                _perform_pytest_unconfigure_()
+                return
         with dash_lock:
             # Multi-threaded tests
             _perform_pytest_unconfigure_()
@@ -1513,6 +1523,7 @@ def pytest_unconfigure():
     else:
         # Single-threaded tests
         _perform_pytest_unconfigure_()
+        return
 
 
 @pytest.fixture()
