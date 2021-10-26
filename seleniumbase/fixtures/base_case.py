@@ -9670,6 +9670,32 @@ class BaseCase(unittest.TestCase):
             self.__add_deferred_assert_failure()
             return False
 
+    def deferred_check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
+    ):
+        """A non-terminating assertion for the check_window() method.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it."""
+        self.__check_scope()
+        self.__deferred_assert_count += 1
+        try:
+            self.check_window(
+                name=name,
+                level=level,
+                baseline=baseline,
+                check_domain=check_domain,
+                full_diff=full_diff,
+            )
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure()
+            return False
+
     def process_deferred_asserts(self, print_only=False):
         """To be used with any test that uses deferred_asserts, which are
         non-terminating verifications that only raise exceptions
@@ -9692,7 +9718,7 @@ class BaseCase(unittest.TestCase):
             if print_only:
                 print(exception_output)
             else:
-                raise Exception(exception_output)
+                raise Exception(exception_output.replace("\\n", "\n"))
 
     ############
 
@@ -9712,6 +9738,23 @@ class BaseCase(unittest.TestCase):
         """ Same as self.deferred_assert_text() """
         return self.deferred_assert_text(
             text=text, selector=selector, by=by, timeout=timeout
+        )
+
+    def delayed_check_window(
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False
+    ):
+        """ Same as self.deferred_check_window() """
+        return self.deferred_check_window(
+            name=name,
+            level=level,
+            baseline=baseline,
+            check_domain=check_domain,
+            full_diff=full_diff,
         )
 
     def process_delayed_asserts(self, print_only=False):
