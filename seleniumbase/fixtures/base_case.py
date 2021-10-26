@@ -9292,7 +9292,12 @@ class BaseCase(unittest.TestCase):
             raise Exception(minified_exception)
 
     def check_window(
-        self, name="default", level=0, baseline=False, check_domain=True
+        self,
+        name="default",
+        level=0,
+        baseline=False,
+        check_domain=True,
+        full_diff=False,
     ):
         """***  Automated Visual Testing with SeleniumBase  ***
 
@@ -9350,6 +9355,10 @@ class BaseCase(unittest.TestCase):
         self.check_window() in a test to use that as the baseline. This
         only makes sense if you're calling self.check_window() more than
         once with the same name parameter in the same test.
+
+        If "full_diff" is set to False, the error output will only
+        include the first differing element in the list comparison.
+        Set "full_diff" to True if you want to see the full output.
 
         Automated Visual Testing with self.check_window() is not very
         effective for websites that have dynamic content that changes
@@ -9482,12 +9491,21 @@ class BaseCase(unittest.TestCase):
                 self.assertEqual(page_data_domain, page_domain, domain_fail)
             unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 3:
-                self.__assert_eq(level_3_data, level_3, level_3_failure)
+                if not full_diff:
+                    self.__assert_eq(level_3_data, level_3, level_3_failure)
+                else:
+                    self.assertEqual(level_3_data, level_3, level_3_failure)
             unittest.TestCase.maxDiff = 3200
             if level == 2:
-                self.__assert_eq(level_2_data, level_2, level_2_failure)
+                if not full_diff:
+                    self.__assert_eq(level_2_data, level_2, level_2_failure)
+                else:
+                    self.assertEqual(level_2_data, level_2, level_2_failure)
             if level == 1:
-                self.__assert_eq(level_1_data, level_1, level_1_failure)
+                if not full_diff:
+                    self.__assert_eq(level_1_data, level_1, level_1_failure)
+                else:
+                    self.assertEqual(level_1_data, level_1, level_1_failure)
             unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
             if level == 0:
                 try:
@@ -9497,19 +9515,36 @@ class BaseCase(unittest.TestCase):
                             page_domain, page_data_domain, domain_fail
                         )
                     try:
-                        self.__assert_eq(
-                            level_1_data, level_1, level_1_failure
-                        )
+                        if not full_diff:
+                            self.__assert_eq(
+                                level_1_data, level_1, level_1_failure
+                            )
+                        else:
+                            self.assertEqual(
+                                level_1_data, level_1, level_1_failure
+                            )
                     except Exception as e:
                         print(e)
                     try:
-                        self.__assert_eq(
-                            level_2_data, level_2, level_2_failure
-                        )
+                        if not full_diff:
+                            self.__assert_eq(
+                                level_2_data, level_2, level_2_failure
+                            )
+                        else:
+                            self.assertEqual(
+                                level_2_data, level_2, level_2_failure
+                            )
                     except Exception as e:
                         print(e)
                     unittest.TestCase.maxDiff = 6400  # Use `None` for no limit
-                    self.__assert_eq(level_3_data, level_3, level_3_failure)
+                    if not full_diff:
+                        self.__assert_eq(
+                            level_3_data, level_3, level_3_failure
+                        )
+                    else:
+                        self.assertEqual(
+                            level_3_data, level_3, level_3_failure
+                        )
                 except Exception as e:
                     print(e)  # Level-0 Dry Run (Only print the differences)
             unittest.TestCase.maxDiff = None  # Reset unittest.TestCase.maxDiff
