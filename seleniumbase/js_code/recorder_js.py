@@ -201,14 +201,18 @@ var getBestSelector = function(el) {
     contains_tags.push('h5');
     contains_tags.push('li');
     contains_tags.push('td');
+    contains_tags.push('th');
     contains_tags.push('code');
     contains_tags.push('mark');
     contains_tags.push('label');
     contains_tags.push('button');
     contains_tags.push('legend');
     contains_tags.push('strong');
+    contains_tags.push('summary');
     all_by_tag = [];
-    inner_text = el.innerText.trim();
+    inner_text = '';
+    if (el.innerText)
+        inner_text = el.innerText.trim();
     for (var i = 0; i < contains_tags.length; i++) {
         if (tag_name == contains_tags[i] &&
             inner_text.length >= 2 && inner_text.length <= 64)
