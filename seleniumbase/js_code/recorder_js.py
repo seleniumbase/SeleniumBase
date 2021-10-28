@@ -109,16 +109,25 @@ var ssOccurrences = function(string, subString, allowOverlapping) {
 function hasNumber(str) {
   return /\d/.test(str);
 };
+function tagName(el) {
+  return el.tagName.toLowerCase();
+};
 var getBestSelector = function(el) {
     if (!(el instanceof Element))
         return;
+    if (tagName(el) == 'span') {
+        if (tagName(el.parentElement) == 'button')
+            el = el.parentElement;
+        else if (tagName(el.parentElement.parentElement) == 'button')
+            el = el.parentElement.parentElement;
+    }
     child_sep = ' > ';
     selector_by_id = cssPathById(el);
     if (!selector_by_id.includes(child_sep))
         return selector_by_id;
     child_count_by_id = ssOccurrences(selector_by_id, child_sep);
     selector_by_class = cssPathByClass(el);
-    tag_name = el.tagName.toLowerCase();
+    tag_name = tagName(el);
     non_id_attributes = [];
     non_id_attributes.push('name');
     non_id_attributes.push('data-qa');
@@ -227,31 +236,6 @@ var getBestSelector = function(el) {
                 inner_text = inner_text.replaceAll("'", "\\'");
                 inner_text = inner_text.replaceAll('"', '\\"');
                 return tag_name += ':contains("'+inner_text+'")';
-            }
-        }
-    }
-    if (tag_name == "span" && inner_text.length > 1 && inner_text.length <= 64)
-    {
-        parent_element = el.parentElement;
-        parent_tag_name = parent_element.tagName.toLowerCase();
-        grand_element = parent_element.parentElement;
-        grand_tag_name = grand_element.tagName.toLowerCase();
-        if (parent_tag_name == "button" || grand_tag_name == "button") {
-            qsa_element = "span";
-            if (parent_tag_name == "button")
-                qsa_element = "button > span";
-            else
-                qsa_element = "button > "+parent_tag_name+" > span";
-            t_count = 0;
-            all_el_found = document.querySelectorAll(qsa_element);
-            for (var j = 0; j < all_el_found.length; j++) {
-                if (all_el_found[j].innerText.includes(inner_text))
-                    t_count += 1;
-            }
-            if (t_count === 1 && !inner_text.includes('\n')) {
-                inner_text = inner_text.replaceAll("'", "\\'");
-                inner_text = inner_text.replaceAll('"', '\\"');
-                return qsa_element += ':contains("'+inner_text+'")';
             }
         }
     }
