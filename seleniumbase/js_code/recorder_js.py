@@ -610,7 +610,7 @@ document.body.addEventListener('mouseup', function (event) {
         }
         else
             document.recorded_actions.push(['click', selector, href, d_now]);
-        // Switch to hover_click() if in a dropdown.
+        // hover_click() if dropdown.
         if (element.parentElement.classList.contains('dropdown-content') &&
             element.parentElement.parentElement.classList.contains('dropdown'))
         {
@@ -637,7 +637,7 @@ document.body.addEventListener('mouseup', function (event) {
     else if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn')
     {
-        // Maybe an accidental drag & drop.
+        // Maybe accidental drag & drop.
         document.recorded_actions.pop();
     }
     json_rec_act = JSON.stringify(document.recorded_actions);
@@ -673,7 +673,7 @@ document.body.addEventListener('keydown', function (event) {
 });
 document.body.addEventListener('keyup', function (event) {
     reset_if_recorder_undefined();
-    // Controls to Pause & Resume.
+    // Controls to pause & resume.
     pause_rec = sessionStorage.getItem('pause_recorder');
     rec_mode = sessionStorage.getItem('recorder_mode');
     l_key = event.key.toLowerCase();
