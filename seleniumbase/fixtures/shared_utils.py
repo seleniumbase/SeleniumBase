@@ -8,8 +8,6 @@ from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
-from seleniumbase.common.exceptions import NoSuchFileException
-from seleniumbase.common.exceptions import TimeLimitExceededException
 from seleniumbase import config as sb_config
 
 
@@ -17,6 +15,8 @@ def format_exc(exception, message):
     """
     Formats an exception message to make the output cleaner.
     """
+    from seleniumbase.common.exceptions import NoSuchFileException
+
     if exception == Exception:
         exc = Exception
         return exc, message
@@ -65,6 +65,8 @@ def _format_message(message):
 
 
 def __time_limit_exceeded(message):
+    from seleniumbase.common.exceptions import TimeLimitExceededException
+
     raise TimeLimitExceededException(message)
 
 
