@@ -354,6 +354,23 @@ document.body.addEventListener('mouseout', function (event) {
 document.body.addEventListener('click', function (event) {
     // Do Nothing.
 });
+document.body.addEventListener('submit', function (event) {
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    const d_now = Date.now();
+    ra_len = document.recorded_actions.length;
+    if (ra_len > 0 &&
+        document.recorded_actions[ra_len-1][0] === 'input' &&
+        !document.recorded_actions[ra_len-1][2].endsWith('\n'))
+    {
+        selector = document.recorded_actions[ra_len-1][1];
+        text = document.recorded_actions[ra_len-1][2] + '\n';
+        document.recorded_actions.pop();
+        document.recorded_actions.push(['input', selector, text, d_now]);
+        json_rec_act = JSON.stringify(document.recorded_actions);
+        sessionStorage.setItem('recorded_actions', json_rec_act);
+    }
+});
 document.body.addEventListener('formdata', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
