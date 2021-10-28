@@ -109,16 +109,25 @@ var ssOccurrences = function(string, subString, allowOverlapping) {
 function hasNumber(str) {
   return /\d/.test(str);
 };
+function tagName(el) {
+  return el.tagName.toLowerCase();
+};
 var getBestSelector = function(el) {
     if (!(el instanceof Element))
         return;
+    if (tagName(el) == 'span') {
+        if (tagName(el.parentElement) == 'button')
+            el = el.parentElement;
+        else if (tagName(el.parentElement.parentElement) == 'button')
+            el = el.parentElement.parentElement;
+    }
     child_sep = ' > ';
     selector_by_id = cssPathById(el);
     if (!selector_by_id.includes(child_sep))
         return selector_by_id;
     child_count_by_id = ssOccurrences(selector_by_id, child_sep);
     selector_by_class = cssPathByClass(el);
-    tag_name = el.tagName.toLowerCase();
+    tag_name = tagName(el);
     non_id_attributes = [];
     non_id_attributes.push('name');
     non_id_attributes.push('data-qa');
@@ -227,31 +236,6 @@ var getBestSelector = function(el) {
                 inner_text = inner_text.replaceAll("'", "\\'");
                 inner_text = inner_text.replaceAll('"', '\\"');
                 return tag_name += ':contains("'+inner_text+'")';
-            }
-        }
-    }
-    if (tag_name == "span" && inner_text.length > 1 && inner_text.length <= 64)
-    {
-        parent_element = el.parentElement;
-        parent_tag_name = parent_element.tagName.toLowerCase();
-        grand_element = parent_element.parentElement;
-        grand_tag_name = grand_element.tagName.toLowerCase();
-        if (parent_tag_name == "button" || grand_tag_name == "button") {
-            qsa_element = "span";
-            if (parent_tag_name == "button")
-                qsa_element = "button > span";
-            else
-                qsa_element = "button > "+parent_tag_name+" > span";
-            t_count = 0;
-            all_el_found = document.querySelectorAll(qsa_element);
-            for (var j = 0; j < all_el_found.length; j++) {
-                if (all_el_found[j].innerText.includes(inner_text))
-                    t_count += 1;
-            }
-            if (t_count === 1 && !inner_text.includes('\n')) {
-                inner_text = inner_text.replaceAll("'", "\\'");
-                inner_text = inner_text.replaceAll('"', '\\"');
-                return qsa_element += ':contains("'+inner_text+'")';
             }
         }
     }
@@ -370,6 +354,23 @@ document.body.addEventListener('mouseout', function (event) {
 document.body.addEventListener('click', function (event) {
     // Do Nothing.
 });
+document.body.addEventListener('submit', function (event) {
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    const d_now = Date.now();
+    ra_len = document.recorded_actions.length;
+    if (ra_len > 0 &&
+        document.recorded_actions[ra_len-1][0] === 'input' &&
+        !document.recorded_actions[ra_len-1][2].endsWith('\n'))
+    {
+        selector = document.recorded_actions[ra_len-1][1];
+        text = document.recorded_actions[ra_len-1][2] + '\n';
+        document.recorded_actions.pop();
+        document.recorded_actions.push(['input', selector, text, d_now]);
+        json_rec_act = JSON.stringify(document.recorded_actions);
+        sessionStorage.setItem('recorded_actions', json_rec_act);
+    }
+});
 document.body.addEventListener('formdata', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
@@ -440,7 +441,7 @@ document.body.addEventListener('change', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
-    tag_name = element.tagName.toLowerCase();
+    tag_name = tagName(element);
     e_type = element.type
     if (tag_name === 'select')
     {
@@ -495,7 +496,7 @@ document.body.addEventListener('mousedown', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
-    tag_name = element.tagName.toLowerCase();
+    tag_name = tagName(element);
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
@@ -513,9 +514,9 @@ document.body.addEventListener('mouseup', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
-    tag_name = element.tagName.toLowerCase();
+    tag_name = tagName(element);
     parent_element = element.parentElement;
-    parent_tag_name = parent_element.tagName.toLowerCase();
+    parent_tag_name = tagName(parent_element);
     grand_element = "";
     grand_tag_name = "";
     origin = "";
@@ -559,7 +560,7 @@ document.body.addEventListener('mouseup', function (event) {
     }
     if (parent_element.parentElement != null) {
         grand_element = parent_element.parentElement;
-        grand_tag_name = grand_element.tagName.toLowerCase();
+        grand_tag_name = tagName(grand_element);
     }
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][1] === selector &&
@@ -718,9 +719,9 @@ document.body.addEventListener('keyup', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     skip_input = false;
-    if ((element.tagName.toLowerCase() === 'input' &&
+    if ((tagName(element) === 'input' &&
         element.type !== 'checkbox' && element.type !== 'range') ||
-        element.tagName.toLowerCase() === 'textarea')
+        tagName(element) === 'textarea')
     {
         ra_len = document.recorded_actions.length;
         if (ra_len > 0 && l_key === 'enter' &&
