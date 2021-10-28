@@ -19,7 +19,7 @@ COMMANDS:
       options          (List common pytest options)
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
-      mkrec / codegen  [FILE.py]
+      mkrec / codegen  [FILE.py] [OPTIONS]
       mkpres           [FILE.py] [LANG]
       mkchart          [FILE.py] [LANG]
       print            [FILE] [OPTIONS]
@@ -225,12 +225,18 @@ is included.
 <h3>mkrec / codegen</h3>
 
 * Usage:
-``sbase mkrec [FILE.py]``
-``sbase codegen [FILE.py]``
+``sbase mkrec [FILE.py] [OPTIONS]``
+``sbase codegen [FILE.py] [OPTIONS]``
 
 * Examples:
 ``sbase mkrec new_test.py``
+``sbase mkrec new_test.py --url=seleniumbase.io``
 ``sbase codegen new_test.py``
+``sbase codegen new_test.py --url=wikipedia.org``
+
+* Options:
+``--url=URL``  (Sets the initial start page URL.)
+``--edge``  (Use Edge browser instead of Chrome.)
 
 * Output:
 Creates a new SeleniumBase test using the Recorder.
