@@ -441,7 +441,7 @@ document.body.addEventListener('change', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
-    tag_name = element.tagName.toLowerCase();
+    tag_name = tagName(element);
     e_type = element.type
     if (tag_name === 'select')
     {
@@ -496,7 +496,7 @@ document.body.addEventListener('mousedown', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
-    tag_name = element.tagName.toLowerCase();
+    tag_name = tagName(element);
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
@@ -514,9 +514,9 @@ document.body.addEventListener('mouseup', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
-    tag_name = element.tagName.toLowerCase();
+    tag_name = tagName(element);
     parent_element = element.parentElement;
-    parent_tag_name = parent_element.tagName.toLowerCase();
+    parent_tag_name = tagName(parent_element);
     grand_element = "";
     grand_tag_name = "";
     origin = "";
@@ -560,7 +560,7 @@ document.body.addEventListener('mouseup', function (event) {
     }
     if (parent_element.parentElement != null) {
         grand_element = parent_element.parentElement;
-        grand_tag_name = grand_element.tagName.toLowerCase();
+        grand_tag_name = tagName(grand_element);
     }
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][1] === selector &&
@@ -719,9 +719,9 @@ document.body.addEventListener('keyup', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     skip_input = false;
-    if ((element.tagName.toLowerCase() === 'input' &&
+    if ((tagName(element) === 'input' &&
         element.type !== 'checkbox' && element.type !== 'range') ||
-        element.tagName.toLowerCase() === 'textarea')
+        tagName(element) === 'textarea')
     {
         ra_len = document.recorded_actions.length;
         if (ra_len > 0 && l_key === 'enter' &&
