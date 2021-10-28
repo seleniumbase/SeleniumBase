@@ -37,7 +37,9 @@ var cssPathByAttribute = function(el, attr) {
     while (el !== null && el.nodeType === Node.ELEMENT_NODE) {
         var selector = el.nodeName.toLowerCase();
         if (el.hasAttribute(attr) &&
-            el.getAttribute(attr).length > 0) {
+            el.getAttribute(attr).length > 0 &&
+            !el.getAttribute(attr).includes('\n'))
+        {
             the_attr = el.getAttribute(attr);
             if (the_attr.includes('"'))
                 the_attr = the_attr.replace('"', '\\"');
@@ -104,6 +106,9 @@ var ssOccurrences = function(string, subString, allowOverlapping) {
     }
     return n;
 };
+function hasNumber(str) {
+  return /\d/.test(str);
+};
 var getBestSelector = function(el) {
     if (!(el instanceof Element))
         return;
@@ -132,6 +137,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-cy');
     non_id_attributes.push('data-action');
     non_id_attributes.push('data-target');
+    non_id_attributes.push('data-content');
     non_id_attributes.push('alt');
     non_id_attributes.push('title');
     non_id_attributes.push('heading');
@@ -152,18 +158,22 @@ var getBestSelector = function(el) {
     num_by_attr = [];
     child_count_by_attr = [];
     for (var i = 0; i < non_id_attributes.length; i++) {
+        n_i_attr = non_id_attributes[i];
         selector_by_attr[i] = null;
-        if (non_id_attributes[i] == 'class') {
+        if (n_i_attr == 'class') {
             selector_by_attr[i] = selector_by_class;
         }
         else {
-            selector_by_attr[i] = cssPathByAttribute(el, non_id_attributes[i]);
+            selector_by_attr[i] = cssPathByAttribute(el, n_i_attr);
         }
         all_by_attr[i] = document.querySelectorAll(selector_by_attr[i]);
         num_by_attr[i] = all_by_attr[i].length;
         if (!selector_by_attr[i].includes(child_sep) &&
             ((num_by_attr[i] == 1) || (el == all_by_attr[i][0])))
         {
+            if (n_i_attr == 'aria-label' || n_i_attr == 'for')
+                if (hasNumber(selector_by_attr[i]))
+                    continue;
             return selector_by_attr[i];
         }
         child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], child_sep);
@@ -176,8 +186,8 @@ var getBestSelector = function(el) {
     basic_tags.push('input');
     basic_tags.push('textarea');
     for (var i = 0; i < basic_tags.length; i++) {
-        d_qs_bt_i = document.querySelector(basic_tags[i]);
-        if (tag_name == basic_tags[i] && el == d_qs_bt_i)
+        d_qsa = document.querySelectorAll(basic_tags[i]);
+        if (tag_name == basic_tags[i] && d_qsa.length == 1 && el == d_qsa[0])
             return basic_tags[i];
     }
     contains_tags = [];
@@ -191,14 +201,18 @@ var getBestSelector = function(el) {
     contains_tags.push('h5');
     contains_tags.push('li');
     contains_tags.push('td');
+    contains_tags.push('th');
     contains_tags.push('code');
     contains_tags.push('mark');
     contains_tags.push('label');
     contains_tags.push('button');
     contains_tags.push('legend');
     contains_tags.push('strong');
+    contains_tags.push('summary');
     all_by_tag = [];
-    inner_text = el.innerText.trim();
+    inner_text = '';
+    if (el.innerText)
+        inner_text = el.innerText.trim();
     for (var i = 0; i < contains_tags.length; i++) {
         if (tag_name == contains_tags[i] &&
             inner_text.length >= 2 && inner_text.length <= 64)
@@ -264,23 +278,29 @@ var getBestSelector = function(el) {
     return best_selector;
 };
 
-var AllAnchorTags = document.getElementsByTagName("a");
-for (var i = 0; i < AllAnchorTags.length; i++) {
-    AllAnchorTags[i].addEventListener('click', function (event) {
-        rec_mode = sessionStorage.getItem('recorder_mode');
-        if (rec_mode !== '2' && rec_mode !== '3') {
-            if (this.origin &&
-                this.origin != 'null' &&
-                this.origin != document.location.origin &&
-                this.hasAttribute('href'))
-            {
-                event.preventDefault();
-                window.open(this.href, '_blank').focus();
-            }
-        } else { event.preventDefault(); event.stopPropagation(); }
-    },
-    false);
-}
+function new_tab_on_new_origin() {
+    var AllAnchorTags = document.getElementsByTagName("a");
+    for (var i = 0; i < AllAnchorTags.length; i++) {
+        if (!AllAnchorTags[i].sbset) {
+            AllAnchorTags[i].sbset = true;
+            AllAnchorTags[i].addEventListener('click', function (event) {
+                rec_mode = sessionStorage.getItem('recorder_mode');
+                if (rec_mode !== '2' && rec_mode !== '3') {
+                    if (this.origin &&
+                        this.origin != 'null' &&
+                        this.origin != document.location.origin &&
+                        this.hasAttribute('href'))
+                    {
+                        event.preventDefault();
+                        window.open(this.href, '_blank').focus();
+                    }
+                } else { event.preventDefault(); event.stopPropagation(); }
+            },
+            false);
+        }
+    }
+};
+new_tab_on_new_origin();
 var AllInputTags = document.getElementsByTagName("input");
 var AllButtonTags = document.getElementsByTagName("button");
 var All_IB_Tags = [];
@@ -292,6 +312,17 @@ for (var i = 0; i < All_IB_Tags.length; i++) {
         { event.preventDefault(); event.stopPropagation(); }
     },
     false);
+}
+var SearchInputs = document.querySelectorAll('input[type="search"]');
+for (var i = 0; i < SearchInputs.length; i++) {
+    SearchInputs[i].addEventListener('change', function (event) {
+        new_tab_on_new_origin();
+    },
+    false);
+}
+var AwayForms = document.querySelectorAll('form[action^="//"]');
+for (var i = 0; i < AwayForms.length; i++) {
+    AwayForms[i].target = '_blank';
 }
 
 var reset_recorder_state = function() {
@@ -579,7 +610,7 @@ document.body.addEventListener('mouseup', function (event) {
         }
         else
             document.recorded_actions.push(['click', selector, href, d_now]);
-        // Switch to hover_click() if in a dropdown.
+        // hover_click() if dropdown.
         if (element.parentElement.classList.contains('dropdown-content') &&
             element.parentElement.parentElement.classList.contains('dropdown'))
         {
@@ -606,7 +637,7 @@ document.body.addEventListener('mouseup', function (event) {
     else if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn')
     {
-        // Maybe an accidental drag & drop.
+        // Maybe accidental drag & drop.
         document.recorded_actions.pop();
     }
     json_rec_act = JSON.stringify(document.recorded_actions);
@@ -642,7 +673,7 @@ document.body.addEventListener('keydown', function (event) {
 });
 document.body.addEventListener('keyup', function (event) {
     reset_if_recorder_undefined();
-    // Controls to Pause & Resume.
+    // Controls to pause & resume.
     pause_rec = sessionStorage.getItem('pause_recorder');
     rec_mode = sessionStorage.getItem('recorder_mode');
     l_key = event.key.toLowerCase();
@@ -672,8 +703,8 @@ document.body.addEventListener('keyup', function (event) {
     else if (event.key === '&' && pause_rec === 'no')
     {
         sessionStorage.setItem('recorder_mode', '3');
-        orange_border = 'thick solid #F28C28';
-        document.querySelector('body').style.border = orange_border;
+        teal_border = 'thick solid #30C6C6';
+        document.querySelector('body').style.border = teal_border;
     }
     else if (pause_rec === 'no' && l_key !== 'shift' && l_key !== 'backspace')
     {

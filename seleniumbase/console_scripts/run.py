@@ -11,7 +11,9 @@ sbase methods
 sbase options
 sbase mkdir ui_tests
 sbase mkfile new_test.py
-sbase mkrec new_test.py  # Same as "sbase codegen new_test.py"
+sbase mkrec new_test.py
+sbase mkrec new_test.py --url=wikipedia.org
+sbase codegen new_test.py --url=wikipedia.org
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -75,7 +77,7 @@ def show_basic_usage():
     sc += "      options          (List common pytest options)\n"
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
-    sc += "      mkrec / codegen  [FILE.py]\n"
+    sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
     sc += "      mkpres           [FILE.py] [LANG]\n"
     sc += "      mkchart          [FILE.py] [LANG]\n"
     sc += "      print            [FILE] [OPTIONS]\n"
@@ -203,10 +205,14 @@ def show_mkrec_usage():
     print(sc)
     print("")
     print("  Usage:")
-    print("           seleniumbase mkrec [FILE.py]")
-    print("           OR:    sbase mkrec [FILE.py]")
-    print("  Example:")
+    print("           seleniumbase mkrec [FILE.py] [OPTIONS]")
+    print("           OR:    sbase mkrec [FILE.py] [OPTIONS]")
+    print("  Examples:")
     print("           sbase mkrec new_test.py")
+    print("           sbase mkrec new_test.py --url=wikipedia.org")
+    print("  Options:")
+    print("           --url=URL  (Sets the initial start page URL.)")
+    print("           --edge  (Use Edge browser instead of Chrome.)")
     print("  Output:")
     print("           Creates a new SeleniumBase test using the Recorder.")
     print("           If the filename already exists, an error is raised.")
@@ -221,10 +227,14 @@ def show_codegen_usage():
     print(sc)
     print("")
     print("  Usage:")
-    print("           seleniumbase codegen [FILE.py]")
-    print("           OR:    sbase codegen [FILE.py]")
-    print("  Example:")
+    print("           seleniumbase codegen [FILE.py] [OPTIONS]")
+    print("           OR:    sbase codegen [FILE.py] [OPTIONS]")
+    print("  Examples:")
     print("           sbase codegen new_test.py")
+    print("           sbase codegen new_test.py --url=wikipedia.org")
+    print("  Options:")
+    print("           --url=URL  (Sets the initial start page URL.)")
+    print("           --edge  (Use Edge browser instead of Chrome.)")
     print("  Output:")
     print("           Creates a new SeleniumBase test using the Recorder.")
     print("           If the filename already exists, an error is raised.")

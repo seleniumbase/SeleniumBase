@@ -108,7 +108,7 @@ COMMANDS:
       options          (List common pytest options)
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
-      mkrec / codegen  [FILE.py]
+      mkrec / codegen  [FILE.py] [OPTIONS]
       mkpres           [FILE.py] [LANG]
       mkchart          [FILE.py] [LANG]
       print            [FILE] [OPTIONS]

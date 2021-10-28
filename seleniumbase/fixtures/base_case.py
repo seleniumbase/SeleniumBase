@@ -95,6 +95,7 @@ class BaseCase(unittest.TestCase):
         self.__last_page_url = None
         self.__last_page_source = None
         self.__skip_reason = None
+        self.__dont_record_open = False
         self.__dont_record_js_click = False
         self.__new_window_on_rec_open = True
         self.__overrided_default_timeouts = False
@@ -142,7 +143,7 @@ class BaseCase(unittest.TestCase):
         if url.startswith("://"):
             # Convert URLs such as "://google.com" into "https://google.com"
             url = "https" + url
-        if self.recorder_mode:
+        if self.recorder_mode and not self.__dont_record_open:
             time_stamp = self.execute_script("return Date.now();")
             origin = self.get_origin()
             action = ["_url_", origin, url, time_stamp]
@@ -774,9 +775,11 @@ class BaseCase(unittest.TestCase):
             if page_utils.is_valid_url(start_page):
                 self.open(start_page)
             else:
-                new_start_page = "http://" + start_page
+                new_start_page = "https://" + start_page
                 if page_utils.is_valid_url(new_start_page):
+                    self.__dont_record_open = True
                     self.open(new_start_page)
+                    self.__dont_record_open = False
                 else:
                     logging.info('Invalid URL: "%s"!' % start_page)
                     self.open("data:,")
@@ -2905,9 +2908,11 @@ class BaseCase(unittest.TestCase):
                 if page_utils.is_valid_url(self.start_page):
                     self.open(self.start_page)
                 else:
-                    new_start_page = "http://" + self.start_page
+                    new_start_page = "https://" + self.start_page
                     if page_utils.is_valid_url(new_start_page):
+                        self.__dont_record_open = True
                         self.open(new_start_page)
+                        self.__dont_record_open = False
         return new_driver
 
     def switch_to_driver(self, driver):
@@ -10494,10 +10499,12 @@ class BaseCase(unittest.TestCase):
                     self.open(self.start_page)
                     self.__new_window_on_rec_open = True
                 else:
-                    new_start_page = "http://" + self.start_page
+                    new_start_page = "https://" + self.start_page
                     if page_utils.is_valid_url(new_start_page):
                         good_start_page = True
+                        self.__dont_record_open = True
                         self.open(new_start_page)
+                        self.__dont_record_open = False
             if self.recorder_ext or (self._crumbs and not good_start_page):
                 if self.get_current_url() != "data:,":
                     self.__new_window_on_rec_open = False
@@ -10822,6 +10829,7 @@ class BaseCase(unittest.TestCase):
     def __process_dashboard(self, has_exception, init=False):
         """ SeleniumBase Dashboard Processing """
         if self._multithreaded:
+            existing_res = sb_config._results  # For recording "Skipped" tests
             abs_path = os.path.abspath(".")
             dash_json_loc = constants.Dashboard.DASH_JSON
             dash_jsonpath = os.path.join(abs_path, dash_json_loc)
@@ -10908,8 +10916,8 @@ class BaseCase(unittest.TestCase):
                 sb_config.item_count_untested -= 1
             elif (
                 self._multithreaded
-                and test_id in sb_config._results.keys()
-                and sb_config._results[test_id] == "Skipped"
+                and test_id in existing_res.keys()
+                and existing_res[test_id] == "Skipped"
             ):
                 sb_config._results[test_id] = "Skipped"
                 sb_config.item_count_skipped += 1
