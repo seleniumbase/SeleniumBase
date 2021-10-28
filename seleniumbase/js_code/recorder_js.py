@@ -703,8 +703,8 @@ document.body.addEventListener('keyup', function (event) {
     else if (event.key === '&' && pause_rec === 'no')
     {
         sessionStorage.setItem('recorder_mode', '3');
-        orange_border = 'thick solid #F28C28';
-        document.querySelector('body').style.border = orange_border;
+        teal_border = 'thick solid #30C6C6';
+        document.querySelector('body').style.border = teal_border;
     }
     else if (pause_rec === 'no' && l_key !== 'shift' && l_key !== 'backspace')
     {
