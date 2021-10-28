@@ -37,7 +37,9 @@ var cssPathByAttribute = function(el, attr) {
     while (el !== null && el.nodeType === Node.ELEMENT_NODE) {
         var selector = el.nodeName.toLowerCase();
         if (el.hasAttribute(attr) &&
-            el.getAttribute(attr).length > 0) {
+            el.getAttribute(attr).length > 0 &&
+            !el.getAttribute(attr).includes('\n'))
+        {
             the_attr = el.getAttribute(attr);
             if (the_attr.includes('"'))
                 the_attr = the_attr.replace('"', '\\"');
