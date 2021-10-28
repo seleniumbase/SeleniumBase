@@ -186,8 +186,8 @@ var getBestSelector = function(el) {
     basic_tags.push('input');
     basic_tags.push('textarea');
     for (var i = 0; i < basic_tags.length; i++) {
-        d_qs_bt_i = document.querySelector(basic_tags[i]);
-        if (tag_name == basic_tags[i] && el == d_qs_bt_i)
+        d_qsa = document.querySelectorAll(basic_tags[i]);
+        if (tag_name == basic_tags[i] && d_qsa.length == 1 && el == d_qsa[0])
             return basic_tags[i];
     }
     contains_tags = [];
