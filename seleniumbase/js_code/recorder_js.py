@@ -134,6 +134,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-cy');
     non_id_attributes.push('data-action');
     non_id_attributes.push('data-target');
+    non_id_attributes.push('data-content');
     non_id_attributes.push('alt');
     non_id_attributes.push('title');
     non_id_attributes.push('heading');
