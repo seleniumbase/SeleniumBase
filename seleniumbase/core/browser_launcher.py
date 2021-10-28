@@ -5,6 +5,9 @@ import sys
 import urllib3
 import warnings
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as Chrome_Service
+from selenium.webdriver.edge.service import Service as Edge_Service
+from selenium.webdriver.firefox.service import Service as Firefox_Service
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
@@ -13,6 +16,9 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 
 urllib3.disable_warnings()
+selenium4 = False
+if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+    selenium4 = True
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
@@ -116,7 +122,18 @@ def _repair_chromedriver(chrome_options, headless_options):
         "sbase install chromedriver 2.44", shell=True
     )
     try:
-        driver = webdriver.Chrome(options=headless_options)
+        if selenium4:
+            service = Chrome_Service(
+                executable_path=LOCAL_CHROMEDRIVER)
+            driver = webdriver.Chrome(
+                service=service,
+                options=headless_options,
+            )
+        else:
+            driver = webdriver.Chrome(
+                executable_path=LOCAL_CHROMEDRIVER,
+                options=headless_options,
+            )
     except Exception:
         subprocess.check_call(
             "sbase install chromedriver latest-1", shell=True
@@ -1132,11 +1149,18 @@ def get_local_driver(
             )
         else:
             if os.path.exists(LOCAL_GECKODRIVER):
-                warnings.simplefilter("ignore", category=DeprecationWarning)
-                return webdriver.Firefox(
-                    executable_path=LOCAL_GECKODRIVER,
-                    options=firefox_options,
-                )
+                if selenium4:
+                    service = Firefox_Service(
+                        executable_path=LOCAL_GECKODRIVER)
+                    return webdriver.Firefox(
+                        service=service,
+                        options=firefox_options,
+                    )
+                else:
+                    return webdriver.Firefox(
+                        executable_path=LOCAL_GECKODRIVER,
+                        options=firefox_options,
+                    )
             else:
                 return webdriver.Firefox(options=firefox_options)
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
@@ -1268,10 +1292,6 @@ def get_local_driver(
                 print("\nWarning: msedgedriver not found. Installing now:")
                 sb_install.main(override="edgedriver")
                 sys.argv = sys_args  # Put back the original sys args
-
-        selenium4 = False
-        if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
-            selenium4 = True
 
         # For Microsoft Edge (Chromium) version 80 or higher
         if selenium4:
@@ -1410,12 +1430,9 @@ def get_local_driver(
                 if len(chromium_arg_item) >= 3:
                     edge_options.add_argument(chromium_arg_item)
         if selenium4:
-            warnings.simplefilter("ignore", category=DeprecationWarning)
             try:
-                driver = Edge(
-                    executable_path=LOCAL_EDGEDRIVER,
-                    options=edge_options,
-                )
+                service = Edge_Service(executable_path=LOCAL_EDGEDRIVER)
+                driver = Edge(service=service, options=edge_options)
             except Exception as e:
                 auto_upgrade_edgedriver = False
                 if "This version of MSEdgeDriver only supports" in e.msg:
@@ -1442,10 +1459,8 @@ def get_local_driver(
                     if not _was_chromedriver_repaired():  # Works for Edge
                         _repair_edgedriver(edge_version)
                     _mark_chromedriver_repaired()  # Works for Edge
-                driver = Edge(
-                    executable_path=LOCAL_EDGEDRIVER,
-                    options=edge_options,
-                )
+                service = Edge_Service(executable_path=LOCAL_EDGEDRIVER)
+                driver = Edge(service=service, options=edge_options)
             return driver
         else:
             capabilities = edge_options.to_capabilities()
@@ -1538,6 +1553,7 @@ def get_local_driver(
                 device_pixel_ratio,
             )
             opera_options.headless = False  # No support for headless Opera
+            warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Opera(options=opera_options)
         except Exception:
             return webdriver.Opera()
@@ -1619,12 +1635,18 @@ def get_local_driver(
             if not headless or "linux" not in PLATFORM:
                 try:
                     if os.path.exists(LOCAL_CHROMEDRIVER):
-                        warnings.simplefilter(
-                            "ignore", category=DeprecationWarning)
-                        driver = webdriver.Chrome(
-                            executable_path=LOCAL_CHROMEDRIVER,
-                            options=chrome_options,
-                        )
+                        if selenium4:
+                            service = Chrome_Service(
+                                executable_path=LOCAL_CHROMEDRIVER)
+                            driver = webdriver.Chrome(
+                                service=service,
+                                options=chrome_options,
+                            )
+                        else:
+                            driver = webdriver.Chrome(
+                                executable_path=LOCAL_CHROMEDRIVER,
+                                options=chrome_options,
+                            )
                     else:
                         driver = webdriver.Chrome(options=chrome_options)
                 except Exception as e:
@@ -1692,12 +1714,18 @@ def get_local_driver(
                             )
                         _mark_chromedriver_repaired()
                     if os.path.exists(LOCAL_CHROMEDRIVER):
-                        warnings.simplefilter(
-                            "ignore", category=DeprecationWarning)
-                        driver = webdriver.Chrome(
-                            executable_path=LOCAL_CHROMEDRIVER,
-                            options=chrome_options,
-                        )
+                        if selenium4:
+                            service = Chrome_Service(
+                                executable_path=LOCAL_CHROMEDRIVER)
+                            driver = webdriver.Chrome(
+                                service=service,
+                                options=chrome_options,
+                            )
+                        else:
+                            driver = webdriver.Chrome(
+                                executable_path=LOCAL_CHROMEDRIVER,
+                                options=chrome_options,
+                            )
                     else:
                         driver = webdriver.Chrome(options=chrome_options)
                 return driver
