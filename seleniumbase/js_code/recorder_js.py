@@ -106,6 +106,9 @@ var ssOccurrences = function(string, subString, allowOverlapping) {
     }
     return n;
 };
+function hasNumber(str) {
+  return /\d/.test(str);
+};
 var getBestSelector = function(el) {
     if (!(el instanceof Element))
         return;
@@ -155,18 +158,22 @@ var getBestSelector = function(el) {
     num_by_attr = [];
     child_count_by_attr = [];
     for (var i = 0; i < non_id_attributes.length; i++) {
+        n_i_attr = non_id_attributes[i];
         selector_by_attr[i] = null;
-        if (non_id_attributes[i] == 'class') {
+        if (n_i_attr == 'class') {
             selector_by_attr[i] = selector_by_class;
         }
         else {
-            selector_by_attr[i] = cssPathByAttribute(el, non_id_attributes[i]);
+            selector_by_attr[i] = cssPathByAttribute(el, n_i_attr);
         }
         all_by_attr[i] = document.querySelectorAll(selector_by_attr[i]);
         num_by_attr[i] = all_by_attr[i].length;
         if (!selector_by_attr[i].includes(child_sep) &&
             ((num_by_attr[i] == 1) || (el == all_by_attr[i][0])))
         {
+            if (n_i_attr == 'aria-label' || n_i_attr == 'for')
+                if (hasNumber(selector_by_attr[i]))
+                    continue;
             return selector_by_attr[i];
         }
         child_count_by_attr[i] = ssOccurrences(selector_by_attr[i], child_sep);
