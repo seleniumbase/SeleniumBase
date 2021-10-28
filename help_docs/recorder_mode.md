@@ -6,7 +6,7 @@
 
 <img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-(This tutorial assumes you are using SeleniumBase version ``2.0.8`` or newer.)
+(This tutorial assumes you are using SeleniumBase version ``2.0.10`` or newer.)
 
 🔴 To make a new recording with Recorder Mode, you can use ``sbase mkrec`` or ``sbase codegen``):
 
