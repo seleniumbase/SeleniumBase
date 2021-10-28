@@ -282,7 +282,12 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    os.system("sbase print %s -n" % file_name)
+    if " " not in file_name:
+        os.system("sbase print %s -n" % file_name)
+    elif '"' not in file_name:
+        os.system('sbase print "%s" -n' % file_name)
+    else:
+        os.system("sbase print '%s' -n" % file_name)
     success = (
         "\n" + c1 + '* Presentation: "' + file_name + '" was created! *'
         "" + cr + "\n"

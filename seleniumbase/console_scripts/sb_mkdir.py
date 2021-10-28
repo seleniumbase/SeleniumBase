@@ -700,7 +700,12 @@ def main():
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
-    os.system("sbase print %s -n" % file_path)
+    if " " not in file_path:
+        os.system("sbase print %s -n" % file_path)
+    elif '"' not in file_path:
+        os.system('sbase print "%s" -n' % file_path)
+    else:
+        os.system("sbase print '%s' -n" % file_path)
     os.remove(file_path)
 
     success = (

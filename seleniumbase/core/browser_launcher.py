@@ -5,9 +5,9 @@ import sys
 import urllib3
 import warnings
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as Chrome_Service
-from selenium.webdriver.edge.service import Service as Edge_Service
-from selenium.webdriver.firefox.service import Service as Firefox_Service
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from seleniumbase.config import settings
 from seleniumbase.core import download_helper
 from seleniumbase.core import proxy_helper
@@ -123,7 +123,7 @@ def _repair_chromedriver(chrome_options, headless_options):
     )
     try:
         if selenium4:
-            service = Chrome_Service(
+            service = ChromeService(
                 executable_path=LOCAL_CHROMEDRIVER)
             driver = webdriver.Chrome(
                 service=service,
@@ -1150,7 +1150,7 @@ def get_local_driver(
         else:
             if os.path.exists(LOCAL_GECKODRIVER):
                 if selenium4:
-                    service = Firefox_Service(
+                    service = FirefoxService(
                         executable_path=LOCAL_GECKODRIVER)
                     return webdriver.Firefox(
                         service=service,
@@ -1431,7 +1431,7 @@ def get_local_driver(
                     edge_options.add_argument(chromium_arg_item)
         if selenium4:
             try:
-                service = Edge_Service(executable_path=LOCAL_EDGEDRIVER)
+                service = EdgeService(executable_path=LOCAL_EDGEDRIVER)
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
                 auto_upgrade_edgedriver = False
@@ -1459,7 +1459,7 @@ def get_local_driver(
                     if not _was_chromedriver_repaired():  # Works for Edge
                         _repair_edgedriver(edge_version)
                     _mark_chromedriver_repaired()  # Works for Edge
-                service = Edge_Service(executable_path=LOCAL_EDGEDRIVER)
+                service = EdgeService(executable_path=LOCAL_EDGEDRIVER)
                 driver = Edge(service=service, options=edge_options)
             return driver
         else:
@@ -1636,7 +1636,7 @@ def get_local_driver(
                 try:
                     if os.path.exists(LOCAL_CHROMEDRIVER):
                         if selenium4:
-                            service = Chrome_Service(
+                            service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER)
                             driver = webdriver.Chrome(
                                 service=service,
@@ -1715,7 +1715,7 @@ def get_local_driver(
                         _mark_chromedriver_repaired()
                     if os.path.exists(LOCAL_CHROMEDRIVER):
                         if selenium4:
-                            service = Chrome_Service(
+                            service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER)
                             driver = webdriver.Chrome(
                                 service=service,

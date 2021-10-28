@@ -158,7 +158,12 @@ def main():
     recorded_filename = file_name[:-3] + "_rec.py"
     recordings_dir = os.path.join(dir_name, "recordings")
     recorded_file = os.path.join(recordings_dir, recorded_filename)
-    os.system("sbase print %s -n" % recorded_file)
+    if " " not in recorded_file:
+        os.system("sbase print %s -n" % recorded_file)
+    elif '"' not in recorded_file:
+        os.system('sbase print "%s" -n' % recorded_file)
+    else:
+        os.system("sbase print '%s' -n" % recorded_file)
     shutil.copy(recorded_file, file_path)
     success = (
         "\n" + c2 + "***" + cr + " RECORDING COPIED to: "
