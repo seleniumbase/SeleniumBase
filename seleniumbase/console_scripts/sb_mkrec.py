@@ -3,14 +3,20 @@
 Creates a new SeleniumBase test file using the Recorder.
 
 Usage:
-      seleniumbase mkrec [FILE.py]
-             sbase mkrec [FILE.py]
-    seleniumbase codegen [FILE.py]
-           sbase codegen [FILE.py]
+      seleniumbase mkrec [FILE.py] [OPTIONS]
+             sbase mkrec [FILE.py] [OPTIONS]
+    seleniumbase codegen [FILE.py] [OPTIONS]
+           sbase codegen [FILE.py] [OPTIONS]
 
 Examples:
     sbase mkrec new_test.py
+    sbase mkrec new_test.py --url=seleniumbase.io
     sbase codegen new_test.py
+    sbase codegen new_test.py --url=wikipedia.org
+
+Options:
+    --url=URL  (Sets the initial start page URL.)
+    --edge  (Use Edge browser instead of Chrome.)
 
 Output:
     Creates a new SeleniumBase test using the Recorder.
@@ -34,6 +40,9 @@ def invalid_run_command(msg=None):
     exp += "  Examples:\n"
     exp += "           sbase mkrec new_test.py\n"
     exp += "           sbase codegen new_test.py\n"
+    exp += "  Options:\n"
+    exp += "           --url=URL  (Sets the initial start page URL.)\n"
+    exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"
@@ -65,6 +74,9 @@ def main():
     help_me = False
     error_msg = None
     invalid_cmd = None
+    use_edge = False
+    start_page = None
+    next_is_url = False
 
     command_args = sys.argv[2:]
     file_name = command_args[0]
@@ -87,9 +99,17 @@ def main():
     if len(command_args) >= 2:
         options = command_args[1:]
         for option in options:
-            option = option.lower()
-            if option == "-h" or option == "--help":
+            if option.lower() == "-h" or option.lower() == "--help":
                 help_me = True
+            elif option.lower() == "--edge":
+                use_edge = True
+            elif option.lower().startswith("--url="):
+                start_page = option[len("--url="):]
+            elif option.lower() == "--url":
+                next_is_url = True
+            elif next_is_url:
+                start_page = option
+                next_is_url = False
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -121,8 +141,18 @@ def main():
         "" + c1 + file_name + "" + cr + "\n"
     )
     print(success)
-    print("pytest %s --rec -q -s" % file_name)
-    os.system("pytest %s --rec -q -s" % file_name)
+    if not start_page:
+        run_cmd = "pytest %s --rec -q -s" % file_name
+        if use_edge:
+            run_cmd += " --edge"
+        print(run_cmd)
+        os.system(run_cmd)
+    else:
+        run_cmd = "pytest %s --rec -q -s --url=%s" % (file_name, start_page)
+        if use_edge:
+            run_cmd += " --edge"
+        print(run_cmd)
+        os.system(run_cmd)
     if os.path.exists(file_path):
         os.remove(file_path)
     recorded_filename = file_name[:-3] + "_rec.py"
