@@ -2590,6 +2590,9 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
 
     def switch_to_window(self, window, timeout=None):
+        """ Switches control of the browser to the specified window.
+            The window can be an integer: 0 -> 1st tab, 1 -> 2nd tab, etc...
+                Or it can be a list item from self.driver.window_handles """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2916,7 +2919,8 @@ class BaseCase(unittest.TestCase):
         return new_driver
 
     def switch_to_driver(self, driver):
-        """Sets self.driver to the specified driver.
+        """Switches control of the browser to the specified driver.
+        Also sets the self.driver variable to the specified driver.
         You may need this if using self.get_new_driver() in your code."""
         self.__check_scope()
         self.driver = driver
