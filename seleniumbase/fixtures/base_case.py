@@ -6027,6 +6027,25 @@ class BaseCase(unittest.TestCase):
         """ Same as self.refresh_page() """
         self.refresh_page()
 
+    def open_new_tab(self, switch_to=True):
+        """ Same as self.open_new_window() """
+        self.open_new_window(switch_to=switch_to)
+
+    def switch_to_tab(self, tab, timeout=None):
+        """ Same as self.switch_to_window()
+            Switches control of the browser to the specified window.
+            The window can be an integer: 0 -> 1st tab, 1 -> 2nd tab, etc...
+                Or it can be a list item from self.driver.window_handles """
+        self.switch_to_window(window=tab, timeout=timeout)
+
+    def switch_to_default_tab(self):
+        """ Same as self.switch_to_default_window() """
+        self.switch_to_default_window()
+
+    def switch_to_newest_tab(self):
+        """ Same as self.switch_to_newest_window() """
+        self.switch_to_newest_window()
+
     def input(
         self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
     ):
