@@ -7276,17 +7276,15 @@ class BaseCase(unittest.TestCase):
     ############
 
     def create_tour(self, name=None, theme=None):
-        """Creates a tour for a website. By default, the Shepherd JavaScript
-        Library is used with the Shepherd "Light" / "Arrows" theme.
+        """Creates a guided tour for any website.
+        The default theme is the IntroJS Library.
         @Params
         name - If creating multiple tours at the same time,
                use this to select the tour you wish to add steps to.
-        theme - Sets the default theme for the tour.
-                Choose from "light"/"arrows", "dark", "default", "square",
-                and "square-dark". ("arrows" is used if None is selected.)
-                Alternatively, you may use a different JavaScript Library
-                as the theme. Those include "IntroJS", "DriverJS",
-                "Hopscotch", and "Bootstrap".
+        theme - Sets the default theme for the website tour. Available themes:
+                "Bootstrap", "DriverJS", "Hopscotch", "IntroJS", "Shepherd".
+                The "Shepherd" library also contains multiple variation themes:
+                "light"/"arrows", "dark", "default", "square", "square-dark".
         """
         if not name:
             name = "default"
@@ -7308,10 +7306,10 @@ class BaseCase(unittest.TestCase):
                 self.create_shepherd_tour(name, theme="light")
             elif theme.lower() == "light":
                 self.create_shepherd_tour(name, theme="light")
-            elif theme.lower() == "dark":
-                self.create_shepherd_tour(name, theme="dark")
             elif theme.lower() == "arrows":
                 self.create_shepherd_tour(name, theme="light")
+            elif theme.lower() == "dark":
+                self.create_shepherd_tour(name, theme="dark")
             elif theme.lower() == "square":
                 self.create_shepherd_tour(name, theme="square")
             elif theme.lower() == "square-dark":
@@ -7319,9 +7317,9 @@ class BaseCase(unittest.TestCase):
             elif theme.lower() == "default":
                 self.create_shepherd_tour(name, theme="default")
             else:
-                self.create_shepherd_tour(name, theme)
+                self.create_introjs_tour(name)
         else:
-            self.create_shepherd_tour(name, theme="light")
+            self.create_introjs_tour(name)
 
     def create_shepherd_tour(self, name=None, theme=None):
         """Creates a Shepherd JS website tour.
