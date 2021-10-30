@@ -43,6 +43,7 @@ def invalid_run_command(msg=None):
     exp += "  Options:\n"
     exp += "           --url=URL  (Sets the initial start page URL.)\n"
     exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
+    exp += "           --ui or --headed  (For linux: use browser instead of headless.)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"
@@ -54,15 +55,14 @@ def invalid_run_command(msg=None):
     else:
         raise Exception("INVALID RUN COMMAND!\n\n%s\n%s\n" % (exp, msg))
 
-
-def main():
+def set_colors(use_colors):
     c0 = ""
     c1 = ""
     c2 = ""
     c5 = ""
     c7 = ""
     cr = ""
-    if "linux" not in sys.platform:
+    if use_colors:
         colorama.init(autoreset=True)
         c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
@@ -70,6 +70,10 @@ def main():
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
         cr = colorama.Style.RESET_ALL
+    return c0, c1, c2, c5, c7, cr
+
+
+def main():
 
     help_me = False
     error_msg = None
@@ -77,6 +81,9 @@ def main():
     use_edge = False
     start_page = None
     next_is_url = False
+
+    use_browser = ("linux" not in sys.platform)
+    c0, c1, c2, c5, c7, cr = set_colors(use_browser)
 
     command_args = sys.argv[2:]
     file_name = command_args[0]
@@ -110,6 +117,9 @@ def main():
             elif next_is_url:
                 start_page = option
                 next_is_url = False
+            elif option.lower() in ('--gui', '--headed'):
+                use_browser = True
+                c0, c1, c2, c5, c7, cr = set_colors(use_browser)
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -143,8 +153,11 @@ def main():
     print(success)
     if not start_page:
         run_cmd = "pytest %s --rec -q -s" % file_name
-        if use_edge:
-            run_cmd += " --edge"
+        if use_browser:
+            if use_edge:
+                run_cmd += " --edge"
+            else:
+                run_cmd += " --chrome"
         print(run_cmd)
         os.system(run_cmd)
     else:
