@@ -27,7 +27,7 @@ markdown_extensions:
 # Configuration
 theme:
   name: material
-  logo: img/green_logo2.png
+  logo: img/green_logo.png
   favicon: img/green_logo3.png
   language: en
   include_homepage_in_sidebar: true
@@ -49,7 +49,7 @@ theme:
     - navigation.instant
   palette:
     scheme: default
-    primary: blue
+    primary: teal
     accent: indigo
   font:
     text: Roboto
@@ -124,9 +124,12 @@ nav:
     - MySQL Instructions: help_docs/mysql_installation.md
   - Demo Pages:
     - Demo Page / Demo Site: https://seleniumbase.io/demo_page
+    - MFA Login Demo Page: https://seleniumbase.io/realworld/login
     - TinyMCE Demo Page: https://seleniumbase.io/tinymce/
-    - Drag & Drop Demo Page: https://seleniumbase.io/other/drag_and_drop
     - Virtual Device Farm: https://seleniumbase.io/devices/
+    - Drag & Drop Demo Page: https://seleniumbase.io/other/drag_and_drop
+    - HTML Playground Page: https://seleniumbase.io/w3schools/
+    - SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
     - Error Demo Page: https://seleniumbase.io/error_page/
     - Page with broken links: https://seleniumbase.io/other/broken_page
     - W3Schools iframes: https://seleniumbase.io/w3schools/iframes
@@ -134,8 +137,6 @@ nav:
     - W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
     - W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
     - W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
-    - SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
-    - HTML Playground Page: https://seleniumbase.io/w3schools/
   - Presentations:
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html
