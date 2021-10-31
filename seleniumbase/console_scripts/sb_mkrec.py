@@ -43,6 +43,7 @@ def invalid_run_command(msg=None):
     exp += "  Options:\n"
     exp += "           --url=URL  (Sets the initial start page URL.)\n"
     exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
+    exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"
@@ -55,14 +56,14 @@ def invalid_run_command(msg=None):
         raise Exception("INVALID RUN COMMAND!\n\n%s\n%s\n" % (exp, msg))
 
 
-def main():
+def set_colors(use_colors):
     c0 = ""
     c1 = ""
     c2 = ""
     c5 = ""
     c7 = ""
     cr = ""
-    if "linux" not in sys.platform:
+    if use_colors:
         colorama.init(autoreset=True)
         c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
@@ -70,13 +71,22 @@ def main():
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         c7 = colorama.Fore.BLACK + colorama.Back.MAGENTA
         cr = colorama.Style.RESET_ALL
+    return c0, c1, c2, c5, c7, cr
 
+
+def main():
     help_me = False
     error_msg = None
     invalid_cmd = None
     use_edge = False
     start_page = None
     next_is_url = False
+    use_colors = True
+    force_gui = False
+
+    if "linux" in sys.platform:
+        use_colors = False
+    c0, c1, c2, c5, c7, cr = set_colors(use_colors)
 
     command_args = sys.argv[2:]
     file_name = command_args[0]
@@ -103,6 +113,13 @@ def main():
                 help_me = True
             elif option.lower() == "--edge":
                 use_edge = True
+            elif (
+                option.lower() in ("--gui", "--headed")
+                and "linux" in sys.platform
+            ):
+                use_colors = True
+                c0, c1, c2, c5, c7, cr = set_colors(use_colors)
+                force_gui = True
             elif option.lower().startswith("--url="):
                 start_page = option[len("--url="):]
             elif option.lower() == "--url":
@@ -145,12 +162,16 @@ def main():
         run_cmd = "pytest %s --rec -q -s" % file_name
         if use_edge:
             run_cmd += " --edge"
+        if force_gui:
+            run_cmd += " --gui"
         print(run_cmd)
         os.system(run_cmd)
     else:
         run_cmd = "pytest %s --rec -q -s --url=%s" % (file_name, start_page)
         if use_edge:
             run_cmd += " --edge"
+        if force_gui:
+            run_cmd += " --gui"
         print(run_cmd)
         os.system(run_cmd)
     if os.path.exists(file_path):
