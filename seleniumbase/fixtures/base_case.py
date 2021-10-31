@@ -2590,6 +2590,9 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
 
     def switch_to_window(self, window, timeout=None):
+        """ Switches control of the browser to the specified window.
+            The window can be an integer: 0 -> 1st tab, 1 -> 2nd tab, etc...
+                Or it can be a list item from self.driver.window_handles """
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2916,7 +2919,8 @@ class BaseCase(unittest.TestCase):
         return new_driver
 
     def switch_to_driver(self, driver):
-        """Sets self.driver to the specified driver.
+        """Switches control of the browser to the specified driver.
+        Also sets the self.driver variable to the specified driver.
         You may need this if using self.get_new_driver() in your code."""
         self.__check_scope()
         self.driver = driver
@@ -5191,12 +5195,12 @@ class BaseCase(unittest.TestCase):
             return True  # chromedriver is too old! Please upgrade!
         return False
 
-    def get_google_auth_password(self, totp_key=None):
+    def get_totp_code(self, totp_key=None):
         """Returns a time-based one-time password based on the
-        Google Authenticator password algorithm. Works with Authy.
-        If "totp_key" is not specified, defaults to using the one
-        provided in seleniumbase/config/settings.py
-        Google Auth passwords expire and change at 30-second intervals.
+        Google Authenticator algorithm. Works with Authy and Okta.
+        If the "totp_key" is not specified, this method defaults
+        to using the one provided in [seleniumbase/config/settings.py].
+        Google Authenticator codes expire & change at 30-sec intervals.
         If the fetched password expires in the next 1.5 seconds, waits
         for a new one before returning it (may take up to 1.5 seconds).
         See https://pyotp.readthedocs.io/en/latest/ for details."""
@@ -6023,6 +6027,25 @@ class BaseCase(unittest.TestCase):
         """ Same as self.refresh_page() """
         self.refresh_page()
 
+    def open_new_tab(self, switch_to=True):
+        """ Same as self.open_new_window() """
+        self.open_new_window(switch_to=switch_to)
+
+    def switch_to_tab(self, tab, timeout=None):
+        """ Same as self.switch_to_window()
+            Switches control of the browser to the specified window.
+            The window can be an integer: 0 -> 1st tab, 1 -> 2nd tab, etc...
+                Or it can be a list item from self.driver.window_handles """
+        self.switch_to_window(window=tab, timeout=timeout)
+
+    def switch_to_default_tab(self):
+        """ Same as self.switch_to_default_window() """
+        self.switch_to_default_window()
+
+    def switch_to_newest_tab(self):
+        """ Same as self.switch_to_newest_window() """
+        self.switch_to_newest_window()
+
     def input(
         self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
     ):
@@ -6139,6 +6162,14 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
+
+    def get_google_auth_password(self, totp_key=None):
+        """ Same as self.get_totp_code() """
+        return self.get_totp_code(totp_key=totp_key)
+
+    def get_google_auth_code(self, totp_key=None):
+        """ Same as self.get_totp_code() """
+        return self.get_totp_code(totp_key=totp_key)
 
     def assert_no_broken_links(self, multithreaded=True):
         """ Same as self.assert_no_404_errors() """
@@ -7276,17 +7307,15 @@ class BaseCase(unittest.TestCase):
     ############
 
     def create_tour(self, name=None, theme=None):
-        """Creates a tour for a website. By default, the Shepherd JavaScript
-        Library is used with the Shepherd "Light" / "Arrows" theme.
+        """Creates a guided tour for any website.
+        The default theme is the IntroJS Library.
         @Params
         name - If creating multiple tours at the same time,
                use this to select the tour you wish to add steps to.
-        theme - Sets the default theme for the tour.
-                Choose from "light"/"arrows", "dark", "default", "square",
-                and "square-dark". ("arrows" is used if None is selected.)
-                Alternatively, you may use a different JavaScript Library
-                as the theme. Those include "IntroJS", "DriverJS",
-                "Hopscotch", and "Bootstrap".
+        theme - Sets the default theme for the website tour. Available themes:
+                "Bootstrap", "DriverJS", "Hopscotch", "IntroJS", "Shepherd".
+                The "Shepherd" library also contains multiple variation themes:
+                "light"/"arrows", "dark", "default", "square", "square-dark".
         """
         if not name:
             name = "default"
@@ -7308,10 +7337,10 @@ class BaseCase(unittest.TestCase):
                 self.create_shepherd_tour(name, theme="light")
             elif theme.lower() == "light":
                 self.create_shepherd_tour(name, theme="light")
-            elif theme.lower() == "dark":
-                self.create_shepherd_tour(name, theme="dark")
             elif theme.lower() == "arrows":
                 self.create_shepherd_tour(name, theme="light")
+            elif theme.lower() == "dark":
+                self.create_shepherd_tour(name, theme="dark")
             elif theme.lower() == "square":
                 self.create_shepherd_tour(name, theme="square")
             elif theme.lower() == "square-dark":
@@ -7319,9 +7348,9 @@ class BaseCase(unittest.TestCase):
             elif theme.lower() == "default":
                 self.create_shepherd_tour(name, theme="default")
             else:
-                self.create_shepherd_tour(name, theme)
+                self.create_introjs_tour(name)
         else:
-            self.create_shepherd_tour(name, theme="light")
+            self.create_introjs_tour(name)
 
     def create_shepherd_tour(self, name=None, theme=None):
         """Creates a Shepherd JS website tour.

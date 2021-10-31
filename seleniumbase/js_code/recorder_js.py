@@ -442,7 +442,7 @@ document.body.addEventListener('change', function (event) {
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
     tag_name = tagName(element);
-    e_type = element.type
+    e_type = element.type;
     if (tag_name === 'select')
     {
         el_computed = document.querySelector(selector);
@@ -496,14 +496,18 @@ document.body.addEventListener('mousedown', function (event) {
     const element = event.target;
     const selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
+    rec_mode = sessionStorage.getItem('recorder_mode');
     tag_name = tagName(element);
+    text = '';
+    if (rec_mode === '3')
+        text = element.innerText;
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
         // Do Nothing. ('change' action.)
     }
     else
-        document.recorded_actions.push(['mo_dn', selector, '', d_now]);
+        document.recorded_actions.push(['mo_dn', selector, text, d_now]);
     json_rec_act = JSON.stringify(document.recorded_actions);
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
@@ -512,7 +516,7 @@ document.body.addEventListener('mouseup', function (event) {
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const element = event.target;
-    const selector = getBestSelector(element);
+    selector = getBestSelector(element);
     ra_len = document.recorded_actions.length;
     tag_name = tagName(element);
     parent_element = element.parentElement;
@@ -521,10 +525,8 @@ document.body.addEventListener('mouseup', function (event) {
     grand_tag_name = "";
     origin = "";
     rec_mode = sessionStorage.getItem('recorder_mode');
-    if (ra_len > 0 &&
-        document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
-        document.recorded_actions[ra_len-1][1] === selector)
-    {
+    if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn') {
+        selector = document.recorded_actions[ra_len-1][1];
         sel_has_contains = selector.includes(':contains(');
         if (rec_mode === '2' || (rec_mode === '3' && sel_has_contains)) {
             origin = window.location.origin;
@@ -535,7 +537,7 @@ document.body.addEventListener('mouseup', function (event) {
         }
         else if (rec_mode === '3') {
             origin = window.location.origin;
-            text = element.innerText;
+            text = document.recorded_actions[ra_len-1][2];
             action = 'as_et';
             if (!text) { text = ''; }
             else {
@@ -678,8 +680,7 @@ document.body.addEventListener('keyup', function (event) {
     pause_rec = sessionStorage.getItem('pause_recorder');
     rec_mode = sessionStorage.getItem('recorder_mode');
     l_key = event.key.toLowerCase();
-    if (l_key === 'escape' && pause_rec === 'no' && rec_mode === '1')
-    {
+    if (l_key === 'escape' && pause_rec === 'no' && rec_mode === '1') {
         sessionStorage.setItem('pause_recorder', 'yes');
         pause_rec = 'yes';
         console.log('SeleniumBase Recorder paused');
@@ -687,22 +688,19 @@ document.body.addEventListener('keyup', function (event) {
         document.querySelector('body').style.border = no_border;
         document.title = sessionStorage.getItem('recorder_title');
     }
-    else if ((event.key === '`' || event.key === '~') && pause_rec === 'yes')
-    {
+    else if ((event.key === '`' || event.key === '~') && pause_rec === 'yes') {
         sessionStorage.setItem('pause_recorder', 'no');
         pause_rec = 'no';
         console.log('SeleniumBase Recorder resumed');
         red_border = 'thick solid #EE3344';
         document.querySelector('body').style.border = red_border;
     }
-    else if (event.key === '^' && pause_rec === 'no')
-    {
+    else if (event.key === '^' && pause_rec === 'no') {
         sessionStorage.setItem('recorder_mode', '2');
         purple_border = 'thick solid #EF5BE9';
         document.querySelector('body').style.border = purple_border;
     }
-    else if (event.key === '&' && pause_rec === 'no')
-    {
+    else if (event.key === '&' && pause_rec === 'no') {
         sessionStorage.setItem('recorder_mode', '3');
         teal_border = 'thick solid #30C6C6';
         document.querySelector('body').style.border = teal_border;

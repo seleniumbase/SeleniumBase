@@ -202,12 +202,16 @@ self.set_content_to_frame(frame, timeout=None)
 self.set_content_to_default(nested=True)
 
 self.open_new_window(switch_to=True)
+# Duplicates: self.open_new_tab(switch_to=True)
 
 self.switch_to_window(window, timeout=None)
+# Duplicates: self.switch_to_tab(tab, timeout=None)
 
 self.switch_to_default_window()
+# Duplicates: self.switch_to_default_tab()
 
 self.switch_to_newest_window()
+# Duplicates: self.switch_to_newest_tab()
 
 self.get_new_driver(
     browser=None, headless=None, locale_code=None, protocol=None,
@@ -398,7 +402,9 @@ self.get_chromedriver_version()
 
 self.is_chromedriver_too_old()
 
-self.get_google_auth_password(totp_key=None)
+self.get_totp_code(totp_key=None)
+# Duplicates: self.get_google_auth_password(totp_key=None)
+#             self.get_google_auth_code(totp_key=None)
 
 self.convert_css_to_xpath(css)
 
