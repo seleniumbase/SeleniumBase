@@ -402,7 +402,9 @@ self.get_chromedriver_version()
 
 self.is_chromedriver_too_old()
 
-self.get_google_auth_password(totp_key=None)
+self.get_totp_code(totp_key=None)
+# Duplicates: self.get_google_auth_password(totp_key=None)
+#             self.get_google_auth_code(totp_key=None)
 
 self.convert_css_to_xpath(css)
 

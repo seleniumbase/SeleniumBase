@@ -5195,12 +5195,12 @@ class BaseCase(unittest.TestCase):
             return True  # chromedriver is too old! Please upgrade!
         return False
 
-    def get_google_auth_password(self, totp_key=None):
+    def get_totp_code(self, totp_key=None):
         """Returns a time-based one-time password based on the
-        Google Authenticator password algorithm. Works with Authy.
-        If "totp_key" is not specified, defaults to using the one
-        provided in seleniumbase/config/settings.py
-        Google Auth passwords expire and change at 30-second intervals.
+        Google Authenticator algorithm. Works with Authy and Okta.
+        If the "totp_key" is not specified, this method defaults
+        to using the one provided in [seleniumbase/config/settings.py].
+        Google Authenticator codes expire & change at 30-sec intervals.
         If the fetched password expires in the next 1.5 seconds, waits
         for a new one before returning it (may take up to 1.5 seconds).
         See https://pyotp.readthedocs.io/en/latest/ for details."""
@@ -6162,6 +6162,14 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         self.wait_for_element_absent(selector, by=by, timeout=timeout)
         return True
+
+    def get_google_auth_password(self, totp_key=None):
+        """ Same as self.get_totp_code() """
+        return self.get_totp_code(totp_key=totp_key)
+
+    def get_google_auth_code(self, totp_key=None):
+        """ Same as self.get_totp_code() """
+        return self.get_totp_code(totp_key=totp_key)
 
     def assert_no_broken_links(self, multithreaded=True):
         """ Same as self.assert_no_404_errors() """
