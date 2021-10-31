@@ -432,6 +432,9 @@ class SeleniumBrowser(Plugin):
         parser.add_option(
             "--disable_csp",
             "--disable-csp",
+            "--no_csp",
+            "--no-csp",
+            "--dcsp",
             action="store_true",
             dest="disable_csp",
             default=False,
@@ -559,6 +562,7 @@ class SeleniumBrowser(Plugin):
             "--screenshot",
             "--save_screenshot",
             "--save-screenshot",
+            "--ss",
             action="store_true",
             dest="save_screenshot",
             default=False,
