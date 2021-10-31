@@ -10,7 +10,6 @@ from selenium.common.exceptions import WebDriverException
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
-from seleniumbase.fixtures import shared_utils
 
 
 def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
@@ -24,10 +23,14 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
       because readyState == "interactive" may be good enough.
     (Previously, tests would fail immediately if exceeding the timeout.)
     """
+    if sb_config.time_limit and not sb_config.recorder_mode:
+        from seleniumbase.fixtures import shared_utils
+
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        shared_utils.check_if_time_limit_exceeded()
+        if sb_config.time_limit and not sb_config.recorder_mode:
+            shared_utils.check_if_time_limit_exceeded()
         try:
             ready_state = driver.execute_script("return document.readyState")
         except WebDriverException:
