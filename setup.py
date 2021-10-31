@@ -234,7 +234,7 @@ setup(
         # pip install -e .[coverage]
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
-            'coverage==6.1;python_version>="3.6"',
+            'coverage==6.1.1;python_version>="3.6"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
