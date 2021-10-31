@@ -14,7 +14,7 @@
 sbase mkrec TEST_NAME.py --url=URL
 ```
 
-If the file already exists, you'll get an error. If no URL is provided, you'll start on a blank page and will need to navigate somewhere for the Recorder to activate. (The Recorder captures events on URLs that start with ``https``, ``http``, or ``file``.) The command above runs an empty test that stops at a breakpoint so that you can perform manual browser actions for the Recorder. When you have finished recording, type "``c``" on the command-line and press ``[ENTER]`` to let the test continue from the breakpoint. The test will then complete and a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder. That file will get copied back to the original folder with the name you gave it. (You can run with Edge instead of Chrome by adding ``--edge`` to the command above.)
+If the file already exists, you'll get an error. If no URL is provided, you'll start on a blank page and will need to navigate somewhere for the Recorder to activate. (The Recorder captures events on URLs that start with ``https``, ``http``, or ``file``.) The command above runs an empty test that stops at a breakpoint so that you can perform manual browser actions for the Recorder. When you have finished recording, type "``c``" on the command-line and press ``[ENTER]`` to let the test continue from the breakpoint. The test will then complete and a file called ``TEST_NAME_rec.py`` will be automatically created in the ``./recordings`` folder. That file will get copied back to the original folder with the name you gave it. (You can run with Edge instead of Chrome by adding ``--edge`` to the command above. For headed Linux machines, add ``--gui`` to prevent the default headless mode on Linux.)
 
 Example:
 

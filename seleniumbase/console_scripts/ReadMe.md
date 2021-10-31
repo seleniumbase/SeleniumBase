@@ -237,6 +237,7 @@ is included.
 * Options:
 ``--url=URL``  (Sets the initial start page URL.)
 ``--edge``  (Use Edge browser instead of Chrome.)
+``--gui`` / ``--headed``  (Use headed mode on Linux.)
 
 * Output:
 Creates a new SeleniumBase test using the Recorder.
