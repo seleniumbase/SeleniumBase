@@ -117,7 +117,7 @@ setup(
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
-        'packaging>=21.0;python_version>="3.6"',
+        'packaging>=21.2;python_version>="3.6"',
         "typing-extensions>=3.10.0.2",
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
@@ -159,7 +159,7 @@ setup(
         'more-itertools==8.10.0;python_version>="3.5"',
         "cssselect==1.1.0",
         'filelock==3.2.1;python_version<"3.6"',
-        'filelock==3.3.1;python_version>="3.6"',
+        'filelock==3.3.2;python_version>="3.6"',
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
@@ -205,7 +205,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.28.0;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.29.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
@@ -234,7 +234,7 @@ setup(
         # pip install -e .[coverage]
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
-            'coverage==6.0.2;python_version>="3.6"',
+            'coverage==6.1;python_version>="3.6"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
