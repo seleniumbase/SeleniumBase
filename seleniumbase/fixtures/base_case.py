@@ -95,6 +95,8 @@ class BaseCase(unittest.TestCase):
         self.__last_page_url = None
         self.__last_page_source = None
         self.__skip_reason = None
+        self.__origins_to_save = []
+        self.__actions_to_save = []
         self.__dont_record_open = False
         self.__dont_record_js_click = False
         self.__new_window_on_rec_open = True
@@ -2987,6 +2989,15 @@ class BaseCase(unittest.TestCase):
                 return page_actions.save_screenshot(
                     self.driver, name, test_logpath, selector, by
                 )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["ss_tl", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
         return page_actions.save_screenshot(self.driver, name, test_logpath)
 
     def save_page_source(self, name, folder=None):
@@ -3183,6 +3194,22 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
 
+    def save_recorded_actions(self):
+        """(When using Recorder Mode, use this method if you plan on
+            navigating to a different domain/origin in the same tab.)
+        This method saves recorded actions from the active tab so that
+        a complete recording can be exported as a SeleniumBase file at the
+        end of the test. This is only needed in special cases because most
+        actions that result in a new origin, (such as clicking on a link),
+        should automatically open a new tab while Recorder Mode is enabled."""
+        url = self.get_current_url()
+        if url and len(url) > 0:
+            if ("http:") in url or ("https:") in url or ("file:") in url:
+                origin = self.get_origin()
+                self.__origins_to_save.append(origin)
+                tab_actions = self.__get_recorded_actions_on_active_tab()
+                self.__actions_to_save.append(tab_actions)
+
     def __get_recorded_actions_on_active_tab(self):
         url = self.driver.current_url
         if (
@@ -3213,6 +3240,11 @@ class BaseCase(unittest.TestCase):
                 if action not in used_actions:
                     used_actions.append(action)
                     raw_actions.append(action)
+        for tab_actions in self.__actions_to_save:
+            for action in tab_actions:
+                if action not in used_actions:
+                    used_actions.append(action)
+                    raw_actions.append(action)
         for action in self.__extra_actions:
             if action not in used_actions:
                 used_actions.append(action)
@@ -3232,6 +3264,15 @@ class BaseCase(unittest.TestCase):
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
                 and srt_actions[n-1][0] == "sk_op"
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 1
+                and srt_actions[n-1][0] == "_skip"
+                and srt_actions[n-2][0] == "sk_op"
+                and srt_actions[n][2] == srt_actions[n-1][2]
             ):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
@@ -3325,6 +3366,23 @@ class BaseCase(unittest.TestCase):
             ):
                 srt_actions[n-1][0] = "_skip"
                 srt_actions[n][2] = srt_actions[n-1][1][1]
+        for n in range(len(srt_actions)):
+            if (
+                srt_actions[n][0] == "input"
+                and n > 0
+                and srt_actions[n-1][0] == "e_mfa"
+            ):
+                srt_actions[n][0] = "_skip"
+        for n in range(len(srt_actions)):
+            if (
+                (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
+                and n > 0
+                and (
+                    srt_actions[n-1][0] == "submi"
+                    or srt_actions[n-1][0] == "e_mfa"
+                )
+            ):
+                srt_actions[n][0] = "f_url"
         origins = []
         for n in range(len(srt_actions)):
             if (
@@ -3337,6 +3395,8 @@ class BaseCase(unittest.TestCase):
                     origin = origin[0:-1]
                 if origin not in origins:
                     origins.append(origin)
+        for origin in self.__origins_to_save:
+            origins.append(origin)
         for n in range(len(srt_actions)):
             if (
                 srt_actions[n][0] == "click"
@@ -3382,6 +3442,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("s_c_d")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
+        ext_actions.append("e_mfa")
+        ext_actions.append("ss_tl")
         for n in range(len(srt_actions)):
             if srt_actions[n][0] in ext_actions:
                 origin = srt_actions[n][2]
@@ -3393,6 +3455,9 @@ class BaseCase(unittest.TestCase):
                 if origin.endswith("/"):
                     origin = origin[0:-1]
                 if srt_actions[n][0] == "js_ty":
+                    srt_actions[n][2] = srt_actions[n][1][1]
+                    srt_actions[n][1] = srt_actions[n][1][0]
+                if srt_actions[n][0] == "e_mfa":
                     srt_actions[n][2] = srt_actions[n][1][1]
                     srt_actions[n][1] = srt_actions[n][1][0]
                 if srt_actions[n][0] == "_url_" and origin not in origins:
@@ -3436,6 +3501,21 @@ class BaseCase(unittest.TestCase):
                 method = "type"
                 if action[0] == "js_ty":
                     method = "js_type"
+                text = action[2].replace("\n", "\\n")
+                if '"' not in action[1] and '"' not in text:
+                    sb_actions.append('self.%s("%s", "%s")' % (
+                        method, action[1], text))
+                elif '"' not in action[1] and '"' in text:
+                    sb_actions.append('self.%s("%s", \'%s\')' % (
+                        method, action[1], text))
+                elif '"' in action[1] and '"' not in text:
+                    sb_actions.append('self.%s(\'%s\', "%s")' % (
+                        method, action[1], text))
+                elif '"' in action[1] and '"' in text:
+                    sb_actions.append("self.%s('%s', '%s')" % (
+                        method, action[1], text))
+            elif action[0] == "e_mfa":
+                method = "enter_mfa_code"
                 text = action[2].replace("\n", "\\n")
                 if '"' not in action[1] and '"' not in text:
                     sb_actions.append('self.%s("%s", "%s")' % (
@@ -3631,19 +3711,22 @@ class BaseCase(unittest.TestCase):
                     else:
                         sb_actions.append("self.%s('%s')" % (
                             method, action[1][0]))
+            elif action[0] == "ss_tl":
+                method = "save_screenshot_to_logs"
+                sb_actions.append('self.%s()' % method)
             elif action[0] == "sh_fc":
-                cb_method = "show_file_choosers"
-                sb_actions.append('self.%s()' % cb_method)
+                method = "show_file_choosers"
+                sb_actions.append('self.%s()' % method)
             elif action[0] == "c_l_s":
                 sb_actions.append("self.clear_local_storage()")
             elif action[0] == "c_box":
-                cb_method = "check_if_unchecked"
+                method = "check_if_unchecked"
                 if action[2] == "no":
-                    cb_method = "uncheck_if_checked"
+                    method = "uncheck_if_checked"
                 if '"' not in action[1]:
-                    sb_actions.append('self.%s("%s")' % (cb_method, action[1]))
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
-                    sb_actions.append("self.%s('%s')" % (cb_method, action[1]))
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
 
         filename = self.__get_filename()
         new_file = False
@@ -5195,9 +5278,10 @@ class BaseCase(unittest.TestCase):
             return True  # chromedriver is too old! Please upgrade!
         return False
 
-    def get_totp_code(self, totp_key=None):
-        """Returns a time-based one-time password based on the
-        Google Authenticator algorithm. Works with Authy and Okta.
+    def get_mfa_code(self, totp_key=None):
+        """Same as get_totp_code() and get_google_auth_password().
+        Returns a time-based one-time password based on the
+        Google Authenticator algorithm for multi-factor authentication.
         If the "totp_key" is not specified, this method defaults
         to using the one provided in [seleniumbase/config/settings.py].
         Google Authenticator codes expire & change at 30-sec intervals.
@@ -5223,6 +5307,36 @@ class BaseCase(unittest.TestCase):
 
         totp = pyotp.TOTP(totp_key)
         return str(totp.now())
+
+    def enter_mfa_code(
+        self, selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """Enters into the field a Multi-Factor Authentication TOTP Code.
+        If the "totp_key" is not specified, this method defaults
+        to using the one provided in [seleniumbase/config/settings.py].
+        The TOTP code is generated by the Google Authenticator Algorithm.
+        This method will automatically press ENTER after typing the code."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        self.wait_for_element_visible(selector, by=by, timeout=timeout)
+        if self.recorder_mode:
+            css_selector = self.convert_to_css_selector(selector, by=by)
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    origin = self.get_origin()
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        sel_key = [css_selector, totp_key]
+                        action = ["e_mfa", sel_key, origin, time_stamp]
+                        self.__extra_actions.append(action)
+                    # Sometimes Sign-In leaves the origin... Save work first.
+                    self.__origins_to_save.append(origin)
+                    tab_actions = self.__get_recorded_actions_on_active_tab()
+                    self.__actions_to_save.append(tab_actions)
+        mfa_code = self.get_mfa_code(totp_key)
+        self.update_text(selector, mfa_code + "\n", by=by, timeout=timeout)
 
     def convert_css_to_xpath(self, css):
         return css_to_xpath.convert_css_to_xpath(css)
@@ -6164,12 +6278,24 @@ class BaseCase(unittest.TestCase):
         return True
 
     def get_google_auth_password(self, totp_key=None):
-        """ Same as self.get_totp_code() """
-        return self.get_totp_code(totp_key=totp_key)
+        """ Same as self.get_mfa_code() """
+        return self.get_mfa_code(totp_key=totp_key)
 
     def get_google_auth_code(self, totp_key=None):
-        """ Same as self.get_totp_code() """
-        return self.get_totp_code(totp_key=totp_key)
+        """ Same as self.get_mfa_code() """
+        return self.get_mfa_code(totp_key=totp_key)
+
+    def get_totp_code(self, totp_key=None):
+        """ Same as self.get_mfa_code() """
+        return self.get_mfa_code(totp_key=totp_key)
+
+    def enter_totp_code(
+        self, selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """ Same as self.enter_mfa_code() """
+        return self.enter_mfa_code(
+            selector=selector, totp_key=totp_key, by=by, timeout=timeout
+        )
 
     def assert_no_broken_links(self, multithreaded=True):
         """ Same as self.assert_no_404_errors() """
