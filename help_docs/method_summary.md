@@ -261,6 +261,8 @@ self.deactivate_design_mode()
 
 self.activate_recorder()
 
+self.save_recorded_actions()
+
 self.activate_jquery()
 
 self.bring_to_front(selector, by=By.CSS_SELECTOR)
@@ -402,9 +404,13 @@ self.get_chromedriver_version()
 
 self.is_chromedriver_too_old()
 
-self.get_totp_code(totp_key=None)
-# Duplicates: self.get_google_auth_password(totp_key=None)
+self.get_mfa_code(totp_key=None)
+# Duplicates: self.get_totp_code(totp_key=None)
+#             self.get_google_auth_password(totp_key=None)
 #             self.get_google_auth_code(totp_key=None)
+
+self.enter_mfa_code(selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None)
+# Duplicates: self.enter_totp_code(selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None)
 
 self.convert_css_to_xpath(css)
 

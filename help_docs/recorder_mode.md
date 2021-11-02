@@ -6,7 +6,7 @@
 
 <img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-(This tutorial assumes that you are using SeleniumBase version ``2.1.0`` or newer.)
+(This tutorial assumes that you are using SeleniumBase version ``2.1.1`` or newer.)
 
 🔴 To make a new recording with Recorder Mode, you can use ``sbase mkrec`` or ``sbase codegen``):
 
@@ -42,17 +42,19 @@ ipdb> c
 
 🔴 From within Recorder Mode there are two additional modes: "Assert Element Mode" and "Assert Text Mode". To switch into "Assert Element Mode", press the <code>{^}-key (SHIFT+6)</code>: The border will become purple, and you'll be able to click on elements to assert from your test. To switch into "Assert Text Mode", press the <code>{&}-key (SHIFT+7)</code>: The border will become teal, and you'll be able to click on elements for asserting text from your test. While using either of the two special Assertion Modes, certain actions such as clicking on links won't have any effect. This lets you make assertions on elements without navigating away from the page, etc. To add an assertion for a button without triggering its default behavior via a "click" action, mouse-down on the button and then mouse-up somewhere else, which prevents a detected click while still recording the assert. To return back to the original Recorder Mode, press any key other than SHIFT or BACKSPACE (Eg: Press ``CONTROL``, etc.). You can also press ESC once to leave the Assertion Modes, but if you press it again, it'll stop the Recorder.
 
-🔴 For extra flexibility, you can break up the ``sbase mkrec`` command into three separate commands so that you can pick & choose how you use the Recorder:
+🔴 For extra flexibility, the ``sbase mkrec`` command can be split into four separate commands:
 
 ```bash
 sbase mkfile TEST_NAME.py --rec
 
 pytest TEST_NAME.py --rec -q -s
 
+sbase print ./recordings/TEST_NAME_rec.py -n
+
 cp ./recordings/TEST_NAME_rec.py ./TEST_NAME.py
 ```
 
-The first command creates a boilerplate test with a breakpoint; the second command runs the test with the Recorder activated; and the third command replaces the initial boilerplate with the full recorded test. If you're just experimenting with the Recorder, you can run the second command as many times as you want, and it'll override previous recordings saved to ``./recordings/TEST_NAME_rec.py``. (Note that ``-s`` is needed to allow breakpoints, unless you already have a ``pytest.ini`` file present with ``addopts = --capture=no`` in it. The ``-q`` is optional, which shortens ``pytest`` console output.)
+The first command creates a boilerplate test with a breakpoint; the second command runs the test with the Recorder activated; the third command prints the completed test to the console; and the fourth command replaces the initial boilerplate with the completed test. If you're just experimenting with the Recorder, you can run the second command as many times as you want, and it'll override previous recordings saved to ``./recordings/TEST_NAME_rec.py``. (Note that ``-s`` is needed to allow breakpoints, unless you already have a ``pytest.ini`` file present with ``addopts = --capture=no`` in it. The ``-q`` is optional, which shortens ``pytest`` console output.)
 
 🔴 You can also use the Recorder to add code to an existing test. To do that, you'll first need to create a breakpoint in your code where you want to insert manual browser actions:
 
@@ -88,7 +90,7 @@ pytest TEST_NAME.py --trace --rec -s
 ***************************************************
 ```
 
-🔴 Recorder Mode works by saving your recorded actions into the browser's <code>sessionStorage</code>. SeleniumBase then reads from the browser's <code>sessionStorage</code> to take the raw data and generate a full test from it. Keep in mind that <code>sessionStorage</code> is only present for a website while the browser tab remains on a web page of the same domain/origin. If you leave that domain/origin, the <code>sessionStorage</code> of that tab will no longer have the raw data that SeleniumBase needs to create a full recording. To compensate for this, all links to web pages of a different domain/origin will automatically open a new tab for you while in Recorder Mode. Additionally, the SeleniumBase <code>self.open(URL)</code> method will also open a new tab for you in Recorder Mode if the domain/origin is different from the current URL. When the recorded test completes, SeleniumBase will scan the <code>sessionStorage</code> of all open browser tabs for the data it needs to generate the complete SeleniumBase automation script.
+🔴 Recorder Mode works by saving your recorded actions into the browser's <code>sessionStorage</code>. SeleniumBase then reads from the browser's <code>sessionStorage</code> to take the raw data and generate a full test from it. Keep in mind that <code>sessionStorage</code> is only present for a website while the browser tab remains on a web page of the same domain/origin. If you leave that domain/origin, the <code>sessionStorage</code> of that tab will no longer have the raw data that SeleniumBase needs to create a full recording. To compensate for this, all links to web pages of a different domain/origin will automatically open a new tab for you while in Recorder Mode. Additionally, the SeleniumBase <code>self.open(URL)</code> method will also open a new tab for you in Recorder Mode if the domain/origin is different from the current URL. If you need to navigate to a different domain/origin from within the same tab, call <code>self.save_recorded_actions()</code> first, which saves the recorded data for later. When the recorded test completes, SeleniumBase will scan the <code>sessionStorage</code> of all open browser tabs for the data it needs to generate the complete SeleniumBase automation script.
 
 🔴 As an alternative to activating Recorder Mode with the <code>--rec</code> command-line arg, you can also call <code>self.activate_recorder()</code> from your tests. This is only useful for tests that stay on the same URL because the Recorder will turn off when leaving the page where you activated the Recorder. The reason for this is because the standard Recorder Mode functions as a Chrome extension (and persists wherever the browser goes), whereas the method call version of Recorder Mode only lives in the page where it was called.
 
