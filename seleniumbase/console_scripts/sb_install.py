@@ -324,18 +324,29 @@ def main(override=None):
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
             else:
                 use_version = DEFAULT_EDGEDRIVER_VERSION
+        suffix = None
         if "win64" in sys_plat or "x64" in sys_plat:
             file_name = "edgedriver_win64.zip"
+            suffix = "WINDOWS"
         elif "win32" in sys_plat or "x86" in sys_plat:
             file_name = "edgedriver_win32.zip"
+            suffix = "WINDOWS"
         elif "darwin" in sys_plat:
             file_name = "edgedriver_mac64.zip"
+            suffix = "MACOS"
         elif "linux" in sys_plat:
             file_name = "edgedriver_linux64.zip"
+            suffix = "LINUX"
         else:
             raise Exception(
                 "Cannot determine which version of EdgeDriver to download!"
             )
+        if use_version.isdigit():
+            edgedriver_st = "https://msedgedriver.azureedge.net/LATEST_RELEASE"
+            use_version = "%s_%s_%s" % (edgedriver_st, use_version, suffix)
+            url_request = requests.get(use_version)
+            if url_request.ok:
+                use_version = url_request.text.split("\r")[0].split("\n")[0]
         download_url = "https://msedgedriver.azureedge.net/%s/%s" % (
             use_version,
             file_name,
