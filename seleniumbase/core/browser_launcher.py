@@ -1240,40 +1240,6 @@ def get_local_driver(
             "profile.managed_default_content_settings.popups": 0,
             "profile.default_content_setting_values.automatic_downloads": 1,
         }
-        chrome_options = _set_chrome_options(
-            browser_name,
-            downloads_path,
-            headless,
-            locale_code,
-            proxy_string,
-            proxy_auth,
-            proxy_user,
-            proxy_pass,
-            user_agent,
-            recorder_ext,
-            disable_csp,
-            enable_ws,
-            enable_sync,
-            use_auto_ext,
-            no_sandbox,
-            disable_gpu,
-            incognito,
-            guest_mode,
-            devtools,
-            remote_debug,
-            swiftshader,
-            ad_block_on,
-            block_images,
-            chromium_arg,
-            user_data_dir,
-            extension_zip,
-            extension_dir,
-            servername,
-            mobile_emulator,
-            device_width,
-            device_height,
-            device_pixel_ratio,
-        )
         if LOCAL_EDGEDRIVER and os.path.exists(LOCAL_EDGEDRIVER):
             try:
                 make_driver_executable_if_not(LOCAL_EDGEDRIVER)
@@ -1325,6 +1291,8 @@ def get_local_driver(
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
+        if not enable_sync:
+            edge_options.add_argument("--disable-sync")
         if guest_mode:
             edge_options.add_argument("--guest")
         if headless:
@@ -1435,15 +1403,20 @@ def get_local_driver(
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
                 auto_upgrade_edgedriver = False
+                edge_version = None
                 if "This version of MSEdgeDriver only supports" in e.msg:
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "Current browser version is ")[1].split(' ')[0]
+                    elif "only supports MSEdge version " in e.msg:
+                        auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "only supports MSEdge version ")[1].split(' ')[0]
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
-                edge_version = e.msg.split(
-                    "Current browser version is ")[1].split(' ')[0]
                 args = " ".join(sys.argv)
                 if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                     import fasteners
@@ -1472,15 +1445,20 @@ def get_local_driver(
                 )
             except Exception as e:
                 auto_upgrade_edgedriver = False
+                edge_version = None
                 if "This version of MSEdgeDriver only supports" in e.msg:
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "Current browser version is ")[1].split(' ')[0]
+                    elif "only supports MSEdge version " in e.msg:
+                        auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "only supports MSEdge version ")[1].split(' ')[0]
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
-                edge_version = e.msg.split(
-                    "Current browser version is ")[1].split(' ')[0]
                 args = " ".join(sys.argv)
                 if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                     import fasteners
