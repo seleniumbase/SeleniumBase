@@ -123,14 +123,14 @@ nav:
     - macOS Hidden Files: help_docs/hidden_files_info.md
     - MySQL Instructions: help_docs/mysql_installation.md
   - Demo Pages:
-    - Demo Page / Demo Site: https://seleniumbase.io/demo_page
-    - MFA Login Demo Page: https://seleniumbase.io/realworld/login
-    - TinyMCE Demo Page: https://seleniumbase.io/tinymce/
+    - Demo Page (Test Page): https://seleniumbase.io/demo_page
+    - MFA Login (Test Page): https://seleniumbase.io/realworld/login
+    - TinyMCE (Test Page): https://seleniumbase.io/tinymce/
+    - Error Page (Test Page): https://seleniumbase.io/error_page/
+    - Drag-&-Drop (Test Page): https://seleniumbase.io/other/drag_and_drop
     - Virtual Device Farm: https://seleniumbase.io/devices/
-    - Drag & Drop Demo Page: https://seleniumbase.io/other/drag_and_drop
     - HTML Playground Page: https://seleniumbase.io/w3schools/
     - SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
-    - Error Demo Page: https://seleniumbase.io/error_page/
     - Page with broken links: https://seleniumbase.io/other/broken_page
     - W3Schools iframes: https://seleniumbase.io/w3schools/iframes
     - W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
@@ -141,7 +141,7 @@ nav:
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
     - Core Presentation: https://seleniumbase.io/other/core_presentation.html
     - Chart Maker Demo: https://seleniumbase.io/other/chart_presentation.html
-    - Virtual Env Tutorial: https://seleniumbase.io/other/py_virtual_envs.html
+    - Python Virtual Envs: https://seleniumbase.io/other/py_virtual_envs.html
   - Other:
     - YouTube Link: https://www.youtube.com/playlist?list=PLp9uKicxkBc5UIlGi2BuE3aWC7JyXpD3m
     - Case Studies: help_docs/happy_customers.md

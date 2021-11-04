@@ -73,11 +73,25 @@
 
 <h3>Demo Pages / Web Examples</h3>
 
-<div><a href="https://seleniumbase.io/demo_page"><b>Demo Page / Demo Site</b></a></div>
-<div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE Demo Page</b></a></div>
+<div><a href="https://seleniumbase.io/demo_page"><b>Demo Page (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/realworld/login"><b>MFA Login (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/error_page/"><b>Error Page (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag-&-Drop (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/devices/"><b>Virtual Device Farm</b></a></div>
-<div><a href="https://seleniumbase.io/error_page/"><b>Error Page for Tests</b></a></div>
-<div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag-&-Drop Test Page</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/"><b>HTML Playground Page</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/sbase"><b>SeleniumBase in iframe</b></a></div>
+<div><a href="https://seleniumbase.io/other/broken_page"><b>Page with broken links</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/iframes"><b>W3Schools iframes</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/double_click"><b>W3Schools doubleclick</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/checkboxes"><b>W3Schools checkboxes</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/drag_drop"><b>W3Schools drag & drop</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/radio_buttons"><b>W3Schools radio buttons</b></a></div>
+
+--------
+
+<h3>Presentations</h3>
+
 <div><a href="https://seleniumbase.io/other/presenter.html"><b>Presenter Demo</b></a></div>
 <div><a href="https://seleniumbase.io/other/core_presentation.html"><b>Core Presentation</b></a></div>
 <div><a href="https://seleniumbase.io/other/chart_presentation.html"><b>Chart Maker Demo</b></a></div>
