@@ -1435,15 +1435,20 @@ def get_local_driver(
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
                 auto_upgrade_edgedriver = False
+                edge_version = None
                 if "This version of MSEdgeDriver only supports" in e.msg:
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "Current browser version is ")[1].split(' ')[0]
+                    elif "only supports MSEdge version " in e.msg:
+                        auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "only supports MSEdge version ")[1].split(' ')[0]
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
-                edge_version = e.msg.split(
-                    "Current browser version is ")[1].split(' ')[0]
                 args = " ".join(sys.argv)
                 if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                     import fasteners
@@ -1472,15 +1477,20 @@ def get_local_driver(
                 )
             except Exception as e:
                 auto_upgrade_edgedriver = False
+                edge_version = None
                 if "This version of MSEdgeDriver only supports" in e.msg:
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "Current browser version is ")[1].split(' ')[0]
+                    elif "only supports MSEdge version " in e.msg:
+                        auto_upgrade_edgedriver = True
+                        edge_version = e.msg.split(
+                            "only supports MSEdge version ")[1].split(' ')[0]
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
-                edge_version = e.msg.split(
-                    "Current browser version is ")[1].split(' ')[0]
                 args = " ".join(sys.argv)
                 if ("-n" in sys.argv or " -n=" in args or args == "-c"):
                     import fasteners
