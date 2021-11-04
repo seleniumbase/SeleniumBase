@@ -1,4 +1,4 @@
-regex>=2021.11.1
+regex>=2021.11.2
 tqdm>=4.62.3
 docutils==0.18
 python-dateutil==2.8.2
