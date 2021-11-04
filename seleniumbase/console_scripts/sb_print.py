@@ -570,11 +570,15 @@ def main():
             used_width = code_width + extra_r_spaces
 
         the_code = rich_helper.fix_emoji_spacing(the_code)
+        the_theme = "monokai"
+        platform = sys.platform
+        if "win32" in platform or "win64" in platform or "x64" in platform:
+            the_theme = "abap"
 
         magic_syntax = rich_helper.process_syntax(
             the_code,
             code_lang,
-            theme="monokai",
+            theme=the_theme,
             line_numbers=line_numbers,
             code_width=used_width,
             word_wrap=word_wrap,
