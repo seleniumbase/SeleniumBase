@@ -1291,6 +1291,8 @@ def get_local_driver(
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
+        if not enable_sync:
+            edge_options.add_argument("--disable-sync")
         if guest_mode:
             edge_options.add_argument("--guest")
         if headless:
