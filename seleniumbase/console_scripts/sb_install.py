@@ -298,7 +298,7 @@ def main(override=None):
         name = "edgedriver"
         last = (
             "https://msedgewebdriverstorage.blob.core.windows.net"
-            "/edgewebdriver/LATEST_BETA"
+            "/edgewebdriver/LATEST_STABLE"
         )
         get_latest = False
         if num_args == 3:
