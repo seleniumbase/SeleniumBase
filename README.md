@@ -212,7 +212,7 @@ nosetests test_suite.py --browser=firefox
 ```
 
 ✅ Automatic Test Discovery:
-<p>All Python methods that start with <code>test_</code> will automatically be run when using <code>pytest</code> or <code>nosetests</code> on a Python file, (<i>or on folders containing Python files</i>). You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)</p>
+<p>All Python methods that start with <code>test_</code> will be run automatically when running <code>pytest</code> or <code>nosetests</code> on Python files. You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)</p>
 
 ```bash
 pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
@@ -232,13 +232,10 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 
 
 <a id="detailed_instructions"></a>
-<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="300">
-
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
-<a id="seleniumbase_demo_mode"></a> <b>Use Demo Mode to help you see what tests are asserting.</b>
-
-🔵 If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+<a id="seleniumbase_demo_mode"></a>
+🔵 You can use **Demo Mode** to help you see what a test is doing: If a test is moving too fast for your eyes, run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and displays assertions:
 
 ```bash
 pytest my_first_test.py --demo
@@ -764,6 +761,8 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
     selector = "div.superbowl_%s div.commercials div.transcript div.picard" % superbowl_year
     if self.is_text_visible("Yes, it was I who summoned you all here.", selector):
         return "Picard Paramount+ Superbowl Ad 2020"
+    elif self.is_text_visible("Commander, signal the following: Our Network is Secure!"):
+        return "Picard Mirror Universe iboss Superbowl Ad 2018"
     elif self.is_text_visible("For the Love of Marketing and Earl Grey Tea!", selector):
         return "Picard Mirror Universe HubSpot Superbowl Ad 2015"
     elif self.is_text_visible("Delivery Drones... Engage", selector):
@@ -774,19 +773,19 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
         return "Picard Mirror Universe Google Superbowl Ad 2015"
     elif self.is_text_visible("Number One, I've Never Seen Anything Like It.", selector):
         return "Picard Mirror Universe Tesla Superbowl Ad 2015"
+    elif self.is_text_visible("Let us make sure history never forgets the name ... Facebook", selector):
+        return "Picard Mirror Universe Facebook Superbowl Ad 2015"
     elif self.is_text_visible("""With the first link, the chain is forged.
                               The first speech censored, the first thought forbidden,
                               the first freedom denied, chains us all irrevocably.""", selector):
         return "Picard Mirror Universe Wikimedia Superbowl Ad 2015"
-    elif self.is_text_visible("Let us make sure history never forgets the name ... Facebook", selector):
-        return "Picard Mirror Universe Facebook Superbowl Ad 2015"
     else:
         raise Exception("Reports of my assimilation are greatly exaggerated.")
 ```
 
 🔵 Switching Tabs:
 
-<p>What if your test opens up a new tab/window and now you have more than one page? No problem. You need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:</p>
+<p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to ``about:blank`` URLs.)</p>
 
 ```python
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
@@ -840,6 +839,8 @@ self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "
 
 self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
+
+(Most of the above commands can be done directly with built-in SeleniumBase methods.)
 
 🔵 In the next example, JavaScript creates a referral button on a page, which is then clicked:
 
@@ -916,13 +917,15 @@ pytest --reruns=1 --reruns-delay=1
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://seleniumbase.io">
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="200" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-%20%20SeleniumBase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></div> <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://twitter.com/SeleniumBase" target="_blank"><img src="https://img.shields.io/twitter/follow/seleniumbase.svg?style=flat-rounded&logo=twitter&label=followers" alt="SeleniumBase Twitter followers" /></a></div>
 
 <p><div>
 <span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="38" /></a></span>
 <span><a href="https://www.facebook.com/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="36" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="29" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="30" /></a></span>
 <span><a href="https://instagram.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="32" /></a></span>
 <span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="39" /></a></span>
 </div></p>
+
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a>
