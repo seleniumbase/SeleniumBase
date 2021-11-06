@@ -112,15 +112,21 @@ function hasNumber(str) {
 function tagName(el) {
   return el.tagName.toLowerCase();
 };
+function turnIntoParentAsNeeded(el) {
+    if (tagName(el) == 'span') {
+        if (tagName(el.parentElement) == 'button') {
+            el = el.parentElement;
+        }
+        else if (tagName(el.parentElement.parentElement) == 'button') {
+            el = el.parentElement.parentElement;
+        }
+    }
+    return el;
+}
 var getBestSelector = function(el) {
     if (!(el instanceof Element))
         return;
-    if (tagName(el) == 'span') {
-        if (tagName(el.parentElement) == 'button')
-            el = el.parentElement;
-        else if (tagName(el.parentElement.parentElement) == 'button')
-            el = el.parentElement.parentElement;
-    }
+    el = turnIntoParentAsNeeded(el);
     child_sep = ' > ';
     selector_by_id = cssPathById(el);
     if (!selector_by_id.includes(child_sep))
@@ -214,28 +220,29 @@ var getBestSelector = function(el) {
     contains_tags.push('code');
     contains_tags.push('mark');
     contains_tags.push('label');
+    contains_tags.push('small');
     contains_tags.push('button');
     contains_tags.push('legend');
     contains_tags.push('strong');
     contains_tags.push('summary');
     all_by_tag = [];
-    inner_text = '';
-    if (el.innerText)
-        inner_text = el.innerText.trim();
+    text_content = '';
+    if (el.textContent)
+        text_content = el.textContent.trim();
     for (var i = 0; i < contains_tags.length; i++) {
         if (tag_name == contains_tags[i] &&
-            inner_text.length >= 2 && inner_text.length <= 64)
+            text_content.length >= 2 && text_content.length <= 64)
         {
             t_count = 0;
             all_by_tag[i] = document.querySelectorAll(contains_tags[i]);
             for (var j = 0; j < all_by_tag[i].length; j++) {
-                if (all_by_tag[i][j].innerText.includes(inner_text))
+                if (all_by_tag[i][j].textContent.includes(text_content))
                     t_count += 1;
             }
-            if (t_count === 1 && !inner_text.includes('\n')) {
-                inner_text = inner_text.replaceAll("'", "\\'");
-                inner_text = inner_text.replaceAll('"', '\\"');
-                return tag_name += ':contains("'+inner_text+'")';
+            if (t_count === 1 && !text_content.includes('\n')) {
+                text_content = text_content.replaceAll("'", "\\'");
+                text_content = text_content.replaceAll('"', '\\"');
+                return tag_name += ':contains("'+text_content+'")';
             }
         }
     }
@@ -340,8 +347,8 @@ var reset_if_recorder_undefined = function() {
 document.body.addEventListener('mouseover', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
-    const element = event.target;
-    const selector = getBestSelector(element);
+    const el = event.target;
+    const selector = getBestSelector(el);
     if (!selector.startsWith('body') && !selector.includes(' div')) {
         document.title = selector;
     }
@@ -392,8 +399,8 @@ document.body.addEventListener('dragstart', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
-    const element = event.target;
-    const selector = getBestSelector(element);
+    const el = event.target;
+    const selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
@@ -401,7 +408,7 @@ document.body.addEventListener('dragstart', function (event) {
     {
         document.recorded_actions.pop();
     }
-    if (element.draggable === true) {
+    if (el.draggable === true) {
         document.recorded_actions.push(['drags', selector, '', d_now]);
     }
     json_rec_act = JSON.stringify(document.recorded_actions);
@@ -422,8 +429,8 @@ document.body.addEventListener('drop', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
-    const element = event.target;
-    const selector = getBestSelector(element);
+    const el = event.target;
+    const selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'drags')
     {
@@ -438,11 +445,11 @@ document.body.addEventListener('change', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
-    const element = event.target;
-    const selector = getBestSelector(element);
+    const el = event.target;
+    const selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
-    tag_name = tagName(element);
-    e_type = element.type;
+    tag_name = tagName(el);
+    e_type = el.type;
     if (tag_name === 'select')
     {
         el_computed = document.querySelector(selector);
@@ -461,7 +468,7 @@ document.body.addEventListener('change', function (event) {
             document.recorded_actions.pop();
             ra_len = document.recorded_actions.length;
         }
-        value = element.value;
+        value = el.value;
         document.recorded_actions.push(['set_v', selector, value, d_now]);
     }
     else if (tag_name === 'input' && e_type === 'file') {
@@ -470,7 +477,7 @@ document.body.addEventListener('change', function (event) {
             document.recorded_actions.pop();
             ra_len = document.recorded_actions.length;
         }
-        value = element.value;
+        value = el.value;
         document.recorded_actions.push(['cho_f', selector, value, d_now]);
     }
     else if (ra_len > 0 &&
@@ -482,9 +489,9 @@ document.body.addEventListener('change', function (event) {
         if (ra_len > 0 && document.recorded_actions[ra_len-1][1] === selector)
             document.recorded_actions.pop();
     }
-    if (tag_name === 'input' && e_type === 'checkbox' && element.checked)
+    if (tag_name === 'input' && e_type === 'checkbox' && el.checked)
         document.recorded_actions.push(['c_box', selector, 'yes', d_now]);
-    else if (tag_name === 'input' && e_type === 'checkbox' && !element.checked)
+    else if (tag_name === 'input' && e_type === 'checkbox' && !el.checked)
         document.recorded_actions.push(['c_box', selector, 'no', d_now]);
     json_rec_act = JSON.stringify(document.recorded_actions);
     sessionStorage.setItem('recorded_actions', json_rec_act);
@@ -493,21 +500,22 @@ document.body.addEventListener('mousedown', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
-    const element = event.target;
-    const selector = getBestSelector(element);
+    el = event.target;
+    const selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
     rec_mode = sessionStorage.getItem('recorder_mode');
-    tag_name = tagName(element);
+    tag_name = tagName(el);
     text = '';
-    if (rec_mode === '3')
-        text = element.innerText;
+    if (rec_mode === '2' || rec_mode === '3')
+        el = turnIntoParentAsNeeded(el);
+        texts = [el.innerText, el.textContent];
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
         // Do Nothing. ('change' action.)
     }
     else
-        document.recorded_actions.push(['mo_dn', selector, text, d_now]);
+        document.recorded_actions.push(['mo_dn', selector, texts, d_now]);
     json_rec_act = JSON.stringify(document.recorded_actions);
     sessionStorage.setItem('recorded_actions', json_rec_act);
 });
@@ -515,54 +523,57 @@ document.body.addEventListener('mouseup', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
-    const element = event.target;
-    selector = getBestSelector(element);
+    const el = event.target;
+    selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
-    tag_name = tagName(element);
-    parent_element = element.parentElement;
-    parent_tag_name = tagName(parent_element);
-    grand_element = "";
+    tag_name = tagName(el);
+    parent_el = el.parentElement;
+    parent_tag_name = tagName(parent_el);
+    grand_el = "";
     grand_tag_name = "";
     origin = "";
     rec_mode = sessionStorage.getItem('recorder_mode');
-    if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn') {
-        selector = document.recorded_actions[ra_len-1][1];
-        sel_has_contains = selector.includes(':contains(');
-        if (rec_mode === '2' || (rec_mode === '3' && sel_has_contains)) {
-            origin = window.location.origin;
-            document.recorded_actions.push(['as_el', selector, origin, d_now]);
+    if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
+        (rec_mode === '2' || rec_mode === '3'))
+    {
+        pre_sel = document.recorded_actions[ra_len-1][1];
+        sel_has_contains = pre_sel.includes(':contains(');
+        texts = document.recorded_actions[ra_len-1][2];
+        text = texts[0];
+        t_con = texts[1];
+        origin = window.location.origin;
+        if (!text) { text = ''; }
+        if (rec_mode === '2' || (
+            rec_mode === '3' && sel_has_contains && text === t_con))
+        {
+            document.recorded_actions.push(['as_el', pre_sel, origin, d_now]);
             json_rec_act = JSON.stringify(document.recorded_actions);
             sessionStorage.setItem('recorded_actions', json_rec_act);
             return;
         }
         else if (rec_mode === '3') {
-            origin = window.location.origin;
-            text = document.recorded_actions[ra_len-1][2];
             action = 'as_et';
-            if (!text) { text = ''; }
-            else {
-                text = text.trim();
-                var match = /\r|\n/.exec(text);
-                if (match) {
-                    lines = text.split(/\r\n|\r|\n/g);
-                    text = '';
-                    for (var i = 0; i < lines.length; i++) {
-                        if (lines[i].length > 0) {
-                            action = 'as_te'; text = lines[i]; break;
-                        }
+            text = text.trim();
+            var match = /\r|\n/.exec(text);
+            if (match) {
+                lines = text.split(/\r\n|\r|\n/g);
+                text = '';
+                for (var i = 0; i < lines.length; i++) {
+                    if (lines[i].length > 0) {
+                        action = 'as_te'; text = lines[i]; break;
                     }
                 }
             }
-            tex_sel = [text, selector];
+            tex_sel = [text, pre_sel];
             document.recorded_actions.push([action, tex_sel, origin, d_now]);
             json_rec_act = JSON.stringify(document.recorded_actions);
             sessionStorage.setItem('recorded_actions', json_rec_act);
             return;
         }
     }
-    if (parent_element.parentElement != null) {
-        grand_element = parent_element.parentElement;
-        grand_tag_name = tagName(grand_element);
+    if (parent_el.parentElement != null) {
+        grand_el = parent_el.parentElement;
+        grand_tag_name = tagName(grand_el);
     }
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][1] === selector &&
@@ -572,38 +583,38 @@ document.body.addEventListener('mouseup', function (event) {
     {
         href = '';
         if (tag_name === 'a' &&
-            element.hasAttribute('href') &&
-            element.getAttribute('href').length > 0 &&
-            element.origin != 'null')
+            el.hasAttribute('href') &&
+            el.getAttribute('href').length > 0 &&
+            el.origin != 'null')
         {
-            href = element.href;
-            origin = element.origin;
+            href = el.href;
+            origin = el.origin;
         }
         else if (parent_tag_name === 'a' &&
-            parent_element.hasAttribute('href') &&
-            parent_element.getAttribute('href').length > 0 &&
-            parent_element.origin != 'null')
+            parent_el.hasAttribute('href') &&
+            parent_el.getAttribute('href').length > 0 &&
+            parent_el.origin != 'null')
         {
-            href = parent_element.href;
-            origin = parent_element.origin;
+            href = parent_el.href;
+            origin = parent_el.origin;
         }
         else if (grand_tag_name === 'a' &&
-            grand_element.hasAttribute('href') &&
-            grand_element.getAttribute('href').length > 0 &&
-            grand_element.origin != 'null')
+            grand_el.hasAttribute('href') &&
+            grand_el.getAttribute('href').length > 0 &&
+            grand_el.origin != 'null')
         {
-            href = grand_element.href;
-            origin = grand_element.origin;
+            href = grand_el.href;
+            origin = grand_el.origin;
         }
         document.recorded_actions.pop();
         child_sep = ' > ';
         child_count = ssOccurrences(selector, child_sep);
-        if ((tag_name === "a" && !element.hasAttribute('onclick') &&
+        if ((tag_name === "a" && !el.hasAttribute('onclick') &&
              child_count > 0 && href.length > 0) ||
             (parent_tag_name === "a" && href.length > 0 &&
-             child_count > 1 && !parent_element.hasAttribute('onclick')) ||
+             child_count > 1 && !parent_el.hasAttribute('onclick')) ||
             (grand_tag_name === "a" && href.length > 0 &&
-             child_count > 2 && !grand_element.hasAttribute('onclick')))
+             child_count > 2 && !grand_el.hasAttribute('onclick')))
         {
             w_orig = window.location.origin;
             if (origin === w_orig)
@@ -614,11 +625,11 @@ document.body.addEventListener('mouseup', function (event) {
         else
             document.recorded_actions.push(['click', selector, href, d_now]);
         // hover_click() if dropdown.
-        if (element.parentElement.classList.contains('dropdown-content') &&
-            element.parentElement.parentElement.classList.contains('dropdown'))
+        if (el.parentElement.classList.contains('dropdown-content') &&
+            el.parentElement.parentElement.classList.contains('dropdown'))
         {
             ch_s = selector;
-            pa_el = element.parentElement.parentElement;
+            pa_el = el.parentElement.parentElement;
             pa_s = getBestSelector(pa_el);
             if (pa_el.childElementCount >= 2 &&
                !pa_el.firstElementChild.classList.contains('dropdown-content'))
@@ -649,8 +660,8 @@ document.body.addEventListener('mouseup', function (event) {
 document.body.addEventListener('contextmenu', function (event) {
     reset_if_recorder_undefined();
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
-    const element = event.target;
-    const selector = getBestSelector(element);
+    const el = event.target;
+    const selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
@@ -714,12 +725,12 @@ document.body.addEventListener('keyup', function (event) {
     // After controls for switching modes.
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
-    const element = event.target;
-    const selector = getBestSelector(element);
+    const el = event.target;
+    const selector = getBestSelector(el);
     skip_input = false;
-    if ((tagName(element) === 'input' &&
-        element.type !== 'checkbox' && element.type !== 'range') ||
-        tagName(element) === 'textarea')
+    if ((tagName(el) === 'input' &&
+        el.type !== 'checkbox' && el.type !== 'range') ||
+        tagName(el) === 'textarea')
     {
         ra_len = document.recorded_actions.length;
         if (ra_len > 0 && l_key === 'enter' &&
@@ -755,7 +766,7 @@ document.body.addEventListener('keyup', function (event) {
         }
         if (!skip_input) {
             document.recorded_actions.push(
-                ['input', selector, element.value, d_now]);
+                ['input', selector, el.value, d_now]);
         }
     }
     json_rec_act = JSON.stringify(document.recorded_actions);
