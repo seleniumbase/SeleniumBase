@@ -3300,7 +3300,7 @@ class BaseCase(unittest.TestCase):
                     url2 = url1[:-3]
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
-                if url1 == url2:
+                if (url1 == url2) or (url1 == url2.replace("www.", "")):
                     srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
             if (
@@ -3688,6 +3688,8 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s(\'%s\', "%s")' % (
                         method, action[1][0], action[1][1]))
             elif action[0] == "as_te" or action[0] == "as_et":
+                import unicodedata
+                action[1][0] = unicodedata.normalize("NFKD", action[1][0])
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
