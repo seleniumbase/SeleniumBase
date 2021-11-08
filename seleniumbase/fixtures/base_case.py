@@ -43,6 +43,7 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
     MoveTargetOutOfBoundsException,
+    NoSuchWindowException,
     StaleElementReferenceException,
     WebDriverException,
 )
@@ -132,6 +133,7 @@ class BaseCase(unittest.TestCase):
     def open(self, url):
         """ Navigates the current browser window to the specified page. """
         self.__check_scope()
+        self.__check_browser()
         if type(url) is str:
             url = url.strip()  # Remove leading and trailing whitespace
         if (type(url) is not str) or not self.__looks_like_a_page_url(url):
@@ -737,11 +739,13 @@ class BaseCase(unittest.TestCase):
 
     def get_user_agent(self):
         self.__check_scope()
+        self.__check_browser()
         user_agent = self.driver.execute_script("return navigator.userAgent;")
         return user_agent
 
     def get_locale_code(self):
         self.__check_scope()
+        self.__check_browser()
         locale_code = self.driver.execute_script(
             "return navigator.language || navigator.languages[0];"
         )
@@ -2341,10 +2345,12 @@ class BaseCase(unittest.TestCase):
 
     def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
+        self.__check_browser()
         return self.driver.execute_script(script, *args, **kwargs)
 
     def execute_async_script(self, script, timeout=None):
         self.__check_scope()
+        self.__check_browser()
         if not timeout:
             timeout = settings.EXTREME_TIMEOUT
         return js_utils.execute_async_script(self.driver, script, timeout)
@@ -2354,6 +2360,7 @@ class BaseCase(unittest.TestCase):
         it's important that the jQuery library has been loaded first.
         This method will load jQuery if it wasn't already loaded."""
         self.__check_scope()
+        self.__check_browser()
         if not js_utils.is_jquery_activated(self.driver):
             self.activate_jquery()
         return self.driver.execute_script(script, *args, **kwargs)
@@ -2583,6 +2590,7 @@ class BaseCase(unittest.TestCase):
     def open_new_window(self, switch_to=True):
         """ Opens a new browser tab/window and switches to it by default. """
         self.__check_scope()
+        self.__check_browser()  # Current window must exist to open a new one
         self.driver.execute_script("window.open('');")
         time.sleep(0.01)
         if switch_to:
@@ -3085,6 +3093,7 @@ class BaseCase(unittest.TestCase):
 
     def wait_for_ready_state_complete(self, timeout=None):
         self.__check_scope()
+        self.__check_browser()
         if not timeout:
             timeout = settings.EXTREME_TIMEOUT
         if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
@@ -6330,26 +6339,32 @@ class BaseCase(unittest.TestCase):
 
     def add_css_link(self, css_link):
         self.__check_scope()
+        self.__check_browser()
         js_utils.add_css_link(self.driver, css_link)
 
     def add_js_link(self, js_link):
         self.__check_scope()
+        self.__check_browser()
         js_utils.add_js_link(self.driver, js_link)
 
     def add_css_style(self, css_style):
         self.__check_scope()
+        self.__check_browser()
         js_utils.add_css_style(self.driver, css_style)
 
     def add_js_code_from_link(self, js_link):
         self.__check_scope()
+        self.__check_browser()
         js_utils.add_js_code_from_link(self.driver, js_link)
 
     def add_js_code(self, js_code):
         self.__check_scope()
+        self.__check_browser()
         js_utils.add_js_code(self.driver, js_code)
 
     def add_meta_tag(self, http_equiv=None, content=None):
         self.__check_scope()
+        self.__check_browser()
         js_utils.add_meta_tag(
             self.driver, http_equiv=http_equiv, content=content
         )
@@ -8121,6 +8136,7 @@ class BaseCase(unittest.TestCase):
     def activate_jquery_confirm(self):
         """ See https://craftpip.github.io/jquery-confirm/ for usage. """
         self.__check_scope()
+        self.__check_browser()
         js_utils.activate_jquery_confirm(self.driver)
         self.wait_for_ready_state_complete()
 
@@ -8449,6 +8465,7 @@ class BaseCase(unittest.TestCase):
 
     def activate_messenger(self):
         self.__check_scope()
+        self.__check_browser()
         js_utils.activate_messenger(self.driver)
         self.wait_for_ready_state_complete()
 
@@ -8462,6 +8479,7 @@ class BaseCase(unittest.TestCase):
         max_messages is the limit of concurrent messages to display.
         """
         self.__check_scope()
+        self.__check_browser()
         if not theme:
             theme = "default"  # "flat"
         if not location:
@@ -8489,6 +8507,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script('Messenger().post("My Message")')
         """
         self.__check_scope()
+        self.__check_browser()
         if style not in ["info", "success", "error"]:
             style = "info"
         if not duration:
@@ -8524,6 +8543,7 @@ class BaseCase(unittest.TestCase):
             pause: If True, the program waits until the message completes.
         """
         self.__check_scope()
+        self.__check_browser()
         if not duration:
             if not self.message_duration:
                 duration = settings.DEFAULT_MESSAGE_DURATION
@@ -8547,6 +8567,7 @@ class BaseCase(unittest.TestCase):
             pause: If True, the program waits until the message completes.
         """
         self.__check_scope()
+        self.__check_browser()
         if not duration:
             if not self.message_duration:
                 duration = settings.DEFAULT_MESSAGE_DURATION
@@ -9750,6 +9771,18 @@ class BaseCase(unittest.TestCase):
                 "\n that runs automatically before all tests called by pytest."
             )
             raise OutOfScopeException(message)
+
+    ############
+
+    def __check_browser(self):
+        """This method raises an exception if the window was already closed."""
+        active_window = None
+        try:
+            active_window = self.driver.current_window_handle  # Fails if None
+        except Exception:
+            pass
+        if not active_window:
+            raise NoSuchWindowException("Active window was already closed!")
 
     ############
 
