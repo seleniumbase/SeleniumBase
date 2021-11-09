@@ -3309,7 +3309,11 @@ class BaseCase(unittest.TestCase):
                     url2 = url1[:-3]
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
-                if (url1 == url2) or (url1 == url2.replace("www.", "")):
+                if (
+                    url1 == url2
+                    or url1 == url2.replace("www.", "")
+                    or (len(url1) > 0 and url2.startswith(url1))
+                ):
                     srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
             if (
