@@ -1,4 +1,4 @@
-regex>=2021.11.2
+regex>=2021.11.9
 tqdm>=4.62.3
 docutils==0.18
 python-dateutil==2.8.2
@@ -9,12 +9,12 @@ MarkupSafe==2.0.1;python_version>="3.6"
 pyparsing==2.4.7;python_version>="3.6"
 keyring==23.2.1;python_version>="3.6"
 pkginfo==1.7.1;python_version>="3.6"
-Jinja2==3.0.2;python_version>="3.6"
+Jinja2==3.0.3;python_version>="3.6"
 click==8.0.3;python_version>="3.6"
 zipp==3.6.0;python_version>="3.6"
 readme-renderer==30.0
 pymdown-extensions==9.0;python_version>="3.6"
-importlib-metadata==4.8.1;python_version>="3.6"
+importlib-metadata==4.8.2;python_version>="3.6"
 bleach==4.1.0
 jsmin==3.0.0;python_version>="3.6"
 lunr==0.6.1;python_version>="3.6"
