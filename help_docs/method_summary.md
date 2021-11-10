@@ -692,8 +692,15 @@ self.check_window(
 self.deferred_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 # Duplicates: self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
 
-self.deferred_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.deferred_assert_text(
+    text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates:
+# self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+
+self.deferred_assert_exact_text(
+    text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# Duplicates:
+# self.delayed_assert_exact_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
 
 self.deferred_check_window(
     name="default", level=0, baseline=False, check_domain=True, full_diff=False)

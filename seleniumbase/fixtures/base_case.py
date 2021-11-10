@@ -9818,7 +9818,7 @@ class BaseCase(unittest.TestCase):
         current_url = self.driver.current_url
         message = self.__get_exception_message()
         self.__deferred_assert_failures.append(
-            "CHECK #%s: (%s)\n %s"
+            "CHECK #%s: (%s) %s\n"
             % (self.__deferred_assert_count, current_url, message)
         )
 
@@ -9839,7 +9839,7 @@ class BaseCase(unittest.TestCase):
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_deferred_assert:
-                timeout = 1
+                timeout = 1  # Was already on page (full wait not needed)
             else:
                 self.__last_url_of_deferred_assert = url
         except Exception:
@@ -9866,13 +9866,42 @@ class BaseCase(unittest.TestCase):
         try:
             url = self.get_current_url()
             if url == self.__last_url_of_deferred_assert:
-                timeout = 1
+                timeout = 1  # Was already on page (full wait not needed)
             else:
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
         try:
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure()
+            return False
+
+    def deferred_assert_exact_text(
+        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+    ):
+        """A non-terminating assertion for exact text from an element.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 1  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        try:
+            self.wait_for_exact_text_visible(
+                text, selector, by=by, timeout=timeout
+            )
             return True
         except Exception:
             self.__add_deferred_assert_failure()
@@ -9917,8 +9946,8 @@ class BaseCase(unittest.TestCase):
         If "print_only" is set to True, the exception won't get raised."""
         if self.__deferred_assert_failures:
             exception_output = ""
-            exception_output += "\n*** DEFERRED ASSERTION FAILURES FROM: "
-            exception_output += "%s\n" % self.id()
+            exception_output += "\n***** DEFERRED ASSERTION FAILURES:\n"
+            exception_output += "TEST: %s\n\n" % self.id()
             all_failing_checks = self.__deferred_assert_failures
             self.__deferred_assert_failures = []
             for tb in all_failing_checks:
@@ -9945,6 +9974,14 @@ class BaseCase(unittest.TestCase):
     ):
         """ Same as self.deferred_assert_text() """
         return self.deferred_assert_text(
+            text=text, selector=selector, by=by, timeout=timeout
+        )
+
+    def delayed_assert_exact_text(
+        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+    ):
+        """ Same as self.deferred_assert_exact_text() """
+        return self.deferred_assert_exact_text(
             text=text, selector=selector, by=by, timeout=timeout
         )
 
