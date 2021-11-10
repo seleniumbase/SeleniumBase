@@ -2,6 +2,7 @@
 This test demonstrates the use of deferred asserts.
 Deferred asserts won't raise exceptions from failures until either
 process_deferred_asserts() is called, or the test reaches the tearDown() step.
+Requires version 2.1.6 or newer for the deferred_assert_exact_text() method.
 """
 import pytest
 from seleniumbase import BaseCase
@@ -19,4 +20,6 @@ class DeferredAssertTests(BaseCase):
         self.deferred_assert_text("Fake Item", "#middleContainer")  # Will Fail
         self.deferred_assert_text("Random", "#middleContainer")
         self.deferred_assert_element('a[name="Super Fake !!!"]')  # Will Fail
+        self.deferred_assert_exact_text("Brand Identity", "#ctitle")
+        self.deferred_assert_exact_text("Fake Food", "#comic")  # Will Fail
         self.process_deferred_asserts()
