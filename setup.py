@@ -128,8 +128,10 @@ setup(
         "wheel>=0.37.0",
         "attrs>=21.2.0",
         'PyYAML>=6.0;python_version>="3.6"',
-        "sortedcontainers==2.4.0",
+        'traitlets==4.3.3;python_version<"3.7"',
+        'traitlets>=5.1.1;python_version>="3.7"',
         "certifi>=2021.10.8",
+        "sortedcontainers==2.4.0",
         "six==1.16.0",
         "nose==1.3.7",
         'sniffio;python_version>="3.7"',  # For "trio". (Funnier under "nose")
@@ -195,8 +197,6 @@ setup(
         'cryptography==35.0.0;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.10.0;python_version>="3.5"',
-        'traitlets==4.3.3;python_version<"3.7"',
-        'traitlets==5.1.1;python_version>="3.7"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
         'prompt-toolkit==3.0.22;python_version>="3.6.2"',
