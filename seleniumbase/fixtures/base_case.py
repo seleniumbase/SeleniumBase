@@ -3125,7 +3125,7 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if not sb_config.time_limit:
             time.sleep(seconds)
-        elif seconds <= 0.3:
+        elif seconds < 0.4:
             shared_utils.check_if_time_limit_exceeded()
             time.sleep(seconds)
             shared_utils.check_if_time_limit_exceeded()
