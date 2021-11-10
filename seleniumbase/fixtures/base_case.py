@@ -157,7 +157,14 @@ class BaseCase(unittest.TestCase):
             if ("http:") in c_url or ("https:") in c_url or ("file:") in c_url:
                 if self.get_domain_url(url) != self.get_domain_url(c_url):
                     self.open_new_window(switch_to=True)
-        self.driver.get(url)
+        try:
+            self.driver.get(url)
+        except Exception as e:
+            if "ERR_CONNECTION_TIMED_OUT" in e.msg:
+                self.sleep(0.5)
+                self.driver.get(url)
+            else:
+                raise Exception(e.msg)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
@@ -3125,7 +3132,7 @@ class BaseCase(unittest.TestCase):
         self.__check_scope()
         if not sb_config.time_limit:
             time.sleep(seconds)
-        elif seconds <= 0.3:
+        elif seconds < 0.4:
             shared_utils.check_if_time_limit_exceeded()
             time.sleep(seconds)
             shared_utils.check_if_time_limit_exceeded()
@@ -3309,7 +3316,13 @@ class BaseCase(unittest.TestCase):
                     url2 = url1[:-3]
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
-                if (url1 == url2) or (url1 == url2.replace("www.", "")):
+                if (
+                    url1 == url2
+                    or url1 == url2.replace("www.", "")
+                    or (len(url1) > 0 and url2.startswith(url1)
+                        and (int(srt_actions[n][3]) - int(
+                            srt_actions[n-1][3]) < 6500))
+                ):
                     srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
             if (
