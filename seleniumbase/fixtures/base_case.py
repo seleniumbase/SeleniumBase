@@ -3312,7 +3312,9 @@ class BaseCase(unittest.TestCase):
                 if (
                     url1 == url2
                     or url1 == url2.replace("www.", "")
-                    or (len(url1) > 0 and url2.startswith(url1))
+                    or (len(url1) > 0 and url2.startswith(url1)
+                        and (int(srt_actions[n][3]) - int(
+                            srt_actions[n-1][3]) < 6500))
                 ):
                     srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
