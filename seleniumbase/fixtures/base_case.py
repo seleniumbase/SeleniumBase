@@ -157,7 +157,14 @@ class BaseCase(unittest.TestCase):
             if ("http:") in c_url or ("https:") in c_url or ("file:") in c_url:
                 if self.get_domain_url(url) != self.get_domain_url(c_url):
                     self.open_new_window(switch_to=True)
-        self.driver.get(url)
+        try:
+            self.driver.get(url)
+        except Exception as e:
+            if "ERR_CONNECTION_TIMED_OUT" in e.msg:
+                self.sleep(0.5)
+                self.driver.get(url)
+            else:
+                raise Exception(e.msg)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
