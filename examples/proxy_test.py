@@ -1,4 +1,3 @@
-import time
 from seleniumbase import BaseCase
 
 
@@ -16,4 +15,4 @@ class ProxyTests(BaseCase):
                 data.append(row.strip())
         print("\n".join(data).replace('\n"', " "))
         print("\nThe browser will close automatically in 7 seconds...")
-        time.sleep(7)
+        self.sleep(7)
