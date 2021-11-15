@@ -876,7 +876,6 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
-    downloads_path = download_helper.get_downloads_folder()
     if servername.startswith("https://"):
         protocol = "https"
         servername = servername.split("https://")[1]
@@ -900,6 +899,7 @@ def get_remote_driver(
             address += "wd/hub"
         else:
             address += "/wd/hub"
+    downloads_path = download_helper.get_downloads_folder()
     desired_caps = {}
     extra_caps = {}
     if cap_file:
