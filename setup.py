@@ -129,8 +129,6 @@ setup(
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
         'traitlets>=5.1.1;python_version>="3.7"',
-        'typing-extensions==3.10.0.2;python_version<"3.8"',  # rich: Python<3.8
-        'typing-extensions>=4.0.0;python_version>="3.8"',
         "certifi>=2021.10.8",
         "sortedcontainers==2.4.0",
         "six==1.16.0",
@@ -225,6 +223,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6"',
+        'typing-extensions==3.10.0.2;python_version<"3.8"',  # Sync with "rich"
         'rich==10.13.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
