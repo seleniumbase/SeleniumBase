@@ -120,7 +120,7 @@ setup(
         'packaging>=21.2;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=59.1.0;python_version>="3.6"',
+        'setuptools>=59.0.1;python_version>="3.6"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6"',
