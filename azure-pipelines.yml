@@ -11,15 +11,15 @@ jobs:
     vmImage: 'Ubuntu-20.04'
   strategy:
     matrix:
-      Python3.5:
+      Python3_5:
         python.version: '3.5'
-      Python3.6:
+      Python3_6:
         python.version: '3.6'
-      Python3.7:
+      Python3_7:
         python.version: '3.7'
-      Python3.8:
+      Python3_8:
         python.version: '3.8'
-      Python3.9:
+      Python3_9:
         python.version: '3.9'
     maxParallel: 5
 
