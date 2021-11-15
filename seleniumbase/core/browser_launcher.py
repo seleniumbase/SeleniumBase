@@ -876,6 +876,7 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
+    # Construct the address for connecting to a Selenium Grid
     if servername.startswith("https://"):
         protocol = "https"
         servername = servername.split("https://")[1]
