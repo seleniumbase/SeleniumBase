@@ -14,7 +14,6 @@ PyYAML>=6.0;python_version>="3.6"
 traitlets>=4.3.3;python_version<"3.7"
 traitlets>=5.1.1;python_version>="3.7"
 certifi>=2021.10.8
-sortedcontainers==2.4.0
 six==1.16.0
 ipdb==0.13.4;python_version<"3.5"
 ipdb==0.13.9;python_version>="3.5"
@@ -43,6 +42,7 @@ msedge-selenium-tools==3.141.3;python_version<"3.7"
 more-itertools==5.0.0;python_version<"3.5"
 more-itertools==8.11.0;python_version>="3.5"
 cssselect==1.1.0
+sortedcontainers==2.4.0
 filelock==3.2.1;python_version<"3.6"
 filelock==3.3.2;python_version>="3.6"
 fasteners==0.16;python_version<"3.5"
