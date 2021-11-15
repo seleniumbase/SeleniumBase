@@ -876,8 +876,31 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
+    # Construct the address for connecting to a Selenium Grid
+    if servername.startswith("https://"):
+        protocol = "https"
+        servername = servername.split("https://")[1]
+    elif "://" in servername:
+        servername = servername.split("://")[1]
+    server_with_port = ""
+    if ":" not in servername:
+        col_port = ":" + str(port)
+        first_slash = servername.find("/")
+        if first_slash != -1:
+            server_with_port = (
+                servername[:first_slash] + col_port + servername[first_slash:]
+            )
+        else:
+            server_with_port = servername + col_port
+    else:
+        server_with_port = servername
+    address = "%s://%s" % (protocol, server_with_port)
+    if not address.endswith("/wd/hub"):
+        if address.endswith("/"):
+            address += "wd/hub"
+        else:
+            address += "/wd/hub"
     downloads_path = download_helper.get_downloads_folder()
-    address = "%s://%s:%s/wd/hub" % (protocol, servername, port)
     desired_caps = {}
     extra_caps = {}
     if cap_file:
