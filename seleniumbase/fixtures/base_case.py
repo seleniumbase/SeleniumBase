@@ -8528,6 +8528,8 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
+        if (self.headless or self.xvfb) and float(duration) > 0.75:
+            duration = 0.75
         try:
             js_utils.post_message(self.driver, message, duration, style=style)
         except Exception:
@@ -8562,6 +8564,8 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
+        if (self.headless or self.xvfb) and float(duration) > 0.75:
+            duration = 0.75
         try:
             js_utils.post_message(
                 self.driver, message, duration, style="success"
@@ -8586,6 +8590,8 @@ class BaseCase(unittest.TestCase):
                 duration = settings.DEFAULT_MESSAGE_DURATION
             else:
                 duration = self.message_duration
+        if (self.headless or self.xvfb) and float(duration) > 0.75:
+            duration = 0.75
         try:
             js_utils.post_message(
                 self.driver, message, duration, style="error"
@@ -10406,13 +10412,23 @@ class BaseCase(unittest.TestCase):
         time.sleep(0.065)
 
     def __highlight_with_js_2(self, message, selector, o_bs):
+        duration = self.message_duration
+        if not duration:
+            duration = settings.DEFAULT_MESSAGE_DURATION
+        if (self.headless or self.xvfb) and float(duration) > 0.75:
+            duration = 0.75
         js_utils.highlight_with_js_2(
-            self.driver, message, selector, o_bs, self.message_duration
+            self.driver, message, selector, o_bs, duration
         )
 
     def __highlight_with_jquery_2(self, message, selector, o_bs):
+        duration = self.message_duration
+        if not duration:
+            duration = settings.DEFAULT_MESSAGE_DURATION
+        if (self.headless or self.xvfb) and float(duration) > 0.75:
+            duration = 0.75
         js_utils.highlight_with_jquery_2(
-            self.driver, message, selector, o_bs, self.message_duration
+            self.driver, message, selector, o_bs, duration
         )
 
     ############
