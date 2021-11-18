@@ -43,14 +43,17 @@ if sys.argv[-1] == "publish":
             sys.exit()
         else:
             print("*** No flake8 issues detected. Continuing...")
-        print("\n*** Rebuilding distribution packages: ***\n")
+        print("\n*** Removing existing distribution packages: ***\n")
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
-        os.system("python setup.py sdist bdist_wheel")  # Create new tar/wheel
+        print("\n*** Installing build: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=1.15.0'")
+        os.system("python -m pip install --upgrade 'twine>=3.6.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.62.3'")
+        print("\n*** Rebuilding distribution packages: ***\n")
+        os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
