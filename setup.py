@@ -43,14 +43,17 @@ if sys.argv[-1] == "publish":
             sys.exit()
         else:
             print("*** No flake8 issues detected. Continuing...")
-        print("\n*** Rebuilding distribution packages: ***\n")
+        print("\n*** Removing existing distribution packages: ***\n")
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
-        os.system("python setup.py sdist bdist_wheel")  # Create new tar/wheel
+        print("\n*** Installing build: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=1.15.0'")
+        os.system("python -m pip install --upgrade 'twine>=3.6.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.62.3'")
+        print("\n*** Rebuilding distribution packages: ***\n")
+        os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -120,7 +123,7 @@ setup(
         'packaging>=21.2;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=59.0.1;python_version>="3.6"',
+        'setuptools>=59.1.1;python_version>="3.6"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6"',
@@ -136,7 +139,7 @@ setup(
         'parso==0.7.1;python_version<"3.6"',
         'parso==0.8.2;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
-        'jedi==0.18.0;python_version>="3.6"',
+        'jedi==0.18.1;python_version>="3.6"',
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
@@ -160,7 +163,7 @@ setup(
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
         'filelock==3.2.1;python_version<"3.6"',
-        'filelock==3.3.2;python_version>="3.6"',
+        'filelock==3.4.0;python_version>="3.6"',
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
@@ -224,7 +227,7 @@ setup(
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6"',
         'typing-extensions==3.10.0.2;python_version<"3.8"',  # Sync with "rich"
-        'rich==10.13.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.14.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
