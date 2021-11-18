@@ -19,6 +19,8 @@ urllib3.disable_warnings()
 selenium4 = False
 if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
     selenium4 = True
+    from selenium.webdriver.common.options import ArgOptions
+
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 # Make sure that the SeleniumBase DRIVER_DIR is at the top of the System PATH
 # (Changes to the System PATH with os.environ only last during the test run)
@@ -962,15 +964,28 @@ def get_remote_driver(
             device_height,
             device_pixel_ratio,
         )
-        capabilities = chrome_options.to_capabilities()
+        capabilities = None
+        if selenium4:
+            capabilities = webdriver.ChromeOptions().to_capabilities()
+        else:
+            capabilities = chrome_options.to_capabilities()
+        # Set custom desired capabilities
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            chrome_options.set_capability("cloud:options", capabilities)
+            return webdriver.Remote(
+                command_executor=address,
+                options=chrome_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.FIREFOX:
         firefox_options = _set_firefox_options(
             downloads_path,
@@ -982,60 +997,115 @@ def get_remote_driver(
             firefox_arg,
             firefox_pref,
         )
-        capabilities = firefox_options.to_capabilities()
+        capabilities = None
+        if selenium4:
+            capabilities = webdriver.FirefoxOptions().to_capabilities()
+        else:
+            capabilities = firefox_options.to_capabilities()
         capabilities["marionette"] = True
         if "linux" in PLATFORM:
             if headless:
                 capabilities["moz:firefoxOptions"] = {"args": ["-headless"]}
+        # Set custom desired capabilities
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            firefox_options.set_capability("cloud:options", capabilities)
+            return webdriver.Remote(
+                command_executor=address,
+                options=firefox_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.EDGE:
         capabilities = webdriver.DesiredCapabilities.EDGE
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.SAFARI:
         capabilities = webdriver.DesiredCapabilities.SAFARI
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.OPERA:
         capabilities = webdriver.DesiredCapabilities.OPERA
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.PHANTOM_JS:
+        if selenium4:
+            message = (
+                "\n"
+                "PhantomJS is no longer available for Selenium 4!\n"
+                'Try using "--headless" mode with Chrome instead!')
+            raise Exception(message)
         capabilities = webdriver.DesiredCapabilities.PHANTOMJS
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -1049,37 +1119,77 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.ANDROID:
         capabilities = webdriver.DesiredCapabilities.ANDROID
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.IPHONE:
         capabilities = webdriver.DesiredCapabilities.IPHONE
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.IPAD:
         capabilities = webdriver.DesiredCapabilities.IPAD
-        for key in desired_caps.keys():
-            capabilities[key] = desired_caps[key]
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=capabilities,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            for key in desired_caps.keys():
+                capabilities[key] = desired_caps[key]
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=capabilities,
+                keep_alive=True,
+            )
     elif browser_name == constants.Browser.REMOTE:
-        return webdriver.Remote(
-            command_executor=address,
-            desired_capabilities=desired_caps,
-            keep_alive=True,
-        )
+        if selenium4:
+            remote_options = ArgOptions()
+            remote_options.set_capability("cloud:options", desired_caps)
+            return webdriver.Remote(
+                command_executor=address,
+                options=remote_options,
+                keep_alive=True,
+            )
+        else:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            return webdriver.Remote(
+                command_executor=address,
+                desired_capabilities=desired_caps,
+                keep_alive=True,
+            )
 
 
 def get_local_driver(
@@ -1559,6 +1669,12 @@ def get_local_driver(
         except Exception:
             return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
+        if selenium4:
+            message = (
+                "\n"
+                "PhantomJS is no longer available for Selenium 4!\n"
+                'Try using "--headless" mode with Chrome instead!')
+            raise Exception(message)
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
             warnings.simplefilter("ignore", category=UserWarning)
