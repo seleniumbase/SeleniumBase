@@ -9004,6 +9004,7 @@ class BaseCase(unittest.TestCase):
     ):
         """Similar to wait_for_text_visible()
         Raises an exception if the element or the text is not found.
+        The text only needs to be a subset within the complete text.
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
         self.__check_scope()
         if not timeout:
@@ -9046,8 +9047,8 @@ class BaseCase(unittest.TestCase):
     def assert_exact_text(
         self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
     ):
-        """Similar to assert_text(), but the text must be exact, rather than
-        exist as a subset of the full text.
+        """Similar to assert_text(), but the text must be exact,
+        rather than exist as a subset of the full text.
         (Extra whitespace at the beginning or the end doesn't count.)
         Raises an exception if the element or the text is not found.
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
