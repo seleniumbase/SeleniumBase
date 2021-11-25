@@ -6,7 +6,7 @@ from seleniumbase.fixtures import page_utils
 
 if sys.version_info[0] < 3:
     raise Exception("This script is for Python 3 only!")
-import tkinter as tk
+import tkinter as tk  # noqa: E402
 from tkinter import messagebox  # noqa: E402
 
 
