@@ -1,6 +1,6 @@
 """
-This test demonstrates the use of encryption/decryption.
-(Technically, obfuscation/unobfuscation of passwords.)
+This test demonstrates the use of password encryption/decryption.
+(Technically considered to be obfuscation/unobfuscation.)
 """
 
 from seleniumbase import BaseCase
