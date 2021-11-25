@@ -68,6 +68,9 @@ LOGGER.setLevel(logging.WARNING)
 if sys.version_info[0] < 3:
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf8")
+selenium4 = False
+if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+    selenium4 = True
 
 
 class BaseCase(unittest.TestCase):
@@ -5736,9 +5739,48 @@ class BaseCase(unittest.TestCase):
         element = self.get_element(selectors[0])
         selector_chain = selectors[0]
         for selector_part in selectors[1:]:
-            shadow_root = self.execute_script(
-                "return arguments[0].shadowRoot", element
-            )
+            shadow_root = None
+            if (
+                selenium4
+                and self.is_chromium()
+                and int(self.__get_major_browser_version()) >= 96
+            ):
+                try:
+                    shadow_root = element.shadow_root
+                except Exception:
+                    if self.browser == "chrome":
+                        chrome_dict = self.driver.capabilities["chrome"]
+                        chrome_dr_version = chrome_dict["chromedriverVersion"]
+                        chromedriver_version = chrome_dr_version.split(" ")[0]
+                        major_c_dr_version = chromedriver_version.split(".")[0]
+                        if int(major_c_dr_version) < 96:
+                            message = (
+                                "You need to upgrade to a newer version of "
+                                "chromedriver to interact with Shadow root "
+                                "elements!\n(Current driver version is: %s)"
+                                "\n(Minimum driver version is: 96.*)"
+                                "\nTo upgrade: "
+                                '"seleniumbase install chromedriver latest"'
+                                % chromedriver_version
+                            )
+                            raise Exception(message)
+                    if timeout != 0.1:  # Skip wait for special 0.1 (See above)
+                        time.sleep(2)
+                    try:
+                        shadow_root = element.shadow_root
+                    except Exception:
+                        raise Exception(
+                            "Element {%s} has no shadow root!" % selector_chain
+                        )
+            else:  # This part won't work on Chrome 96 or newer.
+                # If using Chrome 96 or newer (and on an old Python version),
+                #     you'll need to upgrade in order to access Shadow roots.
+                # Firefox users will likely hit:
+                #     https://github.com/mozilla/geckodriver/issues/1711
+                #     When Firefox adds support, switch to element.shadow_root
+                shadow_root = self.execute_script(
+                    "return arguments[0].shadowRoot", element
+                )
             if timeout == 0.1 and not shadow_root:
                 raise Exception(
                     "Element {%s} has no shadow root!" % selector_chain
@@ -5755,12 +5797,20 @@ class BaseCase(unittest.TestCase):
             selector_chain += "::shadow "
             selector_chain += selector_part
             try:
-                element = page_actions.wait_for_element_present(
-                    shadow_root,
-                    selector_part,
-                    by=By.CSS_SELECTOR,
-                    timeout=timeout,
-                )
+                if (
+                    selenium4
+                    and self.is_chromium()
+                    and int(self.__get_major_browser_version()) >= 96
+                ):
+                    element = shadow_root.find_element(
+                        By.CSS_SELECTOR, value=selector_part)
+                else:
+                    element = page_actions.wait_for_element_present(
+                        shadow_root,
+                        selector_part,
+                        by=By.CSS_SELECTOR,
+                        timeout=timeout,
+                    )
             except Exception:
                 msg = (
                     "Shadow DOM Element {%s} was not present after %s seconds!"
@@ -10100,6 +10150,15 @@ class BaseCase(unittest.TestCase):
         selector = self.__make_css_match_first_element_only(selector)
         click_script = """jQuery('%s')[0].click();""" % selector
         self.safe_execute_script(click_script)
+
+    def __get_major_browser_version(self):
+        try:
+            version = self.driver.__dict__["caps"]["browserVersion"]
+        except Exception:
+            version = self.driver.__dict__["caps"]["version"]
+            self.driver.__dict__["caps"]["browserVersion"] = version
+        major_browser_version = version.split(".")[0]
+        return major_browser_version
 
     def __get_href_from_link_text(self, link_text, hard_fail=True):
         href = self.get_link_attribute(link_text, "href", hard_fail)
