@@ -120,10 +120,10 @@ setup(
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6"',
         'packaging>=20.9;python_version<"3.6"',
-        'packaging>=21.2;python_version>="3.6"',
+        'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=59.1.1;python_version>="3.6"',
+        'setuptools>=59.2.0;python_version>="3.6"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6"',
@@ -144,7 +144,7 @@ setup(
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.7;python_version>="3.5"',  # Sync "requests"
+        'charset-normalizer==2.0.8;python_version>="3.5"',  # Sync "requests"
         "urllib3==1.26.7",  # Must stay in sync with "requests"
         'requests==2.26.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
@@ -156,10 +156,10 @@ setup(
         'pyopenssl==21.0.0;python_version>="3.7"',
         'wsproto==1.0.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.0.0;python_version>="3.7"',
+        'selenium==4.1.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.5"',
-        'more-itertools==8.11.0;python_version>="3.5"',
+        'more-itertools==8.12.0;python_version>="3.5"',
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
         'filelock==3.2.1;python_version<"3.6"',
@@ -196,7 +196,7 @@ setup(
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==3.4.8;python_version>="3.6" and python_version<"3.7"',
-        'cryptography==35.0.0;python_version>="3.7"',
+        'cryptography==36.0.0;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.10.0;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
@@ -226,7 +226,8 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6"',
-        'typing-extensions==3.10.0.2;python_version<"3.8"',  # Sync with "rich"
+        'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
+        'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         'rich==10.14.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',

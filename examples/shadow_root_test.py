@@ -1,14 +1,19 @@
+""" Piercing through shadow-root elements with the "::shadow" selector.
+    To confirm that "::shadow" works, print text and assert exact text. """
+
 from seleniumbase import BaseCase
 
 
 class ShadowRootTest(BaseCase):
     def test_shadow_root(self):
-        self.open("https://react-shadow.herokuapp.com/Patagonia")
-        self.click("section.weather::shadow div::shadow button")
-        self.assert_element('section.weather::shadow img[alt="Patagonia"]')
-        weather = self.get_text("section.weather::shadow h1")
-        self.post_message(weather)
-        self.click('section.weather::shadow a[href="/Kyoto"]')
-        self.assert_element('section.weather::shadow img[alt="Kyoto"]')
-        weather = self.get_text("section.weather::shadow h1")
-        self.post_message(weather)
+        self.open("https://seleniumbase.io/other/shadow_dom")
+        print("")
+        self.click("button.tab_1")
+        print(self.get_text("fancy-tabs::shadow #panels"))
+        self.assert_exact_text("Content Panel 1", "fancy-tabs::shadow #panels")
+        self.click("button.tab_2")
+        print(self.get_text("fancy-tabs::shadow #panels"))
+        self.assert_exact_text("Content Panel 2", "fancy-tabs::shadow #panels")
+        self.click("button.tab_3")
+        print(self.get_text("fancy-tabs::shadow #panels"))
+        self.assert_exact_text("Content Panel 3", "fancy-tabs::shadow #panels")

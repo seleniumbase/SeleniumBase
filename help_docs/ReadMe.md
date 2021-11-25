@@ -78,14 +78,16 @@
 <div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/error_page/"><b>Error Page (Test Page)</b></a></div>
 <div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag-&-Drop (Test Page)</b></a></div>
-<div><a href="https://seleniumbase.io/devices/"><b>Virtual Device Farm</b></a></div>
+<div><a href="https://seleniumbase.io/devices/"><b>Device Farm (Virtual)</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/"><b>HTML Playground Page</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/sbase"><b>SeleniumBase in iframe</b></a></div>
 <div><a href="https://seleniumbase.io/other/broken_page"><b>Page with broken links</b></a></div>
+<div><a href="https://seleniumbase.io/other/shadow_dom"><b>Shadow DOM/Root</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/iframes"><b>W3Schools iframes</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/file_upload"><b>W3Schools file upload</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/double_click"><b>W3Schools doubleclick</b></a></div>
-<div><a href="https://seleniumbase.io/w3schools/checkboxes"><b>W3Schools checkboxes</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/drag_drop"><b>W3Schools drag & drop</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/checkboxes"><b>W3Schools checkboxes</b></a></div>
 <div><a href="https://seleniumbase.io/w3schools/radio_buttons"><b>W3Schools radio buttons</b></a></div>
 
 --------
