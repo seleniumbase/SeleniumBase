@@ -128,14 +128,16 @@ nav:
     - TinyMCE (Test Page): https://seleniumbase.io/tinymce/
     - Error Page (Test Page): https://seleniumbase.io/error_page/
     - Drag-&-Drop (Test Page): https://seleniumbase.io/other/drag_and_drop
-    - Virtual Device Farm: https://seleniumbase.io/devices/
+    - Device Farm (Virtual): https://seleniumbase.io/devices/
     - HTML Playground Page: https://seleniumbase.io/w3schools/
     - SeleniumBase in iframe: https://seleniumbase.io/w3schools/sbase
     - Page with broken links: https://seleniumbase.io/other/broken_page
+    - Shadow DOM/Root: https://seleniumbase.io/other/shadow_dom
     - W3Schools iframes: https://seleniumbase.io/w3schools/iframes
+    - W3Schools file upload: https://seleniumbase.io/w3schools/file_upload
     - W3Schools doubleclick: https://seleniumbase.io/w3schools/double_click
-    - W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
     - W3Schools drag & drop: https://seleniumbase.io/w3schools/drag_drop
+    - W3Schools checkboxes: https://seleniumbase.io/w3schools/checkboxes
     - W3Schools radio buttons: https://seleniumbase.io/w3schools/radio_buttons
   - Presentations:
     - Presenter Demo: https://seleniumbase.io/other/presenter.html
