@@ -5244,6 +5244,10 @@ class BaseCase(unittest.TestCase):
         print(results)
         return results
 
+    def is_valid_url(self, url):
+        """ Return True if the url is a valid url. """
+        return page_utils.is_valid_url(url)
+
     def is_chromium(self):
         """ Return True if the browser is Chrome, Edge, or Opera. """
         self.__check_scope()

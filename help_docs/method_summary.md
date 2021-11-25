@@ -396,6 +396,8 @@ self.assert_no_js_errors()
 
 self.inspect_html()
 
+self.is_valid_url(url)
+
 self.is_chromium()
 
 self.get_chrome_version()
