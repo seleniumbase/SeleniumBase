@@ -123,7 +123,7 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=59.2.0;python_version>="3.6"',
+        'setuptools>=59.3.0;python_version>="3.6"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6"',
@@ -201,13 +201,13 @@ setup(
         'pygments==2.10.0;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
-        'prompt-toolkit==3.0.22;python_version>="3.6.2"',
+        'prompt-toolkit==3.0.23;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.0;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.29.0;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.30.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
@@ -239,7 +239,7 @@ setup(
         # pip install -e .[coverage]
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
-            'coverage==6.1.2;python_version>="3.6"',
+            'coverage==6.2;python_version>="3.6"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
