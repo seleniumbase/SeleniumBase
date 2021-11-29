@@ -970,10 +970,17 @@ def get_remote_driver(
         else:
             capabilities = chrome_options.to_capabilities()
         # Set custom desired capabilities
+        selenoid = False
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+            if key == "selenoid" and desired_caps[key]:
+                selenoid = True
         if selenium4:
             chrome_options.set_capability("cloud:options", capabilities)
+            if selenoid:
+                chrome_options.set_capability(
+                    "selenoid:options", {"enableVNC": True}
+                )
             return webdriver.Remote(
                 command_executor=address,
                 options=chrome_options,
@@ -1007,10 +1014,17 @@ def get_remote_driver(
             if headless:
                 capabilities["moz:firefoxOptions"] = {"args": ["-headless"]}
         # Set custom desired capabilities
+        selenoid = False
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
+            if key == "selenoid" and desired_caps[key]:
+                selenoid = True
         if selenium4:
             firefox_options.set_capability("cloud:options", capabilities)
+            if selenoid:
+                firefox_options.set_capability(
+                    "selenoid:options", {"enableVNC": True}
+                )
             return webdriver.Remote(
                 command_executor=address,
                 options=firefox_options,
@@ -1175,9 +1189,17 @@ def get_remote_driver(
                 keep_alive=True,
             )
     elif browser_name == constants.Browser.REMOTE:
+        selenoid = False
+        for key in desired_caps.keys():
+            if key == "selenoid" and desired_caps[key]:
+                selenoid = True
         if selenium4:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
+            if selenoid:
+                remote_options.set_capability(
+                    "selenoid:options", {"enableVNC": True}
+                )
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
