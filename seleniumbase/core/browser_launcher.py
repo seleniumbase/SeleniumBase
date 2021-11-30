@@ -913,11 +913,12 @@ def get_remote_driver(
         import json
 
         try:
-            extra_caps = json.loads(cap_string)
+            extra_caps = json.loads(str(cap_string))
         except Exception as e:
             p1 = "Invalid input format for --cap-string:\n  %s" % e
             p2 = "The --cap-string input was: %s" % cap_string
-            p3 = "Enclose cap-string in SINGLE quotes; keys in DOUBLE quotes."
+            p3 = ("Enclose cap-string in SINGLE quotes; "
+                  "keys and values in DOUBLE quotes.")
             p4 = (
                 """Here's an example of correct cap-string usage:\n  """
                 """--cap-string='{"browserName":"chrome","name":"test1"}'"""
@@ -971,16 +972,23 @@ def get_remote_driver(
             capabilities = chrome_options.to_capabilities()
         # Set custom desired capabilities
         selenoid = False
+        selenoid_options = None
+        screen_resolution = None
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
-            if key == "selenoid" and desired_caps[key]:
+            if key == "selenoid:options":
                 selenoid = True
+                selenoid_options = desired_caps[key]
+            elif key == "screenResolution":
+                screen_resolution = desired_caps[key]
         if selenium4:
             chrome_options.set_capability("cloud:options", capabilities)
             if selenoid:
-                chrome_options.set_capability(
-                    "selenoid:options", {"enableVNC": True}
-                )
+                snops = selenoid_options
+                chrome_options.set_capability("selenoid:options", snops)
+            if screen_resolution:
+                scres = screen_resolution
+                chrome_options.set_capability("screenResolution", scres)
             return webdriver.Remote(
                 command_executor=address,
                 options=chrome_options,
@@ -1015,16 +1023,23 @@ def get_remote_driver(
                 capabilities["moz:firefoxOptions"] = {"args": ["-headless"]}
         # Set custom desired capabilities
         selenoid = False
+        selenoid_options = None
+        screen_resolution = None
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
-            if key == "selenoid" and desired_caps[key]:
+            if key == "selenoid:options":
                 selenoid = True
+                selenoid_options = desired_caps[key]
+            elif key == "screenResolution":
+                screen_resolution = desired_caps[key]
         if selenium4:
             firefox_options.set_capability("cloud:options", capabilities)
             if selenoid:
-                firefox_options.set_capability(
-                    "selenoid:options", {"enableVNC": True}
-                )
+                snops = selenoid_options
+                firefox_options.set_capability("selenoid:options", snops)
+            if screen_resolution:
+                scres = screen_resolution
+                firefox_options.set_capability("screenResolution", scres)
             return webdriver.Remote(
                 command_executor=address,
                 options=firefox_options,
@@ -1190,16 +1205,23 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.REMOTE:
         selenoid = False
+        selenoid_options = None
+        screen_resolution = None
         for key in desired_caps.keys():
-            if key == "selenoid" and desired_caps[key]:
+            if key == "selenoid:options":
                 selenoid = True
+                selenoid_options = desired_caps[key]
+            elif key == "screenResolution":
+                screen_resolution = desired_caps[key]
         if selenium4:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             if selenoid:
-                remote_options.set_capability(
-                    "selenoid:options", {"enableVNC": True}
-                )
+                snops = selenoid_options
+                remote_options.set_capability("selenoid:options", snops)
+            if screen_resolution:
+                scres = screen_resolution
+                remote_options.set_capability("screenResolution", scres)
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
