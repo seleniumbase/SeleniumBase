@@ -228,7 +228,7 @@ setup(
         'Pillow==8.4.0;python_version>="3.6"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==10.15.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.15.1;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
