@@ -138,7 +138,7 @@ class HackTests(BaseCase):
 
         self.open("https://dev.to/top/infinity")
         self.click_if_visible('button[aria-label="Close campaign banner"]')
-        self.set_text_content('nav a[data-text="Feed"]', "ALL")
+        self.set_text_content('nav a[data-text="Relevant"]', "ALL")
         self.set_text_content('nav a[data-text="Latest"]', "YOUR")
         self.set_text_content('nav a[data-text="Top"]', "BASE")
         self.set_text_content('nav a[data-text="Week"]', "ARE")
@@ -158,7 +158,7 @@ class HackTests(BaseCase):
         self.type('input[name="q"]', aybabtu)
         self.highlight('input[name="q"]', loops=4, scroll=False)
         self.highlight('[aria-label="Primary sidebar"] div div', scroll=False)
-        self.highlight('nav a[data-text="Feed"]', loops=1, scroll=False)
+        self.highlight('nav a[data-text="Relevant"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Latest"]', loops=1, scroll=False)
         self.highlight('nav a[data-text="Top"]', loops=2, scroll=False)
         self.highlight('nav a[data-text="Week"]', loops=1, scroll=False)
@@ -283,7 +283,8 @@ class HackTests(BaseCase):
         self.set_text_content('nav a[href="/case-studies/"]', "TO")
         self.set_text_content('nav #navbarDropdown', "US")
         self.set_text_content('nav #navbarDropdownMenuLink', ".")
-        self.set_text_content("h1", aybabtu)
+        if self.is_element_visible("h1"):
+            self.set_text_content("h1", aybabtu)
         self.highlight("nav ul.navbar-nav", loops=3, scroll=False)
         self.highlight('nav a[href="/docs/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/blog/"]', loops=1, scroll=False)
@@ -292,7 +293,8 @@ class HackTests(BaseCase):
         self.highlight('nav a[href="/community/"]', loops=1, scroll=False)
         self.highlight('nav a[href="/case-studies/"]', loops=1, scroll=False)
         self.highlight('nav #navbarDropdown', loops=2, scroll=False)
-        self.highlight('h1', loops=6, scroll=False)
+        if self.is_element_visible("h1"):
+            self.highlight('h1', loops=6, scroll=False)
 
         self.open("https://www.selenium.dev/")
         self.set_attributes("a.dropdown-toggle", "class", "nav-link")
