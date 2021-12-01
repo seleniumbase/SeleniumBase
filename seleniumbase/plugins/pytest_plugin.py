@@ -37,6 +37,8 @@ def pytest_addoption(parser):
     --cap-string=STRING  (The web browser's desired capabilities to use.)
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
+    --proxy-bypass-list=STRING (Semi-colon  seperated string of domains to not
+                                use a proxy for or * to bypass all)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -383,6 +385,17 @@ def pytest_addoption(parser):
                 username:password@servername:port  OR
                 A dict key from proxy_list.PROXY_LIST
                 Default: None.""",
+    )
+    parser.addoption(
+        "--proxy-bypass-list",
+        action="store",
+        dest="proxy_bypass_list",
+        default=None,
+        help="""Designates the domains or IP address to bypass the defined proxy.
+                Format: example.test  OR
+                example.test,anothorexample.test  OR
+                *
+                Default: ''.""",
     )
     parser.addoption(
         "--agent",
@@ -1051,6 +1064,7 @@ def pytest_configure(config):
         if str(sb_config.port) == "443":
             sb_config.protocol = "https"
     sb_config.proxy_string = config.getoption("proxy_string")
+    sb_config.proxy_bypass_list = config.getoption("proxy_bypass_list")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")
     sb_config.settings_file = config.getoption("settings_file")

@@ -21,6 +21,8 @@ class SeleniumBrowser(Plugin):
     --cap-string=STRING  (The web browser's desired capabilities to use.)
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
+    --proxy-bypass-list=STRING (Semi-colon seperated string of domains to not
+                                use a proxy for or * to bypass all)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -156,6 +158,17 @@ class SeleniumBrowser(Plugin):
                             username:password@servername:port  OR
                             A dict key from proxy_list.PROXY_LIST
                     Default: None.""",
+        )
+        parser.add_option(
+            "--proxy-bypass-list",
+            action="store",
+            dest="proxy_bypass_list",
+            default=None,
+            help="""Designates the domains or IP address to bypass the defined proxy.
+                    Format: example.test  OR
+                    example.test,anothorexample.test  OR
+                    *
+                    Default: ''.""",
         )
         parser.add_option(
             "--agent",
@@ -625,6 +638,7 @@ class SeleniumBrowser(Plugin):
         test.test.firefox_arg = self.options.firefox_arg
         test.test.firefox_pref = self.options.firefox_pref
         test.test.proxy_string = self.options.proxy_string
+        test.test.proxy_bypass_list = self.options.proxy_bypass_list
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics
