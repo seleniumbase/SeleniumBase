@@ -12,12 +12,12 @@ To handle automated visual testing, SeleniumBase uses the ``self.check_window()`
 The first time a test calls ``self.check_window()`` with a unique ``name`` parameter, the visual baseline is set, which means a folder is created with the following files:
 
 <li><b>page_url.txt</b>  ->  The URL of the current window</li>
-<li><b>screenshot.png</b>  -> A screenshot of the current window</li>
+<li><b>baseline.png</b>  ->  The baseline screenshot (PNG)</li>
 <li><b>tags_level1.txt</b>  ->  HTML tags from the window</li>
 <li><b>tags_level2.txt</b>  ->  HTML tags + attribute names</li>
 <li><b>tags_level3.txt</b>  ->  HTML tags + attribute names+values</li>
 
-After the first time ``self.check_window()`` is called, later calls will compare the HTML tags and attributes of the latest window to the ones from the first call (<i>or to the ones from the call when the baseline was last reset</i>).
+After the first time ``self.check_window()`` is called, later calls will compare the HTML tags and attributes of the latest window to the ones from the first call (*or to the ones from the call when the baseline was last reset*). Additionally, a ``latest.png`` screenshot is saved in the same folder, which can help you determine if/when the existing baseline needs to be reset.
 
 Here's an example call:
 
@@ -132,10 +132,13 @@ First differing element 33:
 *
 *** Exception: <Level 3> Visual Diff Failure:
 * HTML tag attribute values don't match the baseline!
-
 ```
 
-Here's an example where a web site logo is resized:
+Here's the ``side_by_side.html`` file for that, (from the ``./latest_logs/`` folder), which shows a visual comparison of the two screenshots as a result of the missing "Donate" button:
+
+<img style="border: 1px solid #222222;" src="https://seleniumbase.io/cdn/img/visual_comparison.png" title="SeleniumBase Visual Comparison" />
+
+Here's another example, where a web site logo is resized:
 
 ```python
 from seleniumbase import BaseCase
