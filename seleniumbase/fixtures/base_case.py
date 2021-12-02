@@ -2988,8 +2988,7 @@ class BaseCase(unittest.TestCase):
         (The last_page / failure screenshot is always "screenshot.png")
         The screenshot will be in PNG format."""
         self.wait_for_ready_state_complete()
-        test_id = self.__get_test_id()
-        test_logpath = self.log_path + "/" + test_id
+        test_logpath = os.path.join(self.log_path, self.__get_test_id())
         self.__create_log_path_as_needed(test_logpath)
         if name:
             name = str(name)
@@ -11202,6 +11201,7 @@ class BaseCase(unittest.TestCase):
         )
         if self._sb_test_identifier and len(str(self._sb_test_identifier)) > 6:
             test_id = self._sb_test_identifier
+            test_id = test_id.replace(".py::", ".").replace("::", ".")
         return test_id
 
     def __get_test_id_2(self):
@@ -11627,8 +11627,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             return
         if self.__has_exception() or self.save_screenshot_after_test:
-            test_id = self.__get_test_id()
-            test_logpath = self.log_path + "/" + test_id
+            test_logpath = os.path.join(self.log_path, self.__get_test_id())
             self.__create_log_path_as_needed(test_logpath)
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
@@ -11718,7 +11717,7 @@ class BaseCase(unittest.TestCase):
                     and not has_exception
                     and self.save_screenshot_after_test
                 ):
-                    test_logpath = self.log_path + "/" + test_id
+                    test_logpath = os.path.join(self.log_path, test_id)
                     self.__create_log_path_as_needed(test_logpath)
                     if not self.__last_page_screenshot_png:
                         self.__set_last_page_screenshot()
@@ -11731,7 +11730,7 @@ class BaseCase(unittest.TestCase):
                     )
                     self.__add_pytest_html_extra()
                 if self.with_testing_base and has_exception:
-                    test_logpath = self.log_path + "/" + test_id
+                    test_logpath = os.path.join(self.log_path, test_id)
                     self.__create_log_path_as_needed(test_logpath)
                     if (
                         not self.with_screen_shots
@@ -11861,7 +11860,7 @@ class BaseCase(unittest.TestCase):
             # (Nosetests)
             if has_exception:
                 test_id = self.__get_test_id()
-                test_logpath = self.log_path + "/" + test_id
+                test_logpath = os.path.join(self.log_path, test_id)
                 self.__create_log_path_as_needed(test_logpath)
                 log_helper.log_test_failure_data(
                     self,
@@ -11885,7 +11884,7 @@ class BaseCase(unittest.TestCase):
                     )
             elif self.save_screenshot_after_test:
                 test_id = self.__get_test_id()
-                test_logpath = self.log_path + "/" + test_id
+                test_logpath = os.path.join(self.log_path, test_id)
                 self.__create_log_path_as_needed(test_logpath)
                 if not self.__last_page_screenshot_png:
                     self.__set_last_page_screenshot()
