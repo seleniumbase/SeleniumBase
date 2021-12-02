@@ -49,7 +49,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=3.6.0'")
+        os.system("python -m pip install --upgrade 'twine>=3.7.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.62.3'")
         print("\n*** Rebuilding distribution packages: ***\n")
@@ -137,7 +137,7 @@ setup(
         'ipdb==0.13.4;python_version<"3.5"',
         'ipdb==0.13.9;python_version>="3.5"',
         'parso==0.7.1;python_version<"3.6"',
-        'parso==0.8.2;python_version>="3.6"',
+        'parso==0.8.3;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
         'jedi==0.18.1;python_version>="3.6"',
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"

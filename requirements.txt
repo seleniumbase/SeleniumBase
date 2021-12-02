@@ -18,7 +18,7 @@ six==1.16.0
 ipdb==0.13.4;python_version<"3.5"
 ipdb==0.13.9;python_version>="3.5"
 parso==0.7.1;python_version<"3.6"
-parso==0.8.2;python_version>="3.6"
+parso==0.8.3;python_version>="3.6"
 jedi==0.17.2;python_version<"3.6"
 jedi==0.18.1;python_version>="3.6"
 idna==2.10;python_version<"3.6"

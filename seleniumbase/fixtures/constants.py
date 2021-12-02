@@ -2,6 +2,8 @@
 SeleniumBase constants are stored in this file.
 """
 
+from seleniumbase.core import encoded_images
+
 
 class Environment:
     # Usage Example => "--env=qa" => Then access value in tests with "self.env"
@@ -32,8 +34,6 @@ class Recordings:
 
 
 class Dashboard:
-    from seleniumbase.core import encoded_images
-
     TITLE = "SeleniumBase Test Results Dashboard"
     # STYLE_CSS = "https://seleniumbase.io/cdn/css/pytest_style.css"
     STYLE_CSS = "assets/pytest_style.css"  # Generated before tests
@@ -50,6 +50,11 @@ class Dashboard:
     DASH_PIE_PNG_1 = encoded_images.DASH_PIE_PNG_1  # Faster than CDN
     DASH_PIE_PNG_2 = encoded_images.DASH_PIE_PNG_2  # Faster than CDN
     DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
+
+
+class SideBySide:
+    HTML_FILE = "side_by_side.html"
+    SIDE_BY_SIDE_PNG = encoded_images.SIDE_BY_SIDE_PNG
 
 
 class MultiBrowser:
