@@ -45,6 +45,7 @@ theme:
     # - navigation.sections
     - navigation.expand
     # - navigation.tabs
+    - navigation.top
     - navigation.tracking
     - navigation.instant
   palette:
