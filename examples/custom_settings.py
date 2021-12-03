@@ -19,7 +19,7 @@ SWITCH_TO_NEW_TABS_ON_CLICK = True
 
 # Waiting for Document.readyState to be "Complete" after browser actions.
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
-WAIT_FOR_RSC_ON_CLICKS = True
+WAIT_FOR_RSC_ON_CLICKS = False
 WAIT_FOR_ANGULARJS = True
 
 # Changing the default behavior of Demo Mode. Activate with: --demo_mode

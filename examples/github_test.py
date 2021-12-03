@@ -9,14 +9,12 @@ class GitHubTests(BaseCase):
         # To avoid this automation blocker, two steps are being taken:
         # 1. self.slow_click() is being used to slow down Selenium actions.
         # 2. The browser's User Agent is modified to avoid Selenium-detection
-        #    when running in headless mode on Chrome or Edge (Chromium).
-        if self.headless and (
-            self.browser == "chrome" or self.browser == "edge"
-        ):
+        #    when running in headless mode.
+        if self.headless:
             self.get_new_driver(
                 agent="""Mozilla/5.0 """
                 """AppleWebKit/537.36 (KHTML, like Gecko) """
-                """Chrome/92.0.4515.159 Safari/537.36"""
+                """Chrome/Version 96.0.4664.55 Safari/537.36"""
             )
         self.open("https://github.com/search?q=SeleniumBase")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
