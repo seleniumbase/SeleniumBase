@@ -247,6 +247,11 @@ def wait_for_css_query_selector(
 
 
 def highlight_with_js(driver, selector, loops, o_bs):
+    try:
+        # This closes any pop-up alerts
+        driver.execute_script("")
+    except Exception:
+        pass
     script = (
         """document.querySelector('%s').style.boxShadow =
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
@@ -308,6 +313,11 @@ def highlight_with_js(driver, selector, loops, o_bs):
 
 
 def highlight_with_jquery(driver, selector, loops, o_bs):
+    try:
+        # This closes any pop-up alerts
+        driver.execute_script("")
+    except Exception:
+        pass
     script = (
         """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');"""
@@ -689,6 +699,11 @@ def post_messenger_error_message(driver, message, msg_dur):
 
 
 def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
+    try:
+        # This closes any pop-up alerts
+        driver.execute_script("")
+    except Exception:
+        pass
     if selector == "html":
         selector = "body"
     script = (
