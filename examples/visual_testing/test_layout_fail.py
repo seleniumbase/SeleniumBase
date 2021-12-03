@@ -1,4 +1,17 @@
+""" Visual Layout Testing with different Syntax Formats """
+
 from seleniumbase import BaseCase
+
+
+class VisualLayout_FixtureTests():
+    def test_python_home_change(sb):
+        sb.open("https://python.org/")
+        print('\nCreating baseline in "visual_baseline" folder.')
+        sb.check_window(name="python_home", baseline=True)
+        # Remove the "Donate" button
+        sb.remove_element("a.donate-button")
+        print("(This test should fail)")  # due to missing button
+        sb.check_window(name="python_home", level=3)
 
 
 class VisualLayoutFailureTests(BaseCase):
@@ -10,17 +23,8 @@ class VisualLayoutFailureTests(BaseCase):
         self.click('a[href="?diff1"]')
         # Click a button that makes a hidden element visible
         self.click("button")
-        print("(This test should fail)")
+        print("(This test should fail)")  # due to image now seen
         self.check_window(name="helloworld", level=3)
-
-    def test_python_home_change(self):
-        self.open("https://python.org/")
-        print('\nCreating baseline in "visual_baseline" folder.')
-        self.check_window(name="python_home", baseline=True)
-        # Remove the "Donate" button
-        self.remove_element("a.donate-button")
-        print("(This test should fail)")
-        self.check_window(name="python_home", level=3)
 
     def test_xkcd_logo_change(self):
         self.open("https://xkcd.com/554/")
@@ -29,5 +33,5 @@ class VisualLayoutFailureTests(BaseCase):
         # Change height: (83 -> 110) , Change width: (185 -> 120)
         self.set_attribute('[alt="xkcd.com logo"]', "height", "110")
         self.set_attribute('[alt="xkcd.com logo"]', "width", "120")
-        print("(This test should fail)")
+        print("(This test should fail)")  # due to a resized logo
         self.check_window(name="xkcd_554", level=3)
