@@ -81,6 +81,11 @@ def wait_for_angularjs(driver, timeout=settings.LARGE_TIMEOUT, **kwargs):
         "suffix": suffix,
     }
     try:
+        # This closes any pop-up alerts (otherwise the next part fails)
+        driver.execute_script("")
+    except Exception:
+        pass
+    try:
         execute_async_script(driver, script, timeout=timeout)
     except Exception:
         time.sleep(0.05)

@@ -358,6 +358,11 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+        else:
+            # A smaller subset of self.wait_for_ready_state_complete()
+            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            if self.driver.current_url != pre_action_url:
+                self.__ad_block_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -437,6 +442,11 @@ class BaseCase(unittest.TestCase):
                 self.safe_execute_script(double_click_script)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+        else:
+            # A smaller subset of self.wait_for_ready_state_complete()
+            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            if self.driver.current_url != pre_action_url:
+                self.__ad_block_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1064,7 +1074,7 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
-        if settings.WAIT_FOR_RSC_ON_CLICKS:
+        if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
@@ -1196,7 +1206,7 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
-        if settings.WAIT_FOR_RSC_ON_CLICKS:
+        if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
@@ -1641,6 +1651,11 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+        else:
+            # A smaller subset of self.wait_for_ready_state_complete()
+            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            if self.driver.current_url != pre_action_url:
+                self.__ad_block_as_needed()
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -2142,6 +2157,9 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
         if settings.WAIT_FOR_RSC_ON_CLICKS:
             self.wait_for_ready_state_complete()
+        else:
+            # A smaller subset of self.wait_for_ready_state_complete()
+            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -3112,19 +3130,12 @@ class BaseCase(unittest.TestCase):
             if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
 
-    def wait_for_ready_state_complete(self, timeout=None):
-        self.__check_scope()
-        self.__check_browser()
-        if not timeout:
-            timeout = settings.EXTREME_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        is_ready = js_utils.wait_for_ready_state_complete(self.driver, timeout)
-        self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
-        if self.js_checking_on:
-            self.assert_no_js_errors()
+    def __ad_block_as_needed(self):
+        """ This is an internal method for handling ad-blocking.
+            Use "pytest --ad-block" to enable this during tests.
+            When not Chromium or in headless mode, use the hack. """
         if self.ad_block_on and (self.headless or not self.is_chromium()):
-            # For Chromium browsers in headed mode, the extension is used
+            # (Chromium browsers in headed mode use the extension instead)
             current_url = self.get_current_url()
             if not current_url == self.__last_page_load_url:
                 if page_actions.is_element_present(
@@ -3132,15 +3143,33 @@ class BaseCase(unittest.TestCase):
                 ):
                     self.ad_block()
                 self.__last_page_load_url = current_url
-        return is_ready
+
+    def wait_for_ready_state_complete(self, timeout=None):
+        """ Waits for the "readyState" of the page to be "complete".
+            Returns True when the method completes. """
+        self.__check_scope()
+        self.__check_browser()
+        if not timeout:
+            timeout = settings.EXTREME_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.EXTREME_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        js_utils.wait_for_ready_state_complete(self.driver, timeout)
+        self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+        if self.js_checking_on:
+            self.assert_no_js_errors()
+        self.__ad_block_as_needed()
+        return True
 
     def wait_for_angularjs(self, timeout=None, **kwargs):
+        """ Waits for Angular components of the page to finish loading.
+            Returns True when the method completes. """
         self.__check_scope()
         if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         js_utils.wait_for_angularjs(self.driver, timeout, **kwargs)
+        return True
 
     def sleep(self, seconds):
         self.__check_scope()
