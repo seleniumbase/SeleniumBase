@@ -139,6 +139,11 @@ class BaseCase(unittest.TestCase):
         """ Navigates the current browser window to the specified page. """
         self.__check_scope()
         self.__check_browser()
+        pre_action_url = None
+        try:
+            pre_action_url = self.driver.current_url
+        except Exception:
+            pass
         if type(url) is str:
             url = url.strip()  # Remove leading and trailing whitespace
         if (type(url) is not str) or not self.__looks_like_a_page_url(url):
@@ -170,6 +175,11 @@ class BaseCase(unittest.TestCase):
                 self.driver.get(url)
             else:
                 raise Exception(e.msg)
+        if (
+            self.driver.current_url == pre_action_url
+            and pre_action_url != url
+        ):
+            time.sleep(0.1)  # Make sure load happens
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
             self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
