@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 
 
 class VisualLayout_FixtureTests():
-    def test_python_home_change(sb):
+    def test_python_home_change(self, sb):
         sb.open("https://python.org/")
         print('\nCreating baseline in "visual_baseline" folder.')
         sb.check_window(name="python_home", baseline=True)
