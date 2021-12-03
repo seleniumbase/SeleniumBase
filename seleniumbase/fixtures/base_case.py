@@ -9555,12 +9555,15 @@ class BaseCase(unittest.TestCase):
         test_logpath = os.path.join(self.log_path, self.__get_test_id())
         for baseline_copy_tuple in self.__visual_baseline_copies:
             baseline_path = baseline_copy_tuple[0]
-            baseline_copy_path = baseline_copy_tuple[1]
-            b_c_alt_path = baseline_copy_tuple[2]
+            baseline_copy_name = baseline_copy_tuple[1]
+            b_c_alt_name = baseline_copy_tuple[2]
             latest_png_path = baseline_copy_tuple[3]
-            latest_copy_path = baseline_copy_tuple[4]
-            l_c_alt_path = baseline_copy_tuple[5]
-
+            latest_copy_name = baseline_copy_tuple[4]
+            l_c_alt_name = baseline_copy_tuple[5]
+            baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
+            b_c_alt_path = os.path.join(test_logpath, b_c_alt_name)
+            latest_copy_path = os.path.join(test_logpath, latest_copy_name)
+            l_c_alt_path = os.path.join(test_logpath, l_c_alt_name)
             if len(self.__visual_baseline_copies) == 1:
                 baseline_copy_path = b_c_alt_path
                 latest_copy_path = l_c_alt_path
@@ -9798,19 +9801,14 @@ class BaseCase(unittest.TestCase):
             out_file.writelines(json.dumps(level_3))
             out_file.close()
 
-        test_logpath = os.path.join(self.log_path, self.__get_test_id())
         baseline_path = os.path.join(visual_baseline_path, baseline_png)
         baseline_copy_name = "baseline_%s.png" % name
-        baseline_copy_path = os.path.join(test_logpath, baseline_copy_name)
         b_c_alt_name = "baseline.png"
-        b_c_alt_path = os.path.join(test_logpath, b_c_alt_name)
         latest_copy_name = "baseline_diff_%s.png" % name
-        latest_copy_path = os.path.join(test_logpath, latest_copy_name)
         l_c_alt_name = "baseline_diff.png"
-        l_c_alt_path = os.path.join(test_logpath, l_c_alt_name)
         baseline_copy_tuple = (
-            baseline_path, baseline_copy_path, b_c_alt_path,
-            latest_png_path, latest_copy_path, l_c_alt_path,
+            baseline_path, baseline_copy_name, b_c_alt_name,
+            latest_png_path, latest_copy_name, l_c_alt_name,
         )
         self.__visual_baseline_copies.append(baseline_copy_tuple)
 
