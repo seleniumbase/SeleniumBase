@@ -253,6 +253,7 @@ def _set_chrome_options(
     proxy_auth,
     proxy_user,
     proxy_pass,
+    proxy_bypass_list,
     user_agent,
     recorder_ext,
     disable_csp,
@@ -441,6 +442,9 @@ def _set_chrome_options(
                 chrome_options, proxy_string, proxy_user, proxy_pass
             )
         chrome_options.add_argument("--proxy-server=%s" % proxy_string)
+        if proxy_bypass_list:
+            chrome_options.add_argument(
+                "--proxy-bypass-list=%s" % proxy_bypass_list)
     if headless:
         if not proxy_auth and not browser_name == constants.Browser.OPERA:
             # Headless Chrome doesn't support extensions, which are
@@ -491,6 +495,7 @@ def _set_firefox_options(
     headless,
     locale_code,
     proxy_string,
+    proxy_bypass_list,
     user_agent,
     disable_csp,
     firefox_arg,
@@ -545,6 +550,8 @@ def _set_firefox_options(
             options.set_preference("network.proxy.http_port", int(proxy_port))
             options.set_preference("network.proxy.ssl", proxy_server)
             options.set_preference("network.proxy.ssl_port", int(proxy_port))
+        if proxy_bypass_list:
+            options.set_preference("no_proxies_on", proxy_bypass_list)
     if user_agent:
         options.set_preference("general.useragent.override", user_agent)
     options.set_preference(
@@ -697,6 +704,7 @@ def get_driver(
     servername="localhost",
     port=4444,
     proxy_string=None,
+    proxy_bypass_list=None,
     user_agent=None,
     cap_file=None,
     cap_string=None,
@@ -771,6 +779,7 @@ def get_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_bypass_list,
             user_agent,
             cap_file,
             cap_string,
@@ -810,6 +819,7 @@ def get_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_bypass_list,
             user_agent,
             recorder_ext,
             disable_csp,
@@ -849,6 +859,7 @@ def get_remote_driver(
     proxy_auth,
     proxy_user,
     proxy_pass,
+    proxy_bypass_list,
     user_agent,
     cap_file,
     cap_string,
@@ -940,6 +951,7 @@ def get_remote_driver(
             proxy_auth,
             proxy_user,
             proxy_pass,
+            proxy_bypass_list,
             user_agent,
             recorder_ext,
             disable_csp,
@@ -1007,6 +1019,7 @@ def get_remote_driver(
             headless,
             locale_code,
             proxy_string,
+            proxy_bypass_list,
             user_agent,
             disable_csp,
             firefox_arg,
@@ -1245,6 +1258,7 @@ def get_local_driver(
     proxy_auth,
     proxy_user,
     proxy_pass,
+    proxy_bypass_list,
     user_agent,
     recorder_ext,
     disable_csp,
@@ -1283,6 +1297,7 @@ def get_local_driver(
             headless,
             locale_code,
             proxy_string,
+            proxy_bypass_list,
             user_agent,
             disable_csp,
             firefox_arg,
@@ -1539,6 +1554,9 @@ def get_local_driver(
                     edge_options, proxy_string, proxy_user, proxy_pass
                 )
             edge_options.add_argument("--proxy-server=%s" % proxy_string)
+        if proxy_bypass_list:
+            edge_options.add_argument(
+                "--proxy-bypass-list=%s" % proxy_bypass_list)
         edge_options.add_argument("--test-type")
         edge_options.add_argument("--log-level=3")
         edge_options.add_argument("--no-first-run")
@@ -1682,6 +1700,7 @@ def get_local_driver(
                 proxy_auth,
                 proxy_user,
                 proxy_pass,
+                proxy_bypass_list,
                 user_agent,
                 recorder_ext,
                 disable_csp,
@@ -1734,6 +1753,7 @@ def get_local_driver(
                 proxy_auth,
                 proxy_user,
                 proxy_pass,
+                proxy_bypass_list,
                 user_agent,
                 recorder_ext,
                 disable_csp,
@@ -1830,6 +1850,7 @@ def get_local_driver(
                         proxy_auth,
                         proxy_user,
                         proxy_pass,
+                        proxy_bypass_list,
                         user_agent,
                         recorder_ext,
                         disable_csp,

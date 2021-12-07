@@ -2674,6 +2674,7 @@ class BaseCase(unittest.TestCase):
         servername=None,
         port=None,
         proxy=None,
+        proxy_bypass_list=None,
         agent=None,
         switch_to=True,
         cap_file=None,
@@ -2715,6 +2716,8 @@ class BaseCase(unittest.TestCase):
         servername - if using a Selenium Grid, set the host address here
         port - if using a Selenium Grid, set the host port here
         proxy - if using a proxy server, specify the "host:port" combo here
+        proxy_bypass_list - Semi-colon  seperated string of domains to not
+                            use a proxy for or * to bypass all
         switch_to - the option to switch to the new driver (default = True)
         cap_file - the file containing desired capabilities for the browser
         cap_string - the string with desired capabilities for the browser
@@ -2789,6 +2792,8 @@ class BaseCase(unittest.TestCase):
         proxy_string = proxy
         if proxy_string is None:
             proxy_string = self.proxy_string
+        if proxy_bypass_list is None:
+            proxy_bypass_list = self.proxy_bypass_list
         user_agent = agent
         if user_agent is None:
             user_agent = self.user_agent
@@ -2863,6 +2868,7 @@ class BaseCase(unittest.TestCase):
             servername=servername,
             port=port,
             proxy_string=proxy_string,
+            proxy_bypass_list=proxy_bypass_list,
             user_agent=user_agent,
             cap_file=cap_file,
             cap_string=cap_string,
@@ -10711,6 +10717,7 @@ class BaseCase(unittest.TestCase):
             self.servername = sb_config.servername
             self.port = sb_config.port
             self.proxy_string = sb_config.proxy_string
+            self.proxy_bypass_list = sb_config.proxy_bypass_list
             self.user_agent = sb_config.user_agent
             self.mobile_emulator = sb_config.mobile_emulator
             self.device_metrics = sb_config.device_metrics
@@ -10991,6 +10998,7 @@ class BaseCase(unittest.TestCase):
                 servername=self.servername,
                 port=self.port,
                 proxy=self.proxy_string,
+                proxy_bypass_list=self.proxy_bypass_list,
                 agent=self.user_agent,
                 switch_to=True,
                 cap_file=self.cap_file,
