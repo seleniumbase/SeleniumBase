@@ -120,6 +120,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --port=PORT  # (The Selenium Grid port used by the test server.)
 --proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
 --proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
+--proxy-bypass-list=STRING  # (";"-separated hosts to bypass, Eg "*.foo.com")
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
