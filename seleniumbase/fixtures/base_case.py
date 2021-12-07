@@ -2716,8 +2716,7 @@ class BaseCase(unittest.TestCase):
         servername - if using a Selenium Grid, set the host address here
         port - if using a Selenium Grid, set the host port here
         proxy - if using a proxy server, specify the "host:port" combo here
-        proxy_bypass_list - Semi-colon  seperated string of domains to not
-                            use a proxy for or * to bypass all
+        proxy_bypass_list - ";"-separated hosts to bypass (Eg. "*.foo.com")
         switch_to - the option to switch to the new driver (default = True)
         cap_file - the file containing desired capabilities for the browser
         cap_string - the string with desired capabilities for the browser

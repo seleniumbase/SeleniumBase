@@ -21,8 +21,7 @@ class SeleniumBrowser(Plugin):
     --cap-string=STRING  (The web browser's desired capabilities to use.)
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
-    --proxy-bypass-list=STRING (Semi-colon seperated string of domains to not
-                                use a proxy for or * to bypass all)
+    --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -161,14 +160,21 @@ class SeleniumBrowser(Plugin):
         )
         parser.add_option(
             "--proxy-bypass-list",
+            "--proxy_bypass_list",
             action="store",
             dest="proxy_bypass_list",
             default=None,
-            help="""Designates the domains or IP address to bypass the defined proxy.
-                    Format: example.test  OR
-                    example.test,anothorexample.test  OR
-                    *
-                    Default: ''.""",
+            help="""Designates the hosts, domains, and/or IP addresses
+                    to bypass when using a proxy server with "--proxy".
+                    Format: A ";"-separated string.
+                    Example usage:
+                        pytest
+                            --proxy="username:password@servername:port"
+                            --proxy-bypass-list="*.foo.com;github.com"
+                        pytest
+                            --proxy="servername:port"
+                            --proxy-bypass-list="127.0.0.1:8080"
+                    Default: None.""",
         )
         parser.add_option(
             "--agent",
