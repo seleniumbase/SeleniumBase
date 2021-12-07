@@ -49,7 +49,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=3.7.0'")
+        os.system("python -m pip install --upgrade 'twine>=3.7.1'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.62.3'")
         print("\n*** Rebuilding distribution packages: ***\n")
