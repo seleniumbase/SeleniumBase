@@ -174,6 +174,8 @@ setup(
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
         'pytest==6.2.5;python_version>="3.6"',
+        'pytest-forked==1.3.0;python_version<"3.6"',
+        'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.8.0;python_version<"3.6"',
