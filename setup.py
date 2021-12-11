@@ -174,7 +174,6 @@ setup(
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
         'pytest==6.2.5;python_version>="3.6"',
-        "pytest-forked==1.3.0",
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.8.0;python_version<"3.6"',
@@ -185,7 +184,7 @@ setup(
         'pytest-rerunfailures==10.2;python_version>="3.6"',
         'pytest-xdist==1.34.0;python_version<"3.5"',
         'pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"',
-        'pytest-xdist==2.4.0;python_version>="3.6"',
+        'pytest-xdist==2.5.0;python_version>="3.6"',
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.0.0",
         'soupsieve==1.9.6;python_version<"3.5"',
@@ -201,7 +200,7 @@ setup(
         'pygments==2.10.0;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
-        'prompt-toolkit==3.0.23;python_version>="3.6.2"',
+        'prompt-toolkit==3.0.24;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.0;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
