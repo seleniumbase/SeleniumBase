@@ -236,6 +236,14 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # activate_jquery()
         return self.activate_jquery(*args, **kwargs)
 
+    def RECORDER_로드(self, *args, **kwargs):
+        # activate_recorder()
+        return self.activate_recorder(*args, **kwargs)
+
+    def URL_이_아닌_경우_열기(self, *args, **kwargs):
+        # open_if_not_url(url)
+        return self.open_if_not_url(*args, **kwargs)
+
     def 광고_차단(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)

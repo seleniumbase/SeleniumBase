@@ -236,6 +236,14 @@ class Testgeval(BaseCase):
         # activate_jquery()
         return self.activate_jquery(*args, **kwargs)
 
+    def activeer_recorder(self, *args, **kwargs):
+        # activate_recorder()
+        return self.activate_recorder(*args, **kwargs)
+
+    def openen_zo_niet_url(self, *args, **kwargs):
+        # open_if_not_url(url)
+        return self.open_if_not_url(*args, **kwargs)
+
     def blokkeer_advertenties(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
