@@ -236,6 +236,14 @@ class 硒测试用例(BaseCase):  # noqa
         # activate_jquery()
         return self.activate_jquery(*args, **kwargs)
 
+    def 加载RECORDER(self, *args, **kwargs):
+        # activate_recorder()
+        return self.activate_recorder(*args, **kwargs)
+
+    def 开启如果不网址(self, *args, **kwargs):
+        # open_if_not_url(url)
+        return self.open_if_not_url(*args, **kwargs)
+
     def 阻止广告(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)

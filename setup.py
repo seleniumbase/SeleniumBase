@@ -123,10 +123,11 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
-        'setuptools>=59.5.0;python_version>="3.6"',
+        'setuptools>=59.6.0;python_version>="3.6"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
-        'tomli>=1.2.2;python_version>="3.6"',
+        'tomli>=1.2.2;python_version>="3.6" and python_version<"3.7"',
+        'tomli>=2.0.0;python_version>="3.7"',
         "wheel>=0.37.0",
         "attrs>=21.2.0",
         'PyYAML>=6.0;python_version>="3.6"',
@@ -229,7 +230,7 @@ setup(
         'Pillow==8.4.0;python_version>="3.6"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==10.15.2;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.16.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',

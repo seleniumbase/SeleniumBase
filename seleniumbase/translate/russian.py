@@ -236,6 +236,14 @@ class ТестНаСелен(BaseCase):  # noqa
         # activate_jquery()
         return self.activate_jquery(*args, **kwargs)
 
+    def активировать_RECORDER(self, *args, **kwargs):
+        # activate_recorder()
+        return self.activate_recorder(*args, **kwargs)
+
+    def открыть_если_не_URL(self, *args, **kwargs):
+        # open_if_not_url(url)
+        return self.open_if_not_url(*args, **kwargs)
+
     def блокировать_рекламу(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)

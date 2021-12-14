@@ -941,6 +941,30 @@ class MD:
     md["activate_jquery"][8] = "активировать_JQUERY"
     md["activate_jquery"][9] = "activar_jquery"
 
+    md["activate_recorder"] = ["*"] * num_langs
+    md["activate_recorder"][0] = "activate_recorder"
+    md["activate_recorder"][1] = "加载RECORDER"
+    md["activate_recorder"][2] = "activeer_recorder"
+    md["activate_recorder"][3] = "activer_recorder"
+    md["activate_recorder"][4] = "attiva_recorder"
+    md["activate_recorder"][5] = "RECORDERを読み込む"
+    md["activate_recorder"][6] = "RECORDER_로드"
+    md["activate_recorder"][7] = "ativar_recorder"
+    md["activate_recorder"][8] = "активировать_RECORDER"
+    md["activate_recorder"][9] = "activar_recorder"
+
+    md["open_if_not_url"] = ["*"] * num_langs
+    md["open_if_not_url"][0] = "open_if_not_url"
+    md["open_if_not_url"][1] = "开启如果不网址"
+    md["open_if_not_url"][2] = "openen_zo_niet_url"
+    md["open_if_not_url"][3] = "ouvrir_si_non_url"
+    md["open_if_not_url"][4] = "apri_se_non_url"
+    md["open_if_not_url"][5] = "URLでない場合は開く"
+    md["open_if_not_url"][6] = "URL_이_아닌_경우_열기"
+    md["open_if_not_url"][7] = "abrir_se_não_url"
+    md["open_if_not_url"][8] = "открыть_если_не_URL"
+    md["open_if_not_url"][9] = "abrir_que_no_url"
+
     md["ad_block"] = ["*"] * num_langs
     md["ad_block"][0] = "ad_block"
     md["ad_block"][1] = "阻止广告"

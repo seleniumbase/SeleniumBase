@@ -1963,6 +1963,11 @@ def get_local_driver(
                     chrome_options.headless = False
                     return webdriver.Chrome(options=chrome_options)
         except Exception as e:
+            try:
+                # Try again if Chrome didn't launch
+                return webdriver.Chrome(options=chrome_options)
+            except Exception:
+                pass
             if headless:
                 raise Exception(e)
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):

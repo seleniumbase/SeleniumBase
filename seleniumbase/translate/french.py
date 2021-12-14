@@ -236,6 +236,14 @@ class CasDeBase(BaseCase):
         # activate_jquery()
         return self.activate_jquery(*args, **kwargs)
 
+    def activer_recorder(self, *args, **kwargs):
+        # activate_recorder()
+        return self.activate_recorder(*args, **kwargs)
+
+    def ouvrir_si_non_url(self, *args, **kwargs):
+        # open_if_not_url(url)
+        return self.open_if_not_url(*args, **kwargs)
+
     def annonces_de_bloc(self, *args, **kwargs):
         # ad_block()
         return self.ad_block(*args, **kwargs)
