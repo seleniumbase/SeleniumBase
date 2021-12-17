@@ -11,7 +11,8 @@ var cssPathById = function(el) {
         var selector = el.nodeName.toLowerCase();
         if (el.id) {
             elid = el.id;
-            if (elid.includes('.') || elid.includes('(') || elid.includes(')'))
+            if (elid.includes(',') || elid.includes('.') ||
+                elid.includes('(') || elid.includes(')'))
                 return cssPathByAttribute(el, 'id');
             selector += '#' + elid;
             path.unshift(selector);
@@ -107,10 +108,10 @@ var ssOccurrences = function(string, subString, allowOverlapping) {
     return n;
 };
 function hasNumber(str) {
-  return /\d/.test(str);
+    return /\d/.test(str);
 };
 function tagName(el) {
-  return el.tagName.toLowerCase();
+    return el.tagName.toLowerCase();
 };
 function turnIntoParentAsNeeded(el) {
     if (tagName(el) == 'span') {
@@ -402,6 +403,9 @@ document.body.addEventListener('dragstart', function (event) {
     const el = event.target;
     const selector = getBestSelector(el);
     ra_len = document.recorded_actions.length;
+    rec_mode = sessionStorage.getItem('recorder_mode');
+    if (rec_mode === '2' || rec_mode === '3')
+        return;
     if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
         document.recorded_actions[ra_len-1][1] === selector)
@@ -505,48 +509,19 @@ document.body.addEventListener('mousedown', function (event) {
     ra_len = document.recorded_actions.length;
     rec_mode = sessionStorage.getItem('recorder_mode');
     tag_name = tagName(el);
-    text = '';
     if (rec_mode === '2' || rec_mode === '3')
+    {
         el = turnIntoParentAsNeeded(el);
         texts = [el.innerText, el.textContent];
-    if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
-        document.recorded_actions.pop();
-    if (tag_name === 'select') {
-        // Do Nothing. ('change' action.)
-    }
-    else
-        document.recorded_actions.push(['mo_dn', selector, texts, d_now]);
-    json_rec_act = JSON.stringify(document.recorded_actions);
-    sessionStorage.setItem('recorded_actions', json_rec_act);
-});
-document.body.addEventListener('mouseup', function (event) {
-    reset_if_recorder_undefined();
-    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
-    const d_now = Date.now();
-    const el = event.target;
-    selector = getBestSelector(el);
-    ra_len = document.recorded_actions.length;
-    tag_name = tagName(el);
-    parent_el = el.parentElement;
-    parent_tag_name = tagName(parent_el);
-    grand_el = "";
-    grand_tag_name = "";
-    origin = "";
-    rec_mode = sessionStorage.getItem('recorder_mode');
-    if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn' &&
-        (rec_mode === '2' || rec_mode === '3'))
-    {
-        pre_sel = document.recorded_actions[ra_len-1][1];
-        sel_has_contains = pre_sel.includes(':contains(');
-        texts = document.recorded_actions[ra_len-1][2];
         text = texts[0];
         t_con = texts[1];
         origin = window.location.origin;
+        sel_has_contains = selector.includes(':contains(');
         if (!text) { text = ''; }
         if (rec_mode === '2' || (
             rec_mode === '3' && sel_has_contains && text === t_con))
         {
-            document.recorded_actions.push(['as_el', pre_sel, origin, d_now]);
+            document.recorded_actions.push(['as_el', selector, origin, d_now]);
             json_rec_act = JSON.stringify(document.recorded_actions);
             sessionStorage.setItem('recorded_actions', json_rec_act);
             return;
@@ -564,13 +539,39 @@ document.body.addEventListener('mouseup', function (event) {
                     }
                 }
             }
-            tex_sel = [text, pre_sel];
+            tex_sel = [text, selector];
             document.recorded_actions.push([action, tex_sel, origin, d_now]);
             json_rec_act = JSON.stringify(document.recorded_actions);
             sessionStorage.setItem('recorded_actions', json_rec_act);
             return;
         }
     }
+    if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
+        document.recorded_actions.pop();
+    if (tag_name === 'select') {
+        // Do Nothing. ('change' action.)
+    }
+    else
+        document.recorded_actions.push(['mo_dn', selector, '', d_now]);
+    json_rec_act = JSON.stringify(document.recorded_actions);
+    sessionStorage.setItem('recorded_actions', json_rec_act);
+});
+document.body.addEventListener('mouseup', function (event) {
+    reset_if_recorder_undefined();
+    if (sessionStorage.getItem('pause_recorder') === 'yes') return;
+    const d_now = Date.now();
+    const el = event.target;
+    selector = getBestSelector(el);
+    ra_len = document.recorded_actions.length;
+    tag_name = tagName(el);
+    parent_el = el.parentElement;
+    parent_tag_name = tagName(parent_el);
+    grand_el = "";
+    grand_tag_name = "";
+    origin = "";
+    rec_mode = sessionStorage.getItem('recorder_mode');
+    if (rec_mode === '2' || rec_mode === '3')
+        return;
     if (parent_el.parentElement != null) {
         grand_el = parent_el.parentElement;
         grand_tag_name = tagName(grand_el);

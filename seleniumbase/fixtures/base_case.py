@@ -3391,7 +3391,7 @@ class BaseCase(unittest.TestCase):
                     url2 = url1[:-3]
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
-                if url1 == url2:
+                if url1.replace("www.", "") == url2.replace("www.", ""):
                     srt_actions[n-1][0] = "_skip"
                 elif url2.startswith(url1):
                     srt_actions[n][0] = "f_url"
@@ -3546,8 +3546,22 @@ class BaseCase(unittest.TestCase):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
             if action[0] == "begin" or action[0] == "_url_":
+                if "%" in action[2] and sys.version_info[0] >= 3:
+                    try:
+                        from urllib.parse import unquote
+
+                        action[2] = unquote(action[2], errors="strict")
+                    except Exception:
+                        pass
                 sb_actions.append('self.open("%s")' % action[2])
             elif action[0] == "f_url":
+                if "%" in action[2] and sys.version_info[0] >= 3:
+                    try:
+                        from urllib.parse import unquote
+
+                        action[2] = unquote(action[2], errors="strict")
+                    except Exception:
+                        pass
                 sb_actions.append('self.open_if_not_url("%s")' % action[2])
             elif action[0] == "click":
                 method = "click"
@@ -3759,7 +3773,7 @@ class BaseCase(unittest.TestCase):
                         method, action[1][0], action[1][1]))
             elif action[0] == "as_te" or action[0] == "as_et":
                 import unicodedata
-                action[1][0] = unicodedata.normalize("NFKD", action[1][0])
+                action[1][0] = unicodedata.normalize("NFKC", action[1][0])
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
