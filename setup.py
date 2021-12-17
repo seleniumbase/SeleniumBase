@@ -198,7 +198,7 @@ setup(
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==3.4.8;python_version>="3.6" and python_version<"3.7"',
-        'cryptography==36.0.0;python_version>="3.7"',
+        'cryptography==36.0.1;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.10.0;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
@@ -230,7 +230,7 @@ setup(
         'Pillow==8.4.0;python_version>="3.6"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==10.16.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==10.16.1;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
