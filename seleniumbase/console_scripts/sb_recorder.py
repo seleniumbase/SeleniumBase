@@ -131,7 +131,7 @@ def create_tkinter_gui():
     entry = tk.Entry(window, textvariable=fname)
     entry.pack()
     cbx = tk.IntVar()
-    chk = tk.Checkbutton(window, text="Overwrite existing file", variable=cbx)
+    chk = tk.Checkbutton(window, text="Overwrite existing files", variable=cbx)
     chk.pack()
     chk.select()
     cbb = tk.IntVar()
