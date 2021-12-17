@@ -206,7 +206,17 @@ def convert_xpath_to_css(xpath):
     if xpath.startswith("("):
         xpath = _filter_xpath_grouping(xpath)
 
-    css = _get_raw_css_from_xpath(xpath)
+    css = ""
+    if "/descORself/" in xpath and ("@id" in xpath or "@class" in xpath):
+        css_sections = []
+        xpath_sections = xpath.split("/descORself/")
+        for xpath_section in xpath_sections:
+            if not xpath_section.startswith("//"):
+                xpath_section = "//" + xpath_section
+            css_sections.append(_get_raw_css_from_xpath(xpath_section))
+        css = "/descORself/".join(css_sections)
+    else:
+        css = _get_raw_css_from_xpath(xpath)
 
     attribute_defs = re.findall(r"(\[\w+\=\S+\])", css)
     for attr_def in attribute_defs:
