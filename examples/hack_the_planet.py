@@ -21,6 +21,7 @@ class HackTests(BaseCase):
         wiki = "https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us"
 
         self.open(wiki)
+        self.click_if_visible('button[aria-label="Close"]')
         self.set_text_content("h1#firstHeading", aybabtu)
         self.set_text_content("#ca-history a", aybabtu)
         self.set_text_content('#n-mainpage-description a', "ALL")
