@@ -2,4 +2,4 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Desktop Apps</h2>
 
-* **Recorder** (Run using ``python recorder.py``)
+* **Recorder** (Run using ``python recorder.py`` or ``sbase recorder``)

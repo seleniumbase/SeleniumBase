@@ -20,6 +20,7 @@ COMMANDS:
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
+      recorder         (Open Recorder Desktop App)
       mkpres           [FILE.py] [LANG]
       mkchart          [FILE.py] [LANG]
       print            [FILE] [OPTIONS]
@@ -242,6 +243,14 @@ is included.
 * Output:
 Creates a new SeleniumBase test using the Recorder.
 If the filename already exists, an error is raised.
+
+<h3>recorder</h3>
+
+* Usage:
+``sbase recorder``
+
+* Output:
+Launches the SeleniumBase Recorder Desktop App.
 
 <h3>mkpres</h3>
 

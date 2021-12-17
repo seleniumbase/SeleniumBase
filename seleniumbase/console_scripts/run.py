@@ -14,6 +14,7 @@ sbase mkfile new_test.py
 sbase mkrec new_test.py
 sbase mkrec new_test.py --url=wikipedia.org
 sbase codegen new_test.py --url=wikipedia.org
+sbase recorder
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -78,6 +79,7 @@ def show_basic_usage():
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
+    sc += "      recorder         (Open Recorder Desktop App)\n"
     sc += "      mkpres           [FILE.py] [LANG]\n"
     sc += "      mkchart          [FILE.py] [LANG]\n"
     sc += "      print            [FILE] [OPTIONS]\n"
@@ -772,6 +774,10 @@ def main():
         else:
             show_basic_usage()
             show_install_usage()
+    elif command == "recorder":
+        from seleniumbase.console_scripts import sb_recorder
+
+        sb_recorder.main()
     elif command == "mkdir":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkdir
