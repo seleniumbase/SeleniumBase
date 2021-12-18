@@ -908,11 +908,6 @@ def get_remote_driver(
     else:
         server_with_port = servername
     address = "%s://%s" % (protocol, server_with_port)
-    if not address.endswith("/wd/hub"):
-        if address.endswith("/"):
-            address += "wd/hub"
-        else:
-            address += "/wd/hub"
     downloads_path = download_helper.get_downloads_folder()
     desired_caps = {}
     extra_caps = {}
