@@ -5,6 +5,7 @@ import sys
 import urllib3
 import warnings
 from selenium import webdriver
+from selenium.webdriver.remote.remote_connection import RemoteConnection
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -889,6 +890,11 @@ def get_remote_driver(
     device_height,
     device_pixel_ratio,
 ):
+    # When a WebDriver instance makes a remote command request, and the server accepts the connection
+    # and reads the request but does not write a response, then the client continues waiting indefinitely
+    # for a response. This is very common case for Callisto. Let's set the property to prevent infinite runs
+    RemoteConnection.set_timeout(60)
+
     # Construct the address for connecting to a Selenium Grid
     if servername.startswith("https://"):
         protocol = "https"
