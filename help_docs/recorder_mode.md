@@ -1,4 +1,5 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM"><img src="http://img.youtube.com/vi/eKN5nq7YbdM/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=eKN5nq7YbdM">Watch the tutorial on YouTube</a></b>)</p>
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Recorder Mode</h2>
 
