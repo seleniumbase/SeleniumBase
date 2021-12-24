@@ -9,8 +9,10 @@
 * [Broadcom](https://www.broadcom.com/)
 * [FortressIQ](https://www.fortressiq.com/)
 * [Thoma Bravo](https://www.thomabravo.com/)
+* [ASICS Digital](https://www.asicsdigital.com/)
 * [Expedia Group](https://lifeatexpediagroup.com/)
 * [Texture Health](https://www.texturehealth.com/)
+* [ActiveCampaign](https://www.activecampaign.com/)
 * [Harvard Medical School](https://hms.harvard.edu/)
 * [Singapore Institute of Tech](https://www.singaporetech.edu.sg)
 * [Mississippi State University](https://www.msstate.edu/)
@@ -39,9 +41,12 @@
 * [WPILib](https://wpilib.org/)
 * [Yandex](https://yandex.ru/)
 * [netLex](https://netlex.io/en/)
+* [Alokin](https://alokin.in/)
 * [Cubic](https://www.cubic.com/)
 * [Baidu](https://www.baidu.com/)
 * [HqO](https://www.hqo.co/)
+* [PDS](https://www.pdsinc.com/)
+* [Pico](https://trypico.com/)
 * [Iver](https://www.iver.com/)
 * And more...
 
