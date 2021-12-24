@@ -52,7 +52,6 @@ case "$1" in
             echo ""
             exit 1
         else
-            # START_HUB_CMD="java -Djava.util.logging.config.file=test/logging.properties -jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_HUB_PARAMS}"
             START_HUB_CMD="java ${VERBOSITY_STRING}-jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_HUB_PARAMS}"
             echo ""
             echo $START_HUB_CMD
@@ -71,8 +70,8 @@ case "$1" in
         echo "Stopping Selenium-WebDriver Grid Hub..."
         if [ -f $WEBDRIVER_HUB_PIDFILE ]; then
             PID=$(cat $WEBDRIVER_HUB_PIDFILE)
-            kill $PID
             rm $WEBDRIVER_HUB_PIDFILE
+            kill $PID
             sleep 1
             if [[ $(ps -A | egrep "^${PID}") ]]; then
                 echo "${FAIL_MSG} Tried to kill the Grid Hub with PID ${PID}, but was unsuccessful. You need to kill it with something stronger, like 'kill -9'"

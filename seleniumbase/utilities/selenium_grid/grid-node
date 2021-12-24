@@ -40,8 +40,7 @@ if [ "$GRID_NODE_VERBOSE_LOGS" == "True" ]; then
 fi
 
 WEBDRIVER_SERVER_JAR=${DIR}/selenium-server-standalone.jar
-# WEBDRIVER_NODE_PARAMS="-role node -hubHost ${GRID_HUB_SERVER_IP} -hubPort 4444 -host 127.0.0.1 -browser browserName=chrome,maxInstances=5,version=ANY,platform=ANY -browser browserName=firefox,maxInstances=5,version=ANY,platform=ANY -browser browserName=MicrosoftEdge,maxInstances=1,version=ANY,platform=WIN10"
-WEBDRIVER_NODE_PARAMS="-role node -hub http://${GRID_HUB_SERVER_IP}:4444/grid/register -browser browserName=chrome,maxInstances=5,version=ANY,seleniumProtocol=WebDriver -browser browserName=firefox,maxInstances=5,version=ANY,seleniumProtocol=WebDriver -browser browserName=MicrosoftEdge,maxInstances=1,version=ANY,platform=WIN10,seleniumProtocol=WebDriver"
+WEBDRIVER_NODE_PARAMS="-role node -hub http://${GRID_HUB_SERVER_IP}:4444/grid/register -browser browserName=chrome,maxInstances=5,version=latest,seleniumProtocol=WebDriver -browser browserName=firefox,maxInstances=5,version=latest,seleniumProtocol=WebDriver"
 WEBDRIVER_NODE_PIDFILE="/tmp/webdriver_node.pid"
 
 if [ ! -f $WEBDRIVER_SERVER_JAR ]; then
@@ -56,7 +55,6 @@ case "$1" in
             echo "${FAIL_MSG} Selenium-WebDriver Grid node already running with PID $(cat $WEBDRIVER_NODE_PIDFILE). Run 'grid-node stop' or 'grid-node restart'."
             exit 1
         else
-            # START_NODE_CMD="java -Djava.util.logging.config.file=test/logging.properties -jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_NODE_PARAMS}"
             START_NODE_CMD="java ${VERBOSITY_STRING}-jar ${WEBDRIVER_SERVER_JAR} ${WEBDRIVER_NODE_PARAMS}"
             echo ""
             echo $START_NODE_CMD
@@ -66,8 +64,6 @@ case "$1" in
             echo $PID > "${WEBDRIVER_NODE_PIDFILE}"
             echo "${SUCCESS_MSG} Selenium-WebDriver Grid node started successfully."
             echo ""
-            echo "Browser Sessions: http://127.0.0.1:5555/wd/hub/static/resource/hub.html"
-            echo ""
             # echo "To see full log output, remove the java.util.logging.config.file parameter from script/grid-node"
         fi
         ;;
@@ -75,8 +71,8 @@ case "$1" in
         echo "Stopping Selenium-WebDriver Grid node..."
         if [ -f $WEBDRIVER_NODE_PIDFILE ]; then
             PID=$(cat $WEBDRIVER_NODE_PIDFILE)
-            kill $PID
             rm $WEBDRIVER_NODE_PIDFILE
+            kill $PID
             sleep 1
             if [[ $(ps -A | egrep "^${PID}") ]]; then
                 echo "${FAIL_MSG} Tried to kill the node with PID ${PID}, but was unsuccessful. You need to kill it with something stronger, like 'kill -9'"
