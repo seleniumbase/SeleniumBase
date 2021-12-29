@@ -125,13 +125,13 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.1.0;python_version>="3.7"',
+        'setuptools>=60.1.1;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.0;python_version>="3.7"',
         "wheel>=0.37.1",
-        "attrs>=21.2.0",
+        "attrs>=21.3.0",
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
         'traitlets>=5.1.1;python_version>="3.7"',
@@ -166,7 +166,7 @@ setup(
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
         'filelock==3.2.1;python_version<"3.6"',
-        'filelock==3.4.0;python_version>="3.6"',
+        'filelock==3.4.2;python_version>="3.6"',
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5"',
         "execnet==1.9.0",
@@ -215,11 +215,11 @@ setup(
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
-        'platformdirs==2.4.0;python_version>="3.6"',
+        'platformdirs==2.4.1;python_version>="3.6"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        "virtualenv>=20.10.0",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.11.1",  # Sync with importlib-metadata and pathlib2
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
