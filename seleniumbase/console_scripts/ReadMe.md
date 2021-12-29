@@ -53,13 +53,13 @@ COMMANDS:
 sbase install chromedriver
 sbase install geckodriver
 sbase install edgedriver
-sbase install chromedriver 94
-sbase install chromedriver 94.0.4606.61
+sbase install chromedriver 96
+sbase install chromedriver 96.0.4664.45
 sbase install chromedriver latest
 sbase install chromedriver latest-1  # (Latest minus one)
 sbase install chromedriver -p
 sbase install chromedriver latest -p
-sbase install edgedriver 94.0.992.38
+sbase install edgedriver 96.0.1054.62
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
