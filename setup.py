@@ -216,7 +216,8 @@ setup(
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
-        'platformdirs==2.4.1;python_version>="3.6"',
+        'platformdirs==2.4.0;python_version>="3.6" and python_version<"3.7"',
+        'platformdirs==2.4.1;python_version>="3.7"',
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
