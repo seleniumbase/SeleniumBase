@@ -11,10 +11,10 @@ keyring==23.4.0;python_version>="3.6"
 pkginfo==1.8.2;python_version>="3.6"
 Jinja2==3.0.3;python_version>="3.6"
 click==8.0.3;python_version>="3.6"
-zipp==3.6.0;python_version>="3.6"
+zipp==3.7.0;python_version>="3.7"
 readme-renderer==32.0
 pymdown-extensions==9.1;python_version>="3.6"
-importlib-metadata==4.10.0;python_version>="3.6"
+importlib-metadata==4.10.0;python_version>="3.7"
 bleach==4.1.0
 jsmin==3.0.0;python_version>="3.6"
 lunr==0.6.1;python_version>="3.6"

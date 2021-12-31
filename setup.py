@@ -125,13 +125,13 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.1.1;python_version>="3.7"',
+        'setuptools>=60.2.0;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.0;python_version>="3.7"',
         "wheel>=0.37.1",
-        "attrs>=21.3.0",
+        "attrs>=21.4.0",
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
         'traitlets>=5.1.1;python_version>="3.7"',
@@ -203,7 +203,7 @@ setup(
         'cryptography==3.4.8;python_version>="3.6" and python_version<"3.7"',
         'cryptography==36.0.1;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.10.0;python_version>="3.5"',
+        'pygments==2.11.1;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
         'prompt-toolkit==3.0.24;python_version>="3.6.2"',
@@ -221,7 +221,7 @@ setup(
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        "virtualenv>=20.11.1",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.12.0",  # Sync with importlib-metadata and pathlib2
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
