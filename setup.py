@@ -221,7 +221,7 @@ setup(
         'pathlib2==2.3.5;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.0.0;python_version<"3.5"',
         'importlib-metadata==2.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        "virtualenv>=20.12.0",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.12.1",  # Sync with importlib-metadata and pathlib2
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
