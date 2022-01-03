@@ -21,7 +21,7 @@ lunr==0.6.1;python_version>="3.6"
 nltk==3.6.7;python_version>="3.6"
 watchdog==2.1.6;python_version>="3.6"
 mkdocs==1.2.3;python_version>="3.6"
-mkdocs-material==8.1.3;python_version>="3.6"
+mkdocs-material==8.1.4;python_version>="3.6"
 mkdocs-exclude-search==0.6.3;python_version>="3.6"
 mkdocs-simple-hooks==0.1.4
 mkdocs-material-extensions==1.0.3;python_version>="3.6"
