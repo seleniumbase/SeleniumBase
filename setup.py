@@ -147,11 +147,11 @@ setup(
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.9;python_version>="3.5"',  # Sync "requests"
+        'charset-normalizer==2.0.10;python_version>="3.5"',  # Sync "requests"
         "urllib3==1.26.7",  # Must stay in sync with "requests"
-        'requests==2.26.0;python_version<"3.5"',
+        'requests==2.27.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
-        'requests==2.26.0;python_version>="3.6"',
+        'requests==2.27.0;python_version>="3.6"',
         "nose==1.3.7",
         'sniffio==1.2.0;python_version>="3.7"',
         'trio==0.19.0;python_version>="3.7"',
