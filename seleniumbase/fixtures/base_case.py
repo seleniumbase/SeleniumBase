@@ -66,7 +66,9 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+python3 = True
 if sys.version_info[0] < 3:
+    python3 = False
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf8")
 selenium4 = False
@@ -144,9 +146,8 @@ class BaseCase(unittest.TestCase):
             pre_action_url = self.driver.current_url
         except Exception:
             pass
-        if type(url) is str:
-            url = url.strip()  # Remove leading and trailing whitespace
-        if (type(url) is not str) or not self.__looks_like_a_page_url(url):
+        url = str(url).strip()  # Remove leading and trailing whitespace
+        if not self.__looks_like_a_page_url(url):
             # url should start with one of the following:
             # "http:", "https:", "://", "data:", "file:",
             # "about:", "chrome:", "opera:", or "edge:".
@@ -742,7 +743,7 @@ class BaseCase(unittest.TestCase):
     def get_current_url(self):
         self.__check_scope()
         current_url = self.driver.current_url
-        if "%" in current_url and sys.version_info[0] >= 3:
+        if "%" in current_url and python3:
             try:
                 from urllib.parse import unquote
 
@@ -2386,6 +2387,8 @@ class BaseCase(unittest.TestCase):
     def execute_script(self, script, *args, **kwargs):
         self.__check_scope()
         self.__check_browser()
+        if not python3:
+            script = unicode(script.decode('latin-1'))  # noqa: F821
         return self.driver.execute_script(script, *args, **kwargs)
 
     def execute_async_script(self, script, timeout=None):
@@ -2520,6 +2523,8 @@ class BaseCase(unittest.TestCase):
             url = self.execute_script(
                 """return document.querySelector('%s').src;""" % frame
             )
+            if not python3:
+                url = str(url)
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     pass
@@ -3547,7 +3552,7 @@ class BaseCase(unittest.TestCase):
             cleaned_actions.append(srt_actions[n])
         for action in srt_actions:
             if action[0] == "begin" or action[0] == "_url_":
-                if "%" in action[2] and sys.version_info[0] >= 3:
+                if "%" in action[2] and python3:
                     try:
                         from urllib.parse import unquote
 
@@ -3556,7 +3561,7 @@ class BaseCase(unittest.TestCase):
                         pass
                 sb_actions.append('self.open("%s")' % action[2])
             elif action[0] == "f_url":
-                if "%" in action[2] and sys.version_info[0] >= 3:
+                if "%" in action[2] and python3:
                     try:
                         from urllib.parse import unquote
 
@@ -10464,7 +10469,7 @@ class BaseCase(unittest.TestCase):
         used to make the ":contains()" selector valid outside JS calls."""
         _type = type(selector)  # First make sure the selector is a string
         not_string = False
-        if sys.version_info[0] < 3:
+        if not python3:
             if _type is not str and _type is not unicode:  # noqa: F821
                 not_string = True
         else:
@@ -11123,7 +11128,7 @@ class BaseCase(unittest.TestCase):
     def __get_exception_info(self):
         exc_message = None
         if (
-            sys.version_info[0] >= 3
+            python3
             and hasattr(self, "_outcome")
             and (hasattr(self._outcome, "errors") and self._outcome.errors)
         ):
@@ -11234,11 +11239,11 @@ class BaseCase(unittest.TestCase):
         has_exception = False
         if hasattr(sys, "last_traceback") and sys.last_traceback is not None:
             has_exception = True
-        elif sys.version_info[0] >= 3 and hasattr(self, "_outcome"):
+        elif python3 and hasattr(self, "_outcome"):
             if hasattr(self._outcome, "errors") and self._outcome.errors:
                 has_exception = True
         else:
-            if sys.version_info[0] >= 3:
+            if python3:
                 has_exception = sys.exc_info()[1] is not None
             else:
                 if not hasattr(self, "_using_sb_fixture_class") and (
@@ -11247,7 +11252,10 @@ class BaseCase(unittest.TestCase):
                     has_exception = sys.exc_info()[1] is not None
                 else:
                     has_exception = len(str(sys.exc_info()[1]).strip()) > 0
-        if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
+        if (
+            self.__will_be_skipped
+            and (hasattr(self, "_using_sb_fixture") or not python3)
+        ):
             has_exception = False
         return has_exception
 
