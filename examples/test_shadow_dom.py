@@ -20,9 +20,11 @@ class ShadowDomTests(BaseCase):
 
     def test_shadow_dom(self):
         if self.browser != "chrome":
+            self.open("data:,")
             print("\n  This test is for Google Chrome only!")
             self.skip("This test is for Google Chrome only!")
         if self.headless:
+            self.open("data:,")
             print("\n  This test doesn't run in headless mode!")
             self.skip("This test doesn't run in headless mode!")
 
