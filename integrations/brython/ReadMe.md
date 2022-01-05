@@ -3,9 +3,11 @@
 * Brython was designed for replacing JavaScript with Python.
 * This tutorial will show you how to get started quickly.
 
-### 0. Install ``brython``:
+### Here's the web app you'll be creating:
 
-<i>(Note: SeleniumBase no longer includes ``brython`` as part of installed dependencies.)</i>
+<img src="https://seleniumbase.io/cdn/img/brython_demo.png" alt="Brython Demo" title="Brython Demo" width="410" />
+
+### 0. Install ``brython``:
 
 ```bash
 pip install brython
@@ -18,6 +20,7 @@ pip install brython
 ```bash
 python -m http.server
 ```
+
 You can always stop the server by using ``CTRL+C``.
 
 ### 2. Navigate to [http://localhost:8000/](http://localhost:8000/)
