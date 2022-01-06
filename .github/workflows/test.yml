@@ -7,10 +7,7 @@ on:
     branches:
       - main
       - ci-cd-test-branch-1
-  pull_request:
-    branches: 
-      - main
-      - ci-cd-test-branch-1
+  
 jobs:
   build:
 
