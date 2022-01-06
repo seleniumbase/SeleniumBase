@@ -6,11 +6,11 @@ on:
   push:
     branches:
       - main
-      - ci-cd-test-branch
+      - ci-cd-test-branch-1
   pull_request:
     branches: 
       - main
-      - ci-cd-test-branch
+      - ci-cd-test-branch-1
 jobs:
   build:
 
@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       max-parallel: 6
       matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8, 3.9, 3.10]
+        python-version: [3.10.1]
 
     steps:
     - uses: actions/checkout@v1
