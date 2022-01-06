@@ -53,4 +53,4 @@ jobs:
         seleniumbase install geckodriver
     - name: Run Selenium Test
       run: |
-        pytest examples/ajit.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml 
+        pytest examples/ajit.py 
