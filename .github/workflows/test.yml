@@ -30,4 +30,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Selenium Test
       run: |
-        pytest examples/ajit.py 
+        pytest -B Chrome -U http://localhost:6464/ 
