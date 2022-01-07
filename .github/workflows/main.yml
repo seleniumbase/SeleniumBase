@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - master
+  
+name: Deploy website on push
+jobs:
+  FTP-Deploy-Action:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.1.0
+      with:
+        fetch-depth: 2
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
+      with:
+        ftp-server: ftp://ftp.dlptest.com/ 
+        ftp-username: dlpuser
+        ftp-password: rNrKYTX9g7z3RgJRmxWuGHbeu
