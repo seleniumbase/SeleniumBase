@@ -2986,6 +2986,7 @@ class BaseCase(unittest.TestCase):
         self.driver = driver
         if self.driver in self.__driver_browser_map:
             self.browser = self.__driver_browser_map[self.driver]
+        self.bring_active_window_to_front()
 
     def switch_to_default_driver(self):
         """ Sets self.driver to the default/original driver. """
@@ -2993,6 +2994,7 @@ class BaseCase(unittest.TestCase):
         self.driver = self._default_driver
         if self.driver in self.__driver_browser_map:
             self.browser = self.__driver_browser_map[self.driver]
+        self.bring_active_window_to_front()
 
     def save_screenshot(
         self, name, folder=None, selector=None, by=By.CSS_SELECTOR
@@ -3183,7 +3185,10 @@ class BaseCase(unittest.TestCase):
 
     def sleep(self, seconds):
         self.__check_scope()
-        if not sb_config.time_limit:
+        if (
+            not hasattr(sb_config, "time_limit")
+            or (hasattr(sb_config, "time_limit") and not sb_config.time_limit)
+        ):
             time.sleep(seconds)
         elif seconds < 0.4:
             shared_utils.check_if_time_limit_exceeded()
@@ -3889,6 +3894,15 @@ class BaseCase(unittest.TestCase):
 
     def __escape_quotes_if_needed(self, string):
         return js_utils.escape_quotes_if_needed(string)
+
+    def bring_active_window_to_front(self):
+        """Brings the active browser window to the front.
+        This is useful when multiple drivers are being used."""
+        self.__check_scope()
+        try:
+            self.switch_to_window(self.driver.current_window_handle)
+        except Exception:
+            pass
 
     def bring_to_front(self, selector, by=By.CSS_SELECTOR):
         """Updates the Z-index of a page element to bring it into view.
@@ -10466,7 +10480,7 @@ class BaseCase(unittest.TestCase):
     def __recalculate_selector(self, selector, by, xp_ok=True):
         """Use autodetection to return the correct selector with "by" updated.
         If "xp_ok" is False, don't call convert_css_to_xpath(), which is
-        used to make the ":contains()" selector valid outside JS calls."""
+        used to make the ":contains()" selector valid outside of JS calls."""
         _type = type(selector)  # First make sure the selector is a string
         not_string = False
         if not python3:

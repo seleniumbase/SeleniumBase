@@ -83,6 +83,7 @@ setup(
     author_email="mdmintz@gmail.com",
     maintainer="Michael Mintz",
     license="MIT",
+    keywords="pytest automation selenium browser testing webdriver sbase",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -125,7 +126,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.2.0;python_version>="3.7"',
+        'setuptools>=60.3.1;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.3.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6" and python_version<"3.7"',
@@ -148,7 +149,7 @@ setup(
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.10;python_version>="3.5"',  # Sync "requests"
-        "urllib3==1.26.7",  # Must stay in sync with "requests"
+        "urllib3==1.26.8",  # Must stay in sync with "requests"
         'requests==2.27.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
         'requests==2.27.1;python_version>="3.6"',
@@ -203,12 +204,12 @@ setup(
         'cryptography==3.4.8;python_version>="3.6" and python_version<"3.7"',
         'cryptography==36.0.1;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.11.1;python_version>="3.5"',
+        'pygments==2.11.2;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
         'prompt-toolkit==3.0.24;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
-        'decorator==5.1.0;python_version>="3.5"',
+        'decorator==5.1.1;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
