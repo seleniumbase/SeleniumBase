@@ -599,7 +599,7 @@ def set_messenger_theme(
         theme = "flat"
     if location == "default":
         location = "bottom_right"
-        if sb_config.mobile_emulator:
+        if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
             location = "top_center"
     if max_messages == "default":
         max_messages = "8"
@@ -682,7 +682,7 @@ def post_messenger_success_message(driver, message, msg_dur):
     try:
         theme = "flat"
         location = "bottom_right"
-        if sb_config.mobile_emulator:
+        if hasattr(sb_config, "mobile_emulator") and sb_config.mobile_emulator:
             location = "top_center"
         set_messenger_theme(driver, theme=theme, location=location)
         post_message(driver, message, msg_dur, style="success")

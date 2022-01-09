@@ -3185,7 +3185,10 @@ class BaseCase(unittest.TestCase):
 
     def sleep(self, seconds):
         self.__check_scope()
-        if not sb_config.time_limit:
+        if (
+            not hasattr(sb_config, "time_limit")
+            or (hasattr(sb_config, "time_limit") and not sb_config.time_limit)
+        ):
             time.sleep(seconds)
         elif seconds < 0.4:
             shared_utils.check_if_time_limit_exceeded()
