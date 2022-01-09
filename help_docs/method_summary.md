@@ -265,6 +265,8 @@ self.save_recorded_actions()
 
 self.activate_jquery()
 
+self.bring_active_window_to_front()
+
 self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
 self.highlight_click(selector, by=By.CSS_SELECTOR, loops=3, scroll=True)
