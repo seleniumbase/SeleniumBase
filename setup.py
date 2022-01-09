@@ -83,6 +83,7 @@ setup(
     author_email="mdmintz@gmail.com",
     maintainer="Michael Mintz",
     license="MIT",
+    keywords="pytest automation selenium browser testing webdriver sbase",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
