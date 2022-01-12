@@ -110,6 +110,10 @@ self.remove_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None)
 
 self.remove_attributes(selector, attribute, by=By.CSS_SELECTOR)
 
+self.get_property(selector, property, by=By.CSS_SELECTOR, timeout=None)
+
+self.get_text_content(selector, by=By.CSS_SELECTOR, timeout=None)
+
 self.get_property_value(selector, property, by=By.CSS_SELECTOR, timeout=None)
 
 self.get_image_url(selector, by=By.CSS_SELECTOR, timeout=None)
