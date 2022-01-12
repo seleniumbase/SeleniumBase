@@ -217,7 +217,7 @@ def is_in_frame(driver):
     Returns True if the driver has switched to a frame.
     Returns False if the driver was on default content.
     """
-    return driver.execute_script(
+    in_basic_frame = driver.execute_script(
         """
         var frame = window.frameElement;
         if (frame) {
@@ -228,6 +228,13 @@ def is_in_frame(driver):
         }
         """
     )
+    location_href = driver.execute_script("""return window.location.href;""")
+    in_external_frame = False
+    if driver.current_url != location_href:
+        in_external_frame = True
+    if in_basic_frame or in_external_frame:
+        return True
+    return False
 
 
 def safe_execute_script(driver, script):
