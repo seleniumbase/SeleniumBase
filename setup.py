@@ -109,8 +109,12 @@ setup(
         "Topic :: Internet",
         "Topic :: Internet :: WWW/HTTP :: Browsers",
         "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Topic :: Scientific/Engineering :: Image Processing",
+        "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Software Development",
         "Topic :: Software Development :: Quality Assurance",
+        "Topic :: Software Development :: Code Generators",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Testing",
         "Topic :: Software Development :: Testing :: Acceptance",
@@ -237,7 +241,7 @@ setup(
         'Pillow==9.0.0;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==10.16.2;python_version>="3.6" and python_version<"4.0"',
+        'rich==11.0.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',

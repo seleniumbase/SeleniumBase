@@ -72,7 +72,7 @@ if sys.version_info[0] < 3:
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf8")
 selenium4 = False
-if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+if sys.version_info >= (3, 7):
     selenium4 = True
 
 
@@ -1402,6 +1402,50 @@ class BaseCase(unittest.TestCase):
             self.execute_script(script)
         except Exception:
             pass
+
+    def get_property(
+        self, selector, property, by=By.CSS_SELECTOR, timeout=None
+    ):
+        """Returns the property value of an element.
+        This is not the same as self.get_property_value(), which returns
+        the value of an element's computed style using a different algorithm.
+        If no result is found, an empty string (instead of None) is returned.
+        Example:
+            html_text = self.get_property(SELECTOR, "textContent")
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.wait_for_ready_state_complete()
+        time.sleep(0.01)
+        element = page_actions.wait_for_element_present(
+            self.driver, selector, by, timeout
+        )
+        try:
+            property_value = element.get_property(property)
+        except (StaleElementReferenceException, ENI_Exception):
+            self.wait_for_ready_state_complete()
+            time.sleep(0.14)
+            element = page_actions.wait_for_element_present(
+                self.driver, selector, by, timeout
+            )
+            property_value = element.get_property(property)
+        if not property_value:
+            return ""
+        return property_value
+
+    def get_text_content(self, selector, by=By.CSS_SELECTOR, timeout=None):
+        """Returns the text that appears in the HTML for an element.
+        This is different from "self.get_text(selector, by=By.CSS_SELECTOR)"
+        because that only returns the visible text on a page for an element,
+        rather than the HTML text that's being returned from this method."""
+        self.__check_scope()
+        return self.get_property(
+            selector, property="textContent", by=by, timeout=timeout
+        )
 
     def get_property_value(
         self, selector, property, by=By.CSS_SELECTOR, timeout=None
@@ -3895,12 +3939,18 @@ class BaseCase(unittest.TestCase):
     def __escape_quotes_if_needed(self, string):
         return js_utils.escape_quotes_if_needed(string)
 
+    def __is_in_frame(self):
+        return js_utils.is_in_frame(self.driver)
+
     def bring_active_window_to_front(self):
         """Brings the active browser window to the front.
         This is useful when multiple drivers are being used."""
         self.__check_scope()
         try:
-            self.switch_to_window(self.driver.current_window_handle)
+            if not self.__is_in_frame():
+                # Only bring the window to the front if not in a frame
+                # because the driver resets itself to default content.
+                self.switch_to_window(self.driver.current_window_handle)
         except Exception:
             pass
 
