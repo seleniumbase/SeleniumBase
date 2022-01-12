@@ -31,7 +31,7 @@ class DemoSiteTests(BaseCase):
 
         # Verify that a button click changes text on the page
         self.assert_text("This Text is Green", "#pText")
-        self.click("#myButton")
+        self.click('button:contains("Click Me")')
         self.assert_text("This Text is Purple", "#pText")
 
         # Assert that the given SVG is visible on the page
