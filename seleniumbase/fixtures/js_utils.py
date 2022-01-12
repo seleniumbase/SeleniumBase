@@ -212,6 +212,24 @@ def escape_quotes_if_needed(string):
     return string
 
 
+def is_in_frame(driver):
+    """
+    Returns True if the driver has switched to a frame.
+    Returns False if the driver was on default content.
+    """
+    return driver.execute_script(
+        """
+        var frame = window.frameElement;
+        if (frame) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        """
+    )
+
+
 def safe_execute_script(driver, script):
     """When executing a script that contains a jQuery command,
     it's important that the jQuery library has been loaded first.

@@ -3939,12 +3939,18 @@ class BaseCase(unittest.TestCase):
     def __escape_quotes_if_needed(self, string):
         return js_utils.escape_quotes_if_needed(string)
 
+    def __is_in_frame(self):
+        return js_utils.is_in_frame(self.driver)
+
     def bring_active_window_to_front(self):
         """Brings the active browser window to the front.
         This is useful when multiple drivers are being used."""
         self.__check_scope()
         try:
-            self.switch_to_window(self.driver.current_window_handle)
+            if not self.__is_in_frame():
+                # Only bring the window to the front if not in a frame
+                # because the driver resets itself to default content.
+                self.switch_to_window(self.driver.current_window_handle)
         except Exception:
             pass
 
