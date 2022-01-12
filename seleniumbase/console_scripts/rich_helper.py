@@ -37,7 +37,9 @@ def display_code(code):
 def fix_emoji_spacing(code):
     try:
         # Fix the display width of certain emojis that take up two spaces
-        double_width_emojis = ["🗺️", "🖼️", "🗄️", "⏺️", "♻️", "🗂️", "🖥️"]
+        double_width_emojis = [
+            "🗺️", "🖼️", "🗄️", "⏺️", "♻️", "🗂️", "🖥️", "🕹️", "🎞️"
+        ]
         for emoji in double_width_emojis:
             if emoji in code:
                 code = code.replace(emoji, emoji + " ")
