@@ -2,6 +2,7 @@
 This module contains useful utility methods.
 """
 import codecs
+import os
 import re
 import requests
 
@@ -247,7 +248,8 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
     else:
         file_name = file_url.split("/")[-1]
     r = requests.get(file_url)
-    with open(destination_folder + "/" + file_name, "wb") as code:
+    file_path = os.path.join(destination_folder, file_name)
+    with open(file_path, "wb") as code:
         code.write(r.content)
 
 

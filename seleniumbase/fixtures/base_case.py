@@ -72,7 +72,7 @@ if sys.version_info[0] < 3:
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf8")
 selenium4 = False
-if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
+if sys.version_info >= (3, 7):
     selenium4 = True
 
 
