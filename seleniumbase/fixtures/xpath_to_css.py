@@ -102,7 +102,7 @@ def _get_raw_css_from_xpath(xpath):
             elif match["mattr"] == "@class":
                 attr = ".%s" % match["mvalue"].replace(" ", ".")
             elif match["mattr"] in ["text()", "."]:
-                attr = ":contains(^%s$)" % match["mvalue"]
+                attr = ":contains('%s')" % match["mvalue"]
             elif match["mattr"]:
                 attr = '[%s="%s"]' % (
                     match["mattr"].replace("@", ""),
