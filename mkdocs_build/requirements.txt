@@ -16,13 +16,13 @@ readme-renderer==32.0
 pymdown-extensions==9.1;python_version>="3.6"
 importlib-metadata==4.10.0;python_version>="3.7"
 bleach==4.1.0
-jsmin==3.0.0;python_version>="3.6"
+jsmin==3.0.1;python_version>="3.6"
 lunr==0.6.1;python_version>="3.6"
 nltk==3.6.7;python_version>="3.6"
 watchdog==2.1.6;python_version>="3.6"
 mkdocs==1.2.3;python_version>="3.6"
-mkdocs-material==8.1.4;python_version>="3.6"
-mkdocs-exclude-search==0.6.3;python_version>="3.6"
-mkdocs-simple-hooks==0.1.4
+mkdocs-material==8.1.7;python_version>="3.6"
+mkdocs-exclude-search==0.6.4;python_version>="3.6"
+mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.0.3;python_version>="3.6"
 mkdocs-minify-plugin==0.5.0
