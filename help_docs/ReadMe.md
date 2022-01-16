@@ -29,7 +29,7 @@
 <a href="https://seleniumbase.io/help_docs/translations/">🌏 Translate</a> |
 <a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">🛂 DialogBoxes</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/recorder_mode.md">🔴 Recorder</a> |
+<a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
 <a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Presenter</a> |
