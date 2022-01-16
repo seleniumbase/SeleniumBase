@@ -1858,13 +1858,13 @@ class BaseCase(unittest.TestCase):
         try:
             return page_actions.hover_on_element(self.driver, selector)
         except WebDriverException as e:
-            driver_capabilities = self.driver.__dict__["capabilities"]
+            driver_capabilities = self.driver.capabilities
             if "version" in driver_capabilities:
                 chrome_version = driver_capabilities["version"]
             else:
                 chrome_version = driver_capabilities["browserVersion"]
             major_chrome_version = chrome_version.split(".")[0]
-            chrome_dict = self.driver.__dict__["capabilities"]["chrome"]
+            chrome_dict = self.driver.capabilities["chrome"]
             chromedriver_version = chrome_dict["chromedriverVersion"]
             chromedriver_version = chromedriver_version.split(" ")[0]
             major_chromedriver_version = chromedriver_version.split(".")[0]
@@ -10396,7 +10396,12 @@ class BaseCase(unittest.TestCase):
         try:
             version = self.driver.__dict__["caps"]["browserVersion"]
         except Exception:
-            version = self.driver.__dict__["caps"]["version"]
+            try:
+                version = self.driver.__dict__["caps"]["version"]
+            except Exception:
+                version = str(
+                    self.driver.__dict__["capabilities"]["version"]
+                )
             self.driver.__dict__["caps"]["browserVersion"] = version
         major_browser_version = version.split(".")[0]
         return major_browser_version
