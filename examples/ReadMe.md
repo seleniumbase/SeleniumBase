@@ -43,6 +43,14 @@ pytest test_swag_labs.py --demo
 
 <img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" /><br />
 
+Run a Wordle-solver example:
+
+```bash
+pytest wordle_test.py
+```
+
+<img src="https://seleniumbase.io/cdn/gif/wordle.gif" /><br />
+
 Run an example test in Headless Mode: (invisible browser)
 
 ```bash
