@@ -49,8 +49,9 @@ def process_failures(test, test_count, browser_type, duration):
     bad_page_image = "failure_%s.png" % test_count
     bad_page_data = "failure_%s.txt" % test_count
     screenshot_path = "%s/%s" % (LATEST_REPORT_DIR, bad_page_image)
-    with open(screenshot_path, "wb") as file:
-        file.write(test._last_page_screenshot)
+    if hasattr(test, "_last_page_screenshot"):
+        with open(screenshot_path, "wb") as file:
+            file.write(test._last_page_screenshot)
     page_actions.save_test_failure_data(
         test.driver, bad_page_data, browser_type, folder=LATEST_REPORT_DIR
     )
@@ -69,6 +70,8 @@ def process_failures(test, test_count, browser_type, duration):
             exc_message = sys.last_value
         except Exception:
             exc_message = "(Unknown Exception)"
+    if not hasattr(test, "_last_page_url"):
+        test._last_page_url = "about:blank"
     return '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"' % (
         test_count,
         "FAILED!",

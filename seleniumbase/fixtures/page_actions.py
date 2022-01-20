@@ -124,13 +124,12 @@ def is_attribute_present(
         element = driver.find_element(by=by, value=selector)
         found_value = element.get_attribute(attribute)
         if found_value is None:
-            raise Exception()
-
+            return False
         if value is not None:
             if found_value == value:
                 return True
             else:
-                raise Exception()
+                return False
         else:
             return True
     except Exception:
