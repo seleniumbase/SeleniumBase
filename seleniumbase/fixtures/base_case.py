@@ -5834,7 +5834,7 @@ class BaseCase(unittest.TestCase):
                 self.__passed_then_skipped = True
             self.__will_be_skipped = True
             sb_config._results[test_id] = "Skipped"
-        if self.with_db_reporting:
+        if hasattr(self, "with_db_reporting") and self.with_db_reporting:
             if self.is_pytest:
                 self.__skip_reason = reason
             else:
