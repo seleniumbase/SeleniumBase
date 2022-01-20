@@ -834,22 +834,30 @@ class BaseCase(unittest.TestCase):
     def is_element_present(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_element_present(selector)
         return page_actions.is_element_present(self.driver, selector, by)
 
     def is_element_visible(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_element_visible(selector)
         return page_actions.is_element_visible(self.driver, selector, by)
 
     def is_element_enabled(self, selector, by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_element_enabled(selector)
         return page_actions.is_element_enabled(self.driver, selector, by)
 
     def is_text_visible(self, text, selector="html", by=By.CSS_SELECTOR):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_text_visible(text, selector)
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def is_attribute_present(
@@ -860,6 +868,10 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_attribute_present(
+                selector, attribute, value
+            )
         return page_actions.is_attribute_present(
             self.driver, selector, attribute, value, by
         )
@@ -1259,6 +1271,8 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
+        if self.__is_shadow_selector(selector):
+            return self.__get_shadow_attribute(selector, attribute)
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
         )
@@ -6004,6 +6018,10 @@ class BaseCase(unittest.TestCase):
         element = self.__get_shadow_element(selector)
         return element.text
 
+    def __get_shadow_attribute(self, selector, attribute):
+        element = self.__get_shadow_element(selector)
+        return element.get_attribute(attribute)
+
     def __wait_for_shadow_text_visible(self, text, selector):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
@@ -6129,6 +6147,36 @@ class BaseCase(unittest.TestCase):
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
             return element.is_displayed()
+        except Exception:
+            return False
+
+    def __is_shadow_element_enabled(self, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return element.is_enabled()
+        except Exception:
+            return False
+
+    def __is_shadow_text_visible(self, text, selector):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            return element.is_displayed() and text in element.text
+        except Exception:
+            return False
+
+    def __is_shadow_attribute_present(self, selector, attribute, value=None):
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            found_value = element.get_attribute(attribute)
+            if found_value is None:
+                return False
+            if value is not None:
+                if found_value == value:
+                    return True
+                else:
+                    return False
+            else:
+                return True
         except Exception:
             return False
 
