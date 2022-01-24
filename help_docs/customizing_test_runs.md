@@ -164,6 +164,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --maximize-window  # (Start tests with the web browser window maximized.)
 --save-screenshot  # (Save a screenshot at the end of each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
+--external-pdf  # (Set Chrome "plugins.always_open_pdf_externally": True.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
 
