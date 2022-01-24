@@ -81,6 +81,7 @@ def pytest_addoption(parser):
     --maximize  (Start tests with the web browser window maximized.)
     --save-screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
+    --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
     c1 = ""
@@ -831,8 +832,8 @@ def pytest_addoption(parser):
         dest="crumbs",
         default=False,
         help="""The option to delete all cookies between tests
-             that reuse the same browser session. This option
-            is only needed when using "--reuse-session".""",
+                that reuse the same browser session. This option
+                is only needed when using "--reuse-session".""",
     )
     parser.addoption(
         "--maximize_window",
@@ -853,8 +854,8 @@ def pytest_addoption(parser):
         action="store_true",
         dest="save_screenshot",
         default=False,
-        help="""Take a screenshot on last page after the last step
-                of the test. (Added to the "latest_logs" folder.)""",
+        help="""Save a screenshot at the end of the test.
+                (Added to the "latest_logs/" folder.)""",
     )
     parser.addoption(
         "--visual_baseline",
@@ -866,6 +867,17 @@ def pytest_addoption(parser):
                 Automated Visual Testing with SeleniumBase.
                 When a test calls self.check_window(), it will
                 rebuild its files in the visual_baseline folder.""",
+    )
+    parser.addoption(
+        "--external_pdf",
+        "--external-pdf",
+        action="store_true",
+        dest="external_pdf",
+        default=False,
+        help="""This option sets the following on Chromium:
+                "plugins.always_open_pdf_externally": True,
+                which causes opened PDF URLs to download immediately,
+                instead of being displayed in the browser window.""",
     )
     parser.addoption(
         "--timeout_multiplier",
@@ -1114,6 +1126,7 @@ def pytest_configure(config):
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
+    sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config._is_timeout_changed = False
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT

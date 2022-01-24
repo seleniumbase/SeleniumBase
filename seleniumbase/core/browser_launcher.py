@@ -273,6 +273,7 @@ def _set_chrome_options(
     user_data_dir,
     extension_zip,
     extension_dir,
+    external_pdf,
     servername,
     mobile_emulator,
     device_width,
@@ -302,6 +303,8 @@ def _set_chrome_options(
         prefs["intl.accept_languages"] = locale_code
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
+    if external_pdf:
+        prefs["plugins.always_open_pdf_externally"] = True
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_experimental_option("w3c", True)
     if enable_sync:
@@ -728,6 +731,7 @@ def get_driver(
     user_data_dir=None,
     extension_zip=None,
     extension_dir=None,
+    external_pdf=None,
     test_id=None,
     mobile_emulator=False,
     device_width=None,
@@ -803,6 +807,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            external_pdf,
             test_id,
             mobile_emulator,
             device_width,
@@ -841,6 +846,7 @@ def get_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            external_pdf,
             mobile_emulator,
             device_width,
             device_height,
@@ -883,6 +889,7 @@ def get_remote_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    external_pdf,
     test_id,
     mobile_emulator,
     device_width,
@@ -971,6 +978,7 @@ def get_remote_driver(
             user_data_dir,
             extension_zip,
             extension_dir,
+            external_pdf,
             servername,
             mobile_emulator,
             device_width,
@@ -1298,6 +1306,7 @@ def get_local_driver(
     user_data_dir,
     extension_zip,
     extension_dir,
+    external_pdf,
     mobile_emulator,
     device_width,
     device_height,
@@ -1490,6 +1499,8 @@ def get_local_driver(
             prefs["intl.accept_languages"] = locale_code
         if block_images:
             prefs["profile.managed_default_content_settings.images"] = 2
+        if external_pdf:
+            prefs["plugins.always_open_pdf_externally"] = True
         edge_options.add_experimental_option("prefs", prefs)
         edge_options.add_experimental_option("w3c", True)
         edge_options.add_argument(
@@ -1738,6 +1749,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                external_pdf,
                 servername,
                 mobile_emulator,
                 device_width,
@@ -1791,6 +1803,7 @@ def get_local_driver(
                 user_data_dir,
                 extension_zip,
                 extension_dir,
+                external_pdf,
                 servername,
                 mobile_emulator,
                 device_width,
@@ -1888,6 +1901,7 @@ def get_local_driver(
                         user_data_dir,
                         extension_zip,
                         extension_dir,
+                        external_pdf,
                         servername,
                         mobile_emulator,
                         device_width,

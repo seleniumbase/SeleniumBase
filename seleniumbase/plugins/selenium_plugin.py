@@ -60,6 +60,7 @@ class SeleniumBrowser(Plugin):
     --maximize  (Start tests with the web browser window maximized.)
     --save-screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
+    --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
 
@@ -585,8 +586,7 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="save_screenshot",
             default=False,
-            help="""(DEPRECATED) - Screenshots are enabled by default now.
-                    This option saves screenshots during test failures.
+            help="""Save a screenshot at the end of the test.
                     (Added to the "latest_logs/" folder.)""",
         )
         parser.add_option(
@@ -599,6 +599,17 @@ class SeleniumBrowser(Plugin):
                     Automated Visual Testing with SeleniumBase.
                     When a test calls self.check_window(), it will
                     rebuild its files in the visual_baseline folder.""",
+        )
+        parser.add_option(
+            "--external_pdf",
+            "--external-pdf",
+            action="store_true",
+            dest="external_pdf",
+            default=False,
+            help="""This option sets the following on Chromium:
+                    "plugins.always_open_pdf_externally": True,
+                    which causes opened PDF URLs to download immediately,
+                    instead of being displayed in the browser window.""",
         )
         parser.add_option(
             "--timeout_multiplier",
@@ -677,6 +688,7 @@ class SeleniumBrowser(Plugin):
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
+        test.test.external_pdf = self.options.external_pdf
         test.test.timeout_multiplier = self.options.timeout_multiplier
         test.test.dashboard = False
         test.test._multithreaded = False
