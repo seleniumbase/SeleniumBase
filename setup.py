@@ -219,7 +219,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.31.0;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.31.1;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
@@ -263,6 +263,7 @@ setup(
             'flake8==3.7.9;python_version<"3.5"',
             'flake8==3.9.2;python_version>="3.5" and python_version<"3.6"',
             'flake8==4.0.1;python_version>="3.6"',
+            'mccabe==0.6.1',
             'pyflakes==2.1.1;python_version<"3.5"',
             'pyflakes==2.3.1;python_version>="3.5" and python_version<"3.6"',
             'pyflakes==2.4.0;python_version>="3.6"',

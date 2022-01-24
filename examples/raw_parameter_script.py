@@ -82,6 +82,7 @@ if pure_python:
     sb._dash_initialized = False
     sb.message_duration = 2
     sb.block_images = False
+    sb.external_pdf = False
     sb.remote_debug = False
     sb.settings_file = None
     sb.user_data_dir = None
