@@ -3402,16 +3402,16 @@ class BaseCase(unittest.TestCase):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
-                and srt_actions[n-1][0] == "sk_op"
+                and srt_actions[n - 1][0] == "sk_op"
             ):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 1
-                and srt_actions[n-1][0] == "_skip"
-                and srt_actions[n-2][0] == "sk_op"
-                and srt_actions[n][2] == srt_actions[n-1][2]
+                and srt_actions[n - 1][0] == "_skip"
+                and srt_actions[n - 2][0] == "sk_op"
+                and srt_actions[n][2] == srt_actions[n - 1][2]
             ):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
@@ -3419,17 +3419,17 @@ class BaseCase(unittest.TestCase):
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
                 and (
-                    srt_actions[n-1][0] == "click"
-                    or srt_actions[n-1][0] == "js_cl"
-                    or srt_actions[n-1][0] == "js_ca"
+                    srt_actions[n - 1][0] == "click"
+                    or srt_actions[n - 1][0] == "js_cl"
+                    or srt_actions[n - 1][0] == "js_ca"
                 )
             ):
-                url1 = srt_actions[n-1][2]
+                url1 = srt_actions[n - 1][2]
                 if (
-                    srt_actions[n-1][0] == "js_cl"
-                    or srt_actions[n-1][0] == "js_ca"
+                    srt_actions[n - 1][0] == "js_cl"
+                    or srt_actions[n - 1][0] == "js_ca"
                 ):
-                    url1 = srt_actions[n-1][2][0]
+                    url1 = srt_actions[n - 1][2][0]
                 if url1.endswith("/#/"):
                     url1 = url1[:-3]
                 elif url1.endswith("/"):
@@ -3445,7 +3445,7 @@ class BaseCase(unittest.TestCase):
                     or (len(url1) > 0
                         and (url2.startswith(url1) or "?search" in url1)
                         and (int(srt_actions[n][3]) - int(
-                            srt_actions[n-1][3]) < 6500))
+                            srt_actions[n - 1][3]) < 6500))
                 ):
                     srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
@@ -3453,11 +3453,11 @@ class BaseCase(unittest.TestCase):
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
                 and (
-                    srt_actions[n-1][0] == "begin"
-                    or srt_actions[n-1][0] == "_url_"
+                    srt_actions[n - 1][0] == "begin"
+                    or srt_actions[n - 1][0] == "_url_"
                 )
             ):
-                url1 = srt_actions[n-1][2]
+                url1 = srt_actions[n - 1][2]
                 if url1.endswith("/#/"):
                     url1 = url1[:-3]
                 elif url1.endswith("/"):
@@ -3468,55 +3468,57 @@ class BaseCase(unittest.TestCase):
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
                 if url1.replace("www.", "") == url2.replace("www.", ""):
-                    srt_actions[n-1][0] = "_skip"
+                    srt_actions[n - 1][0] = "_skip"
                 elif url2.startswith(url1):
                     srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
             if (
                 srt_actions[n][0] == "input"
                 and n > 0
-                and srt_actions[n-1][0] == "input"
-                and srt_actions[n-1][2] == ""
+                and srt_actions[n - 1][0] == "input"
+                and srt_actions[n - 1][2] == ""
             ):
-                srt_actions[n-1][0] = "_skip"
+                srt_actions[n - 1][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
                 and (
-                    srt_actions[n-1][0] == "click"
-                    or srt_actions[n-1][0] == "js_cl"
-                    or srt_actions[n-1][0] == "js_ca"
-                    or srt_actions[n-1][0] == "input"
+                    srt_actions[n - 1][0] == "click"
+                    or srt_actions[n - 1][0] == "js_cl"
+                    or srt_actions[n - 1][0] == "js_ca"
+                    or srt_actions[n - 1][0] == "input"
                 )
-                and (int(srt_actions[n][3]) - int(srt_actions[n-1][3]) < 6500)
+                and (
+                    int(srt_actions[n][3]) - int(srt_actions[n - 1][3]) < 6500
+                )
             ):
                 if (
-                    srt_actions[n-1][0] == "click"
-                    or srt_actions[n-1][0] == "js_cl"
-                    or srt_actions[n-1][0] == "js_ca"
+                    srt_actions[n - 1][0] == "click"
+                    or srt_actions[n - 1][0] == "js_cl"
+                    or srt_actions[n - 1][0] == "js_ca"
                 ):
                     if (
-                        srt_actions[n-1][1].startswith("input")
-                        or srt_actions[n-1][1].startswith("button")
+                        srt_actions[n - 1][1].startswith("input")
+                        or srt_actions[n - 1][1].startswith("button")
                     ):
                         srt_actions[n][0] = "f_url"
-                elif srt_actions[n-1][0] == "input":
-                    if srt_actions[n-1][2].endswith("\n"):
+                elif srt_actions[n - 1][0] == "input":
+                    if srt_actions[n - 1][2].endswith("\n"):
                         srt_actions[n][0] = "f_url"
         for n in range(len(srt_actions)):
             if (
                 srt_actions[n][0] == "cho_f"
                 and n > 0
-                and srt_actions[n-1][0] == "chfil"
+                and srt_actions[n - 1][0] == "chfil"
             ):
-                srt_actions[n-1][0] = "_skip"
-                srt_actions[n][2] = srt_actions[n-1][1][1]
+                srt_actions[n - 1][0] = "_skip"
+                srt_actions[n][2] = srt_actions[n - 1][1][1]
         for n in range(len(srt_actions)):
             if (
                 srt_actions[n][0] == "input"
                 and n > 0
-                and srt_actions[n-1][0] == "e_mfa"
+                and srt_actions[n - 1][0] == "e_mfa"
             ):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
@@ -3524,8 +3526,8 @@ class BaseCase(unittest.TestCase):
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
                 and n > 0
                 and (
-                    srt_actions[n-1][0] == "submi"
-                    or srt_actions[n-1][0] == "e_mfa"
+                    srt_actions[n - 1][0] == "submi"
+                    or srt_actions[n - 1][0] == "e_mfa"
                 )
             ):
                 srt_actions[n][0] = "f_url"
@@ -3547,13 +3549,13 @@ class BaseCase(unittest.TestCase):
             if (
                 srt_actions[n][0] == "click"
                 and n > 0
-                and srt_actions[n-1][0] == "ho_cl"
-                and srt_actions[n-1][2] in origins
+                and srt_actions[n - 1][0] == "ho_cl"
+                and srt_actions[n - 1][2] in origins
             ):
-                srt_actions[n-1][0] = "_skip"
+                srt_actions[n - 1][0] = "_skip"
                 srt_actions[n][0] = "h_clk"
-                srt_actions[n][1] = srt_actions[n-1][1][0]
-                srt_actions[n][2] = srt_actions[n-1][1][1]
+                srt_actions[n][1] = srt_actions[n - 1][1][0]
+                srt_actions[n][2] = srt_actions[n - 1][1][1]
         for n in range(len(srt_actions)):
             if srt_actions[n][0] == "chfil" and srt_actions[n][2] in origins:
                 srt_actions[n][0] = "cho_f"
@@ -3563,9 +3565,9 @@ class BaseCase(unittest.TestCase):
             if (
                 srt_actions[n][0] == "sh_fc"
                 and n > 0
-                and srt_actions[n-1][0] == "sh_fc"
+                and srt_actions[n - 1][0] == "sh_fc"
             ):
-                srt_actions[n-1][0] = "_skip"
+                srt_actions[n - 1][0] = "_skip"
         ext_actions = []
         ext_actions.append("_url_")
         ext_actions.append("js_cl")
@@ -3614,8 +3616,8 @@ class BaseCase(unittest.TestCase):
             if (
                 srt_actions[n][0] == "input"
                 and n > 0
-                and srt_actions[n-1][0] == "js_ty"
-                and srt_actions[n][2] == srt_actions[n-1][2]
+                and srt_actions[n - 1][0] == "js_ty"
+                and srt_actions[n][2] == srt_actions[n - 1][2]
             ):
                 srt_actions[n][0] = "_skip"
         for n in range(len(srt_actions)):
@@ -8517,13 +8519,13 @@ class BaseCase(unittest.TestCase):
         new_buttons = []
         for button in buttons:
             if (
-                (type(button) is list or type(button) is tuple) and (
-                 len(button) == 1)
+                (type(button) is list or type(button) is tuple)
+                and (len(button) == 1)
             ):
                 new_buttons.append(button[0])
             elif (
-                (type(button) is list or type(button) is tuple) and (
-                 len(button) > 1)
+                (type(button) is list or type(button) is tuple)
+                and (len(button) > 1)
             ):
                 new_buttons.append((button[0], str(button[1]).lower()))
             else:
@@ -8587,13 +8589,13 @@ class BaseCase(unittest.TestCase):
             raise Exception('Expecting a string for arg: "message"!')
         if button:
             if (
-                (type(button) is list or type(button) is tuple) and (
-                 len(button) == 1)
+                (type(button) is list or type(button) is tuple)
+                and (len(button) == 1)
             ):
                 button = (str(button[0]), "")
             elif (
-                (type(button) is list or type(button) is tuple) and (
-                 len(button) > 1)
+                (type(button) is list or type(button) is tuple)
+                and (len(button) > 1)
             ):
                 valid_colors = [
                     "blue",
@@ -8679,13 +8681,13 @@ class BaseCase(unittest.TestCase):
         new_buttons = []
         for button in buttons:
             if (
-                (type(button) is list or type(button) is tuple) and (
-                 len(button) == 1)
+                (type(button) is list or type(button) is tuple)
+                and (len(button) == 1)
             ):
                 new_buttons.append(button[0])
             elif (
-                (type(button) is list or type(button) is tuple) and (
-                 len(button) > 1)
+                (type(button) is list or type(button) is tuple)
+                and (len(button) > 1)
             ):
                 new_buttons.append((button[0], str(button[1]).lower()))
             else:

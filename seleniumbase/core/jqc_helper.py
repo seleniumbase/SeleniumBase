@@ -240,19 +240,19 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
         },"""
     )
     b1_html = (
-            """formSubmit: {
-                btnClass: 'btn-%s',
-                text: '%s',
-                action: function(){
-                jqc_input = this.$content.find('.jqc_input').val();
-                $jqc_input = this.$content.find('.jqc_input').val();
-                jconfirm.lastInputText = jqc_input;
-                jqc_status = '%s';
-                $jqc_status = jqc_status;
-                jconfirm.lastButtonText = jqc_status;
-                }
-            },"""
-        )
+        """formSubmit: {
+            btnClass: 'btn-%s',
+            text: '%s',
+            action: function(){
+            jqc_input = this.$content.find('.jqc_input').val();
+            $jqc_input = this.$content.find('.jqc_input').val();
+            jconfirm.lastInputText = jqc_input;
+            jqc_status = '%s';
+            $jqc_status = jqc_status;
+            jconfirm.lastButtonText = jqc_status;
+            }
+        },"""
+    )
     one_button_trigger = ""
     if len(buttons) == 1:
         # If there's only one button, allow form submit with "Enter/Return"
