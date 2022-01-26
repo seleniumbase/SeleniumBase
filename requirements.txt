@@ -51,7 +51,7 @@ filelock==3.4.1;python_version>="3.6" and python_version<"3.7"
 filelock==3.4.2;python_version>="3.7"
 fasteners==0.16;python_version<"3.5"
 fasteners==0.16.3;python_version>="3.5" and python_version<"3.6"
-fasteners==0.17.2;python_version>="3.6"
+fasteners==0.17.3;python_version>="3.6"
 execnet==1.9.0
 pluggy==0.13.1;python_version<"3.6"
 pluggy==1.0.0;python_version>="3.6"
@@ -129,7 +129,8 @@ pdfminer.six==20211012;python_version>="3.6"
 # ("pip install -r requirements.txt" also installs this, but "pip install -e ." won't.)
 
 coverage==5.5;python_version<"3.6"
-coverage==6.2;python_version>="3.6"
+coverage==6.2;python_version>="3.6" and python_version<"3.7"
+coverage==6.3;python_version>="3.7"
 pytest-cov==2.12.1;python_version<"3.6"
 pytest-cov==3.0.0;python_version>="3.6"
 flake8==3.7.9;python_version<"3.5"
