@@ -225,7 +225,7 @@ class BaseCase(unittest.TestCase):
                 self.click_partial_link_text(selector, timeout=timeout)
                 return
         if self.__is_shadow_selector(selector):
-            self.__shadow_click(selector)
+            self.__shadow_click(selector, timeout)
             return
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout=timeout
@@ -500,7 +500,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            self.__shadow_type(selector, text)
+            self.__shadow_type(selector, text, timeout)
             return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout
@@ -577,7 +577,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            self.__shadow_type(selector, text, clear_first=False)
+            self.__shadow_type(selector, text, timeout, clear_first=False)
             return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout
@@ -675,7 +675,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            self.__shadow_clear(selector)
+            self.__shadow_clear(selector, timeout)
             return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout
@@ -1237,7 +1237,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__get_shadow_text(selector)
+            return self.__get_shadow_text(selector, timeout)
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         element = page_actions.wait_for_element_visible(
@@ -1272,7 +1272,9 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         if self.__is_shadow_selector(selector):
-            return self.__get_shadow_attribute(selector, attribute)
+            return self.__get_shadow_attribute(
+                selector, attribute, timeout=timeout
+            )
         element = page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
         )
@@ -5954,8 +5956,19 @@ class BaseCase(unittest.TestCase):
                     and self.is_chromium()
                     and int(self.__get_major_browser_version()) >= 96
                 ):
-                    element = shadow_root.find_element(
-                        By.CSS_SELECTOR, value=selector_part)
+                    found = False
+                    for i in range(int(timeout) * 3):
+                        try:
+                            element = shadow_root.find_element(
+                                By.CSS_SELECTOR, value=selector_part)
+                            found = True
+                            break
+                        except Exception:
+                            time.sleep(0.2)
+                            continue
+                    if not found:
+                        element = shadow_root.find_element(
+                            By.CSS_SELECTOR, value=selector_part)
                 else:
                     element = page_actions.wait_for_element_present(
                         shadow_root,
@@ -5985,12 +5998,12 @@ class BaseCase(unittest.TestCase):
             return True
         return False
 
-    def __shadow_click(self, selector):
-        element = self.__get_shadow_element(selector)
+    def __shadow_click(self, selector, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         element.click()
 
-    def __shadow_type(self, selector, text, clear_first=True):
-        element = self.__get_shadow_element(selector)
+    def __shadow_type(self, selector, text, timeout, clear_first=True):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         if clear_first:
             try:
                 element.clear()
@@ -6010,8 +6023,8 @@ class BaseCase(unittest.TestCase):
             if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                 self.wait_for_ready_state_complete()
 
-    def __shadow_clear(self, selector):
-        element = self.__get_shadow_element(selector)
+    def __shadow_clear(self, selector, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         try:
             element.clear()
             backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
@@ -6019,20 +6032,22 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
 
-    def __get_shadow_text(self, selector):
-        element = self.__get_shadow_element(selector)
+    def __get_shadow_text(self, selector, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         return element.text
 
-    def __get_shadow_attribute(self, selector, attribute):
-        element = self.__get_shadow_element(selector)
+    def __get_shadow_attribute(self, selector, attribute, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         return element.get_attribute(attribute)
 
-    def __wait_for_shadow_text_visible(self, text, selector):
+    def __wait_for_shadow_text_visible(self, text, selector, timeout):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
         for x in range(int(settings.SMALL_TIMEOUT * 10)):
             try:
-                actual_text = self.__get_shadow_text(selector).strip()
+                actual_text = self.__get_shadow_text(
+                    selector, timeout=1
+                ).strip()
                 text = text.strip()
                 if text not in actual_text:
                     msg = (
@@ -6048,7 +6063,7 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.1)
-        actual_text = self.__get_shadow_text(selector).strip()
+        actual_text = self.__get_shadow_text(selector, timeout=1).strip()
         text = text.strip()
         if text not in actual_text:
             msg = "Expected text {%s} in element {%s} was not visible!" % (
@@ -6058,12 +6073,14 @@ class BaseCase(unittest.TestCase):
             page_actions.timeout_exception("ElementNotVisibleException", msg)
         return True
 
-    def __wait_for_exact_shadow_text_visible(self, text, selector):
+    def __wait_for_exact_shadow_text_visible(self, text, selector, timeout):
         start_ms = time.time() * 1000.0
         stop_ms = start_ms + (settings.SMALL_TIMEOUT * 1000.0)
         for x in range(int(settings.SMALL_TIMEOUT * 10)):
             try:
-                actual_text = self.__get_shadow_text(selector).strip()
+                actual_text = self.__get_shadow_text(
+                    selector, timeout=1
+                ).strip()
                 text = text.strip()
                 if text != actual_text:
                     msg = (
@@ -6079,7 +6096,7 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.1)
-        actual_text = self.__get_shadow_text(selector).strip()
+        actual_text = self.__get_shadow_text(selector, timeout=1).strip()
         text = text.strip()
         if text != actual_text:
             msg = (
@@ -6089,8 +6106,8 @@ class BaseCase(unittest.TestCase):
             page_actions.timeout_exception("ElementNotVisibleException", msg)
         return True
 
-    def __assert_shadow_text_visible(self, text, selector):
-        self.__wait_for_shadow_text_visible(text, selector)
+    def __assert_shadow_text_visible(self, text, selector, timeout):
+        self.__wait_for_shadow_text_visible(text, selector, timeout)
         if self.demo_mode:
             a_t = "ASSERT TEXT"
             i_n = "in"
@@ -6115,8 +6132,8 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
-    def __assert_exact_shadow_text_visible(self, text, selector):
-        self.__wait_for_exact_shadow_text_visible(text, selector)
+    def __assert_exact_shadow_text_visible(self, text, selector, timeout):
+        self.__wait_for_exact_shadow_text_visible(text, selector, timeout)
         if self.demo_mode:
             a_t = "ASSERT EXACT TEXT"
             i_n = "in"
@@ -6185,12 +6202,12 @@ class BaseCase(unittest.TestCase):
         except Exception:
             return False
 
-    def __wait_for_shadow_element_present(self, selector):
-        element = self.__get_shadow_element(selector)
+    def __wait_for_shadow_element_present(self, selector, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         return element
 
-    def __wait_for_shadow_element_visible(self, selector):
-        element = self.__get_shadow_element(selector)
+    def __wait_for_shadow_element_visible(self, selector, timeout):
+        element = self.__get_shadow_element(selector, timeout=timeout)
         if not element.is_displayed():
             msg = "Shadow DOM Element {%s} was not visible!" % selector
             page_actions.timeout_exception("NoSuchElementException", msg)
@@ -6495,7 +6512,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_visible(selector)
+            return self.__wait_for_shadow_element_visible(
+                selector, timeout
+            )
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
@@ -8937,7 +8956,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_present(selector)
+            return self.__wait_for_shadow_element_present(
+                selector, timeout
+            )
         return page_actions.wait_for_element_present(
             self.driver, selector, by, timeout
         )
@@ -8952,7 +8973,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_element_visible(selector)
+            return self.__wait_for_shadow_element_visible(
+                selector, timeout
+            )
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
@@ -9184,7 +9207,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_shadow_text_visible(text, selector)
+            return self.__wait_for_shadow_text_visible(
+                text, selector, timeout
+            )
         return page_actions.wait_for_text_visible(
             self.driver, text, selector, by, timeout
         )
@@ -9199,7 +9224,9 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            return self.__wait_for_exact_shadow_text_visible(text, selector)
+            return self.__wait_for_exact_shadow_text_visible(
+                text, selector, timeout
+            )
         return page_actions.wait_for_exact_text_visible(
             self.driver, text, selector, by, timeout
         )
@@ -9255,7 +9282,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            self.__assert_shadow_text_visible(text, selector)
+            self.__assert_shadow_text_visible(text, selector, timeout)
             return True
         self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
         if self.demo_mode:
@@ -9301,7 +9328,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
-            self.__assert_exact_shadow_text_visible(text, selector)
+            self.__assert_exact_shadow_text_visible(text, selector, timeout)
             return True
         self.wait_for_exact_text_visible(
             text, selector, by=by, timeout=timeout
