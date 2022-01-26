@@ -532,7 +532,7 @@ def pytest_addoption(parser):
                 When using "--xvfb", the "--headless" option
                 will no longer be enabled by default on Linux.
                 Default: False. (Linux-ONLY!)""",
-        )
+    )
     parser.addoption(
         "--locale_code",
         "--locale-code",

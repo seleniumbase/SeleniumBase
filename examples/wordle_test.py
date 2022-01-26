@@ -79,7 +79,7 @@ class WordleTests(BaseCase):
                 self.click(keyboard_base + button)
             button = 'button[data-key="↵"]'
             self.click(keyboard_base + button)
-            self.sleep(1)  # Time for the animation
+            self.sleep(2)  # Time for the animation
             row = 'game-app::shadow game-row[letters="%s"]::shadow ' % word
             tile = row + "game-tile:nth-of-type(%s)"
             letter_status = []
