@@ -55,8 +55,8 @@ class WordleTests(BaseCase):
             print(message)
             self.skip(message)
         version = [int(i) for i in __version__.split(".") if i.isdigit()]
-        if version < [2, 4, 0]:
-            message = "This test requires SeleniumBase 2.4.0 or newer!"
+        if version < [2, 4, 2]:
+            message = "This test requires SeleniumBase 2.4.2 or newer!"
             print(message)
             self.skip(message)
 
@@ -79,9 +79,9 @@ class WordleTests(BaseCase):
                 self.click(keyboard_base + button)
             button = 'button[data-key="↵"]'
             self.click(keyboard_base + button)
-            self.sleep(2)  # Time for the animation
             row = 'game-app::shadow game-row[letters="%s"]::shadow ' % word
             tile = row + "game-tile:nth-of-type(%s)"
+            self.wait_for_element(tile % "5" + '::shadow [data-state*="e"]')
             letter_status = []
             for i in range(1, 6):
                 letter_eval = self.get_attribute(tile % str(i), "evaluation")
