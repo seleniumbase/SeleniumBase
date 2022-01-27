@@ -5923,14 +5923,21 @@ class BaseCase(unittest.TestCase):
                         chromedriver_version = chrome_dr_version.split(" ")[0]
                         major_c_dr_version = chromedriver_version.split(".")[0]
                         if int(major_c_dr_version) < 96:
+                            upgrade_to = "latest"
+                            major_browser_version = (
+                                self.__get_major_browser_version()
+                            )
+                            if int(major_browser_version) >= 96:
+                                upgrade_to = str(major_browser_version)
                             message = (
-                                "You need to upgrade to a newer version of "
-                                "chromedriver to interact with Shadow root "
-                                "elements!\n(Current driver version is: %s)"
+                                "You need to upgrade to a newer\n"
+                                "version of chromedriver to interact\n"
+                                "with Shadow root elements!\n"
+                                "(Current driver version is: %s)"
                                 "\n(Minimum driver version is: 96.*)"
-                                "\nTo upgrade: "
-                                '"seleniumbase install chromedriver latest"'
-                                % chromedriver_version
+                                "\nTo upgrade, run this:"
+                                '\n"seleniumbase install chromedriver %s"'
+                                % (chromedriver_version, upgrade_to)
                             )
                             raise Exception(message)
                     if timeout != 0.1:  # Skip wait for special 0.1 (See above)
@@ -5947,9 +5954,15 @@ class BaseCase(unittest.TestCase):
                 # Firefox users will likely hit:
                 #     https://github.com/mozilla/geckodriver/issues/1711
                 #     When Firefox adds support, switch to element.shadow_root
-                shadow_root = self.execute_script(
-                    "return arguments[0].shadowRoot", element
-                )
+                try:
+                    shadow_root = self.execute_script(
+                        "return arguments[0].shadowRoot", element
+                    )
+                except Exception:
+                    time.sleep(2)
+                    shadow_root = self.execute_script(
+                        "return arguments[0].shadowRoot", element
+                    )
             if timeout == 0.1 and not shadow_root:
                 raise Exception(
                     "Element {%s} has no shadow root!" % selector_chain
@@ -5971,19 +5984,23 @@ class BaseCase(unittest.TestCase):
                     and self.is_chromium()
                     and int(self.__get_major_browser_version()) >= 96
                 ):
-                    found = False
-                    for i in range(int(timeout) * 3):
-                        try:
-                            element = shadow_root.find_element(
-                                By.CSS_SELECTOR, value=selector_part)
-                            found = True
-                            break
-                        except Exception:
-                            time.sleep(0.2)
-                            continue
-                    if not found:
+                    if timeout == 0.1:
                         element = shadow_root.find_element(
                             By.CSS_SELECTOR, value=selector_part)
+                    else:
+                        found = False
+                        for i in range(int(timeout) * 4):
+                            try:
+                                element = shadow_root.find_element(
+                                    By.CSS_SELECTOR, value=selector_part)
+                                found = True
+                                break
+                            except Exception:
+                                time.sleep(0.2)
+                                continue
+                        if not found:
+                            element = shadow_root.find_element(
+                                By.CSS_SELECTOR, value=selector_part)
                 else:
                     element = page_actions.wait_for_element_present(
                         shadow_root,
