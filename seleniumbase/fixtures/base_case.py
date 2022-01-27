@@ -4011,6 +4011,17 @@ class BaseCase(unittest.TestCase):
     def highlight_update_text(
         self, selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True
     ):
+        """Highlights the element and then types text into the field."""
+        self.__check_scope()
+        if not self.demo_mode:
+            self.highlight(selector, by=by, loops=loops, scroll=scroll)
+        self.update_text(selector, text, by=by)
+
+    def highlight_type(
+        self, selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True
+    ):
+        """Same as self.highlight_update_text()
+        As above, highlights the element and then types text into the field."""
         self.__check_scope()
         if not self.demo_mode:
             self.highlight(selector, by=by, loops=loops, scroll=scroll)

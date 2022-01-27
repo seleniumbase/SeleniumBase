@@ -275,8 +275,9 @@ self.bring_to_front(selector, by=By.CSS_SELECTOR)
 
 self.highlight_click(selector, by=By.CSS_SELECTOR, loops=3, scroll=True)
 
-self.highlight_update_text(
-    selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
+self.highlight_type(selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
+# Duplicates:
+# self.highlight_update_text(selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
 
 self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
 
