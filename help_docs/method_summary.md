@@ -218,15 +218,44 @@ self.switch_to_newest_window()
 # Duplicates: self.switch_to_newest_tab()
 
 self.get_new_driver(
-    browser=None, headless=None, locale_code=None, protocol=None,
-    servername=None, port=None, proxy=None, agent=None, switch_to=True,
-    cap_file=None, cap_string=None, disable_csp=None, enable_ws=None,
-    enable_sync=None, use_auto_ext=None, no_sandbox=None, disable_gpu=None,
-    incognito=None, guest_mode=None, devtools=None, remote_debug=None,
-    swiftshader=None, block_images=None,
-    chromium_arg=None, firefox_arg=None, firefox_pref=None,
-    user_data_dir=None, extension_zip=None, extension_dir=None,
-    is_mobile=None, d_width=None, d_height=None, d_p_r=None)
+    browser=None,
+    headless=None,
+    locale_code=None,
+    protocol=None,
+    servername=None,
+    port=None,
+    proxy=None,
+    proxy_bypass_list=None,
+    agent=None,
+    switch_to=True,
+    cap_file=None,
+    cap_string=None,
+    recorder_ext=None,
+    disable_csp=None,
+    enable_ws=None,
+    enable_sync=None,
+    use_auto_ext=None,
+    no_sandbox=None,
+    disable_gpu=None,
+    incognito=None,
+    guest_mode=None,
+    devtools=None,
+    remote_debug=None,
+    swiftshader=None,
+    ad_block_on=None,
+    block_images=None,
+    chromium_arg=None,
+    firefox_arg=None,
+    firefox_pref=None,
+    user_data_dir=None,
+    extension_zip=None,
+    extension_dir=None,
+    external_pdf=None,
+    is_mobile=None,
+    d_width=None,
+    d_height=None,
+    d_p_r=None,
+)
 
 self.switch_to_driver(driver)
 
@@ -585,8 +614,7 @@ self.post_success_message(message, duration=None, pause=True)
 
 self.post_error_message(message, duration=None, pause=True)
 
-self.set_messenger_theme(theme="default", location="default",
-                         max_messages="default")
+self.set_messenger_theme(theme="default", location="default", max_messages="default")
 
 ############
 
