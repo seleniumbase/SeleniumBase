@@ -72,7 +72,7 @@ class DialogBoxTests(BaseCase):
         message = "<b>This is the SeleniumBase Docs website!</b><br /><br />"
         message += "What would you like to search for?<br />"
         text = self.get_jqc_text_input(message, ["Search"])
-        self.update_text('input[aria-label="Search"]', text + "\n")
+        self.type('input[aria-label="Search"]', text + "\n")
         self.wait_for_ready_state_complete()
         self.set_jqc_theme("bootstrap", color="red", width="32%")
         if self.is_text_visible("No matching documents", ".md-search-result"):
@@ -103,7 +103,7 @@ class DialogBoxTests(BaseCase):
             self.open("https://store.xkcd.com/search")
         else:
             self.open("https://en.wikipedia.org/wiki/Special:Search")
-        self.highlight_update_text('input[id*="search"]', text + "\n")
+        self.highlight_type('input[id*="search"]', text + "\n")
         self.wait_for_ready_state_complete()
         self.sleep(1)
         self.highlight("body")

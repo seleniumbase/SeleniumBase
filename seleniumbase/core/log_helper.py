@@ -65,9 +65,65 @@ def get_master_time():
     return timestamp, the_date, the_time
 
 
+def get_browser_version(driver):
+    driver_capabilities = driver.capabilities
+    if "version" in driver_capabilities:
+        browser_version = driver_capabilities["version"]
+    else:
+        browser_version = driver_capabilities["browserVersion"]
+    return browser_version
+
+
+def get_driver_name_and_version(driver, browser):
+    if driver.capabilities["browserName"].lower() == "chrome":
+        cap_dict = driver.capabilities["chrome"]
+        return ("chromedriver", cap_dict["chromedriverVersion"].split(" ")[0])
+    elif driver.capabilities["browserName"].lower() == "msedge":
+        cap_dict = driver.capabilities["msedge"]
+        return ("msedgedriver", cap_dict["msedgedriverVersion"].split(" ")[0])
+    elif driver.capabilities["browserName"].lower() == "opera":
+        cap_dict = driver.capabilities["opera"]
+        return ("operadriver", cap_dict["operadriverVersion"].split(" ")[0])
+    elif driver.capabilities["browserName"].lower() == "firefox":
+        return ("geckodriver", driver.capabilities["moz:geckodriverVersion"])
+    elif browser == "safari":
+        return ("safaridriver", get_browser_version(driver))
+    elif browser == "ie":
+        return ("iedriver", get_browser_version(driver))
+    else:
+        return None
+
+
 def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     import traceback
 
+    browser_displayed = browser
+    driver_displayed = None
+    browser_version = None
+    driver_version = None
+    driver_name = None
+    try:
+        browser_version = get_browser_version(driver)
+    except Exception:
+        pass
+    try:
+        driver_name, driver_version = get_driver_name_and_version(
+            driver, browser
+        )
+    except Exception:
+        pass
+    if browser_version:
+        headless = ""
+        if test.headless and browser in ["chrome", "edge", "firefox"]:
+            headless = " / headless"
+        browser_displayed = "%s (%s%s)" % (browser, browser_version, headless)
+        if driver_name and driver_version:
+            driver_displayed = "%s (%s)" % (driver_name, driver_version)
+    if not browser_version:
+        browser_displayed = browser
+        driver_displayed = "(Unknown Driver)"
+    if not driver_displayed:
+        driver_displayed = "(Unknown Driver)"
     basic_info_name = settings.BASIC_INFO_NAME
     basic_file_path = "%s/%s" % (test_logpath, basic_info_name)
     if url:
@@ -82,7 +138,8 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         "--------------------------------------------------------------------"
     )
     data_to_save.append("Last Page: %s" % last_page)
-    data_to_save.append("  Browser: %s" % browser)
+    data_to_save.append("  Browser: %s" % browser_displayed)
+    data_to_save.append("   Driver: %s" % driver_displayed)
     data_to_save.append("Timestamp: %s" % timestamp)
     data_to_save.append("     Date: %s" % the_date)
     data_to_save.append("     Time: %s" % the_time)
@@ -140,7 +197,34 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
     log_file.close()
 
 
-def log_skipped_test_data(test, test_logpath, browser, reason):
+def log_skipped_test_data(test, test_logpath, driver, browser, reason):
+    browser_displayed = browser
+    driver_displayed = None
+    browser_version = None
+    driver_version = None
+    driver_name = None
+    try:
+        browser_version = get_browser_version(driver)
+    except Exception:
+        pass
+    try:
+        driver_name, driver_version = get_driver_name_and_version(
+            driver, browser
+        )
+    except Exception:
+        pass
+    if browser_version:
+        headless = ""
+        if test.headless and browser in ["chrome", "edge", "firefox"]:
+            headless = " / headless"
+        browser_displayed = "%s (%s%s)" % (browser, browser_version, headless)
+        if driver_name and driver_version:
+            driver_displayed = "%s (%s)" % (driver_name, driver_version)
+    if not browser_version:
+        browser_displayed = browser
+        driver_displayed = "(Unknown Driver)"
+    if not driver_displayed:
+        driver_displayed = "(Unknown Driver)"
     timestamp, the_date, the_time = get_master_time()
     test_id = get_test_id(test)  # pytest runnable display_id (with the "::")
     data_to_save = []
@@ -149,7 +233,8 @@ def log_skipped_test_data(test, test_logpath, browser, reason):
         "--------------------------------------------------------------------"
     )
     data_to_save.append("       Outcome: SKIPPED")
-    data_to_save.append("       Browser: %s" % browser)
+    data_to_save.append("       Browser: %s" % browser_displayed)
+    data_to_save.append("        Driver: %s" % driver_displayed)
     data_to_save.append("     Timestamp: %s" % timestamp)
     data_to_save.append("          Date: %s" % the_date)
     data_to_save.append("          Time: %s" % the_time)

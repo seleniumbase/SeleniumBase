@@ -55,8 +55,8 @@ class WordleTests(BaseCase):
             print(message)
             self.skip(message)
         version = [int(i) for i in __version__.split(".") if i.isdigit()]
-        if version < [2, 4, 2]:
-            message = "This test requires SeleniumBase 2.4.2 or newer!"
+        if version < [2, 4, 3]:
+            message = "This test requires SeleniumBase 2.4.3 or newer!"
             print(message)
             self.skip(message)
 

@@ -1,5 +1,7 @@
 from seleniumbase.__version__ import __version__  # noqa
 from seleniumbase.core.browser_launcher import get_driver  # noqa
+from seleniumbase.fixtures import js_utils  # noqa
+from seleniumbase.fixtures import page_actions  # noqa
 from seleniumbase.fixtures.base_case import BaseCase  # noqa
 from seleniumbase.masterqa.master_qa import MasterQA  # noqa
 from seleniumbase.common import decorators  # noqa
