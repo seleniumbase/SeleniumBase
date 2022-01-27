@@ -5870,7 +5870,9 @@ class BaseCase(unittest.TestCase):
         browser = self.browser
         if not reason:
             reason = "No skip reason given"
-        log_helper.log_skipped_test_data(self, test_logpath, browser, reason)
+        log_helper.log_skipped_test_data(
+            self, test_logpath, self.driver, browser, reason
+        )
         # Finally skip the test for real
         self.skipTest(reason)
 

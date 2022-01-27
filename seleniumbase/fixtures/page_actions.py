@@ -850,13 +850,17 @@ def _get_last_page(driver):
     return last_page
 
 
-def save_test_failure_data(driver, name, browser_type, folder=None):
+def save_test_failure_data(driver, name, browser_type=None, folder=None):
     """
-    Saves failure data to the current directory (or to a subfolder if provided)
+    Saves failure data to the current directory, or to a subfolder if provided.
+    If {name} does not end in ".txt", it will get added to it.
+    If {browser_type} is provided, the logs will include that.
     If the folder provided doesn't exist, it will get created.
     """
     import traceback
 
+    if not name.endswith(".txt"):
+        name = name + ".txt"
     if folder:
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
@@ -869,7 +873,8 @@ def save_test_failure_data(driver, name, browser_type, folder=None):
     last_page = _get_last_page(driver)
     data_to_save = []
     data_to_save.append("Last_Page: %s" % last_page)
-    data_to_save.append("Browser: %s " % browser_type)
+    if browser_type:
+        data_to_save.append("Browser: %s " % browser_type)
     data_to_save.append(
         "Traceback: "
         + "".join(

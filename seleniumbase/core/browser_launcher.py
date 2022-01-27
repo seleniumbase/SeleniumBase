@@ -1433,6 +1433,7 @@ def get_local_driver(
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if not headless:
+            warnings.simplefilter("ignore", category=DeprecationWarning)
             return webdriver.Ie(capabilities=ie_capabilities)
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
