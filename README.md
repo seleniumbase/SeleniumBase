@@ -149,7 +149,36 @@ pytest my_first_test.py --demo
 
 > (Chrome is the default browser if not specified with ``--browser``. On Linux, ``--headless`` is the default behavior.)
 
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_2.gif" alt="SeleniumBase Test" title="SeleniumBase Demo Mode" width="400" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="400" /></a>
+
+<p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
+
+```python
+from seleniumbase import BaseCase
+
+class MyTestClass(BaseCase):
+    def test_swag_labs(self):
+        self.open("https://www.saucedemo.com")
+        self.type("#user-name", "standard_user")
+        self.type("#password", "secret_sauce\n")
+        self.assert_element("#inventory_container")
+        self.assert_text("PRODUCTS", "span.title")
+        self.click('button[name*="backpack"]')
+        self.click("#shopping_cart_container a")
+        self.assert_text("YOUR CART", "span.title")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click("button#checkout")
+        self.type("#first-name", "SeleniumBase")
+        self.type("#last-name", "Automation")
+        self.type("#postal-code", "77123")
+        self.click("input#continue")
+        self.assert_text("CHECKOUT: OVERVIEW")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click("button#finish")
+        self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
+        self.assert_element('img[alt="Pony Express"]')
+        self.js_click("a#logout_sidebar_link")
+```
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [CSS Diner](http://flukeout.github.io/) can help you learn.

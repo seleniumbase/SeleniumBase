@@ -21,6 +21,8 @@ Run an example test in Chrome: (Default: ``--browser=chrome``)
 pytest my_first_test.py
 ```
 
+<img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" /><br />
+
 Run an example test in Firefox:
 
 ```bash
@@ -28,14 +30,6 @@ pytest my_first_test.py --browser=firefox
 ```
 
 Run an example test in Demo Mode: (highlight assertions)
-
-```bash
-pytest my_first_test.py --demo
-```
-
-<img src="https://seleniumbase.io/cdn/gif/my_first_test_2.gif" title="SeleniumBase Demo Mode" /><br />
-
-Run a different example in Demo Mode:
 
 ```bash
 pytest test_swag_labs.py --demo
