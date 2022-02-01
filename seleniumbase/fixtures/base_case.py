@@ -44,6 +44,7 @@ from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
     MoveTargetOutOfBoundsException,
+    NoSuchElementException,
     NoSuchWindowException,
     StaleElementReferenceException,
     WebDriverException,
@@ -364,6 +365,8 @@ class BaseCase(unittest.TestCase):
             self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
             if self.driver.current_url != pre_action_url:
                 self.__ad_block_as_needed()
+        if self.browser == "safari":
+            time.sleep(0.02)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -4866,14 +4869,26 @@ class BaseCase(unittest.TestCase):
         if type(abs_path) is int or type(abs_path) is float:
             abs_path = str(abs_path)
         try:
-            element.send_keys(abs_path)
+            if self.browser == "safari":
+                try:
+                    element.send_keys(abs_path)
+                except NoSuchElementException:
+                    pass  # May get this error on Safari even if upload works.
+            else:
+                element.send_keys(abs_path)
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = self.wait_for_element_present(
                 selector, by=by, timeout=timeout
             )
-            element.send_keys(abs_path)
+            if self.browser == "safari":
+                try:
+                    element.send_keys(abs_path)
+                except NoSuchElementException:
+                    pass  # May get this error on Safari even if upload works.
+            else:
+                element.send_keys(abs_path)
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
