@@ -281,6 +281,8 @@ def _set_chrome_options(
     device_pixel_ratio,
 ):
     chrome_options = webdriver.ChromeOptions()
+    if browser_name == constants.Browser.OPERA:
+        chrome_options = webdriver.opera.options.Options()
     prefs = {
         "download.default_directory": downloads_path,
         "local_discovery.notifications_enabled": False,
@@ -1058,6 +1060,7 @@ def get_remote_driver(
         selenoid = False
         selenoid_options = None
         screen_resolution = None
+        browser_version = None
         platform_name = None
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
@@ -1066,6 +1069,8 @@ def get_remote_driver(
                 selenoid_options = desired_caps[key]
             elif key == "screenResolution":
                 screen_resolution = desired_caps[key]
+            elif key == "version" or key == "browserVersion":
+                browser_version = desired_caps[key]
             elif key == "platform" or key == "platformName":
                 platform_name = desired_caps[key]
         if selenium4:
@@ -1076,6 +1081,9 @@ def get_remote_driver(
             if screen_resolution:
                 scres = screen_resolution
                 firefox_options.set_capability("screenResolution", scres)
+            if browser_version:
+                br_vers = browser_version
+                firefox_options.set_capability("browserVersion", br_vers)
             if platform_name:
                 plat_name = platform_name
                 firefox_options.set_capability("platformName", plat_name)
@@ -1149,19 +1157,86 @@ def get_remote_driver(
                 keep_alive=True,
             )
     elif browser_name == constants.Browser.OPERA:
-        capabilities = webdriver.DesiredCapabilities.OPERA
+        opera_options = _set_chrome_options(
+            browser_name,
+            downloads_path,
+            headless,
+            locale_code,
+            proxy_string,
+            proxy_auth,
+            proxy_user,
+            proxy_pass,
+            proxy_bypass_list,
+            user_agent,
+            recorder_ext,
+            disable_csp,
+            enable_ws,
+            enable_sync,
+            use_auto_ext,
+            no_sandbox,
+            disable_gpu,
+            incognito,
+            guest_mode,
+            devtools,
+            remote_debug,
+            swiftshader,
+            ad_block_on,
+            block_images,
+            chromium_arg,
+            user_data_dir,
+            extension_zip,
+            extension_dir,
+            external_pdf,
+            servername,
+            mobile_emulator,
+            device_width,
+            device_height,
+            device_pixel_ratio,
+        )
+        capabilities = None
         if selenium4:
-            remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
+            capabilities = webdriver.DesiredCapabilities.OPERA
+        else:
+            opera_options = webdriver.opera.options.Options()
+            capabilities = opera_options.to_capabilities()
+        # Set custom desired capabilities
+        selenoid = False
+        selenoid_options = None
+        screen_resolution = None
+        browser_version = None
+        platform_name = None
+        for key in desired_caps.keys():
+            capabilities[key] = desired_caps[key]
+            if key == "selenoid:options":
+                selenoid = True
+                selenoid_options = desired_caps[key]
+            elif key == "screenResolution":
+                screen_resolution = desired_caps[key]
+            elif key == "version" or key == "browserVersion":
+                browser_version = desired_caps[key]
+            elif key == "platform" or key == "platformName":
+                platform_name = desired_caps[key]
+        if selenium4:
+            opera_options.set_capability("cloud:options", capabilities)
+            if selenoid:
+                snops = selenoid_options
+                opera_options.set_capability("selenoid:options", snops)
+            if screen_resolution:
+                scres = screen_resolution
+                opera_options.set_capability("screenResolution", scres)
+            if browser_version:
+                br_vers = browser_version
+                opera_options.set_capability("browserVersion", br_vers)
+            if platform_name:
+                plat_name = platform_name
+                opera_options.set_capability("platformName", plat_name)
             return webdriver.Remote(
                 command_executor=address,
-                options=remote_options,
+                options=opera_options,
                 keep_alive=True,
             )
         else:
             warnings.simplefilter("ignore", category=DeprecationWarning)
-            for key in desired_caps.keys():
-                capabilities[key] = desired_caps[key]
             return webdriver.Remote(
                 command_executor=address,
                 desired_capabilities=capabilities,
@@ -1246,12 +1321,18 @@ def get_remote_driver(
         selenoid = False
         selenoid_options = None
         screen_resolution = None
+        browser_version = None
+        platform_name = None
         for key in desired_caps.keys():
             if key == "selenoid:options":
                 selenoid = True
                 selenoid_options = desired_caps[key]
             elif key == "screenResolution":
                 screen_resolution = desired_caps[key]
+            elif key == "version" or key == "browserVersion":
+                browser_version = desired_caps[key]
+            elif key == "platform" or key == "platformName":
+                platform_name = desired_caps[key]
         if selenium4:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
@@ -1261,6 +1342,12 @@ def get_remote_driver(
             if screen_resolution:
                 scres = screen_resolution
                 remote_options.set_capability("screenResolution", scres)
+            if browser_version:
+                br_vers = browser_version
+                firefox_options.set_capability("browserVersion", br_vers)
+            if platform_name:
+                plat_name = platform_name
+                firefox_options.set_capability("platformName", plat_name)
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,

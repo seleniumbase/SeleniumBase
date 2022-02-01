@@ -1245,6 +1245,8 @@ class BaseCase(unittest.TestCase):
         )
         try:
             element_text = element.text
+            if self.browser == "safari":
+                element_text = element.get_attribute("innerText")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
@@ -1252,6 +1254,8 @@ class BaseCase(unittest.TestCase):
                 self.driver, selector, by, timeout
             )
             element_text = element.text
+            if self.browser == "safari":
+                element_text = element.get_attribute("innerText")
         return element_text
 
     def get_attribute(
@@ -5891,7 +5895,9 @@ class BaseCase(unittest.TestCase):
 
     # Shadow DOM / Shadow-root methods
 
-    def __get_shadow_element(self, selector, timeout=None):
+    def __get_shadow_element(
+        self, selector, timeout=None, must_be_visible=False
+    ):
         self.wait_for_ready_state_complete()
         if timeout is None:
             timeout = settings.SMALL_TIMEOUT
@@ -5907,6 +5913,7 @@ class BaseCase(unittest.TestCase):
         selectors = selector.split("::shadow ")
         element = self.get_element(selectors[0])
         selector_chain = selectors[0]
+        is_present = False
         for selector_part in selectors[1:]:
             shadow_root = None
             if (
@@ -5993,6 +6000,11 @@ class BaseCase(unittest.TestCase):
                             try:
                                 element = shadow_root.find_element(
                                     By.CSS_SELECTOR, value=selector_part)
+                                is_present = True
+                                if must_be_visible:
+                                    if not element.is_displayed():
+                                        raise Exception(
+                                            "Shadow Root element not visible!")
                                 found = True
                                 break
                             except Exception:
@@ -6001,6 +6013,10 @@ class BaseCase(unittest.TestCase):
                         if not found:
                             element = shadow_root.find_element(
                                 By.CSS_SELECTOR, value=selector_part)
+                            is_present = True
+                            if must_be_visible and not element.is_displayed():
+                                raise Exception(
+                                    "Shadow Root element not visible!")
                 else:
                     element = page_actions.wait_for_element_present(
                         shadow_root,
@@ -6009,11 +6025,16 @@ class BaseCase(unittest.TestCase):
                         timeout=timeout,
                     )
             except Exception:
+                error = "not present"
+                the_exception = "NoSuchElementException"
+                if must_be_visible and is_present:
+                    error = "not visible"
+                    the_exception = "ElementNotVisibleException"
                 msg = (
-                    "Shadow DOM Element {%s} was not present after %s seconds!"
-                    % (selector_chain, timeout)
+                    "Shadow DOM Element {%s} was %s after %s seconds!"
+                    % (selector_chain, error, timeout)
                 )
-                page_actions.timeout_exception("NoSuchElementException", msg)
+                page_actions.timeout_exception(the_exception, msg)
         return element
 
     def __fail_if_invalid_shadow_selector_usage(self, selector):
@@ -6031,11 +6052,15 @@ class BaseCase(unittest.TestCase):
         return False
 
     def __shadow_click(self, selector, timeout):
-        element = self.__get_shadow_element(selector, timeout=timeout)
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
         element.click()
 
     def __shadow_type(self, selector, text, timeout, clear_first=True):
-        element = self.__get_shadow_element(selector, timeout=timeout)
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
         if clear_first:
             try:
                 element.clear()
@@ -6056,7 +6081,9 @@ class BaseCase(unittest.TestCase):
                 self.wait_for_ready_state_complete()
 
     def __shadow_clear(self, selector, timeout):
-        element = self.__get_shadow_element(selector, timeout=timeout)
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
         try:
             element.clear()
             backspaces = Keys.BACK_SPACE * 42  # Autofill Defense
@@ -6065,8 +6092,13 @@ class BaseCase(unittest.TestCase):
             pass
 
     def __get_shadow_text(self, selector, timeout):
-        element = self.__get_shadow_element(selector, timeout=timeout)
-        return element.text
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
+        element_text = element.text
+        if self.browser == "safari":
+            element_text = element.get_attribute("innerText")
+        return element_text
 
     def __get_shadow_attribute(self, selector, attribute, timeout):
         element = self.__get_shadow_element(selector, timeout=timeout)
@@ -6214,6 +6246,11 @@ class BaseCase(unittest.TestCase):
     def __is_shadow_text_visible(self, text, selector):
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
+            if self.browser == "safari":
+                return (
+                    element.is_displayed()
+                    and text in element.get_attribute("innerText")
+                )
             return element.is_displayed() and text in element.text
         except Exception:
             return False
@@ -6239,10 +6276,9 @@ class BaseCase(unittest.TestCase):
         return element
 
     def __wait_for_shadow_element_visible(self, selector, timeout):
-        element = self.__get_shadow_element(selector, timeout=timeout)
-        if not element.is_displayed():
-            msg = "Shadow DOM Element {%s} was not visible!" % selector
-            page_actions.timeout_exception("NoSuchElementException", msg)
+        element = self.__get_shadow_element(
+            selector, timeout=timeout, must_be_visible=True
+        )
         return element
 
     def __wait_for_shadow_attribute_present(
@@ -9243,7 +9279,7 @@ class BaseCase(unittest.TestCase):
                 text, selector, timeout
             )
         return page_actions.wait_for_text_visible(
-            self.driver, text, selector, by, timeout
+            self.driver, text, selector, by, timeout, self.browser
         )
 
     def wait_for_exact_text_visible(
@@ -9260,7 +9296,7 @@ class BaseCase(unittest.TestCase):
                 text, selector, timeout
             )
         return page_actions.wait_for_exact_text_visible(
-            self.driver, text, selector, by, timeout
+            self.driver, text, selector, by, timeout, self.browser
         )
 
     def wait_for_text(
