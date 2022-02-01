@@ -29,7 +29,7 @@ except (ImportError, ValueError):
     pure_python = True
 
 if pure_python:
-    sb = MyTestClass("test_basics")
+    sb = MyTestClass("test_swag_labs")
     sb.browser = "chrome"
     sb.headless = False
     sb.headed = False
@@ -101,7 +101,7 @@ if pure_python:
 
     sb.setUp()
     try:
-        sb.test_basics()
+        sb.test_swag_labs()
     finally:
         sb.tearDown()
         del sb
