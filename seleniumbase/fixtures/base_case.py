@@ -1245,6 +1245,8 @@ class BaseCase(unittest.TestCase):
         )
         try:
             element_text = element.text
+            if self.browser == "safari":
+                element_text = element.get_attribute("innerText")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
@@ -1252,6 +1254,8 @@ class BaseCase(unittest.TestCase):
                 self.driver, selector, by, timeout
             )
             element_text = element.text
+            if self.browser == "safari":
+                element_text = element.get_attribute("innerText")
         return element_text
 
     def get_attribute(
@@ -6214,6 +6218,11 @@ class BaseCase(unittest.TestCase):
     def __is_shadow_text_visible(self, text, selector):
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
+            if self.browser == "safari":
+                return (
+                    element.is_displayed()
+                    and text in element.get_attribute("innerText")
+                )
             return element.is_displayed() and text in element.text
         except Exception:
             return False
@@ -9243,7 +9252,7 @@ class BaseCase(unittest.TestCase):
                 text, selector, timeout
             )
         return page_actions.wait_for_text_visible(
-            self.driver, text, selector, by, timeout
+            self.driver, text, selector, by, timeout, self.browser
         )
 
     def wait_for_exact_text_visible(
@@ -9260,7 +9269,7 @@ class BaseCase(unittest.TestCase):
                 text, selector, timeout
             )
         return page_actions.wait_for_exact_text_visible(
-            self.driver, text, selector, by, timeout
+            self.driver, text, selector, by, timeout, self.browser
         )
 
     def wait_for_text(
