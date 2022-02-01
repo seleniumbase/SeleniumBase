@@ -120,6 +120,8 @@ def main():
                 """Name=chrome,maxInstances=5,version=latest,"""
                 """seleniumProtocol=WebDriver -browser browserName=firefox,"""
                 """maxInstances=5,version=latest,seleniumProtocol=WebDriver"""
+                """ -browser browserName=opera,"""
+                """maxInstances=5,version=latest,seleniumProtocol=WebDriver"""
                 % (dir_path, server_ip)
             )
             print("\nStarting Selenium-WebDriver Grid node...\n")
