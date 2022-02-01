@@ -1,14 +1,18 @@
+"""
+Add an item to a shopping cart, and verify.
+"""
 from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
     def test_basics(self):
-        self.open("https://store.xkcd.com/search")
-        self.type('input[name="q"]', "xkcd book\n")
-        self.assert_text("xkcd book", "div.results")
-        self.open("https://xkcd.com/353/")
-        self.click('a[rel="license"]')
-        self.go_back()
-        self.click_link("About")
-        self.click_link("comic #249")
-        self.assert_element('img[alt*="Chess"]')
+        self.open("https://www.saucedemo.com")
+        self.type("#user-name", "standard_user")
+        self.type("#password", "secret_sauce\n")
+        self.assert_element("#inventory_container")
+        self.assert_exact_text("PRODUCTS", "span.title")
+        self.click('button[name*="backpack"]')
+        self.click("#shopping_cart_container a")
+        self.assert_exact_text("YOUR CART", "span.title")
+        self.assert_text("Backpack", "div.cart_item")
+        self.js_click("a#logout_sidebar_link")

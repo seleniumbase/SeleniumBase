@@ -1,21 +1,31 @@
+"""
+A complete end-to-end test for an e-commerce website.
+"""
 from seleniumbase import BaseCase
 
 
 class MyTestClass(BaseCase):
-    def test_basics(self):
-        url = "https://store.xkcd.com/collections/posters"
-        self.open(url)
-        self.type('input[name="q"]', "xkcd book")
-        self.click('input[value="Search"]')
-        self.assert_text("xkcd: volume 0", "h3")
-        self.open("https://xkcd.com/353/")
-        self.assert_title("xkcd: Python")
-        self.assert_element('img[alt="Python"]')
-        self.click('a[rel="license"]')
-        self.assert_text("free to copy and reuse")
-        self.go_back()
-        self.click_link("About")
-        self.assert_exact_text("xkcd.com", "h2")
+    def test_swag_labs(self):
+        self.open("https://www.saucedemo.com")
+        self.type("#user-name", "standard_user")
+        self.type("#password", "secret_sauce\n")
+        self.assert_element("#inventory_container")
+        self.assert_text("PRODUCTS", "span.title")
+        self.click('button[name*="backpack"]')
+        self.click("#shopping_cart_container a")
+        self.assert_text("YOUR CART", "span.title")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click("button#checkout")
+        self.type("#first-name", "SeleniumBase")
+        self.type("#last-name", "Automation")
+        self.type("#postal-code", "77123")
+        self.click("input#continue")
+        self.assert_text("CHECKOUT: OVERVIEW")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click("button#finish")
+        self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
+        self.assert_element('img[alt="Pony Express"]')
+        self.js_click("a#logout_sidebar_link")
 
         ####
 
@@ -123,10 +133,12 @@ class MyTestClass(BaseCase):
         #    whitespace in the TEXT assertion.
         #    So, self.assert_exact_text("Some Text") will find [" Some Text "].
         #
-        # 7. If a URL starts with "://", then "https://" is automatically used.
+        # 7. self.js_click(SELECTOR) can be used to click on hidden elements.
+        #
+        # 8. If a URL starts with "://", then "https://" is automatically used.
         #    Example: [self.open("://URL")] becomes [self.open("https://URL")]
         #    This helps by reducing the line length by 5 characters.
         #
-        # 8. For the full method list, see one of the following:
+        # 9. For the full method list, see one of the following:
         #    * SeleniumBase/seleniumbase/fixtures/base_case.py
         #    * SeleniumBase/help_docs/method_summary.md

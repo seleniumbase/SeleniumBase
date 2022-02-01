@@ -60,12 +60,12 @@ class DownloadTests(BaseCase):
 
         # Get file sizes in kB to compare actual values with displayed values
         whl_file_kb = whl_file_bytes / 1000.0
-        whl_line_fi = self.get_text('a[href$=".whl"]')
-        whl_line = self.get_text('tbody th:contains("%s")' % whl_line_fi)
+        whl_line_fi = self.get_text('a[href$=".whl"]').strip()
+        whl_line = self.get_text('div.file:contains("%s")' % whl_line_fi)
         whl_display_kb = float(whl_line.split("(")[1].split(" ")[0])
         tar_gz_file_kb = tar_gz_file_bytes / 1000.0
-        tar_gz_line_fi = self.get_text('a[href$=".tar.gz"]')
-        tar_gz_line = self.get_text('tbody th:contains("%s")' % tar_gz_line_fi)
+        tar_gz_line_fi = self.get_text('a[href$=".tar.gz"]').strip()
+        tar_gz_line = self.get_text('div.file:contains("%s")' % tar_gz_line_fi)
         tar_gz_display_kb = float(tar_gz_line.split("(")[1].split(" ")[0])
 
         # Verify downloaded files are the correct size (account for rounding)
