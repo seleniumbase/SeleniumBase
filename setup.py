@@ -124,13 +124,14 @@ setup(
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
-        'pip>=21.3.1;python_version>="3.6"',
+        'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
+        'pip>=22.0.2;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.5.0;python_version>="3.7"',
+        'setuptools>=60.6.0;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6" and python_version<"3.7"',
@@ -152,7 +153,7 @@ setup(
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.10;python_version>="3.5"',  # Sync "requests"
+        'charset-normalizer==2.0.11;python_version>="3.5"',  # Sync "requests"
         "urllib3==1.26.8",  # Must stay in sync with "requests"
         'requests==2.27.0;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
@@ -162,7 +163,7 @@ setup(
         'h11==0.13.0;python_version>="3.7"',
         'trio==0.19.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
-        'pyopenssl==21.0.0;python_version>="3.7"',
+        'pyopenssl==22.0.0;python_version>="3.7"',
         'wsproto==1.0.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.1.0;python_version>="3.7"',
@@ -213,7 +214,7 @@ setup(
         'pygments==2.11.2;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6.2"',  # noqa: E501
-        'prompt-toolkit==3.0.24;python_version>="3.6.2"',
+        'prompt-toolkit==3.0.26;python_version>="3.6.2"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.1;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
@@ -243,7 +244,7 @@ setup(
         'Pillow==9.0.0;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==11.0.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==11.1.0;python_version>="3.6.2" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
