@@ -14,12 +14,13 @@ class UserAgentTests(BaseCase):
             print("\n\nUser-Agent override = %s\n" % user_agent_detected)
         self.sleep(3)
 
+        if not self.is_chromium():
+            # Skip the rest of the test if not using a Chromium browser
+            msg = "\n* execute_cdp_cmd() is only for Chromium browsers"
+            print(msg)
+            self.skip(msg)
         try:
             # Now change the user-agent using "execute_cdp_cmd()"
-            if not self.is_chromium():
-                msg = "\n* execute_cdp_cmd() is only for Chromium browsers"
-                print(msg)
-                self.skip(msg)
             print("--------------------------")
             self.driver.execute_cdp_cmd(
                 "Network.setUserAgentOverride", {

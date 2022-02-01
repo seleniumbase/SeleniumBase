@@ -72,7 +72,7 @@ class SwagLabsTests(BaseCase):
         self.click("button#finish")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
         self.assert_element("img.pony_express")
-        self.click("#shopping_cart_container")
+        self.click("#shopping_cart_container a")
         self.assert_element_absent("div.inventory_item_name")
         self.click("button#continue-shopping")
         self.assert_element_absent("span.shopping_cart_badge")

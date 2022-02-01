@@ -21,7 +21,8 @@ class FileUpload(BaseCase):
         my_file = "screenshot.png"
         file_path = os.path.join(dir_name, "example_logs/%s" % my_file)
         self.choose_file(choose_file_selector, file_path)
-        seen_path = "%s\\%s" % ("C:\\fakepath", my_file)
-        self.assert_attribute(choose_file_selector, "value", seen_path)
+        if self.browser != "safari":
+            seen_path = "%s\\%s" % ("C:\\fakepath", my_file)
+            self.assert_attribute(choose_file_selector, "value", seen_path)
         self.demo_mode = True
         self.assert_element(uploaded_image)
