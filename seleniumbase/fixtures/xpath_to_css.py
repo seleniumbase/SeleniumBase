@@ -56,7 +56,7 @@ def _handle_brackets_in_strings(xpath):
     return new_xpath
 
 
-def _filter_xpath_grouping(xpath):
+def _filter_xpath_grouping(xpath, original):
     """
     This method removes the outer parentheses for xpath grouping.
     The xpath converter will break otherwise.
@@ -71,12 +71,16 @@ def _filter_xpath_grouping(xpath):
     index = xpath.rfind(")")
     index_p1 = index + 1  # Make "flake8" and "black" agree
     if index == -1:
-        raise XpathException("Invalid or unsupported Xpath: %s" % xpath)
+        raise XpathException(
+            "\nInvalid or unsupported XPath:\n%s\n"
+            "(Unable to convert XPath Selector to CSS Selector)"
+            "" % original
+        )
     xpath = xpath[:index] + xpath[index_p1:]
     return xpath
 
 
-def _get_raw_css_from_xpath(xpath):
+def _get_raw_css_from_xpath(xpath, original):
     css = ""
     attr = ""
     position = 0
@@ -84,7 +88,11 @@ def _get_raw_css_from_xpath(xpath):
     while position < len(xpath):
         node = prog.match(xpath[position:])
         if node is None:
-            raise XpathException("Invalid or unsupported Xpath: %s" % xpath)
+            raise XpathException(
+                "\nInvalid or unsupported XPath:\n%s\n"
+                "(Unable to convert XPath Selector to CSS Selector)"
+                "" % original
+            )
         match = node.groupdict()
 
         if position != 0:
@@ -135,6 +143,7 @@ def _get_raw_css_from_xpath(xpath):
 
 
 def convert_xpath_to_css(xpath):
+    original = xpath
     xpath = xpath.replace(" = '", "='")
 
     # **** Start of handling special xpath edge cases instantly ****
@@ -204,7 +213,7 @@ def convert_xpath_to_css(xpath):
                 xpath = xpath.replace(swap, "_STAR_=")
 
     if xpath.startswith("("):
-        xpath = _filter_xpath_grouping(xpath)
+        xpath = _filter_xpath_grouping(xpath, original)
 
     css = ""
     if "/descORself/" in xpath and ("@id" in xpath or "@class" in xpath):
@@ -213,10 +222,12 @@ def convert_xpath_to_css(xpath):
         for xpath_section in xpath_sections:
             if not xpath_section.startswith("//"):
                 xpath_section = "//" + xpath_section
-            css_sections.append(_get_raw_css_from_xpath(xpath_section))
+            css_sections.append(_get_raw_css_from_xpath(
+                xpath_section, original)
+            )
         css = "/descORself/".join(css_sections)
     else:
-        css = _get_raw_css_from_xpath(xpath)
+        css = _get_raw_css_from_xpath(xpath, original)
 
     attribute_defs = re.findall(r"(\[\w+\=\S+\])", css)
     for attr_def in attribute_defs:
