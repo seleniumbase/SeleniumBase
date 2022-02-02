@@ -25,10 +25,11 @@ def pytest_addoption(parser):
     --safari  (Shortcut for "--browser=safari".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
-    --data=DATA  (Extra test data. Access with "self.data" in tests.)
-    --var1=DATA  (Extra test data. Access with "self.var1" in tests.)
-    --var2=DATA  (Extra test data. Access with "self.var2" in tests.)
-    --var3=DATA  (Extra test data. Access with "self.var3" in tests.)
+    --account=STR  (Set account. Access with "self.account" in tests.)
+    --data=STRING  (Extra test data. Access with "self.data" in tests.)
+    --var1=STRING  (Extra test data. Access with "self.var1" in tests.)
+    --var2=STRING  (Extra test data. Access with "self.var2" in tests.)
+    --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
@@ -171,12 +172,23 @@ def pytest_addoption(parser):
             constants.Environment.DEVELOP,
             constants.Environment.PRODUCTION,
             constants.Environment.MASTER,
+            constants.Environment.REMOTE,
             constants.Environment.LOCAL,
+            constants.Environment.ALPHA,
+            constants.Environment.BETA,
+            constants.Environment.MAIN,
             constants.Environment.TEST,
         ),
         default=constants.Environment.TEST,
-        help="""This option is used for setting the test env.
+        help="""This option sets a test env from a list of choices.
                 In tests, use "self.environment" to get the env.""",
+    )
+    parser.addoption(
+        "--account",
+        dest="account",
+        default=None,
+        help="""This option sets a test account string.
+                In tests, use "self.account" to get the value.""",
     )
     parser.addoption(
         "--data",
@@ -1047,6 +1059,7 @@ def pytest_configure(config):
     sb_config.browser = config.getoption("browser")
     if sb_config._browser_shortcut:
         sb_config.browser = sb_config._browser_shortcut
+    sb_config.account = config.getoption("account")
     sb_config.data = config.getoption("data")
     sb_config.var1 = config.getoption("var1")
     sb_config.var2 = config.getoption("var2")

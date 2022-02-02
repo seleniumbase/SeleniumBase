@@ -40,6 +40,10 @@ if pure_python:
     sb.servername = "localhost"
     sb.port = 4444
     sb.data = None
+    sb.var1 = None
+    sb.var2 = None
+    sb.var3 = None
+    sb.account = None
     sb.environment = "test"
     sb.user_agent = None
     sb.incognito = False

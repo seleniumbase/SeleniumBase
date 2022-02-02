@@ -10937,6 +10937,7 @@ class BaseCase(unittest.TestCase):
             if hasattr(self, "_using_sb_fixture"):
                 self.test_id = sb_config._test_id
             self.browser = sb_config.browser
+            self.account = sb_config.account
             self.data = sb_config.data
             self.var1 = sb_config.var1
             self.var2 = sb_config.var2

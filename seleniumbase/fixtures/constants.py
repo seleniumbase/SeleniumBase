@@ -12,7 +12,11 @@ class Environment:
     DEVELOP = "develop"
     PRODUCTION = "production"
     MASTER = "master"
+    REMOTE = "remote"
     LOCAL = "local"
+    ALPHA = "alpha"
+    BETA = "beta"
+    MAIN = "main"
     TEST = "test"
 
 
