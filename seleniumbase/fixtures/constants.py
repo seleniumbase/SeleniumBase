@@ -12,7 +12,11 @@ class Environment:
     DEVELOP = "develop"
     PRODUCTION = "production"
     MASTER = "master"
+    REMOTE = "remote"
     LOCAL = "local"
+    ALPHA = "alpha"
+    BETA = "beta"
+    MAIN = "main"
     TEST = "test"
 
 
@@ -287,8 +291,8 @@ class TourColor:
     """Used for button colors in IntroJS Tours"""
     # theme_color = "#f26721"  # Orange
     # hover_color = "#db5409"  # Darker Orange
-    theme_color = "#458bca"  # Blue
-    hover_color = "#336aa5"  # Darker Blue
+    theme_color = "#367be5"  # Blue
+    hover_color = "#245ac0"  # Darker Blue
 
 
 class JqueryConfirm:

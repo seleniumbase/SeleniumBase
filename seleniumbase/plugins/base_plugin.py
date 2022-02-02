@@ -15,10 +15,11 @@ class Base(Plugin):
     """
     This plugin adds the following command-line options to nosetests:
     --env=ENV  (Set the test env. Access with "self.env" in tests.)
-    --data=DATA  (Extra test data. Access with "self.data" in tests.)
-    --var1=DATA  (Extra test data. Access with "self.var1" in tests.)
-    --var2=DATA  (Extra test data. Access with "self.var2" in tests.)
-    --var3=DATA  (Extra test data. Access with "self.var3" in tests.)
+    --account=STR  (Set account. Access with "self.account" in tests.)
+    --data=STRING  (Extra test data. Access with "self.data" in tests.)
+    --var1=STRING  (Extra test data. Access with "self.var1" in tests.)
+    --var2=STRING  (Extra test data. Access with "self.var2" in tests.)
+    --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --archive-logs  (Archive old log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting.)
@@ -43,11 +44,23 @@ class Base(Plugin):
                 constants.Environment.DEVELOP,
                 constants.Environment.PRODUCTION,
                 constants.Environment.MASTER,
+                constants.Environment.REMOTE,
                 constants.Environment.LOCAL,
+                constants.Environment.ALPHA,
+                constants.Environment.BETA,
+                constants.Environment.MAIN,
                 constants.Environment.TEST,
             ),
             default=constants.Environment.TEST,
-            help="The environment to run the tests in.",
+            help="""This option sets a test env from a list of choices.
+                    In tests, use "self.environment" to get the env.""",
+        )
+        parser.add_option(
+            "--account",
+            dest="account",
+            default=None,
+            help="""This option sets a test account string.
+                    In tests, use "self.account" to get the value.""",
         )
         parser.add_option(
             "--data",
@@ -171,6 +184,7 @@ class Base(Plugin):
     def beforeTest(self, test):
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
+        test.test.account = self.options.account
         test.test.data = self.options.data
         test.test.var1 = self.options.var1
         test.test.var2 = self.options.var2
