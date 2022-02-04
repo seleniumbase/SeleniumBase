@@ -4,15 +4,21 @@
 
 ![](https://seleniumbase.io/cdn/gif/masterqa6.gif "MasterQA")
 
-Here's example code from [basic_masterqa_test_0.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/basic_masterqa_test_0.py):
+Here's code from [basic_masterqa_test_0.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/basic_masterqa_test_0.py):
 
 ```python
-self.open("https://xkcd.com/1700/")
-self.verify("Do you see a webcomic?")
-self.highlight_click('link=Blag')
-self.verify('Do you see a blog archive?')
-self.highlight_update_text("input#s", "Dragons\n")
-self.verify('Do you see "dragons" in the search results?')
+from seleniumbase import MasterQA
+
+class MasterQATests(MasterQA):
+    def test_masterqa(self):
+        self.open("https://xkcd.com/1700/")
+        self.verify("Do you see a webcomic?")
+        self.open("https://seleniumbase.io/demo_page")
+        self.highlight('table')
+        self.verify("Do you see elements in a table?")
+        self.open("https://seleniumbase.io/devices/")
+        self.highlight("div.mockup-wrapper")
+        self.verify("Do you see 4 computer devices?")
 ```
 
 After each automation checkpoint, a pop-up window will ask the user questions for each verification command.
