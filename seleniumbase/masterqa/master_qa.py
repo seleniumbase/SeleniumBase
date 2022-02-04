@@ -1,3 +1,6 @@
+"""
+This tool allows testers to quickly verify pages while assisted by automation.
+"""
 import os
 import shutil
 import sys
@@ -9,7 +12,9 @@ from seleniumbase.core.style_sheet import style
 from seleniumbase.config import settings
 from seleniumbase.fixtures import js_utils
 
-# This tool allows testers to quickly verify pages while assisted by automation
+python3 = True
+if sys.version_info[0] < 3:
+    python3 = False
 
 
 class MasterQA(BaseCase):
@@ -63,7 +68,7 @@ class MasterQA(BaseCase):
                 "WARNING: %s manual checks were skipped! (MasterQA)"
                 % self.check_count
             )
-        if sys.exc_info()[1]:
+        if self.__has_exception():
             self.__add_failure(sys.exc_info()[1])
         self.__process_manual_check_results(self.auto_close_results_page)
         super(MasterQA, self).tearDown()
@@ -303,6 +308,25 @@ class MasterQA(BaseCase):
         raise Exception(
             "%s seconds passed without human action! Stopping..." % timeout
         )
+
+    def __has_exception(self):
+        has_exception = False
+        if hasattr(sys, "last_traceback") and sys.last_traceback is not None:
+            has_exception = True
+        elif python3 and hasattr(self, "_outcome"):
+            if hasattr(self._outcome, "errors") and self._outcome.errors:
+                has_exception = True
+        else:
+            if python3:
+                has_exception = sys.exc_info()[1] is not None
+            else:
+                if not hasattr(self, "_using_sb_fixture_class") and (
+                    not hasattr(self, "_using_sb_fixture_no_class")
+                ):
+                    has_exception = sys.exc_info()[1] is not None
+                else:
+                    has_exception = len(str(sys.exc_info()[1]).strip()) > 0
+        return has_exception
 
     def __add_failure(self, exception=None):
         exc_info = None
