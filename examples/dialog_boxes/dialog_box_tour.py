@@ -44,7 +44,7 @@ class DialogBoxTests(BaseCase):
                 break
 
         self.open("https://xkcd.com/1117/")
-        sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_cs.png"
+        sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_10.png"
         self.set_attributes("#news img", "src", sb_banner_logo)
         options = [("theme", "material"), ("width", "52%")]
         message = 'With one button, you can press "Enter/Return", "Y", or "1".'
@@ -97,13 +97,14 @@ class DialogBoxTests(BaseCase):
         message = "Now let's combine form inputs with multiple button options!"
         message += "<br /><br />"
         message += "Pick something to search. Then pick the site to search on."
-        buttons = ["XKCD.com Store", "Wikipedia.org"]
+        buttons = ["SeleniumBase.io", "Wikipedia.org"]
         text, choice = self.get_jqc_form_inputs(message, buttons)
-        if choice == "XKCD.com Store":
-            self.open("https://store.xkcd.com/search")
+        if choice == "SeleniumBase.io":
+            self.open("https://seleniumbase.io/")
+            self.highlight_type('input[aria-label="Search"]', text + "\n")
         else:
             self.open("https://en.wikipedia.org/wiki/Special:Search")
-        self.highlight_type('input[id*="search"]', text + "\n")
+            self.highlight_type('input[id*="search"]', text + "\n")
         self.wait_for_ready_state_complete()
         self.sleep(1)
         self.highlight("body")

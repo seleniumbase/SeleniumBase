@@ -4,6 +4,7 @@ from seleniumbase import BaseCase
 class YouTubeSearchTests(BaseCase):
     def test_youtube_autocomplete_results(self):
         """ Verify YouTube autocomplete search results. """
+        self.get_new_driver(block_images=True)  # Runs faster
         self.open("https://www.youtube.com/")
         search_term = "seleniumbase"
         search_selector = "input#search"
@@ -24,6 +25,7 @@ class YouTubeSearchTests(BaseCase):
 
     def test_youtube_search_results(self):
         """ Verify finding a specific video by performing a YouTube search. """
+        self.get_new_driver(block_images=True)  # Runs faster
         self.open("https://www.youtube.com/")
         search_term = "SeleniumBase Common API Methods"
         search_selector = "input#search"
