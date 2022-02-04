@@ -123,6 +123,7 @@ nav:
     - The HTML Inspector: help_docs/html_inspector.md
     - macOS Hidden Files: help_docs/hidden_files_info.md
     - MySQL Instructions: help_docs/mysql_installation.md
+    - Useful grep commands: help_docs/useful_grep_commands.md
   - Demo Pages:
     - Demo Page (Test Page): https://seleniumbase.io/demo_page
     - MFA Login (Test Page): https://seleniumbase.io/realworld/login

@@ -15,7 +15,7 @@ class HackTests(BaseCase):
         ayb = "ALL YOUR BASE"
         abtu = "ARE BELONG TO US"
         aybabtu = "%s %s" % (ayb, abtu)
-        sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_ds.png"
+        sb_banner_logo = "//seleniumbase.io/cdn/img/sb_logo_10.png"
         sb_dashboard_logo = "//seleniumbase.io/img/dash_pie_3.png"
         yt_chip = "#chips yt-chip-cloud-chip-renderer:nth-of-type"
         wiki = "https://en.wikipedia.org/wiki/All_your_base_are_belong_to_us"
@@ -215,12 +215,12 @@ class HackTests(BaseCase):
         self.set_text_content('a[href="/archive"]', "ALL")
         self.set_text_content('a[href*="what-if"]', "YOUR")
         self.set_text_content('a[href*="//blag."]', "BASE")
-        self.set_text_content('a[href*="how-to"]', "ARE")
-        self.set_text_content('a[href*="/store"]', "BELONG")
-        self.set_text_content('a[href*="/about"]', "TO")
-        self.set_text_content('a[href*="/atom."]', "US")
-        self.remove_element('a:contains("Email")')
+        self.set_text_content('a[href*="/about"]', abtu)
+        self.remove_element('li:contains("Feed")')
         self.remove_element('li:contains("TW")')
+        self.remove_element('li:contains("Books")')
+        self.remove_element('li:contains("What")')
+        self.remove_element('li:contains("WI")')
         self.set_attributes("#news img", "src", sb_banner_logo)
         self.set_text_content('#ctitle', aybabtu)
         self.set_text_content('a[rel="prev"]', "All")
@@ -230,10 +230,7 @@ class HackTests(BaseCase):
         self.highlight('a[href="/archive"]', loops=1, scroll=False)
         self.highlight('a[href*="what-if"]', loops=1, scroll=False)
         self.highlight('a[href*="//blag."]', loops=2, scroll=False)
-        self.highlight('a[href*="how-to"]', loops=1, scroll=False)
-        self.highlight('a[href*="/store"]', loops=1, scroll=False)
-        self.highlight('a[href*="/about"]', loops=1, scroll=False)
-        self.highlight('a[href*="/atom."]', loops=2, scroll=False)
+        self.highlight('a[href*="/about"]', loops=5, scroll=False)
         self.highlight('a[rel="prev"]', loops=1, scroll=False)
         self.highlight('a[href*="random"]', loops=1, scroll=False)
         self.highlight('a[rel="next"]', loops=3, scroll=False)
@@ -246,14 +243,6 @@ class HackTests(BaseCase):
         self.highlight('div.search-flex', loops=4, scroll=False)
         self.highlight('button[data-section*="news"]', loops=4, scroll=False)
         self.highlight("h2", loops=6, scroll=False)
-
-        self.open("https://store.xkcd.com/search")
-        self.set_text_content('a[href="/pages/about-us"]', ayb)
-        self.set_text_content('a:contains("the comic")', abtu)
-        self.set_text_content('#search-form input[name="q"]', aybabtu)
-        self.highlight('a[href="/pages/about-us"]', loops=4, scroll=False)
-        self.highlight('a[href="http://xkcd.com"]', loops=4, scroll=False)
-        self.highlight('#search-form', loops=8, scroll=False)
 
         self.open("https://support.gog.com/hc/en-us?product=gog")
         self.set_text_content("div.intro-title", aybabtu)
@@ -405,10 +394,11 @@ class HackTests(BaseCase):
 
         self.open("https://teamtreehouse.com/")
         self.set_text_content("li.nav-item-free-trial", aybabtu)
+        self.set_text_content("h1", aybabtu)
         self.set_text_content("h2", aybabtu)
         self.set_text_content("p.homepage-signup-form-banner", aybabtu)
         self.highlight("li.nav-item-free-trial", loops=6, scroll=False)
-        self.highlight("h2", loops=6, scroll=False)
+        self.highlight("h1", loops=6, scroll=False)
         self.highlight('p[class*="signup-form"]', loops=8, scroll=False)
 
         self.open("https://pragprog.com/")

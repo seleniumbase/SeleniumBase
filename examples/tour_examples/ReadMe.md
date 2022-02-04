@@ -109,7 +109,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Type in your query here.", 'input[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "Google")
+        self.highlight_type('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
         self.create_tour(theme="light")

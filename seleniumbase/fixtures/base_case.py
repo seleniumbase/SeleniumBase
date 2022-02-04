@@ -3486,6 +3486,15 @@ class BaseCase(unittest.TestCase):
                 and srt_actions[n - 1][2] == ""
             ):
                 srt_actions[n - 1][0] = "_skip"
+            elif (
+                srt_actions[n][0] == "input"
+                and n > 1
+                and srt_actions[n - 2][0] == "input"
+                and srt_actions[n - 1][0] == "submi"
+                and srt_actions[n - 2][1].startswith("textarea")
+                and srt_actions[n - 2][1] == srt_actions[n][1]
+            ):
+                srt_actions[n - 2][0] = "_skip"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")

@@ -15,9 +15,11 @@ class MasterQATests(MasterQA):
         self.verify("Can you find the moon?")
         self.click('a[rel="next"]')
         self.verify("Do the drones look safe?")
-        self.open("https://store.xkcd.com/search")
-        self.type("input.search-input", "book\n")
-        self.verify("Do you see books in the search results?")
+
+        self.open("https://seleniumbase.io/devices/")
+        self.type("input#urlInput", "seleniumbase.io/error_page\n")
+        self.verify("Do you see Octocat in a Jedi knight robe?")
+
         self.open("https://xkcd.com/213/")
         for i in range(5):
             self.click('a[rel="prev"]')

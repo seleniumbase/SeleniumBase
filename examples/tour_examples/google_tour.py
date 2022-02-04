@@ -13,7 +13,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Type in your query here.", 'input[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "Google")
+        self.highlight_type('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
         # Create a website tour using the ShepherdJS library with "light" theme
@@ -23,7 +23,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Or press [ENTER] after entry.", '[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "GitHub\n")
+        self.highlight_type('input[title="Search"]', "GitHub\n")
         self.ad_block()
         self.wait_for_element("#search")
 
