@@ -49,7 +49,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=3.7.1'")
+        os.system("python -m pip install --upgrade 'twine>=3.8.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.62.3'")
         print("\n*** Rebuilding distribution packages: ***\n")
@@ -125,13 +125,13 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
-        'pip>=22.0.2;python_version>="3.7"',
+        'pip>=22.0.3;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.6.0;python_version>="3.7"',
+        'setuptools>=60.7.1;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.2;python_version>="3.6" and python_version<"3.7"',
@@ -241,7 +241,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
-        'Pillow==9.0.0;python_version>="3.7"',
+        'Pillow==9.0.1;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         'rich==11.1.0;python_version>="3.6.2" and python_version<"4.0"',
