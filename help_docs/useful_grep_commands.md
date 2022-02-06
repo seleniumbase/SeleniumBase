@@ -12,13 +12,13 @@ OR
 
 --------
 
-#### Replace all occurrences of "foo_abc" with "bar_xyz" on Linux, from the current directory:
+#### Replace all occurrences of "foo_abc" with "bar_xyz" on Linux, for Python files from the current directory:
 
-``sed -i 's/foo_abc/bar_xyz/g' *``
+``sed -i 's/foo_abc/bar_xyz/g' *.py``
 
-#### Replace all occurrences of "foo_abc" with "bar_xyz" on macOS (file-backup required), from the current directory:
+#### Replace all occurrences of "foo_abc" with "bar_xyz" on macOS, for Python files from the current directory:
 
-``sed -i '.bak' 's/foo_abc/bar_xyz/g' *``
+``sed -i '' 's/foo_abc/bar_xyz/g' *.py``
 
 --------
 
