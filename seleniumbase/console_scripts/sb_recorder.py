@@ -15,8 +15,12 @@ import os
 import sys
 from seleniumbase.fixtures import page_utils
 
-if sys.version_info[0] < 3:
-    raise Exception("This script is for Python 3 only!")
+if sys.version_info <= (3, 7):
+    current_version = ".".join(str(ver) for ver in sys.version_info[:3])
+    raise Exception(
+        "\n* Recorder Desktop requires Python 3.7 or newer!"
+        "\n*** You are currently using Python %s" % current_version
+    )
 import tkinter as tk  # noqa: E402
 from tkinter import messagebox  # noqa: E402
 

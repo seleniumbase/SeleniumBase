@@ -10,11 +10,8 @@ class WordleTests(BaseCase):
     word_list = []
 
     def initalize_word_list(self):
-        js_file = "https://www.powerlanguage.co.uk/wordle/main.e65ce0a5.js"
-        req_text = requests.get(js_file).text
-        start = req_text.find("var La=") + len("var La=")
-        end = req_text.find("],", start) + 1
-        word_string = req_text[start:end]
+        txt_file = "https://seleniumbase.io/cdn/txt/wordle_words.txt"
+        word_string = requests.get(txt_file).text
         self.word_list = ast.literal_eval(word_string)
 
     def modify_word_list(self, word, letter_status):

@@ -89,6 +89,48 @@ def test_request_sb_fixture(testdir):
     assert result.matchreport("test_request_sb_fixture").passed
 
 
+def check_outcome_field(outcomes, field_name, expected_value):
+    field_value = outcomes.get(field_name, 0)
+    assert field_value == expected_value, (
+        "outcomes.%s has an unexpected value! "
+        'Expected "%s" but got "%s"!'
+        % (field_name, expected_value, field_value)
+    )
+
+
+def assert_outcomes(
+    result,
+    passed=1,
+    skipped=0,
+    failed=0,
+    xfailed=0,
+    xpassed=0,
+    rerun=0,
+):
+    outcomes = result.parseoutcomes()
+    check_outcome_field(outcomes, "passed", passed)
+    check_outcome_field(outcomes, "skipped", skipped)
+    check_outcome_field(outcomes, "failed", failed)
+    check_outcome_field(outcomes, "xfailed", xfailed)
+    check_outcome_field(outcomes, "xpassed", xpassed)
+    check_outcome_field(outcomes, "rerun", rerun)
+
+
+def test_rerun_failures(testdir):
+    testdir.makepyfile(
+        """
+        from seleniumbase import BaseCase
+        class MyTestCase(BaseCase):
+            def test_passing(self):
+                self.assert_equal('yes', 'yes')
+            def test_failing(self):
+                self.assert_equal('yes', 'no')
+        """
+    )
+    result = testdir.runpytest("--headless", "--reruns=1", "--rs", "-v")
+    assert_outcomes(result, passed=1, failed=1, rerun=1)
+
+
 def test_browser_launcher(testdir):
     testdir.makepyfile(
         """

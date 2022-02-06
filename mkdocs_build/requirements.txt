@@ -4,7 +4,8 @@ docutils==0.18.1
 python-dateutil==2.8.2
 livereload==2.6.3;python_version>="3.6"
 joblib==1.1.0;python_version>="3.6"
-Markdown==3.3.6;python_version>="3.6"
+Markdown==3.2.2;python_version>="3.6" and python_version<"3.7"
+Markdown==3.3.6;python_version>="3.7"
 MarkupSafe==2.0.1;python_version>="3.6"
 pyparsing==3.0.7;python_version>="3.6"
 keyring==23.5.0;python_version>="3.7"

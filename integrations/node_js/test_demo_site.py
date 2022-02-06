@@ -1,7 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
+class DemoSiteTests(BaseCase):
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page")
 
@@ -21,12 +21,17 @@ class MyTestClass(BaseCase):
 
         # Verify that a hover dropdown link changes page text
         self.assert_text("Automation Practice", "h3")
-        self.hover_and_click("#myDropdown", "#dropOption2")
+        try:
+            self.hover_and_click(
+                "#myDropdown", "#dropOption2", timeout=2)
+        except Exception:
+            # If a human moves the mouse while the test runs
+            self.js_click("#dropOption2")
         self.assert_text("Link Two Selected", "h3")
 
         # Verify that a button click changes text on the page
         self.assert_text("This Text is Green", "#pText")
-        self.click("#myButton")
+        self.click('button:contains("Click Me")')
         self.assert_text("This Text is Purple", "#pText")
 
         # Assert that the given SVG is visible on the page
@@ -60,9 +65,11 @@ class MyTestClass(BaseCase):
         self.assert_true(self.is_selected("#radioButton2"))
 
         # Verify that clicking a checkbox makes it selected
+        self.assert_element_not_visible("img#logo")
         self.assert_false(self.is_selected("#checkBox1"))
         self.click("#checkBox1")
         self.assert_true(self.is_selected("#checkBox1"))
+        self.assert_element("img#logo")
 
         # Verify clicking on multiple elements with one call
         self.assert_false(self.is_selected("#checkBox2"))
@@ -82,6 +89,11 @@ class MyTestClass(BaseCase):
         self.assert_true(self.is_selected(".fBox"))
         self.switch_to_default_content()
 
+        # Verify Drag and Drop
+        self.assert_element_not_visible("div#drop2 img#logo")
+        self.drag_and_drop("img#logo", "div#drop2")
+        self.assert_element("div#drop2 img#logo")
+
         # Assert link text
         self.assert_link_text("seleniumbase.com")
         self.assert_link_text("SeleniumBase on GitHub")
@@ -93,8 +105,16 @@ class MyTestClass(BaseCase):
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")
 
+        # Highlight a page element (Also asserts visibility)
+        self.highlight("h2")
+
+        # Actions with Demo Mode enabled
+        self.demo_mode = True
+        self.type("input", "Have a Nice Day!")
+        self.assert_text("SeleniumBase", "h2")
+
         # Assert no broken links (Can be slow if many links)
         # self.assert_no_404_errors()
 
         # Assert no JavaScript errors (Can also detect 404s)
-        self.assert_no_js_errors()
+        # self.assert_no_js_errors()
