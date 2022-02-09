@@ -1315,7 +1315,6 @@ def get_remote_driver(
                 keep_alive=True,
             )
     elif browser_name == constants.Browser.REMOTE:
-        selenoid = "selenoid:options" in desired_caps
         if selenium4:
             remote_options = ArgOptions()
             # shovel caps into remote options.
