@@ -995,6 +995,9 @@ def get_remote_driver(
         # Set custom desired capabilities
         selenoid = False
         selenoid_options = None
+        screen_resolution = None
+        browser_version = None
+        platform_name = None
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
             if key == "selenoid:options":
