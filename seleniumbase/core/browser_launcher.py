@@ -995,9 +995,6 @@ def get_remote_driver(
         # Set custom desired capabilities
         selenoid = False
         selenoid_options = None
-        screen_resolution = None
-        browser_version = None
-        platform_name = None
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
             if key == "selenoid:options":
@@ -1318,36 +1315,11 @@ def get_remote_driver(
                 keep_alive=True,
             )
     elif browser_name == constants.Browser.REMOTE:
-        selenoid = False
-        selenoid_options = None
-        screen_resolution = None
-        browser_version = None
-        platform_name = None
-        for key in desired_caps.keys():
-            if key == "selenoid:options":
-                selenoid = True
-                selenoid_options = desired_caps[key]
-            elif key == "screenResolution":
-                screen_resolution = desired_caps[key]
-            elif key == "version" or key == "browserVersion":
-                browser_version = desired_caps[key]
-            elif key == "platform" or key == "platformName":
-                platform_name = desired_caps[key]
         if selenium4:
             remote_options = ArgOptions()
-            remote_options.set_capability("cloud:options", desired_caps)
-            if selenoid:
-                snops = selenoid_options
-                remote_options.set_capability("selenoid:options", snops)
-            if screen_resolution:
-                scres = screen_resolution
-                remote_options.set_capability("screenResolution", scres)
-            if browser_version:
-                br_vers = browser_version
-                firefox_options.set_capability("browserVersion", br_vers)
-            if platform_name:
-                plat_name = platform_name
-                firefox_options.set_capability("platformName", plat_name)
+            # shovel caps into remote options.
+            for cap_name, cap_value in desired_caps.items():
+                remote_options.set_capability(cap_name, cap_value)
             return webdriver.Remote(
                 command_executor=address,
                 options=remote_options,
