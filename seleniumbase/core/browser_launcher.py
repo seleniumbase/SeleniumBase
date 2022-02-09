@@ -1318,8 +1318,7 @@ def get_remote_driver(
         selenoid = "selenoid:options" in desired_caps
         if selenium4:
             remote_options = ArgOptions()
-            # just shovel desired caps so that --browser remote takes the --cap-file literally.
-            # don't try and handle each possible key on an 'if present' basis.
+            # shovel caps into remote options.
             for cap_name, cap_value in desired_caps.items():
                 remote_options.set_capability(cap_name, cap_value)
             return webdriver.Remote(
