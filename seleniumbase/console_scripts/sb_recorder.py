@@ -30,6 +30,7 @@ def set_colors(use_colors):
     c1 = ""
     c2 = ""
     c3 = ""
+    c4 = ""
     cr = ""
     if use_colors:
         colorama.init(autoreset=True)
