@@ -53,7 +53,7 @@ class Base(Plugin):
             ),
             default=constants.Environment.TEST,
             help="""This option sets a test env from a list of choices.
-                    In tests, use "self.environment" to get the env.""",
+                    Access using "self.env" or "self.environment".""",
         )
         parser.add_option(
             "--account",
