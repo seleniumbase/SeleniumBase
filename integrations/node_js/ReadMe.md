@@ -4,21 +4,21 @@ You can create a customized web app for running SeleniumBase tests by using Node
 
 <img src="https://seleniumbase.io/other/node_runner.png" title="Node Runner" />
 
-#### 1. Install NodeJS
+#### 1. Install NodeJS (if not installed)
 
 * Navigate to [https://nodejs.org/en/](https://nodejs.org/en/)
 * Click to download and install NodeJS
 
-#### 2. Install Express for NodeJS
+#### 2. Upgrade NodeJS (if using an older version)
 
 ```bash
-npm install -g express
+npm install -g npm@latest
 ```
 
-#### 3. Install the Example Test Runner for SeleniumBase from the ``integrations/node_js`` folder
+#### 3. Install the Example Test Runner for SeleniumBase from the ``integrations/node_js`` folder (``npm ci`` has a speed improvement over ``npm install``.)
 
 ```bash
-npm install
+npm ci
 ```
 
 (You should see a ``node_modules`` folder appear in your ``node_js`` folder.)
