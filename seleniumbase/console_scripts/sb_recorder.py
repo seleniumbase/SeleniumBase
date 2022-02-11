@@ -12,6 +12,7 @@ Output:
 
 import colorama
 import os
+import subprocess
 import sys
 from seleniumbase.fixtures import page_utils
 
@@ -92,10 +93,10 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
                     return
             else:
                 os.remove(file_name)
-        command = "python -m sbase mkrec %s --url=%s" % (file_name, url)
+        command = "sbase mkrec %s --url=%s --gui" % (file_name, url)
         if not use_chrome:
             command += " --edge"
-        os.system(command)
+        subprocess.Popen(command, shell=True)
         send_window_to_front(window)
 
 
@@ -113,12 +114,14 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         )
         return
     command = "pytest %s -q -s" % file_name
+    if "linux" in sys.platform:
+        command += " --gui"
     if not use_chrome:
         command += " --edge"
     if demo_mode:
         command += " --demo"
     print(command)
-    os.system(command)
+    subprocess.Popen(command, shell=True)
     send_window_to_front(window)
 
 

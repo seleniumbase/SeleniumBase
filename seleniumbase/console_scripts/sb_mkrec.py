@@ -76,6 +76,7 @@ def set_colors(use_colors):
 
 
 def main():
+    platform = sys.platform
     help_me = False
     error_msg = None
     invalid_cmd = None
@@ -85,7 +86,7 @@ def main():
     use_colors = True
     force_gui = False
 
-    if "linux" in sys.platform:
+    if "linux" in platform:
         use_colors = False
     c0, c1, c2, c5, c7, cr = set_colors(use_colors)
 
@@ -116,11 +117,9 @@ def main():
                 use_edge = True
             elif (
                 option.lower() in ("--gui", "--headed")
-                and "linux" in sys.platform
             ):
-                use_colors = True
-                c0, c1, c2, c5, c7, cr = set_colors(use_colors)
-                force_gui = True
+                if "linux" in platform:
+                    force_gui = True
             elif option.lower().startswith("--url="):
                 start_page = option[len("--url="):]
             elif option.lower() == "--url":
