@@ -71,6 +71,12 @@ jobs:
     - name: Run pytest test_mfa_login.py --browser=chrome --xvfb
       run: |
         pytest examples/test_mfa_login.py --browser=chrome --xvfb -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest test_iframes.py --browser=chrome --xvfb --rs
+      run: |
+        pytest examples/test_iframes.py --browser=chrome --xvfb --rs -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest test_window_switching.py --browser=chrome --headless
+      run: |
+        pytest examples/test_window_switching.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     - name: Run pytest my_first_test.py --browser=chrome --headless
       run: |
         pytest examples/my_first_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
