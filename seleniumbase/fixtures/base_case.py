@@ -4614,10 +4614,12 @@ class BaseCase(unittest.TestCase):
         links = []
         for link in all_links:
             if (
-                "javascript:" not in link
+                "data:" not in link
                 and "mailto:" not in link
-                and "data:" not in link
+                and "javascript:" not in link
                 and "://fonts.gstatic.com" not in link
+                and "://fonts.googleapis.com" not in link
+                and "://googleads.g.doubleclick.net" not in link
             ):
                 links.append(link)
         if timeout:
