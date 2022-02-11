@@ -4691,6 +4691,7 @@ class BaseCase(unittest.TestCase):
         wrap=False,
         nav=False,
         override=False,
+        caching=True,
     ):
         """Gets text from a PDF file.
         PDF can be either a URL or a file path on the local file system.
@@ -4712,7 +4713,8 @@ class BaseCase(unittest.TestCase):
               (Not needed because the PDF will be downloaded anyway.)
         override - If the PDF file to be downloaded already exists in the
                    downloaded_files/ folder, that PDF will be used
-                   instead of downloading it again."""
+                   instead of downloading it again.
+        caching - If resources should be cached via pdfminer."""
         import warnings
 
         with warnings.catch_warnings():
@@ -4760,7 +4762,7 @@ class BaseCase(unittest.TestCase):
             password="",
             page_numbers=page_search,
             maxpages=maxpages,
-            caching=False,
+            caching=caching,
             codec=codec,
         )
         pdf_text = self.__fix_unicode_conversion(pdf_text)
