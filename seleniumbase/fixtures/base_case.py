@@ -54,6 +54,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
@@ -4731,8 +4732,6 @@ class BaseCase(unittest.TestCase):
             raise Exception("%s is not a PDF file! (Expecting a .pdf)" % pdf)
         file_path = None
         if page_utils.is_valid_url(pdf):
-            from seleniumbase.core import download_helper
-
             downloads_folder = download_helper.get_downloads_folder()
             if nav:
                 if self.get_current_url() != pdf:
@@ -5011,8 +5010,6 @@ class BaseCase(unittest.TestCase):
           any clicks that download files will also use this folder
           rather than using the browser's default "downloads/" path."""
         self.__check_scope()
-        from seleniumbase.core import download_helper
-
         return download_helper.get_downloads_folder()
 
     def get_browser_downloads_folder(self):
@@ -5035,8 +5032,6 @@ class BaseCase(unittest.TestCase):
         ):
             return os.path.join(os.path.expanduser("~"), "downloads")
         else:
-            from seleniumbase.core import download_helper
-
             return download_helper.get_downloads_folder()
         return os.path.join(os.path.expanduser("~"), "downloads")
 
