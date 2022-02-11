@@ -185,7 +185,7 @@ setup(
         'py==1.11.0;python_version>="3.5"',
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
-        'pytest==7.0.0;python_version>="3.6"',
+        'pytest==7.0.1;python_version>="3.6"',
         'pytest-forked==1.3.0;python_version<"3.6"',
         'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==1.22.1;python_version<"3.6"',
@@ -213,7 +213,7 @@ setup(
         'pygments==2.11.2;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        'prompt-toolkit==3.0.27;python_version>="3.6"',
+        'prompt-toolkit==3.0.28;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.1;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
