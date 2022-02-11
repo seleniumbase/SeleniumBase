@@ -59,7 +59,7 @@ class WordleTests(BaseCase):
 
     def test_wordle(self):
         self.skip_if_incorrect_env()
-        self.open("https://www.powerlanguage.co.uk/wordle/")
+        self.open("https://www.nytimes.com/games/wordle/index.html")
         self.click("game-app::shadow game-modal::shadow game-icon")
         self.initalize_word_list()
         keyboard_base = "game-app::shadow game-keyboard::shadow "
