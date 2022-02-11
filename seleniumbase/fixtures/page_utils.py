@@ -209,19 +209,31 @@ def _get_unique_links(page_url, soup):
                 pass
             unique_links.append(link)
 
-    return unique_links
+    links = unique_links
+    links = list(set(links))  # Make sure all duplicates were removed
+    links = sorted(links)  # Sort all the links alphabetically
+    return links
 
 
-def _get_link_status_code(link, allow_redirects=False, timeout=5):
+def _get_link_status_code(
+    link,
+    allow_redirects=False,
+    timeout=5,
+    verify=False,
+):
     """Get the status code of a link.
     If the timeout is exceeded, will return a 404.
+    If "verify" is False, will ignore certificate errors.
     For a list of available status codes, see:
     https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
     """
     status_code = None
     try:
         response = requests.get(
-            link, allow_redirects=allow_redirects, timeout=timeout
+            link,
+            allow_redirects=allow_redirects,
+            timeout=timeout,
+            verify=verify,
         )
         status_code = response.status_code
     except Exception:

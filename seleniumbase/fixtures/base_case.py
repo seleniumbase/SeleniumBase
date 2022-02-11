@@ -4561,10 +4561,17 @@ class BaseCase(unittest.TestCase):
         links = page_utils._get_unique_links(page_url, soup)
         return links
 
-    def get_link_status_code(self, link, allow_redirects=False, timeout=5):
+    def get_link_status_code(
+        self,
+        link,
+        allow_redirects=False,
+        timeout=5,
+        verify=False,
+    ):
         """Get the status code of a link.
         If the timeout is set to less than 1, it becomes 1.
         If the timeout is exceeded by requests.get(), it will return a 404.
+        If "verify" is False, will ignore certificate errors.
         For a list of available status codes, see:
         https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         """
@@ -4573,7 +4580,10 @@ class BaseCase(unittest.TestCase):
         if timeout < 1:
             timeout = 1
         status_code = page_utils._get_link_status_code(
-            link, allow_redirects=allow_redirects, timeout=timeout
+            link,
+            allow_redirects=allow_redirects,
+            timeout=timeout,
+            verify=verify,
         )
         return status_code
 
