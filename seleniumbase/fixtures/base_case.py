@@ -4646,6 +4646,7 @@ class BaseCase(unittest.TestCase):
                     broken_links.append(link)
         self.__requests_timeout = None  # Reset the requests.get() timeout
         if len(broken_links) > 0:
+            broken_links = sorted(broken_links)
             bad_links_str = "\n".join(broken_links)
             if len(broken_links) == 1:
                 self.fail("Broken link detected:\n%s" % bad_links_str)
