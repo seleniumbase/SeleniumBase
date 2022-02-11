@@ -54,6 +54,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.remote_connection import LOGGER
 from seleniumbase import config as sb_config
 from seleniumbase.config import settings
+from seleniumbase.core import download_helper
 from seleniumbase.core import log_helper
 from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import css_to_xpath
@@ -4561,10 +4562,17 @@ class BaseCase(unittest.TestCase):
         links = page_utils._get_unique_links(page_url, soup)
         return links
 
-    def get_link_status_code(self, link, allow_redirects=False, timeout=5):
+    def get_link_status_code(
+        self,
+        link,
+        allow_redirects=False,
+        timeout=5,
+        verify=False,
+    ):
         """Get the status code of a link.
         If the timeout is set to less than 1, it becomes 1.
         If the timeout is exceeded by requests.get(), it will return a 404.
+        If "verify" is False, will ignore certificate errors.
         For a list of available status codes, see:
         https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
         """
@@ -4573,7 +4581,10 @@ class BaseCase(unittest.TestCase):
         if timeout < 1:
             timeout = 1
         status_code = page_utils._get_link_status_code(
-            link, allow_redirects=allow_redirects, timeout=timeout
+            link,
+            allow_redirects=allow_redirects,
+            timeout=timeout,
+            verify=verify,
         )
         return status_code
 
@@ -4604,10 +4615,12 @@ class BaseCase(unittest.TestCase):
         links = []
         for link in all_links:
             if (
-                "javascript:" not in link
+                "data:" not in link
                 and "mailto:" not in link
-                and "data:" not in link
+                and "javascript:" not in link
                 and "://fonts.gstatic.com" not in link
+                and "://fonts.googleapis.com" not in link
+                and "://googleads.g.doubleclick.net" not in link
             ):
                 links.append(link)
         if timeout:
@@ -4634,6 +4647,7 @@ class BaseCase(unittest.TestCase):
                     broken_links.append(link)
         self.__requests_timeout = None  # Reset the requests.get() timeout
         if len(broken_links) > 0:
+            broken_links = sorted(broken_links)
             bad_links_str = "\n".join(broken_links)
             if len(broken_links) == 1:
                 self.fail("Broken link detected:\n%s" % bad_links_str)
@@ -4681,6 +4695,7 @@ class BaseCase(unittest.TestCase):
         wrap=False,
         nav=False,
         override=False,
+        caching=True,
     ):
         """Gets text from a PDF file.
         PDF can be either a URL or a file path on the local file system.
@@ -4702,7 +4717,8 @@ class BaseCase(unittest.TestCase):
               (Not needed because the PDF will be downloaded anyway.)
         override - If the PDF file to be downloaded already exists in the
                    downloaded_files/ folder, that PDF will be used
-                   instead of downloading it again."""
+                   instead of downloading it again.
+        caching - If resources should be cached via pdfminer."""
         import warnings
 
         with warnings.catch_warnings():
@@ -4716,8 +4732,6 @@ class BaseCase(unittest.TestCase):
             raise Exception("%s is not a PDF file! (Expecting a .pdf)" % pdf)
         file_path = None
         if page_utils.is_valid_url(pdf):
-            from seleniumbase.core import download_helper
-
             downloads_folder = download_helper.get_downloads_folder()
             if nav:
                 if self.get_current_url() != pdf:
@@ -4750,7 +4764,7 @@ class BaseCase(unittest.TestCase):
             password="",
             page_numbers=page_search,
             maxpages=maxpages,
-            caching=False,
+            caching=caching,
             codec=codec,
         )
         pdf_text = self.__fix_unicode_conversion(pdf_text)
@@ -4996,8 +5010,6 @@ class BaseCase(unittest.TestCase):
           any clicks that download files will also use this folder
           rather than using the browser's default "downloads/" path."""
         self.__check_scope()
-        from seleniumbase.core import download_helper
-
         return download_helper.get_downloads_folder()
 
     def get_browser_downloads_folder(self):
@@ -5020,8 +5032,6 @@ class BaseCase(unittest.TestCase):
         ):
             return os.path.join(os.path.expanduser("~"), "downloads")
         else:
-            from seleniumbase.core import download_helper
-
             return download_helper.get_downloads_folder()
         return os.path.join(os.path.expanduser("~"), "downloads")
 
