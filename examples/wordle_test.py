@@ -52,8 +52,8 @@ class WordleTests(BaseCase):
             print(message)
             self.skip(message)
         version = [int(i) for i in __version__.split(".") if i.isdigit()]
-        if version < [2, 4, 3]:
-            message = "This test requires SeleniumBase 2.4.3 or newer!"
+        if version < [2, 4, 4]:
+            message = "This test requires SeleniumBase 2.4.4 or newer!"
             print(message)
             self.skip(message)
 
@@ -74,7 +74,7 @@ class WordleTests(BaseCase):
                 letters.append(letter)
                 button = 'button[data-key="%s"]' % letter
                 self.click(keyboard_base + button)
-            button = 'button[data-key="↵"]'
+            button = 'button.one-and-a-half'
             self.click(keyboard_base + button)
             row = 'game-app::shadow game-row[letters="%s"]::shadow ' % word
             tile = row + "game-tile:nth-of-type(%s)"
