@@ -28,7 +28,7 @@ idna==2.10;python_version<"3.6"
 idna==3.3;python_version>="3.6"
 chardet==3.0.4;python_version<"3.5"
 chardet==4.0.0;python_version>="3.5"
-charset-normalizer==2.0.11;python_version>="3.5"
+charset-normalizer==2.0.12;python_version>="3.5"
 urllib3==1.26.8
 requests==2.27.1;python_version<"3.5"
 requests==2.25.1;python_version>="3.5" and python_version<"3.6"

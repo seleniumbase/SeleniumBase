@@ -153,7 +153,7 @@ setup(
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.11;python_version>="3.5"',  # Sync "requests"
+        'charset-normalizer==2.0.12;python_version>="3.5"',  # Sync "requests"
         "urllib3==1.26.8",  # Must stay in sync with "requests"
         'requests==2.27.1;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
