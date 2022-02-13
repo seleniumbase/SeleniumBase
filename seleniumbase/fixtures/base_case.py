@@ -4784,6 +4784,7 @@ class BaseCase(unittest.TestCase):
         wrap=True,
         nav=False,
         override=False,
+        caching=True,
     ):
         """Asserts text in a PDF file.
         PDF can be either a URL or a file path on the local file system.
@@ -4806,7 +4807,8 @@ class BaseCase(unittest.TestCase):
               (Not needed because the PDF will be downloaded anyway.)
         override - If the PDF file to be downloaded already exists in the
                    downloaded_files/ folder, that PDF will be used
-                   instead of downloading it again."""
+                   instead of downloading it again.
+        caching - If resources should be cached via pdfminer."""
         text = self.__fix_unicode_conversion(text)
         if not codec:
             codec = "utf-8"
@@ -4819,6 +4821,7 @@ class BaseCase(unittest.TestCase):
             wrap=wrap,
             nav=nav,
             override=override,
+            caching=caching,
         )
         if type(page) is int:
             if text not in pdf_text:
