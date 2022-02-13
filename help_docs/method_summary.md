@@ -361,7 +361,7 @@ self.get_beautiful_soup(source=None)
 
 self.get_unique_links()
 
-self.get_link_status_code(link, allow_redirects=False, timeout=5)
+self.get_link_status_code(link, allow_redirects=False, timeout=5, verify=False)
 
 self.assert_link_status_code_is_not_404(link)
 
@@ -372,11 +372,11 @@ self.print_unique_links_with_status_codes()
 
 self.get_pdf_text(
     pdf, page=None, maxpages=None, password=None,
-    codec='utf-8', wrap=False, nav=False, override=False)
+    codec='utf-8', wrap=False, nav=False, override=False, caching=True)
 
 self.assert_pdf_text(
     pdf, text, page=None, maxpages=None, password=None,
-    codec='utf-8', wrap=True, nav=False, override=False)
+    codec='utf-8', wrap=True, nav=False, override=False, caching=True)
 
 self.create_folder(folder)
 
