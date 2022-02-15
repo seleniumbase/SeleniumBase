@@ -30,7 +30,7 @@ class ShadowDomTests(BaseCase):
 
         # Download Python package files from PyPI
         file_name_1 = self.download_tar_file_from_pypi("sbase")
-        file_name_2 = self.download_tar_file_from_pypi("tensorpy")
+        file_name_2 = self.download_tar_file_from_pypi("seleniumbase")
         self.assert_downloaded_file(file_name_1, browser=True)
         self.assert_downloaded_file(file_name_2, browser=True)
 
@@ -67,7 +67,7 @@ class ShadowDomTests(BaseCase):
         self.type(search_input, "sbase")
         self.assert_text(file_name_1, file_link)
         print("\n  Download 1: %s" % self.get_text(file_link))
-        self.type(search_input, "tensorpy")
+        self.type(search_input, "seleniumbase")
         self.assert_text(file_name_2, file_link)
         print("  Download 2: %s" % self.get_text(file_link))
         self.click(clear_search_icon)
