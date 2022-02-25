@@ -131,7 +131,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.9.1;python_version>="3.7"',
+        'setuptools>=60.9.3;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -161,12 +161,12 @@ setup(
         "nose==1.3.7",
         'sniffio==1.2.0;python_version>="3.7"',
         'h11==0.13.0;python_version>="3.7"',
-        'trio==0.19.0;python_version>="3.7"',
+        'trio==0.20.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
         'pyopenssl==22.0.0;python_version>="3.7"',
         'wsproto==1.0.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.1.0;python_version>="3.7"',
+        'selenium==4.1.2;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.12.0;python_version>="3.5"',
@@ -174,7 +174,7 @@ setup(
         "sortedcontainers==2.4.0",
         'filelock==3.2.1;python_version<"3.6"',
         'filelock==3.4.1;python_version>="3.6" and python_version<"3.7"',
-        'filelock==3.5.0;python_version>="3.7"',
+        'filelock==3.6.0;python_version>="3.7"',
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5" and python_version<"3.6"',
         'fasteners==0.17.3;python_version>="3.6"',
@@ -219,16 +219,16 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.31.1;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.32.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'platformdirs==2.0.2;python_version<"3.6"',
         'platformdirs==2.4.0;python_version>="3.6" and python_version<"3.7"',
-        'platformdirs==2.5.0;python_version>="3.7"',
+        'platformdirs==2.5.1;python_version>="3.7"',
         'pathlib2==2.3.6;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        "virtualenv>=20.13.1",  # Sync with importlib-metadata and pathlib2
+        "virtualenv>=20.13.2",  # Sync with importlib-metadata and pathlib2
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
@@ -255,7 +255,7 @@ setup(
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==6.3.1;python_version>="3.7"',
+            'coverage==6.3.2;python_version>="3.7"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
