@@ -58,7 +58,7 @@ class SeleniumBrowser(Plugin):
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --maximize  (Start tests with the web browser window maximized.)
-    --save-screenshot  (Save a screenshot at the end of each test.)
+    --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
