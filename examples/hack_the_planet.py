@@ -237,12 +237,8 @@ class HackTests(BaseCase):
         self.highlight("#ctitle", loops=7, scroll=False)
 
         self.open("https://www.nintendo.com/whatsnew/")
-        self.set_text_content('button[aria-label="Search"]', aybabtu)
-        self.set_text_content('button[data-section="newsevents"]', aybabtu)
-        self.set_text_content("h2", aybabtu)
-        self.highlight('div.search-flex', loops=4, scroll=False)
-        self.highlight('button[data-section*="news"]', loops=4, scroll=False)
-        self.highlight("h2", loops=6, scroll=False)
+        self.set_text_content("h1", aybabtu)
+        self.highlight("h1", loops=10, scroll=False)
 
         self.open("https://support.gog.com/hc/en-us?product=gog")
         self.set_text_content("div.intro-title", aybabtu)
