@@ -9,7 +9,7 @@ class WordleTests(BaseCase):
 
     word_list = []
 
-    def initalize_word_list(self):
+    def initialize_word_list(self):
         txt_file = "https://seleniumbase.io/cdn/txt/wordle_words.txt"
         word_string = requests.get(txt_file).text
         self.word_list = ast.literal_eval(word_string)
@@ -61,7 +61,7 @@ class WordleTests(BaseCase):
         self.skip_if_incorrect_env()
         self.open("https://www.nytimes.com/games/wordle/index.html")
         self.click("game-app::shadow game-modal::shadow game-icon")
-        self.initalize_word_list()
+        self.initialize_word_list()
         keyboard_base = "game-app::shadow game-keyboard::shadow "
         word = random.choice(self.word_list)
         total_attempts = 0
