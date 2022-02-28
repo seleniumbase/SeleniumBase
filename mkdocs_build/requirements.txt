@@ -1,5 +1,5 @@
 regex>=2022.1.18
-tqdm>=4.62.3
+tqdm>=4.63.0
 docutils==0.18.1
 python-dateutil==2.8.2
 livereload==2.6.3;python_version>="3.6"
@@ -15,7 +15,7 @@ click==8.0.4;python_version>="3.6"
 zipp==3.7.0;python_version>="3.7"
 readme-renderer==32.0
 pymdown-extensions==9.2;python_version>="3.7"
-importlib-metadata==4.11.1;python_version>="3.7"
+importlib-metadata==4.11.2;python_version>="3.7"
 bleach==4.1.0
 jsmin==3.0.1;python_version>="3.6"
 lunr==0.6.2;python_version>="3.6"
