@@ -3739,6 +3739,19 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "canva":
+                method = "click_with_offset"
+                selector = action[1][0]
+                p_x = action[1][1]
+                p_y = action[1][2]
+                if '"' not in selector:
+                    sb_actions.append(
+                        'self.%s("%s", %s, %s)' % (method, selector, p_x, p_y)
+                    )
+                else:
+                    sb_actions.append(
+                        "self.%s('%s', %s, %s)" % (method, selector, p_x, p_y)
+                    )
             elif action[0] == "input" or action[0] == "js_ty":
                 method = "type"
                 if action[0] == "js_ty":
