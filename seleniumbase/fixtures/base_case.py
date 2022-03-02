@@ -1733,6 +1733,69 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
+    def click_with_offset(
+        self, selector, x, y, by=By.CSS_SELECTOR, mark=False, timeout=None
+    ):
+        """
+        Click an element at an {X,Y}-offset location.
+        {0,0} is the top-left corner of the element.
+        If mark==True, will draw a dot at location. (Useful for debugging)
+        """
+        from selenium.webdriver.common.action_chains import ActionChains
+
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout
+        )
+        self.__demo_mode_highlight_if_active(selector, by)
+        if mark:
+            selector = self.convert_to_css_selector(selector, by=by)
+            selector = re.escape(selector)
+            selector = self.__escape_quotes_if_needed(selector)
+            px = x - 2
+            if px < 0:
+                px = 0
+            py = y - 2
+            if py < 0:
+                py = 0
+            script = (
+                "var canvas = document.querySelector('%s');"
+                "var ctx = canvas.getContext('2d');"
+                "ctx.fillStyle = '#F80808';"
+                "ctx.fillRect(%s, %s, 5, 5);"
+                % (selector, px, py)
+            )
+            self.execute_script(script)
+        try:
+            element_location = element.location["y"]
+            element_location = element_location - 130 + y
+            if element_location < 0:
+                element_location = 0
+            scroll_script = "window.scrollTo(0, %s);" % element_location
+            self.driver.execute_script(scroll_script)
+            self.sleep(0.1)
+        except Exception:
+            pass
+        try:
+            action_chains = ActionChains(self.driver)
+            action_chains.move_to_element_with_offset(element, x, y)
+            action_chains.click().perform()
+        except MoveTargetOutOfBoundsException:
+            message = (
+                "Target coordinates for click are out-of-bounds!\n"
+                "The offset must stay inside the target element!"
+            )
+            raise Exception(message)
+        if self.demo_mode:
+            self.__demo_mode_pause_if_active()
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
+
     def is_checked(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """Determines if a checkbox or a radio button element is checked.
         Returns True if the element is checked.
