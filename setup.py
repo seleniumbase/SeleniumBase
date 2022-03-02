@@ -142,6 +142,12 @@ setup(
         'traitlets>=4.3.3;python_version<"3.7"',
         'traitlets>=5.1.1;python_version>="3.7"',
         "certifi>=2021.10.8",
+        'filelock>=3.2.1;python_version<"3.6"',
+        'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
+        'filelock>=3.6.0;python_version>="3.7"',
+        'platformdirs>=2.0.2;python_version<"3.6"',
+        'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
+        'platformdirs>=2.5.1;python_version>="3.7"',
         "six==1.16.0",
         'ipdb==0.13.4;python_version<"3.5"',
         'ipdb==0.13.9;python_version>="3.5"',
@@ -164,7 +170,7 @@ setup(
         'trio==0.20.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
         'pyopenssl==22.0.0;python_version>="3.7"',
-        'wsproto==1.0.0;python_version>="3.7"',
+        'wsproto==1.1.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.1.2;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
@@ -172,9 +178,6 @@ setup(
         'more-itertools==8.12.0;python_version>="3.5"',
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
-        'filelock==3.2.1;python_version<"3.6"',
-        'filelock==3.4.1;python_version>="3.6" and python_version<"3.7"',
-        'filelock==3.6.0;python_version>="3.7"',
         'fasteners==0.16;python_version<"3.5"',
         'fasteners==0.16.3;python_version>="3.5" and python_version<"3.6"',
         'fasteners==0.17.3;python_version>="3.6"',
@@ -222,13 +225,8 @@ setup(
         'ipython==7.32.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
-        'platformdirs==2.0.2;python_version<"3.6"',
-        'platformdirs==2.4.0;python_version>="3.6" and python_version<"3.7"',
-        'platformdirs==2.5.1;python_version>="3.7"',
-        'pathlib2==2.3.6;python_version<"3.5"',  # Sync with "virtualenv"
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        "virtualenv>=20.13.2",  # Sync with importlib-metadata and pathlib2
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
