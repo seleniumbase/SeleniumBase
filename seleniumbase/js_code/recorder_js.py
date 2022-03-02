@@ -198,6 +198,7 @@ var getBestSelector = function(el) {
     basic_tags.push('h1');
     basic_tags.push('h2');
     basic_tags.push('h3');
+    basic_tags.push('canvas');
     basic_tags.push('center');
     basic_tags.push('input');
     basic_tags.push('textarea');
@@ -625,7 +626,7 @@ document.body.addEventListener('mouseup', function (event) {
         }
         else
             document.recorded_actions.push(['click', selector, href, d_now]);
-        // hover_click() if dropdown.
+        // hover_click()
         if (el.parentElement.classList.contains('dropdown-content') &&
             el.parentElement.parentElement.classList.contains('dropdown'))
         {
@@ -640,6 +641,15 @@ document.body.addEventListener('mouseup', function (event) {
             }
             document.recorded_actions.pop();
             document.recorded_actions.push(['h_clk', pa_s, ch_s, d_now]);
+        }
+        else if (tag_name === 'canvas')
+        {
+            rect = el.getBoundingClientRect();
+            p_x = event.clientX - rect.left;
+            p_y = event.clientY - rect.top;
+            c_offset = [selector, p_x, p_y];
+            document.recorded_actions.pop();
+            document.recorded_actions.push(['canva', c_offset, href, d_now]);
         }
     }
     else if (ra_len > 0 &&
