@@ -1734,12 +1734,13 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
 
     def click_with_offset(
-        self, selector, x, y, by=By.CSS_SELECTOR, mark=False, timeout=None
+        self, selector, x, y, by=By.CSS_SELECTOR, mark=None, timeout=None
     ):
         """
         Click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
         If mark==True, will draw a dot at location. (Useful for debugging)
+        In Demo Mode, mark becomes True unless set to False. (Default: None)
         """
         from selenium.webdriver.common.action_chains import ActionChains
 
@@ -1752,23 +1753,26 @@ class BaseCase(unittest.TestCase):
         element = page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
-        self.__demo_mode_highlight_if_active(selector, by)
+        if self.demo_mode:
+            self.highlight(selector, by=by, loops=1)
+        elif self.slow_mode:
+            self.__slow_scroll_to_element(element)
+        if self.demo_mode and mark is None:
+            mark = True
         if mark:
             selector = self.convert_to_css_selector(selector, by=by)
             selector = re.escape(selector)
             selector = self.__escape_quotes_if_needed(selector)
-            px = x - 2
-            if px < 0:
-                px = 0
-            py = y - 2
-            if py < 0:
-                py = 0
+            px = x - 3
+            py = y - 3
             script = (
                 "var canvas = document.querySelector('%s');"
                 "var ctx = canvas.getContext('2d');"
+                "ctx.fillStyle = '#F8F808';"
+                "ctx.fillRect(%s, %s, 7, 7);"
                 "ctx.fillStyle = '#F80808';"
-                "ctx.fillRect(%s, %s, 5, 5);"
-                % (selector, px, py)
+                "ctx.fillRect(%s+1, %s+1, 5, 5);"
+                % (selector, px, py, px, py)
             )
             self.execute_script(script)
         try:
@@ -3739,6 +3743,19 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append('self.%s("%s")' % (method, action[1]))
                 else:
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "canva":
+                method = "click_with_offset"
+                selector = action[1][0]
+                p_x = action[1][1]
+                p_y = action[1][2]
+                if '"' not in selector:
+                    sb_actions.append(
+                        'self.%s("%s", %s, %s)' % (method, selector, p_x, p_y)
+                    )
+                else:
+                    sb_actions.append(
+                        "self.%s('%s', %s, %s)" % (method, selector, p_x, p_y)
+                    )
             elif action[0] == "input" or action[0] == "js_ty":
                 method = "type"
                 if action[0] == "js_ty":
