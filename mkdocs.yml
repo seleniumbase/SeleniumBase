@@ -10,7 +10,7 @@ edit_uri: ""
 site_dir: "site"
 docs_dir: "mkdocs_build"
 # Copyright
-copyright: Copyright &copy; 2014 - 2021 Michael Mintz
+copyright: Copyright &copy; 2014 - 2022 Michael Mintz
 # Extensions
 markdown_extensions:
   - admonition
