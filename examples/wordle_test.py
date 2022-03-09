@@ -1,3 +1,5 @@
+""" Solve the Wordle game using SeleniumBase. """
+
 import ast
 import random
 import requests
