@@ -13,7 +13,7 @@ pkginfo==1.8.2;python_version>="3.6"
 Jinja2==3.0.3;python_version>="3.6"
 click==8.0.4;python_version>="3.6"
 zipp==3.7.0;python_version>="3.7"
-readme-renderer==32.0
+readme-renderer==33.0
 pymdown-extensions==9.2;python_version>="3.7"
 importlib-metadata==4.11.2;python_version>="3.7"
 bleach==4.1.0
@@ -22,7 +22,7 @@ lunr==0.6.2;python_version>="3.6"
 nltk==3.7;python_version>="3.6"
 watchdog==2.1.6;python_version>="3.6"
 mkdocs==1.2.3;python_version>="3.6"
-mkdocs-material==8.2.4;python_version>="3.6"
+mkdocs-material==8.2.5;python_version>="3.6"
 mkdocs-exclude-search==0.6.4;python_version>="3.6"
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.0.3;python_version>="3.6"
