@@ -530,8 +530,7 @@ class BaseCase(unittest.TestCase):
             pass  # Clearing the text field first might not be necessary
         self.__demo_mode_pause_if_active(tiny=True)
         pre_action_url = self.driver.current_url
-        if type(text) is int or type(text) is float:
-            text = str(text)
+        text = self.__get_type_checked_text(text)
         try:
             if not text.endswith("\n"):
                 element.send_keys(text)
@@ -590,8 +589,7 @@ class BaseCase(unittest.TestCase):
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
         pre_action_url = self.driver.current_url
-        if type(text) is int or type(text) is float:
-            text = str(text)
+        text = self.__get_type_checked_text(text)
         try:
             if not text.endswith("\n"):
                 element.send_keys(text)
@@ -988,6 +986,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         pre_action_url = self.driver.current_url
         pre_window_count = len(self.driver.window_handles)
+        link_text = self.__get_type_checked_text(link_text)
         if self.browser == "phantomjs":
             if self.is_link_text_visible(link_text):
                 element = self.wait_for_link_text_visible(
@@ -1109,6 +1108,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        partial_link_text = self.__get_type_checked_text(partial_link_text)
         if self.browser == "phantomjs":
             if self.is_partial_link_text_visible(partial_link_text):
                 element = self.wait_for_partial_link_text(partial_link_text)
@@ -4765,6 +4765,32 @@ class BaseCase(unittest.TestCase):
         text = text.replace("\xe2\xbd\x85", "\xe6\x96\xb9")
         return text
 
+    def __get_type_checked_text(self, text):
+        """ Do type-checking on text. Then return it when valid.
+        If the text is acceptable, return the text or str(text).
+        If the text is not acceptable, raise a Python Exception.
+        """
+        if type(text) is str:
+            return text
+        elif type(text) is int or type(text) is float:
+            return str(text)  # Convert num to string
+        elif type(text) is bool:
+            raise Exception("text must be a string! Boolean found!")
+        elif type(text).__name__ == "NoneType":
+            raise Exception("text must be a string! NoneType found!")
+        elif type(text) is list:
+            raise Exception("text must be a string! List found!")
+        elif type(text) is tuple:
+            raise Exception("text must be a string! Tuple found!")
+        elif type(text) is set:
+            raise Exception("text must be a string! Set found!")
+        elif type(text) is dict:
+            raise Exception("text must be a string! Dict found!")
+        elif not python3 and type(text) is unicode:  # noqa: F821
+            return text  # (For old Python versions with unicode)
+        else:
+            return str(text)
+
     def get_pdf_text(
         self,
         pdf,
@@ -5703,8 +5729,7 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_highlight_if_active(orginal_selector, by)
         if scroll and not self.demo_mode and not self.slow_mode:
             self.scroll_to(orginal_selector, by=by, timeout=timeout)
-        if type(text) is int or type(text) is float:
-            text = str(text)
+        text = self.__get_type_checked_text(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
         pre_escape_css_selector = css_selector
@@ -5765,8 +5790,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
-        if type(text) is int or type(text) is float:
-            text = str(text)
+        text = self.__get_type_checked_text(text)
         self.set_value(selector, text, by=by, timeout=timeout)
         if not text.endswith("\n"):
             try:
@@ -5838,8 +5862,7 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(orginal_selector, by)
             if not self.demo_mode and not self.slow_mode:
                 self.scroll_to(orginal_selector, by=by, timeout=timeout)
-        if type(text) is int or type(text) is float:
-            text = str(text)
+        text = self.__get_type_checked_text(text)
         value = re.escape(text)
         value = self.__escape_quotes_if_needed(value)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
@@ -6185,8 +6208,7 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(backspaces)
             except Exception:
                 pass
-        if type(text) is int or type(text) is float:
-            text = str(text)
+        text = self.__get_type_checked_text(text)
         if not text.endswith("\n"):
             element.send_keys(text)
             if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
@@ -9390,6 +9412,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        text = self.__get_type_checked_text(text)
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_text_visible(

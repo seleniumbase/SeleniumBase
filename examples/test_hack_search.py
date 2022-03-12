@@ -20,7 +20,7 @@ class HackingTests(BaseCase):
         if self.is_element_visible(help_docs_install_link):
             self.highlight_click(help_docs_install_link)
             self.assert_text("Install SeleniumBase", "h1")
-            self.click_link_text("GitHub branch")
+            self.click_link("GitHub branch")
         self.highlight_click('a[href*="/seleniumbase/SeleniumBase"]')
         self.assert_element('[href="/seleniumbase/SeleniumBase"]')
         self.assert_true("seleniumbase/SeleniumBase" in self.get_current_url())

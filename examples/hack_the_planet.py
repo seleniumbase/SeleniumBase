@@ -286,6 +286,8 @@ class HackTests(BaseCase):
             self.highlight('h1', loops=6, scroll=False)
 
         self.open("https://www.selenium.dev/")
+        if self.is_element_visible('button[data-dismiss="alert"] span'):
+            self.js_click('button[data-dismiss="alert"] span', scroll=False)
         self.set_attributes("a.dropdown-toggle", "class", "nav-link")
         self.set_text_content('li a:contains("About")', "ALL")
         self.set_text_content('li a:contains("Downloads")', "YOUR")
@@ -360,12 +362,12 @@ class HackTests(BaseCase):
         self.set_text_content('a[href="/software/jira/features"]', "")
         self.set_text_content('a[href="/software/jira/guides"]', "")
         self.set_text_content("h1", ayb)
-        self.set_text_content('div.xs-none-bottom a[href*="free"]', abtu)
+        self.set_text_content('[class*="link-button"] a[href*="free"]', abtu)
         self.highlight("ul.imkt-navbar__link-list", loops=2, scroll=False)
         self.highlight('a[href*="jira/pricing"]', loops=3, scroll=False)
         self.highlight('a[href*="jira/enterprise"]', loops=3, scroll=False)
         self.highlight("h1", loops=3, scroll=False)
-        self.highlight('div.xs-none-bottom a[href*="free"]', scroll=False)
+        self.highlight('[class*="link-button"] a[href*="free"]', scroll=False)
 
         self.open("https://status.iboss.com/ibcloud/app/cloudStatus.html")
         self.set_text_content('div[translate*="cloudStatus"]', ayb)
