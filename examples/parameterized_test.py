@@ -13,7 +13,6 @@ class GoogleTests(BaseCase):
     def test_parameterized_google_search(self, search_key, expected_text, img):
         self.open("https://google.com/ncr")
         self.type('input[title="Search"]', search_key + "\n")
-        self.assert_element("#result-stats")
         self.assert_text(expected_text, "#search")
         self.click('a:contains("%s")' % expected_text)
         self.assert_element(img)
