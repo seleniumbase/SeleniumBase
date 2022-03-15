@@ -297,49 +297,70 @@ def highlight_with_js(driver, selector, loops, o_bs):
             '0px 0px 6px 6px rgba(255, 0, 0, 1)';"""
             % selector
         )
-        driver.execute_script(script)
+        try:
+            driver.execute_script(script)
+        except Exception:
+            return
         time.sleep(0.0181)
         script = (
             """document.querySelector('%s').style.boxShadow =
             '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
             % selector
         )
-        driver.execute_script(script)
+        try:
+            driver.execute_script(script)
+        except Exception:
+            return
         time.sleep(0.0181)
         script = (
             """document.querySelector('%s').style.boxShadow =
             '0px 0px 6px 6px rgba(0, 0, 255, 1)';"""
             % selector
         )
-        driver.execute_script(script)
+        try:
+            driver.execute_script(script)
+        except Exception:
+            return
         time.sleep(0.0181)
         script = (
             """document.querySelector('%s').style.boxShadow =
             '0px 0px 6px 6px rgba(0, 255, 0, 1)';"""
             % selector
         )
-        driver.execute_script(script)
+        try:
+            driver.execute_script(script)
+        except Exception:
+            return
         time.sleep(0.0181)
         script = (
             """document.querySelector('%s').style.boxShadow =
             '0px 0px 6px 6px rgba(128, 128, 0, 1)';"""
             % selector
         )
-        driver.execute_script(script)
+        try:
+            driver.execute_script(script)
+        except Exception:
+            return
         time.sleep(0.0181)
         script = (
             """document.querySelector('%s').style.boxShadow =
             '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
             % selector
         )
-        driver.execute_script(script)
+        try:
+            driver.execute_script(script)
+        except Exception:
+            return
         time.sleep(0.0181)
     script = """document.querySelector('%s').style.boxShadow =
         '%s';""" % (
         selector,
         o_bs,
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
 
 
 def highlight_with_jquery(driver, selector, loops, o_bs):
@@ -751,28 +772,40 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
         '0px 0px 6px 6px rgba(205, 30, 0, 1)';"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = (
         """document.querySelector('%s').style.boxShadow =
         '0px 0px 6px 6px rgba(128, 0, 128, 1)';"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = (
         """document.querySelector('%s').style.boxShadow =
         '0px 0px 6px 6px rgba(50, 50, 128, 1)';"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = (
         """document.querySelector('%s').style.boxShadow =
         '0px 0px 6px 6px rgba(50, 205, 50, 1)';"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
 
     try:
@@ -785,7 +818,10 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
         selector,
         o_bs,
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
 
 
 def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
@@ -806,28 +842,40 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
         '0px 0px 6px 6px rgba(205, 30, 0, 1)');"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = (
         """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 0, 128, 1)');"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = (
         """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(50, 50, 200, 1)');"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
     script = (
         """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(50, 205, 50, 1)');"""
         % selector
     )
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
     time.sleep(0.0181)
 
     try:
@@ -837,7 +885,10 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
         pass
 
     script = """jQuery('%s').css('box-shadow', '%s');""" % (selector, o_bs)
-    driver.execute_script(script)
+    try:
+        driver.execute_script(script)
+    except Exception:
+        return
 
 
 def get_scroll_distance_to_element(driver, element):
