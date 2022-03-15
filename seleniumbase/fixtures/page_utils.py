@@ -276,6 +276,6 @@ def _save_data_as(data, destination_folder, file_name):
 def make_css_match_first_element_only(selector):
     # Only get the first match
     last_syllable = selector.split(" ")[-1]
-    if ":" not in last_syllable and ":contains" not in selector:
+    if ":first" not in last_syllable:
         selector += ":first"
     return selector
