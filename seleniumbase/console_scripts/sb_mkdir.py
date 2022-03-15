@@ -241,6 +241,7 @@ def main():
     data.append("msedgedriver")
     data.append("operadriver")
     data.append("MicrosoftWebDriver.exe")
+    data.append("headless_ie_selenium.exe")
     data.append("IEDriverServer.exe")
     data.append("chromedriver.exe")
     data.append("geckodriver.exe")
