@@ -21,6 +21,7 @@ COMMANDS:
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
       recorder         (Open Recorder Desktop App)
+      record           (App if 0 args. Else mkrec.)
       mkpres           [FILE.py] [LANG]
       mkchart          [FILE.py] [LANG]
       print            [FILE] [OPTIONS]
@@ -223,7 +224,7 @@ methods, which are "open", "type", "click",
 basic boilerplate option, only the "open" method
 is included.
 
-<h3>mkrec / codegen</h3>
+<h3>mkrec / record / codegen</h3>
 
 * Usage:
 ``sbase mkrec [FILE.py] [OPTIONS]``

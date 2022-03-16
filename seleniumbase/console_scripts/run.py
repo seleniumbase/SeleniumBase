@@ -79,7 +79,8 @@ def show_basic_usage():
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
-    sc += "      recorder         (Open Recorder Desktop App)\n"
+    sc += "      recorder         (Open Recorder Desktop App.)\n"
+    sc += "      record           (App if 0 args. Else mkrec.)\n"
     sc += "      mkpres           [FILE.py] [LANG]\n"
     sc += "      mkchart          [FILE.py] [LANG]\n"
     sc += "      print            [FILE] [OPTIONS]\n"
@@ -774,10 +775,28 @@ def main():
         else:
             show_basic_usage()
             show_install_usage()
-    elif command == "recorder":
+    elif (
+        command == "recorder"
+        or (command == "record" and len(command_args) == 0)
+    ):
         from seleniumbase.console_scripts import sb_recorder
 
         sb_recorder.main()
+    elif (
+        command == "mkrec"
+        or command == "codegen"
+        or (command == "record" and len(command_args) >= 1)
+    ):
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkrec
+
+            sb_mkrec.main()
+        else:
+            show_basic_usage()
+            if command == "codegen":
+                show_codegen_usage()
+            else:
+                show_mkrec_usage()
     elif command == "mkdir":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkdir
@@ -794,22 +813,6 @@ def main():
         else:
             show_basic_usage()
             show_mkfile_usage()
-    elif command == "mkrec":
-        if len(command_args) >= 1:
-            from seleniumbase.console_scripts import sb_mkrec
-
-            sb_mkrec.main()
-        else:
-            show_basic_usage()
-            show_mkrec_usage()
-    elif command == "codegen":
-        if len(command_args) >= 1:
-            from seleniumbase.console_scripts import sb_mkrec
-
-            sb_mkrec.main()
-        else:
-            show_basic_usage()
-            show_codegen_usage()
     elif command == "mkpres":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkpres

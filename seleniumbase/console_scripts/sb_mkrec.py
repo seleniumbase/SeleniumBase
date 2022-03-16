@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 """
+** mkrec / record / codegen **
+
 Creates a new SeleniumBase test file using the Recorder.
 
 Usage:
       seleniumbase mkrec [FILE.py] [OPTIONS]
              sbase mkrec [FILE.py] [OPTIONS]
+     seleniumbase record [FILE.py] [OPTIONS]
+            sbase record [FILE.py] [OPTIONS]
     seleniumbase codegen [FILE.py] [OPTIONS]
            sbase codegen [FILE.py] [OPTIONS]
 
