@@ -106,6 +106,8 @@ def main():
         error_msg = 'File name cannot start with "-"!'
     elif "/" in str(file_name) or "\\" in str(file_name):
         error_msg = "File must be created in the current directory!"
+    elif file_name == "abc.py":
+        error_msg = '"abc.py" is a reserved Python module! Use another name!'
     elif os.path.exists(os.getcwd() + "/" + file_name):
         error_msg = 'File "%s" already exists in this directory!' % file_name
     if error_msg:
