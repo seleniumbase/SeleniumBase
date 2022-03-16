@@ -11,7 +11,7 @@ class SwagLabsTests(BaseCase):
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
-        self.assert_element('div:contains("Sauce Labs Backpack")')
+        self.assert_element('.inventory_item:contains("Sauce Labs Backpack")')
 
     def test_swag_labs_basic_flow(self):
         """ This test checks functional flow of the Swag Labs store. """

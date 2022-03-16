@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 """
+** mkrec / record / codegen **
+
 Creates a new SeleniumBase test file using the Recorder.
 
 Usage:
       seleniumbase mkrec [FILE.py] [OPTIONS]
              sbase mkrec [FILE.py] [OPTIONS]
+     seleniumbase record [FILE.py] [OPTIONS]
+            sbase record [FILE.py] [OPTIONS]
     seleniumbase codegen [FILE.py] [OPTIONS]
            sbase codegen [FILE.py] [OPTIONS]
 
@@ -18,6 +22,7 @@ Options:
     --url=URL  (Sets the initial start page URL.)
     --edge  (Use Edge browser instead of Chrome.)
     --gui / --headed  (Use headed mode on Linux.)
+    --overwrite  (Overwrite file when it exists.)
 
 Output:
     Creates a new SeleniumBase test using the Recorder.
@@ -32,19 +37,18 @@ import sys
 
 
 def invalid_run_command(msg=None):
-    exp = "  ** mkrec / codegen **\n\n"
+    exp = "  ** mkrec / record / codegen **\n\n"
     exp += "  Usage:\n"
     exp += "           seleniumbase mkrec [FILE.py]\n"
-    exp += "                  sbase mkrec [FILE.py]\n"
-    exp += "         seleniumbase codegen [FILE.py]\n"
-    exp += "                sbase codegen [FILE.py]\n"
+    exp += "           OR:    sbase mkrec [FILE.py]\n"
     exp += "  Examples:\n"
     exp += "           sbase mkrec new_test.py\n"
-    exp += "           sbase codegen new_test.py\n"
+    exp += "           sbase mkrec new_test.py --url=wikipedia.org\n"
     exp += "  Options:\n"
     exp += "           --url=URL  (Sets the initial start page URL.)\n"
     exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
     exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
+    exp += "           --overwrite  (Overwrite file when it exists.)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"
@@ -102,9 +106,22 @@ def main():
         error_msg = 'File name cannot start with "-"!'
     elif "/" in str(file_name) or "\\" in str(file_name):
         error_msg = "File must be created in the current directory!"
-    elif os.path.exists(os.getcwd() + "/" + file_name):
-        error_msg = 'File "%s" already exists in this directory!' % file_name
+    elif file_name == "abc.py":
+        error_msg = '"abc.py" is a reserved Python module! Use another name!'
     if error_msg:
+        error_msg = c5 + "ERROR: " + error_msg + cr
+        invalid_run_command(error_msg)
+
+    dir_name = os.getcwd()
+    file_path = os.path.join(dir_name, file_name)
+
+    if (
+        "--overwrite" in ' '.join(command_args).lower()
+        and os.path.exists(file_path)
+    ):
+        os.remove(file_path)
+    if os.path.exists(file_path):
+        error_msg = 'File "%s" already exists in this directory!' % file_name
         error_msg = c5 + "ERROR: " + error_msg + cr
         invalid_run_command(error_msg)
 
@@ -127,6 +144,8 @@ def main():
             elif next_is_url:
                 start_page = option
                 next_is_url = False
+            elif option.lower() == "--overwrite":
+                pass  # Already handled if file existed
             else:
                 invalid_cmd = "\n===> INVALID OPTION: >> %s <<\n" % option
                 invalid_cmd = invalid_cmd.replace(">> ", ">>" + c5 + " ")
@@ -137,9 +156,6 @@ def main():
                 break
     if help_me:
         invalid_run_command(invalid_cmd)
-
-    dir_name = os.getcwd()
-    file_path = "%s/%s" % (dir_name, file_name)
 
     data = []
     data.append("from seleniumbase import BaseCase")

@@ -15,6 +15,8 @@ sbase mkrec new_test.py
 sbase mkrec new_test.py --url=wikipedia.org
 sbase codegen new_test.py --url=wikipedia.org
 sbase recorder
+sbase record new_test.py
+sbase record
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -79,7 +81,8 @@ def show_basic_usage():
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
-    sc += "      recorder         (Open Recorder Desktop App)\n"
+    sc += "      recorder         (Open Recorder Desktop App.)\n"
+    sc += "      record           (If args: mkrec. Else: App.)\n"
     sc += "      mkpres           [FILE.py] [LANG]\n"
     sc += "      mkchart          [FILE.py] [LANG]\n"
     sc += "      print            [FILE] [OPTIONS]\n"
@@ -126,13 +129,13 @@ def show_install_usage():
     print("           sbase install chromedriver")
     print("           sbase install geckodriver")
     print("           sbase install edgedriver")
-    print("           sbase install chromedriver 96")
-    print("           sbase install chromedriver 96.0.4664.45")
+    print("           sbase install chromedriver 99")
+    print("           sbase install chromedriver 99.0.4844.51")
     print("           sbase install chromedriver latest")
     print("           sbase install chromedriver latest-1")
     print("           sbase install chromedriver -p")
     print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 96.0.1054.62")
+    print("           sbase install edgedriver 99.0.1150.39")
     print("  Output:")
     print("           Installs the chosen webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")
@@ -216,6 +219,7 @@ def show_mkrec_usage():
     print("           --url=URL  (Sets the initial start page URL.)")
     print("           --edge  (Use Edge browser instead of Chrome.)")
     print("           --gui / --headed  (Use headed mode on Linux.)")
+    print("           --overwrite  (Overwrite file when it exists.)")
     print("  Output:")
     print("           Creates a new SeleniumBase test using the Recorder.")
     print("           If the filename already exists, an error is raised.")
@@ -239,6 +243,7 @@ def show_codegen_usage():
     print("           --url=URL  (Sets the initial start page URL.)")
     print("           --edge  (Use Edge browser instead of Chrome.)")
     print("           --gui / --headed  (Use headed mode on Linux.)")
+    print("           --overwrite  (Overwrite file when it exists.)")
     print("  Output:")
     print("           Creates a new SeleniumBase test using the Recorder.")
     print("           If the filename already exists, an error is raised.")
@@ -774,10 +779,28 @@ def main():
         else:
             show_basic_usage()
             show_install_usage()
-    elif command == "recorder":
+    elif (
+        command == "recorder"
+        or (command == "record" and len(command_args) == 0)
+    ):
         from seleniumbase.console_scripts import sb_recorder
 
         sb_recorder.main()
+    elif (
+        command == "mkrec"
+        or command == "codegen"
+        or (command == "record" and len(command_args) >= 1)
+    ):
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkrec
+
+            sb_mkrec.main()
+        else:
+            show_basic_usage()
+            if command == "codegen":
+                show_codegen_usage()
+            else:
+                show_mkrec_usage()
     elif command == "mkdir":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkdir
@@ -794,22 +817,6 @@ def main():
         else:
             show_basic_usage()
             show_mkfile_usage()
-    elif command == "mkrec":
-        if len(command_args) >= 1:
-            from seleniumbase.console_scripts import sb_mkrec
-
-            sb_mkrec.main()
-        else:
-            show_basic_usage()
-            show_mkrec_usage()
-    elif command == "codegen":
-        if len(command_args) >= 1:
-            from seleniumbase.console_scripts import sb_mkrec
-
-            sb_mkrec.main()
-        else:
-            show_basic_usage()
-            show_codegen_usage()
     elif command == "mkpres":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkpres
