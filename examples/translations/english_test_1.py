@@ -3,18 +3,15 @@ from seleniumbase import BaseCase
 
 class MyTestClass(BaseCase):
     def test_example_1(self):
-        url = "https://store.xkcd.com/collections/posters"
-        self.open(url)
-        self.type("input.search-input", "xkcd book\n")
-        self.assert_text("xkcd: volume 0", "h3")
-        self.click("li.checkout-link a")
-        self.assert_text("Shopping Cart", "#page-title")
-        self.assert_element("div#umbrella")
-        self.open("https://xkcd.com/353/")
-        self.assert_title("xkcd: Python")
-        self.assert_element('img[alt="Python"]')
-        self.click('a[rel="license"]')
-        self.assert_text("back to this page")
-        self.go_back()
-        self.click_link("About")
-        self.assert_exact_text("xkcd.com", "h2")
+        self.open("https://www.saucedemo.com")
+        self.type("#user-name", "standard_user")
+        self.type("#password", "secret_sauce\n")
+        self.assert_element("#inventory_container")
+        self.assert_exact_text("PRODUCTS", "span.title")
+        self.click('button[name*="backpack"]')
+        self.click("#shopping_cart_container a")
+        self.assert_exact_text("YOUR CART", "span.title")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click('button:contains("Remove")')  # HTML innerText
+        self.assert_text_not_visible("Backpack", "div.cart_item")
+        self.js_click("a#logout_sidebar_link")

@@ -14,7 +14,7 @@ class MinhaClasseDeTeste(CasoDeTeste):
         self.js_digitar("#searchform input", "Florianópolis")
         self.clique("#searchform button")
         self.verificar_texto("Florianópolis", "h1#firstHeading")
-        self.verificar_elemento('img[alt*="Avenida Beira Mar"]')
+        self.verificar_elemento('td:contains("Avenida Beira-Mar")')
         self.voltar()
         self.verificar_verdade("João" in self.obter_url_atual())
         self.js_digitar("#searchform input", "Teatro Amazonas")
