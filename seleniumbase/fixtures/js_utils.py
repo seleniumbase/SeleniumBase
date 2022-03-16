@@ -282,6 +282,19 @@ def highlight_with_js(driver, selector, loops, o_bs):
         driver.execute_script("")
     except Exception:
         pass
+    if selector == "html":
+        selector = "body"
+    selector_no_spaces = selector.replace(" ", "")
+    early_exit = False
+    if '[style=\\"' in selector_no_spaces:
+        if 'box\\-shadow:' in selector:
+            early_exit = True  # Changing the box-shadow changes the selector
+        elif '[style=\\"' in selector:
+            selector = selector.replace('[style=\\"', '[style\\*=\\"')
+        else:
+            early_exit = True  # Changing the box-shadow changes the selector
+        if early_exit:
+            return
     script = (
         """document.querySelector('%s').style.boxShadow =
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
@@ -369,6 +382,19 @@ def highlight_with_jquery(driver, selector, loops, o_bs):
         driver.execute_script("")
     except Exception:
         pass
+    if selector == "html":
+        selector = "body"
+    selector_no_spaces = selector.replace(" ", "")
+    early_exit = False
+    if '[style=\\"' in selector_no_spaces:
+        if 'box\\-shadow:' in selector:
+            early_exit = True  # Changing the box-shadow changes the selector
+        elif '[style=\\"' in selector:
+            selector = selector.replace('[style=\\"', '[style\\*=\\"')
+        else:
+            early_exit = True  # Changing the box-shadow changes the selector
+        if early_exit:
+            return
     script = (
         """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');"""
@@ -757,6 +783,22 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
         pass
     if selector == "html":
         selector = "body"
+    selector_no_spaces = selector.replace(" ", "")
+    early_exit = False
+    if '[style=\\"' in selector_no_spaces:
+        if 'box\\-shadow:' in selector:
+            early_exit = True  # Changing the box-shadow changes the selector
+        elif '[style=\\"' in selector:
+            selector = selector.replace('[style=\\"', '[style\\*=\\"')
+        else:
+            early_exit = True  # Changing the box-shadow changes the selector
+        if early_exit:
+            try:
+                activate_jquery(driver)
+                post_messenger_success_message(driver, message, msg_dur)
+            except Exception:
+                pass
+            return
     script = (
         """document.querySelector('%s').style.boxShadow =
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)';"""
@@ -827,6 +869,22 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
 def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
     if selector == "html":
         selector = "body"
+    selector_no_spaces = selector.replace(" ", "")
+    early_exit = False
+    if '[style=\\"' in selector_no_spaces:
+        if 'box\\-shadow:' in selector:
+            early_exit = True  # Changing the box-shadow changes the selector
+        elif '[style=\\"' in selector:
+            selector = selector.replace('[style=\\"', '[style\\*=\\"')
+        else:
+            early_exit = True  # Changing the box-shadow changes the selector
+        if early_exit:
+            try:
+                activate_jquery(driver)
+                post_messenger_success_message(driver, message, msg_dur)
+            except Exception:
+                pass
+            return
     script = (
         """jQuery('%s').css('box-shadow',
         '0px 0px 6px 6px rgba(128, 128, 128, 0.5)');"""
