@@ -20,8 +20,8 @@ COMMANDS:
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
-      recorder         (Open Recorder Desktop App)
-      record           (App if 0 args. Else mkrec.)
+      recorder         (Open Recorder Desktop App.)
+      record           (If args: mkrec. Else: App.)
       mkpres           [FILE.py] [LANG]
       mkchart          [FILE.py] [LANG]
       print            [FILE] [OPTIONS]
@@ -54,13 +54,13 @@ COMMANDS:
 sbase install chromedriver
 sbase install geckodriver
 sbase install edgedriver
-sbase install chromedriver 96
-sbase install chromedriver 96.0.4664.45
+sbase install chromedriver 99
+sbase install chromedriver 99.0.4844.51
 sbase install chromedriver latest
 sbase install chromedriver latest-1  # (Latest minus one)
 sbase install chromedriver -p
 sbase install chromedriver latest -p
-sbase install edgedriver 96.0.1054.62
+sbase install edgedriver 99.0.1150.39
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,

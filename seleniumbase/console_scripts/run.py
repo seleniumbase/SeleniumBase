@@ -15,6 +15,8 @@ sbase mkrec new_test.py
 sbase mkrec new_test.py --url=wikipedia.org
 sbase codegen new_test.py --url=wikipedia.org
 sbase recorder
+sbase record new_test.py
+sbase record
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -80,7 +82,7 @@ def show_basic_usage():
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
     sc += "      recorder         (Open Recorder Desktop App.)\n"
-    sc += "      record           (App if 0 args. Else mkrec.)\n"
+    sc += "      record           (If args: mkrec. Else: App.)\n"
     sc += "      mkpres           [FILE.py] [LANG]\n"
     sc += "      mkchart          [FILE.py] [LANG]\n"
     sc += "      print            [FILE] [OPTIONS]\n"
@@ -127,13 +129,13 @@ def show_install_usage():
     print("           sbase install chromedriver")
     print("           sbase install geckodriver")
     print("           sbase install edgedriver")
-    print("           sbase install chromedriver 96")
-    print("           sbase install chromedriver 96.0.4664.45")
+    print("           sbase install chromedriver 99")
+    print("           sbase install chromedriver 99.0.4844.51")
     print("           sbase install chromedriver latest")
     print("           sbase install chromedriver latest-1")
     print("           sbase install chromedriver -p")
     print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 96.0.1054.62")
+    print("           sbase install edgedriver 99.0.1150.39")
     print("  Output:")
     print("           Installs the chosen webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")
