@@ -13,4 +13,4 @@ class SwagLabsLoginTests(BaseCase):
         """ This test checks standard login for the Swag Labs store. """
         self.login_to_swag_labs()
         self.assert_element("#inventory_container")
-        self.assert_element('div:contains("Sauce Labs Backpack")')
+        self.assert_element('.inventory_item:contains("Sauce Labs Backpack")')
