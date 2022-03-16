@@ -240,6 +240,7 @@ is included.
 ``--url=URL``  (Sets the initial start page URL.)
 ``--edge``  (Use Edge browser instead of Chrome.)
 ``--gui`` / ``--headed``  (Use headed mode on Linux.)
+``--overwrite``  (Overwrite file when it exists.)
 
 * Output:
 Creates a new SeleniumBase test using the Recorder.
