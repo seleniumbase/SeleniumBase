@@ -19,7 +19,7 @@ Example:
         sbase install chromedriver latest-1  # (Latest minus one)
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 99.0.1150.39
+        sbase install edgedriver 99.0.1150.46
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -71,7 +71,7 @@ def invalid_run_command():
     exp += "          sbase install chromedriver latest-1\n"
     exp += "          sbase install chromedriver -p\n"
     exp += "          sbase install chromedriver latest -p\n"
-    exp += "          sbase install edgedriver 99.0.1150.39"
+    exp += "          sbase install edgedriver 99.0.1150.46"
     exp += "  Output:\n"
     exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
