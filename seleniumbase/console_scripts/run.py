@@ -135,7 +135,7 @@ def show_install_usage():
     print("           sbase install chromedriver latest-1")
     print("           sbase install chromedriver -p")
     print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 99.0.1150.39")
+    print("           sbase install edgedriver 99.0.1150.46")
     print("  Output:")
     print("           Installs the chosen webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")

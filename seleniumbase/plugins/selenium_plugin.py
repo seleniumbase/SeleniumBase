@@ -8,6 +8,10 @@ from seleniumbase.config import settings
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
+
 
 class SeleniumBrowser(Plugin):
     """
@@ -744,7 +748,8 @@ class SeleniumBrowser(Plugin):
     def afterTest(self, test):
         try:
             # If the browser window is still open, close it now.
-            self.driver.quit()
+            if not is_windows or self.driver.service.process:
+                self.driver.quit()
         except AttributeError:
             pass
         except Exception:

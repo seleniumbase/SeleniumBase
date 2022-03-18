@@ -60,7 +60,7 @@ sbase install chromedriver latest
 sbase install chromedriver latest-1  # (Latest minus one)
 sbase install chromedriver -p
 sbase install chromedriver latest -p
-sbase install edgedriver 99.0.1150.39
+sbase install edgedriver 99.0.1150.46
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,

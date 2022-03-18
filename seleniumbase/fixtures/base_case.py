@@ -68,6 +68,9 @@ logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
 urllib3.disable_warnings()
 LOGGER.setLevel(logging.WARNING)
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
 python3 = True
 if sys.version_info[0] < 3:
     python3 = False
@@ -9979,7 +9982,8 @@ class BaseCase(unittest.TestCase):
                 "Use this method only if get_new_driver() has been called."
             )
         try:
-            driver.quit()
+            if not is_windows or driver.service.process:
+                driver.quit()
         except AttributeError:
             pass
         except Exception:
@@ -11666,7 +11670,8 @@ class BaseCase(unittest.TestCase):
         self._drivers_list.reverse()  # Last In, First Out
         for driver in self._drivers_list:
             try:
-                driver.quit()
+                if not is_windows or driver.service.process:
+                    driver.quit()
             except AttributeError:
                 pass
             except Exception:
