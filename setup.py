@@ -131,7 +131,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=60.9.3;python_version>="3.7"',
+        'setuptools>=60.10.0;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -160,7 +160,7 @@ setup(
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
         'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.5"',  # Sync "requests"
-        "urllib3==1.26.8",  # Must stay in sync with "requests"
+        "urllib3==1.26.9",  # Must stay in sync with "requests"
         'requests==2.27.1;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
         'requests==2.27.1;python_version>="3.6"',
@@ -189,7 +189,7 @@ setup(
         'pytest==4.6.11;python_version<"3.5"',
         'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
         'pytest==7.0.1;python_version>="3.6" and python_version<"3.7"',
-        'pytest==7.1.0;python_version>="3.7"',
+        'pytest==7.1.1;python_version>="3.7"',
         'pytest-forked==1.3.0;python_version<"3.6"',
         'pytest-forked==1.4.0;python_version>="3.6"',
         'pytest-html==1.22.1;python_version<"3.6"',
