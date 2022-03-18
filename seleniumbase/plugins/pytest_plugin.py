@@ -10,6 +10,9 @@ from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
 
@@ -1349,7 +1352,8 @@ def pytest_runtest_teardown(item):
                 and self.driver
                 and "--pdb" not in sys.argv
             ):
-                self.driver.quit()
+                if not is_windows or self.driver.service.process:
+                    self.driver.quit()
         except Exception:
             pass
         try:
@@ -1402,7 +1406,8 @@ def _perform_pytest_unconfigure_():
         # Close the shared browser session
         if sb_config.shared_driver:
             try:
-                sb_config.shared_driver.quit()
+                if not is_windows or sb_config.shared_driver.service.process:
+                    sb_config.shared_driver.quit()
             except AttributeError:
                 pass
             except Exception:
