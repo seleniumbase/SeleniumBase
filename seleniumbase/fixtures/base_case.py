@@ -9927,6 +9927,73 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def quit_extra_driver(self, driver=None):
+        """ Quits the driver only if it's not the default/initial driver.
+        If a driver is given, quits that, otherwise quits the active driver.
+        Raises an Exception if quitting the default/initial driver.
+        Should only be called if a test has already called get_new_driver().
+        Afterwards, self.driver points to the default/initial driver
+        if self.driver was the one being quit.
+        ----
+        If a test never calls get_new_driver(), this method isn't needed.
+        SeleniumBase automatically quits browsers after tests have ended.
+        Even if tests do call get_new_driver(), you don't need to use this
+        method unless you want to quit extra browsers before a test ends.
+        ----
+        Terminology and important details:
+        * Active driver: The one self.driver is set to. Used within methods.
+        * Default/initial driver: The one that is spun up when tests start.
+        Initially, the active driver and the default driver are the same.
+        The active driver can change when one of these methods is called:
+        > self.get_new_driver()
+        > self.switch_to_default_driver()
+        > self.switch_to_driver()
+        > self.quit_extra_driver()
+        """
+        self.__check_scope()
+        if not driver:
+            driver = self.driver
+        if type(driver).__name__ == "NoneType":
+            raise Exception("The driver to quit was a NoneType variable!")
+        elif (
+            not hasattr(driver, "get")
+            or not hasattr(driver, "name")
+            or not hasattr(driver, "quit")
+            or not hasattr(driver, "capabilities")
+            or not hasattr(driver, "window_handles")
+        ):
+            raise Exception("The driver to quit does not match a Driver!")
+        elif self._reuse_session and driver == self._default_driver:
+            raise Exception(
+                "Cannot quit the initial driver in --reuse-session mode!\n"
+                "This is done automatically after all tests have ended.\n"
+                "Use this method only if get_new_driver() has been called."
+            )
+        elif (
+            driver == self._default_driver
+            or (driver in self._drivers_list and len(self._drivers_list) == 1)
+        ):
+            raise Exception(
+                "Cannot quit the default/initial driver!\n"
+                "This is done automatically at the end of each test.\n"
+                "Use this method only if get_new_driver() has been called."
+            )
+        try:
+            driver.quit()
+        except AttributeError:
+            pass
+        except Exception:
+            pass
+        if driver in self._drivers_list:
+            self._drivers_list.remove(driver)
+            if driver in self._drivers_browser_map:
+                del self._drivers_browser_map[driver]
+        # If the driver to quit was the active driver, switch drivers
+        if driver == self.driver:
+            self.switch_to_default_driver()
+
+    ############
+
     def __assert_eq(self, *args, **kwargs):
         """ Minified assert_equal() using only the list diff. """
         minified_exception = None
