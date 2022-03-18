@@ -251,6 +251,7 @@ setup(
     ],
     extras_require={
         # pip install -e .[coverage]
+        # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
@@ -259,6 +260,7 @@ setup(
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
         # pip install -e .[flake]
+        # Usage: flake8
         "flake": [
             'flake8==3.7.9;python_version<"3.5"',
             'flake8==3.9.2;python_version>="3.5" and python_version<"3.6"',
