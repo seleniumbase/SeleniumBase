@@ -723,6 +723,10 @@ self.switch_to_alert(timeout=None)
 
 ############
 
+self.quit_extra_driver(driver=None)
+
+############
+
 self.check_window(
     name="default", level=0, baseline=False, check_domain=True, full_diff=False)
 

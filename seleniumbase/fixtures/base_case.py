@@ -117,7 +117,6 @@ class BaseCase(unittest.TestCase):
         self.__device_width = None
         self.__device_height = None
         self.__device_pixel_ratio = None
-        self.__driver_browser_map = {}
         self.__changed_jqc_theme = False
         self.__jqc_default_theme = None
         self.__jqc_default_color = None
@@ -131,6 +130,7 @@ class BaseCase(unittest.TestCase):
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
+        self._drivers_browser_map = {}
         self._chart_data = {}
         self._chart_count = 0
         self._chart_label = {}
@@ -1028,7 +1028,11 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
             try:
                 element.click()
-            except (StaleElementReferenceException, ENI_Exception):
+            except (
+                StaleElementReferenceException,
+                ENI_Exception,
+                ECI_Exception,
+            ):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_link_text_visible(
@@ -1153,7 +1157,11 @@ class BaseCase(unittest.TestCase):
             )
             try:
                 element.click()
-            except (StaleElementReferenceException, ENI_Exception):
+            except (
+                StaleElementReferenceException,
+                ENI_Exception,
+                ECI_Exception,
+            ):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_partial_link_text(
@@ -1665,7 +1673,7 @@ class BaseCase(unittest.TestCase):
         try:
             self.__scroll_to_element(element)
             element.click()
-        except (StaleElementReferenceException, ENI_Exception):
+        except (StaleElementReferenceException, ENI_Exception, ECI_Exception):
             time.sleep(0.12)
             self.wait_for_ready_state_complete()
             self.wait_for_element_present(selector, by=by, timeout=timeout)
@@ -3043,7 +3051,7 @@ class BaseCase(unittest.TestCase):
             device_pixel_ratio=d_p_r,
         )
         self._drivers_list.append(new_driver)
-        self.__driver_browser_map[new_driver] = browser_name
+        self._drivers_browser_map[new_driver] = browser_name
         if switch_to:
             self.driver = new_driver
             self.browser = browser_name
@@ -3124,16 +3132,16 @@ class BaseCase(unittest.TestCase):
         You may need this if using self.get_new_driver() in your code."""
         self.__check_scope()
         self.driver = driver
-        if self.driver in self.__driver_browser_map:
-            self.browser = self.__driver_browser_map[self.driver]
+        if self.driver in self._drivers_browser_map:
+            self.browser = self._drivers_browser_map[self.driver]
         self.bring_active_window_to_front()
 
     def switch_to_default_driver(self):
-        """ Sets self.driver to the default/original driver. """
+        """ Sets self.driver to the default/initial driver. """
         self.__check_scope()
         self.driver = self._default_driver
-        if self.driver in self.__driver_browser_map:
-            self.browser = self.__driver_browser_map[self.driver]
+        if self.driver in self._drivers_browser_map:
+            self.browser = self._drivers_browser_map[self.driver]
         self.bring_active_window_to_front()
 
     def save_screenshot(
@@ -9919,6 +9927,73 @@ class BaseCase(unittest.TestCase):
 
     ############
 
+    def quit_extra_driver(self, driver=None):
+        """ Quits the driver only if it's not the default/initial driver.
+        If a driver is given, quits that, otherwise quits the active driver.
+        Raises an Exception if quitting the default/initial driver.
+        Should only be called if a test has already called get_new_driver().
+        Afterwards, self.driver points to the default/initial driver
+        if self.driver was the one being quit.
+        ----
+        If a test never calls get_new_driver(), this method isn't needed.
+        SeleniumBase automatically quits browsers after tests have ended.
+        Even if tests do call get_new_driver(), you don't need to use this
+        method unless you want to quit extra browsers before a test ends.
+        ----
+        Terminology and important details:
+        * Active driver: The one self.driver is set to. Used within methods.
+        * Default/initial driver: The one that is spun up when tests start.
+        Initially, the active driver and the default driver are the same.
+        The active driver can change when one of these methods is called:
+        > self.get_new_driver()
+        > self.switch_to_default_driver()
+        > self.switch_to_driver()
+        > self.quit_extra_driver()
+        """
+        self.__check_scope()
+        if not driver:
+            driver = self.driver
+        if type(driver).__name__ == "NoneType":
+            raise Exception("The driver to quit was a NoneType variable!")
+        elif (
+            not hasattr(driver, "get")
+            or not hasattr(driver, "name")
+            or not hasattr(driver, "quit")
+            or not hasattr(driver, "capabilities")
+            or not hasattr(driver, "window_handles")
+        ):
+            raise Exception("The driver to quit does not match a Driver!")
+        elif self._reuse_session and driver == self._default_driver:
+            raise Exception(
+                "Cannot quit the initial driver in --reuse-session mode!\n"
+                "This is done automatically after all tests have ended.\n"
+                "Use this method only if get_new_driver() has been called."
+            )
+        elif (
+            driver == self._default_driver
+            or (driver in self._drivers_list and len(self._drivers_list) == 1)
+        ):
+            raise Exception(
+                "Cannot quit the default/initial driver!\n"
+                "This is done automatically at the end of each test.\n"
+                "Use this method only if get_new_driver() has been called."
+            )
+        try:
+            driver.quit()
+        except AttributeError:
+            pass
+        except Exception:
+            pass
+        if driver in self._drivers_list:
+            self._drivers_list.remove(driver)
+            if driver in self._drivers_browser_map:
+                del self._drivers_browser_map[driver]
+        # If the driver to quit was the active driver, switch drivers
+        if driver == self.driver:
+            self.switch_to_default_driver()
+
+    ############
+
     def __assert_eq(self, *args, **kwargs):
         """ Minified assert_equal() using only the list diff. """
         minified_exception = None
@@ -11410,6 +11485,11 @@ class BaseCase(unittest.TestCase):
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
+            if len(self._drivers_list) == 0:
+                # The user is overriding self.get_new_driver()
+                # (Otherwise this code shouldn't be reachable)
+                self._drivers_list.append(self.driver)
+                self._drivers_browser_map[self.driver] = self.browser
 
         if self.browser in ["firefox", "ie", "safari", "opera"]:
             # Only Chrome and Edge browsers have the mobile emulator.
