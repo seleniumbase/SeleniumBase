@@ -11418,6 +11418,11 @@ class BaseCase(unittest.TestCase):
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
+            if len(self._drivers_list) == 0:
+                # The user is overriding self.get_new_driver()
+                # (Otherwise this code shouldn't be reachable)
+                self._drivers_list.append(self.driver)
+                self._drivers_browser_map[self.driver] = self.browser
 
         if self.browser in ["firefox", "ie", "safari", "opera"]:
             # Only Chrome and Edge browsers have the mobile emulator.
