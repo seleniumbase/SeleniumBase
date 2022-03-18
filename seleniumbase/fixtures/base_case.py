@@ -117,7 +117,6 @@ class BaseCase(unittest.TestCase):
         self.__device_width = None
         self.__device_height = None
         self.__device_pixel_ratio = None
-        self.__driver_browser_map = {}
         self.__changed_jqc_theme = False
         self.__jqc_default_theme = None
         self.__jqc_default_color = None
@@ -131,6 +130,7 @@ class BaseCase(unittest.TestCase):
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._default_driver = None
         self._drivers_list = []
+        self._drivers_browser_map = {}
         self._chart_data = {}
         self._chart_count = 0
         self._chart_label = {}
@@ -3043,7 +3043,7 @@ class BaseCase(unittest.TestCase):
             device_pixel_ratio=d_p_r,
         )
         self._drivers_list.append(new_driver)
-        self.__driver_browser_map[new_driver] = browser_name
+        self._drivers_browser_map[new_driver] = browser_name
         if switch_to:
             self.driver = new_driver
             self.browser = browser_name
@@ -3124,16 +3124,16 @@ class BaseCase(unittest.TestCase):
         You may need this if using self.get_new_driver() in your code."""
         self.__check_scope()
         self.driver = driver
-        if self.driver in self.__driver_browser_map:
-            self.browser = self.__driver_browser_map[self.driver]
+        if self.driver in self._drivers_browser_map:
+            self.browser = self._drivers_browser_map[self.driver]
         self.bring_active_window_to_front()
 
     def switch_to_default_driver(self):
-        """ Sets self.driver to the default/original driver. """
+        """ Sets self.driver to the default/initial driver. """
         self.__check_scope()
         self.driver = self._default_driver
-        if self.driver in self.__driver_browser_map:
-            self.browser = self.__driver_browser_map[self.driver]
+        if self.driver in self._drivers_browser_map:
+            self.browser = self._drivers_browser_map[self.driver]
         self.bring_active_window_to_front()
 
     def save_screenshot(
