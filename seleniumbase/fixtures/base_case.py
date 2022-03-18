@@ -1028,7 +1028,11 @@ class BaseCase(unittest.TestCase):
             self.__demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
             try:
                 element.click()
-            except (StaleElementReferenceException, ENI_Exception):
+            except (
+                StaleElementReferenceException,
+                ENI_Exception,
+                ECI_Exception,
+            ):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_link_text_visible(
@@ -1153,7 +1157,11 @@ class BaseCase(unittest.TestCase):
             )
             try:
                 element.click()
-            except (StaleElementReferenceException, ENI_Exception):
+            except (
+                StaleElementReferenceException,
+                ENI_Exception,
+                ECI_Exception,
+            ):
                 self.wait_for_ready_state_complete()
                 time.sleep(0.16)
                 element = self.wait_for_partial_link_text(
@@ -1665,7 +1673,7 @@ class BaseCase(unittest.TestCase):
         try:
             self.__scroll_to_element(element)
             element.click()
-        except (StaleElementReferenceException, ENI_Exception):
+        except (StaleElementReferenceException, ENI_Exception, ECI_Exception):
             time.sleep(0.12)
             self.wait_for_ready_state_complete()
             self.wait_for_element_present(selector, by=by, timeout=timeout)
