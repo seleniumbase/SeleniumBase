@@ -195,7 +195,8 @@ setup(
         'pytest-html==1.22.1;python_version<"3.6"',
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.8.0;python_version<"3.6"',
-        'pytest-metadata==1.11.0;python_version>="3.6"',
+        'pytest-metadata==1.11.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
+        'pytest-metadata==2.0.0;python_version>="3.7"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==8.0;python_version<"3.5"',
         'pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
@@ -242,12 +243,13 @@ setup(
         'Pillow==9.0.1;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==12.0.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==12.0.1;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        'pdfminer.six==20211012;python_version>="3.6"',
+        'pdfminer.six==20211012;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
+        'pdfminer.six==20220319;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[coverage]
