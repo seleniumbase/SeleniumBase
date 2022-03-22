@@ -16,7 +16,7 @@ Jinja2==3.0.3
 click==8.0.4
 zipp==3.7.0
 readme-renderer==34.0
-pymdown-extensions==9.2
+pymdown-extensions==9.3
 importlib-metadata==4.11.3
 bleach==4.1.0
 jsmin==3.0.1
