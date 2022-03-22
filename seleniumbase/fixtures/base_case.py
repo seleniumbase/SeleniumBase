@@ -1753,63 +1753,22 @@ class BaseCase(unittest.TestCase):
         If mark==True, will draw a dot at location. (Useful for debugging)
         In Demo Mode, mark becomes True unless set to False. (Default: None)
         """
-        from selenium.webdriver.common.action_chains import ActionChains
-
         self.__check_scope()
-        if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout
-        )
-        if self.demo_mode:
-            self.highlight(selector, by=by, loops=1)
-        elif self.slow_mode:
-            self.__slow_scroll_to_element(element)
-        if self.demo_mode and mark is None:
-            mark = True
-        if mark:
-            selector = self.convert_to_css_selector(selector, by=by)
-            selector = re.escape(selector)
-            selector = self.__escape_quotes_if_needed(selector)
-            px = x - 3
-            py = y - 3
-            script = (
-                "var canvas = document.querySelector('%s');"
-                "var ctx = canvas.getContext('2d');"
-                "ctx.fillStyle = '#F8F808';"
-                "ctx.fillRect(%s, %s, 7, 7);"
-                "ctx.fillStyle = '#F80808';"
-                "ctx.fillRect(%s+1, %s+1, 5, 5);"
-                % (selector, px, py, px, py)
-            )
-            self.execute_script(script)
-        try:
-            element_location = element.location["y"]
-            element_location = element_location - 130 + y
-            if element_location < 0:
-                element_location = 0
-            scroll_script = "window.scrollTo(0, %s);" % element_location
-            self.driver.execute_script(scroll_script)
-            self.sleep(0.1)
-        except Exception:
-            pass
-        try:
-            action_chains = ActionChains(self.driver)
-            action_chains.move_to_element_with_offset(element, x, y)
-            action_chains.click().perform()
-        except MoveTargetOutOfBoundsException:
-            message = (
-                "Target coordinates for click are out-of-bounds!\n"
-                "The offset must stay inside the target element!"
-            )
-            raise Exception(message)
-        if self.demo_mode:
-            self.__demo_mode_pause_if_active()
-        elif self.slow_mode:
-            self.__slow_mode_pause_if_active()
+        self.__click_with_offset(
+            selector, x, y, by=by, double=False, mark=mark, timeout=timeout)
+
+    def double_click_with_offset(
+        self, selector, x, y, by=By.CSS_SELECTOR, mark=None, timeout=None
+    ):
+        """
+        Double click an element at an {X,Y}-offset location.
+        {0,0} is the top-left corner of the element.
+        If mark==True, will draw a dot at location. (Useful for debugging)
+        In Demo Mode, mark becomes True unless set to False. (Default: None)
+        """
+        self.__check_scope()
+        self.__click_with_offset(
+            selector, x, y, by=by, double=True, mark=mark, timeout=timeout)
 
     def is_checked(self, selector, by=By.CSS_SELECTOR, timeout=None):
         """Determines if a checkbox or a radio button element is checked.
@@ -10716,6 +10675,77 @@ class BaseCase(unittest.TestCase):
             % css_selector
         )
         self.execute_script(script)
+
+    def __click_with_offset(
+        self,
+        selector,
+        x,
+        y,
+        by=By.CSS_SELECTOR,
+        double=False,
+        mark=None,
+        timeout=None,
+    ):
+        from selenium.webdriver.common.action_chains import ActionChains
+
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.SMALL_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        element = page_actions.wait_for_element_visible(
+            self.driver, selector, by, timeout
+        )
+        if self.demo_mode:
+            self.highlight(selector, by=by, loops=1)
+        elif self.slow_mode:
+            self.__slow_scroll_to_element(element)
+        if self.demo_mode and mark is None:
+            mark = True
+        if mark:
+            selector = self.convert_to_css_selector(selector, by=by)
+            selector = re.escape(selector)
+            selector = self.__escape_quotes_if_needed(selector)
+            px = x - 3
+            py = y - 3
+            script = (
+                "var canvas = document.querySelector('%s');"
+                "var ctx = canvas.getContext('2d');"
+                "ctx.fillStyle = '#F8F808';"
+                "ctx.fillRect(%s, %s, 7, 7);"
+                "ctx.fillStyle = '#F80808';"
+                "ctx.fillRect(%s+1, %s+1, 5, 5);"
+                % (selector, px, py, px, py)
+            )
+            self.execute_script(script)
+        try:
+            element_location = element.location["y"]
+            element_location = element_location - 130 + y
+            if element_location < 0:
+                element_location = 0
+            scroll_script = "window.scrollTo(0, %s);" % element_location
+            self.driver.execute_script(scroll_script)
+            self.sleep(0.1)
+        except Exception:
+            pass
+        try:
+            action_chains = ActionChains(self.driver)
+            action_chains.move_to_element_with_offset(element, x, y)
+            if not double:
+                action_chains.click().perform()
+            else:
+                action_chains.double_click().perform()
+        except MoveTargetOutOfBoundsException:
+            message = (
+                "Target coordinates for click are out-of-bounds!\n"
+                "The offset must stay inside the target element!"
+            )
+            raise Exception(message)
+        if self.demo_mode:
+            self.__demo_mode_pause_if_active()
+        elif self.slow_mode:
+            self.__slow_mode_pause_if_active()
 
     def __jquery_slow_scroll_to(self, selector, by=By.CSS_SELECTOR):
         selector, by = self.__recalculate_selector(selector, by)
