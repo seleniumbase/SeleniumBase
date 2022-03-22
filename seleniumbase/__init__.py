@@ -21,3 +21,4 @@ del sys  # Undo "import sys" / Simplify "dir(seleniumbase)"
 del webdriver  # Undo "import webdriver" / Simplify "dir(seleniumbase)"
 
 version_info = [int(i) for i in __version__.split(".") if i.isdigit()]  # noqa
+version_tuple = tuple(version_info)  # noqa
