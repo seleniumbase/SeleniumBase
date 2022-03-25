@@ -2,7 +2,7 @@
 # Minimum Python version: 3.7
 
 regex>=2022.3.15
-tqdm>=4.63.0
+tqdm>=4.63.1
 docutils==0.18.1
 python-dateutil==2.8.2
 livereload==2.6.3
@@ -22,9 +22,9 @@ bleach==4.1.0
 jsmin==3.0.1
 lunr==0.6.2
 nltk==3.7
-watchdog==2.1.6
+watchdog==2.1.7
 mkdocs==1.2.3
-mkdocs-material==8.2.5
+mkdocs-material==8.2.7
 mkdocs-exclude-search==0.6.4
 mkdocs-simple-hooks==0.1.5
 mkdocs-material-extensions==1.0.3

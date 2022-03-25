@@ -1,10 +1,13 @@
 name: CI build
 
 on:
+  pull_request:
+    branches:
   push:
     branches:
       - master
-  pull_request:
+  workflow_dispatch:
+    branches:
 
 jobs:
   build:
