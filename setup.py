@@ -196,7 +196,7 @@ setup(
         'pytest-html==2.0.1;python_version>="3.6"',  # Newer ones had issues
         'pytest-metadata==1.8.0;python_version<"3.6"',
         'pytest-metadata==1.11.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'pytest-metadata==2.0.0;python_version>="3.7"',
+        'pytest-metadata==2.0.1;python_version>="3.7"',
         "pytest-ordering==0.6",
         'pytest-rerunfailures==8.0;python_version<"3.5"',
         'pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
