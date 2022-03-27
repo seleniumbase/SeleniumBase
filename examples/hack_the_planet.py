@@ -390,7 +390,7 @@ class HackTests(BaseCase):
         self.highlight("#nav-about h3", loops=5, scroll=False)
         self.highlight("#nav-documentation h3", loops=6, scroll=False)
 
-        self.open("https://teamtreehouse.com/")
+        self.open("https://teamtreehouse.com/teams")
         self.set_text_content("li.nav-item-free-trial", aybabtu)
         self.set_text_content("h1", aybabtu)
         self.set_text_content("h2", aybabtu)
