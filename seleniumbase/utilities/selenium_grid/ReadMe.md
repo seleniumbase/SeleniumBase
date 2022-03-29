@@ -56,16 +56,16 @@ You can also run your tests on someone else's Selenium Grid to avoid managing yo
 pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
-* [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
-
-```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
-```
-
 * [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid:
 
 ```bash
 pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
+```
+
+* [Perfecto](https://www.perfecto.io/integrations/selenium) Selenium Grid:
+
+```bash
+pytest test_demo_site.py --server=USERNAME:KEY@demo.perfectomobile.com/nexperience/perfectomobile --port=443
 ```
 
 * [TestingBot](https://testingbot.com/features) Selenium Grid:
@@ -74,16 +74,16 @@ pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com 
 pytest test_demo_site.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
-* [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
-
-```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
-```
-
 * [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
 
 ```bash
 pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
+```
+
+* [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
+
+```bash
+pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
 ```
 
 To use a server on the ``https`` protocol, add ``--protocol=https``:

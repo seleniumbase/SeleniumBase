@@ -347,7 +347,7 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Running tests on a remote Selenium Grid:</h3>
 
-SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [LambdaTest](https://www.lambdatest.com/selenium-automation)'s Selenium Grid,[Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, other Grids, and even your own Grid:
+SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [LambdaTest](https://www.lambdatest.com/selenium-automation)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, other Grids, and even your own Grid:
 
 (For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
 
@@ -363,7 +363,7 @@ Here's how to connect to a Sauce Labs Selenium Grid server for running tests:
 pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
 ```
 
-Here's how to connect to a Perfecto Mobile Selenium Grid server for running tests:
+Here's how to connect to a Perfecto Selenium Grid server for running tests:
 
 ```bash
 pytest test_demo_site.py --server=USERNAME:KEY@demo.perfectomobile.com/nexperience/perfectomobile --port=443
@@ -378,7 +378,7 @@ pytest test_demo_site.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 Here's how to connect to a LambdaTest Selenium Grid server for running tests:
 
 ```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com/wd/hub --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
 
 Here's how to connect to a CrossBrowserTesting Selenium Grid server for running tests:

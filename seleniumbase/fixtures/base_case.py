@@ -2862,8 +2862,8 @@ class BaseCase(unittest.TestCase):
             raise Exception(
                 'Cannot use "remote" browser driver on localhost!'
                 " Did you mean to connect to a remote Grid server"
-                " such as BrowserStack ,LambdaTest or Sauce Labs? In that"
-                ' case, you must specify the "server" and "port"'
+                " such as BrowserStack, LambdaTest, or Sauce Labs?"
+                ' If so, you must specify the "server" and "port"'
                 " parameters on the command line! "
                 "Example: "
                 "--server=user:key@hub.browserstack.com --port=80"
@@ -2878,12 +2878,12 @@ class BaseCase(unittest.TestCase):
                 "Need to specify a desired capabilities file when "
                 'using "--browser=remote". Add "--cap_file=FILE". '
                 "File should be in the Python format used by: "
-                "%s OR "
-                "%s OR "
+                "%s, "
+                "%s, OR "
                 "%s "
-                "See SeleniumBase/examples/capabilities/sample_cap_file_BS.py "
-                "See SeleniumBase/examples/capabilities/sample_cap_file_LT.py "
-                "and SeleniumBase/examples/capabilities/sample_cap_file_SL.py"
+                "See SeleniumBase/examples/capabilities/sample_cap_file_BS.py,"
+                " SeleniumBase/examples/capabilities/sample_cap_file_LT.py,"
+                " and SeleniumBase/examples/capabilities/sample_cap_file_SL.py"
                 % (browserstack_ref, lambdatest_ref, sauce_labs_ref)
             )
         if browser is None:
