@@ -151,3 +151,4 @@ assets
 temp
 temp_*/
 node_modules
+.DS_Store
