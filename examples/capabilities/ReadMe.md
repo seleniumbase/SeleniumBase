@@ -1,6 +1,6 @@
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using Desired Capabilities</h3>
 
-You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote SeleniumGrid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities) or [LambdaTest] (https://www.lambdatest.com/capabilities-generator/) or [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/).
+You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote Selenium Grid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [LambdaTest](https://www.lambdatest.com/capabilities-generator/), or [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/).
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
@@ -26,16 +26,17 @@ desired_cap = {
     "browserstack.selenium_version": "3.141.59",
 }
 ```
+
 Here's an example desired capabilities file for LambdaTest:
 
 ```python
 capabilities = {
-		"build" : "your build name",
-		"name" : "your test name",
-		"platform" : "Windows 11",
-		"browserName" : "Chrome",
-		"version" : "100.0"
-	}
+    "build" : "your build name",
+    "name" : "your test name",
+    "platform" : "Windows 11",
+    "browserName" : "Chrome",
+    "version" : "100.0",
+}
 ```
 
 Here's an example desired capabilities file for Sauce Labs:

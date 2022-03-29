@@ -138,6 +138,9 @@ mkdocs_build/*/*.md
 mkdocs_build/*/*/*.md
 mkdocs_build/*/*/*/*.md
 
+# macOS system files
+.DS_Store
+
 # Other
 selenium-server-standalone.jar
 proxy.zip
@@ -151,4 +154,3 @@ assets
 temp
 temp_*/
 node_modules
-.DS_Store
