@@ -2879,11 +2879,12 @@ class BaseCase(unittest.TestCase):
                 'using "--browser=remote". Add "--cap_file=FILE". '
                 "File should be in the Python format used by: "
                 "%s OR "
+                "%s OR "
                 "%s "
                 "See SeleniumBase/examples/capabilities/sample_cap_file_BS.py "
                 "See SeleniumBase/examples/capabilities/sample_cap_file_LT.py "
                 "and SeleniumBase/examples/capabilities/sample_cap_file_SL.py"
-                % (browserstack_ref, lambdatest_ref,sauce_labs_ref)
+                % (browserstack_ref, lambdatest_ref, sauce_labs_ref)
             )
         if browser is None:
             browser = self.browser

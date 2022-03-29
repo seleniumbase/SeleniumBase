@@ -59,7 +59,7 @@ pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 * [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
 
 ```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com/wd/hub --port=80
+pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 ```
 
 * [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid:
