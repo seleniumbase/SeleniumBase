@@ -223,7 +223,7 @@ def pytest_addoption(parser):
         dest="cap_file",
         default=None,
         help="""The file that stores browser desired capabilities
-                for BrowserStack, Sauce Labs, and other
+                for BrowserStack, LambdaTest,Sauce Labs, and other
                 remote web drivers to use.""",
     )
     parser.addoption(
@@ -232,7 +232,7 @@ def pytest_addoption(parser):
         dest="cap_string",
         default=None,
         help="""The string that stores browser desired
-                capabilities for BrowserStack, Sauce Labs,
+                capabilities for BrowserStack, LambdaTest, Sauce Labs,
                 and other remote web drivers to use.
                 Enclose cap-string in single quotes.
                 Enclose parameter keys in double quotes.

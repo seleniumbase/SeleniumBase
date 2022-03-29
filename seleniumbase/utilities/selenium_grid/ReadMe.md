@@ -56,6 +56,12 @@ You can also run your tests on someone else's Selenium Grid to avoid managing yo
 pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 ```
 
+* [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
+
+```bash
+pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
+```
+
 * [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium) Selenium Grid:
 
 ```bash

@@ -99,7 +99,7 @@ class SeleniumBrowser(Plugin):
             dest="cap_file",
             default=None,
             help="""The file that stores browser desired capabilities
-                    for BrowserStack or Sauce Labs web drivers.""",
+                    for BrowserStack ,LambdaTest or Sauce Labs web drivers.""",
         )
         parser.add_option(
             "--cap_string",
@@ -107,7 +107,7 @@ class SeleniumBrowser(Plugin):
             dest="cap_string",
             default=None,
             help="""The string that stores browser desired
-                    capabilities for BrowserStack, Sauce Labs,
+                    capabilities for BrowserStack, LambdaTest,Sauce Labs,
                     and other remote web drivers to use.
                     Enclose cap-string in single quotes.
                     Enclose parameter keys in double quotes.
