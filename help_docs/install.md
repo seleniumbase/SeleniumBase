@@ -8,6 +8,12 @@
 pip install seleniumbase
 ```
 
+To upgrade an existing ``seleniumbase`` install from PyPI:
+
+```bash
+pip install -U seleniumbase
+```
+
 <h4>If installing SeleniumBase from a Git clone, use:</h4>
 
 ```bash
@@ -22,6 +28,13 @@ pip install .
 git clone https://github.com/seleniumbase/SeleniumBase.git
 cd SeleniumBase/
 pip install -e .
+```
+
+To upgrade an existing ``seleniumbase`` install from GitHub:
+
+```bash
+git pull  # To pull the latest version
+pip install -e .  # Or "pip install ."
 ```
 
 <h4>If installing SeleniumBase from a <a href="https://github.com/seleniumbase/SeleniumBase">GitHub branch</a>, use:</h4>
