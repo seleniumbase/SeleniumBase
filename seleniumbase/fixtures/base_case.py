@@ -11173,6 +11173,8 @@ class BaseCase(unittest.TestCase):
             self.test_id = test_id
             if hasattr(self, "_using_sb_fixture"):
                 self.test_id = sb_config._test_id
+                if hasattr(sb_config, "_sb_pdb_driver"):
+                    sb_config._sb_pdb_driver = None
             self.browser = sb_config.browser
             self.account = sb_config.account
             self.data = sb_config.data
@@ -11685,6 +11687,21 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
+    def __delay_driver_quit(self):
+        delay_driver_quit = False
+        if (
+            hasattr(self, "_using_sb_fixture")
+            and self._using_sb_fixture
+            and "--pdb" in sys.argv
+            and self.__has_exception()
+            and len(self._drivers_list) == 1
+            and self.driver == self._default_driver
+        ):
+            # Special case: Using sb fixture, --pdb, and has error.
+            # Keep the driver open for debugging and quit it later.
+            delay_driver_quit = True
+        return delay_driver_quit
+
     def __quit_all_drivers(self):
         if self._reuse_session and sb_config.shared_driver:
             if len(self._drivers_list) > 0:
@@ -11698,20 +11715,25 @@ class BaseCase(unittest.TestCase):
                 self._drivers_list = self._drivers_list[1:]
             else:
                 self._drivers_list = []
-
         # Close all open browser windows
+        delay_driver_quit = self.__delay_driver_quit()
         self._drivers_list.reverse()  # Last In, First Out
         for driver in self._drivers_list:
             try:
                 if not is_windows or driver.service.process:
-                    driver.quit()
+                    if not delay_driver_quit:
+                        driver.quit()
+                    else:
+                        # Save it for later to quit it later.
+                        sb_config._sb_pdb_driver = driver
             except AttributeError:
                 pass
             except Exception:
                 pass
-        self.driver = None
-        self._default_driver = None
-        self._drivers_list = []
+        if not delay_driver_quit:
+            self.driver = None
+            self._default_driver = None
+            self._drivers_list = []
 
     def __has_exception(self):
         has_exception = False

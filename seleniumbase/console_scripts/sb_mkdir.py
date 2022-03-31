@@ -274,6 +274,7 @@ def main():
     data.append("saved_cookies")
     data.append("recordings")
     data.append("visual_baseline")
+    data.append(".DS_Store")
     data.append("selenium-server-standalone.jar")
     data.append("proxy.zip")
     data.append("proxy.lock")

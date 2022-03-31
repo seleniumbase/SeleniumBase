@@ -1345,17 +1345,32 @@ def pytest_runtest_teardown(item):
     Make sure that webdriver and headless displays have exited.
     (Has zero effect on tests using --reuse-session / --rs)"""
     try:
-        self = item._testcase
-        try:
-            if (
-                hasattr(self, "driver")
-                and self.driver
-                and "--pdb" not in sys.argv
+        if hasattr(item, "_testcase") or hasattr(sb_config, "_sb_pdb_driver"):
+            if hasattr(item, "_testcase"):
+                self = item._testcase
+                try:
+                    if (
+                        hasattr(self, "driver")
+                        and self.driver
+                        and "--pdb" not in sys.argv
+                    ):
+                        if not is_windows or self.driver.service.process:
+                            self.driver.quit()
+                except Exception:
+                    pass
+            elif (
+                hasattr(sb_config, "_sb_pdb_driver")
+                and sb_config._sb_pdb_driver
             ):
-                if not is_windows or self.driver.service.process:
-                    self.driver.quit()
-        except Exception:
-            pass
+                try:
+                    if (
+                        not is_windows
+                        or sb_config._sb_pdb_driver.service.process
+                    ):
+                        sb_config._sb_pdb_driver.quit()
+                        sb_config._sb_pdb_driver = None
+                except Exception:
+                    pass
         try:
             if hasattr(self, "xvfb") and self.xvfb:
                 if self.headless_active and "--pdb" not in sys.argv:

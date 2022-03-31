@@ -78,6 +78,13 @@ pip install -e .  # Editable install
 
 > (When using a virtual env, the Editable install is faster.)
 
+To upgrade an existing install from a GitHub clone:
+
+```bash
+git pull  # To pull the latest version
+pip install -e .  # Or "pip install ."
+```
+
 🔵 Installing ``seleniumbase`` from PyPI:
 
 ```bash
@@ -87,6 +94,12 @@ pip install seleniumbase
 > (Add ``--upgrade`` OR ``-U`` to install the latest ``seleniumbase``.)
 > (Add ``--force-reinstall`` to also install the latest dependencies.)
 > (Use ``pip3`` if multiple versions of Python are installed.)
+
+To upgrade an existing install from PyPI:
+
+```bash
+pip install -U seleniumbase
+```
 
 🔵 Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
 
