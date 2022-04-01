@@ -64,6 +64,9 @@ plugins:
       lang: en
   - exclude-search:
       exclude:
+        - CODE_OF_CONDUCT.md
+        - CONTRIBUTING.md
+        - SECURITY.md
         - help_docs/chinese.md
         - integrations/katalon/ReadMe.md
         - seleniumbase/utilities/selenium_ide/ReadMe.md
