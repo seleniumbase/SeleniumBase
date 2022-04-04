@@ -1431,10 +1431,21 @@ def get_local_driver(
                 if selenium4:
                     service = FirefoxService(
                         executable_path=LOCAL_GECKODRIVER)
-                    return webdriver.Firefox(
-                        service=service,
-                        options=firefox_options,
-                    )
+                    try:
+                        return webdriver.Firefox(
+                            service=service,
+                            options=firefox_options,
+                        )
+                    except Exception as e:
+                        if "Process unexpectedly closed" in e.msg:
+                            # Firefox probably just auto-updated itself.
+                            # Trying again right after that often works.
+                            return webdriver.Firefox(
+                                service=service,
+                                options=firefox_options,
+                            )
+                        else:
+                            raise Exception(e.msg)  # Not an obvious fix.
                 else:
                     return webdriver.Firefox(
                         executable_path=LOCAL_GECKODRIVER,
