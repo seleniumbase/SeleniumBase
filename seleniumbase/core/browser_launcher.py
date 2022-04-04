@@ -619,12 +619,10 @@ def _set_firefox_options(
                 raise Exception(
                     'Incorrect formatting for Firefox "pref:value" set!'
                 )
-            f_pref = firefox_pref_item.strip()
             if needs_conversion:
-                f_pref_value = firefox_pref_item.strip()
-                if f_pref_value.lower == "true" or len(f_pref_value) == 0:
+                if f_pref_value.lower() == "true" or len(f_pref_value) == 0:
                     f_pref_value = True
-                elif f_pref_value.lower == "false":
+                elif f_pref_value.lower() == "false":
                     f_pref_value = False
                 elif f_pref_value.isdigit():
                     f_pref_value = int(f_pref_value)
