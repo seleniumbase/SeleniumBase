@@ -512,7 +512,7 @@ def _set_firefox_options(
     options.set_preference("pdfjs.disabled", True)
     options.set_preference("app.update.auto", False)
     options.set_preference("app.update.enabled", False)
-    options.set_preference("app.update.silent", False)
+    options.set_preference("app.update.silent", True)
     options.set_preference("browser.formfill.enable", False)
     options.set_preference("browser.privatebrowsing.autostart", False)
     options.set_preference("devtools.errorconsole.enabled", True)
@@ -524,7 +524,7 @@ def _set_firefox_options(
     options.set_preference("extensions.systemAddon.update.enabled", False)
     options.set_preference("extensions.update.autoUpdateDefault", False)
     options.set_preference("extensions.update.enabled", False)
-    options.set_preference("extensions.update.silent", False)
+    options.set_preference("extensions.update.silent", True)
     options.set_preference("datareporting.healthreport.service.enabled", False)
     options.set_preference("datareporting.healthreport.uploadEnabled", False)
     options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
@@ -619,12 +619,10 @@ def _set_firefox_options(
                 raise Exception(
                     'Incorrect formatting for Firefox "pref:value" set!'
                 )
-            f_pref = firefox_pref_item.strip()
             if needs_conversion:
-                f_pref_value = firefox_pref_item.strip()
-                if f_pref_value.lower == "true" or len(f_pref_value) == 0:
+                if f_pref_value.lower() == "true" or len(f_pref_value) == 0:
                     f_pref_value = True
-                elif f_pref_value.lower == "false":
+                elif f_pref_value.lower() == "false":
                     f_pref_value = False
                 elif f_pref_value.isdigit():
                     f_pref_value = int(f_pref_value)
@@ -1433,10 +1431,21 @@ def get_local_driver(
                 if selenium4:
                     service = FirefoxService(
                         executable_path=LOCAL_GECKODRIVER)
-                    return webdriver.Firefox(
-                        service=service,
-                        options=firefox_options,
-                    )
+                    try:
+                        return webdriver.Firefox(
+                            service=service,
+                            options=firefox_options,
+                        )
+                    except Exception as e:
+                        if "Process unexpectedly closed" in e.msg:
+                            # Firefox probably just auto-updated itself.
+                            # Trying again right after that often works.
+                            return webdriver.Firefox(
+                                service=service,
+                                options=firefox_options,
+                            )
+                        else:
+                            raise Exception(e.msg)  # Not an obvious fix.
                 else:
                     return webdriver.Firefox(
                         executable_path=LOCAL_GECKODRIVER,
