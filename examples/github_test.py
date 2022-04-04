@@ -20,7 +20,7 @@ class GitHubTests(BaseCase):
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')
         self.assert_element("div.repository-content")
-        self.assert_text("SeleniumBase", "h1")
+        self.assert_text("SeleniumBase", "h2 strong")
         self.slow_click('a[title="seleniumbase"]')
         self.slow_click('a[title="fixtures"]')
         self.slow_click('a[title="base_case.py"]')

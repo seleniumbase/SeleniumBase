@@ -51,7 +51,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'twine>=4.0.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.63.1'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.64.0'")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
@@ -131,7 +131,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=61.3.0;python_version>="3.7"',
+        'setuptools>=62.0.0;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -218,7 +218,7 @@ setup(
         'pygments==2.11.2;python_version>="3.5"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        'prompt-toolkit==3.0.28;python_version>="3.6"',
+        'prompt-toolkit==3.0.29;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.1;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',
@@ -240,10 +240,10 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
-        'Pillow==9.0.1;python_version>="3.7"',
+        'Pillow==9.1.0;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.8 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
-        'rich==12.0.1;python_version>="3.6" and python_version<"4.0"',
+        'rich==12.1.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
