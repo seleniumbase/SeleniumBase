@@ -9,7 +9,7 @@ class SoupParsingTests(BaseCase):
         # (This is useful when the selector ID is auto-generated.)
         pattern = re.compile(text)
         soup = self.get_beautiful_soup()
-        the_id = soup.find(text=pattern).parent.parent.attrs["id"]
+        the_id = soup.find(string=pattern).parent.parent.attrs["id"]
         self.click("#%s" % the_id)
 
     def test_beautiful_soup_and_tinymce(self):

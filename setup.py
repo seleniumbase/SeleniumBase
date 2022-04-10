@@ -208,9 +208,10 @@ setup(
         "sbvirtualdisplay==1.0.0",
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.1;python_version>="3.5" and python_version<"3.6"',
-        'soupsieve==2.3.1;python_version>="3.6"',
+        'soupsieve==2.3.2;python_version>="3.6"',
         'beautifulsoup4==4.9.3;python_version<"3.5"',
-        'beautifulsoup4==4.10.0;python_version>="3.5"',
+        'beautifulsoup4==4.10.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'beautifulsoup4==4.11.1;python_version>="3.6"',
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==36.0.2;python_version>="3.6"',
