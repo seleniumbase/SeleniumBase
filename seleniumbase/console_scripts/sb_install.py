@@ -13,13 +13,13 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 99.0.4844.51
-        sbase install chromedriver 99
+        sbase install chromedriver 100.0.4896.60
+        sbase install chromedriver 100
         sbase install chromedriver latest
         sbase install chromedriver latest-1  # (Latest minus one)
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 99.0.1150.46
+        sbase install edgedriver 100.0.1185.39
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -65,13 +65,13 @@ def invalid_run_command():
     exp += "          sbase install chromedriver\n"
     exp += "          sbase install geckodriver\n"
     exp += "          sbase install edgedriver"
-    exp += "          sbase install chromedriver 99\n"
-    exp += "          sbase install chromedriver 99.0.4844.51\n"
+    exp += "          sbase install chromedriver 100\n"
+    exp += "          sbase install chromedriver 100.0.4896.60\n"
     exp += "          sbase install chromedriver latest\n"
     exp += "          sbase install chromedriver latest-1\n"
     exp += "          sbase install chromedriver -p\n"
     exp += "          sbase install chromedriver latest -p\n"
-    exp += "          sbase install edgedriver 99.0.1150.46"
+    exp += "          sbase install edgedriver 100.0.1185.39"
     exp += "  Output:\n"
     exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
