@@ -6,7 +6,7 @@ from seleniumbase import BaseCase
 class ImageTests(BaseCase):
     @pytest.mark.run(order=1)
     def test_pull_image_from_website(self):
-        """ Pull an image from a website and save it as a PNG file. """
+        """Pull an image from a website and save it as a PNG file."""
         self.open("https://xkcd.com/1117/")
         selector = "#comic"
         file_name = "comic.png"
@@ -17,7 +17,7 @@ class ImageTests(BaseCase):
 
     @pytest.mark.run(order=2)
     def test_add_text_overlay_to_image(self):
-        """ Add a text overlay to an image. """
+        """Add a text overlay to an image."""
         self.open("https://xkcd.com/1117/")
         selector = "#comic"
         file_name = "image_overlay.png"
@@ -31,7 +31,7 @@ class ImageTests(BaseCase):
 
     @pytest.mark.run(order=3)
     def test_add_text_overlay_to_page_section(self):
-        """ Add a text overlay to a section of a page. """
+        """Add a text overlay to a section of a page."""
         self.open("https://xkcd.com/2200/")
         selector = "#middleContainer"
         file_name = "section_overlay.png"
@@ -50,7 +50,7 @@ class ImageTests(BaseCase):
 
     @pytest.mark.run(order=4)
     def test_add_text_overlay_to_full_page(self):
-        """ Add a text overlay to a full page. """
+        """Add a text overlay to a full page."""
         self.open("https://xkcd.com/1922/")
         self.remove_element("#bottom")
         selector = "body"

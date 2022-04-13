@@ -16,7 +16,7 @@ class CanvasTests(BaseCase):
         if self.is_chromium():
             return [color[0], color[1], color[2]]
         else:
-            return [color['0'], color['1'], color['2']]
+            return [color["0"], color["1"], color["2"]]
 
     def test_canvas_actions(self):
         self.open("https://seleniumbase.io/canvas/")

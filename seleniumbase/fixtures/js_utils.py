@@ -287,7 +287,7 @@ def highlight_with_js(driver, selector, loops, o_bs):
     selector_no_spaces = selector.replace(" ", "")
     early_exit = False
     if '[style=\\"' in selector_no_spaces:
-        if 'box\\-shadow:' in selector:
+        if "box\\-shadow:" in selector:
             early_exit = True  # Changing the box-shadow changes the selector
         elif '[style=\\"' in selector:
             selector = selector.replace('[style=\\"', '[style\\*=\\"')
@@ -387,7 +387,7 @@ def highlight_with_jquery(driver, selector, loops, o_bs):
     selector_no_spaces = selector.replace(" ", "")
     early_exit = False
     if '[style=\\"' in selector_no_spaces:
-        if 'box\\-shadow:' in selector:
+        if "box\\-shadow:" in selector:
             early_exit = True  # Changing the box-shadow changes the selector
         elif '[style=\\"' in selector:
             selector = selector.replace('[style=\\"', '[style\\*=\\"')
@@ -786,7 +786,7 @@ def highlight_with_js_2(driver, message, selector, o_bs, msg_dur):
     selector_no_spaces = selector.replace(" ", "")
     early_exit = False
     if '[style=\\"' in selector_no_spaces:
-        if 'box\\-shadow:' in selector:
+        if "box\\-shadow:" in selector:
             early_exit = True  # Changing the box-shadow changes the selector
         elif '[style=\\"' in selector:
             selector = selector.replace('[style=\\"', '[style\\*=\\"')
@@ -872,7 +872,7 @@ def highlight_with_jquery_2(driver, message, selector, o_bs, msg_dur):
     selector_no_spaces = selector.replace(" ", "")
     early_exit = False
     if '[style=\\"' in selector_no_spaces:
-        if 'box\\-shadow:' in selector:
+        if "box\\-shadow:" in selector:
             early_exit = True  # Changing the box-shadow changes the selector
         elif '[style=\\"' in selector:
             selector = selector.replace('[style=\\"', '[style\\*=\\"')

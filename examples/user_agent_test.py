@@ -23,12 +23,13 @@ class UserAgentTests(BaseCase):
             # Now change the user-agent using "execute_cdp_cmd()"
             print("--------------------------")
             self.driver.execute_cdp_cmd(
-                "Network.setUserAgentOverride", {
+                "Network.setUserAgentOverride",
+                {
                     "userAgent": "Mozilla/5.0 "
-                                 "(Nintendo Switch; WifiWebAuthApplet) "
-                                 "AppleWebKit/606.4 (KHTML, like Gecko) "
-                                 "NF/6.0.1.15.4 NintendoBrowser/5.1.0.20393"
-                }
+                    "(Nintendo Switch; WifiWebAuthApplet) "
+                    "AppleWebKit/606.4 (KHTML, like Gecko) "
+                    "NF/6.0.1.15.4 NintendoBrowser/5.1.0.20393"
+                },
             )
             self.open("https://www.whatsmyua.info/")
             user_agent_detected = self.get_text("#custom-ua-string")
@@ -37,7 +38,6 @@ class UserAgentTests(BaseCase):
         finally:
             # Reset the user-agent back to the original
             self.driver.execute_cdp_cmd(
-                "Network.setUserAgentOverride", {
-                    "userAgent": original_user_agent
-                }
+                "Network.setUserAgentOverride",
+                {"userAgent": original_user_agent},
             )

@@ -14,7 +14,7 @@ class GitHubTests(BaseCase):
             self.get_new_driver(
                 agent="""Mozilla/5.0 """
                 """AppleWebKit/537.36 (KHTML, like Gecko) """
-                """Chrome/Version 96.0.4664.55 Safari/537.36"""
+                """Chrome/Version 100.0.4896.88 Safari/537.36"""
             )
         self.open("https://github.com/search?q=SeleniumBase")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')

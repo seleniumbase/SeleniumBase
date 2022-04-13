@@ -13,13 +13,13 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 99.0.4844.51
-        sbase install chromedriver 99
+        sbase install chromedriver 100.0.4896.60
+        sbase install chromedriver 100
         sbase install chromedriver latest
         sbase install chromedriver latest-1  # (Latest minus one)
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 99.0.1150.46
+        sbase install edgedriver 100.0.1185.39
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -44,8 +44,8 @@ urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.30.0"
-DEFAULT_EDGEDRIVER_VERSION = "99.0.1150.46"  # (Looks for LATEST_STABLE first)
+DEFAULT_GECKODRIVER_VERSION = "v0.31.0"
+DEFAULT_EDGEDRIVER_VERSION = "100.0.1185.39"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -65,13 +65,13 @@ def invalid_run_command():
     exp += "          sbase install chromedriver\n"
     exp += "          sbase install geckodriver\n"
     exp += "          sbase install edgedriver"
-    exp += "          sbase install chromedriver 99\n"
-    exp += "          sbase install chromedriver 99.0.4844.51\n"
+    exp += "          sbase install chromedriver 100\n"
+    exp += "          sbase install chromedriver 100.0.4896.60\n"
     exp += "          sbase install chromedriver latest\n"
     exp += "          sbase install chromedriver latest-1\n"
     exp += "          sbase install chromedriver -p\n"
     exp += "          sbase install chromedriver latest -p\n"
-    exp += "          sbase install edgedriver 99.0.1150.46"
+    exp += "          sbase install edgedriver 100.0.1185.39"
     exp += "  Output:\n"
     exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -196,7 +196,7 @@ def main(override=None):
                 use_version = url_request.text
                 if get_latest_minus_one:
                     get_v_latest = True
-                    use_version = str(int(use_version.split('.')[0]) - 1)
+                    use_version = str(int(use_version.split(".")[0]) - 1)
         if get_v_latest:
             url_req = requests_get(last)
             if url_req.ok:

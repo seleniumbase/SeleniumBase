@@ -76,7 +76,7 @@ class WordleTests(BaseCase):
                 letters.append(letter)
                 button = 'button[data-key="%s"]' % letter
                 self.click(keyboard_base + button)
-            button = 'button.one-and-a-half'
+            button = "button.one-and-a-half"
             self.click(keyboard_base + button)
             row = 'game-app::shadow game-row[letters="%s"]::shadow ' % word
             tile = row + "game-tile:nth-of-type(%s)"

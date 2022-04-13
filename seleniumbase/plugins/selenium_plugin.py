@@ -639,7 +639,8 @@ class SeleniumBrowser(Plugin):
         if self.options.recorder_mode and browser not in ["chrome", "edge"]:
             message = (
                 "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
-                '\n  (Your browser choice was: "%s")\n' % browser)
+                '\n  (Your browser choice was: "%s")\n' % browser
+            )
             raise Exception(message)
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
@@ -743,7 +744,7 @@ class SeleniumBrowser(Plugin):
         test.test.driver = self.driver
 
     def finalize(self, result):
-        """ This runs after all tests have completed with nosetests. """
+        """This runs after all tests have completed with nosetests."""
         proxy_helper.remove_proxy_zip_if_present()
 
     def afterTest(self, test):

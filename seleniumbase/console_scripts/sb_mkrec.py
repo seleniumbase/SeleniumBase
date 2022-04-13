@@ -116,7 +116,7 @@ def main():
     file_path = os.path.join(dir_name, file_name)
 
     if (
-        "--overwrite" in ' '.join(command_args).lower()
+        "--overwrite" in " ".join(command_args).lower()
         and os.path.exists(file_path)
     ):
         os.remove(file_path)
@@ -132,9 +132,7 @@ def main():
                 help_me = True
             elif option.lower() == "--edge":
                 use_edge = True
-            elif (
-                option.lower() in ("--gui", "--headed")
-            ):
+            elif option.lower() in ("--gui", "--headed"):
                 if "linux" in platform:
                     force_gui = True
             elif option.lower().startswith("--url="):
@@ -163,14 +161,14 @@ def main():
     data.append("")
     data.append("class RecorderTests(BaseCase):")
     data.append("    def test_recording(self):")
-    data.append('        if self.recorder_ext and not self.xvfb:')
-    data.append('            import ipdb; ipdb.set_trace()')
+    data.append("        if self.recorder_ext and not self.xvfb:")
+    data.append("            import ipdb; ipdb.set_trace()")
     data.append("")
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     success = (
-        "\n" + c0 + '* RECORDING initialized:' + cr + " "
+        "\n" + c0 + "* RECORDING initialized:" + cr + " "
         "" + c1 + file_name + "" + cr + "\n"
     )
     print(success)

@@ -70,7 +70,7 @@ class DBReporting(Plugin):
         self.testcase_manager.insert_execution_data(exec_payload)
 
     def startTest(self, test):
-        """ At the start of the test, set the testcase details. """
+        """At the start of the test, set the testcase details."""
         data_payload = TestcaseDataPayload()
         self.testcase_guid = str(uuid.uuid4())
         data_payload.guid = self.testcase_guid

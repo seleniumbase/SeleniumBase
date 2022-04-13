@@ -55,7 +55,7 @@ class DialogBoxTests(BaseCase):
         options = [("theme", "bootstrap"), ("width", "52%")]
         message = 'If the lowercase button text is "yes" or "no", '
         message += '<br><br>you can use the "Y" or "N" keys as shortcuts. '
-        message += '<br><br><br>Other shortcuts include: <br><br>'
+        message += "<br><br><br>Other shortcuts include: <br><br>"
         message += '"1": 1st button, "2": 2nd button, etc. Got it?'
         buttons = [("YES", "green"), ("NO", "red")]
         choice = self.get_jqc_button_input(message, buttons, options)

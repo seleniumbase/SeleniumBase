@@ -11,7 +11,7 @@ def get_visual_baseline_folder():
 
 
 def visual_baseline_folder_setup():
-    """ Handle Logging """
+    """Handle Logging"""
     if not os.path.exists(visual_baseline_path):
         try:
             os.makedirs(visual_baseline_path)

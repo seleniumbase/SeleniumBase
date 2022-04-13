@@ -23,7 +23,7 @@ def test_repeat_this_test_with_pytest_parametrize(sb):
     sb.assert_text("Console Scripts", "h1")
 
 
-class RepeatTestsWithPytest():
+class RepeatTestsWithPytest:
     @pytest.mark.parametrize("", [[]] * 2)
     def test_repeat_test_with_pytest_parametrize(self, sb):
         sb.open("https://seleniumbase.io")

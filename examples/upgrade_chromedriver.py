@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 
-class TestUpgradeChromedriver():
+class TestUpgradeChromedriver:
     def basic_run(self, testdir):
         testdir.makepyfile(
             """

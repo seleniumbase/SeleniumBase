@@ -68,7 +68,8 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
     error_msg = file_name_error(file_name)
     if error_msg:
         messagebox.showwarning(
-            "Invalid filename", "Invalid filename: %s" % error_msg)
+            "Invalid filename", "Invalid filename: %s" % error_msg
+        )
         return
 
     url = url.strip()
@@ -77,14 +78,15 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             url = "https://" + url
     if not page_utils.is_valid_url(url):
         messagebox.showwarning(
-            "Invalid URL", "Enter a valid URL! (Eg. seleniumbase.io)")
+            "Invalid URL", "Enter a valid URL! (Eg. seleniumbase.io)"
+        )
     else:
         if os.path.exists(os.getcwd() + "/" + file_name):
             if not overwrite_enabled:
                 msgbox = tk.messagebox.askquestion(
                     "Overwrite?",
                     'Are you sure you want to overwrite "%s"?' % file_name,
-                    icon="warning"
+                    icon="warning",
                 )
                 if msgbox == "yes":
                     os.remove(file_name)
@@ -105,12 +107,13 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
     error_msg = file_name_error(file_name)
     if error_msg:
         messagebox.showwarning(
-            "Invalid filename", "Invalid filename: %s" % error_msg)
+            "Invalid filename", "Invalid filename: %s" % error_msg
+        )
         return
     if not os.path.exists(os.getcwd() + "/" + file_name):
         messagebox.showwarning(
             "File does not exist",
-            'File "%s" does not exist in the current directory!' % file_name
+            'File "%s" does not exist in the current directory!' % file_name,
         )
         return
     command = "pytest %s -q -s" % file_name
@@ -154,28 +157,38 @@ def create_tkinter_gui():
     entry.focus()
     entry.bind(
         "<Return>",
-        (lambda _: do_recording(
-            fname.get(), url.get(), cbx.get(), cbb.get(), window))
+        (
+            lambda _: do_recording(
+                fname.get(), url.get(), cbx.get(), cbb.get(), window
+            )
+        ),
     )
     tk.Button(
-        window, text="Record", fg="red",
+        window,
+        text="Record",
+        fg="red",
         command=lambda: do_recording(
-            fname.get(), url.get(), cbx.get(), cbb.get(), window)
+            fname.get(), url.get(), cbx.get(), cbb.get(), window
+        ),
     ).pack()
     tk.Label(window, text="").pack()
-    tk.Label(
-        window, text="Playback recording (Normal Mode):").pack()
+    tk.Label(window, text="Playback recording (Normal Mode):").pack()
     tk.Button(
-        window, text="Playback", fg="green",
-        command=lambda: do_playback(fname.get(), cbb.get(), window)
+        window,
+        text="Playback",
+        fg="green",
+        command=lambda: do_playback(fname.get(), cbb.get(), window),
     ).pack()
     tk.Label(window, text="").pack()
-    tk.Label(
-        window, text="Playback recording (Demo Mode):").pack()
+    tk.Label(window, text="Playback recording (Demo Mode):").pack()
     tk.Button(
-        window, text="Playback (Demo Mode)", fg="teal",
+        window,
+        text="Playback (Demo Mode)",
+        fg="teal",
         command=lambda: do_playback(
-            fname.get(), cbb.get(), window, demo_mode=True)).pack()
+            fname.get(), cbb.get(), window, demo_mode=True
+        ),
+    ).pack()
 
     # Bring form window to front
     send_window_to_front(window)
