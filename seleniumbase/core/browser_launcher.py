@@ -120,13 +120,10 @@ def _repair_chromedriver(chrome_options, headless_options):
     import subprocess
 
     driver = None
-    subprocess.check_call(
-        "sbase install chromedriver 2.44", shell=True
-    )
+    subprocess.check_call("sbase install chromedriver 2.44", shell=True)
     try:
         if selenium4:
-            service = ChromeService(
-                executable_path=LOCAL_CHROMEDRIVER)
+            service = ChromeService(executable_path=LOCAL_CHROMEDRIVER)
             driver = webdriver.Chrome(
                 service=service,
                 options=headless_options,
@@ -154,8 +151,7 @@ def _repair_chromedriver(chrome_options, headless_options):
     major_chromedriver_ver = chromedriver_ver.split(".")[0]
     if major_chromedriver_ver != major_chrome_ver:
         subprocess.check_call(
-            "sbase install chromedriver %s" % major_chrome_ver,
-            shell=True
+            "sbase install chromedriver %s" % major_chrome_ver, shell=True
         )
     return
 
@@ -165,7 +161,8 @@ def _repair_edgedriver(edge_version):
 
     print(
         "\nWarning: msedgedriver version doesn't match Edge version!"
-        "\nAttempting to install a matching version of msedgedriver:")
+        "\nAttempting to install a matching version of msedgedriver:"
+    )
     subprocess.check_call(
         "sbase install edgedriver %s" % edge_version, shell=True
     )
@@ -449,7 +446,8 @@ def _set_chrome_options(
         chrome_options.add_argument("--proxy-server=%s" % proxy_string)
         if proxy_bypass_list:
             chrome_options.add_argument(
-                "--proxy-bypass-list=%s" % proxy_bypass_list)
+                "--proxy-bypass-list=%s" % proxy_bypass_list
+            )
     if headless:
         if not proxy_auth and not browser_name == constants.Browser.OPERA:
             # Headless Chrome doesn't support extensions, which are
@@ -935,8 +933,10 @@ def get_remote_driver(
         except Exception as e:
             p1 = "Invalid input format for --cap-string:\n  %s" % e
             p2 = "The --cap-string input was: %s" % cap_string
-            p3 = ("Enclose cap-string in SINGLE quotes; "
-                  "keys and values in DOUBLE quotes.")
+            p3 = (
+                "Enclose cap-string in SINGLE quotes; "
+                "keys and values in DOUBLE quotes."
+            )
             p4 = (
                 """Here's an example of correct cap-string usage:\n  """
                 """--cap-string='{"browserName":"chrome","name":"test1"}'"""
@@ -1245,7 +1245,8 @@ def get_remote_driver(
             message = (
                 "\n"
                 "PhantomJS is no longer available for Selenium 4!\n"
-                'Try using "--headless" mode with Chrome instead!')
+                'Try using "--headless" mode with Chrome instead!'
+            )
             raise Exception(message)
         capabilities = webdriver.DesiredCapabilities.PHANTOMJS
         for key in desired_caps.keys():
@@ -1429,8 +1430,7 @@ def get_local_driver(
         else:
             if os.path.exists(LOCAL_GECKODRIVER):
                 if selenium4:
-                    service = FirefoxService(
-                        executable_path=LOCAL_GECKODRIVER)
+                    service = FirefoxService(executable_path=LOCAL_GECKODRIVER)
                     try:
                         return webdriver.Firefox(
                             service=service,
@@ -1578,9 +1578,7 @@ def get_local_driver(
         edge_options.add_argument(
             "--disable-blink-features=AutomationControlled"
         )
-        edge_options.add_experimental_option(
-            "useAutomationExtension", False
-        )
+        edge_options.add_experimental_option("useAutomationExtension", False)
         edge_options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
         )
@@ -1639,9 +1637,7 @@ def get_local_driver(
         edge_options.add_argument("--dom-automation")
         edge_options.add_argument("--disable-hang-monitor")
         edge_options.add_argument("--disable-prompt-on-repost")
-        if (
-            settings.DISABLE_CSP_ON_CHROME or disable_csp
-        ) and not headless:
+        if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
             # Headless Edge doesn't support extensions, which are required
             # for disabling the Content Security Policy on Edge
             edge_options = _add_chrome_disable_csp_extension(edge_options)
@@ -1657,7 +1653,8 @@ def get_local_driver(
             edge_options.add_argument("--proxy-server=%s" % proxy_string)
         if proxy_bypass_list:
             edge_options.add_argument(
-                "--proxy-bypass-list=%s" % proxy_bypass_list)
+                "--proxy-bypass-list=%s" % proxy_bypass_list
+            )
         edge_options.add_argument("--test-type")
         edge_options.add_argument("--log-level=3")
         edge_options.add_argument("--no-first-run")
@@ -1704,17 +1701,19 @@ def get_local_driver(
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
                         edge_version = e.msg.split(
-                            "Current browser version is ")[1].split(' ')[0]
+                            "Current browser version is "
+                        )[1].split(" ")[0]
                     elif "only supports MSEdge version " in e.msg:
                         auto_upgrade_edgedriver = True
                         edge_version = e.msg.split(
-                            "only supports MSEdge version ")[1].split(' ')[0]
+                            "only supports MSEdge version "
+                        )[1].split(" ")[0]
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
                 args = " ".join(sys.argv)
-                if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                if "-n" in sys.argv or " -n=" in args or args == "-c":
                     import fasteners
 
                     edgedriver_fixing_lock = fasteners.InterProcessLock(
@@ -1746,17 +1745,19 @@ def get_local_driver(
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
                         edge_version = e.msg.split(
-                            "Current browser version is ")[1].split(' ')[0]
+                            "Current browser version is "
+                        )[1].split(" ")[0]
                     elif "only supports MSEdge version " in e.msg:
                         auto_upgrade_edgedriver = True
                         edge_version = e.msg.split(
-                            "only supports MSEdge version ")[1].split(' ')[0]
+                            "only supports MSEdge version "
+                        )[1].split(" ")[0]
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
                 args = " ".join(sys.argv)
-                if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                if "-n" in sys.argv or " -n=" in args or args == "-c":
                     import fasteners
 
                     edgedriver_fixing_lock = fasteners.InterProcessLock(
@@ -1838,7 +1839,8 @@ def get_local_driver(
             message = (
                 "\n"
                 "PhantomJS is no longer available for Selenium 4!\n"
-                'Try using "--headless" mode with Chrome instead!')
+                'Try using "--headless" mode with Chrome instead!'
+            )
             raise Exception(message)
         with warnings.catch_warnings():
             # Ignore "PhantomJS has been deprecated" UserWarning
@@ -1921,7 +1923,8 @@ def get_local_driver(
                     if os.path.exists(LOCAL_CHROMEDRIVER):
                         if selenium4:
                             service = ChromeService(
-                                executable_path=LOCAL_CHROMEDRIVER)
+                                executable_path=LOCAL_CHROMEDRIVER
+                            )
                             driver = webdriver.Chrome(
                                 service=service,
                                 options=chrome_options,
@@ -1981,7 +1984,7 @@ def get_local_driver(
                         device_pixel_ratio,
                     )
                     args = " ".join(sys.argv)
-                    if ("-n" in sys.argv or " -n=" in args or args == "-c"):
+                    if "-n" in sys.argv or " -n=" in args or args == "-c":
                         import fasteners
 
                         chromedriver_fixing_lock = fasteners.InterProcessLock(
@@ -2002,7 +2005,8 @@ def get_local_driver(
                     if os.path.exists(LOCAL_CHROMEDRIVER):
                         if selenium4:
                             service = ChromeService(
-                                executable_path=LOCAL_CHROMEDRIVER)
+                                executable_path=LOCAL_CHROMEDRIVER
+                            )
                             driver = webdriver.Chrome(
                                 service=service,
                                 options=chrome_options,
@@ -2026,11 +2030,7 @@ def get_local_driver(
                         auto_upgrade_chromedriver = True
                     if auto_upgrade_chromedriver:
                         args = " ".join(sys.argv)
-                        if (
-                            "-n" in sys.argv
-                            or " -n=" in args
-                            or args == "-c"
-                        ):
+                        if "-n" in sys.argv or " -n=" in args or args == "-c":
                             import fasteners
 
                             chromedr_fixing_lock = fasteners.InterProcessLock(

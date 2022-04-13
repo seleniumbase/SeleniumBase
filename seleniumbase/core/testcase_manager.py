@@ -21,7 +21,7 @@ class TestcaseManager:
         return execution_query_payload.guid
 
     def update_execution_data(self, execution_guid, execution_time):
-        """ Updates an existing test execution row in the database. """
+        """Updates an existing test execution row in the database."""
         query = """UPDATE test_execution
                    SET total_execution_time=%(execution_time)s
                    WHERE guid=%(execution_guid)s """
@@ -34,7 +34,7 @@ class TestcaseManager:
         )
 
     def insert_testcase_data(self, testcase_run_payload):
-        """ Inserts all data for the test in the DB. Returns new row guid. """
+        """Inserts all data for the test in the DB. Returns new row guid."""
         query = """INSERT INTO test_run_data(
                    guid, browser, state, execution_guid, env, start_time,
                    test_address, runtime, retry_count, message, stack_trace)
@@ -55,7 +55,7 @@ class TestcaseManager:
         )
 
     def update_testcase_data(self, testcase_payload):
-        """ Updates an existing test run in the database. """
+        """Updates an existing test run in the database."""
         query = """UPDATE test_run_data SET
                             runtime=%(runtime)s,
                             state=%(state)s,

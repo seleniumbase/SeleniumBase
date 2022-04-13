@@ -11,6 +11,7 @@ class S3LoggingBucket(object):
     A class for uploading log files from tests to Amazon S3.
     Those files can then be shared easily.
     """
+
     def __init__(
         self,
         log_bucket=settings.S3_LOG_BUCKET,
@@ -25,13 +26,13 @@ class S3LoggingBucket(object):
         self.bucket_url = bucket_url
 
     def get_key(self, file_name):
-        """ Create a new Key instance with the given name. """
+        """Create a new Key instance with the given name."""
         from boto.s3.key import Key
 
         return Key(bucket=self.bucket, name=file_name)
 
     def get_bucket(self):
-        """ Return the bucket being used. """
+        """Return the bucket being used."""
         return self.bucket
 
     def upload_file(self, file_name, file_path):

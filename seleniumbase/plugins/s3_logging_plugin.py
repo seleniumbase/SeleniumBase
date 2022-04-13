@@ -11,15 +11,16 @@ from nose.plugins import Plugin
 
 class S3Logging(Plugin):
     """The plugin for uploading test logs to the S3 bucket specified."""
+
     name = "s3_logging"  # Usage: --with-s3-logging
 
     def configure(self, options, conf):
-        """ Get the options. """
+        """Get the options."""
         super(S3Logging, self).configure(options, conf)
         self.options = options
 
     def afterTest(self, test):
-        """ After each testcase, upload logs to the S3 bucket. """
+        """After each testcase, upload logs to the S3 bucket."""
         s3_bucket = S3LoggingBucket()
         guid = str(uuid.uuid4().hex)
         path = "%s/%s" % (self.options.log_path, test.test.id())

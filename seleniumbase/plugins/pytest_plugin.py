@@ -954,7 +954,7 @@ def pytest_addoption(parser):
         or "--record" in sys_argv
         or "--rec" in sys_argv
     ):
-        if ("--headless" in sys_argv):
+        if "--headless" in sys_argv:
             raise Exception(
                 "\n\n  Recorder Mode does NOT support Headless Mode!"
                 '\n  (DO NOT combine "--recorder" with "--headless"!)\n'
@@ -1046,12 +1046,13 @@ def pytest_addoption(parser):
     ):
         message = (
             "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
-            '\n  (Your browser choice was: "%s")\n' % browser_list[0])
+            '\n  (Your browser choice was: "%s")\n' % browser_list[0]
+        )
         raise Exception(message)
 
 
 def pytest_configure(config):
-    """ This runs after command-line options have been parsed. """
+    """This runs after command-line options have been parsed."""
     sb_config.item_count = 0
     sb_config.item_count_passed = 0
     sb_config.item_count_failed = 0
@@ -1332,7 +1333,7 @@ def pytest_collection_finish(session):
 
 
 def pytest_runtest_setup(item):
-    """ This runs before every test with pytest. """
+    """This runs before every test with pytest."""
     if sb_config.dashboard:
         sb_config._sbase_detected = False
     test_id, display_id = _get_test_ids_(item)
@@ -1493,9 +1494,7 @@ def _perform_pytest_unconfigure_():
                     '</head><link rel="shortcut icon" '
                     'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3,
                 )
-                the_html_d = the_html_d.replace(
-                    "<html>", '<html lang="en">'
-                )
+                the_html_d = the_html_d.replace("<html>", '<html lang="en">')
                 the_html_d = the_html_d.replace(
                     "<head>",
                     '<head><meta http-equiv="Content-Type" '
@@ -1555,15 +1554,12 @@ def _perform_pytest_unconfigure_():
 
 
 def pytest_unconfigure(config):
-    """ This runs after all tests have completed with pytest. """
+    """This runs after all tests have completed with pytest."""
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
 
         dash_lock = fasteners.InterProcessLock(constants.Dashboard.LOCKFILE)
-        if (
-            hasattr(sb_config, "dashboard")
-            and sb_config.dashboard
-        ):
+        if hasattr(sb_config, "dashboard") and sb_config.dashboard:
             # Multi-threaded tests with the Dashboard
             abs_path = os.path.abspath(".")
             dash_lock_file = constants.Dashboard.LOCKFILE

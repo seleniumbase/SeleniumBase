@@ -31,7 +31,7 @@ def log_screenshot(test_logpath, driver, screenshot=None, get=False):
 
 
 def get_master_time():
-    """ Returns (timestamp, the_date, the_time) """
+    """Returns (timestamp, the_date, the_time)"""
     import datetime
 
     timestamp = str(int(time.time())) + "  (Unix Timestamp)"
@@ -374,7 +374,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 
 def archive_logs_if_set(log_path, archive_logs=False):
-    """ Handle Logging """
+    """Handle Logging"""
     arg_join = " ".join(sys.argv)
     if ("-n" in sys.argv) or ("-n=" in arg_join) or (arg_join == "-c"):
         return  # Skip if multithreaded
@@ -402,7 +402,7 @@ def archive_logs_if_set(log_path, archive_logs=False):
 
 
 def log_folder_setup(log_path, archive_logs=False):
-    """ Handle Logging """
+    """Handle Logging"""
     if log_path.endswith("/"):
         log_path = log_path[:-1]
     if not os.path.exists(log_path):

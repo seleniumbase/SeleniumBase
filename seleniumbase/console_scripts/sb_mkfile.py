@@ -231,8 +231,8 @@ def main():
     if not recorder:
         data.append('        self.open("%s")' % url)
     else:
-        data.append('        if self.recorder_ext and not self.xvfb:')
-        data.append('            import ipdb; ipdb.set_trace()')
+        data.append("        if self.recorder_ext and not self.xvfb:")
+        data.append("            import ipdb; ipdb.set_trace()")
     if not basic and not recorder:
         data.append(
             '        self.type("input", "%s")' "  # selector, text" % goodbye

@@ -261,7 +261,7 @@ def is_shepherd_activated(driver):
 
 
 def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
-    """ Plays a Shepherd tour on the current website. """
+    """Plays a Shepherd tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -391,7 +391,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
 def play_bootstrap_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays a Bootstrap tour on the current website. """
+    """Plays a Bootstrap tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -483,7 +483,7 @@ def play_bootstrap_tour(
 def play_driverjs_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays a DriverJS tour on the current website. """
+    """Plays a DriverJS tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -610,7 +610,7 @@ def play_driverjs_tour(
 def play_hopscotch_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays a Hopscotch tour on the current website. """
+    """Plays a Hopscotch tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -729,7 +729,7 @@ def play_hopscotch_tour(
 def play_introjs_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays an IntroJS tour on the current website. """
+    """Plays an IntroJS tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step

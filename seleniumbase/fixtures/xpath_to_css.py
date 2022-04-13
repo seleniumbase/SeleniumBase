@@ -222,8 +222,8 @@ def convert_xpath_to_css(xpath):
         for xpath_section in xpath_sections:
             if not xpath_section.startswith("//"):
                 xpath_section = "//" + xpath_section
-            css_sections.append(_get_raw_css_from_xpath(
-                xpath_section, original)
+            css_sections.append(
+                _get_raw_css_from_xpath(xpath_section, original)
             )
         css = "/descORself/".join(css_sections)
     else:

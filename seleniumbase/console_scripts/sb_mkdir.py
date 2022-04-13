@@ -362,9 +362,9 @@ def main():
     data.append('        self.assert_text("Automation Practice", "h3")')
     data.append("        try:")
     data.append("            self.hover_and_click(")
-    data.append('                "#myDropdown", "#dropOption2", timeout=2)')
+    data.append('                "#myDropdown", "#dropOption2", timeout=1)')
     data.append("        except Exception:")
-    data.append("            # If a human moves the mouse while the test runs")
+    data.append("            # If someone moves the mouse while the test runs")
     data.append('            self.js_click("#dropOption2")')
     data.append('        self.assert_text("Link Two Selected", "h3")')
     data.append('        self.assert_text("This Text is Green", "#pText")')
@@ -412,7 +412,8 @@ def main():
     data.append('        self.assert_true(self.is_selected(".fBox"))')
     data.append("        self.switch_to_default_content()")
     data.append(
-        '        self.assert_element_not_visible("div#drop2 img#logo")')
+        '        self.assert_element_not_visible("div#drop2 img#logo")'
+    )
     data.append('        self.drag_and_drop("img#logo", "div#drop2")')
     data.append('        self.assert_element("div#drop2 img#logo")')
     data.append('        self.assert_link_text("seleniumbase.com")')

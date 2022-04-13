@@ -390,7 +390,7 @@ def wait_for_text_visible(
     selector,
     by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT,
-    browser=None
+    browser=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -464,7 +464,7 @@ def wait_for_exact_text_visible(
     selector,
     by=By.CSS_SELECTOR,
     timeout=settings.LARGE_TIMEOUT,
-    browser=None
+    browser=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -493,10 +493,8 @@ def wait_for_exact_text_visible(
             element = driver.find_element(by=by, value=selector)
             is_present = True
             if browser == "safari":
-                if (
-                    element.is_displayed()
-                    and text.strip() == element.get_attribute(
-                        "innerText").strip()
+                if element.is_displayed() and (
+                    text.strip() == element.get_attribute("innerText").strip()
                 ):
                     return element
                 else:
@@ -741,7 +739,7 @@ def wait_for_attribute_not_present(
     attribute,
     value=None,
     by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT
+    timeout=settings.LARGE_TIMEOUT,
 ):
     """
     Searches for the specified element attribute by the given selector.

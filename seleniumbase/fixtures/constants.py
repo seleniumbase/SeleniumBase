@@ -288,7 +288,7 @@ class IntroJS:
 
 
 class TourColor:
-    """Used for button colors in IntroJS Tours"""
+    # Used for button colors in IntroJS Tours
     # theme_color = "#f26721"  # Orange
     # hover_color = "#db5409"  # Darker Orange
     theme_color = "#367be5"  # Blue

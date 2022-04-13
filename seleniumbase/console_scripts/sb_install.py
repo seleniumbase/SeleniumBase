@@ -196,7 +196,7 @@ def main(override=None):
                 use_version = url_request.text
                 if get_latest_minus_one:
                     get_v_latest = True
-                    use_version = str(int(use_version.split('.')[0]) - 1)
+                    use_version = str(int(use_version.split(".")[0]) - 1)
         if get_v_latest:
             url_req = requests_get(last)
             if url_req.ok:

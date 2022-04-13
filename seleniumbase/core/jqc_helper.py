@@ -6,8 +6,7 @@ from seleniumbase.fixtures import constants
 from seleniumbase.fixtures import js_utils
 
 
-form_code = (
-    """'<form align="center" action="" class="jqc_form">' +
+form_code = """'<form align="center" action="" class="jqc_form">' +
     '<div class="form-group">' +
     '<input style="font-size:20px; background-color: #f8fdfd; ' +
     ' width: 84%%; border: 1px solid blue; ' +
@@ -15,7 +14,6 @@ form_code = (
     ' type="text" class="jqc_input" />' +
     '</div>' +
     '</form>'"""
-)
 
 
 def jquery_confirm_button_dialog(driver, message, buttons, options=None):
@@ -39,18 +37,16 @@ def jquery_confirm_button_dialog(driver, message, buttons, options=None):
     key_row = ""
     if len(buttons) == 1:  # There's only one button as an option
         key_row = "keys: ['enter', 'y', '1'],"  # Shortcut: "Enter","Y","1"
-    b_html = (
-        """button_%s: {
-            btnClass: 'btn-%s',
-            text: '<b>%s</b>',
-            %s
-            action: function(){
-                jqc_status = '%s';
-                $jqc_status = jqc_status;
-                jconfirm.lastButtonText = jqc_status;
-            }
-        },"""
-    )
+    b_html = """button_%s: {
+        btnClass: 'btn-%s',
+        text: '<b>%s</b>',
+        %s
+        action: function(){
+            jqc_status = '%s';
+            $jqc_status = jqc_status;
+            jconfirm.lastButtonText = jqc_status;
+        }
+    },"""
     all_buttons = ""
     btn_count = 0
     for button in buttons:
@@ -74,10 +70,7 @@ def jquery_confirm_button_dialog(driver, message, buttons, options=None):
         new_button = b_html % (btn_count, color, text, key_row, text)
         all_buttons += new_button
 
-    content = (
-        '<div></div><font color="#0066ee">%s</font>'
-        "" % (message)
-    )
+    content = '<div></div><font color="#0066ee">%s</font>' % (message)
     content = js_utils.escape_quotes_if_needed(content)
     overlay_opacity = "0.32"
     if theme.lower() == "supervan":
@@ -88,8 +81,7 @@ def jquery_confirm_button_dialog(driver, message, buttons, options=None):
         overlay_opacity = "0.5"
     if theme.lower() == "material":
         overlay_opacity = "0.4"
-    jqcd = (
-        """jconfirm({
+    jqcd = """jconfirm({
             boxWidth: '%s',
             useBootstrap: false,
             containerFluid: true,
@@ -107,15 +99,13 @@ def jquery_confirm_button_dialog(driver, message, buttons, options=None):
             buttons: {
                 %s
             }
-        });"""
-        % (
-            width,
-            overlay_opacity,
-            border_color,
-            theme,
-            content,
-            all_buttons
-        )
+        });""" % (
+        width,
+        overlay_opacity,
+        border_color,
+        theme,
+        content,
+        all_buttons,
     )
     driver.execute_script(jqcd)
 
@@ -150,10 +140,7 @@ def jquery_confirm_text_dialog(driver, message, button=None, options=None):
     btn_color = button[1]
     if not btn_color:
         btn_color = "blue"
-    content = (
-        '<div></div><font color="#0066ee">%s</font>'
-        "" % (message)
-    )
+    content = '<div></div><font color="#0066ee">%s</font>' % (message)
     content = js_utils.escape_quotes_if_needed(content)
     overlay_opacity = "0.32"
     if theme.lower() == "supervan":
@@ -164,8 +151,7 @@ def jquery_confirm_text_dialog(driver, message, button=None, options=None):
         overlay_opacity = "0.5"
     if theme.lower() == "material":
         overlay_opacity = "0.4"
-    jqcd = (
-        """jconfirm({
+    jqcd = """jconfirm({
             boxWidth: '%s',
             useBootstrap: false,
             containerFluid: true,
@@ -201,18 +187,16 @@ def jquery_confirm_text_dialog(driver, message, button=None, options=None):
                 jc.$$formSubmit.trigger('click');  // Click the button
             });
             }
-        });"""
-        % (
-            width,
-            overlay_opacity,
-            border_color,
-            theme,
-            content,
-            form_code,
-            btn_color,
-            btn_text,
-            btn_text
-        )
+        });""" % (
+        width,
+        overlay_opacity,
+        border_color,
+        theme,
+        content,
+        form_code,
+        btn_color,
+        btn_text,
+        btn_text,
     )
     driver.execute_script(jqcd)
 
@@ -227,8 +211,7 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
     if not message:
         message = ""
     btn_count = 0
-    b_html = (
-        """button_%s: {
+    b_html = """button_%s: {
             btnClass: 'btn-%s',
             text: '%s',
             action: function(){
@@ -238,9 +221,7 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
             $jqc_status = '%s';
             }
         },"""
-    )
-    b1_html = (
-        """formSubmit: {
+    b1_html = """formSubmit: {
             btnClass: 'btn-%s',
             text: '%s',
             action: function(){
@@ -252,7 +233,6 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
             jconfirm.lastButtonText = jqc_status;
             }
         },"""
-    )
     one_button_trigger = ""
     if len(buttons) == 1:
         # If there's only one button, allow form submit with "Enter/Return"
@@ -281,10 +261,7 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
             else:
                 raise Exception('Unknown option: "%s"' % option[0])
 
-    content = (
-        '<div></div><font color="#0066ee">%s</font>'
-        "" % (message)
-    )
+    content = '<div></div><font color="#0066ee">%s</font>' % (message)
     content = js_utils.escape_quotes_if_needed(content)
     overlay_opacity = "0.32"
     if theme.lower() == "supervan":
@@ -295,8 +272,7 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
         overlay_opacity = "0.5"
     if theme.lower() == "material":
         overlay_opacity = "0.4"
-    jqcd = (
-        """jconfirm({
+    jqcd = """jconfirm({
             boxWidth: '%s',
             useBootstrap: false,
             containerFluid: true,
@@ -323,16 +299,14 @@ def jquery_confirm_full_dialog(driver, message, buttons, options=None):
                 %s
             });
             }
-        });"""
-        % (
-            width,
-            overlay_opacity,
-            border_color,
-            theme,
-            content,
-            form_code,
-            all_buttons,
-            one_button_trigger
-        )
+        });""" % (
+        width,
+        overlay_opacity,
+        border_color,
+        theme,
+        content,
+        form_code,
+        all_buttons,
+        one_button_trigger,
     )
     driver.execute_script(jqcd)
