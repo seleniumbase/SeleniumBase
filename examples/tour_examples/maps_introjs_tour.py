@@ -45,7 +45,7 @@ class MyTourClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour",
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
         )
         self.export_tour(filename="maps_introjs_tour.js")
         self.play_tour()

@@ -18,7 +18,7 @@ class FrameTests(BaseCase):
         self.set_content_to_frame("iframeResult")
         self.highlight('iframe[title="Iframe Example"]')
         self.set_content_to_frame("iframe")
-        self.assert_element_not_visible('iframe')
+        self.assert_element_not_visible("iframe")
         self.highlight("body")
         self.set_content_to_default(nested=False)
         self.highlight('iframe[title="Iframe Example"]')

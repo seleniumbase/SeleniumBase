@@ -4,7 +4,7 @@ from seleniumbase import BaseCase
 
 class SwagLabsTests(BaseCase):
     def login_to_swag_labs(self, username="standard_user"):
-        """ Login to Swag Labs and verify success. """
+        """Login to Swag Labs and verify success."""
         url = "https://www.saucedemo.com"
         self.open(url)
         if username not in self.get_text("#login_credentials"):

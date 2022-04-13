@@ -7,7 +7,7 @@ class MasterQATests(MasterQA):
         self.highlight("div.mockup-wrapper")
         self.verify("Do you see 4 computer devices?")
         self.open("https://seleniumbase.io/demo_page")
-        self.highlight('table')
+        self.highlight("table")
         self.verify("Do you see elements in a table?")
         self.open("https://xkcd.com/1700/")
         self.highlight("#comic")
