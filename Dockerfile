@@ -88,8 +88,8 @@ RUN cd /SeleniumBase && pip3 install .
 #=====================
 # Download WebDrivers
 #=====================
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux32.tar.gz
-RUN tar -xvzf geckodriver-v0.30.0-linux32.tar.gz
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz
+RUN tar -xvzf geckodriver-v0.31.0-linux32.tar.gz
 RUN chmod +x geckodriver
 RUN mv geckodriver /usr/local/bin/
 RUN wget https://chromedriver.storage.googleapis.com/2.44/chromedriver_linux64.zip
