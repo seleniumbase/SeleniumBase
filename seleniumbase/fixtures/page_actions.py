@@ -279,7 +279,11 @@ def hover_element_and_double_click(
 
 
 def wait_for_element_present(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -291,6 +295,7 @@ def wait_for_element_present(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
     A web element object
     """
@@ -311,16 +316,28 @@ def wait_for_element_present(
     if timeout == 1:
         plural = ""
     if not element:
+        if (
+            original_selector
+            and ":contains(" in original_selector
+            and "contains(." in selector
+        ):
+            selector = original_selector
         message = "Element {%s} was not present after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
         timeout_exception(NoSuchElementException, message)
+    else:
+        return element
 
 
 def wait_for_element_visible(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -334,6 +351,7 @@ def wait_for_element_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
     A web element object
     """
@@ -360,6 +378,12 @@ def wait_for_element_visible(
     if timeout == 1:
         plural = ""
     if not element and by != By.LINK_TEXT:
+        if (
+            original_selector
+            and ":contains(" in original_selector
+            and "contains(." in selector
+        ):
+            selector = original_selector
         if not is_present:
             # The element does not exist in the HTML
             message = "Element {%s} was not present after %s second%s!" % (
@@ -375,13 +399,15 @@ def wait_for_element_visible(
             plural,
         )
         timeout_exception(ElementNotVisibleException, message)
-    if not element and by == By.LINK_TEXT:
+    elif not element and by == By.LINK_TEXT:
         message = "Link text {%s} was not visible after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
         timeout_exception(ElementNotVisibleException, message)
+    else:
+        return element
 
 
 def wait_for_text_visible(
@@ -406,6 +432,7 @@ def wait_for_text_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    browser - used to handle a special edge case when using Safari
     @Returns
     A web element object that contains the text searched for
     """
@@ -456,6 +483,8 @@ def wait_for_text_visible(
             % (text, selector, timeout, plural)
         )
         timeout_exception(ElementNotVisibleException, message)
+    else:
+        return element
 
 
 def wait_for_exact_text_visible(
@@ -480,6 +509,7 @@ def wait_for_exact_text_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    browser - used to handle a special edge case when using Safari
     @Returns
     A web element object that contains the text searched for
     """
@@ -532,6 +562,8 @@ def wait_for_exact_text_visible(
             "after %s second%s!" % (text, selector, timeout, plural)
         )
         timeout_exception(ElementNotVisibleException, message)
+    else:
+        return element
 
 
 def wait_for_attribute(
@@ -618,10 +650,16 @@ def wait_for_attribute(
             % (value, attribute, selector, timeout, plural, found_value)
         )
         timeout_exception(NoSuchAttributeException, message)
+    else:
+        return element
 
 
 def wait_for_element_absent(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector.
@@ -632,6 +670,7 @@ def wait_for_element_absent(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -648,6 +687,12 @@ def wait_for_element_absent(
     plural = "s"
     if timeout == 1:
         plural = ""
+    if (
+        original_selector
+        and ":contains(" in original_selector
+        and "contains(." in selector
+    ):
+        selector = original_selector
     message = "Element {%s} was still present after %s second%s!" % (
         selector,
         timeout,
@@ -657,7 +702,11 @@ def wait_for_element_absent(
 
 
 def wait_for_element_not_visible(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector.
@@ -668,6 +717,7 @@ def wait_for_element_not_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for the element in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
@@ -687,6 +737,12 @@ def wait_for_element_not_visible(
     plural = "s"
     if timeout == 1:
         plural = ""
+    if (
+        original_selector
+        and ":contains(" in original_selector
+        and "contains(." in selector
+    ):
+        selector = original_selector
     message = "Element {%s} was still visible after %s second%s!" % (
         selector,
         timeout,

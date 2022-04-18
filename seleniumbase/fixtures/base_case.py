@@ -230,7 +230,11 @@ class BaseCase(unittest.TestCase):
             self.__shadow_click(selector, timeout)
             return
         element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout=timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if scroll and not self.demo_mode and not self.slow_mode:
@@ -280,7 +284,11 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
-                self.driver, selector, by, timeout=timeout
+                self.driver,
+                selector,
+                by,
+                timeout=timeout,
+                original_selector=original_selector,
             )
             try:
                 self.__scroll_to_element(element, selector, by)
@@ -297,7 +305,11 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.1)
             element = page_actions.wait_for_element_visible(
-                self.driver, selector, by, timeout=timeout
+                self.driver,
+                selector,
+                by,
+                timeout=timeout,
+                original_selector=original_selector,
             )
             href = None
             new_tab = False
@@ -344,7 +356,11 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     # One more attempt to click on the element
                     element = page_actions.wait_for_element_visible(
-                        self.driver, selector, by, timeout=timeout
+                        self.driver,
+                        selector,
+                        by,
+                        timeout=timeout,
+                        original_selector=original_selector,
                     )
                     element.click()
         latest_window_count = len(self.driver.window_handles)
@@ -410,7 +426,11 @@ class BaseCase(unittest.TestCase):
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout=timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if not self.demo_mode and not self.slow_mode:
@@ -418,7 +438,11 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         # Find the element one more time in case scrolling hid it
         element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout=timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
         pre_action_url = self.driver.current_url
         try:
@@ -1906,7 +1930,7 @@ class BaseCase(unittest.TestCase):
             selector = self.convert_to_css_selector(selector, By.XPATH)
             by = By.CSS_SELECTOR
         self.wait_for_element_visible(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT
+            original_selector, by=original_by, timeout=settings.SMALL_TIMEOUT
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(selector, by=by)
@@ -1971,7 +1995,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by
         )
         dropdown_element = self.wait_for_element_visible(
-            hover_selector, by=hover_by, timeout=timeout
+            original_selector, by=original_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
@@ -2073,7 +2097,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by
         )
         dropdown_element = self.wait_for_element_visible(
-            hover_selector, by=hover_by, timeout=timeout
+            original_selector, by=original_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
@@ -4421,9 +4445,11 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
-            selector, by=by, timeout=timeout
+            original_selector, by=original_by, timeout=timeout
         )
         try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
@@ -4437,7 +4463,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
-                selector, by=by, timeout=timeout
+                original_selector, by=original_by, timeout=timeout
             )
             self.__slow_scroll_to_element(element)
 
@@ -6798,11 +6824,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def wait_for_element_not_present(
@@ -6819,9 +6850,14 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_absent(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def assert_element_not_present(
@@ -9230,11 +9266,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_present(selector, timeout)
         return page_actions.wait_for_element_present(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
@@ -9801,9 +9842,14 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_absent(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def assert_element_absent(
@@ -9837,9 +9883,14 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_not_visible(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def assert_element_not_visible(
