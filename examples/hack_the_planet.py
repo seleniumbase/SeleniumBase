@@ -1,16 +1,9 @@
 """ Video Link: https://youtu.be/1s-Tj65AKZA """
-from seleniumbase import __version__
 from seleniumbase import BaseCase
 
 
 class HackTests(BaseCase):
     def test_all_your_base_are_belong_to_us(self):
-        # First make sure that seleniumbase 1.65.0 or newer is installed
-        version = __version__.split(".")
-        if version[0] == "1" and int(version[1]) < 65:
-            raise Exception(
-                "This test requires minimum seleniumbase version: 1.65.0"
-            )
         self.set_window_size(1220, 740)
         ayb = "ALL YOUR BASE"
         abtu = "ARE BELONG TO US"

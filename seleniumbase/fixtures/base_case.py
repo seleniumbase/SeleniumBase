@@ -230,7 +230,11 @@ class BaseCase(unittest.TestCase):
             self.__shadow_click(selector, timeout)
             return
         element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout=timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if scroll and not self.demo_mode and not self.slow_mode:
@@ -280,7 +284,11 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.16)
             element = page_actions.wait_for_element_visible(
-                self.driver, selector, by, timeout=timeout
+                self.driver,
+                selector,
+                by,
+                timeout=timeout,
+                original_selector=original_selector,
             )
             try:
                 self.__scroll_to_element(element, selector, by)
@@ -297,7 +305,11 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.1)
             element = page_actions.wait_for_element_visible(
-                self.driver, selector, by, timeout=timeout
+                self.driver,
+                selector,
+                by,
+                timeout=timeout,
+                original_selector=original_selector,
             )
             href = None
             new_tab = False
@@ -344,7 +356,11 @@ class BaseCase(unittest.TestCase):
                 except Exception:
                     # One more attempt to click on the element
                     element = page_actions.wait_for_element_visible(
-                        self.driver, selector, by, timeout=timeout
+                        self.driver,
+                        selector,
+                        by,
+                        timeout=timeout,
+                        original_selector=original_selector,
                     )
                     element.click()
         latest_window_count = len(self.driver.window_handles)
@@ -410,7 +426,11 @@ class BaseCase(unittest.TestCase):
         original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout=timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         if not self.demo_mode and not self.slow_mode:
@@ -418,7 +438,11 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         # Find the element one more time in case scrolling hid it
         element = page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout=timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
         pre_action_url = self.driver.current_url
         try:
@@ -1906,7 +1930,7 @@ class BaseCase(unittest.TestCase):
             selector = self.convert_to_css_selector(selector, By.XPATH)
             by = By.CSS_SELECTOR
         self.wait_for_element_visible(
-            selector, by=by, timeout=settings.SMALL_TIMEOUT
+            original_selector, by=original_by, timeout=settings.SMALL_TIMEOUT
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(selector, by=by)
@@ -1971,7 +1995,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by
         )
         dropdown_element = self.wait_for_element_visible(
-            hover_selector, by=hover_by, timeout=timeout
+            original_selector, by=original_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
@@ -2073,7 +2097,7 @@ class BaseCase(unittest.TestCase):
             click_selector, click_by
         )
         dropdown_element = self.wait_for_element_visible(
-            hover_selector, by=hover_by, timeout=timeout
+            original_selector, by=original_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(original_selector, original_by)
         self.scroll_to(hover_selector, by=hover_by)
@@ -2569,9 +2593,9 @@ class BaseCase(unittest.TestCase):
 
     def switch_to_default_content(self):
         """Brings driver control outside the current iframe.
-        (If the driver control is inside an iframe, the driver control
-        will be set to one level above the current frame. If the driver
-        control is not currently in an iframe, nothing will happen.)"""
+        If the driver is currently set inside an iframe or nested iframes,
+        then the driver control will exit from all entered iframes.
+        If the driver is not currently set in an iframe, nothing happens."""
         self.__check_scope()
         if self.recorder_mode and self._rec_overrides_switch:
             url = self.get_current_url()
@@ -2589,18 +2613,39 @@ class BaseCase(unittest.TestCase):
                         return
         self.driver.switch_to.default_content()
 
+    def switch_to_parent_frame(self):
+        """Brings driver control outside the current iframe.
+        If the driver is currently set inside an iframe or nested iframes,
+        the driver control will be set to one level above the current frame.
+        If the driver is not currently set in an iframe, nothing happens."""
+        self.__check_scope()
+        if self.recorder_mode and self._rec_overrides_switch:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    r_a = self.get_session_storage_item("recorder_activated")
+                    if r_a == "yes":
+                        self.__set_c_from_switch = True
+                        self.set_content_to_default(nested=True)
+                        self.__set_c_from_switch = False
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["sw_pf", "", origin, time_stamp]
+                        self.__extra_actions.append(action)
+                        return
+        self.driver.switch_to.parent_frame()
+
     def set_content_to_frame(self, frame, timeout=None):
         """Replaces the page html with an iframe's html from that page.
-        If the iFrame contains an "src" field that includes a valid URL,
+        If the iframe contains an "src" field that includes a valid URL,
         then instead of replacing the current html, this method will then
-        open up the "src" URL of the iFrame in a new browser tab.
+        open up the "src" URL of the iframe in a new browser tab.
         To return to default content, use: self.set_content_to_default().
         This method also sets the state of the browser window so that the
         self.set_content_to_default() method can bring the user back to
         the original content displayed, which is similar to how the methods
         self.switch_to_frame(frame) and self.switch_to_default_content()
-        work together to get the user into frames and out of all of them.
-        """
+        work together to get the user into frames and out of all of them."""
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -2663,12 +2708,12 @@ class BaseCase(unittest.TestCase):
             action = ["s_c_f", o_frame, origin, time_stamp]
             self.__extra_actions.append(action)
 
-    def set_content_to_default(self, nested=True):
+    def set_content_to_default(self, nested=False):
         """After using self.set_content_to_frame(), this reverts the page back.
         If self.set_content_to_frame() hasn't been called here, only refreshes.
-        If "nested" is set to False when the content was set to nested iFrames,
-        then the control will only move above the last iFrame that was entered.
-        """
+        If "nested" is set to True when the content is set to a nested iframe,
+        then the page control will only exit from the current iframe entered,
+        instead of exiting out of all iframes entered."""
         self.__check_scope()
         swap_cnt = self.execute_script("return document.cframe_swap;")
         tab_sta = self.execute_script("return document.cframe_tab;")
@@ -2679,7 +2724,10 @@ class BaseCase(unittest.TestCase):
             action = ["sk_op", "", origin, time_stamp]
             self.__extra_actions.append(action)
 
-        if nested:
+        if not nested:
+            # Sets the page to the outer-most content.
+            # If page control was inside nested iframes, exits them all.
+            # If only in one iframe, has the same effect as nested=True.
             if (
                 len(self.__page_sources) > 0
                 and (
@@ -2705,6 +2753,9 @@ class BaseCase(unittest.TestCase):
             self.execute_script("document.cframe_swap = 0;")
             self.__page_sources = []
         else:
+            # (If Nested is True)
+            # Sets the page to the content outside the current nested iframe.
+            # If only in one iframe, has the same effect as nested=True.
             just_refresh = False
             if swap_cnt and int(swap_cnt) > 0 and len(self.__page_sources) > 0:
                 self.execute_script("document.cframe_swap -= 1;")
@@ -2735,6 +2786,24 @@ class BaseCase(unittest.TestCase):
             origin = self.get_origin()
             action = ["s_c_d", nested, origin, time_stamp]
             self.__extra_actions.append(action)
+
+    def set_content_to_default_content(self, nested=False):
+        """Same as self.set_content_to_default()."""
+        self.set_content_to_default(nested=nested)
+
+    def set_content_to_parent(self):
+        """Same as self.set_content_to_parent_frame().
+        Same as self.set_content_to_default(nested=True).
+        Sets the page to the content outside the current nested iframe.
+        Reverts self.set_content_to_frame()."""
+        self.set_content_to_default(nested=True)
+
+    def set_content_to_parent_frame(self):
+        """Same as self.set_content_to_parent().
+        Same as self.set_content_to_default(nested=True).
+        Sets the page to the content outside the current nested iframe.
+        Reverts self.set_content_to_frame()."""
+        self.set_content_to_default(nested=True)
 
     def open_new_window(self, switch_to=True):
         """Opens a new browser tab/window and switches to it by default."""
@@ -3643,6 +3712,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_et")
         ext_actions.append("sw_fr")
         ext_actions.append("sw_dc")
+        ext_actions.append("sw_pf")
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
         ext_actions.append("sh_fc")
@@ -3878,6 +3948,8 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "sw_dc":
                 sb_actions.append("self.switch_to_default_content()")
+            elif action[0] == "sw_pf":
+                sb_actions.append("self.switch_to_parent_frame()")
             elif action[0] == "s_c_f":
                 method = "set_content_to_frame"
                 if '"' not in action[1]:
@@ -3888,9 +3960,10 @@ class BaseCase(unittest.TestCase):
                 method = "set_content_to_default"
                 nested = action[1]
                 if nested:
+                    method = "set_content_to_parent"
                     sb_actions.append("self.%s()" % method)
                 else:
-                    sb_actions.append("self.%s(nested=False)" % method)
+                    sb_actions.append("self.%s()" % method)
             elif action[0] == "as_el":
                 method = "assert_element"
                 if '"' not in action[1]:
@@ -4372,9 +4445,11 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        original_by = by
         selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_visible(
-            selector, by=by, timeout=timeout
+            original_selector, by=original_by, timeout=timeout
         )
         try:
             scroll_distance = js_utils.get_scroll_distance_to_element(
@@ -4388,7 +4463,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
-                selector, by=by, timeout=timeout
+                original_selector, by=original_by, timeout=timeout
             )
             self.__slow_scroll_to_element(element)
 
@@ -6749,11 +6824,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_visible(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def wait_for_element_not_present(
@@ -6770,9 +6850,14 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_absent(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def assert_element_not_present(
@@ -7001,7 +7086,7 @@ class BaseCase(unittest.TestCase):
         image - Attach an image (from a URL link) to the slide.
         code - Attach code of any programming language to the slide.
                Language-detection will be used to add syntax formatting.
-        iframe - Attach an iFrame (from a URL link) to the slide.
+        iframe - Attach an iframe (from a URL link) to the slide.
         content2 - HTML content to display after adding an image or code.
         notes - Additional notes to include with the slide.
                 ONLY SEEN if show_notes is set for the presentation.
@@ -9181,11 +9266,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_present(selector, timeout)
         return page_actions.wait_for_element_present(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
@@ -9752,9 +9842,14 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_absent(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def assert_element_absent(
@@ -9788,9 +9883,14 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         return page_actions.wait_for_element_not_visible(
-            self.driver, selector, by, timeout
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
         )
 
     def assert_element_not_visible(
