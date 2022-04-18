@@ -8,7 +8,11 @@ class FrameTests(BaseCase):
         self.assert_text("HTML Iframes", "h2")
         self.switch_to_frame('[title*="Iframe"]')  # Enter iframe inside iframe
         self.assert_text("This page is displayed in an iframe", "h1")
-        self.switch_to_default_content()  # Exit all iFrames
+        self.switch_to_parent_frame()  # Exit only the inner iframe
+        self.assert_text("Use CSS width & height to specify", "p")
+        self.switch_to_frame('[title*="Iframe"]')  # Enter iframe inside iframe
+        self.assert_text("seleniumbase.io/w3schools/iframes", "a")
+        self.switch_to_default_content()  # Exit all iframes
         self.click("button#runbtn")
         self.switch_to_frame("iframeResult")  # Go back inside 1st iframe
         self.highlight('iframe[title="Iframe Example"]')
@@ -20,7 +24,7 @@ class FrameTests(BaseCase):
         self.set_content_to_frame("iframe")
         self.assert_element_not_visible("iframe")
         self.highlight("body")
-        self.set_content_to_default(nested=False)
+        self.set_content_to_parent()
         self.highlight('iframe[title="Iframe Example"]')
         self.set_content_to_default()
         self.click("button#runbtn")
