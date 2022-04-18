@@ -207,9 +207,15 @@ self.switch_to_frame(frame, timeout=None)
 
 self.switch_to_default_content()
 
+self.switch_to_parent_frame()
+
 self.set_content_to_frame(frame, timeout=None)
 
-self.set_content_to_default(nested=True)
+self.set_content_to_default(nested=False)
+# Duplicates: self.set_content_to_default_content(nested=False)
+
+self.set_content_to_parent()
+# Duplicates: self.set_content_to_parent_frame()
 
 self.open_new_window(switch_to=True)
 # Duplicates: self.open_new_tab(switch_to=True)
