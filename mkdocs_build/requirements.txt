@@ -15,7 +15,7 @@ pkginfo==1.8.2
 Jinja2==3.1.1
 click==8.1.2
 zipp==3.8.0
-readme-renderer==34.0
+readme-renderer==35.0
 pymdown-extensions==9.3
 importlib-metadata==4.11.3
 bleach==5.0.0
