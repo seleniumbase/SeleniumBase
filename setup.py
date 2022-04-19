@@ -147,7 +147,7 @@ setup(
         'filelock>=3.6.0;python_version>="3.7"',
         'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
-        'platformdirs>=2.5.1;python_version>="3.7"',
+        'platformdirs>=2.5.2;python_version>="3.7"',
         "six==1.16.0",
         'ipdb==0.13.4;python_version<"3.5"',
         'ipdb==0.13.9;python_version>="3.5"',
@@ -208,7 +208,7 @@ setup(
         "sbvirtualdisplay==1.1.0",
         'soupsieve==1.9.6;python_version<"3.5"',
         'soupsieve==2.1;python_version>="3.5" and python_version<"3.6"',
-        'soupsieve==2.3.2;python_version>="3.6"',
+        'soupsieve==2.3.2.post1;python_version>="3.6"',
         'beautifulsoup4==4.9.3;python_version<"3.5"',
         'beautifulsoup4==4.10.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
         'beautifulsoup4==4.11.1;python_version>="3.6"',
