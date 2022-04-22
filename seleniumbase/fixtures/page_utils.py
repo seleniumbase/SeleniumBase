@@ -229,7 +229,7 @@ def _get_link_status_code(
     """
     status_code = None
     try:
-        response = requests.get(
+        response = requests.head(
             link,
             allow_redirects=allow_redirects,
             timeout=timeout,

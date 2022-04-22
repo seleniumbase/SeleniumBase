@@ -268,6 +268,10 @@ class CasDeBase(BaseCase):
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
 
+    def passer_au_cadre_parent(self, *args, **kwargs):
+        # switch_to_parent_frame()
+        return self.switch_to_parent_frame(*args, **kwargs)
+
     def ouvrir_une_nouvelle_fenêtre(self, *args, **kwargs):
         # open_new_window()
         return self.open_new_window(*args, **kwargs)

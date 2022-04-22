@@ -268,6 +268,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
 
+    def переключиться_на_родительский_кадр(self, *args, **kwargs):
+        # switch_to_parent_frame()
+        return self.switch_to_parent_frame(*args, **kwargs)
+
     def открыть_новое_окно(self, *args, **kwargs):
         # open_new_window()
         return self.open_new_window(*args, **kwargs)

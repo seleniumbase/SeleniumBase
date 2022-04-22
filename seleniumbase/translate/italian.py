@@ -260,13 +260,17 @@ class CasoDiProva(BaseCase):
         # assert_no_js_errors()
         return self.assert_no_js_errors(*args, **kwargs)
 
-    def passa_al_frame(self, *args, **kwargs):
+    def passa_alla_cornice(self, *args, **kwargs):
         # switch_to_frame(frame)
         return self.switch_to_frame(*args, **kwargs)
 
     def passa_al_contenuto_predefinito(self, *args, **kwargs):
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
+
+    def passa_alla_cornice_principale(self, *args, **kwargs):
+        # switch_to_parent_frame()
+        return self.switch_to_parent_frame(*args, **kwargs)
 
     def apri_una_nuova_finestra(self, *args, **kwargs):
         # open_new_window()

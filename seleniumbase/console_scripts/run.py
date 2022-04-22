@@ -9,6 +9,7 @@ Examples:
 sbase install chromedriver
 sbase methods
 sbase options
+sbase commander
 sbase mkdir ui_tests
 sbase mkfile new_test.py
 sbase mkrec new_test.py
@@ -78,6 +79,7 @@ def show_basic_usage():
     sc += "      install          [DRIVER] [OPTIONS]\n"
     sc += "      methods          (List common Python methods)\n"
     sc += "      options          (List common pytest options)\n"
+    sc += "      commander / gui  [OPTIONAL PATH or TEST FILE]\n"
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
@@ -143,6 +145,28 @@ def show_install_usage():
     print("           (edgedriver is required for Microsoft Edge automation)")
     print("           (iedriver is required for InternetExplorer automation)")
     print("           (operadriver is required for Opera Browser automation)")
+    print("")
+
+
+def show_commander_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "commander" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase commander [OPTIONAL PATH or TEST FILE]")
+    print("           OR:    sbase commander [OPTIONAL PATH or TEST FILE]")
+    print("           OR:   seleniumbase gui [OPTIONAL PATH or TEST FILE]")
+    print("           OR:          sbase gui [OPTIONAL PATH or TEST FILE]")
+    print("  Examples:")
+    print("           sbase gui")
+    print("           sbase gui -k agent")
+    print("           sbase gui examples/")
+    print("           sbase gui test_suite.py")
+    print("  Output:")
+    print("           Launches SeleniumBase Commander | GUI for pytest.")
     print("")
 
 
@@ -247,6 +271,21 @@ def show_codegen_usage():
     print("  Output:")
     print("           Creates a new SeleniumBase test using the Recorder.")
     print("           If the filename already exists, an error is raised.")
+    print("")
+
+
+def show_recorder_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "recorder" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase recorder")
+    print("           OR:    sbase recorder")
+    print("  Output:")
+    print("           Launches the SeleniumBase Recorder Desktop App.")
     print("")
 
 
@@ -629,7 +668,8 @@ def show_methods():
     sbm += "*.get_attribute(selector, attribute) => Get element attribute.\n"
     sbm += "*.get_title() => Get the title of the current page.\n"
     sbm += "*.switch_to_frame(frame) => Switch into the iframe container.\n"
-    sbm += "*.switch_to_default_content() => Leave the iframe container.\n"
+    sbm += "*.switch_to_default_content() => Exit all iframe containers.\n"
+    sbm += "*.switch_to_parent_frame() => Exit from the current iframe.\n"
     sbm += "*.open_new_window() => Open a new window in the same browser.\n"
     sbm += "*.switch_to_window(window) => Switch to the browser window.\n"
     sbm += "*.switch_to_default_window() => Switch to the original window.\n"
@@ -735,10 +775,12 @@ def show_detailed_help():
     print(c6 + "            " + c2 + "  Commands:  " + c6 + "            ")
     print(cr)
     show_install_usage()
+    show_commander_usage()
     show_mkdir_usage()
     show_mkfile_usage()
     show_mkrec_usage()
     show_codegen_usage()
+    show_recorder_usage()
     show_mkpres_usage()
     show_mkchart_usage()
     show_convert_usage()
@@ -779,6 +821,10 @@ def main():
         else:
             show_basic_usage()
             show_install_usage()
+    elif command == "commander" or command == "gui":
+        from seleniumbase.console_scripts import sb_commander
+
+        sb_commander.main()
     elif (
         command == "recorder"
         or (command == "record" and len(command_args) == 0)
@@ -960,6 +1006,14 @@ def main():
                 print("")
                 show_install_usage()
                 return
+            elif command_args[0] == "commander":
+                print("")
+                show_commander_usage()
+                return
+            elif command_args[0] == "gui":
+                print("")
+                show_commander_usage()
+                return
             elif command_args[0] == "mkdir":
                 print("")
                 show_mkdir_usage()
@@ -975,6 +1029,10 @@ def main():
             elif command_args[0] == "codegen":
                 print("")
                 show_codegen_usage()
+                return
+            elif command_args[0] == "recorder":
+                print("")
+                show_recorder_usage()
                 return
             elif command_args[0] == "mkpres":
                 print("")

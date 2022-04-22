@@ -1018,8 +1018,8 @@ class MD:
     md["switch_to_frame"][1] = "切换到帧"
     md["switch_to_frame"][2] = "overschakelen_naar_frame"
     md["switch_to_frame"][3] = "passer_au_cadre"
-    md["switch_to_frame"][4] = "passa_al_frame"
-    md["switch_to_frame"][5] = "フレームに切り替え"
+    md["switch_to_frame"][4] = "passa_alla_cornice"
+    md["switch_to_frame"][5] = "フレームに切り替えます"
     md["switch_to_frame"][6] = "프레임으로_전환"
     md["switch_to_frame"][7] = "mudar_para_o_quadro"
     md["switch_to_frame"][8] = "переключиться_на_кадр"
@@ -1037,6 +1037,18 @@ class MD:
     stdc_ru = "переключиться_на_содержимое_по_умолчанию"
     md["switch_to_default_content"][8] = stdc_ru
     md["switch_to_default_content"][9] = "cambiar_al_contenido_predeterminado"
+
+    md["switch_to_parent_frame"] = ["*"] * num_langs
+    md["switch_to_parent_frame"][0] = "switch_to_parent_frame"
+    md["switch_to_parent_frame"][1] = "切换到父框架"
+    md["switch_to_parent_frame"][2] = "overschakelen_naar_bovenliggend_frame"
+    md["switch_to_parent_frame"][3] = "passer_au_cadre_parent"
+    md["switch_to_parent_frame"][4] = "passa_alla_cornice_principale"
+    md["switch_to_parent_frame"][5] = "親フレームに切り替えます"
+    md["switch_to_parent_frame"][6] = "상위_프레임으로_전환"
+    md["switch_to_parent_frame"][7] = "mudar_para_o_quadro_pai"
+    md["switch_to_parent_frame"][8] = "переключиться_на_родительский_кадр"
+    md["switch_to_parent_frame"][9] = "cambiar_al_marco_principal"
 
     md["open_new_window"] = ["*"] * num_langs
     md["open_new_window"][0] = "open_new_window"
@@ -2106,6 +2118,32 @@ class MD:
     md["reload_page"][7] = "atualizar_a_página"
     md["reload_page"][8] = "обновить_страницу"
     md["reload_page"][9] = "actualizar_la_página"
+
+    # "open_new_tab" -> duplicate of "open_new_window"
+    md["open_new_tab"] = ["*"] * num_langs
+    md["open_new_tab"][0] = "open_new_tab"
+    md["open_new_tab"][1] = "打开新窗口"
+    md["open_new_tab"][2] = "nieuw_venster_openen"
+    md["open_new_tab"][3] = "ouvrir_une_nouvelle_fenêtre"
+    md["open_new_tab"][4] = "apri_una_nuova_finestra"
+    md["open_new_tab"][5] = "新しいウィンドウを開く"
+    md["open_new_tab"][6] = "새_창_열기"
+    md["open_new_tab"][7] = "abrir_nova_janela"
+    md["open_new_tab"][8] = "открыть_новое_окно"
+    md["open_new_tab"][9] = "abrir_una_nueva_ventana"
+
+    # "switch_to_newest_tab" -> duplicate of "switch_to_newest_window"
+    md["switch_to_newest_tab"] = ["*"] * num_langs
+    md["switch_to_newest_tab"][0] = "switch_to_newest_tab"
+    md["switch_to_newest_tab"][1] = "切换到最新的窗口"
+    md["switch_to_newest_tab"][2] = "overschakelen_naar_nieuwste_venster"
+    md["switch_to_newest_tab"][3] = "passer_à_fenêtre_dernière"
+    md["switch_to_newest_tab"][4] = "passa_alla_finestra_ultimo"
+    md["switch_to_newest_tab"][5] = "最新のウィンドウに切り替えます"
+    md["switch_to_newest_tab"][6] = "최신_창으로_전환"
+    md["switch_to_newest_tab"][7] = "mudar_para_a_janela_última"
+    md["switch_to_newest_tab"][8] = "переключиться_на_последнее_окно"
+    md["switch_to_newest_tab"][9] = "cambiar_a_ventana_última"
 
     # "get_page_title" -> duplicate of "get_title"
     md["get_page_title"] = ["*"] * num_langs

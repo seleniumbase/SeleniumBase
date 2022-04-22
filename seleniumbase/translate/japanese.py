@@ -260,13 +260,17 @@ class セレニウムテストケース(BaseCase):  # noqa
         # assert_no_js_errors()
         return self.assert_no_js_errors(*args, **kwargs)
 
-    def フレームに切り替え(self, *args, **kwargs):
+    def フレームに切り替えます(self, *args, **kwargs):
         # switch_to_frame(frame)
         return self.switch_to_frame(*args, **kwargs)
 
     def デフォルトのコンテンツに切り替える(self, *args, **kwargs):
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
+
+    def 親フレームに切り替えます(self, *args, **kwargs):
+        # switch_to_parent_frame()
+        return self.switch_to_parent_frame(*args, **kwargs)
 
     def 新しいウィンドウを開く(self, *args, **kwargs):
         # open_new_window()
