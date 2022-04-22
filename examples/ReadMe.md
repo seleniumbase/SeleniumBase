@@ -135,6 +135,16 @@ pytest upload_file_test.py
 
 --------
 
+Try the new SeleniumBase Commander! A GUI for pytest:
+
+```bash
+sbase gui
+```
+
+<img src="https://seleniumbase.io/cdn/img/sbase_commander.png" title="SeleniumBase Commander / GUI for pytest" /><br />
+
+--------
+
 <b>SeleniumBase tests can also be run with ``nosetests``:</b>
 
 Run an example test with nosetests:
