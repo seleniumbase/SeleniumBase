@@ -268,6 +268,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
 
+    def 상위_프레임으로_전환(self, *args, **kwargs):
+        # switch_to_parent_frame()
+        return self.switch_to_parent_frame(*args, **kwargs)
+
     def 새_창_열기(self, *args, **kwargs):
         # open_new_window()
         return self.open_new_window(*args, **kwargs)

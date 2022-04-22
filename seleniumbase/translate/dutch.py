@@ -268,6 +268,10 @@ class Testgeval(BaseCase):
         # switch_to_default_content()
         return self.switch_to_default_content(*args, **kwargs)
 
+    def overschakelen_naar_bovenliggend_frame(self, *args, **kwargs):
+        # switch_to_parent_frame()
+        return self.switch_to_parent_frame(*args, **kwargs)
+
     def nieuw_venster_openen(self, *args, **kwargs):
         # open_new_window()
         return self.open_new_window(*args, **kwargs)
