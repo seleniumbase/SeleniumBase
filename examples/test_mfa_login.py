@@ -8,5 +8,6 @@ class TestMFALogin(BaseCase):
         self.type("#password", "secret_pass")
         self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")
         self.highlight("img#image1")
+        self.click('a:contains("This Page")')
         self.assert_text("Welcome!", "h1")
         self.save_screenshot_to_logs()
