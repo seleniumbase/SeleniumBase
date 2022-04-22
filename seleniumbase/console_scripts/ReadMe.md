@@ -17,6 +17,7 @@ COMMANDS:
       install          [DRIVER] [OPTIONS]
       methods          (List common Python methods)
       options          (List common pytest options)
+      commander / gui  [OPTIONAL PATH or TEST FILE]
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
@@ -142,6 +143,21 @@ that are available when using SeleniumBase.
 
 For the full list of command-line options, type: "pytest --help".
 ```
+
+<h3>commander / gui</h3>
+
+* Usage:
+``sbase commander [OPTIONAL PATH or TEST FILE]``
+``sbase gui [OPTIONAL PATH or TEST FILE]``
+
+* Examples:
+``sbase gui``
+``sbase gui -k agent``
+``sbase gui examples/``
+``sbase gui test_suite.py``
+
+* Output:
+Launches SeleniumBase Commander | GUI for pytest.
 
 <h3>mkdir</h3>
 
