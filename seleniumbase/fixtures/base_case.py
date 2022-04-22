@@ -4756,7 +4756,7 @@ class BaseCase(unittest.TestCase):
     ):
         """Get the status code of a link.
         If the timeout is set to less than 1, it becomes 1.
-        If the timeout is exceeded by requests.get(), it will return a 404.
+        If the timeout is exceeded by requests.head(), it will return a 404.
         If "verify" is False, will ignore certificate errors.
         For a list of available status codes, see:
         https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
@@ -4794,6 +4794,8 @@ class BaseCase(unittest.TestCase):
         """Assert no 404 errors from page links obtained from:
         "a"->"href", "img"->"src", "link"->"href", and "script"->"src".
         Timeout is on a per-link basis using the "requests" library.
+        If timeout is None, uses the one set in get_link_status_code().
+        (That timeout value is currently set to 5 seconds per link.)
         (A 404 error represents a broken link on a web page.)
         """
         all_links = self.get_unique_links()
@@ -4830,7 +4832,7 @@ class BaseCase(unittest.TestCase):
             for link in links:
                 if self.__get_link_if_404_error(link):
                     broken_links.append(link)
-        self.__requests_timeout = None  # Reset the requests.get() timeout
+        self.__requests_timeout = None  # Reset the requests.head() timeout
         if len(broken_links) > 0:
             broken_links = sorted(broken_links)
             bad_links_str = "\n".join(broken_links)
