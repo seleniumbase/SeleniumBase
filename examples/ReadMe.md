@@ -141,7 +141,7 @@ Try the new SeleniumBase Commander! A GUI for pytest:
 sbase gui
 ```
 
-<img src="https://seleniumbase.io/cdn/img/sbase_commander.png" title="SeleniumBase Commander / GUI for pytest" /><br />
+<img src="https://seleniumbase.io/cdn/img/sbase_commander.png" title="SeleniumBase Commander / GUI for pytest" width="520" /><br />
 
 --------
 
