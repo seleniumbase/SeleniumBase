@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="310" /></a></h3>
 <!-- View on GitHub -->
 <h4 align="center">Better web testing with <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> and <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a>.</h4>
 <p align="center">
@@ -118,6 +118,7 @@ COMMANDS:
       install          [DRIVER] [OPTIONS]
       methods          (List common Python methods)
       options          (List common pytest options)
+      commander / gui  [OPTIONAL PATH or TEST FILE]
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
