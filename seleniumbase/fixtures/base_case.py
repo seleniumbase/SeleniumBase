@@ -6913,16 +6913,17 @@ class BaseCase(unittest.TestCase):
         self.ad_block()
 
     def _print(self, msg):
-        """Same as Python's print(), but won't print during multithreaded runs
-        because overlapping print() commands may lead to unexpected output.
-        In most cases, the print() command won't print for multithreaded tests,
-        but there are some exceptions, and this will take care of those.
-        Here's an example of running tests multithreaded: "pytest -n=4".
+        """Same as Python's print(), but also prints during multithreaded runs.
+        Normally, Python's print() command won't print for multithreaded tests.
+        Here's an example of running tests using multithreading: "pytest -n=4".
+        Here's how to print directly from sys without using a print() command:
         To force a print during multithreaded tests, use: "sys.stderr.write()".
         To print without the new-line character end, use: "sys.stdout.write()".
         """
         if not sb_config._multithreaded:
             print(msg)
+        else:
+            sys.stderr.write(msg)
 
     def start_tour(self, name=None, interval=0):
         self.play_tour(name=name, interval=interval)
