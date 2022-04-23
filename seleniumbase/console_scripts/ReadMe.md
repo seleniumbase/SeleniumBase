@@ -1,6 +1,6 @@
 <h2>🔮 Console Scripts 🔮</h2>
 
-⭐ SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with useful configuration files, initializing the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into multiple languages, and running a Selenium Grid.
+⭐ SeleniumBase console scripts help you get things done, such as installing web drivers, creating a test directory with useful files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 
 * Usage: ``seleniumbase [COMMAND] [PARAMETERS]``
 
