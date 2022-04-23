@@ -1,8 +1,6 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
+<h2>🔮 Console Scripts 🔮</h2>
 
-<h2>Console Scripts</h2>
-
-SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
+⭐ SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with useful configuration files, initializing the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into multiple languages, and running a Selenium Grid.
 
 * Usage: ``seleniumbase [COMMAND] [PARAMETERS]``
 
@@ -147,14 +145,21 @@ For the full list of command-line options, type: "pytest --help".
 <h3>commander / gui</h3>
 
 * Usage:
-``sbase commander [OPTIONAL PATH or TEST FILE]``
-``sbase gui [OPTIONAL PATH or TEST FILE]``
+
+```bash
+sbase commander [OPTIONAL PATH or TEST FILE]
+sbase gui [OPTIONAL PATH or TEST FILE]
+```
 
 * Examples:
-``sbase gui``
-``sbase gui -k agent``
-``sbase gui examples/``
-``sbase gui test_suite.py``
+
+```bash
+sbase gui
+sbase gui -k agent
+sbase gui -m marker2
+sbase gui test_suite.py
+sbase gui offline_examples/
+```
 
 * Output:
 Launches SeleniumBase Commander | GUI for pytest.

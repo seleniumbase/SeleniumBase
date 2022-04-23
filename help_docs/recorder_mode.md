@@ -7,7 +7,7 @@
 
 <img src="https://seleniumbase.io/cdn/img/sb_recorder_notification.png" title="SeleniumBase" width="380">
 
-🔴 To make a new recording with Recorder Mode, you can use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``):
+🔴 To make a new recording with Recorder Mode, use ``sbase mkrec``, ``sbase codegen``, or ``sbase record``):
 
 ```bash
 sbase mkrec TEST_NAME.py --url=URL

@@ -82,6 +82,7 @@ nav:
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
   - Dashboard / Reports: examples/example_logs/ReadMe.md
+  - SeleniumBase Commander: help_docs/commander.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - Syntax Formats: help_docs/syntax_formats.md
   - Recorder Mode: help_docs/recorder_mode.md

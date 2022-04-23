@@ -1,23 +1,27 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
-
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> JS Package Manager and Code Generators</h2>
 
-<div>SeleniumBase lets you load JavaScript packages from any CDN link into any website.</div>
+<h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website.</h3>
 
-<p><div>In addition to loading JS packages, SeleniumBase also lets you generate JS code from Python so that you can use these packages more easily.</div></p>
+<b>🎨 The following SeleniumBase solutions utilize this feature:</b>
 
-<p><div>Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Website Tours</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Chart Maker</a> - <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog Boxes</a>
+
+<p><div>🕹️ In addition to loading JS packages, SeleniumBase also lets you generate JS code from Python so that you can use these packages more easily.</div></p>
+
+<p><div>🗺️ Here's an example of loading a website-tour library into the browser for a Google Maps tour:</div></p>
 
 <img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google" /><br />
 
-This example, ([maps_introjs_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py) from the SeleniumBase ``examples/tour_examples/`` folder), can be run with ``pytest`` after you've cloned and installed [SeleniumBase from GitHub](https://github.com/seleniumbase/SeleniumBase): (The ``--interval=1`` makes the tour go automatically to the next step after 1 second.)
+<p>🗺️ This example is from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a>. (The <code>--interval=1</code> makes the tour go automatically to the next step after 1 second.)</p>
 
 ```bash
 cd examples/tour_examples
 pytest maps_introjs_tour.py --interval=1
 ```
 
-<p>SeleniumBase includes powerful JS code generators for converting Python into JavaScript for using the supported JS packages. A few lines of Python in your tests might generate hundreds of lines of JavaScript. (Here is some tour code in Python from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a> that expands into a lot of JavaScript.)</p>
+<p>🕹️ SeleniumBase includes powerful JS code generators for converting Python into JavaScript for using the supported JS packages. A few lines of Python in your tests might generate hundreds of lines of JavaScript.</p>
+
+<p>🗺️ Here is some tour code in Python from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py">maps_introjs_tour.py</a> that expands into a lot of JavaScript.</p>
 
 ```python
 self.open("https://www.google.com/maps/@42.3591234,-71.0915634,15z")
@@ -30,21 +34,21 @@ self.export_tour(filename="maps_introjs_tour.js")
 self.play_tour()
 ```
 
-<p><div>For existing features, SeleniumBase already takes care of loading all the necessary JS and CSS files into the web browser. To load other packages, here are a few useful methods that you should know about:</div></p>
+<p><div>🕹️ For existing features, SeleniumBase already takes care of loading all the necessary JS and CSS files into the web browser. To load other packages, here are a few useful methods that you should know about:</div></p>
 
 ```python
 self.add_js_link(js_link)
 ```
 
-<div>This example loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:</div>
+<p><div>🕹️ This example loads the <a href="https://introjs.com/">IntroJS</a> JavaScript library:</div></p>
 
 ```python
 self.add_js_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.min.js")
 ```
 
-<div>You can load any JS package this way as long as you know the URL.</div>
+<div>🕹️ You can load any JS package this way as long as you know the URL.</div>
 
-If you're wondering how SeleniumBase does this, here's the full Python code from [js_utils.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/js_utils.py), which uses WebDriver's ``execute_script()`` method for making JS calls after escaping quotes with backslashes as needed:
+<p>🕹️ If you're wondering how SeleniumBase does this, here's the full Python code from <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/js_utils.py">js_utils.py</a>, which uses WebDriver's <code>execute_script()</code> method for making JS calls after escaping quotes with backslashes as needed:</p>
 
 ```python
 def add_js_link(driver, js_link):
@@ -64,19 +68,19 @@ def add_js_link(driver, js_link):
     driver.execute_script(script_to_add_js % js_link)
 ```
 
-<p>Now that you've loaded JavaScript into the browser, you may also want to load some CSS to go along with it:</p>
+<p>🕹️ Now that you've loaded JavaScript into the browser, you may also want to load some CSS to go along with it:</p>
 
 ```python
 self.add_css_link(css_link)
 ```
 
-<p>Here's code that loads the <a href="https://introjs.com/">IntroJS</a> CSS:</p>
+<p>🕹️ Here's code that loads the <a href="https://introjs.com/">IntroJS</a> CSS:</p>
 
 ```python
 self.add_css_link("https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css")
 ```
 
-<p>And here's the Python WebDriver code that makes this possible:</p>
+<p>🕹️ And here's the Python WebDriver code that makes this possible:</p>
 
 ```python
 def add_css_link(driver, css_link):
@@ -95,8 +99,8 @@ def add_css_link(driver, css_link):
     driver.execute_script(script_to_add_css % css_link)
 ```
 
-<div>Website tours are just one of the many uses of the JS Package Manager.</div>
-<p><div>The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
+<div>🕹️ Website tours are just one of the many uses of the JS Package Manager.</div>
+<p><div>🛂 The following example shows the <a href="https://github.com/craftpip/jquery-confirm">JqueryConfirm</a> package loaded into a website for creating fancy dialog boxes:</div></p>
 
 <img src="https://seleniumbase.io/cdn/img/emoji_sports_dialog.png" alt="SeleniumBase" width="400" />
 
@@ -113,7 +117,7 @@ pytest test_dialog_boxes.py
 
 <p><div>(Example from the <a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">Dialog Boxes ReadMe</a>)</div></p>
 
-<div>Since packages are loaded directly from a CDN link, you won't need other package managers like NPM, Bower, or Yarn to get the packages that you need into the websites that you want.</div>
+<div>🕹️ Since packages are loaded directly from a CDN link, you won't need other package managers like NPM, Bower, or Yarn to get the packages that you need into the websites that you want.</div>
 
 --------
 
@@ -127,4 +131,4 @@ pytest test_dialog_boxes.py
 <a href="https://github.com/seleniumbase/SeleniumBase">
 <img src="https://img.shields.io/badge/✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀-02A79E.svg" alt="SeleniumBase on GitHub" /></a>
 
-And if you're just interested in creating website tours with SeleniumBase, here's the link to the <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours ReadMe</a>.
+🗺️ If you're only interested in creating website tours with SeleniumBase, here's the link to the <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">Website Tours ReadMe</a>.

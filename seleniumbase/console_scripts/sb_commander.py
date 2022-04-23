@@ -8,8 +8,15 @@ Usage:
             seleniumbase gui [OPTIONAL PATH or TEST FILE]
                    sbase gui [OPTIONAL PATH or TEST FILE]
 
+Examples:
+      sbase gui
+      sbase gui -k agent
+      sbase gui -m marker2
+      sbase gui test_suite.py
+      sbase gui offline_examples/
+
 Output:
-    Launches SeleniumBase Commander | GUI for pytest.
+      Launches SeleniumBase Commander | GUI for pytest.
 """
 
 import colorama

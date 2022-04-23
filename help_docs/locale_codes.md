@@ -1,6 +1,6 @@
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="25" /> Language Locale Codes</h2>
 
-You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase you can change the web browser's Locale on the command line by adding:
+You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase, you can change the web browser's Locale on the command line by doing this:
 
 ```bash
 pytest --locale=CODE  # Example: --locale=ru

@@ -95,5 +95,6 @@ pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 
 (For setting browser desired capabilities while running Selenium remotely, see the <a href="https://seleniumbase.io/help_docs/desired_capabilities/">desired capabilities documentation</a> and the sample files located in <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities">SeleniumBase/examples/capabilities</a>)
 
-<h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> More info about the Selenium Grid Hub can be found here:</h4>
-* [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
+<h4><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> More info about the Selenium Grid Hub can be found here:</h4>
+
+* [https://www.selenium.dev/documentation/grid/](https://www.selenium.dev/documentation/grid/)

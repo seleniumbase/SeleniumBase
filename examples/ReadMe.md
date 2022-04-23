@@ -1,5 +1,3 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
-
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Running Example Tests:</h2>
 
 <p align="left"><a align="center" href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img align="center" src="https://seleniumbase.io/cdn/img/sb_demo_page.png" alt="SeleniumBase Demo Page" width="420" /></a></p>
@@ -15,13 +13,21 @@
 
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Example tests with run commands to help you get started:</h3>
 
-Run an example test in Chrome: (Default: ``--browser=chrome``)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Chrome: (Default: ``--browser=chrome``)
 
 ```bash
 pytest my_first_test.py
 ```
 
 <img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" /><br />
+
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py) on the SeleniumBase Demo Site:
+
+```bash
+pytest test_demo_site.py
+```
+
+<img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
 
 Run an example test in Firefox:
 
@@ -37,7 +43,7 @@ pytest test_swag_labs.py --demo
 
 <img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" /><br />
 
-Run a Wordle-solver example:
+Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py):
 
 ```bash
 pytest wordle_test.py
@@ -51,7 +57,7 @@ Run an example test in Headless Mode: (invisible browser)
 pytest my_first_test.py --headless
 ```
 
-Run an example test using Chrome's mobile device emulator: (default settings)
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py) using Chrome's mobile device emulator: (default settings)
 
 ```bash
 pytest test_swag_labs.py --mobile
@@ -59,27 +65,19 @@ pytest test_swag_labs.py --mobile
 
 <img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Mode" /><br />
 
-Run tests with verbose output: (includes more details)
+Run a [test suite](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py) with verbose output: (see more details)
 
 ```bash
 pytest test_suite.py -v
 ```
 
-Run a test on the Demo Site to try many SeleniumBase methods:
-
-```bash
-pytest test_demo_site.py
-```
-
-<img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" title="SeleniumBase Demo Page" /><br />
-
-Run tests multi-threaded using [n] threads:
+Run a test suite multi-threaded using [n] threads:
 
 ```bash
 pytest test_suite.py -n=4
 ```
 
-Run a parameterized test: (Generates multiple tests from one)
+Run a [parameterized test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/parameterized_test.py): (Generates multiple tests from one)
 
 ```bash
 pytest parameterized_test.py -v
@@ -97,7 +95,7 @@ Run a test suite and generate a pytest report:
 pytest test_suite.py --html=report.html
 ```
 
-Run a failing test: (See the ``latest_logs/`` folder for logs and screenshots)
+Run a [failing test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_fail.py): (See the ``latest_logs/`` folder for logs and screenshots)
 
 ```bash
 pytest test_fail.py
@@ -109,25 +107,25 @@ Run a failing test with Debug-mode enabled: (``pdb`` activates on failures)
 pytest test_fail.py --pdb -s
 ```
 
-Run an example test suite that demonstrates the use of pytest markers:
+Run a test suite that demonstrates the use of pytest markers:
 
 ```bash
 pytest -m marker_test_suite -v
 ```
 
-Run an example test suite that reuses the browser session between tests:
+Run a test suite that reuses the browser session between tests:
 
 ```bash
 pytest test_suite.py --reuse-session
 ```
 
-Run an example test demonstrating the ``rate_limited`` Python decorator:
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/rate_limiting_test.py) demonstrating the ``rate_limited`` Python decorator:
 
 ```bash
 pytest rate_limiting_test.py
 ```
 
-Run an example test that demonstrates how to upload a file to a website:
+Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/upload_file_test.py) that demonstrates how to upload a file to a website:
 
 ```bash
 pytest upload_file_test.py

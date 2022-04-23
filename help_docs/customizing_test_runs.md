@@ -1,10 +1,8 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> pytest options for SeleniumBase</h2>
 
-## pytest options for SeleniumBase
+🎛️ SeleniumBase's [pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) lets you customize test runs from the CLI (Command-Line Interface), which adds options for setting/enabling the browser type, Dashboard Mode, Demo Mode, Headless Mode, Mobile Mode, Multi-threading Mode, Recorder Mode, reuse-session mode, proxy config, user agent config, browser extensions, html-report mode, and more.
 
-SeleniumBase's [pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) lets you customize test runs from the CLI (Command-Line Interface), which adds options for setting/enabling the browser type, Dashboard Mode, Demo Mode, Headless Mode, Mobile Mode, Multi-threading Mode, Recorder Mode, reuse-session mode, proxy config, user agent config, browser extensions, html-report mode, and more.
-
-Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
+🎛️ Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
 ```bash
 # Run a test in Chrome (default browser)
@@ -77,11 +75,11 @@ pytest test_swag_labs.py --mobile --metrics="411,731,3"
 pytest my_first_test.py --settings-file=custom_settings.py
 ```
 
-You can interchange ``pytest`` with ``nosetests`` for most tests, but using ``pytest`` is recommended. (``chrome`` is the default browser if not specified.)
+🎛️ You can interchange ``pytest`` with ``nosetests`` for most tests, but using ``pytest`` is recommended. (``chrome`` is the default browser if not specified.)
 
-If you're using ``pytest`` for running tests outside of the SeleniumBase repo, you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure. If using ``nosetests``, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).
+🎛️ If you're using ``pytest`` for running tests outside of the SeleniumBase repo, you'll want a copy of [pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini) at the base of the new folder structure. If using ``nosetests``, the same applies for [setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg).
 
-Here are some useful command-line options that come with ``pytest``:
+🎛️ Here are some useful command-line options that come with ``pytest``:
 
 ```bash
 -v  # Verbose mode. Prints the full name of each test run.
@@ -96,7 +94,7 @@ Here are some useful command-line options that come with ``pytest``:
 -m=MARKER  # Run tests with the specified pytest marker.
 ```
 
-SeleniumBase provides additional ``pytest`` command-line options for tests:
+🎛️ SeleniumBase provides additional ``pytest`` command-line options for tests:
 
 ```bash
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
@@ -171,7 +169,7 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)
 
-You can also view a list of popular ``pytest`` options for SeleniumBase by typing:
+🎛️ You can also view a list of popular ``pytest`` options for SeleniumBase by typing:
 
 ```bash
 seleniumbase options
@@ -245,7 +243,7 @@ The code above will leave your browser window open in case there's a failure. (i
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Combinations of options:</h3>
 
-There are times when you'll want to combine various command-line options for added effect.
+🎛️ There are times when you'll want to combine various command-line options for added effect.
 For instance, the multi-process option, ``-n=4``, can be customized by adding:
 ``--dist=loadscope`` or ``--dist=loadfile`` to it.
 Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/pytest-xdist/):
@@ -254,7 +252,7 @@ Here's more info on that, as taken from [pytest-xdist](https://pypi.org/project/
 
 * ``-n=4 --dist=loadfile``: Tests are grouped by their containing file. Groups are distributed to available workers as whole units. This guarantees that all tests in a file run in the same worker.
 
-You might also want to combine multiple options at once. For example:
+🎛️ You might also want to combine multiple options at once. For example:
 
 ```bash
 pytest -n=4 --reuse-session --headless -v --dashboard --html=report.html
@@ -336,20 +334,36 @@ nosetests test_suite.py --report
 
 --------
 
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Language Locale Codes</h3>
+
+You can specify a Language Locale Code to customize web pages on supported websites. With SeleniumBase, you can change the web browser's Locale on the command line by doing this:
+
+```bash
+pytest --locale=CODE  # Example: --locale=ru
+```
+
+Visit <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md"><b>🗾 Locales</b></a> for a full list of codes.
+
+--------
+
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Customizing default settings:</h3>
 
-An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
+🎛️ An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
-``--settings-file=custom_settings.py``
+
+```bash
+pytest --settings-file=custom_settings.py
+```
+
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
 --------
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Running tests on a remote Selenium Grid:</h3>
 
-SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [LambdaTest](https://www.lambdatest.com/selenium-automation)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, other Grids, and even your own Grid:
+🌐 SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [LambdaTest](https://www.lambdatest.com/selenium-automation)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, other Grids, and even your own Grid:
 
-(For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities)
+🌐 For setting browser desired capabilities while running Selenium remotely, see the ReadMe located here: https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities
 
 Here's how to connect to a BrowserStack Selenium Grid server for running tests:
 
@@ -387,9 +401,9 @@ Here's how to connect to a CrossBrowserTesting Selenium Grid server for running 
 pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
 ```
 
-Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
+🌐 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
-To use a server on the ``https`` protocol, add ``--protocol=https``: (*Now automatic if the port is 443.*)
+🌐 To use a server on the ``https`` protocol, add ``--protocol=https``: (*Now automatic if the port is 443.*)
 
 ```bash
 pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
@@ -399,19 +413,19 @@ pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
 
-If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+🌐 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
 ```bash
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
-If the proxy server that you wish to use requires authentication, you can do the following (Chromium only):
+🌐 If the proxy server that you wish to use requires authentication, you can do the following (Chromium only):
 
 ```bash
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
 ```
 
-SeleniumBase also supports SOCKS4 and SOCKS5 proxies:
+🌐 SeleniumBase also supports SOCKS4 and SOCKS5 proxies:
 
 ```bash
 pytest proxy_test.py --proxy="socks4://IP_ADDRESS:PORT"
@@ -429,7 +443,7 @@ pytest proxy_test.py --proxy=proxy1
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
 
-If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT-STRING"`` as an argument on the command line.
+🔤 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT-STRING"`` as an argument on the command line.
 
 ```bash
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
@@ -437,7 +451,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Mobile Device Testing:</h3>
 
-Use ``--mobile`` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"`` to set those values. You'll also be able to set the user agent with ``--agent="USER-AGENT-STRING"`` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
+📱 Use ``--mobile`` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"`` to set those values. You'll also be able to set the user agent with ``--agent="USER-AGENT-STRING"`` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
 
 ```bash
 # Run tests using Chrome's mobile device emulator (default settings)

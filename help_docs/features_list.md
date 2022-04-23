@@ -1,5 +1,3 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
-
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw"><img src="http://img.youtube.com/vi/Sjzq9kU5kOw/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
 
@@ -31,6 +29,7 @@
 * Includes [Chart Maker](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md), a tool for creating interactive charts.
 * Includes a [dialog box builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md) to allow user-input during automation.
 * Includes a [website tour builder](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md) for creating interactive walkthroughs.
+* Includes a GUI for running pytest scripts: [SeleniumBase Commander](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md).
 * Includes integrations for [GitHub Actions](https://seleniumbase.io/integrations/github/workflows/ReadMe/), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * Can handle Google Authenticator logins with [Python's one-time password library](https://pyotp.readthedocs.io/en/latest/).
 * Can load and make assertions on PDF files from websites or the local file system.

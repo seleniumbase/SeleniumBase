@@ -7,7 +7,7 @@ Usage:
              sbase recorder
 
 Output:
-    Launches the SeleniumBase Recorder Desktop App.
+      Launches the SeleniumBase Recorder Desktop App.
 """
 
 import colorama
