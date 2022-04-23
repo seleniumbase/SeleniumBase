@@ -5,9 +5,9 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_9.png" alt="SeleniumBase" title="SeleniumBase" width="308" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_8.png" alt="SeleniumBase" title="SeleniumBase" width="310" /></a></h3>
 <!-- View on GitHub -->
-<h4 align="center">Better Web Testing with <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> and <a href="https://docs.pytest.org/en/stable/" target="_blank">Pytest</a>.</h4>
+<h4 align="center">Better Web Testing with <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> and <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a>.</h4>
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
@@ -45,36 +45,38 @@
 
 --------
 
-<p align="left">⭐ An example test using the <code>BaseCase</code> class:</p>
+<p align="left">🔵 An example test using the <code>BaseCase</code> class:</p>
 
 ```python
 from seleniumbase import BaseCase
 
-class Test_MFA_Login(BaseCase):
+class TestMFALogin(BaseCase):
     def test_mfa_login(self):
         self.open("https://seleniumbase.io/realworld/login")
-        self.type("input#username", "demo_user")
-        self.type("input#password", "secret_pass")
+        self.type("#username", "demo_user")
+        self.type("#password", "secret_pass")
         self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")
-        self.click('a:contains("This Page")')
+        self.assert_element("img#image1")
         self.assert_text("Welcome!", "h1")
+        self.click('a:contains("This Page")')
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">⭐ An example test using the <code>sb</code> fixture:</p>
+<p align="left">🔵 An example test using the <code>sb</code> pytest fixture:</p>
 
 ```python
 def test_mfa_login(sb):
     sb.open("https://seleniumbase.io/realworld/login")
-    sb.type("input#username", "demo_user")
-    sb.type("input#password", "secret_pass")
+    sb.type("#username", "demo_user")
+    sb.type("#password", "secret_pass")
     sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")
-    sb.click('a:contains("This Page")')
+    sb.assert_element("img#image1")
     sb.assert_text("Welcome!", "h1")
+    sb.click('a:contains("This Page")')
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">⭐ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
+<p align="left">🔵 An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
 ```bash
 cd examples/
