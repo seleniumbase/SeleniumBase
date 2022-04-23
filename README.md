@@ -45,7 +45,7 @@
 
 --------
 
-<p align="left">🔵 An example test using the <code>BaseCase</code> class:</p>
+<p align="left">↘️ An example test using the <code>BaseCase</code> class:</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -62,7 +62,7 @@ class TestMFALogin(BaseCase):
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">🔵 An example test using the <code>sb</code> pytest fixture:</p>
+<p align="left">↘️ An example test using the <code>sb</code> pytest fixture:</p>
 
 ```python
 def test_mfa_login(sb):
@@ -76,7 +76,7 @@ def test_mfa_login(sb):
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">🔵 An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
+<p align="left">↘️ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
 ```bash
 cd examples/
