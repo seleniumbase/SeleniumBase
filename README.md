@@ -759,6 +759,7 @@ attribute = self.get_attribute("#comic img", "title")
 ```python
 self.wait_for_element_present("div.my_class", timeout=10)
 ```
+
 (NOTE: You can also use: ``self.assert_element_present(ELEMENT)``)
 
 🔵 Asserting visibility of an element on a page within some number of seconds:
@@ -793,6 +794,7 @@ self.click('a[name*="partial_name"]')
 self.assert_text("Make it so!", "div#trek div.picard div.quotes")
 self.assert_text("Tea. Earl Grey. Hot.", "div#trek div.picard div.quotes", timeout=3)
 ```
+
 (NOTE: ``self.find_text(TEXT, ELEMENT)`` and ``self.wait_for_text(TEXT, ELEMENT)`` also do this. For backwards compatibility, older method names were kept, but the default timeout may be different.)
 
 🔵 Asserting Anything:
@@ -893,12 +895,10 @@ You'd know this because the web page would contain something like the following 
 self.activate_jquery()
 ```
 
-🔵 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
-
 🔵 Here are some examples of using jQuery in your scripts:
 
 ```python
-self.execute_script('jQuery, window.scrollTo(0, 600)')  # Scrolling the page
+self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
 
 self.execute_script("jQuery('#annoying-widget').hide()")  # Hiding elements on a page
 
@@ -918,6 +918,8 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 ```
 
 (Most of the above commands can be done directly with built-in SeleniumBase methods.)
+
+🔵 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
 
 🔵 In the next example, JavaScript creates a referral button on a page, which is then clicked:
 
@@ -963,7 +965,7 @@ To flush out all the failed deferred asserts into a single exception, make sure 
 ```python
 self.driver.delete_all_cookies()
 capabilities = self.driver.capabilities
-self.driver.find_elements_by_partial_link_text("GitHub")
+self.driver.find_elements("partial link text", "GitHub")
 ```
 
 (In general, you'll want to use the SeleniumBase versions of methods when available.)
