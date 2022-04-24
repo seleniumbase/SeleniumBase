@@ -47,6 +47,16 @@ def fix_emoji_spacing(code):
             "🖥️",
             "🕹️",
             "🎞️",
+            "🎛️",
+            "🎖️",
+            "↘️",
+            "⬇️",
+            "↙️",
+            "⬅️",
+            "↖️",
+            "⬆️",
+            "↗️",
+            "➡️",
         ]
         for emoji in double_width_emojis:
             if emoji in code:
