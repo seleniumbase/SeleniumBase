@@ -192,6 +192,14 @@ def create_tkinter_gui():
 
     # Bring form window to front
     send_window_to_front(window)
+    # Use decoy to set correct focus on main window
+    decoy = tk.Tk()
+    decoy.geometry("1x1")
+    decoy.iconify()
+    decoy.update()
+    decoy.deiconify()
+    decoy.destroy()
+    # Start tkinter
     window.mainloop()
 
 

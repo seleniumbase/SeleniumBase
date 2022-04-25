@@ -46,7 +46,7 @@ def set_colors(use_colors):
         c0 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
         c2 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-        c3 = colorama.Fore.LIGHTGREEN_EX + colorama.Back.BLACK
+        c3 = colorama.Fore.BLACK + colorama.Back.LIGHTGREEN_EX
         c4 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
         c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
         cr = colorama.Style.RESET_ALL
@@ -255,7 +255,7 @@ def create_tkinter_gui(tests, command_string):
     count = 0
     ara = {}
     for row in tests:
-        row += " " * 400
+        row += " " * 200
         ara[count] = tk.IntVar()
         cb = tk.Checkbutton(
             text_area,
@@ -327,6 +327,14 @@ def create_tkinter_gui(tests, command_string):
 
     # Bring form window to front
     send_window_to_front(root)
+    # Use decoy to set correct focus on main window
+    decoy = tk.Tk()
+    decoy.geometry("1x1")
+    decoy.iconify()
+    decoy.update()
+    decoy.deiconify()
+    decoy.destroy()
+    # Start tkinter
     root.mainloop()
 
 
