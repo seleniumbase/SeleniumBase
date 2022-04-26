@@ -30,7 +30,7 @@ class OfflineTests(BaseCase):
         try:
             self.hover_and_click("#myDropdown", "#dropOption2", timeout=1)
         except Exception:
-            # If someone moves the mouse while the test runs
+            # Someone moved the mouse while the test ran
             self.js_click("#dropOption2")
         self.assert_text("Link Two Selected", "h3")
 
