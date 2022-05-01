@@ -37,6 +37,7 @@ import os
 import re
 import shutil
 import sys
+import textwrap
 import time
 import unittest
 import urllib3
@@ -7815,6 +7816,7 @@ class BaseCase(unittest.TestCase):
             color_by_point,
         )
         new_chart = chart_libs + chart_css + chart_figure + chart_init + series
+        new_chart = textwrap.dedent(new_chart)
         self._chart_data[chart_name] = []
         self._chart_label[chart_name] = []
         self._chart_data[chart_name].append(new_chart)
@@ -7883,6 +7885,7 @@ class BaseCase(unittest.TestCase):
             value,
             color,
         )
+        data_point = textwrap.dedent(data_point)
         self._chart_data[chart_name].append(data_point)
         if self._chart_first_series[chart_name]:
             self._chart_label[chart_name].append(label)
@@ -7917,13 +7920,13 @@ class BaseCase(unittest.TestCase):
             </script>
             """
         axis = "xAxis: {\n"
-        axis += "                labels: {\n"
-        axis += "                    useHTML: true,\n"
-        axis += "                    style: {\n"
-        axis += "                        fontSize: '14px',\n"
-        axis += "                    },\n"
-        axis += "                },\n"
-        axis += "            categories: ["
+        axis += "    labels: {\n"
+        axis += "        useHTML: true,\n"
+        axis += "        style: {\n"
+        axis += "            fontSize: '14px',\n"
+        axis += "        },\n"
+        axis += "    },\n"
+        axis += "categories: ["
         for label in self._chart_label[chart_name]:
             axis += "'%s'," % label
         axis += "], crosshair: false},"
@@ -8023,13 +8026,13 @@ class BaseCase(unittest.TestCase):
             </script>
             """
         axis = "xAxis: {\n"
-        axis += "                labels: {\n"
-        axis += "                    useHTML: true,\n"
-        axis += "                    style: {\n"
-        axis += "                        fontSize: '14px',\n"
-        axis += "                    },\n"
-        axis += "                },\n"
-        axis += "            categories: ["
+        axis += "    labels: {\n"
+        axis += "        useHTML: true,\n"
+        axis += "        style: {\n"
+        axis += "            fontSize: '14px',\n"
+        axis += "        },\n"
+        axis += "    },\n"
+        axis += "categories: ["
         for label in self._chart_label[chart_name]:
             axis += "'%s'," % label
         axis += "], crosshair: false},"

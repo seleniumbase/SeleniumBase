@@ -4,6 +4,7 @@ These helper methods SHOULD NOT be called directly from tests.
 """
 import os
 import re
+import textwrap
 import time
 from selenium.webdriver.common.by import By
 from seleniumbase import config as sb_config
@@ -1008,6 +1009,8 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         instructions += "loadResources()"
 
     instructions += "\n\n////////  Tour Code  ////////\n\n"
+    first_instructions = instructions
+    instructions = "        "
     if tour_type == "bootstrap":
         instructions += "function loadTour() { "
         instructions += 'if ( typeof Tour !== "undefined" ) {\n'
@@ -1070,6 +1073,8 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
             $tour = tour;\n"""
     else:
         pass
+    instructions = textwrap.dedent(instructions)
+    instructions = first_instructions + instructions
     instructions += '\n} else { window.setTimeout("loadTour();",100); } '
     instructions += "}\n"
     instructions += "loadTour()\n"
