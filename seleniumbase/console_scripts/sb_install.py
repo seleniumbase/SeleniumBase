@@ -13,13 +13,13 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 100.0.4896.60
-        sbase install chromedriver 100
+        sbase install chromedriver 101.0.4951.41
+        sbase install chromedriver 101
         sbase install chromedriver latest
         sbase install chromedriver latest-1  # (Latest minus one)
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 100.0.1185.39
+        sbase install edgedriver 101.0.1210.32
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -45,7 +45,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.31.0"
-DEFAULT_EDGEDRIVER_VERSION = "100.0.1185.39"  # (Looks for LATEST_STABLE first)
+DEFAULT_EDGEDRIVER_VERSION = "101.0.1210.32"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -64,14 +64,14 @@ def invalid_run_command():
     exp += "  Example:\n"
     exp += "          sbase install chromedriver\n"
     exp += "          sbase install geckodriver\n"
-    exp += "          sbase install edgedriver"
-    exp += "          sbase install chromedriver 100\n"
-    exp += "          sbase install chromedriver 100.0.4896.60\n"
+    exp += "          sbase install edgedriver\n"
+    exp += "          sbase install chromedriver 101\n"
+    exp += "          sbase install chromedriver 101.0.4951.41\n"
     exp += "          sbase install chromedriver latest\n"
     exp += "          sbase install chromedriver latest-1\n"
     exp += "          sbase install chromedriver -p\n"
     exp += "          sbase install chromedriver latest -p\n"
-    exp += "          sbase install edgedriver 100.0.1185.39"
+    exp += "          sbase install edgedriver 101.0.1210.32\n"
     exp += "  Output:\n"
     exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -113,10 +113,8 @@ def main(override=None):
 
     num_args = len(sys.argv)
     if (
-        sys.argv[0].split("/")[-1].lower() == "seleniumbase"
-        or (sys.argv[0].split("\\")[-1].lower() == "seleniumbase")
-        or (sys.argv[0].split("/")[-1].lower() == "sbase")
-        or (sys.argv[0].split("\\")[-1].lower() == "sbase")
+        "sbase" in sys.argv[0].lower()
+        or ("seleniumbase" in sys.argv[0].lower())
     ):
         if num_args < 3 or num_args > 5:
             invalid_run_command()

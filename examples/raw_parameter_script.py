@@ -81,10 +81,10 @@ if pure_python:
     sb.slow_mode = False
     sb.demo_mode = False
     sb.time_limit = None
-    sb.demo_sleep = 1
+    sb.demo_sleep = None
     sb.dashboard = False
     sb._dash_initialized = False
-    sb.message_duration = 2
+    sb.message_duration = None
     sb.block_images = False
     sb.external_pdf = False
     sb.remote_debug = False
