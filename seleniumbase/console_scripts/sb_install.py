@@ -113,10 +113,8 @@ def main(override=None):
 
     num_args = len(sys.argv)
     if (
-        sys.argv[0].split("/")[-1].lower() == "seleniumbase"
-        or (sys.argv[0].split("\\")[-1].lower() == "seleniumbase")
-        or (sys.argv[0].split("/")[-1].lower() == "sbase")
-        or (sys.argv[0].split("\\")[-1].lower() == "sbase")
+        "sbase" in sys.argv[0].lower()
+        or ("seleniumbase" in sys.argv[0].lower())
     ):
         if num_args < 3 or num_args > 5:
             invalid_run_command()
