@@ -214,7 +214,8 @@ setup(
         'beautifulsoup4==4.11.1;python_version>="3.6"',
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
-        'cryptography==36.0.2;python_version>="3.6"',
+        'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
+        'cryptography==37.0.1;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.11.2;python_version>="3.5" and python_version<"3.6"',
         'pygments==2.12.0;python_version>="3.6"',
@@ -226,7 +227,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.32.0;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.33.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'importlib-metadata==2.1.3;python_version<"3.6"',
@@ -245,7 +246,7 @@ setup(
         'Pillow==9.1.0;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
-        'rich==12.2.0;python_version>="3.6" and python_version<"4.0"',
+        'rich==12.3.0;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
