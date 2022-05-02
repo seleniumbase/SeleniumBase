@@ -361,7 +361,7 @@ document.body.addEventListener('mouseout', function (event) {
     document.title = sessionStorage.getItem('recorder_title');
 });
 document.body.addEventListener('click', function (event) {
-    // Do Nothing.
+    // Do Nothing
 });
 document.body.addEventListener('submit', function (event) {
     reset_if_recorder_undefined();
@@ -513,9 +513,8 @@ document.body.addEventListener('mousedown', function (event) {
     if (rec_mode === '2' || rec_mode === '3')
     {
         el = turnIntoParentAsNeeded(el);
-        texts = [el.innerText, el.textContent];
-        text = texts[0];
-        t_con = texts[1];
+        text = el.innerText;
+        t_con = el.textContent;
         origin = window.location.origin;
         sel_has_contains = selector.includes(':contains(');
         if (!text) { text = ''; }
@@ -530,6 +529,8 @@ document.body.addEventListener('mousedown', function (event) {
         else if (rec_mode === '3') {
             action = 'as_et';
             text = text.trim();
+            if (el.tagName.toLowerCase() == "input")
+                text = el.value.trim();
             var match = /\r|\n/.exec(text);
             if (match) {
                 lines = text.split(/\r\n|\r|\n/g);
@@ -550,7 +551,7 @@ document.body.addEventListener('mousedown', function (event) {
     if (ra_len > 0 && document.recorded_actions[ra_len-1][0] === 'mo_dn')
         document.recorded_actions.pop();
     if (tag_name === 'select') {
-        // Do Nothing. ('change' action.)
+        // Do Nothing ('change' action)
     }
     else
         document.recorded_actions.push(['mo_dn', selector, '', d_now]);
@@ -662,7 +663,7 @@ document.body.addEventListener('mouseup', function (event) {
     else if (ra_len > 0 &&
         document.recorded_actions[ra_len-1][0] === 'mo_dn')
     {
-        // Maybe accidental drag & drop.
+        // Accidental drag & drop.
         document.recorded_actions.pop();
     }
     json_rec_act = JSON.stringify(document.recorded_actions);
@@ -733,7 +734,7 @@ document.body.addEventListener('keyup', function (event) {
         red_border = 'thick solid #EE3344';
         document.querySelector('body').style.border = red_border;
     }
-    // After controls for switching modes.
+    // After switching modes
     if (sessionStorage.getItem('pause_recorder') === 'yes') return;
     const d_now = Date.now();
     const el = event.target;
@@ -775,7 +776,7 @@ document.body.addEventListener('keyup', function (event) {
         {
             skip_input = true;
         }
-        if (!skip_input) {
+        if (!skip_input && !el.hasAttribute('readonly')) {
             document.recorded_actions.push(
                 ['input', selector, el.value, d_now]);
         }
