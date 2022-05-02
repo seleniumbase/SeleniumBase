@@ -740,25 +740,29 @@ self.check_window(
 
 ############
 
-self.deferred_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
+self.deferred_assert_element(selector, by=By.CSS_SELECTOR, timeout=None, fs=False)
+# Duplicates:
+# self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None, fs=False)
 
 self.deferred_assert_text(
-    text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+    text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
 # Duplicates:
-# self.delayed_assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# self.delayed_assert_text(
+#     text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
 
 self.deferred_assert_exact_text(
-    text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+    text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
 # Duplicates:
-# self.delayed_assert_exact_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+# self.delayed_assert_exact_text(
+#     text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
 
 self.deferred_check_window(
-    name="default", level=0, baseline=False, check_domain=True, full_diff=False)
+    name="default", level=0, baseline=False,
+    check_domain=True, full_diff=False, fs=False)
 # Duplicates:
-# self.deferred_check_window(
-#     name=name, level=level, baseline=baseline, check_domain=check_domain, full_diff=full_diff)
-
+# self.delayed_check_window(
+#     name="default", level=0, baseline=False,
+#     check_domain=True, full_diff=False, fs=False)
 self.process_deferred_asserts(print_only=False)
 # Duplicates: self.process_delayed_asserts(print_only=False)
 

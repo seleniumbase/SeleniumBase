@@ -2,7 +2,6 @@
 This test demonstrates the use of deferred asserts.
 Deferred asserts won't raise exceptions from failures until either
 process_deferred_asserts() is called, or the test reaches the tearDown() step.
-Requires version 2.1.6 or newer for the deferred_assert_exact_text() method.
 """
 import pytest
 from seleniumbase import BaseCase
