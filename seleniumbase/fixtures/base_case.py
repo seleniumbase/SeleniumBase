@@ -3201,7 +3201,7 @@ class BaseCase(unittest.TestCase):
     def save_screenshot_to_logs(
         self, name=None, selector=None, by=By.CSS_SELECTOR
     ):
-        """Saves a screenshot of the current page to the "latest_logs" folder.
+        """Saves a screenshot of the current page to the "latest_logs/" folder.
         Naming is automatic:
             If NO NAME provided: "_1_screenshot.png", "_2_screenshot.png", etc.
             If NAME IS provided, it becomes: "_1_name.png", "_2_name.png", etc.
