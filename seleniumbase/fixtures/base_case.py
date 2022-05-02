@@ -10585,24 +10585,31 @@ class BaseCase(unittest.TestCase):
             exc_message = sys.exc_info()
         return exc_message
 
-    def __add_deferred_assert_failure(self):
+    def __add_deferred_assert_failure(self, fs=False):
         """Add a deferred_assert failure to a list for future processing."""
         self.__check_scope()
         current_url = self.driver.current_url
         message = self.__get_exception_message()
+        count = self.__deferred_assert_count
         self.__deferred_assert_failures.append(
-            "CHECK #%s: (%s) %s\n"
-            % (self.__deferred_assert_count, current_url, message)
+            "DEFERRED ASSERT #%s: (%s) %s\n" % (count, current_url, message)
         )
+        if fs:
+            self.save_screenshot_to_logs(name="deferred_#%s" % count)
 
     ############
 
     def deferred_assert_element(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by=By.CSS_SELECTOR, timeout=None, fs=False
     ):
         """A non-terminating assertion for an element on a page.
         Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it."""
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -10621,15 +10628,20 @@ class BaseCase(unittest.TestCase):
             self.wait_for_element_visible(selector, by=by, timeout=timeout)
             return True
         except Exception:
-            self.__add_deferred_assert_failure()
+            self.__add_deferred_assert_failure(fs=fs)
             return False
 
     def deferred_assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
     ):
         """A non-terminating assertion for text from an element on a page.
         Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it."""
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -10648,15 +10660,20 @@ class BaseCase(unittest.TestCase):
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             return True
         except Exception:
-            self.__add_deferred_assert_failure()
+            self.__add_deferred_assert_failure(fs=fs)
             return False
 
     def deferred_assert_exact_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
     ):
         """A non-terminating assertion for exact text from an element.
         Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it."""
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
         self.__check_scope()
         if not timeout:
             timeout = settings.MINI_TIMEOUT
@@ -10677,7 +10694,7 @@ class BaseCase(unittest.TestCase):
             )
             return True
         except Exception:
-            self.__add_deferred_assert_failure()
+            self.__add_deferred_assert_failure(fs=fs)
             return False
 
     def deferred_check_window(
@@ -10687,10 +10704,16 @@ class BaseCase(unittest.TestCase):
         baseline=False,
         check_domain=True,
         full_diff=False,
+        fs=False,
     ):
         """A non-terminating assertion for the check_window() method.
         Failures will be saved until the process_deferred_asserts()
-        method is called from inside a test, likely at the end of it."""
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
         self.__check_scope()
         self.__deferred_assert_count += 1
         try:
@@ -10703,7 +10726,7 @@ class BaseCase(unittest.TestCase):
             )
             return True
         except Exception:
-            self.__add_deferred_assert_failure()
+            self.__add_deferred_assert_failure(fs=fs)
             return False
 
     def process_deferred_asserts(self, print_only=False):
@@ -10735,27 +10758,27 @@ class BaseCase(unittest.TestCase):
     # Alternate naming scheme for the "deferred_assert" methods.
 
     def delayed_assert_element(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by=By.CSS_SELECTOR, timeout=None, fs=False
     ):
         """Same as self.deferred_assert_element()"""
         return self.deferred_assert_element(
-            selector=selector, by=by, timeout=timeout
+            selector=selector, by=by, timeout=timeout, fs=fs
         )
 
     def delayed_assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
     ):
         """Same as self.deferred_assert_text()"""
         return self.deferred_assert_text(
-            text=text, selector=selector, by=by, timeout=timeout
+            text=text, selector=selector, by=by, timeout=timeout, fs=fs
         )
 
     def delayed_assert_exact_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
     ):
         """Same as self.deferred_assert_exact_text()"""
         return self.deferred_assert_exact_text(
-            text=text, selector=selector, by=by, timeout=timeout
+            text=text, selector=selector, by=by, timeout=timeout, fs=fs
         )
 
     def delayed_check_window(
@@ -10765,6 +10788,7 @@ class BaseCase(unittest.TestCase):
         baseline=False,
         check_domain=True,
         full_diff=False,
+        fs=False,
     ):
         """Same as self.deferred_check_window()"""
         return self.deferred_check_window(
@@ -10773,6 +10797,7 @@ class BaseCase(unittest.TestCase):
             baseline=baseline,
             check_domain=check_domain,
             full_diff=full_diff,
+            fs=fs,
         )
 
     def process_delayed_asserts(self, print_only=False):
