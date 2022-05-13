@@ -171,6 +171,27 @@ def show_commander_usage():
     print("")
 
 
+def show_behave_gui_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "behave-gui" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase behave-gui [OPTIONAL PATH or TEST FILE]")
+    print("           seleniumbase gui-behave [OPTIONAL PATH or TEST FILE]")
+    print("           OR:    sbase behave-gui [OPTIONAL PATH or TEST FILE]")
+    print("           OR:    sbase gui-behave [OPTIONAL PATH or TEST FILE]")
+    print("  Examples:")
+    print("           sbase behave-gui")
+    print("           sbase behave-gui features/")
+    print("           sbase behave-gui features/calculator.feature")
+    print("  Output:")
+    print("           Launches SeleniumBase Commander | GUI for Behave.")
+    print("")
+
+
 def show_mkdir_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -767,6 +788,73 @@ def show_options():
     print("")
 
 
+def show_behave_options():
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+    c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "\n " + c2 + " ** " + c3 + " Behave CLI Options " + c2 + " ** " + cr
+    print(sc)
+    print("")
+    line = 'Here are some common "behave" options to use with SeleniumBase:'
+    line = c1 + line + cr
+    print(line)
+    line = '(Some options are Chromium-specific, e.g. "-D guest -D mobile")'
+    print(line)
+    op = "\n"
+    op += '-D browser=BROWSER  (The web browser to use. Default is "chrome")\n'
+    op += "-D headless  (Run tests headlessly. Default mode on Linux OS.)\n"
+    op += "-D demo  (Slow down and visually see test actions as they occur.)\n"
+    op += "-D slow  (Slow down the automation. Faster than using Demo Mode.)\n"
+    op += "-D reuse-session / -D rs  (Reuse browser session between tests.)\n"
+    op += "-D crumbs  (Clear all cookies between tests reusing a session.)\n"
+    op += "-D maximize  (Start tests with the web browser window maximized.)\n"
+    op += "-D dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
+    op += "-D incognito  (Enable Chromium's Incognito mode.)\n"
+    op += "-D guest  (Enable Chromium's Guest mode.)\n"
+    op += "--no-snippets / -q  (Quiet mode. Don't print snippets.)\n"
+    op += "--dry-run / -d  (Dry run. Only show discovered tests.)\n"
+    op += "--stop  (Stop running tests after the first failure is reached.)\n"
+    op += "-D pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n"
+    op += "      | Debug Mode Commands  >>>   help / h: List all commands. |\n"
+    op += "      |   n: Next line of method. s: Step through. c: Continue. |\n"
+    op += "      |  return / r: Run until method returns. j: Jump to line. |\n"
+    op += "      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n"
+    op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
+    op += "-D recorder  (Record browser actions to generate test scripts.)\n"
+    op += "-D save-screenshot  (Save a screenshot at the end of each test.)\n"
+    op += "-D archive-logs  (Archive log files instead of deleting them.)\n"
+    op += "-D check-js  (Check for JavaScript errors after page loads.)\n"
+    op += "-D start-page=URL  (The browser start page when tests begin.)\n"
+    op += "-D agent=STRING  (Modify the web browser's User-Agent string.)\n"
+    op += "-D mobile  (Use Chromium's mobile device emulator during tests.)\n"
+    op += '-D metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)\n'
+    op += "-D ad-block  (Block some types of display ads after page loads.)\n"
+    op += "-D settings-file=FILE  (Override default SeleniumBase settings.)\n"
+    op += '-D env=ENV  (Set the test env. Access using "self.env" in tests.)\n'
+    op += '-D data=DATA  (Extra test data. Access using "self.data".)\n'
+    op += "-D disable-csp  (Disable the Content Security Policy of sites.)\n"
+    op += "-D server=SERVER  (The Selenium Grid server/IP used for tests.)\n"
+    op += "-D port=PORT  (The Selenium Grid port used by the test server.)\n"
+    op += "-D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n"
+    op += "-D proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)\n"
+    op += cr
+    op = op.replace("\n-", "\n" + c1 + "-").replace("  (", cr + "  (")
+    op = op.replace(" / -", cr + " / " + c1 + "-")
+    op = op.replace("=", c2 + "=" + c3)
+    op = op.replace(" | ", " |" + c3 + " ").replace("|\n", cr + "|\n")
+    op = op.replace(": ", c5 + ":" + c3 + " ")
+    op = op.replace("Debug Mode Commands", c5 + "Debug Mode Commands" + c3)
+    op = op.replace(">>>", c4 + ">>>" + c3)
+    print(op)
+    line = "For the full list of " + c2 + "command-line options" + cr
+    line += ', type: "' + c3 + "behave" + cr + " " + c1 + "--help" + cr + '".'
+    print(line)
+    print("")
+
+
 def show_detailed_help():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -777,6 +865,7 @@ def show_detailed_help():
     print(cr)
     show_install_usage()
     show_commander_usage()
+    show_behave_gui_usage()
     show_mkdir_usage()
     show_mkfile_usage()
     show_mkrec_usage()
@@ -826,6 +915,10 @@ def main():
         from seleniumbase.console_scripts import sb_commander
 
         sb_commander.main()
+    elif command == "behave-gui" or command == "gui-behave":
+        from seleniumbase.console_scripts import sb_behave_gui
+
+        sb_behave_gui.main()
     elif (
         command == "recorder"
         or (command == "record" and len(command_args) == 0)
@@ -1001,9 +1094,15 @@ def main():
         show_methods()
     elif command == "options" or command == "--options":
         show_options()
+    elif command == "behave-options" or command == "--behave-options":
+        show_behave_options()
     elif command == "help" or command == "--help":
         if len(command_args) >= 1:
-            if command_args[0] == "install":
+            if command_args[0] == "get":
+                print("")
+                show_install_usage()
+                return
+            elif command_args[0] == "install":
                 print("")
                 show_install_usage()
                 return
@@ -1014,6 +1113,14 @@ def main():
             elif command_args[0] == "gui":
                 print("")
                 show_commander_usage()
+                return
+            elif command_args[0] == "behave-gui":
+                print("")
+                show_behave_gui_usage()
+                return
+            elif command_args[0] == "gui-behave":
+                print("")
+                show_behave_gui_usage()
                 return
             elif command_args[0] == "mkdir":
                 print("")
