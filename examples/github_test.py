@@ -3,19 +3,10 @@ from seleniumbase import BaseCase
 
 class GitHubTests(BaseCase):
     def test_github(self):
-        # Selenium can trigger GitHub's anti-automation system:
-        # "You have triggered an abuse detection mechanism."
-        # "Please wait a few minutes before you try again."
-        # To avoid this automation blocker, two steps are being taken:
-        # 1. self.slow_click() is being used to slow down Selenium actions.
-        # 2. The browser's User Agent is modified to avoid Selenium-detection
-        #    when running in headless mode.
         if self.headless:
-            self.get_new_driver(
-                agent="""Mozilla/5.0 """
-                """AppleWebKit/537.36 (KHTML, like Gecko) """
-                """Chrome/Version 100.0.4896.88 Safari/537.36"""
-            )
+            self.open_if_not_url("about:blank")
+            print("\n  This test is NOT designed for Headless Mode!")
+            self.skip('Do NOT use "--headless" with this test!')
         self.open("https://github.com/search?q=SeleniumBase")
         self.slow_click('a[href="/seleniumbase/SeleniumBase"]')
         self.click_if_visible('[data-action="click:signup-prompt#dismiss"]')

@@ -13,7 +13,7 @@ class EdgeTests(BaseCase):
             print('  (Run this test using "--edge" or "--browser=edge")')
             self.skip('Use "--edge" or "--browser=edge"')
         if self.headless:
-            self.open("data:,")
+            self.open_if_not_url("about:blank")
             print("\n  This test is NOT designed for Headless Mode!")
             self.skip('Do NOT use "--headless" with this test!')
         self.open("edge://settings/help")

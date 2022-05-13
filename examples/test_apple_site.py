@@ -4,9 +4,10 @@ from seleniumbase import BaseCase
 
 class AppleTests(BaseCase):
     def test_apple_developer_site_webdriver_instructions(self):
-        self.demo_mode = True
-        self.demo_sleep = 0.5
-        self.message_duration = 2.0
+        if not (self.headless or self.xvfb):
+            self.demo_mode = True
+            self.demo_sleep = 0.5
+            self.message_duration = 2.0
         if self.headless and (
             self.browser == "chrome" or self.browser == "edge"
         ):
