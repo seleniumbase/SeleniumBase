@@ -3469,6 +3469,17 @@ class BaseCase(unittest.TestCase):
                 origin = self.get_origin()
                 self.__origins_to_save.append(origin)
                 tab_actions = self.__get_recorded_actions_on_active_tab()
+                for n in range(len(tab_actions)):
+                    if (
+                        n > 2
+                        and tab_actions[n - 2][0] == "sw_fr"
+                        and tab_actions[n - 1][0] == "sk_fo"
+                        and tab_actions[n][0] != "_url_"
+                    ):
+                        origin = tab_actions[n - 2][2]
+                        time_stamp = str(int(tab_actions[n][3]) - 1)
+                        new_action = ["sw_pf", "", origin, time_stamp]
+                        tab_actions.append(new_action)
                 self.__actions_to_save.append(tab_actions)
 
     def __get_recorded_actions_on_active_tab(self):
@@ -3478,6 +3489,7 @@ class BaseCase(unittest.TestCase):
             or url.startswith("chrome:") or url.startswith("edge:")
         ):
             return []
+        self.__origins_to_save.append(self.get_origin())
         actions = self.get_session_storage_item("recorded_actions")
         if actions:
             actions = json.loads(actions)
@@ -3492,34 +3504,43 @@ class BaseCase(unittest.TestCase):
         srt_actions = []
         cleaned_actions = []
         sb_actions = []
-        used_actions = []
         action_dict = {}
         for window in self.driver.window_handles:
             self.switch_to_window(window)
             tab_actions = self.__get_recorded_actions_on_active_tab()
+            for n in range(len(tab_actions)):
+                if (
+                    n > 2
+                    and tab_actions[n - 2][0] == "sw_fr"
+                    and tab_actions[n - 1][0] == "sk_fo"
+                    and tab_actions[n][0] != "_url_"
+                ):
+                    origin = tab_actions[n - 2][2]
+                    time_stamp = str(int(tab_actions[n][3]) - 1)
+                    new_action = ["sw_pf", "", origin, time_stamp]
+                    tab_actions.append(new_action)
             for action in tab_actions:
-                if action not in used_actions:
-                    used_actions.append(action)
+                if action not in raw_actions:
                     raw_actions.append(action)
         for tab_actions in self.__actions_to_save:
             for action in tab_actions:
-                if action not in used_actions:
-                    used_actions.append(action)
+                if action not in raw_actions:
                     raw_actions.append(action)
         for action in self.__extra_actions:
-            if action not in used_actions:
-                used_actions.append(action)
+            if action not in raw_actions:
                 raw_actions.append(action)
         for action in raw_actions:
-            if self._reuse_session:
-                if int(action[3]) < int(self.__js_start_time):
-                    continue
+            if int(action[3]) < int(self.__js_start_time):
+                continue
             # Use key for sorting and preventing duplicates
             key = str(action[3]) + "-" + str(action[0])
             action_dict[key] = action
         for key in sorted(action_dict):
             # print(action_dict[key])  # For debugging purposes
             srt_actions.append(action_dict[key])
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "sk_fo":
+                srt_actions[n][0] = "sk_op"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
@@ -3722,6 +3743,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("s_c_d")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
+        ext_actions.append("c_s_s")
         ext_actions.append("e_mfa")
         ext_actions.append("ss_tl")
         for n in range(len(srt_actions)):
@@ -4088,6 +4110,8 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append("self.%s()" % method)
             elif action[0] == "c_l_s":
                 sb_actions.append("self.clear_local_storage()")
+            elif action[0] == "c_s_s":
+                sb_actions.append("self.clear_session_storage()")
             elif action[0] == "c_box":
                 method = "check_if_unchecked"
                 if action[2] == "no":
@@ -5812,9 +5836,7 @@ class BaseCase(unittest.TestCase):
                         action = ["e_mfa", sel_key, origin, time_stamp]
                         self.__extra_actions.append(action)
                     # Sometimes Sign-In leaves the origin... Save work first.
-                    self.__origins_to_save.append(origin)
-                    tab_actions = self.__get_recorded_actions_on_active_tab()
-                    self.__actions_to_save.append(tab_actions)
+                    self.save_recorded_actions()
         mfa_code = self.get_mfa_code(totp_key)
         self.update_text(selector, mfa_code + "\n", by=by, timeout=timeout)
 
@@ -6715,7 +6737,24 @@ class BaseCase(unittest.TestCase):
 
     def clear_session_storage(self):
         self.__check_scope()
-        self.execute_script("window.sessionStorage.clear();")
+        if not self.recorder_mode:
+            self.execute_script("window.sessionStorage.clear();")
+        else:
+            recorder_keys = [
+                "recorder_mode",
+                "recorded_actions",
+                "recorder_title",
+                "pause_recorder",
+                "recorder_activated",
+            ]
+            keys = self.get_session_storage_keys()
+            for key in keys:
+                if key not in recorder_keys:
+                    self.remove_session_storage_item(key)
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["c_s_s", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def get_session_storage_keys(self):
         self.__check_scope()
@@ -11634,9 +11673,9 @@ class BaseCase(unittest.TestCase):
                     self._dash_initialized = True
                     self.__process_dashboard(False, init=True)
 
-        # Set the JS start time for Recorder Mode if reusing the session.
+        # Set the JS start time for Recorder Mode.
         # Use this to skip saving recorded actions from previous tests.
-        if self.recorder_mode and self._reuse_session:
+        if self.recorder_mode:
             self.__js_start_time = int(time.time() * 1000.0)
 
         has_url = False
@@ -12417,18 +12456,23 @@ class BaseCase(unittest.TestCase):
     def save_teardown_screenshot(self):
         """(Should ONLY be used at the start of custom tearDown() methods.)
         This method takes a screenshot of the current web page for a
-        failing test (or when running your tests with --save-screenshot).
+        FAILING test (or when using "--screenshot" / "--save-screenshot").
         That way your tearDown() method can navigate away from the last
         page where the test failed, and still get the correct screenshot
         before performing tearDown() steps on other pages. If this method
         is not included in your custom tearDown() method, a screenshot
         will still be taken after the last step of your tearDown(), where
         you should be calling "super(SubClassOfBaseCase, self).tearDown()"
+        or "super().tearDown()".
+        This method also saves recorded actions when using Recorder Mode.
         """
         try:
             self.__check_scope()
         except Exception:
             return
+        if self.recorder_mode:
+            # In case tearDown() leaves the origin, save actions first.
+            self.save_recorded_actions()
         if self.__has_exception() or self.save_screenshot_after_test:
             test_logpath = os.path.join(self.log_path, self.__get_test_id())
             self.__create_log_path_as_needed(test_logpath)

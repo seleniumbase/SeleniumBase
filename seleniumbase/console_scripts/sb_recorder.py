@@ -14,8 +14,11 @@ import colorama
 import os
 import subprocess
 import sys
+from seleniumbase import config as sb_config
 from seleniumbase.fixtures import page_utils
 
+sb_config.rec_subprocess_p = None
+sb_config.rec_subprocess_used = False
 if sys.version_info <= (3, 7):
     current_version = ".".join(str(ver) for ver in sys.version_info[:3])
     raise Exception(
@@ -50,6 +53,14 @@ def send_window_to_front(window):
     window.after_idle(window.attributes, "-topmost", False)
 
 
+def show_already_recording_warning():
+    messagebox.showwarning(
+        "SeleniumBase Recorder: Already Running!",
+        "Please finalize the active recording from the terminal:\n"
+        'Type "c" and press Enter/Return there.'
+    )
+
+
 def file_name_error(file_name):
     error_msg = None
     if not file_name.endswith(".py"):
@@ -64,6 +75,18 @@ def file_name_error(file_name):
 
 
 def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
+    poll = None
+    if sb_config.rec_subprocess_used:
+        poll = sb_config.rec_subprocess_p.poll()
+    if not sb_config.rec_subprocess_used or poll is not None:
+        pass
+    else:
+        show_already_recording_warning()
+        send_window_to_front(window)
+        poll = sb_config.rec_subprocess_p.poll()
+        if poll is None:
+            return
+
     file_name = file_name.strip()
     error_msg = file_name_error(file_name)
     if error_msg:
@@ -98,7 +121,14 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
         command = "sbase mkrec %s --url=%s --gui" % (file_name, url)
         if not use_chrome:
             command += " --edge"
-        subprocess.Popen(command, shell=True)
+        poll = None
+        if sb_config.rec_subprocess_used:
+            poll = sb_config.rec_subprocess_p.poll()
+        if not sb_config.rec_subprocess_used or poll is not None:
+            sb_config.rec_subprocess_p = subprocess.Popen(command, shell=True)
+            sb_config.rec_subprocess_used = True
+        else:
+            show_already_recording_warning()
         send_window_to_front(window)
 
 
@@ -123,8 +153,18 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         command += " --edge"
     if demo_mode:
         command += " --demo"
-    print(command)
-    subprocess.Popen(command, shell=True)
+    poll = None
+    if sb_config.rec_subprocess_used:
+        poll = sb_config.rec_subprocess_p.poll()
+    if not sb_config.rec_subprocess_used or poll is not None:
+        print(command)
+        subprocess.Popen(command, shell=True)
+    else:
+        messagebox.showwarning(
+            "SeleniumBase Recorder: Already Running!",
+            "Please finalize the active recording from the terminal:\n"
+            'Type "c" and press Enter/Return there.'
+        )
     send_window_to_front(window)
 
 
@@ -201,6 +241,38 @@ def create_tkinter_gui():
     decoy.destroy()
     # Start tkinter
     window.mainloop()
+    end_program()
+
+
+def recorder_still_running():
+    poll = None
+    if sb_config.rec_subprocess_used:
+        try:
+            poll = sb_config.rec_subprocess_p.poll()
+        except Exception:
+            return False
+    else:
+        return False
+    if poll is not None:
+        return False
+    return True
+
+
+def show_still_running_warning():
+    """Give the user a chance to end the recording safely via the
+    pytest ipdb Debug Mode so that processes such as chromedriver
+    and Python don't remain open and hanging in the background."""
+    messagebox.showwarning(
+        "SeleniumBase Recorder: Still Running!",
+        "Please end the active recording from the TERMINAL/PROMPT:\n"
+        'Type "c" and press Enter/Return there.\n'
+        "(Then you can safely close this alert.)"
+    )
+
+
+def end_program():
+    if recorder_still_running():
+        show_still_running_warning()
 
 
 def main():
