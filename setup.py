@@ -282,6 +282,7 @@ setup(
     packages=[
         "seleniumbase",
         "sbase",
+        "seleniumbase.behave",
         "seleniumbase.common",
         "seleniumbase.config",
         "seleniumbase.console_scripts",
