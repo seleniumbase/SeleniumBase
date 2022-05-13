@@ -838,7 +838,7 @@ class BaseCase(unittest.TestCase):
         """Navigates the current browser window to the start_page.
         You can set the start_page on the command-line in three ways:
         '--start_page=URL', '--start-page=URL', or '--url=URL'.
-        If the start_page is not set, then "data:," will be used."""
+        If the start_page is not set, then "about:blank" will be used."""
         self.__check_scope()
         start_page = self.start_page
         if type(start_page) is str:
@@ -854,9 +854,11 @@ class BaseCase(unittest.TestCase):
                     self.__dont_record_open = False
                 else:
                     logging.info('Invalid URL: "%s"!' % start_page)
-                    self.open("data:,")
+                    if self.get_current_url() != "about:blank":
+                        self.open("about:blank")
         else:
-            self.open("data:,")
+            if self.get_current_url() != "about:blank":
+                self.open("about:blank")
 
     def open_if_not_url(self, url):
         """Opens the url in the browser if it's not the current url."""
@@ -11721,9 +11723,9 @@ class BaseCase(unittest.TestCase):
                         self.open(new_start_page)
                         self.__dont_record_open = False
             if self.recorder_ext or (self._crumbs and not good_start_page):
-                if self.get_current_url() != "data:,":
+                if self.get_current_url() != "about:blank":
                     self.__new_window_on_rec_open = False
-                    self.open("data:,")
+                    self.open("about:blank")
                     self.__new_window_on_rec_open = True
                     if self.recorder_ext:
                         self.__js_start_time = int(time.time() * 1000.0)
