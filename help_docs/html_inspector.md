@@ -1,10 +1,10 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The HTML Inspector</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The HTML Inspector 🔎</h2>
 
-🔵 <b>HTML Inspector</b> provides useful info about a web page.
+🔎 <b>HTML Inspector</b> provides useful info about a web page.
 
-🔵 (<i>Based on: [github.com/philipwalton/html-inspector](https://github.com/philipwalton/html-inspector)</i>)
+🔎 (<i>Based on: [github.com/philipwalton/html-inspector](https://github.com/philipwalton/html-inspector)</i>)
 
-🔵 Example: [examples/test_inspect_html.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_inspect_html.py) (Chromium-only)
+🔎 Example: [examples/test_inspect_html.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_inspect_html.py) (Chromium-only)
 
 ```python
 from seleniumbase import BaseCase
