@@ -3311,6 +3311,11 @@ class BaseCase(unittest.TestCase):
         Does NOT delete the saved cookies file."""
         self.wait_for_ready_state_complete()
         self.driver.delete_all_cookies()
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["d_a_c", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def delete_saved_cookies(self, name="cookies.txt"):
         """Deletes the cookies file from the "saved_cookies" folder.
@@ -3748,6 +3753,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
         ext_actions.append("c_s_s")
+        ext_actions.append("d_a_c")
         ext_actions.append("e_mfa")
         ext_actions.append("ss_tl")
         for n in range(len(srt_actions)):
@@ -4116,6 +4122,8 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append("self.clear_local_storage()")
             elif action[0] == "c_s_s":
                 sb_actions.append("self.clear_session_storage()")
+            elif action[0] == "d_a_c":
+                sb_actions.append("self.delete_all_cookies()")
             elif action[0] == "c_box":
                 method = "check_if_unchecked"
                 if action[2] == "no":
