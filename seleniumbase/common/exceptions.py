@@ -20,3 +20,7 @@ class OutOfScopeException(Exception):
 
 class TimeLimitExceededException(Exception):
     pass
+
+
+class TextNotVisibleException(Exception):
+    pass
