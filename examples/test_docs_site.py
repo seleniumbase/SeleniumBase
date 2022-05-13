@@ -4,6 +4,7 @@ from seleniumbase import BaseCase
 class DocsSiteTests(BaseCase):
     def test_docs(self):
         self.open("https://seleniumbase.io/")
+        self.delete_all_cookies()
         self.assert_exact_text("SeleniumBase ReadMe", "h1")
         self.click('a[href="help_docs/features_list/"]')
         self.assert_exact_text("Features List", "h1")
