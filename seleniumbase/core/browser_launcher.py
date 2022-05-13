@@ -1406,7 +1406,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: geckodriver not found! Installing now:")
+                print("\nWarning: geckodriver not found. Getting it now:")
                 try:
                     sb_install.main(override="geckodriver")
                 except Exception as e:
@@ -1482,7 +1482,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: IEDriver not found. Installing now:")
+                print("\nWarning: IEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if LOCAL_HEADLESS_IEDRIVER and os.path.exists(LOCAL_HEADLESS_IEDRIVER):
@@ -1500,7 +1500,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: HeadlessIEDriver not found. Installing now:")
+                print("\nWarning: HeadlessIEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if not headless:
@@ -1546,7 +1546,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: msedgedriver not found. Installing now:")
+                print("\nWarning: msedgedriver not found. Getting it now:")
                 sb_install.main(override="edgedriver")
                 sys.argv = sys_args  # Put back the original sys args
 
@@ -1899,7 +1899,7 @@ def get_local_driver(
                     from seleniumbase.console_scripts import sb_install
 
                     sys_args = sys.argv  # Save a copy of current sys args
-                    print("\nWarning: chromedriver not found. Installing now:")
+                    print("\nWarning: chromedriver not found. Getting it now:")
                     sb_install.main(override="chromedriver")
                     sys.argv = sys_args  # Put back the original sys args
                 else:
@@ -1914,7 +1914,7 @@ def get_local_driver(
                             sys_args = sys.argv  # Save a copy of sys args
                             print(
                                 "\nWarning: chromedriver not found. "
-                                "Installing now:"
+                                "Getting it now:"
                             )
                             sb_install.main(override="chromedriver")
                             sys.argv = sys_args  # Put back original sys args
