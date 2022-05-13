@@ -14,6 +14,7 @@
 * <b>[utilities](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities):</b> This folder contains code for spinning up your own Selenium Grid, and more.
 * <b>[resources](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/resources):</b> This folder contains copies of JavaScript resources that are used by tests.
 * <b>[translate](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/translate):</b> This folder contains code for translating tests into different languages.
+* <b>[behave](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/behave):</b> This folder contains code for integrating with the Behave BDD test runner.
 * <b>[masterqa](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/masterqa):</b> MasterQA is a tool for combining automation with manual verification.
 
 --------

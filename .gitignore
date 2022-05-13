@@ -91,6 +91,7 @@ geckodriver.log
 pytestdebug.log
 
 # Reports
+reports/*.xml
 latest_report
 report_archives
 archived_reports

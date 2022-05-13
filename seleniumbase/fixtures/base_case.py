@@ -87,6 +87,9 @@ class BaseCase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super(BaseCase, self).__init__(*args, **kwargs)
+        self.__initialize_variables()
+
+    def __initialize_variables(self):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
@@ -102,8 +105,8 @@ class BaseCase(unittest.TestCase):
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
         self.__visual_baseline_copies = []
-        self.__last_url_of_deferred_assert = "data:,"
-        self.__last_page_load_url = "data:,"
+        self.__last_url_of_deferred_assert = "about:blank"
+        self.__last_page_load_url = "about:blank"
         self.__last_page_screenshot = None
         self.__last_page_screenshot_png = None
         self.__last_page_url = None
@@ -135,6 +138,7 @@ class BaseCase(unittest.TestCase):
         self._default_driver = None
         self._drivers_list = []
         self._drivers_browser_map = {}
+        self._was_skipped = False
         self._chart_data = {}
         self._chart_count = 0
         self._chart_label = {}
@@ -4094,6 +4098,29 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
 
         filename = self.__get_filename()
+        classname = self.__class__.__name__
+        methodname = self._testMethodName
+        if hasattr(self, "is_behave") and self.is_behave:
+            classname = sb_config.behave_feature.name
+            classname = classname.replace("/", " ").replace(" & ", " ")
+            classname = re.sub(r"[^\w" + r"_ " + r"]", "", classname)
+            classname_parts = classname.split(" ")
+            new_classname = ""
+            for part in classname_parts:
+                new_classname += (part[0].upper() + part[1:])
+            classname = new_classname
+            methodname = sb_config.behave_scenario.name
+            methodname = methodname.replace("/", "_").replace(" & ", "_")
+            methodname = methodname.replace(" + ", " plus ")
+            methodname = methodname.replace(" - ", " minus ")
+            methodname = methodname.replace(" × ", " times ")
+            methodname = methodname.replace(" ÷ ", " divided by ")
+            methodname = methodname.replace(" = ", " equals ")
+            methodname = methodname.replace(" %% ", " percent ")
+            methodname = re.sub(r"[^\w" + r"_ " + r"]", "", methodname)
+            methodname = methodname.replace(" ", "_").lower()
+            if not methodname.startswith("test_"):
+                methodname = "test_" + methodname
         new_file = False
         data = []
         if filename not in sb_config._recorded_actions:
@@ -4102,10 +4129,10 @@ class BaseCase(unittest.TestCase):
             data.append("from seleniumbase import BaseCase")
             data.append("")
             data.append("")
-            data.append("class %s(BaseCase):" % self.__class__.__name__)
+            data.append("class %s(BaseCase):" % classname)
         else:
             data = sb_config._recorded_actions[filename]
-        data.append("    def %s(self):" % self._testMethodName)
+        data.append("    def %s(self):" % methodname)
         if len(sb_actions) > 0:
             for action in sb_actions:
                 data.append("        " + action)
@@ -4124,6 +4151,10 @@ class BaseCase(unittest.TestCase):
                 pass
 
         file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename.replace(".", "_")
+            file_name = file_name.split("/")[-1].split("\\")[-1]
+            file_name = file_name + "_rec.py"
         file_path = "%s/%s" % (recordings_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
@@ -6133,6 +6164,7 @@ class BaseCase(unittest.TestCase):
         log_helper.log_skipped_test_data(
             self, test_logpath, self.driver, browser, reason
         )
+        self._was_skipped = True
         # Finally skip the test for real
         self.skipTest(reason)
 
@@ -11305,6 +11337,19 @@ class BaseCase(unittest.TestCase):
             self.driver, message, selector, o_bs, duration
         )
 
+    def __activate_virtual_display_as_needed(self):
+        if self.headless or self.xvfb:
+            width = settings.HEADLESS_START_WIDTH
+            height = settings.HEADLESS_START_HEIGHT
+            try:
+                from sbvirtualdisplay import Display
+
+                self.display = Display(visible=0, size=(width, height))
+                self.display.start()
+                self.headless_active = True
+            except Exception:
+                pass
+
     ############
 
     from seleniumbase.common import decorators
@@ -11482,24 +11527,16 @@ class BaseCase(unittest.TestCase):
                 data_payload.state = constants.State.UNTESTED
                 self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
-                self.case_start_time = int(time.time() * 1000)
-            if self.headless or self.xvfb:
-                width = settings.HEADLESS_START_WIDTH
-                height = settings.HEADLESS_START_HEIGHT
-                try:
-                    # from pyvirtualdisplay import Display  # Skip for own lib
-                    from sbvirtualdisplay import Display
-
-                    self.display = Display(visible=0, size=(width, height))
-                    self.display.start()
-                    self.headless_active = True
-                except Exception:
-                    # pyvirtualdisplay might not be necessary anymore because
-                    # Chrome and Firefox now have built-in headless displays
-                    pass
+                self.case_start_time = int(time.time() * 1000.0)
+            self.__activate_virtual_display_as_needed()
+        elif hasattr(self, "is_behave") and self.is_behave:
+            self.__initialize_variables()
+            self.__activate_virtual_display_as_needed()
+        elif hasattr(self, "is_nosetest") and self.is_nosetest:
+            pass  # Setup performed in plugins for nosetests
         else:
-            # (Nosetests / Not Pytest)
-            pass  # Setup performed in plugins
+            # Pure Python run
+            self.__activate_virtual_display_as_needed()
 
         # Verify that SeleniumBase is installed successfully
         if not hasattr(self, "browser"):
@@ -11930,6 +11967,16 @@ class BaseCase(unittest.TestCase):
 
     def __get_test_id(self):
         """The id used in various places such as the test log path."""
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename
+            file_name = file_name.replace("/", ".").replace("\\", ".")
+            scenario_name = sb_config.behave_scenario.name
+            if " -- @" in scenario_name:
+                scenario_name = scenario_name.split(" -- @")[0]
+            scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
+            scenario_name = scenario_name.replace(" ", "_")
+            test_id = "%s.%s" % (file_name, scenario_name)
+            return test_id
         test_id = "%s.%s.%s" % (
             self.__class__.__module__,
             self.__class__.__name__,
@@ -11944,6 +11991,8 @@ class BaseCase(unittest.TestCase):
         """The id for SeleniumBase Dashboard entries."""
         if "PYTEST_CURRENT_TEST" in os.environ:
             return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+        if hasattr(self, "is_behave") and self.is_behave:
+            return self.__get_test_id()
         test_id = "%s.%s.%s" % (
             self.__class__.__module__.split(".")[-1],
             self.__class__.__name__,
@@ -11959,6 +12008,14 @@ class BaseCase(unittest.TestCase):
         """The id for running a test from pytest. (Displayed on Dashboard)"""
         if "PYTEST_CURRENT_TEST" in os.environ:
             return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename
+            line_num = sb_config.behave_line_num
+            scenario_name = sb_config.behave_scenario.name
+            if " -- @" in scenario_name:
+                scenario_name = scenario_name.split(" -- @")[0]
+            test_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
+            return test_id
         test_id = "%s.py::%s::%s" % (
             self.__class__.__module__.replace(".", "/"),
             self.__class__.__name__,
@@ -11984,6 +12041,9 @@ class BaseCase(unittest.TestCase):
         if "PYTEST_CURRENT_TEST" in os.environ:
             test_id = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
             filename = test_id.split("::")[0].split("/")[-1]
+        elif hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename
+            file_name = file_name.split("/")[-1].split("\\")[-1]
         else:
             filename = self.__class__.__module__.split(".")[-1] + ".py"
         return filename
@@ -12336,6 +12396,13 @@ class BaseCase(unittest.TestCase):
             dash_json_file.writelines(dash_json)
             dash_json_file.close()
 
+    def __activate_behave_post_mortem_debug_mode(self):
+        """Activate Post Mortem Debug Mode for failing tests that use Behave"""
+        import ipdb
+
+        ipdb.post_mortem(sb_config.behave_step.exc_traceback)
+        # Post Mortem Debug Mode ("behave -D pdb")
+
     def has_exception(self):
         """(This method should ONLY be used in custom tearDown() methods.)
         This method returns True if the test failed or raised an exception.
@@ -12593,7 +12660,25 @@ class BaseCase(unittest.TestCase):
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
-            # (Nosetests)
+            # (Nosetests / Behave / Pure Python)
+            if hasattr(self, "is_behave") and self.is_behave:
+                if sb_config.behave_scenario.status.name == "failed":
+                    has_exception = True
+                    sb_config._has_exception = True
+                    print("   ❌ Scenario Failed!  (Skipping remaining steps:)")
+                else:
+                    print("   ✅ Scenario Passed!")
+                if self.dashboard:
+                    self.__process_dashboard(has_exception)
+                if self.headless or self.xvfb:
+                    if self.headless_active:
+                        try:
+                            self.display.stop()
+                        except AttributeError:
+                            pass
+                        except Exception:
+                            pass
+                        self.display = None
             if has_exception:
                 test_id = self.__get_test_id()
                 test_logpath = os.path.join(self.log_path, test_id)
@@ -12635,9 +12720,12 @@ class BaseCase(unittest.TestCase):
                     self._last_page_url = self.get_current_url()
                 except Exception:
                     self._last_page_url = "(Error: Unknown URL)"
-            # (Nosetests) Finally close all open browser windows
+            if hasattr(self, "is_behave") and self.is_behave and has_exception:
+                if hasattr(sb_config, "pdb_option") and sb_config.pdb_option:
+                    self.__activate_behave_post_mortem_debug_mode()
+            # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
-        # Resume tearDown() for both Pytest and Nosetests
+        # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
         if has_exception and self.__visual_baseline_copies:
             self.__process_visual_baseline_logs()
         if deferred_exception:
