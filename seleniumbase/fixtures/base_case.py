@@ -161,8 +161,10 @@ class BaseCase(unittest.TestCase):
             # url should start with one of the following:
             # "http:", "https:", "://", "data:", "file:",
             # "about:", "chrome:", "opera:", or "edge:".
-            msg = 'Did you forget to prefix your URL with "http:" or "https:"?'
-            raise Exception('Invalid URL: "%s"\n%s' % (url, msg))
+            if page_utils.is_valid_url("https://" + url):
+                url = "https://" + url
+            else:
+                raise Exception('Invalid URL: "%s"!' % url)
         self.__last_page_load_url = None
         js_utils.clear_out_console_logs(self.driver)
         if url.startswith("://"):
