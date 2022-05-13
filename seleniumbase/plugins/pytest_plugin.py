@@ -33,6 +33,7 @@ def pytest_addoption(parser):
     --var1=STRING  (Extra test data. Access with "self.var1" in tests.)
     --var2=STRING  (Extra test data. Access with "self.var2" in tests.)
     --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
+    --variables=DICT  (Extra test data. Access with "self.variables".)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
@@ -216,6 +217,12 @@ def pytest_addoption(parser):
         dest="var3",
         default=None,
         help="Extra data to pass to tests from the command line.",
+    )
+    parser.addoption(
+        "--variables",
+        dest="variables",
+        default=None,
+        help="A var dict to pass to tests from the command line.",
     )
     parser.addoption(
         "--cap_file",
@@ -1068,6 +1075,7 @@ def pytest_configure(config):
     sb_config.var1 = config.getoption("var1")
     sb_config.var2 = config.getoption("var2")
     sb_config.var3 = config.getoption("var3")
+    sb_config.variables = config.getoption("variables")
     sb_config.environment = config.getoption("environment")
     sb_config.with_selenium = config.getoption("with_selenium")
     sb_config.user_agent = config.getoption("user_agent")

@@ -11453,6 +11453,32 @@ class BaseCase(unittest.TestCase):
             self.var1 = sb_config.var1
             self.var2 = sb_config.var2
             self.var3 = sb_config.var3
+            variables = sb_config.variables
+            if variables and type(variables) is str and len(variables) > 0:
+                import ast
+
+                bad_input = False
+                if (
+                    not variables.startswith("{")
+                    or not variables.endswith("}")
+                ):
+                    bad_input = True
+                else:
+                    try:
+                        variables = ast.literal_eval(variables)
+                        if not type(variables) is dict:
+                            bad_input = True
+                    except Exception:
+                        bad_input = True
+                if bad_input:
+                    raise Exception(
+                        '\nExpecting a Python dictionary for "variables"!'
+                        "\nEg. --variables=\"{'KEY1':'VALUE', 'KEY2':123}\""
+                    )
+            else:
+                variables = {}
+            sb_config.variables = variables
+            self.variables = sb_config.variables
             self.slow_mode = sb_config.slow_mode
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
