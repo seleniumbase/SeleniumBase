@@ -6988,6 +6988,10 @@ class BaseCase(unittest.TestCase):
             selector=selector, totp_key=totp_key, by=by, timeout=timeout
         )
 
+    def clear_all_cookies(self):
+        """Same as self.delete_all_cookies()"""
+        self.delete_all_cookies()
+
     def assert_no_broken_links(self, multithreaded=True):
         """Same as self.assert_no_404_errors()"""
         self.assert_no_404_errors(multithreaded=multithreaded)
