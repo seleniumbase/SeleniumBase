@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 SeleniumBase constants are stored in this file.
 """
@@ -20,6 +21,22 @@ class Environment:
     TEST = "test"
 
 
+class ValidEnvs:
+    valid_envs = [
+        "qa",
+        "staging",
+        "develop",
+        "production",
+        "master",
+        "remote",
+        "local",
+        "alpha",
+        "beta",
+        "main",
+        "test",
+    ]
+
+
 class Files:
     DOWNLOADS_FOLDER = "downloaded_files"
     ARCHIVED_DOWNLOADS_FOLDER = "archived_files"
@@ -38,7 +55,7 @@ class Recordings:
 
 
 class Dashboard:
-    TITLE = "SeleniumBase Test Results Dashboard"
+    TITLE = "SeleniumBase Dashboard ⚪"
     # STYLE_CSS = "https://seleniumbase.io/cdn/css/pytest_style.css"
     STYLE_CSS = "assets/pytest_style.css"  # Generated before tests
     META_REFRESH_HTML = '<meta http-equiv="refresh" content="12">'

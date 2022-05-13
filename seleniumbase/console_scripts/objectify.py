@@ -31,7 +31,7 @@ def invalid_run_command(shell_command):
 
 
 def invalid_objectify_run_command():
-    exp = "  ** objectify**\n\n"
+    exp = "  ** objectify **\n\n"
     exp += "  Usage:\n"
     exp += "         seleniumbase objectify [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Options:\n"
@@ -48,7 +48,7 @@ def invalid_objectify_run_command():
 
 
 def invalid_inject_objects_run_command():
-    exp = "  ** inject-objects**\n\n"
+    exp = "  ** inject-objects **\n\n"
     exp += "  Usage:\n"
     exp += "         seleniumbase inject-objects [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Options:\n"
@@ -62,7 +62,7 @@ def invalid_inject_objects_run_command():
 
 
 def invalid_extract_objects_run_command():
-    exp = "  ** extract-objects**\n\n"
+    exp = "  ** extract-objects **\n\n"
     exp += "  Usage:\n"
     exp += "         seleniumbase extract-objects [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Output:\n"
@@ -73,7 +73,7 @@ def invalid_extract_objects_run_command():
 
 
 def invalid_revert_objects_run_command():
-    exp = "  ** revert-objects**\n\n"
+    exp = "  ** revert-objects **\n\n"
     exp += "  Usage:\n"
     exp += "         seleniumbase revert-objects [SELENIUMBASE_PYTHON_FILE]\n"
     exp += "  Options:\n"

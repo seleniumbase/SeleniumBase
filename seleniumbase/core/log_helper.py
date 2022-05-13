@@ -4,6 +4,7 @@ import os
 import shutil
 import sys
 import time
+from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
@@ -165,31 +166,46 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         data_to_save.append("Exception: " + str(exc_message))
     else:
         the_traceback = None
-        the_traceback = "".join(
-            traceback.format_exception(
-                sys.exc_info()[0],
-                sys.exc_info()[1],
-                sys.exc_info()[2],
+        if hasattr(test, "is_behave") and test.is_behave:
+            if sb_config.behave_scenario.status.name == "failed":
+                if sb_config.behave_step.error_message:
+                    the_traceback = sb_config.behave_step.error_message
+        else:
+            the_traceback = "".join(
+                traceback.format_exception(
+                    sys.exc_info()[0],
+                    sys.exc_info()[1],
+                    sys.exc_info()[2],
+                )
             )
-        )
         if (
             not the_traceback
             or len(str(the_traceback)) < 30
             or the_traceback.endswith("StopIteration\n")
         ):
             good_stack = []
-            the_stacks = traceback.format_list(
-                traceback.extract_tb(sys.last_traceback)
-            )
+            the_stacks = []
+            if hasattr(sys, "last_traceback"):
+                the_stacks = traceback.format_list(
+                    traceback.extract_tb(sys.last_traceback)
+                )
+            else:
+                message = None
+                if hasattr(test, "is_behave") and test.is_behave:
+                    message = "Behave step was not implemented or skipped!"
+                else:
+                    message = "Traceback not found!"
+                the_stacks = [message]
             for stack in the_stacks:
                 if "/site-packages/pluggy/" not in stack:
                     if "/site-packages/_pytest/" not in stack:
                         good_stack.append(stack)
             the_traceback = "".join(good_stack)
             data_to_save.append("Traceback: " + the_traceback)
-            last_value = sys.last_value
-            if last_value:
-                data_to_save.append("Exception: " + str(last_value))
+            if hasattr(sys, "last_value"):
+                last_value = sys.last_value
+                if last_value:
+                    data_to_save.append("Exception: " + str(last_value))
         else:
             data_to_save.append("Traceback: " + the_traceback)
     log_file = codecs.open(basic_file_path, "w+", "utf-8")
@@ -276,6 +292,14 @@ def log_page_source(test_logpath, driver, source=None):
 
 
 def get_test_id(test):
+    if hasattr(test, "is_behave") and test.is_behave:
+        file_name = sb_config.behave_scenario.filename
+        line_num = sb_config.behave_line_num
+        scenario_name = sb_config.behave_scenario.name
+        if " -- @" in scenario_name:
+            scenario_name = scenario_name.split(" -- @")[0]
+        test_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
+        return test_id
     test_id = None
     try:
         test_id = get_test_name(test)

@@ -8,6 +8,7 @@ from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
+from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase import config as sb_config
 
 
@@ -28,6 +29,10 @@ def format_exc(exception, message):
         exc = NoSuchElementException
     elif exception == "NoSuchElementException":
         exc = NoSuchElementException
+    elif exception == TextNotVisibleException:
+        exc = TextNotVisibleException
+    elif exception == "TextNotVisibleException":
+        exc = TextNotVisibleException
     elif exception == NoAlertPresentException:
         exc = NoAlertPresentException
     elif exception == "NoAlertPresentException":

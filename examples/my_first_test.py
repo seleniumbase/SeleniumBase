@@ -135,9 +135,8 @@ class MyTestClass(BaseCase):
         #
         # 7. self.js_click(SELECTOR) can be used to click on hidden elements.
         #
-        # 8. If a URL starts with "://", then "https://" is automatically used.
-        #    Example: [self.open("://URL")] becomes [self.open("https://URL")]
-        #    This helps by reducing the line length by 5 characters.
+        # 8. self.open(URL) will automatically complete URLs missing a prefix.
+        #    Example: google.com will become https://google.com before opened.
         #
         # 9. For the full method list, see one of the following:
         #    * SeleniumBase/seleniumbase/fixtures/base_case.py

@@ -1406,7 +1406,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: geckodriver not found! Installing now:")
+                print("\nWarning: geckodriver not found. Getting it now:")
                 try:
                     sb_install.main(override="geckodriver")
                 except Exception as e:
@@ -1430,7 +1430,10 @@ def get_local_driver(
         else:
             if os.path.exists(LOCAL_GECKODRIVER):
                 if selenium4:
-                    service = FirefoxService(executable_path=LOCAL_GECKODRIVER)
+                    service = FirefoxService(
+                        executable_path=LOCAL_GECKODRIVER,
+                        log_path=os.path.devnull,
+                    )
                     try:
                         return webdriver.Firefox(
                             service=service,
@@ -1449,10 +1452,20 @@ def get_local_driver(
                 else:
                     return webdriver.Firefox(
                         executable_path=LOCAL_GECKODRIVER,
+                        service_log_path=os.path.devnull,
                         options=firefox_options,
                     )
             else:
-                return webdriver.Firefox(options=firefox_options)
+                if selenium4:
+                    service = FirefoxService(log_path=os.path.devnull)
+                    return webdriver.Firefox(
+                        service=service, options=firefox_options
+                    )
+                else:
+                    return webdriver.Firefox(
+                        service_log_path=os.path.devnull,
+                        options=firefox_options,
+                    )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
             raise Exception(
@@ -1482,7 +1495,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: IEDriver not found. Installing now:")
+                print("\nWarning: IEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if LOCAL_HEADLESS_IEDRIVER and os.path.exists(LOCAL_HEADLESS_IEDRIVER):
@@ -1500,7 +1513,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: HeadlessIEDriver not found. Installing now:")
+                print("\nWarning: HeadlessIEDriver not found. Getting it now:")
                 sb_install.main(override="iedriver")
                 sys.argv = sys_args  # Put back the original sys args
         if not headless:
@@ -1546,7 +1559,7 @@ def get_local_driver(
                 from seleniumbase.console_scripts import sb_install
 
                 sys_args = sys.argv  # Save a copy of current sys args
-                print("\nWarning: msedgedriver not found. Installing now:")
+                print("\nWarning: msedgedriver not found. Getting it now:")
                 sb_install.main(override="edgedriver")
                 sys.argv = sys_args  # Put back the original sys args
 
@@ -1692,7 +1705,9 @@ def get_local_driver(
                     edge_options.add_argument(chromium_arg_item)
         if selenium4:
             try:
-                service = EdgeService(executable_path=LOCAL_EDGEDRIVER)
+                service = EdgeService(
+                    executable_path=LOCAL_EDGEDRIVER, log_path=os.path.devnull
+                )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
                 auto_upgrade_edgedriver = False
@@ -1727,7 +1742,9 @@ def get_local_driver(
                     if not _was_chromedriver_repaired():  # Works for Edge
                         _repair_edgedriver(edge_version)
                     _mark_chromedriver_repaired()  # Works for Edge
-                service = EdgeService(executable_path=LOCAL_EDGEDRIVER)
+                service = EdgeService(
+                    executable_path=LOCAL_EDGEDRIVER, log_path=os.path.devnull
+                )
                 driver = Edge(service=service, options=edge_options)
             return driver
         else:
@@ -1736,6 +1753,7 @@ def get_local_driver(
             try:
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
+                    service_log_path=os.path.devnull,
                     capabilities=capabilities,
                 )
             except Exception as e:
@@ -1773,6 +1791,7 @@ def get_local_driver(
                     _mark_chromedriver_repaired()  # Works for Edge
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
+                    service_log_path=os.path.devnull,
                     capabilities=capabilities,
                 )
             return driver
@@ -1899,7 +1918,7 @@ def get_local_driver(
                     from seleniumbase.console_scripts import sb_install
 
                     sys_args = sys.argv  # Save a copy of current sys args
-                    print("\nWarning: chromedriver not found. Installing now:")
+                    print("\nWarning: chromedriver not found. Getting it now:")
                     sb_install.main(override="chromedriver")
                     sys.argv = sys_args  # Put back the original sys args
                 else:
@@ -1914,7 +1933,7 @@ def get_local_driver(
                             sys_args = sys.argv  # Save a copy of sys args
                             print(
                                 "\nWarning: chromedriver not found. "
-                                "Installing now:"
+                                "Getting it now:"
                             )
                             sb_install.main(override="chromedriver")
                             sys.argv = sys_args  # Put back original sys args
@@ -1923,7 +1942,8 @@ def get_local_driver(
                     if os.path.exists(LOCAL_CHROMEDRIVER):
                         if selenium4:
                             service = ChromeService(
-                                executable_path=LOCAL_CHROMEDRIVER
+                                executable_path=LOCAL_CHROMEDRIVER,
+                                log_path=os.path.devnull,
                             )
                             driver = webdriver.Chrome(
                                 service=service,
@@ -1932,10 +1952,20 @@ def get_local_driver(
                         else:
                             driver = webdriver.Chrome(
                                 executable_path=LOCAL_CHROMEDRIVER,
+                                service_log_path=os.path.devnull,
                                 options=chrome_options,
                             )
                     else:
-                        driver = webdriver.Chrome(options=chrome_options)
+                        if selenium4:
+                            service = ChromeService(log_path=os.path.devnull)
+                            driver = webdriver.Chrome(
+                                service=service, options=chrome_options
+                            )
+                        else:
+                            driver = webdriver.Chrome(
+                                options=chrome_options,
+                                service_log_path=os.path.devnull,
+                            )
                 except Exception as e:
                     auto_upgrade_chromedriver = False
                     if "This version of ChromeDriver only supports" in e.msg:

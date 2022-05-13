@@ -6,10 +6,11 @@ seleniumbase [COMMAND] [PARAMETERS]
   OR   sbase [COMMAND] [PARAMETERS]
 
 Examples:
-sbase install chromedriver
+sbase get chromedriver
 sbase methods
 sbase options
 sbase commander
+sbase behave-gui
 sbase mkdir ui_tests
 sbase mkfile new_test.py
 sbase mkrec new_test.py
@@ -76,10 +77,12 @@ def show_basic_usage():
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
     sc += "\n"
     sc += "COMMANDS:\n"
-    sc += "      install          [DRIVER] [OPTIONS]\n"
+    sc += "      get / install    [DRIVER] [OPTIONS]\n"
     sc += "      methods          (List common Python methods)\n"
     sc += "      options          (List common pytest options)\n"
-    sc += "      commander / gui  [OPTIONAL PATH or TEST FILE]\n"
+    sc += "      behave-options   (List common Behave options)\n"
+    sc += "      gui / commander  [OPTIONAL PATH or TEST FILE]\n"
+    sc += "      behave-gui       (SBase Commander for Behave)\n"
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
@@ -99,7 +102,7 @@ def show_basic_usage():
     sc += "      download server  (Get Selenium Grid JAR file)\n"
     sc += "      grid-hub         [start|stop] [OPTIONS]\n"
     sc += "      grid-node        [start|stop] --hub=[HOST/IP]\n"
-    sc += ' * (EXAMPLE: "sbase install chromedriver latest") *\n'
+    sc += ' * (EXAMPLE: "sbase get chromedriver latest") *\n'
     sc += ""
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -114,32 +117,37 @@ def show_install_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = "  " + c2 + "** " + c3 + "install" + c2 + " **" + cr
+    sc = "  " + c2 + "** " + c3 + "get / install" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase install [DRIVER_NAME] [OPTIONS]")
+    print("           OR: seleniumbase get [DRIVER_NAME] [OPTIONS]")
     print("           OR:    sbase install [DRIVER_NAME] [OPTIONS]")
+    print("           OR:        sbase get [DRIVER_NAME] [OPTIONS]")
     print("                 (Drivers: chromedriver, geckodriver, edgedriver")
     print("                           iedriver, operadriver)")
     print("  Options:")
-    print("           VERSION         Specify the version.")
-    print("                           (Default Chromedriver version = 2.44)")
-    print('                           Use "latest" for the latest version.')
+    print("           VERSION         Specify the version to download.")
+    print("                            (Default Chromedriver version = 2.44.")
+    print('                             Use "latest" for the latest version.')
+    print("                             For chromedriver, you can also use")
+    print("                             the major version integer")
+    print('                             or "latest-1" for 1 less than that.)')
     print("           -p OR --path    Also copy the driver to /usr/local/bin")
-    print("  Example:")
-    print("           sbase install chromedriver")
-    print("           sbase install geckodriver")
-    print("           sbase install edgedriver")
-    print("           sbase install chromedriver 101")
-    print("           sbase install chromedriver 101.0.4951.41")
-    print("           sbase install chromedriver latest")
-    print("           sbase install chromedriver latest-1")
-    print("           sbase install chromedriver -p")
-    print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 101.0.1210.32")
+    print("  Examples:")
+    print("           sbase get chromedriver")
+    print("           sbase get geckodriver")
+    print("           sbase get edgedriver")
+    print("           sbase get chromedriver 101")
+    print("           sbase get chromedriver 101.0.4951.41")
+    print("           sbase get chromedriver latest")
+    print("           sbase get chromedriver latest-1")
+    print("           sbase get chromedriver -p")
+    print("           sbase get chromedriver latest -p")
+    print("           sbase get edgedriver 101.0.1210.32")
     print("  Output:")
-    print("           Installs the chosen webdriver to seleniumbase/drivers/")
+    print("           Downloads the chosen webdriver to seleniumbase/drivers")
     print("           (chromedriver is required for Chrome automation)")
     print("           (geckodriver is required for Firefox automation)")
     print("           (edgedriver is required for Microsoft Edge automation)")
@@ -168,6 +176,27 @@ def show_commander_usage():
     print("           sbase gui offline_examples/")
     print("  Output:")
     print("           Launches SeleniumBase Commander | GUI for pytest.")
+    print("")
+
+
+def show_behave_gui_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "behave-gui" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase behave-gui [OPTIONAL PATH or TEST FILE]")
+    print("           seleniumbase gui-behave [OPTIONAL PATH or TEST FILE]")
+    print("           OR:    sbase behave-gui [OPTIONAL PATH or TEST FILE]")
+    print("           OR:    sbase gui-behave [OPTIONAL PATH or TEST FILE]")
+    print("  Examples:")
+    print("           sbase behave-gui")
+    print("           sbase behave-gui features/")
+    print("           sbase behave-gui features/calculator.feature")
+    print("  Output:")
+    print("           Launches SeleniumBase Commander | GUI for Behave.")
     print("")
 
 
@@ -727,6 +756,7 @@ def show_options():
     op += "--html=report.html  (Create a detailed pytest-html report.)\n"
     op += "--collect-only / --co  (Only show discovered tests. No run.)\n"
     op += "--co -q  (Only show full names of discovered tests. No run.)\n"
+    op += "-x  (Stop running tests after the first failure is reached.)\n"
     op += "--pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n"
     op += "--trace  (Enter Debug Mode immediately after starting any test.)\n"
     op += "      | Debug Mode Commands  >>>   help / h: List all commands. |\n"
@@ -736,7 +766,6 @@ def show_options():
     op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
     op += "--recorder  (Record browser actions to generate test scripts.)\n"
     op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"
-    op += "-x  (Stop running the tests after the first failure is reached.)\n"
     op += "--archive-logs  (Archive old log files instead of deleting them.)\n"
     op += "--check-js  (Check for JavaScript errors after page loads.)\n"
     op += "--start-page=URL  (The browser start page when tests begin.)\n"
@@ -767,6 +796,73 @@ def show_options():
     print("")
 
 
+def show_behave_options():
+    c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    c4 = colorama.Fore.MAGENTA + colorama.Back.LIGHTYELLOW_EX
+    c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "\n " + c2 + " ** " + c3 + " Behave CLI Options " + c2 + " ** " + cr
+    print(sc)
+    print("")
+    line = 'Here are some common "behave" options to use with SeleniumBase:'
+    line = c1 + line + cr
+    print(line)
+    line = '(Some options are Chromium-specific, e.g. "-D guest -D mobile")'
+    print(line)
+    op = "\n"
+    op += '-D browser=BROWSER  (The web browser to use. Default is "chrome")\n'
+    op += "-D headless  (Run tests headlessly. Default mode on Linux OS.)\n"
+    op += "-D demo  (Slow down and visually see test actions as they occur.)\n"
+    op += "-D slow  (Slow down the automation. Faster than using Demo Mode.)\n"
+    op += "-D reuse-session / -D rs  (Reuse browser session between tests.)\n"
+    op += "-D crumbs  (Clear all cookies between tests reusing a session.)\n"
+    op += "-D maximize  (Start tests with the web browser window maximized.)\n"
+    op += "-D dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)\n"
+    op += "-D incognito  (Enable Chromium's Incognito mode.)\n"
+    op += "-D guest  (Enable Chromium's Guest mode.)\n"
+    op += "--no-snippets / -q  (Quiet mode. Don't print snippets.)\n"
+    op += "--dry-run / -d  (Dry run. Only show discovered tests.)\n"
+    op += "--stop  (Stop running tests after the first failure is reached.)\n"
+    op += "-D pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n"
+    op += "      | Debug Mode Commands  >>>   help / h: List all commands. |\n"
+    op += "      |   n: Next line of method. s: Step through. c: Continue. |\n"
+    op += "      |  return / r: Run until method returns. j: Jump to line. |\n"
+    op += "      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n"
+    op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
+    op += "-D recorder  (Record browser actions to generate test scripts.)\n"
+    op += "-D save-screenshot  (Save a screenshot at the end of each test.)\n"
+    op += "-D archive-logs  (Archive log files instead of deleting them.)\n"
+    op += "-D check-js  (Check for JavaScript errors after page loads.)\n"
+    op += "-D start-page=URL  (The browser start page when tests begin.)\n"
+    op += "-D agent=STRING  (Modify the web browser's User-Agent string.)\n"
+    op += "-D mobile  (Use Chromium's mobile device emulator during tests.)\n"
+    op += '-D metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)\n'
+    op += "-D ad-block  (Block some types of display ads after page loads.)\n"
+    op += "-D settings-file=FILE  (Override default SeleniumBase settings.)\n"
+    op += '-D env=ENV  (Set the test env. Access using "self.env" in tests.)\n'
+    op += '-D data=DATA  (Extra test data. Access using "self.data".)\n'
+    op += "-D disable-csp  (Disable the Content Security Policy of sites.)\n"
+    op += "-D server=SERVER  (The Selenium Grid server/IP used for tests.)\n"
+    op += "-D port=PORT  (The Selenium Grid port used by the test server.)\n"
+    op += "-D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)\n"
+    op += "-D proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)\n"
+    op += cr
+    op = op.replace("\n-", "\n" + c1 + "-").replace("  (", cr + "  (")
+    op = op.replace(" / -", cr + " / " + c1 + "-")
+    op = op.replace("=", c2 + "=" + c3)
+    op = op.replace(" | ", " |" + c3 + " ").replace("|\n", cr + "|\n")
+    op = op.replace(": ", c5 + ":" + c3 + " ")
+    op = op.replace("Debug Mode Commands", c5 + "Debug Mode Commands" + c3)
+    op = op.replace(">>>", c4 + ">>>" + c3)
+    print(op)
+    line = "For the full list of " + c2 + "command-line options" + cr
+    line += ', type: "' + c3 + "behave" + cr + " " + c1 + "--help" + cr + '".'
+    print(line)
+    print("")
+
+
 def show_detailed_help():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
@@ -777,6 +873,7 @@ def show_detailed_help():
     print(cr)
     show_install_usage()
     show_commander_usage()
+    show_behave_gui_usage()
     show_mkdir_usage()
     show_mkfile_usage()
     show_mkrec_usage()
@@ -814,7 +911,7 @@ def main():
         command_args = sys.argv[2:]
     command = command.lower()
 
-    if command == "install":
+    if command == "get" or command == "install":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_install
 
@@ -826,6 +923,10 @@ def main():
         from seleniumbase.console_scripts import sb_commander
 
         sb_commander.main()
+    elif command == "behave-gui" or command == "gui-behave":
+        from seleniumbase.console_scripts import sb_behave_gui
+
+        sb_behave_gui.main()
     elif (
         command == "recorder"
         or (command == "record" and len(command_args) == 0)
@@ -1001,9 +1102,15 @@ def main():
         show_methods()
     elif command == "options" or command == "--options":
         show_options()
+    elif command == "behave-options" or command == "--behave-options":
+        show_behave_options()
     elif command == "help" or command == "--help":
         if len(command_args) >= 1:
-            if command_args[0] == "install":
+            if command_args[0] == "get":
+                print("")
+                show_install_usage()
+                return
+            elif command_args[0] == "install":
                 print("")
                 show_install_usage()
                 return
@@ -1014,6 +1121,14 @@ def main():
             elif command_args[0] == "gui":
                 print("")
                 show_commander_usage()
+                return
+            elif command_args[0] == "behave-gui":
+                print("")
+                show_behave_gui_usage()
+                return
+            elif command_args[0] == "gui-behave":
+                print("")
+                show_behave_gui_usage()
                 return
             elif command_args[0] == "mkdir":
                 print("")

@@ -282,6 +282,7 @@ self.save_cookies(name="cookies.txt")
 self.load_cookies(name="cookies.txt")
 
 self.delete_all_cookies()
+# Duplicates: self.clear_all_cookies()
 
 self.delete_saved_cookies(name="cookies.txt")
 

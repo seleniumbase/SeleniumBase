@@ -33,6 +33,7 @@ def pytest_addoption(parser):
     --var1=STRING  (Extra test data. Access with "self.var1" in tests.)
     --var2=STRING  (Extra test data. Access with "self.var2" in tests.)
     --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
+    --variables=DICT  (Extra test data. Access with "self.variables".)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
@@ -218,6 +219,12 @@ def pytest_addoption(parser):
         help="Extra data to pass to tests from the command line.",
     )
     parser.addoption(
+        "--variables",
+        dest="variables",
+        default=None,
+        help="A var dict to pass to tests from the command line.",
+    )
+    parser.addoption(
         "--cap_file",
         "--cap-file",
         dest="cap_file",
@@ -306,6 +313,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--database_env",
+        "--database-env",
         action="store",
         dest="database_env",
         choices=(
@@ -314,7 +322,11 @@ def pytest_addoption(parser):
             constants.Environment.DEVELOP,
             constants.Environment.PRODUCTION,
             constants.Environment.MASTER,
+            constants.Environment.REMOTE,
             constants.Environment.LOCAL,
+            constants.Environment.ALPHA,
+            constants.Environment.BETA,
+            constants.Environment.MAIN,
             constants.Environment.TEST,
         ),
         default=constants.Environment.TEST,
@@ -906,6 +918,7 @@ def pytest_addoption(parser):
     )
 
     sys_argv = sys.argv
+    arg_join = " ".join(sys.argv)
     sb_config._browser_shortcut = None
 
     # SeleniumBase does not support pytest-timeout due to hanging browsers.
@@ -939,7 +952,6 @@ def pytest_addoption(parser):
         or "--record" in sys_argv
         or "--rec" in sys_argv
     ):
-        arg_join = " ".join(sys.argv)
         if ("-n" in sys_argv) or (" -n=" in arg_join) or ("-c" in sys_argv):
             raise Exception(
                 "\n\n  Recorder Mode does NOT support multi-process mode (-n)!"
@@ -1068,6 +1080,7 @@ def pytest_configure(config):
     sb_config.var1 = config.getoption("var1")
     sb_config.var2 = config.getoption("var2")
     sb_config.var3 = config.getoption("var3")
+    sb_config.variables = config.getoption("variables")
     sb_config.environment = config.getoption("environment")
     sb_config.with_selenium = config.getoption("with_selenium")
     sb_config.user_agent = config.getoption("user_agent")

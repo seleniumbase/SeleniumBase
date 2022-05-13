@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ This is the Nosetest plugin for setting base configuration and logging. """
 
+import ast
 import sys
 import time
 from nose.plugins import Plugin
@@ -20,6 +21,7 @@ class Base(Plugin):
     --var1=STRING  (Extra test data. Access with "self.var1" in tests.)
     --var2=STRING  (Extra test data. Access with "self.var2" in tests.)
     --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
+    --variables=DICT  (Extra test data. Access with "self.variables".)
     --settings-file=FILE  (Override default SeleniumBase settings.)
     --archive-logs  (Archive old log files instead of deleting them.)
     --archive-downloads  (Archive old downloads instead of deleting.)
@@ -85,6 +87,12 @@ class Base(Plugin):
             dest="var3",
             default=None,
             help="Extra data to pass to tests from the command line.",
+        )
+        parser.add_option(
+            "--variables",
+            dest="variables",
+            default=None,
+            help="A var dict to pass to tests from the command line.",
         )
         parser.add_option(
             "--settings_file",
@@ -182,6 +190,29 @@ class Base(Plugin):
             report_helper.clear_out_old_report_logs(archive_past_runs=False)
 
     def beforeTest(self, test):
+        variables = self.options.variables
+        if variables and type(variables) is str and len(variables) > 0:
+            bad_input = False
+            if (
+                not variables.startswith("{")
+                or not variables.endswith("}")
+            ):
+                bad_input = True
+            else:
+                try:
+                    variables = ast.literal_eval(variables)
+                    if not type(variables) is dict:
+                        bad_input = True
+                except Exception:
+                    bad_input = True
+            if bad_input:
+                raise Exception(
+                    '\nExpecting a Python dictionary for "variables"!'
+                    "\nEg. --variables=\"{'KEY1':'VALUE', 'KEY2':123}\""
+                )
+        else:
+            variables = {}
+        test.test.is_nosetest = True
         test.test.environment = self.options.environment
         test.test.env = self.options.environment  # Add a shortened version
         test.test.account = self.options.account
@@ -189,6 +220,7 @@ class Base(Plugin):
         test.test.var1 = self.options.var1
         test.test.var2 = self.options.var2
         test.test.var3 = self.options.var3
+        test.test.variables = variables  # Already verified is a dictionary
         test.test.settings_file = self.options.settings_file
         test.test.log_path = self.options.log_path
         if self.options.archive_downloads:

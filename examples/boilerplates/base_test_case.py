@@ -15,7 +15,7 @@ class BaseTestCase(BaseCase):
         # <<< Run custom setUp() code for tests AFTER the super().setUp() >>>
 
     def tearDown(self):
-        self.save_teardown_screenshot()
+        self.save_teardown_screenshot()  # If test fails, or if "--screenshot"
         if self.has_exception():
             # <<< Run custom code if the test failed. >>>
             pass

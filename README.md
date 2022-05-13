@@ -1,13 +1,15 @@
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
 <meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
-<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, dashboard, recorder, reports">
+<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, behave, nosetests, dashboard, recorder, reports, gui">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_8.png" alt="SeleniumBase" title="SeleniumBase" width="310" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_9.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h3>
 <!-- View on GitHub -->
-<h4 align="center">Better Web Testing with <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> and <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a>.</h4>
+
+<div align="center">A <b>Python</b> ecosystem for <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a>. Supports <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a> and <a href="https://behave.readthedocs.io/en/stable/index.html" target="_blank">behave-BDD</a>.</div>
+
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
@@ -37,15 +39,15 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Templates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Slides</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 DialogBox</a>
 </p>
 
 --------
 
-<p align="left">↘️ An example test using the <code>BaseCase</code> class:</p>
+<p align="left">↘️ Example test with the <b>BaseCase</b> class. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -55,28 +57,44 @@ class TestMFALogin(BaseCase):
         self.open("https://seleniumbase.io/realworld/login")
         self.type("#username", "demo_user")
         self.type("#password", "secret_pass")
-        self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")
+        self.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
         self.assert_element("img#image1")
         self.assert_text("Welcome!", "h1")
         self.click('a:contains("This Page")')
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">↘️ An example test using the <code>sb</code> pytest fixture:</p>
+<p align="left">↘️ Example test with the <b>sb</b> pytest fixture. Runs with <code>pytest</code>.</p>
 
 ```python
 def test_mfa_login(sb):
     sb.open("https://seleniumbase.io/realworld/login")
     sb.type("#username", "demo_user")
     sb.type("#password", "secret_pass")
-    sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")
+    sb.enter_mfa_code("#totpcode", "GAXG2MTEOR3DMMDG")  # 6-digit
     sb.assert_element("img#image1")
     sb.assert_text("Welcome!", "h1")
     sb.click('a:contains("This Page")')
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">↘️ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
+<p align="left">↘️ Example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+
+```bash
+Feature: SeleniumBase scenarios for the RealWorld App
+
+    Scenario: Verify RealWorld App (log in / sign out)
+        Given Open "seleniumbase.io/realworld/login"
+        When Type "demo_user" into "#username"
+        And Type "secret_pass" into "#password"
+        And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
+        Then Assert exact text "Welcome!" in "h1"
+        And Highlight "img#image1"
+        And Click 'a:contains("This Page")'
+        And Save screenshot to logs
+```
+
+<p align="left">✅ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
 ```bash
 cd examples/
@@ -145,14 +163,17 @@ pip install -U seleniumbase
  *    OR:        "sbase [COMMAND] [PARAMETERS]"
 
 COMMANDS:
-      install          [DRIVER] [OPTIONS]
+      get / install    [DRIVER] [OPTIONS]
       methods          (List common Python methods)
       options          (List common pytest options)
-      commander / gui  [OPTIONAL PATH or TEST FILE]
+      behave-options   (List common Behave options)
+      gui / commander  [OPTIONAL PATH or TEST FILE]
+      behave-gui       (SBase Commander for Behave)
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
-      recorder         (Open Recorder Desktop App)
+      recorder         (Open Recorder Desktop App.)
+      record           (If args: mkrec. Else: App.)
       mkpres           [FILE.py] [LANG]
       mkchart          [FILE.py] [LANG]
       print            [FILE] [OPTIONS]
@@ -167,7 +188,7 @@ COMMANDS:
       download server  (Get Selenium Grid JAR file)
       grid-hub         [start|stop] [OPTIONS]
       grid-node        [start|stop] --hub=[HOST/IP]
- * (EXAMPLE: "sbase install chromedriver latest") *
+ * (EXAMPLE: "sbase get chromedriver latest") *
 
     Type "sbase help [COMMAND]" for specific command info.
     For info on all commands, type: "seleniumbase --help".
@@ -226,7 +247,7 @@ class MyTestClass(BaseCase):
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
 * If you're new to CSS Selectors, games like [CSS Diner](http://flukeout.github.io/) can help you learn.
-* Here are some common ``SeleniumBase`` methods that you might find in tests:
+* Here are some common SeleniumBase methods that you might find in tests:
 
 ```python
 self.open(url)  # Navigate the browser window to the URL.
@@ -375,6 +396,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --var1=STRING  # (Extra test data. Access with "self.var1" in tests.)
 --var2=STRING  # (Extra test data. Access with "self.var2" in tests.)
 --var3=STRING  # (Extra test data. Access with "self.var3" in tests.)
+--variables=DICT  # (Extra test data. Access with "self.variables".)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --protocol=PROTOCOL  # (The Selenium Grid protocol: http|https.)
 --server=SERVER  # (The Selenium Grid server/IP used for tests.)

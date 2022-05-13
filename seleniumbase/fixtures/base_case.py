@@ -87,6 +87,9 @@ class BaseCase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         super(BaseCase, self).__init__(*args, **kwargs)
+        self.__initialize_variables()
+
+    def __initialize_variables(self):
         self.driver = None
         self.environment = None
         self.env = None  # Add a shortened version of self.environment
@@ -102,8 +105,8 @@ class BaseCase(unittest.TestCase):
         self.__will_be_skipped = False
         self.__passed_then_skipped = False
         self.__visual_baseline_copies = []
-        self.__last_url_of_deferred_assert = "data:,"
-        self.__last_page_load_url = "data:,"
+        self.__last_url_of_deferred_assert = "about:blank"
+        self.__last_page_load_url = "about:blank"
         self.__last_page_screenshot = None
         self.__last_page_screenshot_png = None
         self.__last_page_url = None
@@ -135,6 +138,7 @@ class BaseCase(unittest.TestCase):
         self._default_driver = None
         self._drivers_list = []
         self._drivers_browser_map = {}
+        self._was_skipped = False
         self._chart_data = {}
         self._chart_count = 0
         self._chart_label = {}
@@ -157,8 +161,10 @@ class BaseCase(unittest.TestCase):
             # url should start with one of the following:
             # "http:", "https:", "://", "data:", "file:",
             # "about:", "chrome:", "opera:", or "edge:".
-            msg = 'Did you forget to prefix your URL with "http:" or "https:"?'
-            raise Exception('Invalid URL: "%s"\n%s' % (url, msg))
+            if page_utils.is_valid_url("https://" + url):
+                url = "https://" + url
+            else:
+                raise Exception('Invalid URL: "%s"!' % url)
         self.__last_page_load_url = None
         js_utils.clear_out_console_logs(self.driver)
         if url.startswith("://"):
@@ -832,7 +838,7 @@ class BaseCase(unittest.TestCase):
         """Navigates the current browser window to the start_page.
         You can set the start_page on the command-line in three ways:
         '--start_page=URL', '--start-page=URL', or '--url=URL'.
-        If the start_page is not set, then "data:," will be used."""
+        If the start_page is not set, then "about:blank" will be used."""
         self.__check_scope()
         start_page = self.start_page
         if type(start_page) is str:
@@ -848,9 +854,11 @@ class BaseCase(unittest.TestCase):
                     self.__dont_record_open = False
                 else:
                     logging.info('Invalid URL: "%s"!' % start_page)
-                    self.open("data:,")
+                    if self.get_current_url() != "about:blank":
+                        self.open("about:blank")
         else:
-            self.open("data:,")
+            if self.get_current_url() != "about:blank":
+                self.open("about:blank")
 
     def open_if_not_url(self, url):
         """Opens the url in the browser if it's not the current url."""
@@ -1284,6 +1292,8 @@ class BaseCase(unittest.TestCase):
             element_text = element.text
             if self.browser == "safari":
                 element_text = element.get_attribute("innerText")
+            if element.tag_name == "input":
+                element_text = element.get_property("value")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
@@ -1293,6 +1303,8 @@ class BaseCase(unittest.TestCase):
             element_text = element.text
             if self.browser == "safari":
                 element_text = element.get_attribute("innerText")
+            if element.tag_name == "input":
+                element_text = element.get_property("value")
         return element_text
 
     def get_attribute(
@@ -1992,6 +2004,7 @@ class BaseCase(unittest.TestCase):
         )
         hover_selector = self.convert_to_css_selector(hover_selector, hover_by)
         hover_by = By.CSS_SELECTOR
+        original_click_selector = click_selector
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by
         )
@@ -2007,6 +2020,10 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if hover_by == By.XPATH:
+                            hover_selector = original_selector
+                        if click_by == By.XPATH:
+                            click_selector = original_click_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         the_selectors = [hover_selector, click_selector]
@@ -3303,6 +3320,11 @@ class BaseCase(unittest.TestCase):
         Does NOT delete the saved cookies file."""
         self.wait_for_ready_state_complete()
         self.driver.delete_all_cookies()
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["d_a_c", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def delete_saved_cookies(self, name="cookies.txt"):
         """Deletes the cookies file from the "saved_cookies" folder.
@@ -3465,6 +3487,17 @@ class BaseCase(unittest.TestCase):
                 origin = self.get_origin()
                 self.__origins_to_save.append(origin)
                 tab_actions = self.__get_recorded_actions_on_active_tab()
+                for n in range(len(tab_actions)):
+                    if (
+                        n > 2
+                        and tab_actions[n - 2][0] == "sw_fr"
+                        and tab_actions[n - 1][0] == "sk_fo"
+                        and tab_actions[n][0] != "_url_"
+                    ):
+                        origin = tab_actions[n - 2][2]
+                        time_stamp = str(int(tab_actions[n][3]) - 1)
+                        new_action = ["sw_pf", "", origin, time_stamp]
+                        tab_actions.append(new_action)
                 self.__actions_to_save.append(tab_actions)
 
     def __get_recorded_actions_on_active_tab(self):
@@ -3474,6 +3507,7 @@ class BaseCase(unittest.TestCase):
             or url.startswith("chrome:") or url.startswith("edge:")
         ):
             return []
+        self.__origins_to_save.append(self.get_origin())
         actions = self.get_session_storage_item("recorded_actions")
         if actions:
             actions = json.loads(actions)
@@ -3488,34 +3522,43 @@ class BaseCase(unittest.TestCase):
         srt_actions = []
         cleaned_actions = []
         sb_actions = []
-        used_actions = []
         action_dict = {}
         for window in self.driver.window_handles:
             self.switch_to_window(window)
             tab_actions = self.__get_recorded_actions_on_active_tab()
+            for n in range(len(tab_actions)):
+                if (
+                    n > 2
+                    and tab_actions[n - 2][0] == "sw_fr"
+                    and tab_actions[n - 1][0] == "sk_fo"
+                    and tab_actions[n][0] != "_url_"
+                ):
+                    origin = tab_actions[n - 2][2]
+                    time_stamp = str(int(tab_actions[n][3]) - 1)
+                    new_action = ["sw_pf", "", origin, time_stamp]
+                    tab_actions.append(new_action)
             for action in tab_actions:
-                if action not in used_actions:
-                    used_actions.append(action)
+                if action not in raw_actions:
                     raw_actions.append(action)
         for tab_actions in self.__actions_to_save:
             for action in tab_actions:
-                if action not in used_actions:
-                    used_actions.append(action)
+                if action not in raw_actions:
                     raw_actions.append(action)
         for action in self.__extra_actions:
-            if action not in used_actions:
-                used_actions.append(action)
+            if action not in raw_actions:
                 raw_actions.append(action)
         for action in raw_actions:
-            if self._reuse_session:
-                if int(action[3]) < int(self.__js_start_time):
-                    continue
+            if int(action[3]) < int(self.__js_start_time):
+                continue
             # Use key for sorting and preventing duplicates
             key = str(action[3]) + "-" + str(action[0])
             action_dict[key] = action
         for key in sorted(action_dict):
             # print(action_dict[key])  # For debugging purposes
             srt_actions.append(action_dict[key])
+        for n in range(len(srt_actions)):
+            if srt_actions[n][0] == "sk_fo":
+                srt_actions[n][0] = "sk_op"
         for n in range(len(srt_actions)):
             if (
                 (srt_actions[n][0] == "begin" or srt_actions[n][0] == "_url_")
@@ -3718,6 +3761,8 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("s_c_d")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
+        ext_actions.append("c_s_s")
+        ext_actions.append("d_a_c")
         ext_actions.append("e_mfa")
         ext_actions.append("ss_tl")
         for n in range(len(srt_actions)):
@@ -4084,6 +4129,10 @@ class BaseCase(unittest.TestCase):
                 sb_actions.append("self.%s()" % method)
             elif action[0] == "c_l_s":
                 sb_actions.append("self.clear_local_storage()")
+            elif action[0] == "c_s_s":
+                sb_actions.append("self.clear_session_storage()")
+            elif action[0] == "d_a_c":
+                sb_actions.append("self.delete_all_cookies()")
             elif action[0] == "c_box":
                 method = "check_if_unchecked"
                 if action[2] == "no":
@@ -4094,6 +4143,29 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s('%s')" % (method, action[1]))
 
         filename = self.__get_filename()
+        classname = self.__class__.__name__
+        methodname = self._testMethodName
+        if hasattr(self, "is_behave") and self.is_behave:
+            classname = sb_config.behave_feature.name
+            classname = classname.replace("/", " ").replace(" & ", " ")
+            classname = re.sub(r"[^\w" + r"_ " + r"]", "", classname)
+            classname_parts = classname.split(" ")
+            new_classname = ""
+            for part in classname_parts:
+                new_classname += (part[0].upper() + part[1:])
+            classname = new_classname
+            methodname = sb_config.behave_scenario.name
+            methodname = methodname.replace("/", "_").replace(" & ", "_")
+            methodname = methodname.replace(" + ", " plus ")
+            methodname = methodname.replace(" - ", " minus ")
+            methodname = methodname.replace(" × ", " times ")
+            methodname = methodname.replace(" ÷ ", " divided by ")
+            methodname = methodname.replace(" = ", " equals ")
+            methodname = methodname.replace(" %% ", " percent ")
+            methodname = re.sub(r"[^\w" + r"_ " + r"]", "", methodname)
+            methodname = methodname.replace(" ", "_").lower()
+            if not methodname.startswith("test_"):
+                methodname = "test_" + methodname
         new_file = False
         data = []
         if filename not in sb_config._recorded_actions:
@@ -4102,10 +4174,10 @@ class BaseCase(unittest.TestCase):
             data.append("from seleniumbase import BaseCase")
             data.append("")
             data.append("")
-            data.append("class %s(BaseCase):" % self.__class__.__name__)
+            data.append("class %s(BaseCase):" % classname)
         else:
             data = sb_config._recorded_actions[filename]
-        data.append("    def %s(self):" % self._testMethodName)
+        data.append("    def %s(self):" % methodname)
         if len(sb_actions) > 0:
             for action in sb_actions:
                 data.append("        " + action)
@@ -4124,6 +4196,10 @@ class BaseCase(unittest.TestCase):
                 pass
 
         file_name = self.__class__.__module__.split(".")[-1] + "_rec.py"
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename.replace(".", "_")
+            file_name = file_name.split("/")[-1].split("\\")[-1]
+            file_name = file_name + "_rec.py"
         file_path = "%s/%s" % (recordings_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
@@ -5781,9 +5857,7 @@ class BaseCase(unittest.TestCase):
                         action = ["e_mfa", sel_key, origin, time_stamp]
                         self.__extra_actions.append(action)
                     # Sometimes Sign-In leaves the origin... Save work first.
-                    self.__origins_to_save.append(origin)
-                    tab_actions = self.__get_recorded_actions_on_active_tab()
-                    self.__actions_to_save.append(tab_actions)
+                    self.save_recorded_actions()
         mfa_code = self.get_mfa_code(totp_key)
         self.update_text(selector, mfa_code + "\n", by=by, timeout=timeout)
 
@@ -6133,6 +6207,7 @@ class BaseCase(unittest.TestCase):
         log_helper.log_skipped_test_data(
             self, test_logpath, self.driver, browser, reason
         )
+        self._was_skipped = True
         # Finally skip the test for real
         self.skipTest(reason)
 
@@ -6683,7 +6758,24 @@ class BaseCase(unittest.TestCase):
 
     def clear_session_storage(self):
         self.__check_scope()
-        self.execute_script("window.sessionStorage.clear();")
+        if not self.recorder_mode:
+            self.execute_script("window.sessionStorage.clear();")
+        else:
+            recorder_keys = [
+                "recorder_mode",
+                "recorded_actions",
+                "recorder_title",
+                "pause_recorder",
+                "recorder_activated",
+            ]
+            keys = self.get_session_storage_keys()
+            for key in keys:
+                if key not in recorder_keys:
+                    self.remove_session_storage_item(key)
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["c_s_s", "", origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def get_session_storage_keys(self):
         self.__check_scope()
@@ -6900,6 +6992,10 @@ class BaseCase(unittest.TestCase):
         return self.enter_mfa_code(
             selector=selector, totp_key=totp_key, by=by, timeout=timeout
         )
+
+    def clear_all_cookies(self):
+        """Same as self.delete_all_cookies()"""
+        self.delete_all_cookies()
 
     def assert_no_broken_links(self, multithreaded=True):
         """Same as self.assert_no_404_errors()"""
@@ -9415,6 +9511,7 @@ class BaseCase(unittest.TestCase):
             self.__assert_shadow_element_visible(selector)
             return True
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
+        original_selector = selector
         if self.demo_mode:
             selector, by = self.__recalculate_selector(
                 selector, by, xp_ok=False
@@ -9431,6 +9528,8 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["as_el", selector, origin, time_stamp]
@@ -9598,6 +9697,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_text_visible(text, selector, timeout)
@@ -9624,6 +9724,8 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         text_selector = [text, selector]
@@ -9644,6 +9746,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             self.__assert_exact_shadow_text_visible(text, selector, timeout)
@@ -9672,6 +9775,8 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         text_selector = [text, selector]
@@ -9910,12 +10015,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode:
             url = self.get_current_url()
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["asenv", selector, origin, time_stamp]
@@ -11305,6 +11414,19 @@ class BaseCase(unittest.TestCase):
             self.driver, message, selector, o_bs, duration
         )
 
+    def __activate_virtual_display_as_needed(self):
+        if self.headless or self.xvfb:
+            width = settings.HEADLESS_START_WIDTH
+            height = settings.HEADLESS_START_HEIGHT
+            try:
+                from sbvirtualdisplay import Display
+
+                self.display = Display(visible=0, size=(width, height))
+                self.display.start()
+                self.headless_active = True
+            except Exception:
+                pass
+
     ############
 
     from seleniumbase.common import decorators
@@ -11333,12 +11455,13 @@ class BaseCase(unittest.TestCase):
             # This raises an exception if the test is not coming from pytest
             self.is_pytest = sb_config.is_pytest
         except Exception:
-            # Not using pytest (probably nosetests)
+            # Not using pytest (could be nosetests, behave, or raw Python)
             self.is_pytest = False
         if self.is_pytest:
             # pytest-specific code
             test_id = self.__get_test_id()
             self.test_id = test_id
+            self.is_behave = False
             if hasattr(self, "_using_sb_fixture"):
                 self.test_id = sb_config._test_id
                 if hasattr(sb_config, "_sb_pdb_driver"):
@@ -11349,6 +11472,32 @@ class BaseCase(unittest.TestCase):
             self.var1 = sb_config.var1
             self.var2 = sb_config.var2
             self.var3 = sb_config.var3
+            variables = sb_config.variables
+            if variables and type(variables) is str and len(variables) > 0:
+                import ast
+
+                bad_input = False
+                if (
+                    not variables.startswith("{")
+                    or not variables.endswith("}")
+                ):
+                    bad_input = True
+                else:
+                    try:
+                        variables = ast.literal_eval(variables)
+                        if not type(variables) is dict:
+                            bad_input = True
+                    except Exception:
+                        bad_input = True
+                if bad_input:
+                    raise Exception(
+                        '\nExpecting a Python dictionary for "variables"!'
+                        "\nEg. --variables=\"{'KEY1':'VALUE', 'KEY2':123}\""
+                    )
+            else:
+                variables = {}
+            sb_config.variables = variables
+            self.variables = sb_config.variables
             self.slow_mode = sb_config.slow_mode
             self.demo_mode = sb_config.demo_mode
             self.demo_sleep = sb_config.demo_sleep
@@ -11459,7 +11608,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager = TestcaseManager(self.database_env)
                 #
                 exec_payload = ExecutionQueryPayload()
-                exec_payload.execution_start_time = int(time.time() * 1000)
+                exec_payload.execution_start_time = int(time.time() * 1000.0)
                 self.execution_start_time = exec_payload.execution_start_time
                 exec_payload.guid = self.execution_guid
                 exec_payload.username = getpass.getuser()
@@ -11482,24 +11631,16 @@ class BaseCase(unittest.TestCase):
                 data_payload.state = constants.State.UNTESTED
                 self.__skip_reason = None
                 self.testcase_manager.insert_testcase_data(data_payload)
-                self.case_start_time = int(time.time() * 1000)
-            if self.headless or self.xvfb:
-                width = settings.HEADLESS_START_WIDTH
-                height = settings.HEADLESS_START_HEIGHT
-                try:
-                    # from pyvirtualdisplay import Display  # Skip for own lib
-                    from sbvirtualdisplay import Display
-
-                    self.display = Display(visible=0, size=(width, height))
-                    self.display.start()
-                    self.headless_active = True
-                except Exception:
-                    # pyvirtualdisplay might not be necessary anymore because
-                    # Chrome and Firefox now have built-in headless displays
-                    pass
+                self.case_start_time = int(time.time() * 1000.0)
+            self.__activate_virtual_display_as_needed()
+        elif hasattr(self, "is_behave") and self.is_behave:
+            self.__initialize_variables()
+            self.__activate_virtual_display_as_needed()
+        elif hasattr(self, "is_nosetest") and self.is_nosetest:
+            pass  # Setup performed in plugins for nosetests
         else:
-            # (Nosetests / Not Pytest)
-            pass  # Setup performed in plugins
+            # Pure Python run
+            self.__activate_virtual_display_as_needed()
 
         # Verify that SeleniumBase is installed successfully
         if not hasattr(self, "browser"):
@@ -11597,9 +11738,9 @@ class BaseCase(unittest.TestCase):
                     self._dash_initialized = True
                     self.__process_dashboard(False, init=True)
 
-        # Set the JS start time for Recorder Mode if reusing the session.
+        # Set the JS start time for Recorder Mode.
         # Use this to skip saving recorded actions from previous tests.
-        if self.recorder_mode and self._reuse_session:
+        if self.recorder_mode:
             self.__js_start_time = int(time.time() * 1000.0)
 
         has_url = False
@@ -11643,9 +11784,9 @@ class BaseCase(unittest.TestCase):
                         self.open(new_start_page)
                         self.__dont_record_open = False
             if self.recorder_ext or (self._crumbs and not good_start_page):
-                if self.get_current_url() != "data:,":
+                if self.get_current_url() != "about:blank":
                     self.__new_window_on_rec_open = False
-                    self.open("data:,")
+                    self.open("about:blank")
                     self.__new_window_on_rec_open = True
                     if self.recorder_ext:
                         self.__js_start_time = int(time.time() * 1000.0)
@@ -11711,9 +11852,7 @@ class BaseCase(unittest.TestCase):
         # Although the pytest clock starts before setUp() begins,
         # the time-limit clock starts at the end of the setUp() method.
         sb_config.start_time_ms = int(time.time() * 1000.0)
-        if not self.__start_time_ms:
-            # Call this once in case of multiple setUp() calls in the same test
-            self.__start_time_ms = sb_config.start_time_ms
+        self.__start_time_ms = sb_config.start_time_ms
 
     def __set_last_page_screenshot(self):
         """self.__last_page_screenshot is only for pytest html report logs.
@@ -11795,7 +11934,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.core.testcase_manager import TestcaseDataPayload
 
         data_payload = TestcaseDataPayload()
-        data_payload.runtime = int(time.time() * 1000) - self.case_start_time
+        data_payload.runtime = int(time.time() * 1000.0) - self.case_start_time
         data_payload.guid = self.testcase_guid
         data_payload.execution_guid = self.execution_guid
         data_payload.state = state
@@ -11930,6 +12069,16 @@ class BaseCase(unittest.TestCase):
 
     def __get_test_id(self):
         """The id used in various places such as the test log path."""
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename
+            file_name = file_name.replace("/", ".").replace("\\", ".")
+            scenario_name = sb_config.behave_scenario.name
+            if " -- @" in scenario_name:
+                scenario_name = scenario_name.split(" -- @")[0]
+            scenario_name = re.sub(r"[^\w" + r"_ " + r"]", "", scenario_name)
+            scenario_name = scenario_name.replace(" ", "_")
+            test_id = "%s.%s" % (file_name, scenario_name)
+            return test_id
         test_id = "%s.%s.%s" % (
             self.__class__.__module__,
             self.__class__.__name__,
@@ -11944,6 +12093,8 @@ class BaseCase(unittest.TestCase):
         """The id for SeleniumBase Dashboard entries."""
         if "PYTEST_CURRENT_TEST" in os.environ:
             return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+        if hasattr(self, "is_behave") and self.is_behave:
+            return self.__get_test_id()
         test_id = "%s.%s.%s" % (
             self.__class__.__module__.split(".")[-1],
             self.__class__.__name__,
@@ -11959,6 +12110,14 @@ class BaseCase(unittest.TestCase):
         """The id for running a test from pytest. (Displayed on Dashboard)"""
         if "PYTEST_CURRENT_TEST" in os.environ:
             return os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename
+            line_num = sb_config.behave_line_num
+            scenario_name = sb_config.behave_scenario.name
+            if " -- @" in scenario_name:
+                scenario_name = scenario_name.split(" -- @")[0]
+            test_id = "%s:%s => %s" % (file_name, line_num, scenario_name)
+            return test_id
         test_id = "%s.py::%s::%s" % (
             self.__class__.__module__.replace(".", "/"),
             self.__class__.__name__,
@@ -11984,6 +12143,9 @@ class BaseCase(unittest.TestCase):
         if "PYTEST_CURRENT_TEST" in os.environ:
             test_id = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
             filename = test_id.split("::")[0].split("/")[-1]
+        elif hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename
+            file_name = file_name.split("/")[-1].split("\\")[-1]
         else:
             filename = self.__class__.__module__.split(".")[-1] + ".py"
         return filename
@@ -12041,7 +12203,7 @@ class BaseCase(unittest.TestCase):
         if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
             test_id = sb_config._test_id
         if not init:
-            duration_ms = int(time.time() * 1000) - self.__start_time_ms
+            duration_ms = int(time.time() * 1000.0) - self.__start_time_ms
             duration = float(duration_ms) / 1000.0
             duration = "{:.2f}".format(duration)
             sb_config._duration[test_id] = duration
@@ -12336,6 +12498,13 @@ class BaseCase(unittest.TestCase):
             dash_json_file.writelines(dash_json)
             dash_json_file.close()
 
+    def __activate_behave_post_mortem_debug_mode(self):
+        """Activate Post Mortem Debug Mode for failing tests that use Behave"""
+        import ipdb
+
+        ipdb.post_mortem(sb_config.behave_step.exc_traceback)
+        # Post Mortem Debug Mode ("behave -D pdb")
+
     def has_exception(self):
         """(This method should ONLY be used in custom tearDown() methods.)
         This method returns True if the test failed or raised an exception.
@@ -12350,18 +12519,23 @@ class BaseCase(unittest.TestCase):
     def save_teardown_screenshot(self):
         """(Should ONLY be used at the start of custom tearDown() methods.)
         This method takes a screenshot of the current web page for a
-        failing test (or when running your tests with --save-screenshot).
+        FAILING test (or when using "--screenshot" / "--save-screenshot").
         That way your tearDown() method can navigate away from the last
         page where the test failed, and still get the correct screenshot
         before performing tearDown() steps on other pages. If this method
         is not included in your custom tearDown() method, a screenshot
         will still be taken after the last step of your tearDown(), where
         you should be calling "super(SubClassOfBaseCase, self).tearDown()"
+        or "super().tearDown()".
+        This method also saves recorded actions when using Recorder Mode.
         """
         try:
             self.__check_scope()
         except Exception:
             return
+        if self.recorder_mode:
+            # In case tearDown() leaves the origin, save actions first.
+            self.save_recorded_actions()
         if self.__has_exception() or self.save_screenshot_after_test:
             test_logpath = os.path.join(self.log_path, self.__get_test_id())
             self.__create_log_path_as_needed(test_logpath)
@@ -12550,7 +12724,7 @@ class BaseCase(unittest.TestCase):
                         self.__insert_test_result(
                             constants.State.PASSED, False
                         )
-                runtime = int(time.time() * 1000) - self.execution_start_time
+                runtime = int(time.time() * 1000.0) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime
                 )
@@ -12593,7 +12767,25 @@ class BaseCase(unittest.TestCase):
                     data_payload.logURL = index_file
                     self.testcase_manager.update_testcase_log_url(data_payload)
         else:
-            # (Nosetests)
+            # (Nosetests / Behave / Pure Python)
+            if hasattr(self, "is_behave") and self.is_behave:
+                if sb_config.behave_scenario.status.name == "failed":
+                    has_exception = True
+                    sb_config._has_exception = True
+                    print("   ❌ Scenario Failed!  (Skipping remaining steps:)")
+                else:
+                    print("   ✅ Scenario Passed!")
+                if self.dashboard:
+                    self.__process_dashboard(has_exception)
+                if self.headless or self.xvfb:
+                    if self.headless_active:
+                        try:
+                            self.display.stop()
+                        except AttributeError:
+                            pass
+                        except Exception:
+                            pass
+                        self.display = None
             if has_exception:
                 test_id = self.__get_test_id()
                 test_logpath = os.path.join(self.log_path, test_id)
@@ -12635,9 +12827,12 @@ class BaseCase(unittest.TestCase):
                     self._last_page_url = self.get_current_url()
                 except Exception:
                     self._last_page_url = "(Error: Unknown URL)"
-            # (Nosetests) Finally close all open browser windows
+            if hasattr(self, "is_behave") and self.is_behave and has_exception:
+                if hasattr(sb_config, "pdb_option") and sb_config.pdb_option:
+                    self.__activate_behave_post_mortem_debug_mode()
+            # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
-        # Resume tearDown() for both Pytest and Nosetests
+        # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
         if has_exception and self.__visual_baseline_copies:
             self.__process_visual_baseline_logs()
         if deferred_exception:

@@ -158,7 +158,7 @@ def do_pytest_run(
 def create_tkinter_gui(tests, command_string):
     root = tk.Tk()
     root.title("SeleniumBase Commander | GUI for pytest")
-    root.minsize(720, 640)
+    root.minsize(820, 645)
     tk.Label(root, text="").pack()
 
     options_list = [
@@ -179,7 +179,7 @@ def create_tkinter_gui(tests, command_string):
         "Reuse Session / clear cookies  (--rs --crumbs)",
     ]
     rsx = tk.StringVar(root)
-    rsx.set(options_list[0])
+    rsx.set(options_list[2])
     question_menu = tk.OptionMenu(root, rsx, *options_list)
     question_menu.pack()
 

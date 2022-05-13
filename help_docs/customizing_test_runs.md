@@ -113,6 +113,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --var1=STRING  # (Extra test data. Access with "self.var1" in tests.)
 --var2=STRING  # (Extra test data. Access with "self.var2" in tests.)
 --var3=STRING  # (Extra test data. Access with "self.var3" in tests.)
+--variables=DICT  # (Extra test data. Access with "self.variables".)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --protocol=PROTOCOL  # (The Selenium Grid protocol: http|https.)
 --server=SERVER  # (The Selenium Grid server/IP used for tests.)

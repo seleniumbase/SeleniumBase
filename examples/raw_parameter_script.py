@@ -31,6 +31,7 @@ except (ImportError, ValueError):
 if pure_python:
     sb = MyTestClass("test_swag_labs")
     sb.browser = "chrome"
+    sb.is_behave = False
     sb.headless = False
     sb.headed = False
     sb.xvfb = False
@@ -43,6 +44,7 @@ if pure_python:
     sb.var1 = None
     sb.var2 = None
     sb.var3 = None
+    sb.variables = {}
     sb.account = None
     sb.environment = "test"
     sb.user_agent = None
@@ -98,7 +100,6 @@ if pure_python:
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None
-    sb.check_js = False
     sb.interval = None
     sb.cap_file = None
     sb.cap_string = None

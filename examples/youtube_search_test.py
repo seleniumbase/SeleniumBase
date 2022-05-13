@@ -22,13 +22,3 @@ class YouTubeSearchTests(BaseCase):
         )
         self.click(result_selector)
         self.assert_element_present('a[aria-label*="SeleniumBase"]')
-
-    def test_youtube_search_results(self):
-        """Verify finding a specific video by performing a YouTube search."""
-        self.open("https://www.youtube.com/c/MichaelMintz")
-        search_term = "SeleniumBase Common API Methods"
-        search_selector = "input#search"
-        self.type(search_selector, search_term + "\n")
-        self.ad_block()
-        self.demo_mode = True
-        self.assert_element('.text-wrapper > div:contains("%s")' % search_term)
