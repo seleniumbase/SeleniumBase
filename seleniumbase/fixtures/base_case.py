@@ -1292,6 +1292,8 @@ class BaseCase(unittest.TestCase):
             element_text = element.text
             if self.browser == "safari":
                 element_text = element.get_attribute("innerText")
+            if element.tag_name == "input":
+                element_text = element.get_property("value")
         except (StaleElementReferenceException, ENI_Exception):
             self.wait_for_ready_state_complete()
             time.sleep(0.14)
@@ -1301,6 +1303,8 @@ class BaseCase(unittest.TestCase):
             element_text = element.text
             if self.browser == "safari":
                 element_text = element.get_attribute("innerText")
+            if element.tag_name == "input":
+                element_text = element.get_property("value")
         return element_text
 
     def get_attribute(
