@@ -313,6 +313,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--database_env",
+        "--database-env",
         action="store",
         dest="database_env",
         choices=(
@@ -321,7 +322,11 @@ def pytest_addoption(parser):
             constants.Environment.DEVELOP,
             constants.Environment.PRODUCTION,
             constants.Environment.MASTER,
+            constants.Environment.REMOTE,
             constants.Environment.LOCAL,
+            constants.Environment.ALPHA,
+            constants.Environment.BETA,
+            constants.Environment.MAIN,
             constants.Environment.TEST,
         ),
         default=constants.Environment.TEST,
@@ -913,6 +918,7 @@ def pytest_addoption(parser):
     )
 
     sys_argv = sys.argv
+    arg_join = " ".join(sys.argv)
     sb_config._browser_shortcut = None
 
     # SeleniumBase does not support pytest-timeout due to hanging browsers.
@@ -946,7 +952,6 @@ def pytest_addoption(parser):
         or "--record" in sys_argv
         or "--rec" in sys_argv
     ):
-        arg_join = " ".join(sys.argv)
         if ("-n" in sys_argv) or (" -n=" in arg_join) or ("-c" in sys_argv):
             raise Exception(
                 "\n\n  Recorder Mode does NOT support multi-process mode (-n)!"

@@ -2004,6 +2004,7 @@ class BaseCase(unittest.TestCase):
         )
         hover_selector = self.convert_to_css_selector(hover_selector, hover_by)
         hover_by = By.CSS_SELECTOR
+        original_click_selector = click_selector
         click_selector, click_by = self.__recalculate_selector(
             click_selector, click_by
         )
@@ -2019,6 +2020,10 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if hover_by == By.XPATH:
+                            hover_selector = original_selector
+                        if click_by == By.XPATH:
+                            click_selector = original_click_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         the_selectors = [hover_selector, click_selector]
@@ -9506,6 +9511,7 @@ class BaseCase(unittest.TestCase):
             self.__assert_shadow_element_visible(selector)
             return True
         self.wait_for_element_visible(selector, by=by, timeout=timeout)
+        original_selector = selector
         if self.demo_mode:
             selector, by = self.__recalculate_selector(
                 selector, by, xp_ok=False
@@ -9522,6 +9528,8 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["as_el", selector, origin, time_stamp]
@@ -9689,6 +9697,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             self.__assert_shadow_text_visible(text, selector, timeout)
@@ -9715,6 +9724,8 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         text_selector = [text, selector]
@@ -9735,6 +9746,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             self.__assert_exact_shadow_text_visible(text, selector, timeout)
@@ -9763,6 +9775,8 @@ class BaseCase(unittest.TestCase):
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         text_selector = [text, selector]
@@ -10001,12 +10015,16 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode:
             url = self.get_current_url()
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["asenv", selector, origin, time_stamp]
@@ -11437,12 +11455,13 @@ class BaseCase(unittest.TestCase):
             # This raises an exception if the test is not coming from pytest
             self.is_pytest = sb_config.is_pytest
         except Exception:
-            # Not using pytest (probably nosetests)
+            # Not using pytest (could be nosetests, behave, or raw Python)
             self.is_pytest = False
         if self.is_pytest:
             # pytest-specific code
             test_id = self.__get_test_id()
             self.test_id = test_id
+            self.is_behave = False
             if hasattr(self, "_using_sb_fixture"):
                 self.test_id = sb_config._test_id
                 if hasattr(sb_config, "_sb_pdb_driver"):
@@ -11589,7 +11608,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_manager = TestcaseManager(self.database_env)
                 #
                 exec_payload = ExecutionQueryPayload()
-                exec_payload.execution_start_time = int(time.time() * 1000)
+                exec_payload.execution_start_time = int(time.time() * 1000.0)
                 self.execution_start_time = exec_payload.execution_start_time
                 exec_payload.guid = self.execution_guid
                 exec_payload.username = getpass.getuser()
@@ -11833,9 +11852,7 @@ class BaseCase(unittest.TestCase):
         # Although the pytest clock starts before setUp() begins,
         # the time-limit clock starts at the end of the setUp() method.
         sb_config.start_time_ms = int(time.time() * 1000.0)
-        if not self.__start_time_ms:
-            # Call this once in case of multiple setUp() calls in the same test
-            self.__start_time_ms = sb_config.start_time_ms
+        self.__start_time_ms = sb_config.start_time_ms
 
     def __set_last_page_screenshot(self):
         """self.__last_page_screenshot is only for pytest html report logs.
@@ -11917,7 +11934,7 @@ class BaseCase(unittest.TestCase):
         from seleniumbase.core.testcase_manager import TestcaseDataPayload
 
         data_payload = TestcaseDataPayload()
-        data_payload.runtime = int(time.time() * 1000) - self.case_start_time
+        data_payload.runtime = int(time.time() * 1000.0) - self.case_start_time
         data_payload.guid = self.testcase_guid
         data_payload.execution_guid = self.execution_guid
         data_payload.state = state
@@ -12186,7 +12203,7 @@ class BaseCase(unittest.TestCase):
         if hasattr(self, "_using_sb_fixture") and self.__will_be_skipped:
             test_id = sb_config._test_id
         if not init:
-            duration_ms = int(time.time() * 1000) - self.__start_time_ms
+            duration_ms = int(time.time() * 1000.0) - self.__start_time_ms
             duration = float(duration_ms) / 1000.0
             duration = "{:.2f}".format(duration)
             sb_config._duration[test_id] = duration
@@ -12707,7 +12724,7 @@ class BaseCase(unittest.TestCase):
                         self.__insert_test_result(
                             constants.State.PASSED, False
                         )
-                runtime = int(time.time() * 1000) - self.execution_start_time
+                runtime = int(time.time() * 1000.0) - self.execution_start_time
                 self.testcase_manager.update_execution_data(
                     self.execution_guid, runtime
                 )

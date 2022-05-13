@@ -642,6 +642,7 @@ class SeleniumBrowser(Plugin):
                 '\n  (Your browser choice was: "%s")\n' % browser
             )
             raise Exception(message)
+        test.test.is_nosetest = True
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string

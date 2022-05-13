@@ -158,8 +158,8 @@ def hover_element(driver, element):
 
 
 def timeout_exception(exception, message):
-    exception, message = s_utils.format_exc(exception, message)
-    raise exception(message)
+    exc, msg = shared_utils.format_exc(exception, message)
+    raise exc(msg)
 
 
 def hover_and_click(
@@ -302,7 +302,7 @@ def wait_for_element_present(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             return element
@@ -359,7 +359,7 @@ def wait_for_element_visible(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
@@ -652,7 +652,7 @@ def wait_for_attribute(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             element_present = True
@@ -728,7 +728,7 @@ def wait_for_element_absent(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             driver.find_element(by=by, value=selector)
             now_ms = time.time() * 1000.0
@@ -775,7 +775,7 @@ def wait_for_element_not_visible(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -823,7 +823,7 @@ def wait_for_text_not_visible(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         if not is_text_visible(driver, text, selector, by=by):
             return True
         now_ms = time.time() * 1000.0
@@ -866,7 +866,7 @@ def wait_for_attribute_not_present(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         if not is_attribute_present(
             driver, selector, attribute, value=value, by=by
         ):
@@ -1067,7 +1067,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             alert = driver.switch_to.alert
             # Raises exception if no alert present
@@ -1096,11 +1096,11 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             driver.switch_to.frame(frame)
             return True
-        except (NoSuchFrameException, TimeoutException):
+        except Exception:
             if type(frame) is str:
                 by = None
                 if page_utils.is_xpath_selector(frame):
@@ -1142,7 +1142,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     stop_ms = start_ms + (timeout * 1000.0)
     if isinstance(window, int):
         for x in range(int(timeout * 10)):
-            s_utils.check_if_time_limit_exceeded()
+            shared_utils.check_if_time_limit_exceeded()
             try:
                 window_handle = driver.window_handles[window]
                 driver.switch_to.window(window_handle)
@@ -1164,7 +1164,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     else:
         window_handle = window
         for x in range(int(timeout * 10)):
-            s_utils.check_if_time_limit_exceeded()
+            shared_utils.check_if_time_limit_exceeded()
             try:
                 driver.switch_to.window(window_handle)
                 return True
