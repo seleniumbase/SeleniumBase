@@ -6,10 +6,11 @@ seleniumbase [COMMAND] [PARAMETERS]
   OR   sbase [COMMAND] [PARAMETERS]
 
 Examples:
-sbase install chromedriver
+sbase get chromedriver
 sbase methods
 sbase options
 sbase commander
+sbase behave-gui
 sbase mkdir ui_tests
 sbase mkfile new_test.py
 sbase mkrec new_test.py
@@ -76,10 +77,12 @@ def show_basic_usage():
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
     sc += "\n"
     sc += "COMMANDS:\n"
-    sc += "      install          [DRIVER] [OPTIONS]\n"
+    sc += "      get / install    [DRIVER] [OPTIONS]\n"
     sc += "      methods          (List common Python methods)\n"
     sc += "      options          (List common pytest options)\n"
-    sc += "      commander / gui  [OPTIONAL PATH or TEST FILE]\n"
+    sc += "      behave-options   (List common Behave options)\n"
+    sc += "      gui / commander  [OPTIONAL PATH or TEST FILE]\n"
+    sc += "      behave-gui       (SBase Commander for Behave)\n"
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
     sc += "      mkfile           [FILE.py] [OPTIONS]\n"
     sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
@@ -99,7 +102,7 @@ def show_basic_usage():
     sc += "      download server  (Get Selenium Grid JAR file)\n"
     sc += "      grid-hub         [start|stop] [OPTIONS]\n"
     sc += "      grid-node        [start|stop] --hub=[HOST/IP]\n"
-    sc += ' * (EXAMPLE: "sbase install chromedriver latest") *\n'
+    sc += ' * (EXAMPLE: "sbase get chromedriver latest") *\n'
     sc += ""
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -114,32 +117,37 @@ def show_install_usage():
     c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
     c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
     cr = colorama.Style.RESET_ALL
-    sc = "  " + c2 + "** " + c3 + "install" + c2 + " **" + cr
+    sc = "  " + c2 + "** " + c3 + "get / install" + c2 + " **" + cr
     print(sc)
     print("")
     print("  Usage:")
     print("           seleniumbase install [DRIVER_NAME] [OPTIONS]")
+    print("           OR: seleniumbase get [DRIVER_NAME] [OPTIONS]")
     print("           OR:    sbase install [DRIVER_NAME] [OPTIONS]")
+    print("           OR:        sbase get [DRIVER_NAME] [OPTIONS]")
     print("                 (Drivers: chromedriver, geckodriver, edgedriver")
     print("                           iedriver, operadriver)")
     print("  Options:")
-    print("           VERSION         Specify the version.")
-    print("                           (Default Chromedriver version = 2.44)")
-    print('                           Use "latest" for the latest version.')
+    print("           VERSION         Specify the version to download.")
+    print("                            (Default Chromedriver version = 2.44.")
+    print('                             Use "latest" for the latest version.')
+    print("                             For chromedriver, you can also use")
+    print("                             the major version integer")
+    print('                             or "latest-1" for 1 less than that.)')
     print("           -p OR --path    Also copy the driver to /usr/local/bin")
-    print("  Example:")
-    print("           sbase install chromedriver")
-    print("           sbase install geckodriver")
-    print("           sbase install edgedriver")
-    print("           sbase install chromedriver 101")
-    print("           sbase install chromedriver 101.0.4951.41")
-    print("           sbase install chromedriver latest")
-    print("           sbase install chromedriver latest-1")
-    print("           sbase install chromedriver -p")
-    print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 101.0.1210.32")
+    print("  Examples:")
+    print("           sbase get chromedriver")
+    print("           sbase get geckodriver")
+    print("           sbase get edgedriver")
+    print("           sbase get chromedriver 101")
+    print("           sbase get chromedriver 101.0.4951.41")
+    print("           sbase get chromedriver latest")
+    print("           sbase get chromedriver latest-1")
+    print("           sbase get chromedriver -p")
+    print("           sbase get chromedriver latest -p")
+    print("           sbase get edgedriver 101.0.1210.32")
     print("  Output:")
-    print("           Installs the chosen webdriver to seleniumbase/drivers/")
+    print("           Downloads the chosen webdriver to seleniumbase/drivers")
     print("           (chromedriver is required for Chrome automation)")
     print("           (geckodriver is required for Firefox automation)")
     print("           (edgedriver is required for Microsoft Edge automation)")
@@ -748,6 +756,7 @@ def show_options():
     op += "--html=report.html  (Create a detailed pytest-html report.)\n"
     op += "--collect-only / --co  (Only show discovered tests. No run.)\n"
     op += "--co -q  (Only show full names of discovered tests. No run.)\n"
+    op += "-x  (Stop running tests after the first failure is reached.)\n"
     op += "--pdb  (Enter the Post Mortem Debug Mode after any test fails.)\n"
     op += "--trace  (Enter Debug Mode immediately after starting any test.)\n"
     op += "      | Debug Mode Commands  >>>   help / h: List all commands. |\n"
@@ -757,7 +766,6 @@ def show_options():
     op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
     op += "--recorder  (Record browser actions to generate test scripts.)\n"
     op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"
-    op += "-x  (Stop running the tests after the first failure is reached.)\n"
     op += "--archive-logs  (Archive old log files instead of deleting them.)\n"
     op += "--check-js  (Check for JavaScript errors after page loads.)\n"
     op += "--start-page=URL  (The browser start page when tests begin.)\n"
@@ -903,7 +911,7 @@ def main():
         command_args = sys.argv[2:]
     command = command.lower()
 
-    if command == "install":
+    if command == "get" or command == "install":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_install
 
