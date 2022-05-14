@@ -761,6 +761,8 @@ def dashboard_pre_processing():
 
     command_args = sys.argv[1:]
     command_string = " ".join(command_args)
+    command_string = command_string.replace("--quiet", "")
+    command_string = command_string.replace("-q", "")
     proc = subprocess.Popen(
         "behave -d %s --show-source" % command_string,
         stdout=subprocess.PIPE,
