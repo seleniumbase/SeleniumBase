@@ -1,4 +1,4 @@
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> SeleniumBase Workflows
+### <img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> SeleniumBase Workflows
 
 > **Table of Contents / Navigation:**
 > - [**CI build**](workflows/python-package.yml)
