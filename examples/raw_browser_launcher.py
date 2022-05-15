@@ -9,14 +9,12 @@ from seleniumbase import page_actions
 success = False
 try:
     driver = get_driver("chrome", headless=False)
-    driver.get('data:text/html,<h1 class="top">Data URL</h2>')
-    source = driver.page_source
-    assert "Data URL" in source
-    # An example of "is_element_visible()" from "page_actions"
-    assert page_actions.is_element_visible(driver, "h1.top")
-    # Extra fun with Javascript
-    js_utils.highlight_with_js(driver, "h1.top", 8, "")
-    success = True  # No errors
+    driver.get("https://seleniumbase.io/apps/calculator")
+    page_actions.wait_for_element_visible(driver, "4", "id").click()
+    page_actions.wait_for_element_visible(driver, "2", "id").click()
+    page_actions.wait_for_text_visible(driver, "42", "output", "id")
+    js_utils.highlight_with_js(driver, "#output", 6, "")
+    success = True
 finally:
     driver.quit()
 assert success

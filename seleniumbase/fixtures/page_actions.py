@@ -9,14 +9,14 @@ by giving page elements enough time to load before taking action on them.
 The default option for searching for elements is by CSS Selector.
 This can be changed by overriding the "By" parameter.
 Options are:
-By.CSS_SELECTOR
-By.CLASS_NAME
-By.ID
-By.NAME
-By.LINK_TEXT
-By.XPATH
-By.TAG_NAME
-By.PARTIAL_LINK_TEXT
+By.CSS_SELECTOR        # "css selector"
+By.CLASS_NAME          # "class name"
+By.ID                  # "id"
+By.NAME                # "name"
+By.LINK_TEXT           # "link text"
+By.XPATH               # "xpath"
+By.TAG_NAME            # "tag name"
+By.PARTIAL_LINK_TEXT   # "partial link text"
 """
 
 import codecs
