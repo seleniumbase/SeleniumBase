@@ -80,7 +80,7 @@ def test_mfa_login(sb):
 
 <p align="left">↘️ Example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
-```bash
+```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
 
     Scenario: Verify RealWorld App (log in / sign out)

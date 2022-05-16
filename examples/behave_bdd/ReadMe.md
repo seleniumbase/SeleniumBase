@@ -144,7 +144,7 @@ def add_item_to_cart(context, item):
 
 🐝 A ``*.feature`` file could look like this:
 
-```bash
+```gherkin
 Feature: SeleniumBase scenarios for the Swag Labs App
 
     Background:
@@ -173,7 +173,7 @@ Feature: SeleniumBase scenarios for the Swag Labs App
 
 🐝 Here's another example of a ``*.feature`` file:
 
-```bash
+```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
 
     Scenario: Verify RealWorld App (log in / sign out)

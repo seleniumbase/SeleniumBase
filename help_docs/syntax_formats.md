@@ -523,7 +523,7 @@ features/
 
 A ``*.feature`` file might look like this:
 
-```bash
+```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
 
     Scenario: Verify RealWorld App (log in / sign out)
@@ -571,7 +571,7 @@ from seleniumbase.behave import steps  # noqa
 
 That will allow you to use lines like this in your ``*.feature`` files:
 
-```bash
+```gherkin
 ...
     Given Open "seleniumbase.io/realworld/login"
     And Clear Session Storage
