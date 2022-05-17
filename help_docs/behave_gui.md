@@ -34,7 +34,7 @@ sbase behave-gui features/calculator.feature  # tests in that feature
 
 🐝🎖️ Once launched, you can further customize which tests to run and what settings to use. There are various controls for changing settings, modes, and other "behave" command line options that are specific to SeleniumBase. You can also set additional options that don't have a visible toggle. When you're ready to run the selected tests with the specified options, click on the <code>Run Selected Tests</code> button.
 
-🔵🐝⚪ With the Dashboard enabled, you'll get one of these:
+🐝⚪ With the Dashboard enabled, you'll get one of these:
 
 <img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 
