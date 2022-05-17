@@ -8,7 +8,7 @@
 <h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/nice_logo_4t.png" alt="SeleniumBase" title="SeleniumBase" width="260" /></a></h3>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">A <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> ecosystem for Python that extends <a href="https://docs.pytest.org/en/stable/" target="_blank">Pytest</a> and <a href="https://behave.readthedocs.io/en/stable/index.html" target="_blank">Behave</a>.</div></p>
+<p align="center"><div align="center">A <a href="https://www.selenium.dev/documentation/overview/details/" target="_blank">Selenium</a> ecosystem for Python that extends <a href="https://docs.pytest.org/en/stable/" target="_blank">Pytest</a> and <a href="https://behave.readthedocs.io/en/stable/index.html" target="_blank">Behave</a>.</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
