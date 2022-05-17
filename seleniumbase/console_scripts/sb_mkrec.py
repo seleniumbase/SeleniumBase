@@ -23,6 +23,7 @@ Options:
     --edge  (Use Edge browser instead of Chrome.)
     --gui / --headed  (Use headed mode on Linux.)
     --overwrite  (Overwrite file when it exists.)
+    --behave  (Also output Behave/Gherkin files.)
 
 Output:
     Creates a new SeleniumBase test using the Recorder.
@@ -49,6 +50,7 @@ def invalid_run_command(msg=None):
     exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
     exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
     exp += "           --overwrite  (Overwrite file when it exists.)\n"
+    exp += "           --behave  (Also output Behave/Gherkin files.)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"
@@ -89,6 +91,7 @@ def main():
     next_is_url = False
     use_colors = True
     force_gui = False
+    rec_behave = False
 
     if "linux" in platform:
         use_colors = False
@@ -135,6 +138,8 @@ def main():
             elif option.lower() in ("--gui", "--headed"):
                 if "linux" in platform:
                     force_gui = True
+            elif option.lower() in ("--rec-behave", "--behave", "--gherkin"):
+                rec_behave = True
             elif option.lower().startswith("--url="):
                 start_page = option[len("--url="):]
             elif option.lower() == "--url":
@@ -172,22 +177,19 @@ def main():
         "" + c1 + file_name + "" + cr + "\n"
     )
     print(success)
+    run_cmd = None
     if not start_page:
         run_cmd = "pytest %s --rec -q -s" % file_name
-        if use_edge:
-            run_cmd += " --edge"
-        if force_gui:
-            run_cmd += " --gui"
-        print(run_cmd)
-        os.system(run_cmd)
     else:
         run_cmd = "pytest %s --rec -q -s --url=%s" % (file_name, start_page)
-        if use_edge:
-            run_cmd += " --edge"
-        if force_gui:
-            run_cmd += " --gui"
-        print(run_cmd)
-        os.system(run_cmd)
+    if use_edge:
+        run_cmd += " --edge"
+    if force_gui:
+        run_cmd += " --gui"
+    if rec_behave:
+        run_cmd += " --rec-behave"
+    print(run_cmd)
+    os.system(run_cmd)
     if os.path.exists(file_path):
         os.remove(file_path)
     recorded_filename = file_name[:-3] + "_rec.py"

@@ -51,6 +51,8 @@ class SeleniumBrowser(Plugin):
     --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
+    --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
+    --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -455,6 +457,27 @@ class SeleniumBrowser(Plugin):
                     into SeleniumBase scripts.""",
         )
         parser.add_option(
+            "--rec-behave",
+            "--rec-gherkin",
+            action="store_true",
+            dest="rec_behave",
+            default=False,
+            help="""Not only enables the SeleniumBase Recorder,
+                    but also saves recorded actions into the
+                    behave-gerkin format, which includes a
+                    feature file, an imported steps file,
+                    and the environment.py file.""",
+        )
+        parser.add_option(
+            "--rec-sleep",
+            "--record-sleep",
+            action="store_true",
+            dest="record_sleep",
+            default=False,
+            help="""If Recorder Mode is enabled,
+                    records sleep(seconds) calls.""",
+        )
+        parser.add_option(
             "--disable_csp",
             "--disable-csp",
             "--no_csp",
@@ -678,6 +701,11 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.recorder_mode = self.options.recorder_mode
         test.test.recorder_ext = self.options.recorder_mode  # Again
+        test.test.rec_behave = self.options.rec_behave
+        if self.options.rec_behave:
+            test.test.recorder_mode = True
+            test.test.recorder_ext = True
+        test.test.record_sleep = self.options.record_sleep
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws

@@ -4225,6 +4225,179 @@ class BaseCase(unittest.TestCase):
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
         print("\n\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+        if hasattr(self, "rec_behave") and self.rec_behave:
+            # Also generate necessary behave-gherkin files.
+            self.__process_recorded_behave_actions(srt_actions, colorama)
+
+    def __process_recorded_behave_actions(self, srt_actions, colorama):
+        from seleniumbase.behave import behave_helper
+
+        behave_actions = behave_helper.generate_gherkin(srt_actions)
+        filename = self.__get_filename()
+        feature_class = None
+        scenario_test = None
+        if hasattr(self, "is_behave") and self.is_behave:
+            feature_class = sb_config.behave_feature.name
+            scenario_test = sb_config.behave_scenario.name
+        else:
+            feature_class = self.__class__.__name__
+            scenario_test = self._testMethodName
+        new_file = False
+        data = []
+        if filename not in sb_config._behave_recorded_actions:
+            new_file = True
+            sb_config._behave_recorded_actions[filename] = []
+            data.append("Feature: %s" % feature_class)
+            data.append("")
+        else:
+            data = sb_config._behave_recorded_actions[filename]
+        data.append("  Scenario: %s" % scenario_test)
+        if len(behave_actions) > 0:
+            count = 0
+            for action in behave_actions:
+                if count == 0:
+                    data.append("    Given " + action)
+                else:
+                    data.append("    And " + action)
+                count += 1
+        data.append("")
+        sb_config._behave_recorded_actions[filename] = data
+
+        recordings_folder = constants.Recordings.SAVED_FOLDER
+        if recordings_folder.endswith("/"):
+            recordings_folder = recordings_folder[:-1]
+        if not os.path.exists(recordings_folder):
+            try:
+                os.makedirs(recordings_folder)
+            except Exception:
+                pass
+        features_folder = os.path.join(recordings_folder, "features")
+        if not os.path.exists(features_folder):
+            try:
+                os.makedirs(features_folder)
+            except Exception:
+                pass
+        steps_folder = os.path.join(features_folder, "steps")
+        if not os.path.exists(steps_folder):
+            try:
+                os.makedirs(steps_folder)
+            except Exception:
+                pass
+
+        file_name = filename.split(".")[0] + "_rec.feature"
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename.replace(".", "_")
+            file_name = file_name.split("/")[-1].split("\\")[-1]
+            file_name = file_name + "_rec.feature"
+        file_path = os.path.join(features_folder, file_name)
+        out_file = codecs.open(file_path, "w+", "utf-8")
+        out_file.writelines("\r\n".join(data))
+        out_file.close()
+
+        rec_message = ">>> RECORDING SAVED as: "
+        if not new_file:
+            rec_message = ">>> RECORDING ADDED to: "
+        star_len = len(rec_message) + len(file_path)
+        try:
+            terminal_size = os.get_terminal_size().columns
+            if terminal_size > 30 and star_len > terminal_size:
+                star_len = terminal_size
+        except Exception:
+            pass
+        stars = "*" * star_len
+        c1 = ""
+        c2 = ""
+        cr = ""
+        if "linux" not in sys.platform:
+            colorama.init(autoreset=True)
+            c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+            c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
+            cr = colorama.Style.RESET_ALL
+            rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
+        print("\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+
+        data = []
+        data.append("")
+        file_name = "__init__.py"
+        file_path = os.path.join(features_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/__init__.py")
+
+        data = []
+        data.append("[behave]")
+        data.append("show_skipped=false")
+        data.append("show_timings=false")
+        data.append("")
+        file_name = "behave.ini"
+        file_path = os.path.join(features_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/behave.ini")
+
+        data = []
+        data.append("from seleniumbase import BaseCase")
+        data.append("from seleniumbase.behave import behave_sb")
+        data.append(
+            "behave_sb.set_base_class(BaseCase)  # Accepts a BaseCase subclass"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_all  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_feature  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_scenario  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_step  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_step  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_scenario  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_feature  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_all  # noqa"
+        )
+        data.append("")
+        file_name = "environment.py"
+        file_path = os.path.join(features_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/environment.py")
+
+        data = []
+        data.append("")
+        file_name = "__init__.py"
+        file_path = os.path.join(steps_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/steps/__init__.py")
+
+        data = []
+        data.append("from seleniumbase.behave import steps  # noqa")
+        data.append("")
+        file_name = "imported.py"
+        file_path = os.path.join(steps_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/steps/imported.py")
 
     def activate_jquery(self):
         """If "jQuery is not defined", use this method to activate it for use.
@@ -11543,6 +11716,11 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.recorder_mode = sb_config.recorder_mode
             self.recorder_ext = sb_config.recorder_mode
+            self.rec_behave = sb_config.rec_behave
+            self.record_sleep = sb_config.record_sleep
+            if self.rec_behave and not self.recorder_mode:
+                self.recorder_mode = True
+                self.recorder_ext = True
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
             self.enable_ws = sb_config.enable_ws
@@ -11666,6 +11844,7 @@ class BaseCase(unittest.TestCase):
         if not hasattr(sb_config, "_recorded_actions"):
             # Only filled when Recorder Mode is enabled
             sb_config._recorded_actions = {}
+            sb_config._behave_recorded_actions = {}
 
         if not hasattr(settings, "SWITCH_TO_NEW_TABS_ON_CLICK"):
             # If using an older settings file, set the new definitions manually

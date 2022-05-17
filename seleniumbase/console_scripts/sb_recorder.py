@@ -3,11 +3,14 @@
 Launches the SeleniumBase Recorder Desktop App.
 
 Usage:
-      seleniumbase recorder
-             sbase recorder
+    seleniumbase recorder [OPTIONS]
+           sbase recorder [OPTIONS]
+
+Options:
+    --behave  (Also output Behave/Gherkin files.)
 
 Output:
-      Launches the SeleniumBase Recorder Desktop App.
+    Launches the SeleniumBase Recorder Desktop App.
 """
 
 import colorama
@@ -56,8 +59,8 @@ def send_window_to_front(window):
 def show_already_recording_warning():
     messagebox.showwarning(
         "SeleniumBase Recorder: Already Running!",
-        "Please finalize the active recording from the terminal:\n"
-        'Type "c" and press Enter/Return there.'
+        "Please finalize the active recording from the terminal\n"
+        'where you opened the Recorder: Type "c" and hit Enter.'
     )
 
 
@@ -118,9 +121,18 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
                     return
             else:
                 os.remove(file_name)
+        add_on = ""
+        command_args = sys.argv[2:]
+        if (
+            "--rec-behave" in command_args
+            or "--behave" in command_args
+            or "--gherkin" in command_args
+        ):
+            add_on = " --rec-behave"
         command = "sbase mkrec %s --url=%s --gui" % (file_name, url)
         if not use_chrome:
             command += " --edge"
+        command += add_on
         poll = None
         if sb_config.rec_subprocess_used:
             poll = sb_config.rec_subprocess_p.poll()
@@ -162,8 +174,8 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
     else:
         messagebox.showwarning(
             "SeleniumBase Recorder: Already Running!",
-            "Please finalize the active recording from the terminal:\n"
-            'Type "c" and press Enter/Return there.'
+            "Please finalize the active recording from the terminal\n"
+            'where you opened the Recorder: Type "c" and hit Enter.'
         )
     send_window_to_front(window)
 
@@ -264,8 +276,8 @@ def show_still_running_warning():
     and Python don't remain open and hanging in the background."""
     messagebox.showwarning(
         "SeleniumBase Recorder: Still Running!",
-        "Please end the active recording from the TERMINAL/PROMPT:\n"
-        'Type "c" and press Enter/Return there.\n'
+        "Please finalize the active recording from the terminal\n"
+        'where you opened the Recorder: Type "c" and hit Enter.\n'
         "(Then you can safely close this alert.)"
     )
 
