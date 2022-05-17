@@ -3,7 +3,29 @@ from seleniumbase import BaseCase
 
 
 class DownloadTests(BaseCase):
-    def test_download_files(self):
+    def test_download_chromedriver_notes(self):
+        self.open("https://chromedriver.chromium.org/downloads")
+        notes_file = "notes.txt"
+        notes_link = (
+            "https://chromedriver.storage.googleapis.com"
+            "/101.0.4951.41/%s" % notes_file
+        )
+        self.download_file(notes_link)
+        self.assert_downloaded_file(notes_file)
+        notes_path = self.get_path_of_downloaded_file(notes_file)
+        with open(notes_path, "r") as f:
+            notes_data = f.read()
+        self.assert_true(len(notes_data) > 100)  # Verify file not empty
+        text = "Switching to nested frame fails with chrome/chromedriver 100"
+        self.assert_true(text in notes_data)  # Verify file has expected data
+
+    def test_download_files_from_pypi_with_edge(self):
+        if self.browser != "edge":
+            self.open("data:,")
+            print("\n  This test is only for Microsoft Edge (Chromium)!")
+            print('  (Run this test using "--edge" or "--browser=edge")')
+            self.skip('Use "--edge" or "--browser=edge"')
+
         self.open("https://pypi.org/project/seleniumbase/#files")
         pkg_header = self.get_text("h1.package-header__name").strip()
         pkg_name = pkg_header.replace(" ", "-")
