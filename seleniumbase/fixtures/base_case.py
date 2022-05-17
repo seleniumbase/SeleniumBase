@@ -3407,6 +3407,15 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
+        if (
+            self.recorder_mode
+            and hasattr(sb_config, "record_sleep")
+            and sb_config.record_sleep
+        ):
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["sleep", seconds, origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def install_addon(self, xpi_file):
         """Installs a Firefox add-on instantly at run-time.
@@ -3759,6 +3768,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("sw_pf")
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
+        ext_actions.append("sleep")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
         ext_actions.append("c_s_s")
@@ -4010,6 +4020,9 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s()" % method)
                 else:
                     sb_actions.append("self.%s()" % method)
+            elif action[0] == "sleep":
+                method = "sleep"
+                sb_actions.append("self.%s(%s)" % (method, action[1]))
             elif action[0] == "as_el":
                 method = "assert_element"
                 if '"' not in action[1]:
