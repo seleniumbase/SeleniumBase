@@ -3286,7 +3286,7 @@ class BaseCase(unittest.TestCase):
         file_path = abs_path + "/%s" % folder
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file_path = os.path.join(file_path, name)
         cookies_file = codecs.open(cookies_file_path, "w+", encoding="utf-8")
         cookies_file.writelines(json_cookies)
         cookies_file.close()
@@ -3305,7 +3305,7 @@ class BaseCase(unittest.TestCase):
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
-        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file_path = os.path.join(file_path, name)
         json_cookies = None
         with open(cookies_file_path, "r") as f:
             json_cookies = f.read().strip()
@@ -3341,7 +3341,7 @@ class BaseCase(unittest.TestCase):
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
-        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file_path = os.path.join(file_path, name)
         if os.path.exists(cookies_file_path):
             if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
@@ -4213,7 +4213,7 @@ class BaseCase(unittest.TestCase):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
             file_name = file_name.split("/")[-1].split("\\")[-1]
             file_name = file_name + "_rec.py"
-        file_path = "%s/%s" % (recordings_folder, file_name)
+        file_path = os.path.join(recordings_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
         out_file.close()
@@ -5417,7 +5417,7 @@ class BaseCase(unittest.TestCase):
                 folder = folder[:-1]
             if len(folder) > 0:
                 self.create_folder(folder)
-                image_file_path = "%s/%s" % (folder, file_name)
+                image_file_path = os.path.join(folder, file_name)
         if not image_file_path:
             image_file_path = file_name
         with open(image_file_path, "wb") as file:
@@ -12927,7 +12927,7 @@ class BaseCase(unittest.TestCase):
 
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
-                path = "%s/%s" % (self.log_path, test_id)
+                path = os.path.join(self.log_path, test_id)
                 uploaded_files = []
                 for logfile in os.listdir(path):
                     logfile_name = "%s/%s/%s" % (
@@ -12936,7 +12936,7 @@ class BaseCase(unittest.TestCase):
                         logfile.split(path)[-1],
                     )
                     s3_bucket.upload_file(
-                        logfile_name, "%s/%s" % (path, logfile)
+                        logfile_name, "%s" % os.path.join(path, logfile)
                     )
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)
