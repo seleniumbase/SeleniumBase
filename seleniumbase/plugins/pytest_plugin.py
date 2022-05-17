@@ -70,6 +70,8 @@ def pytest_addoption(parser):
     --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
+    --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
+    --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -713,6 +715,27 @@ def pytest_addoption(parser):
                 into SeleniumBase scripts.""",
     )
     parser.addoption(
+        "--rec-behave",
+        "--rec-gherkin",
+        action="store_true",
+        dest="rec_behave",
+        default=False,
+        help="""Not only enables the SeleniumBase Recorder,
+                but also saves recorded actions into the
+                behave-gerkin format, which includes a
+                feature file, an imported steps file,
+                and the environment.py file.""",
+    )
+    parser.addoption(
+        "--rec-sleep",
+        "--record-sleep",
+        action="store_true",
+        dest="record_sleep",
+        default=False,
+        help="""If Recorder Mode is enabled,
+                records sleep(seconds) calls.""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -1135,6 +1158,11 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption("verify_delay")
     sb_config.recorder_mode = config.getoption("recorder_mode")
     sb_config.recorder_ext = config.getoption("recorder_mode")  # Again
+    sb_config.rec_behave = config.getoption("rec_behave")
+    if sb_config.rec_behave and not sb_config.recorder_mode:
+        sb_config.recorder_mode = True
+        sb_config.recorder_ext = True
+    sb_config.record_sleep = config.getoption("record_sleep")
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
     sb_config.enable_ws = config.getoption("enable_ws")

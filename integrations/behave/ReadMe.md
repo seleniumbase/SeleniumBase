@@ -73,7 +73,7 @@ Took 0m1.672s
 
 <img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 
-### 🐝 Understanding Behave files:
+### 🐝 Behave-Gherkin files:
 
 🐝 The ``*.feature`` files can use any step seen from:
 
@@ -144,28 +144,28 @@ def add_item_to_cart(context, item):
 ```gherkin
 Feature: SeleniumBase scenarios for the Swag Labs App
 
-    Background:
-        Given Open the Swag Labs Login Page
+  Background:
+    Given Open the Swag Labs Login Page
 
-    Scenario: User can order a backpack from the store
-        When Login to Swag Labs with standard_user
-        Then Verify that the current user is logged in
-        And Save price of "Backpack" to <item_price>
-        When Add "Backpack" to Cart
-        Then Verify shopping cart badge shows 1 item(s)
-        When Click on shopping cart icon
-        And Click Checkout
-        And Enter checkout info: First, Last, 12345
-        And Click Continue
-        Then Verify 1 "Backpack"(s) in cart
-        And Verify cost of "Backpack" is <item_price>
-        And Verify item total is $29.99
-        And Verify tax amount is $2.40
-        And Verify total cost is $32.39
-        When Click Finish
-        Then Verify order complete
-        When Logout from Swag Labs
-        Then Verify on Login page
+  Scenario: User can order a backpack from the store
+    When Login to Swag Labs with standard_user
+    Then Verify that the current user is logged in
+    And Save price of "Backpack" to <item_price>
+    When Add "Backpack" to Cart
+    Then Verify shopping cart badge shows 1 item(s)
+    When Click on shopping cart icon
+    And Click Checkout
+    And Enter checkout info: First, Last, 12345
+    And Click Continue
+    Then Verify 1 "Backpack"(s) in cart
+    And Verify cost of "Backpack" is <item_price>
+    And Verify item total is $29.99
+    And Verify tax amount is $2.40
+    And Verify total cost is $32.39
+    When Click Finish
+    Then Verify order complete
+    When Logout from Swag Labs
+    Then Verify on Login page
 ```
 
 🐝 Here's another example of a ``*.feature`` file:
@@ -173,19 +173,19 @@ Feature: SeleniumBase scenarios for the Swag Labs App
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
 
-    Scenario: Verify RealWorld App (log in / sign out)
-        Given Open "seleniumbase.io/realworld/login"
-        And Clear Session Storage
-        When Type "demo_user" into "#username"
-        And Type "secret_pass" into "#password"
-        And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
-        Then Assert text "Welcome!" in "h1"
-        And Highlight element "img#image1"
-        And Click 'a:contains("This Page")'
-        And Save screenshot to logs
-        When Click link "Sign out"
-        Then Assert element 'a:contains("Sign in")'
-        And Assert text "You have been signed out!"
+  Scenario: Verify RealWorld App (log in / sign out)
+    Given Open "seleniumbase.io/realworld/login"
+    And Clear Session Storage
+    When Type "demo_user" into "#username"
+    And Type "secret_pass" into "#password"
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
+    Then Assert text "Welcome!" in "h1"
+    And Highlight element "img#image1"
+    And Click 'a:contains("This Page")'
+    And Save screenshot to logs
+    When Click link "Sign out"
+    Then Assert element 'a:contains("Sign in")'
+    And Assert text "You have been signed out!"
 ```
 
 🐝 If there's a test failure, that's easy to spot:

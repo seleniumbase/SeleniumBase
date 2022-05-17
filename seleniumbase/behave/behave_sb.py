@@ -59,6 +59,8 @@ behave -D agent="User Agent String" -D demo
 -D block-images  (Block images from loading during tests.)
 -D verify-delay=SECONDS  (The delay before MasterQA verification checks.)
 -D recorder  (Enables the Recorder for turning browser actions into code.)
+-D rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
+-D rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
 -D disable-csp  (Disable the Content Security Policy of websites.)
 -D disable-ws  (Disable Web Security on Chromium-based browsers.)
 -D enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -166,6 +168,8 @@ def get_configured_sb(context):
     sb.js_checking_on = False
     sb.recorder_mode = False
     sb.recorder_ext = False
+    sb.record_sleep = False
+    sb.rec_behave = False
     sb.report_on = False
     sb.is_pytest = False
     sb.slow_mode = False
@@ -499,6 +503,14 @@ def get_configured_sb(context):
             sb.recorder_mode = True
             sb.recorder_ext = True
             continue
+        # Handle: -D rec-behave / rec-gherkin
+        if low_key in ["rec-behave", "rec-gherkin"]:
+            sb.rec_behave = True
+            continue
+        # Handle: -D record-sleep / record_sleep / rec-sleep / rec_sleep
+        if low_key in ["record-sleep", "rec-sleep"]:
+            sb.record_sleep = True
+            continue
         # Handle: -D slow / slowmo / slow-mode / slow_mode
         if low_key in ["slow", "slowmo", "slow-mode", "slow_mode"]:
             sb.slow_mode = True
@@ -681,9 +693,13 @@ def get_configured_sb(context):
     sb_config.variables = sb.variables
     sb_config.dashboard = sb.dashboard
     sb_config.pdb_option = sb.pdb_option
+    sb_config.rec_behave = sb.rec_behave
+    sb_config.record_sleep = sb.record_sleep
     sb_config._is_timeout_changed = False
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
     sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
+    sb_config._recorded_actions = {}
+    sb_config._behave_recorded_actions = {}
     # Dashboard-specific variables
     sb_config._results = {}  # SBase Dashboard test results
     sb_config._duration = {}  # SBase Dashboard test duration

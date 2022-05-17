@@ -131,7 +131,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=62.2.0;python_version>="3.7"',
+        'setuptools>=62.3.1;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -140,7 +140,7 @@ setup(
         "attrs>=21.4.0",
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
-        'traitlets>=5.2.0;python_version>="3.7"',
+        'traitlets>=5.2.1.post0;python_version>="3.7"',
         "certifi>=2021.10.8",
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
@@ -246,7 +246,7 @@ setup(
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
-        'Pillow==9.1.0;python_version>="3.7"',
+        'Pillow==9.1.1;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
         'rich==12.4.1;python_version>="3.6" and python_version<"4.0"',

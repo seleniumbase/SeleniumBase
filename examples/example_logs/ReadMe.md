@@ -102,7 +102,7 @@ nosetests test_suite.py --report
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> 🔵🐝⚪ Behave Dashboard & Reports:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> 🐝⚪ Behave Dashboard & Reports:</h3>
 
 (The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
 

@@ -322,6 +322,7 @@ is included.
 ``--edge``  (Use Edge browser instead of Chrome.)
 ``--gui`` / ``--headed``  (Use headed mode on Linux.)
 ``--overwrite``  (Overwrite file when it exists.)
+``--behave``  (Also output Behave/Gherkin files.)
 
 * Output:
 Creates a new SeleniumBase test using the Recorder.
@@ -330,7 +331,10 @@ If the filename already exists, an error is raised.
 <h3>recorder</h3>
 
 * Usage:
-``sbase recorder``
+``sbase recorder``  [OPTIONS]
+
+* Options:
+``--behave``  (Also output Behave/Gherkin files.)
 
 * Output:
 Launches the SeleniumBase Recorder Desktop App.

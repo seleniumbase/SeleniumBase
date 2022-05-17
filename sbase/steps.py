@@ -105,7 +105,7 @@ def js_click(context, selector):
 
 
 @step("Save screenshot to logs")
-@step('Save a screenshot to the logs')
+@step("Save a screenshot to the logs")
 def save_screenshot_to_logs(context):
     sb = context.sb
     sb.save_screenshot_to_logs()
@@ -376,3 +376,135 @@ def clear_local_storage(context):
 def clear_session_storage(context):
     sb = context.sb
     sb.clear_session_storage()
+
+
+@step("JS click all '{selector}'")
+@step('JS click all "{selector}"')
+def js_click_all(context, selector):
+    sb = context.sb
+    sb.js_click_all(selector)
+
+
+@step("Click '{selector}' at ({px},{py})")
+@step('Click "{selector}" at ({px},{py})')
+@step("Click '{selector}' at ({px}, {py})")
+@step('Click "{selector}" at ({px}, {py})')
+def click_with_offset(context, selector, px, py):
+    sb = context.sb
+    sb.click_with_offset(selector, px, py)
+
+
+@step("Into '{selector}' choose file '{file_path}'")
+@step('Into "{selector}" choose file "{file_path}"')
+@step("Into '{selector}' choose file \"{file_path}\"")
+@step('Into "{selector}" choose file \'{file_path}\'')
+def choose_file(context, selector, file_path):
+    sb = context.sb
+    sb.choose_file(selector, file_path)
+
+
+@step("Set content to frame '{frame}'")
+@step('Set content to frame "{frame}"')
+def set_content_to_frame(context, frame):
+    sb = context.sb
+    sb.set_content_to_frame(frame)
+
+
+@step("Set content to default")
+def set_content_to_default(context):
+    sb = context.sb
+    sb.set_content_to_default()
+
+
+@step("Set content to parent")
+def set_content_to_parent(context):
+    sb = context.sb
+    sb.set_content_to_parent()
+
+
+@step("Assert element present '{selector}'")
+@step('Assert element present "{selector}"')
+def assert_element_present(context, selector):
+    sb = context.sb
+    sb.assert_element_present(selector)
+
+
+@step("Assert element not visible '{selector}'")
+@step('Assert element not visible "{selector}"')
+def assert_element_not_visible(context, selector):
+    sb = context.sb
+    sb.assert_element_not_visible(selector)
+
+
+@step("Assert link text '{text}'")
+@step('Assert link text "{text}"')
+def assert_link_text(context, text):
+    sb = context.sb
+    sb.assert_link_text(text)
+
+
+@step("Assert title '{title}'")
+@step('Assert title "{title}"')
+def assert_title(context, title):
+    sb = context.sb
+    sb.assert_title(title)
+
+
+@step("Assert downloaded file '{file}'")
+@step('Assert downloaded file "{file}"')
+def assert_downloaded_file(context, file):
+    sb = context.sb
+    sb.assert_downloaded_file(file)
+
+
+@step("Download '{file}' to downloads")
+@step('Download "{file}" to downloads')
+@step("Download file '{file}' to downloads")
+@step('Download file "{file}" to downloads')
+def download_file(context, file):
+    sb = context.sb
+    sb.download_file(file)
+
+
+@step("Download '{file}' to '{destination}'")
+@step('Download "{file}" to "{destination}"')
+@step("Download file '{file}' to '{destination}'")
+@step('Download file "{file}" to "{destination}"')
+def download_file_to_destination(context, file, destination):
+    sb = context.sb
+    sb.download_file(file, destination)
+
+
+@step("In '{selector}' assert attribute \'{attribute}\'")
+@step('In "{selector}" assert attribute \"{attribute}\"')
+@step("In \"{selector}\" assert attribute '{attribute}'")
+@step('In \'{selector}\' assert attribute "{attribute}"')
+def assert_attribute(context, selector, attribute):
+    sb = context.sb
+    sb.assert_attribute(selector, attribute)
+
+
+@step("In '{selector}' assert attribute/value '{attribute}'/'{value}'")
+@step('In "{selector}" assert attribute/value "{attribute}"/"{value}"')
+@step("In \"{selector}\" assert attribute/value '{attribute}'/\"{value}\"")
+@step('In \'{selector}\' assert attribute/value "{attribute}"/\'{value}\'')
+@step("In '{selector}' assert attribute/value '{attribute}'/\"{value}\"")
+@step('In "{selector}" assert attribute/value "{attribute}"/\'{value}\'')
+@step("In \"{selector}\" assert attribute/value '{attribute}'/'{value}'")
+@step('In \'{selector}\' assert attribute/value "{attribute}"/"{value}"')
+def assert_attribute_has_value(context, selector, attribute, value):
+    sb = context.sb
+    sb.assert_attribute(selector, attribute, value)
+
+
+@step("Show file choosers")
+@step("Show hidden file choosers")
+def show_file_choosers(context):
+    sb = context.sb
+    sb.show_file_choosers()
+
+
+@step("Sleep for {seconds} seconds")
+def sleep(context, seconds):
+    sb = context.sb
+    sb.sleep(float(seconds))

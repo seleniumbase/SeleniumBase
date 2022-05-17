@@ -2,7 +2,7 @@
 site_name: SeleniumBase Docs
 site_url: https://seleniumbase.io
 site_author: Michael Mintz
-site_description: A complete framework for end-to-end testing with Python, pytest, and WebDriver.
+site_description: A complete framework for end-to-end testing with Python, pytest, behave-BDD, and WebDriver.
 # Repository information
 repo_name: seleniumbase/SeleniumBase
 repo_url: https://github.com/seleniumbase/SeleniumBase
@@ -82,7 +82,7 @@ nav:
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
   - Dashboard / Reports: examples/example_logs/ReadMe.md
-  - SeleniumBase Commander: help_docs/commander.md
+  - GUI / Commander: help_docs/commander.md
   - Console Scripts: seleniumbase/console_scripts/ReadMe.md
   - Syntax Formats: help_docs/syntax_formats.md
   - Recorder Mode: help_docs/recorder_mode.md
@@ -94,9 +94,9 @@ nav:
     - WebDriver Installation: help_docs/webdriver_installation.md
     - Verifying WebDriver: help_docs/verify_webdriver.md
     - How it Works: help_docs/how_it_works.md
-  - Behave-BDD:
-    - SBase Behave-BDD ReadMe: examples/behave_bdd/ReadMe.md
-    - SBase Behave-BDD GUI App: help_docs/behave_gui.md
+  - Behave-BDD Integration:
+    - Behave-BDD ReadMe: examples/behave_bdd/ReadMe.md
+    - Behave-BDD GUI App: help_docs/behave_gui.md
   - Languages:
     - Translations: help_docs/translations.md
     - Chinese Docs: help_docs/chinese.md

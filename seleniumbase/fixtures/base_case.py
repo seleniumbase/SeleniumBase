@@ -184,7 +184,7 @@ class BaseCase(unittest.TestCase):
             self.driver.get(url)
         except Exception as e:
             if "ERR_CONNECTION_TIMED_OUT" in e.msg:
-                self.sleep(0.5)
+                time.sleep(0.5)
                 self.driver.get(url)
             else:
                 raise Exception(e.msg)
@@ -3286,7 +3286,7 @@ class BaseCase(unittest.TestCase):
         file_path = abs_path + "/%s" % folder
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file_path = os.path.join(file_path, name)
         cookies_file = codecs.open(cookies_file_path, "w+", encoding="utf-8")
         cookies_file.writelines(json_cookies)
         cookies_file.close()
@@ -3305,7 +3305,7 @@ class BaseCase(unittest.TestCase):
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
-        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file_path = os.path.join(file_path, name)
         json_cookies = None
         with open(cookies_file_path, "r") as f:
             json_cookies = f.read().strip()
@@ -3341,7 +3341,7 @@ class BaseCase(unittest.TestCase):
         folder = constants.SavedCookies.STORAGE_FOLDER
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
-        cookies_file_path = "%s/%s" % (file_path, name)
+        cookies_file_path = os.path.join(file_path, name)
         if os.path.exists(cookies_file_path):
             if cookies_file_path.endswith(".txt"):
                 os.remove(cookies_file_path)
@@ -3407,6 +3407,15 @@ class BaseCase(unittest.TestCase):
                 if now_ms >= stop_ms:
                     break
                 time.sleep(0.2)
+        if (
+            self.recorder_mode
+            and hasattr(sb_config, "record_sleep")
+            and sb_config.record_sleep
+        ):
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["sleep", seconds, origin, time_stamp]
+            self.__extra_actions.append(action)
 
     def install_addon(self, xpi_file):
         """Installs a Firefox add-on instantly at run-time.
@@ -3759,6 +3768,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("sw_pf")
         ext_actions.append("s_c_f")
         ext_actions.append("s_c_d")
+        ext_actions.append("sleep")
         ext_actions.append("sh_fc")
         ext_actions.append("c_l_s")
         ext_actions.append("c_s_s")
@@ -4010,6 +4020,9 @@ class BaseCase(unittest.TestCase):
                     sb_actions.append("self.%s()" % method)
                 else:
                     sb_actions.append("self.%s()" % method)
+            elif action[0] == "sleep":
+                method = "sleep"
+                sb_actions.append("self.%s(%s)" % (method, action[1]))
             elif action[0] == "as_el":
                 method = "assert_element"
                 if '"' not in action[1]:
@@ -4200,7 +4213,7 @@ class BaseCase(unittest.TestCase):
             file_name = sb_config.behave_scenario.filename.replace(".", "_")
             file_name = file_name.split("/")[-1].split("\\")[-1]
             file_name = file_name + "_rec.py"
-        file_path = "%s/%s" % (recordings_folder, file_name)
+        file_path = os.path.join(recordings_folder, file_name)
         out_file = codecs.open(file_path, "w+", "utf-8")
         out_file.writelines("\r\n".join(data))
         out_file.close()
@@ -4225,6 +4238,179 @@ class BaseCase(unittest.TestCase):
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
         print("\n\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+        if hasattr(self, "rec_behave") and self.rec_behave:
+            # Also generate necessary behave-gherkin files.
+            self.__process_recorded_behave_actions(srt_actions, colorama)
+
+    def __process_recorded_behave_actions(self, srt_actions, colorama):
+        from seleniumbase.behave import behave_helper
+
+        behave_actions = behave_helper.generate_gherkin(srt_actions)
+        filename = self.__get_filename()
+        feature_class = None
+        scenario_test = None
+        if hasattr(self, "is_behave") and self.is_behave:
+            feature_class = sb_config.behave_feature.name
+            scenario_test = sb_config.behave_scenario.name
+        else:
+            feature_class = self.__class__.__name__
+            scenario_test = self._testMethodName
+        new_file = False
+        data = []
+        if filename not in sb_config._behave_recorded_actions:
+            new_file = True
+            sb_config._behave_recorded_actions[filename] = []
+            data.append("Feature: %s" % feature_class)
+            data.append("")
+        else:
+            data = sb_config._behave_recorded_actions[filename]
+        data.append("  Scenario: %s" % scenario_test)
+        if len(behave_actions) > 0:
+            count = 0
+            for action in behave_actions:
+                if count == 0:
+                    data.append("    Given " + action)
+                else:
+                    data.append("    And " + action)
+                count += 1
+        data.append("")
+        sb_config._behave_recorded_actions[filename] = data
+
+        recordings_folder = constants.Recordings.SAVED_FOLDER
+        if recordings_folder.endswith("/"):
+            recordings_folder = recordings_folder[:-1]
+        if not os.path.exists(recordings_folder):
+            try:
+                os.makedirs(recordings_folder)
+            except Exception:
+                pass
+        features_folder = os.path.join(recordings_folder, "features")
+        if not os.path.exists(features_folder):
+            try:
+                os.makedirs(features_folder)
+            except Exception:
+                pass
+        steps_folder = os.path.join(features_folder, "steps")
+        if not os.path.exists(steps_folder):
+            try:
+                os.makedirs(steps_folder)
+            except Exception:
+                pass
+
+        file_name = filename.split(".")[0] + "_rec.feature"
+        if hasattr(self, "is_behave") and self.is_behave:
+            file_name = sb_config.behave_scenario.filename.replace(".", "_")
+            file_name = file_name.split("/")[-1].split("\\")[-1]
+            file_name = file_name + "_rec.feature"
+        file_path = os.path.join(features_folder, file_name)
+        out_file = codecs.open(file_path, "w+", "utf-8")
+        out_file.writelines("\r\n".join(data))
+        out_file.close()
+
+        rec_message = ">>> RECORDING SAVED as: "
+        if not new_file:
+            rec_message = ">>> RECORDING ADDED to: "
+        star_len = len(rec_message) + len(file_path)
+        try:
+            terminal_size = os.get_terminal_size().columns
+            if terminal_size > 30 and star_len > terminal_size:
+                star_len = terminal_size
+        except Exception:
+            pass
+        stars = "*" * star_len
+        c1 = ""
+        c2 = ""
+        cr = ""
+        if "linux" not in sys.platform:
+            colorama.init(autoreset=True)
+            c1 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
+            c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
+            cr = colorama.Style.RESET_ALL
+            rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
+        print("\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+
+        data = []
+        data.append("")
+        file_name = "__init__.py"
+        file_path = os.path.join(features_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/__init__.py")
+
+        data = []
+        data.append("[behave]")
+        data.append("show_skipped=false")
+        data.append("show_timings=false")
+        data.append("")
+        file_name = "behave.ini"
+        file_path = os.path.join(features_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/behave.ini")
+
+        data = []
+        data.append("from seleniumbase import BaseCase")
+        data.append("from seleniumbase.behave import behave_sb")
+        data.append(
+            "behave_sb.set_base_class(BaseCase)  # Accepts a BaseCase subclass"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_all  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_feature  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_scenario  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import before_step  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_step  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_scenario  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_feature  # noqa"
+        )
+        data.append(
+            "from seleniumbase.behave.behave_sb import after_all  # noqa"
+        )
+        data.append("")
+        file_name = "environment.py"
+        file_path = os.path.join(features_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/environment.py")
+
+        data = []
+        data.append("")
+        file_name = "__init__.py"
+        file_path = os.path.join(steps_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/steps/__init__.py")
+
+        data = []
+        data.append("from seleniumbase.behave import steps  # noqa")
+        data.append("")
+        file_name = "imported.py"
+        file_path = os.path.join(steps_folder, file_name)
+        if not os.path.exists(file_path):
+            out_file = codecs.open(file_path, "w+", "utf-8")
+            out_file.writelines("\r\n".join(data))
+            out_file.close()
+            print("Created recordings/features/steps/imported.py")
 
     def activate_jquery(self):
         """If "jQuery is not defined", use this method to activate it for use.
@@ -5231,7 +5417,7 @@ class BaseCase(unittest.TestCase):
                 folder = folder[:-1]
             if len(folder) > 0:
                 self.create_folder(folder)
-                image_file_path = "%s/%s" % (folder, file_name)
+                image_file_path = os.path.join(folder, file_name)
         if not image_file_path:
             image_file_path = file_name
         with open(image_file_path, "wb") as file:
@@ -5603,13 +5789,13 @@ class BaseCase(unittest.TestCase):
                 self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
-            self.sleep(settings.MINI_TIMEOUT)
+            time.sleep(settings.MINI_TIMEOUT)
             actual = self.get_page_title().strip()
             try:
                 self.assertEqual(expected, actual, error % (expected, actual))
             except Exception:
                 self.wait_for_ready_state_complete()
-                self.sleep(settings.MINI_TIMEOUT)
+                time.sleep(settings.MINI_TIMEOUT)
                 actual = self.get_page_title().strip()
                 self.assertEqual(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
@@ -8964,7 +9150,7 @@ class BaseCase(unittest.TestCase):
         jqc_helper.jquery_confirm_button_dialog(
             self.driver, message, buttons, options
         )
-        self.sleep(0.02)
+        time.sleep(0.02)
         jf = "document.querySelector('.jconfirm-box').focus();"
         try:
             self.execute_script(jf)
@@ -8972,11 +9158,11 @@ class BaseCase(unittest.TestCase):
             pass
         waiting_for_response = True
         while waiting_for_response:
-            self.sleep(0.05)
+            time.sleep(0.05)
             jqc_open = self.execute_script("return jconfirm.instances.length")
             if str(jqc_open) == "0":
                 break
-        self.sleep(0.1)
+        time.sleep(0.1)
         status = None
         try:
             status = self.execute_script("return $jqc_status")
@@ -9047,7 +9233,7 @@ class BaseCase(unittest.TestCase):
         jqc_helper.jquery_confirm_text_dialog(
             self.driver, message, button, options
         )
-        self.sleep(0.02)
+        time.sleep(0.02)
         jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
         try:
             self.execute_script(jf)
@@ -9055,11 +9241,11 @@ class BaseCase(unittest.TestCase):
             pass
         waiting_for_response = True
         while waiting_for_response:
-            self.sleep(0.05)
+            time.sleep(0.05)
             jqc_open = self.execute_script("return jconfirm.instances.length")
             if str(jqc_open) == "0":
                 break
-        self.sleep(0.1)
+        time.sleep(0.1)
         status = None
         try:
             status = self.execute_script("return $jqc_input")
@@ -9118,7 +9304,7 @@ class BaseCase(unittest.TestCase):
         jqc_helper.jquery_confirm_full_dialog(
             self.driver, message, buttons, options
         )
-        self.sleep(0.02)
+        time.sleep(0.02)
         jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
         try:
             self.execute_script(jf)
@@ -9126,11 +9312,11 @@ class BaseCase(unittest.TestCase):
             pass
         waiting_for_response = True
         while waiting_for_response:
-            self.sleep(0.05)
+            time.sleep(0.05)
             jqc_open = self.execute_script("return jconfirm.instances.length")
             if str(jqc_open) == "0":
                 break
-        self.sleep(0.1)
+        time.sleep(0.1)
         text_status = None
         button_status = None
         try:
@@ -11008,7 +11194,7 @@ class BaseCase(unittest.TestCase):
                 element_location = 0
             scroll_script = "window.scrollTo(0, %s);" % element_location
             self.driver.execute_script(scroll_script)
-            self.sleep(0.1)
+            time.sleep(0.1)
         except Exception:
             pass
         try:
@@ -11058,7 +11244,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script(scroll_script)
         else:
             self.__slow_scroll_to_element(element)
-        self.sleep(sleep_time)
+        time.sleep(sleep_time)
 
     def __jquery_click(self, selector, by=By.CSS_SELECTOR):
         """Clicks an element using jQuery. Different from using pure JS."""
@@ -11543,6 +11729,11 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.recorder_mode = sb_config.recorder_mode
             self.recorder_ext = sb_config.recorder_mode
+            self.rec_behave = sb_config.rec_behave
+            self.record_sleep = sb_config.record_sleep
+            if self.rec_behave and not self.recorder_mode:
+                self.recorder_mode = True
+                self.recorder_ext = True
             self.disable_csp = sb_config.disable_csp
             self.disable_ws = sb_config.disable_ws
             self.enable_ws = sb_config.enable_ws
@@ -11666,6 +11857,7 @@ class BaseCase(unittest.TestCase):
         if not hasattr(sb_config, "_recorded_actions"):
             # Only filled when Recorder Mode is enabled
             sb_config._recorded_actions = {}
+            sb_config._behave_recorded_actions = {}
 
         if not hasattr(settings, "SWITCH_TO_NEW_TABS_ON_CLICK"):
             # If using an older settings file, set the new definitions manually
@@ -12735,7 +12927,7 @@ class BaseCase(unittest.TestCase):
 
                 s3_bucket = S3LoggingBucket()
                 guid = str(uuid.uuid4().hex)
-                path = "%s/%s" % (self.log_path, test_id)
+                path = os.path.join(self.log_path, test_id)
                 uploaded_files = []
                 for logfile in os.listdir(path):
                     logfile_name = "%s/%s/%s" % (
@@ -12744,7 +12936,7 @@ class BaseCase(unittest.TestCase):
                         logfile.split(path)[-1],
                     )
                     s3_bucket.upload_file(
-                        logfile_name, "%s/%s" % (path, logfile)
+                        logfile_name, "%s" % os.path.join(path, logfile)
                     )
                     uploaded_files.append(logfile_name)
                 s3_bucket.save_uploaded_file_names(uploaded_files)

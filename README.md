@@ -1,14 +1,14 @@
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
 <meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
-<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, behave, nosetests, dashboard, recorder, reports, gui">
+<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, behave, BDD, nosetests, dashboard, recorder, reports, gui, screenshots">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_9.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/nice_logo_4t.png" alt="SeleniumBase" title="SeleniumBase" width="260" /></a></h3>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">Python framework for <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a>. Supports <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a> and <a href="https://behave.readthedocs.io/en/stable/index.html" target="_blank">behave-BDD</a>.</div></p>
+<p align="center"><div align="center">A Python ecosystem for <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> that extends <a href="https://docs.pytest.org/en/stable/" target="_blank">Pytest</a> and <a href="https://behave.readthedocs.io/en/stable/index.html" target="_blank">Behave</a>.</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -47,7 +47,7 @@
 
 --------
 
-<p align="left">↘️ Example test with the <b>BaseCase</b> class. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">🌱 An example with <b>BaseCase</b>, a subclass of <code>unittest.TestCase</code>. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -64,7 +64,7 @@ class TestMFALogin(BaseCase):
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">↘️ Example test with the <b>sb</b> pytest fixture. Runs with <code>pytest</code>.</p>
+<p align="left">🌱 An example with <b>sb</b>, a <code>pytest</code> fixture. Runs with <code>pytest</code>.</p>
 
 ```python
 def test_mfa_login(sb):
@@ -78,20 +78,20 @@ def test_mfa_login(sb):
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">↘️ Example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">🌱 An example with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
 
-    Scenario: Verify RealWorld App (log in / sign out)
-        Given Open "seleniumbase.io/realworld/login"
-        When Type "demo_user" into "#username"
-        And Type "secret_pass" into "#password"
-        And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
-        Then Assert exact text "Welcome!" in "h1"
-        And Highlight "img#image1"
-        And Click 'a:contains("This Page")'
-        And Save screenshot to logs
+  Scenario: Verify RealWorld App (log in / sign out)
+    Given Open "seleniumbase.io/realworld/login"
+    When Type "demo_user" into "#username"
+    And Type "secret_pass" into "#password"
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
+    Then Assert exact text "Welcome!" in "h1"
+    And Highlight "img#image1"
+    And Click 'a:contains("This Page")'
+    And Save screenshot to logs
 ```
 
 <p align="left">✅ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
@@ -431,6 +431,8 @@ The code above will leave your browser window open in case there's a failure. (i
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --recorder  # (Enables the Recorder for turning browser actions into code.)
+--rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)
+--rec-sleep  # (If the Recorder is enabled, also records self.sleep calls.)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
@@ -1022,11 +1024,13 @@ pytest --reruns=1 --reruns-delay=1
 <img src="https://img.shields.io/badge/docs-%20%20SeleniumBase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></div> <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
 
 <p><div>
-<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="38" /></a></span>
-<span><a href="https://www.facebook.com/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="36" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="30" /></a></span>
-<span><a href="https://instagram.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="32" /></a></span>
-<span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="39" /></a></span>
+<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="40" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="37" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="32" /></a></span>
+<span><a href="https://instagram.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="33" /></a></span>
+<span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="40" /></a></span>
 </div></p>
 
 <a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a>
+
+<p><b>Build all the automation you want, with SeleniumBase.</b></p>

@@ -78,6 +78,8 @@ if pure_python:
     sb.js_checking_on = False
     sb.recorder_mode = False
     sb.recorder_ext = False
+    sb.record_sleep = False
+    sb.rec_behave = False
     sb.report_on = False
     sb.is_pytest = False
     sb.slow_mode = False

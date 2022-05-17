@@ -148,6 +148,8 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --recorder  # (Enables the Recorder for turning browser actions into code.)
+--rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)
+--rec-sleep  # (If the Recorder is enabled, also records self.sleep calls.)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)

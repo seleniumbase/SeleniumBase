@@ -89,6 +89,8 @@ def main():
         code_lang = "go"
     elif file_to_print.lower().endswith(".java"):
         code_lang = "java"
+    elif file_to_print.lower().endswith(".feature"):
+        code_lang = "gherkin"
     elif "." not in file_to_print:
         code_lang = "markdown"
     else:
