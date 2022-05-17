@@ -184,7 +184,7 @@ class BaseCase(unittest.TestCase):
             self.driver.get(url)
         except Exception as e:
             if "ERR_CONNECTION_TIMED_OUT" in e.msg:
-                self.sleep(0.5)
+                time.sleep(0.5)
                 self.driver.get(url)
             else:
                 raise Exception(e.msg)
@@ -5603,13 +5603,13 @@ class BaseCase(unittest.TestCase):
                 self.assertEqual(expected, actual, error % (expected, actual))
         except Exception:
             self.wait_for_ready_state_complete()
-            self.sleep(settings.MINI_TIMEOUT)
+            time.sleep(settings.MINI_TIMEOUT)
             actual = self.get_page_title().strip()
             try:
                 self.assertEqual(expected, actual, error % (expected, actual))
             except Exception:
                 self.wait_for_ready_state_complete()
-                self.sleep(settings.MINI_TIMEOUT)
+                time.sleep(settings.MINI_TIMEOUT)
                 actual = self.get_page_title().strip()
                 self.assertEqual(expected, actual, error % (expected, actual))
         if self.demo_mode and not self.recorder_mode:
@@ -8964,7 +8964,7 @@ class BaseCase(unittest.TestCase):
         jqc_helper.jquery_confirm_button_dialog(
             self.driver, message, buttons, options
         )
-        self.sleep(0.02)
+        time.sleep(0.02)
         jf = "document.querySelector('.jconfirm-box').focus();"
         try:
             self.execute_script(jf)
@@ -8972,11 +8972,11 @@ class BaseCase(unittest.TestCase):
             pass
         waiting_for_response = True
         while waiting_for_response:
-            self.sleep(0.05)
+            time.sleep(0.05)
             jqc_open = self.execute_script("return jconfirm.instances.length")
             if str(jqc_open) == "0":
                 break
-        self.sleep(0.1)
+        time.sleep(0.1)
         status = None
         try:
             status = self.execute_script("return $jqc_status")
@@ -9047,7 +9047,7 @@ class BaseCase(unittest.TestCase):
         jqc_helper.jquery_confirm_text_dialog(
             self.driver, message, button, options
         )
-        self.sleep(0.02)
+        time.sleep(0.02)
         jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
         try:
             self.execute_script(jf)
@@ -9055,11 +9055,11 @@ class BaseCase(unittest.TestCase):
             pass
         waiting_for_response = True
         while waiting_for_response:
-            self.sleep(0.05)
+            time.sleep(0.05)
             jqc_open = self.execute_script("return jconfirm.instances.length")
             if str(jqc_open) == "0":
                 break
-        self.sleep(0.1)
+        time.sleep(0.1)
         status = None
         try:
             status = self.execute_script("return $jqc_input")
@@ -9118,7 +9118,7 @@ class BaseCase(unittest.TestCase):
         jqc_helper.jquery_confirm_full_dialog(
             self.driver, message, buttons, options
         )
-        self.sleep(0.02)
+        time.sleep(0.02)
         jf = "document.querySelector('.jconfirm-box input.jqc_input').focus();"
         try:
             self.execute_script(jf)
@@ -9126,11 +9126,11 @@ class BaseCase(unittest.TestCase):
             pass
         waiting_for_response = True
         while waiting_for_response:
-            self.sleep(0.05)
+            time.sleep(0.05)
             jqc_open = self.execute_script("return jconfirm.instances.length")
             if str(jqc_open) == "0":
                 break
-        self.sleep(0.1)
+        time.sleep(0.1)
         text_status = None
         button_status = None
         try:
@@ -11008,7 +11008,7 @@ class BaseCase(unittest.TestCase):
                 element_location = 0
             scroll_script = "window.scrollTo(0, %s);" % element_location
             self.driver.execute_script(scroll_script)
-            self.sleep(0.1)
+            time.sleep(0.1)
         except Exception:
             pass
         try:
@@ -11058,7 +11058,7 @@ class BaseCase(unittest.TestCase):
             self.execute_script(scroll_script)
         else:
             self.__slow_scroll_to_element(element)
-        self.sleep(sleep_time)
+        time.sleep(sleep_time)
 
     def __jquery_click(self, selector, by=By.CSS_SELECTOR):
         """Clicks an element using jQuery. Different from using pure JS."""
