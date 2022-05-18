@@ -6,9 +6,9 @@
 
 * A complete test automation framework for web and mobile E2E UI testing.
 * Has [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for generating scripts from recorded actions. (``--rec``)
-* Supports multiple browsers, tabs, iFrames, and proxies in the same test.
+* Supports multiple browsers, tabs, iframes, and proxies in the same test.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
-* Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), and [nose](http://nose.readthedocs.io/en/latest/) for test discovery and execution.
+* Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), [nose](http://nose.readthedocs.io/en/latest/), and [behave](https://behave.readthedocs.io/en/stable/index.html) for finding/running tests.
 * No paywalls! You get access to all available features from the start.
 * Powerful logging tools for [dashboards, reports, and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 * Can run tests in Headless Mode to hide the browser. (``--headless``)
