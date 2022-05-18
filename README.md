@@ -16,7 +16,7 @@
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank">
-<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a>
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
 <p align="center">
@@ -857,7 +857,8 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
     return False
 ```
 
-is_text_visible(text, selector)  # is text visible on a page
+<details>
+<summary>is_text_visible(text, selector)  # is text visible on a page</summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -885,6 +886,8 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
     else:
         raise Exception("Reports of my assimilation are greatly exaggerated.")
 ```
+
+</details>
 
 🔵 Switching Tabs:
 
