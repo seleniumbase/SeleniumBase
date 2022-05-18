@@ -11,7 +11,7 @@ var cssPathById = function(el) {
         if (el.id) {
             elid = el.id;
             if (elid.includes(',') || elid.includes('.') ||
-                elid.includes('(') || elid.includes(')'))
+                elid.includes('(') || elid.includes(')') || hasNumber(elid[0]))
                 return cssPathByAttribute(el, 'id');
             selector += '#' + elid;
             path.unshift(selector);
@@ -110,7 +110,7 @@ function tagName(el) {
     return el.tagName.toLowerCase();
 };
 function turnIntoParentAsNeeded(el) {
-    if (tagName(el) == 'span') {
+    if (tagName(el) == 'span' || tagName(el) == 'i') {
         if (tagName(el.parentElement) == 'button') {
             el = el.parentElement;
         }
@@ -148,6 +148,7 @@ var getBestSelector = function(el) {
     non_id_attributes.push('data-action');
     non_id_attributes.push('data-target');
     non_id_attributes.push('data-content');
+    non_id_attributes.push('data-tooltip');
     non_id_attributes.push('alt');
     non_id_attributes.push('title');
     non_id_attributes.push('heading');

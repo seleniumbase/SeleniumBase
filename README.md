@@ -626,6 +626,22 @@ nosetests test_suite.py --report
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
 
+<h4><b>Behave Dashboard & Reports:</b></h4>
+
+(The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
+
+```bash
+behave behave_bdd/features/ -D dashboard -D headless
+```
+
+<img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="500">
+
+You can also use ``--junit`` to get ``.xml`` reports for each Behave feature. Jenkins can use these files to display better reporting for your tests.
+
+```bash
+behave behave_bdd/features/ --junit -D rs -D headless
+```
+
 <h4><b>Allure Reports:</b></h4>
 
 See: [https://docs.qameta.io/allure/](https://docs.qameta.io/allure/#_pytest)
@@ -695,17 +711,19 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
 
 <details>
-<summary>🔵 Here are some things you can do to set up a production environment for your testing.</summary>
+<summary>▶️ (expand) Here are some things you can do to set up a production environment for your testing.</summary>
 
-* You can set up a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.
+<ul>
+<li>You can set up a <a href="https://jenkins.io/">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.</li>
 
-* You can use [the Selenium Grid](https://selenium.dev/documentation/en/grid/) to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the [SeleniumBase selenium_grid folder](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid), which should have everything you need, including the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">Selenium Grid ReadMe</a>, which will help you get started.
+<li>You can use <a href="https://selenium.dev/documentation/en/grid/">the Selenium Grid</a> to scale your testing by distributing tests on several machines with parallel execution. To do this, check out the<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/utilities/selenium_grid">SeleniumBase selenium_grid folder</a>, which should have everything you need, including the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">Selenium Grid ReadMe</a>, which will help you get started.</li>
 
-* If you're using the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md">SeleniumBase MySQL feature</a> to save results from tests running on a server machine, you can install [MySQL Workbench](https://dev.mysql.com/downloads/tools/workbench/) to help you read & write from your DB more easily.
+<li>If you're using the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mysql_installation.md">SeleniumBase MySQL feature</a> to save results from tests running on a server machine, you can install <a href="https://dev.mysql.com/downloads/tools/workbench/">MySQL Workbench</a> to help you read & write from your DB more easily.</li>
 
-* If you use [Slack](https://slack.com), you can easily have your Jenkins jobs display results there by using the [Jenkins Slack Plugin](https://github.com/jenkinsci/slack-plugin). Another way to send messages from your tests to Slack is by using [Slack's Incoming Webhooks API](https://api.slack.com/incoming-webhooks).
+<li>If you use <a href="https://slack.com">Slack</a>, you can easily have your Jenkins jobs display results there by using the <a href="https://github.com/jenkinsci/slack-plugin">Jenkins Slack Plugin</a>. Another way to send messages from your tests to Slack is by using <a href="https://api.slack.com/incoming-webhooks">Slack's Incoming Webhooks API</a>.</li>
 
-* If you're using AWS, you can set up an [Amazon S3](https://aws.amazon.com/s3/) account for saving log files and screenshots from your tests. To activate this feature, modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details in the S3 section, and add "``--with-s3-logging``" on the command-line when running your tests.
+<li>If you're using AWS, you can set up an <a href="https://aws.amazon.com/s3/">Amazon S3</a> account for saving log files and screenshots from your tests. To activate this feature, modify <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py">settings.py</a> with connection details in the S3 section, and add <code>--with-s3-logging</code> on the command-line when running your tests.</li>
+</ul>
 
 Here's an example of running tests with some additional features enabled:
 
@@ -862,7 +880,7 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
 ```
 
 <details>
-<summary>is_text_visible(text, selector)  # is text visible on a page</summary>
+<summary>▶️ (expand) is_text_visible(text, selector)  # is text visible on a page</summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -895,7 +913,7 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
 
 🔵 Switching Tabs:
 
-<p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to ``about:blank`` URLs.)</p>
+<p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to <code>about:blank</code> URLs.)</p>
 
 ```python
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
@@ -927,7 +945,7 @@ self.activate_jquery()
 ```
 
 <details>
-<summary>🔵 Here are some examples of using jQuery in your scripts.</summary>
+<summary>▶️ (expand) Here are some examples of using jQuery in your scripts.</summary>
 
 ```python
 self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
@@ -956,7 +974,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 🔵 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
 
 <details>
-<summary>🔵 In this example, JavaScript creates a referral button on a page, which is then clicked.</summary>
+<summary>▶️ (expand) In this example, JavaScript creates a referral button on a page, which is then clicked.</summary>
 
 ```python
 start_page = "https://xkcd.com/465/"
@@ -967,7 +985,7 @@ self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
 
-(Due to popular demand, this traffic generation example has been included in SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
+(Due to popular demand, this traffic generation example has been included in SeleniumBase with the <code>self.generate_referral(start_page, end_page)</code> and the <code>self.generate_traffic(start_page, end_page, loops)</code> methods.)
 
 </details>
 
