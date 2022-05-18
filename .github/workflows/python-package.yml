@@ -9,6 +9,9 @@ on:
   workflow_dispatch:
     branches:
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
