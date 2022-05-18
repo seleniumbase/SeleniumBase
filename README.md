@@ -8,7 +8,7 @@
 <h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/nice_logo_5t.png" alt="SeleniumBase" title="SeleniumBase" width="260" /></a></h3>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">A Python framework with all the tools you need to automate web testing.</div></p>
+<p align="center"><div align="center">A Python framework with everything you need to automate web testing.</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
