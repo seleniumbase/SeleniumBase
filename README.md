@@ -694,7 +694,8 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 <a id="utilizing_advanced_features"></a>
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
 
-🔵 Here are some things you can do to set up a production environment for your testing:
+<details>
+<summary>🔵 Here are some things you can do to set up a production environment for your testing.</summary>
 
 * You can set up a [Jenkins](https://jenkins.io/) build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.
 
@@ -706,11 +707,14 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 * If you're using AWS, you can set up an [Amazon S3](https://aws.amazon.com/s3/) account for saving log files and screenshots from your tests. To activate this feature, modify [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) with connection details in the S3 section, and add "``--with-s3-logging``" on the command-line when running your tests.
 
-Here's an example of running tests with additional features enabled:
+Here's an example of running tests with some additional features enabled:
 
 ```bash
 pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 ```
+
+</details>
+
 
 <a id="detailed_method_specifications"></a>
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
@@ -922,7 +926,8 @@ You'd know this because the web page would contain something like the following 
 self.activate_jquery()
 ```
 
-🔵 Here are some examples of using jQuery in your scripts:
+<details>
+<summary>🔵 Here are some examples of using jQuery in your scripts.</summary>
 
 ```python
 self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
@@ -946,9 +951,12 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 (Most of the above commands can be done directly with built-in SeleniumBase methods.)
 
+</details>
+
 🔵 Some websites have a restrictive [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) to prevent users from loading jQuery and other external libraries onto their websites. If you need to use jQuery or another JS library on such a website, add ``--disable-csp`` on the command-line.
 
-🔵 In the next example, JavaScript creates a referral button on a page, which is then clicked:
+<details>
+<summary>🔵 In this example, JavaScript creates a referral button on a page, which is then clicked.</summary>
 
 ```python
 start_page = "https://xkcd.com/465/"
@@ -960,6 +968,8 @@ self.click("a.analytics")  # Clicks the generated button
 ```
 
 (Due to popular demand, this traffic generation example has been included in SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
+
+</details>
 
 🔵 Using deferred asserts:
 
