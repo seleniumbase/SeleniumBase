@@ -5,10 +5,10 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/nice_logo_4t.png" alt="SeleniumBase" title="SeleniumBase" width="260" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/nice_logo_5t.png" alt="SeleniumBase" title="SeleniumBase" width="260" /></a></h3>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">A <a href="https://www.selenium.dev/documentation/overview/details/" target="_blank">Selenium</a> ecosystem for Python that extends <a href="https://docs.pytest.org/en/stable/" target="_blank">Pytest</a> and <a href="https://behave.readthedocs.io/en/stable/index.html" target="_blank">Behave</a>.</div></p>
+<p align="center"><div align="center">A Python framework with all the tools you need to automate web testing.</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -16,7 +16,7 @@
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank">
-<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a>
 </p>
 
 <p align="center">
@@ -47,7 +47,7 @@
 
 --------
 
-<p align="left">🌱 An example with <b>BaseCase</b>, a subclass of <code>unittest.TestCase</code>. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">🌱 An example with the <b>BaseCase</b> class. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -64,7 +64,7 @@ class TestMFALogin(BaseCase):
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">🌱 An example with <b>sb</b>, a <code>pytest</code> fixture. Runs with <code>pytest</code>.</p>
+<p align="left">🌱 An example with the <b>sb</b> <code>pytest</code> fixture. Runs with <code>pytest</code>.</p>
 
 ```python
 def test_mfa_login(sb):
