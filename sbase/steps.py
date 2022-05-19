@@ -508,3 +508,15 @@ def show_file_choosers(context):
 def sleep(context, seconds):
     sb = context.sb
     sb.sleep(float(seconds))
+
+
+@step("Activate Demo Mode")
+def activate_demo_mode(context):
+    sb = context.sb
+    sb.activate_demo_mode()
+
+
+@step("Deactivate Demo Mode")
+def deactivate_demo_mode(context):
+    sb = context.sb
+    sb.deactivate_demo_mode()
