@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></a></h3>
 <!-- View on GitHub -->
 
 <p align="center"><div align="center">A Python framework with everything you need to automate web testing.</div></p>
