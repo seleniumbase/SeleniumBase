@@ -49,7 +49,7 @@
 
 <details>
 <summary> (expand) ▶️ How is SeleniumBase different from raw Selenium?</summary>
-<div>
+<div><br />
 
 ✔️ SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.
 
