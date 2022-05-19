@@ -51,23 +51,23 @@
 <summary> (expand) ▶️ How is SeleniumBase different from raw Selenium?</summary>
 <div><br />
 
-✔️ SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.
+✔️ SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.<br />
 
-✔️ With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase install chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).
+✔️ With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase install chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).<br />
 
-✔️ With raw Selenium, your commands that use selectors would also need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, so you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).
+✔️ With raw Selenium, your commands that use selectors would also need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, so you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).<br />
 
-✔️ SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in "\n".<br />With raw Selenium, those actions require multiple method calls.
+✔️ SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in "\n".<br />With raw Selenium, those actions require multiple method calls.<br />
 
-✔️ SeleniumBase lets you change the explicit timeout values of methods:<br /><code>self.click("button",timeout=12)</code><br />With raw Selenium, that requires more code:<br /><code>WebDriverWait(driver,12).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />Given these examples, the SeleniumBase way is preferable for simplicity.
+✔️ SeleniumBase lets you change the explicit timeout values of methods:<br /><code>self.click("button",timeout=12)</code><br />With raw Selenium, that requires more code:<br /><code>WebDriverWait(driver,12).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />Given these examples, the SeleniumBase way is preferable for simplicity.<br />
 
-✔️ With SeleniumBase, there's a default timeout length if not set, which means that methods automatically wait for elements to appear (<i>up to the timeout length</i>) before failing. With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load.
+✔️ With SeleniumBase, there's a default timeout length if not set, which means that methods automatically wait for elements to appear (<i>up to the timeout length</i>) before failing. With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load.<br />
 
-✔️ SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw Selenium does not have these options out-of-the-box.
+✔️ SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw Selenium does not have these options out-of-the-box.<br />
 
-✔️ SeleniumBase includes desktop apps for running tests, such as the SeleniumBase Commander for pytest, and the SeleniumBase Behave GUI.
+✔️ SeleniumBase includes desktop apps for running tests, such as the SeleniumBase Commander for pytest, and the SeleniumBase Behave GUI.<br />
 
-✔️ SeleniumBase has its own Recorder & Test Generator that can create tests from manual browser actions. SeleniumBase also has many other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)
+✔️ SeleniumBase has its own Recorder & Test Generator that can create tests from manual browser actions. SeleniumBase also has many other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)<br />
 </div>
 </details>
 
