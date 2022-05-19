@@ -2,7 +2,7 @@
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
-<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Features: 🏰</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Features: 🎯</h2>
 
 * A complete test automation framework for web and mobile E2E UI testing.
 * Has [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for generating scripts from recorded actions. (``--rec``)
