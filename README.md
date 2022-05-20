@@ -71,7 +71,7 @@
 </div>
 </details>
 
-<p align="left">📘 An example with the <b>BaseCase</b> class. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
+<p align="left">📘📝 An example with the <b>BaseCase</b> class. Runs with <code>pytest</code> or <code>nosetests</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">Learn more</a>)</p>
 
 ```python
 from seleniumbase import BaseCase
@@ -88,7 +88,7 @@ class TestMFALogin(BaseCase):
         self.save_screenshot_to_logs()
 ```
 
-<p align="left">📗 An example with the <b>sb</b> <code>pytest</code> fixture. Runs with <code>pytest</code>.</p>
+<p align="left">📗📝 An example with the <b>sb</b> <code>pytest</code> fixture. Runs with <code>pytest</code>.</p>
 
 ```python
 def test_mfa_login(sb):
@@ -102,7 +102,7 @@ def test_mfa_login(sb):
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">📕 An example with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">📕📝 An example with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
