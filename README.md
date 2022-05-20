@@ -8,7 +8,7 @@
 <h1 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/logo3b.png" alt="SeleniumBase" title="SeleniumBase" width="38" /></a> SeleniumBase <a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/dash_pie_2.png" alt="SeleniumBase" title="SeleniumBase" width="38" /></a></h1>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">Fast, easy, and reliable browser automation & testing with Python.</div></p>
+<p align="center"><div align="center">✅ Fast, easy, and reliable Web/UI testing with Python.</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
@@ -22,7 +22,7 @@
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🎯 Features</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">✅ Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📝 Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🎛️ Options</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🔮 Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ Cmdr</a> |
@@ -30,7 +30,7 @@
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">⚪ Dashboard</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Formats</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Charts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
@@ -48,7 +48,7 @@
 --------
 
 <details>
-<summary> ▶️ How is SeleniumBase different from raw Selenium? (click to expand)</summary>
+<summary> ▶️ <u>How is SeleniumBase different from raw Selenium?</u> (click to expand)</summary>
 <div>
 
 <p>✔️ SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
