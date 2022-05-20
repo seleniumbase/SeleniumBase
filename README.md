@@ -5,18 +5,17 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h1 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/logo3b.png" alt="SeleniumBase" title="SeleniumBase" width="38" /></a> SeleniumBase <a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/dash_pie_2.png" alt="SeleniumBase" title="SeleniumBase" width="38" /></a></h1>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_i.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">✅ Fast, easy, and reliable Web/UI testing with Python.</div></p>
+<p align="center"><div align="center">Fast, easy, and reliable Web/UI testing with <b>Python</b>. ✅</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank">
-<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a>
 </p>
 
 <p align="center">
@@ -30,7 +29,7 @@
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">⚪ Dashboard</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Formats</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Charts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
@@ -129,6 +128,8 @@ pytest test_demo_site.py
 
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/cdn/img/python_logo.png" title="SeleniumBase" width="42" /> Python Setup:</h2>
+
+<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=FACE42" title="Supported Python Versions" /></a>
 
 🔵 Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
