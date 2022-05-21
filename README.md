@@ -8,7 +8,7 @@
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_i.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">Fast, easy, and reliable Web/UI testing with <b>Python</b>. ✅</div></p>
+<p align="center"><div align="center">Fast, easy, and reliable Web/UI testing with Python. ✅</div></p>
 
 <p align="center">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
