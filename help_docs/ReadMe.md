@@ -6,11 +6,11 @@
 <a href="https://seleniumbase.io/help_docs/features_list/">🎯 Features</a> |
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🎛️ Options</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">✅ Examples</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">📝 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
-<a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Formats</a> |
+<a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/method_summary/">📚 API</a> |
 <a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
@@ -31,8 +31,8 @@
 <a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
-<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Presenter</a> |
-<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 ChartMaker</a>
+<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Slides</a> |
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 Charts</a>
 </p>
 
 --------
