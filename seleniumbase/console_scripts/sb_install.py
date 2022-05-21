@@ -661,6 +661,11 @@ def main(override=None):
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
             print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
+            if copy_to_path and os.path.exists(LOCAL_PATH):
+                path_file = LOCAL_PATH + f_name
+                shutil.copyfile(new_file, path_file)
+                make_executable(path_file)
+                print("Also copied to: %s%s%s" % (c3, path_file, cr))
             print("")
         elif name == "operadriver":
             if len(contents) > 3:
