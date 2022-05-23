@@ -5,20 +5,20 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_i.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_banner_3_wide.png" alt="SeleniumBase" title="SeleniumBase" width="500" /></a></p>
 <!-- View on GitHub -->
 
-<p align="center"><div align="center">Fast, easy, and reliable Web/UI testing with Python. ✅</div></p>
+<p align="left"><div align="left">✅ Fast, easy, and reliable Web/UI automation & testing with Python.</div></p>
 
-<p align="center">
+<p align="left">
 <a href="https://github.com/seleniumbase/SeleniumBase/releases">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
 <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a>
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">
+<p align="left">
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🎯 Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📝 Examples</a> |
