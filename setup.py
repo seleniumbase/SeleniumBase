@@ -125,7 +125,7 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
-        'pip>=22.1;python_version>="3.7"',
+        'pip>=22.1.1;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.5"',
@@ -251,7 +251,7 @@ setup(
         'Pillow==9.1.1;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
-        'rich==12.4.1;python_version>="3.6" and python_version<"4.0"',
+        'rich==12.4.3;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
         'pdfminer.six==20191110;python_version<"3.5"',
@@ -265,7 +265,7 @@ setup(
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==6.3.3;python_version>="3.7"',
+            'coverage==6.4;python_version>="3.7"',
             'pytest-cov==2.12.1;python_version<"3.6"',
             'pytest-cov==3.0.0;python_version>="3.6"',
         ],
