@@ -77,7 +77,7 @@ plugins:
         on_pre_build: mkdocs_build.prepare:main
 # Page tree
 nav:
-  - SeleniumBase: README.md
+  - SeleniumBase ReadMe: README.md
   - Features List: help_docs/features_list.md
   - Running Example Tests: examples/ReadMe.md
   - Command Line Options: help_docs/customizing_test_runs.md
