@@ -3763,6 +3763,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_at")
         ext_actions.append("as_te")
         ext_actions.append("as_et")
+        ext_actions.append("wf_el")
         ext_actions.append("sw_fr")
         ext_actions.append("sw_dc")
         ext_actions.append("sw_pf")
@@ -3775,6 +3776,11 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("d_a_c")
         ext_actions.append("e_mfa")
         ext_actions.append("ss_tl")
+        ext_actions.append("da_el")
+        ext_actions.append("da_ep")
+        ext_actions.append("da_te")
+        ext_actions.append("da_et")
+        ext_actions.append("pr_da")
         for n in range(len(srt_actions)):
             if srt_actions[n][0] in ext_actions:
                 origin = srt_actions[n][2]
@@ -4023,6 +4029,12 @@ class BaseCase(unittest.TestCase):
             elif action[0] == "sleep":
                 method = "sleep"
                 sb_actions.append("self.%s(%s)" % (method, action[1]))
+            elif action[0] == "wf_el":
+                method = "wait_for_element"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "as_el":
                 method = "assert_element"
                 if '"' not in action[1]:
@@ -4097,13 +4109,22 @@ class BaseCase(unittest.TestCase):
                         'self.%s(\'%s\', "%s")'
                         % (method, action[1][0], action[1][1])
                     )
-            elif action[0] == "as_te" or action[0] == "as_et":
+            elif (
+                action[0] == "as_te"
+                or action[0] == "as_et"
+                or action[0] == "da_te"
+                or action[0] == "da_et"
+            ):
                 import unicodedata
 
                 action[1][0] = unicodedata.normalize("NFKC", action[1][0])
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
+                elif action[0] == "da_te":
+                    method = "deferred_assert_text"
+                elif action[0] == "da_et":
+                    method = "deferred_assert_exact_text"
                 if action[1][1] != "html":
                     if '"' not in action[1][0] and '"' not in action[1][1]:
                         sb_actions.append(
@@ -4134,12 +4155,26 @@ class BaseCase(unittest.TestCase):
                         sb_actions.append(
                             "self.%s('%s')" % (method, action[1][0])
                         )
+            elif action[0] == "da_el":
+                method = "deferred_assert_element"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "da_ep":
+                method = "deferred_assert_element_present"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "ss_tl":
                 method = "save_screenshot_to_logs"
                 sb_actions.append("self.%s()" % method)
             elif action[0] == "sh_fc":
                 method = "show_file_choosers"
                 sb_actions.append("self.%s()" % method)
+            elif action[0] == "pr_da":
+                sb_actions.append("self.process_deferred_asserts()")
             elif action[0] == "c_l_s":
                 sb_actions.append("self.clear_local_storage()")
             elif action[0] == "c_s_s":
@@ -9574,14 +9609,26 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["wf_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
 
-    def get_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def get_element(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_present() - returns the element.
         The element does not need be visible (it may be hidden)."""
         self.__check_scope()
@@ -10919,6 +10966,15 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["da_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         try:
             self.wait_for_element_visible(selector, by=by, timeout=timeout)
             return True
@@ -10992,6 +11048,16 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["da_te", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         try:
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             return True
@@ -11024,6 +11090,16 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["da_et", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         try:
             self.wait_for_exact_text_visible(
                 text, selector, by=by, timeout=timeout
@@ -11076,6 +11152,11 @@ class BaseCase(unittest.TestCase):
         the deferred asserts on a single html page so that the failure
         screenshot matches the location of the deferred asserts.
         If "print_only" is set to True, the exception won't get raised."""
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["pr_da", "", origin, time_stamp]
+            self.__extra_actions.append(action)
         if self.__deferred_assert_failures:
             exception_output = ""
             exception_output += "\n***** DEFERRED ASSERTION FAILURES:\n"
