@@ -37,7 +37,7 @@ from seleniumbase.config import settings
 from seleniumbase.fixtures import shared_utils
 
 
-def is_element_present(driver, selector, by=By.CSS_SELECTOR):
+def is_element_present(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is present on the page.
     @Params
@@ -54,7 +54,7 @@ def is_element_present(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
+def is_element_visible(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is visible on the page.
     @Params
@@ -71,7 +71,7 @@ def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def is_element_enabled(driver, selector, by=By.CSS_SELECTOR):
+def is_element_enabled(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is enabled on the page.
     @Params
@@ -88,7 +88,7 @@ def is_element_enabled(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
+def is_text_visible(driver, text, selector, by="css selector"):
     """
     Returns whether the specified text is visible in the specified selector.
     @Params
@@ -107,7 +107,7 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
 
 
 def is_attribute_present(
-    driver, selector, attribute, value=None, by=By.CSS_SELECTOR
+    driver, selector, attribute, value=None, by="css selector"
 ):
     """
     Returns whether the specified attribute is present in the given selector.
@@ -136,7 +136,7 @@ def is_attribute_present(
         return False
 
 
-def hover_on_element(driver, selector, by=By.CSS_SELECTOR):
+def hover_on_element(driver, selector, by="css selector"):
     """
     Fires the hover event for the specified element by the given selector.
     @Params
@@ -166,8 +166,8 @@ def hover_and_click(
     driver,
     hover_selector,
     click_selector,
-    hover_by=By.CSS_SELECTOR,
-    click_by=By.CSS_SELECTOR,
+    hover_by="css selector",
+    click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
     """
@@ -211,7 +211,7 @@ def hover_element_and_click(
     driver,
     element,
     click_selector,
-    click_by=By.CSS_SELECTOR,
+    click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
     """
@@ -246,7 +246,7 @@ def hover_element_and_double_click(
     driver,
     element,
     click_selector,
-    click_by=By.CSS_SELECTOR,
+    click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
     start_ms = time.time() * 1000.0
@@ -280,7 +280,7 @@ def hover_element_and_double_click(
 def wait_for_element_present(
     driver,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     original_selector=None,
 ):
@@ -334,7 +334,7 @@ def wait_for_element_present(
 def wait_for_element_visible(
     driver,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     original_selector=None,
 ):
@@ -413,7 +413,7 @@ def wait_for_text_visible(
     driver,
     text,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     browser=None,
 ):
@@ -517,7 +517,7 @@ def wait_for_exact_text_visible(
     driver,
     text,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     browser=None,
 ):
@@ -624,7 +624,7 @@ def wait_for_attribute(
     selector,
     attribute,
     value=None,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
     """
@@ -710,7 +710,7 @@ def wait_for_attribute(
 def wait_for_element_absent(
     driver,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     original_selector=None,
 ):
@@ -757,7 +757,7 @@ def wait_for_element_absent(
 def wait_for_element_not_visible(
     driver,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
     original_selector=None,
 ):
@@ -805,7 +805,7 @@ def wait_for_element_not_visible(
 
 
 def wait_for_text_not_visible(
-    driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver, text, selector, by="css selector", timeout=settings.LARGE_TIMEOUT
 ):
     """
     Searches for the text in the element of the given selector on the page.
@@ -847,7 +847,7 @@ def wait_for_attribute_not_present(
     selector,
     attribute,
     value=None,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
     """
@@ -891,7 +891,7 @@ def wait_for_attribute_not_present(
     timeout_exception(Exception, message)
 
 
-def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
+def find_visible_elements(driver, selector, by="css selector"):
     """
     Finds all WebElements that match a selector and are visible.
     Similar to webdriver.find_elements.
@@ -915,7 +915,7 @@ def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
 
 
 def save_screenshot(
-    driver, name, folder=None, selector=None, by=By.CSS_SELECTOR
+    driver, name, folder=None, selector=None, by="css selector"
 ):
     """
     Saves a screenshot of the current page.
