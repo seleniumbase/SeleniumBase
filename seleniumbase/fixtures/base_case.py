@@ -10926,8 +10926,49 @@ class BaseCase(unittest.TestCase):
             self.__add_deferred_assert_failure(fs=fs)
             return False
 
+    def deferred_assert_element_present(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """A non-terminating assertion for an element present in the page html.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 1  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["da_ep", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        try:
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
     def deferred_assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, text, selector="html", by="css selector", timeout=None, fs=False
     ):
         """A non-terminating assertion for text from an element on a page.
         Failures will be saved until the process_deferred_asserts()
