@@ -11094,15 +11094,23 @@ class BaseCase(unittest.TestCase):
     # Alternate naming scheme for the "deferred_assert" methods.
 
     def delayed_assert_element(
-        self, selector, by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, selector, by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_element()"""
         return self.deferred_assert_element(
             selector=selector, by=by, timeout=timeout, fs=fs
         )
 
+    def delayed_assert_element_present(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """Same as self.deferred_assert_element_present()"""
+        return self.deferred_assert_element_present(
+            selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
     def delayed_assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, text, selector="html", by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_text()"""
         return self.deferred_assert_text(
