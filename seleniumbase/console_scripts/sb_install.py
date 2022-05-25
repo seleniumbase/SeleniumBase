@@ -230,7 +230,15 @@ def main(override=None):
             if get_latest:
                 p_version = p_version + " " + c2 + "(Latest)" + cr
             else:
-                not_latest = c5 + "(" + c4 + "NOT Latest" + c5 + ")" + cr
+                n_l_s = "NOT Latest"
+                try:
+                    int_use_version = int(use_version.split(".")[0])
+                    int_latest_version = int(latest_version.split(".")[0])
+                    if int_use_version > int_latest_version:
+                        n_l_s = "NOT Latest Stable"
+                except Exception:
+                    pass
+                not_latest = c5 + "(" + c4 + n_l_s + c5 + ")" + cr
                 p_version = p_version + " " + not_latest
             msg = c2 + "chromedriver version for download" + cr
             print("\n*** %s = %s" % (msg, p_version))
