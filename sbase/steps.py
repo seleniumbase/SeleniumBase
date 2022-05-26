@@ -520,3 +520,46 @@ def activate_demo_mode(context):
 def deactivate_demo_mode(context):
     sb = context.sb
     sb.deactivate_demo_mode()
+
+
+@step("Deferred assert element '{selector}'")
+@step('Deferred assert element "{selector}"')
+def deferred_assert_element(context, selector):
+    sb = context.sb
+    sb.deferred_assert_element(selector)
+
+
+@step("Deferred assert element present '{selector}'")
+@step('Deferred assert element present "{selector}"')
+def deferred_assert_element_present(context, selector):
+    sb = context.sb
+    sb.deferred_assert_element_present(selector)
+
+
+@step("Deferred assert text '{text}' in '{selector}'")
+@step('Deferred assert text "{text}" in "{selector}"')
+@step("Deferred assert text '{text}' in \"{selector}\"")
+@step('Deferred assert text "{text}" in \'{selector}\'')
+def deferred_assert_text_in_element(context, text, selector):
+    sb = context.sb
+    sb.deferred_assert_text(text, selector)
+
+
+@step("Deferred assert text '{text}'")
+@step('Deferred assert text "{text}"')
+def deferred_assert_text(context, text):
+    sb = context.sb
+    sb.deferred_assert_text(text)
+
+
+@step("Deferred assert exact text '{text}' in '{selector}'")
+@step('Deferred assert exact text "{text}" in "{selector}"')
+def deferred_assert_exact_text(context, text, selector):
+    sb = context.sb
+    sb.deferred_assert_exact_text(text, selector)
+
+
+@step("Process deferred asserts")
+def process_deferred_asserts(context):
+    sb = context.sb
+    sb.process_deferred_asserts()
