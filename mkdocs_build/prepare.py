@@ -125,7 +125,7 @@ def main(*args, **kwargs):
             if "<!-- View on GitHub -->" in line:
                 changed = True
                 line = (
-                    r'<p align="left"><div align="left">'
+                    r'<p align="center"><div align="center">'
                     r'<a href="https://github.com/seleniumbase/SeleniumBase">'
                     r'<img src="https://img.shields.io/badge/'
                     r"✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀"
@@ -144,7 +144,7 @@ def main(*args, **kwargs):
             if "<!-- SeleniumBase Header1 -->" in line:
                 changed = True
                 line = (
-                    '<section align="left"><div align="left">'
+                    '<section align="center"><div align="center">'
                     "<h2>✅ Reliable Browser Testing</h2>"
                     "</div></section>"
                 )

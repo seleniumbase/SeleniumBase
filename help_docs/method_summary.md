@@ -16,28 +16,28 @@ self.get(url)
 # If the url parameter is a URL: Perform self.open(url)
 # Otherwise: return self.get_element(URL_AS_A_SELECTOR)
 
-self.click(selector, by=By.CSS_SELECTOR, timeout=None, delay=0, scroll=True)
+self.click(selector, by="css selector", timeout=None, delay=0, scroll=True)
 
-self.slow_click(selector, by=By.CSS_SELECTOR, timeout=None)
+self.slow_click(selector, by="css selector", timeout=None)
 
-self.double_click(selector, by=By.CSS_SELECTOR, timeout=None)
+self.double_click(selector, by="css selector", timeout=None)
 
-self.click_chain(selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0)
+self.click_chain(selectors_list, by="css selector", timeout=None, spacing=0)
 
-self.type(selector, text, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
-#             self.input(selector, text, by=By.CSS_SELECTOR, timeout=None)
-#             self.fill(selector, text, by=By.CSS_SELECTOR, timeout=None)
-#             self.write(selector, text, by=By.CSS_SELECTOR, timeout=None)
+self.type(selector, text, by="css selector", timeout=None)
+# Duplicates: self.update_text(selector, text, by="css selector", timeout=None)
+#             self.input(selector, text, by="css selector", timeout=None)
+#             self.fill(selector, text, by="css selector", timeout=None)
+#             self.write(selector, text, by="css selector", timeout=None)
 
-self.add_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.send_keys(selector, text, by=By.CSS_SELECTOR, timeout=None)
+self.add_text(selector, text, by="css selector", timeout=None)
+# Duplicates: self.send_keys(selector, text, by="css selector", timeout=None)
 
-self.submit(selector, by=By.CSS_SELECTOR)
+self.submit(selector, by="css selector")
 
-self.clear(selector, by=By.CSS_SELECTOR, timeout=None)
+self.clear(selector, by="css selector", timeout=None)
 
-self.focus(selector, by=By.CSS_SELECTOR, timeout=None)
+self.focus(selector, by="css selector", timeout=None)
 
 self.refresh_page()
 # Duplicates: self.refresh(), self.reload(), self.reload_page()
@@ -63,15 +63,15 @@ self.open_start_page()
 
 self.open_if_not_url(url)
 
-self.is_element_present(selector, by=By.CSS_SELECTOR)
+self.is_element_present(selector, by="css selector")
 
-self.is_element_visible(selector, by=By.CSS_SELECTOR)
+self.is_element_visible(selector, by="css selector")
 
-self.is_element_enabled(selector, by=By.CSS_SELECTOR)
+self.is_element_enabled(selector, by="css selector")
 
-self.is_text_visible(text, selector="html", by=By.CSS_SELECTOR)
+self.is_text_visible(text, selector="html", by="css selector")
 
-self.is_attribute_present(selector, attribute, value=None, by=By.CSS_SELECTOR)
+self.is_attribute_present(selector, attribute, value=None, by="css selector")
 
 self.is_link_text_visible(link_text)
 
@@ -92,93 +92,93 @@ self.click_link(link_text, timeout=None)
 self.click_partial_link(partial_link_text, timeout=None)
 # Duplicates: self.click_partial_link_text(partial_link_text, timeout=None)
 
-self.get_text(selector, by=By.CSS_SELECTOR, timeout=None)
+self.get_text(selector, by="css selector", timeout=None)
 
 self.get_attribute(
-    selector, attribute, by=By.CSS_SELECTOR,
+    selector, attribute, by="css selector",
     timeout=None, hard_fail=True)
 
 self.set_attribute(
-    selector, attribute, value, by=By.CSS_SELECTOR, timeout=None, scroll=False)
+    selector, attribute, value, by="css selector", timeout=None, scroll=False)
 
-self.set_attributes(selector, attribute, value, by=By.CSS_SELECTOR)
-# Duplicates: self.set_attribute_all(selector, attribute, value, by=By.CSS_SELECTOR)
+self.set_attributes(selector, attribute, value, by="css selector")
+# Duplicates: self.set_attribute_all(selector, attribute, value, by="css selector")
 
-self.remove_attribute(selector, attribute, by=By.CSS_SELECTOR, timeout=None)
+self.remove_attribute(selector, attribute, by="css selector", timeout=None)
 
-self.remove_attributes(selector, attribute, by=By.CSS_SELECTOR)
+self.remove_attributes(selector, attribute, by="css selector")
 
-self.get_property(selector, property, by=By.CSS_SELECTOR, timeout=None)
+self.get_property(selector, property, by="css selector", timeout=None)
 
-self.get_text_content(selector, by=By.CSS_SELECTOR, timeout=None)
+self.get_text_content(selector, by="css selector", timeout=None)
 
-self.get_property_value(selector, property, by=By.CSS_SELECTOR, timeout=None)
+self.get_property_value(selector, property, by="css selector", timeout=None)
 
-self.get_image_url(selector, by=By.CSS_SELECTOR, timeout=None)
+self.get_image_url(selector, by="css selector", timeout=None)
 
-self.find_elements(selector, by=By.CSS_SELECTOR, limit=0)
+self.find_elements(selector, by="css selector", limit=0)
 
-self.find_visible_elements(selector, by=By.CSS_SELECTOR, limit=0)
+self.find_visible_elements(selector, by="css selector", limit=0)
 
-self.click_visible_elements(selector, by=By.CSS_SELECTOR, limit=0, timeout=None)
+self.click_visible_elements(selector, by="css selector", limit=0, timeout=None)
 
-self.click_nth_visible_element(selector, number, by=By.CSS_SELECTOR, timeout=None)
+self.click_nth_visible_element(selector, number, by="css selector", timeout=None)
 
-self.click_if_visible(selector, by=By.CSS_SELECTOR)
+self.click_if_visible(selector, by="css selector")
 
 self.click_active_element()
 
 self.click_with_offset(
-    selector, x, y, by=By.CSS_SELECTOR, mark=None, timeout=None)
+    selector, x, y, by="css selector", mark=None, timeout=None)
 
 self.double_click_with_offset(
-    selector, x, y, by=By.CSS_SELECTOR, mark=None, timeout=None)
+    selector, x, y, by="css selector", mark=None, timeout=None)
 
-self.is_selected(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.is_checked(selector, by=By.CSS_SELECTOR, timeout=None)
+self.is_selected(selector, by="css selector", timeout=None)
+# Duplicates: self.is_checked(selector, by="css selector", timeout=None)
 
-self.select_if_unselected(selector, by=By.CSS_SELECTOR)
-# Duplicates: self.check_if_unchecked(selector, by=By.CSS_SELECTOR)
+self.select_if_unselected(selector, by="css selector")
+# Duplicates: self.check_if_unchecked(selector, by="css selector")
 
-self.unselect_if_selected(selector, by=By.CSS_SELECTOR)
-# Duplicates: self.uncheck_if_checked(selector, by=By.CSS_SELECTOR)
+self.unselect_if_selected(selector, by="css selector")
+# Duplicates: self.uncheck_if_checked(selector, by="css selector")
 
-self.is_element_in_an_iframe(selector, by=By.CSS_SELECTOR)
+self.is_element_in_an_iframe(selector, by="css selector")
 
-self.switch_to_frame_of_element(selector, by=By.CSS_SELECTOR)
+self.switch_to_frame_of_element(selector, by="css selector")
 
-self.hover_on_element(selector, by=By.CSS_SELECTOR)
+self.hover_on_element(selector, by="css selector")
 
 self.hover_and_click(
     hover_selector, click_selector,
-    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
+    hover_by="css selector", click_by="css selector",
     timeout=None)
 
 self.hover_and_double_click(
     hover_selector, click_selector,
-    hover_by=By.CSS_SELECTOR, click_by=By.CSS_SELECTOR,
+    hover_by="css selector", click_by="css selector",
     timeout=None)
 
 self.drag_and_drop(drag_selector, drop_selector,
-                   drag_by=By.CSS_SELECTOR, drop_by=By.CSS_SELECTOR,
+                   drag_by="css selector", drop_by="css selector",
                    timeout=None)
 
 self.drag_and_drop_with_offset(
-    selector, x, y, by=By.CSS_SELECTOR, timeout=None)
+    selector, x, y, by="css selector", timeout=None)
 
 self.select_option_by_text(
     dropdown_selector, option,
-    dropdown_by=By.CSS_SELECTOR,
+    dropdown_by="css selector",
     timeout=None)
 
 self.select_option_by_index(
     dropdown_selector, option,
-    dropdown_by=By.CSS_SELECTOR,
+    dropdown_by="css selector",
     timeout=None)
 
 self.select_option_by_value(
     dropdown_selector, option,
-    dropdown_by=By.CSS_SELECTOR,
+    dropdown_by="css selector",
     timeout=None)
 
 self.load_html_string(html_string, new_page=True)
@@ -271,9 +271,9 @@ self.switch_to_driver(driver)
 
 self.switch_to_default_driver()
 
-self.save_screenshot(name, folder=None, selector=None, by=By.CSS_SELECTOR)
+self.save_screenshot(name, folder=None, selector=None, by="css selector")
 
-self.save_screenshot_to_logs(name=None, selector=None, by=By.CSS_SELECTOR)
+self.save_screenshot_to_logs(name=None, selector=None, by="css selector")
 
 self.save_page_source(name, folder=None)
 
@@ -311,29 +311,29 @@ self.activate_jquery()
 
 self.bring_active_window_to_front()
 
-self.bring_to_front(selector, by=By.CSS_SELECTOR)
+self.bring_to_front(selector, by="css selector")
 
-self.highlight_click(selector, by=By.CSS_SELECTOR, loops=3, scroll=True)
+self.highlight_click(selector, by="css selector", loops=3, scroll=True)
 
-self.highlight_type(selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
+self.highlight_type(selector, text, by="css selector", loops=3, scroll=True)
 # Duplicates:
-# self.highlight_update_text(selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True)
+# self.highlight_update_text(selector, text, by="css selector", loops=3, scroll=True)
 
-self.highlight(selector, by=By.CSS_SELECTOR, loops=4, scroll=True)
+self.highlight(selector, by="css selector", loops=4, scroll=True)
 
-self.press_up_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+self.press_up_arrow(selector="html", times=1, by="css selector")
 
-self.press_down_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+self.press_down_arrow(selector="html", times=1, by="css selector")
 
-self.press_left_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+self.press_left_arrow(selector="html", times=1, by="css selector")
 
-self.press_right_arrow(selector="html", times=1, by=By.CSS_SELECTOR)
+self.press_right_arrow(selector="html", times=1, by="css selector")
 
-self.scroll_to(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.scroll_to_element(selector, by=By.CSS_SELECTOR)
+self.scroll_to(selector, by="css selector", timeout=None)
+# Duplicates: self.scroll_to_element(selector, by="css selector")
 
-self.slow_scroll_to(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.slow_scroll_to_element(selector, by=By.CSS_SELECTOR)
+self.slow_scroll_to(selector, by="css selector", timeout=None)
+# Duplicates: self.slow_scroll_to_element(selector, by="css selector")
 
 self.scroll_to_top()
 
@@ -341,25 +341,25 @@ self.scroll_to_bottom()
 
 self.click_xpath(xpath)
 
-self.js_click(selector, by=By.CSS_SELECTOR, all_matches=False, scroll=True)
+self.js_click(selector, by="css selector", all_matches=False, scroll=True)
 
-self.js_click_all(selector, by=By.CSS_SELECTOR)
+self.js_click_all(selector, by="css selector")
 
-self.jquery_click(selector, by=By.CSS_SELECTOR)
+self.jquery_click(selector, by="css selector")
 
-self.jquery_click_all(selector, by=By.CSS_SELECTOR)
+self.jquery_click_all(selector, by="css selector")
 
-self.hide_element(selector, by=By.CSS_SELECTOR)
+self.hide_element(selector, by="css selector")
 
-self.hide_elements(selector, by=By.CSS_SELECTOR)
+self.hide_elements(selector, by="css selector")
 
-self.show_element(selector, by=By.CSS_SELECTOR)
+self.show_element(selector, by="css selector")
 
-self.show_elements(selector, by=By.CSS_SELECTOR)
+self.show_elements(selector, by="css selector")
 
-self.remove_element(selector, by=By.CSS_SELECTOR)
+self.remove_element(selector, by="css selector")
 
-self.remove_elements(selector, by=By.CSS_SELECTOR)
+self.remove_elements(selector, by="css selector")
 
 self.ad_block()
 # Duplicates: self.block_ads()
@@ -391,7 +391,7 @@ self.assert_pdf_text(
 
 self.create_folder(folder)
 
-self.choose_file(selector, file_path, by=By.CSS_SELECTOR, timeout=None)
+self.choose_file(selector, file_path, by="css selector", timeout=None)
 
 self.save_element_as_image_file(
     selector, file_name, folder=None, overlay_text="")
@@ -431,11 +431,11 @@ self.assert_raises(*args, **kwargs)
 
 self.wait_for_attribute(
     selector, attribute, value=None,
-    by=By.CSS_SELECTOR, timeout=None)
+    by="css selector", timeout=None)
 
 self.assert_attribute(
     selector, attribute, value=None,
-    by=By.CSS_SELECTOR, timeout=None)
+    by="css selector", timeout=None)
 
 self.assert_title(title)
 
@@ -458,8 +458,8 @@ self.get_mfa_code(totp_key=None)
 #             self.get_google_auth_password(totp_key=None)
 #             self.get_google_auth_code(totp_key=None)
 
-self.enter_mfa_code(selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.enter_totp_code(selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None)
+self.enter_mfa_code(selector, totp_key=None, by="css selector", timeout=None)
+# Duplicates: self.enter_totp_code(selector, totp_key=None, by="css selector", timeout=None)
 
 self.convert_css_to_xpath(css)
 
@@ -467,17 +467,17 @@ self.convert_xpath_to_css(xpath)
 
 self.convert_to_css_selector(selector, by)
 
-self.set_value(selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=True)
+self.set_value(selector, text, by="css selector", timeout=None, scroll=True)
 
-self.js_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.js_type(selector, text, by=By.CSS_SELECTOR, timeout=None)
-#             self.set_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
+self.js_update_text(selector, text, by="css selector", timeout=None)
+# Duplicates: self.js_type(selector, text, by="css selector", timeout=None)
+#             self.set_text(selector, text, by="css selector", timeout=None)
 
-self.set_text_content(selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=False)
+self.set_text_content(selector, text, by="css selector", timeout=None, scroll=False)
 
-self.jquery_update_text(selector, text, by=By.CSS_SELECTOR, timeout=None)
+self.jquery_update_text(selector, text, by="css selector", timeout=None)
 
-self.get_value(selector, by=By.CSS_SELECTOR, timeout=None)
+self.get_value(selector, by="css selector", timeout=None)
 
 self.set_time_limit(time_limit)
 
@@ -619,7 +619,7 @@ self.activate_messenger()
 
 self.post_message(message, duration=None, pause=True, style="info")
 
-self.post_message_and_highlight(message, selector, by=By.CSS_SELECTOR)
+self.post_message_and_highlight(message, selector, by="css selector")
 
 self.post_success_message(message, duration=None, pause=True)
 
@@ -639,38 +639,38 @@ self.generate_traffic_chain(pages, loops=1)
 
 ############
 
-self.get_element(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.wait_for_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
+self.get_element(selector, by="css selector", timeout=None)
+# Duplicates: self.wait_for_element_present(selector, by="css selector", timeout=None)
 
-self.assert_element_present(selector, by=By.CSS_SELECTOR, timeout=None)
+self.assert_element_present(selector, by="css selector", timeout=None)
 
 self.assert_elements_present(*args, **kwargs)
 
 ############
 
-self.find_element(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.wait_for_element(selector, by=By.CSS_SELECTOR, timeout=None)
-#             self.wait_for_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
+self.find_element(selector, by="css selector", timeout=None)
+# Duplicates: self.wait_for_element(selector, by="css selector", timeout=None)
+#             self.wait_for_element_visible(selector, by="css selector", timeout=None)
 
-self.assert_element(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.assert_element_visible(selector, by=By.CSS_SELECTOR, timeout=None)
+self.assert_element(selector, by="css selector", timeout=None)
+# Duplicates: self.assert_element_visible(selector, by="css selector", timeout=None)
 
 self.assert_elements(*args, **kwargs)
 # Duplicates: self.assert_elements_visible(*args, **kwargs)
 
 ############
 
-self.find_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.wait_for_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-#             self.wait_for_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.find_text(text, selector="html", by="css selector", timeout=None)
+# Duplicates: self.wait_for_text(text, selector="html", by="css selector", timeout=None)
+#             self.wait_for_text_visible(text, selector="html", by="css selector", timeout=None)
 
 self.wait_for_exact_text_visible(
-    text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+    text, selector="html", by="css selector", timeout=None)
 
-self.assert_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.assert_text_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.assert_text(text, selector="html", by="css selector", timeout=None)
+# Duplicates: self.assert_text_visible(text, selector="html", by="css selector", timeout=None)
 
-self.assert_exact_text(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.assert_exact_text(text, selector="html", by="css selector", timeout=None)
 
 ############
 
@@ -693,31 +693,31 @@ self.assert_partial_link_text(partial_link_text, timeout=None)
 
 ############
 
-self.wait_for_element_absent(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.wait_for_element_not_present(selector, by=By.CSS_SELECTOR)
+self.wait_for_element_absent(selector, by="css selector", timeout=None)
+# Duplicates: self.wait_for_element_not_present(selector, by="css selector")
 
-self.assert_element_absent(selector, by=By.CSS_SELECTOR, timeout=None)
-# Duplicates: self.assert_element_not_present(selector, by=By.CSS_SELECTOR)
-
-############
-
-self.wait_for_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=None)
-
-self.assert_element_not_visible(selector, by=By.CSS_SELECTOR, timeout=None)
+self.assert_element_absent(selector, by="css selector", timeout=None)
+# Duplicates: self.assert_element_not_present(selector, by="css selector")
 
 ############
 
-self.wait_for_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.wait_for_element_not_visible(selector, by="css selector", timeout=None)
 
-self.assert_text_not_visible(text, selector="html", by=By.CSS_SELECTOR, timeout=None)
+self.assert_element_not_visible(selector, by="css selector", timeout=None)
+
+############
+
+self.wait_for_text_not_visible(text, selector="html", by="css selector", timeout=None)
+
+self.assert_text_not_visible(text, selector="html", by="css selector", timeout=None)
 
 ############
 
 self.wait_for_attribute_not_present(
-    selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None)
+    selector, attribute, value=None, by="css selector", timeout=None)
 
 self.assert_attribute_not_present(
-    selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None)
+    selector, attribute, value=None, by="css selector", timeout=None)
 
 ############
 
@@ -741,21 +741,27 @@ self.check_window(
 
 ############
 
-self.deferred_assert_element(selector, by=By.CSS_SELECTOR, timeout=None, fs=False)
+self.deferred_assert_element(selector, by="css selector", timeout=None, fs=False)
 # Duplicates:
-# self.delayed_assert_element(selector, by=By.CSS_SELECTOR, timeout=None, fs=False)
+# self.delayed_assert_element(selector, by="css selector", timeout=None, fs=False)
+
+self.deferred_assert_element_present(
+    selector, by="css selector", timeout=None, fs=False)
+# Duplicates:
+# self.delayed_assert_element_present(
+#     selector, by="css selector", timeout=None, fs=False)
 
 self.deferred_assert_text(
-    text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
+    text, selector="html", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_text(
-#     text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
+#     text, selector="html", by="css selector", timeout=None, fs=False)
 
 self.deferred_assert_exact_text(
-    text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
+    text, selector="html", by="css selector", timeout=None, fs=False)
 # Duplicates:
 # self.delayed_assert_exact_text(
-#     text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False)
+#     text, selector="html", by="css selector", timeout=None, fs=False)
 
 self.deferred_check_window(
     name="default", level=0, baseline=False,

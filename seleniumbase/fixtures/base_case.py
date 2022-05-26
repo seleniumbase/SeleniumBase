@@ -208,7 +208,7 @@ class BaseCase(unittest.TestCase):
             return self.get_element(url)  # url is treated like a selector
 
     def click(
-        self, selector, by=By.CSS_SELECTOR, timeout=None, delay=0, scroll=True
+        self, selector, by="css selector", timeout=None, delay=0, scroll=True
     ):
         self.__check_scope()
         if not timeout:
@@ -399,7 +399,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def slow_click(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def slow_click(self, selector, by="css selector", timeout=None):
         """Similar to click(), but pauses for a brief moment before clicking.
         When used in combination with setting the user-agent, you can often
         bypass bot-detection by tricking websites into thinking that you're
@@ -421,7 +421,7 @@ class BaseCase(unittest.TestCase):
             # Demo Mode already includes a small delay
             self.click(selector, by=by, timeout=timeout, delay=0.25)
 
-    def double_click(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def double_click(self, selector, by="css selector", timeout=None):
         from selenium.webdriver.common.action_chains import ActionChains
 
         self.__check_scope()
@@ -492,7 +492,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
 
     def click_chain(
-        self, selectors_list, by=By.CSS_SELECTOR, timeout=None, spacing=0
+        self, selectors_list, by="css selector", timeout=None, spacing=0
     ):
         """This method clicks on a list of elements in succession.
         @Params
@@ -512,7 +512,7 @@ class BaseCase(unittest.TestCase):
                 time.sleep(spacing)
 
     def update_text(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
+        self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """This method updates an element's text field with new text.
         Has multiple parts:
@@ -601,7 +601,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def add_text(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def add_text(self, selector, text, by="css selector", timeout=None):
         """The more-reliable version of driver.send_keys()
         Similar to update_text(), but won't clear the text field first."""
         self.__check_scope()
@@ -651,7 +651,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
 
     def type(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
+        self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()
         This method updates an element's text field with new text.
@@ -677,7 +677,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
-    def submit(self, selector, by=By.CSS_SELECTOR):
+    def submit(self, selector, by="css selector"):
         """Alternative to self.driver.find_element_by_*(SELECTOR).submit()"""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -687,7 +687,7 @@ class BaseCase(unittest.TestCase):
         element.submit()
         self.__demo_mode_pause_if_active()
 
-    def clear(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def clear(self, selector, by="css selector", timeout=None):
         """This method clears an element's text field.
         A clear() is already included with most methods that type text,
         such as self.type(), self.update_text(), etc.
@@ -733,7 +733,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             element.clear()
 
-    def focus(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def focus(self, selector, by="css selector", timeout=None):
         """Make the current page focus on an interactable element.
         If the element is not interactable, only scrolls to it.
         The "tab" key is another way of setting the page focus."""
@@ -866,28 +866,28 @@ class BaseCase(unittest.TestCase):
         if self.driver.current_url != url:
             self.open(url)
 
-    def is_element_present(self, selector, by=By.CSS_SELECTOR):
+    def is_element_present(self, selector, by="css selector"):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_element_present(selector)
         return page_actions.is_element_present(self.driver, selector, by)
 
-    def is_element_visible(self, selector, by=By.CSS_SELECTOR):
+    def is_element_visible(self, selector, by="css selector"):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_element_visible(selector)
         return page_actions.is_element_visible(self.driver, selector, by)
 
-    def is_element_enabled(self, selector, by=By.CSS_SELECTOR):
+    def is_element_enabled(self, selector, by="css selector"):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_element_enabled(selector)
         return page_actions.is_element_enabled(self.driver, selector, by)
 
-    def is_text_visible(self, text, selector="html", by=By.CSS_SELECTOR):
+    def is_text_visible(self, text, selector="html", by="css selector"):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         selector, by = self.__recalculate_selector(selector, by)
@@ -896,7 +896,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.is_text_visible(self.driver, text, selector, by)
 
     def is_attribute_present(
-        self, selector, attribute, value=None, by=By.CSS_SELECTOR
+        self, selector, attribute, value=None, by="css selector"
     ):
         """Returns True if the element attribute/value is found.
         If the value is not specified, the attribute only needs to exist."""
@@ -915,14 +915,14 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         return page_actions.is_element_visible(
-            self.driver, link_text, by=By.LINK_TEXT
+            self.driver, link_text, by="link text"
         )
 
     def is_partial_link_text_visible(self, partial_link_text):
         self.wait_for_ready_state_complete()
         time.sleep(0.01)
         return page_actions.is_element_visible(
-            self.driver, partial_link_text, by=By.PARTIAL_LINK_TEXT
+            self.driver, partial_link_text, by="partial link text"
         )
 
     def is_link_text_present(self, link_text):
@@ -1033,7 +1033,7 @@ class BaseCase(unittest.TestCase):
             if self.demo_mode:
                 self.wait_for_link_text_present(link_text, timeout=timeout)
                 try:
-                    self.__jquery_slow_scroll_to(link_text, by=By.LINK_TEXT)
+                    self.__jquery_slow_scroll_to(link_text, by="link text")
                 except Exception:
                     element = self.wait_for_link_text_visible(
                         link_text, timeout=timeout
@@ -1042,7 +1042,7 @@ class BaseCase(unittest.TestCase):
                 o_bs = ""  # original_box_shadow
                 loops = settings.HIGHLIGHTS
                 selector = self.convert_to_css_selector(
-                    link_text, by=By.LINK_TEXT
+                    link_text, by="link text"
                 )
                 selector = self.__make_css_match_first_element_only(selector)
                 try:
@@ -1051,14 +1051,14 @@ class BaseCase(unittest.TestCase):
                     self.__highlight_with_jquery(selector, loops, o_bs)
                 except Exception:
                     pass  # JQuery probably couldn't load. Skip highlighting.
-            self.__jquery_click(link_text, by=By.LINK_TEXT)
+            self.__jquery_click(link_text, by="link text")
             return
         if not self.is_link_text_present(link_text):
             self.wait_for_link_text_present(link_text, timeout=timeout)
         pre_action_url = self.get_current_url()
         try:
             element = self.wait_for_link_text_visible(link_text, timeout=0.2)
-            self.__demo_mode_highlight_if_active(link_text, by=By.LINK_TEXT)
+            self.__demo_mode_highlight_if_active(link_text, by="link text")
             try:
                 element.click()
             except (
@@ -1186,7 +1186,7 @@ class BaseCase(unittest.TestCase):
                 partial_link_text, timeout=0.2
             )
             self.__demo_mode_highlight_if_active(
-                partial_link_text, by=By.LINK_TEXT
+                partial_link_text, by="link text"
             )
             try:
                 element.click()
@@ -1274,7 +1274,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def get_text(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def get_text(self, selector, by="css selector", timeout=None):
         self.__check_scope()
         if not timeout:
             timeout = settings.SMALL_TIMEOUT
@@ -1311,7 +1311,7 @@ class BaseCase(unittest.TestCase):
         self,
         selector,
         attribute,
-        by=By.CSS_SELECTOR,
+        by="css selector",
         timeout=None,
         hard_fail=True,
     ):
@@ -1356,7 +1356,7 @@ class BaseCase(unittest.TestCase):
         selector,
         attribute,
         value,
-        by=By.CSS_SELECTOR,
+        by="css selector",
         timeout=None,
         scroll=False,
     ):
@@ -1386,7 +1386,7 @@ class BaseCase(unittest.TestCase):
         )
         self.execute_script(script)
 
-    def set_attributes(self, selector, attribute, value, by=By.CSS_SELECTOR):
+    def set_attributes(self, selector, attribute, value, by="css selector"):
         """This method uses JavaScript to set/update a common attribute.
         All matching selectors from querySelectorAll() are used.
         Example => (Make all links on a website redirect to Google):
@@ -1414,7 +1414,7 @@ class BaseCase(unittest.TestCase):
             pass
 
     def set_attribute_all(
-        self, selector, attribute, value, by=By.CSS_SELECTOR
+        self, selector, attribute, value, by="css selector"
     ):
         """Same as set_attributes(), but using querySelectorAll naming scheme.
         This method uses JavaScript to set/update a common attribute.
@@ -1424,7 +1424,7 @@ class BaseCase(unittest.TestCase):
         self.set_attributes(selector, attribute, value, by=by)
 
     def remove_attribute(
-        self, selector, attribute, by=By.CSS_SELECTOR, timeout=None
+        self, selector, attribute, by="css selector", timeout=None
     ):
         """This method uses JavaScript to remove an attribute.
         Only the first matching selector from querySelector() is used."""
@@ -1450,7 +1450,7 @@ class BaseCase(unittest.TestCase):
         )
         self.execute_script(script)
 
-    def remove_attributes(self, selector, attribute, by=By.CSS_SELECTOR):
+    def remove_attributes(self, selector, attribute, by="css selector"):
         """This method uses JavaScript to remove a common attribute.
         All matching selectors from querySelectorAll() are used."""
         self.__check_scope()
@@ -1473,7 +1473,7 @@ class BaseCase(unittest.TestCase):
             pass
 
     def get_property(
-        self, selector, property, by=By.CSS_SELECTOR, timeout=None
+        self, selector, property, by="css selector", timeout=None
     ):
         """Returns the property value of an element.
         This is not the same as self.get_property_value(), which returns
@@ -1506,9 +1506,9 @@ class BaseCase(unittest.TestCase):
             return ""
         return property_value
 
-    def get_text_content(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def get_text_content(self, selector, by="css selector", timeout=None):
         """Returns the text that appears in the HTML for an element.
-        This is different from "self.get_text(selector, by=By.CSS_SELECTOR)"
+        This is different from "self.get_text(selector, by="css selector")"
         because that only returns the visible text on a page for an element,
         rather than the HTML text that's being returned from this method."""
         self.__check_scope()
@@ -1517,7 +1517,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def get_property_value(
-        self, selector, property, by=By.CSS_SELECTOR, timeout=None
+        self, selector, property, by="css selector", timeout=None
     ):
         """Returns the property value of a page element's computed style.
         Example:
@@ -1555,7 +1555,7 @@ class BaseCase(unittest.TestCase):
         else:
             return ""  # Return an empty string if the property doesn't exist
 
-    def get_image_url(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def get_image_url(self, selector, by="css selector", timeout=None):
         """Extracts the URL from an image element on the page."""
         self.__check_scope()
         if not timeout:
@@ -1566,7 +1566,7 @@ class BaseCase(unittest.TestCase):
             selector, attribute="src", by=by, timeout=timeout
         )
 
-    def find_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
+    def find_elements(self, selector, by="css selector", limit=0):
         """Returns a list of matching WebElements.
         Elements could be either hidden or visible on the page.
         If "limit" is set and > 0, will only return that many elements."""
@@ -1578,7 +1578,7 @@ class BaseCase(unittest.TestCase):
             elements = elements[:limit]
         return elements
 
-    def find_visible_elements(self, selector, by=By.CSS_SELECTOR, limit=0):
+    def find_visible_elements(self, selector, by="css selector", limit=0):
         """Returns a list of matching WebElements that are visible.
         If "limit" is set and > 0, will only return that many elements."""
         selector, by = self.__recalculate_selector(selector, by)
@@ -1590,7 +1590,7 @@ class BaseCase(unittest.TestCase):
         return v_elems
 
     def click_visible_elements(
-        self, selector, by=By.CSS_SELECTOR, limit=0, timeout=None
+        self, selector, by="css selector", limit=0, timeout=None
     ):
         """Finds all matching page elements and clicks visible ones in order.
         If a click reloads or opens a new page, the clicking will stop.
@@ -1682,7 +1682,7 @@ class BaseCase(unittest.TestCase):
             self.__switch_to_newest_window_if_not_blank()
 
     def click_nth_visible_element(
-        self, selector, number, by=By.CSS_SELECTOR, timeout=None
+        self, selector, number, by="css selector", timeout=None
     ):
         """Finds all matching page elements and clicks the nth visible one.
         Example:  self.click_nth_visible_element('[type="checkbox"]', 5)
@@ -1738,7 +1738,7 @@ class BaseCase(unittest.TestCase):
         ):
             self.__switch_to_newest_window_if_not_blank()
 
-    def click_if_visible(self, selector, by=By.CSS_SELECTOR):
+    def click_if_visible(self, selector, by="css selector"):
         """If the page selector exists and is visible, clicks on the element.
         This method only clicks on the first matching element found.
         (Use click_visible_elements() to click all matching elements.)"""
@@ -1779,7 +1779,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
 
     def click_with_offset(
-        self, selector, x, y, by=By.CSS_SELECTOR, mark=None, timeout=None
+        self, selector, x, y, by="css selector", mark=None, timeout=None
     ):
         """
         Click an element at an {X,Y}-offset location.
@@ -1793,7 +1793,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def double_click_with_offset(
-        self, selector, x, y, by=By.CSS_SELECTOR, mark=None, timeout=None
+        self, selector, x, y, by="css selector", mark=None, timeout=None
     ):
         """
         Double click an element at an {X,Y}-offset location.
@@ -1806,7 +1806,7 @@ class BaseCase(unittest.TestCase):
             selector, x, y, by=by, double=True, mark=mark, timeout=timeout
         )
 
-    def is_checked(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def is_checked(self, selector, by="css selector", timeout=None):
         """Determines if a checkbox or a radio button element is checked.
         Returns True if the element is checked.
         Returns False if the element is not checked.
@@ -1829,11 +1829,11 @@ class BaseCase(unittest.TestCase):
         else:  # (NoneType)
             return False
 
-    def is_selected(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def is_selected(self, selector, by="css selector", timeout=None):
         """Same as is_checked()"""
         return self.is_checked(selector, by=by, timeout=timeout)
 
-    def check_if_unchecked(self, selector, by=By.CSS_SELECTOR):
+    def check_if_unchecked(self, selector, by="css selector"):
         """If a checkbox or radio button is not checked, will check it."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -1843,14 +1843,14 @@ class BaseCase(unittest.TestCase):
             else:
                 selector = self.convert_to_css_selector(selector, by=by)
                 self.__dont_record_js_click = True
-                self.js_click(selector, by=By.CSS_SELECTOR)
+                self.js_click(selector, by="css selector")
                 self.__dont_record_js_click = False
 
-    def select_if_unselected(self, selector, by=By.CSS_SELECTOR):
+    def select_if_unselected(self, selector, by="css selector"):
         """Same as check_if_unchecked()"""
         self.check_if_unchecked(selector, by=by)
 
-    def uncheck_if_checked(self, selector, by=By.CSS_SELECTOR):
+    def uncheck_if_checked(self, selector, by="css selector"):
         """If a checkbox is checked, will uncheck it."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -1860,14 +1860,14 @@ class BaseCase(unittest.TestCase):
             else:
                 selector = self.convert_to_css_selector(selector, by=by)
                 self.__dont_record_js_click = True
-                self.js_click(selector, by=By.CSS_SELECTOR)
+                self.js_click(selector, by="css selector")
                 self.__dont_record_js_click = False
 
-    def unselect_if_selected(self, selector, by=By.CSS_SELECTOR):
+    def unselect_if_selected(self, selector, by="css selector"):
         """Same as uncheck_if_checked()"""
         self.uncheck_if_checked(selector, by=by)
 
-    def is_element_in_an_iframe(self, selector, by=By.CSS_SELECTOR):
+    def is_element_in_an_iframe(self, selector, by="css selector"):
         """Returns True if the selector's element is located in an iframe.
         Otherwise returns False."""
         self.__check_scope()
@@ -1894,7 +1894,7 @@ class BaseCase(unittest.TestCase):
             self.switch_to_default_content()
         return False
 
-    def switch_to_frame_of_element(self, selector, by=By.CSS_SELECTOR):
+    def switch_to_frame_of_element(self, selector, by="css selector"):
         """Set driver control to the iframe containing element (assuming the
         element is in a single-nested iframe) and returns the iframe name.
         If element is not in an iframe, returns None, and nothing happens.
@@ -1934,7 +1934,7 @@ class BaseCase(unittest.TestCase):
                 "element {%s}!" % selector
             )
 
-    def hover_on_element(self, selector, by=By.CSS_SELECTOR):
+    def hover_on_element(self, selector, by="css selector"):
         self.__check_scope()
         original_selector = selector
         original_by = by
@@ -1986,8 +1986,8 @@ class BaseCase(unittest.TestCase):
         self,
         hover_selector,
         click_selector,
-        hover_by=By.CSS_SELECTOR,
-        click_by=By.CSS_SELECTOR,
+        hover_by="css selector",
+        click_by="css selector",
         timeout=None,
     ):
         """When you want to hover over an element or dropdown menu,
@@ -2093,8 +2093,8 @@ class BaseCase(unittest.TestCase):
         self,
         hover_selector,
         click_selector,
-        hover_by=By.CSS_SELECTOR,
-        click_by=By.CSS_SELECTOR,
+        hover_by="css selector",
+        click_by="css selector",
         timeout=None,
     ):
         """When you want to hover over an element or dropdown menu,
@@ -2145,7 +2145,7 @@ class BaseCase(unittest.TestCase):
                 self.driver,
                 dropdown_element,
                 click_selector,
-                click_by=By.CSS_SELECTOR,
+                click_by="css selector",
                 timeout=timeout,
             )
         latest_window_count = len(self.driver.window_handles)
@@ -2173,8 +2173,8 @@ class BaseCase(unittest.TestCase):
         self,
         drag_selector,
         drop_selector,
-        drag_by=By.CSS_SELECTOR,
-        drop_by=By.CSS_SELECTOR,
+        drag_by="css selector",
+        drop_by="css selector",
         timeout=None,
     ):
         """Drag and drop an element from one selector to another."""
@@ -2216,7 +2216,7 @@ class BaseCase(unittest.TestCase):
         return drag_element
 
     def drag_and_drop_with_offset(
-        self, selector, x, y, by=By.CSS_SELECTOR, timeout=None
+        self, selector, x, y, by="css selector", timeout=None
     ):
         """Drag and drop an element to an {X,Y}-offset location."""
         self.__check_scope()
@@ -2244,7 +2244,7 @@ class BaseCase(unittest.TestCase):
         self,
         dropdown_selector,
         option,
-        dropdown_by=By.CSS_SELECTOR,
+        dropdown_by="css selector",
         option_by="text",
         timeout=None,
     ):
@@ -2319,7 +2319,7 @@ class BaseCase(unittest.TestCase):
         self,
         dropdown_selector,
         option,
-        dropdown_by=By.CSS_SELECTOR,
+        dropdown_by="css selector",
         timeout=None,
     ):
         """Selects an HTML <select> option by option text.
@@ -2344,7 +2344,7 @@ class BaseCase(unittest.TestCase):
         self,
         dropdown_selector,
         option,
-        dropdown_by=By.CSS_SELECTOR,
+        dropdown_by="css selector",
         timeout=None,
     ):
         """Selects an HTML <select> option by option index.
@@ -2369,7 +2369,7 @@ class BaseCase(unittest.TestCase):
         self,
         dropdown_selector,
         option,
-        dropdown_by=By.CSS_SELECTOR,
+        dropdown_by="css selector",
         timeout=None,
     ):
         """Selects an HTML <select> option by option value.
@@ -3196,7 +3196,7 @@ class BaseCase(unittest.TestCase):
         self.bring_active_window_to_front()
 
     def save_screenshot(
-        self, name, folder=None, selector=None, by=By.CSS_SELECTOR
+        self, name, folder=None, selector=None, by="css selector"
     ):
         """
         Saves a screenshot of the current page.
@@ -3216,7 +3216,7 @@ class BaseCase(unittest.TestCase):
         return page_actions.save_screenshot(self.driver, name, folder)
 
     def save_screenshot_to_logs(
-        self, name=None, selector=None, by=By.CSS_SELECTOR
+        self, name=None, selector=None, by="css selector"
     ):
         """Saves a screenshot of the current page to the "latest_logs/" folder.
         Naming is automatic:
@@ -3763,6 +3763,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("as_at")
         ext_actions.append("as_te")
         ext_actions.append("as_et")
+        ext_actions.append("wf_el")
         ext_actions.append("sw_fr")
         ext_actions.append("sw_dc")
         ext_actions.append("sw_pf")
@@ -3775,6 +3776,11 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("d_a_c")
         ext_actions.append("e_mfa")
         ext_actions.append("ss_tl")
+        ext_actions.append("da_el")
+        ext_actions.append("da_ep")
+        ext_actions.append("da_te")
+        ext_actions.append("da_et")
+        ext_actions.append("pr_da")
         for n in range(len(srt_actions)):
             if srt_actions[n][0] in ext_actions:
                 origin = srt_actions[n][2]
@@ -4023,6 +4029,12 @@ class BaseCase(unittest.TestCase):
             elif action[0] == "sleep":
                 method = "sleep"
                 sb_actions.append("self.%s(%s)" % (method, action[1]))
+            elif action[0] == "wf_el":
+                method = "wait_for_element"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "as_el":
                 method = "assert_element"
                 if '"' not in action[1]:
@@ -4097,13 +4109,22 @@ class BaseCase(unittest.TestCase):
                         'self.%s(\'%s\', "%s")'
                         % (method, action[1][0], action[1][1])
                     )
-            elif action[0] == "as_te" or action[0] == "as_et":
+            elif (
+                action[0] == "as_te"
+                or action[0] == "as_et"
+                or action[0] == "da_te"
+                or action[0] == "da_et"
+            ):
                 import unicodedata
 
                 action[1][0] = unicodedata.normalize("NFKC", action[1][0])
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
+                elif action[0] == "da_te":
+                    method = "deferred_assert_text"
+                elif action[0] == "da_et":
+                    method = "deferred_assert_exact_text"
                 if action[1][1] != "html":
                     if '"' not in action[1][0] and '"' not in action[1][1]:
                         sb_actions.append(
@@ -4134,12 +4155,26 @@ class BaseCase(unittest.TestCase):
                         sb_actions.append(
                             "self.%s('%s')" % (method, action[1][0])
                         )
+            elif action[0] == "da_el":
+                method = "deferred_assert_element"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
+            elif action[0] == "da_ep":
+                method = "deferred_assert_element_present"
+                if '"' not in action[1]:
+                    sb_actions.append('self.%s("%s")' % (method, action[1]))
+                else:
+                    sb_actions.append("self.%s('%s')" % (method, action[1]))
             elif action[0] == "ss_tl":
                 method = "save_screenshot_to_logs"
                 sb_actions.append("self.%s()" % method)
             elif action[0] == "sh_fc":
                 method = "show_file_choosers"
                 sb_actions.append("self.%s()" % method)
+            elif action[0] == "pr_da":
+                sb_actions.append("self.process_deferred_asserts()")
             elif action[0] == "c_l_s":
                 sb_actions.append("self.clear_local_storage()")
             elif action[0] == "c_s_s":
@@ -4440,7 +4475,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
 
-    def bring_to_front(self, selector, by=By.CSS_SELECTOR):
+    def bring_to_front(self, selector, by="css selector"):
         """Updates the Z-index of a page element to bring it into view.
         Useful when getting a WebDriverException, such as the one below:
             { Element is not clickable at point (#, #).
@@ -4464,7 +4499,7 @@ class BaseCase(unittest.TestCase):
         self.execute_script(script)
 
     def highlight_click(
-        self, selector, by=By.CSS_SELECTOR, loops=3, scroll=True
+        self, selector, by="css selector", loops=3, scroll=True
     ):
         self.__check_scope()
         if not self.demo_mode:
@@ -4472,7 +4507,7 @@ class BaseCase(unittest.TestCase):
         self.click(selector, by=by)
 
     def highlight_update_text(
-        self, selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True
+        self, selector, text, by="css selector", loops=3, scroll=True
     ):
         """Highlights the element and then types text into the field."""
         self.__check_scope()
@@ -4481,7 +4516,7 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by)
 
     def highlight_type(
-        self, selector, text, by=By.CSS_SELECTOR, loops=3, scroll=True
+        self, selector, text, by="css selector", loops=3, scroll=True
     ):
         """Same as self.highlight_update_text()
         As above, highlights the element and then types text into the field."""
@@ -4490,7 +4525,7 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by, loops=loops, scroll=scroll)
         self.update_text(selector, text, by=by)
 
-    def highlight(self, selector, by=By.CSS_SELECTOR, loops=None, scroll=True):
+    def highlight(self, selector, by="css selector", loops=None, scroll=True):
         """This method uses fancy JavaScript to highlight an element.
         Used during demo_mode.
         @Params
@@ -4545,7 +4580,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
-                selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT
+                selector, by="css selector", timeout=settings.SMALL_TIMEOUT
             )
             style = element.get_attribute("style")
         if style:
@@ -4587,7 +4622,7 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         js_utils.highlight_with_jquery(self.driver, selector, loops, o_bs)
 
-    def press_up_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+    def press_up_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the UP Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -4609,7 +4644,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def press_down_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+    def press_down_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the DOWN Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -4631,7 +4666,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def press_left_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+    def press_left_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the LEFT Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -4653,7 +4688,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def press_right_arrow(self, selector="html", times=1, by=By.CSS_SELECTOR):
+    def press_right_arrow(self, selector="html", times=1, by="css selector"):
         """Simulates pressing the RIGHT Arrow on the keyboard.
         By default, "html" will be used as the CSS Selector target.
         You can specify how many times in-a-row the action happens."""
@@ -4675,7 +4710,7 @@ class BaseCase(unittest.TestCase):
             if self.slow_mode:
                 time.sleep(0.1)
 
-    def scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def scroll_to(self, selector, by="css selector", timeout=None):
         """Fast scroll to destination"""
         self.__check_scope()
         if not timeout:
@@ -4698,10 +4733,10 @@ class BaseCase(unittest.TestCase):
             )
             self.__scroll_to_element(element, selector, by)
 
-    def scroll_to_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def scroll_to_element(self, selector, by="css selector", timeout=None):
         self.scroll_to(selector, by=by, timeout=timeout)
 
-    def slow_scroll_to(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def slow_scroll_to(self, selector, by="css selector", timeout=None):
         """Slow motion scroll to destination"""
         self.__check_scope()
         if not timeout:
@@ -4731,7 +4766,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_scroll_to_element(element)
 
     def slow_scroll_to_element(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         self.slow_scroll_to(selector, by=by, timeout=timeout)
 
@@ -4760,10 +4795,10 @@ class BaseCase(unittest.TestCase):
     def click_xpath(self, xpath):
         # Technically self.click() will automatically detect an xpath selector,
         # so self.click_xpath() is just a longer name for the same action.
-        self.click(xpath, by=By.XPATH)
+        self.click(xpath, by="xpath")
 
     def js_click(
-        self, selector, by=By.CSS_SELECTOR, all_matches=False, scroll=True
+        self, selector, by="css selector", all_matches=False, scroll=True
     ):
         """Clicks an element using JavaScript.
         Can be used to click hidden / invisible elements.
@@ -4847,11 +4882,11 @@ class BaseCase(unittest.TestCase):
         self.wait_for_ready_state_complete()
         self.__demo_mode_pause_if_active()
 
-    def js_click_all(self, selector, by=By.CSS_SELECTOR):
+    def js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
-        self.js_click(selector, by=By.CSS_SELECTOR, all_matches=True)
+        self.js_click(selector, by="css selector", all_matches=True)
 
-    def jquery_click(self, selector, by=By.CSS_SELECTOR):
+    def jquery_click(self, selector, by="css selector"):
         """Clicks an element using jQuery. (Different from using pure JS.)
         Can be used to click hidden / invisible elements."""
         self.__check_scope()
@@ -4867,7 +4902,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
-    def jquery_click_all(self, selector, by=By.CSS_SELECTOR):
+    def jquery_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using jQuery."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
@@ -4881,7 +4916,7 @@ class BaseCase(unittest.TestCase):
         self.safe_execute_script(click_script)
         self.__demo_mode_pause_if_active()
 
-    def hide_element(self, selector, by=By.CSS_SELECTOR):
+    def hide_element(self, selector, by="css selector"):
         """Hide the first element on the page that matches the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -4890,7 +4925,7 @@ class BaseCase(unittest.TestCase):
         hide_script = """jQuery('%s').hide();""" % selector
         self.safe_execute_script(hide_script)
 
-    def hide_elements(self, selector, by=By.CSS_SELECTOR):
+    def hide_elements(self, selector, by="css selector"):
         """Hide all elements on the page that match the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -4898,7 +4933,7 @@ class BaseCase(unittest.TestCase):
         hide_script = """jQuery('%s').hide();""" % selector
         self.safe_execute_script(hide_script)
 
-    def show_element(self, selector, by=By.CSS_SELECTOR):
+    def show_element(self, selector, by="css selector"):
         """Show the first element on the page that matches the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -4907,7 +4942,7 @@ class BaseCase(unittest.TestCase):
         show_script = """jQuery('%s').show(0);""" % selector
         self.safe_execute_script(show_script)
 
-    def show_elements(self, selector, by=By.CSS_SELECTOR):
+    def show_elements(self, selector, by="css selector"):
         """Show all elements on the page that match the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -4915,7 +4950,7 @@ class BaseCase(unittest.TestCase):
         show_script = """jQuery('%s').show(0);""" % selector
         self.safe_execute_script(show_script)
 
-    def remove_element(self, selector, by=By.CSS_SELECTOR):
+    def remove_element(self, selector, by="css selector"):
         """Remove the first element on the page that matches the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -4924,7 +4959,7 @@ class BaseCase(unittest.TestCase):
         remove_script = """jQuery('%s').remove();""" % selector
         self.safe_execute_script(remove_script)
 
-    def remove_elements(self, selector, by=By.CSS_SELECTOR):
+    def remove_elements(self, selector, by="css selector"):
         """Remove all elements on the page that match the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
@@ -5325,7 +5360,7 @@ class BaseCase(unittest.TestCase):
                 pass
 
     def choose_file(
-        self, selector, file_path, by=By.CSS_SELECTOR, timeout=None
+        self, selector, file_path, by="css selector", timeout=None
     ):
         """This method is used to choose a file to upload to a website.
         It works by populating a file-chooser "input" field of type="file".
@@ -5688,7 +5723,7 @@ class BaseCase(unittest.TestCase):
         return self.assertRaises(*args, **kwargs)
 
     def wait_for_attribute(
-        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+        self, selector, attribute, value=None, by="css selector", timeout=None
     ):
         """Raises an exception if the element attribute/value is not found.
         If the value is not specified, the attribute only needs to exist.
@@ -5714,7 +5749,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_attribute(
-        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+        self, selector, attribute, value=None, by="css selector", timeout=None
     ):
         """Raises an exception if the element attribute/value is not found.
         If the value is not specified, the attribute only needs to exist.
@@ -6020,7 +6055,7 @@ class BaseCase(unittest.TestCase):
         return str(totp.now())
 
     def enter_mfa_code(
-        self, selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None
+        self, selector, totp_key=None, by="css selector", timeout=None
     ):
         """Enters into the field a Multi-Factor Authentication TOTP Code.
         If the "totp_key" is not specified, this method defaults
@@ -6081,7 +6116,7 @@ class BaseCase(unittest.TestCase):
             )
 
     def set_value(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=True
+        self, selector, text, by="css selector", timeout=None, scroll=True
     ):
         """This method uses JavaScript to update a text field."""
         self.__check_scope()
@@ -6145,7 +6180,7 @@ class BaseCase(unittest.TestCase):
                     pass
         self.__demo_mode_pause_if_active()
 
-    def js_update_text(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def js_update_text(self, selector, text, by="css selector", timeout=None):
         """JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
         If text ends in "\n", set_value() presses RETURN after.
@@ -6168,7 +6203,7 @@ class BaseCase(unittest.TestCase):
             except Exception:
                 pass
 
-    def js_type(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def js_type(self, selector, text, by="css selector", timeout=None):
         """Same as self.js_update_text()
         JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
@@ -6183,7 +6218,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.js_update_text(selector, text, by=by, timeout=timeout)
 
-    def set_text(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def set_text(self, selector, text, by="css selector", timeout=None):
         """Same as self.js_update_text()
         JavaScript + send_keys are used to update a text field.
         Performs self.set_value() and triggers event listeners.
@@ -6206,7 +6241,7 @@ class BaseCase(unittest.TestCase):
             self.set_text_content(selector, text, by=by, timeout=timeout)
 
     def set_text_content(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, scroll=False
+        self, selector, text, by="css selector", timeout=None, scroll=False
     ):
         """This method uses JavaScript to set an element's textContent.
         If the element is an input or textarea, sets the value instead."""
@@ -6249,7 +6284,7 @@ class BaseCase(unittest.TestCase):
         self.__demo_mode_pause_if_active()
 
     def jquery_update_text(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None
+        self, selector, text, by="css selector", timeout=None
     ):
         """This method uses jQuery to update a text field.
         If the text string ends with the newline character,
@@ -6277,7 +6312,7 @@ class BaseCase(unittest.TestCase):
             element.send_keys("\n")
         self.__demo_mode_pause_if_active()
 
-    def get_value(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def get_value(self, selector, by="css selector", timeout=None):
         """This method uses JavaScript to get the value of an input field.
         (Works on both input fields and textarea fields.)"""
         self.__check_scope()
@@ -6532,7 +6567,7 @@ class BaseCase(unittest.TestCase):
                     element = page_actions.wait_for_element_present(
                         shadow_root,
                         selector_part,
-                        by=By.CSS_SELECTOR,
+                        by="css selector",
                         timeout=timeout,
                     )
             except Exception:
@@ -6877,26 +6912,41 @@ class BaseCase(unittest.TestCase):
 
     # Application "Local Storage" controls
 
+    def __is_valid_storage_url(self):
+        url = self.get_current_url()
+        if url and len(url) > 0:
+            if ("http:") in url or ("https:") in url or ("file:") in url:
+                return True
+        return False
+
     def set_local_storage_item(self, key, value):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         self.execute_script(
             "window.localStorage.setItem('{}', '{}');".format(key, value)
         )
 
     def get_local_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         return self.execute_script(
             "return window.localStorage.getItem('{}');".format(key)
         )
 
     def remove_local_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         self.execute_script(
             "window.localStorage.removeItem('{}');".format(key)
         )
 
     def clear_local_storage(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            return
         self.execute_script("window.localStorage.clear();")
         if self.recorder_mode:
             time_stamp = self.execute_script("return Date.now();")
@@ -6906,6 +6956,8 @@ class BaseCase(unittest.TestCase):
 
     def get_local_storage_keys(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         return self.execute_script(
             "var ls = window.localStorage, keys = []; "
             "for (var i = 0; i < ls.length; ++i) "
@@ -6915,6 +6967,8 @@ class BaseCase(unittest.TestCase):
 
     def get_local_storage_items(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         return self.execute_script(
             r"var ls = window.localStorage, items = {}; "
             "for (var i = 0, k; i < ls.length; ++i) "
@@ -6926,24 +6980,32 @@ class BaseCase(unittest.TestCase):
 
     def set_session_storage_item(self, key, value):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         self.execute_script(
             "window.sessionStorage.setItem('{}', '{}');".format(key, value)
         )
 
     def get_session_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         return self.execute_script(
             "return window.sessionStorage.getItem('{}');".format(key)
         )
 
     def remove_session_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         self.execute_script(
             "window.sessionStorage.removeItem('{}');".format(key)
         )
 
     def clear_session_storage(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            return
         if not self.recorder_mode:
             self.execute_script("window.sessionStorage.clear();")
         else:
@@ -6965,6 +7027,8 @@ class BaseCase(unittest.TestCase):
 
     def get_session_storage_keys(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         return self.execute_script(
             "var ls = window.sessionStorage, keys = []; "
             "for (var i = 0; i < ls.length; ++i) "
@@ -6974,6 +7038,8 @@ class BaseCase(unittest.TestCase):
 
     def get_session_storage_items(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         return self.execute_script(
             r"var ls = window.sessionStorage, items = {}; "
             "for (var i = 0, k; i < ls.length; ++i) "
@@ -7033,7 +7099,7 @@ class BaseCase(unittest.TestCase):
         self.switch_to_newest_window()
 
     def input(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
+        self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()"""
         self.__check_scope()
@@ -7045,7 +7111,7 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def fill(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
+        self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()"""
         self.__check_scope()
@@ -7057,7 +7123,7 @@ class BaseCase(unittest.TestCase):
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
     def write(
-        self, selector, text, by=By.CSS_SELECTOR, timeout=None, retry=False
+        self, selector, text, by="css selector", timeout=None, retry=False
     ):
         """Same as self.update_text()"""
         self.__check_scope()
@@ -7068,7 +7134,7 @@ class BaseCase(unittest.TestCase):
         selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
 
-    def send_keys(self, selector, text, by=By.CSS_SELECTOR, timeout=None):
+    def send_keys(self, selector, text, by="css selector", timeout=None):
         """Same as self.add_text()"""
         self.__check_scope()
         if not timeout:
@@ -7097,7 +7163,7 @@ class BaseCase(unittest.TestCase):
         self.click_partial_link_text(partial_link_text, timeout=timeout)
 
     def wait_for_element_visible(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Same as self.wait_for_element()"""
         self.__check_scope()
@@ -7118,7 +7184,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_element_not_present(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Same as self.wait_for_element_absent()
         Waits for an element to no longer appear in the HTML of a page.
@@ -7142,7 +7208,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_element_not_present(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Same as self.assert_element_absent()
         Will raise an exception if the element stays present.
@@ -7172,7 +7238,7 @@ class BaseCase(unittest.TestCase):
         return self.get_mfa_code(totp_key=totp_key)
 
     def enter_totp_code(
-        self, selector, totp_key=None, by=By.CSS_SELECTOR, timeout=None
+        self, selector, totp_key=None, by="css selector", timeout=None
     ):
         """Same as self.enter_mfa_code()"""
         return self.enter_mfa_code(
@@ -9394,7 +9460,7 @@ class BaseCase(unittest.TestCase):
             time.sleep(float(duration))
 
     def post_message_and_highlight(
-        self, message, selector, by=By.CSS_SELECTOR
+        self, message, selector, by="css selector"
     ):
         """Post a message on the screen and highlight an element.
         Arguments:
@@ -9545,7 +9611,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_element_present(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Waits for an element to appear in the HTML of a page.
         The element does not need be visible (it may be hidden)."""
@@ -9566,7 +9632,7 @@ class BaseCase(unittest.TestCase):
             original_selector=original_selector,
         )
 
-    def wait_for_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def wait_for_element(self, selector, by="css selector", timeout=None):
         """Waits for an element to appear in the HTML of a page.
         The element must be visible (it cannot be hidden)."""
         self.__check_scope()
@@ -9574,14 +9640,26 @@ class BaseCase(unittest.TestCase):
             timeout = settings.LARGE_TIMEOUT
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
         selector, by = self.__recalculate_selector(selector, by)
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        if by == By.XPATH:
+                            selector = original_selector
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["wf_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_visible(
             self.driver, selector, by, timeout
         )
 
-    def get_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def get_element(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_present() - returns the element.
         The element does not need be visible (it may be hidden)."""
         self.__check_scope()
@@ -9593,7 +9671,7 @@ class BaseCase(unittest.TestCase):
         return self.wait_for_element_present(selector, by=by, timeout=timeout)
 
     def assert_element_present(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Similar to wait_for_element_present(), but returns nothing.
         Waits for an element to appear in the HTML of a page.
@@ -9672,7 +9750,7 @@ class BaseCase(unittest.TestCase):
             continue
         return True
 
-    def find_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def find_element(self, selector, by="css selector", timeout=None):
         """Same as wait_for_element_visible() - returns the element"""
         self.__check_scope()
         if not timeout:
@@ -9681,7 +9759,7 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         return self.wait_for_element_visible(selector, by=by, timeout=timeout)
 
-    def assert_element(self, selector, by=By.CSS_SELECTOR, timeout=None):
+    def assert_element(self, selector, by="css selector", timeout=None):
         """Similar to wait_for_element_visible(), but returns nothing.
         As above, will raise an exception if nothing can be found.
         Returns True if successful. Default timeout = SMALL_TIMEOUT."""
@@ -9723,7 +9801,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     def assert_element_visible(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Same as self.assert_element()
         As above, will raise an exception if nothing can be found."""
@@ -9802,7 +9880,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_text_visible(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -9818,7 +9896,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_exact_text_visible(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -9835,7 +9913,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def wait_for_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         """The shorter version of wait_for_text_visible()"""
         self.__check_scope()
@@ -9848,7 +9926,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def find_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         """Same as wait_for_text_visible() - returns the element"""
         self.__check_scope()
@@ -9861,7 +9939,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_text_visible(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         """Same as assert_text()"""
         self.__check_scope()
@@ -9872,7 +9950,7 @@ class BaseCase(unittest.TestCase):
         return self.assert_text(text, selector, by=by, timeout=timeout)
 
     def assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         """Similar to wait_for_text_visible()
         Raises an exception if the element or the text is not found.
@@ -9920,7 +9998,7 @@ class BaseCase(unittest.TestCase):
         return True
 
     def assert_exact_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         """Similar to assert_text(), but the text must be exact,
         rather than exist as a subset of the full text.
@@ -10029,7 +10107,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         return self.wait_for_element_visible(
-            link_text, by=By.LINK_TEXT, timeout=timeout
+            link_text, by="link text", timeout=timeout
         )
 
     def wait_for_link_text(self, link_text, timeout=None):
@@ -10068,7 +10146,7 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert_link_text(self._language)
             messenger_post = "%s: {%s}" % (a_t, link_text)
             self.__highlight_with_assert_success(
-                messenger_post, link_text, by=By.LINK_TEXT
+                messenger_post, link_text, by="link text"
             )
         if self.recorder_mode:
             url = self.get_current_url()
@@ -10088,7 +10166,7 @@ class BaseCase(unittest.TestCase):
         if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         return self.wait_for_element_visible(
-            partial_link_text, by=By.PARTIAL_LINK_TEXT, timeout=timeout
+            partial_link_text, by="partial link text", timeout=timeout
         )
 
     def find_partial_link_text(self, partial_link_text, timeout=None):
@@ -10120,14 +10198,14 @@ class BaseCase(unittest.TestCase):
                 a_t = SD.translate_assert_link_text(self._language)
             messenger_post = "%s: {%s}" % (a_t, partial_link_text)
             self.__highlight_with_assert_success(
-                messenger_post, partial_link_text, by=By.PARTIAL_LINK_TEXT
+                messenger_post, partial_link_text, by="partial link text"
             )
         return True
 
     ############
 
     def wait_for_element_absent(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Waits for an element to no longer appear in the HTML of a page.
         A hidden element counts as a present element, which fails this assert.
@@ -10150,7 +10228,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_element_absent(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Similar to wait_for_element_absent()
         As above, will raise an exception if the element stays present.
@@ -10170,7 +10248,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_element_not_visible(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Waits for an element to no longer be visible on a page.
         The element can be non-existent in the HTML or hidden on the page
@@ -10191,7 +10269,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_element_not_visible(
-        self, selector, by=By.CSS_SELECTOR, timeout=None
+        self, selector, by="css selector", timeout=None
     ):
         """Similar to wait_for_element_not_visible()
         As above, will raise an exception if the element stays visible.
@@ -10220,7 +10298,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_text_not_visible(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -10233,7 +10311,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_text_not_visible(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None
+        self, text, selector="html", by="css selector", timeout=None
     ):
         """Similar to wait_for_text_not_visible()
         Raises an exception if the text is still visible after timeout.
@@ -10250,7 +10328,7 @@ class BaseCase(unittest.TestCase):
     ############
 
     def wait_for_attribute_not_present(
-        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+        self, selector, attribute, value=None, by="css selector", timeout=None
     ):
         self.__check_scope()
         if not timeout:
@@ -10263,7 +10341,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def assert_attribute_not_present(
-        self, selector, attribute, value=None, by=By.CSS_SELECTOR, timeout=None
+        self, selector, attribute, value=None, by="css selector", timeout=None
     ):
         """Similar to wait_for_attribute_not_present()
         Raises an exception if the attribute is still present after timeout.
@@ -10895,9 +10973,9 @@ class BaseCase(unittest.TestCase):
     ############
 
     def deferred_assert_element(
-        self, selector, by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, selector, by="css selector", timeout=None, fs=False
     ):
-        """A non-terminating assertion for an element on a page.
+        """A non-terminating assertion for an element visible on the page.
         Failures will be saved until the process_deferred_asserts()
         method is called from inside a test, likely at the end of it.
         If "fs" is set to True, a failure screenshot is saved to the
@@ -10919,6 +10997,15 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["da_el", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         try:
             self.wait_for_element_visible(selector, by=by, timeout=timeout)
             return True
@@ -10926,8 +11013,49 @@ class BaseCase(unittest.TestCase):
             self.__add_deferred_assert_failure(fs=fs)
             return False
 
+    def deferred_assert_element_present(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """A non-terminating assertion for an element present in the page html.
+        Failures will be saved until the process_deferred_asserts()
+        method is called from inside a test, likely at the end of it.
+        If "fs" is set to True, a failure screenshot is saved to the
+        "latest_logs/" folder for that assertion failure. Otherwise,
+        only the last page screenshot is taken for all failures when
+        calling the process_deferred_asserts() method.
+        """
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.MINI_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.MINI_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        self.__deferred_assert_count += 1
+        try:
+            url = self.get_current_url()
+            if url == self.__last_url_of_deferred_assert:
+                timeout = 1  # Was already on page (full wait not needed)
+            else:
+                self.__last_url_of_deferred_assert = url
+        except Exception:
+            pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        action = ["da_ep", selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        try:
+            self.wait_for_element_present(selector, by=by, timeout=timeout)
+            return True
+        except Exception:
+            self.__add_deferred_assert_failure(fs=fs)
+            return False
+
     def deferred_assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, text, selector="html", by="css selector", timeout=None, fs=False
     ):
         """A non-terminating assertion for text from an element on a page.
         Failures will be saved until the process_deferred_asserts()
@@ -10951,6 +11079,16 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["da_te", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         try:
             self.wait_for_text_visible(text, selector, by=by, timeout=timeout)
             return True
@@ -10959,7 +11097,7 @@ class BaseCase(unittest.TestCase):
             return False
 
     def deferred_assert_exact_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, text, selector="html", by="css selector", timeout=None, fs=False
     ):
         """A non-terminating assertion for exact text from an element.
         Failures will be saved until the process_deferred_asserts()
@@ -10983,6 +11121,16 @@ class BaseCase(unittest.TestCase):
                 self.__last_url_of_deferred_assert = url
         except Exception:
             pass
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["da_et", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
         try:
             self.wait_for_exact_text_visible(
                 text, selector, by=by, timeout=timeout
@@ -11035,6 +11183,11 @@ class BaseCase(unittest.TestCase):
         the deferred asserts on a single html page so that the failure
         screenshot matches the location of the deferred asserts.
         If "print_only" is set to True, the exception won't get raised."""
+        if self.recorder_mode:
+            time_stamp = self.execute_script("return Date.now();")
+            origin = self.get_origin()
+            action = ["pr_da", "", origin, time_stamp]
+            self.__extra_actions.append(action)
         if self.__deferred_assert_failures:
             exception_output = ""
             exception_output += "\n***** DEFERRED ASSERTION FAILURES:\n"
@@ -11053,15 +11206,23 @@ class BaseCase(unittest.TestCase):
     # Alternate naming scheme for the "deferred_assert" methods.
 
     def delayed_assert_element(
-        self, selector, by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, selector, by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_element()"""
         return self.deferred_assert_element(
             selector=selector, by=by, timeout=timeout, fs=fs
         )
 
+    def delayed_assert_element_present(
+        self, selector, by="css selector", timeout=None, fs=False
+    ):
+        """Same as self.deferred_assert_element_present()"""
+        return self.deferred_assert_element_present(
+            selector=selector, by=by, timeout=timeout, fs=fs
+        )
+
     def delayed_assert_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, text, selector="html", by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_text()"""
         return self.deferred_assert_text(
@@ -11069,7 +11230,7 @@ class BaseCase(unittest.TestCase):
         )
 
     def delayed_assert_exact_text(
-        self, text, selector="html", by=By.CSS_SELECTOR, timeout=None, fs=False
+        self, text, selector="html", by="css selector", timeout=None, fs=False
     ):
         """Same as self.deferred_assert_exact_text()"""
         return self.deferred_assert_exact_text(
@@ -11101,7 +11262,7 @@ class BaseCase(unittest.TestCase):
 
     ############
 
-    def __js_click(self, selector, by=By.CSS_SELECTOR):
+    def __js_click(self, selector, by="css selector"):
         """Clicks an element using pure JS. Does not use jQuery."""
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
@@ -11122,7 +11283,7 @@ class BaseCase(unittest.TestCase):
         )
         self.execute_script(script)
 
-    def __js_click_all(self, selector, by=By.CSS_SELECTOR):
+    def __js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
         selector, by = self.__recalculate_selector(selector, by)
         css_selector = self.convert_to_css_selector(selector, by=by)
@@ -11150,7 +11311,7 @@ class BaseCase(unittest.TestCase):
         selector,
         x,
         y,
-        by=By.CSS_SELECTOR,
+        by="css selector",
         double=False,
         mark=None,
         timeout=None,
@@ -11215,7 +11376,7 @@ class BaseCase(unittest.TestCase):
         elif self.slow_mode:
             self.__slow_mode_pause_if_active()
 
-    def __jquery_slow_scroll_to(self, selector, by=By.CSS_SELECTOR):
+    def __jquery_slow_scroll_to(self, selector, by="css selector"):
         selector, by = self.__recalculate_selector(selector, by)
         element = self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
@@ -11246,7 +11407,7 @@ class BaseCase(unittest.TestCase):
             self.__slow_scroll_to_element(element)
         time.sleep(sleep_time)
 
-    def __jquery_click(self, selector, by=By.CSS_SELECTOR):
+    def __jquery_click(self, selector, by="css selector"):
         """Clicks an element using jQuery. Different from using pure JS."""
         selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_present(
@@ -11322,7 +11483,7 @@ class BaseCase(unittest.TestCase):
                                 self.driver,
                                 dropdown,
                                 link_text,
-                                click_by=By.LINK_TEXT,
+                                click_by="link text",
                                 timeout=0.12,
                             )
                             return True
@@ -11387,7 +11548,7 @@ class BaseCase(unittest.TestCase):
                                 self.driver,
                                 dropdown,
                                 link_text,
-                                click_by=By.LINK_TEXT,
+                                click_by="link text",
                                 timeout=0.12,
                             )
                             return True
@@ -11505,7 +11666,7 @@ class BaseCase(unittest.TestCase):
                 self.__slow_scroll_to_element(element)
             time.sleep(0.12)
 
-    def __scroll_to_element(self, element, selector=None, by=By.CSS_SELECTOR):
+    def __scroll_to_element(self, element, selector=None, by="css selector"):
         success = js_utils.scroll_to_element(self.driver, element)
         if not success and selector:
             self.wait_for_ready_state_complete()
@@ -11522,7 +11683,7 @@ class BaseCase(unittest.TestCase):
             js_utils.scroll_to_element(self.driver, element)
 
     def __highlight_with_assert_success(
-        self, message, selector, by=By.CSS_SELECTOR
+        self, message, selector, by="css selector"
     ):
         selector, by = self.__recalculate_selector(selector, by, xp_ok=False)
         element = self.wait_for_element_visible(
@@ -11556,7 +11717,7 @@ class BaseCase(unittest.TestCase):
             self.wait_for_ready_state_complete()
             time.sleep(0.12)
             element = self.wait_for_element_visible(
-                selector, by=By.CSS_SELECTOR, timeout=settings.SMALL_TIMEOUT
+                selector, by="css selector", timeout=settings.SMALL_TIMEOUT
             )
             style = element.get_attribute("style")
         if style:
@@ -12053,9 +12214,7 @@ class BaseCase(unittest.TestCase):
             not self.__last_page_screenshot_png
         ):
             try:
-                element = self.driver.find_element(
-                    by=By.TAG_NAME, value="body"
-                )
+                element = self.driver.find_element(by="tag name", value="body")
                 if self.is_pytest and self.report_on:
                     self.__last_page_screenshot_png = (
                         self.driver.get_screenshot_as_png()
