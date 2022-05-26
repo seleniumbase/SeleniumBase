@@ -33,16 +33,14 @@ class MyTestClass(BaseCase):
         #
         #    ****  NOTES / USEFUL INFO  ****
         #
-        # 1. By default, CSS Selectors are used to identify elements.
+        # 1. By default, page elements are identified by "css selector".
         #    CSS Guide: "https://www.w3schools.com/cssref/css_selectors.asp".
-        #    Other selectors include: "LINK_TEXT", "PARTIAL_LINK_TEXT", "NAME",
-        #    "CLASS_NAME", and "ID", but most of those can be expressed as CSS.
+        #    Other selectors include: "link text", "partial link text", "name",
+        #    "class name", and "id", but most of those can be expressed as CSS.
         #
         #    Here's an example of changing the "by":
         #    [
-        #        from selenium.webdriver.common.by import By
-        #        ...
-        #        self.click('Next', by=By.PARTIAL_LINK_TEXT)
+        #        self.click('Next', by="partial link text")
         #    ]
         #
         #    XPath is used by default if the arg starts with "/", "./", or "(":

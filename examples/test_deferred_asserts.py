@@ -16,8 +16,8 @@ class DeferredAssertTests(BaseCase):
         self.deferred_assert_element('img[alt="Brand Identity"]')
         self.deferred_assert_element('img[alt="Rocket Ship"]')  # Will Fail
         self.deferred_assert_element("#comicmap")
-        self.deferred_assert_text("Fake Item", "#middleContainer")  # Will Fail
-        self.deferred_assert_text("Random", "#middleContainer")
+        self.deferred_assert_text("Fake Item", "ul.comicNav")  # Will Fail
+        self.deferred_assert_text("Random", "ul.comicNav")
         self.deferred_assert_element('a[name="Super Fake !!!"]')  # Will Fail
         self.deferred_assert_exact_text("Brand Identity", "#ctitle")
         self.deferred_assert_exact_text("Fake Food", "#comic")  # Will Fail
