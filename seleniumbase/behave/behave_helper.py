@@ -202,6 +202,12 @@ def generate_gherkin(srt_actions):
                 sb_actions.append("Set content to default")
         elif action[0] == "sleep":
             sb_actions.append("Sleep for %s seconds" % action[1])
+        elif action[0] == "wf_el":
+            method = "Wait for element"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            else:
+                sb_actions.append("%s '%s'" % (method, action[1]))
         elif action[0] == "as_el":
             method = "Assert element"
             if '"' not in action[1]:
@@ -275,13 +281,22 @@ def generate_gherkin(srt_actions):
                     'In \'%s\' assert attribute "%s"'
                     % (action[1][0], action[1][1])
                 )
-        elif action[0] == "as_te" or action[0] == "as_et":
+        elif (
+            action[0] == "as_te"
+            or action[0] == "as_et"
+            or action[0] == "da_te"
+            or action[0] == "da_et"
+        ):
             import unicodedata
 
             action[1][0] = unicodedata.normalize("NFKC", action[1][0])
             method = "Assert text"
             if action[0] == "as_et":
                 method = "Assert exact text"
+            elif action[0] == "da_te":
+                method = "Deferred assert text"
+            elif action[0] == "da_et":
+                method = "Deferred assert exact text"
             if action[1][1] != "html":
                 if '"' not in action[1][0] and '"' not in action[1][1]:
                     sb_actions.append(
@@ -312,10 +327,24 @@ def generate_gherkin(srt_actions):
                     sb_actions.append(
                         "%s '%s'" % (method, action[1][0])
                     )
+        elif action[0] == "da_el":
+            method = "Deferred assert element"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            else:
+                sb_actions.append("%s '%s'" % (method, action[1]))
+        elif action[0] == "da_ep":
+            method = "Deferred assert element present"
+            if '"' not in action[1]:
+                sb_actions.append('%s "%s"' % (method, action[1]))
+            else:
+                sb_actions.append("%s '%s'" % (method, action[1]))
         elif action[0] == "ss_tl":
             sb_actions.append("Save screenshot to logs")
         elif action[0] == "sh_fc":
             sb_actions.append("Show file choosers")
+        elif action[0] == "pr_da":
+            sb_actions.append("Process deferred asserts")
         elif action[0] == "c_l_s":
             sb_actions.append("Clear Local Storage")
         elif action[0] == "c_s_s":
