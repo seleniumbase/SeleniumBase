@@ -6912,26 +6912,41 @@ class BaseCase(unittest.TestCase):
 
     # Application "Local Storage" controls
 
+    def __is_valid_storage_url(self):
+        url = self.get_current_url()
+        if url and len(url) > 0:
+            if ("http:") in url or ("https:") in url or ("file:") in url:
+                return True
+        return False
+
     def set_local_storage_item(self, key, value):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         self.execute_script(
             "window.localStorage.setItem('{}', '{}');".format(key, value)
         )
 
     def get_local_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         return self.execute_script(
             "return window.localStorage.getItem('{}');".format(key)
         )
 
     def remove_local_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         self.execute_script(
             "window.localStorage.removeItem('{}');".format(key)
         )
 
     def clear_local_storage(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            return
         self.execute_script("window.localStorage.clear();")
         if self.recorder_mode:
             time_stamp = self.execute_script("return Date.now();")
@@ -6941,6 +6956,8 @@ class BaseCase(unittest.TestCase):
 
     def get_local_storage_keys(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         return self.execute_script(
             "var ls = window.localStorage, keys = []; "
             "for (var i = 0; i < ls.length; ++i) "
@@ -6950,6 +6967,8 @@ class BaseCase(unittest.TestCase):
 
     def get_local_storage_items(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Local Storage is not available here!")
         return self.execute_script(
             r"var ls = window.localStorage, items = {}; "
             "for (var i = 0, k; i < ls.length; ++i) "
@@ -6961,24 +6980,32 @@ class BaseCase(unittest.TestCase):
 
     def set_session_storage_item(self, key, value):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         self.execute_script(
             "window.sessionStorage.setItem('{}', '{}');".format(key, value)
         )
 
     def get_session_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         return self.execute_script(
             "return window.sessionStorage.getItem('{}');".format(key)
         )
 
     def remove_session_storage_item(self, key):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         self.execute_script(
             "window.sessionStorage.removeItem('{}');".format(key)
         )
 
     def clear_session_storage(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            return
         if not self.recorder_mode:
             self.execute_script("window.sessionStorage.clear();")
         else:
@@ -7000,6 +7027,8 @@ class BaseCase(unittest.TestCase):
 
     def get_session_storage_keys(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         return self.execute_script(
             "var ls = window.sessionStorage, keys = []; "
             "for (var i = 0; i < ls.length; ++i) "
@@ -7009,6 +7038,8 @@ class BaseCase(unittest.TestCase):
 
     def get_session_storage_items(self):
         self.__check_scope()
+        if not self.__is_valid_storage_url():
+            raise WebDriverException("Session Storage is not available here!")
         return self.execute_script(
             r"var ls = window.sessionStorage, items = {}; "
             "for (var i = 0, k; i < ls.length; ++i) "
