@@ -1,6 +1,6 @@
 [<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
 
-<h1> 📑 Presenter / Slides 🎞️ </h1>
+<h1> 📑 Presenter/Slides 🎞️ </h1>
 
 <p>SeleniumBase Presenter / Slides lets you use Python to generate HTML presentations and slide shows from Reveal-JS.</p>
 
@@ -37,7 +37,7 @@ pytest core_presentation.py
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Creating a new presentation:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Creating a new presentation:</h3>
 
 ```python
 self.create_presentation(name=None, theme="serif", transition="default")
@@ -60,7 +60,7 @@ Notes are disabled by default. You can enable notes by specifying:
 ``show_notes=True``
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Adding a slide to a presentation:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Adding a slide to a presentation:</h3>
 
 ```python
 self.add_slide(content=None, image=None, code=None, iframe=None,
@@ -83,8 +83,7 @@ self.add_slide(content=None, image=None, code=None, iframe=None,
 """
 ```
 
-
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Running a presentation:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Running a presentation:</h3>
 
 ```python
 self.begin_presentation(
@@ -107,7 +106,7 @@ Before the presentation is run, the full HTML is saved to the ``saved_presentati
 
 All methods have the optional ``name`` argument, which is only needed if you're creating multiple presentations at once.
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Here's an example of using SeleniumBase Presenter:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Here's an example of using SeleniumBase Presenter:</h3>
 
 ```python
 from seleniumbase import BaseCase
@@ -232,7 +231,7 @@ That example is from [my_presentation.py](https://github.com/seleniumbase/Seleni
 pytest my_presentation.py
 ```
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Saving a presentation:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="24" /> Saving a presentation:</h3>
 
 If you want to save the presentation you created as an HTML file, use:
 
@@ -241,6 +240,7 @@ self.save_presentation(filename="my_presentation.html", show_notes=True)
 ```
 
 Presentations automatically get saved when calling:
+
 ```python
 self.begin_presentation(show_notes=True)
 ```
