@@ -32,7 +32,7 @@ class TestUpgradeChromedriver:
                     major_chromedriver_ver = chromedriver_ver.split(".")[0]
                     if major_chromedriver_ver != major_chrome_ver:
                         subprocess.check_call(
-                            "sbase install chromedriver %s" % major_chrome_ver,
+                            "sbase get chromedriver %s" % major_chrome_ver,
                             shell=True
                         )
             """
@@ -64,7 +64,7 @@ class TestUpgradeChromedriver:
                         print(
                             "* The version of chromedriver is too low!\\n"
                             "* Try upgrading to chromedriver %s manually:\\n"
-                            "* >>> sbase install chromedriver %s <<<"
+                            "* >>> sbase get chromedriver %s <<<"
                             % (major_chrome_ver, major_chrome_ver)
                         )
                     else:
@@ -72,7 +72,7 @@ class TestUpgradeChromedriver:
                         print(
                             "* The version of chromedriver is too high!\\n"
                             "* Try downgrading to chromedriver %s manually:\\n"
-                            "* >>> sbase install chromedriver %s <<<"
+                            "* >>> sbase get chromedriver %s <<<"
                             % (major_chrome_ver, major_chrome_ver)
                         )
             """
@@ -91,7 +91,7 @@ class TestUpgradeChromedriver:
         except Exception:
             # Install the compatibility version of chromedriver
             subprocess.check_call(
-                "seleniumbase install chromedriver 2.44", shell=True
+                "seleniumbase get chromedriver 72.0.3626.69", shell=True
             )
         # Upgrade chromedriver to match the installed version of Chrome
         testdir = self.upgrade_chromedriver(testdir)
