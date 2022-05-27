@@ -24,7 +24,7 @@ class CanvasTests(BaseCase):
         rgb = self.get_pixel_colors()
         self.assert_equal(rgb, [221, 242, 231])  # Looks greenish
         self.click_with_offset("canvas", 500, 350)
-        self.highlight("canvas")
+        self.highlight("canvas", loops=5)
         rgb = self.get_pixel_colors()
         self.assert_equal(rgb, [39, 42, 56])  # Blue by hamburger
 
