@@ -6,7 +6,7 @@ Usage:
                     iedriver|operadriver} [OPTIONS]
 Options:
          VERSION         Specify the version.
-                         (Default chromedriver version = 2.44)
+                         (Default chromedriver = 72.0.3626.69)
                          Use "latest" for the latest version.
                          Use "latest-1" for one less than that.
          -p OR --path    Also copy the driver to /usr/local/bin
@@ -44,7 +44,7 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
-DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
+DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (Specify "latest" for latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.31.0"
 DEFAULT_EDGEDRIVER_VERSION = "101.0.1210.32"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
@@ -61,7 +61,7 @@ def invalid_run_command():
     exp += "                          iedriver, operadriver)\n"
     exp += "  Options:\n"
     exp += "           VERSION        Specify the version.\n"
-    exp += "                           (Default chromedriver version = 2.44)\n"
+    exp += "                           (Default chromedriver = 72.0.3626.69.\n"
     exp += '                            Use "latest" for the latest version.\n'
     exp += "                            For chromedriver, you can also use\n"
     exp += "                            the major version integer\n"
@@ -108,14 +108,27 @@ def requests_get(url):
 
 
 def main(override=None):
-    if override == "chromedriver":
-        sys.argv = ["seleniumbase", "get", "chromedriver"]
-    elif override == "edgedriver":
-        sys.argv = ["seleniumbase", "get", "edgedriver"]
-    elif override == "geckodriver":
-        sys.argv = ["seleniumbase", "get", "geckodriver"]
-    elif override == "iedriver":
-        sys.argv = ["seleniumbase", "get", "iedriver"]
+    if override:
+        if override == "chromedriver":
+            sys.argv = ["seleniumbase", "get", "chromedriver"]
+        elif override.startswith("chromedriver "):
+            extra = override.split("chromedriver ")[1]
+            sys.argv = ["seleniumbase", "get", "chromedriver", extra]
+        elif override == "edgedriver":
+            sys.argv = ["seleniumbase", "get", "edgedriver"]
+        elif override.startswith("edgedriver "):
+            extra = override.split("edgedriver ")[1]
+            sys.argv = ["seleniumbase", "get", "edgedriver", extra]
+        elif override == "geckodriver":
+            sys.argv = ["seleniumbase", "get", "geckodriver"]
+        elif override.startswith("geckodriver "):
+            extra = override.split("geckodriver ")[1]
+            sys.argv = ["seleniumbase", "get", "geckodriver", extra]
+        elif override == "iedriver":
+            sys.argv = ["seleniumbase", "get", "iedriver"]
+        elif override.startswith("iedriver "):
+            extra = override.split("iedriver ")[1]
+            sys.argv = ["seleniumbase", "get", "iedriver", extra]
 
     num_args = len(sys.argv)
     if (

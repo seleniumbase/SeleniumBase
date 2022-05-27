@@ -5,7 +5,7 @@ from seleniumbase import BaseCase
 class GoogleTests(BaseCase):
     @parameterized.expand(
         [
-            ["PyPI", "pypi.org", 'img[alt="PyPI"]'],
+            ["Download Python", "Download Python", "img.python-logo"],
             ["Wikipedia", "www.wikipedia.org", "img.central-featured-logo"],
             ["SeleniumBase GitHub.com", "SeleniumBase", 'img[title*="Sele"]'],
         ]

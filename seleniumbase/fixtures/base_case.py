@@ -44,6 +44,7 @@ import urllib3
 from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
+    InvalidArgumentException,
     MoveTargetOutOfBoundsException,
     NoSuchElementException,
     NoSuchWindowException,
@@ -1968,11 +1969,11 @@ class BaseCase(unittest.TestCase):
             install_sb = (
                 "seleniumbase install chromedriver %s" % major_chrome_version
             )
-            if major_chromedriver_version < major_chrome_version:
+            if int(major_chromedriver_version) < int(major_chrome_version):
                 # Upgrading the driver is required for performing hover actions
                 message = (
-                    "\n"
-                    "You need a newer chromedriver to perform hover actions!\n"
+                    "You need a newer version of\n"
+                    "chromedriver to perform hover actions!\n"
                     "Your version of chromedriver is: %s\n"
                     "And your version of Chrome is: %s\n"
                     "You can fix this issue by running:\n>>> %s\n"
@@ -11371,6 +11372,41 @@ class BaseCase(unittest.TestCase):
                 "The offset must stay inside the target element!"
             )
             raise Exception(message)
+        except InvalidArgumentException as e:
+            if not self.browser == "chrome":
+                raise Exception(e)
+            driver_capabilities = self.driver.capabilities
+            if "version" in driver_capabilities:
+                chrome_version = driver_capabilities["version"]
+            else:
+                chrome_version = driver_capabilities["browserVersion"]
+            major_chrome_version = chrome_version.split(".")[0]
+            chrome_dict = self.driver.capabilities["chrome"]
+            chromedriver_version = chrome_dict["chromedriverVersion"]
+            chromedriver_version = chromedriver_version.split(" ")[0]
+            major_chromedriver_version = chromedriver_version.split(".")[0]
+            if (
+                int(major_chromedriver_version) >= 76
+                and int(major_chrome_version) >= 76
+            ):
+                raise Exception(e)
+            install_sb = (
+                "seleniumbase install chromedriver %s" % major_chrome_version
+            )
+            if int(major_chromedriver_version) < int(major_chrome_version):
+                # Upgrading the driver is needed for performing canvas actions
+                message = (
+                    "You need to upgrade to a newer\n"
+                    "version of chromedriver to perform canvas actions!\n"
+                    "Reason: github.com/SeleniumHQ/selenium/issues/7000"
+                    "\nYour version of chromedriver is: %s\n"
+                    "And your version of Chrome is: %s\n"
+                    "You can fix this issue by running:\n>>> %s\n"
+                    % (chromedriver_version, chrome_version, install_sb)
+                )
+                raise Exception(message)
+            else:
+                raise Exception(e)
         if self.demo_mode:
             self.__demo_mode_pause_if_active()
         elif self.slow_mode:

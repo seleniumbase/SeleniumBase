@@ -437,14 +437,14 @@ def main():
     file.close()
 
     data = []
-    data.append("from seleniumbase import BaseCase")
     data.append("from parameterized import parameterized")
+    data.append("from seleniumbase import BaseCase")
     data.append("")
     data.append("")
     data.append("class GoogleTests(BaseCase):")
     data.append("    @parameterized.expand(")
     data.append("        [")
-    data.append('            ["pypi", "pypi.org"],')
+    data.append('            ["Download Python", "Download Python"],')
     data.append('            ["wikipedia", "wikipedia.org"],')
     data.append('            ["seleniumbase", "SeleniumBase"],')
     data.append("        ]")
@@ -457,7 +457,6 @@ def main():
     data.append(
         '        self.type(\'input[title="Search"]\', search_term + "\\n")'
     )
-    data.append('        self.assert_element("#result-stats")')
     data.append('        self.assert_text(expected_text, "#search")')
     data.append("")
     file_path = "%s/%s" % (dir_name, "parameterized_test.py")

@@ -79,8 +79,8 @@ class SideBySide:
 
 
 class MultiBrowser:
-    CHROMEDRIVER_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/driver_fixing.lock"
-    CHROMEDRIVER_REPAIRED = Files.DOWNLOADS_FOLDER + "/driver_fixed.lock"
+    DRIVER_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/driver_fixing.lock"
+    DRIVER_REPAIRED = Files.DOWNLOADS_FOLDER + "/driver_fixed.lock"
 
 
 class SavedCookies:
