@@ -12,7 +12,7 @@ seleniumbase get operadriver
 
 After running the commands above, web drivers will get downloaded into this folder. SeleniumBase will then use those drivers during tests if present. (The drivers don't come with SeleniumBase by default.)
 
-* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
+* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 72.0.3626.69 for compatibility reasons</i>):
 
 ```bash
 sbase get chromedriver latest

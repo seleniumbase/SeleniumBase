@@ -52,7 +52,7 @@ COMMANDS:
 * Examples:
 
 ```bash
-sbase get chromedriver
+sbase get chromedriver  # (Default version = 72.0.3626.69)
 sbase get geckodriver
 sbase get edgedriver
 sbase get chromedriver 101
