@@ -174,7 +174,7 @@ setup(
         'pyopenssl==22.0.0;python_version>="3.7"',
         'wsproto==1.1.0;python_version>="3.7"',
         'selenium==3.141.0;python_version<"3.7"',
-        'selenium==4.1.5;python_version>="3.7"',
+        'selenium==4.2.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
         'more-itertools==5.0.0;python_version<"3.5"',
         'more-itertools==8.13.0;python_version>="3.5"',
@@ -232,7 +232,7 @@ setup(
         'ipython==5.10.0;python_version<"3.5"',
         'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
-        'ipython==7.33.0;python_version>="3.7"',  # Requires matplotlib-inline
+        'ipython==7.34.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.4",
         'importlib-metadata==2.1.3;python_version<"3.6"',
