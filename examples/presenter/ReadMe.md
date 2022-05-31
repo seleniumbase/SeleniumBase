@@ -2,7 +2,7 @@
 
 <h1> 📑 Presenter 🎞️ </h1>
 
-<p>SeleniumBase Presenter (slide-maker) lets you use Python to generate HTML presentations from Reveal-JS.</p>
+<p>SeleniumBase Presenter (slide-maker) lets you use Python to generate HTML presentations.</p>
 
 <b>Here's a sample presentation:</b>
 
