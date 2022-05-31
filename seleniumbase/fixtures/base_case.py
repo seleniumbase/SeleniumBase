@@ -11361,7 +11361,11 @@ class BaseCase(unittest.TestCase):
             pass
         try:
             action_chains = ActionChains(self.driver)
-            action_chains.move_to_element_with_offset(element, x, y)
+            import warnings
+
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=DeprecationWarning)
+                action_chains.move_to_element_with_offset(element, x, y)
             if not double:
                 action_chains.click().perform()
             else:
