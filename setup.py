@@ -49,7 +49,7 @@ if sys.argv[-1] == "publish":
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=4.0.0'")
+        os.system("python -m pip install --upgrade 'twine>=4.0.1'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
         os.system("python -m pip install --upgrade 'tqdm>=4.64.0'")
         print("\n*** Rebuilding distribution packages: ***\n")
@@ -140,13 +140,13 @@ setup(
         "attrs>=21.4.0",
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
-        'traitlets>=5.2.1.post0;python_version>="3.7"',
+        'traitlets>=5.2.2.post1;python_version>="3.7"',
         'certifi>=2021.10.8;python_version<"3.5"',
         'certifi>=2022.5.18;python_version>="3.5" and python_version<"3.6"',
         'certifi>=2022.5.18.1;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
-        'filelock>=3.7.0;python_version>="3.7"',
+        'filelock>=3.7.1;python_version>="3.7"',
         'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
         'platformdirs>=2.5.2;python_version>="3.7"',
