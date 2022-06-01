@@ -8,7 +8,7 @@
 <h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="672" /></a></h2>
 
 <p align="center">
-<b>The most advanced open-source automation framework on the Planet.</b>
+<b>The most advanced open-source automation framework on <a href="https://en.wikipedia.org/wiki/Earth">Earth</a>.</b>
 </p>
 
 <!-- View on GitHub -->
