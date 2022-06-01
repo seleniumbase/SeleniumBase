@@ -7,23 +7,21 @@
 
 <h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="672" /></a></h2>
 
-<p align="center">
-<b>The most advanced open-source automation framework on <a href="https://en.wikipedia.org/wiki/Earth">Earth</a>.</b>
-</p>
+<p align="center">The most advanced open-source automation framework on <a href="https://en.wikipedia.org/wiki/Earth" target="_blank">Earth</a>.</p>
 
 <!-- View on GitHub -->
 
 <p align="center">
-<a href="https://github.com/seleniumbase/SeleniumBase/releases">
+<a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank">
 <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
 <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io"> <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></p>
 
 <p align="center">
-<a href="https://github.com/seleniumbase/SeleniumBase/actions">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank">
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">SeleniumBase is a complete framework for web automation & testing with <a href="https://github.com/pytest-dev/pytest">pytest</a>.<br />Simplifies <a href="https://github.com/SeleniumHQ/selenium">Selenium</a>'s out-of-the-box API, resulting in cleaner, maintainable code. <br />Includes advanced tools such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">JS code generators</a>.</p>
+<p align="center">SeleniumBase is a complete framework for web automation & testing with <a href="https://github.com/pytest-dev/pytest" target="_blank">pytest</a>.<br />Simplifies <a href="https://github.com/SeleniumHQ/selenium" target="_blank">Selenium</a>'s out-of-the-box API, resulting in cleaner, maintainable code. <br />Includes advanced tools such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">JS code generators</a>.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -145,7 +143,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/cdn/img/python_logo.png" title="SeleniumBase" width="42" /> Python Setup:</h2>
 
-<a href="https://www.python.org/downloads/"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=FACE42" title="Supported Python Versions" /></a>
+<a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=FACE42" title="Supported Python Versions" /></a>
 
 🔵 Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
