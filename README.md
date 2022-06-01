@@ -5,10 +5,10 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="760" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="672" /></a></h2>
 
 <p align="center">
-<b>Everything you need to test web apps.</b>
+<b>The most advanced open-source automation framework on the Planet.</b>
 </p>
 
 <!-- View on GitHub -->
@@ -53,7 +53,7 @@
 
 <p align="left">
 ✅ Smart-waiting code prevents flaky tests.<br />
-✅ Supports Chromium, Firefox, and Safari.<br />
+✅ Runs on Chromium, Firefox, IE, & Safari.<br />
 ✅ Supports Linux, macOS, and Windows.<br />
 </p>
 
