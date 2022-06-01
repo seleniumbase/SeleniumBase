@@ -779,7 +779,11 @@ class SeleniumBrowser(Plugin):
     def afterTest(self, test):
         try:
             # If the browser window is still open, close it now.
-            if not is_windows or self.driver.service.process:
+            if (
+                not is_windows
+                or test.test.browser == "ie"
+                or self.driver.service.process
+            ):
                 self.driver.quit()
         except AttributeError:
             pass

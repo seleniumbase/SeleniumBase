@@ -920,7 +920,11 @@ def _perform_behave_unconfigure_():
         # Close the shared browser session
         if sb_config.shared_driver:
             try:
-                if not is_windows or sb_config.shared_driver.service.process:
+                if (
+                    not is_windows
+                    or sb_config.browser == "ie"
+                    or sb_config.shared_driver.service.process
+                ):
                     sb_config.shared_driver.quit()
             except AttributeError:
                 pass
@@ -983,7 +987,11 @@ def _perform_behave_unconfigure_():
 def do_final_driver_cleanup_as_needed():
     try:
         if hasattr(sb_config, "last_driver") and sb_config.last_driver:
-            if not is_windows or sb_config.last_driver.service.process:
+            if (
+                not is_windows
+                or sb_config.browser == "ie"
+                or sb_config.last_driver.service.process
+            ):
                 sb_config.last_driver.quit()
     except Exception:
         pass
