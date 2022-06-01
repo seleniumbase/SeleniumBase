@@ -1,6 +1,12 @@
 from behave import step
 
 
+def normalize_text(text):
+    text = text.replace("\\\\", "\\").replace("\\t", "\t").replace("\\n", "\n")
+    text = text.replace('\\"', '"').replace("\\'", "'")
+    return text
+
+
 @step("Open '{url}'")
 @step('Open "{url}"')
 @step("Open URL '{url}'")
@@ -33,6 +39,7 @@ def click_element(context, selector):
 @step('Into "{selector}" type \'{text}\'')
 def type_text(context, selector, text):
     sb = context.sb
+    text = normalize_text(text)
     sb.type(selector, text)
 
 
@@ -46,6 +53,7 @@ def type_text(context, selector, text):
 @step('Into "{selector}" add \'{text}\'')
 def add_text(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.add_text(selector, text)
 
 
@@ -62,6 +70,7 @@ def assert_element(context, selector):
 @step('Assert text "{text}" in \'{selector}\'')
 def assert_text_in_element(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.assert_text(text, selector)
 
 
@@ -69,6 +78,7 @@ def assert_text_in_element(context, text, selector):
 @step('Assert text "{text}"')
 def assert_text(context, text):
     sb = context.sb
+    text = normalize_text(text)
     sb.assert_text(text)
 
 
@@ -76,6 +86,7 @@ def assert_text(context, text):
 @step('Assert exact text "{text}" in "{selector}"')
 def assert_exact_text(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.assert_exact_text(text, selector)
 
 
@@ -139,6 +150,7 @@ def go_forward(context):
 @step('JS type text "{text}" into \'{selector}\'')
 def js_type(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.js_type(selector, text)
 
 
@@ -148,6 +160,7 @@ def js_type(context, text, selector):
 @step('Set value of \'{selector}\' to "{text}"')
 def set_value(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.set_value(selector, text)
 
 
@@ -258,6 +271,7 @@ def hover_and_click(context, hover_selector, click_selector):
 @step('Find "{selector}" and select \'{text}\'')
 def select_option_by_text(context, selector, text):
     sb = context.sb
+    text = normalize_text(text)
     sb.select_option_by_text(selector, text)
 
 
@@ -267,6 +281,7 @@ def select_option_by_text(context, selector, text):
 @step('Find "{selector}" and select \'{text}\' by {option}')
 def select_option_by_option(context, selector, text, option):
     sb = context.sb
+    text = normalize_text(text)
     if option.startswith("'") or option.startswith('"'):
         option = option[1:]
     if option.endswith("'") or option.endswith('"'):
@@ -440,6 +455,7 @@ def assert_element_not_visible(context, selector):
 @step('Assert link text "{text}"')
 def assert_link_text(context, text):
     sb = context.sb
+    text = normalize_text(text)
     sb.assert_link_text(text)
 
 
@@ -447,6 +463,7 @@ def assert_link_text(context, text):
 @step('Assert title "{title}"')
 def assert_title(context, title):
     sb = context.sb
+    title = normalize_text(title)
     sb.assert_title(title)
 
 
@@ -494,6 +511,7 @@ def assert_attribute(context, selector, attribute):
 @step('In \'{selector}\' assert attribute/value "{attribute}"/"{value}"')
 def assert_attribute_has_value(context, selector, attribute, value):
     sb = context.sb
+    value = normalize_text(value)
     sb.assert_attribute(selector, attribute, value)
 
 
@@ -542,6 +560,7 @@ def deferred_assert_element_present(context, selector):
 @step('Deferred assert text "{text}" in \'{selector}\'')
 def deferred_assert_text_in_element(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.deferred_assert_text(text, selector)
 
 
@@ -549,6 +568,7 @@ def deferred_assert_text_in_element(context, text, selector):
 @step('Deferred assert text "{text}"')
 def deferred_assert_text(context, text):
     sb = context.sb
+    text = normalize_text(text)
     sb.deferred_assert_text(text)
 
 
@@ -556,6 +576,7 @@ def deferred_assert_text(context, text):
 @step('Deferred assert exact text "{text}" in "{selector}"')
 def deferred_assert_exact_text(context, text, selector):
     sb = context.sb
+    text = normalize_text(text)
     sb.deferred_assert_exact_text(text, selector)
 
 

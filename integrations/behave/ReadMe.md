@@ -69,7 +69,7 @@ Feature: SeleniumBase scenarios for the Calculator App # features/calculator.fea
 Took 0m1.672s
 ```
 
-🔵🐝⚪ With the Dashboard enabled, you'll get one of these:
+🐝⚪ With the Dashboard enabled, you'll get one of these:
 
 <img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 

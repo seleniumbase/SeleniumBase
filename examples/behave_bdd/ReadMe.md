@@ -13,18 +13,18 @@ Dashboard: /Users/michael/github/SeleniumBase/examples/behave_bdd/dashboard.html
 Feature: SeleniumBase scenarios for the RealWorld App # features/realworld.feature:1
 
   Scenario: Verify RealWorld App (log in / sign out)  # features/realworld.feature:3
-    Given Open "seleniumbase.io/realworld/login"      # ../../sbase/steps.py:4
-    And Clear Session Storage                         # ../../sbase/steps.py:374
-    When Type "demo_user" into "#username"            # ../../sbase/steps.py:22
-    And Type "secret_pass" into "#password"           # ../../sbase/steps.py:22
-    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"    # ../../sbase/steps.py:179
-    Then Assert exact text "Welcome!" in "h1"         # ../../sbase/steps.py:75
-    And Highlight "img#image1"                        # ../../sbase/steps.py:82
-    And Click 'a:contains("This Page")'               # ../../sbase/steps.py:13
-    And Save screenshot to logs                       # ../../sbase/steps.py:107
-    When Click link "Sign out"                        # ../../sbase/steps.py:91
-    Then Assert element 'a:contains("Sign in")'       # ../../sbase/steps.py:52
-    And Assert text "You have been signed out!"       # ../../sbase/steps.py:68
+    Given Open "seleniumbase.io/realworld/login"      # ../../sbase/steps.py:10
+    And Clear Session Storage                         # ../../sbase/steps.py:389
+    When Type "demo_user" into "#username"            # ../../sbase/steps.py:28
+    And Type "secret_pass" into "#password"           # ../../sbase/steps.py:28
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"    # ../../sbase/steps.py:192
+    Then Assert exact text "Welcome!" in "h1"         # ../../sbase/steps.py:85
+    And Highlight "img#image1"                        # ../../sbase/steps.py:93
+    And Click 'a:contains("This Page")'               # ../../sbase/steps.py:19
+    And Save screenshot to logs                       # ../../sbase/steps.py:118
+    When Click link "Sign out"                        # ../../sbase/steps.py:102
+    Then Assert element 'a:contains("Sign in")'       # ../../sbase/steps.py:60
+    And Assert text "You have been signed out!"       # ../../sbase/steps.py:77
    ✅ Scenario Passed!
 
 - Dashboard: /Users/michael/github/SeleniumBase/examples/behave_bdd/dashboard.html
@@ -72,7 +72,7 @@ Feature: SeleniumBase scenarios for the Calculator App # features/calculator.fea
 Took 0m1.672s
 ```
 
-🔵🐝⚪ With the Dashboard enabled, you'll get one of these:
+🐝⚪ With the Dashboard enabled, you'll get one of these:
 
 <img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
 
