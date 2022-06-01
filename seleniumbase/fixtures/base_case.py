@@ -10465,7 +10465,11 @@ class BaseCase(unittest.TestCase):
                 "Use this method only if get_new_driver() has been called."
             )
         try:
-            if not is_windows or driver.service.process:
+            if (
+                not is_windows
+                or self.browser == "ie"
+                or driver.service.process
+            ):
                 driver.quit()
         except AttributeError:
             pass
@@ -12419,7 +12423,11 @@ class BaseCase(unittest.TestCase):
         self._drivers_list.reverse()  # Last In, First Out
         for driver in self._drivers_list:
             try:
-                if not is_windows or driver.service.process:
+                if (
+                    not is_windows
+                    or self.browser == "ie"
+                    or driver.service.process
+                ):
                     if not delay_driver_quit:
                         driver.quit()
                     else:

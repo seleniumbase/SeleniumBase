@@ -1463,7 +1463,11 @@ def _perform_pytest_unconfigure_():
         # Close the shared browser session
         if sb_config.shared_driver:
             try:
-                if not is_windows or sb_config.shared_driver.service.process:
+                if (
+                    not is_windows
+                    or sb_config.browser == "ie"
+                    or sb_config.shared_driver.service.process
+                ):
                     sb_config.shared_driver.quit()
             except AttributeError:
                 pass
