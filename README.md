@@ -5,10 +5,10 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="250" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="760" /></a></h2>
 
 <p align="center">
-<b>Everything you need to test websites.</b>
+<b>Everything you need to test web apps.</b>
 </p>
 
 <!-- View on GitHub -->
@@ -23,7 +23,7 @@
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">SeleniumBase is a complete framework for browser automation + testing with <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.<br />The API simplifies <a href="https://www.selenium.dev/documentation/">Selenium</a>'s out-of-the-box API, allowing cleaner, maintainable code. <br />Includes advanced features such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">JS code generators</a>.</p>
+<p align="center">SeleniumBase is a complete framework for web automation & testing with <a href="https://github.com/pytest-dev/pytest">pytest</a>.<br />Simplifies <a href="https://github.com/SeleniumHQ/selenium">Selenium</a>'s out-of-the-box API, resulting in cleaner, maintainable code. <br />Includes advanced tools such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">JS code generators</a>.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -44,8 +44,8 @@
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Templates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Templates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog</a>
@@ -53,9 +53,8 @@
 
 <p align="left">
 ✅ Smart-waiting code prevents flaky tests.<br />
-✅ Supports Windows, Linux, and macOS.<br />
 ✅ Supports Chromium, Firefox, and Safari.<br />
-✅ Includes <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">dashboards and reporting tools</a>.
+✅ Supports Linux, macOS, and Windows.<br />
 </p>
 
 --------
