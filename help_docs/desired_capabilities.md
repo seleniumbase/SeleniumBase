@@ -1,6 +1,6 @@
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using Desired Capabilities</h3>
 
-You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote Selenium Grid server such as [BrowserStack](https://www.browserstack.com/automate/capabilities), [LambdaTest](https://www.lambdatest.com/selenium-automation), or [Sauce Labs](https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/).
+You can specify browser desired capabilities for webdriver when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://www.lambdatest.com/capabilities-generator/" target="_blank">LambdaTest</a>, or <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>.
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
@@ -22,12 +22,13 @@ Here's an example desired capabilities file for BrowserStack:
 
 ```python
 desired_cap = {
-    "os": "OS X",
-    "os_version": "Mojave",
-    "browser": "Chrome",
-    "browser_version": "latest",
-    "browserstack.local": "false",
-    "browserstack.selenium_version": "3.141.59",
+    "os" : "Windows",
+    "os_version" : "11",
+    "browser" : "Chrome",
+    "browser_version" : "101.0",
+    "browserstack.local" : "false",
+    "browserstack.debug" : "true",
+    "browserstack.selenium_version" : "4.1.2",
 }
 ```
 
@@ -39,7 +40,9 @@ capabilities = {
     "name" : "your test name",
     "platform" : "Windows 11",
     "browserName" : "Chrome",
-    "version" : "100.0",
+    "version" : "101.0",
+    "timezone" : "UTC+05:30",
+    "geoLocation" : "IN",
 }
 ```
 
@@ -59,9 +62,9 @@ capabilities = {
 <div><b>You can generate specific desired capabilities using:</b></div>
 
 <ul>
-    <li><a href="https://www.browserstack.com/automate/capabilities">BrowserStack desired capabilities</a></li>
-    <li><a href="https://www.lambdatest.com/capabilities-generator/">LambdaTest desired capabilities</a></li>
-    <li><a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/">Sauce Labs desired capabilities</a></li>
+    <li><a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack desired capabilities</a></li>
+    <li><a href="https://www.lambdatest.com/capabilities-generator/" target="_blank">LambdaTest desired capabilities</a></li>
+    <li><a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs desired capabilities</a></li>
 </ul>
 
 <div><b>Parsing desired capabilities:</b></div>
