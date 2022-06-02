@@ -5,9 +5,9 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="672" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
 
-<p align="center">The most advanced open-source automation framework on <a href="https://en.wikipedia.org/wiki/Earth" target="_blank">Earth</a>.</p>
+<p align="center"><b>✅ Build fast, reliable, end-to-end tests.</b></p>
 
 <!-- View on GitHub -->
 
@@ -21,7 +21,7 @@
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">SeleniumBase is a complete framework for web automation & testing with <a href="https://github.com/pytest-dev/pytest" target="_blank">pytest</a>.<br />Simplifies <a href="https://github.com/SeleniumHQ/selenium" target="_blank">Selenium</a>'s out-of-the-box API, resulting in cleaner, maintainable code. <br />Includes advanced tools such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">Dashboard</a>, a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">Recorder</a>, and <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">JS code generators</a>.</p>
+<p align="center">SeleniumBase is a complete framework for automated web testing with Python.<br />Enhances Selenium's out-of-the-box API, resulting in cleaner, maintainable code.<br />Includes advanced tools such as a Dashboard, a Recorder, and a GUI to run tests.</p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -51,7 +51,7 @@
 
 <p align="left">
 ✅ Smart-waiting code prevents flaky tests.<br />
-✅ Runs on Chromium, Firefox, IE, & Safari.<br />
+✅ Runs on Chrome, Edge, Firefox, & Safari.<br />
 ✅ Supports Linux, macOS, and Windows.<br />
 </p>
 
