@@ -7,7 +7,7 @@
 
 <h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
 
-<p align="center"><b>✅ Build fast, reliable, end-to-end tests.</b></p>
+<p align="center"><b>Build fast, reliable, end-to-end tests.</b></p>
 
 <!-- View on GitHub -->
 
