@@ -79,6 +79,7 @@ def pytest_addoption(parser):
     --use-auto-ext  (Use Chrome's automation extension.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
+    --dash-title=STRING  (Set the title shown for the generated dashboard.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -832,6 +833,13 @@ def pytest_addoption(parser):
                 folder that the pytest command was run from.""",
     )
     parser.addoption(
+        "--dash_title",
+        "--dash-title",
+        dest="dash_title",
+        default=None,
+        help="Set the title shown for the generated dashboard.",
+    )
+    parser.addoption(
         "--swiftshader",
         action="store_true",
         dest="swiftshader",
@@ -1174,6 +1182,7 @@ def pytest_configure(config):
     sb_config.disable_gpu = config.getoption("disable_gpu")
     sb_config.remote_debug = config.getoption("remote_debug")
     sb_config.dashboard = config.getoption("dashboard")
+    sb_config.dash_title = config.getoption("dash_title")
     sb_config.swiftshader = config.getoption("swiftshader")
     sb_config.incognito = config.getoption("incognito")
     sb_config.guest_mode = config.getoption("guest_mode")
@@ -1255,6 +1264,9 @@ def pytest_configure(config):
             sb_config.browser = "safari"
         else:
             pass  # Use the browser specified using "--browser=BROWSER"
+
+    if sb_config.dash_title:
+        constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
     from seleniumbase.core import log_helper
     from seleniumbase.core import download_helper

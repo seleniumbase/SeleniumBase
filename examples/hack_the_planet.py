@@ -69,6 +69,7 @@ class HackTests(BaseCase):
         self.highlight("h2", loops=9, scroll=False)
 
         self.open("https://google.com/ncr")
+        self.hide_elements('iframe')
         self.set_text_content('a[href*="about.google"]', ayb)
         self.set_text_content('a[href*="store.google"]', abtu)
         self.set_text_content('a[href*="mail.google.com"]', ayb)
@@ -169,11 +170,9 @@ class HackTests(BaseCase):
         self.set_text_content("h1", aybabtu)
         self.set_text_content('a[aria-label*="Try PlayF"]', ayb)
         self.set_text_content('a[aria-label*="Sign in to"]', abtu)
-        self.set_text_content('span:contains("Chat with Sales")', aybabtu)
         self.highlight("h1", loops=6, scroll=False)
         self.highlight('a[aria-label*="Try PlayF"]', loops=4, scroll=False)
-        self.highlight('a[aria-label*="Sign in to"]', loops=4, scroll=False)
-        self.highlight("button#live-engage-btn", loops=6, scroll=False)
+        self.highlight('a[aria-label*="Sign in to"]', loops=6, scroll=False)
 
         self.open("https://www.snapchat.com/")
         self.set_text_content("h1", ayb)

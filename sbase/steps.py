@@ -84,6 +84,8 @@ def assert_text(context, text):
 
 @step("Assert exact text '{text}' in '{selector}'")
 @step('Assert exact text "{text}" in "{selector}"')
+@step("Assert exact text '{text}' in \"{selector}\"")
+@step('Assert exact text "{text}" in \'{selector}\'')
 def assert_exact_text(context, text, selector):
     sb = context.sb
     text = normalize_text(text)
@@ -220,28 +222,28 @@ def open_if_not_url(context, url):
 
 
 @step("Select if unselected '{selector}'")
-@step('Select if unselected  "{selector}"')
+@step('Select if unselected "{selector}"')
 def select_if_unselected(context, selector):
     sb = context.sb
     sb.select_if_unselected(selector)
 
 
 @step("Unselect if selected '{selector}'")
-@step('Unselect if selected  "{selector}"')
+@step('Unselect if selected "{selector}"')
 def unselect_if_selected(context, selector):
     sb = context.sb
     sb.unselect_if_selected(selector)
 
 
 @step("Check if unchecked '{selector}'")
-@step('Check if unchecked  "{selector}"')
+@step('Check if unchecked "{selector}"')
 def check_if_unchecked(context, selector):
     sb = context.sb
     sb.check_if_unchecked(selector)
 
 
 @step("Uncheck if checked '{selector}'")
-@step('Uncheck if checked  "{selector}"')
+@step('Uncheck if checked "{selector}"')
 def uncheck_if_checked(context, selector):
     sb = context.sb
     sb.uncheck_if_checked(selector)

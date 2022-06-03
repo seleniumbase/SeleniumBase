@@ -64,15 +64,15 @@ def generate_gherkin(srt_actions):
                 )
             elif '"' not in action[1] and '"' in text:
                 sb_actions.append(
-                    'Into "%s" type \'%s\')' % (action[1], text)
+                    'Into "%s" type \'%s\'' % (action[1], text)
                 )
             elif '"' in action[1] and '"' not in text:
                 sb_actions.append(
-                    'Into \'%s\' type "%s")' % (action[1], text)
+                    'Into \'%s\' type "%s"' % (action[1], text)
                 )
             elif '"' in action[1] and '"' in text:
                 sb_actions.append(
-                    "Into '%s' type '%s')" % (action[1], text)
+                    "Into '%s' type '%s'" % (action[1], text)
                 )
         elif action[0] == "e_mfa":
             text = action[2].replace("\n", "\\n")
@@ -258,7 +258,7 @@ def generate_gherkin(srt_actions):
                 sb_actions.append('%s "%s" to downloads' % (method, file_url))
             else:
                 sb_actions.append(
-                    '%s "%s" to "%s")' % (method, file_url, dest)
+                    '%s "%s" to "%s"' % (method, file_url, dest)
                 )
         elif action[0] == "as_at":
             if ('"' not in action[1][0]) and action[1][2]:

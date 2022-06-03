@@ -484,6 +484,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --use-auto-ext  # (Use Chrome's automation extension.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
+--dash-title=STRING  # (Set the title shown for the generated dashboard.)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)

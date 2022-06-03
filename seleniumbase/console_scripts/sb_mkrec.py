@@ -207,6 +207,22 @@ def main():
         "" + c1 + file_name + cr + "\n"
     )
     print(success)
+    if rec_behave:
+        recorded_filename = file_name[:-3] + "_rec.feature"
+        recordings_dir = os.path.join(dir_name, "recordings")
+        features_dir = os.path.join(recordings_dir, "features")
+        recorded_file = os.path.join(features_dir, recorded_filename)
+        if " " not in recorded_file:
+            os.system("sbase print %s -n" % recorded_file)
+        elif '"' not in recorded_file:
+            os.system('sbase print "%s" -n' % recorded_file)
+        else:
+            os.system("sbase print '%s' -n" % recorded_file)
+        success = (
+            "\n" + c2 + "***" + cr + " BEHAVE RECORDING at: "
+            "" + c1 + os.path.relpath(recorded_file) + cr + "\n"
+        )
+        print(success)
 
 
 if __name__ == "__main__":

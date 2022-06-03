@@ -68,6 +68,7 @@ behave -D agent="User Agent String" -D demo
 -D use-auto-ext  (Use Chrome's automation extension.)
 -D remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
 -D dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
+-D dash-title=STRING  (Set the title shown for the generated dashboard.)
 -D swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
 -D incognito  (Enable Chrome's Incognito mode.)
 -D guest  (Enable Chrome's Guest mode.)
@@ -177,6 +178,7 @@ def get_configured_sb(context):
     sb.time_limit = None
     sb.demo_sleep = None
     sb.dashboard = False
+    sb.dash_title = None
     sb._dash_initialized = False
     sb.message_duration = None
     sb.block_images = False
@@ -537,6 +539,10 @@ def get_configured_sb(context):
         if low_key == "dashboard":
             sb.dashboard = True
             continue
+        # Handle: -D dash-title=TITLE / dash_title=TITLE
+        if low_key in ["dash-title", "dash_title"]:
+            sb.dash_title = userdata[key]
+            continue
         # Handle: -D message-duration / message_duration
         if low_key in ["message-duration", "message_duration"]:
             message_duration = userdata[key]
@@ -689,9 +695,14 @@ def get_configured_sb(context):
             sb.protocol = "https"
 
     # Set sb_config
+    sb_config.browser = sb.browser
+    sb_config.headless = sb.headless
+    sb_config.headed = sb.headed
+    sb_config.xvfb = sb.xvfb
     sb_config.save_screenshot = sb.save_screenshot_after_test
     sb_config.variables = sb.variables
     sb_config.dashboard = sb.dashboard
+    sb_config.dash_title = sb.dash_title
     sb_config.pdb_option = sb.pdb_option
     sb_config.rec_behave = sb.rec_behave
     sb_config.record_sleep = sb.record_sleep
@@ -719,6 +730,9 @@ def get_configured_sb(context):
     sb_config._saved_dashboard_pie = None  # Copy of pie chart for html report
     sb_config._dash_final_summary = None  # Dash status to add to html report
     sb_config._html_report_name = None  # The name of the pytest html report
+
+    if sb_config.dash_title:
+        constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
     log_helper.log_folder_setup(sb.log_path, sb.archive_logs)
     download_helper.reset_downloads_folder()
@@ -799,7 +813,11 @@ def dashboard_pre_processing():
     filename = None
     feature_name = None
     scenario_name = None
-    for row in output.decode("utf-8").split("\n"):
+    if is_windows:
+        output = output.decode("latin1")
+    else:
+        output = output.decode("utf-8")
+    for row in output.replace("\r", "").split("\n"):
         if row.startswith("Feature: "):
             filename_count += 1
             feature_count += 1
