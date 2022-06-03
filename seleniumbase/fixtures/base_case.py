@@ -13168,12 +13168,26 @@ class BaseCase(unittest.TestCase):
         else:
             # (Nosetests / Behave / Pure Python)
             if hasattr(self, "is_behave") and self.is_behave:
+                import colorama
+
                 if sb_config.behave_scenario.status.name == "failed":
                     has_exception = True
                     sb_config._has_exception = True
-                    print("   ❌ Scenario Failed!  (Skipping remaining steps:)")
+                    msg = "   ❌ Scenario Failed!  (Skipping remaining steps:)"
+                    if is_windows:
+                        c1 = colorama.Fore.RED + colorama.Back.LIGHTRED_EX
+                        cr = colorama.Style.RESET_ALL
+                        colorama.init(autoreset=True)
+                        msg = msg.replace("❌", c1 + "><" + cr)
+                    print(msg)
                 else:
-                    print("   ✅ Scenario Passed!")
+                    msg = "   ✅ Scenario Passed!"
+                    if is_windows:
+                        c2 = colorama.Fore.GREEN + colorama.Back.LIGHTGREEN_EX
+                        cr = colorama.Style.RESET_ALL
+                        colorama.init(autoreset=True)
+                        msg = msg.replace("✅", c2 + "<>" + cr)
+                    print(msg)
                 if self.dashboard:
                     self.__process_dashboard(has_exception)
                 if self.headless or self.xvfb:
