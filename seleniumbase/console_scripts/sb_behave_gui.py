@@ -28,6 +28,10 @@ if sys.version_info <= (3, 7):
 import tkinter as tk  # noqa: E402
 from tkinter.scrolledtext import ScrolledText  # noqa: E402
 
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
+
 
 def set_colors(use_colors):
     c0 = ""
@@ -371,7 +375,11 @@ def main():
     file_scenario_count = {}
     f_count = 0
     s_count = 0
-    for row in output.decode("utf-8").split("\n"):
+    if is_windows:
+        output = output.decode("latin1")
+    else:
+        output = output.decode("utf-8")
+    for row in output.replace("\r", "").split("\n"):
         if row.startswith("Feature: "):
             if f_count > 0:
                 file_scenario_count[str(f_count)] = s_count
@@ -386,7 +394,7 @@ def main():
     file_scenario_count[str(f_count)] = s_count
     f_count = 0
     s_count = 0
-    for row in output.decode("utf-8").split("\n"):
+    for row in output.replace("\r", "").split("\n"):
         if row.startswith("Feature: "):
             f_count += 1
             feature_name = row.split("Feature: ")[1]

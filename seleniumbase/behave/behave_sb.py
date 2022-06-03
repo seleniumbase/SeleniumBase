@@ -813,7 +813,11 @@ def dashboard_pre_processing():
     filename = None
     feature_name = None
     scenario_name = None
-    for row in output.decode("utf-8").split("\n"):
+    if is_windows:
+        output = output.decode("latin1")
+    else:
+        output = output.decode("utf-8")
+    for row in output.replace("\r", "").split("\n"):
         if row.startswith("Feature: "):
             filename_count += 1
             feature_count += 1
