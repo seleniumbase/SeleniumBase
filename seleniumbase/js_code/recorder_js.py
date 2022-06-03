@@ -540,8 +540,12 @@ document.body.addEventListener('mousedown', function (event) {
         origin = window.location.origin;
         sel_has_contains = selector.includes(':contains(');
         if (!text) { text = ''; }
+        text = text.trim();
+        if (el.tagName.toLowerCase() == "input")
+            text = el.value.trim();
+        if (!t_con) { t_con = ''; }
         if (rec_mode === '2' || (
-            rec_mode === '3' && sel_has_contains && text === t_con))
+            rec_mode === '3' && sel_has_contains && text === t_con.trim()))
         {
             document.recorded_actions.push(['as_el', selector, origin, d_now]);
             json_rec_act = JSON.stringify(document.recorded_actions);
@@ -550,9 +554,6 @@ document.body.addEventListener('mousedown', function (event) {
         }
         else if (rec_mode === '3') {
             action = 'as_et';
-            text = text.trim();
-            if (el.tagName.toLowerCase() == "input")
-                text = el.value.trim();
             var match = /\r|\n/.exec(text);
             if (match) {
                 lines = text.split(/\r\n|\r|\n/g);
