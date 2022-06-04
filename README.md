@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t3.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
 
 <p align="center"><b>Fast & Reliable Web/UI Testing.</b></p>
 
