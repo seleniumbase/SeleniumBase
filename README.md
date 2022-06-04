@@ -7,7 +7,7 @@
 
 <h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
 
-<p align="center"><b>Build fast, reliable, end-to-end tests.</b></p>
+<p align="center"><b>Fast & Reliable Web/UI Testing.</b></p>
 
 <!-- View on GitHub -->
 
@@ -21,7 +21,7 @@
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">SeleniumBase is a complete framework for automated web testing with Python.<br />Enhances Selenium's out-of-the-box API, resulting in cleaner, maintainable code.<br />Includes advanced tools such as a Dashboard, a Recorder, and a GUI to run tests.</p>
+<p align="center">SeleniumBase is a complete Python framework for web automation & testing.<br />Supports Chrome, Edge, Firefox, Linux, macOS, Safari, Ubuntu, and Windows.<br /></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -47,12 +47,6 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog</a>
-</p>
-
-<p align="left">
-✅ Smart-waiting code prevents flaky tests.<br />
-✅ Runs on Chrome, Edge, Firefox, & Safari.<br />
-✅ Supports Linux, macOS, and Windows.<br />
 </p>
 
 --------
