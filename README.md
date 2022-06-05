@@ -5,9 +5,9 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t3.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t4.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
 
-<p align="center"><b>Fast & Reliable Web/UI Testing.</b></p>
+<p align="center"><b>Python Web UI Testing Made Easy.</b></p>
 
 <!-- View on GitHub -->
 
@@ -21,7 +21,7 @@
 <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
-<p align="center">SeleniumBase is a complete Python framework for web automation & testing.<br />Supports Chrome, Edge, Firefox, Linux, macOS, Safari, Ubuntu, and Windows.<br /></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/swag_vid.gif" width="528" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -57,10 +57,10 @@
 
 ```bash
 cd examples/
-pytest test_demo_site.py
+pytest test_demo_site.py --chrome
 ```
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="400" alt="SeleniumBase Demo Mode" title="SeleniumBase Test" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="400" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 <div></div>
 <details>
@@ -118,7 +118,7 @@ def test_mfa_login(sb):
     sb.save_screenshot_to_logs()
 ```
 
-<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
+<p align="left">📕📝 An example test with <b>behave-BDD</b> <a href="https://behave.readthedocs.io/en/stable/gherkin.html" target="_blank">Gherkin</a> structure. Runs with <code>behave</code>. (<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">Learn more</a>)</p>
 
 ```gherkin
 Feature: SeleniumBase scenarios for the RealWorld App
@@ -325,6 +325,10 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 🔵 For the complete list of SeleniumBase methods, see: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
 
 <h2><img src="https://seleniumbase.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Learn More:</h2>
+
+✅ Supports all major web browsers and operating systems:
+<p><b>Browsers:</b> Chrome, Edge, Firefox, IE, and Safari.</p>
+<p><b>Systems: </b>Linux, macOS, Windows, and Ubuntu.</p>
 
 ✅ Automatic WebDriver Abilities:
 <p>SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">Read more about customizing test runs</a>.</i>)</p>
