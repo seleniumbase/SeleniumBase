@@ -136,6 +136,8 @@ class BaseCase(unittest.TestCase):
         self._rec_overrides_switch = True  # Recorder-Mode uses set_c vs switch
         self._sb_test_identifier = None
         self._html_report_extra = []  # (Used by pytest_plugin.py)
+        self._last_page_screenshot = None
+        self._last_page_url = None
         self._default_driver = None
         self._drivers_list = []
         self._drivers_browser_map = {}
