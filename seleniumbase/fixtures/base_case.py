@@ -12372,12 +12372,14 @@ class BaseCase(unittest.TestCase):
                         extra_url = {}
                         extra_url["name"] = "URL"
                         extra_url["format"] = "url"
+                        extra_url["format_type"] = "url"
                         extra_url["content"] = self.get_current_url()
                         extra_url["mime_type"] = None
                         extra_url["extension"] = None
                         extra_image = {}
                         extra_image["name"] = "Screenshot"
                         extra_image["format"] = "image"
+                        extra_image["format_type"] = "image"
                         extra_image["content"] = self.__last_page_screenshot
                         extra_image["mime_type"] = "image/png"
                         extra_image["extension"] = "png"
