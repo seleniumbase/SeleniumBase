@@ -65,6 +65,14 @@ pytest test_swag_labs.py --mobile
 
 <img src="https://seleniumbase.io/cdn/gif/swag_mobile_2.gif" title="SeleniumBase Mobile Mode" /><br />
 
+Run another [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_xkcd.py) in Demo Mode: (highlight assertions)
+
+```bash
+pytest test_xkcd.py --demo
+```
+
+<img src="https://seleniumbase.io/cdn/gif/xkcd_vid.gif" title="SeleniumBase Demo Mode" /><br />
+
 Run a [test suite](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_suite.py) with verbose output: (see more details)
 
 ```bash
