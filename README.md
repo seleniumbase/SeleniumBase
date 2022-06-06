@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t4.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></a></h2>
+<h2 align="center"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t4.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></h2>
 
 <!-- View on GitHub -->
 
