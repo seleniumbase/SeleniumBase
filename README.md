@@ -13,7 +13,7 @@
 
 <p align="center"><b>Web-UI Automation & Testing Made Easy, with Python.</b></p>
 
-<p align="center"><img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" width="450px" alt="SeleniumBase Example" title="SeleniumBase Example" /><br /></p>
+<p align="center"><img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" width="450" alt="SeleniumBase Example" title="SeleniumBase Example" /><br /></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
