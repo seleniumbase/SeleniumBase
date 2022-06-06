@@ -5,23 +5,15 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t4.png" alt="SeleniumBase" title="SeleniumBase" width="340" /></a></h2>
-
-<p align="center"><b>Python Web UI Testing Made Easy.</b></p>
+<h2 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t4.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></a></h2>
 
 <!-- View on GitHub -->
 
-<p align="center">
-<a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io"> <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></p>
+<p align="center"> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"> <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"> <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io"> <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"> <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a></p>
 
-<p align="center">
-<a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a>  <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
-</p>
+<p align="center"><b>Web-UI Automation & Testing Made Easy, with Python.</b></p>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/swag_vid.gif" width="528" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="center"><img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" width="450px" alt="SeleniumBase Example" title="SeleniumBase Example" /><br /></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -48,6 +40,10 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog</a>
 </p>
+
+* ✅ Get set up in minutes. Deploy anywhere.
+* ✅ Build Web-UI tests with a [complete API](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md).
+* ✅ Generate [test reports and dashboards](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 
 --------
 
