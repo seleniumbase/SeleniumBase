@@ -735,6 +735,7 @@ def get_configured_sb(context):
     sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb
     sb_config.save_screenshot = sb.save_screenshot_after_test
+    sb_config._has_logs = False
     sb_config.variables = sb.variables
     sb_config.dashboard = sb.dashboard
     sb_config.dash_title = sb.dash_title
@@ -1070,7 +1071,11 @@ def _perform_behave_terminal_summary_():
     if sb_config.dashboard:
         # Print link a second time because the first one may be off-screen
         print("%s- Dashboard:%s %s" % (c2, cr, dash_path))
-    if sb_config._has_exception or sb_config.save_screenshot:
+    if (
+        sb_config._has_exception
+        or sb_config.save_screenshot
+        or sb_config._has_logs
+    ):
         # Log files are generated during test failures and Screenshot Mode
         print("%s--- LogPath:%s %s" % (c2, cr, latest_logs_dir))
     if (

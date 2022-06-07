@@ -1209,6 +1209,7 @@ def pytest_configure(config):
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config._is_timeout_changed = False
+    sb_config._has_logs = False
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
     sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
     sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
@@ -1474,7 +1475,11 @@ def pytest_terminal_summary(terminalreporter):
         # Print link a second time because the first one may be off-screen
         dashboard_file = os.getcwd() + "/dashboard.html"
         terminalreporter.write_sep("-", "Dashboard: %s" % dashboard_file)
-    if sb_config._has_exception or sb_config.save_screenshot:
+    if (
+        sb_config._has_exception
+        or sb_config.save_screenshot
+        or sb_config._has_logs
+    ):
         # Log files are generated during test failures and Screenshot Mode
         terminalreporter.write_sep("-", "LogPath: %s" % latest_logs_dir)
 

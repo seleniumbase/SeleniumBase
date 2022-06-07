@@ -3259,6 +3259,7 @@ class BaseCase(unittest.TestCase):
                         origin = self.get_origin()
                         action = ["ss_tl", "", origin, time_stamp]
                         self.__extra_actions.append(action)
+        sb_config._has_logs = True
         return page_actions.save_screenshot(self.driver, name, test_logpath)
 
     def save_page_source(self, name, folder=None):
@@ -12970,6 +12971,7 @@ class BaseCase(unittest.TestCase):
             self.__set_last_page_screenshot()
             self.__set_last_page_url()
             self.__set_last_page_source()
+            sb_config._has_logs = True
             if self.is_pytest:
                 self.__add_pytest_html_extra()
 
@@ -13050,6 +13052,7 @@ class BaseCase(unittest.TestCase):
                 if has_exception:
                     self.__add_pytest_html_extra()
                     sb_config._has_exception = True
+                    sb_config._has_logs = True
                 if (
                     self.with_testing_base
                     and not has_exception
@@ -13067,6 +13070,7 @@ class BaseCase(unittest.TestCase):
                         self.__last_page_screenshot_png,
                     )
                     self.__add_pytest_html_extra()
+                    sb_config._has_logs = True
                 if self.with_testing_base and has_exception:
                     test_logpath = os.path.join(self.log_path, test_id)
                     self.__create_log_path_as_needed(test_logpath)
