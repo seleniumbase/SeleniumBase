@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from seleniumbase import BaseCase
 
 
@@ -9,7 +10,9 @@ class MyTourClass(BaseCase):
         self.wait_for_element("#zoom", timeout=20)
 
         self.create_tour(theme="introjs")
-        self.add_tour_step("Welcome to Google Maps", title="SeleniumBase Tour")
+        self.add_tour_step(
+            "Welcome to Google Maps", title="✅ SeleniumBase Tours 🌎"
+        )
         self.add_tour_step(
             "The location goes here.", "#searchboxinput", title="Search Box"
         )
@@ -45,7 +48,8 @@ class MyTourClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
+            "Thanks for using SeleniumBase Tours!",
+            title="🚃 End of Guided Tour 🚃"
         )
         self.export_tour(filename="maps_introjs_tour.js")
         self.play_tour()

@@ -86,7 +86,8 @@ def pytest_addoption(parser):
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --reuse-session | --rs  (Reuse browser session between tests.)
     --crumbs  (Delete all cookies between tests reusing a session.)
-    --maximize  (Start tests with the web browser window maximized.)
+    --window-size  (Set the browser window size: "Width,Height".)
+    --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
@@ -894,6 +895,17 @@ def pytest_addoption(parser):
                 is only needed when using "--reuse-session".""",
     )
     parser.addoption(
+        "--window-size",
+        "--window_size",
+        action="store",
+        dest="window_size",
+        default=None,
+        help="""The option to set the default window "width,height".
+                Format: A comma-separated string with the 2 values.
+                Example: "1200,800"
+                Default: None. (Will use default values if None)""",
+    )
+    parser.addoption(
         "--maximize_window",
         "--maximize-window",
         "--maximize",
@@ -901,8 +913,8 @@ def pytest_addoption(parser):
         action="store_true",
         dest="maximize_option",
         default=False,
-        help="""The option to start with the browser window
-                maximized.""",
+        help="""The option to start with a maximized browser window.
+                (Overrides the "window-size" option if used.)""",
     )
     parser.addoption(
         "--screenshot",
@@ -1190,12 +1202,14 @@ def pytest_configure(config):
     sb_config.reuse_session = config.getoption("reuse_session")
     sb_config.crumbs = config.getoption("crumbs")
     sb_config.shared_driver = None  # The default driver for session reuse
+    sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config._is_timeout_changed = False
+    sb_config._has_logs = False
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
     sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
     sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
@@ -1461,7 +1475,11 @@ def pytest_terminal_summary(terminalreporter):
         # Print link a second time because the first one may be off-screen
         dashboard_file = os.getcwd() + "/dashboard.html"
         terminalreporter.write_sep("-", "Dashboard: %s" % dashboard_file)
-    if sb_config._has_exception or sb_config.save_screenshot:
+    if (
+        sb_config._has_exception
+        or sb_config.save_screenshot
+        or sb_config._has_logs
+    ):
         # Log files are generated during test failures and Screenshot Mode
         terminalreporter.write_sep("-", "LogPath: %s" % latest_logs_dir)
 
