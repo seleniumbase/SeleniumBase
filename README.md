@@ -5,15 +5,19 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h2 align="center"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t5.png" alt="SeleniumBase" title="SeleniumBase" width="360" /></h2>
+<p align="center"><img src="https://seleniumbase.io/cdn/img/sb_media_logo_t5.png" alt="SeleniumBase" title="SeleniumBase" width="330" /></p>
 
 <!-- View on GitHub -->
 
-<p align="center"> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"> <img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"> <img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io"> <img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"> <img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a>  <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></p>
 
-<p align="center"><b>Web/UI Automation and Testing made easy with Python.</b></p>
+<p align="center"><b>Web/UI Automation and Testing made easy.</b></p>
 
-<p align="center"><img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" width="460" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
+<p align="center"><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master" target="_blank"><img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a></p>
+
+<p align="center">Includes advanced tools such as a website tour generator.</p>
+
+<p align="center"><img src="https://seleniumbase.io/cdn/gif/introjs_tour2.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
@@ -47,7 +51,7 @@
 
 --------
 
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="202" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb4.png" alt="SeleniumBase" title="SeleniumBase" width="202" /></a>
 
 <p align="left">✅ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
@@ -56,7 +60,7 @@ cd examples/
 pytest test_demo_site.py --chrome
 ```
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="400" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="420" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 <div></div>
 <details>
