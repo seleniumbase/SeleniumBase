@@ -45,7 +45,7 @@
 
 --------
 
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="256" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="250" /></a>
 
 <p align="left">✅ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
