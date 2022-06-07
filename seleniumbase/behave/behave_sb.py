@@ -75,7 +75,8 @@ behave -D agent="User Agent String" -D demo
 -D devtools  (Open Chrome's DevTools when the browser opens.)
 -D reuse-session | -D rs  (Reuse browser session between tests.)
 -D crumbs  (Delete all cookies between tests reusing a session.)
--D maximize  (Start tests with the web browser window maximized.)
+-D window-size  (Set the browser window size: "Width,Height".)
+-D maximize  (Start tests with the browser window maximized.)
 -D screenshot  (Save a screenshot at the end of each test.)
 -D visual-baseline  (Set the visual baseline for Visual/Layout tests.)
 -D external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
@@ -160,6 +161,7 @@ def get_configured_sb(context):
     sb._reuse_session = False
     sb._crumbs = False
     sb.visual_baseline = False
+    sb.window_size = None
     sb.maximize_option = False
     sb.save_screenshot_after_test = False
     sb.timeout_multiplier = None
@@ -469,6 +471,13 @@ def get_configured_sb(context):
         if low_key in ["visual-baseline", "visual_baseline"]:
             sb.visual_baseline = True
             continue
+        # Handle: -D window-size=Width,Height / window_size=Width,Height
+        if low_key in ["window-size", "window_size"]:
+            window_size = userdata[key]
+            if window_size == "true":
+                window_size = sb.window_size  # revert to default
+            sb.window_size = window_size
+            continue
         # Handle: -D maximize / fullscreen / maximize-window
         if low_key in [
             "maximize", "fullscreen", "maximize-window", "maximize_window"
@@ -693,11 +702,37 @@ def get_configured_sb(context):
         # If the port is "443", the protocol is "https"
         if str(sb.port) == "443":
             sb.protocol = "https"
+    if sb.window_size:
+        window_size = sb.window_size
+        if window_size.count(",") != 1:
+            message = (
+                '\n\n  window_size expects a "width,height" string!'
+                '\n  (Your input was: "%s")\n' % window_size
+            )
+            raise Exception(message)
+        window_size = window_size.replace(" ", "")
+        width = None
+        height = None
+        try:
+            width = int(window_size.split(",")[0])
+            height = int(window_size.split(",")[1])
+        except Exception:
+            message = (
+                '\n\n  Expecting integer values for "width,height"!'
+                '\n  (window_size input was: "%s")\n' % window_size
+            )
+            raise Exception(message)
+        settings.CHROME_START_WIDTH = width
+        settings.CHROME_START_HEIGHT = height
+        settings.HEADLESS_START_WIDTH = width
+        settings.HEADLESS_START_HEIGHT = height
 
     # Set sb_config
     sb_config.browser = sb.browser
     sb_config.headless = sb.headless
     sb_config.headed = sb.headed
+    sb_config.window_size = sb.window_size
+    sb_config.maximize_option = sb.maximize_option
     sb_config.xvfb = sb.xvfb
     sb_config.save_screenshot = sb.save_screenshot_after_test
     sb_config.variables = sb.variables

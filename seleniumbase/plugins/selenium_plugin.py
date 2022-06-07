@@ -63,7 +63,8 @@ class SeleniumBrowser(Plugin):
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
-    --maximize  (Start tests with the web browser window maximized.)
+    --window-size  (Set the browser window size: "Width,Height".)
+    --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
@@ -597,6 +598,17 @@ class SeleniumBrowser(Plugin):
             help="""Using this opens Chrome's DevTools.""",
         )
         parser.add_option(
+            "--window-size",
+            "--window_size",
+            action="store",
+            dest="window_size",
+            default=None,
+            help="""The option to set the default window "width,height".
+                    Format: A comma-separated string with the 2 values.
+                    Example: "1200,800"
+                    Default: None. (Will use default values if None)""",
+        )
+        parser.add_option(
             "--maximize_window",
             "--maximize-window",
             "--maximize",
@@ -604,7 +616,8 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="maximize_option",
             default=False,
-            help="""The option to start with the web browser maximized.""",
+            help="""The option to start with a maximized browser window.
+                    (Overrides the "window-size" option if used.)""",
         )
         parser.add_option(
             "--screenshot",
@@ -665,6 +678,30 @@ class SeleniumBrowser(Plugin):
                 '\n  (Your browser choice was: "%s")\n' % browser
             )
             raise Exception(message)
+        window_size = self.options.window_size
+        if window_size:
+            if window_size.count(",") != 1:
+                message = (
+                    '\n\n  window_size expects a "width,height" string!'
+                    '\n  (Your input was: "%s")\n' % window_size
+                )
+                raise Exception(message)
+            window_size = window_size.replace(" ", "")
+            width = None
+            height = None
+            try:
+                width = int(window_size.split(",")[0])
+                height = int(window_size.split(",")[1])
+            except Exception:
+                message = (
+                    '\n\n  Expecting integer values for "width,height"!'
+                    '\n  (window_size input was: "%s")\n' % window_size
+                )
+                raise Exception(message)
+            settings.CHROME_START_WIDTH = width
+            settings.CHROME_START_HEIGHT = height
+            settings.HEADLESS_START_WIDTH = width
+            settings.HEADLESS_START_HEIGHT = height
         test.test.is_nosetest = True
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
@@ -720,6 +757,7 @@ class SeleniumBrowser(Plugin):
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
         test.test.devtools = self.options.devtools
+        test.test.window_size = self.options.window_size
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline

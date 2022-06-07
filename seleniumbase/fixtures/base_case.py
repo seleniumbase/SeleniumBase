@@ -11970,6 +11970,31 @@ class BaseCase(unittest.TestCase):
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
             self.external_pdf = sb_config.external_pdf
+            self.window_size = sb_config.window_size
+            window_size = self.window_size
+            if window_size:
+                if window_size.count(",") != 1:
+                    message = (
+                        '\n\n  window_size expects a "width,height" string!'
+                        '\n  (Your input was: "%s")\n' % window_size
+                    )
+                    raise Exception(message)
+                window_size = window_size.replace(" ", "")
+                width = None
+                height = None
+                try:
+                    width = int(window_size.split(",")[0])
+                    height = int(window_size.split(",")[1])
+                except Exception:
+                    message = (
+                        '\n\n  Expecting integer values for "width,height"!'
+                        '\n  (window_size input was: "%s")\n' % window_size
+                    )
+                    raise Exception(message)
+                settings.CHROME_START_WIDTH = width
+                settings.CHROME_START_HEIGHT = height
+                settings.HEADLESS_START_WIDTH = width
+                settings.HEADLESS_START_HEIGHT = height
             self.maximize_option = sb_config.maximize_option
             self.save_screenshot_after_test = sb_config.save_screenshot
             self.visual_baseline = sb_config.visual_baseline

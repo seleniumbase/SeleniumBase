@@ -69,6 +69,7 @@ if pure_python:
     sb._reuse_session = False
     sb._crumbs = False
     sb.visual_baseline = False
+    sb.window_size = None
     sb.maximize_option = False
     sb.save_screenshot_after_test = False
     sb.timeout_multiplier = None
