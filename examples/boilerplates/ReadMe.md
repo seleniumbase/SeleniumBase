@@ -3,7 +3,8 @@
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Example Boilerplates:</h2>
 
 * Boilerplate files are located in the [SeleniumBase => examples/boilerplates/](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/boilerplates) folder.
-* Boilerplates can help you structure tests using common design patterns such as the Page Object Model. For all 20 SeleniumBase design patterns, see: [Syntax Formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md)
+* Boilerplates can help you structure tests using common design patterns such as the Page Object Model.
+* For all 20 SeleniumBase design patterns, see: [Syntax Formats](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md)
 
 <h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Boilerplate Files:</h2>
 
