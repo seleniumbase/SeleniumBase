@@ -8851,7 +8851,7 @@ class BaseCase(unittest.TestCase):
                 orphan: true,
                 autoscroll: true,
                 %s
-                placement: 'auto %s',
+                placement: '%s',
                 smartPlacement: true,
                 duration: %s,
                 },""" % (

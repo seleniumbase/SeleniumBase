@@ -4,7 +4,7 @@ Usage:  pytest test_skype_site.py --mobile --browser=edge
 
 Default mobile settings for User Agent and Device Metrics if not specified:
         User Agent:   --agent="Mozilla/5.0 (Linux; Android 11; Pixel 4 XL)"
-        CSS Width, CSS Height, Pixel-Ratio:   --metrics="411,731,3"
+        CSS Width, CSS Height, Pixel-Ratio:   --metrics="360,640,2"
 """
 from seleniumbase import BaseCase
 
@@ -15,11 +15,7 @@ class SkypeTests(BaseCase):
             print("\n  This test is only for mobile-device web browsers!")
             print('  (Use "--mobile" to run this test in Mobile Mode!)')
             self.skip('Use "--mobile" to run this test in Mobile Mode!')
-        self.open("https://www.skype.com/en/")
-        self.highlight('[itemprop="url"]')
-        self.highlight("h1")
-        self.highlight('[data-bi-area="meet-now-home-page"]')
-        self.highlight_click('[data-bi-name="skype-download-home-page"]')
+        self.open("https://www.skype.com/en/get-skype/")
         self.assert_element('[aria-label="Microsoft"]')
         self.assert_text("Download Skype", "h1")
         self.highlight("div.appBannerContent")

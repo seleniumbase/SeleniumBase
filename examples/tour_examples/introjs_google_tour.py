@@ -5,6 +5,7 @@ class MyTourClass(BaseCase):
     def test_google_tour(self):
         self.open("https://google.com/ncr")
         self.wait_for_element('input[title="Search"]')
+        self.hide_elements('iframe')
 
         self.create_introjs_tour()  # OR self.create_tour(theme="introjs")
         self.add_tour_step("Welcome to Google!", title="SeleniumBase Tours")

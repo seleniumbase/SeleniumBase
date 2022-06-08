@@ -109,72 +109,36 @@ class Warnings:
 
 class JQuery:
     VER = "3.6.0"
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/jquery/%s/jquery.min.js" % VER
-    )
-    # MIN_JS = (
-    #    "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-%s.min.js" % VER)
-    # MIN_JS = (
-    #    "https://ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js" % VER)
+    MIN_JS = "https://cdn.jsdelivr.net/npm/jquery@%s/dist/jquery.min.js" % VER
 
 
 class Messenger:
+    LIB = "https://cdn.jsdelivr.net/npm/messenger-hubspot"
     VER = "1.5.0"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger.min.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/js/messenger.min.js" % VER
-    )
-    THEME_FLAT_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/js/messenger-theme-flat.js" % VER
-    )
-    THEME_FUTURE_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/js/messenger-theme-future.js" % VER
-    )
-    THEME_FLAT_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger-theme-flat.min.css" % VER
-    )
-    THEME_FUTURE_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger-theme-future.min.css" % VER
-    )
-    THEME_BLOCK_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger-theme-block.min.css" % VER
-    )
-    THEME_AIR_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger-theme-air.min.css" % VER
-    )
-    THEME_ICE_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger-theme-ice.min.css" % VER
-    )
-    SPINNER_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "messenger/%s/css/messenger-spinner.min.css" % VER
-    )
+    THEME = "messenger-theme"
+    MIN_CSS = "%s@%s/build/css/messenger.min.css" % (LIB, VER)
+    MIN_JS = "%s@%s/build/js/messenger.min.js" % (LIB, VER)
+    THEME_FLAT_JS = "%s@%s/build/js/%s-flat.min.js" % (LIB, VER, THEME)
+    THEME_FUTURE_JS = "%s@%s/build/js/%s-future.min.js" % (LIB, VER, THEME)
+    THEME_FLAT_CSS = "%s@%s/build/css/%s-flat.min.css" % (LIB, VER, THEME)
+    THEME_FUTURE_CSS = "%s@%s/build/css/%s-future.min.css" % (LIB, VER, THEME)
+    THEME_BLOCK_CSS = "%s@%s/build/css/%s-block.min.css" % (LIB, VER, THEME)
+    THEME_AIR_CSS = "%s@%s/build/css/%s-air.min.css" % (LIB, VER, THEME)
+    THEME_ICE_CSS = "%s@%s/build/css/%s-ice.min.css" % (LIB, VER, THEME)
+    SPINNER_CSS = "%s@%s/build/css/messenger-spinner.min.css" % (LIB, VER)
 
 
 class Underscore:
-    VER = "1.12.1"
+    VER = "1.13.4"
     MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "underscore.js/%s/underscore-min.js" % VER
+        "https://cdn.jsdelivr.net/npm/underscore@%s/underscore.min.js" % VER
     )
 
 
 class Backbone:
-    VER = "1.4.0"
+    VER = "1.4.1"
     MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "backbone.js/%s/backbone-min.js" % VER
+        "https://cdn.jsdelivr.net/npm/backbone@%s/backbone.min.js" % VER
     )
 
 
@@ -194,59 +158,21 @@ class PrettifyJS:
 
 
 class Reveal:
+    LIB = "https://cdn.jsdelivr.net/npm/reveal.js"
     VER = "3.8.0"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/reveal.min.css" % VER
-    )
-    SERIF_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/serif.min.css" % VER
-    )
-    WHITE_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/white.min.css" % VER
-    )
-    BLACK_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/black.min.css" % VER
-    )
-    SKY_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/sky.min.css" % VER
-    )
-    MOON_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/moon.min.css" % VER
-    )
-    NIGHT_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/night.min.css" % VER
-    )
-    LEAGUE_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/league.min.css" % VER
-    )
-    BEIGE_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/beige.min.css" % VER
-    )
-    BLOOD_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/blood.min.css" % VER
-    )
-    SIMPLE_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/simple.min.css" % VER
-    )
-    SOLARIZED_MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/css/theme/solarized.min.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "reveal.js/%s/js/reveal.min.js" % VER
-    )
+    MIN_CSS = "%s@%s/css/reveal.css" % (LIB, VER)
+    SERIF_MIN_CSS = "%s@%s/css/theme/serif.min.css" % (LIB, VER)
+    WHITE_MIN_CSS = "%s@%s/css/theme/white.min.css" % (LIB, VER)
+    BLACK_MIN_CSS = "%s@%s/css/theme/black.min.css" % (LIB, VER)
+    SKY_MIN_CSS = "%s@%s/css/theme/sky.min.css" % (LIB, VER)
+    MOON_MIN_CSS = "%s@%s/css/theme/moon.min.css" % (LIB, VER)
+    NIGHT_MIN_CSS = "%s@%s/css/theme/night.min.css" % (LIB, VER)
+    LEAGUE_MIN_CSS = "%s@%s/css/theme/league.min.css" % (LIB, VER)
+    BEIGE_MIN_CSS = "%s@%s/css/theme/beige.min.css" % (LIB, VER)
+    BLOOD_MIN_CSS = "%s@%s/css/theme/blood.min.css" % (LIB, VER)
+    SIMPLE_MIN_CSS = "%s@%s/css/theme/simple.min.css" % (LIB, VER)
+    SOLARIZED_MIN_CSS = "%s@%s/css/theme/solarized.min.css" % (LIB, VER)
+    MIN_JS = "%s@%s/js/reveal.min.js" % (LIB, VER)
 
 
 class HighCharts:
@@ -263,45 +189,33 @@ class HighCharts:
 
 
 class BootstrapTour:
+    LIB = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour"
     VER = "0.12.0"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "bootstrap-tour/%s/css/bootstrap-tour-standalone.min.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "bootstrap-tour/%s/js/bootstrap-tour-standalone.min.js" % VER
-    )
+    MIN_CSS = "%s/%s/css/bootstrap-tour-standalone.min.css" % (LIB, VER)
+    MIN_JS = "%s/%s/js/bootstrap-tour-standalone.min.js" % (LIB, VER)
 
 
 class DriverJS:
+    LIB = "https://cdn.jsdelivr.net/npm/driver.js"
     VER = "0.9.8"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "driver.js/%s/driver.min.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "driver.js/%s/driver.min.js" % VER
-    )
+    MIN_CSS = "%s@%s/dist/driver.min.css" % (LIB, VER)
+    MIN_JS = "%s@%s/dist/driver.min.js" % (LIB, VER)
 
 
 class Hopscotch:
+    LIB = "https://cdn.jsdelivr.net/npm/hopscotch"
     VER = "0.3.1"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "hopscotch/%s/css/hopscotch.min.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "hopscotch/%s/js/hopscotch.min.js" % VER
-    )
+    MIN_CSS = "%s@%s/dist/css/hopscotch.min.css" % (LIB, VER)
+    MIN_JS = "%s@%s/dist/js/hopscotch.min.js" % (LIB, VER)
 
 
 class IntroJS:
-    VER = "4.2.2"
-    MIN_CSS = "https://unpkg.com/intro.js@%s/minified/introjs.min.css" % VER
-    MIN_JS = "https://unpkg.com/intro.js@%s/minified/intro.min.js" % VER
+    VER = "5.1.0"
+    MIN_CSS = (
+        "https://cdn.jsdelivr.net/npm/"
+        "intro.js@%s/minified/introjs.min.css" % VER
+    )
+    MIN_JS = "https://cdn.jsdelivr.net/npm/intro.js@%s/intro.min.js" % VER
 
 
 class TourColor:
@@ -313,57 +227,31 @@ class TourColor:
 
 
 class JqueryConfirm:
+    LIB = "https://cdn.jsdelivr.net/npm/jquery-confirm"
     VER = "3.3.4"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "jquery-confirm/%s/jquery-confirm.min.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "jquery-confirm/%s/jquery-confirm.min.js" % VER
-    )
+    MIN_CSS = "%s@%s/css/jquery-confirm.min.css" % (LIB, VER)
+    MIN_JS = "%s@%s/js/jquery-confirm.min.js" % (LIB, VER)
     DEFAULT_THEME = "bootstrap"
     DEFAULT_COLOR = "blue"
     DEFAULT_WIDTH = "38%"
 
 
 class Shepherd:
+    LIB = "https://cdnjs.cloudflare.com/ajax/libs/shepherd"
     VER = "1.8.1"
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/js/shepherd.min.js" % VER
-    )
-    THEME_ARROWS_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/css/shepherd-theme-arrows.css" % VER
-    )
-    THEME_ARR_FIX_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/css/shepherd-theme-arrows-fix.css" % VER
-    )
-    THEME_DEFAULT_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/css/shepherd-theme-default.css" % VER
-    )
-    THEME_DARK_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/css/shepherd-theme-dark.css" % VER
-    )
-    THEME_SQ_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/css/shepherd-theme-square.css" % VER
-    )
-    THEME_SQ_DK_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "shepherd/%s/css/shepherd-theme-square-dark.css" % VER
-    )
+    MIN_JS = "%s/%s/js/shepherd.min.js" % (LIB, VER)
+    THEME_ARROWS_CSS = "%s/%s/css/shepherd-theme-arrows.css" % (LIB, VER)
+    THEME_ARR_FIX_CSS = "%s/%s/css/shepherd-theme-arrows-fix.css" % (LIB, VER)
+    THEME_DEFAULT_CSS = "%s/%s/css/shepherd-theme-default.css" % (LIB, VER)
+    THEME_DARK_CSS = "%s/%s/css/shepherd-theme-dark.css" % (LIB, VER)
+    THEME_SQ_CSS = "%s/%s/css/shepherd-theme-square.css" % (LIB, VER)
+    THEME_SQ_DK_CSS = "%s/%s/css/shepherd-theme-square-dark.css" % (LIB, VER)
 
 
 class Tether:
     VER = "1.4.7"
     MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "tether/%s/js/tether.min.js" % VER
+        "https://cdn.jsdelivr.net/npm/tether@%s/dist/js/tether.min.js" % VER
     )
 
 

@@ -9,6 +9,7 @@ from seleniumbase import BaseCase
 class HackingTests(BaseCase):
     def test_hack_search(self):
         self.open("https://google.com/ncr")
+        self.hide_elements('iframe')
         self.assert_element('input[title="Search"]')
         self.set_attribute('[action="/search"]', "action", "//bing.com/search")
         self.set_attributes('[value="Google Search"]', "value", "Bing Search")

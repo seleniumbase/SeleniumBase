@@ -69,7 +69,7 @@ pytest user_agent_test.py --agent="USER-AGENT-STRING"
 pytest test_swag_labs.py --mobile
 
 # Run mobile tests specifying CSS Width, CSS Height, and Pixel-Ratio
-pytest test_swag_labs.py --mobile --metrics="411,731,3"
+pytest test_swag_labs.py --mobile --metrics="360,640,2"
 
 # Run tests while changing SeleniumBase default settings
 pytest my_first_test.py --settings-file=custom_settings.py
