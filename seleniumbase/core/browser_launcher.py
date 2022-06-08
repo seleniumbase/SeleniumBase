@@ -365,9 +365,9 @@ def _set_chrome_options(
             device_metrics["height"] = device_height
             device_metrics["pixelRatio"] = device_pixel_ratio
         else:
-            device_metrics["width"] = 411
-            device_metrics["height"] = 731
-            device_metrics["pixelRatio"] = 3
+            device_metrics["width"] = 360
+            device_metrics["height"] = 640
+            device_metrics["pixelRatio"] = 2
         emulator_settings["deviceMetrics"] = device_metrics
         if user_agent:
             emulator_settings["userAgent"] = user_agent
@@ -1653,9 +1653,9 @@ def get_local_driver(
                 device_metrics["height"] = device_height
                 device_metrics["pixelRatio"] = device_pixel_ratio
             else:
-                device_metrics["width"] = 411
-                device_metrics["height"] = 731
-                device_metrics["pixelRatio"] = 3
+                device_metrics["width"] = 360
+                device_metrics["height"] = 640
+                device_metrics["pixelRatio"] = 2
             emulator_settings["deviceMetrics"] = device_metrics
             if user_agent:
                 emulator_settings["userAgent"] = user_agent
