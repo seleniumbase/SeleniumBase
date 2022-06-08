@@ -113,6 +113,7 @@ nav:
     - Selenium Grid: seleniumbase/utilities/selenium_grid/ReadMe.md
     - HighCharts: examples/chart_maker/ReadMe.md
     - MasterQA: examples/master_qa/ReadMe.md
+    - Azure Pipelines: integrations/azure/azure_pipelines/ReadMe.md
     - Jenkins on Azure: integrations/azure/jenkins/ReadMe.md
     - Jenkins on Google Cloud: integrations/google_cloud/ReadMe.md
     - NodeJS Test Runner: https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js
