@@ -5,7 +5,10 @@ class NthChildSelectorTests(BaseCase):
     def test_locate_rows_with_colors(self):
         self.open("https://xkcd.com/color/rgb/")
         tbody = "center > table tbody"
-        self.demo_mode = True
+        if not (self.headless or self.xvfb):
+            self.demo_mode = True
+            self.demo_sleep = 0.5
+            self.message_duration = 2.0
         self.highlight(tbody)
         self.post_message("Part 1: Assert text in given row.")
         self.assert_text("teal", tbody + " tr:nth-child(2)")
