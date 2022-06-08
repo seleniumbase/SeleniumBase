@@ -53,7 +53,7 @@ pytest test_swag_labs.py --mobile
 pytest test_swag_labs.py --mobile
 
 # Run mobile tests specifying CSS Width, CSS Height, and Pixel-Ratio
-pytest test_swag_labs.py --mobile --metrics="411,731,3"
+pytest test_swag_labs.py --mobile --metrics="360,640,2"
 
 # Run mobile tests specifying the user agent
 pytest test_swag_labs.py --mobile --agent="Mozilla/5.0 (Linux; Android 9; Pixel 3 XL)"
