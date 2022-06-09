@@ -754,6 +754,10 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 
 <a id="utilizing_advanced_features"></a>
+
+--------
+
+<div></div>
 <h3><img src="https://seleniumbase.io/img/green_logo2.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
 
 <div></div>
@@ -798,7 +802,7 @@ self.get_current_url()  # This method returns the current page URL.
 self.get_page_source()  # This method returns the current page source.
 ```
 
-<b>ProTip™:</b> You may need to use the <code>self.get_page_source()</code> method along with Python's <code>find()</code> command to parse through the source to find something that Selenium wouldn't be able to. (You may want to brush up on your Python programming skills for that.)
+<b>ProTip™:</b> You can use the <code>self.get_page_source()</code> method with Python's <code>find()</code> command to parse through HTML to find something specific. (For more advanced parsing, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_parse_soup.py">BeautifulSoup example</a>.)
 
 ```python
 source = self.get_page_source()
