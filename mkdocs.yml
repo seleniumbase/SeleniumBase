@@ -164,6 +164,6 @@ nav:
 extra:
   analytics:
     provider: google
-    property: G-P5KFWRNLRN
-    # property: UA-167313767-1
+    # property: G-P5KFWRNLRN
+    property: UA-167313767-1
 # google_analytics: ['UA-167313767-1', 'seleniumbase.io']
