@@ -66,7 +66,7 @@ pytest test_demo_site.py --chrome
 
 <div></div>
 <details>
-<summary> ▶️ How is SeleniumBase different from raw Selenium? (click to expand)</summary>
+<summary> ▶️ How is SeleniumBase different from raw Selenium? (<b>click to expand</b>)</summary>
 <div>
 
 <p>✔️ SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
@@ -758,7 +758,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <div></div>
 <details>
-<summary> ▶️ Here are some things you can do to set up a production environment for your testing. (click to expand)</summary>
+<summary> ▶️ Here are some things you can do to set up a production environment for your testing. (<b>click to expand</b>)</summary>
 
 <ul>
 <li>You can set up a <a href="https://jenkins.io/">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.</li>
@@ -926,7 +926,7 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
 
 <div></div>
 <details>
-<summary> ▶️ is_text_visible(text, selector)  # is text visible on a page (click to expand)</summary>
+<summary> ▶️ is_text_visible(text, selector)  # is text visible on a page (<b>click to expand</b>)</summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -992,7 +992,7 @@ self.activate_jquery()
 
 <div></div>
 <details>
-<summary> ▶️ Here are some examples of using jQuery in your scripts. (click to expand)</summary>
+<summary> ▶️ Here are some examples of using jQuery in your scripts. (<b>click to expand</b>)</summary>
 
 ```python
 self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
@@ -1022,7 +1022,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 <div></div>
 <details>
-<summary> ▶️ In this example, JavaScript creates a referral button on a page, which is then clicked. (click to expand)</summary>
+<summary> ▶️ In this example, JavaScript creates a referral button on a page, which is then clicked. (<b>click to expand</b>)</summary>
 
 ```python
 start_page = "https://xkcd.com/465/"
