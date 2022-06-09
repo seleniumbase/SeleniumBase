@@ -1,5 +1,7 @@
 ### Building a browser-based test automation server with [Jenkins on Azure](https://azuremarketplace.microsoft.com/en-au/marketplace/apps/azure-oss.jenkins) by using [SeleniumBase](https://github.com/seleniumbase/SeleniumBase)
 
+(**2022 NOTE:** Steps from [this 2019 tutorial from Boston Code Camp](https://www.bostoncodecamp.com/CC31/sessions/details/16741) are now **out-of-date**. For installing Jenkins from the Azure Marketplace, you can try using [Bitnami Jenkins](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/bitnami.jenkins). **Or**, for the newer official Microsoft tutorial, see [Get Started: Install Jenkins on an Azure Linux VM](https://docs.microsoft.com/en-us/azure/developer/jenkins/configure-on-linux-vm), and then continue with [Step 4](#step4) below to resume SeleniumBase setup after you've created your Jenkins instance.)
+
 ----------
 
 ### Step 0. Fork the [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) repo on GitHub to get started quickly.
@@ -58,6 +60,8 @@ ssh USERNAME@IP_ADDRESS
 ![](https://seleniumbase.io/cdn/img/azure/jenkins_on_azure_07.png "Jenkins on Azure")
 
 ----------
+
+<a id="step4"></a>
 
 ### Step 4. Clone the SeleniumBase repository from the root ("/") directory.
 
