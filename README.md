@@ -1110,5 +1110,5 @@ pytest --reruns=1 --reruns-delay=1
 <span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="40" /></a></span>
 </div></p>
 
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a>
-<a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://badge.fury.io/py/seleniumbase.svg" alt="PyPI version" /></a>
+<p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a></p>
+<p><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://badge.fury.io/py/seleniumbase.svg" alt="PyPI version" /></a></p>
