@@ -13,7 +13,7 @@
 
 <p align="center"><b>A Python framework for Web/UI automation and testing.</b><br />Includes advanced tools, such as a <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">website tour generator</a>.</p>
 
-<p align="center"><img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" width="480" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
+<p align="center"><img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" width="440" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
