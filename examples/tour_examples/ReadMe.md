@@ -2,11 +2,11 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Interactive Product Tours</h2>
 
-<p>Increase SaaS Product Adoption by 10x or more.</p>
+<p><b>Increase SaaS Product Adoption by 10x or more.</b></p>
 
-SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on any website:<br>
+* SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on **any website**:
 
-**[IntroJS](https://introjs.com/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, **[Shepherd](https://shepherdjs.dev/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
+> **[IntroJS](https://introjs.com/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, **[Shepherd](https://shepherdjs.dev/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
 <b>Example tour: (with autoplay)</b>
 
@@ -30,7 +30,7 @@ cd examples/tour_examples
 pytest google_tour.py
 ```
 
-(From [GitHub => SeleniumBase/examples/tour_examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples))
+> (From [GitHub => SeleniumBase/examples/tour_examples](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples))
 
 
 ### Creating a new tour:
@@ -83,7 +83,7 @@ OR
 
 ``self.add_tour_step(message, css_selector, title, alignment, theme)``
 
-With the ``self.add_tour_step()`` method, you must first pass a message to display. You can then specify a web element to attach to (by using [CSS selectors](https://www.w3schools.com/cssref/css_selectors.asp)). If no element is specified, the tour step will tether to the top of the screen by default. You can also add an optional title above the message to display with the tour step, as well as change the theme for that step (Shepherd tours only), and even specify the alignment (which is the side of the element that you want the tour message to tether to).
+> With the ``self.add_tour_step()`` method, you must first pass a message to display. You can then specify a web element to attach to (by using [CSS selectors](https://www.w3schools.com/cssref/css_selectors.asp)). If no element is specified, the tour step will tether to the top of the screen by default. You can also add an optional title above the message to display with the tour step, as well as change the theme for that step (Shepherd tours only), and even specify the alignment (which is the side of the element that you want the tour message to tether to).
 
 
 ### Playing a tour:
