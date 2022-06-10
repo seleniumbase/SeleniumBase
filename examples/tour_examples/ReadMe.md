@@ -2,7 +2,11 @@
 
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Interactive Product Tours</h2>
 
-SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on any website:<br>**[Shepherd](https://shepherdjs.dev/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[IntroJS](https://introjs.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
+<p>Increase SaaS Product Adoption by 10x or more.</p>
+
+SeleniumBase Tours utilize 5 JavaScript libraries for creating interactive walkthroughs on any website:<br>
+
+**[IntroJS](https://introjs.com/)**, **[Bootstrap Tour](http://bootstraptour.com/)**, **[DriverJS](https://kamranahmed.info/driver.js/)**, **[Shepherd](https://shepherdjs.dev/)**, and **[Hopscotch](https://linkedinattic.github.io/hopscotch/)**.
 
 <b>Example tour: (with autoplay)</b>
 
@@ -88,7 +92,7 @@ You can play a tour by calling:
 
 ``self.play_tour(interval)``
 
- If you specify an interval (optional), the tour will automatically walk through each step after that many seconds have passed.
+> If you specify an ``interval`` (optional), the tour will automatically walk through each step after that many seconds have passed.
 
 
 All methods have the optional ``name`` argument, which is only needed if you're creating multiple tours at once. Then, when you're adding a step or playing a tour, SeleniumBase knows which tour you're referring too. You can avoid using the ``name`` arg for multiple tours if you play a tour before creating a new one.
@@ -134,6 +138,6 @@ OR
 
 ``self.export_tour(name=None, filename="my_tour.js")``
 
-(``name`` is optional unless you gave custom names to your tours when you created them. ``filename`` is the name of the file to save the JavaScript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's JavaScript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
+> (``name`` is optional unless you gave custom names to your tours when you created them. ``filename`` is the name of the file to save the JavaScript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's JavaScript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
 
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
