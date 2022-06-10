@@ -10,8 +10,7 @@
 
 --------
 
-<p align="center"><b>A Python framework for Web/UI automation and testing.</b></p>
-<p align="center">Includes advanced features: (Eg. <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">tools for User Onboarding</a>)</p>
+<p align="center"><b>A Python framework for Web/UI automation and testing.</b><br />Includes advanced features: (Eg. <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">tools for User Onboarding</a>)</p>
 
 <p align="center"><img src="https://seleniumbase.io/cdn/gif/introjs_tour4.gif" width="450" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
