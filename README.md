@@ -24,25 +24,25 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📗 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Syntaxes</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Syntaxes</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/commander.md">🎖️ GUI</a> |
 <a href="https://seleniumbase.io/demo_page">📰 TestPage</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Charts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/html_inspector.md">🔎 Inspector</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSCode</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialogs</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialogs</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a>
 </p>
 
 --------
