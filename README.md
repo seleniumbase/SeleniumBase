@@ -325,6 +325,9 @@ self.assert_no_js_errors()  # Verify there are no JS errors.
 <p><b>Browsers:</b> Chrome, Edge, Firefox, IE, and Safari.</p>
 <p><b>Systems: </b>Linux, macOS, Windows, and Ubuntu.</p>
 
+✅ Works on popular CI/CD platforms:
+<p><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md"><img alt="GitHub Actions integration" src="https://img.shields.io/badge/GitHub_Actions-12B2C2.svg?logo=GitHubActions&logoColor=CFFFC2" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md"><img alt="Jenkins integration" src="https://img.shields.io/badge/Jenkins-32B242.svg?logo=jenkins&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md"><img alt="Azure integration" src="https://img.shields.io/badge/Azure-2288EE.svg?logo=AzurePipelines&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md"><img alt="Google Cloud integration" src="https://img.shields.io/badge/Google_Cloud-11CAE8.svg?logo=GoogleCloud&logoColor=EE0066" /></a> <a href="#utilizing_advanced_features"><img alt="AWS integration" src="https://img.shields.io/badge/AWS-4488DD.svg?logo=AmazonAWS&logoColor=FFFF44" /></a> <a href="https://en.wikipedia.org/wiki/Personal_computer"><img alt="Your Computer" src="https://img.shields.io/badge/💻_Your_Computer-44E6E6.svg" /></a></p>
+
 ✅ Automatic WebDriver Abilities:
 <p>SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">Read more about customizing test runs</a>.</i>)</p>
 
@@ -361,9 +364,6 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 
 ✅ Feature-Rich:
 <p>For a full list of SeleniumBase features, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">Click Here</a>.</p>
-
-✅ Plays nicely with popular CI/CD platforms:
-<p><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md"><img alt="GitHub Actions integration" src="https://img.shields.io/badge/GitHub_Actions-12B2C2.svg?logo=GitHubActions&logoColor=CFFFC2" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md"><img alt="Jenkins integration" src="https://img.shields.io/badge/Jenkins-32B242.svg?logo=jenkins&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md"><img alt="Azure integration" src="https://img.shields.io/badge/Azure-2288EE.svg?logo=AzurePipelines&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md"><img alt="Google Cloud integration" src="https://img.shields.io/badge/Google_Cloud-11CAE8.svg?logo=GoogleCloud&logoColor=EE0066" /></a> <a href="#utilizing_advanced_features"><img alt="AWS integration" src="https://img.shields.io/badge/AWS-4488DD.svg?logo=AmazonAWS&logoColor=FFFF44" /></a> <a href="https://en.wikipedia.org/wiki/Personal_computer"><img alt="Your Computer" src="https://img.shields.io/badge/💻_Your_Computer-44E6E6.svg" /></a></p>
 
 
 <a id="detailed_instructions"></a>
