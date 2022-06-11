@@ -5,9 +5,6 @@ class YouTubeSearchTests(BaseCase):
     def test_youtube_autocomplete_results(self):
         """Verify YouTube autocomplete search results."""
         self.open("https://www.youtube.com/c/MichaelMintz")
-        self.delete_all_cookies()
-        self.clear_local_storage()
-        self.clear_session_storage()
         search_term = "seleniumbase"
         search_selector = "input#search"
         result_selector = 'li[role="presentation"]'
