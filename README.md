@@ -10,7 +10,7 @@
 
 --------
 
-<p align="center"><b>A Python framework for Web/UI automation and testing.</b><br />Includes advanced features: (Eg. <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">tools for User Onboarding</a>)</p>
+<p align="center"><b>A Python framework for Web/UI automation and testing.</b><br />Includes advanced features such as <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">User Onboarding tools</a>.</p>
 
 <p align="center"><img src="https://seleniumbase.io/cdn/gif/introjs_tour4.gif" width="450" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
@@ -132,7 +132,7 @@ Feature: SeleniumBase scenarios for the RealWorld App
 <a id="python_installation"></a>
 <h2><img src="https://seleniumbase.io/cdn/img/python_logo.png" title="SeleniumBase" width="42" /> Python Setup:</h2>
 
-<a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?logo=python&color=FACE42" title="Supported Python Versions" /></a>
+<a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python" title="Supported Python Versions" /></a>
 
 🔵 Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
@@ -362,7 +362,7 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 ✅ Feature-Rich:
 <p>For a full list of SeleniumBase features, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">Click Here</a>.</p>
 
-✅ Works with popular CI/CD platforms:
+✅ Plays nicely with popular CI/CD platforms:
 <p><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md"><img alt="GitHub Actions integration" src="https://img.shields.io/badge/GitHub_Actions-12B2C2.svg?logo=GitHubActions&logoColor=CFFFC2" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md"><img alt="Jenkins integration" src="https://img.shields.io/badge/Jenkins-32B242.svg?logo=jenkins&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/azure_pipelines/ReadMe.md"><img alt="Azure integration" src="https://img.shields.io/badge/Azure-2288EE.svg?logo=AzurePipelines&logoColor=white" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md"><img alt="Google Cloud integration" src="https://img.shields.io/badge/Google_Cloud-11CAE8.svg?logo=GoogleCloud&logoColor=EE0066" /></a> <a href="#utilizing_advanced_features"><img alt="AWS integration" src="https://img.shields.io/badge/AWS-4488DD.svg?logo=AmazonAWS&logoColor=FFFF44" /></a> <a href="https://en.wikipedia.org/wiki/Personal_computer"><img alt="Your Computer" src="https://img.shields.io/badge/💻_Your_Computer-44E6E6.svg" /></a></p>
 
 
