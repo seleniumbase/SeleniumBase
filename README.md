@@ -57,26 +57,26 @@ pytest test_demo_site.py --chrome
 
 <div></div>
 <details>
-<summary> ▶️ How is SeleniumBase different from raw Selenium? (<b>click to expand</b>)</summary>
+<summary> ▶️ How is SeleniumBase different from raw Selenium? (<b><u>click to expand</u></b>)</summary>
 <div>
 
-<p>✔️ SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
+<p>💡 SeleniumBase is a Python test framework for the Selenium/WebDriver browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as which browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
-<p>✔️ With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase install chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).</p>
+<p>💡 With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase install chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).</p>
 
-<p>✔️ With raw Selenium, your commands that use selectors would also need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, so you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
+<p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, so you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
-<p>✔️ SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in "\n".<br />With raw Selenium, those actions require multiple method calls.</p>
+<p>💡 SeleniumBase methods often perform multiple actions in a single method call. For example, <code>self.type(selector,text)</code> does the following:<br />1. Waits for the element to be visible.<br />2. Waits for the element to be interactive.<br />3. Clears the text field.<br />4. Types in the new text.<br />5. Presses Enter/Submit if the text ends in "\n".<br />With raw Selenium, those actions require multiple method calls.</p>
 
-<p>✔️ SeleniumBase lets you change the explicit timeout values of methods:<br /><code>self.click("button",timeout=12)</code><br />With raw Selenium, that requires more code:<br /><code>WebDriverWait(driver,12).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />Given these examples, the SeleniumBase way is preferable for simplicity.</p>
+<p>💡 SeleniumBase uses default timeout values when not set, which means that methods automatically wait for elements to appear (<i>up to the timeout limit</i>) before failing:<br />✅<code>self.click("button")</code><br />With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load:<br />❌<code>self.driver.find_element(by="css selector", value="button").click()</code><br />(Reliable code is better than unreliable code.)</p>
 
-<p>✔️ With SeleniumBase, there's a default timeout length if not set, which means that methods automatically wait for elements to appear (<i>up to the timeout length</i>) before failing. With raw Selenium, methods would fail instantly (<i>by default</i>) if an element needed more time to load.</p>
+<p>💡 SeleniumBase lets you change the explicit timeout values of methods:<br />✅<code>self.click("button",timeout=12)</code><br />With raw Selenium, that requires more code:<br />❌<code>WebDriverWait(driver,12).until(EC.element_to_be_clickable("css selector", "button")).click()</code><br />(Simple code is better than complex code.)</p>
 
-<p>✔️ SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw Selenium does not have these options out-of-the-box.</p>
+<p>💡 SeleniumBase gives you the option to generate a dashboard and reports for tests. It also saves screenshots from failing tests to the <code>./latest_logs/</code> folder. Raw Selenium does not have these options out-of-the-box.</p>
 
-<p>✔️ SeleniumBase includes desktop apps for running tests, such as the SeleniumBase Commander for pytest, and the SeleniumBase Behave GUI.</p>
+<p>💡 SeleniumBase includes desktop GUI apps for running tests, such as <b>SeleniumBase Commander</b> for <code>pytest</code>, and <b>SeleniumBase Behave GUI.</b></p>
 
-<p>✔️ SeleniumBase has its own Recorder & Test Generator that can create tests from manual browser actions. SeleniumBase also has many other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)</p>
+<p>💡 SeleniumBase has its own Recorder & Test Generator that can create tests from manual browser actions. SeleniumBase also has many other useful tools and console scripts for getting things done quickly. (<i>See the documentation for more details!</i>)</p>
 </div>
 </details>
 
@@ -756,7 +756,7 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 
 <div></div>
 <details>
-<summary> ▶️ Here are some things you can do to set up a production environment for your testing. (<b>click to expand</b>)</summary>
+<summary> ▶️ Here are some things you can do to set up a production environment for your testing. (<b><u>click to expand</u></b>)</summary>
 
 <ul>
 <li>You can set up a <a href="https://jenkins.io/">Jenkins</a> build server for running tests at regular intervals. For a real-world Jenkins example of headless browser automation in action, check out the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md">SeleniumBase Jenkins example on Azure</a> or the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/google_cloud/ReadMe.md">SeleniumBase Jenkins example on Google Cloud</a>.</li>
@@ -924,7 +924,7 @@ def is_there_a_cloaked_klingon_ship_on_this_page():
 
 <div></div>
 <details>
-<summary> ▶️ is_text_visible(text, selector)  # is text visible on a page (<b>click to expand</b>)</summary>
+<summary> ▶️ is_text_visible(text, selector)  # is text visible on a page (<b><u>click to expand</u></b>)</summary>
 
 ```python
 def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
@@ -990,7 +990,7 @@ self.activate_jquery()
 
 <div></div>
 <details>
-<summary> ▶️ Here are some examples of using jQuery in your scripts. (<b>click to expand</b>)</summary>
+<summary> ▶️ Here are some examples of using jQuery in your scripts. (<b><u>click to expand</u></b>)</summary>
 
 ```python
 self.execute_script("jQuery, window.scrollTo(0, 600)")  # Scrolling the page
@@ -1020,7 +1020,7 @@ self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "va
 
 <div></div>
 <details>
-<summary> ▶️ In this example, JavaScript creates a referral button on a page, which is then clicked. (<b>click to expand</b>)</summary>
+<summary> ▶️ In this example, JavaScript creates a referral button on a page, which is then clicked. (<b><u>click to expand</u></b>)</summary>
 
 ```python
 start_page = "https://xkcd.com/465/"
