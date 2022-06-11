@@ -10,7 +10,7 @@
 
 <b>Example tour: (with autoplay)</b>
 
-<img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.io/cdn/gif/introjs_tour4.gif" title="SeleniumBase Tour of Google"><br>
 
 [SeleniumBase maps_introjs_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py)
 
@@ -21,7 +21,7 @@ pytest maps_introjs_tour.py --interval=1
 
 <b>Here's a longer example:</b>
 
-<img src="https://seleniumbase.io/cdn/gif/google_tour_3.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.io/cdn/gif/google_tour_4.gif" title="SeleniumBase Tour of Google"><br>
 
 [SeleniumBase google_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/google_tour.py)
 
@@ -139,5 +139,7 @@ OR
 ``self.export_tour(name=None, filename="my_tour.js")``
 
 > (``name`` is optional unless you gave custom names to your tours when you created them. ``filename`` is the name of the file to save the JavaScript to.) Once you've exported your tour, you can use it outside of SeleniumBase. You can even copy the tour's JavaScript code to the Console of your web browser to play the tour from there (you need to be on the correct web page for it to work).
+
+<img src="https://seleniumbase.io/cdn/gif/driverjs_tour_2.gif" title="SeleniumBase Tour of Google"><br>
 
 <h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="320" /></h3>
