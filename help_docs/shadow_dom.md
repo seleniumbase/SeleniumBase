@@ -20,4 +20,7 @@ css_5 = "downloads-manager::shadow downloads-toolbar::shadow cr-toolbar::shadow 
 
 🔵 Note that ``::shadow`` selectors only exist within SeleniumBase, and do not exist outside of it.
 
-🔵 Here's an example test that interacts with Shadow DOM elements: [examples/test_shadow_dom.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_shadow_dom.py)
+🔵 Here are some examples of tests that interact with Shadow DOM elements:
+* [examples/shadow_root_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/shadow_root_test.py)
+* [examples/test_shadow_dom.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_shadow_dom.py)
+* [examples/wordle_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/wordle_test.py)
