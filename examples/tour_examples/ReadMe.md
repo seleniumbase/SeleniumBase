@@ -10,7 +10,7 @@
 
 <b>Example tour: (with autoplay)</b>
 
-<img src="https://seleniumbase.io/cdn/gif/introjs_tour4.gif" title="SeleniumBase Tour of Google"><br>
+<img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" title="SeleniumBase Tour of Google"><br>
 
 [SeleniumBase maps_introjs_tour.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/maps_introjs_tour.py)
 
