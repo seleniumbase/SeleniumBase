@@ -5,15 +5,11 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<h3 align="center"><img src="https://seleniumbase.io/cdn/img/sb_logo_gs4.png" alt="SeleniumBase" title="SeleniumBase" width="580" /></h3>
+<p align="center"><img src="https://seleniumbase.io/cdn/img/mac_sb_banner_t.png" alt="SeleniumBase" title="SeleniumBase" width="600" /></p>
+
+<p align="center"><b>Reliable web automation and testing with Python/pytest.</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=2288EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
-
---------
-
-<p align="center"><b>A Python framework for Web/UI automation and testing.</b>
-<br />Includes advanced tools, such as <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">website tour generators</a>.</p>
-<p align="center"><img src="https://seleniumbase.io/cdn/gif/introjs_tour.gif" width="440" alt="SeleniumBase Example" title="SeleniumBase Example" /></p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
