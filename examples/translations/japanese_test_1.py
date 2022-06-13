@@ -16,7 +16,7 @@ class 私のテストクラス(セレニウムテストケース):
         self.要素を確認する('img[alt="握り寿司"]')
         self.入力("#searchInput", "レゴランド・ジャパン")
         self.クリックして("#searchButton")
-        self.要素を確認する('img[alt="Legoland japan.jpg"]')
+        self.要素を確認する('img[alt*="LEGOLAND JAPAN"]')
         self.リンクテキストを確認する("名古屋城")
         self.リンクテキストをクリックします("テーマパーク")
         self.テキストを確認する("テーマパーク", "#firstHeading")
