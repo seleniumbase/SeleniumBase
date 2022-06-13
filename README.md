@@ -5,8 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="340" /></a></p>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" width="332" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/img/sb_logo_10.png" alt="SeleniumBase" width="284" /></a><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="284" /></a></p>
 <p align="center"><b>Build fast, reliable, end-to-end tests.</b></p>
 <p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 
