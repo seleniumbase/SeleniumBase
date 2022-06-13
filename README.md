@@ -5,16 +5,17 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" alt="SeleniumBase" width="300" /></a></p>
-<p align="center"><b>A complete end-to-end testing experience.</b></p>
-<p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> and <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_demo_site.png" alt="SeleniumBase" width="340" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" width="332" /></a></p>
+<p align="center"><b>Build fast, reliable, end-to-end tests.</b></p>
+<p align="center">Extends <a href="https://www.w3.org/TR/webdriver/">Selenium/WebDriver</a> & <a href="https://docs.pytest.org/en/latest/index.html">pytest</a>.</p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=2288EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
-<p><b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, charts, presentations, and website tours. Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.</p>
+<p><b>SeleniumBase</b> is an all-in-one framework for fast & simple browser automation, end-to-end testing, reports, charts, presentations, and website tours. Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.</p>
 
 <p align="center">
-<a href="#python_installation">🐣 Start</a> |
+<a href="#python_installation">🚁 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏞️ Features</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👨‍🏫 Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">☑️ Options</a> |
