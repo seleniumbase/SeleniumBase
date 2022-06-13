@@ -1,15 +1,12 @@
-<h3 align="left"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" title="SeleniumBase" width="310" /></a></h3>
-
 <a id="language_tests"></a>
-<h3>🌏 Language Tests & Translation API</h3>
+<h2>🌏 Translated Tests 🈺</h2>
 
-<b>SeleniumBase</b> supports the following 10 languages: <i>English</i>, <i>Chinese</i>, <i>Dutch</i>, <i>French</i>, <i>Italian</i>, <i>Japanese</i>, <i>Korean</i>, <i>Portuguese</i>, <i>Russian</i>, and <i>Spanish</i>.
+<b>SeleniumBase</b> supports the following 10 languages: <i>English</i>, <i>Chinese</i>, <i>Dutch</i>, <i>French</i>, <i>Italian</i>, <i>Japanese</i>, <i>Korean</i>, <i>Portuguese</i>, <i>Russian</i>, and <i>Spanish</i>. (Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>])
 
-Examples can be found in [<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations">SeleniumBase/examples/translations</a>].
-
-Multi-language tests are run with **pytest** like any other test. Test methods have a one-to-one mapping to the other supported languages. Here's an example of a translated test:
+Multi-language tests run with **pytest** like other tests. Test methods have a one-to-one mapping to supported languages. Here's an example of a translated test:
 
 ```python
+# Chinese Translation
 from seleniumbase.translate.chinese import 硒测试用例
 
 class 我的测试类(硒测试用例):
@@ -23,8 +20,25 @@ class 我的测试类(硒测试用例):
         self.断言文本("舞龍", "#firstHeading")
 ```
 
+Here's another example:
+
+```python
+# Japanese Translation
+from seleniumbase.translate.japanese import セレニウムテストケース
+
+class 私のテストクラス(セレニウムテストケース):
+    def test_例1(self):
+        self.を開く("https://ja.wikipedia.org/wiki/")
+        self.テキストを確認する("ウィキペディア")
+        self.要素を確認する('[title="メインページに移動する"]')
+        self.入力("#searchInput", "アニメ")
+        self.クリックして("#searchButton")
+        self.テキストを確認する("アニメ", "#firstHeading")
+        self.入力("#searchInput", "寿司")
+```
+
 <a id="translation_api"></a>
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Translation API</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Translation API 🈺</h2>
 
 You can use SeleniumBase to selectively translate the method names of any test from one language to another with the console scripts interface. Additionally, the ``import`` line at the top of the Python file will change to import the new ``BaseCase``. Example: ``BaseCase`` becomes ``CasoDeTeste`` when a test is translated into Portuguese.
 
