@@ -2,7 +2,7 @@
 
 <h2> 📊 ChartMaker 📶 </h2>
 
-<p>SeleniumBase ChartMaker lets you use Python to generate HTML charts from HighCharts JS.</p>
+<p>SeleniumBase ChartMaker lets you use Python to generate HTML charts.</p>
 
 <a href="https://seleniumbase.io/other/chart_presentation.html"><img width="480" src="https://seleniumbase.io/cdn/gif/chart_pres.gif" title="Chart Presentation"></a><br>
 
