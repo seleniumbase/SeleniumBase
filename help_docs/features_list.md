@@ -9,7 +9,7 @@
 * Supports multiple browsers, tabs, iframes, and proxies in the same test.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), [nose](http://nose.readthedocs.io/en/latest/), and [behave](https://behave.readthedocs.io/en/stable/index.html) for finding/running tests.
-* No paywalls! You get access to all available features from the start.
+* All the code is open source. Dive in to see details about any feature.
 * Powerful logging tools for [dashboards, reports, and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 * Can run tests in Headless Mode to hide the browser. (``--headless``)
 * Can run tests multithreaded from parallel browsers. (``-n NUM_THREADS``)
@@ -33,11 +33,11 @@
 * Includes integrations for [GitHub Actions](https://seleniumbase.io/integrations/github/workflows/ReadMe/), [Google Cloud](https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/google_cloud/ReadMe.md), [Azure](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/azure/jenkins/ReadMe.md), [S3](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/s3_logging_plugin.py), and [Docker](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/docker/ReadMe.md).
 * Can handle Google Authenticator logins with [Python's one-time password library](https://pyotp.readthedocs.io/en/latest/).
 * Can load and make assertions on PDF files from websites or the local file system.
+* Can inspect HTML to find issues and points of interest with the [HTML Inspector](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/html_inspector.md).
 * Is backwards-compatible with Python [WebDriver](https://www.selenium.dev/projects/) methods. (Use: ``self.driver``)
 * Can execute JavaScript code from Python calls. (Use: ``self.execute_script()``)
 * Can pierce through Shadow DOM selectors. (Add ``::shadow`` to CSS fragments.)
-* Includes a hybrid-automation solution, [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md), for speeding up manual testing.
-* Includes a tool to [convert Katalon & SeleniumIDE recordings](https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/katalon/ReadMe.md) into SeleniumBase format.
+* Includes a hybrid-automation solution, [MasterQA](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md), to speed up manual testing.
 * Includes useful [Python decorators and password obfuscation methods](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/common/ReadMe.md).
 
 --------
