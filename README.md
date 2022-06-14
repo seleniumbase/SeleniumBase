@@ -43,6 +43,8 @@
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🎭 Visual</a>
 </p>
 
+<p align="center"><br /><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" width="460" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+
 --------
 
 <a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="250" /></a>
