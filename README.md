@@ -11,7 +11,7 @@
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=2288EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
-<p><b>SeleniumBase</b> is an all-in-one framework for reliable browser automation, end-to-end testing, reports, charts, presentations, and website tours. Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.</p>
+<p><b>SeleniumBase</b> is an all-in-one Python framework for fast/simple/reliable browser automation, end-to-end testing, and JavaScript injection. Tests are run with <b>pytest</b>. Browsers are controlled by <b>WebDriver</b>.</p>
 
 <p align="center">
 <a href="#python_installation">🚁 Start</a> |
