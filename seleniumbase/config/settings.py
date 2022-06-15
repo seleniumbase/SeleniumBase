@@ -12,7 +12,7 @@ Develop Mode Install: "pip install -e ."  (from the top-level directory)
 # Different methods/actions in base_case.py use different timeouts.
 # If the element to be acted on does not appear in time, the test fails.
 MINI_TIMEOUT = 2
-SMALL_TIMEOUT = 6
+SMALL_TIMEOUT = 7
 LARGE_TIMEOUT = 10
 EXTREME_TIMEOUT = 30
 

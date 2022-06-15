@@ -2584,8 +2584,8 @@ class BaseCase(unittest.TestCase):
         """
         self.__check_scope()
         if not timeout:
-            timeout = settings.SMALL_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
         if type(frame) is str and self.is_element_visible(frame):
             try:

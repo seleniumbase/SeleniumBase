@@ -4,6 +4,11 @@ from seleniumbase import BaseCase
 class YouTubeSearchTests(BaseCase):
     def test_youtube_autocomplete_results(self):
         """Verify YouTube autocomplete search results."""
+        if self.headless:
+            self.open("about:blank")
+            message = "This test is skipped in headless mode."
+            print(message)
+            self.skip(message)
         self.open("https://www.youtube.com/c/MichaelMintz")
         search_term = "seleniumbase"
         search_selector = "input#search"

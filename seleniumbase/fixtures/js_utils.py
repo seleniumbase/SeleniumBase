@@ -144,8 +144,8 @@ def raise_unable_to_load_jquery_exception(driver):
         )
     else:
         raise Exception(
-            """Unable to load jQuery on "%s" because this website """
-            """restricts external JavaScript resources from loading."""
+            """Unable to load jQuery on "%s" because this website may be """
+            """restricting external JavaScript resources from loading."""
             % driver.current_url
         )
 
@@ -172,8 +172,9 @@ def activate_jquery(driver):
             time.sleep(0.1)
     try:
         add_js_link(driver, jquery_js)
-        time.sleep(0.1)
+        time.sleep(0.2)
         driver.execute_script("jQuery('head');")
+        return
     except Exception:
         pass
     # Since jQuery still isn't activating, give up and raise an exception
