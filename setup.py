@@ -131,7 +131,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=62.3.3;python_version>="3.7"',
+        'setuptools>=62.4.0;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -165,10 +165,12 @@ setup(
         "urllib3==1.26.9",  # Must stay in sync with "requests"
         'requests==2.27.1;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
-        'requests==2.27.1;python_version>="3.6"',
+        'requests==2.27.1;python_version>="3.6" and python_version<"3.7"',
+        'requests==2.28.0;python_version>="3.7"',
         "nose==1.3.7",
         'sniffio==1.2.0;python_version>="3.7"',
         'h11==0.13.0;python_version>="3.7"',
+        'outcome==1.2.0;python_version>="3.7"',
         'trio==0.21.0;python_version>="3.7"',
         'trio-websocket==0.9.2;python_version>="3.7"',
         'pyopenssl==22.0.0;python_version>="3.7"',
@@ -257,7 +259,7 @@ setup(
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
         'pdfminer.six==20211012;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'pdfminer.six==20220319;python_version>="3.7"',
+        'pdfminer.six==20220524;python_version>="3.7"',
     ],
     extras_require={
         # pip install -e .[coverage]
