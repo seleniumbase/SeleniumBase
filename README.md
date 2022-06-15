@@ -6,7 +6,7 @@
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
 <p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/nice_logo_6t.png" alt="SeleniumBase" title="SeleniumBase" width="284" /></a></p>
-<p align="center"><b>Better web testing with <a href="https://www.selenium.dev/documentation/">Selenium</a>, <a href="https://www.python.org/about/">Python</a>, and <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>.</b></p>
+<p align="center">A framework for better web testing with <a href="https://www.selenium.dev/documentation/">Selenium</a>, <a href="https://www.python.org/about/">Python</a>, and <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>.</p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
 
@@ -41,13 +41,9 @@
 <br />
 </p>
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_swag_labs.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/swag_demo_3.gif" width="460" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
-
 --------
 
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="250" /></a>
-
-<p align="left">✅ An example of running a test: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
+<p align="left"><b>One of many examples:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
 ```bash
 cd examples/
@@ -340,9 +336,9 @@ self.type("input", "dogs\n")
 SeleniumBase tests can be run with both ``pytest`` and ``nosetests``, but using ``pytest`` is recommended. (``chrome`` is the default browser if not specified.)
 
 ```bash
-pytest my_first_test.py --browser=chrome
+pytest my_first_test.py --chrome
 
-nosetests test_suite.py --browser=firefox
+nosetests test_suite.py --firefox
 ```
 
 ✅ Automatic Test Discovery:
