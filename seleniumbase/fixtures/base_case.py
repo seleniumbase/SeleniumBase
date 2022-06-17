@@ -4219,6 +4219,7 @@ class BaseCase(unittest.TestCase):
             methodname = methodname.replace(" = ", " equals ")
             methodname = methodname.replace(" %% ", " percent ")
             methodname = re.sub(r"[^\w" + r"_ " + r"]", "", methodname)
+            methodname = methodname.replace(" _ ", "_").lower()
             methodname = methodname.replace(" ", "_").lower()
             if not methodname.startswith("test_"):
                 methodname = "test_" + methodname
