@@ -11359,6 +11359,8 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by, loops=1)
         elif self.slow_mode:
             self.__slow_scroll_to_element(element)
+        else:
+            self.__scroll_to_element(element, selector, by)
         if self.demo_mode and mark is None:
             mark = True
         if mark:
