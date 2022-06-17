@@ -12602,8 +12602,8 @@ class BaseCase(unittest.TestCase):
             test_id = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
             filename = test_id.split("::")[0].split("/")[-1]
         elif hasattr(self, "is_behave") and self.is_behave:
-            file_name = sb_config.behave_scenario.filename
-            file_name = file_name.split("/")[-1].split("\\")[-1]
+            filename = sb_config.behave_scenario.filename
+            filename = filename.split("/")[-1].split("\\")[-1]
         else:
             filename = self.__class__.__module__.split(".")[-1] + ".py"
         return filename
