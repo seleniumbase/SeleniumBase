@@ -4266,6 +4266,16 @@ class BaseCase(unittest.TestCase):
                 star_len = terminal_size
         except Exception:
             pass
+        spc = "\n\n"
+        if hasattr(self, "rec_print") and self.rec_print:
+            spc = ""
+            print()
+            if " " not in file_path:
+                os.system("sbase print %s -n" % file_path)
+            elif '"' not in file_path:
+                os.system('sbase print "%s" -n' % file_path)
+            else:
+                os.system("sbase print '%s' -n" % file_path)
         stars = "*" * star_len
         c1 = ""
         c2 = ""
@@ -4276,7 +4286,7 @@ class BaseCase(unittest.TestCase):
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
-        print("\n\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+        print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
         if hasattr(self, "rec_behave") and self.rec_behave:
             # Also generate necessary behave-gherkin files.
             self.__process_recorded_behave_actions(srt_actions, colorama)
@@ -4356,6 +4366,16 @@ class BaseCase(unittest.TestCase):
                 star_len = terminal_size
         except Exception:
             pass
+        spc = "\n"
+        if hasattr(self, "rec_print") and self.rec_print:
+            spc = ""
+            print()
+            if " " not in file_path:
+                os.system("sbase print %s -n" % file_path)
+            elif '"' not in file_path:
+                os.system('sbase print "%s" -n' % file_path)
+            else:
+                os.system("sbase print '%s' -n" % file_path)
         stars = "*" * star_len
         c1 = ""
         c2 = ""
@@ -4366,7 +4386,7 @@ class BaseCase(unittest.TestCase):
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
-        print("\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+        print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
 
         data = []
         data.append("")
@@ -11937,9 +11957,16 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.recorder_mode = sb_config.recorder_mode
             self.recorder_ext = sb_config.recorder_mode
+            self.rec_print = sb_config.rec_print
             self.rec_behave = sb_config.rec_behave
             self.record_sleep = sb_config.record_sleep
-            if self.rec_behave and not self.recorder_mode:
+            if self.rec_print and not self.recorder_mode:
+                self.recorder_mode = True
+                self.recorder_ext = True
+            elif self.rec_behave and not self.recorder_mode:
+                self.recorder_mode = True
+                self.recorder_ext = True
+            elif self.record_sleep and not self.recorder_mode:
                 self.recorder_mode = True
                 self.recorder_ext = True
             self.disable_csp = sb_config.disable_csp
