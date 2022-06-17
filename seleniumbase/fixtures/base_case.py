@@ -3598,6 +3598,7 @@ class BaseCase(unittest.TestCase):
                     or srt_actions[n - 1][0] == "js_ca"
                 )
             ):
+                sel1 = srt_actions[n - 1][1]
                 url1 = srt_actions[n - 1][2]
                 if (
                     srt_actions[n - 1][0] == "js_cl"
@@ -3616,6 +3617,8 @@ class BaseCase(unittest.TestCase):
                 if (
                     url1 == url2
                     or url1 == url2.replace("www.", "")
+                    or url1 == url2.replace("https://", "http://")
+                    or sel1.split(" ")[-1].startswith("a[href=")
                     or (len(url1) > 0
                         and (url2.startswith(url1) or "?search" in url1)
                         and (int(srt_actions[n][3]) - int(
@@ -3642,6 +3645,8 @@ class BaseCase(unittest.TestCase):
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
                 if url1.replace("www.", "") == url2.replace("www.", ""):
+                    srt_actions[n - 1][0] = "_skip"
+                elif url1.replace("http://", "https://") == url2:
                     srt_actions[n - 1][0] = "_skip"
                 elif url2.startswith(url1):
                     srt_actions[n][0] = "f_url"
