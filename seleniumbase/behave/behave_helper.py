@@ -284,6 +284,7 @@ def generate_gherkin(srt_actions):
         elif (
             action[0] == "as_te"
             or action[0] == "as_et"
+            or action[0] == "astnv"
             or action[0] == "da_te"
             or action[0] == "da_et"
         ):
@@ -293,6 +294,8 @@ def generate_gherkin(srt_actions):
             method = "Assert text"
             if action[0] == "as_et":
                 method = "Assert exact text"
+            elif action[0] == "astnv":
+                method = "Assert text not visible"
             elif action[0] == "da_te":
                 method = "Deferred assert text"
             elif action[0] == "da_et":

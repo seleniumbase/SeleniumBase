@@ -3766,6 +3766,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("do_fi")
         ext_actions.append("as_at")
         ext_actions.append("as_te")
+        ext_actions.append("astnv")
         ext_actions.append("as_et")
         ext_actions.append("wf_el")
         ext_actions.append("sw_fr")
@@ -4116,6 +4117,7 @@ class BaseCase(unittest.TestCase):
             elif (
                 action[0] == "as_te"
                 or action[0] == "as_et"
+                or action[0] == "astnv"
                 or action[0] == "da_te"
                 or action[0] == "da_et"
             ):
@@ -4125,6 +4127,8 @@ class BaseCase(unittest.TestCase):
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
+                elif action[0] == "astnv":
+                    method = "assert_text_not_visible"
                 elif action[0] == "da_te":
                     method = "deferred_assert_text"
                 elif action[0] == "da_et":
@@ -10303,16 +10307,12 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode:
             url = self.get_current_url()
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["asenv", selector, origin, time_stamp]
@@ -10345,9 +10345,20 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_text_not_visible(
+        self.wait_for_text_not_visible(
             text, selector, by=by, timeout=timeout
         )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["astnv", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
 
     ############
 
