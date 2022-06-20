@@ -7217,6 +7217,28 @@ class BaseCase(unittest.TestCase):
             original_selector=original_selector,
         )
 
+    def wait_for_element_clickable(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for the element to be clickable, but does NOT click it."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            # If a shadow selector, use visible instead of clickable
+            return self.__wait_for_shadow_element_visible(selector, timeout)
+        return page_actions.wait_for_element_clickable(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+
     def wait_for_element_not_present(
         self, selector, by="css selector", timeout=None
     ):
