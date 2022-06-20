@@ -115,7 +115,7 @@ class LoginPage:
 class MyTests(BaseCase):
     def test_swag_labs_login(self):
         LoginPage().login_to_swag_labs(self, "standard_user")
-        self.assert_element("#inventory_container")
+        self.assert_element("div.inventory_list")
         self.assert_element('div:contains("Sauce Labs Backpack")')
 ```
 
@@ -136,7 +136,7 @@ class LoginPage:
 class MyTests:
     def test_swag_labs_login(self, sb):
         LoginPage().login_to_swag_labs(sb, "standard_user")
-        sb.assert_element("#inventory_container")
+        sb.assert_element("div.inventory_list")
         sb.assert_element('div:contains("Sauce Labs Backpack")')
 ```
 
@@ -190,8 +190,9 @@ class OverrideDriverTest(BaseCase):
     def get_new_driver(self, *args, **kwargs):
         """This method overrides get_new_driver() from BaseCase."""
         options = webdriver.ChromeOptions()
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option("useAutomationExtension", False)
+        options.add_experimental_option(
+            "excludeSwitches", ["enable-automation"]
+        )
         if self.headless:
             options.add_argument("--headless")
         return webdriver.Chrome(options=options)
@@ -232,18 +233,15 @@ from seleniumbase import get_driver
 from seleniumbase import js_utils
 from seleniumbase import page_actions
 
-success = False
+driver = get_driver("chrome", headless=False)
 try:
-    driver = get_driver("chrome", headless=False)
     driver.get("https://seleniumbase.io/apps/calculator")
     page_actions.wait_for_element_visible(driver, "4", "id").click()
     page_actions.wait_for_element_visible(driver, "2", "id").click()
     page_actions.wait_for_text_visible(driver, "42", "output", "id")
     js_utils.highlight_with_js(driver, "#output", 6, "")
-    success = True
 finally:
     driver.quit()
-assert success
 ```
 
 (From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_browser_launcher.py">examples/raw_browser_launcher.py</a>)
