@@ -756,7 +756,7 @@ class SeleniumBrowser(Plugin):
         elif self.options.rec_behave:
             test.test.recorder_mode = True
             test.test.recorder_ext = True
-        elif self.options.rec_sleep:
+        elif self.options.record_sleep:
             test.test.recorder_mode = True
             test.test.recorder_ext = True
         test.test.disable_csp = self.options.disable_csp
