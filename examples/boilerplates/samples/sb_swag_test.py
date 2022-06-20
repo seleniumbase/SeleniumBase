@@ -12,5 +12,5 @@ class LoginPage:
 class MyTests:
     def test_swag_labs_login(self, sb):
         LoginPage().login_to_swag_labs(sb, "standard_user")
-        sb.assert_element("#inventory_container")
+        sb.assert_element("div.inventory_list")
         sb.assert_element('div:contains("Sauce Labs Backpack")')

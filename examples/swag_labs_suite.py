@@ -12,7 +12,7 @@ class SwagLabsTests(BaseCase):
         self.type("#user-name", username)
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')
-        self.assert_element("#inventory_container")
+        self.assert_element("div.inventory_list")
         self.assert_element('div:contains("Sauce Labs Backpack")')
 
     @parameterized.expand(

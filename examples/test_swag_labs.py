@@ -10,7 +10,7 @@ class SwagLabsTests(BaseCase):
         self.type("#user-name", username)
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')
-        self.assert_element("#inventory_container")
+        self.assert_element("div.inventory_list")
         self.assert_element('.inventory_item:contains("Sauce Labs Backpack")')
 
     def test_swag_labs_basic_flow(self):
