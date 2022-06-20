@@ -3598,6 +3598,7 @@ class BaseCase(unittest.TestCase):
                     or srt_actions[n - 1][0] == "js_ca"
                 )
             ):
+                sel1 = srt_actions[n - 1][1]
                 url1 = srt_actions[n - 1][2]
                 if (
                     srt_actions[n - 1][0] == "js_cl"
@@ -3616,6 +3617,8 @@ class BaseCase(unittest.TestCase):
                 if (
                     url1 == url2
                     or url1 == url2.replace("www.", "")
+                    or url1 == url2.replace("https://", "http://")
+                    or sel1.split(" ")[-1].startswith("a[href=")
                     or (len(url1) > 0
                         and (url2.startswith(url1) or "?search" in url1)
                         and (int(srt_actions[n][3]) - int(
@@ -3642,6 +3645,8 @@ class BaseCase(unittest.TestCase):
                 elif url2.endswith("/"):
                     url2 = url2[:-1]
                 if url1.replace("www.", "") == url2.replace("www.", ""):
+                    srt_actions[n - 1][0] = "_skip"
+                elif url1.replace("http://", "https://") == url2:
                     srt_actions[n - 1][0] = "_skip"
                 elif url2.startswith(url1):
                     srt_actions[n][0] = "f_url"
@@ -3766,6 +3771,7 @@ class BaseCase(unittest.TestCase):
         ext_actions.append("do_fi")
         ext_actions.append("as_at")
         ext_actions.append("as_te")
+        ext_actions.append("astnv")
         ext_actions.append("as_et")
         ext_actions.append("wf_el")
         ext_actions.append("sw_fr")
@@ -4116,6 +4122,7 @@ class BaseCase(unittest.TestCase):
             elif (
                 action[0] == "as_te"
                 or action[0] == "as_et"
+                or action[0] == "astnv"
                 or action[0] == "da_te"
                 or action[0] == "da_et"
             ):
@@ -4125,6 +4132,8 @@ class BaseCase(unittest.TestCase):
                 method = "assert_text"
                 if action[0] == "as_et":
                     method = "assert_exact_text"
+                elif action[0] == "astnv":
+                    method = "assert_text_not_visible"
                 elif action[0] == "da_te":
                     method = "deferred_assert_text"
                 elif action[0] == "da_et":
@@ -4215,6 +4224,7 @@ class BaseCase(unittest.TestCase):
             methodname = methodname.replace(" = ", " equals ")
             methodname = methodname.replace(" %% ", " percent ")
             methodname = re.sub(r"[^\w" + r"_ " + r"]", "", methodname)
+            methodname = methodname.replace(" _ ", "_").lower()
             methodname = methodname.replace(" ", "_").lower()
             if not methodname.startswith("test_"):
                 methodname = "test_" + methodname
@@ -4266,6 +4276,16 @@ class BaseCase(unittest.TestCase):
                 star_len = terminal_size
         except Exception:
             pass
+        spc = "\n\n"
+        if hasattr(self, "rec_print") and self.rec_print:
+            spc = ""
+            print()
+            if " " not in file_path:
+                os.system("sbase print %s -n" % file_path)
+            elif '"' not in file_path:
+                os.system('sbase print "%s" -n' % file_path)
+            else:
+                os.system("sbase print '%s' -n" % file_path)
         stars = "*" * star_len
         c1 = ""
         c2 = ""
@@ -4276,7 +4296,7 @@ class BaseCase(unittest.TestCase):
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
-        print("\n\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+        print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
         if hasattr(self, "rec_behave") and self.rec_behave:
             # Also generate necessary behave-gherkin files.
             self.__process_recorded_behave_actions(srt_actions, colorama)
@@ -4356,6 +4376,16 @@ class BaseCase(unittest.TestCase):
                 star_len = terminal_size
         except Exception:
             pass
+        spc = "\n"
+        if hasattr(self, "rec_print") and self.rec_print:
+            spc = ""
+            print()
+            if " " not in file_path:
+                os.system("sbase print %s -n" % file_path)
+            elif '"' not in file_path:
+                os.system('sbase print "%s" -n' % file_path)
+            else:
+                os.system("sbase print '%s' -n" % file_path)
         stars = "*" * star_len
         c1 = ""
         c2 = ""
@@ -4366,7 +4396,7 @@ class BaseCase(unittest.TestCase):
             c2 = colorama.Fore.LIGHTRED_EX + colorama.Back.LIGHTYELLOW_EX
             cr = colorama.Style.RESET_ALL
             rec_message = rec_message.replace(">>>", c2 + ">>>" + cr)
-        print("\n%s%s%s%s\n%s" % (rec_message, c1, file_path, cr, stars))
+        print("%s%s%s%s%s\n%s" % (spc, rec_message, c1, file_path, cr, stars))
 
         data = []
         data.append("")
@@ -7180,6 +7210,28 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             return self.__wait_for_shadow_element_visible(selector, timeout)
         return page_actions.wait_for_element_visible(
+            self.driver,
+            selector,
+            by,
+            timeout=timeout,
+            original_selector=original_selector,
+        )
+
+    def wait_for_element_clickable(
+        self, selector, by="css selector", timeout=None
+    ):
+        """Waits for the element to be clickable, but does NOT click it."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        original_selector = selector
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            # If a shadow selector, use visible instead of clickable
+            return self.__wait_for_shadow_element_visible(selector, timeout)
+        return page_actions.wait_for_element_clickable(
             self.driver,
             selector,
             by,
@@ -10283,16 +10335,12 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        original_selector = selector
-        selector, by = self.__recalculate_selector(selector, by)
         self.wait_for_element_not_visible(selector, by=by, timeout=timeout)
         if self.recorder_mode:
             url = self.get_current_url()
             if url and len(url) > 0:
                 if ("http:") in url or ("https:") in url or ("file:") in url:
                     if self.get_session_storage_item("pause_recorder") == "no":
-                        if by == By.XPATH:
-                            selector = original_selector
                         time_stamp = self.execute_script("return Date.now();")
                         origin = self.get_origin()
                         action = ["asenv", selector, origin, time_stamp]
@@ -10325,9 +10373,20 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        return self.wait_for_text_not_visible(
+        self.wait_for_text_not_visible(
             text, selector, by=by, timeout=timeout
         )
+        if self.recorder_mode:
+            url = self.get_current_url()
+            if url and len(url) > 0:
+                if ("http:") in url or ("https:") in url or ("file:") in url:
+                    if self.get_session_storage_item("pause_recorder") == "no":
+                        time_stamp = self.execute_script("return Date.now();")
+                        origin = self.get_origin()
+                        text_selector = [text, selector]
+                        action = ["astnv", text_selector, origin, time_stamp]
+                        self.__extra_actions.append(action)
+        return True
 
     ############
 
@@ -11339,6 +11398,8 @@ class BaseCase(unittest.TestCase):
             self.highlight(selector, by=by, loops=1)
         elif self.slow_mode:
             self.__slow_scroll_to_element(element)
+        else:
+            self.__scroll_to_element(element, selector, by)
         if self.demo_mode and mark is None:
             mark = True
         if mark:
@@ -11937,9 +11998,16 @@ class BaseCase(unittest.TestCase):
             self.verify_delay = sb_config.verify_delay
             self.recorder_mode = sb_config.recorder_mode
             self.recorder_ext = sb_config.recorder_mode
+            self.rec_print = sb_config.rec_print
             self.rec_behave = sb_config.rec_behave
             self.record_sleep = sb_config.record_sleep
-            if self.rec_behave and not self.recorder_mode:
+            if self.rec_print and not self.recorder_mode:
+                self.recorder_mode = True
+                self.recorder_ext = True
+            elif self.rec_behave and not self.recorder_mode:
+                self.recorder_mode = True
+                self.recorder_ext = True
+            elif self.record_sleep and not self.recorder_mode:
                 self.recorder_mode = True
                 self.recorder_ext = True
             self.disable_csp = sb_config.disable_csp
@@ -12026,9 +12094,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_guid = None
                 self.execution_start_time = 0
                 self.case_start_time = 0
-                self.application = None
                 self.testcase_manager = None
-                self.error_handled = False
                 self.testcase_manager = TestcaseManager(self.database_env)
                 #
                 exec_payload = ExecutionQueryPayload()
@@ -12048,7 +12114,7 @@ class BaseCase(unittest.TestCase):
                     data_payload.browser = "N/A"
                 data_payload.test_address = test_id
                 application = ApplicationManager.generate_application_string(
-                    self._testMethodName
+                    self
                 )
                 data_payload.env = application.split(".")[0]
                 data_payload.start_time = application.split(".")[1]
@@ -12573,8 +12639,8 @@ class BaseCase(unittest.TestCase):
             test_id = os.environ["PYTEST_CURRENT_TEST"].split(" ")[0]
             filename = test_id.split("::")[0].split("/")[-1]
         elif hasattr(self, "is_behave") and self.is_behave:
-            file_name = sb_config.behave_scenario.filename
-            file_name = file_name.split("/")[-1].split("\\")[-1]
+            filename = sb_config.behave_scenario.filename
+            filename = filename.split("/")[-1].split("\\")[-1]
         else:
             filename = self.__class__.__module__.split(".")[-1] + ".py"
         return filename

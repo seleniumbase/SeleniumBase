@@ -131,7 +131,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=62.4.0;python_version>="3.7"',
+        'setuptools>=62.6.0;python_version>="3.7"',
         'setuptools-scm>=5.0.2;python_version<"3.6"',
         'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -140,10 +140,10 @@ setup(
         "attrs>=21.4.0",
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
-        'traitlets>=5.2.2.post1;python_version>="3.7"',
+        'traitlets>=5.3.0;python_version>="3.7"',
         'certifi>=2021.10.8;python_version<"3.5"',
         'certifi>=2022.5.18;python_version>="3.5" and python_version<"3.6"',
-        'certifi>=2022.5.18.1;python_version>="3.6"',
+        'certifi>=2022.6.15;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
         'filelock>=3.7.1;python_version>="3.7"',
@@ -236,7 +236,7 @@ setup(
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.34.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
-        "colorama==0.4.4",
+        "colorama==0.4.5",
         'importlib-metadata==2.1.3;python_version<"3.6"',
         'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",

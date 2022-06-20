@@ -707,6 +707,111 @@ def wait_for_attribute(
         return element
 
 
+def wait_for_element_clickable(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
+):
+    """
+    Searches for the specified element by the given selector. Returns the
+    element object if the element is present, visible, & clickable on the page.
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
+    Raises ElementNotVisibleException if the element exists in the HTML,
+    but is not visible (eg. opacity is "0") within the specified timeout.
+    Raises ElementNotInteractableException if the element is not clickable.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
+    @Returns
+    A web element object
+    """
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait
+
+    element = None
+    is_present = False
+    is_visible = False
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        shared_utils.check_if_time_limit_exceeded()
+        try:
+            element = driver.find_element(by=by, value=selector)
+            is_present = True
+            if element.is_displayed():
+                is_visible = True
+                if WebDriverWait(driver, 0.001).until(
+                    EC.element_to_be_clickable((by, selector))
+                ):
+                    return element
+                else:
+                    element = None
+                    raise Exception()
+            else:
+                element = None
+                raise Exception()
+        except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    if not element and by != By.LINK_TEXT:
+        if (
+            original_selector
+            and ":contains(" in original_selector
+            and "contains(." in selector
+        ):
+            selector = original_selector
+        if not is_present:
+            # The element does not exist in the HTML
+            message = "Element {%s} was not present after %s second%s!" % (
+                selector,
+                timeout,
+                plural,
+            )
+            timeout_exception(NoSuchElementException, message)
+        if not is_visible:
+            # The element exists in the HTML, but is not visible
+            message = "Element {%s} was not visible after %s second%s!" % (
+                selector,
+                timeout,
+                plural,
+            )
+            timeout_exception(ElementNotVisibleException, message)
+        # The element is visible in the HTML, but is not clickable
+        message = "Element {%s} was not clickable after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotInteractableException, message)
+    elif not element and by == By.LINK_TEXT and not is_visible:
+        message = "Link text {%s} was not visible after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotVisibleException, message)
+    elif not element and by == By.LINK_TEXT and is_visible:
+        message = "Link text {%s} was not clickable after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotInteractableException, message)
+    else:
+        return element
+
+
 def wait_for_element_absent(
     driver,
     selector,

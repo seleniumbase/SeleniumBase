@@ -53,6 +53,7 @@ class SeleniumBrowser(Plugin):
     --recorder  (Enables the Recorder for turning browser actions into code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
+    --rec-print  (If the Recorder is enabled, prints output after tests end.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -479,6 +480,14 @@ class SeleniumBrowser(Plugin):
                     records sleep(seconds) calls.""",
         )
         parser.add_option(
+            "--rec-print",
+            action="store_true",
+            dest="rec_print",
+            default=False,
+            help="""If Recorder Mode is enabled,
+                    prints output after tests end.""",
+        )
+        parser.add_option(
             "--disable_csp",
             "--disable-csp",
             "--no_csp",
@@ -739,10 +748,17 @@ class SeleniumBrowser(Plugin):
         test.test.recorder_mode = self.options.recorder_mode
         test.test.recorder_ext = self.options.recorder_mode  # Again
         test.test.rec_behave = self.options.rec_behave
-        if self.options.rec_behave:
+        test.test.rec_print = self.options.rec_print
+        test.test.record_sleep = self.options.record_sleep
+        if self.options.rec_print:
             test.test.recorder_mode = True
             test.test.recorder_ext = True
-        test.test.record_sleep = self.options.record_sleep
+        elif self.options.rec_behave:
+            test.test.recorder_mode = True
+            test.test.recorder_ext = True
+        elif self.options.record_sleep:
+            test.test.recorder_mode = True
+            test.test.recorder_ext = True
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws

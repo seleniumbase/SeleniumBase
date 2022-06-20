@@ -9,7 +9,6 @@ class OverrideDriverTest(BaseCase):
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
         )
-        options.add_experimental_option("useAutomationExtension", False)
         if self.headless:
             options.add_argument("--headless")
         return webdriver.Chrome(options=options)

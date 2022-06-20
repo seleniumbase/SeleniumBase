@@ -701,6 +701,10 @@ self.assert_element_absent(selector, by="css selector", timeout=None)
 
 ############
 
+self.wait_for_element_clickable(selector, by="css selector", timeout=None)
+
+############
+
 self.wait_for_element_not_visible(selector, by="css selector", timeout=None)
 
 self.assert_element_not_visible(selector, by="css selector", timeout=None)

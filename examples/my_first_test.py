@@ -9,7 +9,7 @@ class MyTestClass(BaseCase):
         self.open("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
-        self.assert_element("#inventory_container")
+        self.assert_element("div.inventory_list")
         self.assert_text("PRODUCTS", "span.title")
         self.click('button[name*="backpack"]')
         self.click("#shopping_cart_container a")

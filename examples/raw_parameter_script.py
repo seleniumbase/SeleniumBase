@@ -81,6 +81,7 @@ if pure_python:
     sb.recorder_ext = False
     sb.record_sleep = False
     sb.rec_behave = False
+    sb.rec_print = False
     sb.report_on = False
     sb.is_pytest = False
     sb.slow_mode = False

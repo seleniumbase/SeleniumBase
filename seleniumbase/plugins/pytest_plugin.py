@@ -72,6 +72,7 @@ def pytest_addoption(parser):
     --recorder  (Enables the Recorder for turning browser actions into code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
     --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
+    --rec-print  (If the Recorder is enabled, prints output after tests end.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -738,6 +739,14 @@ def pytest_addoption(parser):
                 records sleep(seconds) calls.""",
     )
     parser.addoption(
+        "--rec-print",
+        action="store_true",
+        dest="rec_print",
+        default=False,
+        help="""If Recorder Mode is enabled,
+                prints output after tests end.""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -1179,10 +1188,17 @@ def pytest_configure(config):
     sb_config.recorder_mode = config.getoption("recorder_mode")
     sb_config.recorder_ext = config.getoption("recorder_mode")  # Again
     sb_config.rec_behave = config.getoption("rec_behave")
-    if sb_config.rec_behave and not sb_config.recorder_mode:
+    sb_config.rec_print = config.getoption("rec_print")
+    sb_config.record_sleep = config.getoption("record_sleep")
+    if sb_config.rec_print and not sb_config.recorder_mode:
         sb_config.recorder_mode = True
         sb_config.recorder_ext = True
-    sb_config.record_sleep = config.getoption("record_sleep")
+    elif sb_config.rec_behave and not sb_config.recorder_mode:
+        sb_config.recorder_mode = True
+        sb_config.recorder_ext = True
+    elif sb_config.record_sleep and not sb_config.recorder_mode:
+        sb_config.recorder_mode = True
+        sb_config.recorder_ext = True
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
     sb_config.enable_ws = config.getoption("enable_ws")

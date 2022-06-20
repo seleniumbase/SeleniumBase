@@ -586,3 +586,21 @@ def deferred_assert_exact_text(context, text, selector):
 def process_deferred_asserts(context):
     sb = context.sb
     sb.process_deferred_asserts()
+
+
+@step("Assert text not visible '{text}' in '{selector}'")
+@step('Assert text not visible "{text}" in "{selector}"')
+@step("Assert text not visible '{text}' in \"{selector}\"")
+@step('Assert text not visible "{text}" in \'{selector}\'')
+def assert_text_not_visible_in_element(context, text, selector):
+    sb = context.sb
+    text = normalize_text(text)
+    sb.assert_text_not_visible(text, selector)
+
+
+@step("Assert text not visible '{text}'")
+@step('Assert text not visible "{text}"')
+def assert_text_not_visible(context, text):
+    sb = context.sb
+    text = normalize_text(text)
+    sb.assert_text_not_visible(text)
