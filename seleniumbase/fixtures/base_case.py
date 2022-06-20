@@ -12072,9 +12072,7 @@ class BaseCase(unittest.TestCase):
                 self.testcase_guid = None
                 self.execution_start_time = 0
                 self.case_start_time = 0
-                self.application = None
                 self.testcase_manager = None
-                self.error_handled = False
                 self.testcase_manager = TestcaseManager(self.database_env)
                 #
                 exec_payload = ExecutionQueryPayload()
