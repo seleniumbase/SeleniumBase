@@ -12092,7 +12092,7 @@ class BaseCase(unittest.TestCase):
                     data_payload.browser = "N/A"
                 data_payload.test_address = test_id
                 application = ApplicationManager.generate_application_string(
-                    self._testMethodName
+                    self
                 )
                 data_payload.env = application.split(".")[0]
                 data_payload.start_time = application.split(".")[1]
