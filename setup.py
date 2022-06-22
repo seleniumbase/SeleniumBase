@@ -236,8 +236,7 @@ setup(
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
         "colorama==0.4.5",
         'importlib-metadata==2.1.3;python_version<"3.6"',
-        'importlib-metadata==4.8.3;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
-        'importlib-metadata==4.11.4;python_version>="3.7" and python_version<"3.8"',  # noqa: E501
+        'importlib-metadata==4.2.0;python_version>="3.6" and python_version<"3.8"',  # noqa: E501
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
