@@ -132,8 +132,6 @@ setup(
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
         'setuptools>=62.6.0;python_version>="3.7"',
-        'setuptools-scm>=5.0.2;python_version<"3.6"',
-        'setuptools-scm>=6.4.2;python_version>="3.6"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
@@ -252,7 +250,8 @@ setup(
         'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
         'Pillow==9.1.1;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
-        'typing-extensions==4.0.0;python_version>="3.6" and python_version<"3.9"',  # noqa: E501
+        'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
+        'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.4.4;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
         'tornado==6.1;python_version>="3.5"',
