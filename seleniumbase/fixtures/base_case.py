@@ -1782,31 +1782,61 @@ class BaseCase(unittest.TestCase):
             self.__slow_mode_pause_if_active()
 
     def click_with_offset(
-        self, selector, x, y, by="css selector", mark=None, timeout=None
+        self,
+        selector,
+        x,
+        y,
+        by="css selector",
+        mark=None,
+        timeout=None,
+        center=None,
     ):
         """
         Click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
+        If center==True, {0,0} becomes the center of the element.
         If mark==True, will draw a dot at location. (Useful for debugging)
         In Demo Mode, mark becomes True unless set to False. (Default: None)
         """
         self.__check_scope()
         self.__click_with_offset(
-            selector, x, y, by=by, double=False, mark=mark, timeout=timeout
+            selector,
+            x,
+            y,
+            by=by,
+            double=False,
+            mark=mark,
+            timeout=timeout,
+            center=center,
         )
 
     def double_click_with_offset(
-        self, selector, x, y, by="css selector", mark=None, timeout=None
+        self,
+        selector,
+        x,
+        y,
+        by="css selector",
+        mark=None,
+        timeout=None,
+        center=None,
     ):
         """
         Double click an element at an {X,Y}-offset location.
         {0,0} is the top-left corner of the element.
+        If center==True, {0,0} becomes the center of the element.
         If mark==True, will draw a dot at location. (Useful for debugging)
         In Demo Mode, mark becomes True unless set to False. (Default: None)
         """
         self.__check_scope()
         self.__click_with_offset(
-            selector, x, y, by=by, double=True, mark=mark, timeout=timeout
+            selector,
+            x,
+            y,
+            by=by,
+            double=True,
+            mark=mark,
+            timeout=timeout,
+            center=center,
         )
 
     def is_checked(self, selector, by="css selector", timeout=None):
@@ -11382,6 +11412,7 @@ class BaseCase(unittest.TestCase):
         double=False,
         mark=None,
         timeout=None,
+        center=None,
     ):
         from selenium.webdriver.common.action_chains import ActionChains
 
@@ -11406,8 +11437,16 @@ class BaseCase(unittest.TestCase):
             selector = self.convert_to_css_selector(selector, by=by)
             selector = re.escape(selector)
             selector = self.__escape_quotes_if_needed(selector)
-            px = x - 3
-            py = y - 3
+            m_x = x
+            m_y = y
+            if center:
+                element_rect = element.rect
+                left_offset = element_rect['width'] / 2
+                top_offset = element_rect['height'] / 2
+                m_x = left_offset + (m_x or 0)
+                m_y = top_offset + (m_y or 0)
+            px = m_x - 3
+            py = m_y - 3
             script = (
                 "var canvas = document.querySelector('%s');"
                 "var ctx = canvas.getContext('2d');"
@@ -11428,12 +11467,25 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
         try:
+            if selenium4_or_newer and not center:
+                element_rect = element.rect
+                left_offset = element_rect['width'] / 2
+                top_offset = element_rect['height'] / 2
+                x = -left_offset + (x or 0)
+                y = -top_offset + (y or 0)
+            elif selenium4_or_newer and center:
+                pass
+            elif not selenium4_or_newer and not center:
+                pass
+            else:
+                # not selenium4_or_newer and center:
+                element_rect = element.rect
+                left_offset = element_rect['width'] / 2
+                top_offset = element_rect['height'] / 2
+                x = left_offset + x
+                y = top_offset + y
             action_chains = ActionChains(self.driver)
-            import warnings
-
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore", category=DeprecationWarning)
-                action_chains.move_to_element_with_offset(element, x, y)
+            action_chains.move_to_element_with_offset(element, x, y)
             if not double:
                 action_chains.click().perform()
             else:
