@@ -78,9 +78,9 @@ if sys.version_info[0] < 3:
     python3 = False
     reload(sys)  # noqa: F821
     sys.setdefaultencoding("utf8")
-selenium4 = False
+selenium4_or_newer = False
 if sys.version_info >= (3, 7):
-    selenium4 = True
+    selenium4_or_newer = True
 
 
 class BaseCase(unittest.TestCase):
@@ -6492,7 +6492,7 @@ class BaseCase(unittest.TestCase):
         for selector_part in selectors[1:]:
             shadow_root = None
             if (
-                selenium4
+                selenium4_or_newer
                 and self.is_chromium()
                 and int(self.__get_major_browser_version()) >= 96
             ):
@@ -6562,7 +6562,7 @@ class BaseCase(unittest.TestCase):
             selector_chain += selector_part
             try:
                 if (
-                    selenium4
+                    selenium4_or_newer
                     and self.is_chromium()
                     and int(self.__get_major_browser_version()) >= 96
                 ):
