@@ -18,7 +18,16 @@ class CanvasTests(BaseCase):
         else:
             return [color["0"], color["1"], color["2"]]
 
-    def test_canvas_actions(self):
+    def test_canvas_click_from_center(self):
+        self.open("https://seleniumbase.io/other/canvas")
+        self.click_with_offset("canvas", 0, 0, center=True)
+        self.sleep(1)  # Not needed (Lets you see the alert pop up)
+        alert = self.switch_to_alert()
+        self.assert_equal(alert.text, "You clicked on the square!")
+        self.accept_alert()
+        self.sleep(1)  # Not needed (Lets you see the alert go away)
+
+    def test_click_with_offset(self):
         self.open("https://seleniumbase.io/canvas/")
         self.highlight("canvas")
         rgb = self.get_pixel_colors()
@@ -27,12 +36,3 @@ class CanvasTests(BaseCase):
         self.highlight("canvas", loops=5)
         rgb = self.get_pixel_colors()
         self.assert_equal(rgb, [39, 42, 56])  # Blue by hamburger
-
-    def test_canvas_click(self):
-        self.open("https://seleniumbase.io/other/canvas")
-        self.click_with_offset("canvas", 300, 200)
-        self.sleep(1)  # Not needed (Lets you see the alert pop up)
-        alert = self.switch_to_alert()
-        self.assert_equal(alert.text, "You clicked on the square!")
-        self.accept_alert()
-        self.sleep(1)  # Not needed (Lets you see the alert go away)
