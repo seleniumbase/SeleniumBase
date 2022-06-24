@@ -129,10 +129,10 @@ self.click_if_visible(selector, by="css selector")
 self.click_active_element()
 
 self.click_with_offset(
-    selector, x, y, by="css selector", mark=None, timeout=None)
+    selector, x, y, by="css selector", mark=None, timeout=None, center=None)
 
 self.double_click_with_offset(
-    selector, x, y, by="css selector", mark=None, timeout=None)
+    selector, x, y, by="css selector", mark=None, timeout=None, center=None)
 
 self.is_selected(selector, by="css selector", timeout=None)
 # Duplicates: self.is_checked(selector, by="css selector", timeout=None)
