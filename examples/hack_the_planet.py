@@ -69,7 +69,7 @@ class HackTests(BaseCase):
         self.highlight("h2", loops=9, scroll=False)
 
         self.open("https://google.com/ncr")
-        self.hide_elements('iframe')
+        self.hide_elements("iframe")
         self.set_text_content('a[href*="about.google"]', ayb)
         self.set_text_content('a[href*="store.google"]', abtu)
         self.set_text_content('a[href*="mail.google.com"]', ayb)

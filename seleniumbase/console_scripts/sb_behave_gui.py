@@ -249,12 +249,12 @@ def create_tkinter_gui(tests, command_string):
         cb = tk.Checkbutton(
             text_area,
             text=(row),
-            bg='white',
-            anchor='w',
+            bg="white",
+            anchor="w",
             variable=ara[count],
         )
-        text_area.window_create('end', window=cb)
-        text_area.insert('end', '\n')
+        text_area.window_create("end", window=cb)
+        text_area.insert("end", "\n")
         count += 1
 
     tk.Label(root, text="").pack()
