@@ -193,10 +193,7 @@ class Base(Plugin):
         variables = self.options.variables
         if variables and type(variables) is str and len(variables) > 0:
             bad_input = False
-            if (
-                not variables.startswith("{")
-                or not variables.endswith("}")
-            ):
+            if not variables.startswith("{") or not variables.endswith("}"):
                 bad_input = True
             else:
                 try:

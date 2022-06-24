@@ -86,8 +86,7 @@ def click_continue(context):
 def verify_item_in_cart(context, quantity, item):
     sb = context.sb
     sb.assert_exact_text(
-        quantity,
-        'div.cart_item:contains("%s") div.cart_quantity' % item
+        quantity, 'div.cart_item:contains("%s") div.cart_quantity' % item
     )
 
 
@@ -97,7 +96,7 @@ def verify_cost_of_item(context, item, var):
     earlier_price = sb.variables[var]
     sb.assert_exact_text(
         earlier_price,
-        'div.cart_item_label:contains("%s") .inventory_item_price' % item
+        'div.cart_item_label:contains("%s") .inventory_item_price' % item,
     )
 
 
@@ -105,9 +104,7 @@ def verify_cost_of_item(context, item, var):
 def verify_item_total(context, item_total):
     sb = context.sb
     sb.assert_exact_text(
-        "Item total: %s" % item_total,
-        "div.summary_subtotal_label",
-        timeout=1
+        "Item total: %s" % item_total, "div.summary_subtotal_label", timeout=1
     )
 
 
@@ -115,9 +112,7 @@ def verify_item_total(context, item_total):
 def verify_tax_amount(context, tax_amount):
     sb = context.sb
     sb.assert_exact_text(
-        "Tax: %s" % tax_amount,
-        "div.summary_tax_label",
-        timeout=1
+        "Tax: %s" % tax_amount, "div.summary_tax_label", timeout=1
     )
 
 
@@ -125,9 +120,7 @@ def verify_tax_amount(context, tax_amount):
 def verify_total_cost(context, total_cost):
     sb = context.sb
     sb.assert_exact_text(
-        "Total: %s" % total_cost,
-        "div.summary_total_label",
-        timeout=1
+        "Total: %s" % total_cost, "div.summary_total_label", timeout=1
     )
 
 

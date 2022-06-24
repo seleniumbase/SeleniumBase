@@ -9545,9 +9545,7 @@ class BaseCase(unittest.TestCase):
             duration = float(duration) + 0.15
             time.sleep(float(duration))
 
-    def post_message_and_highlight(
-        self, message, selector, by="css selector"
-    ):
+    def post_message_and_highlight(self, message, selector, by="css selector"):
         """Post a message on the screen and highlight an element.
         Arguments:
             message: The message to display.
@@ -10313,9 +10311,7 @@ class BaseCase(unittest.TestCase):
             original_selector=original_selector,
         )
 
-    def assert_element_absent(
-        self, selector, by="css selector", timeout=None
-    ):
+    def assert_element_absent(self, selector, by="css selector", timeout=None):
         """Similar to wait_for_element_absent()
         As above, will raise an exception if the element stays present.
         A hidden element counts as a present element, which fails this assert.
@@ -10403,9 +10399,7 @@ class BaseCase(unittest.TestCase):
             timeout = settings.SMALL_TIMEOUT
         if self.timeout_multiplier and timeout == settings.SMALL_TIMEOUT:
             timeout = self.__get_new_timeout(timeout)
-        self.wait_for_text_not_visible(
-            text, selector, by=by, timeout=timeout
-        )
+        self.wait_for_text_not_visible(text, selector, by=by, timeout=timeout)
         if self.recorder_mode:
             url = self.get_current_url()
             if url and len(url) > 0:

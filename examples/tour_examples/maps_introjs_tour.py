@@ -49,7 +49,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Thanks for using SeleniumBase Tours!",
-            title="🚃 End of Guided Tour 🚃"
+            title="🚃 End of Guided Tour 🚃",
         )
         self.export_tour(filename="maps_introjs_tour.js")
         self.play_tour()

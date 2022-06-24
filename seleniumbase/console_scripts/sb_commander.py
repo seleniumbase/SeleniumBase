@@ -260,12 +260,12 @@ def create_tkinter_gui(tests, command_string):
         cb = tk.Checkbutton(
             text_area,
             text=(row),
-            bg='white',
-            anchor='w',
+            bg="white",
+            anchor="w",
             variable=ara[count],
         )
-        text_area.window_create('end', window=cb)
-        text_area.insert('end', '\n')
+        text_area.window_create("end", window=cb)
+        text_area.insert("end", "\n")
         count += 1
 
     tk.Label(root, text="").pack()
@@ -273,7 +273,7 @@ def create_tkinter_gui(tests, command_string):
     aopts = tk.StringVar(value=additional_options)
     tk.Label(
         root,
-        text='Additional pytest Options:  (space-separated)',
+        text="Additional pytest Options:  (space-separated)",
         fg="blue",
     ).pack()
     entry = tk.Entry(root, textvariable=aopts)

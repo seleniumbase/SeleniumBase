@@ -13,7 +13,7 @@ class HackingTests(BaseCase):
             print("\n  This test is not for Headless Mode.")
             self.skip('Do not use "--headless" with this test.')
         self.open("https://google.com/ncr")
-        self.hide_elements('iframe')
+        self.hide_elements("iframe")
         self.assert_element('input[title="Search"]')
         self.set_attribute('[action="/search"]', "action", "//bing.com/search")
         self.set_attributes('[value="Google Search"]', "value", "Bing Search")

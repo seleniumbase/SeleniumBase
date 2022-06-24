@@ -326,7 +326,7 @@ def main():
     data.append('        self.open("https://www.saucedemo.com")')
     data.append('        self.type("#user-name", "standard_user")')
     data.append('        self.type("#password", "secret_sauce\\n")')
-    data.append('        self.assert_element("#inventory_container")')
+    data.append('        self.assert_element("div.inventory_list")')
     data.append('        self.assert_text("PRODUCTS", "span.title")')
     data.append("        self.click('button[name*=\"backpack\"]')")
     data.append('        self.click("#shopping_cart_container a")')
@@ -680,7 +680,7 @@ def main():
     data.append("class MyTests:")
     data.append("    def test_swag_labs_login(self, sb):")
     data.append('        LoginPage().login_to_swag_labs(sb, "standard_user")')
-    data.append('        sb.assert_element("#inventory_container")')
+    data.append('        sb.assert_element("div.inventory_list")')
     data.append(
         "        sb.assert_element('div:contains(\"Sauce Labs Backpack\")')"
     )

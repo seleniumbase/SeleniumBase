@@ -137,9 +137,7 @@ class Underscore:
 
 class Backbone:
     VER = "1.4.1"
-    MIN_JS = (
-        "https://cdn.jsdelivr.net/npm/backbone@%s/backbone.min.js" % VER
-    )
+    MIN_JS = "https://cdn.jsdelivr.net/npm/backbone@%s/backbone.min.js" % VER
 
 
 class HtmlInspector:
