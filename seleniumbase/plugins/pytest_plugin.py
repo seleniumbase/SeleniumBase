@@ -79,6 +79,7 @@ def pytest_addoption(parser):
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+    --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
     --dash-title=STRING  (Set the title shown for the generated dashboard.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
@@ -833,6 +834,16 @@ def pytest_addoption(parser):
                 Info: chromedevtools.github.io/devtools-protocol/""",
     )
     parser.addoption(
+        "--final-debug",
+        action="store_true",
+        dest="final_debug",
+        default=False,
+        help="""Enter Debug Mode at the end of each test.
+                To enter Debug Mode only on failures, use "--pdb".
+                If using both "--final-debug" and "--pdb" together,
+                then Debug Mode will activate twice on failures.""",
+    )
+    parser.addoption(
         "--dashboard",
         action="store_true",
         dest="dashboard",
@@ -1209,6 +1220,7 @@ def pytest_configure(config):
     sb_config.no_sandbox = config.getoption("no_sandbox")
     sb_config.disable_gpu = config.getoption("disable_gpu")
     sb_config.remote_debug = config.getoption("remote_debug")
+    sb_config.final_debug = config.getoption("final_debug")
     sb_config.dashboard = config.getoption("dashboard")
     sb_config.dash_title = config.getoption("dash_title")
     sb_config.swiftshader = config.getoption("swiftshader")

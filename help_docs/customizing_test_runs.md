@@ -157,6 +157,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
 --remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
+--final-debug  # (Enter Debug Mode after each test ends. Don't use with CI!)
 --dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --dash-title=STRING  # (Set the title shown for the generated dashboard.)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)

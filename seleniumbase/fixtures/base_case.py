@@ -138,6 +138,7 @@ class BaseCase(unittest.TestCase):
         self._html_report_extra = []  # (Used by pytest_plugin.py)
         self._last_page_screenshot = None
         self._last_page_url = None
+        self._final_debug = None
         self._default_driver = None
         self._drivers_list = []
         self._drivers_browser_map = {}
@@ -12117,6 +12118,7 @@ class BaseCase(unittest.TestCase):
             self.extension_zip = sb_config.extension_zip
             self.extension_dir = sb_config.extension_dir
             self.external_pdf = sb_config.external_pdf
+            self._final_debug = sb_config.final_debug
             self.window_size = sb_config.window_size
             window_size = self.window_size
             if window_size:
@@ -13078,6 +13080,13 @@ class BaseCase(unittest.TestCase):
         ipdb.post_mortem(sb_config.behave_step.exc_traceback)
         # Post Mortem Debug Mode ("behave -D pdb")
 
+    def __activate_debug_mode_in_teardown(self):
+        """Activate Debug Mode in tearDown() when using "--final-debug"."""
+        import ipdb
+
+        ipdb.set_trace()
+        # Final Debug Mode ("--final-debug")
+
     def has_exception(self):
         """(This method should ONLY be used in custom tearDown() methods.)
         This method returns True if the test failed or raised an exception.
@@ -13274,6 +13283,8 @@ class BaseCase(unittest.TestCase):
                             self.__process_dashboard(has_exception)
                     else:
                         self.__process_dashboard(has_exception)
+                if self._final_debug:
+                    self.__activate_debug_mode_in_teardown()
                 # (Pytest) Finally close all open browser windows
                 self.__quit_all_drivers()
             if self.headless or self.xvfb:
@@ -13420,6 +13431,8 @@ class BaseCase(unittest.TestCase):
             if hasattr(self, "is_behave") and self.is_behave and has_exception:
                 if hasattr(sb_config, "pdb_option") and sb_config.pdb_option:
                     self.__activate_behave_post_mortem_debug_mode()
+            if self._final_debug:
+                self.__activate_debug_mode_in_teardown()
             # (Nosetests / Behave / Pure Python) Close all open browser windows
             self.__quit_all_drivers()
         # Resume tearDown() for all test runners, (Pytest / Nosetests / Behave)
