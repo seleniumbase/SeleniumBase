@@ -159,9 +159,9 @@ var getBestSelector = function(el) {
     non_id_attributes.push('href');
     non_id_attributes.push('label');
     non_id_attributes.push('class');
-    non_id_attributes.push('value');
     non_id_attributes.push('for');
     non_id_attributes.push('placeholder');
+    non_id_attributes.push('value');
     non_id_attributes.push('ng-if');
     non_id_attributes.push('src');
     selector_by_attr = [];

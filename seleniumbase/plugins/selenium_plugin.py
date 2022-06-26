@@ -60,6 +60,7 @@ class SeleniumBrowser(Plugin):
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+    --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
@@ -572,6 +573,16 @@ class SeleniumBrowser(Plugin):
                     Info: chromedevtools.github.io/devtools-protocol/""",
         )
         parser.add_option(
+            "--final-debug",
+            action="store_true",
+            dest="final_debug",
+            default=False,
+            help="""Enter Debug Mode at the end of each test.
+                    To enter Debug Mode only on failures, use "--pdb".
+                    If using both "--final-debug" and "--pdb" together,
+                    then Debug Mode will activate twice on failures.""",
+        )
+        parser.add_option(
             "--swiftshader",
             action="store_true",
             dest="swiftshader",
@@ -769,6 +780,7 @@ class SeleniumBrowser(Plugin):
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug
+        test.test._final_debug = self.options.final_debug
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode

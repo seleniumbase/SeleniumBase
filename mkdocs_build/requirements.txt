@@ -18,7 +18,7 @@ zipp==3.8.0
 ghp-import==2.1.0
 readme-renderer==35.0
 pymdown-extensions==9.5
-importlib-metadata==4.11.4
+importlib-metadata==4.12.0
 bleach==5.0.0
 jsmin==3.0.1
 lunr==0.6.2
