@@ -90,7 +90,8 @@ pytest my_first_test.py --settings-file=custom_settings.py
 -n=NUM  # Multithread the tests using that many threads. (Speed up test runs!)
 -s  # See print statements. (Should be on by default with pytest.ini present.)
 --junit-xml=report.xml  # Creates a junit-xml report after tests finish.
---pdb  # If a test fails, pause run and enter debug mode. (Don't use with CI!)
+--pdb  # If a test fails, enter Post Mortem Debug Mode. (Don't use with CI!)
+--trace  # Enter Debug Mode at the beginning of each test. (Don't use with CI!)
 -m=MARKER  # Run tests with the specified pytest marker.
 ```
 
