@@ -356,7 +356,7 @@ class BaseCase(unittest.TestCase):
                     self.__js_click(selector, by=by)
             else:
                 element.click()
-        except (WebDriverException, MoveTargetOutOfBoundsException):
+        except MoveTargetOutOfBoundsException:
             self.wait_for_ready_state_complete()
             try:
                 self.__js_click(selector, by=by)
@@ -373,6 +373,26 @@ class BaseCase(unittest.TestCase):
                         original_selector=original_selector,
                     )
                     element.click()
+        except WebDriverException as e:
+            if "cannot determine loading status" in e.msg:
+                pass  # Odd issue where the click did happen. Continue.
+            else:
+                self.wait_for_ready_state_complete()
+                try:
+                    self.__js_click(selector, by=by)
+                except Exception:
+                    try:
+                        self.__jquery_click(selector, by=by)
+                    except Exception:
+                        # One more attempt to click on the element
+                        element = page_actions.wait_for_element_visible(
+                            self.driver,
+                            selector,
+                            by,
+                            timeout=timeout,
+                            original_selector=original_selector,
+                        )
+                        element.click()
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -572,7 +592,13 @@ class BaseCase(unittest.TestCase):
                     self.wait_for_ready_state_complete()
             else:
                 element.send_keys(text[:-1])
-                element.send_keys(Keys.RETURN)
+                try:
+                    element.send_keys(Keys.RETURN)
+                except WebDriverException as e:
+                    if "cannot determine loading status" in e.msg:
+                        pass  # Odd issue where the click did happen. Continue.
+                    else:
+                        raise e
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         except (StaleElementReferenceException, ENI_Exception):
@@ -586,7 +612,13 @@ class BaseCase(unittest.TestCase):
                 element.send_keys(text)
             else:
                 element.send_keys(text[:-1])
-                element.send_keys(Keys.RETURN)
+                try:
+                    element.send_keys(Keys.RETURN)
+                except WebDriverException as e:
+                    if "cannot determine loading status" in e.msg:
+                        pass  # Odd issue where the click did happen. Continue.
+                    else:
+                        raise e
                 if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
                     self.wait_for_ready_state_complete()
         if (
