@@ -3898,7 +3898,14 @@ class BaseCase(unittest.TestCase):
                         action[2] = unquote(action[2], errors="strict")
                     except Exception:
                         pass
-                sb_actions.append('self.open("%s")' % action[2])
+                if '"' not in action[2]:
+                    sb_actions.append('self.open("%s")' % action[2])
+                elif "'" not in action[2]:
+                    sb_actions.append("self.open('%s')" % action[2])
+                else:
+                    sb_actions.append(
+                        'self.open("%s")' % action[2].replace('"', '\\"')
+                    )
             elif action[0] == "f_url":
                 if "%" in action[2] and python3:
                     try:
@@ -3907,7 +3914,15 @@ class BaseCase(unittest.TestCase):
                         action[2] = unquote(action[2], errors="strict")
                     except Exception:
                         pass
-                sb_actions.append('self.open_if_not_url("%s")' % action[2])
+                if '"' not in action[2]:
+                    sb_actions.append('self.open_if_not_url("%s")' % action[2])
+                elif "'" not in action[2]:
+                    sb_actions.append("self.open_if_not_url('%s')" % action[2])
+                else:
+                    sb_actions.append(
+                        'self.open_if_not_url("%s")'
+                        % action[2].replace('"', '\\"')
+                    )
             elif action[0] == "click":
                 method = "click"
                 if '"' not in action[1]:

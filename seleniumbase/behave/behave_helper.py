@@ -17,7 +17,14 @@ def generate_gherkin(srt_actions):
                     action[2] = unquote(action[2], errors="strict")
                 except Exception:
                     pass
-            sb_actions.append('Open "%s"' % action[2])
+            if '"' not in action[2]:
+                sb_actions.append('Open "%s"' % action[2])
+            elif "'" not in action[2]:
+                sb_actions.append("Open '%s'" % action[2])
+            else:
+                sb_actions.append(
+                    'Open "%s"' % action[2].replace('"', '\\"')
+                )
         elif action[0] == "f_url":
             if "%" in action[2] and python3:
                 try:
@@ -26,7 +33,14 @@ def generate_gherkin(srt_actions):
                     action[2] = unquote(action[2], errors="strict")
                 except Exception:
                     pass
-            sb_actions.append('Open if not "%s"' % action[2])
+            if '"' not in action[2]:
+                sb_actions.append('Open if not "%s"' % action[2])
+            elif "'" not in action[2]:
+                sb_actions.append("Open if not '%s'" % action[2])
+            else:
+                sb_actions.append(
+                    'Open if not "%s"' % action[2].replace('"', '\\"')
+                )
         elif action[0] == "click":
             if '"' not in action[1]:
                 sb_actions.append('Click "%s"' % action[1])
