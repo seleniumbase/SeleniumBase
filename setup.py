@@ -141,8 +141,7 @@ setup(
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
         'traitlets>=5.3.0;python_version>="3.7"',
-        'certifi>=2021.10.8;python_version<"3.5"',
-        'certifi>=2022.5.18;python_version>="3.5" and python_version<"3.6"',
+        'certifi>=2021.10.8;python_version<"3.6"',
         'certifi>=2022.6.15;python_version>="3.6"',
         'filelock>=3.2.1;python_version<"3.6"',
         'filelock>=3.4.1;python_version>="3.6" and python_version<"3.7"',
@@ -228,7 +227,7 @@ setup(
         'pygments==2.12.0;python_version>="3.6"',
         'prompt-toolkit==1.0.18;python_version<"3.5"',
         'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-        'prompt-toolkit==3.0.29;python_version>="3.6"',
+        'prompt-toolkit==3.0.30;python_version>="3.6"',
         'decorator==4.4.2;python_version<"3.5"',
         'decorator==5.1.1;python_version>="3.5"',
         'ipython==5.10.0;python_version<"3.5"',

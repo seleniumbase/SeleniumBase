@@ -31,6 +31,8 @@ behave -D agent="User Agent String" -D demo
 -D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
 -D proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
 -D proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
+-D proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
+-D proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
 -D agent=STRING  (Modify the web browser's User-Agent string.)
 -D mobile  (Use the mobile device emulator while running tests.)
 -D metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -195,6 +197,7 @@ def get_configured_sb(context):
     sb.firefox_pref = None
     sb.proxy_string = None
     sb.proxy_bypass_list = None
+    sb.proxy_pac_url = None
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None
@@ -619,7 +622,7 @@ def get_configured_sb(context):
             sb.firefox_pref = firefox_pref
             continue
         # Handle: -D proxy=SERVER:PORT / proxy=USERNAME:PASSWORD@SERVER:PORT
-        if low_key == "proxy":
+        if low_key in ["proxy", "proxy-server", "proxy-string"]:
             proxy_string = userdata[key]
             if proxy_string == "true":
                 proxy_string = sb.proxy_string  # revert to default
@@ -631,6 +634,13 @@ def get_configured_sb(context):
             if proxy_bypass_list == "true":
                 proxy_bypass_list = sb.proxy_bypass_list  # revert to default
             sb.proxy_bypass_list = proxy_bypass_list
+            continue
+        # Handle: -D proxy-pac-url=URL / proxy-pac-url=USERNAME:PASSWORD@URL
+        if low_key in ["proxy-pac-url", "proxy_pac_url", "pac-url", "pac_url"]:
+            proxy_pac_url = userdata[key]
+            if proxy_pac_url == "true":
+                proxy_pac_url = sb.proxy_pac_url  # revert to default
+            sb.proxy_pac_url = proxy_pac_url
             continue
         # Handle: -D swiftshader
         if low_key == "swiftshader":

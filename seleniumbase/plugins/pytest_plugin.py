@@ -43,6 +43,8 @@ def pytest_addoption(parser):
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
+    --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
+    --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -410,13 +412,15 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--proxy",
+        "--proxy-server",
+        "--proxy-string",
         action="store",
         dest="proxy_string",
         default=None,
         help="""Designates the proxy server:port to use.
                 Format: servername:port.  OR
-                username:password@servername:port  OR
-                A dict key from proxy_list.PROXY_LIST
+                        username:password@servername:port  OR
+                        A dict key from proxy_list.PROXY_LIST
                 Default: None.""",
     )
     parser.addoption(
@@ -435,6 +439,19 @@ def pytest_addoption(parser):
                     pytest
                         --proxy="servername:port"
                         --proxy-bypass-list="127.0.0.1:8080"
+                Default: None.""",
+    )
+    parser.addoption(
+        "--proxy-pac-url",
+        "--proxy_pac_url",
+        "--pac-url",
+        "--pac_url",
+        action="store",
+        dest="proxy_pac_url",
+        default=None,
+        help="""Designates the proxy PAC URL to use.
+                Format: A URL string  OR
+                        A username:password@URL string
                 Default: None.""",
     )
     parser.addoption(
@@ -1176,6 +1193,7 @@ def pytest_configure(config):
             sb_config.protocol = "https"
     sb_config.proxy_string = config.getoption("proxy_string")
     sb_config.proxy_bypass_list = config.getoption("proxy_bypass_list")
+    sb_config.proxy_pac_url = config.getoption("proxy_pac_url")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")
     sb_config.settings_file = config.getoption("settings_file")
@@ -1263,14 +1281,50 @@ def pytest_configure(config):
     sb_config._html_report_name = None  # The name of the pytest html report
 
     arg_join = " ".join(sys.argv)
-    if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
+    if (
+        "-n" in sys.argv
+        or " -n=" in arg_join
+        or "-c" in sys.argv
+        or (
+            sys.version_info[0] >= 3
+            and "addopts" in config.inicfg.keys()
+            and (
+                "-n=" in config.inicfg["addopts"]
+                or "-n " in config.inicfg["addopts"]
+            )
+        )
+    ):
         sb_config._multithreaded = True
-    if "--html" in sys.argv or " --html=" in arg_join:
+    if (
+        "--html" in sys.argv
+        or " --html=" in arg_join
+        or (
+            sys.version_info[0] >= 3
+            and "addopts" in config.inicfg.keys()
+            and (
+                "--html=" in config.inicfg["addopts"]
+                or "--html " in config.inicfg["addopts"]
+            )
+        )
+    ):
         sb_config._using_html_report = True
         sb_config._html_report_name = config.getoption("htmlpath")
         if sb_config.dashboard:
             if sb_config._html_report_name == "dashboard.html":
                 sb_config._dash_is_html_report = True
+
+    # Recorder Mode does not support multi-threaded / multi-process runs.
+    if sb_config.recorder_mode and sb_config._multithreaded:
+        # At this point, the user likely put a "-n NUM" in the pytest.ini file.
+        # Since raising an exception in pytest_configure raises INTERNALERROR,
+        # print a message here instead and cancel Recorder Mode.
+        print(
+            "\n  Recorder Mode does NOT support multi-process mode (-n)!"
+            '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)'
+            '\n  (The Recorder WILL BE DISABLED during this run!)\n'
+        )
+        sb_config.recorder_mode = False
+        sb_config.recorder_ext = False
 
     if sb_config.xvfb and "linux" not in sys.platform:
         # The Xvfb virtual display server is for Linux OS Only!
