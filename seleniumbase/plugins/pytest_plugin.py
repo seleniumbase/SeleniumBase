@@ -43,6 +43,8 @@ def pytest_addoption(parser):
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
+    --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
+    --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -410,13 +412,15 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--proxy",
+        "--proxy-server",
+        "--proxy-string",
         action="store",
         dest="proxy_string",
         default=None,
         help="""Designates the proxy server:port to use.
                 Format: servername:port.  OR
-                username:password@servername:port  OR
-                A dict key from proxy_list.PROXY_LIST
+                        username:password@servername:port  OR
+                        A dict key from proxy_list.PROXY_LIST
                 Default: None.""",
     )
     parser.addoption(
@@ -435,6 +439,19 @@ def pytest_addoption(parser):
                     pytest
                         --proxy="servername:port"
                         --proxy-bypass-list="127.0.0.1:8080"
+                Default: None.""",
+    )
+    parser.addoption(
+        "--proxy-pac-url",
+        "--proxy_pac_url",
+        "--pac-url",
+        "--pac_url",
+        action="store",
+        dest="proxy_pac_url",
+        default=None,
+        help="""Designates the proxy PAC URL to use.
+                Format: A URL string  OR
+                        A username:password@URL string
                 Default: None.""",
     )
     parser.addoption(
@@ -1176,6 +1193,7 @@ def pytest_configure(config):
             sb_config.protocol = "https"
     sb_config.proxy_string = config.getoption("proxy_string")
     sb_config.proxy_bypass_list = config.getoption("proxy_bypass_list")
+    sb_config.proxy_pac_url = config.getoption("proxy_pac_url")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")
     sb_config.settings_file = config.getoption("settings_file")

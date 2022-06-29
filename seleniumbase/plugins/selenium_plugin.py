@@ -26,6 +26,8 @@ class SeleniumBrowser(Plugin):
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
+    --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
+    --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -160,6 +162,8 @@ class SeleniumBrowser(Plugin):
         )
         parser.add_option(
             "--proxy",
+            "--proxy-server",
+            "--proxy-string",
             action="store",
             dest="proxy_string",
             default=None,
@@ -185,6 +189,19 @@ class SeleniumBrowser(Plugin):
                         pytest
                             --proxy="servername:port"
                             --proxy-bypass-list="127.0.0.1:8080"
+                    Default: None.""",
+        )
+        parser.add_option(
+            "--proxy-pac-url",
+            "--proxy_pac_url",
+            "--pac-url",
+            "--pac_url",
+            action="store",
+            dest="proxy_pac_url",
+            default=None,
+            help="""Designates the proxy PAC URL to use.
+                    Format: A URL string  OR
+                            A username:password@URL string
                     Default: None.""",
         )
         parser.add_option(
@@ -743,6 +760,7 @@ class SeleniumBrowser(Plugin):
         test.test.firefox_pref = self.options.firefox_pref
         test.test.proxy_string = self.options.proxy_string
         test.test.proxy_bypass_list = self.options.proxy_bypass_list
+        test.test.proxy_pac_url = self.options.proxy_pac_url
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics

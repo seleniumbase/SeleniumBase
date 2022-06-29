@@ -2937,6 +2937,7 @@ class BaseCase(unittest.TestCase):
         port=None,
         proxy=None,
         proxy_bypass_list=None,
+        proxy_pac_url=None,
         agent=None,
         switch_to=True,
         cap_file=None,
@@ -2980,6 +2981,7 @@ class BaseCase(unittest.TestCase):
         port - if using a Selenium Grid, set the host port here
         proxy - if using a proxy server, specify the "host:port" combo here
         proxy_bypass_list - ";"-separated hosts to bypass (Eg. "*.foo.com")
+        proxy_pac_url - designates the proxy PAC URL to use (Chromium-only)
         switch_to - the option to switch to the new driver (default = True)
         cap_file - the file containing desired capabilities for the browser
         cap_string - the string with desired capabilities for the browser
@@ -3060,6 +3062,8 @@ class BaseCase(unittest.TestCase):
             proxy_string = self.proxy_string
         if proxy_bypass_list is None:
             proxy_bypass_list = self.proxy_bypass_list
+        if proxy_pac_url is None:
+            proxy_pac_url = self.proxy_pac_url
         user_agent = agent
         if user_agent is None:
             user_agent = self.user_agent
@@ -3137,6 +3141,7 @@ class BaseCase(unittest.TestCase):
             port=port,
             proxy_string=proxy_string,
             proxy_bypass_list=proxy_bypass_list,
+            proxy_pac_url=proxy_pac_url,
             user_agent=user_agent,
             cap_file=cap_file,
             cap_string=cap_string,
@@ -12060,6 +12065,7 @@ class BaseCase(unittest.TestCase):
             self.port = sb_config.port
             self.proxy_string = sb_config.proxy_string
             self.proxy_bypass_list = sb_config.proxy_bypass_list
+            self.proxy_pac_url = sb_config.proxy_pac_url
             self.user_agent = sb_config.user_agent
             self.mobile_emulator = sb_config.mobile_emulator
             self.device_metrics = sb_config.device_metrics
@@ -12372,6 +12378,7 @@ class BaseCase(unittest.TestCase):
                 port=self.port,
                 proxy=self.proxy_string,
                 proxy_bypass_list=self.proxy_bypass_list,
+                proxy_pac_url=self.proxy_pac_url,
                 agent=self.user_agent,
                 switch_to=True,
                 cap_file=self.cap_file,
