@@ -1286,7 +1286,8 @@ def pytest_configure(config):
         or " -n=" in arg_join
         or "-c" in sys.argv
         or (
-            "addopts" in config.inicfg.keys()
+            sys.version_info[0] >= 3
+            and "addopts" in config.inicfg.keys()
             and (
                 "-n=" in config.inicfg["addopts"]
                 or "-n " in config.inicfg["addopts"]
@@ -1298,7 +1299,8 @@ def pytest_configure(config):
         "--html" in sys.argv
         or " --html=" in arg_join
         or (
-            "addopts" in config.inicfg.keys()
+            sys.version_info[0] >= 3
+            and "addopts" in config.inicfg.keys()
             and (
                 "--html=" in config.inicfg["addopts"]
                 or "--html " in config.inicfg["addopts"]
