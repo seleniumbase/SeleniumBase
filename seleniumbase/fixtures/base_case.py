@@ -2255,7 +2255,7 @@ class BaseCase(unittest.TestCase):
         drop_selector, drop_by = self.__recalculate_selector(
             drop_selector, drop_by
         )
-        drag_element = self.wait_for_element_visible(
+        drag_element = self.wait_for_element_clickable(
             drag_selector, by=drag_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(drag_selector, drag_by)
