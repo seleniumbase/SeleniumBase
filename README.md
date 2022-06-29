@@ -440,6 +440,8 @@ The code above will leave your browser window open in case there's a failure. (i
 --proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
 --proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
 --proxy-bypass-list=STRING  # (";"-separated hosts to bypass, Eg "*.foo.com")
+--proxy-pac-url=URL  # (Connect to a proxy server using a PAC_URL.pac file.)
+--proxy-pac-url=USERNAME:PASSWORD@URL  # (Authenticated proxy with PAC URL.)
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -963,13 +965,13 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
 ```
 
-🔵 <b>ProTip™:</b> iFrames follow the same principle as new windows - you need to specify the iFrame if you want to take action on something in there
+🔵 <b>ProTip™:</b> iframes follow the same principle as new windows - you need to specify the iframe if you want to take action on something in there
 
 ```python
 self.switch_to_frame('ContentManagerTextBody_ifr')
-# Now you can act inside the iFrame
+# Now you can act inside the iframe
 # .... Do something cool (here)
-self.switch_to_default_content()  # Exit the iFrame when you're done
+self.switch_to_default_content()  # Exit the iframe when you're done
 ```
 
 🔵 Executing Custom jQuery Scripts:
@@ -1109,3 +1111,4 @@ pytest --reruns=1 --reruns-delay=1
 
 <p><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a></p>
 <p><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://badge.fury.io/py/seleniumbase.svg" alt="PyPI version" /></a></p>
+<p><a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/seleniumbase.svg?color=22AAEE&logo=python" title="Supported Python Versions" /></a></p>

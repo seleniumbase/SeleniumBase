@@ -9,18 +9,20 @@
 * Supports multiple browsers, tabs, iframes, and proxies in the same test.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), [nose](http://nose.readthedocs.io/en/latest/), and [behave](https://behave.readthedocs.io/en/stable/index.html) for finding/running tests.
-* All the code is open source. Dive in to see details about any feature.
+* All the code is open source. Look inside to learn about any feature.
 * Powerful logging tools for [dashboards, reports, and screenshots](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
 * Can run tests in Headless Mode to hide the browser. (``--headless``)
 * Can run tests multithreaded from parallel browsers. (``-n NUM_THREADS``)
 * Can run tests from a shared browser session. (``--reuse-session``/``--rs``)
 * Can run tests using Chromium's mobile device emulator. (``--mobile``)
 * Can run tests through a proxy server. (``--proxy=IP_ADDRESS:PORT``)
+* Can run tests with proxy settings via PAC URL. (``--proxy-pac-url=URL.pac``)
 * Can run tests through an authenticated proxy server. (``--proxy=USER:PASS@HOST:PORT``)
+* Can run tests with proxy+auth via PAC URL. (``--proxy-pac-url=USER:PASS@URL.pac``)
 * Can run tests with a customized browser user agent. (``--agent=USER_AGENT_STRING``)
-* Can set a Chromium User Data Directory/Profile to load. (``--user_data_dir=DIR``)
-* Can load Chrome Extension ZIP files. (``--extension_zip=ZIP``)
-* Can load Chrome Extension folders. (``--extension_dir=DIR``)
+* Can set a Chromium User Data Directory/Profile to load. (``--user-data-dir=DIR``)
+* Can load Chrome Extension ZIP files. (``--extension-zip=ZIP``)
+* Can load Chrome Extension folders. (``--extension-dir=DIR``)
 * Powerful [console scripts](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md). (Type **``seleniumbase``** or **``sbase``** to use.)
 * Has the ability to translate tests into [multiple spoken languages](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/translations).
 * Has a flexible [command-line interface](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md) for customizing test runs.
