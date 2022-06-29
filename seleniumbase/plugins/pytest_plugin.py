@@ -1281,14 +1281,48 @@ def pytest_configure(config):
     sb_config._html_report_name = None  # The name of the pytest html report
 
     arg_join = " ".join(sys.argv)
-    if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
+    if (
+        "-n" in sys.argv
+        or " -n=" in arg_join
+        or "-c" in sys.argv
+        or (
+            "addopts" in config.inicfg.keys()
+            and (
+                "-n=" in config.inicfg["addopts"]
+                or "-n " in config.inicfg["addopts"]
+            )
+        )
+    ):
         sb_config._multithreaded = True
-    if "--html" in sys.argv or " --html=" in arg_join:
+    if (
+        "--html" in sys.argv
+        or " --html=" in arg_join
+        or (
+            "addopts" in config.inicfg.keys()
+            and (
+                "--html=" in config.inicfg["addopts"]
+                or "--html " in config.inicfg["addopts"]
+            )
+        )
+    ):
         sb_config._using_html_report = True
         sb_config._html_report_name = config.getoption("htmlpath")
         if sb_config.dashboard:
             if sb_config._html_report_name == "dashboard.html":
                 sb_config._dash_is_html_report = True
+
+    # Recorder Mode does not support multi-threaded / multi-process runs.
+    if sb_config.recorder_mode and sb_config._multithreaded:
+        # At this point, the user likely put a "-n NUM" in the pytest.ini file.
+        # Since raising an exception in pytest_configure raises INTERNALERROR,
+        # print a message here instead and cancel Recorder Mode.
+        print(
+            "\n  Recorder Mode does NOT support multi-process mode (-n)!"
+            '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)'
+            '\n  (The Recorder WILL BE DISABLED during this run!)\n'
+        )
+        sb_config.recorder_mode = False
+        sb_config.recorder_ext = False
 
     if sb_config.xvfb and "linux" not in sys.platform:
         # The Xvfb virtual display server is for Linux OS Only!
