@@ -159,13 +159,15 @@ setup(
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
         'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
-        'chardet==4.0.0;python_version>="3.5"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.12;python_version>="3.5"',  # Sync "requests"
+        'chardet==4.0.0;python_version>="3.5" and python_version<"3.7"',
+        'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
+        'charset-normalizer==2.0.12;python_version>="3.5" and python_version<"3.7"',  # noqa: E501
+        'charset-normalizer==2.1.0;python_version>="3.7"',  # Sync "requests"
         "urllib3==1.26.9",  # Must stay in sync with "requests"
         'requests==2.27.1;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
         'requests==2.27.1;python_version>="3.6" and python_version<"3.7"',
-        'requests==2.28.0;python_version>="3.7"',
+        'requests==2.28.1;python_version>="3.7"',
         "nose==1.3.7",
         'sniffio==1.2.0;python_version>="3.7"',
         'h11==0.13.0;python_version>="3.7"',
@@ -244,7 +246,7 @@ setup(
         'pyotp==2.3.0;python_version<"3.5"',
         'pyotp==2.6.0;python_version>="3.5"',
         "boto==2.49.0",
-        "cffi==1.15.0",
+        "cffi==1.15.1",
         "toml==0.10.2",
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',

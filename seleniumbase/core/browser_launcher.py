@@ -432,6 +432,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--dom-automation")
     chrome_options.add_argument("--disable-hang-monitor")
     chrome_options.add_argument("--disable-prompt-on-repost")
+    chrome_options.add_argument("--disable-3d-apis")
     if servername != "localhost":
         use_auto_ext = True  # Use Automation Extension with the Selenium Grid
     if not use_auto_ext:  # Disable Automation Extension / detection. (Default)
@@ -522,9 +523,15 @@ def _set_firefox_options(
     firefox_arg,
     firefox_pref,
 ):
+    blank_p = "about:blank"
     options = webdriver.FirefoxOptions()
     options.accept_untrusted_certs = True
     options.set_preference("reader.parse-on-load.enabled", False)
+    options.set_preference("browser.startup.homepage", blank_p)
+    options.set_preference("startup.homepage_welcome_url", blank_p)
+    options.set_preference("startup.homepage_welcome_url.additional", blank_p)
+    options.set_preference("trailhead.firstrun.branches", "nofirstrun-empty")
+    options.set_preference("browser.aboutwelcome.enabled", False)
     options.set_preference("pdfjs.disabled", True)
     options.set_preference("app.update.auto", False)
     options.set_preference("app.update.enabled", False)
@@ -1484,60 +1491,45 @@ def get_local_driver(
                         )
                         sb_install.main(override="geckodriver")
                         sys.argv = sys_args  # Put back original sys args
-        warnings.simplefilter("ignore", category=DeprecationWarning)
-        if "linux" in PLATFORM:
-            from selenium.webdriver.common.desired_capabilities import (
-                DesiredCapabilities,
-            )
-
-            firefox_capabilities = DesiredCapabilities.FIREFOX.copy()
-            firefox_capabilities["marionette"] = True
-            if headless:
-                firefox_capabilities["moz:firefoxOptions"] = {
-                    "args": ["-headless"]
-                }
-            return webdriver.Firefox(
-                capabilities=firefox_capabilities, options=firefox_options
-            )
-        else:
-            if os.path.exists(LOCAL_GECKODRIVER):
-                if selenium4:
-                    service = FirefoxService(
-                        executable_path=LOCAL_GECKODRIVER,
-                        log_path=os.path.devnull,
+        # Launch Firefox
+        if os.path.exists(LOCAL_GECKODRIVER):
+            if selenium4:
+                service = FirefoxService(
+                    executable_path=LOCAL_GECKODRIVER,
+                    log_path=os.path.devnull,
+                )
+                try:
+                    return webdriver.Firefox(
+                        service=service,
+                        options=firefox_options,
                     )
-                    try:
+                except Exception as e:
+                    if "Process unexpectedly closed" in e.msg:
+                        # Firefox probably just auto-updated itself.
+                        # Trying again right after that often works.
                         return webdriver.Firefox(
                             service=service,
                             options=firefox_options,
                         )
-                    except Exception as e:
-                        if "Process unexpectedly closed" in e.msg:
-                            # Firefox probably just auto-updated itself.
-                            # Trying again right after that often works.
-                            return webdriver.Firefox(
-                                service=service,
-                                options=firefox_options,
-                            )
-                        else:
-                            raise Exception(e.msg)  # Not an obvious fix.
-                else:
-                    return webdriver.Firefox(
-                        executable_path=LOCAL_GECKODRIVER,
-                        service_log_path=os.path.devnull,
-                        options=firefox_options,
-                    )
+                    else:
+                        raise Exception(e.msg)  # Not an obvious fix.
             else:
-                if selenium4:
-                    service = FirefoxService(log_path=os.path.devnull)
-                    return webdriver.Firefox(
-                        service=service, options=firefox_options
-                    )
-                else:
-                    return webdriver.Firefox(
-                        service_log_path=os.path.devnull,
-                        options=firefox_options,
-                    )
+                return webdriver.Firefox(
+                    executable_path=LOCAL_GECKODRIVER,
+                    service_log_path=os.path.devnull,
+                    options=firefox_options,
+                )
+        else:
+            if selenium4:
+                service = FirefoxService(log_path=os.path.devnull)
+                return webdriver.Firefox(
+                    service=service, options=firefox_options
+                )
+            else:
+                return webdriver.Firefox(
+                    service_log_path=os.path.devnull,
+                    options=firefox_options,
+                )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         if not IS_WINDOWS:
             raise Exception(
@@ -1737,6 +1729,7 @@ def get_local_driver(
         edge_options.add_argument("--dom-automation")
         edge_options.add_argument("--disable-hang-monitor")
         edge_options.add_argument("--disable-prompt-on-repost")
+        edge_options.add_argument("--disable-3d-apis")
         if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
             # Headless Edge doesn't support extensions, which are required
             # for disabling the Content Security Policy on Edge

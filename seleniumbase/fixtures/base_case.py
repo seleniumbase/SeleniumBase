@@ -1449,9 +1449,7 @@ class BaseCase(unittest.TestCase):
         except Exception:
             pass
 
-    def set_attribute_all(
-        self, selector, attribute, value, by="css selector"
-    ):
+    def set_attribute_all(self, selector, attribute, value, by="css selector"):
         """Same as set_attributes(), but using querySelectorAll naming scheme.
         This method uses JavaScript to set/update a common attribute.
         All matching selectors from querySelectorAll() are used.
@@ -3528,7 +3526,8 @@ class BaseCase(unittest.TestCase):
 
         if not self.is_chromium():
             raise Exception(
-                "The Recorder is only for Chromium browsers: (Chrome or Edge)")
+                "The Recorder is only for Chromium browsers: (Chrome or Edge)"
+            )
         url = self.driver.current_url
         if (
             url.startswith("data:") or url.startswith("about:")
@@ -11488,8 +11487,8 @@ class BaseCase(unittest.TestCase):
             m_y = y
             if center:
                 element_rect = element.rect
-                left_offset = element_rect['width'] / 2
-                top_offset = element_rect['height'] / 2
+                left_offset = element_rect["width"] / 2
+                top_offset = element_rect["height"] / 2
                 m_x = left_offset + (m_x or 0)
                 m_y = top_offset + (m_y or 0)
             px = m_x - 3
@@ -11516,8 +11515,8 @@ class BaseCase(unittest.TestCase):
         try:
             if selenium4_or_newer and not center:
                 element_rect = element.rect
-                left_offset = element_rect['width'] / 2
-                top_offset = element_rect['height'] / 2
+                left_offset = element_rect["width"] / 2
+                top_offset = element_rect["height"] / 2
                 x = -left_offset + (x or 0)
                 y = -top_offset + (y or 0)
             elif selenium4_or_newer and center:
@@ -11527,8 +11526,8 @@ class BaseCase(unittest.TestCase):
             else:
                 # not selenium4_or_newer and center:
                 element_rect = element.rect
-                left_offset = element_rect['width'] / 2
-                top_offset = element_rect['height'] / 2
+                left_offset = element_rect["width"] / 2
+                top_offset = element_rect["height"] / 2
                 x = left_offset + x
                 y = top_offset + y
             action_chains = ActionChains(self.driver)

@@ -230,7 +230,16 @@ def pytest_addoption(parser):
         "--variables",
         dest="variables",
         default=None,
-        help="A var dict to pass to tests from the command line.",
+        help="""A var dict to pass to tests from the command line.
+                Example usage:
+                ----------------------------------------------
+                Option: --variables='{"special":123}'
+                Access: self.variables["special"]  # (123)
+                ----------------------------------------------
+                Option: --variables='{"color":"red","num":42}'
+                Access: self.variables["color"]  # ("red")
+                Access: self.variables["num"]  # (42)
+                ----------------------------------------------""",
     )
     parser.addoption(
         "--cap_file",
@@ -443,9 +452,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--proxy-pac-url",
-        "--proxy_pac_url",
         "--pac-url",
-        "--pac_url",
         action="store",
         dest="proxy_pac_url",
         default=None,
@@ -1321,7 +1328,7 @@ def pytest_configure(config):
         print(
             "\n  Recorder Mode does NOT support multi-process mode (-n)!"
             '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)'
-            '\n  (The Recorder WILL BE DISABLED during this run!)\n'
+            "\n  (The Recorder WILL BE DISABLED during this run!)\n"
         )
         sb_config.recorder_mode = False
         sb_config.recorder_ext = False

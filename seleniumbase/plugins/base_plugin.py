@@ -92,7 +92,16 @@ class Base(Plugin):
             "--variables",
             dest="variables",
             default=None,
-            help="A var dict to pass to tests from the command line.",
+            help="""A var dict to pass to tests from the command line.
+                    Example usage:
+                    ----------------------------------------------
+                    Option: --variables='{"special":123}'
+                    Access: self.variables["special"]
+                    ----------------------------------------------
+                    Option: --variables='{"color":"red","num":42}'
+                    Access: self.variables["color"]
+                    Access: self.variables["num"]
+                    ----------------------------------------------""",
         )
         parser.add_option(
             "--settings_file",

@@ -84,10 +84,7 @@ def do_behave_run(
             total_selected_tests += 1
 
     full_run_command = "behave"
-    if (
-        total_selected_tests == 0
-        or total_tests == total_selected_tests
-    ):
+    if total_selected_tests == 0 or total_tests == total_selected_tests:
         if command_string:
             full_run_command += " "
             full_run_command += command_string
@@ -192,27 +189,19 @@ def create_tkinter_gui(tests, command_string):
     question_menu.pack()
 
     qmx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Quiet Mode  (--quiet)", variable=qmx
-    )
+    chk = tk.Checkbutton(root, text="Quiet Mode  (--quiet)", variable=qmx)
     chk.pack()
 
     dmx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Demo Mode  (-D demo)", variable=dmx
-    )
+    chk = tk.Checkbutton(root, text="Demo Mode  (-D demo)", variable=dmx)
     chk.pack()
 
     mmx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Mobile Mode  (-D mobile)", variable=mmx
-    )
+    chk = tk.Checkbutton(root, text="Mobile Mode  (-D mobile)", variable=mmx)
     chk.pack()
 
     dbx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Dashboard  (-D dashboard)", variable=dbx
-    )
+    chk = tk.Checkbutton(root, text="Dashboard  (-D dashboard)", variable=dbx)
     chk.pack()
     chk.select()
 

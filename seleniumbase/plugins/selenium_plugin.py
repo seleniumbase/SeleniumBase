@@ -193,9 +193,7 @@ class SeleniumBrowser(Plugin):
         )
         parser.add_option(
             "--proxy-pac-url",
-            "--proxy_pac_url",
             "--pac-url",
-            "--pac_url",
             action="store",
             dest="proxy_pac_url",
             default=None,

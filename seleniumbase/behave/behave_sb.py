@@ -636,7 +636,7 @@ def get_configured_sb(context):
             sb.proxy_bypass_list = proxy_bypass_list
             continue
         # Handle: -D proxy-pac-url=URL / proxy-pac-url=USERNAME:PASSWORD@URL
-        if low_key in ["proxy-pac-url", "proxy_pac_url", "pac-url", "pac_url"]:
+        if low_key in ["proxy-pac-url", "pac-url"]:
             proxy_pac_url = userdata[key]
             if proxy_pac_url == "true":
                 proxy_pac_url = sb.proxy_pac_url  # revert to default
