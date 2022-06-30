@@ -230,7 +230,16 @@ def pytest_addoption(parser):
         "--variables",
         dest="variables",
         default=None,
-        help="A var dict to pass to tests from the command line.",
+        help="""A var dict to pass to tests from the command line.
+                Example usage:
+                ----------------------------------------------
+                Option: --variables='{"special":123}'
+                Access: self.variables["special"]  # (123)
+                ----------------------------------------------
+                Option: --variables='{"color":"red","num":42}'
+                Access: self.variables["color"]  # ("red")
+                Access: self.variables["num"]  # (42)
+                ----------------------------------------------""",
     )
     parser.addoption(
         "--cap_file",
