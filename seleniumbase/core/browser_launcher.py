@@ -432,6 +432,7 @@ def _set_chrome_options(
     chrome_options.add_argument("--dom-automation")
     chrome_options.add_argument("--disable-hang-monitor")
     chrome_options.add_argument("--disable-prompt-on-repost")
+    chrome_options.add_argument("--disable-3d-apis")
     if servername != "localhost":
         use_auto_ext = True  # Use Automation Extension with the Selenium Grid
     if not use_auto_ext:  # Disable Automation Extension / detection. (Default)
@@ -1737,6 +1738,7 @@ def get_local_driver(
         edge_options.add_argument("--dom-automation")
         edge_options.add_argument("--disable-hang-monitor")
         edge_options.add_argument("--disable-prompt-on-repost")
+        edge_options.add_argument("--disable-3d-apis")
         if (settings.DISABLE_CSP_ON_CHROME or disable_csp) and not headless:
             # Headless Edge doesn't support extensions, which are required
             # for disabling the Content Security Policy on Edge
