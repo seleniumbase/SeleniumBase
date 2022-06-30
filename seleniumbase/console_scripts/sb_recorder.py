@@ -60,7 +60,7 @@ def show_already_recording_warning():
     messagebox.showwarning(
         "SeleniumBase Recorder: Already Running!",
         "Please finalize the active recording from the terminal\n"
-        'where you opened the Recorder: Type "c" and hit Enter.'
+        'where you opened the Recorder: Type "c" and hit Enter.',
     )
 
 
@@ -175,7 +175,7 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         messagebox.showwarning(
             "SeleniumBase Recorder: Already Running!",
             "Please finalize the active recording from the terminal\n"
-            'where you opened the Recorder: Type "c" and hit Enter.'
+            'where you opened the Recorder: Type "c" and hit Enter.',
         )
     send_window_to_front(window)
 
@@ -278,7 +278,7 @@ def show_still_running_warning():
         "SeleniumBase Recorder: Still Running!",
         "Please finalize the active recording from the terminal\n"
         'where you opened the Recorder: Type "c" and hit Enter.\n'
-        "(Then you can safely close this alert.)"
+        "(Then you can safely close this alert.)",
     )
 
 

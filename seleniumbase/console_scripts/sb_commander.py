@@ -83,10 +83,7 @@ def do_pytest_run(
             total_selected_tests += 1
 
     full_run_command = "pytest"
-    if (
-        total_selected_tests == 0
-        or total_tests == total_selected_tests
-    ):
+    if total_selected_tests == 0 or total_tests == total_selected_tests:
         if command_string:
             full_run_command += " "
             full_run_command += command_string
@@ -195,28 +192,20 @@ def create_tkinter_gui(tests, command_string):
     question_menu.pack()
 
     vox = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Verbose Output  (-v)", variable=vox
-    )
+    chk = tk.Checkbutton(root, text="Verbose Output  (-v)", variable=vox)
     chk.pack()
     chk.select()
 
     dmx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Demo Mode  (--demo)", variable=dmx
-    )
+    chk = tk.Checkbutton(root, text="Demo Mode  (--demo)", variable=dmx)
     chk.pack()
 
     mmx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Mobile Mode  (--mobile)", variable=mmx
-    )
+    chk = tk.Checkbutton(root, text="Mobile Mode  (--mobile)", variable=mmx)
     chk.pack()
 
     dbx = tk.IntVar()
-    chk = tk.Checkbutton(
-        root, text="Dashboard  (--dashboard)", variable=dbx
-    )
+    chk = tk.Checkbutton(root, text="Dashboard  (--dashboard)", variable=dbx)
     chk.pack()
     chk.select()
 

@@ -443,9 +443,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--proxy-pac-url",
-        "--proxy_pac_url",
         "--pac-url",
-        "--pac_url",
         action="store",
         dest="proxy_pac_url",
         default=None,
@@ -1321,7 +1319,7 @@ def pytest_configure(config):
         print(
             "\n  Recorder Mode does NOT support multi-process mode (-n)!"
             '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)'
-            '\n  (The Recorder WILL BE DISABLED during this run!)\n'
+            "\n  (The Recorder WILL BE DISABLED during this run!)\n"
         )
         sb_config.recorder_mode = False
         sb_config.recorder_ext = False

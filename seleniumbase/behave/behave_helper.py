@@ -22,9 +22,7 @@ def generate_gherkin(srt_actions):
             elif "'" not in action[2]:
                 sb_actions.append("Open '%s'" % action[2])
             else:
-                sb_actions.append(
-                    'Open "%s"' % action[2].replace('"', '\\"')
-                )
+                sb_actions.append('Open "%s"' % action[2].replace('"', '\\"'))
         elif action[0] == "f_url":
             if "%" in action[2] and python3:
                 try:
@@ -73,27 +71,17 @@ def generate_gherkin(srt_actions):
                 method = "js_type"
             text = action[2].replace("\n", "\\n")
             if '"' not in action[1] and '"' not in text:
-                sb_actions.append(
-                    'Into "%s" type "%s"' % (action[1], text)
-                )
+                sb_actions.append('Into "%s" type "%s"' % (action[1], text))
             elif '"' not in action[1] and '"' in text:
-                sb_actions.append(
-                    'Into "%s" type \'%s\'' % (action[1], text)
-                )
+                sb_actions.append('Into "%s" type \'%s\'' % (action[1], text))
             elif '"' in action[1] and '"' not in text:
-                sb_actions.append(
-                    'Into \'%s\' type "%s"' % (action[1], text)
-                )
+                sb_actions.append('Into \'%s\' type "%s"' % (action[1], text))
             elif '"' in action[1] and '"' in text:
-                sb_actions.append(
-                    "Into '%s' type '%s'" % (action[1], text)
-                )
+                sb_actions.append("Into '%s' type '%s'" % (action[1], text))
         elif action[0] == "e_mfa":
             text = action[2].replace("\n", "\\n")
             if '"' not in action[1] and '"' not in text:
-                sb_actions.append(
-                    'Into "%s" do MFA "%s"' % (action[1], text)
-                )
+                sb_actions.append('Into "%s" do MFA "%s"' % (action[1], text))
             elif '"' not in action[1] and '"' in text:
                 sb_actions.append(
                     'Into "%s" do MFA \'%s\'' % (action[1], text)
@@ -103,9 +91,7 @@ def generate_gherkin(srt_actions):
                     'Into \'%s\' do MFA "%s"' % (action[1], text)
                 )
             elif '"' in action[1] and '"' in text:
-                sb_actions.append(
-                    "Into '%s' do MFA '%s'" % (action[1], text)
-                )
+                sb_actions.append("Into '%s' do MFA '%s'" % (action[1], text))
         elif action[0] == "h_clk":
             if '"' not in action[1] and '"' not in action[2]:
                 sb_actions.append(
@@ -271,9 +257,7 @@ def generate_gherkin(srt_actions):
             if not dest:
                 sb_actions.append('%s "%s" to downloads' % (method, file_url))
             else:
-                sb_actions.append(
-                    '%s "%s" to "%s"' % (method, file_url, dest)
-                )
+                sb_actions.append('%s "%s" to "%s"' % (method, file_url, dest))
         elif action[0] == "as_at":
             if ('"' not in action[1][0]) and action[1][2]:
                 sb_actions.append(
@@ -337,13 +321,9 @@ def generate_gherkin(srt_actions):
                     )
             else:
                 if '"' not in action[1][0]:
-                    sb_actions.append(
-                        '%s "%s"' % (method, action[1][0])
-                    )
+                    sb_actions.append('%s "%s"' % (method, action[1][0]))
                 else:
-                    sb_actions.append(
-                        "%s '%s'" % (method, action[1][0])
-                    )
+                    sb_actions.append("%s '%s'" % (method, action[1][0]))
         elif action[0] == "da_el":
             method = "Deferred assert element"
             if '"' not in action[1]:
