@@ -246,7 +246,7 @@ setup(
         'pyotp==2.3.0;python_version<"3.5"',
         'pyotp==2.6.0;python_version>="3.5"',
         "boto==2.49.0",
-        "cffi==1.15.0",
+        "cffi==1.15.1",
         "toml==0.10.2",
         'Pillow==6.2.2;python_version<"3.5"',
         'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
