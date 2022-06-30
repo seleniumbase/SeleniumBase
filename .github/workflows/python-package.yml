@@ -86,9 +86,12 @@ jobs:
     - name: Run pytest examples/test_inspect_html.py --browser=chrome --headless
       run: |
         pytest examples/test_inspect_html.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
-    - name: Run pytest examples/my_first_test.py --browser=firefox --headless
+    - name: Run pytest examples/test_mfa_login.py --browser=firefox --headless
       run: |
-        pytest examples/my_first_test.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
+        pytest examples/test_mfa_login.py --browser=firefox --headless -v -s --junit-xml=junit/test-results.xml
+    - name: Run pytest examples/test_mfa_login.py --browser=firefox --xvfb
+      run: |
+        pytest examples/test_mfa_login.py --browser=firefox --xvfb -v -s --junit-xml=junit/test-results.xml
     - name: Run behave examples/behave_bdd/features/calculator.feature -D rs -D crumbs -D xvfb
       run: |
         behave examples/behave_bdd/features/calculator.feature -D rs -D crumbs -D xvfb -T -k
