@@ -60,10 +60,10 @@ class WordleTests(BaseCase):
         self.click('svg[data-testid="icon-close"]')
         self.initialize_word_list()
         word = random.choice(self.word_list)
-        total_attempts = 0
+        num_attempts = 0
         success = False
         for attempt in range(6):
-            total_attempts += 1
+            num_attempts += 1
             word = random.choice(self.word_list)
             letters = []
             for letter in word:
@@ -74,7 +74,7 @@ class WordleTests(BaseCase):
             self.click(button)
             row = (
                 'div[class*="lbzlf"] div[class*="Row-module"]:nth-of-type(%s) '
-                % total_attempts
+                % num_attempts
             )
             tile = row + 'div:nth-child(%s) div[class*="module_tile__3ayIZ"]'
             self.wait_for_element(tile % "5" + '[data-state*="e"]')
@@ -89,7 +89,9 @@ class WordleTests(BaseCase):
             self.modify_word_list(word, letter_status)
 
         self.save_screenshot_to_logs()
-        print('\nWord: "%s"\nAttempts: %s' % (word.upper(), total_attempts))
-        if not success:
+        if success:
+            print('\nWord: "%s"\nAttempts: %s' % (word.upper(), num_attempts))
+        else:
+            print('Final guess: "%s" (Not the correct word!)' % word.upper())
             self.fail("Unable to solve for the correct word in 6 attempts!")
         self.sleep(3)

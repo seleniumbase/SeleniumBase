@@ -69,16 +69,16 @@ class WordleTests(BaseCase):
         archive = "https://web.archive.org/web/"
         url = "https://www.nytimes.com/games/wordle/index.html"
         past_wordle = archive + date + "/" + url
-        print(past_wordle)
+        print("\n" + past_wordle)
         self.open(past_wordle)
         self.click("game-app::shadow game-modal::shadow game-icon")
         self.initialize_word_list()
         keyboard_base = "game-app::shadow game-keyboard::shadow "
         word = random.choice(self.word_list)
-        total_attempts = 0
+        num_attempts = 0
         success = False
         for attempt in range(6):
-            total_attempts += 1
+            num_attempts += 1
             word = random.choice(self.word_list)
             letters = []
             for letter in word:
@@ -101,7 +101,9 @@ class WordleTests(BaseCase):
             self.modify_word_list(word, letter_status)
 
         self.save_screenshot_to_logs()
-        print('\nWord: "%s"\nAttempts: %s' % (word.upper(), total_attempts))
-        if not success:
+        if success:
+            print('Word: "%s"\nAttempts: %s' % (word.upper(), num_attempts))
+        else:
+            print('Final guess: "%s" (Not the correct word!)' % word.upper())
             self.fail("Unable to solve for the correct word in 6 attempts!")
         self.sleep(3)
