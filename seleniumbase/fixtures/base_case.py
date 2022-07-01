@@ -5036,52 +5036,119 @@ class BaseCase(unittest.TestCase):
         """Hide the first element on the page that matches the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        selector = self.__make_css_match_first_element_only(selector)
-        hide_script = """jQuery('%s').hide();""" % selector
-        self.safe_execute_script(hide_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if ":contains(" in css_selector:
+            selector = self.__make_css_match_first_element_only(css_selector)
+            script = """jQuery('%s').hide();""" % selector
+            self.safe_execute_script(script)
+        else:
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = (
+                'const e = document.querySelector("%s");'
+                'e.style.display="none";e.style.visibility="hidden";'
+                % css_selector)
+            self.execute_script(script)
 
     def hide_elements(self, selector, by="css selector"):
         """Hide all elements on the page that match the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        hide_script = """jQuery('%s').hide();""" % selector
-        self.safe_execute_script(hide_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if ":contains(" in css_selector:
+            script = """jQuery('%s').hide();""" % css_selector
+            self.safe_execute_script(script)
+        else:
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = (
+                """var $elements = document.querySelectorAll('%s');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                $elements[index].style.display="none";
+                $elements[index].style.visibility="hidden";}"""
+                % css_selector
+            )
+            self.execute_script(script)
 
     def show_element(self, selector, by="css selector"):
         """Show the first element on the page that matches the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        selector = self.__make_css_match_first_element_only(selector)
-        show_script = """jQuery('%s').show(0);""" % selector
-        self.safe_execute_script(show_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if ":contains(" in css_selector:
+            selector = self.__make_css_match_first_element_only(css_selector)
+            script = """jQuery('%s').show(0);""" % selector
+            self.safe_execute_script(script)
+        else:
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = (
+                'const e = document.querySelector("%s");'
+                'e.style.display="";e.style.visibility="visible";'
+                % css_selector
+            )
+            self.execute_script(script)
 
     def show_elements(self, selector, by="css selector"):
         """Show all elements on the page that match the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        show_script = """jQuery('%s').show(0);""" % selector
-        self.safe_execute_script(show_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if ":contains(" in css_selector:
+            script = """jQuery('%s').show(0);""" % css_selector
+            self.safe_execute_script(script)
+        else:
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = (
+                """var $elements = document.querySelectorAll('%s');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                $elements[index].style.display="";
+                $elements[index].style.visibility="visible";}"""
+                % css_selector
+            )
+            self.execute_script(script)
 
     def remove_element(self, selector, by="css selector"):
         """Remove the first element on the page that matches the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        selector = self.__make_css_match_first_element_only(selector)
-        remove_script = """jQuery('%s').remove();""" % selector
-        self.safe_execute_script(remove_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if ":contains(" in css_selector:
+            selector = self.__make_css_match_first_element_only(css_selector)
+            script = """jQuery('%s').remove();""" % selector
+            self.safe_execute_script(script)
+        else:
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = (
+                'const e = document.querySelector("%s");'
+                'e.parentElement.removeChild(e);'
+                % css_selector
+            )
+            self.execute_script(script)
 
     def remove_elements(self, selector, by="css selector"):
         """Remove all elements on the page that match the selector."""
         self.__check_scope()
         selector, by = self.__recalculate_selector(selector, by)
-        selector = self.convert_to_css_selector(selector, by=by)
-        remove_script = """jQuery('%s').remove();""" % selector
-        self.safe_execute_script(remove_script)
+        css_selector = self.convert_to_css_selector(selector, by=by)
+        if ":contains(" in css_selector:
+            script = """jQuery('%s').remove();""" % css_selector
+            self.safe_execute_script(script)
+        else:
+            css_selector = re.escape(css_selector)  # Add "\\" to special chars
+            css_selector = self.__escape_quotes_if_needed(css_selector)
+            script = (
+                """var $elements = document.querySelectorAll('%s');
+                var index = 0, length = $elements.length;
+                for(; index < length; index++){
+                $elements[index].remove();}"""
+                % css_selector
+            )
+            self.execute_script(script)
 
     def ad_block(self):
         """Block ads that appear on the current web page."""

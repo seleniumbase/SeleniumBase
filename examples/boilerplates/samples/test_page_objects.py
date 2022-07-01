@@ -1,5 +1,4 @@
-""" Example test that uses the Page Object Model """
-
+""" An example test using the Classic Page Object Model """
 from seleniumbase import BaseCase
 
 
@@ -24,8 +23,6 @@ class SeleniumBaseGitHubPage:
 
 class SeleniumBaseIOPage:
     def do_search_and_click(self, sb, search_term):
-        if sb.is_element_visible('[for="__search"] svg'):
-            sb.click('[for="__search"] svg')
         sb.type('form[name="search"] input', search_term)
         sb.click("li.md-search-result__item h1:contains(%s)" % search_term)
 

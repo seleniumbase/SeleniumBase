@@ -1,9 +1,10 @@
 """ Solve the Wordle game using SeleniumBase.
-    The latest version of Wordle no longer uses Shadow-DOM. """
+    This test runs on archived versions of Wordle, containing Shadow-DOM. """
 
 import ast
 import random
 import requests
+from seleniumbase import version_info
 from seleniumbase import BaseCase
 
 
@@ -53,12 +54,26 @@ class WordleTests(BaseCase):
             message = "This test doesn't run in headless mode!"
             print(message)
             self.skip(message)
+        if version_info < [2, 4, 4]:
+            message = "This test requires SeleniumBase 2.4.4 or newer!"
+            print(message)
+            self.skip(message)
 
     def test_wordle(self):
         self.skip_if_incorrect_env()
-        self.open("https://www.nytimes.com/games/wordle/index.html")
-        self.click('svg[data-testid="icon-close"]')
+        random.seed()
+        year = "2022"
+        month = random.randint(3, 5)
+        day = random.randint(1, 30)
+        date = str(year) + "0" + str(month) + str(day)
+        archive = "https://web.archive.org/web/"
+        url = "https://www.nytimes.com/games/wordle/index.html"
+        past_wordle = archive + date + "/" + url
+        print(past_wordle)
+        self.open(past_wordle)
+        self.click("game-app::shadow game-modal::shadow game-icon")
         self.initialize_word_list()
+        keyboard_base = "game-app::shadow game-keyboard::shadow "
         word = random.choice(self.word_list)
         total_attempts = 0
         success = False
@@ -69,18 +84,15 @@ class WordleTests(BaseCase):
             for letter in word:
                 letters.append(letter)
                 button = 'button[data-key="%s"]' % letter
-                self.click(button)
-            button = 'button[class*="oneAndAHalf"]'
-            self.click(button)
-            row = (
-                'div[class*="lbzlf"] div[class*="Row-module"]:nth-of-type(%s) '
-                % total_attempts
-            )
-            tile = row + 'div:nth-child(%s) div[class*="module_tile__3ayIZ"]'
-            self.wait_for_element(tile % "5" + '[data-state*="e"]')
+                self.click(keyboard_base + button)
+            button = "button.one-and-a-half"
+            self.click(keyboard_base + button)
+            row = 'game-app::shadow game-row[letters="%s"]::shadow ' % word
+            tile = row + "game-tile:nth-of-type(%s)"
+            self.wait_for_element(tile % "5" + '::shadow [data-state*="e"]')
             letter_status = []
             for i in range(1, 6):
-                letter_eval = self.get_attribute(tile % str(i), "data-state")
+                letter_eval = self.get_attribute(tile % str(i), "evaluation")
                 letter_status.append(letter_eval)
             if letter_status.count("correct") == 5:
                 success = True
