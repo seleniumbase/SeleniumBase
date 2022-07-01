@@ -109,7 +109,7 @@ def is_jquery_activated(driver):
 
 def wait_for_jquery_active(driver, timeout=None):
     if not timeout:
-        timeout = int(settings.MINI_TIMEOUT * 10.0)
+        timeout = 22
     else:
         timeout = int(timeout * 10.0)
     for x in range(timeout):
@@ -163,7 +163,7 @@ def activate_jquery(driver):
         pass
     jquery_js = constants.JQuery.MIN_JS
     add_js_link(driver, jquery_js)
-    for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+    for x in range(22):
         # jQuery needs a small amount of time to activate.
         try:
             driver.execute_script("jQuery('html');")
@@ -172,7 +172,7 @@ def activate_jquery(driver):
             time.sleep(0.1)
     try:
         add_js_link(driver, jquery_js)
-        time.sleep(0.2)
+        time.sleep(0.35)
         driver.execute_script("jQuery('head');")
         return
     except Exception:
@@ -565,7 +565,7 @@ def activate_jquery_confirm(driver):
     add_css_link(driver, jq_confirm_css)
     add_js_link(driver, jq_confirm_js)
 
-    for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+    for x in range(25):
         # jQuery-Confirm needs a small amount of time to load & activate.
         try:
             driver.execute_script("jconfirm")
@@ -591,7 +591,7 @@ def activate_html_inspector(driver):
     wait_for_ready_state_complete(driver)
     wait_for_angularjs(driver)
 
-    for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+    for x in range(25):
         # HTML-Inspector needs a small amount of time to load & activate.
         try:
             driver.execute_script("HTMLInspector")
@@ -641,19 +641,19 @@ def activate_messenger(driver):
     add_js_link(driver, messenger_js)
     add_css_style(driver, style_sheet.messenger_style)
 
-    for x in range(int(settings.MINI_TIMEOUT * 10.0)):
+    for x in range(10):
         # Messenger needs a small amount of time to load & activate.
         try:
             result = driver.execute_script(
                 """ if (typeof Messenger === 'undefined') { return "U"; } """
             )
             if result == "U":
-                time.sleep(0.01)
+                time.sleep(0.02)
                 continue
             else:
                 break
         except Exception:
-            time.sleep(0.01)
+            time.sleep(0.02)
     try:
         driver.execute_script(msg_style)
         add_js_link(driver, msgr_theme_flat_js)
@@ -744,7 +744,7 @@ def post_message(driver, message, msg_dur, style="info"):
             activate_messenger(driver)
             time.sleep(0.2)
             set_messenger_theme(driver)
-            time.sleep(0.5)
+            time.sleep(0.3)
             driver.execute_script(messenger_script)
 
 
