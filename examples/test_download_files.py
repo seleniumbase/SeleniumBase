@@ -19,14 +19,8 @@ class DownloadTests(BaseCase):
         text = "Switching to nested frame fails with chrome/chromedriver 100"
         self.assert_true(text in notes_data)  # Verify file has expected data
 
-    def test_download_files_from_pypi_with_edge(self):
-        if self.browser != "edge":
-            self.open("data:,")
-            print("\n  This test is only for Microsoft Edge (Chromium)!")
-            print('  (Run this test using "--edge" or "--browser=edge")')
-            self.skip('Use "--edge" or "--browser=edge"')
-
-        self.open("https://pypi.org/project/seleniumbase/#files")
+    def test_download_files_from_pypi(self):
+        self.open("https://pypi.org/project/sbvirtualdisplay/#files")
         pkg_header = self.get_text("h1.package-header__name").strip()
         pkg_name = pkg_header.replace(" ", "-")
         whl_file = pkg_name + "-py2.py3-none-any.whl"

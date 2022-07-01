@@ -12,3 +12,4 @@ class Test_UseFixtures:
         sb.assert_text("integrations")
         sb.assert_element('a[title="help_docs"]')
         sb.click('a[title="examples"]')
+        sb.assert_exact_text("examples", "strong.final-path")
