@@ -124,7 +124,7 @@ toml==0.10.2
 Pillow==6.2.2;python_version<"3.5"
 Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"
 Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"
-Pillow==9.1.1;python_version>="3.7"
+Pillow==9.2.0;python_version>="3.7"
 typing-extensions==3.10.0.2;python_version<"3.6"
 typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"
 typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"
