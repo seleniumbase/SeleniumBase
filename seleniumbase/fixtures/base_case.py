@@ -649,9 +649,25 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_type(selector, text, timeout, clear_first=False)
             return
+        if selector == "html" and text in ["\n", Keys.ENTER, Keys.RETURN]:
+            # This is a shortcut for calling self.click_active_element().
+            # Use after "\t" or Keys.TAB to cycle through elements first.
+            self.click_active_element()
+            return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout
         )
+        if (
+            selector == "html" and text.count("\t") >= 1
+            and text.count("\n") == 1 and text.endswith("\n")
+            and text.replace("\t", "").replace("\n", "").replace(" ", "") == ""
+        ):
+            # Shortcut to send multiple tabs followed by click_active_element()
+            self.wait_for_ready_state_complete()
+            for tab in range(text.count("\t")):
+                element.send_keys("\t")
+            self.click_active_element()
+            return
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
