@@ -649,9 +649,25 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             self.__shadow_type(selector, text, timeout, clear_first=False)
             return
+        if selector == "html" and text in ["\n", Keys.ENTER, Keys.RETURN]:
+            # This is a shortcut for calling self.click_active_element().
+            # Use after "\t" or Keys.TAB to cycle through elements first.
+            self.click_active_element()
+            return
         element = self.wait_for_element_visible(
             selector, by=by, timeout=timeout
         )
+        if (
+            selector == "html" and text.count("\t") >= 1
+            and text.count("\n") == 1 and text.endswith("\n")
+            and text.replace("\t", "").replace("\n", "").replace(" ", "") == ""
+        ):
+            # Shortcut to send multiple tabs followed by click_active_element()
+            self.wait_for_ready_state_complete()
+            for tab in range(text.count("\t")):
+                element.send_keys("\t")
+            self.click_active_element()
+            return
         self.__demo_mode_highlight_if_active(selector, by)
         if not self.demo_mode and not self.slow_mode:
             self.__scroll_to_element(element, selector, by)
@@ -712,6 +728,17 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
+
+    def send_keys(self, selector, text, by="css selector", timeout=None):
+        """Same as self.add_text()
+        Similar to update_text(), but won't clear the text field first."""
+        self.__check_scope()
+        if not timeout:
+            timeout = settings.LARGE_TIMEOUT
+        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
+            timeout = self.__get_new_timeout(timeout)
+        selector, by = self.__recalculate_selector(selector, by)
+        self.add_text(selector, text, by=by, timeout=timeout)
 
     def submit(self, selector, by="css selector"):
         """Alternative to self.driver.find_element_by_*(SELECTOR).submit()"""
@@ -7316,16 +7343,6 @@ class BaseCase(unittest.TestCase):
             timeout = self.__get_new_timeout(timeout)
         selector, by = self.__recalculate_selector(selector, by)
         self.update_text(selector, text, by=by, timeout=timeout, retry=retry)
-
-    def send_keys(self, selector, text, by="css selector", timeout=None):
-        """Same as self.add_text()"""
-        self.__check_scope()
-        if not timeout:
-            timeout = settings.LARGE_TIMEOUT
-        if self.timeout_multiplier and timeout == settings.LARGE_TIMEOUT:
-            timeout = self.__get_new_timeout(timeout)
-        selector, by = self.__recalculate_selector(selector, by)
-        self.add_text(selector, text, by=by, timeout=timeout)
 
     def click_link(self, link_text, timeout=None):
         """Same as self.click_link_text()"""
