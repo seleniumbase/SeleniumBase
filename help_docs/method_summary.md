@@ -30,8 +30,8 @@ self.type(selector, text, by="css selector", timeout=None)
 #             self.fill(selector, text, by="css selector", timeout=None)
 #             self.write(selector, text, by="css selector", timeout=None)
 
-self.add_text(selector, text, by="css selector", timeout=None)
-# Duplicates: self.send_keys(selector, text, by="css selector", timeout=None)
+self.send_keys(selector, text, by="css selector", timeout=None)
+# Duplicates: self.add_text(selector, text, by="css selector", timeout=None)
 
 self.submit(selector, by="css selector")
 
