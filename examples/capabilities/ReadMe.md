@@ -1,6 +1,6 @@
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using Desired Capabilities</h3>
 
-You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://www.lambdatest.com/capabilities-generator/" target="_blank">LambdaTest</a>, or <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>.
+You can specify browser capabilities when running SeleniumBase tests on a remote Selenium Grid server such as <a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack</a>, <a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs</a>, or another.
 
 Sample run commands may look like this when run from the [SeleniumBase/examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder: (The browser is now specified in the capabilities file.)
 
@@ -9,14 +9,10 @@ pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@hub.browserstack
 ```
 
 ```bash
-pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@https://@hub.lambdatest.com --port=80 --protocol=https --cap_file=capabilities/sample_cap_file_LT.py
-```
-
-```bash
 pytest test_demo_site.py --browser=remote --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https --cap_file=capabilities/sample_cap_file_SL.py
 ```
 
-(Parameters: ``--browser=remote``, ``--server=SERVER``, ``--port=PORT``, and ``--cap_file=CAP_FILE.py``)
+(Parameters: ``--browser=remote``, ``--server=SERVER``, ``--port=PORT``, ``--protocol=PROTOCOL``, and ``--cap_file=CAP_FILE.py``)
 
 Here's an example desired capabilities file for BrowserStack:
 
@@ -29,20 +25,6 @@ desired_cap = {
     "browserstack.local" : "false",
     "browserstack.debug" : "true",
     "browserstack.selenium_version" : "4.1.2",
-}
-```
-
-Here's an example desired capabilities file for LambdaTest:
-
-```python
-capabilities = {
-    "build" : "your build name",
-    "name" : "your test name",
-    "platform" : "Windows 11",
-    "browserName" : "Chrome",
-    "version" : "101.0",
-    "timezone" : "UTC+05:30",
-    "geoLocation" : "IN",
 }
 ```
 
@@ -63,7 +45,6 @@ capabilities = {
 
 <ul>
     <li><a href="https://www.browserstack.com/automate/capabilities" target="_blank">BrowserStack desired capabilities</a></li>
-    <li><a href="https://www.lambdatest.com/capabilities-generator/" target="_blank">LambdaTest desired capabilities</a></li>
     <li><a href="https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/" target="_blank">Sauce Labs desired capabilities</a></li>
 </ul>
 
