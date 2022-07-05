@@ -134,8 +134,9 @@ nav:
     - Useful grep commands: help_docs/useful_grep_commands.md
   - Demo Pages:
     - Demo Page (Test Page): https://seleniumbase.io/demo_page
-    - MFA Login (Test Page): https://seleniumbase.io/realworld/login
+    - MFA Login (Test App): https://seleniumbase.io/realworld/login
     - TinyMCE (Test Page): https://seleniumbase.io/tinymce/
+    - Calculator (Test App): https://seleniumbase.io/apps/calculator
     - Error Page (Test Page): https://seleniumbase.io/error_page/
     - Drag-&-Drop (Test Page): https://seleniumbase.io/other/drag_and_drop
     - Device Farm (Virtual): https://seleniumbase.io/devices/
