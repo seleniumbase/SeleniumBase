@@ -55,13 +55,13 @@ COMMANDS:
 sbase get chromedriver  # (Default version = 72.0.3626.69)
 sbase get geckodriver
 sbase get edgedriver
-sbase get chromedriver 101
-sbase get chromedriver 101.0.4951.41
+sbase get chromedriver 102
+sbase get chromedriver 102.0.5005.61
 sbase get chromedriver latest
 sbase get chromedriver latest-1  # (Latest minus one)
 sbase get chromedriver -p
 sbase get chromedriver latest -p
-sbase get edgedriver 101.0.1210.32
+sbase get edgedriver 102.0.1245.44
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
