@@ -14,13 +14,13 @@ Examples:
          sbase get chromedriver
          sbase get geckodriver
          sbase get edgedriver
-         sbase get chromedriver 101.0.4951.41
-         sbase get chromedriver 101
+         sbase get chromedriver 102.0.5005.61
+         sbase get chromedriver 102
          sbase get chromedriver latest
          sbase get chromedriver latest-1  # (Latest minus one)
          sbase get chromedriver -p
          sbase get chromedriver latest -p
-         sbase get edgedriver 101.0.1210.32
+         sbase get edgedriver 102.0.1245.44
 Output:
          Downloads the chosen webdriver to seleniumbase/drivers
          (chromedriver is required for Chrome automation)
@@ -46,7 +46,7 @@ DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (Specify "latest" for latest)
 DEFAULT_GECKODRIVER_VERSION = "v0.31.0"
-DEFAULT_EDGEDRIVER_VERSION = "101.0.1210.32"  # (Looks for LATEST_STABLE first)
+DEFAULT_EDGEDRIVER_VERSION = "102.0.1245.44"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
@@ -71,13 +71,13 @@ def invalid_run_command():
     exp += "           sbase get chromedriver\n"
     exp += "           sbase get geckodriver\n"
     exp += "           sbase get edgedriver\n"
-    exp += "           sbase get chromedriver 101\n"
-    exp += "           sbase get chromedriver 101.0.4951.41\n"
+    exp += "           sbase get chromedriver 102\n"
+    exp += "           sbase get chromedriver 102.0.5005.61\n"
     exp += "           sbase get chromedriver latest\n"
     exp += "           sbase get chromedriver latest-1\n"
     exp += "           sbase get chromedriver -p\n"
     exp += "           sbase get chromedriver latest -p\n"
-    exp += "           sbase get edgedriver 101.0.1210.32\n"
+    exp += "           sbase get edgedriver 102.0.1245.44\n"
     exp += "  Output:\n"
     exp += "          Downloads the chosen webdriver to seleniumbase/drivers\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -347,6 +347,7 @@ def main(override=None):
             url_request = requests.get(last)
             if url_request.ok:
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
+                use_version = use_version.split(".")[0]
             else:
                 use_version = DEFAULT_EDGEDRIVER_VERSION
         suffix = None

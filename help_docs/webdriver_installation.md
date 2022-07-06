@@ -21,9 +21,9 @@ sbase install chromedriver latest
 * You can also install a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
-sbase install chromedriver 100.0.4896.60
+sbase install chromedriver 102.0.5005.61
 
-sbase install chromedriver 100
+sbase install chromedriver 102
 ```
 
 * On Linux, you can run the following two commands (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)

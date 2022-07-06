@@ -13,15 +13,15 @@
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">✅ Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🎛️ Options</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">✅ Examples</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🔮 Scripts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔣 Syntaxes</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a>
 <br />
