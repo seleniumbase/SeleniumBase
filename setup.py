@@ -133,7 +133,7 @@ setup(
         'setuptools>=44.1.1;python_version<"3.5"',
         'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=62.6.0;python_version>="3.7"',
+        'setuptools>=63.1.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
@@ -223,7 +223,7 @@ setup(
         'cryptography==2.9.2;python_version<"3.5"',
         'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
         'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
-        'cryptography==37.0.2;python_version>="3.7"',
+        'cryptography==37.0.4;python_version>="3.7"',
         'pygments==2.5.2;python_version<"3.5"',
         'pygments==2.11.2;python_version>="3.5" and python_version<"3.6"',
         'pygments==2.12.0;python_version>="3.6"',
@@ -257,7 +257,8 @@ setup(
         'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.4.4;python_version>="3.6" and python_version<"4.0"',
         'tornado==5.1.1;python_version<"3.5"',
-        'tornado==6.1;python_version>="3.5"',
+        'tornado==6.1;python_version>="3.5" and python_version<"3.7"',
+        'tornado==6.2;python_version>="3.7"',
         'pdfminer.six==20191110;python_version<"3.5"',
         'pdfminer.six==20201018;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
         'pdfminer.six==20211012;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
