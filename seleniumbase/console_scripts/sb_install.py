@@ -347,6 +347,7 @@ def main(override=None):
             url_request = requests.get(last)
             if url_request.ok:
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
+                use_version = use_version.split(".")[0]
             else:
                 use_version = DEFAULT_EDGEDRIVER_VERSION
         suffix = None
