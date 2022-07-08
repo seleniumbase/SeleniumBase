@@ -74,7 +74,7 @@ brew upgrade geckodriver
 If you still need the web drivers, here are some scripts to help you install chromedriver and geckodriver on a Linux machine:
 
 ```bash
-wget http://chromedriver.storage.googleapis.com/2.44/chromedriver_linux64.zip
+wget https://chromedriver.storage.googleapis.com/72.0.3626.69/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver

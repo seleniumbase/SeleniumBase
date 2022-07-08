@@ -67,6 +67,8 @@ self.is_element_present(selector, by="css selector")
 
 self.is_element_visible(selector, by="css selector")
 
+self.is_element_clickable(selector, by="css selector")
+
 self.is_element_enabled(selector, by="css selector")
 
 self.is_text_visible(text, selector="html", by="css selector")

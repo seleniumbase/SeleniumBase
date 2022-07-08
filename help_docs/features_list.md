@@ -4,8 +4,8 @@
 <a id="feature_list"></a>
 <h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Features: 🎯</h2>
 
-* A complete test automation framework for web and mobile E2E UI testing.
-* Has [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for generating scripts from recorded actions. (``--rec``)
+* A powerful Python framework for browser automation and E2E UI testing.
+* Includes [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for instantly generating browser tests in Python.
 * Supports multiple browsers, tabs, iframes, and proxies in the same test.
 * Automatic smart-waiting improves reliability and prevents flaky tests.
 * Supports [pytest](https://docs.pytest.org/en/latest/), [unittest](https://docs.python.org/3/library/unittest.html), [nose](http://nose.readthedocs.io/en/latest/), and [behave](https://behave.readthedocs.io/en/stable/index.html) for finding/running tests.
