@@ -2356,6 +2356,12 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_present(
             dropdown_selector, by=dropdown_by, timeout=timeout
         )
+        try:
+            element = self.wait_for_element_clickable(
+                dropdown_selector, by=dropdown_by, timeout=1.2
+            )
+        except Exception:
+            self.wait_for_ready_state_complete()
         if self.is_element_visible(dropdown_selector, by=dropdown_by):
             self.__demo_mode_highlight_if_active(
                 dropdown_selector, dropdown_by
@@ -2369,18 +2375,28 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
-        except (StaleElementReferenceException, ENI_Exception):
+            time.sleep(0.05)
             self.wait_for_ready_state_complete()
-            time.sleep(0.14)
+        except Exception:
+            time.sleep(0.25)
+            self.wait_for_ready_state_complete()
             element = self.wait_for_element_present(
                 dropdown_selector, by=dropdown_by, timeout=timeout
             )
+            try:
+                element = self.wait_for_element_clickable(
+                    dropdown_selector, by=dropdown_by, timeout=1.2
+                )
+            except Exception:
+                self.wait_for_ready_state_complete()
             if option_by == "index":
                 Select(element).select_by_index(option)
             elif option_by == "value":
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
+            time.sleep(0.05)
+            self.wait_for_ready_state_complete()
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
