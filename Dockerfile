@@ -92,7 +92,7 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckod
 RUN tar -xvzf geckodriver-v0.31.0-linux64.tar.gz
 RUN chmod +x geckodriver
 RUN mv geckodriver /usr/local/bin/
-RUN wget https://chromedriver.storage.googleapis.com/2.44/chromedriver_linux64.zip
+RUN wget https://chromedriver.storage.googleapis.com/72.0.3626.69/chromedriver_linux64.zip
 RUN unzip chromedriver_linux64.zip
 RUN chmod +x chromedriver
 RUN mv chromedriver /usr/local/bin/
