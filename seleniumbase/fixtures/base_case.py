@@ -12514,6 +12514,10 @@ class BaseCase(unittest.TestCase):
                 d_height=self.__device_height,
                 d_p_r=self.__device_pixel_ratio,
             )
+            if selenium4_or_newer and self.driver.timeouts.implicit_wait > 0:
+                self.driver.implicitly_wait(0)
+            elif not selenium4_or_newer:
+                self.driver.implicitly_wait(0)
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
