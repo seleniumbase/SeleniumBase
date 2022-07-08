@@ -5014,11 +5014,11 @@ class BaseCase(unittest.TestCase):
             if ":contains\\(" not in css_selector:
                 tag_name = self.execute_script(
                     "return document.querySelector('%s').tagName.toLowerCase()"
-                    % css_selector
+                    ";" % css_selector
                 )
             if tag_name == "a":
                 href = self.execute_script(
-                    "return document.querySelector('%s').href" % css_selector
+                    "return document.querySelector('%s').href;" % css_selector
                 )
             origin = self.get_origin()
             href_origin = [href, origin]
@@ -6743,12 +6743,12 @@ class BaseCase(unittest.TestCase):
                 #     When Firefox adds support, switch to element.shadow_root
                 try:
                     shadow_root = self.execute_script(
-                        "return arguments[0].shadowRoot", element
+                        "return arguments[0].shadowRoot;", element
                     )
                 except Exception:
                     time.sleep(2)
                     shadow_root = self.execute_script(
-                        "return arguments[0].shadowRoot", element
+                        "return arguments[0].shadowRoot;", element
                     )
             if timeout == 0.1 and not shadow_root:
                 raise Exception(
@@ -6757,7 +6757,7 @@ class BaseCase(unittest.TestCase):
             elif not shadow_root:
                 time.sleep(2)  # Wait two seconds for the shadow root to appear
                 shadow_root = self.execute_script(
-                    "return arguments[0].shadowRoot", element
+                    "return arguments[0].shadowRoot;", element
                 )
                 if not shadow_root:
                     raise Exception(
@@ -9490,15 +9490,15 @@ class BaseCase(unittest.TestCase):
         waiting_for_response = True
         while waiting_for_response:
             time.sleep(0.05)
-            jqc_open = self.execute_script("return jconfirm.instances.length")
+            jqc_open = self.execute_script("return jconfirm.instances.length;")
             if str(jqc_open) == "0":
                 break
         time.sleep(0.1)
         status = None
         try:
-            status = self.execute_script("return $jqc_status")
+            status = self.execute_script("return $jqc_status;")
         except Exception:
-            status = self.execute_script("return jconfirm.lastButtonText")
+            status = self.execute_script("return jconfirm.lastButtonText;")
         return status
 
     def get_jqc_text_input(self, message, button=None, options=None):
@@ -9573,15 +9573,15 @@ class BaseCase(unittest.TestCase):
         waiting_for_response = True
         while waiting_for_response:
             time.sleep(0.05)
-            jqc_open = self.execute_script("return jconfirm.instances.length")
+            jqc_open = self.execute_script("return jconfirm.instances.length;")
             if str(jqc_open) == "0":
                 break
         time.sleep(0.1)
         status = None
         try:
-            status = self.execute_script("return $jqc_input")
+            status = self.execute_script("return $jqc_input;")
         except Exception:
-            status = self.execute_script("return jconfirm.lastInputText")
+            status = self.execute_script("return jconfirm.lastInputText;")
         return status
 
     def get_jqc_form_inputs(self, message, buttons, options=None):
@@ -9644,19 +9644,19 @@ class BaseCase(unittest.TestCase):
         waiting_for_response = True
         while waiting_for_response:
             time.sleep(0.05)
-            jqc_open = self.execute_script("return jconfirm.instances.length")
+            jqc_open = self.execute_script("return jconfirm.instances.length;")
             if str(jqc_open) == "0":
                 break
         time.sleep(0.1)
         text_status = None
         button_status = None
         try:
-            text_status = self.execute_script("return $jqc_input")
-            button_status = self.execute_script("return $jqc_status")
+            text_status = self.execute_script("return $jqc_input;")
+            button_status = self.execute_script("return $jqc_status;")
         except Exception:
-            text_status = self.execute_script("return jconfirm.lastInputText")
+            text_status = self.execute_script("return jconfirm.lastInputText;")
             button_status = self.execute_script(
-                "return jconfirm.lastButtonText"
+                "return jconfirm.lastButtonText;"
             )
         return (text_status, button_status)
 

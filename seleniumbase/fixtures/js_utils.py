@@ -32,7 +32,7 @@ def wait_for_ready_state_complete(driver, timeout=settings.LARGE_TIMEOUT):
         if sb_config.time_limit and not sb_config.recorder_mode:
             shared_utils.check_if_time_limit_exceeded()
         try:
-            ready_state = driver.execute_script("return document.readyState")
+            ready_state = driver.execute_script("return document.readyState;")
         except WebDriverException:
             # Bug fix for: [Permission denied to access property "document"]
             time.sleep(0.03)
@@ -261,7 +261,7 @@ def wait_for_css_query_selector(
             selector = re.escape(selector)
             selector = escape_quotes_if_needed(selector)
             element = driver.execute_script(
-                """return document.querySelector('%s')""" % selector
+                """return document.querySelector('%s');""" % selector
             )
             if element:
                 return element
