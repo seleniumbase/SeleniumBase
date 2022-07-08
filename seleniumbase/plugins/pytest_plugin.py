@@ -68,8 +68,9 @@ def pytest_addoption(parser):
     --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
-    --ad-block  (Block some types of display ads after page loads.)
+    --ad-block  (Block some types of display ads from loading.)
     --block-images  (Block images from loading during tests.)
+    --do-not-track  (Indicate to websites that you don't want to be tracked.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
@@ -722,6 +723,17 @@ def pytest_addoption(parser):
                 loading on web pages during tests.""",
     )
     parser.addoption(
+        "--do_not_track",
+        "--do-not-track",
+        action="store_true",
+        dest="do_not_track",
+        default=False,
+        help="""Indicate to websites that you don't want to be
+                tracked. The browser will send an extra HTTP
+                header each time it requests a web page.
+                https://support.google.com/chrome/answer/2790761""",
+    )
+    parser.addoption(
         "--verify_delay",
         "--verify-delay",
         action="store",
@@ -1220,6 +1232,7 @@ def pytest_configure(config):
     sb_config.js_checking_on = config.getoption("js_checking_on")
     sb_config.ad_block_on = config.getoption("ad_block_on")
     sb_config.block_images = config.getoption("block_images")
+    sb_config.do_not_track = config.getoption("do_not_track")
     sb_config.verify_delay = config.getoption("verify_delay")
     sb_config.recorder_mode = config.getoption("recorder_mode")
     sb_config.recorder_ext = config.getoption("recorder_mode")  # Again

@@ -2981,6 +2981,7 @@ class BaseCase(unittest.TestCase):
         swiftshader=None,
         ad_block_on=None,
         block_images=None,
+        do_not_track=None,
         chromium_arg=None,
         firefox_arg=None,
         firefox_pref=None,
@@ -3024,6 +3025,7 @@ class BaseCase(unittest.TestCase):
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
         ad_block_on - the option to block ads from loading (Chromium-only)
         block_images - the option to block images from loading (Chrome)
+        do_not_track - indicate that websites should not track you (Chrome)
         chromium_arg - the option to add a Chromium arg to Chrome/Edge
         firefox_arg - the option to add a Firefox arg to Firefox runs
         firefox_pref - the option to add a Firefox pref:value set (Firefox)
@@ -3120,6 +3122,8 @@ class BaseCase(unittest.TestCase):
             ad_block_on = self.ad_block_on
         if block_images is None:
             block_images = self.block_images
+        if do_not_track is None:
+            do_not_track = self.do_not_track
         if chromium_arg is None:
             chromium_arg = self.chromium_arg
         if firefox_arg is None:
@@ -3184,6 +3188,7 @@ class BaseCase(unittest.TestCase):
             swiftshader=swiftshader,
             ad_block_on=ad_block_on,
             block_images=block_images,
+            do_not_track=do_not_track,
             chromium_arg=chromium_arg,
             firefox_arg=firefox_arg,
             firefox_pref=firefox_pref,
@@ -12175,6 +12180,7 @@ class BaseCase(unittest.TestCase):
             self.js_checking_on = sb_config.js_checking_on
             self.ad_block_on = sb_config.ad_block_on
             self.block_images = sb_config.block_images
+            self.do_not_track = sb_config.do_not_track
             self.chromium_arg = sb_config.chromium_arg
             self.firefox_arg = sb_config.firefox_arg
             self.firefox_pref = sb_config.firefox_pref
@@ -12495,6 +12501,7 @@ class BaseCase(unittest.TestCase):
                 swiftshader=self.swiftshader,
                 ad_block_on=self.ad_block_on,
                 block_images=self.block_images,
+                do_not_track=self.do_not_track,
                 chromium_arg=self.chromium_arg,
                 firefox_arg=self.firefox_arg,
                 firefox_pref=self.firefox_pref,

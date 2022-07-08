@@ -93,6 +93,7 @@ if pure_python:
     sb._dash_initialized = False
     sb.message_duration = None
     sb.block_images = False
+    sb.do_not_track = False
     sb.external_pdf = False
     sb.remote_debug = False
     sb.settings_file = None
