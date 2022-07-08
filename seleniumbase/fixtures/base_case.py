@@ -944,6 +944,13 @@ class BaseCase(unittest.TestCase):
             return self.__is_shadow_element_visible(selector)
         return page_actions.is_element_visible(self.driver, selector, by)
 
+    def is_element_clickable(self, selector, by="css selector"):
+        self.wait_for_ready_state_complete()
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_element_clickable(selector)
+        return page_actions.is_element_clickable(self.driver, selector, by)
+
     def is_element_enabled(self, selector, by="css selector"):
         self.wait_for_ready_state_complete()
         selector, by = self.__recalculate_selector(selector, by)
@@ -7010,6 +7017,20 @@ class BaseCase(unittest.TestCase):
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
             return element.is_displayed()
+        except Exception:
+            return False
+
+    def __is_shadow_element_clickable(self, selector):
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support.ui import WebDriverWait
+
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            if element.is_displayed() and WebDriverWait(self.driver, 0).until(
+                EC.element_to_be_clickable(element)
+            ):
+                return True
+            return False
         except Exception:
             return False
 
