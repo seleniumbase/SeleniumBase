@@ -163,7 +163,7 @@ def activate_jquery(driver):
         pass
     jquery_js = constants.JQuery.MIN_JS
     add_js_link(driver, jquery_js)
-    for x in range(22):
+    for x in range(25):
         # jQuery needs a small amount of time to activate.
         try:
             driver.execute_script("jQuery('html');")
@@ -172,7 +172,7 @@ def activate_jquery(driver):
             time.sleep(0.1)
     try:
         add_js_link(driver, jquery_js)
-        time.sleep(0.35)
+        time.sleep(0.5)
         driver.execute_script("jQuery('head');")
         return
     except Exception:
