@@ -1,28 +1,29 @@
 # -*- coding: utf-8 -*-
-r"""  ------------>  ------------>  ------------>  ------------>
-   ______     __           _                 ____
-  / ____/__  / /__  ____  (_)_  ______ ___  / _  \____  ________
-  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
- ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
-/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/
-
------------->  ------------>  ------------>  ------------>
+r"""----------------------------------------------------------------->
+|    ______     __           _                  ____                 |
+|   / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________  |
+|   \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \ / /_) / __ \/ ___/ _ \ |
+|  ___/ /  __/ /  __/ / / / / /_/ / / / / / // /_) / (_/ /__  /  __/ |
+| /____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_//_____/\__,_/____/\___/  |
+|                                                                    |
+--------------------------------------------------------------------->
 
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
-It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
+It inherits Python's unittest.TestCase class and runs with pytest or nosetests.
 All tests using BaseCase automatically launch WebDriver browsers for tests.
 
-Usage:
+Example Test:
 
-    from seleniumbase import BaseCase
-    class MyTestClass(BaseCase):
-        def test_anything(self):
-            # Write your code here. Example:
-            self.open("https://github.com/")
-            self.type("input.header-search-input", "SeleniumBase\n")
-            self.click('a[href="/seleniumbase/SeleniumBase"]')
-            self.assert_element("div.repository-content")
-            ....
+# --------------------------------------------------------------
+from seleniumbase import BaseCase
+class MyTestClass(BaseCase):
+    def test_anything(self):
+        # Write your code here. Example:
+        self.open("https://github.com/")
+        self.type("input.header-search-input", "SeleniumBase\n")
+        self.click('a[href="/seleniumbase/SeleniumBase"]')
+        self.assert_element("div.repository-content")
+# --------------------------------------------------------------
 
 SeleniumBase methods expand and improve on existing WebDriver commands.
 Improvements include making WebDriver more robust, reliable, and flexible.
@@ -13573,3 +13574,13 @@ class BaseCase(unittest.TestCase):
         if deferred_exception:
             # User forgot to call "self.process_deferred_asserts()" in test
             raise deferred_exception
+
+
+r"""----------------------------------------------------------------->
+|    ______     __           _                  ____                 |
+|   / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________  |
+|   \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \ / /_) / __ \/ ___/ _ \ |
+|  ___/ /  __/ /  __/ / / / / /_/ / / / / / // /_) / (_/ /__  /  __/ |
+| /____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_//_____/\__,_/____/\___/  |
+|                                                                    |
+------------------------------------------------------------------>"""
