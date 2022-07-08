@@ -71,6 +71,30 @@ def is_element_visible(driver, selector, by="css selector"):
         return False
 
 
+def is_element_clickable(driver, selector, by="css selector"):
+    """
+    Returns whether the specified element selector is clickable.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    @Returns
+    Boolean (is element clickable)
+    """
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait
+
+    try:
+        element = driver.find_element(by=by, value=selector)
+        if element.is_displayed() and WebDriverWait(driver, 0).until(
+            EC.element_to_be_clickable(element)
+        ):
+            return True
+        return False
+    except Exception:
+        return False
+
+
 def is_element_enabled(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is enabled on the page.

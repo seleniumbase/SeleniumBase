@@ -277,6 +277,7 @@ def _set_chrome_options(
     swiftshader,
     ad_block_on,
     block_images,
+    do_not_track,
     chromium_arg,
     user_data_dir,
     extension_zip,
@@ -313,6 +314,8 @@ def _set_chrome_options(
         prefs["intl.accept_languages"] = locale_code
     if block_images:
         prefs["profile.managed_default_content_settings.images"] = 2
+    if do_not_track:
+        prefs["enable_do_not_track"] = True
     if external_pdf:
         prefs["plugins.always_open_pdf_externally"] = True
     chrome_options.add_experimental_option("prefs", prefs)
@@ -752,6 +755,7 @@ def get_driver(
     swiftshader=None,
     ad_block_on=None,
     block_images=None,
+    do_not_track=None,
     chromium_arg=None,
     firefox_arg=None,
     firefox_pref=None,
@@ -856,6 +860,7 @@ def get_driver(
             swiftshader,
             ad_block_on,
             block_images,
+            do_not_track,
             chromium_arg,
             firefox_arg,
             firefox_pref,
@@ -896,6 +901,7 @@ def get_driver(
             swiftshader,
             ad_block_on,
             block_images,
+            do_not_track,
             chromium_arg,
             firefox_arg,
             firefox_pref,
@@ -940,6 +946,7 @@ def get_remote_driver(
     swiftshader,
     ad_block_on,
     block_images,
+    do_not_track,
     chromium_arg,
     firefox_arg,
     firefox_pref,
@@ -1034,6 +1041,7 @@ def get_remote_driver(
             swiftshader,
             ad_block_on,
             block_images,
+            do_not_track,
             chromium_arg,
             user_data_dir,
             extension_zip,
@@ -1242,6 +1250,7 @@ def get_remote_driver(
             swiftshader,
             ad_block_on,
             block_images,
+            do_not_track,
             chromium_arg,
             user_data_dir,
             extension_zip,
@@ -1424,6 +1433,7 @@ def get_local_driver(
     swiftshader,
     ad_block_on,
     block_images,
+    do_not_track,
     chromium_arg,
     firefox_arg,
     firefox_pref,
@@ -1663,6 +1673,8 @@ def get_local_driver(
             prefs["intl.accept_languages"] = locale_code
         if block_images:
             prefs["profile.managed_default_content_settings.images"] = 2
+        if do_not_track:
+            prefs["enable_do_not_track"] = True
         if external_pdf:
             prefs["plugins.always_open_pdf_externally"] = True
         edge_options.add_experimental_option("prefs", prefs)
@@ -1924,6 +1936,7 @@ def get_local_driver(
                 swiftshader,
                 ad_block_on,
                 block_images,
+                do_not_track,
                 chromium_arg,
                 user_data_dir,
                 extension_zip,
@@ -1980,6 +1993,7 @@ def get_local_driver(
                 swiftshader,
                 ad_block_on,
                 block_images,
+                do_not_track,
                 chromium_arg,
                 user_data_dir,
                 extension_zip,
@@ -2100,6 +2114,7 @@ def get_local_driver(
                         swiftshader,
                         ad_block_on,
                         block_images,
+                        do_not_track,
                         chromium_arg,
                         user_data_dir,
                         extension_zip,

@@ -163,7 +163,9 @@ setup(
         'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.5" and python_version<"3.7"',  # noqa: E501
         'charset-normalizer==2.1.0;python_version>="3.7"',  # Sync "requests"
-        "urllib3==1.26.9",  # Must stay in sync with "requests"
+        'urllib3==1.26.10;python_version<"3.5"',  # Sync with "requests"
+        'urllib3==1.26.9;python_version>="3.5" and python_version<"3.6"',
+        'urllib3==1.26.10;python_version>"3.6"',  # Sync with "requests"
         'requests==2.27.1;python_version<"3.5"',
         'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
         'requests==2.27.1;python_version>="3.6" and python_version<"3.7"',

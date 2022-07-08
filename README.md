@@ -5,7 +5,7 @@
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
 <link rel="icon" href="https://seleniumbase.io/img/green_logo2.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_gs6.png" alt="SeleniumBase" title="SeleniumBase" width="250" /></a></p>
+<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_gs7.png" alt="SeleniumBase" title="SeleniumBase" width="275" /></a></p>
 <p align="center"><b>Powerful end-to-end testing with <a href="https://www.selenium.dev/documentation/">Selenium</a>, <a href="https://www.python.org/about/">Python</a>, and <a href="https://docs.pytest.org/en/latest/how-to/usage.html">pytest</a>.</b></p>
 
 <p align="center"><a href="https://pypi.python.org/pypi/seleniumbase" target="_blank"><img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=3399EE" alt="PyPI version" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases" target="_blank"><img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=22AAEE" alt="GitHub version" /></a> <a href="https://seleniumbase.io"><img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBAA.svg" alt="SeleniumBase Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions" target="_blank"><img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a></p>
@@ -175,12 +175,12 @@ pip install -U seleniumbase
 🔵 Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
 
 ```bash
-   ______     __           _                 ____                
-  / ____/__  / /__  ____  (_)_  ______ ___  / _  \____  ________ 
-  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
- ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
-/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/ 
------------------------------------------------------------------
+   ______     __           _                  ____                
+  / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________ 
+  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \ / /_) / __ \/ ___/ _ \
+ ___/ /  __/ /  __/ / / / / /_/ / / / / / // /_) / (_/ /__  /  __/
+/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_//_____/\__,_/____/\___/ 
+------------------------------------------------------------------
 
  * USAGE: "seleniumbase [COMMAND] [PARAMETERS]"
  *    OR:        "sbase [COMMAND] [PARAMETERS]"
@@ -465,8 +465,9 @@ The code above will leave your browser window open in case there's a failure. (i
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
 --message-duration=SECONDS  # (The time length for Messenger alerts.)
 --check-js  # (Check for JavaScript errors after page loads.)
---ad-block  # (Block some types of display ads after page loads.)
+--ad-block  # (Block some types of display ads from loading.)
 --block-images  # (Block images from loading during tests.)
+--do-not-track  # (Indicate to websites that you don't want to be tracked.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
 --recorder  # (Enables the Recorder for turning browser actions into code.)
 --rec-behave  # (Same as Recorder Mode, but also generates behave-gherkin.)

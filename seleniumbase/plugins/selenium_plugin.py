@@ -49,8 +49,9 @@ class SeleniumBrowser(Plugin):
     --highlights=NUM  (Number of highlight animations for Demo Mode actions.)
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
-    --ad-block  (Block some types of display ads after page loads.)
+    --ad-block  (Block some types of display ads from loading.)
     --block-images  (Block images from loading during tests.)
+    --do-not-track  (Indicate to websites that you don't want to be tracked.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
     --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
@@ -454,6 +455,17 @@ class SeleniumBrowser(Plugin):
                     loading on web pages during tests.""",
         )
         parser.add_option(
+            "--do_not_track",
+            "--do-not-track",
+            action="store_true",
+            dest="do_not_track",
+            default=False,
+            help="""Indicate to websites that you don't want to be
+                    tracked. The browser will send an extra HTTP
+                    header each time it requests a web page.
+                    https://support.google.com/chrome/answer/2790761""",
+        )
+        parser.add_option(
             "--verify_delay",
             "--verify-delay",
             action="store",
@@ -771,6 +783,7 @@ class SeleniumBrowser(Plugin):
         test.test.js_checking_on = self.options.js_checking_on
         test.test.ad_block_on = self.options.ad_block_on
         test.test.block_images = self.options.block_images
+        test.test.do_not_track = self.options.do_not_track
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.recorder_mode = self.options.recorder_mode
         test.test.recorder_ext = self.options.recorder_mode  # Again

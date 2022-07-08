@@ -57,8 +57,9 @@ behave -D agent="User Agent String" -D demo
 -D highlights=NUM  (Number of highlight animations for Demo Mode actions.)
 -D message-duration=SECONDS  (The time length for Messenger alerts.)
 -D check-js  (Check for JavaScript errors after page loads.)
--D ad-block  (Block some types of display ads after page loads.)
+-D ad-block  (Block some types of display ads from loading.)
 -D block-images  (Block images from loading during tests.)
+-D do-not-track  (Indicate to websites that you don't want to be tracked.)
 -D verify-delay=SECONDS  (The delay before MasterQA verification checks.)
 -D recorder  (Enables the Recorder for turning browser actions into code.)
 -D rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
@@ -188,6 +189,7 @@ def get_configured_sb(context):
     sb._dash_initialized = False
     sb.message_duration = None
     sb.block_images = False
+    sb.do_not_track = False
     sb.external_pdf = False
     sb.remote_debug = False
     sb.settings_file = None
@@ -577,6 +579,10 @@ def get_configured_sb(context):
         # Handle: -D block-images / block_images
         if low_key in ["block-images", "block_images"]:
             sb.block_images = True
+            continue
+        # Handle: -D do-not-track / do_not_track
+        if low_key in ["do-not-track", "do_not_track"]:
+            sb.do_not_track = True
             continue
         # Handle: -D external-pdf / external_pdf
         if low_key in ["external-pdf", "external_pdf"]:

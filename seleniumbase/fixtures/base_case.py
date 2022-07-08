@@ -1,28 +1,29 @@
 # -*- coding: utf-8 -*-
-r"""  ------------>  ------------>  ------------>  ------------>
-   ______     __           _                 ____
-  / ____/__  / /__  ____  (_)_  ______ ___  / _  \____  ________
-  \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \/ /_) / __ \/ ___/ _ \
- ___/ /  __/ /  __/ / / / / /_/ / / / / / / /_) / (_/ /__  /  __/
-/____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_/_____/\__,_/____/\___/
-
------------->  ------------>  ------------>  ------------>
+r"""----------------------------------------------------------------->
+|    ______     __           _                  ____                 |
+|   / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________  |
+|   \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \ / /_) / __ \/ ___/ _ \ |
+|  ___/ /  __/ /  __/ / / / / /_/ / / / / / // /_) / (_/ /__  /  __/ |
+| /____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_//_____/\__,_/____/\___/  |
+|                                                                    |
+--------------------------------------------------------------------->
 
 The BaseCase class is the main gateway for using The SeleniumBase Framework.
-It inherits Python's unittest.TestCase class, and runs with Pytest or Nose.
+It inherits Python's unittest.TestCase class and runs with pytest or nosetests.
 All tests using BaseCase automatically launch WebDriver browsers for tests.
 
-Usage:
+Example Test:
 
-    from seleniumbase import BaseCase
-    class MyTestClass(BaseCase):
-        def test_anything(self):
-            # Write your code here. Example:
-            self.open("https://github.com/")
-            self.type("input.header-search-input", "SeleniumBase\n")
-            self.click('a[href="/seleniumbase/SeleniumBase"]')
-            self.assert_element("div.repository-content")
-            ....
+# --------------------------------------------------------------
+from seleniumbase import BaseCase
+class MyTestClass(BaseCase):
+    def test_anything(self):
+        # Write your code here. Example:
+        self.open("https://github.com/")
+        self.type("input.header-search-input", "SeleniumBase\n")
+        self.click('a[href="/seleniumbase/SeleniumBase"]')
+        self.assert_element("div.repository-content")
+# --------------------------------------------------------------
 
 SeleniumBase methods expand and improve on existing WebDriver commands.
 Improvements include making WebDriver more robust, reliable, and flexible.
@@ -942,6 +943,13 @@ class BaseCase(unittest.TestCase):
         if self.__is_shadow_selector(selector):
             return self.__is_shadow_element_visible(selector)
         return page_actions.is_element_visible(self.driver, selector, by)
+
+    def is_element_clickable(self, selector, by="css selector"):
+        self.wait_for_ready_state_complete()
+        selector, by = self.__recalculate_selector(selector, by)
+        if self.__is_shadow_selector(selector):
+            return self.__is_shadow_element_clickable(selector)
+        return page_actions.is_element_clickable(self.driver, selector, by)
 
     def is_element_enabled(self, selector, by="css selector"):
         self.wait_for_ready_state_complete()
@@ -2356,6 +2364,12 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_present(
             dropdown_selector, by=dropdown_by, timeout=timeout
         )
+        try:
+            element = self.wait_for_element_clickable(
+                dropdown_selector, by=dropdown_by, timeout=1.2
+            )
+        except Exception:
+            self.wait_for_ready_state_complete()
         if self.is_element_visible(dropdown_selector, by=dropdown_by):
             self.__demo_mode_highlight_if_active(
                 dropdown_selector, dropdown_by
@@ -2369,18 +2383,28 @@ class BaseCase(unittest.TestCase):
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
-        except (StaleElementReferenceException, ENI_Exception):
+            time.sleep(0.05)
             self.wait_for_ready_state_complete()
-            time.sleep(0.14)
+        except Exception:
+            time.sleep(0.25)
+            self.wait_for_ready_state_complete()
             element = self.wait_for_element_present(
                 dropdown_selector, by=dropdown_by, timeout=timeout
             )
+            try:
+                element = self.wait_for_element_clickable(
+                    dropdown_selector, by=dropdown_by, timeout=1.2
+                )
+            except Exception:
+                self.wait_for_ready_state_complete()
             if option_by == "index":
                 Select(element).select_by_index(option)
             elif option_by == "value":
                 Select(element).select_by_value(option)
             else:
                 Select(element).select_by_visible_text(option)
+            time.sleep(0.05)
+            self.wait_for_ready_state_complete()
         latest_window_count = len(self.driver.window_handles)
         if (
             latest_window_count > pre_window_count
@@ -2981,6 +3005,7 @@ class BaseCase(unittest.TestCase):
         swiftshader=None,
         ad_block_on=None,
         block_images=None,
+        do_not_track=None,
         chromium_arg=None,
         firefox_arg=None,
         firefox_pref=None,
@@ -3024,6 +3049,7 @@ class BaseCase(unittest.TestCase):
         swiftshader - the option to use Chrome's swiftshader (Chrome-only)
         ad_block_on - the option to block ads from loading (Chromium-only)
         block_images - the option to block images from loading (Chrome)
+        do_not_track - indicate that websites should not track you (Chrome)
         chromium_arg - the option to add a Chromium arg to Chrome/Edge
         firefox_arg - the option to add a Firefox arg to Firefox runs
         firefox_pref - the option to add a Firefox pref:value set (Firefox)
@@ -3120,6 +3146,8 @@ class BaseCase(unittest.TestCase):
             ad_block_on = self.ad_block_on
         if block_images is None:
             block_images = self.block_images
+        if do_not_track is None:
+            do_not_track = self.do_not_track
         if chromium_arg is None:
             chromium_arg = self.chromium_arg
         if firefox_arg is None:
@@ -3184,6 +3212,7 @@ class BaseCase(unittest.TestCase):
             swiftshader=swiftshader,
             ad_block_on=ad_block_on,
             block_images=block_images,
+            do_not_track=do_not_track,
             chromium_arg=chromium_arg,
             firefox_arg=firefox_arg,
             firefox_pref=firefox_pref,
@@ -4985,11 +5014,11 @@ class BaseCase(unittest.TestCase):
             if ":contains\\(" not in css_selector:
                 tag_name = self.execute_script(
                     "return document.querySelector('%s').tagName.toLowerCase()"
-                    % css_selector
+                    ";" % css_selector
                 )
             if tag_name == "a":
                 href = self.execute_script(
-                    "return document.querySelector('%s').href" % css_selector
+                    "return document.querySelector('%s').href;" % css_selector
                 )
             origin = self.get_origin()
             href_origin = [href, origin]
@@ -6714,12 +6743,12 @@ class BaseCase(unittest.TestCase):
                 #     When Firefox adds support, switch to element.shadow_root
                 try:
                     shadow_root = self.execute_script(
-                        "return arguments[0].shadowRoot", element
+                        "return arguments[0].shadowRoot;", element
                     )
                 except Exception:
                     time.sleep(2)
                     shadow_root = self.execute_script(
-                        "return arguments[0].shadowRoot", element
+                        "return arguments[0].shadowRoot;", element
                     )
             if timeout == 0.1 and not shadow_root:
                 raise Exception(
@@ -6728,7 +6757,7 @@ class BaseCase(unittest.TestCase):
             elif not shadow_root:
                 time.sleep(2)  # Wait two seconds for the shadow root to appear
                 shadow_root = self.execute_script(
-                    "return arguments[0].shadowRoot", element
+                    "return arguments[0].shadowRoot;", element
                 )
                 if not shadow_root:
                     raise Exception(
@@ -6988,6 +7017,20 @@ class BaseCase(unittest.TestCase):
         try:
             element = self.__get_shadow_element(selector, timeout=0.1)
             return element.is_displayed()
+        except Exception:
+            return False
+
+    def __is_shadow_element_clickable(self, selector):
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.support.ui import WebDriverWait
+
+        try:
+            element = self.__get_shadow_element(selector, timeout=0.1)
+            if element.is_displayed() and WebDriverWait(self.driver, 0).until(
+                EC.element_to_be_clickable(element)
+            ):
+                return True
+            return False
         except Exception:
             return False
 
@@ -9447,15 +9490,15 @@ class BaseCase(unittest.TestCase):
         waiting_for_response = True
         while waiting_for_response:
             time.sleep(0.05)
-            jqc_open = self.execute_script("return jconfirm.instances.length")
+            jqc_open = self.execute_script("return jconfirm.instances.length;")
             if str(jqc_open) == "0":
                 break
         time.sleep(0.1)
         status = None
         try:
-            status = self.execute_script("return $jqc_status")
+            status = self.execute_script("return $jqc_status;")
         except Exception:
-            status = self.execute_script("return jconfirm.lastButtonText")
+            status = self.execute_script("return jconfirm.lastButtonText;")
         return status
 
     def get_jqc_text_input(self, message, button=None, options=None):
@@ -9530,15 +9573,15 @@ class BaseCase(unittest.TestCase):
         waiting_for_response = True
         while waiting_for_response:
             time.sleep(0.05)
-            jqc_open = self.execute_script("return jconfirm.instances.length")
+            jqc_open = self.execute_script("return jconfirm.instances.length;")
             if str(jqc_open) == "0":
                 break
         time.sleep(0.1)
         status = None
         try:
-            status = self.execute_script("return $jqc_input")
+            status = self.execute_script("return $jqc_input;")
         except Exception:
-            status = self.execute_script("return jconfirm.lastInputText")
+            status = self.execute_script("return jconfirm.lastInputText;")
         return status
 
     def get_jqc_form_inputs(self, message, buttons, options=None):
@@ -9601,19 +9644,19 @@ class BaseCase(unittest.TestCase):
         waiting_for_response = True
         while waiting_for_response:
             time.sleep(0.05)
-            jqc_open = self.execute_script("return jconfirm.instances.length")
+            jqc_open = self.execute_script("return jconfirm.instances.length;")
             if str(jqc_open) == "0":
                 break
         time.sleep(0.1)
         text_status = None
         button_status = None
         try:
-            text_status = self.execute_script("return $jqc_input")
-            button_status = self.execute_script("return $jqc_status")
+            text_status = self.execute_script("return $jqc_input;")
+            button_status = self.execute_script("return $jqc_status;")
         except Exception:
-            text_status = self.execute_script("return jconfirm.lastInputText")
+            text_status = self.execute_script("return jconfirm.lastInputText;")
             button_status = self.execute_script(
-                "return jconfirm.lastButtonText"
+                "return jconfirm.lastButtonText;"
             )
         return (text_status, button_status)
 
@@ -12175,6 +12218,7 @@ class BaseCase(unittest.TestCase):
             self.js_checking_on = sb_config.js_checking_on
             self.ad_block_on = sb_config.ad_block_on
             self.block_images = sb_config.block_images
+            self.do_not_track = sb_config.do_not_track
             self.chromium_arg = sb_config.chromium_arg
             self.firefox_arg = sb_config.firefox_arg
             self.firefox_pref = sb_config.firefox_pref
@@ -12495,6 +12539,7 @@ class BaseCase(unittest.TestCase):
                 swiftshader=self.swiftshader,
                 ad_block_on=self.ad_block_on,
                 block_images=self.block_images,
+                do_not_track=self.do_not_track,
                 chromium_arg=self.chromium_arg,
                 firefox_arg=self.firefox_arg,
                 firefox_pref=self.firefox_pref,
@@ -12507,6 +12552,10 @@ class BaseCase(unittest.TestCase):
                 d_height=self.__device_height,
                 d_p_r=self.__device_pixel_ratio,
             )
+            if selenium4_or_newer and self.driver.timeouts.implicit_wait > 0:
+                self.driver.implicitly_wait(0)
+            elif not selenium4_or_newer:
+                self.driver.implicitly_wait(0)
             self._default_driver = self.driver
             if self._reuse_session:
                 sb_config.shared_driver = self.driver
@@ -13546,3 +13595,13 @@ class BaseCase(unittest.TestCase):
         if deferred_exception:
             # User forgot to call "self.process_deferred_asserts()" in test
             raise deferred_exception
+
+
+r"""----------------------------------------------------------------->
+|    ______     __           _                  ____                 |
+|   / ____/__  / /__  ____  (_)_  ______ ___   / _  \____  ________  |
+|   \__ \/ _ \/ / _ \/ __ \/ / / / / __ `__ \ / /_) / __ \/ ___/ _ \ |
+|  ___/ /  __/ /  __/ / / / / /_/ / / / / / // /_) / (_/ /__  /  __/ |
+| /____/\___/_/\___/_/ /_/_/\__,_/_/ /_/ /_//_____/\__,_/____/\___/  |
+|                                                                    |
+------------------------------------------------------------------>"""

@@ -23,8 +23,8 @@ class AppleTests(BaseCase):
         self.assert_element("nav.documentation-nav")
         self.assert_text(title, "h1")
         self.assert_text("Enable WebDriver and run a test.", "div.abstract")
-        self.highlight("h2")
-        h3 = "h3:nth-of-type(%s)"
+        self.highlight("div.content h2")
+        h3 = "div.content h3:nth-of-type(%s)"
         self.assert_text("Make Sure You Have Safari’s WebDriver", h3 % "1")
         self.assert_text("Get the Correct Selenium Library", h3 % "2")
         self.assert_text("Configure Safari to Enable WebDriver", h3 % "3")
