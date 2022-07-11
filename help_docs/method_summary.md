@@ -163,7 +163,7 @@ self.hover_and_double_click(
 
 self.drag_and_drop(drag_selector, drop_selector,
                    drag_by="css selector", drop_by="css selector",
-                   timeout=None)
+                   timeout=None, jquery=False)
 
 self.drag_and_drop_with_offset(
     selector, x, y, by="css selector", timeout=None)

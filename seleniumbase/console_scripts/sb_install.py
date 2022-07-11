@@ -107,6 +107,18 @@ def requests_get(url):
     return response
 
 
+def requests_get_with_retry(url):
+    response = None
+    try:
+        response = requests.get(url)
+    except Exception:
+        import time
+
+        time.sleep(0.75)
+        response = requests.get(url)
+    return response
+
+
 def main(override=None):
     if override:
         if override == "chromedriver":
@@ -344,7 +356,7 @@ def main(override=None):
             else:
                 invalid_run_command()
         if get_latest:
-            url_request = requests.get(last)
+            url_request = requests_get_with_retry(last)
             if url_request.ok:
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
                 use_version = use_version.split(".")[0]
@@ -370,7 +382,7 @@ def main(override=None):
         if use_version.isdigit():
             edgedriver_st = "https://msedgedriver.azureedge.net/LATEST_RELEASE"
             use_version = "%s_%s_%s" % (edgedriver_st, use_version, suffix)
-            url_request = requests.get(use_version)
+            url_request = requests_get_with_retry(use_version)
             if url_request.ok:
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
         download_url = "https://msedgedriver.azureedge.net/%s/%s" % (
@@ -378,7 +390,7 @@ def main(override=None):
             file_name,
         )
         if not get_latest and not use_version == DEFAULT_EDGEDRIVER_VERSION:
-            url_request = requests.get(download_url)
+            url_request = requests_get_with_retry(download_url)
             if not url_request.ok:
                 raise Exception(
                     "Could not find version [%s] of EdgeDriver!" % use_version
@@ -410,7 +422,7 @@ def main(override=None):
             "releases/download/"
             "%s/%s" % (headless_ie_version, headless_ie_file_name)
         )
-        url_request = requests.get(headless_ie_url)
+        url_request = requests_get_with_retry(headless_ie_url)
         if url_request.ok:
             headless_ie_exists = True
             msg = c2 + "HeadlessIEDriver version for download" + cr
@@ -497,7 +509,7 @@ def main(override=None):
             "\nDownloading %s from:\n%s ..."
             % (headless_ie_file_name, headless_ie_url)
         )
-        remote_file = requests.get(headless_ie_url)
+        remote_file = requests_get_with_retry(headless_ie_url)
         with open(headless_ie_file_path, "wb") as file:
             file.write(remote_file.content)
         print("Download Complete!\n")
@@ -572,7 +584,7 @@ def main(override=None):
         print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
 
     print("\nDownloading %s from:\n%s ..." % (file_name, download_url))
-    remote_file = requests.get(download_url)
+    remote_file = requests_get_with_retry(download_url)
     with open(file_path, "wb") as file:
         file.write(remote_file.content)
     print("Download Complete!\n")

@@ -2275,6 +2275,7 @@ class BaseCase(unittest.TestCase):
         drag_by="css selector",
         drop_by="css selector",
         timeout=None,
+        jquery=False,
     ):
         """Drag and drop an element from one selector to another."""
         self.__check_scope()
@@ -2292,22 +2293,28 @@ class BaseCase(unittest.TestCase):
             drag_selector, by=drag_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(drag_selector, drag_by)
-        self.wait_for_element_visible(
+        drop_element = self.wait_for_element_visible(
             drop_selector, by=drop_by, timeout=timeout
         )
         self.__demo_mode_highlight_if_active(drop_selector, drop_by)
         self.scroll_to(drag_selector, by=drag_by)
         drag_selector = self.convert_to_css_selector(drag_selector, drag_by)
         drop_selector = self.convert_to_css_selector(drop_selector, drop_by)
-        drag_and_drop_script = js_utils.get_drag_and_drop_script()
-        self.safe_execute_script(
-            drag_and_drop_script
-            + (
-                "$('%s').simulateDragDrop("
-                "{dropTarget: "
-                "'%s'});" % (drag_selector, drop_selector)
+        if not jquery:
+            drag_and_drop_script = js_utils.get_js_drag_and_drop_script()
+            self.execute_script(
+                drag_and_drop_script, drag_element, drop_element, 0, 0, 1, None
             )
-        )
+        else:
+            drag_and_drop_script = js_utils.get_drag_and_drop_script()
+            self.safe_execute_script(
+                drag_and_drop_script
+                + (
+                    "$('%s').simulateDragDrop("
+                    "{dropTarget: "
+                    "'%s'});" % (drag_selector, drop_selector)
+                )
+            )
         if self.demo_mode:
             self.__demo_mode_pause_if_active()
         elif self.slow_mode:
@@ -2332,7 +2339,7 @@ class BaseCase(unittest.TestCase):
         script = js_utils.get_drag_and_drop_with_offset_script(
             css_selector, x, y
         )
-        self.safe_execute_script(script)
+        self.execute_script(script)
         if self.demo_mode:
             self.__demo_mode_pause_if_active()
         elif self.slow_mode:
