@@ -1,6 +1,6 @@
 """
 The setup package to install SeleniumBase dependencies and plugins.
-(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.5+)
+(Uses selenium 3.x and is compatible with Python 2.7+ and Python 3.6+)
 """
 
 from setuptools import setup, find_packages  # noqa: F401
@@ -100,7 +100,6 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -123,15 +122,14 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*",  # noqa: E501
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
         'pip>=22.1.2;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
-        'setuptools>=44.1.1;python_version<"3.5"',
-        'setuptools>=50.3.2;python_version>="3.5" and python_version<"3.6"',
+        'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
         'setuptools>=63.1.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
@@ -150,25 +148,21 @@ setup(
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
         'platformdirs>=2.5.2;python_version>="3.7"',
         "six==1.16.0",
-        'ipdb==0.13.4;python_version<"3.5"',
-        'ipdb==0.13.9;python_version>="3.5"',
+        'ipdb==0.13.4;python_version<"3.6"',
+        'ipdb==0.13.9;python_version>="3.6"',
         'parso==0.7.1;python_version<"3.6"',
         'parso==0.8.3;python_version>="3.6"',
         'jedi==0.17.2;python_version<"3.6"',
         'jedi==0.18.1;python_version>="3.6"',
         'idna==2.10;python_version<"3.6"',  # Must stay in sync with "requests"
         'idna==3.3;python_version>="3.6"',  # Must stay in sync with "requests"
-        'chardet==3.0.4;python_version<"3.5"',  # Stay in sync with "requests"
-        'chardet==4.0.0;python_version>="3.5" and python_version<"3.7"',
+        'chardet==3.0.4;python_version<"3.6"',  # Stay in sync with "requests"
+        'chardet==4.0.0;python_version>="3.6" and python_version<"3.7"',
         'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
-        'charset-normalizer==2.0.12;python_version>="3.5" and python_version<"3.7"',  # noqa: E501
+        'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'charset-normalizer==2.1.0;python_version>="3.7"',  # Sync "requests"
-        'urllib3==1.26.10;python_version<"3.5"',  # Sync with "requests"
-        'urllib3==1.26.9;python_version>="3.5" and python_version<"3.6"',
-        'urllib3==1.26.10;python_version>"3.6"',  # Sync with "requests"
-        'requests==2.27.1;python_version<"3.5"',
-        'requests==2.25.1;python_version>="3.5" and python_version<"3.6"',
-        'requests==2.27.1;python_version>="3.6" and python_version<"3.7"',
+        'urllib3==1.26.10',  # Stay in sync with "requests"
+        'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.1;python_version>="3.7"',
         "nose==1.3.7",
         'sniffio==1.2.0;python_version>="3.7"',
@@ -181,20 +175,18 @@ setup(
         'selenium==3.141.0;python_version<"3.7"',
         'selenium==4.3.0;python_version>="3.7"',
         'msedge-selenium-tools==3.141.3;python_version<"3.7"',
-        'more-itertools==5.0.0;python_version<"3.5"',
-        'more-itertools==8.13.0;python_version>="3.5"',
+        'more-itertools==5.0.0;python_version<"3.6"',
+        'more-itertools==8.13.0;python_version>="3.6"',
         "cssselect==1.1.0",
         "sortedcontainers==2.4.0",
-        'fasteners==0.16;python_version<"3.5"',
-        'fasteners==0.16.3;python_version>="3.5" and python_version<"3.6"',
+        'fasteners==0.16;python_version<"3.6"',
         'fasteners==0.17.3;python_version>="3.6"',
         "execnet==1.9.0",
         'pluggy==0.13.1;python_version<"3.6"',
         'pluggy==1.0.0;python_version>="3.6"',
-        'py==1.8.1;python_version<"3.5"',
-        'py==1.11.0;python_version>="3.5"',
-        'pytest==4.6.11;python_version<"3.5"',
-        'pytest==6.1.2;python_version>="3.5" and python_version<"3.6"',
+        'py==1.8.1;python_version<"3.6"',
+        'py==1.11.0;python_version>="3.6"',
+        'pytest==4.6.11;python_version<"3.6"',
         'pytest==7.0.1;python_version>="3.6" and python_version<"3.7"',
         'pytest==7.1.2;python_version>="3.7"',
         'pytest-forked==1.3.0;python_version<"3.6"',
@@ -205,37 +197,29 @@ setup(
         'pytest-metadata==1.11.0;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'pytest-metadata==2.0.1;python_version>="3.7"',
         "pytest-ordering==0.6",
-        'pytest-rerunfailures==8.0;python_version<"3.5"',
-        'pytest-rerunfailures==9.1.1;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'pytest-rerunfailures==8.0;python_version<"3.6"',
         'pytest-rerunfailures==10.2;python_version>="3.6"',
-        'pytest-xdist==1.34.0;python_version<"3.5"',
-        'pytest-xdist==2.2.1;python_version>="3.5" and python_version<"3.6"',
+        'pytest-xdist==1.34.0;python_version<"3.6"',
         'pytest-xdist==2.5.0;python_version>="3.6"',
         "parameterized==0.8.1",
         "sbvirtualdisplay==1.1.0",
         "behave==1.2.6",
         "parse==1.19.0",
         "parse-type==0.6.0",
-        'soupsieve==1.9.6;python_version<"3.5"',
-        'soupsieve==2.1;python_version>="3.5" and python_version<"3.6"',
+        'soupsieve==1.9.6;python_version<"3.6"',
         'soupsieve==2.3.2.post1;python_version>="3.6"',
-        'beautifulsoup4==4.9.3;python_version<"3.5"',
-        'beautifulsoup4==4.10.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'beautifulsoup4==4.9.3;python_version<"3.6"',
         'beautifulsoup4==4.11.1;python_version>="3.6"',
-        'cryptography==2.9.2;python_version<"3.5"',
-        'cryptography==3.2.1;python_version>="3.5" and python_version<"3.6"',
+        'cryptography==2.9.2;python_version<"3.6"',
         'cryptography==36.0.2;python_version>="3.6" and python_version<"3.7"',
         'cryptography==37.0.4;python_version>="3.7"',
-        'pygments==2.5.2;python_version<"3.5"',
-        'pygments==2.11.2;python_version>="3.5" and python_version<"3.6"',
+        'pygments==2.5.2;python_version<"3.6"',
         'pygments==2.12.0;python_version>="3.6"',
-        'prompt-toolkit==1.0.18;python_version<"3.5"',
-        'prompt-toolkit==2.0.10;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'prompt-toolkit==1.0.18;python_version<"3.6"',
         'prompt-toolkit==3.0.30;python_version>="3.6"',
-        'decorator==4.4.2;python_version<"3.5"',
-        'decorator==5.1.1;python_version>="3.5"',
-        'ipython==5.10.0;python_version<"3.5"',
-        'ipython==7.9.0;python_version>="3.5" and python_version<"3.6"',
+        'decorator==4.4.2;python_version<"3.6"',
+        'decorator==5.1.1;python_version>="3.6"',
+        'ipython==5.10.0;python_version<"3.6"',
         'ipython==7.16.1;python_version>="3.6" and python_version<"3.7"',
         'ipython==7.34.0;python_version>="3.7"',  # Requires matplotlib-inline
         'matplotlib-inline==0.1.3;python_version>="3.7"',  # ipython needs this
@@ -245,24 +229,22 @@ setup(
         "pycparser==2.21",
         'pymysql==0.10.1;python_version<"3.6"',
         'pymysql==1.0.2;python_version>="3.6"',
-        'pyotp==2.3.0;python_version<"3.5"',
-        'pyotp==2.6.0;python_version>="3.5"',
+        'pyotp==2.3.0;python_version<"3.6"',
+        'pyotp==2.6.0;python_version>="3.6"',
         "boto==2.49.0",
         "cffi==1.15.1",
         "toml==0.10.2",
-        'Pillow==6.2.2;python_version<"3.5"',
-        'Pillow==7.2.0;python_version>="3.5" and python_version<"3.6"',
+        'Pillow==6.2.2;python_version<"3.6"',
         'Pillow==8.4.0;python_version>="3.6" and python_version<"3.7"',
         'Pillow==9.2.0;python_version>="3.7"',
         'typing-extensions==3.10.0.2;python_version<"3.6"',  # <3.9 for "rich"
         'typing-extensions==4.1.1;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'typing-extensions==4.2.0;python_version>="3.7" and python_version<"3.9"',  # noqa: E501
         'rich==12.5.1;python_version>="3.6" and python_version<"4.0"',
-        'tornado==5.1.1;python_version<"3.5"',
-        'tornado==6.1;python_version>="3.5" and python_version<"3.7"',
+        'tornado==5.1.1;python_version<"3.6"',
+        'tornado==6.1;python_version>="3.6" and python_version<"3.7"',
         'tornado==6.2;python_version>="3.7"',
-        'pdfminer.six==20191110;python_version<"3.5"',
-        'pdfminer.six==20201018;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+        'pdfminer.six==20191110;python_version<"3.6"',
         'pdfminer.six==20211012;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'pdfminer.six==20220524;python_version>="3.7"',
     ],
@@ -279,15 +261,12 @@ setup(
         # pip install -e .[flake]
         # Usage: flake8
         "flake": [
-            'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.9.2;python_version>="3.5" and python_version<"3.6"',
+            'flake8==3.7.9;python_version<"3.6"',
             'flake8==4.0.1;python_version>="3.6"',
             "mccabe==0.6.1",
-            'pyflakes==2.1.1;python_version<"3.5"',
-            'pyflakes==2.3.1;python_version>="3.5" and python_version<"3.6"',
+            'pyflakes==2.1.1;python_version<"3.6"',
             'pyflakes==2.4.0;python_version>="3.6"',
-            'pycodestyle==2.5.0;python_version<"3.5"',
-            'pycodestyle==2.7.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+            'pycodestyle==2.5.0;python_version<"3.6"',
             'pycodestyle==2.8.0;python_version>="3.6"',
         ],
     },
