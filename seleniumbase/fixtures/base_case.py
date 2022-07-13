@@ -5498,7 +5498,12 @@ class BaseCase(unittest.TestCase):
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
-            from pdfminer.high_level import extract_text
+            try:
+                from pdfminer.high_level import extract_text
+            except Exception:
+                shared_utils.pip_install("pdfminer.six")
+                from pdfminer.high_level import extract_text
+
         if not password:
             password = ""
         if not maxpages:
@@ -5723,7 +5728,11 @@ class BaseCase(unittest.TestCase):
             file.write(element_png)
         # Add a text overlay if given
         if type(overlay_text) is str and len(overlay_text) > 0:
-            from PIL import Image, ImageDraw
+            try:
+                from PIL import Image, ImageDraw
+            except Exception:
+                shared_utils.pip_install("Pillow")
+                from PIL import Image, ImageDraw
 
             text_rows = overlay_text.split("\n")
             len_text_rows = len(text_rows)
