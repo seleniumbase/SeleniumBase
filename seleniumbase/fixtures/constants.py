@@ -73,6 +73,10 @@ class Dashboard:
     DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
 
 
+class PipInstall:
+    LOCKFILE = Files.DOWNLOADS_FOLDER + "/pipinstall.lock"
+
+
 class SideBySide:
     HTML_FILE = "side_by_side.html"
     SIDE_BY_SIDE_PNG = encoded_images.SIDE_BY_SIDE_PNG

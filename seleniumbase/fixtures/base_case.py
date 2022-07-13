@@ -413,8 +413,13 @@ class BaseCase(unittest.TestCase):
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
             self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
-            if self.driver.current_url != pre_action_url:
-                self.__ad_block_as_needed()
+            try:
+                if self.driver.current_url != pre_action_url:
+                    self.__ad_block_as_needed()
+            except Exception:
+                self.wait_for_ready_state_complete()
+                if self.driver.current_url != pre_action_url:
+                    self.__ad_block_as_needed()
         if self.browser == "safari":
             time.sleep(0.02)
         if self.demo_mode:
@@ -5493,7 +5498,12 @@ class BaseCase(unittest.TestCase):
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=UserWarning)
-            from pdfminer.high_level import extract_text
+            try:
+                from pdfminer.high_level import extract_text
+            except Exception:
+                shared_utils.pip_install("pdfminer.six")
+                from pdfminer.high_level import extract_text
+
         if not password:
             password = ""
         if not maxpages:
@@ -5718,7 +5728,11 @@ class BaseCase(unittest.TestCase):
             file.write(element_png)
         # Add a text overlay if given
         if type(overlay_text) is str and len(overlay_text) > 0:
-            from PIL import Image, ImageDraw
+            try:
+                from PIL import Image, ImageDraw
+            except Exception:
+                shared_utils.pip_install("Pillow")
+                from PIL import Image, ImageDraw
 
             text_rows = overlay_text.split("\n")
             len_text_rows = len(text_rows)
