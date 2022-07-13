@@ -43,7 +43,7 @@
 
 --------
 
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_text_f.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a>
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_text_f.png" alt="SeleniumBase" title="SeleniumBase" width="260" /></a>
 
 <p align="left">✅ An example of running a test with <b>pytest</b>: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
@@ -52,7 +52,7 @@ cd examples/
 pytest test_demo_site.py --chrome
 ```
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="432" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py" target="_blank"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="440" alt="SeleniumBase Example" title="SeleniumBase Example" /></a></p>
 
 <div></div>
 <details>
