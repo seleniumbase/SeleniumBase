@@ -1,20 +1,21 @@
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Help Docs</h2>
 
 <p align="left">
-<a href="https://seleniumbase.io/#python_installation">🚀 Start</a>
+<a href="https://seleniumbase.io/#python_installation">🚁 Start</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/features_list/">🎯 Features</a> |
+<a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a> |
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🎛️ Options</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">📝 Examples</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">✅ Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Formats</a> |
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">📝 Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/method_summary/">📚 API</a> |
+<a href="https://seleniumbase.io/help_docs/method_summary/">📙 APIs</a> |
 <a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
-<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
+<a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🚎 Tours</a>
 <br />
 <a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🔮 Console Scripts</a> |
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
@@ -25,7 +26,7 @@
 <a href="https://seleniumbase.io/help_docs/js_package_manager/">🕹️ JSManager</a> |
 <a href="https://seleniumbase.io/examples/visual_testing/ReadMe/">🖼️ VisualTest</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/translations/">🌏 Translate</a> |
+<a href="https://seleniumbase.io/help_docs/translations/">🈺 Translate</a> |
 <a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">🛂 DialogBoxes</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |

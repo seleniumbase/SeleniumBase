@@ -140,7 +140,7 @@ def main(*args, **kwargs):
             back_to_gh = (
                 r'<a href="https://github.com/seleniumbase/SeleniumBase">'
                 r'<img src="https://img.shields.io/badge/'
-                r"✅%20💛%20View%20Code-on%20GitHub%20🌎%20🚀"
+                r"✅%20View%20Code-on%20GitHub%20🌎"
                 r'-02A79E.svg" alt="SeleniumBase on GitHub" />'
                 r"</a>"
             )
