@@ -413,8 +413,13 @@ class BaseCase(unittest.TestCase):
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
             self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
-            if self.driver.current_url != pre_action_url:
-                self.__ad_block_as_needed()
+            try:
+                if self.driver.current_url != pre_action_url:
+                    self.__ad_block_as_needed()
+            except Exception:
+                self.wait_for_ready_state_complete()
+                if self.driver.current_url != pre_action_url:
+                    self.__ad_block_as_needed()
         if self.browser == "safari":
             time.sleep(0.02)
         if self.demo_mode:
