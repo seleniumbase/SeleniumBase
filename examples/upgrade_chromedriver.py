@@ -1,10 +1,9 @@
 """
 This script installs the chromedriver version that matches your Chrome.
 On newer versions of Python, you may replace "testdir" with "pytester".
-(Run with "pytest") / (For Linux/macOS systems only!)
+(Run with "pytest")
 """
 import subprocess
-import sys
 
 
 class TestUpgradeChromedriver:
@@ -80,22 +79,20 @@ class TestUpgradeChromedriver:
         return testdir
 
     def test_upgrade_chromedriver(self, testdir):
-        if "linux" not in sys.platform and "darwin" not in sys.platform:
-            print("\n  This script is for Linux/macOS systems only!")
-            self.skip("This script is for Linux/macOS systems only!")
         # Find out if the installed chromedriver version works with Chrome
+        subprocess.check_call(
+            "seleniumbase get chromedriver latest", shell=True
+        )
         testdir = self.basic_run(testdir)
-        result = testdir.inline_run("--headless")
+        result = testdir.inline_run("--headless", "-s")  # Upgrades as needed
         try:
             assert result.matchreport("test_passing").passed
         except Exception:
             # Install the compatibility version of chromedriver
-            subprocess.check_call(
-                "seleniumbase get chromedriver 72.0.3626.69", shell=True
-            )
-        # Upgrade chromedriver to match the installed version of Chrome
-        testdir = self.upgrade_chromedriver(testdir)
-        result = testdir.inline_run("--headless", "-s")
+            install_command = "seleniumbase get chromedriver 72.0.3626.69"
+            subprocess.check_call(install_command, shell=True)
+            testdir = self.upgrade_chromedriver(testdir)
+            testdir.inline_run("--headless", "-s")
         # Print the final installed versions of chromedriver and Chrome
         testdir = self.print_versions_of_chromedriver_and_chrome(testdir)
-        result = testdir.inline_run("--headless", "-s")
+        testdir.inline_run("--headless", "-s")
