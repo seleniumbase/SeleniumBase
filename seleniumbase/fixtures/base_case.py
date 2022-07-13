@@ -42,6 +42,7 @@ import textwrap
 import time
 import unittest
 import urllib3
+from contextlib import contextmanager
 from selenium.common.exceptions import (
     ElementClickInterceptedException as ECI_Exception,
     ElementNotInteractableException as ENI_Exception,
@@ -2774,6 +2775,18 @@ class BaseCase(unittest.TestCase):
                         self.__extra_actions.append(action)
                         return
         self.driver.switch_to.parent_frame()
+
+    @contextmanager
+    def frame_switch(self, frame, timeout=None):
+        """ Context Manager for switching into iframes.
+        Usage example:
+            with self.frame_switch("iframe"):
+                # Perform actions here that should be done within the iframe.
+            # The iframe is automatically exited after the "with" block ends.
+        """
+        self.switch_to_frame(frame, timeout=timeout)
+        yield
+        self.switch_to_parent_frame()
 
     def set_content_to_frame(self, frame, timeout=None):
         """Replaces the page html with an iframe's html from that page.

@@ -209,6 +209,9 @@ self.switch_to_default_content()
 
 self.switch_to_parent_frame()
 
+with self.frame_switch(frame, timeout=None):
+    # Indented Code Block for Context Manager (Must use "with")
+
 self.set_content_to_frame(frame, timeout=None)
 
 self.set_content_to_default(nested=False)
