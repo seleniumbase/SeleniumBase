@@ -294,8 +294,8 @@ def get_configured_sb(context):
                     '\nEg. -D protocol="https"' % protocol
                 )
             continue
-        # Handle: -D servername=SERVERNAME
-        if low_key == "servername":
+        # Handle: -D server=SERVERNAME / servername=SERVERNAME
+        if low_key in ["server", "servername"]:
             servername = userdata[key]
             if servername == "true":
                 servername = sb.servername  # revert to default
