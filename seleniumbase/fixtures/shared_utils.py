@@ -1,6 +1,9 @@
 """
 This module contains shared utility methods.
 """
+import fasteners
+import subprocess
+import sys
 import time
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
@@ -9,7 +12,24 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
 from seleniumbase.common.exceptions import TextNotVisibleException
+from seleniumbase.fixtures import constants
 from seleniumbase import config as sb_config
+
+
+def pip_install(package, version=None):
+    pip_install_lock = fasteners.InterProcessLock(
+        constants.PipInstall.LOCKFILE
+    )
+    with pip_install_lock:
+        if not version:
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", package]
+            )
+        else:
+            package_and_version = package + "==" + str(version)
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", package_and_version]
+            )
 
 
 def format_exc(exception, message):
