@@ -17,6 +17,19 @@ class FrameTests(BaseCase):
         self.switch_to_frame("iframeResult")  # Go back inside 1st iframe
         self.highlight('iframe[title="Iframe Example"]')
 
+    def test_iframes_with_context_manager(self):
+        self.open("https://seleniumbase.io/w3schools/iframes.html")
+        with self.frame_switch("iframeResult"):
+            self.assert_text("HTML Iframes", "h2")
+            with self.frame_switch('[title*="Iframe"]'):
+                self.assert_text("This page is displayed in an iframe", "h1")
+            self.assert_text("Use CSS width & height to specify", "p")
+            with self.frame_switch('[title*="Iframe"]'):
+                self.assert_text("seleniumbase.io/w3schools/iframes", "a")
+        self.click("button#runbtn")
+        with self.frame_switch("iframeResult"):
+            self.highlight('iframe[title="Iframe Example"]')
+
     def test_set_content_to_frame(self):
         self.open("https://seleniumbase.io/w3schools/iframes.html")
         self.set_content_to_frame("iframeResult")
