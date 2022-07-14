@@ -5016,7 +5016,9 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
+        scroll_done = False
         if self.is_element_visible(selector, by=by):
+            scroll_done = True
             self.__demo_mode_highlight_if_active(selector, by)
             if scroll and not self.demo_mode and not self.slow_mode:
                 success = js_utils.scroll_to_element(self.driver, element)
@@ -5050,6 +5052,16 @@ class BaseCase(unittest.TestCase):
             action = ["js_cl", selector, href_origin, time_stamp]
             if all_matches:
                 action[0] = "js_ca"
+        if not self.is_element_visible(selector, by=by):
+            self.wait_for_ready_state_complete()
+            if self.is_element_visible(selector, by=by):
+                if scroll and not scroll_done:
+                    success = js_utils.scroll_to_element(self.driver, element)
+                    if not success:
+                        timeout = settings.SMALL_TIMEOUT
+                        element = page_actions.wait_for_element_present(
+                            self.driver, selector, by, timeout=timeout
+                        )
         if not all_matches:
             if ":contains\\(" not in css_selector:
                 self.__js_click(selector, by=by)
@@ -11585,7 +11597,16 @@ class BaseCase(unittest.TestCase):
                simulateClick(someLink);"""
             % css_selector
         )
-        self.execute_script(script)
+        try:
+            self.execute_script(script)
+        except Exception:
+            # If the regular mouse-simulated click fails, do a basic JS click
+            self.wait_for_ready_state_complete()
+            script = (
+                """document.querySelector('%s').click();"""
+                % css_selector
+            )
+            self.execute_script(script)
 
     def __js_click_all(self, selector, by="css selector"):
         """Clicks all matching elements using pure JS. (No jQuery)"""
