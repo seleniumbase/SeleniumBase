@@ -538,10 +538,8 @@ def _set_firefox_options(
     options.set_preference("pdfjs.disabled", True)
     options.set_preference("app.update.auto", False)
     options.set_preference("app.update.enabled", False)
-    options.set_preference("app.update.silent", True)
     options.set_preference("browser.formfill.enable", False)
-    options.set_preference("browser.privatebrowsing.autostart", False)
-    options.set_preference("devtools.errorconsole.enabled", True)
+    options.set_preference("browser.privatebrowsing.autostart", True)
     options.set_preference("dom.webnotifications.enabled", False)
     options.set_preference("dom.disable_beforeunload", True)
     options.set_preference("browser.contentblocking.database.enabled", True)
@@ -550,7 +548,6 @@ def _set_firefox_options(
     options.set_preference("extensions.systemAddon.update.enabled", False)
     options.set_preference("extensions.update.autoUpdateDefault", False)
     options.set_preference("extensions.update.enabled", False)
-    options.set_preference("extensions.update.silent", True)
     options.set_preference("datareporting.healthreport.service.enabled", False)
     options.set_preference("datareporting.healthreport.uploadEnabled", False)
     options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
@@ -1514,7 +1511,11 @@ def get_local_driver(
                         options=firefox_options,
                     )
                 except Exception as e:
-                    if "Process unexpectedly closed" in e.msg:
+                    if (
+                        "Process unexpectedly closed" in e.msg
+                        or "Failed to read marionette port" in e.msg
+                        or "A connection attempt failed" in e.msg
+                    ):
                         # Firefox probably just auto-updated itself.
                         # Trying again right after that often works.
                         return webdriver.Firefox(
@@ -1532,9 +1533,24 @@ def get_local_driver(
         else:
             if selenium4:
                 service = FirefoxService(log_path=os.path.devnull)
-                return webdriver.Firefox(
-                    service=service, options=firefox_options
-                )
+                try:
+                    return webdriver.Firefox(
+                        service=service, options=firefox_options
+                    )
+                except Exception as e:
+                    if (
+                        "Process unexpectedly closed" in e.msg
+                        or "Failed to read marionette port" in e.msg
+                        or "A connection attempt failed" in e.msg
+                    ):
+                        # Firefox probably just auto-updated itself.
+                        # Trying again right after that often works.
+                        return webdriver.Firefox(
+                            service=service,
+                            options=firefox_options,
+                        )
+                    else:
+                        raise Exception(e.msg)  # Not an obvious fix.
             else:
                 return webdriver.Firefox(
                     service_log_path=os.path.devnull,

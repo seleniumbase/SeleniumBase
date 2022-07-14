@@ -131,7 +131,7 @@ setup(
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=63.1.0;python_version>="3.7"',
+        'setuptools>=63.2.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
