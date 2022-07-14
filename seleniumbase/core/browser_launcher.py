@@ -1837,6 +1837,14 @@ def get_local_driver(
                         edge_version = e.msg.split(
                             "only supports MSEdge version "
                         )[1].split(" ")[0]
+                elif "DevToolsActivePort file doesn't exist" in e.msg:
+                    service = EdgeService(
+                        executable_path=LOCAL_EDGEDRIVER,
+                        log_path=os.path.devnull,
+                    )
+                    # https://stackoverflow.com/a/56638103/7058266
+                    edge_options.add_argument("--remote-debugging-port=9222")
+                    return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:
@@ -1884,6 +1892,14 @@ def get_local_driver(
                         edge_version = e.msg.split(
                             "only supports MSEdge version "
                         )[1].split(" ")[0]
+                elif "DevToolsActivePort file doesn't exist" in e.msg:
+                    service = EdgeService(
+                        executable_path=LOCAL_EDGEDRIVER,
+                        log_path=os.path.devnull,
+                    )
+                    # https://stackoverflow.com/a/56638103/7058266
+                    edge_options.add_argument("--remote-debugging-port=9222")
+                    return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
                     raise Exception(e.msg)  # Not an obvious fix. Raise.
                 else:

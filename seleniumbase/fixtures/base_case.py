@@ -11599,9 +11599,22 @@ class BaseCase(unittest.TestCase):
         )
         try:
             self.execute_script(script)
-        except Exception:
-            # If the regular mouse-simulated click fails, do a basic JS click
+        except Exception as e:
             self.wait_for_ready_state_complete()
+            if "Cannot read properties of null" in e.msg:
+                page_actions.wait_for_element_present(
+                    self.driver, selector, by, timeout=3
+                )
+                if not page_actions.is_element_clickable(
+                    self.driver, selector, by
+                ):
+                    try:
+                        self.wait_for_element_clickable(
+                            selector, by, timeout=1.2
+                        )
+                    except Exception:
+                        pass
+            # If the regular mouse-simulated click fails, do a basic JS click
             script = (
                 """document.querySelector('%s').click();"""
                 % css_selector
