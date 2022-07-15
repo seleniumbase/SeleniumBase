@@ -175,12 +175,6 @@ class HackTests(BaseCase):
         self.highlight('a[aria-label*="Try PlayF"]', loops=4, scroll=False)
         self.highlight('a[aria-label*="Sign in to"]', loops=6, scroll=False)
 
-        self.open("https://www.snapchat.com/")
-        self.set_text_content("h1", aybabtu)
-        zoom_out = "h1{zoom: 0.85;-moz-transform: scale(0.85);}"
-        self.add_css_style(zoom_out)
-        self.highlight("h1", loops=8, scroll=False)
-
         self.open("https://store.steampowered.com/")
         self.set_text_content('div.content a[href*="/about/"]', " ")
         self.set_text_content('div.content a[href*="help.steam"]', aybabtu)
