@@ -97,6 +97,7 @@ def pytest_addoption(parser):
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
+    --list-fail-page  (After each failing test, list the URL of the failure.)
     """
     c1 = ""
     c2 = ""
@@ -1015,6 +1016,17 @@ def pytest_addoption(parser):
                 by the multiplier when waiting for page elements.
                 Unused when tests override the default value.""",
     )
+    parser.addoption(
+        "--list-fail-page",
+        "--list-fail-pages",
+        action="store_true",
+        dest="fail_page",
+        default=False,
+        help="""(For debugging) After each failing test, list the URL
+                where the failure occurred.
+                Useful when you don't have access to the latest_logs/
+                folder, such as when running tests in GitHub Actions.""",
+    )
 
     sys_argv = sys.argv
     arg_join = " ".join(sys.argv)
@@ -1274,8 +1286,10 @@ def pytest_configure(config):
     sb_config.visual_baseline = config.getoption("visual_baseline")
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
+    sb_config.list_fp = config.getoption("fail_page")
     sb_config._is_timeout_changed = False
     sb_config._has_logs = False
+    sb_config._fail_page = None
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
     sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
     sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
@@ -1554,6 +1568,8 @@ def pytest_runtest_teardown(item):
             pass
     except Exception:
         pass
+    if sb_config._has_exception and sb_config.list_fp and sb_config._fail_page:
+        sys.stderr.write("\n=> Fail Page: %s\n" % sb_config._fail_page)
 
 
 def pytest_sessionfinish(session):

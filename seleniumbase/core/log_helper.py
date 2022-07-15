@@ -131,6 +131,7 @@ def log_test_failure_data(test, test_logpath, driver, browser, url=None):
         last_page = url
     else:
         last_page = get_last_page(driver)
+    sb_config._fail_page = last_page
     timestamp, the_date, the_time = get_master_time()
     test_id = get_test_id(test)  # pytest runnable display_id (with the "::")
     data_to_save = []
