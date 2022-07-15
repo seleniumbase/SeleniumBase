@@ -192,6 +192,11 @@ class BaseCase(unittest.TestCase):
             if "ERR_CONNECTION_TIMED_OUT" in e.msg:
                 time.sleep(0.5)
                 self.driver.get(url)
+            elif (
+                "cannot determine loading status" in e.msg
+                or "unexpected command response" in e.msg
+            ):
+                pass  # Odd issue where the open did happen. Continue.
             else:
                 raise Exception(e.msg)
         if self.driver.current_url == pre_action_url and pre_action_url != url:
@@ -377,7 +382,10 @@ class BaseCase(unittest.TestCase):
                     )
                     element.click()
         except WebDriverException as e:
-            if "cannot determine loading status" in e.msg:
+            if (
+                "cannot determine loading status" in e.msg
+                or "unexpected command response" in e.msg
+            ):
                 pass  # Odd issue where the click did happen. Continue.
             else:
                 self.wait_for_ready_state_complete()
@@ -603,7 +611,10 @@ class BaseCase(unittest.TestCase):
                 try:
                     element.send_keys(Keys.RETURN)
                 except WebDriverException as e:
-                    if "cannot determine loading status" in e.msg:
+                    if (
+                        "cannot determine loading status" in e.msg
+                        or "unexpected command response" in e.msg
+                    ):
                         pass  # Odd issue where the click did happen. Continue.
                     else:
                         raise e
@@ -623,7 +634,10 @@ class BaseCase(unittest.TestCase):
                 try:
                     element.send_keys(Keys.RETURN)
                 except WebDriverException as e:
-                    if "cannot determine loading status" in e.msg:
+                    if (
+                        "cannot determine loading status" in e.msg
+                        or "unexpected command response" in e.msg
+                    ):
                         pass  # Odd issue where the click did happen. Continue.
                     else:
                         raise e

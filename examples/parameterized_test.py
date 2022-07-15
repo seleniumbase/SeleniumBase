@@ -7,7 +7,7 @@ class GoogleTests(BaseCase):
         [
             ["Download Python", "Download Python", "img.python-logo"],
             ["Wikipedia", "www.wikipedia.org", "img.central-featured-logo"],
-            ["SeleniumBase GitHub.com", "SeleniumBase", 'img[title*="Sele"]'],
+            ["SeleniumBase.io Docs", "SeleniumBase", 'img[alt*="SeleniumB"]'],
         ]
     )
     def test_parameterized_google_search(self, search_key, expected_text, img):
@@ -18,7 +18,5 @@ class GoogleTests(BaseCase):
         self.click('a:contains("%s")' % expected_text)
         self.assert_element(img)
         if "SeleniumBase" in search_key:
-            self.click('img[alt="SeleniumBase Docs"]')
-            self.assert_element('[title="SeleniumBase Docs"]')
-            self.click('a:contains("Features List")')
-            self.assert_text("Features List", "h1")
+            self.click('img[alt="SeleniumBase"]')
+            self.assert_element('img[title="SeleniumBase"]')
