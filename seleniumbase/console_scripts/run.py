@@ -80,7 +80,7 @@ def show_basic_usage():
     sc += "      get / install    [DRIVER] [OPTIONS]\n"
     sc += "      methods          (List common Python methods)\n"
     sc += "      options          (List common pytest options)\n"
-    sc += "      behave-options   (List common Behave options)\n"
+    sc += "      behave-options   (List common behave options)\n"
     sc += "      gui / commander  [OPTIONAL PATH or TEST FILE]\n"
     sc += "      behave-gui       (SBase Commander for Behave)\n"
     sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"

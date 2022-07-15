@@ -15,6 +15,7 @@ COMMANDS:
       get / install    [DRIVER] [OPTIONS]
       methods          (List common Python methods)
       options          (List common pytest options)
+      behave-options   (List common behave options)
       gui / commander  [OPTIONAL PATH or TEST FILE]
       behave-gui       (SBase Commander for Behave)
       mkdir            [DIRECTORY] [OPTIONS]
