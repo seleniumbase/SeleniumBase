@@ -176,6 +176,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
 --external-pdf  # (Set Chrome "plugins.always_open_pdf_externally": True.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
+--list-fail-page  # (After each failing test, list the URL of the failure.)
 ```
 
 (For more details, see the full list of command-line options **[here](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py)**.)

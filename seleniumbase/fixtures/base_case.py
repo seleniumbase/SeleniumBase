@@ -5016,6 +5016,8 @@ class BaseCase(unittest.TestCase):
         element = self.wait_for_element_present(
             selector, by=by, timeout=settings.SMALL_TIMEOUT
         )
+        if not page_actions.is_element_clickable(self.driver, selector, by):
+            self.wait_for_ready_state_complete()
         scroll_done = False
         if self.is_element_visible(selector, by=by):
             scroll_done = True
@@ -11584,6 +11586,8 @@ class BaseCase(unittest.TestCase):
         css_selector = self.convert_to_css_selector(selector, by=by)
         css_selector = re.escape(css_selector)  # Add "\\" to special chars
         css_selector = self.__escape_quotes_if_needed(css_selector)
+        is_visible = self.is_element_visible(selector, by=by)
+        current_url = self.get_current_url()
         script = (
             """var simulateClick = function (elem) {
                    var evt = new MouseEvent('click', {
@@ -11600,10 +11604,18 @@ class BaseCase(unittest.TestCase):
         try:
             self.execute_script(script)
         except Exception as e:
+            # If element was visible but no longer, or on a different page now,
+            # assume that the click actually worked and continue with the test.
+            if (
+                (is_visible and not self.is_element_visible(selector, by=by))
+                or current_url != self.get_current_url()
+            ):
+                return  # The click worked, but threw an Exception. Keep going.
+            # It appears the first click didn't work. Make another attempt.
             self.wait_for_ready_state_complete()
             if "Cannot read properties of null" in e.msg:
                 page_actions.wait_for_element_present(
-                    self.driver, selector, by, timeout=3
+                    self.driver, selector, by, timeout=5
                 )
                 if not page_actions.is_element_clickable(
                     self.driver, selector, by
