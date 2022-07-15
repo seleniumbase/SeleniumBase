@@ -19,7 +19,7 @@ Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/e
 pytest my_first_test.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" /><br />
+<img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" title="Testing Swag Labs with SeleniumBase" /><br />
 
 Run an [example test](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py) on the SeleniumBase Demo Site:
 
@@ -49,7 +49,7 @@ Run a [Wordle-solver example](https://github.com/seleniumbase/SeleniumBase/blob/
 pytest wordle_test.py
 ```
 
-<img src="https://seleniumbase.io/cdn/gif/wordle.gif" /><br />
+<img src="https://seleniumbase.io/cdn/gif/wordle.gif" title="Solving Wordle with SeleniumBase" /><br />
 
 Run an example test in Headless Mode: (invisible browser)
 
@@ -179,7 +179,7 @@ For more advanced run commands, such as using a proxy server, see [../help_docs/
 
 If you just need to perform some quick website verification on various devices, you can use the <a href="https://seleniumbase.io/devices/">SeleniumBase Device Farm</a>. Just plug in a website URL, and it will display how the website looks on four different devices:
 
-<a href="https://seleniumbase.io/devices/"><img src="https://seleniumbase.io/cdn/img/github_demo.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
+<a href="https://seleniumbase.io/devices/"><img src="https://seleniumbase.io/cdn/img/github_demo2.png" width="540" title="SeleniumBase Mobile Mode" /></a><br />
 
 --------
 
