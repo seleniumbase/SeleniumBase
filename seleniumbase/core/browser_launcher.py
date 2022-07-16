@@ -1566,10 +1566,10 @@ def get_local_driver(
                             options=firefox_options,
                         )
                     else:
-                        raise Exception(e.msg)  # Not an obvious fix.
+                        raise  # Not an obvious fix.
             else:
                 return webdriver.Firefox(
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     options=firefox_options,
                 )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
@@ -1836,7 +1836,7 @@ def get_local_driver(
         if selenium4:
             try:
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.path.devnull
+                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
                 )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
@@ -1856,13 +1856,13 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.path.devnull,
+                        log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     edge_options.add_argument("--remote-debugging-port=9222")
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
-                    raise Exception(e.msg)  # Not an obvious fix. Raise.
+                    raise  # Not an obvious fix.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
                 args = " ".join(sys.argv)
@@ -1881,7 +1881,7 @@ def get_local_driver(
                         _repair_edgedriver(edge_version)
                     _mark_driver_repaired()
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.path.devnull
+                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
                 )
                 driver = Edge(service=service, options=edge_options)
             return driver
@@ -1891,7 +1891,7 @@ def get_local_driver(
             try:
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     capabilities=capabilities,
                 )
             except Exception as e:
@@ -1911,13 +1911,13 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.path.devnull,
+                        log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     edge_options.add_argument("--remote-debugging-port=9222")
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
-                    raise Exception(e.msg)  # Not an obvious fix. Raise.
+                    raise  # Not an obvious fix.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
                 args = " ".join(sys.argv)
@@ -1937,7 +1937,7 @@ def get_local_driver(
                     _mark_driver_repaired()
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     capabilities=capabilities,
                 )
             return driver
@@ -2092,7 +2092,7 @@ def get_local_driver(
                         if selenium4:
                             service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER,
-                                log_path=os.path.devnull,
+                                log_path=os.devnull,
                             )
                             driver = webdriver.Chrome(
                                 service=service,
@@ -2101,19 +2101,19 @@ def get_local_driver(
                         else:
                             driver = webdriver.Chrome(
                                 executable_path=LOCAL_CHROMEDRIVER,
-                                service_log_path=os.path.devnull,
+                                service_log_path=os.devnull,
                                 options=chrome_options,
                             )
                     else:
                         if selenium4:
-                            service = ChromeService(log_path=os.path.devnull)
+                            service = ChromeService(log_path=os.devnull)
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
                         else:
                             driver = webdriver.Chrome(
                                 options=chrome_options,
-                                service_log_path=os.path.devnull,
+                                service_log_path=os.devnull,
                             )
                 except Exception as e:
                     auto_upgrade_chromedriver = False
@@ -2122,7 +2122,7 @@ def get_local_driver(
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
                     if not auto_upgrade_chromedriver:
-                        raise Exception(e.msg)  # Not an obvious fix. Raise.
+                        raise  # Not an obvious fix.
                     else:
                         pass  # Try upgrading ChromeDriver to match Chrome.
                     mcv = None  # Major Chrome Version
@@ -2267,14 +2267,14 @@ def get_local_driver(
                     )
                     chrome_options.headless = False
                     return webdriver.Chrome(options=chrome_options)
-        except Exception as e:
+        except Exception:
             try:
                 # Try again if Chrome didn't launch
                 return webdriver.Chrome(options=chrome_options)
             except Exception:
                 pass
             if headless:
-                raise Exception(e)
+                raise
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
