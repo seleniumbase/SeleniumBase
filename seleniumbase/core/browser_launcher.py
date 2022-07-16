@@ -533,6 +533,7 @@ def _set_firefox_options(
     options.set_preference("browser.startup.homepage", blank_p)
     options.set_preference("startup.homepage_welcome_url", blank_p)
     options.set_preference("startup.homepage_welcome_url.additional", blank_p)
+    options.set_preference("browser.newtab.url", blank_p)
     options.set_preference("trailhead.firstrun.branches", "nofirstrun-empty")
     options.set_preference("browser.aboutwelcome.enabled", False)
     options.set_preference("pdfjs.disabled", True)
@@ -551,7 +552,11 @@ def _set_firefox_options(
     options.set_preference("datareporting.healthreport.service.enabled", False)
     options.set_preference("datareporting.healthreport.uploadEnabled", False)
     options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
+    options.set_preference("browser.search.update", False)
+    options.set_preference("privacy.trackingprotection.enabled", False)
+    options.set_preference("toolkit.telemetry.enabled", False)
     options.set_preference("toolkit.telemetry.unified", False)
+    options.set_preference("toolkit.telemetry.archive.enabled", False)
     if proxy_string:
         socks_proxy = False
         socks_ver = 0
@@ -588,6 +593,7 @@ def _set_firefox_options(
     options.set_preference(
         "security.mixed_content.block_active_content", False
     )
+    options.set_preference("security.warn_submit_insecure", False)
     if settings.DISABLE_CSP_ON_FIREFOX or disable_csp:
         options.set_preference("security.csp.enable", False)
     options.set_preference(
@@ -1503,18 +1509,23 @@ def get_local_driver(
             if selenium4:
                 service = FirefoxService(
                     executable_path=LOCAL_GECKODRIVER,
-                    log_path=os.path.devnull,
+                    log_path=os.devnull,
                 )
                 try:
                     return webdriver.Firefox(
                         service=service,
                         options=firefox_options,
                     )
-                except Exception as e:
+                except BaseException as e:
                     if (
-                        "Process unexpectedly closed" in e.msg
-                        or "Failed to read marionette port" in e.msg
-                        or "A connection attempt failed" in e.msg
+                        "Process unexpectedly closed" in str(e)
+                        or "Failed to read marionette port" in str(e)
+                        or "A connection attempt failed" in str(e)
+                        or hasattr(e, "msg") and (
+                            "Process unexpectedly closed" in e.msg
+                            or "Failed to read marionette port" in e.msg
+                            or "A connection attempt failed" in e.msg
+                        )
                     ):
                         # Firefox probably just auto-updated itself.
                         # Trying again right after that often works.
@@ -1523,25 +1534,30 @@ def get_local_driver(
                             options=firefox_options,
                         )
                     else:
-                        raise Exception(e.msg)  # Not an obvious fix.
+                        raise  # Not an obvious fix.
             else:
                 return webdriver.Firefox(
                     executable_path=LOCAL_GECKODRIVER,
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     options=firefox_options,
                 )
         else:
             if selenium4:
-                service = FirefoxService(log_path=os.path.devnull)
+                service = FirefoxService(log_path=os.devnull)
                 try:
                     return webdriver.Firefox(
                         service=service, options=firefox_options
                     )
-                except Exception as e:
+                except BaseException as e:
                     if (
-                        "Process unexpectedly closed" in e.msg
-                        or "Failed to read marionette port" in e.msg
-                        or "A connection attempt failed" in e.msg
+                        "Process unexpectedly closed" in str(e)
+                        or "Failed to read marionette port" in str(e)
+                        or "A connection attempt failed" in str(e)
+                        or hasattr(e, "msg") and (
+                            "Process unexpectedly closed" in e.msg
+                            or "Failed to read marionette port" in e.msg
+                            or "A connection attempt failed" in e.msg
+                        )
                     ):
                         # Firefox probably just auto-updated itself.
                         # Trying again right after that often works.
@@ -1550,10 +1566,10 @@ def get_local_driver(
                             options=firefox_options,
                         )
                     else:
-                        raise Exception(e.msg)  # Not an obvious fix.
+                        raise  # Not an obvious fix.
             else:
                 return webdriver.Firefox(
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     options=firefox_options,
                 )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
@@ -1820,7 +1836,7 @@ def get_local_driver(
         if selenium4:
             try:
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.path.devnull
+                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
                 )
                 driver = Edge(service=service, options=edge_options)
             except Exception as e:
@@ -1840,13 +1856,13 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.path.devnull,
+                        log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     edge_options.add_argument("--remote-debugging-port=9222")
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
-                    raise Exception(e.msg)  # Not an obvious fix. Raise.
+                    raise  # Not an obvious fix.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
                 args = " ".join(sys.argv)
@@ -1865,7 +1881,7 @@ def get_local_driver(
                         _repair_edgedriver(edge_version)
                     _mark_driver_repaired()
                 service = EdgeService(
-                    executable_path=LOCAL_EDGEDRIVER, log_path=os.path.devnull
+                    executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
                 )
                 driver = Edge(service=service, options=edge_options)
             return driver
@@ -1875,7 +1891,7 @@ def get_local_driver(
             try:
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     capabilities=capabilities,
                 )
             except Exception as e:
@@ -1895,13 +1911,13 @@ def get_local_driver(
                 elif "DevToolsActivePort file doesn't exist" in e.msg:
                     service = EdgeService(
                         executable_path=LOCAL_EDGEDRIVER,
-                        log_path=os.path.devnull,
+                        log_path=os.devnull,
                     )
                     # https://stackoverflow.com/a/56638103/7058266
                     edge_options.add_argument("--remote-debugging-port=9222")
                     return Edge(service=service, options=edge_options)
                 if not auto_upgrade_edgedriver:
-                    raise Exception(e.msg)  # Not an obvious fix. Raise.
+                    raise  # Not an obvious fix.
                 else:
                     pass  # Try upgrading EdgeDriver to match Edge.
                 args = " ".join(sys.argv)
@@ -1921,7 +1937,7 @@ def get_local_driver(
                     _mark_driver_repaired()
                 driver = Edge(
                     executable_path=LOCAL_EDGEDRIVER,
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     capabilities=capabilities,
                 )
             return driver
@@ -2076,7 +2092,7 @@ def get_local_driver(
                         if selenium4:
                             service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER,
-                                log_path=os.path.devnull,
+                                log_path=os.devnull,
                             )
                             driver = webdriver.Chrome(
                                 service=service,
@@ -2085,19 +2101,19 @@ def get_local_driver(
                         else:
                             driver = webdriver.Chrome(
                                 executable_path=LOCAL_CHROMEDRIVER,
-                                service_log_path=os.path.devnull,
+                                service_log_path=os.devnull,
                                 options=chrome_options,
                             )
                     else:
                         if selenium4:
-                            service = ChromeService(log_path=os.path.devnull)
+                            service = ChromeService(log_path=os.devnull)
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
                             )
                         else:
                             driver = webdriver.Chrome(
                                 options=chrome_options,
-                                service_log_path=os.path.devnull,
+                                service_log_path=os.devnull,
                             )
                 except Exception as e:
                     auto_upgrade_chromedriver = False
@@ -2106,7 +2122,7 @@ def get_local_driver(
                     elif "Chrome version must be between" in e.msg:
                         auto_upgrade_chromedriver = True
                     if not auto_upgrade_chromedriver:
-                        raise Exception(e.msg)  # Not an obvious fix. Raise.
+                        raise  # Not an obvious fix.
                     else:
                         pass  # Try upgrading ChromeDriver to match Chrome.
                     mcv = None  # Major Chrome Version
@@ -2251,14 +2267,14 @@ def get_local_driver(
                     )
                     chrome_options.headless = False
                     return webdriver.Chrome(options=chrome_options)
-        except Exception as e:
+        except Exception:
             try:
                 # Try again if Chrome didn't launch
                 return webdriver.Chrome(options=chrome_options)
             except Exception:
                 pass
             if headless:
-                raise Exception(e)
+                raise
             if LOCAL_CHROMEDRIVER and os.path.exists(LOCAL_CHROMEDRIVER):
                 try:
                     make_driver_executable_if_not(LOCAL_CHROMEDRIVER)
