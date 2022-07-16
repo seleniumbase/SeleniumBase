@@ -1509,18 +1509,23 @@ def get_local_driver(
             if selenium4:
                 service = FirefoxService(
                     executable_path=LOCAL_GECKODRIVER,
-                    log_path=os.path.devnull,
+                    log_path=os.devnull,
                 )
                 try:
                     return webdriver.Firefox(
                         service=service,
                         options=firefox_options,
                     )
-                except Exception as e:
+                except BaseException as e:
                     if (
-                        "Process unexpectedly closed" in e.msg
-                        or "Failed to read marionette port" in e.msg
-                        or "A connection attempt failed" in e.msg
+                        "Process unexpectedly closed" in str(e)
+                        or "Failed to read marionette port" in str(e)
+                        or "A connection attempt failed" in str(e)
+                        or hasattr(e, "msg") and (
+                            "Process unexpectedly closed" in e.msg
+                            or "Failed to read marionette port" in e.msg
+                            or "A connection attempt failed" in e.msg
+                        )
                     ):
                         # Firefox probably just auto-updated itself.
                         # Trying again right after that often works.
@@ -1529,25 +1534,30 @@ def get_local_driver(
                             options=firefox_options,
                         )
                     else:
-                        raise Exception(e.msg)  # Not an obvious fix.
+                        raise  # Not an obvious fix.
             else:
                 return webdriver.Firefox(
                     executable_path=LOCAL_GECKODRIVER,
-                    service_log_path=os.path.devnull,
+                    service_log_path=os.devnull,
                     options=firefox_options,
                 )
         else:
             if selenium4:
-                service = FirefoxService(log_path=os.path.devnull)
+                service = FirefoxService(log_path=os.devnull)
                 try:
                     return webdriver.Firefox(
                         service=service, options=firefox_options
                     )
-                except Exception as e:
+                except BaseException as e:
                     if (
-                        "Process unexpectedly closed" in e.msg
-                        or "Failed to read marionette port" in e.msg
-                        or "A connection attempt failed" in e.msg
+                        "Process unexpectedly closed" in str(e)
+                        or "Failed to read marionette port" in str(e)
+                        or "A connection attempt failed" in str(e)
+                        or hasattr(e, "msg") and (
+                            "Process unexpectedly closed" in e.msg
+                            or "Failed to read marionette port" in e.msg
+                            or "A connection attempt failed" in e.msg
+                        )
                     ):
                         # Firefox probably just auto-updated itself.
                         # Trying again right after that often works.
