@@ -533,6 +533,7 @@ def _set_firefox_options(
     options.set_preference("browser.startup.homepage", blank_p)
     options.set_preference("startup.homepage_welcome_url", blank_p)
     options.set_preference("startup.homepage_welcome_url.additional", blank_p)
+    options.set_preference("browser.newtab.url", blank_p)
     options.set_preference("trailhead.firstrun.branches", "nofirstrun-empty")
     options.set_preference("browser.aboutwelcome.enabled", False)
     options.set_preference("pdfjs.disabled", True)
@@ -551,7 +552,11 @@ def _set_firefox_options(
     options.set_preference("datareporting.healthreport.service.enabled", False)
     options.set_preference("datareporting.healthreport.uploadEnabled", False)
     options.set_preference("datareporting.policy.dataSubmissionEnabled", False)
+    options.set_preference("browser.search.update", False)
+    options.set_preference("privacy.trackingprotection.enabled", False)
+    options.set_preference("toolkit.telemetry.enabled", False)
     options.set_preference("toolkit.telemetry.unified", False)
+    options.set_preference("toolkit.telemetry.archive.enabled", False)
     if proxy_string:
         socks_proxy = False
         socks_ver = 0
@@ -588,6 +593,7 @@ def _set_firefox_options(
     options.set_preference(
         "security.mixed_content.block_active_content", False
     )
+    options.set_preference("security.warn_submit_insecure", False)
     if settings.DISABLE_CSP_ON_FIREFOX or disable_csp:
         options.set_preference("security.csp.enable", False)
     options.set_preference(
