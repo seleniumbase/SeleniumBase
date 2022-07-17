@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import sys
+import time
 import urllib3
 import warnings
 from selenium import webdriver
@@ -1518,17 +1519,21 @@ def get_local_driver(
                     )
                 except BaseException as e:
                     if (
-                        "Process unexpectedly closed" in str(e)
+                        "geckodriver unexpectedly exited" in str(e)
+                        or "Process unexpectedly closed" in str(e)
                         or "Failed to read marionette port" in str(e)
                         or "A connection attempt failed" in str(e)
                         or hasattr(e, "msg") and (
-                            "Process unexpectedly closed" in e.msg
+                            "geckodriver unexpectedly exited" in e.msg
+                            or "Process unexpectedly closed" in e.msg
                             or "Failed to read marionette port" in e.msg
                             or "A connection attempt failed" in e.msg
                         )
                     ):
-                        # Firefox probably just auto-updated itself.
+                        # Firefox probably just auto-updated itself,
+                        # which causes intermittent issues to occur.
                         # Trying again right after that often works.
+                        time.sleep(0.1)
                         return webdriver.Firefox(
                             service=service,
                             options=firefox_options,
@@ -1550,17 +1555,21 @@ def get_local_driver(
                     )
                 except BaseException as e:
                     if (
-                        "Process unexpectedly closed" in str(e)
+                        "geckodriver unexpectedly exited" in str(e)
+                        or "Process unexpectedly closed" in str(e)
                         or "Failed to read marionette port" in str(e)
                         or "A connection attempt failed" in str(e)
                         or hasattr(e, "msg") and (
-                            "Process unexpectedly closed" in e.msg
+                            "geckodriver unexpectedly exited" in e.msg
+                            or "Process unexpectedly closed" in e.msg
                             or "Failed to read marionette port" in e.msg
                             or "A connection attempt failed" in e.msg
                         )
                     ):
-                        # Firefox probably just auto-updated itself.
+                        # Firefox probably just auto-updated itself,
+                        # which causes intermittent issues to occur.
                         # Trying again right after that often works.
+                        time.sleep(0.1)
                         return webdriver.Firefox(
                             service=service,
                             options=firefox_options,
