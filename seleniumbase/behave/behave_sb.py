@@ -53,7 +53,7 @@ behave -D agent="User Agent String" -D demo
 -D time-limit=SECONDS  (Safely fail any test that exceeds the time limit.)
 -D slow  (Slow down the automation. Faster than using Demo Mode.)
 -D demo  (Slow down and visually see test actions as they occur.)
--D demo-sleep=SECONDS  (Set the wait time after Demo Mode actions.)
+-D demo-sleep=SECONDS  (Set the wait time after Slow & Demo Mode actions.)
 -D highlights=NUM  (Number of highlight animations for Demo Mode actions.)
 -D message-duration=SECONDS  (The time length for Messenger alerts.)
 -D check-js  (Check for JavaScript errors after page loads.)
