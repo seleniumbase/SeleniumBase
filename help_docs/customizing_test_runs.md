@@ -143,7 +143,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
---demo-sleep=SECONDS  # (Set the wait time after Demo Mode actions.)
+--demo-sleep=SECONDS  # (Set the wait time after Slow & Demo Mode actions.)
 --highlights=NUM  # (Number of highlight animations for Demo Mode actions.)
 --message-duration=SECONDS  # (The time length for Messenger alerts.)
 --check-js  # (Check for JavaScript errors after page loads.)
