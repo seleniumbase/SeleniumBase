@@ -496,7 +496,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --devtools  # (Open Chrome's DevTools when the browser opens.)
 --reuse-session | --rs  # (Reuse the browser session between tests.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
---window-size  # (Set the browser window size: "Width,Height".)
+--window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)
 --maximize  # (Start tests with the browser window maximized.)
 --screenshot  # (Save a screenshot at the end of each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
