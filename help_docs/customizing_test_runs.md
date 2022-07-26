@@ -170,7 +170,7 @@ pytest my_first_test.py --settings-file=custom_settings.py
 --devtools  # (Open Chrome's DevTools when the browser opens.)
 --reuse-session | --rs  # (Reuse the browser session between tests.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
---window-size  # (Set the browser window size: "Width,Height".)
+--window-size=WIDTH,HEIGHT  # (Set the browser's starting window size.)
 --maximize  # (Start tests with the browser window maximized.)
 --screenshot  # (Save a screenshot at the end of each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)

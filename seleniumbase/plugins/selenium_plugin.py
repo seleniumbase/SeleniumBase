@@ -68,7 +68,7 @@ class SeleniumBrowser(Plugin):
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
-    --window-size  (Set the browser window size: "Width,Height".)
+    --window-size=WIDTH,HEIGHT  (Set the browser's starting window size.)
     --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
