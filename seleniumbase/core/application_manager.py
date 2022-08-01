@@ -12,8 +12,8 @@ class ApplicationManager:
 
     @classmethod
     def generate_application_string(cls, test):
-        """Generate an application string based on some of the given information
-        that can be pulled from the test object: app_env, start_time."""
+        """Generate a string based on some of the given information
+        that's pulled from the test object: app_env, start_time."""
 
         app_env = "test"
         if hasattr(test, "env"):
