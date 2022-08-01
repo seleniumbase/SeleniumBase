@@ -254,7 +254,8 @@ setup(
         "flake": [
             'flake8==3.7.9;python_version<"3.6"',
             'flake8==5.0.2;python_version>="3.6"',
-            "mccabe==0.7.0",
+            'mccabe==0.6.1;python_version<"3.6"',
+            'mccabe==0.7.0;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.6"',
             'pyflakes==2.5.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.6"',
