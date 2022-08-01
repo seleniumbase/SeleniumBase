@@ -253,12 +253,12 @@ setup(
         # Usage: flake8
         "flake": [
             'flake8==3.7.9;python_version<"3.6"',
-            'flake8==4.0.1;python_version>="3.6"',
-            "mccabe==0.6.1",
+            'flake8==5.0.2;python_version>="3.6"',
+            "mccabe==0.7.0",
             'pyflakes==2.1.1;python_version<"3.6"',
-            'pyflakes==2.4.0;python_version>="3.6"',
+            'pyflakes==2.5.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.8.0;python_version>="3.6"',
+            'pycodestyle==2.9.0;python_version>="3.6"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
