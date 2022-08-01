@@ -126,16 +126,17 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
-        'pip>=22.1.2;python_version>="3.7"',
+        'pip>=22.2.1;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=63.2.0;python_version>="3.7"',
+        'setuptools>=63.3.0;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
-        "attrs>=21.4.0",
+        'attrs>=21.4.0;python_version<"3.6"',
+        'attrs>=22.1.0;python_version>="3.6"',
         'PyYAML>=6.0;python_version>="3.6"',
         'traitlets>=4.3.3;python_version<"3.7"',
         'traitlets>=5.3.0;python_version>="3.7"',
@@ -161,7 +162,7 @@ setup(
         'chardet==5.0.0;python_version>="3.7"',  # Stay in sync with "requests"
         'charset-normalizer==2.0.12;python_version>="3.6" and python_version<"3.7"',  # noqa: E501
         'charset-normalizer==2.1.0;python_version>="3.7"',  # Sync "requests"
-        'urllib3==1.26.10',  # Stay in sync with "requests"
+        'urllib3==1.26.11',  # Stay in sync with "requests"
         'requests==2.27.1;python_version<"3.7"',
         'requests==2.28.1;python_version>="3.7"',
         "nose==1.3.7",
@@ -252,12 +253,13 @@ setup(
         # Usage: flake8
         "flake": [
             'flake8==3.7.9;python_version<"3.6"',
-            'flake8==4.0.1;python_version>="3.6"',
-            "mccabe==0.6.1",
+            'flake8==5.0.2;python_version>="3.6"',
+            'mccabe==0.6.1;python_version<"3.6"',
+            'mccabe==0.7.0;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.6"',
-            'pyflakes==2.4.0;python_version>="3.6"',
+            'pyflakes==2.5.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.8.0;python_version>="3.6"',
+            'pycodestyle==2.9.0;python_version>="3.6"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [

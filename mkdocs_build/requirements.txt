@@ -1,7 +1,7 @@
 # mkdocs dependencies for generating the seleniumbase.io website
 # Minimum Python version: 3.7
 
-regex>=2022.7.9
+regex>=2022.7.25
 tqdm>=4.64.0
 docutils==0.19
 python-dateutil==2.8.2
