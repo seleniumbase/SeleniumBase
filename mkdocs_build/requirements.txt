@@ -9,7 +9,6 @@ livereload==2.6.3
 joblib==1.1.0
 Markdown==3.3.7
 MarkupSafe==2.1.1
-pyparsing==3.0.9
 keyring==23.7.0
 pkginfo==1.8.3
 Jinja2==3.1.2
