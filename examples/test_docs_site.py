@@ -3,11 +3,7 @@ from seleniumbase import BaseCase
 
 class DocsSiteTests(BaseCase):
     def test_docs(self):
-        self.open("https://seleniumbase.io/")
-        self.assert_text("SeleniumBase", "h1")
-        self.js_click('a[href="help_docs/features_list/"]')
-        self.assert_exact_text("Features List", "h1")
-        self.js_click('a[href="../../examples/ReadMe/"]')
+        self.open("https://seleniumbase.io/examples/ReadMe/")
         self.assert_exact_text("Running Example Tests", "h1")
         self.js_click('a[href="../../help_docs/customizing_test_runs/"]')
         self.assert_exact_text("Command Line Options", "h1")
