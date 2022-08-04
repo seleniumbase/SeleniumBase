@@ -36,7 +36,7 @@ if sys.argv[-1] == "publish":
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==5.0.2'")
+        os.system("python -m pip install 'flake8==5.0.4'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -256,13 +256,13 @@ setup(
         # Usage: flake8
         "flake": [
             'flake8==3.7.9;python_version<"3.6"',
-            'flake8==5.0.2;python_version>="3.6"',
+            'flake8==5.0.4;python_version>="3.6"',
             'mccabe==0.6.1;python_version<"3.6"',
             'mccabe==0.7.0;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.6"',
             'pyflakes==2.5.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.9.0;python_version>="3.6"',
+            'pycodestyle==2.9.1;python_version>="3.6"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
