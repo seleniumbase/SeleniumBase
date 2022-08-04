@@ -416,18 +416,32 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
+        elif (
+            latest_window_count == pre_window_count - 1
+            and latest_window_count > 0
+        ):
+            # If a click closes the active window,
+            # switch to the last one if it exists.
+            self.switch_to_window(-1)
         if settings.WAIT_FOR_RSC_ON_CLICKS:
-            self.wait_for_ready_state_complete()
+            try:
+                self.wait_for_ready_state_complete()
+            except Exception:
+                pass
         else:
             # A smaller subset of self.wait_for_ready_state_complete()
-            self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            try:
+                self.wait_for_angularjs(timeout=settings.MINI_TIMEOUT)
+            except Exception:
+                pass
             try:
                 if self.driver.current_url != pre_action_url:
                     self.__ad_block_as_needed()
             except Exception:
-                self.wait_for_ready_state_complete()
-                if self.driver.current_url != pre_action_url:
-                    self.__ad_block_as_needed()
+                try:
+                    self.wait_for_ready_state_complete()
+                except Exception:
+                    pass
         if self.browser == "safari":
             time.sleep(0.02)
         if self.demo_mode:
@@ -1218,8 +1232,18 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
+        elif (
+            latest_window_count == pre_window_count - 1
+            and latest_window_count > 0
+        ):
+            # If a click closes the active window,
+            # switch to the last one if it exists.
+            self.switch_to_window(-1)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
-            self.wait_for_ready_state_complete()
+            try:
+                self.wait_for_ready_state_complete()
+            except Exception:
+                pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -1355,8 +1379,18 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
+        elif (
+            latest_window_count == pre_window_count - 1
+            and latest_window_count > 0
+        ):
+            # If a click closes the active window,
+            # switch to the last one if it exists.
+            self.switch_to_window(-1)
         if settings.WAIT_FOR_RSC_ON_PAGE_LOADS:
-            self.wait_for_ready_state_complete()
+            try:
+                self.wait_for_ready_state_complete()
+            except Exception:
+                pass
         if self.demo_mode:
             if self.driver.current_url != pre_action_url:
                 self.__demo_mode_pause_if_active()
@@ -5104,7 +5138,17 @@ class BaseCase(unittest.TestCase):
             )
         ):
             self.__switch_to_newest_window_if_not_blank()
-        self.wait_for_ready_state_complete()
+        elif (
+            latest_window_count == pre_window_count - 1
+            and latest_window_count > 0
+        ):
+            # If a click closes the active window,
+            # switch to the last one if it exists.
+            self.switch_to_window(-1)
+        try:
+            self.wait_for_ready_state_complete()
+        except Exception:
+            pass
         self.__demo_mode_pause_if_active()
 
     def js_click_all(self, selector, by="css selector"):

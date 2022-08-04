@@ -14,5 +14,6 @@ class ProxyTests(BaseCase):
             if row.strip() != "":
                 data.append(row.strip())
         print("\n".join(data).replace('\n"', " "))
-        print("\nThe browser will close automatically in 7 seconds...")
-        self.sleep(7)
+        if not self.headless:
+            print("\nThe browser will close automatically in 7 seconds...")
+            self.sleep(7)

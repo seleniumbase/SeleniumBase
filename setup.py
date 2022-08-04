@@ -36,7 +36,7 @@ if sys.argv[-1] == "publish":
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==5.0.2'")
+        os.system("python -m pip install 'flake8==5.0.4'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -126,12 +126,12 @@ setup(
     install_requires=[
         'pip>=20.3.4;python_version<"3.6"',
         'pip>=21.3.1;python_version>="3.6" and python_version<"3.7"',
-        'pip>=22.2.1;python_version>="3.7"',
+        'pip>=22.2.2;python_version>="3.7"',
         'packaging>=20.9;python_version<"3.6"',
         'packaging>=21.3;python_version>="3.6"',
         'setuptools>=44.1.1;python_version<"3.6"',
         'setuptools>=59.6.0;python_version>="3.6" and python_version<"3.7"',
-        'setuptools>=63.3.0;python_version>="3.7"',
+        'setuptools>=63.4.1;python_version>="3.7"',
         'tomli>=1.2.3;python_version>="3.6" and python_version<"3.7"',
         'tomli>=2.0.1;python_version>="3.7"',
         "wheel>=0.37.1",
@@ -148,6 +148,9 @@ setup(
         'platformdirs>=2.0.2;python_version<"3.6"',
         'platformdirs>=2.4.0;python_version>="3.6" and python_version<"3.7"',
         'platformdirs>=2.5.2;python_version>="3.7"',
+        'pyparsing>=2.4.7;python_version<"3.6"',
+        'pyparsing>=3.0.7;python_version>="3.6" and python_version<"3.7"',
+        'pyparsing>=3.0.9;python_version>="3.7"',
         "six==1.16.0",
         'ipdb==0.13.4;python_version<"3.6"',
         'ipdb==0.13.9;python_version>="3.6"',
@@ -253,13 +256,13 @@ setup(
         # Usage: flake8
         "flake": [
             'flake8==3.7.9;python_version<"3.6"',
-            'flake8==5.0.2;python_version>="3.6"',
+            'flake8==5.0.4;python_version>="3.6"',
             'mccabe==0.6.1;python_version<"3.6"',
             'mccabe==0.7.0;python_version>="3.6"',
             'pyflakes==2.1.1;python_version<"3.6"',
             'pyflakes==2.5.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.9.0;python_version>="3.6"',
+            'pycodestyle==2.9.1;python_version>="3.6"',
         ],
         # pip install -e .[pdfminer]
         "pdfminer": [
