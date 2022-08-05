@@ -1,3 +1,5 @@
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="300" /></h3>
+
 <h4> Here are some organizations that have grown their automation with SeleniumBase:</h4>
 
 * [MIT](https://web.mit.edu/)

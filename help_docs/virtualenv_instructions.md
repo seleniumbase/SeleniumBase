@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Virtual Environment Tutorial</h2>
+## Virtual Environment Tutorial
 
 There are multiple ways of creating a **[Python virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)**. This tutorial covers two of those:
 

@@ -1,6 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
-
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Installation</h2>
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Installation
 
 <h4>If installing SeleniumBase directly from <a href="https://pypi.python.org/pypi/seleniumbase">PyPI</a>, (the Python Package Index), use:</h4>
 
@@ -54,4 +52,6 @@ pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=sele
 
 --------
 
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="280" /></a>
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="200">](https://github.com/seleniumbase/SeleniumBase/)
+
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a>

@@ -14,7 +14,7 @@ You can download Python from [https://www.python.org/downloads/](https://www.pyt
 
 ### [Pip](https://en.wikipedia.org/wiki/Pip_%28package_manager%29)
 
-You might already have pip and setuptools installed, but if you don't:
+You probably already have pip and setuptools installed. If not:
 
 ```bash
 python -m easy_install -U pip

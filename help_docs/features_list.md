@@ -2,7 +2,8 @@
 <!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=Sjzq9kU5kOw">Watch the tutorial on YouTube</a></b>)</p>
 
 <a id="feature_list"></a>
-<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Features: 🎯</h2>
+
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) SeleniumBase Features: 🎯
 
 * A powerful Python framework for browser automation and E2E UI testing.
 * Includes [Recorder Mode](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md) for instantly generating browser tests in Python.

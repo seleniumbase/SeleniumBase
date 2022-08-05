@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> JS Package Manager and Code Generators</h2>
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) JS Package Manager and Code Generators
 
 <h3>🕹️ SeleniumBase lets you load JavaScript packages from any CDN link into any website.</h3>
 
