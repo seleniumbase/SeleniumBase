@@ -1851,7 +1851,10 @@ def get_local_driver(
             except Exception as e:
                 auto_upgrade_edgedriver = False
                 edge_version = None
-                if "This version of MSEdgeDriver only supports" in e.msg:
+                if (
+                    "This version of MSEdgeDriver only supports" in e.msg
+                    or "This version of Microsoft Edge WebDriver" in e.msg
+                ):
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
                         edge_version = e.msg.split(
@@ -1906,7 +1909,10 @@ def get_local_driver(
             except Exception as e:
                 auto_upgrade_edgedriver = False
                 edge_version = None
-                if "This version of MSEdgeDriver only supports" in e.msg:
+                if (
+                    "This version of MSEdgeDriver only supports" in e.msg
+                    or "This version of Microsoft Edge WebDriver" in e.msg
+                ):
                     if "Current browser version is " in e.msg:
                         auto_upgrade_edgedriver = True
                         edge_version = e.msg.split(

@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Help Docs</h2>
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Help Docs
 
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🚁 Start</a> |

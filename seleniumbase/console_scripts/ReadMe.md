@@ -1,4 +1,4 @@
-<h2>🔮 Console Scripts 🔮</h2>
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 🔮 Console Scripts 🔮
 
 ⭐ SeleniumBase console scripts help you get things done, such as getting web drivers, creating a test directory with useful files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 

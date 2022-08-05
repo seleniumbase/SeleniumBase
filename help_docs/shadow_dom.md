@@ -1,4 +1,6 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Shadow DOM support / Shadow-root interaction</h2>
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="300" /></h3>
+
+## Shadow DOM support / Shadow-root interaction
 
 🔵 SeleniumBase lets you pierce through open Shadow DOM selectors (to interact with elements inside) by adding ``::shadow`` to CSS fragments that include a shadow-root element. For multi-layered shadow-roots, you must individually pierce through each shadow-root element that you want to get through.
 

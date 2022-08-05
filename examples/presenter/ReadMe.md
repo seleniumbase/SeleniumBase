@@ -1,6 +1,4 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="220">](https://github.com/seleniumbase/SeleniumBase/)
-
-<h1> 📑 Presenter 🎞️ </h1>
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) 📑 Presenter 🎞️
 
 <p>SeleniumBase Presenter (slide-maker) lets you use Python to generate HTML presentations.</p>
 

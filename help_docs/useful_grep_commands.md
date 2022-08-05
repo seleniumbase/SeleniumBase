@@ -1,14 +1,16 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Useful grep commands</h2>
+## Useful grep commands
 
 There are several useful **grep** commands for helping you find and/or replace text in multiple files. Examples:
 
 #### List all files containing ``self.get_new_driver(``, ignoring ".pyc" files, from the current directory:
 
 ``grep -rl "self.get_new_driver(" * --exclude=\*.pyc``
-
 OR
-
 ``grep -rl * -e "self.get_new_driver(" --exclude=\*.pyc``
+
+To only search ``.py`` files, use ``--include=\*.py``:
+
+``grep -rl "self.get_new_driver(" * --include=\*.py``
 
 --------
 

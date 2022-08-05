@@ -529,7 +529,7 @@ def wait_for_text_visible(
             full_text = full_text.replace("\n", "\\n ")
             message = (
                 "Expected text substring {%s} for {%s} was not visible "
-                "after %s second%s!\n (The string searched was {%s})"
+                "after %s second%s!\n (Actual string found was {%s})"
                 % (text, selector, timeout, plural, full_text)
             )
         timeout_exception(TextNotVisibleException, message)

@@ -1,4 +1,4 @@
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="25" /> MySQL Installation Instructions</h3>
+## MySQL Installation Instructions
 
 
 #### [MySQL](http://www.mysql.com/) (OPTIONAL)

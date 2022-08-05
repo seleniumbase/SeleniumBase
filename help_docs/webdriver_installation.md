@@ -1,8 +1,8 @@
-[<img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" title="SeleniumBase" width="360">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Installing webdrivers
 
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Installing webdrivers</h2>
+To run web automation, you'll need webdrivers for each browser you plan on using.  With SeleniumBase, drivers are downloaded automatically as needed into the SeleniumBase ``drivers`` folder.
 
-To run web automation, you'll need webdrivers for each browser you plan on using. Here are some commands that'll automatically download the driver you need into the SeleniumBase ``drivers`` folder once you've installed SeleniumBase:
+You can also download drivers manually with these commands:
 
 ```bash
 sbase install chromedriver
@@ -88,3 +88,5 @@ chmod +x /usr/local/bin/geckodriver
 ```
 
 * If you wish to verify that web drivers are working, **[follow these instructions](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/verify_webdriver.md)**.
+
+[<img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" title="SeleniumBase" width="280">](https://github.com/seleniumbase/SeleniumBase)

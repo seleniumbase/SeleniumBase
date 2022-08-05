@@ -1,4 +1,4 @@
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The HTML Inspector 🔎</h2>
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) The HTML Inspector 🔎
 
 🔎 <b>HTML Inspector</b> provides useful info about a web page.
 

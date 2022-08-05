@@ -1,5 +1,6 @@
 <a id="syntax_formats"></a>
-<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 20 syntax formats</h2>
+
+## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) The 20 Syntax Formats
 
 <b>SeleniumBase</b> supports 20 different syntax formats (<i>design patterns</i>) for structuring tests. (<i>The first 6 are the most common.</i>)
 
