@@ -170,9 +170,9 @@ pip install -e .  # Or "pip install ."
 pip install seleniumbase
 ```
 
-> (Add ``--upgrade`` OR ``-U`` to install the latest ``seleniumbase``.)
-> (Add ``--force-reinstall`` to also install the latest dependencies.)
-> (Use ``pip3`` if multiple versions of Python are installed.)
+* (Add ``--upgrade`` OR ``-U`` to upgrade SeleniumBase.)
+* (Add ``--force-reinstall`` to upgrade dependencies.)
+* (Use ``pip3`` if multiple versions of Python are present.)
 
 To upgrade an existing install from PyPI:
 

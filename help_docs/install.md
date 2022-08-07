@@ -43,15 +43,13 @@ pip install git+https://github.com/seleniumbase/SeleniumBase.git@master#egg=sele
 
 <h3><code>pip install</code> can be customized:</h3>
 
-> (Add ``--upgrade`` OR ``-U`` to upgrade an installation.)
-> (Add ``--force-reinstall`` to upgrade dependencies.)
-> (Add ``--index-url=http://pypi.python.org/simple/`` if blocked by a VPN.)
-> (Use ``pip3`` if multiple versions of Python are installed.)
+* (Add ``--upgrade`` OR ``-U`` to upgrade SeleniumBase.)
+* (Add ``--force-reinstall`` to upgrade dependencies.)
+* (Add ``--index-url=http://pypi.python.org/simple/`` if blocked by a VPN.)
+* (Use ``pip3`` if multiple versions of Python are present.)
 
 (If you're not using a virtual environment, you may need to add <code>--user</code> to your <code>pip</code> command if you're seeing errors during installation.)
 
 --------
 
 [<img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" title="SeleniumBase" width="200">](https://github.com/seleniumbase/SeleniumBase/)
-
-<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a>
