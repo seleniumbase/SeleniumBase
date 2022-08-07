@@ -1,14 +1,14 @@
 ## [<img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32">](https://github.com/seleniumbase/SeleniumBase/) Verifying that web drivers are installed
 
-On newer versions of SeleniumBase, the driver is automatically downloaded to the ``seleniumbase/drivers`` folder, and does not need to be on the System Path when running tests.
+On newer versions of SeleniumBase, the driver is automatically downloaded to the ``seleniumbase/drivers`` folder as needed, and does not need to be on the System Path when running tests.
 
-Drivers can be manually downloaded with commands such as:
+Drivers can be manually downloaded to the ``seleniumbase/drivers`` folder with commands such as:
 
 ```bash
-sbase install chromedriver
-sbase install chromedriver latest
-sbase install geckodriver
-sbase install edgedriver
+sbase get chromedriver
+sbase get chromedriver latest
+sbase get geckodriver
+sbase get edgedriver
 ```
 
 --------
@@ -18,7 +18,7 @@ If you want to check that you have the correct driver installed on your System P
 *This assumes you've already downloaded a driver to your **System PATH** with a command such as:*
 
 ```bash
-sbase install chromedriver --path
+sbase get chromedriver --path
 ```
 
 (The above ``--path`` addition is for Linux/Mac only, which uses ``/usr/local/bin/``. The "Path" is different on Windows, and you'll need to manually copy the driver to your System Path, which is defined in the Control Panel's System Environment Variables.)

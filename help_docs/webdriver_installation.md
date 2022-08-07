@@ -5,25 +5,23 @@ To run web automation, you'll need webdrivers for each browser you plan on using
 You can also download drivers manually with these commands:
 
 ```bash
-sbase install chromedriver
-sbase install geckodriver
-sbase install edgedriver
-sbase install iedriver
-sbase install operadriver
+sbase get chromedriver
+sbase get geckodriver
+sbase get edgedriver
 ```
 
 * If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 72.0.3626.69 for compatibility reasons</i>):
 
 ```bash
-sbase install chromedriver latest
+sbase get chromedriver latest
 ```
 
 * You can also install a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
-sbase install chromedriver 102.0.5005.61
+sbase get chromedriver 102.0.5005.61
 
-sbase install chromedriver 102
+sbase get chromedriver 102
 ```
 
 * On Linux, you can run the following two commands (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)
