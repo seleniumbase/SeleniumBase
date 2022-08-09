@@ -6,7 +6,7 @@ class 私のテストクラス(セレニウムテストケース):
     def test_例1(self):
         self.を開く("https://ja.wikipedia.org/wiki/")
         self.テキストを確認する("ウィキペディア")
-        self.要素を確認する('[title*="メインページに移動する"]')
+        self.要素を確認する('[title*="ウィキペディアへようこそ"]')
         self.JS入力('input[name="search"]', "アニメ")
         self.クリックして("#searchform button")
         self.テキストを確認する("アニメ", "#firstHeading")
