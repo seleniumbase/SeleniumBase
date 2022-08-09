@@ -39,9 +39,9 @@ With a complete test automation framework built, most of the hard work is alread
 ### 🔵 How is SeleniumBase different from raw Selenium?
 
 <div>
-<p>💡 With raw Selenium, you need to set up your own options-parser for configuring tests from the command-line. SeleniumBase has its own options-parser, which expands on the <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> test runners, allowing you to set the browser, enable the dashboard, and do many more things.</p>
+<p>💡 SeleniumBase is a Python test framework for the <a href="https://www.w3.org/TR/webdriver2/#endpoints" target="_blank">Selenium/WebDriver</a> browser automation library. This framework incorporates test-runners such as <code>pytest</code>, <code>nosetests</code>, and <code>behave</code> to provide organized structure, test discovery, test execution, test state (<i>eg. passed, failed, or skipped</i>), and command-line options for changing default settings (<i>such as choosing the browser to use</i>). With raw Selenium, you would need to set up your own options-parser for configuring tests from the command-line.</p>
 
-<p>💡 With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase install chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).</p>
+<p>💡 With raw Selenium, you have to manually download drivers (<i>eg. chromedriver</i>) before running tests. With SeleniumBase's driver manager, that's done automatically for you if the required driver isn't already on your PATH. There are also console scripts available for more control (eg. <code>sbase get chromedriver latest</code> to download the latest version of chromedriver to a local SeleniumBase directory).</p>
 
 <p>💡 With raw Selenium, commands that use selectors need to specify the type of selector (eg. <code>"css selector", "button#myButton"</code>). With SeleniumBase, there's auto-detection between CSS Selectors and XPath, which means you don't need to specify the type of selector in your commands (<i>but optionally you could</i>).</p>
 
