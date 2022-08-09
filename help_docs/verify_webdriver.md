@@ -32,8 +32,8 @@ python
 ```
 
 ```python
->>> from selenium import webdriver
->>> driver = webdriver.Chrome()
+>>> from seleniumbase import get_driver
+>>> driver = get_driver("chrome", headless=False)
 >>> driver.get("https://www.google.com/chrome")
 >>> driver.quit()
 >>> exit()
@@ -46,8 +46,8 @@ python
 ```
 
 ```python
->>> from selenium import webdriver
->>> driver = webdriver.Firefox()
+>>> from seleniumbase import get_driver
+>>> driver = get_driver("firefox", headless=False)
 >>> driver.get("https://www.mozilla.org/firefox")
 >>> driver.quit()
 >>> exit()
@@ -60,8 +60,8 @@ python
 ```
 
 ```python
->>> from selenium import webdriver
->>> driver = webdriver.Safari()
+>>> from seleniumbase import get_driver
+>>> driver = get_driver("safari", headless=False)
 >>> driver.get("https://www.apple.com/safari")
 >>> driver.quit()
 >>> exit()
