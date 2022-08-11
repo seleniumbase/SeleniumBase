@@ -1068,6 +1068,7 @@ def get_remote_driver(
         screen_resolution = None
         browser_version = None
         platform_name = None
+        custom_caps = {}
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
             if key == "selenoid:options":
@@ -1079,6 +1080,8 @@ def get_remote_driver(
                 browser_version = desired_caps[key]
             elif key == "platform" or key == "platformName":
                 platform_name = desired_caps[key]
+            elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
+                custom_caps[key] = desired_caps[key]
         if selenium4:
             chrome_options.set_capability("cloud:options", capabilities)
             if selenoid:
@@ -1093,6 +1096,9 @@ def get_remote_driver(
             if platform_name:
                 plat_name = platform_name
                 chrome_options.set_capability("platformName", plat_name)
+            if custom_caps:
+                for key in custom_caps:
+                    chrome_options.set_capability(key, custom_caps[key])
             return webdriver.Remote(
                 command_executor=address,
                 options=chrome_options,
@@ -1133,6 +1139,7 @@ def get_remote_driver(
         screen_resolution = None
         browser_version = None
         platform_name = None
+        custom_caps = {}
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
             if key == "selenoid:options":
@@ -1144,6 +1151,8 @@ def get_remote_driver(
                 browser_version = desired_caps[key]
             elif key == "platform" or key == "platformName":
                 platform_name = desired_caps[key]
+            elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
+                custom_caps[key] = desired_caps[key]
         if selenium4:
             firefox_options.set_capability("cloud:options", capabilities)
             if selenoid:
@@ -1158,6 +1167,9 @@ def get_remote_driver(
             if platform_name:
                 plat_name = platform_name
                 firefox_options.set_capability("platformName", plat_name)
+            if custom_caps:
+                for key in custom_caps:
+                    firefox_options.set_capability(key, custom_caps[key])
             return webdriver.Remote(
                 command_executor=address,
                 options=firefox_options,
@@ -1278,6 +1290,7 @@ def get_remote_driver(
         screen_resolution = None
         browser_version = None
         platform_name = None
+        custom_caps = {}
         for key in desired_caps.keys():
             capabilities[key] = desired_caps[key]
             if key == "selenoid:options":
@@ -1289,6 +1302,8 @@ def get_remote_driver(
                 browser_version = desired_caps[key]
             elif key == "platform" or key == "platformName":
                 platform_name = desired_caps[key]
+            elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
+                custom_caps[key] = desired_caps[key]
         if selenium4:
             opera_options.set_capability("cloud:options", capabilities)
             if selenoid:
@@ -1303,6 +1318,9 @@ def get_remote_driver(
             if platform_name:
                 plat_name = platform_name
                 opera_options.set_capability("platformName", plat_name)
+            if custom_caps:
+                for key in custom_caps:
+                    opera_options.set_capability(key, custom_caps[key])
             return webdriver.Remote(
                 command_executor=address,
                 options=opera_options,
