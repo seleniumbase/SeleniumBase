@@ -768,6 +768,7 @@ def show_options():
     op += "      |  return / r: Run until method returns. j: Jump to line. |\n"
     op += "      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n"
     op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
+    op += "--final-debug  (Enter Final Debug Mode after each test ends.)\n"
     op += "--recorder  (Record browser actions to generate test scripts.)\n"
     op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"
     op += "--archive-logs  (Archive old log files instead of deleting them.)\n"
@@ -776,7 +777,7 @@ def show_options():
     op += "--agent=STRING  (Modify the web browser's User-Agent string.)\n"
     op += "--mobile  (Use Chromium's mobile device emulator during tests.)\n"
     op += '--metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)\n'
-    op += "--ad-block  (Block some types of display ads after page loads.)\n"
+    op += "--ad-block  (Block certain types of iframe ads from appearing.)\n"
     op += "--settings-file=FILE  (Override default SeleniumBase settings.)\n"
     op += '--env=ENV  (Set the test env. Access with "self.env" in tests.)\n'
     op += '--data=DATA  (Extra test data. Access with "self.data" in tests.)\n'
