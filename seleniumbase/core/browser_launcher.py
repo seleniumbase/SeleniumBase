@@ -17,9 +17,9 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 from seleniumbase import extensions  # browser extensions storage folder
 
 urllib3.disable_warnings()
-selenium4 = False
+selenium4_or_newer = False
 if sys.version_info[0] == 3 and sys.version_info[1] >= 7:
-    selenium4 = True
+    selenium4_or_newer = True
     from selenium.webdriver.common.options import ArgOptions
 
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
@@ -130,7 +130,7 @@ def _repair_chromedriver(chrome_options, headless_options, mcv=None):
         "sbase install chromedriver 72.0.3626.69", shell=True
     )
     try:
-        if selenium4:
+        if selenium4_or_newer:
             service = ChromeService(executable_path=LOCAL_CHROMEDRIVER)
             driver = webdriver.Chrome(
                 service=service,
@@ -1058,7 +1058,7 @@ def get_remote_driver(
             device_pixel_ratio,
         )
         capabilities = None
-        if selenium4:
+        if selenium4_or_newer:
             capabilities = webdriver.ChromeOptions().to_capabilities()
         else:
             capabilities = chrome_options.to_capabilities()
@@ -1082,7 +1082,7 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
-        if selenium4:
+        if selenium4_or_newer:
             chrome_options.set_capability("cloud:options", capabilities)
             if selenoid:
                 snops = selenoid_options
@@ -1126,7 +1126,7 @@ def get_remote_driver(
             firefox_pref,
         )
         capabilities = None
-        if selenium4:
+        if selenium4_or_newer:
             capabilities = webdriver.FirefoxOptions().to_capabilities()
         else:
             capabilities = firefox_options.to_capabilities()
@@ -1154,7 +1154,7 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
-        if selenium4:
+        if selenium4_or_newer:
             firefox_options.set_capability("cloud:options", capabilities)
             if selenoid:
                 snops = selenoid_options
@@ -1186,7 +1186,7 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.INTERNET_EXPLORER:
         capabilities = webdriver.DesiredCapabilities.INTERNETEXPLORER
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             return webdriver.Remote(
@@ -1205,7 +1205,7 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.EDGE:
         capabilities = webdriver.DesiredCapabilities.EDGE
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             return webdriver.Remote(
@@ -1224,7 +1224,7 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.SAFARI:
         capabilities = webdriver.DesiredCapabilities.SAFARI
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             return webdriver.Remote(
@@ -1281,7 +1281,7 @@ def get_remote_driver(
             device_pixel_ratio,
         )
         capabilities = None
-        if selenium4:
+        if selenium4_or_newer:
             capabilities = webdriver.DesiredCapabilities.OPERA
         else:
             opera_options = webdriver.opera.options.Options()
@@ -1306,7 +1306,7 @@ def get_remote_driver(
                 platform_name = desired_caps[key]
             elif re.match("[a-zA-Z0-9]*:[a-zA-Z0-9]*", key):
                 extension_capabilities[key] = desired_caps[key]
-        if selenium4:
+        if selenium4_or_newer:
             opera_options.set_capability("cloud:options", capabilities)
             if selenoid:
                 snops = selenoid_options
@@ -1337,7 +1337,7 @@ def get_remote_driver(
                 keep_alive=True,
             )
     elif browser_name == constants.Browser.PHANTOM_JS:
-        if selenium4:
+        if selenium4_or_newer:
             message = (
                 "\n"
                 "PhantomJS is no longer available for Selenium 4!\n"
@@ -1357,7 +1357,7 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.ANDROID:
         capabilities = webdriver.DesiredCapabilities.ANDROID
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             return webdriver.Remote(
@@ -1376,7 +1376,7 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.IPHONE:
         capabilities = webdriver.DesiredCapabilities.IPHONE
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             return webdriver.Remote(
@@ -1395,7 +1395,7 @@ def get_remote_driver(
             )
     elif browser_name == constants.Browser.IPAD:
         capabilities = webdriver.DesiredCapabilities.IPAD
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             remote_options.set_capability("cloud:options", desired_caps)
             return webdriver.Remote(
@@ -1413,7 +1413,7 @@ def get_remote_driver(
                 keep_alive=True,
             )
     elif browser_name == constants.Browser.REMOTE:
-        if selenium4:
+        if selenium4_or_newer:
             remote_options = ArgOptions()
             # shovel caps into remote options.
             for cap_name, cap_value in desired_caps.items():
@@ -1528,7 +1528,7 @@ def get_local_driver(
                         sys.argv = sys_args  # Put back original sys args
         # Launch Firefox
         if os.path.exists(LOCAL_GECKODRIVER):
-            if selenium4:
+            if selenium4_or_newer:
                 service = FirefoxService(
                     executable_path=LOCAL_GECKODRIVER,
                     log_path=os.devnull,
@@ -1568,7 +1568,7 @@ def get_local_driver(
                     options=firefox_options,
                 )
         else:
-            if selenium4:
+            if selenium4_or_newer:
                 service = FirefoxService(log_path=os.devnull)
                 try:
                     return webdriver.Firefox(
@@ -1715,7 +1715,7 @@ def get_local_driver(
                         sys.argv = sys_args  # Put back original sys args
 
         # For Microsoft Edge (Chromium) version 80 or higher
-        if selenium4:
+        if selenium4_or_newer:
             Edge = webdriver.edge.webdriver.WebDriver
             EdgeOptions = webdriver.edge.webdriver.Options
         else:
@@ -1863,7 +1863,7 @@ def get_local_driver(
                         chromium_arg_item = "--" + chromium_arg_item
                 if len(chromium_arg_item) >= 3:
                     edge_options.add_argument(chromium_arg_item)
-        if selenium4:
+        if selenium4_or_newer:
             try:
                 service = EdgeService(
                     executable_path=LOCAL_EDGEDRIVER, log_path=os.devnull
@@ -2038,7 +2038,7 @@ def get_local_driver(
         except Exception:
             return webdriver.Opera()
     elif browser_name == constants.Browser.PHANTOM_JS:
-        if selenium4:
+        if selenium4_or_newer:
             message = (
                 "\n"
                 "PhantomJS is no longer available for Selenium 4!\n"
@@ -2125,7 +2125,7 @@ def get_local_driver(
             if not headless or "linux" not in PLATFORM:
                 try:
                     if os.path.exists(LOCAL_CHROMEDRIVER):
-                        if selenium4:
+                        if selenium4_or_newer:
                             service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER,
                                 log_path=os.devnull,
@@ -2141,7 +2141,7 @@ def get_local_driver(
                                 options=chrome_options,
                             )
                     else:
-                        if selenium4:
+                        if selenium4_or_newer:
                             service = ChromeService(log_path=os.devnull)
                             driver = webdriver.Chrome(
                                 service=service, options=chrome_options
@@ -2230,7 +2230,7 @@ def get_local_driver(
                             )
                         _mark_driver_repaired()
                     if os.path.exists(LOCAL_CHROMEDRIVER):
-                        if selenium4:
+                        if selenium4_or_newer:
                             service = ChromeService(
                                 executable_path=LOCAL_CHROMEDRIVER
                             )
