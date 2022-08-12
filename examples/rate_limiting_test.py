@@ -1,7 +1,5 @@
-"""
-This test demonstrates the use of the "rate_limited" decorator.
-You can use this decorator on any method to rate-limit it.
-"""
+""" This test demonstrates the use of the "rate_limited" decorator.
+    You can use this decorator on any method to rate-limit it. """
 
 from seleniumbase import BaseCase
 from seleniumbase import decorators
