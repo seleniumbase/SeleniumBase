@@ -16,3 +16,4 @@ class MyTests(BaseCase):
         LoginPage().login_to_swag_labs(self, "standard_user")
         self.assert_element("div.inventory_list")
         self.assert_element('div:contains("Sauce Labs Backpack")')
+        self.js_click("a#logout_sidebar_link")
