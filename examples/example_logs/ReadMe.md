@@ -68,7 +68,7 @@ pytest test_suite.py --html=report.html
 pytest test_suite.py --dashboard --html=report.html
 ```
 
-<img src="https://seleniumbase.io/cdn/img/dash_report.jpg" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
+<img src="https://seleniumbase.io/cdn/img/dash_report.png" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
 
 --------
 
