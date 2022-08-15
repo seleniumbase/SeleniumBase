@@ -54,7 +54,7 @@ Here's where you can go to manually install web drivers from the source:
 * You can also install drivers by using ``brew`` (aka ``homebrew``), but you'll need to install that first. [Brew installation instructions are here](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/install_python_pip_git.md).
 
 ```bash
-brew cask install chromedriver
+brew install --cask chromedriver
 
 brew install geckodriver
 ```
@@ -62,7 +62,7 @@ brew install geckodriver
 You can also upgrade existing webdrivers:
 
 ```bash
-brew cask upgrade chromedriver
+brew upgrade --cask chromedriver
 
 brew upgrade geckodriver
 ```
