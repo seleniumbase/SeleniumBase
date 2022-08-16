@@ -18,3 +18,4 @@ class MyTestClass(BaseCase):
         self.click('button:contains("Remove")')  # HTML innerText
         self.assert_text_not_visible("Backpack", "div.cart_item")
         self.js_click("a#logout_sidebar_link")
+        self.assert_element("div#login_button_container")
